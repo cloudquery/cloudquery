@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.5.8](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.7...v0.5.8) (2022-06-13)
+
+
+### Features
+
+* Add error classifier ([#90](https://github.com/cloudquery/cq-provider-digitalocean/issues/90)) ([8a94c1f](https://github.com/cloudquery/cq-provider-digitalocean/commit/8a94c1f6a5ea6a45312e4ed7bb4248f5e372f837))
+
 ## [0.5.7](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.6...v0.5.7) (2022-06-08)
 
 
