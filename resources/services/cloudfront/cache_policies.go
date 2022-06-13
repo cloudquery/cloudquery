@@ -17,7 +17,7 @@ func CloudfrontCachePolicies() *schema.Table {
 		Description:  "Contains a cache policy.",
 		Resolver:     fetchCloudfrontCachePolicies,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{

@@ -15,7 +15,7 @@ func GlobalSettings() *schema.Table {
 		Name:         "aws_backup_global_settings",
 		Resolver:     fetchBackupGlobalSettings,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		Global:       true,

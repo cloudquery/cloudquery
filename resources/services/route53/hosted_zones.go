@@ -26,7 +26,7 @@ func Route53HostedZones() *schema.Table {
 		Description:  "A complex type that contains general information about the hosted zone.",
 		Resolver:     fetchRoute53HostedZones,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{

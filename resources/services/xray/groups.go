@@ -18,7 +18,7 @@ func Groups() *schema.Table {
 		Description:  "Details for a group.",
 		Resolver:     fetchXrayGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("xray"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

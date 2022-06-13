@@ -23,7 +23,7 @@ func Stacks() *schema.Table {
 		Description:  "The Stack data type.",
 		Resolver:     fetchCloudformationStacks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("cloudformation"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{

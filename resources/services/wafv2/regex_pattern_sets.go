@@ -18,7 +18,7 @@ func RegexPatternSets() *schema.Table {
 		Description:  "Contains one or more regular expressions",
 		Resolver:     fetchWafv2RegexPatternSets,
 		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionScopeFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

@@ -18,7 +18,7 @@ func Plans() *schema.Table {
 		Description:  "Contains metadata about a backup plan.",
 		Resolver:     fetchBackupPlans,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

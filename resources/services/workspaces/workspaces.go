@@ -19,7 +19,7 @@ func Workspaces() *schema.Table {
 		Description:  "Describes a WorkSpace.",
 		Resolver:     fetchWorkspacesWorkspaces,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("workspaces"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{

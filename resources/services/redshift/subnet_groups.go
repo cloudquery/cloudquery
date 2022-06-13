@@ -18,7 +18,7 @@ func RedshiftSubnetGroups() *schema.Table {
 		Description:  "Describes a subnet group.",
 		Resolver:     fetchRedshiftSubnetGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

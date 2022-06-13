@@ -17,7 +17,7 @@ func ApplicationVersions() *schema.Table {
 		Description:  "Describes the properties of an application version.",
 		Resolver:     fetchElasticbeanstalkApplicationVersions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
