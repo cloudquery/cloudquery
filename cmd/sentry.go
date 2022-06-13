@@ -105,12 +105,12 @@ func initSentry() {
 			ID: userId.String(),
 		})
 		scope.SetTags(map[string]string{
-			"terminal": strconv.FormatBool(ui.IsTerminal()),
-			"ci":       strconv.FormatBool(analytics.IsCI()),
-			"faas":     strconv.FormatBool(analytics.IsFaaS()),
+			"terminal":    strconv.FormatBool(ui.IsTerminal()),
+			"ci":          strconv.FormatBool(analytics.IsCI()),
+			"faas":        strconv.FormatBool(analytics.IsFaaS()),
+			"instance_id": instanceId.String(),
 		})
 		scope.SetExtra("cookie_id", userId.String())
-		scope.SetExtra("instance_id", instanceId)
 		scope.SetExtra("goroutine_count", runtime.NumGoroutine())
 		ulimit, err := limit.GetUlimit()
 		if err == nil && ulimit.Max != 0 {
