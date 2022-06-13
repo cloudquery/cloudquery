@@ -2,10 +2,13 @@ package athena
 
 import (
 	"context"
+	"errors"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -428,7 +431,7 @@ func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *
 			func(summary types.WorkGroupSummary) {
 				errs.Go(func() error {
 					defer sem.Release(1)
-					return fetchWorkGroup(ctx, res, svc, c.Region, summary)
+					return fetchWorkGroup(ctx, res, c, summary)
 				})
 			}(d)
 		}
@@ -491,6 +494,9 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 				options.Region = c.Region
 			})
 			if err != nil {
+				if c.IsNotFoundError(err) {
+					continue
+				}
 				return diag.WrapError(err)
 			}
 			res <- *dc.PreparedStatement
@@ -517,12 +523,14 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 		}
 		for _, d := range response.QueryExecutionIds {
 			dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
-
 				QueryExecutionId: aws.String(d),
 			}, func(options *athena.Options) {
 				options.Region = c.Region
 			})
 			if err != nil {
+				if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
+					continue
+				}
 				return diag.WrapError(err)
 			}
 			res <- *dc.QueryExecution
@@ -554,6 +562,9 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 				options.Region = c.Region
 			})
 			if err != nil {
+				if c.IsNotFoundError(err) {
+					continue
+				}
 				return diag.WrapError(err)
 			}
 			res <- *dc.NamedQuery
@@ -571,13 +582,17 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 //                                                  User Defined Helpers
 // ====================================================================================================================
 
-func fetchWorkGroup(ctx context.Context, res chan<- interface{}, svc client.AthenaClient, region string, groupSummary types.WorkGroupSummary) error {
+func fetchWorkGroup(ctx context.Context, res chan<- interface{}, c *client.Client, groupSummary types.WorkGroupSummary) error {
+	svc := c.Services().Athena
 	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
 		WorkGroup: groupSummary.Name,
 	}, func(options *athena.Options) {
-		options.Region = region
+		options.Region = c.Region
 	})
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	res <- *dc.WorkGroup
@@ -586,4 +601,12 @@ func fetchWorkGroup(ctx context.Context, res chan<- interface{}, svc client.Athe
 
 func createWorkGroupArn(cl *client.Client, groupName string) string {
 	return cl.ARN(client.Athena, "workgroup", groupName)
+}
+
+func isQueryExecutionNotFound(err error) bool {
+	var ae smithy.APIError
+	if !errors.As(err, &ae) {
+		return false
+	}
+	return ae.ErrorCode() == "InvalidRequestException" && strings.Contains(ae.ErrorMessage(), "was not found")
 }

@@ -234,7 +234,7 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 			func(summary types.DataCatalogSummary) {
 				errs.Go(func() error {
 					defer sem.Release(1)
-					return fetchDataCatalog(ctx, res, svc, c.Region, summary)
+					return fetchDataCatalog(ctx, res, c, summary)
 				})
 			}(d)
 		}
@@ -335,17 +335,21 @@ func fetchAthenaDataCatalogDatabaseTablePartitionKeys(ctx context.Context, meta 
 //                                                  User Defined Helpers
 // ====================================================================================================================
 
-func fetchDataCatalog(ctx context.Context, res chan<- interface{}, svc client.AthenaClient, region string, catalogSummary types.DataCatalogSummary) error {
+func fetchDataCatalog(ctx context.Context, res chan<- interface{}, c *client.Client, catalogSummary types.DataCatalogSummary) error {
+	svc := c.Services().Athena
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
 	}, func(options *athena.Options) {
-		options.Region = region
+		options.Region = c.Region
 	})
 	if err != nil {
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
 		// relations can be fetched by its name
 		if *catalogSummary.CatalogName == "AwsDataCatalog" {
 			res <- types.DataCatalog{Name: catalogSummary.CatalogName, Type: catalogSummary.Type}
+			return nil
+		}
+		if c.IsNotFoundError(err) {
 			return nil
 		}
 		return diag.WrapError(err)
