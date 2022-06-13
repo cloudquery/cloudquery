@@ -880,6 +880,9 @@ func fetchRedshiftClusterDeferredMaintenanceWindows(ctx context.Context, meta sc
 }
 func fetchRedshiftClusterEndpointVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
+	if cluster.Endpoint == nil {
+		return nil
+	}
 	res <- cluster.Endpoint.VpcEndpoints
 	return nil
 }
