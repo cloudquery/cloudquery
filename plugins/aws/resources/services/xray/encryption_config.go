@@ -16,7 +16,7 @@ func EncryptionConfigs() *schema.Table {
 		Description:  "A configuration document that specifies encryption configuration settings.",
 		Resolver:     fetchXrayEncryptionConfigs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("xray"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
 		Columns: []schema.Column{

@@ -36,7 +36,7 @@ func Elbv2LoadBalancers() *schema.Table {
 		Description:  "Information about a load balancer.",
 		Resolver:     fetchElbv2LoadBalancers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

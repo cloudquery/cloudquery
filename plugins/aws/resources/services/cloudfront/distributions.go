@@ -17,7 +17,7 @@ func CloudfrontDistributions() *schema.Table {
 		Description:  "A summary of the information about a CloudFront distribution.",
 		Resolver:     fetchCloudfrontDistributions,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

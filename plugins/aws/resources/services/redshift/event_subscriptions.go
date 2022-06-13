@@ -18,7 +18,7 @@ func EventSubscriptions() *schema.Table {
 		Description:  "Describes event subscriptions.",
 		Resolver:     fetchRedshiftEventSubscriptions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

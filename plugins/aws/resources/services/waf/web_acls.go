@@ -23,7 +23,7 @@ func WafWebAcls() *schema.Table {
 		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafWebAcls,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{

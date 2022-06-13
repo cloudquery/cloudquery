@@ -17,7 +17,7 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 		Description:  "Describes a launch configuration.",
 		Resolver:     fetchAutoscalingLaunchConfigurations,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

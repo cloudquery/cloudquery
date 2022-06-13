@@ -26,7 +26,7 @@ func AutoscalingGroups() *schema.Table {
 		Description:  "Describes an Auto Scaling group.",
 		Resolver:     fetchAutoscalingGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

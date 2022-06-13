@@ -18,7 +18,7 @@ func WebAcls() *schema.Table {
 		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafregionalWebAcls,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{

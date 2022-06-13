@@ -24,7 +24,7 @@ func Pipelines() *schema.Table {
 		Description:  "Represents the output of a GetPipeline action.",
 		Resolver:     fetchCodepipelinePipelines,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

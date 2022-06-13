@@ -18,7 +18,7 @@ func Webhooks() *schema.Table {
 		Description:  "The detail returned for each webhook after listing webhooks, such as the webhook URL, the webhook name, and the webhook ARN.",
 		Resolver:     fetchCodepipelineWebhooks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

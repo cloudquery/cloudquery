@@ -18,7 +18,7 @@ func Directories() *schema.Table {
 		Description:  "Describes a directory that is used with Amazon WorkSpaces.",
 		Resolver:     fetchWorkspacesDirectories,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("workspaces"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{

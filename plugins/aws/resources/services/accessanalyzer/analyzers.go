@@ -20,7 +20,7 @@ func Analyzers() *schema.Table {
 		Description:  "Contains information about the analyzer",
 		Resolver:     fetchAccessAnalyzerAnalyzers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("access-analyzer"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{

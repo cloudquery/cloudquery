@@ -22,7 +22,7 @@ func DataCatalogs() *schema.Table {
 		Description:  "Contains information about a data catalog in an Amazon Web Services account",
 		Resolver:     fetchAthenaDataCatalogs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("athena"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
