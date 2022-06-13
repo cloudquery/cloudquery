@@ -31,6 +31,13 @@ const (
 var mainFile = getMainFile()
 
 var testCases = map[string]testCase{
+	"init-clean": {
+		actCommand: []string{"go", "run", mainFile, "init", "test"},
+	},
+	"init-dirty": {
+		setupCommands: [][]string{{"go", "run", mainFile, "init", "test"}},
+		actCommand:    []string{"go", "run", mainFile, "init", "test"},
+	},
 	"policy-output": {
 		setupCommands: [][]string{
 			{"dropdb", "-h", dbHost, "-p", dbPort, "-U", dbUser, dbName},
