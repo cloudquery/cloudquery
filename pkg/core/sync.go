@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
@@ -68,7 +69,7 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 	}
 
 	if want.ParsedVersion == nil {
-		return nil, diag.FromError(fmt.Errorf("unsupported version %q for provider. If you're trying to debug a provider see https://docs.cloudquery.io/docs/developers/debugging", provider.Version), diag.USER)
+		return nil, diag.FromError(fmt.Errorf("unsupported version %q for provider. If you're trying to debug a provider %s", provider.Version, ui.Link("see our docs", "https://docs.cloudquery.io/docs/developers/debugging")), diag.USER)
 	}
 
 	cur, err := sta.GetProvider(ctx, provider)
