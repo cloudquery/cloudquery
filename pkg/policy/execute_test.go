@@ -712,8 +712,10 @@ func TestGenerateExecutionResultFile(t *testing.T) {
 
 	for _, tc := range testCases {
 		executiionResult := ExecutionResult{PolicyName: tc.PolicyName}
-		err := GenerateExecutionResultFile(&executiionResult, tc.OutputDir)
-		if !assert.NoError(t, err) {
+		diags := GenerateExecutionResultFile(&executiionResult, tc.OutputDir)
+
+		if diags.HasErrors() {
+			assert.Fail(t, "expected no errors, got %v", diags)
 			continue
 		}
 

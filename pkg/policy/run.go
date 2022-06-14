@@ -149,8 +149,12 @@ func Run(ctx context.Context, sta *state.Client, storage database.Storage, req *
 			continue
 		}
 		log.Info().Str("policy", p.Name).Str("version", p.Version()).Str("subPath", p.SubPolicy()).Msg("writing policy to output directory")
-		if err := GenerateExecutionResultFile(result, req.OutputDir); err != nil {
-			return nil, diags.Add(diag.FromError(err, diag.INTERNAL))
+
+		diags = diags.Add(GenerateExecutionResultFile(result, req.OutputDir))
+
+		if diags.HasErrors() {
+			log.Error().Msg("failed to generate execution result file")
+			return nil, diags
 		}
 	}
 	return resp, diags

@@ -415,11 +415,15 @@ func (e *Executor) deleteViews(ctx context.Context, policy *Policy) {
 	}
 }
 
-func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) error {
+func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) diag.Diagnostics {
 	fs := afero.NewOsFs()
 
 	if err := fs.MkdirAll(outputDir, 0755); err != nil {
-		return err
+		return diag.FromError(
+			err,
+			diag.USER,
+			diag.WithDetails(fmt.Sprintf("failed to create directory %q", outputDir)),
+		)
 	}
 
 	// result.PolicyName is the full selector for this policy run.
@@ -427,12 +431,18 @@ func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) erro
 	// e.g. for "aws//cis_v1.2.0", the output file should be "aws.json"
 	basePolicyName, err := extractFirstPathComponent(result.PolicyName)
 	if err != nil {
-		return err
+		return diag.FromError(err, diag.INTERNAL)
 	}
 
-	f, err := fs.Create(fmt.Sprintf("%s.json", filepath.Join(outputDir, basePolicyName)))
+	filePath := filepath.Join(outputDir, basePolicyName)
+
+	f, err := fs.Create(fmt.Sprintf("%s.json", filePath))
 	if err != nil {
-		return err
+		return diag.FromError(
+			err,
+			diag.USER,
+			diag.WithDetails(fmt.Sprintf("failed to create file %q", filePath)),
+		)
 	}
 	defer func() {
 		_ = f.Close()
@@ -440,11 +450,16 @@ func GenerateExecutionResultFile(result *ExecutionResult, outputDir string) erro
 
 	data, err := json.Marshal(&result)
 	if err != nil {
-		return err
+		return diag.FromError(err, diag.INTERNAL)
 	}
 	if _, err := f.Write(data); err != nil {
-		return err
+		return diag.FromError(
+			err,
+			diag.USER,
+			diag.WithDetails(fmt.Sprintf("failed to write to file %q", filePath)),
+		)
 	}
+
 	return nil
 }
 
