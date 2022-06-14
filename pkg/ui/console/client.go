@@ -188,7 +188,7 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 		return diags.Add(dd)
 	}
 	for _, u := range updates {
-		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️ %s\n\n", u.Name, u.CurrentVersion, u.AvailableVersion))
+		ui.ColorizedOutput(ui.ColorInfo, fmt.Sprintf("Update available for provider %s: %s ➡️  %s\n\n", u.Name, u.CurrentVersion, u.AvailableVersion))
 	}
 	return diags
 }
