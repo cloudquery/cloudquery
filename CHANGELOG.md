@@ -4,6 +4,15 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.25.2](https://github.com/cloudquery/cloudquery/compare/v0.25.1...v0.25.2) (2022-06-14)
+
+
+### Bug Fixes
+
+* Add missing space when printing provider update message ([#897](https://github.com/cloudquery/cloudquery/issues/897)) ([9694baf](https://github.com/cloudquery/cloudquery/commit/9694baf2dcaba9a67967c964295f8ea2012cf689))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.11.1 ([#892](https://github.com/cloudquery/cloudquery/issues/892)) ([eaecdfe](https://github.com/cloudquery/cloudquery/commit/eaecdfedcfee9d41a99b7ab78e7985621700e805))
+* Index out of range in `policy snapshot` ([#894](https://github.com/cloudquery/cloudquery/issues/894)) ([5d0a46d](https://github.com/cloudquery/cloudquery/commit/5d0a46dac1fd48033cc9cdaec2a98328261c1acb))
+
 ## [0.25.1](https://github.com/cloudquery/cloudquery/compare/v0.25.0...v0.25.1) (2022-06-13)
 
 
