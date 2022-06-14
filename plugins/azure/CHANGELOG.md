@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.7](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.6...v0.11.7) (2022-06-14)
+
+
+### Features
+
+* Added Virtual Network Gateways and Connections ([#331](https://github.com/cloudquery/cq-provider-azure/issues/331)) ([76d335c](https://github.com/cloudquery/cq-provider-azure/commit/76d335cac37e42f134b4b5a2e71baab7deaa1b06))
+
 ## [0.11.6](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.5...v0.11.6) (2022-06-08)
 
 
