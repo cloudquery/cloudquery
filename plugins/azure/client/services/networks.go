@@ -8,15 +8,16 @@ import (
 )
 
 type NetworksClient struct {
-	ExpressRouteCircuits ExpressRouteCircuitsClient
-	ExpressRouteGateways ExpressRouteGatewaysClient
-	ExpressRoutePorts    ExpressRoutePortsClient
-	Interfaces           InterfacesClient
-	PublicIPAddresses    PublicIPAddressesClient
-	RouteFilters         RouteFiltersClient
-	SecurityGroups       SecurityGroupsClient
-	VirtualNetworks      VirtualNetworksClient
-	Watchers             WatchersClient
+	ExpressRouteCircuits   ExpressRouteCircuitsClient
+	ExpressRouteGateways   ExpressRouteGatewaysClient
+	ExpressRoutePorts      ExpressRoutePortsClient
+	Interfaces             InterfacesClient
+	PublicIPAddresses      PublicIPAddressesClient
+	RouteFilters           RouteFiltersClient
+	SecurityGroups         SecurityGroupsClient
+	VirtualNetworkGateways VirtualNetworkGatewaysClient
+	VirtualNetworks        VirtualNetworksClient
+	Watchers               WatchersClient
 }
 type ExpressRouteCircuitsClient interface {
 	ListAll(ctx context.Context) (result network.ExpressRouteCircuitListResultPage, err error)
@@ -46,6 +47,11 @@ type SecurityGroupsClient interface {
 	ListAll(ctx context.Context) (result network.SecurityGroupListResultPage, err error)
 }
 
+type VirtualNetworkGatewaysClient interface {
+	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayListResultPage, err error)
+	ListConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewayListConnectionsResultPage, err error)
+}
+
 type VirtualNetworksClient interface {
 	ListAll(ctx context.Context) (result network.VirtualNetworkListResultPage, err error)
 }
@@ -70,19 +76,22 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) Networks
 	rf.Authorizer = auth
 	sg := network.NewSecurityGroupsClient(subscriptionId)
 	sg.Authorizer = auth
+	vng := network.NewVirtualNetworkGatewaysClient(subscriptionId)
+	vng.Authorizer = auth
 	vn := network.NewVirtualNetworksClient(subscriptionId)
 	vn.Authorizer = auth
 	wch := network.NewWatchersClient(subscriptionId)
 	wch.Authorizer = auth
 	return NetworksClient{
-		ExpressRouteCircuits: erc,
-		ExpressRouteGateways: erg,
-		ExpressRoutePorts:    erp,
-		Interfaces:           ifs,
-		PublicIPAddresses:    pips,
-		RouteFilters:         rf,
-		SecurityGroups:       sg,
-		VirtualNetworks:      vn,
-		Watchers:             wch,
+		ExpressRouteCircuits:   erc,
+		ExpressRouteGateways:   erg,
+		ExpressRoutePorts:      erp,
+		Interfaces:             ifs,
+		PublicIPAddresses:      pips,
+		RouteFilters:           rf,
+		SecurityGroups:         sg,
+		VirtualNetworkGateways: vng,
+		VirtualNetworks:        vn,
+		Watchers:               wch,
 	}
 }

@@ -77,19 +77,50 @@ func fakeVirtualNetwork(t *testing.T) network.VirtualNetwork {
 	return vn
 }
 
+func fakeVirtualNetworkGateway(t *testing.T) network.VirtualNetworkGateway {
+	vng := network.VirtualNetworkGateway{}
+	require.NoError(t, faker.FakeData(&vng))
+	fakeVngID := client.FakeResourceGroup + "/" + *vng.ID
+	vng.ID = &fakeVngID
+	return vng
+}
+
+func fakeVirtualNetworkGatewayConnection(t *testing.T) network.VirtualNetworkGatewayConnectionListEntity {
+	vngc := network.VirtualNetworkGatewayConnectionListEntity{}
+	require.NoError(t, faker.FakeDataSkipFields(&vngc, []string{"VirtualNetworkGatewayConnectionListEntityPropertiesFormat"}))
+	require.NoError(t, faker.FakeData(&vngc.VirtualNetworkGatewayConnectionListEntityPropertiesFormat))
+	fakeVngcID := client.FakeResourceGroup + "/" + *vngc.ID
+	vngc.ID = &fakeVngcID
+	return vngc
+}
+
 func buildNetworkVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	n := mocks.NewMockVirtualNetworksClient(ctrl)
+	ngc := mocks.NewMockVirtualNetworkGatewaysClient(ctrl)
 	s := services.Services{
 		Network: services.NetworksClient{
-			VirtualNetworks: n,
+			VirtualNetworks:        n,
+			VirtualNetworkGateways: ngc,
 		},
 	}
 
 	vn := fakeVirtualNetwork(t)
-	page := network.NewVirtualNetworkListResultPage(network.VirtualNetworkListResult{Value: &[]network.VirtualNetwork{vn}}, func(ctx context.Context, result network.VirtualNetworkListResult) (network.VirtualNetworkListResult, error) {
+	vng := fakeVirtualNetworkGateway(t)
+	vngc := fakeVirtualNetworkGatewayConnection(t)
+
+	vnp := network.NewVirtualNetworkListResultPage(network.VirtualNetworkListResult{Value: &[]network.VirtualNetwork{vn}}, func(ctx context.Context, result network.VirtualNetworkListResult) (network.VirtualNetworkListResult, error) {
 		return network.VirtualNetworkListResult{}, nil
 	})
-	n.EXPECT().ListAll(gomock.Any()).Return(page, nil)
+	vngp := network.NewVirtualNetworkGatewayListResultPage(network.VirtualNetworkGatewayListResult{Value: &[]network.VirtualNetworkGateway{vng}}, func(ctx context.Context, result network.VirtualNetworkGatewayListResult) (network.VirtualNetworkGatewayListResult, error) {
+		return network.VirtualNetworkGatewayListResult{}, nil
+	})
+	vngcp := network.NewVirtualNetworkGatewayListConnectionsResultPage(network.VirtualNetworkGatewayListConnectionsResult{Value: &[]network.VirtualNetworkGatewayConnectionListEntity{vngc}}, func(ctx context.Context, result network.VirtualNetworkGatewayListConnectionsResult) (network.VirtualNetworkGatewayListConnectionsResult, error) {
+		return network.VirtualNetworkGatewayListConnectionsResult{}, nil
+	})
+
+	n.EXPECT().ListAll(gomock.Any()).Return(vnp, nil)
+	ngc.EXPECT().List(gomock.Any(), gomock.Any()).Return(vngp, nil)
+	ngc.EXPECT().ListConnections(gomock.Any(), gomock.Any(), gomock.Any()).Return(vngcp, nil)
 	return s
 }
 
