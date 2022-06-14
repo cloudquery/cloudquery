@@ -127,7 +127,7 @@ var (
 		Use:   "snapshot",
 		Short: policySnapshotHelpMsg,
 		Long:  policySnapshotHelpMsg,
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(2),
 		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
 			err := c.SnapshotPolicy(ctx, args[0], args[1])
 			errors.CaptureError(err, map[string]string{"command": "policy_snapshot"})
