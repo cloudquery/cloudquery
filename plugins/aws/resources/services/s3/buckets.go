@@ -510,12 +510,18 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 
 func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, errs chan<- error, res chan<- interface{}, wg *sync.WaitGroup) {
 	defer wg.Done()
+	cl := meta.(*client.Client)
 	for bucket := range buckets {
 		// always set default bucket region to us-east-1
 		wb := &WrappedBucket{Bucket: bucket, Region: "us-east-1"}
-		e := resolveS3BucketsAttributes(ctx, meta, wb)
+		err := resolveS3BucketsAttributes(ctx, meta, wb)
+		if err != nil {
+			if !cl.IsNotFoundError(err) {
+				errs <- err
+			}
+			continue
+		}
 		res <- wb
-		errs <- e
 	}
 }
 
@@ -527,9 +533,6 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 
 	output, err := mgr.GetBucketRegion(ctx, *resource.Name)
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return diag.WrapError(err)
 	}
 	// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
