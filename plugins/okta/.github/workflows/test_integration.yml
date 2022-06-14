@@ -138,7 +138,7 @@ jobs:
 
 
        # The workflow was manually triggered via `ok_to_test` command so we need to update the check manually
-      - uses: myrotvorets/set-commit-status-action@43511937d24f22e34537bc3e43b7cbdfad31fdd3
+      - uses: myrotvorets/set-commit-status-action@fc80b798deac391d3c7dc9f1a7a7139b64a591e8
         if: ${{ github.event_name == 'repository_dispatch' && success() }}
         with:
           token: ${{ secrets.GH_CQ_BOT }}
@@ -148,7 +148,7 @@ jobs:
           allowForks: true
 
       # The workflow was manually triggered via `ok_to_test` command so we need to update the check manually
-      - uses: myrotvorets/set-commit-status-action@43511937d24f22e34537bc3e43b7cbdfad31fdd3
+      - uses: myrotvorets/set-commit-status-action@fc80b798deac391d3c7dc9f1a7a7139b64a591e8
         if: ${{ github.event_name == 'repository_dispatch' && failure() }}
         with:
           token: ${{ secrets.GH_CQ_BOT }}
