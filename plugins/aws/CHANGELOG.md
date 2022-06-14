@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.12.10](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.9...v0.12.10) (2022-06-13)
+
+
+### Bug Fixes
+
+* Added `not found` errors handlers in athena resources ([#1021](https://github.com/cloudquery/cq-provider-aws/issues/1021)) ([f18abef](https://github.com/cloudquery/cq-provider-aws/commit/f18abef774d73b9ba7a6f910f1c3f40b5f3029e1))
+* Added `not found` errors handlers in athena resources ([#1021](https://github.com/cloudquery/cq-provider-aws/issues/1021)) ([297fa6c](https://github.com/cloudquery/cq-provider-aws/commit/297fa6ca8db0f327193e9c69862adb55cae6824b))
+* change from IgnoreAccessDeniedServiceDisabled to IgnoreCommonErrors ([#1033](https://github.com/cloudquery/cq-provider-aws/issues/1033)) ([1b98229](https://github.com/cloudquery/cq-provider-aws/commit/1b982292b2f3359e8364b2fb6937a0992472e1d0))
+* Redshift Panic when accessing nested attributes ([8bae50b](https://github.com/cloudquery/cq-provider-aws/commit/8bae50b4f9dab65e8753f00594df0998a638aa02))
+* Update endpoints ([#1032](https://github.com/cloudquery/cq-provider-aws/issues/1032)) ([bd6159a](https://github.com/cloudquery/cq-provider-aws/commit/bd6159a4a34f795c402fad46d7aa5cbb663dec40))
+
 ## [0.12.9](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.8...v0.12.9) (2022-06-10)
 
 
