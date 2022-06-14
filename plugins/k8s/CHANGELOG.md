@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.7](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.6...v0.5.7) (2022-06-13)
+
+
+### Bug Fixes
+
+* Added `not found` errors to classifier ([#166](https://github.com/cloudquery/cq-provider-k8s/issues/166)) ([8f81f7b](https://github.com/cloudquery/cq-provider-k8s/commit/8f81f7b4893b7b521baa33641bf8570ff3f49ce4))
+
 ## [0.5.6](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.5...v0.5.6) (2022-06-08)
 
 
