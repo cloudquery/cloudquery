@@ -156,6 +156,9 @@ func fetchSecurityJitNetworkAccessPolicyVirtualMachines(ctx context.Context, met
 }
 func resolveSecurityJitNetworkAccessPolicyVirtualMachinesPublicIpAddress(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(security.JitNetworkAccessPolicyVirtualMachine)
+	if p.PublicIPAddress == nil {
+		return nil
+	}
 	ip := net.ParseIP(*p.PublicIPAddress)
 	return diag.WrapError(resource.Set(c.Name, ip))
 }
