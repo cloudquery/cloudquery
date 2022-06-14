@@ -3,6 +3,7 @@ package ec2
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -121,7 +122,9 @@ func Ec2Eips() *schema.Table {
 func fetchEc2Eips(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
-	output, err := svc.DescribeAddresses(ctx, &ec2.DescribeAddressesInput{}, func(options *ec2.Options) {
+	output, err := svc.DescribeAddresses(ctx, &ec2.DescribeAddressesInput{
+		Filters: []types.Filter{{Name: aws.String("domain"), Values: []string{"vpc"}}},
+	}, func(options *ec2.Options) {
 		options.Region = c.Region
 	})
 	if err != nil {
