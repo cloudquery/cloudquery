@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.12.11](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.10...v0.12.11) (2022-06-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.11.1 ([#1053](https://github.com/cloudquery/cq-provider-aws/issues/1053)) ([a48cf77](https://github.com/cloudquery/cq-provider-aws/commit/a48cf77726731a823a4407a3e752d1aff857cca2))
+* Explicitly Ignore EC2 Classic EIPs ([#1055](https://github.com/cloudquery/cq-provider-aws/issues/1055)) ([28feadf](https://github.com/cloudquery/cq-provider-aws/commit/28feadf5a664478075cb004230bba7f331805e04))
+* Possible use of a wrong region in s3 buckets. ([#1052](https://github.com/cloudquery/cq-provider-aws/issues/1052)) ([e54b46a](https://github.com/cloudquery/cq-provider-aws/commit/e54b46ac8c42b440504006d8236787ace724320a))
+
 ## [0.12.10](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.9...v0.12.10) (2022-06-13)
 
 
