@@ -3,7 +3,6 @@ package config
 import (
 	"errors"
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -144,27 +143,11 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 
 	datadir := viper.GetString("data-dir")
 
-	if dir := viper.GetString("plugin-dir"); dir != "" {
-		if dir == "." {
-			if dir, err := os.Getwd(); err == nil {
-				cq.PluginDirectory = dir
-			}
-		} else {
-			cq.PluginDirectory = dir
-		}
-	} else if datadir != "" {
+	if datadir != "" {
 		cq.PluginDirectory = filepath.Join(datadir, "providers")
 	}
 
-	if dir := viper.GetString("policy-dir"); dir != "" {
-		if dir == "." {
-			if dir, err := os.Getwd(); err == nil {
-				cq.PolicyDirectory = dir
-			}
-		} else {
-			cq.PolicyDirectory = dir
-		}
-	} else if datadir != "" {
+	if datadir != "" {
 		cq.PolicyDirectory = filepath.Join(datadir, "policies")
 	}
 

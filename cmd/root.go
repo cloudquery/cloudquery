@@ -116,8 +116,6 @@ func init() {
 	rootCmd.PersistentFlags().IntVar(&logging.GlobalConfig.MaxBackups, "max-backups", 3, "set max number of rolled files to keep")
 	rootCmd.PersistentFlags().IntVar(&logging.GlobalConfig.MaxAge, "max-age", 3, "set max age in days to keep a logfile")
 	rootCmd.PersistentFlags().String("data-dir", "./.cq", "set persistent data directory (env: CQ_DATA_DIR)")
-	rootCmd.PersistentFlags().String("plugin-dir", "", "set plugins directory (env: CQ_PLUGIN_DIR)")
-	rootCmd.PersistentFlags().String("policy-dir", "", "set policies directory (env: CQ_POLICY_DIR)")
 	rootCmd.PersistentFlags().String("reattach-providers", "", "path to reattach unmanaged plugins, mostly used for testing purposes (env: CQ_REATTACH_PROVIDERS)")
 	rootCmd.PersistentFlags().Bool("skip-build-tables", false, "enable skipping building tables. Should only be set if tables already exist")
 	rootCmd.PersistentFlags().Bool("force-drop", false, "when upgrading schema, force dropping of any dependent views")
@@ -127,15 +125,9 @@ func init() {
 	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "enable telemetry debug logging")
 	rootCmd.PersistentFlags().String("telemetry-apikey", APIKey, "set telemetry API Key")
 
-	// Derived from data-dir if empty
-	_ = rootCmd.PersistentFlags().MarkHidden("plugin-dir")
-	_ = rootCmd.PersistentFlags().MarkHidden("policy-dir")
-
 	_ = viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 	_ = viper.BindPFlag("enable-console-log", rootCmd.PersistentFlags().Lookup("enable-console-log"))
 	_ = viper.BindPFlag("data-dir", rootCmd.PersistentFlags().Lookup("data-dir"))
-	_ = viper.BindPFlag("plugin-dir", rootCmd.PersistentFlags().Lookup("plugin-dir"))
-	_ = viper.BindPFlag("policy-dir", rootCmd.PersistentFlags().Lookup("policy-dir"))
 	_ = viper.BindPFlag("reattach-providers", rootCmd.PersistentFlags().Lookup("reattach-providers"))
 	_ = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
