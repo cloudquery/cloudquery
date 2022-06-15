@@ -184,8 +184,8 @@ github.com/cilium/ebpf v0.4.0/go.mod h1:4tRaxcgiL706VnOzHOdBlY8IEAIdxINsQBcU4xJJ
 github.com/cilium/ebpf v0.6.2/go.mod h1:4tRaxcgiL706VnOzHOdBlY8IEAIdxINsQBcU4xJJXRs=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h4xcZ5GoxqC5SDxFQ8gwyZPKQoEzownBlhI80=
-github.com/cloudquery/cq-provider-sdk v0.11.2 h1:JnBPYYRH8NFKp8nNQYbEv11V/LVi1+OxDmgjsqOF8F0=
-github.com/cloudquery/cq-provider-sdk v0.11.2/go.mod h1:6AepQERMVIk8igb8HxZK6ThI2KaftOkwm5LsN1cSWKs=
+github.com/cloudquery/cq-provider-sdk v0.11.3 h1:o/qorzRlEB9zFOugmGxCvnW9E6L829vqDpw7Coe/dbY=
+github.com/cloudquery/cq-provider-sdk v0.11.3/go.mod h1:6AepQERMVIk8igb8HxZK6ThI2KaftOkwm5LsN1cSWKs=
 github.com/cloudquery/faker/v3 v3.7.5 h1:G7ANdEEcm8TvAAjIwNWSLrYK36CFCiSlrCqOTGCccL0=
 github.com/cloudquery/faker/v3 v3.7.5/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
