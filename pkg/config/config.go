@@ -8,86 +8,65 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/hashicorp/hcl/v2"
+	"github.com/spf13/viper"
 	"github.com/xo/dburl"
 )
+
+type Provider struct {
+	Name                          string   `yaml:"name,omitempty" json:"name,omitempty" hcl:"name,label"`
+	Alias                         string   `yaml:"alias,omitempty" json:"alias,omitempty" hcl:"alias,optional"`
+	Resources                     []string `yaml:"resources,omitempty" json:"resources,omitempty" hcl:"resources,optional"`
+	SkipResources                 []string `yaml:"skip_resources,omitempty" json:"skip_resources,omitempty" hcl:"skip_resources,optional"`
+	Env                           []string `yaml:"env,omitempty" json:"env,omitempty" hcl:"env,optional"`
+	Configuration                 []byte   `yaml:"-"`
+	MaxParallelResourceFetchLimit uint64   `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty" hcl:"max_parallel_resource_fetch_limit"`
+	MaxGoroutines                 uint64   `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty" hcl:"max_goroutines"`
+	ResourceTimeout               uint64   `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty" hcl:"resource_timeout"`
+}
 
 type Providers []*Provider
 
 type Config struct {
 	CloudQuery CloudQuery `hcl:"cloudquery,block"`
 	Providers  Providers  `hcl:"provider,block"`
-	Modules    hcl.Body   `hcl:"modules,block"`
-}
-
-// Deprecated
-type History struct {
-	Retention      int `hcl:"retention,optional"`
-	TimeInterval   int `hcl:"interval,optional"`
-	TimeTruncation int `hcl:"truncation,optional"`
 }
 
 type CloudQuery struct {
-	// Deprecated. Value from hcl is overrwritten.
-	PluginDirectory string `hcl:"plugin_directory,optional"`
-	// Deprecated. Value from hcl is overrwritten.
-	PolicyDirectory string `hcl:"policy_directory,optional"`
+	Logger     *logging.Config   `yaml:"logging,omitempty" json:"logging,omitempty" hcl:"logging,block"`
+	Providers  RequiredProviders `yaml:"providers,omitempty" json:"providers,omitempty" hcl:"provider,block"`
+	Connection *Connection       `yaml:"connection,omitempty" json:"connection,omitempty" hcl:"connection,block"`
+	Policy     *Policy           `yaml:"policy,omitempty" json:"policy,omitempty" hcl:"policy,block"`
 
-	Logger     *logging.Config   `hcl:"logging,block"`
-	Providers  RequiredProviders `hcl:"provider,block"`
-	Connection *Connection       `hcl:"connection,block"`
-	Policy     *Policy           `hcl:"policy,block"`
-	// Deprecated
-	History *History `hcl:"history,block"`
+	// Used internally
+	PluginDirectory string `yaml:"-" json:"-" hcl:"-"`
+	PolicyDirectory string `yaml:"-" json:"-" hcl:"-"`
 }
 
 type Connection struct {
-	DSN string `hcl:"dsn,optional"`
+	DSN string `yaml:"dsn,omitempty" json:"dsn,omitempty" hcl:"dsn,optional"`
 
 	// These params are mutually exclusive with DSN
-	Type     string   `hcl:"type,optional"`
-	Username string   `hcl:"username,optional"`
-	Password string   `hcl:"password,optional"`
-	Host     string   `hcl:"host,optional"`
-	Port     int      `hcl:"port,optional"`
-	Database string   `hcl:"database,optional"`
-	SSLMode  string   `hcl:"sslmode,optional"`
-	Extras   []string `hcl:"extras,optional"`
+	Type     string   `yaml:"type,omitempty" json:"type,omitempty" hcl:"type,optional"`
+	Username string   `yaml:"username,omitempty" json:"username,omitempty" hcl:"username,optional"`
+	Password string   `yaml:"password,omitempty" json:"password,omitempty" hcl:"password,optional"`
+	Host     string   `yaml:"host,omitempty" json:"host,omitempty" hcl:"host,optional"`
+	Port     int      `yaml:"port,omitempty" json:"port,omitempty" hcl:"port,optional"`
+	Database string   `yaml:"database,omitempty" json:"database,omitempty" hcl:"database,optional"`
+	SSLMode  string   `yaml:"sslmode,omitempty" json:"sslmode,omitempty" hcl:"sslmode,optional"`
+	Extras   []string `yaml:"extras,omitempty" json:"extras,omitempty" hcl:"extras,optional"`
 }
 
 type Policy struct {
-	DBPersistence bool `hcl:"db_persistence,optional"`
+	DBPersistence bool `yaml:"db_persistence,omitempty" json:"db_persistence,omitempty" hcl:"db_persistence,optional"`
 }
 
 type RequiredProvider struct {
-	Name    string  `hcl:"name,label"`
-	Source  *string `hcl:"source,optional"`
-	Version string  `hcl:"version"`
+	Name    string  `yaml:"name,omitempty" json:"name,omitempty" hcl:"name,label"`
+	Source  *string `yaml:"source,omitempty" json:"source,omitempty" hcl:"source,optional"`
+	Version string  `yaml:"version,omitempty" json:"version,omitempty" hcl:"version"`
 }
 
 type RequiredProviders []*RequiredProvider
-
-// configFileSchema is the schema for the top-level of a config file. We use
-// the low-level HCL API for this level so we can easily deal with each
-// block type separately with its own decoding logic.
-var configFileSchema = &hcl.BodySchema{
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type: "cloudquery",
-		},
-		{
-			Type:       "provider",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type:       "policy",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type: "modules",
-		},
-	},
-}
 
 func (pp Providers) Names() []string {
 	pNames := make([]string, len(pp))
@@ -210,4 +189,20 @@ func (r RequiredProviders) Get(name string) *RequiredProvider {
 		}
 	}
 	return nil
+}
+
+func handleConnectionConfig(c *Connection) error {
+	if ds := viper.GetString("dsn"); ds != "" {
+		c.DSN = ds
+		return nil
+	}
+
+	if c.DSN != "" {
+		if c.IsAnyConnParamsSet() {
+			return errors.New("DSN specified along with explicit attributes, only one type is supported")
+		}
+		return nil
+	}
+
+	return c.BuildFromConnParams()
 }

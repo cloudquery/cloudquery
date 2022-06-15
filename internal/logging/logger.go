@@ -19,26 +19,26 @@ var GlobalConfig Config
 // Config for logging
 type Config struct {
 	// Enable console logging
-	ConsoleLoggingEnabled bool `hcl:"enable_console_logging,optional"`
+	ConsoleLoggingEnabled bool `yaml:"enable_console_logging,omitempty" json:"enable_console_logging,omitempty" hcl:"enable_console_logging,optional"`
 	// Enable Verbose logging
-	Verbose bool `hcl:"verbose,optional"`
+	Verbose bool `yaml:"verbose,omitempty" json:"verbose,omitempty" hcl:"verbose,optional"`
 	// EncodeLogsAsJson makes the logging framework logging JSON
-	EncodeLogsAsJson bool `hcl:"encode_logs_as_json,optional"`
+	EncodeLogsAsJson bool `yaml:"encode_logs_as_json,omitempty" json:"encode_logs_as_json,omitempty" hcl:"encode_logs_as_json,optional"`
 	// FileLoggingEnabled makes the framework logging to a file
 	// the fields below can be skipped if this value is false!
-	FileLoggingEnabled bool `hcl:"file_logging_enabled,optional"`
+	FileLoggingEnabled bool `yaml:"file_logging_enabled,omitempty" json:"file_logging_enabled,omitempty" hcl:"file_logging_enabled,optional"`
 	// Directory to logging to to when file logging is enabled
-	Directory string `hcl:"directory,optional"`
+	Directory string `yaml:"directory,omitempty" json:"directory,omitempty" hcl:"directory,optional"`
 	// Filename is the name of the logfile which will be placed inside the directory
-	Filename string `hcl:"filename,optional"`
+	Filename string `yaml:"filename,omitempty" json:"filename,omitempty" hcl:"filename,optional"`
 	// MaxSize the max size in MB of the logfile before it's rolled
-	MaxSize int `hcl:"max_size,optional"`
+	MaxSize int `yaml:"max_size,omitempty" json:"max_size,omitempty" hcl:"max_size,optional"`
 	// MaxBackups the max number of rolled files to keep
-	MaxBackups int `hcl:"max_backups,optional"`
+	MaxBackups int `yaml:"max_backups,omitempty" json:"max_backups,omitempty" hcl:"max_backups,optional"`
 	// MaxAge the max age in days to keep a logfile
-	MaxAge int `hcl:"max_age,optional"`
+	MaxAge int `yaml:"max_age,omitempty" json:"max_age,omitempty" hcl:"max_age,optional"`
 	// Console logging will be without color, console logging must be enabled first.
-	ConsoleNoColor bool `hcl:"console_no_color,optional"`
+	ConsoleNoColor bool `yaml:"console_no_color,omitempty" json:"console_no_color,omitempty" hcl:"console_no_color,optional"`
 	// Unique Identifier of execution
 	InstanceId string
 

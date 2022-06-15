@@ -15,12 +15,6 @@ import (
 	"github.com/zclconf/go-cty/cty/function"
 )
 
-type SourceType string
-
-const (
-	SourceHCL = "hcl"
-)
-
 // EnvVarPrefix is a prefix for environment variable names to be exported for HCL substitution.
 const EnvVarPrefix = "CQ_VAR_"
 

@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"path/filepath"
 	"strings"
@@ -11,6 +10,25 @@ import (
 	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
 )
+
+// configFileSchema is the schema for the top-level of a config file. We use
+// the low-level HCL API for this level so we can easily deal with each
+// block type separately with its own decoding logic.
+var configFileSchema = &hcl.BodySchema{
+	Blocks: []hcl.BlockHeaderSchema{
+		{
+			Type: "cloudquery",
+		},
+		{
+			Type:       "provider",
+			LabelNames: []string{"name"},
+		},
+		{
+			Type:       "policy",
+			LabelNames: []string{"name"},
+		},
+	},
+}
 
 func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, hcl.Diagnostics) {
 	if strings.HasSuffix(name, ".json") {
@@ -61,9 +79,6 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 			}
 		case "policy":
 			hasPolicyBlock = true
-		case "modules":
-			// Module manager will process this for us
-			config.Modules = block.Body
 		default:
 			// Should never happen because the above cases should be exhaustive
 			// for all block type names in our schema.
@@ -84,42 +99,6 @@ func (p *Parser) decodeConfig(body hcl.Body, diags hcl.Diagnostics) (*Config, hc
 	return config, diags
 }
 
-// ReadModuleConfigProfiles separates the module config from the modules block, where block identifier is the module name.
-func ReadModuleConfigProfiles(module string, block hcl.Body) (map[string]hcl.Body, error) {
-	if block == nil {
-		return nil, nil
-	}
-
-	content, _, diags := block.PartialContent(&hcl.BodySchema{
-		Blocks: []hcl.BlockHeaderSchema{
-			{
-				Type:       module,
-				LabelNames: []string{"name"},
-			},
-		},
-	})
-	if diags.HasErrors() {
-		return nil, diags
-	}
-
-	ret := make(map[string]hcl.Body, len(content.Blocks))
-	for i := range content.Blocks {
-		if _, ok := ret[content.Blocks[i].Labels[0]]; ok {
-			return nil, hcl.Diagnostics{
-				{
-					Severity: hcl.DiagError,
-					Summary:  "Duplicate profile name",
-					Detail:   fmt.Sprintf("Profile name %q already defined", content.Blocks[i].Labels[0]),
-					Subject:  content.Blocks[i].DefRange.Ptr(),
-				},
-			}
-		}
-
-		ret[content.Blocks[i].Labels[0]] = content.Blocks[i].Body
-	}
-	return ret, nil
-}
-
 func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, hcl.Diagnostics) {
 	var cq CloudQuery
 	// Pre-populate with existing values
@@ -132,7 +111,7 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 		cq.Connection = &Connection{}
 	}
 
-	if err := handleConnectionBlock(cq.Connection); err != nil {
+	if err := handleConnectionConfig(cq.Connection); err != nil {
 		diags = append(diags, &hcl.Diagnostic{
 			Severity: hcl.DiagError,
 			Summary:  "Invalid DSN configuration",
@@ -163,20 +142,4 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 		}
 	}
 	return cq, diags
-}
-
-func handleConnectionBlock(c *Connection) error {
-	if ds := viper.GetString("dsn"); ds != "" {
-		c.DSN = ds
-		return nil
-	}
-
-	if c.DSN != "" {
-		if c.IsAnyConnParamsSet() {
-			return errors.New("DSN specified along with explicit attributes, only one type is supported")
-		}
-		return nil
-	}
-
-	return c.BuildFromConnParams()
 }
