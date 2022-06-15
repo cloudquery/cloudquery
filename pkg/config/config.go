@@ -38,8 +38,8 @@ type CloudQuery struct {
 	Policy     *Policy           `yaml:"policy,omitempty" json:"policy,omitempty" hcl:"policy,block"`
 
 	// Used internally
-	PluginDirectory string `yaml:"-" json:"-" hcl:"-"`
-	PolicyDirectory string `yaml:"-" json:"-" hcl:"-"`
+	PluginDirectory string `yaml:"-" json:"-"`
+	PolicyDirectory string `yaml:"-" json:"-"`
 }
 
 type Connection struct {

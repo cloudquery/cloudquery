@@ -106,6 +106,7 @@ func Configure(config Config) zerolog.Logger {
 
 // Reconfigure reconfigures the already initialized Logger with new values
 func Reconfigure(originalConfig, updatedConfig Config) {
+	// FIXME these look buggy
 	if updatedConfig.Verbose {
 		originalConfig.Verbose = updatedConfig.Verbose
 	}

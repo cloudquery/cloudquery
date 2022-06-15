@@ -26,7 +26,6 @@ import (
 	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-hclog"
-	"github.com/hashicorp/hcl/v2"
 	"github.com/olekukonko/tablewriter"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
@@ -79,10 +78,6 @@ func CreateClient(ctx context.Context, configPath string, allowDefaultConfig boo
 		if err := configMutator(cfg); err != nil {
 			return nil, err
 		}
-	}
-
-	if cfg.CloudQuery.History != nil {
-		return nil, diag.FromError(fmt.Errorf("history feature is removed. See more at https://www.cloudquery.io/blog/migration-and-history-deprecation"), diag.USER)
 	}
 
 	setConfigAnalytics(cfg)
@@ -678,17 +673,13 @@ func loadConfig(file string) (*config.Config, bool) {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
 			c := ui.ColorInfo
-			switch d.Severity {
-			case hcl.DiagError:
+			switch d.Severity() {
+			case diag.ERROR:
 				c = ui.ColorError
-			case hcl.DiagWarning:
+			case diag.WARNING:
 				c = ui.ColorWarning
 			}
-			if d.Subject == nil {
-				ui.ColorizedOutput(c, "❌ %s; %s\n", d.Summary, d.Detail)
-				continue
-			}
-			ui.ColorizedOutput(c, "❌ %s; %s [%s]\n", d.Summary, d.Detail, d.Subject.String())
+			ui.ColorizedOutput(c, "❌ %s; %s\n", d.Description().Summary, d.Description().Detail)
 		}
 		if diags.HasErrors() {
 			return nil, false

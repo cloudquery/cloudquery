@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/afero"
@@ -70,19 +71,8 @@ func NewParser(options ...Option) *Parser {
 	return &p
 }
 
-// LoadHCLFile is a low-level method that reads the file at the given path,
-// parses it, and returns the hcl.Body representing its root. In many cases
-// it is better to use one of the other Load*File methods on this type,
-// which additionally decode the root body in some way and return a higher-level
-// construct.
-//
-// If the file cannot be read at all -- e.g. because it does not exist -- then
-// this method will return a nil body and error diagnostics. In this case
-// callers may wish to ignore the provided error diagnostics and produce
-// a more context-sensitive error instead.
-//
-// The file will be parsed using the HCL native syntax
-func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
+// LoadFile is a low-level method that reads the file at the given path
+func (p *Parser) LoadFile(path string) ([]byte, diag.Diagnostics) {
 	var contents []byte
 	// Example of path supported paths:
 	// `./local/relative/path/to/config.hcl`
@@ -90,13 +80,7 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 	// `s3://object/in/remote/location/absolute/path/to/config.hcl`
 	sanitizedPath, err := url.Parse(path)
 	if err != nil {
-		return nil, hcl.Diagnostics{
-			{
-				Severity: hcl.DiagError,
-				Summary:  "Failed to load config file: invalid path",
-				Detail:   fmt.Sprintf("The file %q could not be read: %s", path, err),
-			},
-		}
+		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to load config file: invalid path"), diag.WithDetails("The file %q could not be read", path))
 	}
 
 	if sanitizedPath.Scheme == "" {
@@ -113,27 +97,24 @@ func (p *Parser) LoadHCLFile(path string) (hcl.Body, hcl.Diagnostics) {
 				err = fmt.Errorf(e.Err.Error())
 			}
 		}
-		return nil, hcl.Diagnostics{
-			{
-				Severity: hcl.DiagError,
-				Summary:  "Failed to read file",
-				Detail:   fmt.Sprintf("The file %q could not be read: %s", path, err),
-			},
-		}
+		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to read file"), diag.WithDetails("The file %q could not be read", path))
+	}
+	if len(contents) == 0 {
+		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to read file"), diag.WithDetails("The file %q is empty", path))
 	}
 
-	return p.LoadFromSource(path, contents)
+	return contents, nil
 }
 
-func (p *Parser) LoadFromSource(name string, data []byte) (hcl.Body, hcl.Diagnostics) {
+func (p *Parser) LoadFromSource(name string, data []byte) (hcl.Body, diag.Diagnostics) {
 	file, diags := p.p.ParseHCL(data, name)
 	// If the returned file or body is nil, then we'll return a non-nil empty
 	// body so we'll meet our contract that nil means an error reading the file.
 	if file == nil || file.Body == nil {
-		return hcl.EmptyBody(), diags
+		return hcl.EmptyBody(), hclToSdkDiags(diags)
 	}
 
-	return file.Body, diags
+	return file.Body, hclToSdkDiags(diags)
 }
 
 func EnvToHCLContext(evalContext *hcl.EvalContext, prefix string, vars []string) {
@@ -143,4 +124,16 @@ func EnvToHCLContext(evalContext *hcl.EvalContext, prefix string, vars []string)
 			evalContext.Variables[strings.TrimPrefix(pair[0], prefix)] = cty.StringVal(pair[1])
 		}
 	}
+}
+
+func hclToSdkDiags(hd hcl.Diagnostics) diag.Diagnostics {
+	var sd diag.Diagnostics
+	for _, dd := range hd {
+		sv := diag.ERROR
+		if dd.Severity == hcl.DiagWarning {
+			sv = diag.WARNING
+		}
+		sd = sd.Add(diag.FromError(dd, diag.USER, diag.WithSeverity(sv), diag.WithSummary("%s", dd.Summary), diag.WithDetails("%s", dd.Detail)))
+	}
+	return sd
 }
