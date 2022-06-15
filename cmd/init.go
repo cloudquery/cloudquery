@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
@@ -19,6 +18,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v2"
 )
 
 const initHelpMsg = "Generate initial config.hcl for fetch command"
@@ -50,8 +50,7 @@ func Initialize(ctx context.Context, providers []string) error {
 		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists\n", configPath)
 		return diag.FromError(fmt.Errorf("config file %q already exists", configPath), diag.USER)
 	}
-	f := hclwrite.NewEmptyFile()
-	rootBody := f.Body()
+
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
 	for i, p := range providers {
 		organization, providerName, provVersion, err := registry.ParseProviderNameWithVersion(p)
@@ -69,18 +68,59 @@ func Initialize(ctx context.Context, providers []string) error {
 		requiredProviders[i] = &rp
 		providers[i] = providerName // overwrite "provider@version" with just "provider"
 	}
-	// TODO: build this manually with block and add comments as well
-	cqBlock := gohcl.EncodeAsBlock(&config.CloudQuery{
-		Providers: requiredProviders,
-		Connection: &config.Connection{
-			Username: "postgres",
-			Password: "pass",
-			Host:     "localhost",
-			Port:     5432,
-			Database: "postgres",
-			SSLMode:  "disable",
+
+	mainConfig := config.Config{
+		CloudQuery: config.CloudQuery{
+			Providers: requiredProviders,
+			Connection: &config.Connection{
+				Username: "postgres",
+				Password: "pass",
+				Host:     "localhost",
+				Port:     5432,
+				Database: "postgres",
+				SSLMode:  "disable",
+			},
 		},
-	}, "cloudquery")
+	}
+	if diags := config.ValidateCQBlock(&mainConfig.CloudQuery); diags.HasErrors() {
+		return diags
+	}
+
+	cCfg := mainConfig
+	cCfg.CloudQuery.Connection.DSN = "" // Don't connect
+	c, err := console.CreateClientFromConfig(ctx, &cCfg, uuid.Nil)
+	if err != nil {
+		return err
+	}
+	defer c.Close()
+	if err := c.DownloadProviders(ctx); err != nil {
+		return err
+	}
+
+	for _, p := range providers {
+		pCfg, diags := core.GetProviderConfiguration(ctx, c.PluginManager, &core.GetProviderConfigOptions{
+			Provider: c.ConvertRequiredToRegistry(p),
+		})
+		if diags.HasErrors() {
+			return diags
+		}
+		// pCfg is []byte
+		_ = pCfg
+	}
+
+	if config.IsNameYAML(configPath) {
+		b, err := yaml.Marshal(mainConfig)
+		if err != nil {
+			return err
+		}
+		_ = afero.WriteFile(fs, configPath, b, 0644)
+		ui.ColorizedOutput(ui.ColorSuccess, "configuration generated successfully to %s\n", configPath)
+		return nil
+	}
+
+	f := hclwrite.NewEmptyFile()
+	rootBody := f.Body()
+	cqBlock := gohcl.EncodeAsBlock(&mainConfig.CloudQuery, "cloudquery")
 
 	// Remove deprecated "plugin_directory" and "policy_directory"
 	cqBlock.Body().RemoveAttribute("plugin_directory")
@@ -95,22 +135,6 @@ func Initialize(ctx context.Context, providers []string) error {
 	}
 
 	rootBody.AppendBlock(cqBlock)
-	cfg, diags := config.NewParser(
-		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
-	).LoadConfigFromSource("init.hcl", f.Bytes())
-	if diags.HasErrors() {
-		return diags
-	}
-
-	cfg.CloudQuery.Connection.DSN = "" // Don't connect
-	c, err := console.CreateClientFromConfig(ctx, cfg, uuid.Nil)
-	if err != nil {
-		return err
-	}
-	defer c.Close()
-	if err := c.DownloadProviders(ctx); err != nil {
-		return err
-	}
 	rootBody.AppendNewline()
 	rootBody.AppendUnstructuredTokens(hclwrite.Tokens{
 		{

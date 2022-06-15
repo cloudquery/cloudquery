@@ -41,7 +41,7 @@ var configSchemaHCL = &hcl.BodySchema{
 }
 
 func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, diag.Diagnostics) {
-	if isNameYAML(name) {
+	if IsNameYAML(name) {
 		return decodeConfigYAML(bytes.NewBuffer(data))
 	}
 
@@ -60,13 +60,42 @@ func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
 	return p.LoadConfigFromSource(path, contents)
 }
 
-func isNameYAML(name string) bool {
+func IsNameYAML(name string) bool {
 	switch strings.ToLower(filepath.Ext(name)) {
 	case ".json", ".yaml", ".yml":
 		return true
 	default:
 		return false
 	}
+}
+
+func ValidateCQBlock(cq *CloudQuery) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if cq.Connection == nil {
+		cq.Connection = &Connection{}
+	}
+
+	if err := handleConnectionConfig(cq.Connection); err != nil {
+		diags = diags.Add(diag.FromError(err, diag.USER, diag.WithSummary("Invalid DSN configuration")))
+	}
+
+	datadir := viper.GetString("data-dir")
+	if datadir != "" {
+		cq.PluginDirectory = filepath.Join(datadir, "providers")
+	}
+
+	if datadir != "" {
+		cq.PolicyDirectory = filepath.Join(datadir, "policies")
+	}
+
+	// validate provider versions
+	for _, cp := range cq.Providers {
+		if cp.Version != "latest" && !strings.HasPrefix(cp.Version, "v") {
+			diags = diags.Add(diag.FromError(fmt.Errorf("Provider %s version %s is invalid", cp.Name, cp.Version), diag.USER, diag.WithDetails("Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z")))
+		}
+	}
+	return diags
 }
 
 func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
@@ -99,7 +128,7 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 	}
 
 	diags := diag.Diagnostics{}
-	diags = diags.Add(validateCQBlock(&c.CloudQuery))
+	diags = diags.Add(ValidateCQBlock(&c.CloudQuery))
 	if diags.HasErrors() {
 		return nil, diags
 	}
@@ -122,7 +151,7 @@ func (p *Parser) decodeConfigHCL(body hcl.Body, diags diag.Diagnostics) (*Config
 			cliLoggingConfig := logging.GlobalConfig
 			cqBlock, cqDiags := decodeCloudQueryBlock(block, &p.HCLContext)
 			diags = diags.Add(hclToSdkDiags(cqDiags))
-			diags = diags.Add(validateCQBlock(&cqBlock))
+			diags = diags.Add(ValidateCQBlock(&cqBlock))
 
 			logging.Reconfigure(*cqBlock.Logger, cliLoggingConfig)
 			config.CloudQuery = cqBlock
@@ -153,33 +182,4 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 	// Pre-populate with existing values
 	cq.Logger = &logging.GlobalConfig
 	return cq, gohcl.DecodeBody(block.Body, ctx, &cq)
-}
-
-func validateCQBlock(cq *CloudQuery) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if cq.Connection == nil {
-		cq.Connection = &Connection{}
-	}
-
-	if err := handleConnectionConfig(cq.Connection); err != nil {
-		diags = diags.Add(diag.FromError(err, diag.USER, diag.WithSummary("Invalid DSN configuration")))
-	}
-
-	datadir := viper.GetString("data-dir")
-	if datadir != "" {
-		cq.PluginDirectory = filepath.Join(datadir, "providers")
-	}
-
-	if datadir != "" {
-		cq.PolicyDirectory = filepath.Join(datadir, "policies")
-	}
-
-	// validate provider versions
-	for _, cp := range cq.Providers {
-		if cp.Version != "latest" && !strings.HasPrefix(cp.Version, "v") {
-			diags = diags.Add(diag.FromError(fmt.Errorf("Provider %s version %s is invalid", cp.Name, cp.Version), diag.USER, diag.WithDetails("Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z")))
-		}
-	}
-	return diags
 }
