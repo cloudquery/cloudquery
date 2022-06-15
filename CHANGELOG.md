@@ -4,6 +4,14 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.25.3](https://github.com/cloudquery/cloudquery/compare/v0.25.2...v0.25.3) (2022-06-15)
+
+
+### Bug Fixes
+
+* Classify "failed to open file" as USER diags ([#891](https://github.com/cloudquery/cloudquery/issues/891)) ([9e8c489](https://github.com/cloudquery/cloudquery/commit/9e8c48942a01e1836ccdec1727d5a179b9e5c018))
+* Remove plugin-dir and data-dir CLI flags ([#899](https://github.com/cloudquery/cloudquery/issues/899)) ([50afe25](https://github.com/cloudquery/cloudquery/commit/50afe253e7a1afd389cdd5d60d6a121c07a76dee))
+
 ## [0.25.2](https://github.com/cloudquery/cloudquery/compare/v0.25.1...v0.25.2) (2022-06-14)
 
 
