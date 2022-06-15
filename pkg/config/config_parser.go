@@ -127,6 +127,8 @@ func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, 
 	cq.Logger = &logging.GlobalConfig
 	var diags hcl.Diagnostics
 	diags = diags.Extend(gohcl.DecodeBody(block.Body, ctx, &cq))
+	// We don't care about additional configuration blocks, so just ignore them
+	cq.Remain = nil
 
 	// TODO: decode in a more generic way
 	if cq.Connection == nil {

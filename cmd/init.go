@@ -84,10 +84,6 @@ func Initialize(ctx context.Context, providers []string) error {
 		},
 	}, "cloudquery")
 
-	// Remove deprecated "plugin_directory" and "policy_directory"
-	cqBlock.Body().RemoveAttribute("plugin_directory")
-	cqBlock.Body().RemoveAttribute("policy_directory")
-
 	// Update connection block to remove unwanted keys
 	if b := cqBlock.Body().FirstMatchingBlock("connection", nil); b != nil {
 		bd := b.Body()

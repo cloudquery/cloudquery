@@ -28,10 +28,8 @@ type History struct {
 }
 
 type CloudQuery struct {
-	// Deprecated. Value from hcl is overrwritten.
-	PluginDirectory string `hcl:"plugin_directory,optional"`
-	// Deprecated. Value from hcl is overrwritten.
-	PolicyDirectory string `hcl:"policy_directory,optional"`
+	PluginDirectory string
+	PolicyDirectory string
 
 	Logger     *logging.Config   `hcl:"logging,block"`
 	Providers  RequiredProviders `hcl:"provider,block"`
@@ -39,6 +37,9 @@ type CloudQuery struct {
 	Policy     *Policy           `hcl:"policy,block"`
 	// Deprecated
 	History *History `hcl:"history,block"`
+
+	// Allow extra properties in the configuration
+	Remain hcl.Body `hcl:",remain"`
 }
 
 type Connection struct {
