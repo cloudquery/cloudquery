@@ -427,7 +427,8 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 		errs, ctx := errgroup.WithContext(ctx)
 		for _, t := range output.Tables {
 			if err := sem.Acquire(ctx, 1); err != nil {
-				return diag.WrapError(err)
+				// Acquire can only fail if the context is canceled already.  Just exit the loop and allow errs.Wait() to collect the real error.
+				break
 			}
 			func(t *bigquery.TableListTables) {
 				errs.Go(func() error {
