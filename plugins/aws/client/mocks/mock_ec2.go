@@ -575,6 +575,46 @@ func (mr *MockEc2ClientMockRecorder) DescribeVolumes(arg0, arg1 interface{}, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVolumes", reflect.TypeOf((*MockEc2Client)(nil).DescribeVolumes), varargs...)
 }
 
+// DescribeVpcEndpointServiceConfigurations mocks base method.
+func (m *MockEc2Client) DescribeVpcEndpointServiceConfigurations(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointServiceConfigurationsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointServiceConfigurationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVpcEndpointServiceConfigurations", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVpcEndpointServiceConfigurationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVpcEndpointServiceConfigurations indicates an expected call of DescribeVpcEndpointServiceConfigurations.
+func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpointServiceConfigurations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVpcEndpointServiceConfigurations", reflect.TypeOf((*MockEc2Client)(nil).DescribeVpcEndpointServiceConfigurations), varargs...)
+}
+
+// DescribeVpcEndpointServices mocks base method.
+func (m *MockEc2Client) DescribeVpcEndpointServices(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointServicesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointServicesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeVpcEndpointServices", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeVpcEndpointServicesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeVpcEndpointServices indicates an expected call of DescribeVpcEndpointServices.
+func (mr *MockEc2ClientMockRecorder) DescribeVpcEndpointServices(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeVpcEndpointServices", reflect.TypeOf((*MockEc2Client)(nil).DescribeVpcEndpointServices), varargs...)
+}
+
 // DescribeVpcEndpoints mocks base method.
 func (m *MockEc2Client) DescribeVpcEndpoints(arg0 context.Context, arg1 *ec2.DescribeVpcEndpointsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeVpcEndpointsOutput, error) {
 	m.ctrl.T.Helper()
