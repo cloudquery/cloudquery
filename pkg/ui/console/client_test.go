@@ -24,12 +24,12 @@ func TestCreateClient(t *testing.T) {
 	}{
 		{
 			name:       "valid",
-			configPath: filepath.Join(fixtures, "config.yaml"),
+			configPath: filepath.Join(fixtures, "config.hcl"),
 			wantErr:    false,
 		},
 		{
 			name:       "invalid config",
-			configPath: filepath.Join(fixtures, "boom.yaml"),
+			configPath: filepath.Join(fixtures, "boom.hcl"),
 			wantErr:    true,
 		},
 	}
@@ -55,12 +55,12 @@ func TestDescribePolicies(t *testing.T) {
 		{
 			name:         "remote policy with config.hcl",
 			policySource: "aws",
-			configPath:   filepath.Join(fixtures, "config.yml"),
+			configPath:   filepath.Join(fixtures, "config.hcl"),
 		},
 		{
 			name:         "local policy with config.hcl",
 			policySource: fmt.Sprintf("file::%s", filepath.Join(fixtures, "example-policy")),
-			configPath:   filepath.Join(fixtures, "config.yml"),
+			configPath:   filepath.Join(fixtures, "config.hcl"),
 		},
 		{
 			name:         "remote policy without config.hcl",
