@@ -1109,11 +1109,10 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 			})
 			if err != nil {
 				if c.IsNotFoundError(err) {
-					return nil
+					continue
 				}
 				return diag.WrapError(err)
 			}
-
 			res <- funcResponse
 		}
 
