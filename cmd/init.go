@@ -6,7 +6,11 @@ import (
 	"fmt"
 	"strings"
 
+	"strings"
+
 	"github.com/cloudquery/cloudquery/internal/file"
+
+	"github.com/Masterminds/semver/v3"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -39,12 +43,12 @@ var (
   cloudquery init aws gcp`,
 		Args: cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return Initialize(cmd.Context(), args)
+			return initialize(cmd.Context(), args)
 		},
 	}
 )
 
-func Initialize(ctx context.Context, providers []string) error {
+func initialize(ctx context.Context, providers []string) error {
 	fs := afero.NewOsFs()
 
 	configPath := getConfigFile() // by definition, this will get us an existing file if possible
@@ -56,7 +60,7 @@ func Initialize(ctx context.Context, providers []string) error {
 
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
 	for i, p := range providers {
-		organization, providerName, provVersion, err := registry.ParseProviderNameWithVersion(p)
+		organization, providerName, provVersion, err := parseProviderCLIArg(p)
 		if err != nil {
 			return fmt.Errorf("could not parse requested provider: %w", err)
 		}
@@ -228,6 +232,43 @@ func generateHCLConfig(ctx context.Context, c *console.Client, providers []strin
 	}
 
 	return hclwrite.Format(buffer.Bytes()), nil
+}
+
+// ParseProviderCLIArg parses the CLI arg passed to `cloudquery init <provider>`
+func parseProviderCLIArg(providerCLIArg string) (org string, name string, version string, err error) {
+	argParts := strings.Split(providerCLIArg, "@")
+
+	l := len(argParts)
+
+	// e.g. aws@latest@0.1.0
+	if l > 2 {
+		return "", "", "", fmt.Errorf("invalid provider name@version %q", providerCLIArg)
+	}
+
+	// e.g. aws@latest
+	if l == 2 && argParts[1] == "latest" {
+		org, name, err = registry.ParseProviderName(argParts[0])
+		return org, name, "latest", err
+	}
+
+	// e.g. aws
+	if l == 1 {
+		org, name, err = registry.ParseProviderName(argParts[0])
+		return org, name, "latest", err
+	}
+
+	// e.g. aws@0.12.0
+	org, name, err = registry.ParseProviderName(argParts[0])
+	if err != nil {
+		return "", "", "", err
+	}
+
+	ver, err := semver.NewVersion(argParts[1])
+	if err != nil {
+		return "", "", "", fmt.Errorf("invalid version %q: %w", argParts[1], err)
+	}
+
+	return org, name, "v" + ver.String(), nil
 }
 
 func init() {
