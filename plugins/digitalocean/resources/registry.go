@@ -123,6 +123,10 @@ func fetchRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema
 	svc := meta.(*client.Client)
 	registry, _, err := svc.DoClient.Registry.Get(ctx)
 	if err != nil {
+		if client.IsErrorMessage(err, "registry does not exist") {
+			meta.Logger().Debug("received registry not found on Registry.Get", "err", err)
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	res <- registry
@@ -138,7 +142,7 @@ func fetchRegistryRepositories(ctx context.Context, meta schema.ClientMeta, pare
 		PerPage: client.MaxItemsPerPage,
 	}
 	for {
-		certs, resp, err := svc.DoClient.Registry.ListRepositories(ctx, registry.Name, opt)
+		repos, resp, err := svc.DoClient.Registry.ListRepositories(ctx, registry.Name, opt)
 		if err != nil {
 			if client.IsErrorMessage(err, "registry does not exist") {
 				meta.Logger().Debug("received registry not found on ListRepositories", "err", err)
@@ -147,7 +151,7 @@ func fetchRegistryRepositories(ctx context.Context, meta schema.ClientMeta, pare
 			return diag.WrapError(err)
 		}
 		// pass the current page's project to our result channel
-		res <- certs
+		res <- repos
 		// if we are at the last page, break out the for loop
 		if resp.Links == nil || resp.Links.IsLastPage() {
 			break
