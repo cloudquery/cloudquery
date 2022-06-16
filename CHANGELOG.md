@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.12.12](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.11...v0.12.12) (2022-06-15)
+
+
+### Features
+
+* Add VPC Endpoint Services and Configurations ([#1029](https://github.com/cloudquery/cq-provider-aws/issues/1029)) ([668ea91](https://github.com/cloudquery/cq-provider-aws/commit/668ea91620f85994606935d3b7a8f171a7d8e8a7))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.11.2 ([#1062](https://github.com/cloudquery/cq-provider-aws/issues/1062)) ([5b2bc76](https://github.com/cloudquery/cq-provider-aws/commit/5b2bc764d31377483c251e90f59ef526d926b556))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.11.3 ([#1063](https://github.com/cloudquery/cq-provider-aws/issues/1063)) ([b81b84c](https://github.com/cloudquery/cq-provider-aws/commit/b81b84c77416acfa2a380d83027c0a077ae99c73))
+* Resolvers Returning Early ([#1059](https://github.com/cloudquery/cq-provider-aws/issues/1059)) ([449aefc](https://github.com/cloudquery/cq-provider-aws/commit/449aefcb9d660689b5fe22c51cecaee520b584ac))
+
 ## [0.12.11](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.10...v0.12.11) (2022-06-14)
 
 
