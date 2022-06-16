@@ -27,8 +27,8 @@ type Provider struct {
 type Providers []*Provider
 
 type Config struct {
-	CloudQuery CloudQuery `hcl:"cloudquery,block"`
-	Providers  Providers  `hcl:"provider,block"`
+	CloudQuery CloudQuery `hcl:"cloudquery,block" yaml:"cloudquery,flow" json:"cloudquery"`
+	Providers  Providers  `hcl:"provider,block" yaml:"providers,flow" json:"providers"`
 }
 
 type CloudQuery struct {

@@ -19,7 +19,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 const initHelpMsg = "Generate initial config.hcl for fetch command"
@@ -113,24 +113,69 @@ func Initialize(ctx context.Context, providers []string) error {
 }
 
 func generateYAMLConfig(ctx context.Context, c *console.Client, providers []string, mainConfig config.Config) ([]byte, error) {
+	cqConfig := struct {
+		CloudQuery config.CloudQuery `yaml:"cloudquery" json:"cloudquery"`
+	}{
+		CloudQuery: mainConfig.CloudQuery,
+	}
+	b, err := yaml.Marshal(cqConfig)
+	if err != nil {
+		return nil, diag.WrapError(err)
+	}
+
+	var cqConfigRaw = struct {
+		CQ yaml.Node `yaml:"cloudquery"`
+	}{}
+	if err := yaml.Unmarshal(b, &cqConfigRaw); err != nil {
+		return nil, diag.WrapError(err)
+	}
+
+	provNode := &yaml.Node{
+		Kind:        yaml.SequenceNode,
+		HeadComment: "provider configurations",
+	}
+
 	for _, p := range providers {
 		pCfg, diags := core.GetProviderConfiguration(ctx, c.PluginManager, &core.GetProviderConfigOptions{
 			Provider: c.ConvertRequiredToRegistry(p),
 			Format:   cqproto.ConfigYAML,
 		})
-		if pCfg.Format != cqproto.ConfigYAML {
+		if pCfg != nil && pCfg.Format != cqproto.ConfigYAML {
 			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support YAML config. Fallback to HCL or upgrade provider", p), diag.USER))
 		}
 		if diags.HasErrors() {
 			return nil, diags
 		}
 
-		// pCfg is []byte
-		// TODO DO YAML THINGS
-		_ = pCfg
+		var yCfg yaml.Node
+		if err := yaml.Unmarshal(pCfg.Config, &yCfg); err != nil {
+			return nil, diag.WrapError(err)
+		}
+
+		yCfg.Kind = yaml.SequenceNode
+
+		provNode.Content = append(provNode.Content, &yaml.Node{
+			Kind: yaml.MappingNode,
+			Content: []*yaml.Node{
+				{
+					Kind:  yaml.ScalarNode,
+					Value: p,
+				},
+				&yCfg,
+			},
+		})
 	}
 
-	return yaml.Marshal(mainConfig)
+	nd := struct {
+		Data map[string]*yaml.Node `yaml:",inline"`
+	}{
+		Data: map[string]*yaml.Node{
+			"cloudquery": &cqConfigRaw.CQ,
+			"providers":  provNode,
+		},
+	}
+
+	return yaml.Marshal(&nd)
 }
 
 func generateHCLConfig(ctx context.Context, c *console.Client, providers []string, mainConfig config.Config) ([]byte, error) {
@@ -169,7 +214,7 @@ func generateHCLConfig(ctx context.Context, c *console.Client, providers []strin
 			Provider: c.ConvertRequiredToRegistry(p),
 			Format:   cqproto.ConfigHCL,
 		})
-		if pCfg.Format != cqproto.ConfigHCL {
+		if pCfg != nil && pCfg.Format != cqproto.ConfigHCL {
 			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support HCL config. Please upgrade provider", p), diag.USER))
 		}
 		if diags.HasErrors() {
