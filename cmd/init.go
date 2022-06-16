@@ -131,7 +131,7 @@ func generateYAMLConfig(ctx context.Context, c *console.Client, providers []stri
 	}
 
 	provNode := &yaml.Node{
-		Kind:        yaml.SequenceNode,
+		Kind:        yaml.MappingNode,
 		HeadComment: "provider configurations",
 	}
 
@@ -152,18 +152,11 @@ func generateYAMLConfig(ctx context.Context, c *console.Client, providers []stri
 			return nil, diag.WrapError(err)
 		}
 
-		yCfg.Kind = yaml.SequenceNode
-
 		provNode.Content = append(provNode.Content, &yaml.Node{
-			Kind: yaml.MappingNode,
-			Content: []*yaml.Node{
-				{
-					Kind:  yaml.ScalarNode,
-					Value: p,
-				},
-				&yCfg,
-			},
+			Kind:  yaml.ScalarNode,
+			Value: p,
 		})
+		provNode.Content = append(provNode.Content, yCfg.Content...)
 	}
 
 	nd := struct {

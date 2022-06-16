@@ -18,7 +18,7 @@ type Provider struct {
 	Resources                     []string `yaml:"resources,omitempty" json:"resources,omitempty" hcl:"resources,optional"`
 	SkipResources                 []string `yaml:"skip_resources,omitempty" json:"skip_resources,omitempty" hcl:"skip_resources,optional"`
 	Env                           []string `yaml:"env,omitempty" json:"env,omitempty" hcl:"env,optional"`
-	Configuration                 []byte   `yaml:"-"`
+	Configuration                 []byte   `yaml:"-" json:"-"`
 	MaxParallelResourceFetchLimit uint64   `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty" hcl:"max_parallel_resource_fetch_limit"`
 	MaxGoroutines                 uint64   `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty" hcl:"max_goroutines"`
 	ResourceTimeout               uint64   `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty" hcl:"resource_timeout"`
@@ -27,8 +27,8 @@ type Provider struct {
 type Providers []*Provider
 
 type Config struct {
-	CloudQuery CloudQuery `hcl:"cloudquery,block" yaml:"cloudquery,flow" json:"cloudquery"`
-	Providers  Providers  `hcl:"provider,block" yaml:"providers,flow" json:"providers"`
+	CloudQuery CloudQuery `hcl:"cloudquery,block" yaml:"cloudquery" json:"cloudquery"`
+	Providers  Providers  `hcl:"provider,block" yaml:"providers" json:"providers"`
 }
 
 type CloudQuery struct {

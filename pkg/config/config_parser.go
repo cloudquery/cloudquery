@@ -99,16 +99,20 @@ func ValidateCQBlock(cq *CloudQuery) diag.Diagnostics {
 }
 
 func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
-	c := &Config{}
-	lgc := logging.GlobalConfig
-	c.CloudQuery.Logger = &lgc
+	var yc struct {
+		CloudQuery CloudQuery           `yaml:"cloudquery" json:"cloudquery"`
+		Providers  map[string]*Provider `yaml:"providers" json:"providers"`
+	}
 
-	if err := yaml.NewDecoder(r).Decode(&c); err != nil {
+	lgc := logging.GlobalConfig
+	yc.CloudQuery.Logger = &lgc
+
+	if err := yaml.NewDecoder(r).Decode(&yc); err != nil {
 		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to parse yaml"))
 	}
 
 	schemaLoader := gojsonschema.NewBytesLoader(configSchemaYAML)
-	documentLoader := gojsonschema.NewGoLoader(c)
+	documentLoader := gojsonschema.NewGoLoader(yc)
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
 	if err != nil {
 		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to validate config"))
@@ -125,6 +129,15 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 			)
 		}
 		return nil, diags
+	}
+
+	c := &Config{
+		CloudQuery: yc.CloudQuery,
+	}
+	for k := range yc.Providers {
+		v := yc.Providers[k]
+		v.Name = k
+		c.Providers = append(c.Providers, v)
 	}
 
 	diags := diag.Diagnostics{}
