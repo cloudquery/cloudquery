@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/stretchr/testify/assert"
@@ -124,7 +125,10 @@ func Test_GetProviderConfig(t *testing.T) {
 	defer pm.Shutdown()
 
 	ctx := context.Background()
-	pConfig, diags := GetProviderConfiguration(ctx, pm, &GetProviderConfigOptions{provider})
+	pConfig, diags := GetProviderConfiguration(ctx, pm, &GetProviderConfigOptions{
+		Provider: provider,
+		Format:   cqproto.ConfigHCL,
+	})
 	if diags.HasErrors() {
 		t.FailNow()
 	}
