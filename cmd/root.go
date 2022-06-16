@@ -125,6 +125,10 @@ func init() {
 	rootCmd.PersistentFlags().Bool("debug-telemetry", false, "enable telemetry debug logging")
 	rootCmd.PersistentFlags().String("telemetry-apikey", APIKey, "set telemetry API Key")
 
+	_ = rootCmd.PersistentFlags().MarkHidden("inspect-telemetry")
+	_ = rootCmd.PersistentFlags().MarkHidden("debug-telemetry")
+	_ = rootCmd.PersistentFlags().MarkHidden("telemetry-apikey")
+
 	_ = viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 	_ = viper.BindPFlag("enable-console-log", rootCmd.PersistentFlags().Lookup("enable-console-log"))
 	_ = viper.BindPFlag("data-dir", rootCmd.PersistentFlags().Lookup("data-dir"))
