@@ -1631,14 +1631,26 @@
         },
         "drs": {
           "regions": {
+            "af-south-1": {},
+            "ap-east-1": {},
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-northeast-3": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-south-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "eu-west-3": {},
+            "me-south-1": {},
+            "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
+            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -3760,6 +3772,7 @@
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
+            "eu-south-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -3965,6 +3978,21 @@
             "us-east-1": {},
             "us-east-2": {},
             "us-west-1": {},
+            "us-west-2": {}
+          }
+        },
+        "redshift-serverless": {
+          "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "us-east-1": {},
+            "us-east-2": {},
             "us-west-2": {}
           }
         },
@@ -5128,6 +5156,54 @@
             "us-west-2": {}
           }
         },
+        "wafv2": {
+          "regions": {
+            "af-south-1": {},
+            "ap-east-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-northeast-3": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ap-southeast-3": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-south-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "fips-af-south-1": {},
+            "fips-ap-east-1": {},
+            "fips-ap-northeast-1": {},
+            "fips-ap-northeast-2": {},
+            "fips-ap-northeast-3": {},
+            "fips-ap-south-1": {},
+            "fips-ap-southeast-1": {},
+            "fips-ap-southeast-2": {},
+            "fips-ap-southeast-3": {},
+            "fips-ca-central-1": {},
+            "fips-eu-central-1": {},
+            "fips-eu-north-1": {},
+            "fips-eu-south-1": {},
+            "fips-eu-west-1": {},
+            "fips-eu-west-2": {},
+            "fips-eu-west-3": {},
+            "fips-me-south-1": {},
+            "fips-sa-east-1": {},
+            "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
+            "fips-us-west-2": {},
+            "me-south-1": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
+          }
+        },
         "wellarchitected": {
           "regions": {
             "ap-east-1": {},
@@ -5922,6 +5998,14 @@
           }
         },
         "waf-regional": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {},
+            "fips-cn-north-1": {},
+            "fips-cn-northwest-1": {}
+          }
+        },
+        "wafv2": {
           "regions": {
             "cn-north-1": {},
             "cn-northwest-1": {},
@@ -7514,6 +7598,14 @@
           }
         },
         "waf-regional": {
+          "regions": {
+            "fips-us-gov-east-1": {},
+            "fips-us-gov-west-1": {},
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "wafv2": {
           "regions": {
             "fips-us-gov-east-1": {},
             "fips-us-gov-west-1": {},
