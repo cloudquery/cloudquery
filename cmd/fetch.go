@@ -22,9 +22,8 @@ var fetchCmd = &cobra.Command{
 	Example: `  # Fetch configured providers to PostgreSQL as configured in config.hcl
   cloudquery fetch`,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		cfgPath := viper.GetString("configPath")
 		cfgMutator := filterConfigProviders(args)
-		c, err := console.CreateClient(cmd.Context(), cfgPath, false, cfgMutator, instanceId)
+		c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, cfgMutator, instanceId)
 		if err != nil {
 			return err
 		}

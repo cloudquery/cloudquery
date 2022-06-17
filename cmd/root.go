@@ -121,7 +121,7 @@ func Execute() error {
 
 func init() {
 	// add inner commands
-	rootCmd.PersistentFlags().String("config", "./config.hcl", "path to configuration file. can be generated with 'init {provider}' command (env: CQ_CONFIG_PATH)")
+	rootCmd.PersistentFlags().String("config", "./config.*", "path to configuration file. can be generated with 'init {provider}' command (env: CQ_CONFIG_PATH)")
 	rootCmd.PersistentFlags().Bool("no-verify", false, "disable plugins verification")
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'postgres://postgres:pass@localhost:5432/postgres')")
 

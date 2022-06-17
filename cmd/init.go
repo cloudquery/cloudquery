@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"strings"
 
+	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -45,7 +47,7 @@ var (
 func Initialize(ctx context.Context, providers []string) error {
 	fs := afero.NewOsFs()
 
-	configPath := viper.GetString("configPath")
+	configPath := getConfigFile() // by definition, this will get us an existing file if possible
 
 	if info, _ := fs.Stat(configPath); info != nil {
 		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists\n", configPath)
@@ -141,7 +143,7 @@ func generateYAMLConfig(ctx context.Context, c *console.Client, providers []stri
 			Format:   cqproto.ConfigYAML,
 		})
 		if pCfg != nil && pCfg.Format != cqproto.ConfigYAML {
-			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support YAML config. Fallback to HCL or upgrade provider", p), diag.USER))
+			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support YAML config. Fallback to HCL or upgrade provider", p), diag.USER, diag.WithDetails("Use `cloudquery init <providers> --config config.hcl` to use HCL config format")))
 		}
 		if diags.HasErrors() {
 			return nil, diags
@@ -223,4 +225,24 @@ func generateHCLConfig(ctx context.Context, c *console.Client, providers []strin
 func init() {
 	initCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(initCmd)
+}
+
+// getConfigFile returns the config filename
+// if it ends with ".*", .yml and .hcl extensions are tried in order to find the existing file, if available
+func getConfigFile() string {
+	configPath := viper.GetString("configPath")
+	if !strings.HasSuffix(configPath, ".*") {
+		return configPath
+	}
+
+	fs := file.NewOsFs()
+	noSuffix := strings.TrimSuffix(configPath, ".*")
+	for _, tryExt := range []string{".yml", ".hcl"} {
+		tryFn := noSuffix + tryExt
+		if _, err := fs.Stat(tryFn); err == nil {
+			return tryFn
+		}
+	}
+
+	return noSuffix + ".yml"
 }
