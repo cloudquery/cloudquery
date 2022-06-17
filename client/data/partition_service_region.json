@@ -1327,6 +1327,14 @@
             "us-west-2": {}
           }
         },
+        "connect-campaigns": {
+          "regions": {
+            "ap-southeast-2": {},
+            "eu-west-2": {},
+            "us-east-1": {},
+            "us-west-2": {}
+          }
+        },
         "contact-lens": {
           "regions": {
             "ap-northeast-1": {},
