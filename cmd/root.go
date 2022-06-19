@@ -4,11 +4,13 @@ import (
 	stdlog "log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/google/uuid"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -85,8 +87,17 @@ Query your cloud assets & configuration with SQL for monitoring security, compli
 Find more information at:
 	https://docs.cloudquery.io`,
 		Version: core.Version,
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if analytics.Enabled() {
+				ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
+				if ui.IsTerminal() {
+					if err := helpers.Sleep(cmd.Context(), 2*time.Second); err != nil {
+						return err
+					}
+				}
+			}
 			logInvocationParams(cmd, args)
+			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			analytics.Close()
