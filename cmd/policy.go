@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/pkg/errors"
@@ -44,9 +43,14 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			return c.DescribePolicies(ctx, args[0])
-		}),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			return c.DescribePolicies(cmd.Context(), args[0])
+		},
 	}
 
 	policyDownloadCmd = &cobra.Command{
@@ -66,10 +70,14 @@ var (
 
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			_ = c.DownloadPolicy(ctx, args)
-			return nil
-		}),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			return c.DownloadPolicy(cmd.Context(), args)
+		},
 	}
 
 	outputDir    string
@@ -95,15 +103,20 @@ var (
   cloudquery policy run github.com/COMMUNITY_GITHUB_ORG/aws
 
   # See https://hub.cloudquery.io for additional policies.`,
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
 			source := args[0]
-			diags := c.RunPolicies(ctx, source, outputDir, noResults, storeResults)
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			diags := c.RunPolicies(cmd.Context(), source, outputDir, noResults, storeResults)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_run"})
 			if diags.HasErrors() {
 				return fmt.Errorf("policy has one or more errors, check logs")
 			}
 			return nil
-		}),
+		},
 		Args: cobra.ExactArgs(1),
 	}
 
@@ -115,11 +128,16 @@ var (
   # Download & Run the policies defined in your config
   cloudquery policy test path/to/policy.hcl path/to/snapshot/dir selector
 	`,
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			err := c.TestPolicies(ctx, args[0], args[1])
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			err = c.TestPolicies(cmd.Context(), args[0], args[1])
 			errors.CaptureError(err, map[string]string{"command": "policy_test"})
 			return err
-		}),
+		},
 		Args: cobra.ExactArgs(2),
 	}
 
@@ -128,11 +146,16 @@ var (
 		Short: policySnapshotHelpMsg,
 		Long:  policySnapshotHelpMsg,
 		Args:  cobra.ExactArgs(2),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			err := c.SnapshotPolicy(ctx, args[0], args[1])
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			err = c.SnapshotPolicy(cmd.Context(), args[0], args[1])
 			errors.CaptureError(err, map[string]string{"command": "policy_snapshot"})
 			return err
-		}),
+		},
 	}
 
 	validatePolicyCmd = &cobra.Command{
@@ -140,11 +163,16 @@ var (
 		Short: policyValidateHelpMsg,
 		Long:  policyValidateHelpMsg,
 		Args:  cobra.ExactArgs(1),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			diags := c.ValidatePolicy(ctx, args[0])
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			diags := c.ValidatePolicy(cmd.Context(), args[0])
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_validate"})
 			return fmt.Errorf("policy validate has one or more errors, check logs")
-		}),
+		},
 	}
 
 	prunePolicyCmd = &cobra.Command{
@@ -155,15 +183,20 @@ var (
   # Prune the policy executions which are older than the relative time specified
   cloudquery policy prune 24h`,
 		Args: cobra.ExactArgs(1),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			if err != nil {
+				return err
+			}
 			retentionPeriod := args[0]
-			diags := c.PrunePolicyExecutions(ctx, retentionPeriod)
+			diags := c.PrunePolicyExecutions(cmd.Context(), retentionPeriod)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_prune"})
 			if diags.HasErrors() {
 				return fmt.Errorf("policy prune has one or more errors, check logs")
 			}
 			return nil
-		}),
+		},
 	}
 )
 

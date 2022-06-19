@@ -37,9 +37,9 @@ var (
   # Downloads aws,gcp providers and generates one config.hcl with both providers
   cloudquery init aws gcp`,
 		Args: cobra.MinimumNArgs(1),
-		Run: handleCommand(func(ctx context.Context, _ *console.Client, cmd *cobra.Command, args []string) error {
-			return Initialize(ctx, args)
-		}),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return Initialize(cmd.Context(), args)
+		},
 	}
 )
 

@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"time"
 
@@ -11,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -43,14 +43,19 @@ var (
 		Use:   "upgrade [providers,...]",
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			_, diags := c.SyncProviders(ctx, args...)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			_, diags := c.SyncProviders(cmd.Context(), args...)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_upgrade"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to sync providers")
 			}
 			return nil
-		}),
+		},
 	}
 
 	providerDowngradeHelpMsg = "Downgrades one or more providers schema version based on config.hcl"
@@ -58,14 +63,19 @@ var (
 		Use:   "downgrade [providers,...]",
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			_, diags := c.SyncProviders(ctx, args...)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			_, diags := c.SyncProviders(cmd.Context(), args...)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_downgrade"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to sync providers")
 			}
 			return nil
-		}),
+		},
 	}
 
 	providerForce       bool
@@ -75,18 +85,23 @@ var (
 		Short: providerDropHelpMsg,
 		Long:  providerDropHelpMsg,
 		Args:  cobra.ExactArgs(1),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			if err != nil {
+				return err
+			}
 			if !providerForce {
 				ui.ColorizedOutput(ui.ColorWarning, "WARNING! This will drop all tables for the given provider. If you wish to continue, use the --force flag.\n")
 				return diag.FromError(fmt.Errorf("if you wish to continue, use the --force flag"), diag.USER)
 			}
-			diags := c.DropProvider(ctx, args[0])
+			diags := c.DropProvider(cmd.Context(), args[0])
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_drop"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to drop provider %s", args[0])
 			}
 			return nil
-		}),
+		},
 	}
 
 	providerBuildSchemaHelpMsg = "Builds provider schema on database"
@@ -95,14 +110,19 @@ var (
 		Short: providerBuildSchemaHelpMsg,
 		Long:  providerBuildSchemaHelpMsg,
 		Args:  cobra.MaximumNArgs(1),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			_, diags := c.SyncProviders(ctx, args...)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			_, diags := c.SyncProviders(cmd.Context(), args...)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_build_schema"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to sync providers")
 			}
 			return nil
-		}),
+		},
 	}
 
 	providerDownloadHelpMsg = "Downloads all providers specified in config.hcl."
@@ -114,14 +134,19 @@ var (
   # Downloads all providers specified in config.hcl:
   ./cloudquery provider download
 `,
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			diags := c.DownloadProviders(ctx)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			diags := c.DownloadProviders(cmd.Context())
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_download"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to download providers")
 			}
 			return nil
-		}),
+		},
 	}
 
 	lastUpdate                 time.Duration
@@ -132,14 +157,19 @@ var (
 		Short: providerRemoveStaleHelpMsg,
 		Long:  providerRemoveStaleHelpMsg,
 		Args:  cobra.MinimumNArgs(1),
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-			diags := c.RemoveStaleData(ctx, lastUpdate, dryRun, args)
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			if err != nil {
+				return err
+			}
+			diags := c.RemoveStaleData(cmd.Context(), lastUpdate, dryRun, args)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_purge"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to remove stale data")
 			}
 			return nil
-		}),
+		},
 	}
 )
 

@@ -16,11 +16,9 @@ limitations under the License.
 package cmd
 
 import (
-	"context"
 	"os"
 
 	"github.com/cloudquery/cloudquery/pkg/errors"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/spf13/cobra"
 )
 
@@ -70,7 +68,7 @@ PS> cloudquery completion powershell > cloudquery.ps1
 	DisableFlagsInUseLine: true,
 	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
 	Args:                  cobra.ExactValidArgs(1),
-	Run: handleCommand(func(_ context.Context, _ *console.Client, cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		var err error
 		switch args[0] {
 		case "bash":
@@ -84,7 +82,7 @@ PS> cloudquery completion powershell > cloudquery.ps1
 		}
 		errors.CaptureError(err, map[string]string{"command": "completion"})
 		return err
-	}),
+	},
 }
 
 func init() {

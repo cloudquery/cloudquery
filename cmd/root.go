@@ -17,6 +17,9 @@ import (
 	"github.com/thoas/go-funk"
 )
 
+// fileDescriptorF gets set trough system relevant files like ulimit_unix.go
+var fileDescriptorF func()
+
 // This is copied from https://github.com/spf13/cobra/blob/master/command.go#L491
 // and modified to not print global flags (as they will be printed via a new options command)
 const usageTemplate = `Usage:{{if .Runnable}}

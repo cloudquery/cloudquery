@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"strings"
 
@@ -22,8 +21,14 @@ var fetchCmd = &cobra.Command{
 	`,
 	Example: `  # Fetch configured providers to PostgreSQL as configured in config.hcl
   cloudquery fetch`,
-	Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
-		result, diags := c.Fetch(ctx)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cfgPath := viper.GetString("configPath")
+		cfgMutator := filterConfigProviders(args)
+		c, err := console.CreateClient(cmd.Context(), cfgPath, false, cfgMutator, instanceId)
+		if err != nil {
+			return err
+		}
+		result, diags := c.Fetch(cmd.Context())
 		errors.CaptureDiagnostics(diags, nil)
 		if result != nil {
 			for _, p := range result.ProviderFetchSummary {
@@ -34,7 +39,7 @@ var fetchCmd = &cobra.Command{
 			return fmt.Errorf("provider has one or more errors, check logs")
 		}
 		return nil
-	}),
+	},
 }
 
 func init() {
