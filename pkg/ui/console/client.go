@@ -662,9 +662,9 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 		}
 
 		if p.Alias != p.Name {
-			fetchProgress.Add(fmt.Sprintf("%s_%s", p.Name, p.Alias), fmt.Sprintf("cq-provider-%s@%s-%s", p.Name, "latest", p.Alias), "fetching", int64(len(p.Resources)))
+			fetchProgress.Add(fmt.Sprintf("%s_%s", p.Name, p.Alias), fmt.Sprintf("cq-provider-%s (%s)", p.Name, p.Alias), "fetching", int64(len(p.Resources)))
 		} else {
-			fetchProgress.Add(fmt.Sprintf("%s_%s", p.Name, p.Alias), fmt.Sprintf("cq-provider-%s@%s", p.Name, "latest"), "fetching", int64(len(p.Resources)))
+			fetchProgress.Add(fmt.Sprintf("%s_%s", p.Name, p.Alias), fmt.Sprintf("cq-provider-%s", p.Name), "fetching", int64(len(p.Resources)))
 		}
 	}
 	fetchCallback := func(update core.FetchUpdate) {
