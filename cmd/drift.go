@@ -1,13 +1,12 @@
 package cmd
 
 import (
-	"context"
-
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/pkg/errors"
 	"github.com/cloudquery/cloudquery/pkg/module/drift"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -21,9 +20,15 @@ var (
 		Use:   "scan [state files...]",
 		Short: "Scan for drifts",
 		Long:  "Scan for drifts between cloud provider and IaC",
-		Run: handleCommand(func(ctx context.Context, c *console.Client, cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cfgPath := viper.GetString("configPath")
+			cfgMutator := filterConfigProviders(args)
+			c, err := console.CreateClient(cmd.Context(), cfgPath, false, cfgMutator, instanceId)
+			if err != nil {
+				return err
+			}
 			driftParams.StateFiles = args
-			diags := c.CallModule(ctx, console.ModuleCallRequest{
+			diags := c.CallModule(cmd.Context(), console.ModuleCallRequest{
 				Name:       "drift",
 				Params:     driftParams,
 				Profile:    driftProfile,
@@ -32,7 +37,7 @@ var (
 			analytics.Capture("drift", c.Providers, nil, diags)
 			errors.CaptureError(diags, map[string]string{"command": "drift"})
 			return diags
-		}),
+		},
 	}
 
 	driftParams     drift.RunParams

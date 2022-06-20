@@ -1,14 +1,16 @@
 package cmd
 
 import (
-	stdlog "log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -16,6 +18,9 @@ import (
 	"github.com/spf13/viper"
 	"github.com/thoas/go-funk"
 )
+
+// fileDescriptorF gets set trough system relevant files like ulimit_unix.go
+var fileDescriptorF func()
 
 // This is copied from https://github.com/spf13/cobra/blob/master/command.go#L491
 // and modified to not print global flags (as they will be printed via a new options command)
@@ -82,8 +87,17 @@ Query your cloud assets & configuration with SQL for monitoring security, compli
 Find more information at:
 	https://docs.cloudquery.io`,
 		Version: core.Version,
-		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if analytics.Enabled() {
+				ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
+				if ui.IsTerminal() {
+					if err := helpers.Sleep(cmd.Context(), 2*time.Second); err != nil {
+						return err
+					}
+				}
+			}
 			logInvocationParams(cmd, args)
+			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			analytics.Close()
@@ -91,11 +105,14 @@ Find more information at:
 	}
 )
 
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		stdlog.Println(err)
-		os.Exit(1)
-	}
+func Execute() error {
+	defer func() {
+		if err := recover(); err != nil {
+			sentry.CurrentHub().Recover(err)
+			panic(err)
+		}
+	}()
+	return rootCmd.Execute()
 }
 
 func init() {
