@@ -32,7 +32,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/ProtonMail/go-crypto v0.0.0-20220113124808-70ae35bab23f
 	github.com/aws/aws-sdk-go v1.43.41
-	github.com/doug-martin/goqu/v9 v9.17.0
+	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/driftprogramming/pgxpoolmock v1.1.0
 	github.com/georgysavva/scany v0.2.9
 	github.com/getsentry/sentry-go v0.13.0
