@@ -4,6 +4,20 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.26.1](https://github.com/cloudquery/cloudquery/compare/v0.26.0...v0.26.1) (2022-06-20)
+
+
+### Features
+
+* Remove handle_command wrapper function ([#918](https://github.com/cloudquery/cloudquery/issues/918)) ([e75a5f9](https://github.com/cloudquery/cloudquery/commit/e75a5f936d2d35f541c6d5c457dc7b527d78e4fb))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/jackc/pgerrcode digest to 469b46a ([#924](https://github.com/cloudquery/cloudquery/issues/924)) ([da0c201](https://github.com/cloudquery/cloudquery/commit/da0c20174f19f938371431e3d6f52cd098779336))
+* **deps:** Update github.com/johannesboyne/gofakes3 digest to 83a58ec ([#925](https://github.com/cloudquery/cloudquery/issues/925)) ([01c8c92](https://github.com/cloudquery/cloudquery/commit/01c8c9233ecd1159f6767dc4f6f1808ec507e194))
+* Progress bar diag count ([#945](https://github.com/cloudquery/cloudquery/issues/945)) ([e3549b3](https://github.com/cloudquery/cloudquery/commit/e3549b392fc43e79d392d5b9e160c9d0dc968c1d)), closes [#883](https://github.com/cloudquery/cloudquery/issues/883)
+
 ## [0.26.0](https://github.com/cloudquery/cloudquery/compare/v0.25.7...v0.26.0) (2022-06-20)
 
 
