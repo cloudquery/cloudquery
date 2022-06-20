@@ -65,8 +65,41 @@ jobs:
       - name: Build
         run: go build -v .
 
-      - name: Sanity
-        run: ./scripts/test-sanity.sh
+      - name: Fetch
+        run: go run ./main.go fetch --config=internal/test/test_config.hcl --enable-console-log --fail-on-error
+
+
+      - name: Fetch Multiple Provider
+        run: go run ./main.go fetch --config=internal/test/test_double_provider_config.hcl --enable-console-log --fail-on-error
+
+      - name: Init
+        run: go run ./main.go init test --config=test_init_config.hcl
+
+      - name: Policy Describe
+        run: go run ./main.go policy describe k8s//nsa_cisa_v1/pod_security --config=internal/test/test_config.hcl
+
+      - name: Policy Download
+        run: go run ./main.go policy download github.com/roneli/aws//cis_v1.2.0 --config=internal/test/test_config.hcl
+
+      - name: Policy Run bad subpath
+        run: go run ./main.go policy run aws//path/not/exist --config=internal/test/test_aws.hcl --disable-fetch-check
+        continue-on-error: true
+
+      - name: Sync (upgrade)
+        run: go run ./main.go provider upgrade test --config=internal/test/test_config.hcl
+
+      - name: Purge
+        run: go run ./main.go provider purge test --config=internal/test/test_config.hcl
+
+      - name: Sync (downgrade)
+        run: go run ./main.go provider downgrade test --config=internal/test/test_config.hcl
+
+      - name: Drop
+        run: go run ./main.go provider drop test --config=internal/test/test_config.hcl --force
+
+      - name: Drift
+        run: go run ./main.go drift scan internal/test/tfstate.state --enable-console-log --config=internal/test/test_drift.hcl
+        continue-on-error: true
 
 
 
