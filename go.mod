@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
-	github.com/cloudquery/cq-provider-sdk v0.11.4
+	github.com/cloudquery/cq-provider-sdk v0.11.5-0.20220620123658-0dcdd27f34c9
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/go-github/v35 v35.2.0
@@ -31,7 +31,6 @@ require (
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/ProtonMail/go-crypto v0.0.0-20220517143526-88bb52951d5b
-	github.com/aws/aws-sdk-go v1.44.37
 	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/driftprogramming/pgxpoolmock v1.1.0
 	github.com/georgysavva/scany v0.2.9
@@ -79,7 +78,7 @@ require (
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
-	github.com/aws/aws-sdk-go v1.43.41 // indirect
+	github.com/aws/aws-sdk-go v1.44.37 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.16.2 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.1 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.15.3 // indirect
