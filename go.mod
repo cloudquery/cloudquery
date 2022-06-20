@@ -20,7 +20,7 @@ require (
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.7.2
-	github.com/thoas/go-funk v0.9.1
+	github.com/thoas/go-funk v0.9.2
 	github.com/vbauerster/mpb/v6 v6.0.4
 	github.com/zclconf/go-cty v1.9.1
 	golang.org/x/crypto v0.0.0-20220427172511-eb4f295cb31f // indirect
