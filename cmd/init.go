@@ -228,7 +228,7 @@ func init() {
 }
 
 // getConfigFile returns the config filename
-// if it ends with ".*", .yml and .hcl extensions are tried in order to find the existing file, if available
+// if it ends with ".*", .hcl and .yml extensions are tried in order to find the existing file, if available
 func getConfigFile() string {
 	configPath := viper.GetString("configPath")
 	if !strings.HasSuffix(configPath, ".*") {
@@ -237,12 +237,12 @@ func getConfigFile() string {
 
 	fs := file.NewOsFs()
 	noSuffix := strings.TrimSuffix(configPath, ".*")
-	for _, tryExt := range []string{".yml", ".hcl"} {
+	for _, tryExt := range []string{".hcl", ".yml"} {
 		tryFn := noSuffix + tryExt
 		if _, err := fs.Stat(tryFn); err == nil {
 			return tryFn
 		}
 	}
 
-	return noSuffix + ".yml"
+	return noSuffix + ".hcl"
 }
