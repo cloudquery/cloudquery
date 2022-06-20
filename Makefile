@@ -31,3 +31,10 @@ endif
 destroy:
 	@cd deploy/aws/terraform && terraform destroy
 
+.PHONY: lint
+lint:
+	@golangci-lint run --timeout 10m --verbose
+
+.PHONY: test-sanity
+test-sanity:
+	./scripts/test-sanity.sh

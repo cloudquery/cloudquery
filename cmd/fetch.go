@@ -30,7 +30,7 @@ var fetchCmd = &cobra.Command{
 				analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
 			}
 		}
-		if viper.GetBool("fail-on-error") && diags.HasErrors() {
+		if diags.HasErrors() {
 			return fmt.Errorf("provider has one or more errors, check logs")
 		}
 		return nil
@@ -39,8 +39,6 @@ var fetchCmd = &cobra.Command{
 
 func init() {
 	fetchCmd.SetUsageTemplate(usageTemplateWithFlags)
-	fetchCmd.PersistentFlags().Bool("fail-on-error", false, "CloudQuery should return a failure error code if provider has any error")
-	_ = viper.BindPFlag("fail-on-error", fetchCmd.PersistentFlags().Lookup("fail-on-error"))
 	fetchCmd.Flags().Bool("skip-schema-upgrade", false, "skip schema upgrade of provider fetch, disabling this flag might cause issues")
 	_ = viper.BindPFlag("skip-schema-upgrade", fetchCmd.Flags().Lookup("skip-schema-upgrade"))
 	fetchCmd.Flags().Bool("redact-diags", false, "show redacted diagnostics only")
