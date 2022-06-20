@@ -365,7 +365,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 					Version:           providerPlugin.Version(),
 					FinishedResources: resp.FinishedResources,
 					ResourceCount:     resp.ResourceCount,
-					DiagnosticCount:   diags.Len(),
+					DiagnosticCount:   diags.BySeverity(diag.WARNING, diag.ERROR, diag.PANIC).Len(),
 				})
 				// pLog.Debug().Str("resource", resp.ResourceName).Uint64("finishedCount", resp.ResourceCount).
 				//	Bool("finished", update.AllDone()).Int("finishCount", update.DoneCount()).Msg("received fetch update")
