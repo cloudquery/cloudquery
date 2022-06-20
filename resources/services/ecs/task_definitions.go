@@ -851,7 +851,10 @@ func resolveEcsTaskDefinitionContainerDefinitionsVolumesFrom(ctx context.Context
 		return nil
 	}
 	for _, s := range r.VolumesFrom {
-		j[*s.SourceContainer] = *s.ReadOnly
+		if s.SourceContainer == nil {
+			continue
+		}
+		j[*s.SourceContainer] = aws.ToBool(s.ReadOnly)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
