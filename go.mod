@@ -42,7 +42,7 @@ require (
 	github.com/hairyhenderson/go-fsimpl v0.0.0-20220419174024-16654461dc34
 	github.com/hashicorp/go-getter v1.6.2
 	github.com/jackc/pgconn v1.12.1
-	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
+	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/jeremywohl/flatten v1.0.1
 	github.com/johannesboyne/gofakes3 v0.0.0-20220314170512-33c13122505e
 	github.com/lib/pq v1.10.6
