@@ -4,6 +4,23 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.25.7](https://github.com/cloudquery/cloudquery/compare/v0.25.6...v0.25.7) (2022-06-20)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/term digest to 065cf7b ([#926](https://github.com/cloudquery/cloudquery/issues/926)) ([81df0d0](https://github.com/cloudquery/cloudquery/commit/81df0d0621d622d519d7466a843b1a6717b8c066))
+* **deps:** Update module github.com/doug-martin/goqu/v9 to v9.18.0 ([#940](https://github.com/cloudquery/cloudquery/issues/940)) ([90e9574](https://github.com/cloudquery/cloudquery/commit/90e95742630db559d24f1f80e9106c424609b7f8))
+* **deps:** Update module github.com/golang-migrate/migrate/v4 to v4.15.2 ([#928](https://github.com/cloudquery/cloudquery/issues/928)) ([9dde364](https://github.com/cloudquery/cloudquery/commit/9dde364291bbff3d2557addaaa566fdef4d76a67))
+* **deps:** Update module github.com/google/go-cmp to v0.5.8 ([#929](https://github.com/cloudquery/cloudquery/issues/929)) ([ed8d1ea](https://github.com/cloudquery/cloudquery/commit/ed8d1ea7476aecde5c42c5578c59c07d607554e6))
+* **deps:** Update module github.com/hashicorp/go-getter to v1.6.2 ([#930](https://github.com/cloudquery/cloudquery/issues/930)) ([a04bd1e](https://github.com/cloudquery/cloudquery/commit/a04bd1e1a174a39e6afdb06cd463e106b78b8c96))
+* **deps:** Update module github.com/hashicorp/go-plugin to v1.4.4 ([#931](https://github.com/cloudquery/cloudquery/issues/931)) ([b6a0c09](https://github.com/cloudquery/cloudquery/commit/b6a0c09ea23199a3a210c849478e15c88fff2073))
+* **deps:** Update module github.com/jackc/pgconn to v1.12.1 ([#933](https://github.com/cloudquery/cloudquery/issues/933)) ([7939aa9](https://github.com/cloudquery/cloudquery/commit/7939aa9269deefe556cdf87c2d322ea9cb85950f))
+* **deps:** Update module github.com/jackc/pgx/v4 to v4.16.1 ([#934](https://github.com/cloudquery/cloudquery/issues/934)) ([d76ed32](https://github.com/cloudquery/cloudquery/commit/d76ed32a51a03febba7b5b48a9f508e7870b96f6))
+* **deps:** Update module github.com/lib/pq to v1.10.6 ([#935](https://github.com/cloudquery/cloudquery/issues/935)) ([66d4d51](https://github.com/cloudquery/cloudquery/commit/66d4d5149e9b98fe1f844b31f7217a542ed576ff))
+* **deps:** Update module github.com/stretchr/testify to v1.7.2 ([#936](https://github.com/cloudquery/cloudquery/issues/936)) ([8ece5bb](https://github.com/cloudquery/cloudquery/commit/8ece5bb91769a91646d73060a925865a623ff26a))
+* **deps:** Update module github.com/vbauerster/mpb/v6 to v6.0.4 ([#938](https://github.com/cloudquery/cloudquery/issues/938)) ([5481d89](https://github.com/cloudquery/cloudquery/commit/5481d89bf74ef5ecb699608de616d12fade30493))
+
 ## [0.25.6](https://github.com/cloudquery/cloudquery/compare/v0.25.5...v0.25.6) (2022-06-19)
 
 
