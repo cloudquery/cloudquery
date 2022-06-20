@@ -88,6 +88,10 @@ Find more information at:
 	https://docs.cloudquery.io`,
 		Version: core.Version,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			// Don't print usage on command errors.
+			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
+			cmd.SilenceUsage = true
+
 			if analytics.Enabled() {
 				ui.ColorizedOutput(ui.ColorInfo, "Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry\n")
 				if ui.IsTerminal() {
