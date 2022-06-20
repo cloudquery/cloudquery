@@ -446,7 +446,12 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 	// Test out retrieving credentials
 	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
 		logger.Error("error retrieving credentials", "err", err)
-		return awsCfg, err
+		return awsCfg, diag.FromError(
+			err,
+			diag.USER,
+			diag.WithSummary("No credentials available"),
+			diag.WithDetails("Coundn't find any credentials in environment variables or configuration files."),
+		)
 	}
 
 	return awsCfg, err
