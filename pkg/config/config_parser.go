@@ -140,8 +140,7 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 		c.Providers = append(c.Providers, v)
 	}
 
-	diags := diag.Diagnostics{}
-	diags = diags.Add(ValidateCQBlock(&c.CloudQuery))
+	diags := ValidateCQBlock(&c.CloudQuery)
 	if diags.HasErrors() {
 		return nil, diags
 	}
