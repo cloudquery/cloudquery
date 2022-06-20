@@ -4,6 +4,15 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.26.3](https://github.com/cloudquery/cloudquery/compare/v0.26.2...v0.26.3) (2022-06-20)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/hairyhenderson/go-fsimpl digest to 3a8e791 ([#923](https://github.com/cloudquery/cloudquery/issues/923)) ([974933f](https://github.com/cloudquery/cloudquery/commit/974933f6f3b33499237d50cde0796bc9b208ad96))
+* **deps:** Update module github.com/aws/aws-sdk-go to v1.44.37 ([#939](https://github.com/cloudquery/cloudquery/issues/939)) ([cc0670d](https://github.com/cloudquery/cloudquery/commit/cc0670dce30e6242983788cb5d6b335a43178e24))
+* Revert "fix(deps): Update github.com/hairyhenderson/go-fsimpl digest to 3a8e791 ([#923](https://github.com/cloudquery/cloudquery/issues/923))" ([#950](https://github.com/cloudquery/cloudquery/issues/950)) ([75f870d](https://github.com/cloudquery/cloudquery/commit/75f870d971977b760b6a0224de1beb7d90fc6012))
+
 ## [0.26.2](https://github.com/cloudquery/cloudquery/compare/v0.26.1...v0.26.2) (2022-06-20)
 
 
