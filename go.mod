@@ -37,7 +37,7 @@ require (
 	github.com/georgysavva/scany v0.2.9
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/golang/mock v1.6.0
-	github.com/google/go-cmp v0.5.7
+	github.com/google/go-cmp v0.5.8
 	github.com/google/uuid v1.3.0
 	github.com/hairyhenderson/go-fsimpl v0.0.0-20220419174024-16654461dc34
 	github.com/hashicorp/go-getter v1.6.2
