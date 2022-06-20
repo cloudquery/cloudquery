@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	stdlog "log"
 	"os"
 	"strings"
 	"time"
@@ -11,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
+	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -105,11 +105,14 @@ Find more information at:
 	}
 )
 
-func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		stdlog.Println(err)
-		os.Exit(1)
-	}
+func Execute() error {
+	defer func() {
+		if err := recover(); err != nil {
+			sentry.CurrentHub().Recover(err)
+			panic(err)
+		}
+	}()
+	return rootCmd.Execute()
 }
 
 func init() {

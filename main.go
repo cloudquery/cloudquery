@@ -1,16 +1,15 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/cloudquery/cloudquery/cmd"
-	"github.com/getsentry/sentry-go"
 )
 
 func main() {
-	defer func() {
-		if err := recover(); err != nil {
-			sentry.CurrentHub().Recover(err)
-			panic(err)
-		}
-	}()
-	cmd.Execute()
+	if err := cmd.Execute(); err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
 }
