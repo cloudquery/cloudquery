@@ -15,11 +15,18 @@ import (
 const ssoInvalidOrExpired = "failed to refresh cached credentials, the SSO session has expired or is invalid"
 
 var (
-	requestIdRegex         = regexp.MustCompile(`\s([Rr]equest[ _]{0,1}(ID|Id|id):)\s[A-Za-z0-9-]+`)
-	hostIdRegex            = regexp.MustCompile(`\sHostID: [A-Za-z0-9+/_=-]+`)
-	arnIdRegex             = regexp.MustCompile(`(\s)(arn:aws[A-Za-z0-9-]*:)[^ \.\(\)\[\]\{\}\;\,]+(\s?)`)
-	urlRegex               = regexp.MustCompile(`([\s"])http(s?):\/\/[a-z0-9_\-\./]+([":\s]?)`)
-	lookupRegex            = regexp.MustCompile(`(\slookup\s)[-A-Za-z0-9\.]+\son\s([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.+?)([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})->([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.*)`)
+	requestIdRegex = regexp.MustCompile(`\s([Rr]equest[ _]{0,1}(ID|Id|id):)\s[A-Za-z0-9-]+`)
+	hostIdRegex    = regexp.MustCompile(`\sHostID: [A-Za-z0-9+/_=-]+`)
+	arnIdRegex     = regexp.MustCompile(`(\s)(arn:aws[A-Za-z0-9-]*:)[^ \.\(\)\[\]\{\}\;\,]+(\s?)`)
+	urlRegex       = regexp.MustCompile(`([\s"])http(s?):\/\/[a-z0-9_\-\./]+([":\s]?)`)
+	lookupRegex    = regexp.MustCompile(
+		`\blookup\s[-A-Za-z0-9\.]+\s` + // " lookup host.name "
+			`on\s\S+:\d+`, // "on 123.123.123.123:53"
+	)
+	readXonYRegex = regexp.MustCompile(
+		`\bread\s(udp|tcp)\s` + // "read udp "
+			`\S+:\d+->\S+:\d+`, // "192.168.1.2:5353->192.168.1.1:53"
+	)
 	dialRegex              = regexp.MustCompile(`(\sdial\s)(tcp|udp)(\s)([0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}\.[0-9]{0,3}:[0-9]{1,5})(:.+?)`)
 	encAuthRegex           = regexp.MustCompile(`(\s)(Encoded authorization failure message:)\s[A-Za-z0-9_-]+`)
 	userRegex              = regexp.MustCompile(`(\s)(is not authorized to perform: .+ on resource:\s)(user)\s.+`)
@@ -235,7 +242,8 @@ func removePII(aa []string, msg string) string {
 	msg = hostIdRegex.ReplaceAllString(msg, " HostID: xxxx")
 	msg = arnIdRegex.ReplaceAllString(msg, "${1}${2}xxxx${3}")
 	msg = urlRegex.ReplaceAllString(msg, "${1}http${2}://xxxx${3}")
-	msg = lookupRegex.ReplaceAllString(msg, "${1}xxxx${3}xxxx->xxxx${6}")
+	msg = lookupRegex.ReplaceAllString(msg, "lookup xxxx on xxxx:xx")
+	msg = readXonYRegex.ReplaceAllString(msg, "read $1 xxxx:xx->xxxx:xx")
 	msg = dialRegex.ReplaceAllString(msg, "${1}${2}${3}xxxx${5}")
 	msg = encAuthRegex.ReplaceAllString(msg, "${1}${2} xxxx")
 	msg = userRegex.ReplaceAllString(msg, "${1}${2}${3} xxxx")

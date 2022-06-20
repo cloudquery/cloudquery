@@ -33,7 +33,7 @@ func TestRemovePII(t *testing.T) {
 		},
 		{
 			"operation error CloudWatch Logs: DescribeMetricFilters, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Post \"https://logs.eu-central-1.amazonaws.com/\": dial tcp: lookup logs.eu-central-1.amazonaws.com on 192.168.1.1:53: read udp 192.168.1.2:5353->192.168.1.1:53: i/o timeout",
-			"operation error CloudWatch Logs: DescribeMetricFilters, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Post \"https://xxxx\": dial tcp: lookup xxxx: read udp xxxx->xxxx: i/o timeout",
+			"operation error CloudWatch Logs: DescribeMetricFilters, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Post \"https://xxxx\": dial tcp: lookup xxxx on xxxx:xx: read udp xxxx:xx->xxxx:xx: i/o timeout",
 		},
 		{
 			"EC2: DescribeImageAttribute - You are not authorized to perform this operation. Encoded authorization failure message: SOMEENCODEDMESSAGEWITHNUMBERS1234567ANDDASHANDUNDERSCORES-ABCDE_123123123_EXAMPLEMESSAGE",
@@ -54,6 +54,10 @@ func TestRemovePII(t *testing.T) {
 		{
 			"ResourceType name not found - Could not find example request type named 'resource-dev-1111'",
 			"ResourceType name not found - Could not find example request type named 'xxxx'",
+		},
+		{
+			`qldb.ledgers: failed to resolve table "aws_qldb_ledgers": error at github.com/cloudquery/cq-provider-aws/resources/services/qldb.fetchQldbLedgers[ledgers.go:264] operation error QLDB: ListLedgers, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Get "https://qldb.ap-southeast-1.amazonaws.com/ledgers": dial tcp: lookup qldb.ap-southeast-1.amazonaws.com on 172.20.0.10:53: no such host`,
+			`qldb.ledgers: failed to resolve table "aws_qldb_ledgers": error at github.com/cloudquery/cq-provider-aws/resources/services/qldb.fetchQldbLedgers[ledgers.go:264] operation error QLDB: ListLedgers, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Get "https://xxxx": dial tcp: lookup xxxx on xxxx:xx: no such host`,
 		},
 	}
 	for i, tc := range cases {
