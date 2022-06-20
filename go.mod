@@ -45,7 +45,7 @@ require (
 	github.com/jackc/pgerrcode v0.0.0-20201024163028-a0d42d470451
 	github.com/jeremywohl/flatten v1.0.1
 	github.com/johannesboyne/gofakes3 v0.0.0-20220314170512-33c13122505e
-	github.com/lib/pq v1.10.4
+	github.com/lib/pq v1.10.6
 	github.com/modern-go/reflect2 v1.0.2
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/rudderlabs/analytics-go v3.3.2+incompatible
