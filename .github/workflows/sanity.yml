@@ -67,6 +67,3 @@ jobs:
 
       - name: Sanity
         run: ./scripts/test-sanity.sh
-
-
-

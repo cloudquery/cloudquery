@@ -3,5 +3,9 @@
     "github>cloudquery/.github//.github/renovate-go-default.json5",
     "github>cloudquery/.github//.github/renovate-node-default.json5",
   ],
-  packageRules: [{ matchPackagePatterns: ["*"], enabled: true }],
+  packageRules: [
+    { matchPackagePatterns: ["*"], enabled: true },
+    // GitHub actions workflows are synced from .github so no need to create PRs for them
+    { matchManagers: ["github-actions"], enabled: false },
+  ],
 }
