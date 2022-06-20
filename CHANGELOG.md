@@ -4,6 +4,22 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.26.0](https://github.com/cloudquery/cloudquery/compare/v0.25.7...v0.26.0) (2022-06-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove fail-on-error (#916)
+
+### Features
+
+* Remove fail-on-error ([#916](https://github.com/cloudquery/cloudquery/issues/916)) ([00fd817](https://github.com/cloudquery/cloudquery/commit/00fd817ef92f81f065c5d8f3c07a431632d8efd8))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/ProtonMail/go-crypto digest to 88bb529 ([#922](https://github.com/cloudquery/cloudquery/issues/922)) ([20ce36e](https://github.com/cloudquery/cloudquery/commit/20ce36e5a2d928259aad7728e20c7fbc94da3b8a))
+
 ## [0.25.7](https://github.com/cloudquery/cloudquery/compare/v0.25.6...v0.25.7) (2022-06-20)
 
 
