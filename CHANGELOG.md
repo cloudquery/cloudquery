@@ -4,6 +4,22 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.27.0-rc1](https://github.com/cloudquery/cloudquery/compare/v0.26.4...v0.27.0-rc1) (2022-06-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove drift (#887)
+
+### Features
+
+* Remove drift ([#887](https://github.com/cloudquery/cloudquery/issues/887)) ([3d387bd](https://github.com/cloudquery/cloudquery/commit/3d387bda0ed8afcdb0b32b5ec1ae2d0e9c279e5e))
+
+
+### Miscellaneous Chores
+
+* Release 0.27.0-rc1 ([#962](https://github.com/cloudquery/cloudquery/issues/962)) ([3a2ec6d](https://github.com/cloudquery/cloudquery/commit/3a2ec6d256d488fe06c47a0602978213859555ed))
+
 ## [0.26.4](https://github.com/cloudquery/cloudquery/compare/v0.26.3...v0.26.4) (2022-06-21)
 
 
