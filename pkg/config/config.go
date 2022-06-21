@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/spf13/viper"
 	"github.com/xo/dburl"
 )
@@ -29,6 +30,8 @@ type Providers []*Provider
 type Config struct {
 	CloudQuery CloudQuery `hcl:"cloudquery,block" yaml:"cloudquery" json:"cloudquery"`
 	Providers  Providers  `hcl:"provider,block" yaml:"providers" json:"providers"`
+
+	format cqproto.ConfigFormat
 }
 
 type CloudQuery struct {
@@ -74,6 +77,10 @@ func (pp Providers) Names() []string {
 		pNames[i] = p.Name
 	}
 	return pNames
+}
+
+func (c Config) Format() cqproto.ConfigFormat {
+	return c.format
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {

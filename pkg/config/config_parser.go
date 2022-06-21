@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/gohcl"
@@ -136,6 +137,7 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 
 	c := &Config{
 		CloudQuery: yc.CloudQuery,
+		format:     cqproto.ConfigYAML,
 	}
 	for k := range yc.Providers {
 		v := yc.Providers[k]
@@ -156,7 +158,9 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 
 func (p *Parser) decodeConfigHCL(body hcl.Body, diags diag.Diagnostics) (*Config, diag.Diagnostics) {
 	existingProviders := make(map[string]bool)
-	config := &Config{}
+	config := &Config{
+		format: cqproto.ConfigHCL,
+	}
 
 	content, contentDiags := body.Content(configSchemaHCL)
 	diags = diags.Add(hclToSdkDiags(contentDiags))

@@ -208,7 +208,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 			printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 			return nil, diags
 		}
-		providers[i] = core.ProviderInfo{Provider: rp, Config: p}
+		providers[i] = core.ProviderInfo{Provider: rp, Config: p, ConfigFormat: c.cfg.Format()}
 	}
 	result, diags := core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
