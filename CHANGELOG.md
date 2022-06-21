@@ -15,7 +15,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Miscellaneous Chores
 
-* Release 0.27.0 ([#963](https://github.com/cloudquery/cloudquery/issues/963)) ([026a9ae](https://github.com/cloudquery/cloudquery/commit/026a9ae11e1c3e59cfc93f90c9d25ecc0f16a69b))
 * Release 0.27.0-rc2 ([#967](https://github.com/cloudquery/cloudquery/issues/967)) ([cd37a11](https://github.com/cloudquery/cloudquery/commit/cd37a119581da8f6dbe138562c6897e3e5db5b6a))
 
 ## [0.27.0-rc1](https://github.com/cloudquery/cloudquery/compare/v0.26.4...v0.27.0-rc1) (2022-06-21)
