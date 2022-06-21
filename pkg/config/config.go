@@ -23,6 +23,9 @@ type Provider struct {
 	MaxParallelResourceFetchLimit uint64   `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty" hcl:"max_parallel_resource_fetch_limit"`
 	MaxGoroutines                 uint64   `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty" hcl:"max_goroutines"`
 	ResourceTimeout               uint64   `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty" hcl:"resource_timeout"`
+
+	// ConfigKeys is only used temporarily for provider-specific configuration when decoding YAML
+	ConfigKeys map[string]interface{} `yaml:",inline"`
 }
 
 type Providers []*Provider

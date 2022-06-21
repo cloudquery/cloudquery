@@ -102,10 +102,43 @@ func ValidateCQBlock(cq *CloudQuery) diag.Diagnostics {
 	return diags
 }
 
+func ProcessValidateProviderBlock(plist []*Provider) (Providers, diag.Diagnostics) {
+	var diags diag.Diagnostics
+	existingProviders := make(map[string]struct{}, len(plist))
+
+	var ret Providers
+
+	for _, v := range plist {
+		if v.Alias != "" {
+			if _, ok := existingProviders[v.Alias]; ok {
+				diags = diags.Add(diag.FromError(fmt.Errorf("provider with alias %s for provider %s already exists, give it a different alias", v.Alias, v.Name), diag.USER, diag.WithSummary("Duplicate Alias")))
+				continue
+			}
+			existingProviders[v.Alias] = struct{}{}
+		} else {
+			if _, ok := existingProviders[v.Name]; ok {
+				diags = diags.Add(diag.FromError(fmt.Errorf("provider with name %s already exists, use alias in provider configuration block", v.Name), diag.USER, diag.WithSummary("Provider Alias Required")))
+				continue
+			}
+			existingProviders[v.Name] = struct{}{}
+			v.Alias = v.Name
+		}
+		var err error
+		v.Configuration, err = yaml.Marshal(v.ConfigKeys)
+		if err != nil {
+			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("ConfigKeys marshal failed")))
+			continue
+		}
+		ret = append(ret, v)
+	}
+
+	return ret, diags
+}
+
 func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 	var yc struct {
-		CloudQuery CloudQuery           `yaml:"cloudquery" json:"cloudquery"`
-		Providers  map[string]*Provider `yaml:"providers" json:"providers"`
+		CloudQuery CloudQuery  `yaml:"cloudquery" json:"cloudquery"`
+		Providers  []*Provider `yaml:"providers" json:"providers"`
 	}
 
 	lgc := logging.GlobalConfig
@@ -139,16 +172,10 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 		CloudQuery: yc.CloudQuery,
 		format:     cqproto.ConfigYAML,
 	}
-	for k := range yc.Providers {
-		v := yc.Providers[k]
-		v.Name = k
-		if v.Alias == "" {
-			v.Alias = v.Name
-		}
-		c.Providers = append(c.Providers, v)
-	}
 
-	diags := ValidateCQBlock(&c.CloudQuery)
+	var diags diag.Diagnostics
+	c.Providers, diags = ProcessValidateProviderBlock(yc.Providers)
+	diags = diags.Add(ValidateCQBlock(&c.CloudQuery))
 	if diags.HasErrors() {
 		return nil, diags
 	}
