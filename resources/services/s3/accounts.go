@@ -17,7 +17,7 @@ type S3AccountConfig struct {
 	ConfigExists bool
 }
 
-func S3Accounts() *schema.Table {
+func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_s3_account_config",
 		Description:  "Account configurations for S3",
