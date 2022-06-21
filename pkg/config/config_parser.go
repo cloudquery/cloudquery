@@ -34,6 +34,9 @@ var configSchemaHCL = &hcl.BodySchema{
 			LabelNames: []string{"name"},
 		},
 		{
+			Type: "modules", // deprecated
+		},
+		{
 			Type:       "policy",
 			LabelNames: []string{"name"},
 		},
@@ -175,6 +178,9 @@ func (p *Parser) decodeConfigHCL(body hcl.Body, diags diag.Diagnostics) (*Config
 			}
 		case "policy":
 			hasPolicyBlock = true
+		case "modules":
+			// deprecated - ignore
+			continue
 		default:
 			// Should never happen because the above cases should be exhaustive
 			// for all block type names in our schema.
