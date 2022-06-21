@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/hashicorp/hcl/v2"
 	"github.com/spf13/viper"
 	"github.com/xo/dburl"
 )
@@ -29,6 +30,9 @@ type Providers []*Provider
 type Config struct {
 	CloudQuery CloudQuery `hcl:"cloudquery,block" yaml:"cloudquery" json:"cloudquery"`
 	Providers  Providers  `hcl:"provider,block" yaml:"providers" json:"providers"`
+
+	// Deprecated
+	Modules hcl.Body `hcl:"modules,block"`
 }
 
 type CloudQuery struct {
