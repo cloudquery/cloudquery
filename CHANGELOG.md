@@ -4,6 +4,19 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.27.0-rc2](https://github.com/cloudquery/cloudquery/compare/v0.27.0-rc1...v0.27.0-rc2) (2022-06-21)
+
+
+### Bug Fixes
+
+* Default alias to name ([#966](https://github.com/cloudquery/cloudquery/issues/966)) ([706447c](https://github.com/cloudquery/cloudquery/commit/706447ce55bedc4f30260ac49100a7715e300ba3))
+* Support modules tag in config ([#965](https://github.com/cloudquery/cloudquery/issues/965)) ([379344f](https://github.com/cloudquery/cloudquery/commit/379344f818768fde05c3fd61e976283678ed09e3))
+
+
+### Miscellaneous Chores
+
+* Release 0.27.0-rc2 ([#967](https://github.com/cloudquery/cloudquery/issues/967)) ([cd37a11](https://github.com/cloudquery/cloudquery/commit/cd37a119581da8f6dbe138562c6897e3e5db5b6a))
+
 ## [0.27.0-rc1](https://github.com/cloudquery/cloudquery/compare/v0.26.4...v0.27.0-rc1) (2022-06-21)
 
 
