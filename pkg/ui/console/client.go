@@ -731,12 +731,6 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 			bar.SetTotal(int64(update.QueriesCount), false)
 		}
 
-		if bar == nil {
-			policyRunProgress.AbortAll()
-			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, fetch will complete shortly\n")
-			return
-		}
-
 		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
 
 		if update.AllDone() && bar.Status != ui.StatusWarn {
