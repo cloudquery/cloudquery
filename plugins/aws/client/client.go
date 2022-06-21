@@ -450,7 +450,7 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 			err,
 			diag.USER,
 			diag.WithSummary("No credentials available"),
-			diag.WithDetails("Coundn't find any credentials in environment variables or configuration files."),
+			diag.WithDetails("Couldn't find any credentials in environment variables or configuration files."),
 		)
 	}
 

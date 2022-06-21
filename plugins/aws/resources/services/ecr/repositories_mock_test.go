@@ -39,5 +39,5 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestEcrRepositories(t *testing.T) {
-	client.AwsMockTestHelper(t, EcrRepositories(), buildEcrRepositoriesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Repositories(), buildEcrRepositoriesMock, client.TestOptions{})
 }

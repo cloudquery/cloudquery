@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func EcrRepositories() *schema.Table {
+func Repositories() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_ecr_repositories",
 		Description:   "An object representing a repository.",
@@ -41,19 +41,19 @@ func EcrRepositories() *schema.Table {
 			},
 			{
 				Name:        "encryption_configuration_encryption_type",
-				Description: "The encryption type to use.",
+				Description: "The encryption type to use",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("EncryptionConfiguration.EncryptionType"),
 			},
 			{
 				Name:        "encryption_configuration_kms_key",
-				Description: "If you use the KMS encryption type, specify the CMK to use for encryption.",
+				Description: "If you use the KMS encryption type, specify the KMS key to use for encryption. The alias, key ID, or full ARN of the KMS key can be specified",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("EncryptionConfiguration.KmsKey"),
 			},
 			{
 				Name:        "image_scanning_configuration_scan_on_push",
-				Description: "The setting that determines whether images are scanned after being pushed to a repository.",
+				Description: "The setting that determines whether images are scanned after being pushed to a repository",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("ImageScanningConfiguration.ScanOnPush"),
 			},
@@ -64,12 +64,12 @@ func EcrRepositories() *schema.Table {
 			},
 			{
 				Name:        "registry_id",
-				Description: "The AWS account ID associated with the registry that contains the repository.",
+				Description: "The Amazon Web Services account ID associated with the registry that contains the repository.",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) that identifies the repository.",
+				Description: "The Amazon Resource Name (ARN) that identifies the repository",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RepositoryArn"),
 			},
@@ -81,17 +81,16 @@ func EcrRepositories() *schema.Table {
 			},
 			{
 				Name:        "uri",
-				Description: "The URI for the repository.",
+				Description: "The URI for the repository",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RepositoryUri"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:          "aws_ecr_repository_images",
-				Description:   "An object that describes an image returned by a DescribeImages operation.",
-				Resolver:      fetchEcrRepositoryImages,
-				IgnoreInTests: true,
+				Name:        "aws_ecr_repository_images",
+				Description: "An object that describes an image returned by a DescribeImages operation.",
+				Resolver:    fetchEcrRepositoryImages,
 				Columns: []schema.Column{
 					{
 						Name:        "repository_cq_id",
@@ -106,9 +105,10 @@ func EcrRepositories() *schema.Table {
 						Resolver:    client.ResolveAWSAccount,
 					},
 					{
-						Name:     "region",
-						Type:     schema.TypeString,
-						Resolver: client.ResolveAWSRegion,
+						Name:        "region",
+						Description: "The AWS Region of the resource.",
+						Type:        schema.TypeString,
+						Resolver:    client.ResolveAWSRegion,
 					},
 					{
 						Name:        "artifact_media_type",
@@ -162,7 +162,7 @@ func EcrRepositories() *schema.Table {
 					},
 					{
 						Name:        "image_size_in_bytes",
-						Description: "The size, in bytes, of the image in the repository.",
+						Description: "The size, in bytes, of the image in the repository",
 						Type:        schema.TypeBigInt,
 					},
 					{
@@ -171,8 +171,13 @@ func EcrRepositories() *schema.Table {
 						Type:        schema.TypeStringArray,
 					},
 					{
+						Name:        "last_recorded_pull_time",
+						Description: "The date and time, expressed in standard JavaScript date format, when Amazon ECR recorded the last image pull",
+						Type:        schema.TypeTimestamp,
+					},
+					{
 						Name:        "registry_id",
-						Description: "The AWS account ID associated with the registry to which this image belongs.",
+						Description: "The Amazon Web Services account ID associated with the registry to which this image belongs.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -189,6 +194,7 @@ func EcrRepositories() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
+
 func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	maxResults := int32(1000)
 	config := ecr.DescribeRepositoriesInput{
