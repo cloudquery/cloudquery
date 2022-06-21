@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -44,8 +43,7 @@ var (
 		Short: providerUpgradeHelpMsg,
 		Long:  providerUpgradeHelpMsg,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -64,8 +62,7 @@ var (
 		Short: providerDowngradeHelpMsg,
 		Long:  providerDowngradeHelpMsg,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -86,8 +83,7 @@ var (
 		Long:  providerDropHelpMsg,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -111,8 +107,7 @@ var (
 		Long:  providerBuildSchemaHelpMsg,
 		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -135,8 +130,7 @@ var (
   ./cloudquery provider download
 `,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -158,8 +152,7 @@ var (
 		Long:  providerRemoveStaleHelpMsg,
 		Args:  cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, false, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}

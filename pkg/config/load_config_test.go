@@ -119,8 +119,8 @@ func TestLoadRemoteFile(t *testing.T) {
 				assert.Equal(t, cfg, body)
 			} else {
 				assert.Equal(t, 1, len(diags))
-				assert.Equal(t, "Failed to read file", diags[0].Summary)
-				assert.Equal(t, fmt.Sprintf("The file %q could not be read: file does not exist. Hint: Try `cloudquery init <provider>`", tc.Path), diags[0].Detail)
+				assert.Equal(t, "Failed to read file: file does not exist. Hint: Try `cloudquery init <provider>`", diags[0].Description().Summary)
+				assert.Equal(t, fmt.Sprintf("The file %q could not be read", tc.Path), diags[0].Description().Detail)
 			}
 		})
 	}

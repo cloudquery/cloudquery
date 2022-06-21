@@ -44,8 +44,7 @@ var (
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -71,8 +70,7 @@ var (
   # See https://hub.cloudquery.io for additional policies.`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -105,8 +103,7 @@ var (
   # See https://hub.cloudquery.io for additional policies.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			source := args[0]
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -129,8 +126,7 @@ var (
   cloudquery policy test path/to/policy.hcl path/to/snapshot/dir selector
 	`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -147,8 +143,7 @@ var (
 		Long:  policySnapshotHelpMsg,
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -164,8 +159,7 @@ var (
 		Long:  policyValidateHelpMsg,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -184,8 +178,7 @@ var (
   cloudquery policy prune 24h`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cfgPath := viper.GetString("configPath")
-			c, err := console.CreateClient(cmd.Context(), cfgPath, true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
 			if err != nil {
 				return err
 			}

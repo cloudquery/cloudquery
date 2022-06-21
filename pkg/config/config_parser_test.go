@@ -50,7 +50,7 @@ func TestHandleConnectionBlock(t *testing.T) {
 	for i := range cases {
 		tc := cases[i]
 		t.Run("case #"+strconv.Itoa(i+1), func(t *testing.T) {
-			err := handleConnectionBlock(tc.input)
+			err := handleConnectionConfig(tc.input)
 			if tc.expectedError {
 				assert.Error(t, err)
 			} else {

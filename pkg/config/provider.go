@@ -10,18 +10,6 @@ import (
 	"github.com/hashicorp/hcl/v2/hclwrite"
 )
 
-type Provider struct {
-	Name                          string   `hcl:"name,label"`
-	Alias                         string   `hcl:"alias,optional"`
-	Resources                     []string `hcl:"resources,optional"`
-	SkipResources                 []string `hcl:"skip_resources,optional"`
-	Env                           []string `hcl:"env,optional"`
-	Configuration                 []byte
-	MaxParallelResourceFetchLimit uint64 `hcl:"max_parallel_resource_fetch_limit"`
-	MaxGoroutines                 uint64 `hcl:"max_goroutines"`
-	ResourceTimeout               uint64 `hcl:"resource_timeout"`
-}
-
 var providerBlockSchema = &hcl.BodySchema{
 	Attributes: []hcl.AttributeSchema{
 		{

@@ -13,6 +13,7 @@ import (
 
 type GetProviderConfigOptions struct {
 	Provider registry.Provider
+	Format   cqproto.ConfigFormat
 }
 
 type TestOptions struct {
@@ -42,7 +43,9 @@ func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *Get
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	defer pm.ClosePlugin(providerPlugin)
-	result, err := providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
+	result, err := providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{
+		Format: opts.Format,
+	})
 	if err != nil {
 		return result, diag.FromError(err, diag.INTERNAL)
 	}

@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/hcl/v2/hclsimple"
 	"github.com/stretchr/testify/assert"
 )
@@ -221,7 +222,7 @@ func TestParser_BadVersion(t *testing.T) {
 	p := NewParser()
 	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testBadVersion))
 	assert.NotNil(t, diags)
-	assert.Equal(t, "test.hcl:1,1-11: Provider test version 0.0.0 is invalid; Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z", diags[0].Error())
+	assert.Equal(t, "Provider test version 0.0.0 is invalid", diags[0].Error())
 }
 
 func TestParser_DuplicateProviderNaming(t *testing.T) {
@@ -274,7 +275,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testEnvVarConfig))
 	if diags != nil {
 		for _, d := range diags {
-			t.Error(d.Summary)
+			t.Error(d.Error())
 		}
 		return
 	}
@@ -388,7 +389,7 @@ cloudquery {
 			if tc.expectedError {
 				assert.True(t, diags.HasErrors())
 			} else {
-				assert.Len(t, diags.Errs(), 0)
+				assert.Len(t, diags.BySeverity(diag.ERROR), 0)
 				assert.Equal(t, tc.expectedDSN, parsedCfg.CloudQuery.Connection.DSN)
 			}
 		})
