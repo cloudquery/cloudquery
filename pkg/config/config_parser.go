@@ -140,6 +140,9 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 	for k := range yc.Providers {
 		v := yc.Providers[k]
 		v.Name = k
+		if v.Alias == "" {
+			v.Alias = v.Name
+		}
 		c.Providers = append(c.Providers, v)
 	}
 
