@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cq-provider-k8s/resources/services/core"
 	"github.com/cloudquery/cq-provider-k8s/resources/services/networking"
 	"github.com/cloudquery/cq-provider-k8s/resources/services/rbac"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -23,8 +24,8 @@ func Provider() *provider.Provider {
 		Name:            ProviderName,
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
-		Config: func() provider.Config {
-			return &client.Config{}
+		Config: func(f cqproto.ConfigFormat) provider.Config {
+			return client.NewConfig(f)
 		},
 		ResourceMap: map[string]*schema.Table{
 			"apps.daemon_sets":            apps.DaemonSets(),
