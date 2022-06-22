@@ -103,7 +103,7 @@ var (
   # See https://hub.cloudquery.io for additional policies.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			source := args[0]
-			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -143,7 +143,7 @@ var (
 		Long:  policySnapshotHelpMsg,
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -178,7 +178,7 @@ var (
   cloudquery policy prune 24h`,
 		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
