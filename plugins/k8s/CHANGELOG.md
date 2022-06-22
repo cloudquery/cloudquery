@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.11](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.10...v0.5.11) (2022-06-22)
+
+
+### Features
+
+* YAML config support ([#182](https://github.com/cloudquery/cq-provider-k8s/issues/182)) ([e58d2cf](https://github.com/cloudquery/cq-provider-k8s/commit/e58d2cf35d50714b37a929bfa80290d63f84cfeb))
+
 ## [0.5.10](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.9...v0.5.10) (2022-06-20)
 
 
