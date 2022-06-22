@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"strings"
 
-	"strings"
-
 	"github.com/cloudquery/cloudquery/internal/file"
 
 	"github.com/Masterminds/semver/v3"
