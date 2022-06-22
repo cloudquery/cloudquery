@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.5.12](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.11...v0.5.12) (2022-06-22)
+
+
+### Features
+
+* YAML config support ([#155](https://github.com/cloudquery/cq-provider-digitalocean/issues/155)) ([0507d07](https://github.com/cloudquery/cq-provider-digitalocean/commit/0507d07422ba9e4edcbd9476c350e4b4d0012f36))
+
 ## [0.5.11](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.10...v0.5.11) (2022-06-20)
 
 
