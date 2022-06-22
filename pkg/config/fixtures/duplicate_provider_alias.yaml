@@ -8,7 +8,7 @@ cloudquery:
       version: "v0.0.0"
 
 providers:
-  aws:
+  - name: aws
     alias: "same-aws"
     configuration:
       accounts:
@@ -16,7 +16,7 @@ providers:
           role_arn: "12312312"
         ron:
     resources: ["slow_resource"]
-  aws-2:
+  - name: aws-2
     alias: "same-aws"
     configuration:
       accounts:

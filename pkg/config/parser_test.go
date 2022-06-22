@@ -33,7 +33,7 @@ provider "aws" {
 const expectedDuplicateProviderError = "fixtures/duplicate_provider_name.hcl:21,1-15: Provider Alias Required; Provider with name aws already exists, use alias in provider configuration block."
 
 const expectedDuplicateAliasProviderError = "fixtures/duplicate_provider_alias.hcl:23,3-21: Duplicate Alias; Provider with alias same-aws for provider aws already exists, give it a different alias."
-const expectedDuplicateAliasProviderErrorYaml = "<empty>:0,0-0: Duplicate Alias; Provider with alias same-aws for provider aws-2 already exists, give it a different alias."
+const expectedDuplicateAliasProviderErrorYaml = "provider with alias same-aws for provider aws-2 already exists, give it a different alias"
 
 type Account struct {
 	ID      string `hcl:",label"`
