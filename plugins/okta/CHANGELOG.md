@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.10](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.9...v0.5.10) (2022-06-22)
+
+
+### Features
+
+* YAML config support ([#134](https://github.com/cloudquery/cq-provider-okta/issues/134)) ([5f64b06](https://github.com/cloudquery/cq-provider-okta/commit/5f64b06a47ff4099ac87db14127def7162408653))
+
 ## [0.5.9](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.8...v0.5.9) (2022-06-20)
 
 
