@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/aws/aws-sdk-go v1.38.61
-	github.com/cloudquery/cq-provider-sdk v0.11.4
+	github.com/cloudquery/cq-provider-sdk v0.12.1
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/hashicorp/go-hclog v1.2.1
@@ -17,6 +17,8 @@ require (
 	golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6 // indirect
 	google.golang.org/genproto v0.0.0-20220314164441-57ef72a4c106 // indirect
 )
+
+require gopkg.in/yaml.v3 v3.0.1
 
 require (
 	github.com/BurntSushi/toml v1.0.0 // indirect
@@ -81,6 +83,5 @@ require (
 	google.golang.org/grpc v1.45.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.3.0-0.dev.0.20220306074811-23e1086441d2 // indirect
 )

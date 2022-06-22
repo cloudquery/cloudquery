@@ -31,12 +31,15 @@ func (c *Client) Logger() hclog.Logger {
 func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	terraformConfig := providerConfig.(*Config)
 
-	if terraformConfig.Config == nil || len(terraformConfig.Config) == 0 {
+	if len(terraformConfig.Config) == 0 {
 		return nil, diag.FromError(errors.New("no config were provided"), diag.USER)
 	}
 
 	var backends = make(map[string]*TerraformBackend)
 	for _, config := range terraformConfig.Config {
+		config := config
+		config.format = terraformConfig.Format()
+
 		logger.Info("creating new backend", "type", config.BackendType)
 		// create backend for each backend config
 		if b, err := NewBackend(&config); err == nil { //nolint:revive

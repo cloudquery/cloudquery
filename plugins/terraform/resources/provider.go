@@ -1,6 +1,7 @@
 package resources
 
 import (
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-terraform/client"
@@ -13,8 +14,8 @@ func Provider() *provider.Provider {
 		ResourceMap: map[string]*schema.Table{
 			"tf.data": TFData(),
 		},
-		Config: func() provider.Config {
-			return &client.Config{}
+		Config: func(f cqproto.ConfigFormat) provider.Config {
+			return client.NewConfig(f)
 		},
 	}
 }
