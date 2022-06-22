@@ -19,6 +19,7 @@ type GetProviderConfigOptions struct {
 type TestOptions struct {
 	Connection   cqproto.ConnectionDetails
 	Config       []byte
+	ConfigFormat cqproto.ConfigFormat
 	CreationInfo *plugin.CreationOptions
 }
 
@@ -68,6 +69,7 @@ func Test(ctx context.Context, pm *plugin.Manager, opts TestOptions) (bool, erro
 		CloudQueryVersion: Version,
 		Connection:        opts.Connection,
 		Config:            opts.Config,
+		Format:            opts.ConfigFormat,
 	})
 	if err != nil {
 		return false, fmt.Errorf("provider test connection failed. Reason: %w", err)

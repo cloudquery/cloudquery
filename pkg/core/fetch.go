@@ -77,8 +77,9 @@ type FetchResponse struct {
 }
 
 type ProviderInfo struct {
-	Provider registry.Provider
-	Config   *config.Provider
+	Provider     registry.Provider
+	Config       *config.Provider
+	ConfigFormat cqproto.ConfigFormat
 }
 
 // FetchOptions is provided to the Client to execute a fetch on one or more providers
@@ -274,6 +275,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		},
 		Config:      cfg.Configuration,
 		ExtraFields: opts.ExtraFields,
+		Format:      info.ConfigFormat,
 	})
 	if err != nil {
 		pLog.Error().Err(err).Msg("failed to configure provider")

@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/spf13/viper"
 	"github.com/xo/dburl"
 )
@@ -22,6 +23,9 @@ type Provider struct {
 	MaxParallelResourceFetchLimit uint64   `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty" hcl:"max_parallel_resource_fetch_limit"`
 	MaxGoroutines                 uint64   `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty" hcl:"max_goroutines"`
 	ResourceTimeout               uint64   `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty" hcl:"resource_timeout"`
+
+	// ConfigKeys is only used temporarily for provider-specific configuration when decoding YAML
+	ConfigKeys map[string]interface{} `yaml:",inline"`
 }
 
 type Providers []*Provider
@@ -29,6 +33,8 @@ type Providers []*Provider
 type Config struct {
 	CloudQuery CloudQuery `hcl:"cloudquery,block" yaml:"cloudquery" json:"cloudquery"`
 	Providers  Providers  `hcl:"provider,block" yaml:"providers" json:"providers"`
+
+	format cqproto.ConfigFormat
 }
 
 type CloudQuery struct {
@@ -74,6 +80,10 @@ func (pp Providers) Names() []string {
 		pNames[i] = p.Name
 	}
 	return pNames
+}
+
+func (c Config) Format() cqproto.ConfigFormat {
+	return c.format
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {
