@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.11](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.10...v0.11.11) (2022-06-22)
+
+
+### Features
+
+* YAML config support ([#353](https://github.com/cloudquery/cq-provider-azure/issues/353)) ([045e92f](https://github.com/cloudquery/cq-provider-azure/commit/045e92fbe9110d9511ed9c5784406431aeea4b10))
+
 ## [0.11.10](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.9...v0.11.10) (2022-06-20)
 
 
