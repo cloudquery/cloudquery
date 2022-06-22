@@ -167,6 +167,19 @@ func classifyError(err error, fallbackType diag.Type, accounts []string, opts ..
 			),
 		}
 	}
+	if strings.Contains(err.Error(), "socket: too many open files") {
+		return diag.Diagnostics{
+			RedactError(accounts, diag.NewBaseError(err,
+				diag.THROTTLE,
+				append(opts,
+					diag.WithType(diag.THROTTLE),
+					diag.WithSeverity(diag.WARNING),
+					ParseSummaryMessage(err),
+					diag.WithDetails("CloudQuery AWS provider has been throttled. Too many open files, try to increase your max file descriptors in your system or contact us on discord (https://cloudquery.io/discord)"),
+				)...),
+			),
+		}
+	}
 
 	// Take over from SDK and always return diagnostics, redacting PII
 	if d, ok := err.(diag.Diagnostic); ok {
