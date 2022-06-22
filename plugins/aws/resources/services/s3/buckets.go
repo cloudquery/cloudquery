@@ -467,7 +467,9 @@ func Buckets() *schema.Table {
 
 func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().S3
-	response, err := svc.ListBuckets(ctx, nil)
+	response, err := svc.ListBuckets(ctx, nil, func(options *s3.Options) {
+		options.Region = "us-east-1"
+	})
 	if err != nil {
 		return diag.WrapError(err)
 	}
