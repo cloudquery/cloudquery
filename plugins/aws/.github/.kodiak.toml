@@ -8,7 +8,7 @@ auto_approve_usernames = ["cq-bot"]
 body = "pull_request_body"
 cut_body_after = "Use the following steps to ensure your PR is ready to be reviewed"
 cut_body_and_text = true
-cut_body_before = "🎉 Thank you for making CloudQuery awesome by submitting a PR 🎉"
+cut_body_before = "<!-- 🎉 Thank you for making CloudQuery awesome by submitting a PR 🎉 -->"
 title = "pull_request_title"
 
 [merge.automerge_dependencies]
