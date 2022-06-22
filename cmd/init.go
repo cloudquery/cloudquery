@@ -6,9 +6,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/internal/file"
-
 	"github.com/Masterminds/semver/v3"
+	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
