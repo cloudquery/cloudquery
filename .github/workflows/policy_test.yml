@@ -65,7 +65,7 @@ jobs:
 
       - name: Build Schema (${{ matrix.provider }})
         run: |
-          go run ./main.go provider build-schema ${{ matrix.provider }} --config ./internal/test/test_policies_config.hcl --enable-console-log
+          go run ./main.go provider sync ${{ matrix.provider }} --config ./internal/test/test_policies_config.hcl --enable-console-log
 
       - name: Policy Run (${{ matrix.provider }})
         run: |
