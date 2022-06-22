@@ -76,7 +76,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListBuckets(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&s3.ListBucketsOutput{
 			Buckets: []s3Types.Bucket{b},
 		}, nil)
