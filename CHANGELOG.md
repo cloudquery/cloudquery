@@ -10,11 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### ⚠ BREAKING CHANGES
 
 * Remove drift (#887)
+* Remove `plugin_directory` and `policy_directory` from `cloudquery` configuration block. Please use the `--data-dir` CLI flag instead (#887)
 
 ### Features
 
 * Remove drift ([#887](https://github.com/cloudquery/cloudquery/issues/887)) ([3d387bd](https://github.com/cloudquery/cloudquery/commit/3d387bda0ed8afcdb0b32b5ec1ae2d0e9c279e5e))
 * Add YAML configuration support ([#887](https://github.com/cloudquery/cloudquery/issues/887)) ([3d387bd](https://github.com/cloudquery/cloudquery/commit/3d387bda0ed8afcdb0b32b5ec1ae2d0e9c279e5e))
+* Remove `plugin_directory` and `policy_directory` from `cloudquery` configuration block. Please use the `--data-dir` CLI flag instead (#887)
 
 ### Bug Fixes
 
