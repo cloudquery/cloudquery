@@ -30,131 +30,10 @@ provider "aws" {
   resources = ["slow_resource"]
 }`
 
-const testNoSource = `cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-  }
-  provider "test" {
-    version = "v0.0.0"
-  }
-}
+const expectedDuplicateProviderError = "fixtures/duplicate_provider_name.hcl:21,1-15: Provider Alias Required; Provider with name aws already exists, use alias in provider configuration block."
 
-provider "test" {
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}`
-
-const testAliasProviderConfig = `cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-  }
-  provider "test" {
-    source = "cloudquery"
-    version = "v0.0.0"
-  }
-}
-
-provider "aws" {
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}
-
-provider "aws" {
-  alias = "another-aws"
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}`
-
-const testMultipleProviderConfig = `cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-  }
-  provider "test" {
-    source = "cloudquery"
-    version = "v0.0.0"
-  }
-}
-
-provider "aws" {
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}
-
-provider "aws" {
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}
-`
-const expectedDuplicateProviderError = "test.hcl:21,1-15: Provider Alias Required; Provider with name aws already exists, use alias in provider configuration block."
-
-const testDuplicateAliasProviderConfig = `cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-  }
-  provider "test" {
-    source = "cloudquery"
-    version = "v0.0.0"
-  }
-}
-
-provider "aws" {
-  alias = "same-aws"
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}
-
-provider "aws" {
-  alias = "same-aws"
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}
-`
-const expectedDuplicateAliasProviderError = "test.hcl:23,3-21: Duplicate Alias; Provider with alias same-aws for provider aws already exists, give it a different alias."
-
-const testBadVersion = `cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-  }
-  provider "test" {
-    source = "cloudquery"
-    version = "0.0.0"
-  }
-}`
+const expectedDuplicateAliasProviderError = "fixtures/duplicate_provider_alias.hcl:23,3-21: Duplicate Alias; Provider with alias same-aws for provider aws already exists, give it a different alias."
+const expectedDuplicateAliasProviderErrorYaml = "provider with alias same-aws for provider aws-2 already exists, give it a different alias"
 
 type Account struct {
 	ID      string `hcl:",label"`
@@ -169,29 +48,9 @@ type AwsConfig struct {
 	MaxBackoff int       `hcl:"max_backoff,optional" default:"30"`
 }
 
-const testEnvVarConfig = `cloudquery {
-	connection {
-	  dsn =  "${DSN}"
-	}
-	provider "test" {
-	  source = "cloudquery"
-	  version = "v0.0.0"
-	}
-  }
-  
-  provider "aws" {
-	configuration {
-	  account "dev" {
-		  role_arn ="${ROLE_ARN}"
-	  }
-	  account "ron" {}
-	}
-	resources = ["slow_resource"]
-  }`
-
 func TestParser_LoadConfigFromSource(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testConfig))
+	cfg, diags := p.LoadConfigFile("fixtures/valid_config.hcl")
 	assert.Nil(t, diags)
 	// Check configuration was added, we will nil it after it to check the whole structure
 	assert.NotNil(t, cfg.Providers[0].Configuration)
@@ -220,21 +79,21 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 
 func TestParser_BadVersion(t *testing.T) {
 	p := NewParser()
-	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testBadVersion))
+	_, diags := p.LoadConfigFile("fixtures/bad_version.hcl")
 	assert.NotNil(t, diags)
 	assert.Equal(t, "Provider test version 0.0.0 is invalid", diags[0].Error())
 }
 
 func TestParser_DuplicateProviderNaming(t *testing.T) {
 	p := NewParser()
-	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testMultipleProviderConfig))
+	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_name.hcl")
 	assert.NotNil(t, diags)
 	assert.Equal(t, expectedDuplicateProviderError, diags[0].Error())
 }
 
 func TestParser_AliasedProvider(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testAliasProviderConfig))
+	cfg, diags := p.LoadConfigFile("fixtures/config_with_alias.hcl")
 	assert.Nil(t, diags)
 	_, err := cfg.GetProvider("another-aws")
 	assert.Nil(t, err)
@@ -244,14 +103,21 @@ func TestParser_AliasedProvider(t *testing.T) {
 
 func TestParser_DuplicateAliasedProvider(t *testing.T) {
 	p := NewParser()
-	_, diags := p.LoadConfigFromSource("test.hcl", []byte(testDuplicateAliasProviderConfig))
+	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_alias.hcl")
 	assert.NotNil(t, diags)
 	assert.Equal(t, expectedDuplicateAliasProviderError, diags[0].Error())
 }
 
+func TestParser_DuplicateAliasedProviderYaml(t *testing.T) {
+	p := NewParser()
+	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_alias.yaml")
+	assert.NotNil(t, diags)
+	assert.Equal(t, expectedDuplicateAliasProviderErrorYaml, diags[0].Error())
+}
+
 func TestProviderLoadConfiguration(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testConfig))
+	cfg, diags := p.LoadConfigFile("fixtures/valid_config.hcl")
 	assert.Nil(t, diags)
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 
@@ -272,7 +138,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
 		"CQ_VAR_ROLE_ARN=12312312",
 	}))
-	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testEnvVarConfig))
+	cfg, diags := p.LoadConfigFile("fixtures/env_vars.hcl")
 	if diags != nil {
 		for _, d := range diags {
 			t.Error(d.Error())
@@ -290,7 +156,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 
 func TestParser_LoadConfigNoSourceField(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFromSource("test.hcl", []byte(testNoSource))
+	cfg, diags := p.LoadConfigFile("fixtures/no_source.hcl")
 	assert.Nil(t, diags)
 	// Check configuration was added, we will nil it after it to check the whole structure
 	assert.NotNil(t, cfg.Providers[0].Configuration)
