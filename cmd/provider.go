@@ -21,53 +21,28 @@ var (
 		Example: `
   # Downloads all providers specified in config.hcl:
   cloudquery provider download
-  # Upgrades all providers specified in config.hcl
-  cloudquery provider upgrade 
-  # Upgrade one or more providers
-  cloudquery provider upgrade aws
-  # Downgrades all providers specified in config.hcl
-  cloudquery provider downgrade 
-  # Downgrades one or more providers
-  cloudquery provider downgrade aws, gcp
+  # Sync (Upgrade or Downgrade) all providers specified in config.hcl This will also create the schema.
+  cloudquery provider sync 
+  # Sync one or more providers
+  cloudquery provider sync aws, gcp
   # Drop provider schema, running fetch again will recreate all tables unless --skip-build-tables is specified
   cloudquery provider drop aws
-  # build provider schema
-  cloudquery provider build-schema aws
 `,
 		Version: core.Version,
 	}
 
-	providerUpgradeHelpMsg = "Upgrades one or more providers schema version based on config.hcl"
-	providerUpgradeCmd     = &cobra.Command{
-		Use:   "upgrade [providers,...]",
-		Short: providerUpgradeHelpMsg,
-		Long:  providerUpgradeHelpMsg,
+	providerSyncHelpMsg = "Sync (Upgrade or Downgrade) all providers specified in config.hcl This will also create the schema"
+	providerSyncCmd     = &cobra.Command{
+		Use:   "sync [providers,...]",
+		Short: providerSyncHelpMsg,
+		Long:  providerSyncHelpMsg,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
 			_, diags := c.SyncProviders(cmd.Context(), args...)
-			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_upgrade"})
-			if diags.HasErrors() {
-				return fmt.Errorf("failed to sync providers")
-			}
-			return nil
-		},
-	}
-
-	providerDowngradeHelpMsg = "Downgrades one or more providers schema version based on config.hcl"
-	providerDowngradeCmd     = &cobra.Command{
-		Use:   "downgrade [providers,...]",
-		Short: providerDowngradeHelpMsg,
-		Long:  providerDowngradeHelpMsg,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
-			if err != nil {
-				return err
-			}
-			_, diags := c.SyncProviders(cmd.Context(), args...)
-			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_downgrade"})
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_sync"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to sync providers")
 			}
@@ -95,26 +70,6 @@ var (
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_drop"})
 			if diags.HasErrors() {
 				return fmt.Errorf("failed to drop provider %s", args[0])
-			}
-			return nil
-		},
-	}
-
-	providerBuildSchemaHelpMsg = "Builds provider schema on database"
-	providerBuildSchemaCmd     = &cobra.Command{
-		Use:   "build-schema [provider]",
-		Short: providerBuildSchemaHelpMsg,
-		Long:  providerBuildSchemaHelpMsg,
-		Args:  cobra.MaximumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
-			if err != nil {
-				return err
-			}
-			_, diags := c.SyncProviders(cmd.Context(), args...)
-			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_build_schema"})
-			if diags.HasErrors() {
-				return fmt.Errorf("failed to sync providers")
 			}
 			return nil
 		},
@@ -172,7 +127,7 @@ func init() {
 			"For example 24h will remove all resources that were not update in last 24 hours. Duration is a string with optional unit suffix such as \"2h45m\" or \"7d\"")
 	providerRemoveStaleCmd.Flags().BoolVar(&dryRun, "dry-run", true, "")
 	providerDropCmd.Flags().BoolVar(&providerForce, "force", false, "Really drop tables for the provider")
-	providerCmd.AddCommand(providerDownloadCmd, providerUpgradeCmd, providerDowngradeCmd, providerDropCmd, providerBuildSchemaCmd, providerRemoveStaleCmd)
+	providerCmd.AddCommand(providerDownloadCmd, providerSyncCmd, providerDropCmd, providerRemoveStaleCmd)
 	providerCmd.SetUsageTemplate(usageTemplateWithFlags)
 	rootCmd.AddCommand(providerCmd)
 }
