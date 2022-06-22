@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cq-provider-azure/client/services"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -44,8 +45,8 @@ func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testin
 			ResourceMap: map[string]*schema.Table{
 				"test_resource": table,
 			},
-			Config: func() provider.Config {
-				return &Config{}
+			Config: func(f cqproto.ConfigFormat) provider.Config {
+				return NewConfig(f)
 			},
 		},
 		Config:           cfg,
@@ -61,8 +62,8 @@ func AzureTestHelper(t *testing.T, table *schema.Table) {
 			Name:      "azure_mock_test_provider",
 			Version:   "development",
 			Configure: Configure,
-			Config: func() provider.Config {
-				return &Config{}
+			Config: func(f cqproto.ConfigFormat) provider.Config {
+				return NewConfig(f)
 			},
 			ResourceMap: map[string]*schema.Table{
 				"test_resource": table,

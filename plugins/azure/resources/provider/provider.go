@@ -28,6 +28,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/streamanalytics"
 	"github.com/cloudquery/cq-provider-azure/resources/services/subscription"
 	"github.com/cloudquery/cq-provider-azure/resources/services/web"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -100,8 +101,8 @@ func Provider() *provider.Provider {
 			"subscription.subscriptions":           subscription.SubscriptionSubscriptions(),
 			"web.apps":                             web.WebApps(),
 		},
-		Config: func() provider.Config {
-			return &client.Config{}
+		Config: func(f cqproto.ConfigFormat) provider.Config {
+			return client.NewConfig(f)
 		},
 	}
 }
