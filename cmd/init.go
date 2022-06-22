@@ -234,7 +234,6 @@ func generateHCLConfig(ctx context.Context, c *console.Client, providers []strin
 	return hclwrite.Format(buffer.Bytes()), nil
 }
 
-// ParseProviderCLIArg parses the CLI arg passed to `cloudquery init <provider>`
 func parseProviderCLIArg(providerCLIArg string) (org string, name string, version string, err error) {
 	argParts := strings.Split(providerCLIArg, "@")
 
