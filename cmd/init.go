@@ -51,8 +51,8 @@ func initialize(ctx context.Context, providers []string) error {
 	configPath := getConfigFile() // by definition, this will get us an existing file if possible
 
 	if info, _ := fs.Stat(configPath); info != nil {
-		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists\n", configPath)
-		return diag.FromError(fmt.Errorf("config file %q already exists", configPath), diag.USER)
+		message := ui.Colorize(ui.ColorError, false, "Error: Config file %s already exists\n", configPath)
+		return diag.FromError(fmt.Errorf(message), diag.USER)
 	}
 
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
