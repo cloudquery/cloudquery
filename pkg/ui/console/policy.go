@@ -104,7 +104,7 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 func createOutputTable(res *policy.QueryResult) {
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader(res.Columns)
-	table.SetFooter(append(makeStringArrayOfLength(len(res.Columns)-2), "Total:", strconv.Itoa(len(res.Rows))))
+	table.SetFooter(append(make([]string, len(res.Columns)-2, len(res.Columns)), "Total:", strconv.Itoa(len(res.Rows))))
 
 	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
@@ -115,28 +115,20 @@ func createOutputTable(res *policy.QueryResult) {
 	table.SetFooterAlignment(tablewriter.ALIGN_LEFT)
 	sort.Sort(res.Rows)
 	for _, row := range res.Rows {
-		data := make([]string, 0)
+		data := make([]string, 0, len(res.Columns))
 		data = append(data, color.HiRedString(row.Status))
-		if len(row.Identifiers) > 0 {
-			data = append(data, cast.ToStringSlice(row.Identifiers)...)
-		}
-		data = append(data, row.Reason)
-		ad := make([]interface{}, 0, len(row.AdditionalData))
 		for _, key := range res.Columns {
-			if val, ok := row.AdditionalData[key]; ok {
-				ad = append(ad, val)
+			if val, ok := row.Identifiers[key]; ok {
+				data = append(data, cast.ToString(val))
 			}
 		}
-		data = append(data, cast.ToStringSlice(ad)...)
+		data = append(data, row.Reason)
+		for _, key := range res.Columns {
+			if val, ok := row.AdditionalData[key]; ok {
+				data = append(data, cast.ToString(val))
+			}
+		}
 		table.Append(data)
 	}
 	table.Render()
-}
-
-func makeStringArrayOfLength(length int) []string {
-	s := make([]string, length)
-	for i := 0; i < length; i++ {
-		s[i] = ""
-	}
-	return s
 }
