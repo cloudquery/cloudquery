@@ -227,16 +227,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 		return nil, diags
 	}
 	for _, summary := range result.ProviderFetchSummary {
-		s := emojiStatus[ui.StatusOK]
-		if summary.Status == core.FetchCanceled {
-			s = emojiStatus[ui.StatusError] + " (canceled)"
-		}
-		key := summary.Name
-		if summary.Name != summary.Alias {
-			key = fmt.Sprintf("%s(%s)", summary.Name, summary.Alias)
-		}
-		diags := summary.Diagnostics().Squash()
-		ui.ColorizedOutput(ui.ColorHeader, fetchSummary, key, s, summary.TotalResourcesFetched, countSeverity(diags, diag.WARNING), countSeverity(diags, diag.ERROR, diag.PANIC))
+		PrintProviderSummary(summary)
 	}
 	return result, diags
 }
@@ -672,27 +663,6 @@ func loadConfig(file string) (*config.Config, bool) {
 		}
 	}
 	return cfg, true
-}
-
-func countSeverity(d diag.Diagnostics, sevs ...diag.Severity) string {
-	var basicCount uint64
-	for _, sev := range sevs {
-		basicCount += d.CountBySeverity(sev, false)
-	}
-
-	if !viper.GetBool("verbose") {
-		return fmt.Sprintf("%d", basicCount)
-	}
-
-	var deepCount uint64
-	for _, sev := range sevs {
-		deepCount += d.CountBySeverity(sev, true)
-	}
-	if basicCount == deepCount {
-		return fmt.Sprintf("%d", basicCount)
-	}
-
-	return fmt.Sprintf("%d(%d)", basicCount, deepCount)
 }
 
 func setAnalyticsProperties(props map[string]interface{}) {
