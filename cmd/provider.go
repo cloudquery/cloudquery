@@ -44,7 +44,7 @@ var (
 			_, diags := c.SyncProviders(cmd.Context(), args...)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_sync"})
 			if diags.HasErrors() {
-				return fmt.Errorf("failed to sync providers")
+				return fmt.Errorf("failed to sync providers %w", diags)
 			}
 			return nil
 		},
