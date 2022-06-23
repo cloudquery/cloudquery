@@ -10,7 +10,7 @@ echo "Fetch Multiple Provider"
 go run ./main.go fetch --config=internal/test/test_double_provider_config.hcl --enable-console-log
 
 echo "Init"
-go run ./main.go init test --config=test_init_config.hcl
+go run ./main.go init test --config=test_init_config.yml
 
 echo "Policy Describe"
 go run ./main.go policy describe k8s//nsa_cisa_v1/pod_security --config=internal/test/test_config.hcl

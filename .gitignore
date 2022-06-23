@@ -25,5 +25,5 @@ config_old.hcl
 database-data/*
 dest/*
 outfile
-test_init_config.hcl
+test_init_config.yml
 telemetry-random-id
