@@ -49,7 +49,7 @@ func PrintProviderSummary(summary *core.ProviderFetchSummary) {
 		const summaryIgnored = "\t ❓ Ignored issues: %s"
 		ui.ColorizedOutput(ui.ColorHeader, summaryIgnored, ignored)
 		const footerIgnored = "\nProvider %s finished with %s ignored issues." +
-			"\nThis may be normal, however, you can use `--verbose` flag to see more details"
+			"\nThis may be normal, however, you can use `--verbose` flag to see more details."
 		ui.ColorizedOutput(ui.ColorHeader, footerIgnored, key, ignored)
 	}
 
