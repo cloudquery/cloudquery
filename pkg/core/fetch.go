@@ -312,6 +312,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 
 	pLog.Info().Msg("provider configured successfully")
 	summary, diags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
+	diags = append(diags, resp.Diagnostics...)
 	return summary, convertToFetchDiags(diags, info.Provider.Name, providerPlugin.Version())
 }
 
