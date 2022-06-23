@@ -126,7 +126,7 @@ var (
   cloudquery policy test path/to/policy.hcl path/to/snapshot/dir selector
 	`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
@@ -159,7 +159,7 @@ var (
 		Long:  policyValidateHelpMsg,
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			c, err := console.CreateClient(cmd.Context(), getConfigFile(), true, nil, instanceId)
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
 			if err != nil {
 				return err
 			}
