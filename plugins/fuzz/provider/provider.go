@@ -157,7 +157,7 @@ func getRelations(parentName string, config fuzzConfig, currentDepth int) []*sch
 func getExampleData() exampleData {
 	var value interface{}
 
-	json.Unmarshal([]byte(`{"key":"value"}`), &value)
+	_ = json.Unmarshal([]byte(`{"key":"value"}`), &value)
 	return exampleData{
 		Bool: true,
 		Int:  1,
