@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cloudquery/cq-provider-fuzzing/provider"
+	"github.com/cloudquery/cq-provider-fuzzing/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 
