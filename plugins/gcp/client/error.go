@@ -62,13 +62,6 @@ func ErrorClassifier(meta schema.ClientMeta, resourceName string, err error) dia
 }
 
 func classifyError(err error, fallbackType diag.Type, projects []string, opts ...diag.BaseErrorOption) diag.Diagnostics {
-	// If the error is a diagnostic already then there is no need to classify it.
-	if d, ok := err.(diag.Diagnostic); ok {
-		return diag.Diagnostics{
-			RedactError(projects, d),
-		}
-	}
-
 	// https://pkg.go.dev/cloud.google.com/go#hdr-Inspecting_errors:
 	// Most of the errors returned by the generated clients can be converted into a `grpc.Status`
 	if s, ok := statusFromError(err); ok {
@@ -89,9 +82,16 @@ func classifyError(err error, fallbackType diag.Type, projects []string, opts ..
 	// as a fallback, try to convert the error to *googleapi.Error
 	var gerr *googleapi.Error
 	if ok := errors.As(err, &gerr); ok {
-		if len(gerr.Errors) > 0 && gerr.Errors[0].Reason == "rateLimitExceeded" {
-			return diag.Diagnostics{
-				RedactError(projects, diag.NewBaseError(err, diag.THROTTLE, append(opts, diag.WithType(diag.THROTTLE), diag.WithSeverity(diag.WARNING), diag.WithError(errors.New(gerr.Message)))...)),
+		if len(gerr.Errors) > 0 {
+			switch gerr.Errors[0].Reason {
+			case "rateLimitExceeded":
+				return diag.Diagnostics{
+					RedactError(projects, diag.NewBaseError(err, diag.THROTTLE, append(opts, diag.WithType(diag.THROTTLE), diag.WithSeverity(diag.WARNING), diag.WithError(errors.New(gerr.Message)))...)),
+				}
+			case "forbidden":
+				return diag.Diagnostics{
+					RedactError(projects, diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithType(diag.ACCESS), diag.WithSeverity(diag.WARNING), diag.WithError(errors.New(gerr.Message)))...)),
+				}
 			}
 		}
 
@@ -116,6 +116,13 @@ func classifyError(err error, fallbackType diag.Type, projects []string, opts ..
 			RedactError(projects,
 				diag.NewBaseError(err, diag.ACCESS, append(opts, diag.WithDetails("Please see this document for GCP authentication: https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp#authenticate-with-gcp"))...),
 			),
+		}
+	}
+
+	// Take over from SDK and always return diagnostics, redacting PII
+	if d, ok := err.(diag.Diagnostic); ok {
+		return diag.Diagnostics{
+			RedactError(projects, diag.NewBaseError(d, d.Type(), opts...)),
 		}
 	}
 
