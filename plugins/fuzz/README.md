@@ -4,7 +4,7 @@
 </a>
 </p>
 
-CloudQuery Test Provider ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cq-provider-fuzz/test?style=flat-square) ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
+CloudQuery Fuzz Provider ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cq-provider-fuzz/test?style=flat-square) ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
 ==================================
 
 This [CloudQuery](https://github.com/cloudquery/cloudquery) provider is only for testing purposes.
