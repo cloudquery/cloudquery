@@ -60,7 +60,7 @@ type AwsConfig struct {
 	MaxBackoff int       `hcl:"max_backoff,optional" default:"30"`
 }
 
-func TestLoader_LoadConfigFromSource(t *testing.T) {
+func TestParser_LoadValidConfigFromFile(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFile("fixtures/valid_config.hcl")
 	assert.Nil(t, diags)
