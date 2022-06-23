@@ -31,7 +31,7 @@ var (
 		Version: core.Version,
 	}
 
-	providerSyncHelpMsg = "Download the providers specified in config.hcl and re-create their database schema"
+	providerSyncHelpMsg = "Download the providers specified in config and re-create their database schema"
 	providerSyncCmd     = &cobra.Command{
 		Use:   "sync [providers,...]",
 		Short: providerSyncHelpMsg,
