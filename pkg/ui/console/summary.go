@@ -1,11 +1,12 @@
 package console
 
 import (
+	"strconv"
+
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
-	"strconv"
 )
 
 func PrintProviderSummary(summary *core.ProviderFetchSummary) {
@@ -74,11 +75,11 @@ func countSeverity(d diag.Diagnostics, sevs ...diag.Severity) (basic, deep uint6
 	}
 
 	if !viper.GetBool("verbose") {
-		return
+		return basic, 0
 	}
 
 	for _, sev := range sevs {
 		deep += d.CountBySeverity(sev, true)
 	}
-	return
+	return basic, deep
 }
