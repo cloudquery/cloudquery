@@ -87,7 +87,6 @@ func FuzzProvider() *provider.Provider {
 		Config: func(f cqproto.ConfigFormat) provider.Config {
 			return newConfiguration(f)
 		},
-		Logger: hclog.NewNullLogger(),
 	}
 }
 
@@ -176,11 +175,12 @@ func getTable(name string, config fuzzConfig, currentDepth int) schema.Table {
 
 func getResolverFunc(config fuzzConfig) schema.TableResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-		meta.Logger().Info("fetching")
+		duration := getRandomDuration(config.minFetchDelay, config.maxFetchDelay)
+		meta.Logger().Info(fmt.Sprintf("resolver called with sleep duration %s", duration))
 		select {
 		case <-ctx.Done():
 			return nil
-		case <-time.After(getRandomDuration(config.minFetchDelay, config.maxFetchDelay)):
+		case <-time.After(duration):
 			res <- getExampleData()
 			return nil
 		}
