@@ -9,7 +9,7 @@ CloudQuery Test Provider ![BuildStatus](https://img.shields.io/github/workflow/s
 
 This [CloudQuery](https://github.com/cloudquery/cloudquery) provider is only for testing purposes.
 
-## Fuzzing Test
+## Fuzzing
 
 Set the following environment variables to configure the fuzzing parameters:
 
