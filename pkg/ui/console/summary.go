@@ -31,21 +31,21 @@ func PrintProviderSummary(summary *core.ProviderFetchSummary) {
 	)
 
 	// errors
-	errors := printIssues(diags, diag.ERROR, diag.PANIC)
+	errors := formatIssues(diags, diag.ERROR, diag.PANIC)
 	if len(errors) > 0 {
 		const summaryErrors = "\t ❌ Errors: %s"
 		ui.ColorizedOutput(ui.ColorHeader, summaryErrors, errors)
 	}
 
 	// warnings
-	warnings := printIssues(diags, diag.WARNING)
+	warnings := formatIssues(diags, diag.WARNING)
 	if len(warnings) > 0 {
 		const summaryWarnings = "\t ⚠️ Warnings: %s"
 		ui.ColorizedOutput(ui.ColorHeader, summaryWarnings, warnings)
 	}
 
 	// ignored issues
-	ignored := printIssues(diags, diag.IGNORE)
+	ignored := formatIssues(diags, diag.IGNORE)
 	if len(ignored) > 0 {
 		const summaryIgnored = "\t ❓ Ignored issues: %s"
 		ui.ColorizedOutput(ui.ColorHeader, summaryIgnored, ignored)
@@ -57,7 +57,7 @@ func PrintProviderSummary(summary *core.ProviderFetchSummary) {
 	ui.ColorizedOutput(ui.ColorHeader, "\n\n")
 }
 
-func printIssues(diags diag.Diagnostics, severities ...diag.Severity) string {
+func formatIssues(diags diag.Diagnostics, severities ...diag.Severity) string {
 	basic, deep := countSeverity(diags, severities...)
 	switch {
 	case deep > 0:
