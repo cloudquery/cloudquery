@@ -10,8 +10,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 )
+
+const maxGoroutines = 10
 
 // diagnosticSetting is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
 type diagnosticSetting struct {
@@ -217,14 +218,10 @@ func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta,
 	}
 
 	g, _ := errgroup.WithContext(ctx)
-	limiter := semaphore.NewWeighted(10)
+	g.SetLimit(maxGoroutines)
 	for _, i := range ids {
 		id := i
 		g.Go(func() error {
-			if err := limiter.Acquire(ctx, 1); err != nil {
-				return diag.WrapError(err)
-			}
-			defer limiter.Release(1)
 			response, err := monSvc.List(ctx, id)
 			if err != nil {
 				if isResourceTypeNotSupported(err) {
