@@ -663,7 +663,7 @@ func loadConfig(file string) (*config.Config, bool) {
 		config.WithFileFunc(filepath.Dir(file)),
 	)
 	cfg, diags := parser.LoadConfigFile(file)
-	if diags != nil {
+	if diags.HasDiags() {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
 			c := ui.ColorInfo
