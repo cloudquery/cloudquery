@@ -7,13 +7,12 @@ import (
 	"math/rand"
 	"time"
 
+	env "github.com/caitlinelfring/go-env-default"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
-
-	env "github.com/caitlinelfring/go-env-default"
 )
 
 type Configuration struct {
@@ -40,7 +39,7 @@ type exampleData struct {
 }
 
 const (
-	defaultNumberOfResources           = 200
+	defaultNumberOfResources           = 100
 	defaultNumberOfRelations           = 10
 	defaultRelationDepth               = 2
 	defaultMinFetchDelayInMilliseconds = 100
