@@ -104,7 +104,6 @@ func printPolicyResponse(results []*policy.ExecutionResult) {
 func createOutputTable(res *policy.QueryResult) {
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader(res.Columns)
-	table.SetFooter(append(make([]string, len(res.Columns)-2, len(res.Columns)), "Total:", strconv.Itoa(len(res.Rows))))
 
 	table.SetHeaderAlignment(tablewriter.ALIGN_LEFT)
 	table.SetAlignment(tablewriter.ALIGN_LEFT)
@@ -114,6 +113,7 @@ func createOutputTable(res *policy.QueryResult) {
 	table.SetBorder(false)
 	table.SetFooterAlignment(tablewriter.ALIGN_LEFT)
 	sort.Sort(res.Rows)
+	max := len(res.Columns)
 	for _, row := range res.Rows {
 		data := make([]string, 0, len(res.Columns))
 		data = append(data, color.HiRedString(row.Status))
@@ -129,6 +129,10 @@ func createOutputTable(res *policy.QueryResult) {
 			}
 		}
 		table.Append(data)
+		if len(data) > max {
+			max = len(data)
+		}
 	}
+	table.SetFooter(append(make([]string, max-2, max), "Total:", strconv.Itoa(len(res.Rows))))
 	table.Render()
 }
