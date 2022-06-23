@@ -42,7 +42,7 @@ type exampleData struct {
 const (
 	defaultNumberOfResources           = 200
 	defaultNumberOfRelations           = 10
-	defaultRelationDepth               = 5
+	defaultRelationDepth               = 2
 	defaultMinFetchDelayInMilliseconds = 100
 	defaultMaxFetchDelayInMilliseconds = 60000
 )
