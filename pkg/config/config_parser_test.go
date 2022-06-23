@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestHandleConnectionBlock(t *testing.T) {
+func TestHandleConnectionConfig(t *testing.T) {
 	cases := []struct {
 		input          *Connection
 		expectedResult string

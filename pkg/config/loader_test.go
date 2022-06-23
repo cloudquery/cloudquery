@@ -1,12 +1,21 @@
 package config
 
 import (
+	"bytes"
+	"fmt"
+	"net/http/httptest"
+	"net/url"
+	"os"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/hcl/v2/hclsimple"
+	"github.com/johannesboyne/gofakes3"
+	"github.com/johannesboyne/gofakes3/backend/s3mem"
+	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -35,6 +44,9 @@ const expectedDuplicateProviderError = "fixtures/duplicate_provider_name.hcl:21,
 const expectedDuplicateAliasProviderError = "fixtures/duplicate_provider_alias.hcl:23,3-21: Duplicate Alias; Provider with alias same-aws for provider aws already exists, give it a different alias."
 const expectedDuplicateAliasProviderErrorYaml = "provider with alias same-aws for provider aws-2 already exists, give it a different alias"
 
+const bucketName = "myBucket"
+const defaultPermissions = 0644
+
 type Account struct {
 	ID      string `hcl:",label"`
 	RoleARN string `hcl:"role_arn,optional"`
@@ -48,7 +60,7 @@ type AwsConfig struct {
 	MaxBackoff int       `hcl:"max_backoff,optional" default:"30"`
 }
 
-func TestParser_LoadConfigFromSource(t *testing.T) {
+func TestLoader_LoadConfigFromSource(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFile("fixtures/valid_config.hcl")
 	assert.Nil(t, diags)
@@ -77,21 +89,21 @@ func TestParser_LoadConfigFromSource(t *testing.T) {
 	}, cfg)
 }
 
-func TestParser_BadVersion(t *testing.T) {
+func TestLoader_BadVersion(t *testing.T) {
 	p := NewParser()
 	_, diags := p.LoadConfigFile("fixtures/bad_version.hcl")
 	assert.NotNil(t, diags)
 	assert.Equal(t, "Provider test version 0.0.0 is invalid", diags[0].Error())
 }
 
-func TestParser_DuplicateProviderNaming(t *testing.T) {
+func TestLoader_DuplicateProviderNaming(t *testing.T) {
 	p := NewParser()
 	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_name.hcl")
 	assert.NotNil(t, diags)
 	assert.Equal(t, expectedDuplicateProviderError, diags[0].Error())
 }
 
-func TestParser_AliasedProvider(t *testing.T) {
+func TestLoader_AliasedProvider(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFile("fixtures/config_with_alias.hcl")
 	assert.Nil(t, diags)
@@ -101,7 +113,7 @@ func TestParser_AliasedProvider(t *testing.T) {
 	assert.Nil(t, err)
 }
 
-func TestParser_DuplicateAliasedProvider(t *testing.T) {
+func TestLoader_DuplicateAliasedProvider(t *testing.T) {
 	p := NewParser()
 	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_alias.hcl")
 	assert.NotNil(t, diags)
@@ -154,7 +166,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)
 }
 
-func TestParser_LoadConfigNoSourceField(t *testing.T) {
+func TestLoader_LoadConfigNoSourceField(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFile("fixtures/no_source.hcl")
 	assert.Nil(t, diags)
@@ -183,7 +195,7 @@ func TestParser_LoadConfigNoSourceField(t *testing.T) {
 	assert.Equal(t, cfg.CloudQuery.Providers[0].String(), "cq-provider-test@v0.0.0")
 }
 
-func TestParser_LoadConfigFromSourceConnectionOptionality(t *testing.T) {
+func TestLoader_LoadConfigFromSourceConnectionOptionality(t *testing.T) {
 	cases := []struct {
 		cfg           string
 		expectedDSN   string
@@ -260,4 +272,111 @@ cloudquery {
 			}
 		})
 	}
+}
+
+func Test_LoadFile(t *testing.T) {
+	srvURL, backend := setupTestS3Bucket(t)
+	cases := []struct {
+		Path        string
+		Name        string
+		Configs     string
+		Type        string
+		SetupFile   bool
+		ExpectError bool
+	}{
+		{
+			Name:      "Success-S3Object",
+			Type:      "s3",
+			Path:      fmt.Sprintf("s3://%s/config.hcl?region=us-east-1&disableSSL=true&s3ForcePathStyle=true&endpoint=%s", bucketName, srvURL.Host),
+			Configs:   testConfig,
+			SetupFile: true,
+		},
+		{
+			Name:        "Failure-S3Object",
+			Type:        "s3",
+			Path:        fmt.Sprintf("s3://%s/config2.hcl?region=us-east-1&disableSSL=true&s3ForcePathStyle=true&endpoint=%s", bucketName, srvURL.Host),
+			Configs:     testConfig,
+			SetupFile:   false,
+			ExpectError: true,
+		},
+		{
+			Name:      "Success-RelativePath",
+			Type:      "file",
+			Path:      "./asdf/asdf/asfd/teddstcdonfig.hcl",
+			Configs:   testConfig,
+			SetupFile: true,
+		},
+		{
+			Name:        "Failure-RelativePath-NotExists",
+			Type:        "file",
+			Path:        "./asdf/asdf/asfd/teddstcdonfig.hcl",
+			Configs:     testConfig,
+			SetupFile:   false,
+			ExpectError: true,
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			var p *Parser
+			switch tc.Type {
+			case "s3":
+				p = NewParser()
+				os.Setenv("AWS_ANON", "true")
+				defer os.Unsetenv("AWS_ANON")
+				if tc.SetupFile {
+					assert.NoError(t, putFile(backend, tc.Path, "application/hcl", tc.Configs))
+				}
+
+			case "file":
+				appFS := afero.NewMemMapFs()
+				p = NewParser(func(p *Parser) {
+					p.fs = afero.Afero{Fs: appFS}
+				})
+				if tc.SetupFile {
+					p.fs.WriteFile(tc.Path, []byte(tc.Configs), defaultPermissions)
+				}
+			}
+			body, diags := p.LoadFile(tc.Path)
+			if !tc.ExpectError {
+				assert.Equal(t, 0, len(diags))
+				cfg := []byte(tc.Configs)
+				assert.Nil(t, diags)
+				assert.Equal(t, cfg, body)
+			} else {
+				assert.Equal(t, 1, len(diags))
+				assert.Equal(t, "Failed to read file: file does not exist. Hint: Try `cloudquery init <provider>`", diags[0].Description().Summary)
+				assert.Equal(t, fmt.Sprintf("The file %q could not be read", tc.Path), diags[0].Description().Detail)
+			}
+		})
+	}
+}
+
+func setupTestS3Bucket(t *testing.T) (*url.URL, *s3mem.Backend) {
+	backend := s3mem.New()
+	faker := gofakes3.New(backend)
+
+	srv := httptest.NewServer(faker.Server())
+
+	t.Cleanup(srv.Close)
+
+	assert.NoError(t, backend.CreateBucket(bucketName))
+	u, err := url.Parse(srv.URL)
+	assert.NoError(t, err)
+	return u, backend
+}
+
+func putFile(backend gofakes3.Backend, path, mime, content string) error {
+	u, err := url.Parse(path)
+	if err != nil {
+		return err
+	}
+	_, err = backend.PutObject(
+		bucketName,
+		strings.TrimPrefix(u.Path, "/"),
+		map[string]string{"Content-Type": mime},
+		bytes.NewBufferString(content),
+		int64(len(content)),
+	)
+
+	return err
 }

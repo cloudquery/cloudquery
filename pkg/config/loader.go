@@ -3,12 +3,16 @@ package config
 import (
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"net/url"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/config/convert"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/hairyhenderson/go-fsimpl"
+	"github.com/hairyhenderson/go-fsimpl/blobfs"
+	"github.com/hairyhenderson/go-fsimpl/filefs"
 	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/spf13/afero"
@@ -136,4 +140,30 @@ func hclToSdkDiags(hd hcl.Diagnostics) diag.Diagnostics {
 		sd = sd.Add(diag.FromError(dd, diag.USER, diag.WithSeverity(sv), diag.WithSummary("%s", dd.Summary), diag.WithDetails("%s", dd.Detail)))
 	}
 	return sd
+}
+
+func loadRemoteFile(path string) ([]byte, error) {
+	mux := fsimpl.NewMux()
+	mux.Add(filefs.FS)
+	mux.Add(blobfs.FS)
+
+	sanitizedPath, _ := url.Parse(path)
+
+	// go-fsimpl is looking for a "directory" where it is the full path without the actual file
+	// but must have all of the query strings
+	directory := path[:strings.LastIndex(path, "/")] + "?" + sanitizedPath.RawQuery
+	fileName := sanitizedPath.Path[strings.LastIndex(sanitizedPath.Path, "/")+1:]
+
+	fsys, err := mux.Lookup(directory)
+	if err != nil {
+		return nil, err
+	}
+
+	f, err := fsys.Open(fileName)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	contents, err := io.ReadAll(f)
+	return contents, err
 }
