@@ -93,11 +93,11 @@ func FuzzProvider() *provider.Provider {
 }
 
 func getFuzzingConfig() fuzzConfig {
-	numberOfResources := env.GetIntDefault("CQ_FUZZING_NUMBER_OF_RESOURCES", defaultNumberOfResources)
-	numberOfRelations := env.GetIntDefault("CQ_FUZZING_NUMBER_OF_RELATIONS", defaultNumberOfRelations)
-	relationDepth := env.GetIntDefault("CQ_FUZZING_RELATION_DEPTH", defaultRelationDepth)
-	minDelay := env.GetIntDefault("CQ_FUZZING_MIN_FETCH_DELAY", defaultMinFetchDelayInMilliseconds)
-	maxDelay := env.GetIntDefault("CQ_FUZZING_MAX_FETCH_DELAY", defaultMaxFetchDelayInMilliseconds)
+	numberOfResources := env.GetIntDefault("CQ_FUZZ_NUMBER_OF_RESOURCES", defaultNumberOfResources)
+	numberOfRelations := env.GetIntDefault("CQ_FUZZ_NUMBER_OF_RELATIONS", defaultNumberOfRelations)
+	relationDepth := env.GetIntDefault("CQ_FUZZ_RELATION_DEPTH", defaultRelationDepth)
+	minDelay := env.GetIntDefault("CQ_FUZZ_MIN_FETCH_DELAY_MILLISECONDS", defaultMinFetchDelayInMilliseconds)
+	maxDelay := env.GetIntDefault("CQ_FUZZ_MAX_FETCH_DELAY_MILLISECONDS", defaultMaxFetchDelayInMilliseconds)
 
 	config := fuzzConfig{
 		numberOfResources: numberOfResources,
