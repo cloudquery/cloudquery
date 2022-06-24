@@ -301,16 +301,16 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 			Status:           sts,
 		}, d
 	}
-	if resp.Diagnostics.HasErrors() {
+	diags = diags.Add(convertToConfigureDiags(resp.Diagnostics))
+	if diags.HasErrors() {
 		return &ProviderFetchSummary{
 			Name:             info.Provider.Name,
 			Alias:            info.Config.Alias,
 			Version:          providerPlugin.Version(),
 			FetchedResources: make(map[string]ResourceFetchSummary),
 			Status:           FetchConfigureFailed,
-		}, convertToConfigureDiags(resp.Diagnostics)
+		}, diags
 	}
-	diags = diags.Add(convertToConfigureDiags(resp.Diagnostics))
 
 	pLog.Info().Msg("provider configured successfully")
 	summary, fetchDiags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
