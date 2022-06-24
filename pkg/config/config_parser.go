@@ -124,7 +124,7 @@ func ProcessValidateProviderBlock(plist []*Provider) (Providers, diag.Diagnostic
 			v.Alias = v.Name
 		}
 		var err error
-		v.Configuration, err = yaml.Marshal(v.ConfigKeys)
+		v.Configuration, err = yaml.Marshal(v.ConfigKeys["configuration"])
 		if err != nil {
 			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("ConfigKeys marshal failed")))
 			continue
