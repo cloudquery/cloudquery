@@ -252,6 +252,7 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 }
 
 func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsnURI string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
+	var diags diag.Diagnostics
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
@@ -309,10 +310,13 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 			Status:           FetchConfigureFailed,
 		}, convertToConfigureDiags(resp.Diagnostics)
 	}
+	diags.Add(convertToConfigureDiags(resp.Diagnostics))
 
 	pLog.Info().Msg("provider configured successfully")
 	summary, fetchDiags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
-	return summary, convertToFetchDiags(fetchDiags, info.Provider.Name, providerPlugin.Version()).Add(convertToConfigureDiags(resp.Diagnostics))
+	diags.Add(convertToFetchDiags(fetchDiags, info.Provider.Name, providerPlugin.Version()))
+
+	return summary, diags
 }
 
 func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
