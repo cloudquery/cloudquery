@@ -3,7 +3,8 @@ module github.com/cloudquery/cq-provider-fuzzing
 go 1.17
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.12.1
+	github.com/caitlinelfring/go-env-default v1.1.0
+	github.com/cloudquery/cq-provider-sdk v0.12.2
 	github.com/hashicorp/go-hclog v1.2.1
 )
 
@@ -12,7 +13,6 @@ require (
 	github.com/Masterminds/squirrel v1.5.3 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
-	github.com/caitlinelfring/go-env-default v1.1.0 // indirect
 	github.com/creasty/defaults v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/doug-martin/goqu/v9 v9.18.0 // indirect
