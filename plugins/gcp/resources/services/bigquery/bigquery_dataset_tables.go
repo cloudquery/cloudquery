@@ -11,7 +11,7 @@ import (
 	"google.golang.org/api/bigquery/v2"
 )
 
-const MAX_GOROUTINES = 10
+const MAX_GOROUTINES = 1
 
 func BigqueryDatasetTables() *schema.Table {
 	return &schema.Table{
