@@ -89,6 +89,35 @@ func TestParser_LoadValidConfigFromFile(t *testing.T) {
 	}, cfg)
 }
 
+func TestParser_LoadValidConfigFromFileYAML(t *testing.T) {
+	p := NewParser()
+	cfg, diags := p.LoadConfigFile("fixtures/valid_config.yaml")
+	assert.Nil(t, diags, "Diagnostics: %s", diags.Error())
+	// Check configuration was added, we will nil it after it to check the whole structure
+	assert.NotNil(t, cfg.Providers[0].Configuration)
+	cfg.Providers[0].Configuration = nil
+	source := "cloudquery"
+	assert.Equal(t, &Config{
+		CloudQuery: CloudQuery{
+			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
+			Providers: []*RequiredProvider{{
+				Name:    "test",
+				Source:  &source,
+				Version: "v0.0.0",
+			}},
+			Logger: &logging.Config{},
+		},
+		Providers: []*Provider{
+			{
+				Name:          "aws",
+				Alias:         "aws",
+				Resources:     []string{"slow_resource"},
+				Configuration: nil,
+			},
+		},
+	}, cfg)
+}
+
 func TestLoader_BadVersion(t *testing.T) {
 	p := NewParser()
 	_, diags := p.LoadConfigFile("fixtures/bad_version.hcl")
