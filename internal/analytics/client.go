@@ -206,9 +206,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 
 	event := analytics.Track{UserId: c.userId, Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
 	if err := c.client.Enqueue(event); err != nil {
-		if c.debug {
-			log.Error().Err(err).Msg("failed to send analytics")
-		}
+		log.Error().Err(err).Msg("failed to send analytics")
 	}
 }
 func SetUserId(userId string) {

@@ -7,7 +7,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/spf13/viper"
 	"github.com/xo/dburl"
@@ -38,7 +37,6 @@ type Config struct {
 }
 
 type CloudQuery struct {
-	Logger     *logging.Config   `yaml:"logging,omitempty" json:"logging,omitempty" hcl:"logging,block"`
 	Providers  RequiredProviders `yaml:"providers,omitempty" json:"providers,omitempty" hcl:"provider,block"`
 	Connection *Connection       `yaml:"connection,omitempty" json:"connection,omitempty" hcl:"connection,block"`
 	Policy     *Policy           `yaml:"policy,omitempty" json:"policy,omitempty" hcl:"policy,block"`

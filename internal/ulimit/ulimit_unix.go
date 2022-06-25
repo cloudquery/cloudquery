@@ -11,6 +11,9 @@ import (
 
 const ulimitUnix uint64 = 16384
 
+// fileDescriptorF gets set trough system relevant files like ulimit_unix.go
+var fileDescriptorF func()
+
 func init() {
 	fileDescriptorF = checkAndSetUlimitUnix
 }

@@ -1,0 +1,58 @@
+package policy
+
+import (
+	"fmt"
+
+	"github.com/cloudquery/cloudquery/cmd/util"
+	"github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/spf13/cobra"
+)
+
+var (
+	runShort   = "Executes a policy on CloudQuery database"
+	runExample = `
+  # Download & Run the policies defined in your config
+  cloudquery policy run
+
+  # Run a specific policy that is not defined in the config.hcl
+  # Run official policy
+  cloudquery policy run aws
+
+  # The following will be the same as above
+  # Official policies are hosted here: https://github.com/cloudquery-policies
+  cloudquery policy run aws//cis_v1.2.0
+	
+  # Run community policy
+  cloudquery policy run github.com/COMMUNITY_GITHUB_ORG/aws
+
+  # See https://hub.cloudquery.io for additional policies.`
+)
+
+type runOptions struct {
+}
+
+func NewCmdPolicyRun(parent policyOptions) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "run",
+		Short:   runShort,
+		Long:    runShort,
+		Example: runExample,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			source := args[0]
+			c, err := console.CreateClient(cmd.Context(), util.GetConfigFile(parent.Config), false, nil, util.InstanceId)
+			if err != nil {
+				return err
+			}
+			diags := c.RunPolicies(cmd.Context(), source, outputDir, noResults, storeResults)
+			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_run"})
+			if diags.HasErrors() {
+				return fmt.Errorf("policy has one or more errors, check logs")
+			}
+			return nil
+		},
+		Args: cobra.ExactArgs(1),
+	}
+
+	return cmd
+}

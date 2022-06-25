@@ -1,4 +1,4 @@
-package cmd
+package init
 
 import (
 	"bytes"
@@ -25,25 +25,29 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const initHelpMsg = "Generate initial config.hcl for fetch command"
-
-var (
-	initCmd = &cobra.Command{
-		Use:   "init [choose one or more providers (aws gcp azure okta ...)]",
-		Short: initHelpMsg,
-		Long:  initHelpMsg,
-		Example: `
+const (
+	initShort   = "Generate initial config.hcl for fetch command"
+	initExample = `
   # Downloads aws provider and generates config.hcl for aws provider
   cloudquery init aws
 
   # Downloads aws,gcp providers and generates one config.hcl with both providers
-  cloudquery init aws gcp`,
-		Args: cobra.MinimumNArgs(1),
+  cloudquery init aws gcp`
+)
+
+func NewCmdInit() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "init [choose one or more providers (aws gcp azure okta ...)]",
+		Short:   initShort,
+		Long:    initShort,
+		Example: initExample,
+		Args:    cobra.MinimumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return initialize(cmd.Context(), args)
 		},
 	}
-)
+	return cmd
+}
 
 func initialize(ctx context.Context, providers []string) error {
 	fs := afero.NewOsFs()
@@ -265,11 +269,6 @@ func parseProviderCLIArg(providerCLIArg string) (org string, name string, versio
 	}
 
 	return org, name, "v" + ver.String(), nil
-}
-
-func init() {
-	initCmd.SetUsageTemplate(usageTemplateWithFlags)
-	rootCmd.AddCommand(initCmd)
 }
 
 // getConfigFile returns the config filename

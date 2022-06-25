@@ -1,4 +1,4 @@
-package cmd
+package options
 
 import (
 	"github.com/spf13/cobra"
@@ -15,15 +15,13 @@ Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
 Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
 `
 
-var optionsCmd = &cobra.Command{
-	Use:   "options",
-	Short: "Prints list of global CLI options (applies to all commands)",
-	RunE: func(cmd *cobra.Command, _ []string) error {
-		return cmd.UsageFunc()(cmd)
-	},
-}
-
-func init() {
-	optionsCmd.SetUsageTemplate(globalOptionsTemplate)
-	rootCmd.AddCommand(optionsCmd)
+func NewCmdOptions() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "options",
+		Short: "Prints list of global CLI options (applies to all commands)",
+		RunE: func(cmd *cobra.Command, _ []string) error {
+			return cmd.UsageFunc()(cmd)
+		},
+	}
+	return cmd
 }

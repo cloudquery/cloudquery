@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-package cmd
+package completion
 
 import (
 	"os"
@@ -22,11 +22,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// completionCmd represents the completion command
-var completionCmd = &cobra.Command{
-	Use:   "completion [bash|zsh|fish|powershell]",
-	Short: "Generate completion script (run --help for full instructions)",
-	Long: `To load completions:
+func NewCmdCompletion() *cobra.Command {
+
+	// completionCmd represents the completion command
+	cmd := &cobra.Command{
+		Use:   "completion [bash|zsh|fish|powershell]",
+		Short: "Generate completion script (run --help for full instructions)",
+		Long: `To load completions:
 
 Bash:
 
@@ -65,26 +67,24 @@ PS> cloudquery completion powershell | Out-String | Invoke-Expression
 PS> cloudquery completion powershell > cloudquery.ps1
 # and source this file from your powershell profile.
 `,
-	DisableFlagsInUseLine: true,
-	ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
-	Args:                  cobra.ExactValidArgs(1),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		var err error
-		switch args[0] {
-		case "bash":
-			err = cmd.Root().GenBashCompletion(os.Stdout)
-		case "zsh":
-			err = cmd.Root().GenZshCompletion(os.Stdout)
-		case "fish":
-			err = cmd.Root().GenFishCompletion(os.Stdout, true)
-		case "powershell":
-			err = cmd.Root().GenPowerShellCompletion(os.Stdout)
-		}
-		errors.CaptureError(err, map[string]string{"command": "completion"})
-		return err
-	},
-}
-
-func init() {
-	rootCmd.AddCommand(completionCmd)
+		DisableFlagsInUseLine: true,
+		ValidArgs:             []string{"bash", "zsh", "fish", "powershell"},
+		Args:                  cobra.ExactValidArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var err error
+			switch args[0] {
+			case "bash":
+				err = cmd.Root().GenBashCompletion(os.Stdout)
+			case "zsh":
+				err = cmd.Root().GenZshCompletion(os.Stdout)
+			case "fish":
+				err = cmd.Root().GenFishCompletion(os.Stdout, true)
+			case "powershell":
+				err = cmd.Root().GenPowerShellCompletion(os.Stdout)
+			}
+			errors.CaptureError(err, map[string]string{"command": "completion"})
+			return err
+		},
+	}
+	return cmd
 }

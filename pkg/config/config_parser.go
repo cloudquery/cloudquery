@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/hcl/v2"
@@ -141,9 +140,6 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 		Providers  []*Provider `yaml:"providers" json:"providers"`
 	}
 
-	lgc := logging.GlobalConfig
-	yc.CloudQuery.Logger = &lgc
-
 	if err := yaml.NewDecoder(r).Decode(&yc); err != nil {
 		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to parse yaml"))
 	}
@@ -197,12 +193,10 @@ func (p *Parser) decodeConfigHCL(body hcl.Body, diags diag.Diagnostics) (*Config
 	for _, block := range content.Blocks {
 		switch block.Type {
 		case "cloudquery":
-			cliLoggingConfig := logging.GlobalConfig
 			cqBlock, cqDiags := decodeCloudQueryBlock(block, &p.HCLContext)
 			diags = diags.Add(hclToSdkDiags(cqDiags))
 			diags = diags.Add(ValidateCQBlock(&cqBlock))
 
-			logging.Reconfigure(*cqBlock.Logger, cliLoggingConfig)
 			config.CloudQuery = cqBlock
 		case "provider":
 			cfg, cfgDiags := decodeProviderBlock(block, &p.HCLContext, existingProviders)
@@ -232,6 +226,5 @@ func (p *Parser) decodeConfigHCL(body hcl.Body, diags diag.Diagnostics) (*Config
 func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, hcl.Diagnostics) {
 	var cq CloudQuery
 	// Pre-populate with existing values
-	cq.Logger = &logging.GlobalConfig
 	return cq, gohcl.DecodeBody(block.Body, ctx, &cq)
 }

@@ -1,0 +1,39 @@
+package policy
+
+import (
+	"github.com/cloudquery/cloudquery/cmd/util"
+	"github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/spf13/cobra"
+)
+
+var (
+	policyShort   = "Tests policy against a precompiled set of database snapshots"
+	policyExample = `
+	# Download & Run the policies defined in your config
+  cloudquery policy test path/to/policy.hcl path/to/snapshot/dir selector
+	`
+)
+
+type testOptions struct {
+}
+
+func NewCmdPolicyTest() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:     "test",
+		Short:   policyShort,
+		Long:    policyShort,
+		Example: policyExample,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, util.InstanceId)
+			if err != nil {
+				return err
+			}
+			err = c.TestPolicies(cmd.Context(), args[0], args[1])
+			errors.CaptureError(err, map[string]string{"command": "policy_test"})
+			return err
+		},
+		Args: cobra.ExactArgs(2),
+	}
+	return cmd
+}
