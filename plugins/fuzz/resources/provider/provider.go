@@ -47,7 +47,7 @@ const (
 )
 
 var (
-	version = "Development"
+	Version = "Development"
 )
 
 func (t TestClient) Logger() hclog.Logger {
@@ -79,7 +79,7 @@ func FuzzProvider() *provider.Provider {
 
 	return &provider.Provider{
 		Name:    "fuzz",
-		Version: version,
+		Version: Version,
 		Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
 			return &TestClient{L: logger}, nil
 		},
