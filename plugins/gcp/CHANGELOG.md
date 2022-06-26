@@ -14,6 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.16](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.15...v0.8.16) (2022-06-26)
+
+
+### Bug Fixes
+
+* Access Denied errors added to classifier ([#346](https://github.com/cloudquery/cq-provider-gcp/issues/346)) ([6a58910](https://github.com/cloudquery/cq-provider-gcp/commit/6a58910a9a96083c4f18d2b61122c80db146141e))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.12.2 ([#354](https://github.com/cloudquery/cq-provider-gcp/issues/354)) ([e01e862](https://github.com/cloudquery/cq-provider-gcp/commit/e01e86220741e540f7e53402376e430019689928))
+* Reduce Concurrency for bigquery_dataset_tables ([73c7975](https://github.com/cloudquery/cq-provider-gcp/commit/73c79756f09ca62cf4ade9bedd41aff1217ab763))
+
 ## [0.8.15](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.14...v0.8.15) (2022-06-22)
 
 
