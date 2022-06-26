@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// PrintProviderSummary is a helper to print the fetch summary in an easily readable format.
 func PrintProviderSummary(summary *core.ProviderFetchSummary) {
 	s := emojiStatus[ui.StatusOK]
 	if summary.Status == core.FetchCanceled {
@@ -30,30 +31,32 @@ func PrintProviderSummary(summary *core.ProviderFetchSummary) {
 	// errors
 	errors := formatIssues(diags, diag.ERROR, diag.PANIC)
 	if len(errors) > 0 {
-		const summaryErrors = "\t ❌ Errors: %s"
-		ui.ColorizedOutput(ui.ColorHeader, summaryErrors, errors)
+		ui.ColorizedOutput(ui.ColorHeader, "\t ❌ Errors: %s", errors)
 	}
 
 	// warnings
 	warnings := formatIssues(diags, diag.WARNING)
 	if len(warnings) > 0 {
-		const summaryWarnings = "\t ⚠️ Warnings: %s"
-		ui.ColorizedOutput(ui.ColorHeader, summaryWarnings, warnings)
+		ui.ColorizedOutput(ui.ColorHeader, "\t ⚠️ Warnings: %s", warnings)
 	}
 
 	// ignored issues
 	ignored := formatIssues(diags, diag.IGNORE)
 	if len(ignored) > 0 {
-		const summaryIgnored = "\t ❓ Ignored issues: %s"
-		ui.ColorizedOutput(ui.ColorHeader, summaryIgnored, ignored)
-		const footerIgnored = "\nProvider %s finished with %s ignored issues." +
-			"\nThis may be normal, however, you can use `--verbose` flag to see more details."
-		ui.ColorizedOutput(ui.ColorHeader, footerIgnored, key, ignored)
+		ui.ColorizedOutput(ui.ColorHeader, "\t ❓ Ignored issues: %s", ignored)
+		ui.ColorizedOutput(ui.ColorHeader,
+			"\nProvider %s finished with %s ignored issues."+
+				"\nThis may be normal, however, you can use `--verbose` flag to see more details.",
+			key, ignored)
 	}
 
 	ui.ColorizedOutput(ui.ColorHeader, "\n\n")
 }
 
+// formatIssues will pretty-print the diagnostics by the requested severities:
+// - for no issues "" is returned
+// - for any deep issues the "base (deep)" amounts are printed
+// - for basic case with no deep issues but rather the base ones, the "base" amount is printed
 func formatIssues(diags diag.Diagnostics, severities ...diag.Severity) string {
 	basic, deep := countSeverity(diags, severities...)
 	switch {

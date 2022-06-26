@@ -35,10 +35,6 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-const (
-	fetchSummary = "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %s\t ❌ Errors: %s\n\n"
-)
-
 // Client console client is a wrapper around core.Client for console execution of CloudQuery
 type Client struct {
 	downloadProgress ui.Progress
