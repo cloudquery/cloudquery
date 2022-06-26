@@ -39,20 +39,21 @@ var (
   # Downloads aws,gcp providers and generates one config.hcl with both providers
   cloudquery init aws gcp`,
 		Args: cobra.MinimumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return initialize(cmd.Context(), args)
-		},
+		RunE: initialize,
 	}
 )
 
-func initialize(ctx context.Context, providers []string) error {
+func initialize(cmd *cobra.Command, providers []string) error {
 	fs := afero.NewOsFs()
+	ctx := cmd.Context()
 
 	configPath := getConfigFile() // by definition, this will get us an existing file if possible
 
 	if info, _ := fs.Stat(configPath); info != nil {
-		message := ui.Colorize(ui.ColorError, false, "Error: Config file %s already exists\n", configPath)
-		return diag.FromError(fmt.Errorf(message), diag.USER)
+		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists\n", configPath)
+		// We don't want to print the error twice, so we set the `SilenceErrors` flag to true
+		cmd.SilenceErrors = true
+		return diag.FromError(fmt.Errorf("config file %q already exists", configPath), diag.USER)
 	}
 
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
