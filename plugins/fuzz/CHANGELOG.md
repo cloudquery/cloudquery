@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/cloudquery/cq-provider-fuzz/compare/v0.0.4...v0.0.5) (2022-06-26)
+
+
+### Bug Fixes
+
+* Embed correct version ([2d0757c](https://github.com/cloudquery/cq-provider-fuzz/commit/2d0757c36f527286ce2cc9f986fdcd5f039665a8))
+
 ## [0.0.4](https://github.com/cloudquery/cq-provider-fuzz/compare/v0.0.3...v0.0.4) (2022-06-26)
 
 
