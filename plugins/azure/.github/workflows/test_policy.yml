@@ -76,7 +76,7 @@ jobs:
           bash -c "until test -f .cq_reattach; do echo 123; sleep 1; done"
 
           export CQ_REATTACH_PROVIDERS=.cq_reattach
-          ./cloudquery provider build-schema azure --config ./test/policy_cq_config.hcl --enable-console-log
+          ./cloudquery provider sync azure --config ./test/policy_cq_config.hcl --enable-console-log
           ./cloudquery policy run azure --config ./test/policy_cq_config.hcl --enable-console-log --disable-fetch-check
 
         env:
