@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.12.17](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.16...v0.12.17) (2022-06-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.12.2 ([#1101](https://github.com/cloudquery/cq-provider-aws/issues/1101)) ([5a694bb](https://github.com/cloudquery/cq-provider-aws/commit/5a694bbd8e161f3dd69490db47593fe8748a7ca0))
+* Update endpoints ([#1104](https://github.com/cloudquery/cq-provider-aws/issues/1104)) ([0779d72](https://github.com/cloudquery/cq-provider-aws/commit/0779d7286cf94db6cce08681c125fc04a2185b15))
+* YAML Include accounts block ([#1103](https://github.com/cloudquery/cq-provider-aws/issues/1103)) ([6829f71](https://github.com/cloudquery/cq-provider-aws/commit/6829f7132c92c2ff39ae049c6f77daa93db48255))
+
 ## [0.12.16](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.15...v0.12.16) (2022-06-22)
 
 
