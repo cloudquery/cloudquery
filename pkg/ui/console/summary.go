@@ -19,12 +19,9 @@ func PrintProviderSummary(summary *core.ProviderFetchSummary) {
 		key = summary.Name + `(` + summary.Alias + `)`
 	}
 	diags := summary.Diagnostics().Squash()
-	const (
-		fetchSummary = "Provider %s fetch summary: %s Total Resources fetched: %d"
-	)
 	ui.ColorizedOutput(
 		ui.ColorHeader,
-		fetchSummary,
+		"Provider %s fetch summary: %s Total Resources fetched: %d",
 		key,
 		s,
 		summary.TotalResourcesFetched,
