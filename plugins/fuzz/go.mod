@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-fuzzing
+module github.com/cloudquery/cq-provider-fuzz
 
 go 1.17
 
