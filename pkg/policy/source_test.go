@@ -84,16 +84,16 @@ func TestLoadSource(t *testing.T) {
 		},
 		{
 			Name:         "github reference specific commit",
-			Source:       "github.com/clouquery-policies/aws?ref=68bede6",
+			Source:       "github.com/clouquery-policies/aws?ref=68bede6e",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "68bede6", SubPolicy: "", Directory: "tests/output/github.com/clouquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "68bede6e", SubPolicy: "", Directory: "tests/output/github.com/clouquery-policies/aws"},
 		},
 
 		{
 			Name:         "subpolicy path",
-			Source:       "github.com/clouquery-policies/aws//subpolicy?ref=68bede6",
+			Source:       "github.com/clouquery-policies/aws//subpolicy?ref=68bede6e",
 			Expected:     true,
-			ExpectedMeta: &Meta{Type: "github", Version: "68bede6", SubPolicy: "subpolicy", Directory: "tests/output/github.com/clouquery-policies/aws"},
+			ExpectedMeta: &Meta{Type: "github", Version: "68bede6e", SubPolicy: "subpolicy", Directory: "tests/output/github.com/clouquery-policies/aws"},
 		},
 		{
 			Name:         "subpolicy path with specific rev using @",
