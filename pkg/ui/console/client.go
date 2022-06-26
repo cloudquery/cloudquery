@@ -36,15 +36,7 @@ import (
 )
 
 const (
-	fetchSummary       = "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %s\t ❌ Errors: %s\n\n"
-	policyConfigFormat = `
-Add this block into your CloudQuery config file:
-
-policy "%s" {
-    source = "%s"
-}
-
-`
+	fetchSummary = "Provider %s fetch summary: %s Total Resources fetched: %d\t ⚠️ Warnings: %s\t ❌ Errors: %s\n\n"
 )
 
 // Client console client is a wrapper around core.Client for console execution of CloudQuery
@@ -357,7 +349,7 @@ func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.D
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
 	// Show policy instructions
-	ui.ColorizedOutput(ui.ColorHeader, fmt.Sprintf(policyConfigFormat, p.Name, p.Source))
+	ui.ColorizedOutput(ui.ColorHeader, fmt.Sprintf("To run the policy call cloudquery policy run %s", p.Source))
 	return nil
 }
 
