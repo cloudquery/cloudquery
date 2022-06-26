@@ -4,6 +4,25 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.28.0](https://github.com/cloudquery/cloudquery/compare/v0.27.3...v0.28.0) (2022-06-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Merge upgrade/downgrade provider command to sync command (#973)
+
+### Features
+
+* Merge upgrade/downgrade provider command to sync command ([#973](https://github.com/cloudquery/cloudquery/issues/973)) ([d76255a](https://github.com/cloudquery/cloudquery/commit/d76255a4c441deb9539c7616fbcbbb428330b3a9))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.12.2 ([#999](https://github.com/cloudquery/cloudquery/issues/999)) ([a735082](https://github.com/cloudquery/cloudquery/commit/a735082c2b42606d53dcaa00222a2fd2bd611d68))
+* Handle Diags ([#997](https://github.com/cloudquery/cloudquery/issues/997)) ([ca41b84](https://github.com/cloudquery/cloudquery/commit/ca41b84812680f7efcf8bcee46a135219603abad))
+* Show identifiers values correctly ([#992](https://github.com/cloudquery/cloudquery/issues/992)) ([1487893](https://github.com/cloudquery/cloudquery/commit/148789372cc662da8367427bfa9181d672b3554e))
+* Work around the panic in createOutputTable ([#995](https://github.com/cloudquery/cloudquery/issues/995)) ([3e3c957](https://github.com/cloudquery/cloudquery/commit/3e3c95760d449c010b2afa310294bb3ecbaf09f1))
+
 ## [0.27.3](https://github.com/cloudquery/cloudquery/compare/v0.27.2...v0.27.3) (2022-06-23)
 
 
