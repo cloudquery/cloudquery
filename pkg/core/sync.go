@@ -69,7 +69,7 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 	}
 
 	if want.ParsedVersion == nil {
-		return nil, diag.FromError(fmt.Errorf("expected provider version from schema to be valid semantic version but got %q. If you're trying to debug a provider %s", s.Version, ui.Link("see our docs", "https://docs.cloudquery.io/docs/developers/debugging")), diag.USER)
+		return nil, diag.FromError(fmt.Errorf("expected provider version from schema to be a valid semantic version but got %q. If you're trying to debug a provider %s", s.Version, ui.Link("see our docs", "https://docs.cloudquery.io/docs/developers/debugging")), diag.USER)
 	}
 
 	cur, err := sta.GetProvider(ctx, provider)
