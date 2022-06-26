@@ -80,7 +80,7 @@ func Load(ctx context.Context, directory string, policy *Policy) (*Policy, diag.
 	if policy.Source != "" {
 		log.Debug().Str("policy", policy.Name).Str("source", policy.Source).Msg("loading policy from source")
 		policy, dd = loadPolicyFromSource(ctx, directory, policy.Name, policy.SubPolicy(), policy.Source)
-		if dd.HasDiags() {
+		if dd.HasErrors() {
 			return nil, dd
 		}
 	}

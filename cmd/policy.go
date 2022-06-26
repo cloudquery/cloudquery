@@ -74,7 +74,11 @@ var (
 			if err != nil {
 				return err
 			}
-			return c.DownloadPolicy(cmd.Context(), args)
+			diags := c.DownloadPolicy(cmd.Context(), args)
+			if diags.HasErrors() {
+				return fmt.Errorf("policy download has one or more errors, check logs")
+			}
+			return nil
 		},
 	}
 
@@ -165,7 +169,10 @@ var (
 			}
 			diags := c.ValidatePolicy(cmd.Context(), args[0])
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "policy_validate"})
-			return fmt.Errorf("policy validate has one or more errors, check logs")
+			if diags.HasErrors() {
+				return fmt.Errorf("policy validate has one or more errors, check logs")
+			}
+			return nil
 		},
 	}
 
