@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.29.0](https://github.com/cloudquery/cloudquery/compare/v0.28.3...v0.29.0) (2022-06-27)
 
+### ⚠ BREAKING CHANGES
+
+* Remove support for cq init HCL (#993)
+* Rename default config to be cloudquery.yml (#1030)
 
 ### Bug Fixes
 
@@ -17,7 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Miscellaneous Chores
 
-* Release 0.29.0 ([#1029](https://github.com/cloudquery/cloudquery/issues/1029)) ([6e6d787](https://github.com/cloudquery/cloudquery/commit/6e6d787d5c573b77d5f5f5a5951b37daa25c4306))
+* Remove support for cq init HCL [#993](https://github.com/cloudquery/cloudquery/issues/993)) ([0504e8](https://github.com/cloudquery/cloudquery/commit/0504e849482fe8d76ef52ee9432186509ec254e8))
+* Rename default config to be cloudquery.yml [#1030](https://github.com/cloudquery/cloudquery/issues/1030)) ([c15a9d](https://github.com/cloudquery/cloudquery/commit/c15a9d72ee5b56b6e75951b9c0985a1f3ac04d2e))
 
 ## [0.28.3](https://github.com/cloudquery/cloudquery/compare/v0.28.2...v0.28.3) (2022-06-27)
 
