@@ -4,6 +4,16 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.28.3](https://github.com/cloudquery/cloudquery/compare/v0.28.2...v0.28.3) (2022-06-27)
+
+### Features
+
+* More verbose summary ([#996](https://github.com/cloudquery/cloudquery/pull/996)) ([d5d6ac6](https://github.com/cloudquery/cloudquery/commit/d5d6ac613a9abd11c99d4309a151af079704c4bb))
+
+### Bug Fixes
+
+* **deps:** fix(deps): Update module github.com/georgysavva/scany to v0.3.0 ([#1013](https://github.com/cloudquery/cloudquery/issues/1013)) ([a44a3a7](https://github.com/cloudquery/cloudquery/commit/a44a3a7ff99d16fd3792cb15e1f1f403de717fbd))
+
 ## [0.28.2](https://github.com/cloudquery/cloudquery/compare/v0.28.1...v0.28.2) (2022-06-27)
 
 
