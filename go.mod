@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/hashicorp/go-plugin v1.4.4
 	github.com/hashicorp/go-version v1.5.0
-	github.com/hashicorp/hcl/v2 v2.10.1
+	github.com/hashicorp/hcl/v2 v2.13.0
 	github.com/jackc/pgx/v4 v4.16.1
 	github.com/mattn/go-isatty v0.0.14
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
