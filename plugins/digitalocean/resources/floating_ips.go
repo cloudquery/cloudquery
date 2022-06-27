@@ -11,7 +11,7 @@ import (
 
 type floatingIpWrapper struct {
 	godo.FloatingIP
-	DropletId int
+	DropletId *int
 }
 
 func FloatingIps() *schema.Table {
@@ -86,9 +86,15 @@ func fetchFloatingIps(ctx context.Context, meta schema.ClientMeta, parent *schem
 		// pass the current page's project to our result channel
 		fw := make([]floatingIpWrapper, len(floatIps))
 		for i, f := range floatIps {
+			var dropletId *int
+			if f.Droplet == nil {
+				dropletId = nil
+			} else {
+				dropletId = &f.Droplet.ID
+			}
 			fw[i] = floatingIpWrapper{
 				FloatingIP: f,
-				DropletId:  f.Droplet.ID,
+				DropletId:  dropletId,
 			}
 		}
 		// if we are at the last page, break out the for loop
