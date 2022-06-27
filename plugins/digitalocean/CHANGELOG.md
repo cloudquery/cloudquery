@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.5.15](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.14...v0.5.15) (2022-06-27)
+
+
+### Bug Fixes
+
+* **deps:** fix(deps): Update module github.com/cloudquery/cq-provider-sdk to v0.12.4 ([#166](https://github.com/cloudquery/cq-provider-digitalocean/issues/166)) ([bc9016a](https://github.com/cloudquery/cq-provider-digitalocean/commit/bc9016a61356695856ee31223d7dce652a2e46bd))
+* Support floating ip without droplet ([#156](https://github.com/cloudquery/cq-provider-digitalocean/issues/156)) ([c703305](https://github.com/cloudquery/cq-provider-digitalocean/commit/c703305e0030fae986bd7dfaa07c104fd8b62f20))
+
 ## [0.5.14](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.13...v0.5.14) (2022-06-26)
 
 
