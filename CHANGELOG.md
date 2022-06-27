@@ -4,6 +4,20 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.28.2](https://github.com/cloudquery/cloudquery/compare/v0.28.1...v0.28.2) (2022-06-27)
+
+
+### Bug Fixes
+
+* **deps:** fix(deps): Update github.com/hairyhenderson/go-fsimpl digest to d4f0b5a ([#1011](https://github.com/cloudquery/cloudquery/issues/1011)) ([2db5c30](https://github.com/cloudquery/cloudquery/commit/2db5c30c626a273dcace1e43e524cab9bf6f1200))
+* **deps:** fix(deps): Update github.com/ProtonMail/go-crypto digest to 5afb4c2 ([#1010](https://github.com/cloudquery/cloudquery/issues/1010)) ([19ba992](https://github.com/cloudquery/cloudquery/commit/19ba9929e49567d97c7829ae835bb461158cc0ce))
+* **deps:** fix(deps): Update module github.com/google/go-github/v35 to v35.3.0 ([#1014](https://github.com/cloudquery/cloudquery/issues/1014)) ([1c35b45](https://github.com/cloudquery/cloudquery/commit/1c35b454419c2d5e41545ec85b6c3073a9d40261))
+* **deps:** fix(deps): Update module github.com/hashicorp/hcl/v2 to v2.13.0 ([#1015](https://github.com/cloudquery/cloudquery/issues/1015)) ([29e5ed5](https://github.com/cloudquery/cloudquery/commit/29e5ed5bd7fe4f02dfb88a9af4c22be5d961a7c9))
+* **deps:** fix(deps): Update module github.com/rs/zerolog to v1.27.0 ([#1016](https://github.com/cloudquery/cloudquery/issues/1016)) ([3643d3d](https://github.com/cloudquery/cloudquery/commit/3643d3dda0439605680e4f39209fdc3e6e122083))
+* **deps:** fix(deps): Update module github.com/spf13/afero to v1.8.2 ([#1017](https://github.com/cloudquery/cloudquery/issues/1017)) ([44e8e9b](https://github.com/cloudquery/cloudquery/commit/44e8e9bc27e4420f48069bb1994be218860f1419))
+* **deps:** fix(deps): Update module github.com/spf13/cast to v1.5.0 ([#1018](https://github.com/cloudquery/cloudquery/issues/1018)) ([5fb9cc6](https://github.com/cloudquery/cloudquery/commit/5fb9cc6d8e6e716fbe28f25ce3a634a825204f5d))
+* **deps:** fix(deps): Update module github.com/stretchr/testify to v1.7.5 ([#1012](https://github.com/cloudquery/cloudquery/issues/1012)) ([a96c37b](https://github.com/cloudquery/cloudquery/commit/a96c37b44542862183b006caedaac71fdd18f777))
+
 ## [0.28.1](https://github.com/cloudquery/cloudquery/compare/v0.28.0...v0.28.1) (2022-06-26)
 
 
