@@ -40,5 +40,6 @@ __debug_bin
 .env
 terraform/downloaded*
 config.hcl
+cloudquery.yml
 terraform/tfplan.binary
 cq-provider*

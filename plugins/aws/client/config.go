@@ -75,7 +75,7 @@ Optional. Named profile in config or credential file from where CQ should grab c
 Optional. by default assumes all regions
 regions:
   - us-east-1
-    us-west-2
+  - us-west-2
 Optional. Enable AWS SDK debug logging.
   aws_debug: false
 The maximum number of times that a request will be retried for failures. Defaults to 10 retry attempts.
