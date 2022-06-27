@@ -52,6 +52,16 @@ func classifyError(err error, fallbackType diag.Type, opts ...diag.BaseErrorOpti
 					)...),
 				),
 			}
+		case "Too many requests":
+			return diag.Diagnostics{
+				RedactError(diag.NewBaseError(err,
+					diag.THROTTLE,
+					append(opts,
+						diag.WithType(diag.THROTTLE),
+						diag.WithSeverity(diag.WARNING),
+					)...),
+				),
+			}
 		}
 	}
 
