@@ -256,15 +256,15 @@ provider "aws" {
     // Optional. if you want to assume role to multiple account and fetch data from them
     accounts "<AccountID_Alias_2>" {
       // Optional. Role ARN we want to assume when accessing this account
-      role_arn = <YOUR_ROLE_ARN_1>
+      role_arn = "<YOUR_ROLE_ARN_1>"
       // Optional. Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for this specific account
-      local_profile = "<NAMED_PROFILE>
+      local_profile = "<NAMED_PROFILE>"
       // Optional. Specify the Role Session name
       role_session_name = ""
     }
     accounts "<AccountID_Alias_2>" {
       // Optional. Role ARN we want to assume when accessing this account
-      role_arn = <YOUR_ROLE_ARN_2>
+      role_arn = "<YOUR_ROLE_ARN_2>"
     }
   }
 
