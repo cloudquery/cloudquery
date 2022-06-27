@@ -185,6 +185,12 @@ func Ec2Images() *schema.Table {
 				Type:        schema.TypeTimestamp,
 				Resolver:    resolveEc2ImageLastLaunchedTime,
 			},
+			{
+				Name:        "deprecation_time",
+				Description: "The date and time to deprecate the AMI.",
+				Type:        schema.TypeTimestamp,
+				Resolver:    client.ResolveTimestampField("DeprecationTime"),
+			},
 		},
 		Relations: []*schema.Table{
 			{
