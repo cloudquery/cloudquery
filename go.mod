@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/cq-provider-sdk v0.12.3
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
-	github.com/google/go-github/v35 v35.2.0
+	github.com/google/go-github/v35 v35.3.0
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/hashicorp/go-plugin v1.4.4
 	github.com/hashicorp/go-version v1.5.0
