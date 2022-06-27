@@ -124,6 +124,7 @@ func newRootCmd() *cobra.Command {
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			zerolog.Logger = NewLogger(o)
 			initSentry(o)
+			initAnalytics(o)
 
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
@@ -135,7 +136,6 @@ func newRootCmd() *cobra.Command {
 						return err
 					}
 				}
-				initAnalytics(o)
 			}
 			logInvocationParams(cmd, args)
 			return nil
