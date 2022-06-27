@@ -531,6 +531,9 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 
 	output, err := mgr.GetBucketRegion(ctx, *resource.Name)
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
