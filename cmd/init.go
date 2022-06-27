@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -278,21 +277,6 @@ func init() {
 }
 
 // getConfigFile returns the config filename
-// if it ends with ".*", .yml and .hcl extensions are tried in order to find the existing file, if available
 func getConfigFile() string {
-	configPath := viper.GetString("configPath")
-	if !strings.HasSuffix(configPath, ".*") {
-		return configPath
-	}
-
-	fs := file.NewOsFs()
-	noSuffix := strings.TrimSuffix(configPath, ".*")
-	for _, tryExt := range []string{".yml", ".hcl"} {
-		tryFn := noSuffix + tryExt
-		if _, err := fs.Stat(tryFn); err == nil {
-			return tryFn
-		}
-	}
-
-	return noSuffix + ".yml"
+	return viper.GetString("configPath")
 }
