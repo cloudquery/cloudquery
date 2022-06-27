@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.5.17](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.16...v0.5.17) (2022-06-27)
+
+
+### Features
+
+* Classify error 420 "Too many requests" ([#154](https://github.com/cloudquery/cq-provider-digitalocean/issues/154)) ([780cd66](https://github.com/cloudquery/cq-provider-digitalocean/commit/780cd667a4b657b210bd49b381df8a517fc242e1))
+
 ## [0.5.16](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.15...v0.5.16) (2022-06-27)
 
 
