@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Features
 
-* More verbose summary [#996](https://github.com/cloudquery/cloudquery/pull/996) (https://github.com/cloudquery/cloudquery/commit/d5d6ac613a9abd11c99d4309a151af079704c4bb)
+* More verbose summary ([#996](https://github.com/cloudquery/cloudquery/pull/996)) ([d5d6ac6](https://github.com/cloudquery/cloudquery/commit/d5d6ac613a9abd11c99d4309a151af079704c4bb))
 
 ### Bug Fixes
 
