@@ -508,7 +508,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 
 		if isAllRegions(localRegions) {
-			logger.Info("All regions specified in config.yml. Assuming all regions")
+			logger.Info("All regions specified in `cloudquery.yml`. Assuming all regions")
 		}
 
 		awsCfg, err := configureAwsClient(ctx, logger, awsConfig, account, adminAccountSts)
