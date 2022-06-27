@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
-	github.com/cloudquery/cq-provider-sdk v0.12.3
+	github.com/cloudquery/cq-provider-sdk v0.12.4
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/go-github/v35 v35.3.0
@@ -52,8 +52,8 @@ require (
 	github.com/spf13/cast v1.5.0
 	github.com/spf13/pflag v1.0.5
 	github.com/xeipuuv/gojsonschema v1.2.0
-	github.com/xo/dburl v0.8.4
-	google.golang.org/grpc v1.46.2
+	github.com/xo/dburl v0.11.0
+	google.golang.org/grpc v1.47.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
