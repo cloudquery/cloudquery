@@ -465,13 +465,14 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 	client := NewAwsClient(logger)
 	client.GlobalRegion = awsConfig.GlobalRegion
 	var adminAccountSts AssumeRoleAPIClient
-
+	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
+		return nil, diags.Add(diag.FromError(errors.New("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple provider blocks"), diag.USER))
+	}
 	if awsConfig.Organization != nil {
 		var err error
 		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsConfig)
 		if err != nil {
 			logger.Error("error getting child accounts", "err", err)
-
 			var ae smithy.APIError
 			if errors.As(err, &ae) {
 				if strings.Contains(ae.ErrorCode(), "AccessDenied") {
@@ -481,7 +482,6 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
 		}
 	}
-
 	if len(awsConfig.Accounts) == 0 {
 		awsConfig.Accounts = append(awsConfig.Accounts, Account{
 			ID: defaultVar,
@@ -515,7 +515,14 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		if err != nil {
 			if account.source == "org" {
 				logger.Warn("unable to assume role in account")
-				diags = diags.Add(diag.FromError(errors.New("unable to assume role in account"), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+				principal := "unknown principal"
+				// Identify the principal making the request and use it to construct the error message. Any errors can be ignored as they are only for improving the user experience.
+				awsAdminCfg, _ := configureAwsClient(ctx, logger, awsConfig, *awsConfig.Organization.AdminAccount, nil)
+				output, accountErr := getAccountId(ctx, awsAdminCfg)
+				if accountErr == nil {
+					principal = *output.Arn
+				}
+				diags = diags.Add(diag.FromError(err, diag.ACCESS, diag.WithDetails("ensure that %s has access to be able perform `sts:AssumeRole` on %s ", principal, account.RoleARN), diag.WithSeverity(diag.WARNING)))
 				continue
 			}
 			var ae smithy.APIError
@@ -552,8 +559,8 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		awsCfg.Region = account.Regions[0]
 		output, err := getAccountId(ctx, awsCfg)
 		if err != nil {
-			// return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
-			diags = diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			// This should only ever fail when there is a network or endpoint issue. There is no way for IAM to deny this call.
+			diags = diags.Add(diag.FromError(fmt.Errorf("failed to get caller identity. AWS Error: %w", err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
 			continue
 		}
 		iamArn, err := arn.Parse(*output.Arn)
