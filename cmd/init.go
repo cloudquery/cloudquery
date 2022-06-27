@@ -55,6 +55,11 @@ func initialize(ctx context.Context, providers []string) error {
 		return diag.FromError(fmt.Errorf("config file %q already exists", configPath), diag.USER)
 	}
 
+	if !config.IsNameYAML(configPath) {
+		ui.ColorizedOutput(ui.ColorError, "Error: HCL config format is deprecated and should not be used for new installations\n")
+		return diag.FromError(fmt.Errorf("deprecated format %q", configPath), diag.USER)
+	}
+
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
 	for i, p := range providers {
 		organization, providerName, provVersion, err := parseProviderCLIArg(p)
@@ -273,7 +278,7 @@ func init() {
 }
 
 // getConfigFile returns the config filename
-// if it ends with ".*", .hcl and .yml extensions are tried in order to find the existing file, if available
+// if it ends with ".*", .yml and .hcl extensions are tried in order to find the existing file, if available
 func getConfigFile() string {
 	configPath := viper.GetString("configPath")
 	if !strings.HasSuffix(configPath, ".*") {
@@ -282,12 +287,12 @@ func getConfigFile() string {
 
 	fs := file.NewOsFs()
 	noSuffix := strings.TrimSuffix(configPath, ".*")
-	for _, tryExt := range []string{".hcl", ".yml"} {
+	for _, tryExt := range []string{".yml", ".hcl"} {
 		tryFn := noSuffix + tryExt
 		if _, err := fs.Stat(tryFn); err == nil {
 			return tryFn
 		}
 	}
 
-	return noSuffix + ".hcl"
+	return noSuffix + ".yml"
 }
