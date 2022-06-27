@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.14](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.13...v0.5.14) (2022-06-27)
+
+
+### Bug Fixes
+
+* **deps:** fix(deps): Update module github.com/cloudquery/cq-provider-sdk to v0.12.4 ([#193](https://github.com/cloudquery/cq-provider-k8s/issues/193)) ([b79b78c](https://github.com/cloudquery/cq-provider-k8s/commit/b79b78cbbb49f3300df73bbd723eb893ce3fb96a))
+
 ## [0.5.13](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.12...v0.5.13) (2022-06-26)
 
 
