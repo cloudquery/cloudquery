@@ -4,6 +4,21 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.29.0](https://github.com/cloudquery/cloudquery/compare/v0.28.3...v0.29.0) (2022-06-27)
+
+
+### Bug Fixes
+
+* Configure Provider Yml ([#1001](https://github.com/cloudquery/cloudquery/issues/1001)) ([23b6695](https://github.com/cloudquery/cloudquery/commit/23b66956148885bb5e9b532a80c0136568868eda))
+* **deps:** fix(deps): Update module github.com/cloudquery/cq-provider-sdk to v0.12.4 ([#1026](https://github.com/cloudquery/cloudquery/issues/1026)) ([bf197eb](https://github.com/cloudquery/cloudquery/commit/bf197eb4933547b6316c672ac5ac51cc60e5af08))
+* **deps:** fix(deps): Update module github.com/cloudquery/cq-provider-sdk to v0.12.5 ([#1027](https://github.com/cloudquery/cloudquery/issues/1027)) ([57db8db](https://github.com/cloudquery/cloudquery/commit/57db8db759e24b6563f8a4828b5e093320f897d7))
+* Don't decrease ulimit. Change ulimit logs from 'debug' to 'info' ([#1028](https://github.com/cloudquery/cloudquery/issues/1028)) ([079cef1](https://github.com/cloudquery/cloudquery/commit/079cef159718face4d4abb7d40e7353d5c32c267))
+
+
+### Miscellaneous Chores
+
+* Release 0.29.0 ([#1029](https://github.com/cloudquery/cloudquery/issues/1029)) ([6e6d787](https://github.com/cloudquery/cloudquery/commit/6e6d787d5c573b77d5f5f5a5951b37daa25c4306))
+
 ## [0.28.3](https://github.com/cloudquery/cloudquery/compare/v0.28.2...v0.28.3) (2022-06-27)
 
 ### Features
