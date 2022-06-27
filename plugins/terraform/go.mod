@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/aws/aws-sdk-go v1.38.61
-	github.com/cloudquery/cq-provider-sdk v0.12.4
+	github.com/cloudquery/cq-provider-sdk v0.12.5
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/hashicorp/go-hclog v1.2.1
