@@ -24,13 +24,9 @@ jobs:
           types: |
             fix
             feat
-            docs
-            ci
             chore
             refactor
             test
-            enhancement
-            breaking
           # Configure that a scope must always be provided.
           requireScope: false
           # Configure additional validation for the subject based on a regex.
