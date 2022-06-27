@@ -49,7 +49,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5
 	github.com/rudderlabs/analytics-go v3.3.2+incompatible
 	github.com/savioxavier/termlink v1.1.0
-	github.com/spf13/cast v1.4.1
+	github.com/spf13/cast v1.5.0
 	github.com/spf13/pflag v1.0.5
 	github.com/xeipuuv/gojsonschema v1.2.0
 	github.com/xo/dburl v0.8.4
