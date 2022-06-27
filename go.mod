@@ -15,7 +15,7 @@ require (
 	github.com/jackc/pgx/v4 v4.16.1
 	github.com/mattn/go-isatty v0.0.14
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/rs/zerolog v1.26.1
+	github.com/rs/zerolog v1.27.0
 	github.com/spf13/afero v1.8.2
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.1
