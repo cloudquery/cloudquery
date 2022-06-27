@@ -14,3 +14,6 @@ title = "pull_request_title"
 [merge.automerge_dependencies]
 usernames = ["cq-bot"]
 versions = ["patch"]
+
+[merge]
+notify_on_conflict = false
