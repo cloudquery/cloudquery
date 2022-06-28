@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/cobra/doc"
 )
@@ -13,8 +16,20 @@ var docCmd = &cobra.Command{
 	Args:   cobra.ExactValidArgs(1),
 	Hidden: true,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return doc.GenMarkdownTree(rootCmd, args[0])
+		return doc.GenMarkdownTreeCustom(rootCmd, args[0], filePrepender, linkHandler)
 	},
+}
+
+func linkHandler(s string) string { return s }
+
+func filePrepender(filename string) string {
+	const fmTemplate = `---
+id: "%s"
+title: "%s"
+---
+`
+	title := strings.ReplaceAll(filename, "_", " ")
+	return fmt.Sprintf(fmTemplate, title, title)
 }
 
 func init() {
