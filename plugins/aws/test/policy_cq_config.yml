@@ -1,0 +1,20 @@
+cloudquery:
+  providers:
+    - name: aws
+      version: latest
+  connection:
+    type: postgres
+    username: postgres
+    password: pass
+    host: localhost
+    port: 5432
+    database: postgres
+    sslmode: disable
+providers:
+  # provider configurations
+  aws:
+    configurations:
+      max_retries: 10
+      max_backoff: 90
+    resources:
+      - "*"
