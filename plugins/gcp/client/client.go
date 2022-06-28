@@ -147,10 +147,10 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 func validateProjects(projects []string) diag.Diagnostics {
 	for _, project := range projects {
 		if project == defaultProjectIdName {
-			return diag.FromError(errors.New("please specify a valid project_id in config.hcl instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>"), diag.USER)
+			return diag.FromError(errors.New("please specify a valid project_id in config.yml instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>"), diag.USER)
 		}
 		if project == "" {
-			return diag.FromError(errors.New("please specify a valid project_id in config.hcl instead of empty string"), diag.USER)
+			return diag.FromError(errors.New("please specify a valid project_id in config.yml instead of empty string"), diag.USER)
 		}
 	}
 	return nil
