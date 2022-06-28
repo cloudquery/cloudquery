@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"path"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -25,11 +27,15 @@ func linkHandler(s string) string { return s }
 func filePrepender(filename string) string {
 	const fmTemplate = `---
 id: "%s"
-title: "%s"
+hide_title: true
+sidebar_label: "%s"
 ---
 `
-	title := strings.ReplaceAll(filename, "_", " ")
-	return fmt.Sprintf(fmTemplate, title, title)
+	name := filepath.Base(filename)
+	base := strings.TrimSuffix(name, path.Ext(name))
+	id := strings.ReplaceAll(base, "_", " ")
+	sidebarLabel := strings.TrimPrefix(id, "cloudquery ")
+	return fmt.Sprintf(fmTemplate, id, sidebarLabel)
 }
 
 func init() {
