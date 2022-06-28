@@ -27,7 +27,7 @@ func (c Config) Example() string {
 		return `
 Optional. if you not specified, cloudquery tries to access all subscriptions available to tenant
 subscriptions:
-  - <YOUR_SUBSCRIPTION_ID_HERE>
+  - "<YOUR_SUBSCRIPTION_ID_HERE>"
 `
 	}
 }
