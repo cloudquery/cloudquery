@@ -25,8 +25,8 @@ func (c Config) Example() string {
 		return `
 Optional. Set contexts that you want to fetch. If it is not given then all contexts from config are iterated over.
 contexts:
-  - YOUR_CONTEXT_NAME1
-  - YOUR_CONTEXT_NAME2
+  - "YOUR_CONTEXT_NAME1"
+  - "YOUR_CONTEXT_NAME2"
 `
 	}
 }
