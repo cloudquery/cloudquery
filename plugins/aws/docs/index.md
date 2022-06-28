@@ -120,7 +120,6 @@ providers:
     # list of resources to fetch
     resources:
       - "*"
-}
 ```
 
 By default, CloudQuery will fetch all configuration from **all** supported resources in **all** commercial regions in the **default** account. You can change this behavior with the following arguments:
