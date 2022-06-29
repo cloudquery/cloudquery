@@ -17,6 +17,7 @@ import (
 	"github.com/johannesboyne/gofakes3/backend/s3mem"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/yaml.v3"
 )
 
 const testConfig = `cloudquery {
@@ -48,16 +49,16 @@ const bucketName = "myBucket"
 const defaultPermissions = 0644
 
 type Account struct {
-	ID      string `hcl:",label"`
-	RoleARN string `hcl:"role_arn,optional"`
+	ID      string `yaml:"id" hcl:",label"`
+	RoleARN string `yaml:"role_arn,omitempty" hcl:"role_arn,optional"`
 }
 
 type AwsConfig struct {
-	Regions    []string  `hcl:"regions,optional"`
-	Accounts   []Account `hcl:"account,block"`
-	AWSDebug   bool      `hcl:"aws_debug,optional"`
-	MaxRetries int       `hcl:"max_retries,optional" default:"5"`
-	MaxBackoff int       `hcl:"max_backoff,optional" default:"30"`
+	Regions    []string  `yaml:"regions,omitempty" hcl:"regions,optional"`
+	Accounts   []Account `yaml:"accounts" hcl:"accounts,block"`
+	AWSDebug   bool      `yaml:"aws_debug,omitempty" hcl:"aws_debug,optional"`
+	MaxRetries int       `yaml:"max_retries,omitempty" hcl:"max_retries,optional" default:"5"`
+	MaxBackoff int       `yaml:"max_backoff,omitempty" hcl:"max_backoff,optional" default:"30"`
 }
 
 func TestParser_LoadValidConfigFromFile(t *testing.T) {
@@ -145,7 +146,7 @@ func TestWithEnvironmentVariables(t *testing.T) {
 	assert.Equal(t, "value 2", p.HCLContext.Variables["Var2"].AsString())
 }
 
-func TestConfigEnvVariableSubstitution(t *testing.T) {
+func TestConfigEnvVariableSubstitutionHCL(t *testing.T) {
 	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{
 		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
 		"CQ_VAR_ROLE_ARN=12312312",
@@ -161,6 +162,27 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 
 	c := AwsConfig{}
 	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
+	assert.Nil(t, errs)
+
+	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)
+}
+
+func TestConfigEnvVariableSubstitutionYAML(t *testing.T) {
+	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{
+		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
+		"CQ_VAR_ROLE_ARN=12312312",
+	}))
+	cfg, diags := p.LoadConfigFile("fixtures/env_vars.yml")
+	if diags != nil {
+		for _, d := range diags {
+			t.Error(d.Error())
+		}
+		return
+	}
+	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
+
+	c := AwsConfig{}
+	errs := yaml.Unmarshal(cfg.Providers[0].Configuration, &c)
 	assert.Nil(t, errs)
 
 	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)

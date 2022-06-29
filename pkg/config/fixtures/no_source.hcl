@@ -9,10 +9,10 @@ cloudquery {
 
 provider "test" {
   configuration {
-    account "dev" {
+    accounts "dev" {
       role_arn = "12312312"
     }
-    account "ron" {}
+    accounts "ron" {}
   }
   resources = ["slow_resource"]
 }

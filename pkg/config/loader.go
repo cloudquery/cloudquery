@@ -32,6 +32,8 @@ type Parser struct {
 	fs         afero.Afero
 	p          *hclparse.Parser
 	HCLContext hcl.EvalContext
+
+	variables map[string]string
 }
 
 type Option func(*Parser)
@@ -48,6 +50,17 @@ func WithFS(aferoFs afero.Fs) Option {
 func WithEnvironmentVariables(prefix string, vars []string) Option {
 	return func(p *Parser) {
 		EnvToHCLContext(&p.HCLContext, prefix, vars)
+
+		for _, v := range vars {
+			pair := strings.SplitN(v, "=", 2)
+			if strings.HasPrefix(pair[0], prefix) {
+				var varVal string
+				if len(pair) == 2 {
+					varVal = pair[1]
+				}
+				p.variables[strings.TrimPrefix(pair[0], prefix)] = varVal
+			}
+		}
 	}
 }
 
@@ -67,12 +80,17 @@ func NewParser(options ...Option) *Parser {
 			Variables: make(map[string]cty.Value),
 			Functions: make(map[string]function.Function),
 		},
+		variables: make(map[string]string),
 	}
 
 	for _, opt := range options {
 		opt(&p)
 	}
 	return &p
+}
+
+func (p *Parser) getVariableValue(s string) string {
+	return p.variables[s]
 }
 
 // LoadFile is a low-level method that reads the file at the given path
