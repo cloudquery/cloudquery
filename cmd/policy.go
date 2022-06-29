@@ -68,7 +68,7 @@ var (
 		Long:  policyRunHelpMsg,
 		Example: `
 	# Run an official policy
-	# Official policies are hosted here: https://github.com/cloudquery-policies
+	# Official policies are available on our hub: https://hub.cloudquery.io/policies
 	cloudquery policy run aws
 
 	# Run a specific sub-policy of an official policy
