@@ -81,7 +81,7 @@ var (
 	cloudquery policy run ./<path-to-local-directory>
 
 	# See https://hub.cloudquery.io for additional policies
-	# See https://docs.cloudquery.io/docs/tutorials/policies/policies-overview for instructions on writing policies.`,
+	# See https://docs.cloudquery.io/docs/tutorials/policies/policies-overview for instructions on writing policies`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			source := args[0]
 			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
