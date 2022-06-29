@@ -33,8 +33,8 @@ sidebar_label: "%s"
 `
 	name := filepath.Base(filename)
 	base := strings.TrimSuffix(name, path.Ext(name))
-	id := strings.ReplaceAll(base, "_", " ")
-	sidebarLabel := strings.TrimPrefix(id, "cloudquery ")
+	id := strings.TrimPrefix(base, "cloudquery_")
+	sidebarLabel := strings.ReplaceAll(id, "_", " ")
 	return fmt.Sprintf(fmTemplate, id, sidebarLabel)
 }
 
