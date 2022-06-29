@@ -22,12 +22,12 @@ import (
 )
 
 const (
-	initShort   = "Generate initial config.hcl for fetch command"
+	initShort   = "Generate initial cloudquery.yml for fetch command"
 	initExample = `
-  # Downloads aws provider and generates config.hcl for aws provider
+  # Downloads aws provider and generates cloudquery.yml for aws provider
   cloudquery init aws
 
-  # Downloads aws,gcp providers and generates one config.hcl with both providers
+  # Downloads aws,gcp providers and generates one cloudquery.yml with both providers
   cloudquery init aws gcp`
 )
 
@@ -145,7 +145,7 @@ func generateConfig(ctx context.Context, c *console.Client, providers []string, 
 			Format:   cqproto.ConfigYAML,
 		})
 		if pCfg != nil && pCfg.Format != cqproto.ConfigYAML {
-			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support YAML config. Fallback to HCL or upgrade provider", p), diag.USER, diag.WithDetails("Use `cloudquery init <providers> --config config.hcl` to use HCL config format")))
+			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support YAML config. Please upgrade provider", p), diag.USER))
 		}
 		if diags.HasErrors() {
 			return nil, diags

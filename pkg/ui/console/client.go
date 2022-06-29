@@ -669,13 +669,7 @@ func setConfigAnalytics(cfg *config.Config) {
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	analytics.SetGlobalProperty("cfghash", cfgHash)
 
-	var cfgf string
-	switch cfg.Format() {
-	case cqproto.ConfigYAML:
-		cfgf = "yaml"
-	case cqproto.ConfigHCL:
-		cfgf = "hcl"
-	}
+	const cfgf = "yaml"
 	analytics.SetGlobalProperty("cfgformat", cfgf)
 
 	sentry.ConfigureScope(func(scope *sentry.Scope) {

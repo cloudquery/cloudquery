@@ -12,7 +12,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/hashicorp/hcl/v2/hclsimple"
 	"github.com/johannesboyne/gofakes3"
 	"github.com/johannesboyne/gofakes3/backend/s3mem"
 	"github.com/spf13/afero"
@@ -40,10 +39,8 @@ provider "aws" {
   resources = ["slow_resource"]
 }`
 
-const expectedDuplicateProviderError = "fixtures/duplicate_provider_name.hcl:21,1-15: Provider Alias Required; Provider with name aws already exists, use alias in provider configuration block."
-
-const expectedDuplicateAliasProviderError = "fixtures/duplicate_provider_alias.hcl:23,3-21: Duplicate Alias; Provider with alias same-aws for provider aws already exists, give it a different alias."
-const expectedDuplicateAliasProviderErrorYaml = "provider with alias same-aws for provider aws-2 already exists, give it a different alias"
+const expectedDuplicateProviderError = "provider with name aws already exists, use alias in provider configuration block"
+const expectedDuplicateAliasProviderError = "provider with alias same-aws for provider aws-2 already exists, give it a different alias"
 
 const bucketName = "myBucket"
 const defaultPermissions = 0644
@@ -63,11 +60,12 @@ type AwsConfig struct {
 
 func TestParser_LoadValidConfigFromFile(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFile("fixtures/valid_config.hcl")
+	cfg, diags := p.LoadConfigFile("fixtures/valid_config.yml")
 	assert.Nil(t, diags)
 	// Check configuration was added, we will nil it after it to check the whole structure
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 	cfg.Providers[0].Configuration = nil
+	cfg.Providers[0].ConfigKeys = nil
 	source := "cloudquery"
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
@@ -92,21 +90,21 @@ func TestParser_LoadValidConfigFromFile(t *testing.T) {
 
 func TestLoader_BadVersion(t *testing.T) {
 	p := NewParser()
-	_, diags := p.LoadConfigFile("fixtures/bad_version.hcl")
+	_, diags := p.LoadConfigFile("fixtures/bad_version.yml")
 	assert.NotNil(t, diags)
 	assert.Equal(t, "Provider test version 0.0.0 is invalid", diags[0].Error())
 }
 
 func TestLoader_DuplicateProviderNaming(t *testing.T) {
 	p := NewParser()
-	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_name.hcl")
+	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_name.yml")
 	assert.NotNil(t, diags)
 	assert.Equal(t, expectedDuplicateProviderError, diags[0].Error())
 }
 
 func TestLoader_AliasedProvider(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFile("fixtures/config_with_alias.hcl")
+	cfg, diags := p.LoadConfigFile("fixtures/config_with_alias.yml")
 	assert.Nil(t, diags)
 	_, err := cfg.GetProvider("another-aws")
 	assert.Nil(t, err)
@@ -116,58 +114,23 @@ func TestLoader_AliasedProvider(t *testing.T) {
 
 func TestLoader_DuplicateAliasedProvider(t *testing.T) {
 	p := NewParser()
-	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_alias.hcl")
+	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_alias.yml")
 	assert.NotNil(t, diags)
 	assert.Equal(t, expectedDuplicateAliasProviderError, diags[0].Error())
 }
 
-func TestParser_DuplicateAliasedProviderYaml(t *testing.T) {
-	p := NewParser()
-	_, diags := p.LoadConfigFile("fixtures/duplicate_provider_alias.yaml")
-	assert.NotNil(t, diags)
-	assert.Equal(t, expectedDuplicateAliasProviderErrorYaml, diags[0].Error())
-}
-
 func TestProviderLoadConfiguration(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFile("fixtures/valid_config.hcl")
+	cfg, diags := p.LoadConfigFile("fixtures/valid_config.yml")
 	assert.Nil(t, diags)
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 
 	c := AwsConfig{}
-	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
+	errs := yaml.Unmarshal(cfg.Providers[0].Configuration, &c)
 	assert.Nil(t, errs)
 }
 
-func TestWithEnvironmentVariables(t *testing.T) {
-	const prefix = "PREFIX_"
-	p := NewParser(WithEnvironmentVariables(prefix, []string{prefix + "VAR1=value1", prefix + "Var2=value 2"}))
-	assert.Equal(t, "value1", p.HCLContext.Variables["VAR1"].AsString())
-	assert.Equal(t, "value 2", p.HCLContext.Variables["Var2"].AsString())
-}
-
-func TestConfigEnvVariableSubstitutionHCL(t *testing.T) {
-	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{
-		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
-		"CQ_VAR_ROLE_ARN=12312312",
-	}))
-	cfg, diags := p.LoadConfigFile("fixtures/env_vars.hcl")
-	if diags != nil {
-		for _, d := range diags {
-			t.Error(d.Error())
-		}
-		return
-	}
-	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
-
-	c := AwsConfig{}
-	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
-	assert.Nil(t, errs)
-
-	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)
-}
-
-func TestConfigEnvVariableSubstitutionYAML(t *testing.T) {
+func TestConfigEnvVariableSubstitution(t *testing.T) {
 	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{
 		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
 		"CQ_VAR_ROLE_ARN=12312312",
@@ -190,11 +153,12 @@ func TestConfigEnvVariableSubstitutionYAML(t *testing.T) {
 
 func TestLoader_LoadConfigNoSourceField(t *testing.T) {
 	p := NewParser()
-	cfg, diags := p.LoadConfigFile("fixtures/no_source.hcl")
+	cfg, diags := p.LoadConfigFile("fixtures/no_source.yml")
 	assert.Nil(t, diags)
 	// Check configuration was added, we will nil it after it to check the whole structure
 	assert.NotNil(t, cfg.Providers[0].Configuration)
 	cfg.Providers[0].Configuration = nil
+	cfg.Providers[0].ConfigKeys = nil
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
 			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
@@ -225,57 +189,61 @@ func TestLoader_LoadConfigFromSourceConnectionOptionality(t *testing.T) {
 	}{
 		{
 			`
-cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-  }
-}
+cloudquery:
+  connection:
+    dsn: "postgres://postgres:pass@localhost:5432/postgres"
+  providers:
+    - name: aws
+      version: latest
 `,
 			"postgres://postgres:pass@localhost:5432/postgres",
 			false,
 		},
 		{
 			`
-cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-    database = "cq"
-  }
-}
+cloudquery:
+  connection:
+    dsn: "postgres://postgres:pass@localhost:5432/postgres"
+    database: "cq"
+  providers:
+    - name: aws
+      version: latest
 `,
 			"",
 			true,
 		},
 		{
 			`
-cloudquery {
-  connection {
-    username = "postgres"
-    password = "pass"
-    host = "localhost"
-    port = 15432
-    database = "cq"
-    sslmode = "disable"
-  }
-}
+cloudquery:
+  connection:
+    username: "postgres"
+    password: "pass"
+    host: "localhost"
+    port: 15432
+    database: "cq"
+    sslmode: "disable"
+  providers:
+    - name: aws
+      version: latest
 `,
 			"postgres://postgres:pass@localhost:15432/cq?sslmode=disable",
 			false,
 		},
 		{
 			`
-cloudquery {
-  connection {
-    username = "postgres"
-    password = "pass"
-    type = "postgres"
-    host = "localhost"
-    port = 15432
-    database = "cq"
-    sslmode = "disable"
-	extras = [ "search_path=myschema" ]
-  }
-}
+cloudquery:
+  connection:
+    username: "postgres"
+    password: "pass"
+    type: "postgres"
+    host: "localhost"
+    port: 15432
+    database: "cq"
+    sslmode: "disable"
+    extras: [ "search_path=myschema" ]
+  providers:
+    - name: aws
+      version: latest
 `,
 			"postgres://postgres:pass@localhost:15432/cq?search_path=myschema&sslmode=disable",
 			false,
@@ -290,6 +258,9 @@ cloudquery {
 				assert.True(t, diags.HasErrors())
 			} else {
 				assert.Len(t, diags.BySeverity(diag.ERROR), 0)
+				if t.Failed() {
+					return
+				}
 				assert.Equal(t, tc.expectedDSN, parsedCfg.CloudQuery.Connection.DSN)
 			}
 		})
