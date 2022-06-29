@@ -4,6 +4,18 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.30.0](https://github.com/cloudquery/cloudquery/compare/v0.29.0...v0.30.0) (2022-06-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove 'policy download' feature (#1033)
+
+### Features
+
+* Generate metadata for CLI docs ([#1034](https://github.com/cloudquery/cloudquery/issues/1034)) ([f7ae08a](https://github.com/cloudquery/cloudquery/commit/f7ae08a4803adc69a11e26eddd8bfe5db5648f30))
+* Remove 'policy download' feature ([#1033](https://github.com/cloudquery/cloudquery/issues/1033)) ([e376aed](https://github.com/cloudquery/cloudquery/commit/e376aed83c625b92be9d5f44e5bd0b902b50ca9f))
+
 ## [0.29.0](https://github.com/cloudquery/cloudquery/compare/v0.28.3...v0.29.0) (2022-06-27)
 
 ### ⚠ BREAKING CHANGES
