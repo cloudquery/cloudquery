@@ -76,8 +76,8 @@ jobs:
           bash -c "until test -f .cq_reattach; do echo 123; sleep 1; done"
 
           export CQ_REATTACH_PROVIDERS=.cq_reattach
-          ./cloudquery provider sync k8s --config ./test/policy_cq_config.hcl --enable-console-log
-          ./cloudquery policy run k8s --config ./test/policy_cq_config.hcl --enable-console-log --disable-fetch-check
+          ./cloudquery provider sync k8s --config ./test/policy_cq_config.yml --enable-console-log
+          ./cloudquery policy run k8s --config ./test/policy_cq_config.yml --enable-console-log --disable-fetch-check
 
         env:
           CQ_PROVIDER_DEBUG: 1
