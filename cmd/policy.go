@@ -63,7 +63,7 @@ var (
 	noResults    bool
 	storeResults bool
 	policyRunCmd = &cobra.Command{
-		Use:   "run some_policy",
+		Use:   "run <policy>",
 		Short: policyRunHelpMsg,
 		Long:  policyRunHelpMsg,
 		Example: `
