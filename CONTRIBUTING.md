@@ -148,4 +148,4 @@ We make use of the [Conventional Commits specification](https://www.conventional
 | `refactor: <Message>`      |  `<String>`       | patch release|
 | `test: <Message>`      |  `<String>`       | patch release|
 
-Additional context can be provided in parentheses, e.g. `fix(docs)`. Breaking changes should be suffixed with `!`, e.g. `feat!: drop support for X`.
+Additional context can be provided in parentheses, e.g. `fix(docs): Fix typo`. Breaking changes should be suffixed with `!`, e.g. `feat!: Drop support for X`. This will always result in a minor release.
