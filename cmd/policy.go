@@ -53,7 +53,7 @@ var (
 
 	policyDownloadCmd = &cobra.Command{
 		Use:        "download",
-		Deprecated: "Use 'policy run' command directly instead. If you need to download a policy to your machine, you can use 'git clone [https://github.com/cloudquery-policies/aws.git]'. See https://docs.cloudquery.io/docs/cli/policy/sources. ",
+		Deprecated: "Use 'policy run' command directly instead. If you need to download a policy to your machine, you can use 'git clone <URL FOR GIT REPO>'. See https://docs.cloudquery.io/docs/cli/policy/sources for more information on how to use the `policy run` command ",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("'policy download' command has been deprecated. Use the 'policy run' command directly instead")
 		},
