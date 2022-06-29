@@ -21,6 +21,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
@@ -673,6 +674,15 @@ func setConfigAnalytics(cfg *config.Config) {
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	analytics.SetGlobalProperty("cfghash", cfgHash)
 
+	var cfgf string
+	switch cfg.Format() {
+	case cqproto.ConfigYAML:
+		cfgf = "yaml"
+	case cqproto.ConfigHCL:
+		cfgf = "hcl"
+	}
+	analytics.SetGlobalProperty("cfgformat", cfgf)
+
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		if analytics.IsCI() {
 			scope.SetUser(sentry.User{
@@ -680,7 +690,8 @@ func setConfigAnalytics(cfg *config.Config) {
 			})
 		}
 		scope.SetTags(map[string]string{
-			"cfghash": cfgHash,
+			"cfghash":   cfgHash,
+			"cfgformat": cfgf,
 		})
 	})
 }
