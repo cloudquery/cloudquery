@@ -15,8 +15,9 @@ LOOP
         strSQL = strSQL || ' UNION ALL ';
     END IF;
     -- create an SQL query to select from table and transform it into our resources view schema
+    -- we use the double reverse here because split_part with negative indexes is not available in PostgreSQL < 14; https://pgpedia.info/postgresql-versions/postgresql-14.html#system_function_changes
     strSQL = strSQL || format('
-        SELECT cq_id, cq_meta, %L as cq_table, subscription_id, split_part(id, ''/'', -1) as id,
+        SELECT cq_id, cq_meta, %L as cq_table, subscription_id, reverse(split_part(reverse(id), ''/''::text, 1)) as id,
         %s as name, %s as kind, %s as location,
         COALESCE(%s, (cq_meta->>''last_updated'')::timestamp) as fetch_date
         FROM %s', tbl,
