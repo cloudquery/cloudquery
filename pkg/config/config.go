@@ -8,21 +8,20 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/spf13/viper"
 	"github.com/xo/dburl"
 )
 
 type Provider struct {
-	Name                          string   `yaml:"name,omitempty" json:"name,omitempty" hcl:"name,label"`
-	Alias                         string   `yaml:"alias,omitempty" json:"alias,omitempty" hcl:"alias,optional"`
-	Resources                     []string `yaml:"resources,omitempty" json:"resources,omitempty" hcl:"resources,optional"`
-	SkipResources                 []string `yaml:"skip_resources,omitempty" json:"skip_resources,omitempty" hcl:"skip_resources,optional"`
-	Env                           []string `yaml:"env,omitempty" json:"env,omitempty" hcl:"env,optional"`
+	Name                          string   `yaml:"name,omitempty" json:"name,omitempty"`
+	Alias                         string   `yaml:"alias,omitempty" json:"alias,omitempty"`
+	Resources                     []string `yaml:"resources,omitempty" json:"resources,omitempty"`
+	SkipResources                 []string `yaml:"skip_resources,omitempty" json:"skip_resources,omitempty"`
+	Env                           []string `yaml:"env,omitempty" json:"env,omitempty"`
 	Configuration                 []byte   `yaml:"-" json:"-"`
-	MaxParallelResourceFetchLimit uint64   `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty" hcl:"max_parallel_resource_fetch_limit"`
-	MaxGoroutines                 uint64   `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty" hcl:"max_goroutines"`
-	ResourceTimeout               uint64   `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty" hcl:"resource_timeout"`
+	MaxParallelResourceFetchLimit uint64   `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty"`
+	MaxGoroutines                 uint64   `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty"`
+	ResourceTimeout               uint64   `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty"`
 
 	// ConfigKeys is only used temporarily for provider-specific configuration when decoding YAML
 	ConfigKeys map[string]interface{} `yaml:",inline"`
@@ -31,17 +30,15 @@ type Provider struct {
 type Providers []*Provider
 
 type Config struct {
-	CloudQuery CloudQuery `hcl:"cloudquery,block" yaml:"cloudquery" json:"cloudquery"`
-	Providers  Providers  `hcl:"provider,block" yaml:"providers" json:"providers"`
-
-	format cqproto.ConfigFormat
+	CloudQuery CloudQuery `yaml:"cloudquery" json:"cloudquery"`
+	Providers  Providers  `yaml:"providers" json:"providers"`
 }
 
 type CloudQuery struct {
-	Logger     *logging.Config   `yaml:"logging,omitempty" json:"logging,omitempty" hcl:"logging,block"`
-	Providers  RequiredProviders `yaml:"providers,omitempty" json:"providers,omitempty" hcl:"provider,block"`
-	Connection *Connection       `yaml:"connection,omitempty" json:"connection,omitempty" hcl:"connection,block"`
-	Policy     *Policy           `yaml:"policy,omitempty" json:"policy,omitempty" hcl:"policy,block"`
+	Logger     *logging.Config   `yaml:"logging,omitempty" json:"logging,omitempty"`
+	Providers  RequiredProviders `yaml:"providers,omitempty" json:"providers,omitempty"`
+	Connection *Connection       `yaml:"connection,omitempty" json:"connection,omitempty"`
+	Policy     *Policy           `yaml:"policy,omitempty" json:"policy,omitempty"`
 
 	// Used internally
 	PluginDirectory string `yaml:"-" json:"-"`
@@ -49,27 +46,27 @@ type CloudQuery struct {
 }
 
 type Connection struct {
-	DSN string `yaml:"dsn,omitempty" json:"dsn,omitempty" hcl:"dsn,optional"`
+	DSN string `yaml:"dsn,omitempty" json:"dsn,omitempty"`
 
 	// These params are mutually exclusive with DSN
-	Type     string   `yaml:"type,omitempty" json:"type,omitempty" hcl:"type,optional"`
-	Username string   `yaml:"username,omitempty" json:"username,omitempty" hcl:"username,optional"`
-	Password string   `yaml:"password,omitempty" json:"password,omitempty" hcl:"password,optional"`
-	Host     string   `yaml:"host,omitempty" json:"host,omitempty" hcl:"host,optional"`
-	Port     int      `yaml:"port,omitempty" json:"port,omitempty" hcl:"port,optional"`
-	Database string   `yaml:"database,omitempty" json:"database,omitempty" hcl:"database,optional"`
-	SSLMode  string   `yaml:"sslmode,omitempty" json:"sslmode,omitempty" hcl:"sslmode,optional"`
-	Extras   []string `yaml:"extras,omitempty" json:"extras,omitempty" hcl:"extras,optional"`
+	Type     string   `yaml:"type,omitempty" json:"type,omitempty"`
+	Username string   `yaml:"username,omitempty" json:"username,omitempty"`
+	Password string   `yaml:"password,omitempty" json:"password,omitempty"`
+	Host     string   `yaml:"host,omitempty" json:"host,omitempty"`
+	Port     int      `yaml:"port,omitempty" json:"port,omitempty"`
+	Database string   `yaml:"database,omitempty" json:"database,omitempty"`
+	SSLMode  string   `yaml:"sslmode,omitempty" json:"sslmode,omitempty"`
+	Extras   []string `yaml:"extras,omitempty" json:"extras,omitempty"`
 }
 
 type Policy struct {
-	DBPersistence bool `yaml:"db_persistence,omitempty" json:"db_persistence,omitempty" hcl:"db_persistence,optional"`
+	DBPersistence bool `yaml:"db_persistence,omitempty" json:"db_persistence,omitempty"`
 }
 
 type RequiredProvider struct {
-	Name    string  `yaml:"name,omitempty" json:"name,omitempty" hcl:"name,label"`
-	Source  *string `yaml:"source,omitempty" json:"source,omitempty" hcl:"source,optional"`
-	Version string  `yaml:"version,omitempty" json:"version,omitempty" hcl:"version"`
+	Name    string  `yaml:"name,omitempty" json:"name,omitempty"`
+	Source  *string `yaml:"source,omitempty" json:"source,omitempty"`
+	Version string  `yaml:"version,omitempty" json:"version,omitempty"`
 }
 
 type RequiredProviders []*RequiredProvider
@@ -80,10 +77,6 @@ func (pp Providers) Names() []string {
 		pNames[i] = p.Name
 	}
 	return pNames
-}
-
-func (c Config) Format() cqproto.ConfigFormat {
-	return c.format
 }
 
 func (c Config) GetProvider(name string) (*Provider, error) {

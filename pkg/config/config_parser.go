@@ -10,10 +10,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
 	"github.com/xeipuuv/gojsonschema"
 	"gopkg.in/yaml.v3"
@@ -22,39 +19,9 @@ import (
 //go:embed schema.json
 var configSchemaYAML []byte
 
-// configSchemaHCL is the HCL schema for the top-level of a config file. We use
-// the low-level HCL API for this level so we can easily deal with each
-// block type separately with its own decoding logic.
-var configSchemaHCL = &hcl.BodySchema{
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type: "cloudquery",
-		},
-		{
-			Type:       "provider",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type: "modules", // deprecated
-		},
-		{
-			Type:       "policy",
-			LabelNames: []string{"name"},
-		},
-	},
-}
-
-func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, diag.Diagnostics) {
-	if IsNameYAML(name) {
-		newData := os.Expand(string(data), p.getVariableValue)
-		return decodeConfigYAML(strings.NewReader(newData))
-	}
-
-	body, diags := p.LoadFromSource(name, data)
-	if body == nil {
-		return nil, diags
-	}
-	return p.decodeConfigHCL(body, diags)
+func (p *Parser) LoadConfigFromSource(data []byte) (*Config, diag.Diagnostics) {
+	newData := os.Expand(string(data), p.getVariableValue)
+	return decodeConfig(strings.NewReader(newData))
 }
 
 func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
@@ -62,16 +29,7 @@ func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
 	if diags.HasErrors() {
 		return nil, diags
 	}
-	return p.LoadConfigFromSource(path, contents)
-}
-
-func IsNameYAML(name string) bool {
-	switch strings.ToLower(filepath.Ext(name)) {
-	case ".json", ".yaml", ".yml":
-		return true
-	default:
-		return false
-	}
+	return p.LoadConfigFromSource(contents)
 }
 
 func ValidateCQBlock(cq *CloudQuery) diag.Diagnostics {
@@ -136,7 +94,7 @@ func ProcessValidateProviderBlock(plist []*Provider) (Providers, diag.Diagnostic
 	return ret, diags
 }
 
-func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
+func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 	var yc struct {
 		CloudQuery CloudQuery  `yaml:"cloudquery" json:"cloudquery"`
 		Providers  []*Provider `yaml:"providers" json:"providers"`
@@ -171,7 +129,6 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 
 	c := &Config{
 		CloudQuery: yc.CloudQuery,
-		format:     cqproto.ConfigYAML,
 	}
 
 	var diags diag.Diagnostics
@@ -182,57 +139,4 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 	}
 
 	return c, diags
-}
-
-func (p *Parser) decodeConfigHCL(body hcl.Body, diags diag.Diagnostics) (*Config, diag.Diagnostics) {
-	existingProviders := make(map[string]bool)
-	config := &Config{
-		format: cqproto.ConfigHCL,
-	}
-
-	content, contentDiags := body.Content(configSchemaHCL)
-	diags = diags.Add(hclToSdkDiags(contentDiags))
-
-	hasPolicyBlock := false
-
-	for _, block := range content.Blocks {
-		switch block.Type {
-		case "cloudquery":
-			cliLoggingConfig := logging.GlobalConfig
-			cqBlock, cqDiags := decodeCloudQueryBlock(block, &p.HCLContext)
-			diags = diags.Add(hclToSdkDiags(cqDiags))
-			diags = diags.Add(ValidateCQBlock(&cqBlock))
-
-			logging.Reconfigure(*cqBlock.Logger, cliLoggingConfig)
-			config.CloudQuery = cqBlock
-		case "provider":
-			cfg, cfgDiags := decodeProviderBlock(block, &p.HCLContext, existingProviders)
-			diags = diags.Add(hclToSdkDiags(cfgDiags))
-			if cfg != nil {
-				config.Providers = append(config.Providers, cfg)
-			}
-		case "policy":
-			hasPolicyBlock = true
-		case "modules":
-			// deprecated - ignore
-			continue
-		default:
-			// Should never happen because the above cases should be exhaustive
-			// for all block type names in our schema.
-			continue
-		}
-	}
-
-	if hasPolicyBlock {
-		diags = diags.Add(diag.FromError(errors.New("Deprecated 'policy' block in config file"), diag.USER, diag.WithSeverity(diag.WARNING), diag.WithDetails("Specifying 'policy' blocks in 'config.hcl' has been deprecated. See https://docs.cloudquery.io/docs/tutorials/policies/policies-overview for instructions on running policies (either from cloudquery-hub or a local file).")))
-	}
-
-	return config, diags
-}
-
-func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, hcl.Diagnostics) {
-	var cq CloudQuery
-	// Pre-populate with existing values
-	cq.Logger = &logging.GlobalConfig
-	return cq, gohcl.DecodeBody(block.Body, ctx, &cq)
 }

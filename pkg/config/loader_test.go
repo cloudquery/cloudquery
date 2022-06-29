@@ -285,7 +285,7 @@ cloudquery {
 		tc := cases[i]
 		t.Run("case #"+strconv.Itoa(i+1), func(t *testing.T) {
 			p := NewParser()
-			parsedCfg, diags := p.LoadConfigFromSource("test.hcl", []byte(tc.cfg))
+			parsedCfg, diags := p.LoadConfigFromSource([]byte(tc.cfg))
 			if tc.expectedError {
 				assert.True(t, diags.HasErrors())
 			} else {
