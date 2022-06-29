@@ -11,8 +11,7 @@ cloudquery:
     database: postgres
     sslmode: disable
 providers:
-  # provider configurations
-  aws:
+  - name: aws
     configurations:
       max_retries: 10
       max_backoff: 90
