@@ -10,10 +10,10 @@ cloudquery {
 
 provider "aws" {
   configuration {
-    account "dev" {
+    accounts "dev" {
       role_arn = "${ROLE_ARN}"
     }
-    account "ron" {}
+    accounts "ron" {}
   }
   resources = ["slow_resource"]
 }

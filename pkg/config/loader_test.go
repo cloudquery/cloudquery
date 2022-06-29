@@ -55,7 +55,7 @@ type Account struct {
 
 type AwsConfig struct {
 	Regions    []string  `yaml:"regions,omitempty" hcl:"regions,optional"`
-	Accounts   []Account `yaml:"accounts" hcl:"account,block"`
+	Accounts   []Account `yaml:"accounts" hcl:"accounts,block"`
 	AWSDebug   bool      `yaml:"aws_debug,omitempty" hcl:"aws_debug,optional"`
 	MaxRetries int       `yaml:"max_retries,omitempty" hcl:"max_retries,optional" default:"5"`
 	MaxBackoff int       `yaml:"max_backoff,omitempty" hcl:"max_backoff,optional" default:"30"`
