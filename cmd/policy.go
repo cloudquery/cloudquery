@@ -71,7 +71,7 @@ var (
 	# Official policies are available on our hub: https://hub.cloudquery.io/policies
 	cloudquery policy run aws
 
-	# Run a specific sub-policy of an official policy
+	# Run a sub-policy of an official policy
 	cloudquery policy run aws//cis_v1.2.0
 
 	# Run community policy
