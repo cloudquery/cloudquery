@@ -78,6 +78,7 @@ func Provider() *provider.Provider {
 			"network.interfaces":                   network.NetworkInterfaces(),
 			"network.public_ip_addresses":          network.NetworkPublicIPAddresses(),
 			"network.route_filters":                network.NetworkRouteFilters(),
+			"network.route_tables":                 network.NetworkRouteTables(),
 			"network.security_groups":              network.NetworkSecurityGroups(),
 			"network.virtual_networks":             network.NetworkVirtualNetworks(),
 			"network.watchers":                     network.NetworkWatchers(),

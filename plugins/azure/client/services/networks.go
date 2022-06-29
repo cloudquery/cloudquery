@@ -14,6 +14,7 @@ type NetworksClient struct {
 	Interfaces             InterfacesClient
 	PublicIPAddresses      PublicIPAddressesClient
 	RouteFilters           RouteFiltersClient
+	RouteTables            RouteTablesClient
 	SecurityGroups         SecurityGroupsClient
 	VirtualNetworkGateways VirtualNetworkGatewaysClient
 	VirtualNetworks        VirtualNetworksClient
@@ -41,6 +42,10 @@ type PublicIPAddressesClient interface {
 
 type RouteFiltersClient interface {
 	List(ctx context.Context) (result network.RouteFilterListResultPage, err error)
+}
+
+type RouteTablesClient interface {
+	ListAll(ctx context.Context) (result network.RouteTableListResultPage, err error)
 }
 
 type SecurityGroupsClient interface {
@@ -74,6 +79,8 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) Networks
 	pips.Authorizer = auth
 	rf := network.NewRouteFiltersClient(subscriptionId)
 	rf.Authorizer = auth
+	rt := network.NewRouteTablesClient(subscriptionId)
+	rt.Authorizer = auth
 	sg := network.NewSecurityGroupsClient(subscriptionId)
 	sg.Authorizer = auth
 	vng := network.NewVirtualNetworkGatewaysClient(subscriptionId)
@@ -89,6 +96,7 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) Networks
 		Interfaces:             ifs,
 		PublicIPAddresses:      pips,
 		RouteFilters:           rf,
+		RouteTables:            rt,
 		SecurityGroups:         sg,
 		VirtualNetworkGateways: vng,
 		VirtualNetworks:        vn,
