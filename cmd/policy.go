@@ -75,7 +75,7 @@ var (
 	cloudquery policy run aws//cis_v1.2.0
 
 	# Run community policy
-	cloudquery policy run github.com/COMMUNITY_GITHUB_ORG/POLICY_NAME
+	cloudquery policy run github.com/<repo-owner>/<repo-name>
 
 	# Run a policy from a local directory
 	cloudquery policy run ./PATH_TO_POLICY_DIRECTORY/
