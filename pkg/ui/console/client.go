@@ -325,21 +325,6 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 // 													Policy Commands
 // =====================================================================================================================
 
-func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.Diagnostics) {
-	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
-	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "policy", Source: args[0]})
-	if err != nil {
-		ui.SleepBeforeError(ctx)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
-		return diags.Add(diag.FromError(err, diag.RESOLVING))
-	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
-	// Show policy instructions
-	ui.ColorizedOutput(ui.ColorHeader, fmt.Sprintf("To run the policy call cloudquery policy run %s", p.Source))
-	return nil
-}
-
 func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
 	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("dbPersistence", dbPersistence).Msg("run policy received params")
