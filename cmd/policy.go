@@ -78,7 +78,7 @@ var (
 	cloudquery policy run github.com/<repo-owner>/<repo-name>
 
 	# Run a policy from a local directory
-	cloudquery policy run ./PATH_TO_POLICY_DIRECTORY/
+	cloudquery policy run ./<path-to-local-directory>
 
 	# See https://hub.cloudquery.io for additional policies.
 	# See https://docs.cloudquery.io/docs/tutorials/policies/policies-overview for instructions on writing policies.`,
