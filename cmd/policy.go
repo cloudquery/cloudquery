@@ -63,25 +63,25 @@ var (
 	noResults    bool
 	storeResults bool
 	policyRunCmd = &cobra.Command{
-		Use:   "run",
+		Use:   "run some_policy",
 		Short: policyRunHelpMsg,
 		Long:  policyRunHelpMsg,
 		Example: `
-  # Download & Run the policies defined in your config
-  cloudquery policy run
+	# Run an official policy
+	# Official policies are hosted here: https://github.com/cloudquery-policies
+	cloudquery policy run aws
 
-  # Run a specific policy that is not defined in the config.hcl
-  # Run official policy
-  cloudquery policy run aws
+	# Run a specific sub-policy of an official policy
+	cloudquery policy run aws//cis_v1.2.0
 
-  # The following will be the same as above
-  # Official policies are hosted here: https://github.com/cloudquery-policies
-  cloudquery policy run aws//cis_v1.2.0
-	
-  # Run community policy
-  cloudquery policy run github.com/COMMUNITY_GITHUB_ORG/aws
+	# Run community policy
+	cloudquery policy run github.com/COMMUNITY_GITHUB_ORG/POLICY_NAME
 
-  # See https://hub.cloudquery.io for additional policies.`,
+	# Run a policy from a local directory
+	cloudquery policy run ./PATH_TO_POLICY_DIRECTORY/
+
+	# See https://hub.cloudquery.io for additional policies.
+	# See https://docs.cloudquery.io/docs/tutorials/policies/policies-overview for instructions on writing policies.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			source := args[0]
 			c, err := console.CreateClient(cmd.Context(), getConfigFile(), false, nil, instanceId)
