@@ -1,11 +1,11 @@
 package config
 
 import (
-	"bytes"
 	_ "embed"
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -46,7 +46,8 @@ var configSchemaHCL = &hcl.BodySchema{
 
 func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, diag.Diagnostics) {
 	if IsNameYAML(name) {
-		return decodeConfigYAML(bytes.NewBuffer(data))
+		newData := os.Expand(string(data), p.getVariableValue)
+		return decodeConfigYAML(strings.NewReader(newData))
 	}
 
 	body, diags := p.LoadFromSource(name, data)
