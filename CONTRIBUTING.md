@@ -144,7 +144,7 @@ We make use of the [Conventional Commits specification](https://www.conventional
 | ----------- | ----------- |----------- |
 | `chore: <Message>`      |  `<String>`       | patch release|
 | `fix: <Message>`      |  `<String>`      | patch release|
-| `feat: <Message>`      |  `<String>`       | minor release|
+| `feat: <Message>`      |  `<String>`       | patch release|
 | `refactor: <Message>`      |  `<String>`       | patch release|
 | `test: <Message>`      |  `<String>`       | patch release|
 
