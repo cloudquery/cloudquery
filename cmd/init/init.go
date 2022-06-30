@@ -1,4 +1,4 @@
-package cmd
+package init
 
 import (
 	"bytes"
@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/cloudquery/cloudquery/cmd/utils"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
@@ -20,33 +21,36 @@ import (
 	"github.com/hashicorp/hcl/v2/hclwrite"
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
 )
 
-const initHelpMsg = "Generate initial config.hcl for fetch command"
-
-var (
-	initCmd = &cobra.Command{
-		Use:   "init [choose one or more providers (aws gcp azure okta ...)]",
-		Short: initHelpMsg,
-		Long:  initHelpMsg,
-		Example: `
+const (
+	initShort   = "Generate initial config.hcl for fetch command"
+	initExample = `
   # Downloads aws provider and generates config.hcl for aws provider
   cloudquery init aws
 
   # Downloads aws,gcp providers and generates one config.hcl with both providers
-  cloudquery init aws gcp`,
-		Args: cobra.MinimumNArgs(1),
-		RunE: initialize,
-	}
+  cloudquery init aws gcp`
 )
+
+func NewCmdInit() *cobra.Command {
+	initCmd := &cobra.Command{
+		Use:     "init [choose one or more providers (aws gcp azure okta ...)]",
+		Short:   initShort,
+		Long:    initShort,
+		Example: initExample,
+		Args:    cobra.MinimumNArgs(1),
+		RunE:    initialize,
+	}
+	return initCmd
+}
 
 func initialize(cmd *cobra.Command, providers []string) error {
 	fs := afero.NewOsFs()
 	ctx := cmd.Context()
 
-	configPath := getConfigFile() // by definition, this will get us an existing file if possible
+	configPath := utils.GetConfigFile() // by definition, this will get us an existing file if possible
 
 	if info, _ := fs.Stat(configPath); info != nil {
 		ui.ColorizedOutput(ui.ColorError, "Error: Config file %s already exists\n", configPath)
@@ -62,7 +66,7 @@ func initialize(cmd *cobra.Command, providers []string) error {
 
 	requiredProviders := make([]*config.RequiredProvider, len(providers))
 	for i, p := range providers {
-		organization, providerName, provVersion, err := parseProviderCLIArg(p)
+		organization, providerName, provVersion, err := ParseProviderCLIArg(p)
 		if err != nil {
 			return fmt.Errorf("could not parse requested provider: %w", err)
 		}
@@ -236,7 +240,7 @@ func generateHCLConfig(ctx context.Context, c *console.Client, providers []strin
 	return hclwrite.Format(buffer.Bytes()), nil
 }
 
-func parseProviderCLIArg(providerCLIArg string) (org string, name string, version string, err error) {
+func ParseProviderCLIArg(providerCLIArg string) (org string, name string, version string, err error) {
 	argParts := strings.Split(providerCLIArg, "@")
 
 	l := len(argParts)
@@ -270,14 +274,4 @@ func parseProviderCLIArg(providerCLIArg string) (org string, name string, versio
 	}
 
 	return org, name, "v" + ver.String(), nil
-}
-
-func init() {
-	initCmd.SetUsageTemplate(usageTemplateWithFlags)
-	rootCmd.AddCommand(initCmd)
-}
-
-// getConfigFile returns the config filename
-func getConfigFile() string {
-	return viper.GetString("configPath")
 }

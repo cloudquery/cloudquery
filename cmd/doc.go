@@ -10,16 +10,24 @@ import (
 	"github.com/spf13/cobra/doc"
 )
 
-// docCmd represents the doc markdown generation command
-// This is an internal command to generate our documentation
-var docCmd = &cobra.Command{
-	Use:    "doc [directory_path]",
-	Short:  "Generate CLI documentation markdown files",
-	Args:   cobra.ExactValidArgs(1),
-	Hidden: true,
-	RunE: func(cmd *cobra.Command, args []string) error {
-		return doc.GenMarkdownTreeCustom(rootCmd, args[0], filePrepender, linkHandler)
-	},
+const (
+	docShort = "Generate CLI documentation markdown files"
+)
+
+func newCmdDoc() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:    "doc [directory_path]",
+		Short:  docShort,
+		Args:   cobra.ExactValidArgs(1),
+		Hidden: true,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			// This is no danger of infinite recursion here as it just goes through the docs
+			// and not running the doc command
+			// nolint:revive
+			return doc.GenMarkdownTreeCustom(newCmdDoc(), args[0], filePrepender, linkHandler)
+		},
+	}
+	return cmd
 }
 
 func linkHandler(s string) string { return s }
@@ -36,8 +44,4 @@ sidebar_label: "%s"
 	id := strings.TrimPrefix(base, "cloudquery_")
 	sidebarLabel := strings.ReplaceAll(id, "_", " ")
 	return fmt.Sprintf(fmTemplate, id, sidebarLabel)
-}
-
-func init() {
-	rootCmd.AddCommand(docCmd)
 }

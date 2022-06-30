@@ -3,6 +3,7 @@ package cmd
 import (
 	"testing"
 
+	initCmd "github.com/cloudquery/cloudquery/cmd/init"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/stretchr/testify/assert"
 )
@@ -102,7 +103,7 @@ func Test_parseProviderCLIArg(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotOrg, gotName, gotVersion, err := parseProviderCLIArg(tt.args.providerCLIArg)
+			gotOrg, gotName, gotVersion, err := initCmd.ParseProviderCLIArg(tt.args.providerCLIArg)
 			if tt.wantErr {
 				assert.Error(t, err)
 			} else {

@@ -1,4 +1,4 @@
-package cmd
+package fetch
 
 import (
 	"encoding/json"

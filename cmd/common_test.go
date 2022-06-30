@@ -23,6 +23,7 @@ func testCommand(t *testing.T, tc CommandTestCases) {
 		}
 	}
 	args := append([]string{tc.Command}, tc.Args...)
+	rootCmd := newCmdRoot()
 	rootCmd.SetArgs(args)
 	err := rootCmd.Execute()
 	if !tc.ExpectError {

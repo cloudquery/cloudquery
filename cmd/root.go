@@ -5,13 +5,19 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/cmd/completion"
+	"github.com/cloudquery/cloudquery/cmd/fetch"
+	initCmd "github.com/cloudquery/cloudquery/cmd/init"
+	"github.com/cloudquery/cloudquery/cmd/options"
+	"github.com/cloudquery/cloudquery/cmd/policy"
+	"github.com/cloudquery/cloudquery/cmd/provider"
+	"github.com/cloudquery/cloudquery/cmd/utils"
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/getsentry/sentry-go"
-	"github.com/google/uuid"
 	zerolog "github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -22,70 +28,26 @@ import (
 // fileDescriptorF gets set trough system relevant files like ulimit_unix.go
 var fileDescriptorF func()
 
-// This is copied from https://github.com/spf13/cobra/blob/master/command.go#L491
-// and modified to not print global flags (as they will be printed via a new options command)
-const usageTemplate = `Usage:{{if .Runnable}}
-{{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
-{{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
-
-Aliases:
-{{.NameAndAliases}}{{end}}{{if .HasExample}}
-
-Examples:
-{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
-
-Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
-{{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
-
-Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
-{{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
-
-Use "{{.CommandPath}} [command] --help" for more information about a command.
-Use "{{.CommandPath}} options" for a list of global CLI options.{{end}}
-`
-
-// This is copied from https://github.com/spf13/cobra/blob/master/command.go#L491
-// and used in the new options command as everywhere else it's disabled via usageTemplate
-const usageTemplateWithFlags = `Usage:{{if .Runnable}}
-{{.UseLine}}{{end}}{{if .HasAvailableSubCommands}}
-{{.CommandPath}} [command]{{end}}{{if gt (len .Aliases) 0}}
-
-Aliases:
-{{.NameAndAliases}}{{end}}{{if .HasExample}}
-
-Examples:
-{{.Example}}{{end}}{{if .HasAvailableSubCommands}}
-
-Available Commands:{{range .Commands}}{{if (or .IsAvailableCommand (eq .Name "help"))}}
-{{rpad .Name .NamePadding }} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableLocalFlags}}
-
-Flags:
-{{.LocalFlags.FlagUsages | trimTrailingWhitespaces}}{{end}}{{if .HasAvailableInheritedFlags}}
-
-Additional help topics:{{range .Commands}}{{if .IsAdditionalHelpTopicCommand}}
-{{rpad .CommandPath .CommandPathPadding}} {{.Short}}{{end}}{{end}}{{end}}{{if .HasAvailableSubCommands}}
-
-Use "{{.CommandPath}} [command] --help" for more information about a command.{{end}}
-Use "{{.Root.Use}} options" for a list of global CLI options.
-`
-
-var (
+const (
 	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 
-	Commit     = "development"
-	Date       = "unknown"
-	APIKey     = ""
-	instanceId = uuid.New()
-
-	rootCmd = &cobra.Command{
-		Use:   "cloudquery",
-		Short: "CloudQuery CLI",
-		Long: `CloudQuery CLI
+	Commit    = "development"
+	Date      = "unknown"
+	APIKey    = ""
+	rootShort = "CloudQuery CLI"
+	rootLong  = `CloudQuery CLI
 
 Query your cloud assets & configuration with SQL for monitoring security, compliance & cost purposes.
 
 Find more information at:
-	https://docs.cloudquery.io`,
+	https://docs.cloudquery.io`
+)
+
+func newCmdRoot() *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:     "cloudquery",
+		Short:   rootShort,
+		Long:    rootLong,
 		Version: core.Version,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			// Don't print usage on command errors.
@@ -107,19 +69,7 @@ Find more information at:
 			analytics.Close()
 		},
 	}
-)
 
-func Execute() error {
-	defer func() {
-		if err := recover(); err != nil {
-			sentry.CurrentHub().Recover(err)
-			panic(err)
-		}
-	}()
-	return rootCmd.Execute()
-}
-
-func init() {
 	// add inner commands
 	rootCmd.PersistentFlags().String("config", "./cloudquery.yml", "path to configuration file. can be generated with 'init {provider}' command (env: CQ_CONFIG_PATH)")
 	rootCmd.PersistentFlags().Bool("no-verify", false, "disable plugins verification")
@@ -169,8 +119,21 @@ func init() {
 	registerSentryFlags(rootCmd)
 
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	rootCmd.SetUsageTemplate(usageTemplate)
 	cobra.OnInitialize(initConfig, initLogging, initUlimit, initSentry, initAnalytics)
+	rootCmd.AddCommand(
+		initCmd.NewCmdInit(), fetch.NewCmdFetch(), policy.NewCmdPolicy(), provider.NewCmdProvider(),
+		options.NewCmdOptions(), completion.NewCmdCompletion(), newCmdVersion(), newCmdDoc())
+	return rootCmd
+}
+
+func Execute() error {
+	defer func() {
+		if err := recover(); err != nil {
+			sentry.CurrentHub().Recover(err)
+			panic(err)
+		}
+	}()
+	return newCmdRoot().Execute()
 }
 
 func initUlimit() {
@@ -192,7 +155,7 @@ func initLogging() {
 	if !ui.IsTerminal() {
 		logging.GlobalConfig.ConsoleLoggingEnabled = true // always true when no terminal
 	}
-	logging.GlobalConfig.InstanceId = instanceId.String()
+	logging.GlobalConfig.InstanceId = utils.InstanceId.String()
 
 	zerolog.Logger = logging.Configure(logging.GlobalConfig).With().Logger()
 }
@@ -202,7 +165,7 @@ func initAnalytics() {
 		analytics.WithVersionInfo(core.Version, Commit, Date),
 		analytics.WithTerminal(ui.IsTerminal()),
 		analytics.WithApiKey(viper.GetString("telemetry-apikey")),
-		analytics.WithInstanceId(instanceId.String()),
+		analytics.WithInstanceId(utils.InstanceId.String()),
 	}
 	userId := analytics.GetCookieId()
 	if viper.GetBool("no-telemetry") || analytics.CQTeamID == userId.String() {
