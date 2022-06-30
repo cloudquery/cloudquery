@@ -80,8 +80,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/cq-provider-sdk v0.12.5 h1:HK8BHq1ikBG3sa6p0fff2sTW6v2mTzyUQ5RFQyz7wj4=
-github.com/cloudquery/cq-provider-sdk v0.12.5/go.mod h1:JIze7LcbgriMECn6VwGgf8KVKTujWrDwEvPLfYHHwqs=
+github.com/cloudquery/cq-provider-sdk v0.13.0 h1:2Jo2bPuHwnUFYIU+nQv4W3jFOqDadZX3O3pKQ0oeIWw=
+github.com/cloudquery/cq-provider-sdk v0.13.0/go.mod h1:JIze7LcbgriMECn6VwGgf8KVKTujWrDwEvPLfYHHwqs=
 github.com/cloudquery/faker/v3 v3.7.5 h1:G7ANdEEcm8TvAAjIwNWSLrYK36CFCiSlrCqOTGCccL0=
 github.com/cloudquery/faker/v3 v3.7.5/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
