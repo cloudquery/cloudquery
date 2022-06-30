@@ -28,7 +28,7 @@ var fetchCmd = &cobra.Command{
 			return err
 		}
 		result, diags := c.Fetch(cmd.Context())
-		errors.CaptureDiagnostics(diags, nil)
+		errors.CaptureDiagnostics(diags, map[string]string{"command": "fetch"})
 		if result != nil {
 			for _, p := range result.ProviderFetchSummary {
 				analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
