@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.21](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.20...v0.8.21) (2022-06-30)
+
+
+### Bug Fixes
+
+* Use errgroup SetLimit ([#353](https://github.com/cloudquery/cq-provider-gcp/issues/353)) ([364dbaf](https://github.com/cloudquery/cq-provider-gcp/commit/364dbafac4a41098489e17381c2c35e441a04d84))
+
 ## [0.8.20](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.19...v0.8.20) (2022-06-29)
 
 
