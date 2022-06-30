@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"syscall"
 
+	"github.com/cloudquery/cq-provider-sdk/helpers/limit"
 	zerolog "github.com/rs/zerolog/log"
 )
 
@@ -24,7 +25,7 @@ func checkAndSetUlimitUnix() {
 
 func setUlimit(ulimit uint64) error {
 	logger := zerolog.Logger
-	rLimit, err := getUlimit()
+	rLimit, err := limit.GetUlimit()
 	if err != nil {
 		return fmt.Errorf("error getting ulimit: %w", err)
 	}
@@ -41,11 +42,5 @@ func setUlimit(ulimit uint64) error {
 		rLimit.Cur = ulimit
 	}
 
-	return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rLimit)
-}
-
-func getUlimit() (syscall.Rlimit, error) {
-	var rLimit syscall.Rlimit
-	err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rLimit)
-	return rLimit, err
+	return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &syscall.Rlimit{Cur: rLimit.Cur, Max: rLimit.Max})
 }
