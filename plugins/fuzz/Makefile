@@ -62,3 +62,9 @@ test-unit:
 .PHONY: test-integration
 test-integration:
 	@if [[ "$(tableName)" == "" ]]; then go test -run=TestIntegration -timeout 3m -tags=integration ./...; else go test -run="TestIntegration/$(tableName)" -timeout 3m -tags=integration ./...; fi
+
+# Install tools
+.PHONY: install-tools
+install-tools:
+	@echo Installing tools from tools/tool.go
+	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
