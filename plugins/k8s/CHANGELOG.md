@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.16](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.15...v0.5.16) (2022-06-29)
+
+
+### Bug Fixes
+
+* Docs to Yaml ([#198](https://github.com/cloudquery/cq-provider-k8s/issues/198)) ([4161749](https://github.com/cloudquery/cq-provider-k8s/commit/41617499310c319f38f68f3aba0b90ab84b166c6))
+
 ## [0.5.15](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.14...v0.5.15) (2022-06-27)
 
 
