@@ -4,6 +4,20 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.30.1](https://github.com/cloudquery/cloudquery/compare/v0.30.0...v0.30.1) (2022-06-30)
+
+
+### Features
+
+* Track config format ([#1040](https://github.com/cloudquery/cloudquery/issues/1040)) ([3a3ad17](https://github.com/cloudquery/cloudquery/commit/3a3ad17dcdd6a5a7d5ac1df3128617140e07b6e8))
+
+
+### Bug Fixes
+
+* Doc command to generate id meta without space ([#1046](https://github.com/cloudquery/cloudquery/issues/1046)) ([be12ebf](https://github.com/cloudquery/cloudquery/commit/be12ebf97b5bee54c985b8bece00d62757253e2f))
+* **docs:** Add code of conduct contact details & commit message guidelines to CONTRIBUTING.md ([#1043](https://github.com/cloudquery/cloudquery/issues/1043)) ([b304bbc](https://github.com/cloudquery/cloudquery/commit/b304bbcaba0024705a4bdb703a7c7a937527d4a0))
+* Support env var substitution in YAML config ([#1041](https://github.com/cloudquery/cloudquery/issues/1041)) ([3bc8014](https://github.com/cloudquery/cloudquery/commit/3bc8014c34655d8de7a8d7210be167e7e14f772b))
+
 ## [0.30.0](https://github.com/cloudquery/cloudquery/compare/v0.29.0...v0.30.0) (2022-06-29)
 
 
