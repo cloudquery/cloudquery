@@ -17,7 +17,6 @@ func Services() *schema.Table {
 		Resolver:      fetchCloudbillingServices,
 		IgnoreError:   client.IgnoreErrorHandler,
 		IgnoreInTests: true,
-		Global:        true,
 		Columns: []schema.Column{
 			{
 				Name:        "business_entity_name",
