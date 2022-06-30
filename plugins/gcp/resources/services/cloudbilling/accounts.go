@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 	"google.golang.org/api/cloudbilling/v1"
 )
 
@@ -16,7 +15,7 @@ type BillingAccountWrapper struct {
 	*cloudbilling.ProjectBillingInfo
 }
 
-const MAX_GOROUTINES = 10
+const maxGoroutines = 10
 
 //go:generate cq-gen --resource accounts --config gen.hcl --output .
 func Accounts() *schema.Table {
@@ -82,7 +81,6 @@ func Accounts() *schema.Table {
 func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
-	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 	for {
 		call := c.Services.CloudBilling.BillingAccounts.List().PageToken(nextPageToken)
 		list, err := c.RetryingDo(ctx, call)
@@ -91,14 +89,10 @@ func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		output := list.(*cloudbilling.ListBillingAccountsResponse)
 		errs, ctx := errgroup.WithContext(ctx)
+		errs.SetLimit(maxGoroutines)
 		for _, b := range output.BillingAccounts {
-			if err := sem.Acquire(ctx, 1); err != nil {
-				// Acquire can only fail if the context is canceled already.  Just exit the loop and allow errs.Wait() to collect the real error.
-				break
-			}
 			func(account cloudbilling.BillingAccount) {
 				errs.Go(func() error {
-					defer sem.Release(1)
 					return fetchProjectBillingInfo(ctx, res, c, account)
 				})
 			}(*b)

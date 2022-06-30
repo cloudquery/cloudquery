@@ -7,11 +7,10 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 	"google.golang.org/api/bigquery/v2"
 )
 
-const MAX_GOROUTINES = 1
+const maxGoroutines = 1
 
 func BigqueryDatasetTables() *schema.Table {
 	return &schema.Table{
@@ -413,7 +412,6 @@ func BigqueryDatasetTables() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 	p := parent.Item.(*bigquery.Dataset)
 	c := meta.(*client.Client)
 	nextPageToken := ""
@@ -425,14 +423,10 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		output := list.(*bigquery.TableList)
 		errs, ctx := errgroup.WithContext(ctx)
+		errs.SetLimit(maxGoroutines)
 		for _, t := range output.Tables {
-			if err := sem.Acquire(ctx, 1); err != nil {
-				// Acquire can only fail if the context is canceled already.  Just exit the loop and allow errs.Wait() to collect the real error.
-				break
-			}
 			func(t *bigquery.TableListTables) {
 				errs.Go(func() error {
-					defer sem.Release(1)
 					return fetchBigqueryDatasetTables(ctx, c, p, t, res)
 				})
 			}(t)
