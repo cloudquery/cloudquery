@@ -19,7 +19,6 @@ func LambdaRuntimes() *schema.Table {
 		Resolver:     fetchLambdaRuntimes,
 		DeleteFilter: client.DeleteAllFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"name"}},
-		Global:       true,
 		Columns: []schema.Column{
 			{
 				Name:        "name",
