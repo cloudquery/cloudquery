@@ -274,9 +274,8 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		Connection: cqproto.ConnectionDetails{
 			DSN: dsnURI,
 		},
-		Config:      cfg.Configuration,
-		ExtraFields: opts.ExtraFields,
-		Format:      info.ConfigFormat,
+		Config: cfg.Configuration,
+		Format: info.ConfigFormat,
 	})
 	if err != nil {
 		pLog.Error().Err(err).Msg("failed to configure provider")
