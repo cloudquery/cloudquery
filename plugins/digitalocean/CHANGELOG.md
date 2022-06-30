@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.5.18](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.17...v0.5.18) (2022-06-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.0 ([#173](https://github.com/cloudquery/cq-provider-digitalocean/issues/173)) ([7088abf](https://github.com/cloudquery/cq-provider-digitalocean/commit/7088abf414cebd07cfa04473c763702cd31697e5))
+
 ## [0.5.17](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.16...v0.5.17) (2022-06-27)
 
 
