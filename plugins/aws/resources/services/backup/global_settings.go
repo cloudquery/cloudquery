@@ -18,7 +18,6 @@ func GlobalSettings() *schema.Table {
 		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
-		Global:       true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
