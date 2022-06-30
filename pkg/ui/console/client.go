@@ -361,7 +361,7 @@ func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string,
 		policiesToRun = resp.Policies
 	}
 	for _, p := range policiesToRun {
-		analytics.Capture("policy run", c.Providers, p.Analytic(dbPersistence), diags)
+		analytics.Capture("policy run", c.Providers, p.Analytic(dbPersistence), "diagnostics", core.SummarizeDiagnostics(diags), "success", !diags.HasErrors())
 	}
 
 	if policyRunProgress != nil {

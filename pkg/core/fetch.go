@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/cloudquery/cloudquery/internal/analytics"
 	cqsort "github.com/cloudquery/cloudquery/internal/sort"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
@@ -48,6 +49,8 @@ type ResourceFetchSummary struct {
 	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
 	// details on how to solve this issue
 	Diagnostics diag.Diagnostics `json:"-"`
+	// TelemetryEvents is a list of telemetry events that occurred during the fetch
+	TelemetryEvents []analytics.TelemetryEvent `json:"-"`
 	// Duration in seconds
 	Duration time.Duration `json:"duration,omitempty"`
 }
@@ -74,6 +77,7 @@ type FetchResponse struct {
 	ProviderFetchSummary map[string]*ProviderFetchSummary `json:"provider_fetch_summary,omitempty"`
 	TotalFetched         uint64                           `json:"total_fetched,omitempty"`
 	Duration             time.Duration                    `json:"total_fetch_time,omitempty"`
+	TelemetryEvents      []analytics.TelemetryEvent       `json:"-"`
 }
 
 type ProviderInfo struct {
@@ -239,7 +243,12 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 		}(providerInfo)
 	}
 	wg.Wait()
-	response := &FetchResponse{FetchId: fetchId, ProviderFetchSummary: make(map[string]*ProviderFetchSummary, len(opts.ProvidersInfo)), Duration: time.Since(start)}
+	response := &FetchResponse{
+		FetchId:              fetchId,
+		ProviderFetchSummary: make(map[string]*ProviderFetchSummary, len(opts.ProvidersInfo)),
+		Duration:             time.Since(start),
+		TelemetryEvents:      make([]analytics.TelemetryEvent, 0),
+	}
 	close(fetchSummaries)
 	for ps := range fetchSummaries {
 		response.ProviderFetchSummary[ps.summary.String()] = ps.summary
@@ -248,7 +257,9 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 		}
 		response.TotalFetched += ps.summary.TotalResourcesFetched
 	}
-	return response, diags
+	events, filtered := analytics.FilterTelemetryEvents(diags)
+	response.TelemetryEvents = events
+	return response, filtered
 }
 
 func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsnURI string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
@@ -376,15 +387,22 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 				//	Bool("finished", update.AllDone()).Int("finishCount", update.DoneCount()).Msg("received fetch update")
 			}
 			summary.TotalResourcesFetched += resp.ResourceCount
-			summary.FetchedResources[resp.ResourceName] = ResourceFetchSummary{resp.Summary.Status.String(), resp.Summary.ResourceCount, resp.Summary.Diagnostics, time.Since(start)}
+			events, rdiags := analytics.FilterTelemetryEvents(resp.Summary.Diagnostics)
+			summary.FetchedResources[resp.ResourceName] = ResourceFetchSummary{
+				resp.Summary.Status.String(),
+				resp.Summary.ResourceCount,
+				rdiags,
+				events,
+				time.Since(start),
+			}
 			if resp.Error != "" {
 				pLog.Warn().Err(err).Str("resource", resp.ResourceName).Msg("received resource fetch error")
 				diags = diags.Add(diag.FromError(errors.New(resp.Error), diag.RESOLVING, diag.WithResourceName(resp.ResourceName)))
 			}
 			// TODO: print diags, specific to resource into log?
-			if resp.Summary.Diagnostics.HasDiags() {
+			if rdiags.HasDiags() {
 				pLog.Warn().Str("resource", resp.ResourceName).Msg("received resource fetch diagnostics")
-				diags = diags.Add(resp.Summary.Diagnostics)
+				diags = diags.Add(rdiags)
 			}
 		case io.EOF:
 			// This case means the stream closed peacefully, i.e the provider finished without any error

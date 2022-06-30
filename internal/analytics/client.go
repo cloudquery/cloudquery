@@ -6,9 +6,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/persistentdata"
-	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
 	"github.com/modern-go/reflect2"
 	"github.com/rs/zerolog/log"
@@ -162,7 +160,7 @@ func GetCookieId() uuid.UUID {
 	return id
 }
 
-func Capture(eventType string, providers registry.Providers, data Message, diags diag.Diagnostics, extra ...interface{}) {
+func Capture(eventType string, providers registry.Providers, data Message, extra ...interface{}) {
 	c := currentHub
 	if c.disabled || c.apikey == "" {
 		return
@@ -179,9 +177,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		"env":                 c.env,
 		"instance_id":         c.instanceId,
 		"cookie_id":           c.cookieId,
-		"success":             !diags.HasErrors(),
 		"installed_providers": pp,
-		"diagnostics":         core.SummarizeDiagnostics(diags),
 	}
 
 	if !reflect2.IsNil(data) {

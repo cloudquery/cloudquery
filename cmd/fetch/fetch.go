@@ -7,7 +7,9 @@ import (
 	"github.com/cloudquery/cloudquery/cmd/utils"
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -22,6 +24,23 @@ const (
 	fetchExample = `  # Fetch configured providers to PostgreSQL as configured in cloudquery.yml
 	cloudquery fetch`
 )
+
+// sendProviderTelemetryEvents sends all collected telemetry events from the provider fetch response.
+func sendProviderTelemetryEvents(providers registry.Providers, fr *core.FetchResponse) {
+	if fr == nil {
+		return
+	}
+	for _, e := range fr.TelemetryEvents {
+		analytics.Capture(e.Type, providers, e)
+	}
+	for _, pfs := range fr.ProviderFetchSummary {
+		for _, rfs := range pfs.FetchedResources {
+			for _, e := range rfs.TelemetryEvents {
+				analytics.Capture(e.Type, providers, e)
+			}
+		}
+	}
+}
 
 func NewCmdFetch() *cobra.Command {
 	fetchCmd := &cobra.Command{
@@ -39,9 +58,10 @@ func NewCmdFetch() *cobra.Command {
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "fetch"})
 			if result != nil {
 				for _, p := range result.ProviderFetchSummary {
-					analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
+					analytics.Capture("fetch", c.Providers, p, "diagnostics", diags, "success", !diags.HasErrors(), "fetch_id", result.FetchId)
 				}
 			}
+			sendProviderTelemetryEvents(c.Providers, result)
 			if diags.HasErrors() {
 				return fmt.Errorf("provider has one or more errors, check logs")
 			}
