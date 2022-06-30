@@ -18,6 +18,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.17](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.16...v0.11.17) (2022-06-29)
+
+
+### Features
+
+* Added Route Tables ([#358](https://github.com/cloudquery/cq-provider-azure/issues/358)) ([71a14c9](https://github.com/cloudquery/cq-provider-azure/commit/71a14c9842fc0bd2dbfb51b082ef0658e36fc4e9))
+
+
+### Bug Fixes
+
+* Docs to Yaml ([#371](https://github.com/cloudquery/cq-provider-azure/issues/371)) ([e36569a](https://github.com/cloudquery/cq-provider-azure/commit/e36569a055d5f33a4208bc7c5c75d14ce625bf4d))
+* Resources view id ([#375](https://github.com/cloudquery/cq-provider-azure/issues/375)) ([7b2053c](https://github.com/cloudquery/cq-provider-azure/commit/7b2053c4ba9bd0689c999b1e87574347130ce539))
+
 ## [0.11.16](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.15...v0.11.16) (2022-06-27)
 
 
