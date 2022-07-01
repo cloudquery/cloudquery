@@ -15,37 +15,87 @@ func init() {
 	fileDescriptorF = checkAndSetUlimitUnix
 }
 
+// In this entire file, by 'ulimit' we mean the "num open files ulimit" (RLIMIT_NOFILE)
 func checkAndSetUlimitUnix() {
 	logger := zerolog.Logger
-	if err := setUlimit(ulimitUnix); err != nil {
-		logger.Err(fmt.Errorf("error setting ulimit: %w", err))
-	}
-}
 
-func setUlimit(ulimit uint64) error {
-	logger := zerolog.Logger
-	rLimit, err := GetUlimit()
+	rlimit, err := getUlimit()
 	if err != nil {
-		return fmt.Errorf("error getting ulimit: %w", err)
+		logger.Err(err).Msg("checkAndSetUlimitUnix: failed getting ulimit")
+		return
+	}
+	logger.Info().Uint64("hard_ulimit", rlimit.Max).Uint64("soft_ulimit", rlimit.Cur).Msg("limits (before adjustment)")
+
+	if err := setUlimit(); err != nil {
+		logger.Err(err).Msg("failed setting ulimit")
 	}
 
-	logger.Info().Uint64("hard_ulimit", rLimit.Max).Uint64("soft_ulimit", rLimit.Cur).Msg("limits (before adjustment)")
-
-	if rLimit.Max < ulimit {
-		logger.Info().Uint64("previous_ulimit", rLimit.Max).Uint64("new_ulimit", ulimit).Msg("adjusting max ulimit")
-		rLimit.Max = ulimit
+	rlimit, err = getUlimit()
+	if err != nil {
+		logger.Err(err).Msg("checkAndSetUlimitUnix: failed getting ulimit")
+		return
 	}
-
-	if rLimit.Cur < ulimit {
-		logger.Info().Uint64("previous_ulimit", rLimit.Cur).Uint64("new_ulimit", ulimit).Msg("adjusting current ulimit")
-		rLimit.Cur = ulimit
-	}
-
-	return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rLimit)
+	logger.Info().Uint64("hard_ulimit", rlimit.Max).Uint64("soft_ulimit", rlimit.Cur).Msg("limits (after adjustment)")
 }
 
-func GetUlimit() (syscall.Rlimit, error) {
+func setUlimit() error {
+	logger := zerolog.Logger
+
+	// Setting the hard ulimit is very likely to fail (usually requires root or even more arcane permissions).
+	// If it fails we just log at "INFO" level.
+	if err := setHardUlimit(); err != nil {
+		// Just an info log here, since it's really not actionable.
+		logger.Info().AnErr("err", err).Msg("failed setting hard ulimit")
+	}
+
+	return setSoftUlimit()
+}
+
+func setHardUlimit() error {
+	logger := zerolog.Logger
+	rLimit, err := getUlimit()
+	if err != nil {
+		return fmt.Errorf("setHardUlimit: error getting ulimit: %w", err)
+	}
+
+	if rLimit.Max < ulimitUnix {
+		logger.Info().Uint64("previous_ulimit", rLimit.Max).Uint64("new_ulimit", ulimitUnix).Msg("adjusting hard ulimit")
+		rLimit.Max = ulimitUnix
+		return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rLimit)
+	}
+
+	return nil
+}
+
+func setSoftUlimit() error {
+	logger := zerolog.Logger
+
+	rlimit, err := getUlimit()
+	if err != nil {
+		return fmt.Errorf("setSoftUlimit: error getting ulimit: %w", err)
+	}
+
+	desiredUlimit := min(rlimit.Max, ulimitUnix)
+	if rlimit.Cur < desiredUlimit {
+		logger.Info().Uint64("previous_ulimit", rlimit.Cur).Uint64("new_ulimit", desiredUlimit).Msg("adjusting soft ulimit")
+		rlimit.Cur = desiredUlimit
+		return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rlimit)
+	}
+
+	return nil
+}
+
+func getUlimit() (syscall.Rlimit, error) {
 	var rLimit syscall.Rlimit
 	err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rLimit)
 	return rLimit, err
+}
+
+// Golang doesn't have an out-of-the-box min function xd
+func min(a uint64, b uint64) uint64 {
+	if a < b {
+		return a
+	}
+
+	return b
 }
