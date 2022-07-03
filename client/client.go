@@ -451,6 +451,7 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 			diag.USER,
 			diag.WithSummary("No credentials available"),
 			diag.WithDetails("Couldn't find any credentials in environment variables or configuration files."),
+			diag.WithSeverity(diag.WARNING),
 		)
 	}
 
@@ -522,6 +523,7 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				if accountErr == nil {
 					principal = *output.Arn
 				}
+
 				diags = diags.Add(diag.FromError(err, diag.ACCESS, diag.WithDetails("ensure that %s has access to be able perform `sts:AssumeRole` on %s ", principal, account.RoleARN), diag.WithSeverity(diag.WARNING)))
 				continue
 			}
