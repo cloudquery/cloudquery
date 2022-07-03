@@ -34,7 +34,7 @@ func newCmdProviderDrop() *cobra.Command {
 			diags := c.DropProvider(cmd.Context(), args[0])
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_drop"})
 			if diags.HasErrors() {
-				return fmt.Errorf("failed to drop provider %s", args[0])
+				return fmt.Errorf("failed to drop provider %s %w", args[0], diags)
 			}
 			return nil
 		},
