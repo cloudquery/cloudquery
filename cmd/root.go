@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cmd/completion"
 	"github.com/cloudquery/cloudquery/cmd/fetch"
 	initCmd "github.com/cloudquery/cloudquery/cmd/init"
 	"github.com/cloudquery/cloudquery/cmd/options"
@@ -122,7 +121,7 @@ func newCmdRoot() *cobra.Command {
 	cobra.OnInitialize(initConfig, initLogging, initUlimit, initSentry, initAnalytics)
 	rootCmd.AddCommand(
 		initCmd.NewCmdInit(), fetch.NewCmdFetch(), policy.NewCmdPolicy(), provider.NewCmdProvider(),
-		options.NewCmdOptions(), completion.NewCmdCompletion(), newCmdVersion(), newCmdDoc())
+		options.NewCmdOptions(), newCmdVersion(), newCmdDoc())
 	return rootCmd
 }
 
