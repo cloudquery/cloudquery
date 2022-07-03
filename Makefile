@@ -38,3 +38,7 @@ lint:
 .PHONY: test-sanity
 test-sanity:
 	./scripts/test-sanity.sh
+
+.PHONY: test-unit
+test-unit:
+	go test ./...
