@@ -4,6 +4,18 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.30.5](https://github.com/cloudquery/cloudquery/compare/v0.30.4...v0.30.5) (2022-07-03)
+
+
+### Features
+
+* Remove custom completion command ([#1068](https://github.com/cloudquery/cloudquery/issues/1068)) ([c4ab6c5](https://github.com/cloudquery/cloudquery/commit/c4ab6c5d0ee36ccf77529d7120fe878af6c9b3db))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/spf13/cobra to v1.5.0 ([#1019](https://github.com/cloudquery/cloudquery/issues/1019)) ([0facde6](https://github.com/cloudquery/cloudquery/commit/0facde6ac1e12bfd5355a777991d396718e16598))
+
 ## [0.30.4](https://github.com/cloudquery/cloudquery/compare/v0.30.3...v0.30.4) (2022-07-03)
 
 
