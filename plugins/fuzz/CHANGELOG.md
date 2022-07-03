@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.9](https://github.com/cloudquery/cq-provider-fuzz/compare/v0.0.8...v0.0.9) (2022-07-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.1 ([#24](https://github.com/cloudquery/cq-provider-fuzz/issues/24)) ([b0e4554](https://github.com/cloudquery/cq-provider-fuzz/commit/b0e4554e52bd64a964183b27e3de0fae65ad65c1))
+
 ## [0.0.8](https://github.com/cloudquery/cq-provider-fuzz/compare/v0.0.7...v0.0.8) (2022-06-30)
 
 
