@@ -30,7 +30,7 @@ func newCmdProviderPurge() *cobra.Command {
 			diags := c.RemoveStaleData(cmd.Context(), lastUpdate, dryRun, args)
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "provider_purge"})
 			if diags.HasErrors() {
-				return fmt.Errorf("failed to remove stale data")
+			return fmt.Errorf("failed to remove stale data: %w", diags)
 			}
 			return nil
 		},
