@@ -59,18 +59,27 @@ A few important things to note when adding functions that call the AWS API:
 
 To prepare your environment for running integration tests:
 ```bash
+# Start Postgres in a Docker container
 docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d  postgres:13.3
-# login with AWS. See all options at https://hub.cloudquery.io/providers/cloudquery/aws/latest
-gcloud auth application-default login
+
+# Login with AWS. AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY can also be used here, if you wish.
+# See all options at https://hub.cloudquery.io/providers/cloudquery/aws/latest
+export AWS_PROFILE={Your AWS profile}
 ```
 
-To run integration test for specific table:
+To run an integration test for a specific table:
 
 ```bash
 go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
 # For example
-go test -run="TestIntegration/azure_sql_managed_instances" -tags=integration ./...
+go test -run="TestIntegration/aws_lambda_functions" -tags=integration ./...
 ```
+
+> Note: You can override the Postgres database URL used for integration tests by specifying a DATABASE_URL environment variable, for example:
+> 
+> ```
+> export DATABASE_URL="host=localhost user=postgres password=pass DB.name=postgres port=5432"
+> ```  
 
 To run all integration tests:
 
@@ -78,13 +87,13 @@ To run all integration tests:
 go test -run=TestIntegration -tags=integration ./...
 ```
 
->**Important** When adding a single resource, it's more common to only run the test for a specific table. You'll need to ensure your resource has the relevant Terraform service deployed 
+>**Important** When adding a single resource, it's more common to only run the test for a specific table. You'll need to ensure your resource has the relevant Terraform service deployed. 
 
 #### Adding new Terraform Files Guidelines
 
 Terraform files are organized under the [`terraform`](../../terraform/) folder, and each service has its own folder.
 Under each service folder, we organize files into 3 folders:
-- `local`: When testing locally run the terraform CLI from here
+- `local`: When testing locally run the Terraform CLI from here
 - `modules/tests`: Terraform resource and module definitions go here
 - `prod`: This folder is used for our CI testing. See relevant scripts [here](../../scripts/). **Not to be used locally**
 
@@ -96,12 +105,12 @@ There are a few good rules of thumb to follow when creating new terraform resour
 * For every compute/db try to use the smallest size to keep the cost low
 * If autoscaling option is present, always turn it off
 
-If you want to apply the terraform locally first before pushing it to CI and applying there use:
+If you want to apply the Terraform locally first before pushing it to CI and applying there, use:
 
 ```bash
 cd terraform/YOUR_SERVICE_NAME/local
 terraform init
-# Use AB as your initial so you can have multiple team members working on the same account without conflicting resources
+# Replace AB with your own initials so multiple team members can work on the same account without conflicting resources
 terraform apply -var="prefix=AB"
 go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
 ```
