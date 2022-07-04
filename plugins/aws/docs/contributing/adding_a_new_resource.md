@@ -1,6 +1,6 @@
 # Adding a new resource
 
-Some information can be found in the [docs for developing a new provider](https://docs.cloudquery.io/developers/developing-new-provider).
+Some information can be found in the [docs for developing a new provider](https://docs.cloudquery.io/docs/developers/developing-new-provider).
 
 As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) ensure API calls exist to list/describe the desired resource, and make note of:
 
@@ -15,7 +15,7 @@ If the service to which the resource belongs has not been used before in cq-prov
    * Don't forget to add the new service interface name to the go:generate comment.
 1. Add the service to the `Services` struct in the [client/client.go](../../client/client.go)
 1. Init the service in the `initServices` function in [client/client.go](../../client/client.go)
-1. Run `go generate client/services.go` to create a mock for your new service. This will update [client/mocks/mock_<service>.go](../../client/mocks) automatically
+1. Run `go generate client/services.go` to create a mock for your new service. This will update [client/mocks/mock_\<service\>.go](../../client/mocks) automatically
 
 > If you get an error about not being able to find `mockgen`, run `make install-tools` to install it. If it still fails, run `export PATH=${PATH}:`go env GOPATH`/bin` in you shell to set up your `PATH` environment properly
 
@@ -26,11 +26,11 @@ If the service to which the resource belongs has not been used before in cq-prov
 ### Skeleton
 
 1. In [client/services.go](../../client/services.go), update the service interface and add the method(s) that you will be using to fetch the data from the aws sdk.
-1. Run `go generate client/services.go` to create a mock for your new methods. This will update [client/mocks/mock_<service>.go](../../client/mocks) automatically.
-1. Create a file under [resources/services/<service>](../../resources/services) that follows the pattern of `<resource>.go`.
+1. Run `go generate client/services.go` to create a mock for your new methods. This will update [client/mocks/mock_\<service\>.go](../../client/mocks) automatically.
+1. Create a file under [resources/services/\<service\>](../../resources/services) that follows the pattern of `<resource>.go`.
 1. In that file, create a function that returns a `*schema.Table`.
 1. In [resources/provider.go](../../resources/provider/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config yml file.
-1. Add a test file at [resources/services/<service>/<resource>_mock_test.go](../../resources/services). Follow other examples to create a test for the resource.
+1. Add a test file at [resources/services/\<service\>/\<resource\>_mock_test.go](../../resources/services). Follow other examples to create a test for the resource.
 1. Run `go run docs/docs.go` to generate the documentation for the new resource.
 
 ### Implementation
@@ -59,13 +59,13 @@ A few important things to note when adding functions that call the AWS API:
 
 To prepare your environment for running integration tests:
 ```bash
-# Start Postgres in a Docker container
-docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d  postgres:13.3
-
-# Login with AWS. AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY can also be used here, if you wish.
-# See all options at https://hub.cloudquery.io/providers/cloudquery/aws/latest
-export AWS_PROFILE={Your AWS profile}
+# Start Postgres in a Docker container:
+docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d  postgres:latest
+# Login with AWS.
+aws configure sso
 ```
+> Note: You can also use AWS CLI profiles and environment variables.
+> See all options at [CloudQuery Hub](https://hub.cloudquery.io/providers/cloudquery/aws/latest#authentication).
 
 To run an integration test for a specific table:
 
