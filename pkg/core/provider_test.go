@@ -54,7 +54,7 @@ func Test_CheckAvailableUpdates(t *testing.T) {
 		{
 			Name: "check-update-with-latest-not-on-disk",
 			Options: &CheckUpdatesOptions{Providers: []registry.Provider{
-				{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization},
+				{Name: "test", Version: latestVersion, Source: registry.DefaultOrganization},
 			}},
 			ExpectedAvailableUpdates: nil,
 		},

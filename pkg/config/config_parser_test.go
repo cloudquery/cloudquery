@@ -1,9 +1,13 @@
 package config
 
 import (
+	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_handleProcessConfig_Connection(t *testing.T) {
@@ -96,6 +100,8 @@ func Test_handleProcessConfig_Connection(t *testing.T) {
 }
 
 func TestHandle_ProcessConfigProviderVersion(t *testing.T) {
+	provider := "aws"
+	latest := getLatestVersion(t, provider)
 	cases := []struct {
 		name            string
 		providerVersion string
@@ -117,7 +123,7 @@ func TestHandle_ProcessConfigProviderVersion(t *testing.T) {
 		{
 			"should allow 'latest' version",
 			"latest",
-			"latest",
+			latest,
 			false,
 		},
 		{
@@ -130,11 +136,18 @@ func TestHandle_ProcessConfigProviderVersion(t *testing.T) {
 	for i := range cases {
 		tc := cases[i]
 		t.Run(tc.name, func(t *testing.T) {
-			provider := &RequiredProvider{Name: "aws", Version: tc.providerVersion}
+			provider := &RequiredProvider{Name: provider, Version: tc.providerVersion}
 			config := Config{CloudQuery: CloudQuery{Providers: RequiredProviders{provider}, Connection: &Connection{DSN: "postgres://user:pass@localhost:5432/postgres"}}}
 			diags := ProcessConfig(&config)
 			assert.Equal(t, tc.expectedError, diags.HasErrors())
 			assert.Equal(t, tc.expectedResult, config.CloudQuery.Providers[0].Version)
 		})
 	}
+}
+
+func getLatestVersion(t *testing.T, name string) string {
+	hub := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()))
+	latest, err := hub.CheckUpdate(context.Background(), registry.Provider{Name: name, Source: registry.DefaultOrganization, Version: "v0.0.0"})
+	require.NoError(t, err)
+	return latest
 }

@@ -80,7 +80,6 @@ func Test(ctx context.Context, pm *plugin.Manager, opts TestOptions) (bool, erro
 // TODO: support installed providers table to save what providers were installed regardless of current disk
 
 // CheckAvailableUpdates checks if any updates are available for providers, if a provider's version is set to latest,
-// update will check vs "latest" available provider located in the local disk.
 func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *CheckUpdatesOptions) ([]AvailableUpdate, diag.Diagnostics) {
 	var (
 		diags   diag.Diagnostics
@@ -88,15 +87,6 @@ func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *Che
 	)
 	for _, p := range opts.Providers {
 		var version = p.Version
-		if p.Version == registry.LatestVersion {
-			pb, err := reg.Get(p.Name, p.Version)
-			// This can happen, when we check for updates, but we don't have any providers downloaded, in this case
-			// the latest provider should be downloaded via the Download command.
-			if err != nil {
-				continue
-			}
-			version = pb.Version
-		}
 		log.Info().Str("provider", p.Name).Str("version", version).Msg("checking update for provider")
 		updateVersion, err := reg.CheckUpdate(ctx, p)
 		if err != nil {

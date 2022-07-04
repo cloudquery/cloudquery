@@ -129,7 +129,7 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 	}
 	c.Providers = make(registry.Providers, len(cfg.CloudQuery.Providers))
 	for i, rp := range cfg.CloudQuery.Providers {
-		src, name, err := core.ParseProviderSource(rp)
+		src, name, err := config.ParseProviderSource(rp)
 		if err != nil {
 			return nil, err
 		}
@@ -687,6 +687,6 @@ func setConfigAnalytics(cfg *config.Config) {
 
 func (c Client) ConvertRequiredToRegistry(providerName string) registry.Provider {
 	rp := c.cfg.CloudQuery.Providers.Get(providerName)
-	src, name, _ := core.ParseProviderSource(rp)
+	src, name, _ := config.ParseProviderSource(rp)
 	return registry.Provider{Name: name, Version: rp.Version, Source: src}
 }

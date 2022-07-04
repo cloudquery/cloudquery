@@ -35,7 +35,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: registry.LatestVersion,
+							Version: latestVersion,
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -68,7 +68,7 @@ func Test_Fetch(t *testing.T) {
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test(test_alias)": {
 				Name:                  "test",
 				Alias:                 "test_alias",
-				Version:               registry.LatestVersion,
+				Version:               latestVersion,
 				TotalResourcesFetched: 0,
 				Status:                FetchFinished,
 			}}},
@@ -80,7 +80,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: registry.LatestVersion,
+							Version: latestVersion,
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -96,7 +96,7 @@ func Test_Fetch(t *testing.T) {
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
-				Version:               registry.LatestVersion,
+				Version:               latestVersion,
 				TotalResourcesFetched: 0,
 				Status:                FetchFinished,
 			}}},
@@ -108,7 +108,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: registry.LatestVersion,
+							Version: latestVersion,
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -124,7 +124,7 @@ func Test_Fetch(t *testing.T) {
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
-				Version:               registry.LatestVersion,
+				Version:               latestVersion,
 				TotalResourcesFetched: 0,
 				Status:                FetchFinished,
 			}}},
@@ -136,7 +136,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: registry.LatestVersion,
+							Version: latestVersion,
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -161,7 +161,7 @@ func Test_Fetch(t *testing.T) {
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
-				Version:               registry.LatestVersion,
+				Version:               latestVersion,
 				TotalResourcesFetched: 0,
 				Status:                FetchCanceled,
 			}}},
@@ -173,7 +173,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: registry.LatestVersion,
+							Version: latestVersion,
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -186,7 +186,7 @@ func Test_Fetch(t *testing.T) {
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
-				Version:               registry.LatestVersion,
+				Version:               latestVersion,
 				TotalResourcesFetched: 0,
 				Status:                FetchFinished,
 			}}},
@@ -198,7 +198,7 @@ func Test_Fetch(t *testing.T) {
 					{
 						Provider: registry.Provider{
 							Name:    "test",
-							Version: registry.LatestVersion,
+							Version: latestVersion,
 							Source:  registry.DefaultOrganization,
 						},
 						Config: &config.Provider{
@@ -214,7 +214,7 @@ func Test_Fetch(t *testing.T) {
 			ExpectedResponse: &FetchResponse{ProviderFetchSummary: map[string]*ProviderFetchSummary{"test": {
 				Name:                  "test",
 				Alias:                 "",
-				Version:               registry.LatestVersion,
+				Version:               latestVersion,
 				TotalResourcesFetched: 0,
 				Status:                FetchFailed,
 			}}},
@@ -292,11 +292,7 @@ func Test_Fetch(t *testing.T) {
 					fetchSummary, ok := resp.ProviderFetchSummary[k]
 					require.True(t, ok)
 					assert.Equal(t, p.Name, fetchSummary.Name)
-					if p.Version == registry.LatestVersion {
-						assert.Equal(t, latestVersion, fetchSummary.Version)
-					} else {
-						assert.Equal(t, p.Version, fetchSummary.Version)
-					}
+					assert.Equal(t, p.Version, fetchSummary.Version)
 					assert.Equal(t, p.Status, fetchSummary.Status)
 					assert.Equal(t, p.TotalResourcesFetched, fetchSummary.TotalResourcesFetched)
 				}

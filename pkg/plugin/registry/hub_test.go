@@ -98,7 +98,7 @@ func TestHub_Get(t *testing.T) {
 			Name: "missing_provider",
 			Provider: Provider{
 				Name:    "test2",
-				Version: LatestVersion,
+				Version: "v0.0.0",
 				Source:  "cloudqueryx",
 			},
 			ExpectedError:    errors.New("provider test2@v0.0.0 is missing, download it first"),
@@ -108,7 +108,7 @@ func TestHub_Get(t *testing.T) {
 			Name: "existing_provider",
 			Provider: Provider{
 				Name:    "test",
-				Version: LatestVersion,
+				Version: "v0.0.4",
 				Source:  "hub",
 			},
 			ExpectedProvider: ProviderBinary{

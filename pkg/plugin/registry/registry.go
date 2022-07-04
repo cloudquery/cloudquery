@@ -6,8 +6,6 @@ import (
 	"strings"
 )
 
-const LatestVersion = "latest"
-
 type ProviderBinary struct {
 	Provider
 	FilePath string

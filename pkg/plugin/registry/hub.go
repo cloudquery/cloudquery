@@ -63,23 +63,6 @@ func NewRegistryHub(url string, opts ...Option) *Hub {
 
 // Get returns a loaded provider from the hub without downloading it again, returns an error if not found.
 func (h Hub) Get(providerName, providerVersion string) (ProviderBinary, error) {
-	if providerVersion == "latest" {
-		latestVersion, _ := version.NewVersion("v0.0.0")
-		for _, p := range h.providers {
-			if p.Name != providerName {
-				continue
-			}
-			currentVersion, err := version.NewVersion(p.Version)
-			if err != nil {
-				log.Warn().Str("provider", providerName).Str("version", providerVersion).Msg("bad version provider exists in directory")
-				continue
-			}
-			if currentVersion.GreaterThan(latestVersion) {
-				latestVersion = currentVersion
-			}
-		}
-		providerVersion = latestVersion.Original()
-	}
 	// TODO: support organization naming level for providers
 	pd, ok := h.providers[fmt.Sprintf("%s-%s", providerName, providerVersion)]
 	if !ok {
@@ -91,16 +74,12 @@ func (h Hub) Get(providerName, providerVersion string) (ProviderBinary, error) {
 // CheckUpdate checks if there is an update available for the requested provider.
 // Returns a new version if there is one, otherwise empty string.
 // Call will be cancelled either if ctx is cancelled or after a timeout set by versionCheckHTTPTimeout.
-// This function should not be called for a provider having Version set to "latest".
 func (h Hub) CheckUpdate(ctx context.Context, provider Provider) (string, error) {
 	ctx, cancel := context.WithTimeout(ctx, versionCheckHTTPTimeout)
 	defer cancel()
 	latestVersion, err := h.getLatestRelease(ctx, provider.Source, provider.Name)
 	if err != nil {
 		return "", err
-	}
-	if provider.Version == LatestVersion {
-		return latestVersion, nil
 	}
 	v, err := version.NewVersion(latestVersion)
 	if err != nil {
@@ -117,16 +96,7 @@ func (h Hub) CheckUpdate(ctx context.Context, provider Provider) (string, error)
 }
 
 func (h Hub) Download(ctx context.Context, provider Provider, noVerify bool) (ProviderBinary, error) {
-	var (
-		requestedVersion = provider.Version
-		err              error
-	)
-	if requestedVersion == "latest" {
-		requestedVersion, err = h.getLatestRelease(ctx, provider.Source, provider.Name)
-		if err != nil {
-			return ProviderBinary{}, err
-		}
-	}
+	requestedVersion := provider.Version
 	p, ok := h.providers[fmt.Sprintf("%s-%s", provider.Name, requestedVersion)]
 	if !ok {
 		return h.downloadProvider(ctx, provider, requestedVersion, noVerify)
@@ -164,10 +134,7 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 
 	l := log.With().Str("provider", provider.Name).Str("version", version).Logger()
 	checksumsPath := filepath.Join(h.PluginDirectory, provider.Source, provider.Name, version+".checksums.txt")
-	checksumsURL := fmt.Sprintf("https://github.com/%s/%s/releases/latest/download/checksums.txt", provider.Source, ProviderRepoName(provider.Name))
-	if version != "latest" {
-		checksumsURL = fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/checksums.txt", provider.Source, ProviderRepoName(provider.Name), version)
-	}
+	checksumsURL := fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/checksums.txt", provider.Source, ProviderRepoName(provider.Name), version)
 	if h.ProgressUpdater != nil {
 		h.ProgressUpdater.Update(provider.Name, ui.StatusInProgress, "Verifying...", 1)
 	}

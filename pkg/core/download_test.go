@@ -24,7 +24,7 @@ func TestDownloadExisting(t *testing.T) {
 	_, err = pm.CreatePlugin(&plugin.CreationOptions{
 		Provider: registry.Provider{
 			Name:    "test",
-			Version: "latest",
+			Version: "v0.1.8",
 			Source:  "cloudquery",
 		},
 		Alias: "",
@@ -37,7 +37,7 @@ func TestDownloadExisting(t *testing.T) {
 		Providers: []registry.Provider{
 			{
 				Name:    "test",
-				Version: "v0.0.11",
+				Version: "v0.1.8",
 				Source:  "cloudquery",
 			},
 		},
@@ -49,7 +49,7 @@ func TestDownloadExisting(t *testing.T) {
 	p, err := pm.CreatePlugin(&plugin.CreationOptions{
 		Provider: registry.Provider{
 			Name:    "test",
-			Version: "latest",
+			Version: "v0.1.8",
 			Source:  "cloudquery",
 		},
 		Alias: "",
@@ -57,7 +57,7 @@ func TestDownloadExisting(t *testing.T) {
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, p.Name(), "test")
-	assert.Equal(t, p.Version(), "v0.0.11")
+	assert.Equal(t, p.Version(), "v0.1.8")
 	pm.ClosePlugin(p)
 
 	// Create a new clean plugin.Manager, and check that it shouldn't download again
@@ -69,7 +69,7 @@ func TestDownloadExisting(t *testing.T) {
 	p, err = pm.CreatePlugin(&plugin.CreationOptions{
 		Provider: registry.Provider{
 			Name:    "test",
-			Version: "latest",
+			Version: "v0.1.8",
 			Source:  "cloudquery",
 		},
 		Alias: "",
@@ -77,7 +77,7 @@ func TestDownloadExisting(t *testing.T) {
 	})
 	assert.Nil(t, err)
 	assert.Equal(t, p.Name(), "test")
-	assert.Equal(t, p.Version(), "v0.0.11")
+	assert.Equal(t, p.Version(), "v0.1.8")
 	pm.ClosePlugin(p)
 }
 
@@ -94,7 +94,7 @@ func TestDownloadUnverified(t *testing.T) {
 	_, err = pm.CreatePlugin(&plugin.CreationOptions{
 		Provider: registry.Provider{
 			Name:    "unverified",
-			Version: "latest",
+			Version: "v0.1.8",
 			Source:  "cloudquery",
 		},
 		Alias: "",
@@ -141,7 +141,7 @@ func TestDownloadCommunity(t *testing.T) {
 		t.FailNow()
 	}
 
-	src, name, err := ParseProviderSource(&config.RequiredProvider{
+	src, name, err := config.ParseProviderSource(&config.RequiredProvider{
 		Name:    "yandex-cloud/yandex",
 		Source:  nil,
 		Version: "v0.0.8",
@@ -161,7 +161,7 @@ func TestDownloadCommunity(t *testing.T) {
 	assert.Nil(t, diags)
 
 	source := "yandex-cloud"
-	src, name, err = ParseProviderSource(&config.RequiredProvider{
+	src, name, err = config.ParseProviderSource(&config.RequiredProvider{
 		Name:    "yandex",
 		Source:  &source,
 		Version: "v0.0.8",

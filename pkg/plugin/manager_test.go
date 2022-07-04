@@ -16,7 +16,7 @@ func TestManager_DownloadProvider(t *testing.T) {
 	manager, err := NewManager(r)
 	assert.Nil(t, err)
 
-	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "latest"}, false).Return(
+	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "v0.1.8"}, false).Return(
 		registry.ProviderBinary{
 			Provider: registry.Provider{
 				Name:    "test",
@@ -25,13 +25,13 @@ func TestManager_DownloadProvider(t *testing.T) {
 			},
 			FilePath: "some/file/path",
 		}, nil).Times(2)
-	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "v0.1.8"}}, false)
 	assert.Nil(t, err)
 
-	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "v0.1.8"}}, false)
 	assert.Nil(t, err)
-	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "latest"}, false).Return(registry.ProviderBinary{}, errors.New("failed to download")).Times(1)
-	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "v0.1.8"}, false).Return(registry.ProviderBinary{}, errors.New("failed to download")).Times(1)
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "v0.1.8"}}, false)
 	assert.Error(t, err)
 }
 
@@ -40,7 +40,7 @@ func TestManager_DownloadProviderWithReattach(t *testing.T) {
 	r := registry.NewMockRegistry(ctrl)
 	manager, err := NewManager(r)
 	assert.Nil(t, err)
-	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "latest"}, false).Return(
+	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "v0.1.8"}, false).Return(
 		registry.ProviderBinary{
 			Provider: registry.Provider{
 				Name:    "test",
@@ -50,12 +50,12 @@ func TestManager_DownloadProviderWithReattach(t *testing.T) {
 			FilePath: "some/file/path",
 		}, nil).Times(2)
 
-	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "v0.1.8"}}, false)
 	assert.Nil(t, err)
-	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "v0.1.8"}}, false)
 	assert.Nil(t, err)
 
-	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "latest"}, false).Return(registry.ProviderBinary{}, errors.New("failed to download")).Times(1)
-	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "latest"}}, false)
+	r.EXPECT().Download(gomock.Any(), registry.Provider{Name: "test", Version: "v0.1.8"}, false).Return(registry.ProviderBinary{}, errors.New("failed to download")).Times(1)
+	_, err = manager.DownloadProviders(context.TODO(), []registry.Provider{{Name: "test", Version: "v0.1.8"}}, false)
 	assert.Error(t, err)
 }

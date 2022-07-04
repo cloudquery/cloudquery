@@ -62,7 +62,7 @@ func Test_PurgeProviderData(t *testing.T) {
 		{
 			Name: "bad-plugin-name",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []registry.Provider{{Name: "bad-plugin", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
+				Providers:  []registry.Provider{{Name: "bad-plugin", Version: "v0.0.11", Source: registry.DefaultOrganization}},
 				LastUpdate: 0,
 				DryRun:     true,
 			},
@@ -78,7 +78,7 @@ func Test_PurgeProviderData(t *testing.T) {
 		{
 			Name: "dry-run-no-data",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
+				Providers:  []registry.Provider{{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization}},
 				LastUpdate: 0,
 				DryRun:     true,
 			},
@@ -90,7 +90,7 @@ func Test_PurgeProviderData(t *testing.T) {
 		{
 			Name: "basic-data-purge",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
+				Providers:  []registry.Provider{{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization}},
 				LastUpdate: 0,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
@@ -126,7 +126,7 @@ func Test_PurgeProviderData(t *testing.T) {
 		{
 			Name: "no-data-purge",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
+				Providers:  []registry.Provider{{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization}},
 				LastUpdate: time.Hour * 10,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
@@ -164,7 +164,7 @@ func Test_PurgeProviderData(t *testing.T) {
 		{
 			Name: "single-data-purge",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
+				Providers:  []registry.Provider{{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization}},
 				LastUpdate: time.Hour * 6,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
@@ -212,7 +212,7 @@ func Test_PurgeProviderData(t *testing.T) {
 		{
 			Name: "data-purge-different-times",
 			Options: &PurgeProviderDataOptions{
-				Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
+				Providers:  []registry.Provider{{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization}},
 				LastUpdate: time.Hour * 4,
 			},
 			Setup: func(t *testing.T, dsn string) func(t *testing.T) {
@@ -300,7 +300,7 @@ func Test_PurgeProviderDataBadUserValues(t *testing.T) {
 	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	require.Nil(t, err)
 	_, diags := PurgeProviderData(context.Background(), storage, pm, &PurgeProviderDataOptions{
-		Providers:  []registry.Provider{{Name: "test", Version: registry.LatestVersion, Source: registry.DefaultOrganization}},
+		Providers:  []registry.Provider{{Name: "test", Version: "v0.0.11", Source: registry.DefaultOrganization}},
 		LastUpdate: 0,
 		DryRun:     false,
 	})

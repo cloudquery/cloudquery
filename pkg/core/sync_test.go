@@ -22,7 +22,7 @@ func Test_Sync(t *testing.T) {
 	}
 
 	// Download plugin before sync call
-	_, diags := Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}, {Name: "test", Version: "latest", Source: "cloudquery"}}, false})
+	_, diags := Download(context.Background(), pManager, &DownloadOptions{[]registry.Provider{{Name: "test", Version: "v0.0.10", Source: "cloudquery"}, {Name: "test", Version: "v0.1.8", Source: "cloudquery"}}, false})
 	assert.False(t, diags.HasErrors())
 
 	sta, err := state.NewClient(context.Background(), dsn)

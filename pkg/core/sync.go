@@ -60,7 +60,9 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 		return nil, diags
 	}
 
-	provider.Version = s.Version // override any "latest"
+	if provider.Version != s.Version {
+		log.Warn().Str("provider", provider.Name).Str("version", provider.Version).Str("schema version", s.Version).Msg("provider and schema version mismatch")
+	}
 
 	want := state.ProviderFromRegistry(provider)
 	if want.ParsedVersion == nil && s.Unmanaged {

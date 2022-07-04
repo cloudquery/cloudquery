@@ -1,6 +1,7 @@
 package config
 
 import (
+	"context"
 	_ "embed"
 	"errors"
 	"fmt"
@@ -10,15 +11,32 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
 	"github.com/xeipuuv/gojsonschema"
 	"gopkg.in/yaml.v3"
 )
 
+const LatestVersion = "latest"
+
 //go:embed schema.json
 var configSchemaYAML []byte
+
+func ParseProviderSource(requestedProvider *RequiredProvider) (org string, provider string, err error) {
+	var requestedSource string
+	if requestedProvider.Source == nil || *requestedProvider.Source == "" {
+		requestedSource = requestedProvider.Name
+	} else {
+		requestedSource = *requestedProvider.Source
+		if !strings.Contains(requestedSource, "/") {
+			requestedSource = strings.Join([]string{requestedSource, requestedProvider.Name}, "/")
+		}
+	}
+	return registry.ParseProviderName(requestedSource)
+}
 
 func (p *Parser) LoadConfigFromSource(data []byte) (*Config, diag.Diagnostics) {
 	newData := os.Expand(string(data), p.getVariableValue)
@@ -53,8 +71,7 @@ func ProcessConfig(config *Config) diag.Diagnostics {
 		return diags
 	}
 
-	normalize(config)
-	return diags
+	return diags.Add(normalize(config))
 }
 
 func ParseVersion(version string) (*semver.Version, error) {
@@ -229,15 +246,24 @@ func validateProvidersBlock(config *Config) diag.Diagnostics {
 	return diags
 }
 
-func normalize(config *Config) {
+func normalize(config *Config) diag.Diagnostics {
+	var diags diag.Diagnostics
 	for _, cloudqueryProvider := range config.CloudQuery.Providers {
 		if isVersionLatest(cloudqueryProvider.Version) {
-			continue
+			source, name, _ := ParseProviderSource(cloudqueryProvider)
+			hub := registry.NewRegistryHub(firebase.CloudQueryRegistryURL)
+			// Using v0.0.0 will force getting the latest version
+			latest, err := hub.CheckUpdate(context.Background(), registry.Provider{Name: name, Source: source, Version: "v0.0.0"})
+			if err != nil {
+				diags = diag.FromError(err, diag.USER, diag.WithSeverity(diag.ERROR), diag.WithSummary("Failed to check for latest version"))
+			} else {
+				cloudqueryProvider.Version = latest
+			}
+		} else {
+			ver, _ := ParseVersion(cloudqueryProvider.Version)
+			// convert partial versions such as "0.10" to "v0.10.0"
+			cloudqueryProvider.Version = FormatVersion(ver)
 		}
-
-		ver, _ := ParseVersion(cloudqueryProvider.Version)
-		// convert partial versions such as "0.10" to "v0.10.0"
-		cloudqueryProvider.Version = FormatVersion(ver)
 	}
 
 	// Backwards compatibility. Don't override DSN if was provided by the user
@@ -250,4 +276,6 @@ func normalize(config *Config) {
 			provider.Alias = provider.Name
 		}
 	}
+
+	return diags
 }
