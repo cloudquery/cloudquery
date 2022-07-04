@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ⚠ BREAKING CHANGES
 
-* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce))
+* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce)). For information on the new YAML configuration format [visit our docs](https://docs.cloudquery.io/docs/configuration/overview).
 
 ### Bug Fixes
 
@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Miscellaneous Chores
 
-* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce))
+* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce)). For information on the new YAML configuration format [visit our docs](https://docs.cloudquery.io/docs/configuration/overview).
 
 ## [0.30.5](https://github.com/cloudquery/cloudquery/compare/v0.30.4...v0.30.5) (2022-07-03)
 
