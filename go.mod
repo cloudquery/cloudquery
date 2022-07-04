@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
-	github.com/cloudquery/cq-provider-sdk v0.13.3
+	github.com/cloudquery/cq-provider-sdk v0.13.4
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/google/go-github/v35 v35.3.0
@@ -21,7 +21,6 @@ require (
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
-	github.com/vbauerster/mpb/v7 v7.4.2
 	github.com/zclconf/go-cty v1.10.0
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467
