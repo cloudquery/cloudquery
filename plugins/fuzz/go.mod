@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/caitlinelfring/go-env-default v1.1.0
-	github.com/cloudquery/cq-provider-sdk v0.13.3
+	github.com/cloudquery/cq-provider-sdk v0.13.4
 	github.com/hashicorp/go-hclog v1.2.1
 )
 
