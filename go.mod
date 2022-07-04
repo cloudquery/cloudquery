@@ -33,7 +33,7 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20220623141421-5afb4c282135
 	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/driftprogramming/pgxpoolmock v1.1.0
-	github.com/georgysavva/scany v0.3.0
+	github.com/georgysavva/scany v1.0.0
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.8
