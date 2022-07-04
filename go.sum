@@ -267,8 +267,8 @@ github.com/aws/aws-sdk-go-v2/service/sagemaker v1.34.0 h1:4TMRXEDWv36zLq1j8n1oaP
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.34.0/go.mod h1:M4BZIF20beXCjkESz+cwbIUb/AvemNpS4OxK4KVIGNY=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.15.12 h1:Pq2GrbfG74dX/JhY/O+bWBz7DUzdgTvqugofqTWLACQ=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.15.12/go.mod h1:MfgrkSNjFbMLz19srWgyGJtvDEfXg/ZUJ6AIrxdj65M=
-github.com/aws/aws-sdk-go-v2/service/ses v1.14.8 h1:QKMyETy2bS+62gK+0qcoEKBgvM+oeSXu23hcf/9+exc=
-github.com/aws/aws-sdk-go-v2/service/ses v1.14.8/go.mod h1:xyjDcbJVRZHFehwSRFQZHt4PfvFFHbSqWfxxW75Eyio=
+github.com/aws/aws-sdk-go-v2/service/sesv2 v1.13.8 h1:9QayjfHwpxcgSKovJ4oz4w8Ye7VJf60qAb4ZNcCShEQ=
+github.com/aws/aws-sdk-go-v2/service/sesv2 v1.13.8/go.mod h1:TtViVlhstOPX/nmz07Cc3KoX3NC1vXwSuzMseOe66dw=
 github.com/aws/aws-sdk-go-v2/service/shield v1.16.7 h1:bfyTNq3U7GXyFAr2fSJ1OaV5ZTmxURd/fS/49MbiIgE=
 github.com/aws/aws-sdk-go-v2/service/shield v1.16.7/go.mod h1:T7HfO9ktODwkrs+RlBFSgvOiVhLjn2eEBN8n2266rLY=
 github.com/aws/aws-sdk-go-v2/service/sns v1.17.8 h1:Z0LBaDH89pfyBOCZzLCi8tmie3hJyLDV2NDjBWVvPzw=

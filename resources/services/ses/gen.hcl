@@ -23,16 +23,17 @@ resource "aws" "ses" "templates" {
   }
 
   column "template_name" {
-    rename = "name"
+    rename      = "name"
+    description = "The name of the template."
   }
-  column "template_html_part" {
-    rename = "html_part"
+  column "email_template_content_html" {
+    rename = "html"
   }
-  column "template_subject_part" {
-    rename = "subject_part"
+  column "email_template_content_subject" {
+    rename = "subject"
   }
-  column "template_text_part" {
-    rename = "text_part"
+  column "email_template_content_text" {
+    rename = "text"
   }
   column "created_timestamp" {
     type        = "timestamp"

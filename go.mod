@@ -54,7 +54,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.21.8
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.34.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.15.12
-	github.com/aws/aws-sdk-go-v2/service/ses v1.14.8
+	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.13.8
 	github.com/aws/aws-sdk-go-v2/service/sns v1.17.8
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.18.7
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.27.3
