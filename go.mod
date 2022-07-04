@@ -43,7 +43,7 @@ require (
 	github.com/jackc/pgconn v1.12.1
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/jeremywohl/flatten v1.0.1
-	github.com/johannesboyne/gofakes3 v0.0.0-20220517215058-83a58ec253b6
+	github.com/johannesboyne/gofakes3 v0.0.0-20220627085814-c3ac35da23b2
 	github.com/lib/pq v1.10.6
 	github.com/modern-go/reflect2 v1.0.2
 	github.com/olekukonko/tablewriter v0.0.5
