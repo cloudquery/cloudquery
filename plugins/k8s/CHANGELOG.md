@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.21](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.20...v0.5.21) (2022-07-04)
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes packages to v0.24.2 ([#212](https://github.com/cloudquery/cq-provider-k8s/issues/212)) ([526549e](https://github.com/cloudquery/cq-provider-k8s/commit/526549ecdc4a62ee1b57821144d5e55fd7fabe77))
+
 ## [0.5.20](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.19...v0.5.20) (2022-07-04)
 
 
