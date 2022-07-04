@@ -11,7 +11,7 @@ require (
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.2.1
-	github.com/stretchr/testify v1.7.5
+	github.com/stretchr/testify v1.8.0
 	github.com/tombuildsstuff/giovanni v0.16.0
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
 )
