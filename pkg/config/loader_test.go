@@ -92,7 +92,7 @@ func TestLoader_BadVersion(t *testing.T) {
 	p := NewParser()
 	_, diags := p.LoadConfigFile("fixtures/bad_version.yml")
 	assert.NotNil(t, diags)
-	assert.Equal(t, "Provider test version 0.0.0 is invalid", diags[0].Error())
+	assert.Equal(t, "Provider \"test\" version \"invalid\" is invalid. Please set to 'latest' a or valid semantic version", diags[0].Description().Summary)
 }
 
 func TestLoader_DuplicateProviderNaming(t *testing.T) {

@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Masterminds/semver/v3"
 	"github.com/cloudquery/cloudquery/cmd/utils"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
@@ -211,10 +210,10 @@ func ParseProviderCLIArg(providerCLIArg string) (org string, name string, versio
 		return "", "", "", err
 	}
 
-	ver, err := semver.NewVersion(argParts[1])
+	ver, err := config.ParseVersion(argParts[1])
 	if err != nil {
 		return "", "", "", fmt.Errorf("invalid version %q: %w", argParts[1], err)
 	}
 
-	return org, name, "v" + ver.String(), nil
+	return org, name, config.FormatVersion(ver), nil
 }
