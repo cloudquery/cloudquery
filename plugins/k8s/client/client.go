@@ -87,6 +87,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 			contexts = append(contexts, cName)
 		}
 	}
+
+	if len(contexts) == 0 {
+		return nil, diag.FromError(fmt.Errorf("could not find any context"), diag.USER, diag.WithDetails("Try to add context, https://kubernetes.io/docs/reference/kubectl/cheatsheet/#kubectl-context-and-configuration"))
+	}
+
 	c := Client{
 		Log:      logger,
 		services: make(map[string]Services),
@@ -98,11 +103,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 
 	for _, ctxName := range contexts {
 		logger.Info("creating k8s client for context", "context", ctxName)
-		kClient, err := buildKubeClient(kCfg, kCfg.CurrentContext)
+		kClient, err := buildKubeClient(kCfg, ctxName)
 		if err != nil {
-			return nil, diag.FromError(fmt.Errorf("failed to build k8s client for context %q: %w", kCfg.CurrentContext, err), diag.INTERNAL)
+			return nil, diag.FromError(fmt.Errorf("failed to build k8s client for context %q: %w", ctxName, err), diag.INTERNAL)
 		}
-		c.services[kCfg.CurrentContext] = initServices(kClient)
+		c.services[ctxName] = initServices(kClient)
 	}
 
 	return &c, nil
