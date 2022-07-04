@@ -24,7 +24,7 @@ func newCmdDoc() *cobra.Command {
 			// There is no danger of infinite recursion here as it just goes through the docs
 			// and not running the doc command
 			// nolint:revive
-			return doc.GenMarkdownTreeCustom(newCmdDoc(), args[0], filePrepender, linkHandler)
+			return doc.GenMarkdownTreeCustom(newCmdRoot(), args[0], filePrepender, linkHandler)
 		},
 	}
 	return cmd
