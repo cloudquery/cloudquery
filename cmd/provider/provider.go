@@ -25,6 +25,6 @@ func NewCmdProvider() *cobra.Command {
 		Example: providerExample,
 		Version: core.Version,
 	}
-	cmd.AddCommand(newCmdProviderSync(), newCmdProviderDrop(), newCmdProviderPurge(), newCmdProviderSync(), newCmdProviderDownload())
+	cmd.AddCommand(newCmdProviderSync(), newCmdProviderDrop(), newCmdProviderPurge(), newCmdProviderDownload())
 	return cmd
 }
