@@ -18,6 +18,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.21](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.20...v0.11.21) (2022-07-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/go-autorest/autorest to v0.11.27 ([#390](https://github.com/cloudquery/cq-provider-azure/issues/390)) ([5610181](https://github.com/cloudquery/cq-provider-azure/commit/5610181aaf284cf8bfac7b4222c351533976aa9d))
+* **deps:** Update module github.com/Azure/go-autorest/autorest/azure/auth to v0.5.11 ([#391](https://github.com/cloudquery/cq-provider-azure/issues/391)) ([5117b28](https://github.com/cloudquery/cq-provider-azure/commit/5117b28e267085012f38cb4c4a31f2fc8372c642))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.3 ([#398](https://github.com/cloudquery/cq-provider-azure/issues/398)) ([7af200f](https://github.com/cloudquery/cq-provider-azure/commit/7af200f7fbeb0d5f7e3e06b0acbe9b1d5dc3787d))
+* **deps:** Update module github.com/stretchr/testify to v1.8.0 ([#392](https://github.com/cloudquery/cq-provider-azure/issues/392)) ([0efa132](https://github.com/cloudquery/cq-provider-azure/commit/0efa132013ca4008019c2a122ccc4606847747a4))
+* **deps:** Update module github.com/tombuildsstuff/giovanni to v0.20.0 ([#393](https://github.com/cloudquery/cq-provider-azure/issues/393)) ([6624f09](https://github.com/cloudquery/cq-provider-azure/commit/6624f09e3eb821db0d33ac59f283783b4dcf8b7c))
+
 ## [0.11.20](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.19...v0.11.20) (2022-07-03)
 
 
