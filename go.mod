@@ -21,7 +21,7 @@ require (
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
-	github.com/vbauerster/mpb/v6 v6.0.4
+	github.com/vbauerster/mpb/v7 v7.4.2
 	github.com/zclconf/go-cty v1.10.0
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467
@@ -51,6 +51,7 @@ require (
 	github.com/savioxavier/termlink v1.1.0
 	github.com/spf13/cast v1.5.0
 	github.com/spf13/pflag v1.0.5
+	github.com/vbauerster/mpb/v6 v6.0.4
 	github.com/xeipuuv/gojsonschema v1.2.0
 	github.com/xo/dburl v0.11.0
 	google.golang.org/grpc v1.47.0
@@ -137,7 +138,7 @@ require (
 	github.com/magiconair/properties v1.8.1 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-ieproxy v0.0.1 // indirect
-	github.com/mattn/go-runewidth v0.0.12 // indirect
+	github.com/mattn/go-runewidth v0.0.13 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
