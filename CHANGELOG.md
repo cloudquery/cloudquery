@@ -4,6 +4,15 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.31.3](https://github.com/cloudquery/cloudquery/compare/v0.31.2...v0.31.3) (2022-07-04)
+
+
+### Bug Fixes
+
+* Classify MkDir fails as diag.USER ([#1091](https://github.com/cloudquery/cloudquery/issues/1091)) ([c52149e](https://github.com/cloudquery/cloudquery/commit/c52149ebcf2c4a77bab90a91ca580ca45d9fedb6))
+* **cmd-providers:** Don't print help for sync command twice ([#1094](https://github.com/cloudquery/cloudquery/issues/1094)) ([fd2813f](https://github.com/cloudquery/cloudquery/commit/fd2813fe1dfe149bf82dccdb4d3974213eedda8e))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.4 ([#1093](https://github.com/cloudquery/cloudquery/issues/1093)) ([2ca124c](https://github.com/cloudquery/cloudquery/commit/2ca124ca180bbb3b9a2ae2deb3cad98f359b2c43))
+
 ## [0.31.2](https://github.com/cloudquery/cloudquery/compare/v0.31.1...v0.31.2) (2022-07-04)
 
 
