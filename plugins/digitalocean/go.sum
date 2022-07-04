@@ -45,8 +45,9 @@ github.com/agext/levenshtein v1.2.3/go.mod h1:JEDfjyjHDjOF/1e4FlBE/PkbqA9OfWu2ki
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/apparentlymart/go-textseg/v13 v13.0.0 h1:Y+KvPE1NYz0xl601PVImeQfFyEy6iT90AvPUL1NNfNw=
 github.com/apparentlymart/go-textseg/v13 v13.0.0/go.mod h1:ZK2fH7c4NqDTLtiYLvIkEghdlcqw7yxLeM89kiTRPUo=
-github.com/aws/aws-sdk-go-v2 v1.9.0 h1:+S+dSqQCN3MSU5vJRu1HqHrq00cJn6heIMU7X9hcsoo=
 github.com/aws/aws-sdk-go-v2 v1.9.0/go.mod h1:cK/D0BBs0b/oWPIcX/Z/obahJK1TT7IPVjy53i/mX/4=
+github.com/aws/aws-sdk-go-v2 v1.16.6 h1:kzafGZYwkwVgLZ2zEX7P+vTwLli6uIMXF8aGjunN6UI=
+github.com/aws/aws-sdk-go-v2 v1.16.6/go.mod h1:6CpKuLXg2w7If3ABZCl/qZ6rEgwtjZTn4eAf4RcEyuw=
 github.com/aws/aws-sdk-go-v2/config v1.8.0 h1:O8EMFBOl6tue5gdJJV6U3Ikyl3lqgx6WrulCYrcy2SQ=
 github.com/aws/aws-sdk-go-v2/config v1.8.0/go.mod h1:w9+nMZ7soXCe5nT46Ri354SNhXDQ6v+V5wqDjnZE+GY=
 github.com/aws/aws-sdk-go-v2/credentials v1.4.0 h1:kmvesfjY861FzlCU9mvAfe01D9aeXcG2ZuC+k9F2YLM=
