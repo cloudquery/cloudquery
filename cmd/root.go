@@ -122,6 +122,7 @@ func newCmdRoot() *cobra.Command {
 	rootCmd.AddCommand(
 		initCmd.NewCmdInit(), fetch.NewCmdFetch(), policy.NewCmdPolicy(), provider.NewCmdProvider(),
 		options.NewCmdOptions(), newCmdVersion(), newCmdDoc())
+	rootCmd.DisableAutoGenTag = true
 	return rootCmd
 }
 
