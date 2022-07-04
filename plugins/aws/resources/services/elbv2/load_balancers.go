@@ -350,8 +350,9 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 	return diag.WrapError(resource.Set(c.Name, response.WebACL.ARN))
 }
 func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ELBv2
+	cl := meta.(*client.Client)
+	region := cl.Region
+	svc := cl.Services().ELBv2
 	loadBalancer := resource.Item.(types.LoadBalancer)
 	tagsOutput, err := svc.DescribeTags(ctx, &elbv2.DescribeTagsInput{
 		ResourceArns: []string{
@@ -361,6 +362,9 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 		o.Region = region
 	})
 	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {
