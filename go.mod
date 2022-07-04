@@ -22,7 +22,7 @@ require (
 	github.com/stretchr/testify v1.7.5
 	github.com/thoas/go-funk v0.9.2
 	github.com/vbauerster/mpb/v6 v6.0.4
-	github.com/zclconf/go-cty v1.9.1
+	github.com/zclconf/go-cty v1.10.0
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
