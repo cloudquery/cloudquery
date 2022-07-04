@@ -8,7 +8,7 @@ import (
 var (
 	providerShort   = "Top-level command to interact with providers."
 	providerExample = `
-  # Sync (Upgrade or Downgrade) all providers specified in config.hcl This will also create the schema.
+  # Sync (Upgrade or Downgrade) all providers specified in cloudquery.yml This will also create the schema.
   cloudquery provider sync 
   # Sync one or more providers
   cloudquery provider sync aws, gcp

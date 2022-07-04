@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
@@ -197,7 +196,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 			printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 			return nil, diags
 		}
-		providers[i] = core.ProviderInfo{Provider: rp, Config: p, ConfigFormat: c.cfg.Format()}
+		providers[i] = core.ProviderInfo{Provider: rp, Config: p, ConfigFormat: cqproto.ConfigYAML}
 	}
 	result, diags := core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
@@ -623,11 +622,7 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 }
 
 func loadConfig(file string) (*config.Config, bool) {
-	parser := config.NewParser(
-		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
-		config.WithFileFunc(filepath.Dir(file)),
-	)
-	cfg, diags := parser.LoadConfigFile(file)
+	cfg, diags := config.NewParser().LoadConfigFile(file)
 	if diags.HasDiags() {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
@@ -674,13 +669,7 @@ func setConfigAnalytics(cfg *config.Config) {
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	analytics.SetGlobalProperty("cfghash", cfgHash)
 
-	var cfgf string
-	switch cfg.Format() {
-	case cqproto.ConfigYAML:
-		cfgf = "yaml"
-	case cqproto.ConfigHCL:
-		cfgf = "hcl"
-	}
+	const cfgf = "yaml"
 	analytics.SetGlobalProperty("cfgformat", cfgf)
 
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
