@@ -61,9 +61,8 @@ func validate(config *Config) diag.Diagnostics {
 
 	diags = diags.Add(validateCloudQueryProviders(config.CloudQuery.Providers))
 	diags = diags.Add(validateConnection(config.CloudQuery.Connection))
-	diags = diags.Add(validateProvidersBlock(config))
 
-	return diags
+	return diags.Add(validateProvidersBlock(config))
 }
 
 func assignDefaults(config *Config) {
