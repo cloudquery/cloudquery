@@ -4,6 +4,26 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.31.0](https://github.com/cloudquery/cloudquery/compare/v0.30.5...v0.31.0) (2022-07-04)
+
+### ⚠ BREAKING CHANGES
+
+* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce)). For information on the new YAML configuration format [visit our docs](https://docs.cloudquery.io/docs/configuration/overview).
+
+### Bug Fixes
+
+* **deps:** Update github.com/hairyhenderson/go-fsimpl digest to 3402ea6 ([#1069](https://github.com/cloudquery/cloudquery/issues/1069)) ([67ea5cb](https://github.com/cloudquery/cloudquery/commit/67ea5cb63aedb442081ed013168e11310266427d))
+* **deps:** Update github.com/johannesboyne/gofakes3 digest to c3ac35d ([#1070](https://github.com/cloudquery/cloudquery/issues/1070)) ([156f757](https://github.com/cloudquery/cloudquery/commit/156f7573fcb89fad7dd90f237da84bb2d4d2697b))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.3 ([#1081](https://github.com/cloudquery/cloudquery/issues/1081)) ([e4522ae](https://github.com/cloudquery/cloudquery/commit/e4522ae328929d63bb139f936552d9f7f65b6d57))
+* **deps:** Update module github.com/hashicorp/go-version to v1.6.0 ([#1071](https://github.com/cloudquery/cloudquery/issues/1071)) ([bb22b4a](https://github.com/cloudquery/cloudquery/commit/bb22b4a50265f554b1723c11f6be7dea4af120d0))
+* **deps:** Update module github.com/stretchr/testify to v1.8.0 ([#1072](https://github.com/cloudquery/cloudquery/issues/1072)) ([23068a8](https://github.com/cloudquery/cloudquery/commit/23068a82f070b7388429e4528fefb5ccf1b48e1d))
+* **deps:** Update module github.com/zclconf/go-cty to v1.10.0 ([#1073](https://github.com/cloudquery/cloudquery/issues/1073)) ([6350fa3](https://github.com/cloudquery/cloudquery/commit/6350fa3aaae7f8ef0ba10c2496d96bdafd2eb40d))
+
+
+### Miscellaneous Chores
+
+* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce)). For information on the new YAML configuration format [visit our docs](https://docs.cloudquery.io/docs/configuration/overview).
+
 ## [0.30.5](https://github.com/cloudquery/cloudquery/compare/v0.30.4...v0.30.5) (2022-07-03)
 
 
