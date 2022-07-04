@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/aws/aws-sdk-go v1.44.47
-	github.com/cloudquery/cq-provider-sdk v0.13.3
+	github.com/cloudquery/cq-provider-sdk v0.13.4
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/hashicorp/go-hclog v1.2.1
@@ -25,7 +25,7 @@ require (
 	github.com/Masterminds/squirrel v1.5.3 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
-	github.com/cloudquery/faker/v3 v3.7.5 // indirect
+	github.com/cloudquery/faker/v3 v3.7.6 // indirect
 	github.com/creasty/defaults v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/doug-martin/goqu/v9 v9.18.0 // indirect
