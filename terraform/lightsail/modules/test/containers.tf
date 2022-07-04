@@ -1,10 +1,10 @@
 # create a new Lightsail container service
 resource "awslightsail_container_service" "awslightsail_container_service" {
-  name        = "${var.prefix}-container-service"
+  name        = "${lower(var.prefix)}-container-service"
   power       = "nano"
   scale       = 1
   is_disabled = false
-  tags = {
+  tags        = {
     foo1 = "bar1"
     foo2 = ""
   }
