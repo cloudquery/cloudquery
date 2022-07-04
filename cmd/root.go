@@ -27,7 +27,7 @@ import (
 // fileDescriptorF gets set trough system relevant files like ulimit_unix.go
 var fileDescriptorF func()
 
-const (
+var (
 	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
 
 	Commit    = "development"
