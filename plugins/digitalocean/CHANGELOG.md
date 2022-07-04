@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.5.21](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.20...v0.5.21) (2022-07-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.3 ([#190](https://github.com/cloudquery/cq-provider-digitalocean/issues/190)) ([23412d0](https://github.com/cloudquery/cq-provider-digitalocean/commit/23412d0f3596956375ce5336c39b93511f442b2a))
+* **deps:** Update Terraform tls to v3.4.0 ([#183](https://github.com/cloudquery/cq-provider-digitalocean/issues/183)) ([3e189fe](https://github.com/cloudquery/cq-provider-digitalocean/commit/3e189fee7d92e4aeb7545805e25ab815ed852181))
+* Docs to Yaml ([#172](https://github.com/cloudquery/cq-provider-digitalocean/issues/172)) ([4cf00e6](https://github.com/cloudquery/cq-provider-digitalocean/commit/4cf00e6b0ea3f6162cd3145d5f1a6b5f1fefeb94))
+
 ## [0.5.20](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.19...v0.5.20) (2022-07-03)
 
 
