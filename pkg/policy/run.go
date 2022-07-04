@@ -241,7 +241,7 @@ func createSnapshotPath(directory, queryName string) (string, error) {
 
 	err := os.MkdirAll(cleanedPath, os.ModePerm)
 	if err != nil {
-		return "", err
+		return "", diag.FromError(err, diag.USER, diag.WithSummary("failed to create snapshot directory"))
 	}
 	return cleanedPath, nil
 }
