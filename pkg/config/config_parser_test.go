@@ -88,7 +88,7 @@ func Test_handleDecodedConfig_Connection(t *testing.T) {
 		tc := cases[i]
 		t.Run(tc.name, func(t *testing.T) {
 			config := Config{CloudQuery: CloudQuery{Connection: tc.input}}
-			diags := HandleDecodedConfig(&config)
+			diags := ProcessConfig(&config)
 			assert.Equal(t, tc.expectedError, diags.HasErrors())
 			assert.Equal(t, tc.expectedResult, config.CloudQuery.Connection.DSN)
 		})

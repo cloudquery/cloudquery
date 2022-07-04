@@ -92,7 +92,7 @@ func initialize(cmd *cobra.Command, providers []string) error {
 			},
 		},
 	}
-	if diags := config.HandleDecodedConfig(&mainConfig); diags.HasErrors() {
+	if diags := config.ProcessConfig(&mainConfig); diags.HasErrors() {
 		return diags
 	}
 

@@ -27,7 +27,7 @@ func (p *Parser) LoadConfigFromSource(data []byte) (*Config, diag.Diagnostics) {
 		return nil, diags
 	}
 
-	diags = append(diags, HandleDecodedConfig(config)...)
+	diags = diags.Add(ProcessConfig(config))
 	return config, diags
 }
 
@@ -39,24 +39,29 @@ func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
 	return p.LoadConfigFromSource(contents)
 }
 
-func HandleDecodedConfig(config *Config) diag.Diagnostics {
-	var diags diag.Diagnostics
+// ProcessConfig handles the configuration after it was loaded and parsed
+// 1. Assigns defaults after decoding the raw configuration format
+// 2. Overrides configuration values from CLI flags
+// 3. Validates the configuration provided by the user
+// 4. Normalizes the configuration to make it easier to use
+func ProcessConfig(config *Config) diag.Diagnostics {
 	assignDefaults(config)
-	overrideFromFlags(config)
-	diags = append(diags, validate(config)...)
-	if len(diags) == 0 {
-		normalize(config)
+	overrideFromCLIFlags(config)
+	diags := validate(config)
+	if diags.HasErrors() {
+		return diags
 	}
 
+	normalize(config)
 	return diags
 }
 
 func validate(config *Config) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	diags = append(diags, validateCloudQueryProviders(config.CloudQuery.Providers)...)
-	diags = append(diags, validateConnection(config.CloudQuery.Connection)...)
-	diags = append(diags, validateProvidersBlock(config)...)
+	diags = diags.Add(validateCloudQueryProviders(config.CloudQuery.Providers))
+	diags = diags.Add(validateConnection(config.CloudQuery.Connection))
+	diags = diags.Add(validateProvidersBlock(config))
 
 	return diags
 }
@@ -68,7 +73,7 @@ func assignDefaults(config *Config) {
 	}
 }
 
-func overrideFromFlags(config *Config) {
+func overrideFromCLIFlags(config *Config) {
 	datadir := viper.GetString("data-dir")
 	if datadir != "" {
 		config.CloudQuery.PluginDirectory = filepath.Join(datadir, "providers")
