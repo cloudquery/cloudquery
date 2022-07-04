@@ -58,7 +58,7 @@ type AwsConfig struct {
 	MaxBackoff int       `yaml:"max_backoff,omitempty" hcl:"max_backoff,optional" default:"30"`
 }
 
-func TestParser_LoadValidConfigFromFile(t *testing.T) {
+func TestLoader_LoadValidConfigFromFile(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFile("fixtures/valid_config.yml")
 	assert.Nil(t, diags)

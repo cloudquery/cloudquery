@@ -1,14 +1,12 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"net/url"
 	"sort"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/spf13/viper"
 	"github.com/xo/dburl"
 )
 
@@ -101,20 +99,13 @@ func (c Connection) IsAnyConnParamsSet() bool {
 	return c.Type != "" || c.Username != "" || c.Password != "" || c.Host != "" || c.Port != 0 || c.Database != "" || c.SSLMode != "" || len(c.Extras) > 0
 }
 
-func (c *Connection) BuildFromConnParams() error {
+func (c *Connection) BuildFromConnParams() {
 	if c.Port == 0 {
 		c.Port = 5432
 	}
 	if c.Type == "" {
 		c.Type = "postgres"
 	}
-	if c.Host == "" {
-		return errors.New("missing host")
-	}
-	if c.Database == "" {
-		return errors.New("missing database")
-	}
-
 	u := url.URL{
 		Scheme: c.Type,
 		Host:   fmt.Sprintf("%s:%d", c.Host, c.Port),
@@ -143,8 +134,6 @@ func (c *Connection) BuildFromConnParams() error {
 	u.RawQuery = v.Encode()
 
 	c.DSN = (&dburl.URL{OriginalScheme: c.Type, URL: u}).String()
-
-	return nil
 }
 
 func (r RequiredProvider) String() string {
@@ -192,20 +181,4 @@ func (r RequiredProviders) Get(name string) *RequiredProvider {
 		}
 	}
 	return nil
-}
-
-func handleConnectionConfig(c *Connection) error {
-	if ds := viper.GetString("dsn"); ds != "" {
-		c.DSN = ds
-		return nil
-	}
-
-	if c.DSN != "" {
-		if c.IsAnyConnParamsSet() {
-			return errors.New("DSN specified along with explicit attributes, only one type is supported")
-		}
-		return nil
-	}
-
-	return c.BuildFromConnParams()
 }
