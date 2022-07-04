@@ -62,7 +62,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	"github.com/aws/aws-sdk-go-v2/service/ses"
+	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
@@ -636,7 +636,7 @@ func initServices(region string, c aws.Config) Services {
 		S3Manager:              newS3ManagerFromConfig(awsCfg),
 		SageMaker:              sagemaker.NewFromConfig(awsCfg),
 		SecretsManager:         secretsmanager.NewFromConfig(awsCfg),
-		SES:                    ses.NewFromConfig(awsCfg),
+		SES:                    sesv2.NewFromConfig(awsCfg),
 		Shield:                 shield.NewFromConfig(awsCfg),
 		SNS:                    sns.NewFromConfig(awsCfg),
 		SSM:                    ssm.NewFromConfig(awsCfg),

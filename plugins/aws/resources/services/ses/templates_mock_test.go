@@ -3,9 +3,8 @@ package ses
 import (
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/service/ses"
-	sesTypes "github.com/aws/aws-sdk-go-v2/service/ses/types"
+	"github.com/aws/aws-sdk-go-v2/service/sesv2"
+	"github.com/aws/aws-sdk-go-v2/service/sesv2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -15,26 +14,27 @@ import (
 func buildSESTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
 	sesClient := mocks.NewMockSESClient(ctrl)
 
-	tplMeta := sesTypes.TemplateMetadata{}
+	tplMeta := types.EmailTemplateMetadata{}
 	err := faker.FakeData(&tplMeta)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	tpl := new(sesTypes.Template)
+	tpl := new(types.EmailTemplateContent)
 	err = faker.FakeData(tpl)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	tpl.TemplateName = aws.String(aws.ToString(tplMeta.Name))
-
-	sesClient.EXPECT().ListTemplates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&ses.ListTemplatesOutput{TemplatesMetadata: []sesTypes.TemplateMetadata{tplMeta}},
+	sesClient.EXPECT().ListEmailTemplates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&sesv2.ListEmailTemplatesOutput{TemplatesMetadata: []types.EmailTemplateMetadata{tplMeta}},
 		nil,
 	)
-	sesClient.EXPECT().GetTemplate(gomock.Any(), &ses.GetTemplateInput{TemplateName: tplMeta.Name}, gomock.Any()).Return(
-		&ses.GetTemplateOutput{Template: tpl}, nil,
+	sesClient.EXPECT().GetEmailTemplate(gomock.Any(), &sesv2.GetEmailTemplateInput{TemplateName: tplMeta.TemplateName}, gomock.Any()).Return(
+		&sesv2.GetEmailTemplateOutput{
+			TemplateName:    tplMeta.TemplateName,
+			TemplateContent: tpl,
+		}, nil,
 	)
 
 	return client.Services{

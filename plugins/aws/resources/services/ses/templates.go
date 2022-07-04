@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/service/ses"
+	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -40,33 +40,33 @@ func Templates() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
+				Name:        "name",
+				Description: "The name of the template.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TemplateName"),
+			},
+			{
+				Name:        "html",
+				Description: "The HTML body of the email.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("EmailTemplateContent.Html"),
+			},
+			{
+				Name:        "subject",
+				Description: "The subject line of the email.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("EmailTemplateContent.Subject"),
+			},
+			{
+				Name:        "text",
+				Description: "The email body that will be visible to recipients whose email clients do not display HTML.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("EmailTemplateContent.Text"),
+			},
+			{
 				Name:        "created_timestamp",
 				Description: "The time and date the template was created.",
 				Type:        schema.TypeTimestamp,
-			},
-			{
-				Name:        "name",
-				Description: "The name of the template",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Template.TemplateName"),
-			},
-			{
-				Name:        "html_part",
-				Description: "The HTML body of the email.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Template.HtmlPart"),
-			},
-			{
-				Name:        "subject_part",
-				Description: "The subject line of the email.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Template.SubjectPart"),
-			},
-			{
-				Name:        "text_part",
-				Description: "The email body that will be visible to recipients whose email clients do not display HTML.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Template.TextPart"),
 			},
 		},
 	}
@@ -80,22 +80,23 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	svc := c.Services().SES
 
-	listInput := new(ses.ListTemplatesInput)
+	listInput := new(sesv2.ListEmailTemplatesInput)
 	for {
-		output, err := svc.ListTemplates(ctx, listInput, func(o *ses.Options) { o.Region = c.Region })
+		output, err := svc.ListEmailTemplates(ctx, listInput, func(o *sesv2.Options) { o.Region = c.Region })
 		if err != nil {
 			return diag.WrapError(err)
 		}
 
 		for _, templateMeta := range output.TemplatesMetadata {
-			getInput := &ses.GetTemplateInput{TemplateName: templateMeta.Name}
-			template, err := svc.GetTemplate(ctx, getInput, func(o *ses.Options) { o.Region = c.Region })
+			getInput := &sesv2.GetEmailTemplateInput{TemplateName: templateMeta.TemplateName}
+			getOutput, err := svc.GetEmailTemplate(ctx, getInput, func(o *sesv2.Options) { o.Region = c.Region })
 			if err != nil {
 				return diag.WrapError(err)
 			}
 			res <- &Template{
-				CreatedTimestamp: templateMeta.CreatedTimestamp,
-				Template:         template.Template,
+				TemplateName:         getOutput.TemplateName,
+				CreatedTimestamp:     templateMeta.CreatedTimestamp,
+				EmailTemplateContent: getOutput.TemplateContent,
 			}
 		}
 		if aws.ToString(output.NextToken) == "" {
