@@ -61,3 +61,14 @@ jobs:
           args: release --rm-dist --config .goreleaser.prerelease.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
+
+      -
+        # Trigger a workflow to sync CLI docs
+        name: Trigger sync docs workflow
+        if: steps.semver_parser.outputs.prerelease == ''
+        uses: peter-evans/repository-dispatch@v2
+        continue-on-error: true
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+          repository: cloudquery/docs
+          event-type: sync-docs
