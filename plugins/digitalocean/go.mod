@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.0
 	github.com/aws/smithy-go v1.12.0
-	github.com/cloudquery/cq-provider-sdk v0.13.3
+	github.com/cloudquery/cq-provider-sdk v0.13.4
 	github.com/digitalocean/godo v1.81.0
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/pkg/errors v0.9.1
@@ -33,7 +33,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.4.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.7.0 // indirect
-	github.com/cloudquery/faker/v3 v3.7.5 // indirect
+	github.com/cloudquery/faker/v3 v3.7.6 // indirect
 	github.com/creasty/defaults v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/doug-martin/goqu/v9 v9.18.0 // indirect
