@@ -47,6 +47,7 @@ const (
 	RedshiftService             AWSService = "redshift"
 	Route53Service              AWSService = "route53"
 	S3Service                   AWSService = "s3"
+	SESService                  AWSService = "ses"
 	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
 )
