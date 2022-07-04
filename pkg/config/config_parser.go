@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
@@ -56,6 +57,18 @@ func ProcessConfig(config *Config) diag.Diagnostics {
 	return diags
 }
 
+func ParseVersion(version string) (*semver.Version, error) {
+	return semver.NewVersion(version)
+}
+
+func FormatVersion(version *semver.Version) string {
+	return "v" + version.String()
+}
+
+func isVersionLatest(version string) bool {
+	return version == "latest"
+}
+
 func validate(config *Config) diag.Diagnostics {
 	var diags diag.Diagnostics
 
@@ -91,10 +104,16 @@ func validateCloudQueryProviders(providers RequiredProviders) diag.Diagnostics {
 	var diags diag.Diagnostics
 
 	for _, cp := range providers {
-		if cp.Version != "latest" && !strings.HasPrefix(cp.Version, "v") {
-			diags = diags.Add(diag.FromError(fmt.Errorf("Provider %s version %s is invalid", cp.Name, cp.Version), diag.USER, diag.WithDetails("Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z")))
+		if isVersionLatest(cp.Version) {
+			continue
+		}
+
+		_, err := ParseVersion(cp.Version)
+		if err != nil {
+			diags = diags.Add(diag.FromError(fmt.Errorf("Provider %q version %q is invalid. Please set to 'latest' a or valid semantic version", cp.Name, cp.Version), diag.USER))
 		}
 	}
+
 	return diags
 }
 
@@ -211,6 +230,16 @@ func validateProvidersBlock(config *Config) diag.Diagnostics {
 }
 
 func normalize(config *Config) {
+	for _, cloudqueryProvider := range config.CloudQuery.Providers {
+		if isVersionLatest(cloudqueryProvider.Version) {
+			continue
+		}
+
+		ver, _ := ParseVersion(cloudqueryProvider.Version)
+		// convert partial versions such as "0.10" to "v0.10.0"
+		cloudqueryProvider.Version = FormatVersion(ver)
+	}
+
 	// Backwards compatibility. Don't override DSN if was provided by the user
 	if config.CloudQuery.Connection.DSN == "" {
 		config.CloudQuery.Connection.BuildFromConnParams()

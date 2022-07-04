@@ -4,4 +4,4 @@ cloudquery:
   providers:
     - name: test
       source: cloudquery
-      version: "0.0.0"
+      version: "invalid"

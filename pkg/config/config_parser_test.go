@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_handleDecodedConfig_Connection(t *testing.T) {
+func Test_handleProcessConfig_Connection(t *testing.T) {
 	cases := []struct {
 		name           string
 		input          *Connection
@@ -91,6 +91,50 @@ func Test_handleDecodedConfig_Connection(t *testing.T) {
 			diags := ProcessConfig(&config)
 			assert.Equal(t, tc.expectedError, diags.HasErrors())
 			assert.Equal(t, tc.expectedResult, config.CloudQuery.Connection.DSN)
+		})
+	}
+}
+
+func TestHandle_ProcessConfigProviderVersion(t *testing.T) {
+	cases := []struct {
+		name            string
+		providerVersion string
+		expectedResult  string
+		expectedError   bool
+	}{
+		{
+			"should allow loose version",
+			"v0.10",
+			"v0.10.0",
+			false,
+		},
+		{
+			"should allow version without 'v' prefix",
+			"0.10",
+			"v0.10.0",
+			false,
+		},
+		{
+			"should allow 'latest' version",
+			"latest",
+			"latest",
+			false,
+		},
+		{
+			"should error if invalid semver",
+			"invalid",
+			"invalid",
+			true,
+		},
+	}
+	for i := range cases {
+		tc := cases[i]
+		t.Run(tc.name, func(t *testing.T) {
+			provider := &RequiredProvider{Name: "aws", Version: tc.providerVersion}
+			config := Config{CloudQuery: CloudQuery{Providers: RequiredProviders{provider}, Connection: &Connection{DSN: "postgres://user:pass@localhost:5432/postgres"}}}
+			diags := ProcessConfig(&config)
+			assert.Equal(t, tc.expectedError, diags.HasErrors())
+			assert.Equal(t, tc.expectedResult, config.CloudQuery.Providers[0].Version)
 		})
 	}
 }
