@@ -280,14 +280,14 @@ func Test_LoadFile(t *testing.T) {
 		{
 			Name:      "Success-S3Object",
 			Type:      "s3",
-			Path:      fmt.Sprintf("s3://%s/config.hcl?region=us-east-1&disableSSL=true&s3ForcePathStyle=true&endpoint=%s", bucketName, srvURL.Host),
+			Path:      fmt.Sprintf("s3://%s/cloudquery.yml?region=us-east-1&disableSSL=true&s3ForcePathStyle=true&endpoint=%s", bucketName, srvURL.Host),
 			Configs:   testConfig,
 			SetupFile: true,
 		},
 		{
 			Name:        "Failure-S3Object",
 			Type:        "s3",
-			Path:        fmt.Sprintf("s3://%s/config2.hcl?region=us-east-1&disableSSL=true&s3ForcePathStyle=true&endpoint=%s", bucketName, srvURL.Host),
+			Path:        fmt.Sprintf("s3://%s/cloudquery2.yml?region=us-east-1&disableSSL=true&s3ForcePathStyle=true&endpoint=%s", bucketName, srvURL.Host),
 			Configs:     testConfig,
 			SetupFile:   false,
 			ExpectError: true,
@@ -295,14 +295,14 @@ func Test_LoadFile(t *testing.T) {
 		{
 			Name:      "Success-RelativePath",
 			Type:      "file",
-			Path:      "./asdf/asdf/asfd/teddstcdonfig.hcl",
+			Path:      "./asdf/asdf/asfd/teddstcdonfig.yml",
 			Configs:   testConfig,
 			SetupFile: true,
 		},
 		{
 			Name:        "Failure-RelativePath-NotExists",
 			Type:        "file",
-			Path:        "./asdf/asdf/asfd/teddstcdonfig.hcl",
+			Path:        "./asdf/asdf/asfd/teddstcdonfig.yml",
 			Configs:     testConfig,
 			SetupFile:   false,
 			ExpectError: true,
@@ -317,7 +317,7 @@ func Test_LoadFile(t *testing.T) {
 				os.Setenv("AWS_ANON", "true")
 				defer os.Unsetenv("AWS_ANON")
 				if tc.SetupFile {
-					assert.NoError(t, putFile(backend, tc.Path, "application/hcl", tc.Configs))
+					assert.NoError(t, putFile(backend, tc.Path, "text/yaml", tc.Configs))
 				}
 
 			case "file":

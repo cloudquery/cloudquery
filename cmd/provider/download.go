@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	downloadShort      = "Downloads all providers specified in config.hcl. (Deprecated: Please use `provider sync` instead)"
+	downloadShort      = "Downloads all providers specified in cloudquery.yml. (Deprecated: Please use `provider sync` instead)"
 	downloadDeprecated = "Please use `cloudquery provider sync` instead."
 )
 
