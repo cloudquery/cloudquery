@@ -19,7 +19,7 @@ require (
 	github.com/spf13/afero v1.8.2
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.7.1
-	github.com/stretchr/testify v1.7.5
+	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
 	github.com/vbauerster/mpb/v6 v6.0.4
 	github.com/zclconf/go-cty v1.9.1
