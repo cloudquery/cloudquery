@@ -344,8 +344,8 @@ github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PK
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/thoas/go-funk v0.9.2 h1:oKlNYv0AY5nyf9g+/GhMgS/UO2ces0QRdPKwkhY3VCk=
 github.com/thoas/go-funk v0.9.2/go.mod h1:+IWnUfUmFO1+WVYQWQtIJHeRRdaIyyYglZN7xzUPe4Q=
-github.com/tombuildsstuff/giovanni v0.16.0 h1:Q8QKgsr4Fmhf+z6Mf1UPQKeovkCdudkiMaAZmq9CIjg=
-github.com/tombuildsstuff/giovanni v0.16.0/go.mod h1:66KVLYma2whJhEdxPSPL3GQHkulhK+C5CluKfHGfPF4=
+github.com/tombuildsstuff/giovanni v0.20.0 h1:IM/I/iNWMXnPYwcSq8uxV7TKDlv7Nejq0bRK9i6O/C0=
+github.com/tombuildsstuff/giovanni v0.20.0/go.mod h1:66KVLYma2whJhEdxPSPL3GQHkulhK+C5CluKfHGfPF4=
 github.com/vmihailenco/msgpack/v4 v4.3.12/go.mod h1:gborTTJjAo/GWTqqRjrLCn9pgNN+NXzzngzBKDPIqw4=
 github.com/vmihailenco/msgpack/v5 v5.3.5 h1:5gO0H1iULLWGhs2H5tbAHIZTV8/cYafcFOr9znI5mJU=
 github.com/vmihailenco/msgpack/v5 v5.3.5/go.mod h1:7xyJ9e+0+9SaZT0Wt1RGleJXzli6Q/V5KbhBonMG9jc=
