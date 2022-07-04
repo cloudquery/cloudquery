@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [0.31.0](https://github.com/cloudquery/cloudquery/compare/v0.30.5...v0.31.0) (2022-07-04)
 
+### ⚠ BREAKING CHANGES
+
+* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce))
 
 ### Bug Fixes
 
@@ -19,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Miscellaneous Chores
 
-* Release 0.31.0 ([#1082](https://github.com/cloudquery/cloudquery/issues/1082)) ([5c3150c](https://github.com/cloudquery/cloudquery/commit/5c3150c620e00ba41eb6c93201745fa94a50632f))
+* Remove support for HCL configuration ([#1044](https://github.com/cloudquery/cloudquery/issues/1044)) ([c6a9872](https://github.com/cloudquery/cloudquery/commit/c6a9872d5421c71fe84a23e014b4a315d10aa0ce))
 
 ## [0.30.5](https://github.com/cloudquery/cloudquery/compare/v0.30.4...v0.30.5) (2022-07-03)
 
