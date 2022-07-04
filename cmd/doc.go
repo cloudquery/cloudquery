@@ -21,10 +21,7 @@ func newCmdDoc() *cobra.Command {
 		Args:   cobra.ExactValidArgs(1),
 		Hidden: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			// There is no danger of infinite recursion here as it just goes through the docs
-			// and not running the doc command
-			// nolint:revive
-			return doc.GenMarkdownTreeCustom(newCmdRoot(), args[0], filePrepender, linkHandler)
+			return doc.GenMarkdownTreeCustom(cmd.Parent(), args[0], filePrepender, linkHandler)
 		},
 	}
 	return cmd
