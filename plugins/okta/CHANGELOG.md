@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.19](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.18...v0.5.19) (2022-07-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/okta/okta-sdk-golang/v2 to v2.13.0 ([#160](https://github.com/cloudquery/cq-provider-okta/issues/160)) ([4d44fa4](https://github.com/cloudquery/cq-provider-okta/commit/4d44fa4988ca06ea9a3d08859fd682ea9704e24d))
+
 ## [0.5.18](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.17...v0.5.18) (2022-07-04)
 
 
