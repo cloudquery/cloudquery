@@ -92,7 +92,7 @@ func initialize(cmd *cobra.Command, providers []string) error {
 			},
 		},
 	}
-	if diags := config.ValidateCQBlock(&mainConfig.CloudQuery); diags.HasErrors() {
+	if diags := config.ProcessConfig(&mainConfig); diags.HasErrors() {
 		return diags
 	}
 
