@@ -828,6 +828,9 @@ func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schem
 			options.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- response.Items
