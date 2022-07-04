@@ -149,7 +149,9 @@ jobs:
 
       - name: Post the comment
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
-        uses: infracost/actions/comment@v2
-        with:
-          path: /tmp/infracost.json
-          behavior: update
+        run: |
+            infracost comment github --path=/tmp/infracost.json \
+                                    --repo=$GITHUB_REPOSITORY \
+                                    --github-token=${{github.token}} \
+                                    --pull-request=${{github.event.pull_request.number}} \
+                                    --behavior=update
