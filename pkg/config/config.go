@@ -41,8 +41,6 @@ type CloudQuery struct {
 	// Used internally
 	PluginDirectory string `yaml:"-" json:"-"`
 	PolicyDirectory string `yaml:"-" json:"-"`
-
-	ExtraKeys map[string]interface{} `yaml:",inline"`
 }
 
 type Connection struct {

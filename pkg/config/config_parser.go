@@ -123,14 +123,13 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 	var yc struct {
 		CloudQuery CloudQuery  `yaml:"cloudquery" json:"cloudquery"`
 		Providers  []*Provider `yaml:"providers" json:"providers"`
-
-		ExtraKeys map[string]interface{} `yaml:",inline"`
 	}
 
 	lgc := logging.GlobalConfig
 	yc.CloudQuery.Logger = &lgc
-
-	if err := yaml.NewDecoder(r).Decode(&yc); err != nil {
+	d := yaml.NewDecoder(r)
+	d.KnownFields(true)
+	if err := d.Decode(&yc); err != nil {
 		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to parse yaml"))
 	}
 
@@ -145,7 +144,7 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 		if len(errs) == 0 {
 			return nil, diag.FromError(errors.New("Failed to validate config with schema"), diag.USER, diag.WithSummary("Invalid configuration"))
 		}
-		diags := diag.Diagnostics{}
+		var diags diag.Diagnostics
 		for _, e := range errs {
 			diags = diags.Add(
 				diag.FromError(errors.New(e.String()), diag.USER, diag.WithDetails("%s", e.Description()), diag.WithSummary("Config field %q has error of type %s", e.Field(), e.Type())),
@@ -154,9 +153,7 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 		return nil, diags
 	}
 
-	diags := diag.Diagnostics{}.Add(validateExtraKeys(yc.ExtraKeys))
-	diags = diags.Add(validateExtraKeys(yc.CloudQuery.ExtraKeys))
-
+	var diags diag.Diagnostics
 	providers := yc.Providers
 	for _, p := range providers {
 		p.Configuration, err = yaml.Marshal(p.ConfigKeys["configuration"])
@@ -165,6 +162,7 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 			continue
 		}
 		delete(p.ConfigKeys, "configuration")
+		// extra keys in other blocks are were already detected by the strict unmarshalling, so we only need to worry about provider config
 		diags = diags.Add(validateExtraKeys(p.ConfigKeys))
 	}
 
