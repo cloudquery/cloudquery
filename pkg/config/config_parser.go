@@ -7,12 +7,14 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
+	"github.com/thoas/go-funk"
 	"github.com/xeipuuv/gojsonschema"
 	"gopkg.in/yaml.v3"
 )
@@ -121,6 +123,8 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 	var yc struct {
 		CloudQuery CloudQuery  `yaml:"cloudquery" json:"cloudquery"`
 		Providers  []*Provider `yaml:"providers" json:"providers"`
+
+		ExtraKeys map[string]interface{} `yaml:",inline"`
 	}
 
 	lgc := logging.GlobalConfig
@@ -150,14 +154,22 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 		return nil, diags
 	}
 
+	diags := diag.Diagnostics{}.Add(validateExtraKeys(yc.ExtraKeys))
+	diags = diags.Add(validateExtraKeys(yc.CloudQuery.ExtraKeys))
+
 	providers := yc.Providers
-	diags := diag.Diagnostics{}
 	for _, p := range providers {
 		p.Configuration, err = yaml.Marshal(p.ConfigKeys["configuration"])
 		if err != nil {
 			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("ConfigKeys marshal failed")))
 			continue
 		}
+		delete(p.ConfigKeys, "configuration")
+		diags = diags.Add(validateExtraKeys(p.ConfigKeys))
+	}
+
+	if diags.HasErrors() {
+		return nil, diags
 	}
 
 	c := &Config{
@@ -165,7 +177,20 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 		Providers:  providers,
 	}
 
-	return c, nil
+	return c, diags
+}
+
+func validateExtraKeys(extraKeys map[string]interface{}) diag.Diagnostics {
+	if len(extraKeys) == 0 {
+		return nil
+	}
+
+	keys := sort.StringSlice(funk.Keys(extraKeys).([]string))
+	keyOrKeys := "keys"
+	if len(keys) == 1 {
+		keyOrKeys = "key"
+	}
+	return diag.FromError(errors.New("Encountered unknown element in config"), diag.USER, diag.WithSummary("Invalid configuration"), diag.WithDetails("Found unknown %s: %s", keyOrKeys, strings.Join(keys, ", ")))
 }
 
 func validateConnection(connection *Connection) diag.Diagnostics {
