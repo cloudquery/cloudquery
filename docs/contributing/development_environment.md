@@ -53,3 +53,16 @@ Unit tests include:
 #### Integration Tests
 
 These are documented in the Adding a new resource guide. See [here](./adding_a_new_resource.md#integration-tests) for more information.
+
+### Pre-commit Hooks
+
+This repository provides a pre-commit hook to check your code before committing it. To use it:
+
+ 1. [Install pre-commit](https://pre-commit.com/) (on Mac OS: `brew install pre-commit`)
+ 2. [Install golangci-lint](https://golangci-lint.run/usage/install/#local-installation) (on Mac OS: `brew install golangci-lint`)
+ 3. In the root of this repo, run:
+    ```shell
+    make install-hooks
+    ```
+
+Now your code will be statically checked for errors prior to commit. 
