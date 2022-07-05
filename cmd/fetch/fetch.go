@@ -8,7 +8,9 @@ import (
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/errors"
+	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -37,6 +39,7 @@ func NewCmdFetch() *cobra.Command {
 			}
 			result, diags := c.Fetch(cmd.Context())
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "fetch"})
+			sendDiagsToAnalytics(diags, c.Providers)
 			if result != nil {
 				for _, p := range result.ProviderFetchSummary {
 					analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
@@ -54,6 +57,33 @@ func NewCmdFetch() *cobra.Command {
 	_ = viper.BindPFlag("redact-diags", fetchCmd.Flags().Lookup("redact-diags"))
 	_ = fetchCmd.Flags().MarkHidden("redact-diags")
 	return fetchCmd
+}
+
+func diagToEventType(d diag.Diagnostic) string {
+	if strings.HasSuffix(d.Error(), "i/o timeout") {
+		return "io_timeout"
+	}
+	return ""
+}
+
+func sendDiagsToAnalytics(diags diag.Diagnostics, providers registry.Providers) {
+	for _, d := range diags {
+		event := diagToEventType(d)
+		if event == "" {
+			continue
+		}
+		desc := d.Description()
+		analytics.Capture(
+			event,
+			providers,
+			nil,
+			nil,
+			"error", d.Error(),
+			"resource", desc.Resource,
+			"summary", desc.Summary,
+			"detail", desc.Detail,
+		)
+	}
 }
 
 // filterConfigProviders gets a list of "providerAlias:resource1,resource2" items and updates the given config, removing non-matching providers
