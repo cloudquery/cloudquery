@@ -89,7 +89,7 @@ Explain the problem and include additional details to help maintainers reproduce
 * **Describe the Bug** in as many details as possible. For example, start by explaining how and where you are running CloudQuery (local machine, cloud service, docker, k8s, CI Pipeline, etc)
 * **Provide specific examples to demonstrate the steps**. Include links to gists and or files, or copy/pasteable snippets to help give context to the issue. If you're providing snippets in the issue, use [Markdown code blocks](https://help.github.com/articles/markdown-basics/#multiple-lines)
 * **Explain which behavior you expected to see instead and why.**
-* **Inlcude (sanitized) log output** execute CloudQuery with the `--enable-console-log` and `-v` flags to get all of the debug information
+* **Include (sanitized) log output** execute CloudQuery with the `--enable-console-log` and `-v` flags to get all of the debug information
 
 Provide more context by answering these questions:
 
