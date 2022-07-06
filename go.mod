@@ -39,6 +39,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/hairyhenderson/go-fsimpl v0.0.0-20220702200609-3402ea6e06fa
 	github.com/hashicorp/go-getter v1.6.2
+	github.com/hashicorp/go-getter/v2 v2.1.0
 	github.com/jackc/pgconn v1.12.1
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/jeremywohl/flatten v1.0.1
