@@ -63,9 +63,9 @@ func TestLoader_LoadValidConfigFromFile(t *testing.T) {
 	cfg, diags := p.LoadConfigFile("fixtures/valid_config.yml")
 	assert.Nil(t, diags)
 	// Check configuration was added, we will nil it after it to check the whole structure
-	assert.NotNil(t, cfg.Providers[0].Configuration)
+	assert.NotNil(t, cfg.Providers[0].ConfigBytes)
+	cfg.Providers[0].ConfigBytes = nil
 	cfg.Providers[0].Configuration = nil
-	cfg.Providers[0].ConfigKeys = nil
 	source := "cloudquery"
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
@@ -79,10 +79,10 @@ func TestLoader_LoadValidConfigFromFile(t *testing.T) {
 		},
 		Providers: []*Provider{
 			{
-				Name:          "aws",
-				Alias:         "aws",
-				Resources:     []string{"slow_resource"},
-				Configuration: nil,
+				Name:        "aws",
+				Alias:       "aws",
+				Resources:   []string{"slow_resource"},
+				ConfigBytes: nil,
 			},
 		},
 	}, cfg)
@@ -123,10 +123,10 @@ func TestProviderLoadConfiguration(t *testing.T) {
 	p := NewParser()
 	cfg, diags := p.LoadConfigFile("fixtures/valid_config.yml")
 	assert.Nil(t, diags)
-	assert.NotNil(t, cfg.Providers[0].Configuration)
+	assert.NotNil(t, cfg.Providers[0].ConfigBytes)
 
 	c := AwsConfig{}
-	errs := yaml.Unmarshal(cfg.Providers[0].Configuration, &c)
+	errs := yaml.Unmarshal(cfg.Providers[0].ConfigBytes, &c)
 	assert.Nil(t, errs)
 }
 
@@ -145,7 +145,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 	assert.Equal(t, "postgres://postgres:pass@localhost:5432/postgres", cfg.CloudQuery.Connection.DSN)
 
 	c := AwsConfig{}
-	errs := yaml.Unmarshal(cfg.Providers[0].Configuration, &c)
+	errs := yaml.Unmarshal(cfg.Providers[0].ConfigBytes, &c)
 	assert.Nil(t, errs)
 
 	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)
@@ -156,9 +156,9 @@ func TestLoader_LoadConfigNoSourceField(t *testing.T) {
 	cfg, diags := p.LoadConfigFile("fixtures/no_source.yml")
 	assert.Nil(t, diags)
 	// Check configuration was added, we will nil it after it to check the whole structure
-	assert.NotNil(t, cfg.Providers[0].Configuration)
+	assert.NotNil(t, cfg.Providers[0].ConfigBytes)
+	cfg.Providers[0].ConfigBytes = nil
 	cfg.Providers[0].Configuration = nil
-	cfg.Providers[0].ConfigKeys = nil
 	assert.Equal(t, &Config{
 		CloudQuery: CloudQuery{
 			Connection: &Connection{DSN: "postgres://postgres:pass@localhost:5432/postgres"},
@@ -171,10 +171,10 @@ func TestLoader_LoadConfigNoSourceField(t *testing.T) {
 		},
 		Providers: []*Provider{
 			{
-				Name:          "test",
-				Alias:         "test",
-				Resources:     []string{"slow_resource"},
-				Configuration: nil,
+				Name:        "test",
+				Alias:       "test",
+				Resources:   []string{"slow_resource"},
+				ConfigBytes: nil,
 			},
 		},
 	}, cfg)

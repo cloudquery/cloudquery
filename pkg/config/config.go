@@ -16,13 +16,13 @@ type Provider struct {
 	Resources                     []string `yaml:"resources,omitempty" json:"resources,omitempty"`
 	SkipResources                 []string `yaml:"skip_resources,omitempty" json:"skip_resources,omitempty"`
 	Env                           []string `yaml:"env,omitempty" json:"env,omitempty"`
-	Configuration                 []byte   `yaml:"-" json:"-"`
+	ConfigBytes                   []byte   `yaml:"-" json:"-"`
 	MaxParallelResourceFetchLimit uint64   `yaml:"max_parallel_resource_fetch_limit,omitempty" json:"max_parallel_resource_fetch_limit,omitempty"`
 	MaxGoroutines                 uint64   `yaml:"max_goroutines,omitempty" json:"max_goroutines,omitempty"`
 	ResourceTimeout               uint64   `yaml:"resource_timeout,omitempty" json:"resource_timeout,omitempty"`
 
-	// ConfigKeys is only used temporarily for provider-specific configuration when decoding YAML
-	ConfigKeys map[string]interface{} `yaml:",inline"`
+	// Configuration is only used temporarily for provider-specific configuration when decoding YAML
+	Configuration map[string]interface{} `yaml:"configuration,omitempty" json:"configuration,omitempty"`
 }
 
 type Providers []*Provider

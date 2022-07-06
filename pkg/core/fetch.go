@@ -274,7 +274,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		Connection: cqproto.ConnectionDetails{
 			DSN: dsnURI,
 		},
-		Config: cfg.Configuration,
+		Config: cfg.ConfigBytes,
 		Format: info.ConfigFormat,
 	})
 	if err != nil {

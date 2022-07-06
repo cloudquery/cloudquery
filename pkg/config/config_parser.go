@@ -7,14 +7,12 @@ import (
 	"io"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
-	"github.com/thoas/go-funk"
 	"github.com/xeipuuv/gojsonschema"
 	"gopkg.in/yaml.v3"
 )
@@ -153,42 +151,18 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 		return nil, diags
 	}
 
-	var diags diag.Diagnostics
 	providers := yc.Providers
 	for _, p := range providers {
-		p.Configuration, err = yaml.Marshal(p.ConfigKeys["configuration"])
+		p.ConfigBytes, err = yaml.Marshal(p.Configuration)
 		if err != nil {
-			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("ConfigKeys marshal failed")))
-			continue
+			return nil, diag.FromError(err, diag.INTERNAL, diag.WithSummary("Configuration marshal failed"))
 		}
-		delete(p.ConfigKeys, "configuration")
-		// extra keys in other blocks are were already detected by the strict unmarshalling, so we only need to worry about provider config
-		diags = diags.Add(validateExtraKeys(p.ConfigKeys))
 	}
 
-	if diags.HasErrors() {
-		return nil, diags
-	}
-
-	c := &Config{
+	return &Config{
 		CloudQuery: yc.CloudQuery,
 		Providers:  providers,
-	}
-
-	return c, diags
-}
-
-func validateExtraKeys(extraKeys map[string]interface{}) diag.Diagnostics {
-	if len(extraKeys) == 0 {
-		return nil
-	}
-
-	keys := sort.StringSlice(funk.Keys(extraKeys).([]string))
-	keyOrKeys := "keys"
-	if len(keys) == 1 {
-		keyOrKeys = "key"
-	}
-	return diag.FromError(errors.New("Encountered unknown element in config"), diag.USER, diag.WithSummary("Invalid configuration"), diag.WithDetails("Found unknown %s: %s", keyOrKeys, strings.Join(keys, ", ")))
+	}, nil
 }
 
 func validateConnection(connection *Connection) diag.Diagnostics {
