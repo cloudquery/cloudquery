@@ -148,7 +148,7 @@ func TestWithEnvironmentVariables(t *testing.T) {
 func TestConfigEnvVariableSubstitution(t *testing.T) {
 	p := NewParser(WithEnvironmentVariables(EnvVarPrefix, []string{
 		"CQ_VAR_DSN=postgres://postgres:pass@localhost:5432/postgres",
-		"CQ_VAR_ROLE_ARN=12312312",
+		"CQ_VAR_ROLE_ARN=12312313",
 	}))
 	cfg, diags := p.LoadConfigFile("fixtures/env_vars.hcl")
 	if diags != nil {
@@ -163,7 +163,7 @@ func TestConfigEnvVariableSubstitution(t *testing.T) {
 	errs := hclsimple.Decode("res.hcl", cfg.Providers[0].Configuration, nil, &c)
 	assert.Nil(t, errs)
 
-	assert.Equal(t, "12312312", c.Accounts[0].RoleARN)
+	assert.Equal(t, "12312313", c.Accounts[0].RoleARN)
 }
 
 func TestLoader_LoadConfigNoSourceField(t *testing.T) {
