@@ -2,12 +2,12 @@ package analytics
 
 import "github.com/cloudquery/cq-provider-sdk/provider/diag"
 
-// TelemetryEvent holds data of a telemtetry event collected from a Diagnostic.
+// TelemetryEvent holds data of a telemetry event collected from a Diagnostic.
 type TelemetryEvent struct {
 	Error    string
 	Resource string
 	Summary  string
-	Type     string
+	Category string
 }
 
 func (e TelemetryEvent) Properties() map[string]interface{} {
@@ -25,7 +25,7 @@ func TelemetryFromDiagnostic(d diag.Diagnostic) TelemetryEvent {
 		Error:    d.Error(),
 		Resource: desc.Resource,
 		Summary:  desc.Summary,
-		Type:     desc.Detail,
+		Category: desc.Detail,
 	}
 }
 

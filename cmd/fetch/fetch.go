@@ -26,17 +26,15 @@ const (
 )
 
 // sendProviderTelemetryEvents sends all collected telemetry events from the provider fetch response.
+// It will panic if fr argument is nil.
 func sendProviderTelemetryEvents(providers registry.Providers, fr *core.FetchResponse) {
-	if fr == nil {
-		return
-	}
 	for _, e := range fr.TelemetryEvents {
-		analytics.Capture(e.Type, providers, e)
+		analytics.Capture(e.Category, providers, e, nil)
 	}
 	for _, pfs := range fr.ProviderFetchSummary {
 		for _, rfs := range pfs.FetchedResources {
 			for _, e := range rfs.TelemetryEvents {
-				analytics.Capture(e.Type, providers, e)
+				analytics.Capture(e.Category, providers, e, nil)
 			}
 		}
 	}
@@ -58,10 +56,12 @@ func NewCmdFetch() *cobra.Command {
 			errors.CaptureDiagnostics(diags, map[string]string{"command": "fetch"})
 			if result != nil {
 				for _, p := range result.ProviderFetchSummary {
-					analytics.Capture("fetch", c.Providers, p, "diagnostics", diags, "success", !diags.HasErrors(), "fetch_id", result.FetchId)
+					analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
 				}
 			}
-			sendProviderTelemetryEvents(c.Providers, result)
+			if result != nil {
+				sendProviderTelemetryEvents(c.Providers, result)
+			}
 			if diags.HasErrors() {
 				return fmt.Errorf("provider has one or more errors, check logs")
 			}

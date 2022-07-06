@@ -163,7 +163,7 @@ func (p ProviderFetchSummary) Properties() map[string]interface{} {
 		"fetch_total_resources_count": p.TotalResourcesFetched,
 		"fetch_resources_durations":   rd,
 		"fetch_duration":              math.Round(p.Duration.Seconds()*100) / 100,
-		"fetch_diags":                 SummarizeDiagnostics(p.Diagnostics()),
+		"fetch_diags":                 analytics.SummarizeDiagnostics(p.Diagnostics()),
 		"fetch_status":                p.Status.String(),
 	}
 }
