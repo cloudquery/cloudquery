@@ -355,6 +355,9 @@ func resolveEc2ImageLastLaunchedTime(ctx context.Context, meta schema.ClientMeta
 		options.Region = cl.Region
 	})
 	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	if result.LastLaunchedTime == nil || result.LastLaunchedTime.Value == nil {
