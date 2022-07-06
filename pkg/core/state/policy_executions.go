@@ -62,9 +62,9 @@ func (c *Client) CreatePolicyExecution(ctx context.Context, pe *PolicyExecution)
 
 // PrunePolicyExecutions deletes old policy executions in the database
 func (c *Client) PrunePolicyExecutions(ctx context.Context, pruneBefore time.Time) error {
-	q := goqu.Dialect("postgres").Delete("cloudquery.policy_executions").Where(goqu.Ex{
-		"timestamp": goqu.Op{"lt": pruneBefore},
-	})
+	q := goqu.Dialect("postgres").
+		Delete("cloudquery.policy_executions").
+		Where(goqu.Ex{"timestamp": goqu.Op{"lt": pruneBefore}})
 	sql, args, err := q.ToSQL()
 	if err != nil {
 		return err

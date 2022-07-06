@@ -24,7 +24,7 @@ cloudquery policy describe github.com/COMMUNITY_GITHUB_ORG/aws
 )
 
 func newCmdPolicyDescribe() *cobra.Command {
-	describePolicyCmd := &cobra.Command{
+	return &cobra.Command{
 		Use:     "describe",
 		Short:   describeShort,
 		Long:    describeShort,
@@ -38,5 +38,4 @@ func newCmdPolicyDescribe() *cobra.Command {
 			return c.DescribePolicies(cmd.Context(), args[0])
 		},
 	}
-	return describePolicyCmd
 }

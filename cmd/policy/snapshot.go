@@ -12,7 +12,7 @@ const (
 )
 
 func newCmdPolicySnapshot() *cobra.Command {
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:   "snapshot",
 		Short: snapshotShort,
 		Long:  snapshotShort,
@@ -27,5 +27,4 @@ func newCmdPolicySnapshot() *cobra.Command {
 			return err
 		},
 	}
-	return cmd
 }

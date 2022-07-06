@@ -17,7 +17,7 @@ cloudquery policy prune 24h`
 )
 
 func newCmdPolicyPrune() *cobra.Command {
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:     "prune",
 		Short:   pruneShort,
 		Long:    pruneShort,
@@ -37,5 +37,4 @@ func newCmdPolicyPrune() *cobra.Command {
 			return nil
 		},
 	}
-	return cmd
 }

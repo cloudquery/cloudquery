@@ -395,6 +395,8 @@ func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestinat
 	}
 
 	p, diags := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "test-policy", Source: policySource})
+	analytics.Capture("policy test", c.Providers, p.Analytic(false), diags)
+
 	if diags.HasErrors() {
 		log.Error().Err(err).Msg("failed to load policy")
 		return diags
@@ -412,6 +414,7 @@ func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestin
 	}
 	log.Debug().Strs("policies", policiesToSnapshot.All()).Msg("policies to snapshot")
 	for _, p := range policiesToSnapshot {
+		analytics.Capture("policy snapshot", c.Providers, p.Analytic(false), nil)
 		if err := c.snapshotControl(ctx, p, policySource, snapshotDestination); err != nil {
 			return err
 		}
@@ -430,6 +433,7 @@ func (c Client) DescribePolicies(ctx context.Context, policySource string) error
 		if err := c.describePolicy(ctx, p, policySource); err != nil {
 			return err
 		}
+		analytics.Capture("policy describe", c.Providers, p.Analytic(false), nil)
 	}
 	return nil
 }
@@ -444,10 +448,12 @@ func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags 
 	if len(policyToValidate) > 1 {
 		return diag.FromError(fmt.Errorf("multiple policies given to validate, only one policy allowed at a time"), diag.USER)
 	}
-	return policy.Validate(ctx, c.Storage, &policy.ValidateRequest{
+	diags = policy.Validate(ctx, c.Storage, &policy.ValidateRequest{
 		Policy:    policyToValidate[0],
 		Directory: c.cfg.CloudQuery.PolicyDirectory,
 	})
+	analytics.Capture("policy validate", c.Providers, policyToValidate[0].Analytic(false), diags)
+	return diags
 }
 
 func (c Client) PrunePolicyExecutions(ctx context.Context, retentionPeriod string) (diags diag.Diagnostics) {

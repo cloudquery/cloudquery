@@ -14,7 +14,7 @@ const (
 )
 
 func newCmdPolicyValidate() *cobra.Command {
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:   "validate",
 		Short: validateShort,
 		Long:  validateShort,
@@ -32,5 +32,4 @@ func newCmdPolicyValidate() *cobra.Command {
 			return nil
 		},
 	}
-	return cmd
 }

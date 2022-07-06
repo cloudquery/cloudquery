@@ -11,12 +11,11 @@ const (
 )
 
 func newCmdPolicyDownload() *cobra.Command {
-	cmd := &cobra.Command{
+	return &cobra.Command{
 		Use:        "download",
 		Deprecated: downloadDeprecated,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return fmt.Errorf("'policy download' command has been deprecated. Use the 'policy run' command directly instead")
 		},
 	}
-	return cmd
 }
