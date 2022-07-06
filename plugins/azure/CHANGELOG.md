@@ -18,6 +18,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.22](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.21...v0.11.22) (2022-07-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.4 ([#403](https://github.com/cloudquery/cq-provider-azure/issues/403)) ([bbbb646](https://github.com/cloudquery/cq-provider-azure/commit/bbbb6468b927aaccfd4fe5ae337ddb97ac52a0f2))
+* **deps:** Update module github.com/cloudquery/faker/v3 to v3.7.6 ([#401](https://github.com/cloudquery/cq-provider-azure/issues/401)) ([dd71206](https://github.com/cloudquery/cq-provider-azure/commit/dd712069fb38681f434edf2787ed003e13325cf3))
+* Remove relation tables PK ([#404](https://github.com/cloudquery/cq-provider-azure/issues/404)) ([34cf0cc](https://github.com/cloudquery/cq-provider-azure/commit/34cf0cc6b0118a3259c8c317c9035919a0e1ef9f))
+
 ## [0.11.21](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.20...v0.11.21) (2022-07-04)
 
 
