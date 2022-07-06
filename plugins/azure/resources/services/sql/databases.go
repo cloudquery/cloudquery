@@ -15,7 +15,6 @@ func SqlDatabases() *schema.Table {
 		Name:          "azure_sql_databases",
 		Description:   "Azure sql database",
 		Resolver:      fetchSqlDatabases,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"server_cq_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
