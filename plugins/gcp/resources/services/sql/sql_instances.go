@@ -120,6 +120,12 @@ func SQLInstances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
+				Name:        "id",
+				Description: "Alias of a name.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Name"),
+			},
+			{
 				Name:        "on_premises_configuration_ca_certificate",
 				Description: "PEM representation of the trusted CA's x509 certificate",
 				Type:        schema.TypeString,

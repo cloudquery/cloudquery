@@ -23,6 +23,7 @@ A Cloud SQL instance resource
 |master_instance_name|text|The name of the instance which will act as primary in the replication setup|
 |max_disk_size|bigint|The maximum disk size of the instance in bytes|
 |name|text|Name of the Cloud SQL instance This does not include the project ID|
+|id|text|Alias of a name.|
 |on_premises_configuration_ca_certificate|text|PEM representation of the trusted CA's x509 certificate|
 |on_premises_configuration_client_certificate|text|PEM representation of the replica's x509 certificate|
 |on_premises_configuration_client_key|text||
