@@ -125,8 +125,9 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 
 	lgc := logging.GlobalConfig
 	yc.CloudQuery.Logger = &lgc
-
-	if err := yaml.NewDecoder(r).Decode(&yc); err != nil {
+	d := yaml.NewDecoder(r)
+	d.KnownFields(true)
+	if err := d.Decode(&yc); err != nil {
 		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to parse yaml"))
 	}
 
@@ -141,7 +142,7 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 		if len(errs) == 0 {
 			return nil, diag.FromError(errors.New("Failed to validate config with schema"), diag.USER, diag.WithSummary("Invalid configuration"))
 		}
-		diags := diag.Diagnostics{}
+		var diags diag.Diagnostics
 		for _, e := range errs {
 			diags = diags.Add(
 				diag.FromError(errors.New(e.String()), diag.USER, diag.WithDetails("%s", e.Description()), diag.WithSummary("Config field %q has error of type %s", e.Field(), e.Type())),
@@ -151,21 +152,17 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 	}
 
 	providers := yc.Providers
-	diags := diag.Diagnostics{}
 	for _, p := range providers {
-		p.Configuration, err = yaml.Marshal(p.ConfigKeys["configuration"])
+		p.ConfigBytes, err = yaml.Marshal(p.Configuration)
 		if err != nil {
-			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("ConfigKeys marshal failed")))
-			continue
+			return nil, diag.FromError(err, diag.INTERNAL, diag.WithSummary("Configuration marshal failed"))
 		}
 	}
 
-	c := &Config{
+	return &Config{
 		CloudQuery: yc.CloudQuery,
 		Providers:  providers,
-	}
-
-	return c, nil
+	}, nil
 }
 
 func validateConnection(connection *Connection) diag.Diagnostics {

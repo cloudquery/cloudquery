@@ -1,12 +1,127 @@
 package config
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_handleProcessConfig_Connection(t *testing.T) {
+func Test_DecodeConfig_Extras(t *testing.T) {
+	cases := []struct {
+		name          string
+		input         string
+		expectedError bool
+	}{
+		{
+			name: "should fail if extra key in root",
+			input: `
+cloudquery:
+    providers:
+        - name: aws
+          version: latest
+    connection:
+        type: postgres
+        username: postgres
+        password: pass
+        host: localhost
+        port: 5432
+        database: postgres
+        sslmode: disable
+blurb:
+	blah: blah
+`,
+			expectedError: true,
+		},
+		{
+			name: "should fail if extra key in cq",
+			input: `
+cloudquery:
+    providers:
+        - name: aws
+          version: latest
+    connection:
+        type: postgres
+        username: postgres
+        password: pass
+        host: localhost
+        port: 5432
+        database: postgres
+        sslmode: disable
+	some-extra: blah
+`,
+			expectedError: true,
+		},
+		{
+			name: "should not fail if no extra key in provider block",
+			input: `
+cloudquery:
+    providers:
+        - name: aws
+          version: latest
+    connection:
+        type: postgres
+        username: postgres
+        password: pass
+        host: localhost
+        port: 5432
+        database: postgres
+        sslmode: disable
+providers:
+    # provider configurations
+    - name: aws
+      configuration:
+        regions:
+           - us-east-1
+           - us-west-2
+      resources:
+        - accessanalyzer.analyzers
+`,
+			expectedError: false,
+		},
+		{
+			name: "should fail if extra key in provider block",
+			input: `
+cloudquery:
+    providers:
+        - name: aws
+          version: latest
+    connection:
+        type: postgres
+        username: postgres
+        password: pass
+        host: localhost
+        port: 5432
+        database: postgres
+        sslmode: disable
+providers:
+    # provider configurations
+    - name: aws
+      configuration:
+      regions:
+        - us-east-1
+        - us-west-2
+      resources:
+        - accessanalyzer.analyzers
+`,
+			expectedError: true,
+		},
+	}
+	for i := range cases {
+		tc := cases[i]
+		t.Run(tc.name, func(t *testing.T) {
+			c, diags := decodeConfig(strings.NewReader(tc.input))
+			assert.Equal(t, tc.expectedError, diags.HasErrors())
+			if diags.HasErrors() {
+				assert.Nil(t, c)
+			} else {
+				assert.NotNil(t, c)
+			}
+		})
+	}
+}
+
+func Test_ProcessConfig_Connection(t *testing.T) {
 	cases := []struct {
 		name           string
 		input          *Connection
