@@ -35,6 +35,7 @@ var (
 		`\bdial\s(tcp|udp)\s` + // "dial tcp "
 			fmt.Sprintf(`(?:%s|%s):\d+`, ipv4Regex, bracketedIpv6Regex), // "192.168.1.2:123" or "[::1]:123"
 	)
+	ec2ImageIdRegex        = regexp.MustCompile(`The image ID '[^']+'`)
 	encAuthRegex           = regexp.MustCompile(`(\s)(Encoded authorization failure message:)\s[A-Za-z0-9_-]+`)
 	userRegex              = regexp.MustCompile(`(\s)(is not authorized to perform: .+ on resource:\s)(user)\s.+`)
 	s3Regex                = regexp.MustCompile(`(\s)(S3(Key|Bucket))=(.+?)([,;\s])`)
@@ -270,6 +271,7 @@ func removePII(aa []string, msg string) string {
 	msg = s3Regex.ReplaceAllString(msg, "${1}${2}=xxxx${5}")
 	msg = resourceNotExistsRegex.ReplaceAllString(msg, "${1}${2}'xxxx'${4}")
 	msg = resourceNotFoundRegex.ReplaceAllString(msg, "${1}${2}${3}${4}'xxxx'")
+	msg = ec2ImageIdRegex.ReplaceAllString(msg, "The image ID 'xxxx'")
 	msg = accountObfusactor(aa, msg)
 
 	return msg

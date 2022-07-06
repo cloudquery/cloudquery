@@ -65,6 +65,7 @@ var (
 )
 
 var notFoundErrorSubstrings = []string{
+	"InvalidAMIID.Unavailable",
 	"NoSuch",
 	"NotFound",
 	"ResourceNotFoundException",
