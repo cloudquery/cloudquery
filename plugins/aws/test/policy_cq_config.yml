@@ -12,7 +12,7 @@ cloudquery:
     sslmode: disable
 providers:
   - name: aws
-    configurations:
+    configuration:
       max_retries: 10
       max_backoff: 90
     resources:
