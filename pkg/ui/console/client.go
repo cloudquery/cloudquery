@@ -622,7 +622,9 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 }
 
 func loadConfig(file string) (*config.Config, bool) {
-	cfg, diags := config.NewParser().LoadConfigFile(file)
+	cfg, diags := config.NewParser(
+		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
+	).LoadConfigFile(file)
 	if diags.HasDiags() {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
