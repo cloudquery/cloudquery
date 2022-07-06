@@ -58,8 +58,6 @@ func NewCmdFetch() *cobra.Command {
 				for _, p := range result.ProviderFetchSummary {
 					analytics.Capture("fetch", c.Providers, p, diags, "fetch_id", result.FetchId)
 				}
-			}
-			if result != nil {
 				sendProviderTelemetryEvents(c.Providers, result)
 			}
 			if diags.HasErrors() {

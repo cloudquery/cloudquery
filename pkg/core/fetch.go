@@ -247,7 +247,6 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 		FetchId:              fetchId,
 		ProviderFetchSummary: make(map[string]*ProviderFetchSummary, len(opts.ProvidersInfo)),
 		Duration:             time.Since(start),
-		TelemetryEvents:      make([]analytics.TelemetryEvent, 0),
 	}
 	close(fetchSummaries)
 	for ps := range fetchSummaries {
