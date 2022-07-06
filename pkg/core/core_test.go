@@ -43,7 +43,9 @@ func setupDB(t *testing.T) (dsn string) {
 		}
 
 		if _, err := conn.Exec(context.Background(), "DROP DATABASE "+newDB+" WITH(FORCE)"); err != nil {
-			t.Logf("teardown: drop database failed: %v", err)
+			if _, err := conn.Exec(context.Background(), "DROP DATABASE "+newDB); err != nil {
+				t.Logf("teardown: drop database failed: %v", err)
+			}
 		}
 	})
 

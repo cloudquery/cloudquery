@@ -1,19 +1,17 @@
 package config
 
 import (
-	"bytes"
 	_ "embed"
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/Masterminds/semver/v3"
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/gohcl"
 	"github.com/spf13/viper"
 	"github.com/xeipuuv/gojsonschema"
 	"gopkg.in/yaml.v3"
@@ -22,38 +20,16 @@ import (
 //go:embed schema.json
 var configSchemaYAML []byte
 
-// configSchemaHCL is the HCL schema for the top-level of a config file. We use
-// the low-level HCL API for this level so we can easily deal with each
-// block type separately with its own decoding logic.
-var configSchemaHCL = &hcl.BodySchema{
-	Blocks: []hcl.BlockHeaderSchema{
-		{
-			Type: "cloudquery",
-		},
-		{
-			Type:       "provider",
-			LabelNames: []string{"name"},
-		},
-		{
-			Type: "modules", // deprecated
-		},
-		{
-			Type:       "policy",
-			LabelNames: []string{"name"},
-		},
-	},
-}
+func (p *Parser) LoadConfigFromSource(data []byte) (*Config, diag.Diagnostics) {
+	newData := os.Expand(string(data), p.getVariableValue)
+	config, diags := decodeConfig(strings.NewReader(newData))
 
-func (p *Parser) LoadConfigFromSource(name string, data []byte) (*Config, diag.Diagnostics) {
-	if IsNameYAML(name) {
-		return decodeConfigYAML(bytes.NewBuffer(data))
-	}
-
-	body, diags := p.LoadFromSource(name, data)
-	if body == nil {
+	if diags.HasErrors() {
 		return nil, diags
 	}
-	return p.decodeConfigHCL(body, diags)
+
+	diags = diags.Add(ProcessConfig(config))
+	return config, diags
 }
 
 func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
@@ -61,81 +37,87 @@ func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
 	if diags.HasErrors() {
 		return nil, diags
 	}
-	return p.LoadConfigFromSource(path, contents)
+	return p.LoadConfigFromSource(contents)
 }
 
-func IsNameYAML(name string) bool {
-	switch strings.ToLower(filepath.Ext(name)) {
-	case ".json", ".yaml", ".yml":
-		return true
-	default:
-		return false
-	}
-}
-
-func ValidateCQBlock(cq *CloudQuery) diag.Diagnostics {
-	var diags diag.Diagnostics
-
-	if cq.Connection == nil {
-		cq.Connection = &Connection{}
+// ProcessConfig handles the configuration after it was loaded and parsed
+// 1. Assigns defaults after decoding the raw configuration format
+// 2. Overrides configuration values from CLI flags
+// 3. Validates the configuration provided by the user
+// 4. Normalizes the configuration to make it easier to use
+func ProcessConfig(config *Config) diag.Diagnostics {
+	assignDefaults(config)
+	overrideFromCLIFlags(config)
+	diags := validate(config)
+	if diags.HasErrors() {
+		return diags
 	}
 
-	if err := handleConnectionConfig(cq.Connection); err != nil {
-		diags = diags.Add(diag.FromError(err, diag.USER, diag.WithSummary("Invalid DSN configuration")))
-	}
-
-	datadir := viper.GetString("data-dir")
-	if datadir != "" {
-		cq.PluginDirectory = filepath.Join(datadir, "providers")
-	}
-
-	if datadir != "" {
-		cq.PolicyDirectory = filepath.Join(datadir, "policies")
-	}
-
-	// validate provider versions
-	for _, cp := range cq.Providers {
-		if cp.Version != "latest" && !strings.HasPrefix(cp.Version, "v") {
-			diags = diags.Add(diag.FromError(fmt.Errorf("Provider %s version %s is invalid", cp.Name, cp.Version), diag.USER, diag.WithDetails("Please set to 'latest' version or valid semantic versioning starting with vX.Y.Z")))
-		}
-	}
+	normalize(config)
 	return diags
 }
 
-func ProcessValidateProviderBlock(plist []*Provider) (Providers, diag.Diagnostics) {
-	var diags diag.Diagnostics
-	existingProviders := make(map[string]struct{}, len(plist))
-
-	var ret Providers
-
-	for _, v := range plist {
-		if v.Alias != "" {
-			if _, ok := existingProviders[v.Alias]; ok {
-				diags = diags.Add(diag.FromError(fmt.Errorf("provider with alias %s for provider %s already exists, give it a different alias", v.Alias, v.Name), diag.USER, diag.WithSummary("Duplicate Alias")))
-				continue
-			}
-			existingProviders[v.Alias] = struct{}{}
-		} else {
-			if _, ok := existingProviders[v.Name]; ok {
-				diags = diags.Add(diag.FromError(fmt.Errorf("provider with name %s already exists, use alias in provider configuration block", v.Name), diag.USER, diag.WithSummary("Provider Alias Required")))
-				continue
-			}
-			existingProviders[v.Name] = struct{}{}
-			v.Alias = v.Name
-		}
-		var err error
-		v.Configuration, err = yaml.Marshal(v.ConfigKeys["configuration"])
-		if err != nil {
-			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("ConfigKeys marshal failed")))
-			continue
-		}
-		ret = append(ret, v)
-	}
-
-	return ret, diags
+func ParseVersion(version string) (*semver.Version, error) {
+	return semver.NewVersion(version)
 }
 
-func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
+func FormatVersion(version *semver.Version) string {
+	return "v" + version.String()
+}
+
+func isVersionLatest(version string) bool {
+	return version == "latest"
+}
+
+func validate(config *Config) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	diags = diags.Add(validateCloudQueryProviders(config.CloudQuery.Providers))
+	diags = diags.Add(validateConnection(config.CloudQuery.Connection))
+
+	return diags.Add(validateProvidersBlock(config))
+}
+
+func assignDefaults(config *Config) {
+	// TODO: decode in a more generic way
+	if config.CloudQuery.Connection == nil {
+		config.CloudQuery.Connection = &Connection{}
+	}
+}
+
+func overrideFromCLIFlags(config *Config) {
+	datadir := viper.GetString("data-dir")
+	if datadir != "" {
+		config.CloudQuery.PluginDirectory = filepath.Join(datadir, "providers")
+	}
+
+	if datadir != "" {
+		config.CloudQuery.PolicyDirectory = filepath.Join(datadir, "policies")
+	}
+
+	if ds := viper.GetString("dsn"); ds != "" {
+		config.CloudQuery.Connection.DSN = ds
+	}
+}
+
+func validateCloudQueryProviders(providers RequiredProviders) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	for _, cp := range providers {
+		if isVersionLatest(cp.Version) {
+			continue
+		}
+
+		_, err := ParseVersion(cp.Version)
+		if err != nil {
+			diags = diags.Add(diag.FromError(fmt.Errorf("Provider %q version %q is invalid. Please set to 'latest' a or valid semantic version", cp.Name, cp.Version), diag.USER))
+		}
+	}
+
+	return diags
+}
+
+func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 	var yc struct {
 		CloudQuery CloudQuery  `yaml:"cloudquery" json:"cloudquery"`
 		Providers  []*Provider `yaml:"providers" json:"providers"`
@@ -168,70 +150,104 @@ func decodeConfigYAML(r io.Reader) (*Config, diag.Diagnostics) {
 		return nil, diags
 	}
 
-	c := &Config{
-		CloudQuery: yc.CloudQuery,
-		format:     cqproto.ConfigYAML,
-	}
-
-	var diags diag.Diagnostics
-	c.Providers, diags = ProcessValidateProviderBlock(yc.Providers)
-	diags = diags.Add(ValidateCQBlock(&c.CloudQuery))
-	if diags.HasErrors() {
-		return nil, diags
-	}
-
-	return c, diags
-}
-
-func (p *Parser) decodeConfigHCL(body hcl.Body, diags diag.Diagnostics) (*Config, diag.Diagnostics) {
-	existingProviders := make(map[string]bool)
-	config := &Config{
-		format: cqproto.ConfigHCL,
-	}
-
-	content, contentDiags := body.Content(configSchemaHCL)
-	diags = diags.Add(hclToSdkDiags(contentDiags))
-
-	hasPolicyBlock := false
-
-	for _, block := range content.Blocks {
-		switch block.Type {
-		case "cloudquery":
-			cliLoggingConfig := logging.GlobalConfig
-			cqBlock, cqDiags := decodeCloudQueryBlock(block, &p.HCLContext)
-			diags = diags.Add(hclToSdkDiags(cqDiags))
-			diags = diags.Add(ValidateCQBlock(&cqBlock))
-
-			logging.Reconfigure(*cqBlock.Logger, cliLoggingConfig)
-			config.CloudQuery = cqBlock
-		case "provider":
-			cfg, cfgDiags := decodeProviderBlock(block, &p.HCLContext, existingProviders)
-			diags = diags.Add(hclToSdkDiags(cfgDiags))
-			if cfg != nil {
-				config.Providers = append(config.Providers, cfg)
-			}
-		case "policy":
-			hasPolicyBlock = true
-		case "modules":
-			// deprecated - ignore
-			continue
-		default:
-			// Should never happen because the above cases should be exhaustive
-			// for all block type names in our schema.
+	providers := yc.Providers
+	diags := diag.Diagnostics{}
+	for _, p := range providers {
+		p.Configuration, err = yaml.Marshal(p.ConfigKeys["configuration"])
+		if err != nil {
+			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("ConfigKeys marshal failed")))
 			continue
 		}
 	}
 
-	if hasPolicyBlock {
-		diags = diags.Add(diag.FromError(errors.New("Deprecated 'policy' block in config file"), diag.USER, diag.WithSeverity(diag.WARNING), diag.WithDetails("Specifying 'policy' blocks in 'config.hcl' has been deprecated. See https://docs.cloudquery.io/docs/tutorials/policies/policies-overview for instructions on running policies (either from cloudquery-hub or a local file).")))
+	c := &Config{
+		CloudQuery: yc.CloudQuery,
+		Providers:  providers,
 	}
 
-	return config, diags
+	return c, nil
 }
 
-func decodeCloudQueryBlock(block *hcl.Block, ctx *hcl.EvalContext) (CloudQuery, hcl.Diagnostics) {
-	var cq CloudQuery
-	// Pre-populate with existing values
-	cq.Logger = &logging.GlobalConfig
-	return cq, gohcl.DecodeBody(block.Body, ctx, &cq)
+func validateConnection(connection *Connection) diag.Diagnostics {
+	var diags diag.Diagnostics
+	// We support both a `dsn` string for backwards compatibility, or connection configuration parameters (host, database, etc.)
+	// If a user configured both, we error out unless the dsn was configured via a CLI flag (e.g. `cloudquery fetch --dsn <dsn>`)
+	if connection.DSN != "" {
+		// allow using a DSN flag even if the config file has explicitly attributes (user, password, host, database, etc.)
+		dsnFromFlag := viper.GetString("dsn")
+		if dsnFromFlag == "" && connection.IsAnyConnParamsSet() {
+			diags = append(diags, diag.NewBaseError(
+				fmt.Errorf("invalid connection configuration"),
+				diag.USER, diag.WithOptionalSeverity(diag.ERROR),
+				diag.WithDetails("DSN specified along with explicit attributes, only one type is supported")),
+			)
+		}
+		return diags
+	}
+
+	if connection.Host == "" {
+		diags = append(diags, diag.NewBaseError(
+			fmt.Errorf("invalid connection configuration"),
+			diag.USER, diag.WithOptionalSeverity(diag.ERROR),
+			diag.WithDetails("missing host")),
+		)
+	}
+	if connection.Database == "" {
+		diags = append(diags, diag.NewBaseError(
+			fmt.Errorf("invalid connection configuration"),
+			diag.USER, diag.WithOptionalSeverity(diag.ERROR),
+			diag.WithDetails("missing database")),
+		)
+	}
+
+	return diags
+}
+
+// Validates the `cloudquery.providers` configuration block
+func validateProvidersBlock(config *Config) diag.Diagnostics {
+	var diags diag.Diagnostics
+	existingProviders := make(map[string]bool, len(config.Providers))
+
+	// We don't allow duplicate provider names or aliases
+	for _, provider := range config.Providers {
+		if provider.Alias != "" {
+			_, aliasExists := existingProviders[provider.Alias]
+			if aliasExists {
+				diags = diags.Add(diag.FromError(fmt.Errorf("provider with alias %s for provider %s already exists, give it a different alias", provider.Alias, provider.Name), diag.USER, diag.WithSummary("Duplicate Alias")))
+				continue
+			}
+			existingProviders[provider.Alias] = true
+		} else {
+			_, nameExists := existingProviders[provider.Name]
+			if nameExists {
+				diags = diags.Add(diag.FromError(fmt.Errorf("provider with name %s already exists, use alias in provider configuration block", provider.Name), diag.USER, diag.WithSummary("Provider Alias Required")))
+				continue
+			}
+			existingProviders[provider.Name] = true
+		}
+	}
+	return diags
+}
+
+func normalize(config *Config) {
+	for _, cloudqueryProvider := range config.CloudQuery.Providers {
+		if isVersionLatest(cloudqueryProvider.Version) {
+			continue
+		}
+
+		ver, _ := ParseVersion(cloudqueryProvider.Version)
+		// convert partial versions such as "0.10" to "v0.10.0"
+		cloudqueryProvider.Version = FormatVersion(ver)
+	}
+
+	// Backwards compatibility. Don't override DSN if was provided by the user
+	if config.CloudQuery.Connection.DSN == "" {
+		config.CloudQuery.Connection.BuildFromConnParams()
+	}
+	for _, provider := range config.Providers {
+		// Alias should default to provider name
+		if provider.Alias == "" {
+			provider.Alias = provider.Name
+		}
+	}
 }

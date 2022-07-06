@@ -9,31 +9,26 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/hashicorp/hcl/v2/hclparse"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/yaml.v3"
 )
 
-const expectedProviderConfig = `
-provider "test" {
+const expectedProviderConfig = `configuration:
 
-  configuration {
-    account "1" {
-      id        = "testid"
-      regions   = ["asdas"]
-      resources = ["ab", "c"]
-    }
-  }
-  // list of resources to fetch
-  resources = [
-    "error_resource",
-    "migrate_resource",
-    "panic_resource",
-    "slow_resource",
-    "very_slow_resource"
-  ]
-  // enables partial fetching, allowing for any failures to not stop full resource pull
-  enable_partial_fetch = true
-}`
+#account:
+#  name: "1"
+#  id: testid
+#  regions:
+#    - asdas
+#  
+# list of resources to fetch
+resources:
+    - error_resource
+    - migrate_resource
+    - panic_resource
+    - slow_resource
+    - very_slow_resource
+`
 
 func Test_CheckAvailableUpdates(t *testing.T) {
 	latestVersion := getLatestVersion(t, "test")
@@ -113,7 +108,7 @@ func Test_GetProviderConfig(t *testing.T) {
 	provider := registry.Provider{
 		Name:    "test",
 		Source:  "cloudquery",
-		Version: "v0.0.11",
+		Version: "v0.1.17",
 	}
 	pm, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
 	assert.Nil(t, err)
@@ -127,15 +122,17 @@ func Test_GetProviderConfig(t *testing.T) {
 	ctx := context.Background()
 	pConfig, diags := GetProviderConfiguration(ctx, pm, &GetProviderConfigOptions{
 		Provider: provider,
-		Format:   cqproto.ConfigHCL,
+		Format:   cqproto.ConfigYAML,
 	})
 	if diags.HasErrors() {
 		t.FailNow()
 	}
 	assert.NotNil(t, pConfig)
 	assert.Equal(t, expectedProviderConfig, string(pConfig.Config))
-	_, hdiags := hclparse.NewParser().ParseHCL(pConfig.Config, "testConfig.hcl")
-	assert.Nil(t, hdiags)
+
+	var yCfg yaml.Node
+	err = yaml.Unmarshal(pConfig.Config, &yCfg)
+	assert.NoError(t, err)
 }
 
 func getLatestVersion(t *testing.T, name string) string {

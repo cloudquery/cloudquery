@@ -20,6 +20,7 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
@@ -195,7 +196,7 @@ func (c Client) Fetch(ctx context.Context) (*core.FetchResponse, diag.Diagnostic
 			printDiagnostics("Fetch", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
 			return nil, diags
 		}
-		providers[i] = core.ProviderInfo{Provider: rp, Config: p, ConfigFormat: c.cfg.Format()}
+		providers[i] = core.ProviderInfo{Provider: rp, Config: p, ConfigFormat: cqproto.ConfigYAML}
 	}
 	result, diags := core.Fetch(ctx, c.StateManager, c.Storage, c.PluginManager, &core.FetchOptions{
 		UpdateCallback: fetchCallback,
@@ -323,21 +324,6 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 // =====================================================================================================================
 // 													Policy Commands
 // =====================================================================================================================
-
-func (c Client) DownloadPolicy(ctx context.Context, args []string) (diags diag.Diagnostics) {
-	ui.ColorizedOutput(ui.ColorProgress, "Downloading CloudQuery Policy...\n")
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
-	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "policy", Source: args[0]})
-	if err != nil {
-		ui.SleepBeforeError(ctx)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to Download policy: %s.\n\n", err.Error())
-		return diags.Add(diag.FromError(err, diag.RESOLVING))
-	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished downloading policy...\n")
-	// Show policy instructions
-	ui.ColorizedOutput(ui.ColorHeader, fmt.Sprintf("To run the policy call cloudquery policy run %s", p.Source))
-	return nil
-}
 
 func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
 	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
@@ -685,6 +671,9 @@ func setConfigAnalytics(cfg *config.Config) {
 	cfgHash := fmt.Sprintf("%0x", s.Sum(nil))
 	analytics.SetGlobalProperty("cfghash", cfgHash)
 
+	const cfgf = "yaml"
+	analytics.SetGlobalProperty("cfgformat", cfgf)
+
 	sentry.ConfigureScope(func(scope *sentry.Scope) {
 		if analytics.IsCI() {
 			scope.SetUser(sentry.User{
@@ -692,7 +681,8 @@ func setConfigAnalytics(cfg *config.Config) {
 			})
 		}
 		scope.SetTags(map[string]string{
-			"cfghash": cfgHash,
+			"cfghash":   cfgHash,
+			"cfgformat": cfgf,
 		})
 	})
 }

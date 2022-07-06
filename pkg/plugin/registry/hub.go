@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-version"
 	"github.com/rs/zerolog/log"
 )
@@ -213,7 +214,7 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	pluginDir := filepath.Join(h.PluginDirectory, provider.Source, provider.Name)
 	osFs := file.NewOsFs()
 	if err := osFs.MkdirAll(pluginDir, os.ModePerm); err != nil {
-		return ProviderBinary{}, err
+		return ProviderBinary{}, diag.FromError(err, diag.USER, diag.WithSummary("failed to create plugin directory"))
 	}
 	// Create a new progress updater callback func
 	var progressCB ui.ProgressUpdateFunc

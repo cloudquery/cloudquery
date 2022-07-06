@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudquery/cloudquery/cmd/utils"
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/ui"
@@ -21,7 +22,7 @@ func registerSentryFlags(cmd *cobra.Command) {
 	cmd.PersistentFlags().Bool("debug-sentry", false, "enable Sentry debug mode")
 	cmd.PersistentFlags().String("sentry-dsn", "https://5ff9e378a79d4ba2821f540b036286e9@o912044.ingest.sentry.io/6106324", "Sentry DSN")
 
-	_ = rootCmd.PersistentFlags().MarkHidden("debug-sentry")
+	_ = cmd.PersistentFlags().MarkHidden("debug-sentry")
 	_ = cmd.PersistentFlags().MarkHidden("sentry-dsn")
 
 	_ = viper.BindPFlag("debug-sentry", cmd.PersistentFlags().Lookup("debug-sentry"))
@@ -109,7 +110,7 @@ func initSentry() {
 			"terminal":    strconv.FormatBool(ui.IsTerminal()),
 			"ci":          strconv.FormatBool(analytics.IsCI()),
 			"faas":        strconv.FormatBool(analytics.IsFaaS()),
-			"instance_id": instanceId.String(),
+			"instance_id": utils.InstanceId.String(),
 		})
 		scope.SetExtra("cookie_id", userId.String())
 		scope.SetExtra("goroutine_count", runtime.NumGoroutine())

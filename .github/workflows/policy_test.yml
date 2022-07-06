@@ -65,8 +65,8 @@ jobs:
 
       - name: Build Schema (${{ matrix.provider }})
         run: |
-          go run ./main.go provider sync ${{ matrix.provider }} --config ./internal/test/test_policies_config.hcl --enable-console-log
+          go run ./main.go provider sync ${{ matrix.provider }} --config ./internal/test/test_policies_config.yml --enable-console-log
 
       - name: Policy Run (${{ matrix.provider }})
         run: |
-          go run ./main.go policy run ${{ matrix.provider }} --config ./internal/test/test_policies_config.hcl --enable-console-log --disable-fetch-check
+          go run ./main.go policy run ${{ matrix.provider }} --config ./internal/test/test_policies_config.yml --enable-console-log --disable-fetch-check
