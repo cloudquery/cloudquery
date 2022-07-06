@@ -70,7 +70,7 @@ aws configure sso
 To run an integration test for a specific table:
 
 ```bash
-go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
+go test -run="TestIntegration/RESOURCE_NAME" -tags=integration ./...
 # For example
 go test -run="TestIntegration/aws_lambda_functions" -tags=integration ./...
 ```
@@ -87,7 +87,7 @@ To run all integration tests:
 go test -run=TestIntegration -tags=integration ./...
 ```
 
->**Important** When adding a single resource, it's more common to only run the test for a specific table. You'll need to ensure your resource has the relevant Terraform service deployed. 
+>**Important** When adding a single resource, it's more common to only run the integration tests for that specific resource. You'll need to ensure your resource has the relevant Terraform service deployed. 
 
 #### Adding new Terraform Files Guidelines
 
@@ -112,5 +112,5 @@ cd terraform/YOUR_SERVICE_NAME/local
 terraform init
 # Replace AB with your own initials so multiple team members can work on the same account without conflicting resources
 terraform apply -var="prefix=AB"
-go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
+go test -run="TestIntegration/RESOURCE_NAME" -tags=integration ./...
 ```

@@ -41,6 +41,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/iot"
 	"github.com/cloudquery/cq-provider-aws/resources/services/kms"
 	"github.com/cloudquery/cq-provider-aws/resources/services/lambda"
+	"github.com/cloudquery/cq-provider-aws/resources/services/lightsail"
 	"github.com/cloudquery/cq-provider-aws/resources/services/mq"
 	"github.com/cloudquery/cq-provider-aws/resources/services/organizations"
 	"github.com/cloudquery/cq-provider-aws/resources/services/qldb"
@@ -189,6 +190,7 @@ func Provider() *provider.Provider {
 			"lambda.functions":                        lambda.Functions(),
 			"lambda.layers":                           lambda.LambdaLayers(),
 			"lambda.runtimes":                         lambda.LambdaRuntimes(),
+			"lightsail.instances":                     lightsail.Instances(),
 			"mq.brokers":                              mq.Brokers(),
 			"organizations.accounts":                  organizations.Accounts(),
 			"qldb.ledgers":                            qldb.Ledgers(),

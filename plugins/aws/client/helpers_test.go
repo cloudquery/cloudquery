@@ -138,7 +138,7 @@ func TestTagsToMap(t *testing.T) {
 					Value: nil,
 				},
 			},
-			Expected: map[string]string{"k": "v"},
+			Expected: map[string]string{"k": "v", "emptyvalue": ""},
 		},
 		{
 			Input: []ttypes.Tag{
