@@ -96,12 +96,7 @@ func Colorize(c *color.Color, noColor bool, msg string, values ...interface{}) s
 }
 
 func Link(text string, url string) string {
-	if termlink.SupportsHyperlinks() {
-		return termlink.Link(text, url)
-	}
-	// termlink has default behavior for terminals that don't support hyperlinks but it adds an extra space before the link, e.g. `text ( link)`
-	// so we use our own formatting
-	return fmt.Sprintf("%s (%s)", text, url)
+	return termlink.Link(text, url)
 }
 
 func strip(str string) string {
