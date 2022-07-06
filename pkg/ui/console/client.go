@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
 	"time"
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
@@ -637,11 +636,9 @@ func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Pro
 }
 
 func loadConfig(file string) (*config.Config, bool) {
-	parser := config.NewParser(
+	cfg, diags := config.NewParser(
 		config.WithEnvironmentVariables(config.EnvVarPrefix, os.Environ()),
-		config.WithFileFunc(filepath.Dir(file)),
-	)
-	cfg, diags := parser.LoadConfigFile(file)
+	).LoadConfigFile(file)
 	if diags.HasDiags() {
 		ui.ColorizedOutput(ui.ColorHeader, "Configuration Error Diagnostics:\n")
 		for _, d := range diags {
