@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.26](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.25...v0.8.26) (2022-07-06)
+
+
+### Features
+
+* Add gcp_sql_instances to the resources view ([#403](https://github.com/cloudquery/cq-provider-gcp/issues/403)) ([0e13a1d](https://github.com/cloudquery/cq-provider-gcp/commit/0e13a1dd478a1d4d7a2c56f66fa9074a76a7729d)), closes [#373](https://github.com/cloudquery/cq-provider-gcp/issues/373)
+
 ## [0.8.25](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.24...v0.8.25) (2022-07-05)
 
 
