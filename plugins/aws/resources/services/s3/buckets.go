@@ -510,8 +510,7 @@ func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <
 	defer wg.Done()
 	cl := meta.(*client.Client)
 	for bucket := range buckets {
-		// always set default bucket region to us-east-1
-		wb := &WrappedBucket{Bucket: bucket, Region: "us-east-1"}
+		wb := &WrappedBucket{Bucket: bucket}
 		err := resolveS3BucketsAttributes(ctx, meta, wb)
 		if err != nil {
 			if !isBucketNotFoundError(cl, err) {
@@ -536,8 +535,8 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		}
 		return diag.WrapError(err)
 	}
-	// This is a weird corner case by AWS API https://github.com/aws/aws-sdk-net/issues/323#issuecomment-196584538
-	// empty output == region of the bucket is us-east-1, as we set it by default we are okay
+	// AWS does not specify a region if bucket is in us-east-1, so as long as no error we can assume an empty string is us-east-1
+	resource.Region = "us-east-1"
 	if output != "" {
 		resource.Region = output
 	}
@@ -574,6 +573,9 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 func fetchS3BucketGrants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services().S3
+	if parent.Get("region").(string) == "" {
+		return nil
+	}
 	aclOutput, err := svc.GetBucketAcl(ctx, &s3.GetBucketAclInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
@@ -590,6 +592,9 @@ func fetchS3BucketCorsRules(ctx context.Context, meta schema.ClientMeta, parent 
 	r := parent.Item.(*WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
+	if parent.Get("region").(string) == "" {
+		return nil
+	}
 	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
@@ -608,6 +613,9 @@ func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, p
 	r := parent.Item.(*WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
+	if parent.Get("region").(string) == "" {
+		return nil
+	}
 	aclOutput, err := svc.GetBucketEncryption(ctx, &s3.GetBucketEncryptionInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
@@ -642,6 +650,9 @@ func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent
 	r := parent.Item.(*WrappedBucket)
 	c := meta.(*client.Client)
 	svc := c.Services().S3
+	if parent.Get("region").(string) == "" {
+		return nil
+	}
 	lifecycleOutput, err := svc.GetBucketLifecycleConfiguration(ctx, &s3.GetBucketLifecycleConfigurationInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = parent.Get("region").(string)
 	})
