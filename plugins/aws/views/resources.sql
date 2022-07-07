@@ -18,7 +18,7 @@ select table_name from information_schema.columns where table_name like 'aws_%s'
 	 strSQL = strSQL || format('select  cq_id,  cq_meta, %L as cq_table, account_id, %s as region, arn, %s as tags,
 		  					    COALESCE(%s, (cq_meta->>''last_updated'')::timestamp) as fetch_date
 							   FROM %s', tbl,
-							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE 'NULL' END,
+							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE E'\'unavailable\'' END,
                  CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='tags' AND table_name=tbl) THEN 'tags' ELSE '''{}''::jsonb' END,
 							   CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='fetch_date' AND table_name=tbl) THEN 'fetch_date' ELSE 'NULL::timestamp' END,
 							   tbl);
