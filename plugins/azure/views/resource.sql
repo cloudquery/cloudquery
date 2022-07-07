@@ -23,7 +23,7 @@ LOOP
         FROM %s', tbl,
             CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='name' AND table_name=tbl) THEN 'name' ELSE 'NULL' END,
             CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='kind' AND table_name=tbl) THEN 'kind' ELSE 'NULL' END,
-            CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='location' AND table_name=tbl) THEN 'location' ELSE 'NULL' END,
+            CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='location' AND table_name=tbl) THEN 'location' ELSE E'\'unavailable\'' END,
             CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='fetch_date' AND table_name=tbl) THEN 'fetch_date' ELSE 'NULL::timestamp' END,
     tbl);
 
