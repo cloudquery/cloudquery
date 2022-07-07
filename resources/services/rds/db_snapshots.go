@@ -246,6 +246,9 @@ func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta,
 		},
 	)
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	if out.DBSnapshotAttributesResult == nil {
