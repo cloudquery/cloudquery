@@ -239,6 +239,9 @@ func fetchEc2Hosts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 }
 func fetchEc2HostAvailableInstanceCapacities(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	host := parent.Item.(types.Host)
+	if host.AvailableCapacity == nil {
+		return nil
+	}
 	res <- host.AvailableCapacity.AvailableInstanceCapacity
 	return nil
 }
