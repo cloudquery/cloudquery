@@ -1,4 +1,4 @@
-package core
+package analytics
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_SummarizeDiagnostics(t *testing.T) {
+func TestSummarizeDiagnostics(t *testing.T) {
 	testCases := []struct {
 		Name            string
 		Diags           diag.Diagnostics

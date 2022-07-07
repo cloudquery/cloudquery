@@ -6,7 +6,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/cloudquery/cloudquery/internal/persistentdata"
-	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
@@ -181,7 +180,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		"cookie_id":           c.cookieId,
 		"success":             !diags.HasErrors(),
 		"installed_providers": pp,
-		"diagnostics":         core.SummarizeDiagnostics(diags),
+		"diagnostics":         SummarizeDiagnostics(diags),
 	}
 
 	if !reflect2.IsNil(data) {
