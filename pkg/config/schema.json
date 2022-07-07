@@ -38,6 +38,10 @@
               "description": "Connection port",
               "type": "integer"
             },
+            "schema": {
+              "description": "Connection schema",
+              "type": "string"
+            },
             "sslmode": {
               "description": "Connection sslmode",
               "type": "string"
