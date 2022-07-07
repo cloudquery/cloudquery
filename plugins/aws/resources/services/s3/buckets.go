@@ -514,7 +514,7 @@ func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <
 		wb := &WrappedBucket{Bucket: bucket, Region: "us-east-1"}
 		err := resolveS3BucketsAttributes(ctx, meta, wb)
 		if err != nil {
-			if !cl.IsNotFoundError(err) {
+			if !isBucketNotFoundError(cl, err) {
 				errs <- err
 			}
 			continue
@@ -542,7 +542,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 		resource.Region = output
 	}
 	if err = resolveBucketLogging(ctx, meta, resource, resource.Region); err != nil {
-		if c.IsNotFoundError(err) {
+		if isBucketNotFoundError(c, err) {
 			return nil
 		}
 		return diag.WrapError(err)
@@ -763,7 +763,7 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 	})
 	if err != nil {
 		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error
-		if c.IsNotFoundError(err) {
+		if isBucketNotFoundError(c, err) {
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
@@ -879,4 +879,14 @@ func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta,
 
 	resource.OwnershipControls = stringArray
 	return nil
+}
+
+func isBucketNotFoundError(cl *client.Client, err error) bool {
+	if cl.IsNotFoundError(err) {
+		return true
+	}
+	if err.Error() == "bucket not found" {
+		return true
+	}
+	return false
 }
