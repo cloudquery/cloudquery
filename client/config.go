@@ -10,6 +10,7 @@ type Account struct {
 	RoleARN         string   `yaml:"role_arn,omitempty" hcl:"role_arn,optional"`
 	RoleSessionName string   `yaml:"role_session_name,omitempty" hcl:"role_session_name,optional"`
 	ExternalID      string   `yaml:"external_id,omitempty" hcl:"external_id,optional"`
+	DefaultRegion   string   `yaml:"default_region,omitempty" hcl:"default_region,optional"`
 	Regions         []string `yaml:"regions,omitempty" hcl:"regions,optional"`
 	source          string
 }

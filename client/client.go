@@ -411,6 +411,11 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 		config.WithRetryer(newRetryer(logger, awsConfig.MaxRetries, awsConfig.MaxBackoff)),
 	}
 
+	if account.DefaultRegion != "" {
+		// According to the docs: If multiple WithDefaultRegion calls are made, the last call overrides the previous call values
+		configFns = append(configFns, config.WithDefaultRegion(account.DefaultRegion))
+	}
+
 	if account.LocalProfile != "" {
 		configFns = append(configFns, config.WithSharedConfigProfile(account.LocalProfile))
 	}
@@ -450,6 +455,20 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 	// Test out retrieving credentials
 	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
 		logger.Error("error retrieving credentials", "err", err)
+
+		var ae smithy.APIError
+		if errors.As(err, &ae) {
+			if strings.Contains(ae.ErrorCode(), "InvalidClientTokenId") {
+				return awsCfg, diag.FromError(
+					err,
+					diag.USER,
+					diag.WithSummary("Invalid credentials for assuming role"),
+					diag.WithDetails("The credentials being used to assume role are invalid. Please check that your credentials are valid in the partition you are using. If you are using a partition other than the AWS commercial region, be sure set the default_region attribute in the cloudquery.yml file."),
+					diag.WithSeverity(diag.WARNING),
+				)
+			}
+		}
+
 		return awsCfg, diag.FromError(
 			err,
 			diag.USER,
@@ -548,6 +567,10 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 			&ec2.DescribeRegionsInput{AllRegions: aws.Bool(false)},
 			func(o *ec2.Options) {
 				o.Region = defaultRegion
+				if account.DefaultRegion != "" {
+					o.Region = account.DefaultRegion
+				}
+
 				if len(localRegions) > 0 && !isAllRegions(localRegions) {
 					o.Region = localRegions[0]
 				}

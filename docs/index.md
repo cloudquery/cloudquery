@@ -263,10 +263,11 @@ providers:
 
 #### Arguments for Accounts block:
 
-- `role_arn`  **(Optional)** - The role that CloudQuery will use to perform the fetch
-- `local_profile`  **(Optional)** - Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for the account
-- `external_id`    **(Optional)** - The unique identifier used to by non aws entities to assume a role in an AWS account
-- `role_session_name`    **(Optional)** - Override the default Session name.
+- `role_arn` **(Optional)** - The role that CloudQuery will use to perform the fetch
+- `local_profile` **(Optional)** - Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for the account
+- `external_id` **(Optional)** - The unique identifier used by non-AWS entities to assume a role in an AWS account
+- `role_session_name` **(Optional)** - Override the default Session name.
+- `default_region` **(Optional)** - this sets the Default Region for the AWS SDK. If you are assuming a role in a partition other than the AWS commercial region, it is important that this attribute is set 
 - `regions`  **(Optional)** - Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array
 
 
