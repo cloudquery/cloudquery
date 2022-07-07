@@ -106,7 +106,7 @@ func shouldIgnorePgCode(code string) bool {
 		// Class 3D - Invalid Catalog Name
 		// Class 53 - Insufficient Resources
 		// Class 57 - Operator Intervention
-		case "08", "28", "3D", "53", "57":
+		case "08", "28", "3D", "3F", "53", "57":
 			return true
 		}
 	}
