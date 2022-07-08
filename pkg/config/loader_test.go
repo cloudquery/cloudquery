@@ -226,7 +226,7 @@ cloudquery:
     - name: aws
       version: latest
 `,
-			"postgres://postgres:pass@localhost:15432/cq?sslmode=disable",
+			"postgres://postgres:pass@localhost:15432/cq?search_path=public&sslmode=disable",
 			false,
 		},
 		{

@@ -136,7 +136,7 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 				Host:     `localhost`,
 				Database: `postgres`,
 			},
-			"postgres://user:pass@localhost:5432/postgres",
+			"postgres://user:pass@localhost:5432/postgres?search_path=public",
 			false,
 		},
 		{
@@ -148,7 +148,20 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 				Port:     15432,
 				Database: `postgres`,
 			},
-			"postgres://user@localhost:15432/postgres",
+			"postgres://user@localhost:15432/postgres?search_path=public",
+			false,
+		},
+		{
+			"should use the provided schema if specified",
+			&Connection{
+				Username: `user`,
+				Type:     `postgres`,
+				Host:     `localhost`,
+				Port:     5432,
+				Database: `postgres`,
+				Schema:   `test`,
+			},
+			"postgres://user@localhost:5432/postgres?search_path=test",
 			false,
 		},
 		{
@@ -161,7 +174,20 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 				SSLMode:  `disable`,
 				Extras:   []string{"a=b", "c=d", "e", "sslmode=enable"},
 			},
-			"postgres://user:pass@localhost:5432/postdb?a=b&c=d&e=&sslmode=disable",
+			"postgres://user:pass@localhost:5432/postdb?a=b&c=d&e=&search_path=public&sslmode=disable",
+			false,
+		},
+		{
+			"extras should override search_path",
+			&Connection{
+				Username: `user`,
+				Password: `pass`,
+				Host:     `localhost`,
+				Database: `postdb`,
+				SSLMode:  `disable`,
+				Extras:   []string{"a=b", "c=d", "e", "sslmode=enable", "search_path=test2"},
+			},
+			"postgres://user:pass@localhost:5432/postdb?a=b&c=d&e=&search_path=test2&sslmode=disable",
 			false,
 		},
 		{

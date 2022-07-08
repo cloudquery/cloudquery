@@ -54,6 +54,7 @@ type Connection struct {
 	Port     int      `yaml:"port,omitempty" json:"port,omitempty"`
 	Database string   `yaml:"database,omitempty" json:"database,omitempty"`
 	SSLMode  string   `yaml:"sslmode,omitempty" json:"sslmode,omitempty"`
+	Schema   string   `yaml:"schema,omitempty" json:"schema,omitempty"`
 	Extras   []string `yaml:"extras,omitempty" json:"extras,omitempty"`
 }
 
@@ -96,7 +97,7 @@ func (c CloudQuery) GetRequiredProvider(name string) (*RequiredProvider, error) 
 }
 
 func (c Connection) IsAnyConnParamsSet() bool {
-	return c.Type != "" || c.Username != "" || c.Password != "" || c.Host != "" || c.Port != 0 || c.Database != "" || c.SSLMode != "" || len(c.Extras) > 0
+	return c.Type != "" || c.Username != "" || c.Password != "" || c.Host != "" || c.Port != 0 || c.Database != "" || c.SSLMode != "" || c.Schema != "" || len(c.Extras) > 0
 }
 
 func (c *Connection) BuildFromConnParams() {
@@ -118,11 +119,22 @@ func (c *Connection) BuildFromConnParams() {
 	}
 
 	v := url.Values{}
+
+	if c.Schema != "" {
+		v.Set("search_path", c.Schema)
+	} else {
+		v.Set("search_path", "public") // default
+	}
+
 	if c.Extras != nil {
 		for _, extra := range c.Extras {
 			parts := strings.SplitN(extra, "=", 2)
 			if len(parts) == 1 {
 				v.Add(parts[0], "")
+				continue
+			}
+			if parts[0] == "search_path" {
+				v.Set(parts[0], parts[1])
 			} else {
 				v.Add(parts[0], parts[1])
 			}
