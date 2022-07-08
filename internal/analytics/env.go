@@ -3,7 +3,6 @@ package analytics
 import (
 	"net"
 	"os"
-	"os/exec"
 	"runtime"
 	"sort"
 	"strings"
@@ -109,14 +108,13 @@ func isHomebrew() bool {
 	if err != nil {
 		return false
 	}
-	// Get the homebrew prefix
-	var out []byte
-	if out, err = exec.Command("brew", "--prefix").Output(); err != nil {
-		return false
+	// Match default Homebrew locations
+	for _, prefix := range []string{"/usr/local", "/opt/homebrew", "/home/linuxbrew/.linuxbrew"} {
+		if strings.HasPrefix(executable, prefix) {
+			return true
+		}
 	}
-	// Trim Homebrew prefix
-	prefix := strings.TrimSpace(string(out))
-	return strings.HasPrefix(executable, prefix)
+	return false
 }
 
 // isContainer returns true if CloudQuery is running within the ghcr.io container
