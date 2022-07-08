@@ -4,6 +4,20 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.31.7](https://github.com/cloudquery/cloudquery/compare/v0.31.6...v0.31.7) (2022-07-08)
+
+
+### Features
+
+* Add Binary and Installation Source tracking ([#1113](https://github.com/cloudquery/cloudquery/issues/1113)) ([006c54f](https://github.com/cloudquery/cloudquery/commit/006c54f2e21a6ead33fc51d9b08615bbcd02e573))
+* Send telemetry about failed COPY FROMs ([#1050](https://github.com/cloudquery/cloudquery/issues/1050)) ([1da0478](https://github.com/cloudquery/cloudquery/commit/1da0478aa05ab409a74d2170bced181aff78e74e))
+
+
+### Bug Fixes
+
+* Add schema option to connection config ([#1112](https://github.com/cloudquery/cloudquery/issues/1112)) ([4e597e4](https://github.com/cloudquery/cloudquery/commit/4e597e4f4d298c8aaeeea47aefded375cc6467d7))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.5 ([#1114](https://github.com/cloudquery/cloudquery/issues/1114)) ([8e6cd35](https://github.com/cloudquery/cloudquery/commit/8e6cd35c5dd05fd901e75eedb6c8c0ebd5e7008d))
+
 ## [0.31.6](https://github.com/cloudquery/cloudquery/compare/v0.31.5...v0.31.6) (2022-07-06)
 
 
