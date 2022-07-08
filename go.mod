@@ -68,7 +68,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/cq-gen v0.0.5
-	github.com/cloudquery/cq-provider-sdk v0.13.4
+	github.com/cloudquery/cq-provider-sdk v0.13.5
 	github.com/cloudquery/faker/v3 v3.7.6
 	github.com/gocarina/gocsv v0.0.0-20220629092026-72f2e845d8d1
 	github.com/golang/mock v1.6.0
