@@ -67,6 +67,10 @@ func TestRemovePII(t *testing.T) {
 			`operation error EC2: DescribeImageAttribute, https response error StatusCode: 400, RequestID: 3PQRRTJ1BAB82DWH, api error InvalidAMIID.Unavailable: The image ID 'ami-01964cde3b8020132' is no longer available`,
 			`operation error EC2: DescribeImageAttribute, https response error StatusCode: 400, RequestID: xxxx, api error InvalidAMIID.Unavailable: The image ID 'xxxx' is no longer available`,
 		},
+		{
+			`operation error Auto Scaling: DescribePolicies, https response error StatusCode: 400, RequestID: 3PQRRTJ1BAB82DWH, api error ValidationError: Group group-name not found`,
+			`operation error Auto Scaling: DescribePolicies, https response error StatusCode: 400, RequestID: xxxx, api error ValidationError: Group xxxx not found`,
+		},
 	}
 	for i, tc := range cases {
 		res := removePII([]string{"123456789"}, tc.Input)

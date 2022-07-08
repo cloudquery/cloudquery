@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"strings"
+	"regexp"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -14,6 +14,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+var groupNotFoundRegex = regexp.MustCompile(`AutoScalingGroup name not found|Group .* not found`)
 
 type autoscalingGroupWrapper struct {
 	types.AutoScalingGroup
@@ -703,6 +705,9 @@ func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.Clien
 			o.Region = cl.Region
 		})
 		if err != nil {
+			if isAutoScalingGroupNotExistsError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- output.ScalingPolicies
@@ -751,6 +756,9 @@ func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.Client
 		o.Region = cl.Region
 	})
 	if err != nil {
+		if isAutoScalingGroupNotExistsError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	res <- output.LifecycleHooks
@@ -774,7 +782,7 @@ func getNotificationConfigurationByGroupName(name string, set []types.Notificati
 func isAutoScalingGroupNotExistsError(err error) bool {
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
-		if ae.ErrorCode() == "ValidationError" && strings.Contains(ae.ErrorMessage(), "AutoScalingGroup name not found") {
+		if ae.ErrorCode() == "ValidationError" && groupNotFoundRegex.MatchString(ae.ErrorMessage()) {
 			return true
 		}
 	}
