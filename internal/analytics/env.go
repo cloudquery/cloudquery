@@ -3,6 +3,7 @@ package analytics
 import (
 	"net"
 	"os"
+	"os/exec"
 	"runtime"
 	"sort"
 	"strings"
@@ -20,6 +21,10 @@ type Environment struct {
 	// Hashed hostname identifier
 	Hostname string `json:"hostname"`
 	MacAddr  string `json:"mac_addr"`
+	// BinarySource is the source of the binary
+	BinarySource string `json:"binary_source"`
+	// InstallationSource is the source of the installation
+	InstallationSource string `json:"installation_source"`
 }
 
 func getEnvironmentAttributes(terminal bool) *Environment {
@@ -28,12 +33,14 @@ func getEnvironmentAttributes(terminal bool) *Environment {
 		hn = HashAttribute(hn)
 	}
 	return &Environment{
-		OS:       runtime.GOOS,
-		Terminal: terminal,
-		CI:       IsCI(),
-		FaaS:     IsFaaS(),
-		Hostname: hn,
-		MacAddr:  macHost(),
+		OS:                 runtime.GOOS,
+		Terminal:           terminal,
+		CI:                 IsCI(),
+		FaaS:               IsFaaS(),
+		Hostname:           hn,
+		MacAddr:            macHost(),
+		BinarySource:       binarySource(),
+		InstallationSource: installationSource(),
 	}
 }
 
@@ -82,4 +89,58 @@ func IsFaaS() bool {
 	}
 
 	return false
+}
+
+// binarySource identifies where the binary came from
+func binarySource() string {
+	switch {
+	case isHomebrew():
+		return "homebrew"
+	case isContainer():
+		return "container"
+	}
+	return "unknown"
+}
+
+// isHomebrew returns true if CloudQuery is running under Homebrew
+func isHomebrew() bool {
+	// Executable returns the path name for the executable that started the current process.
+	executable, err := os.Executable()
+	if err != nil {
+		return false
+	}
+	// Get the homebrew prefix
+	var out []byte
+	if out, err = exec.Command("brew", "--prefix").Output(); err != nil {
+		return false
+	}
+	// Trim Homebrew prefix
+	prefix := strings.TrimSpace(string(out))
+	return strings.HasPrefix(executable, prefix)
+}
+
+// isContainer returns true if CloudQuery is running within the ghcr.io container
+func isContainer() bool {
+	// Executable returns the path name for the executable that started the current process.
+	executable, err := os.Executable()
+	if err != nil {
+		return false
+	}
+	return executable == "/app/cloudquery"
+}
+
+// installationSource identifies if user is using a template/managed installation tool from CloudQuery
+func installationSource() string {
+	switch {
+	case os.Getenv("CQ_INSTALL_SRC") == "HELM":
+		return "helm"
+	case os.Getenv("CQ_INSTALL_SRC") == "TERRAFORM_HELM":
+		return "terraform_helm"
+	case os.Getenv("CQ_INSTALL_SRC") == "CLOUDFORMATION":
+		return "aws_cloudformation"
+	case IsFaaS():
+		return "lambda"
+	default:
+		return "unknown"
+	}
 }
