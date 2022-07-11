@@ -71,6 +71,10 @@ func TestRemovePII(t *testing.T) {
 			`operation error Auto Scaling: DescribePolicies, https response error StatusCode: 400, RequestID: 3PQRRTJ1BAB82DWH, api error ValidationError: Group group-name not found`,
 			`operation error Auto Scaling: DescribePolicies, https response error StatusCode: 400, RequestID: xxxx, api error ValidationError: Group xxxx not found`,
 		},
+		{
+			`operation error Elastic Load Balancing v2: DescribeTargetHealth, https response error StatusCode: 400, RequestID: 3PQRRTJ1BAB82DWH, api error TargetGroupNotFound: Target groups 'arn:aws:elasticloadbalancing:us-east-1:979012345678:targetgroup/tf-20220705120643225800000009/482af980557b75d4' not found`,
+			`operation error Elastic Load Balancing v2: DescribeTargetHealth, https response error StatusCode: 400, RequestID: xxxx, api error TargetGroupNotFound: Target groups 'arn:aws:xxxx' not found`,
+		},
 	}
 	for i, tc := range cases {
 		res := removePII([]string{"123456789"}, tc.Input)
