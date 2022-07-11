@@ -12,16 +12,16 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 )
 
 //go:generate cq-gen --resource work_groups --config gen.hcl --output .
 func WorkGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_athena_work_groups",
-		Description:  "A workgroup, which contains a name, description, creation time, state, and other configuration, listed under WorkGroup$Configuration",
-		Resolver:     fetchAthenaWorkGroups,
+		Name:        "aws_athena_work_groups",
+		Description: "A workgroup, which contains a name, description, creation time, state, and other configuration, listed under WorkGroup$Configuration",
+		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listWorkGroups, workGroupDetail))
+		},
 		Multiplex:    client.ServiceAccountRegionMultiplexer("athena"),
 		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
@@ -411,11 +411,10 @@ func WorkGroups() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	input := athena.ListWorkGroupsInput{}
-	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 	for {
 		response, err := svc.ListWorkGroups(ctx, &input, func(options *athena.Options) {
 			options.Region = c.Region
@@ -423,29 +422,19 @@ func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		errs, ctx := errgroup.WithContext(ctx)
-		for _, d := range response.WorkGroups {
-			if err := sem.Acquire(ctx, 1); err != nil {
-				return diag.WrapError(err)
-			}
-			func(summary types.WorkGroupSummary) {
-				errs.Go(func() error {
-					defer sem.Release(1)
-					return fetchWorkGroup(ctx, res, c, summary)
-				})
-			}(d)
+		for _, item := range response.WorkGroups {
+			detailChan <- item
 		}
-		err = errs.Wait()
-		if err != nil {
-			return diag.WrapError(err)
-		}
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		input.NextToken = response.NextToken
 	}
+
 	return nil
 }
+
 func ResolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.WorkGroup)
@@ -582,21 +571,23 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 //                                                  User Defined Helpers
 // ====================================================================================================================
 
-func fetchWorkGroup(ctx context.Context, res chan<- interface{}, c *client.Client, groupSummary types.WorkGroupSummary) error {
+func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, summary interface{}) {
+	c := meta.(*client.Client)
 	svc := c.Services().Athena
+	wg := summary.(types.WorkGroupSummary)
 	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
-		WorkGroup: groupSummary.Name,
+		WorkGroup: wg.Name,
 	}, func(options *athena.Options) {
 		options.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
-			return nil
+			return
 		}
-		return diag.WrapError(err)
+		errorChan <- diag.WrapError(err)
+		return
 	}
-	res <- *dc.WorkGroup
-	return nil
+	resultsChan <- *dc.WorkGroup
 }
 
 func createWorkGroupArn(cl *client.Client, groupName string) string {
