@@ -136,6 +136,8 @@ func installationSource() string {
 		return "terraform_helm"
 	case os.Getenv("CQ_INSTALL_SRC") == "CLOUDFORMATION":
 		return "aws_cloudformation"
+	case os.Getenv("CQ_INSTALL_SRC") == "GITHUB_ACTIONS":
+		return "github_actions"
 	case IsFaaS():
 		return "lambda"
 	default:
