@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.16.7
-	github.com/aws/aws-sdk-go-v2/config v1.15.12
+	github.com/aws/aws-sdk-go-v2/config v1.15.13
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.8
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.18
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.19
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.15.7
 	github.com/aws/aws-sdk-go-v2/service/acm v1.14.7
 	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.9
@@ -51,7 +51,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.25.1
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.21.2
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.7
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.1
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.21.8
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.34.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.15.12
@@ -83,8 +83,8 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.8 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.5 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.9 // indirect
 	github.com/elliotchance/orderedmap v1.4.0 // indirect
 	github.com/lorenzosaino/go-sysctl v0.3.1 // indirect
 	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
@@ -103,13 +103,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.8 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.14 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.8 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.14 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.15 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.16.3
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.8 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.8
