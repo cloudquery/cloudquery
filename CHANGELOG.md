@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.12.28](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.27...v0.12.28) (2022-07-11)
+
+
+### Features
+
+* Generic list and detail ([#1000](https://github.com/cloudquery/cq-provider-aws/issues/1000)) ([16217c8](https://github.com/cloudquery/cq-provider-aws/commit/16217c824ac66196af63ba5b28d55a4e3f3cf4a5))
+* Partial lambda Function  Fetch ([#1194](https://github.com/cloudquery/cq-provider-aws/issues/1194)) ([f757824](https://github.com/cloudquery/cq-provider-aws/commit/f75782469a5d805f320c3467b3db489a5713ee40))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.16.7 ([#1203](https://github.com/cloudquery/cq-provider-aws/issues/1203)) ([35fde37](https://github.com/cloudquery/cq-provider-aws/commit/35fde37ec9007999b56ae24682a681fe7247e6f8))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/credentials to v1.12.8 ([#1205](https://github.com/cloudquery/cq-provider-aws/issues/1205)) ([103b548](https://github.com/cloudquery/cq-provider-aws/commit/103b548618cac9e1480698860f6a712f925d1d71))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.11.19 ([#1206](https://github.com/cloudquery/cq-provider-aws/issues/1206)) ([825e55f](https://github.com/cloudquery/cq-provider-aws/commit/825e55f842c0f0f07740242c1130c6f95ef36ed8))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/acm to v1.14.8 ([#1208](https://github.com/cloudquery/cq-provider-aws/issues/1208)) ([e0a3b4a](https://github.com/cloudquery/cq-provider-aws/commit/e0a3b4aba11637bfa39af86e0d0486d29d47b86c))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.5 ([#1193](https://github.com/cloudquery/cq-provider-aws/issues/1193)) ([0add41c](https://github.com/cloudquery/cq-provider-aws/commit/0add41c0e0d11169ebb12071a056ced017975a62))
+* **deps:** Update myrotvorets/set-commit-status-action digest to 987babf ([#1145](https://github.com/cloudquery/cq-provider-aws/issues/1145)) ([bf69648](https://github.com/cloudquery/cq-provider-aws/commit/bf69648c21b51200d0c9d9671b22b9bf8bc2c140))
+* **deps:** Update tubone24/update_release digest to 246880c ([#1146](https://github.com/cloudquery/cq-provider-aws/issues/1146)) ([44d9c76](https://github.com/cloudquery/cq-provider-aws/commit/44d9c7656a75016b5308114215e50af4dce6cfeb))
+* Handle invalid/malformed token ([#1210](https://github.com/cloudquery/cq-provider-aws/issues/1210)) ([5131326](https://github.com/cloudquery/cq-provider-aws/commit/51313269f5180433d44f1602b7158610bfa3198f))
+* Ignore AWS backup tags for not found resource ([#1211](https://github.com/cloudquery/cq-provider-aws/issues/1211)) ([ac11c91](https://github.com/cloudquery/cq-provider-aws/commit/ac11c91698177fe64a1e91840e8bd7299d4d262b))
+* Ignore not found errors in apigateway ([#1192](https://github.com/cloudquery/cq-provider-aws/issues/1192)) ([e963155](https://github.com/cloudquery/cq-provider-aws/commit/e963155da7c3b18bfc3bf8483ec317df46cb6abf))
+* Ignore SimpleQueueService.NonExistentQueue ([#1173](https://github.com/cloudquery/cq-provider-aws/issues/1173)) ([7452701](https://github.com/cloudquery/cq-provider-aws/commit/745270176d1bbf15e3de3da0598b3983bf48c81e))
+* Ignore some not founds in autoscaling groups ([#1181](https://github.com/cloudquery/cq-provider-aws/issues/1181)) ([33c2f11](https://github.com/cloudquery/cq-provider-aws/commit/33c2f1127fda56a9d4599710bd7a52f9e0eda741))
+* Ignore TargetGroupNotFound in target_groups ([#1174](https://github.com/cloudquery/cq-provider-aws/issues/1174)) ([1a16deb](https://github.com/cloudquery/cq-provider-aws/commit/1a16deb7aa8a068a8845dacd46398961cde8fc24))
+* Panic in cloudtrail ([#1189](https://github.com/cloudquery/cq-provider-aws/issues/1189)) ([0d98a38](https://github.com/cloudquery/cq-provider-aws/commit/0d98a385bc3ad6efe3a8b0579968d8871ecee58e))
+
 ## [0.12.27](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.26...v0.12.27) (2022-07-07)
 
 
