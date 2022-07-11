@@ -395,6 +395,10 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	for {
 		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) { o.Region = cl.Region })
 		if err != nil {
+			if client.IsAWSError(err, "ERROR_2603") {
+				// ignoring "ERROR_2603: Cannot find recovery point."
+				return nil
+			}
 			if resourceARN.Service == string(client.DynamoDBService) && client.IsAWSError(err, "ERROR_3930") {
 				// advanced backup features are not enabled for dynamodb
 				return nil
