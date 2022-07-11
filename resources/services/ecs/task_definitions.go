@@ -682,7 +682,10 @@ func resolveEcsTaskDefinitionsInferenceAccelerators(ctx context.Context, meta sc
 	r := resource.Item.(TaskDefinitionWrapper)
 	j := map[string]interface{}{}
 	for _, a := range r.InferenceAccelerators {
-		j[*a.DeviceName] = *a.DeviceType
+		if a.DeviceName == nil {
+			continue
+		}
+		j[*a.DeviceName] = aws.ToString(a.DeviceType)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
@@ -690,6 +693,9 @@ func resolveEcsTaskDefinitionsPlacementConstraints(ctx context.Context, meta sch
 	r := resource.Item.(TaskDefinitionWrapper)
 	j := map[string]interface{}{}
 	for _, p := range r.PlacementConstraints {
+		if p.Expression == nil {
+			continue
+		}
 		j[*p.Expression] = p.Type
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
@@ -701,7 +707,10 @@ func resolveEcsTaskDefinitionsProxyConfigurationProperties(ctx context.Context, 
 		return nil
 	}
 	for _, p := range r.ProxyConfiguration.Properties {
-		j[*p.Name] = *p.Value
+		if p.Name == nil {
+			continue
+		}
+		j[*p.Name] = aws.ToString(p.Value)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
@@ -720,25 +729,31 @@ func fetchEcsTaskDefinitionContainerDefinitions(ctx context.Context, meta schema
 }
 func resolveEcsTaskDefinitionContainerDefinitionsDependsOn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ContainerDefinition)
-	j := map[string]interface{}{}
+	j := map[string]string{}
 	for _, p := range r.DependsOn {
-		j[*p.ContainerName] = p.Condition
+		if p.ContainerName == nil {
+			continue
+		}
+		j[*p.ContainerName] = string(p.Condition)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveEcsTaskDefinitionContainerDefinitionsEnvironment(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ContainerDefinition)
-	j := map[string]interface{}{}
+	j := map[string]string{}
 	for _, p := range r.Environment {
-		j[*p.Name] = p.Value
+		if p.Name == nil {
+			continue
+		}
+		j[*p.Name] = aws.ToString(p.Value)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveEcsTaskDefinitionContainerDefinitionsEnvironmentFiles(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ContainerDefinition)
-	j := map[string]interface{}{}
+	j := map[string]string{}
 	for _, p := range r.EnvironmentFiles {
-		j[string(p.Type)] = p.Value
+		j[string(p.Type)] = aws.ToString(p.Value)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
@@ -746,6 +761,9 @@ func resolveEcsTaskDefinitionContainerDefinitionsExtraHosts(ctx context.Context,
 	r := resource.Item.(types.ContainerDefinition)
 	j := map[string]interface{}{}
 	for _, h := range r.ExtraHosts {
+		if h.Hostname == nil {
+			continue
+		}
 		j[*h.Hostname] = h.IpAddress
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
@@ -804,34 +822,31 @@ func resolveEcsTaskDefinitionContainerDefinitionsPortMappings(ctx context.Contex
 }
 func resolveEcsTaskDefinitionContainerDefinitionsResourceRequirements(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ContainerDefinition)
-	j := map[string]interface{}{}
-	if r.LogConfiguration == nil {
-		return nil
-	}
+	j := map[string]string{}
 	for _, s := range r.ResourceRequirements {
-		j[string(s.Type)] = *s.Value
+		j[string(s.Type)] = aws.ToString(s.Value)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveEcsTaskDefinitionContainerDefinitionsSecrets(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ContainerDefinition)
-	j := map[string]interface{}{}
-	if r.LogConfiguration == nil {
-		return nil
-	}
+	j := map[string]string{}
 	for _, s := range r.Secrets {
-		j[*s.Name] = *s.ValueFrom
+		if s.Name == nil {
+			continue
+		}
+		j[*s.Name] = aws.ToString(s.ValueFrom)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveEcsTaskDefinitionContainerDefinitionsSystemControls(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ContainerDefinition)
-	j := map[string]interface{}{}
-	if r.LogConfiguration == nil {
-		return nil
-	}
+	j := map[string]string{}
 	for _, s := range r.SystemControls {
-		j[*s.Namespace] = *s.Value
+		if s.Namespace == nil {
+			continue
+		}
+		j[*s.Namespace] = aws.ToString(s.Value)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
@@ -847,9 +862,6 @@ func resolveEcsTaskDefinitionContainerDefinitionsUlimits(ctx context.Context, me
 func resolveEcsTaskDefinitionContainerDefinitionsVolumesFrom(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ContainerDefinition)
 	j := map[string]interface{}{}
-	if r.LogConfiguration == nil {
-		return nil
-	}
 	for _, s := range r.VolumesFrom {
 		if s.SourceContainer == nil {
 			continue
@@ -866,9 +878,12 @@ func fetchEcsTaskDefinitionVolumes(ctx context.Context, meta schema.ClientMeta, 
 
 func resolveEcsTaskDefinitionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(TaskDefinitionWrapper)
-	j := map[string]interface{}{}
+	j := map[string]string{}
 	for _, a := range r.Tags {
-		j[*a.Key] = *a.Value
+		if a.Key == nil {
+			continue
+		}
+		j[*a.Key] = aws.ToString(a.Value)
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
