@@ -72,6 +72,14 @@ var notFoundErrorSubstrings = []string{
 	"WAFNonexistentItemException",
 }
 
+var accessDeniedErrorStrings = map[string]struct{}{
+	"AuthorizationError":              {},
+	"AccessDenied":                    {},
+	"AccessDeniedException":           {},
+	"InsufficientPrivilegesException": {},
+	"UnauthorizedOperation":           {},
+}
+
 func readSupportedServiceRegions() *SupportedServiceRegionsData {
 	f, err := supportedServiceRegionFile.Open(PartitionServiceRegionFile)
 	if err != nil {
@@ -176,13 +184,11 @@ func IgnoreAccessDeniedServiceDisabled(err error) bool {
 			return strings.Contains(ae.Error(), "The security token included in the request is invalid")
 		case "AWSOrganizationsNotInUseException":
 			return true
-		case "AuthorizationError", "AccessDenied", "AccessDeniedException", "InsufficientPrivilegesException", "UnauthorizedOperation":
-			return true
 		case "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
 			return true
 		}
 	}
-	return false
+	return isAccessDeniedError(err)
 }
 
 func IgnoreCommonErrors(err error) bool {
@@ -299,6 +305,24 @@ func isNotFoundError(err error) bool {
 		}
 	}
 	return false
+}
+
+// IsAccessDeniedError checks if api error should be classified as a permissions issue
+func (c *Client) IsAccessDeniedError(err error) bool {
+	if isAccessDeniedError(err) {
+		c.logger.Warn("API returned an Access Denied error, ignoring it and continuing...", "error", err)
+		return true
+	}
+	return false
+}
+
+func isAccessDeniedError(err error) bool {
+	var ae smithy.APIError
+	if !errors.As(err, &ae) {
+		return false
+	}
+	_, ok := accessDeniedErrorStrings[ae.ErrorCode()]
+	return ok
 }
 
 func IsInvalidParameterValueError(err error) bool {
