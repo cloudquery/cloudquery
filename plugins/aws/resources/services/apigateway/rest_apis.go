@@ -768,6 +768,9 @@ func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMe
 			options.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- response.Items
@@ -788,6 +791,9 @@ func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMe
 			options.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- response.Items
@@ -808,6 +814,9 @@ func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.C
 			options.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- response.Items
@@ -851,6 +860,9 @@ func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.Cli
 			options.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- response.Items
@@ -927,6 +939,9 @@ func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.Cl
 			options.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- response.Items
@@ -947,6 +962,9 @@ func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta
 			options.Region = c.Region
 		})
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 		res <- response.Items
@@ -967,6 +985,9 @@ func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, p
 		options.Region = c.Region
 	})
 	if err != nil {
+		if c.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	res <- response.Item
