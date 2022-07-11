@@ -55,6 +55,7 @@ var errorCodeDescriptions = map[string]string{
 	"AccessDenied":                  "You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys.",
 	"AuthorizationError":            "You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys.",
 	"AuthFailure":                   "You are not authorized to perform this operation. Check your IAM policies, and ensure that you are using the correct access keys.",
+	"InvalidToken":                  "The provided token is malformed or otherwise invalid.",
 }
 
 var throttleCodes = map[string]struct{}{
@@ -78,7 +79,7 @@ func classifyError(err error, fallbackType diag.Type, accounts []string, opts ..
 	var ae smithy.APIError
 	if errors.As(err, &ae) {
 		switch ae.ErrorCode() {
-		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId", "AuthFailure", "ExpiredToken", "ExpiredTokenException", "FailedResourceAccessException":
+		case "AccessDenied", "AccessDeniedException", "UnauthorizedOperation", "AuthorizationError", "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId", "AuthFailure", "ExpiredToken", "ExpiredTokenException", "FailedResourceAccessException", "InvalidToken":
 			return diag.Diagnostics{
 				RedactError(accounts, diag.NewBaseError(err,
 					diag.ACCESS,
