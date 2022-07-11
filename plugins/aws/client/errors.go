@@ -21,9 +21,11 @@ var (
 
 	requestIdRegex = regexp.MustCompile(`\s([Rr]equest[ _]{0,1}(ID|Id|id):)\s[A-Za-z0-9-]+`)
 	hostIdRegex    = regexp.MustCompile(`\sHostID: [A-Za-z0-9+/_=-]+`)
-	arnIdRegex     = regexp.MustCompile(`(\s)(arn:aws[A-Za-z0-9-]*:)[^ \.\(\)\[\]\{\}\;\,]+(\s?)`)
-	urlRegex       = regexp.MustCompile(`([\s"])http(s?):\/\/[a-z0-9_\-\./]+([":\s]?)`)
-	lookupRegex    = regexp.MustCompile(
+	arnIdRegex     = regexp.MustCompile(
+		`\b(arn:aws[A-Za-z0-9-]*:)` + // "arn:aws:"
+			`[^ \.\(\)\[\]\{\}\;\,'"]+`) // continuation in the form of a bunch of characters except space, dot, brackets, square brackets, curly brackets, semicolon, comma and single/double quotes
+	urlRegex    = regexp.MustCompile(`([\s"])http(s?):\/\/[a-z0-9_\-\./]+([":\s]?)`)
+	lookupRegex = regexp.MustCompile(
 		`\blookup\s[-A-Za-z0-9\.]+\s` + // " lookup host.name "
 			`on\s\S+:\d+`, // "on 123.123.123.123:53"
 	)
@@ -262,7 +264,7 @@ func removePII(aa []string, msg string) string {
 	}
 	msg = requestIdRegex.ReplaceAllString(msg, " ${1} xxxx")
 	msg = hostIdRegex.ReplaceAllString(msg, " HostID: xxxx")
-	msg = arnIdRegex.ReplaceAllString(msg, "${1}${2}xxxx${3}")
+	msg = arnIdRegex.ReplaceAllString(msg, "${1}xxxx${2}")
 	msg = urlRegex.ReplaceAllString(msg, "${1}http${2}://xxxx${3}")
 	msg = lookupRegex.ReplaceAllString(msg, "lookup xxxx on xxxx:xx")
 	msg = readXonYRegex.ReplaceAllString(msg, "read $1 xxxx:xx->xxxx:xx")
