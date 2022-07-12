@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.5.24](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.23...v0.5.24) (2022-07-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2 to v1.16.7 ([#198](https://github.com/cloudquery/cq-provider-digitalocean/issues/198)) ([6c55cf9](https://github.com/cloudquery/cq-provider-digitalocean/commit/6c55cf97c5745ed19c819618775da5d7cadccf35))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.27.1 ([#199](https://github.com/cloudquery/cq-provider-digitalocean/issues/199)) ([394e688](https://github.com/cloudquery/cq-provider-digitalocean/commit/394e6883c87f7685a5c5b03b2652ad3a777de2c3))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.5 ([#196](https://github.com/cloudquery/cq-provider-digitalocean/issues/196)) ([c524dd4](https://github.com/cloudquery/cq-provider-digitalocean/commit/c524dd434b350a539d7392d3f71f5beec86fd1ae))
+
 ## [0.5.23](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.22...v0.5.23) (2022-07-05)
 
 
