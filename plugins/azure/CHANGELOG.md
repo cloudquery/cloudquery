@@ -18,6 +18,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.23](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.22...v0.11.23) (2022-07-12)
+
+
+### Features
+
+* Set location to 'unavailable' rather than null in view ([#407](https://github.com/cloudquery/cq-provider-azure/issues/407)) ([7ff8c50](https://github.com/cloudquery/cq-provider-azure/commit/7ff8c506f140139326cedecf6f795d367f9f84df))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.5 ([#411](https://github.com/cloudquery/cq-provider-azure/issues/411)) ([4d7a95c](https://github.com/cloudquery/cq-provider-azure/commit/4d7a95cc81038ed2bbef4f327e3dbbb497dcb58a))
+* move mock generation to separate files ([#409](https://github.com/cloudquery/cq-provider-azure/issues/409)) ([9f721e9](https://github.com/cloudquery/cq-provider-azure/commit/9f721e99139dcbe7e80f8c709a1987ba250fe62a))
+
 ## [0.11.22](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.21...v0.11.22) (2022-07-06)
 
 
