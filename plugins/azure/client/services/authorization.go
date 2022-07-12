@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/authorization.go -package=mocks . RoleAssignmentsClient,RoleDefinitionsClient
 package services
 
 import (

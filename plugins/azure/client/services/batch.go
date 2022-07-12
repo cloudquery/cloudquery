@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/batch.go -package=mocks . BatchAccountClient
 package services
 
 import (

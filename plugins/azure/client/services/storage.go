@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountClient,StorageBlobServicePropertiesClient,StorageBlobServicesClient,StorageContainerClient,StorageQueueServicePropertiesClient
 package services
 
 import (

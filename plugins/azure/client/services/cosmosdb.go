@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/cosmosdb.go -package=mocks . CosmosDBAccountClient,CosmosDBSQLClient,CosmosDBMongoDBClient
 package services
 
 import (

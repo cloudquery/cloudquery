@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/streamanalytics.go -package=mocks . JobsClient
 package services
 
 import (

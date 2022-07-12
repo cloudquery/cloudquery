@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/containerservice.go -package=mocks . ManagedClustersClient
 package services
 
 import (

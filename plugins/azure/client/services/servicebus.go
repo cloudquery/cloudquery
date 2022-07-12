@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/servicebus.go -package=mocks . NamespacesClient
 package services
 
 import (

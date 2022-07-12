@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . MariaDBConfigurationsClient,MariaDBServersClient
 package services
 
 import (

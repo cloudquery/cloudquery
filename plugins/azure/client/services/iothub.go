@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/iothub.go -package=mocks . IotHubClient
 package services
 
 import (

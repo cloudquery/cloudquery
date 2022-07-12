@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/web.go -package=mocks . AppsClient
 package services
 
 import (

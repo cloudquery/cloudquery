@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultClient,KeyVaultManagedHSMClient,KeysClient
 package services
 
 import (

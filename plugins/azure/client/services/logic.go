@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/logic.go -package=mocks . MonitorDiagnosticSettingsClient,WorkflowsClient
 package services
 
 import (

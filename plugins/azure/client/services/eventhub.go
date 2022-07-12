@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/eventhub.go -package=mocks . EventHubClient
 package services
 
 import (

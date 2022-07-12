@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
 package services
 
 import (

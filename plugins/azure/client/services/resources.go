@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResClient,GroupsClient,AssignmentsClient,LinksClient
 package services
 
 import (

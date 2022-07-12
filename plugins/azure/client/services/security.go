@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient,JitNetworkAccessPoliciesClient,AssessmentsClient
 package services
 
 import (

@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/network.go -package=mocks . ExpressRouteCircuitsClient,ExpressRouteGatewaysClient,ExpressRoutePortsClient,InterfacesClient,PublicIPAddressesClient,RouteFiltersClient,RouteTablesClient,SecurityGroupsClient,VirtualNetworkGatewaysClient,VirtualNetworksClient,WatchersClient
 package services
 
 import (

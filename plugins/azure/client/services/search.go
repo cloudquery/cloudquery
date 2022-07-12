@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/search.go -package=mocks . SearchServiceClient
 package services
 
 import (

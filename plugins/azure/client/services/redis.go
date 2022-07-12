@@ -1,3 +1,4 @@
+//go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisClient
 package services
 
 import (
