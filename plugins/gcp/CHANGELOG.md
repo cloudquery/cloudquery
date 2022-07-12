@@ -14,6 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.27](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.26...v0.8.27) (2022-07-08)
+
+
+### Features
+
+* use 'unavailable' for resources without region ([#406](https://github.com/cloudquery/cq-provider-gcp/issues/406)) ([61610ee](https://github.com/cloudquery/cq-provider-gcp/commit/61610eed2837361cc22010bb0d3cf57d2c2882e0))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.13.5 ([#408](https://github.com/cloudquery/cq-provider-gcp/issues/408)) ([cdb093e](https://github.com/cloudquery/cq-provider-gcp/commit/cdb093edea9e854f4bfea72fdbfeb94bf5f3ee0e))
+
 ## [0.8.26](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.25...v0.8.26) (2022-07-06)
 
 
