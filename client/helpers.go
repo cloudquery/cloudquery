@@ -89,6 +89,7 @@ var accessDeniedErrorStrings = map[string]struct{}{
 	"AccessDeniedException":           {},
 	"InsufficientPrivilegesException": {},
 	"UnauthorizedOperation":           {},
+	"Unauthorized":                    {},
 }
 
 func readSupportedServiceRegions() *SupportedServiceRegionsData {
