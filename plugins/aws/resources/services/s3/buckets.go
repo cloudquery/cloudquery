@@ -465,10 +465,25 @@ func Buckets() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
+// listBucketRegion identifies the canonical region for S3 based on the partition
+// in the future we might want to make this configurable if users are alright with the fact that performing this
+// action in different regions will return different results
+func listBucketRegion(cl *client.Client) string {
+	switch cl.Partition {
+	case "aws-cn":
+		return "cn-north-1"
+	case "aws-us-gov":
+		return "us-gov-west-1"
+	default:
+		return "us-east-1"
+	}
+}
+
 func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().S3
+	cl := meta.(*client.Client)
+	svc := cl.Services().S3
 	response, err := svc.ListBuckets(ctx, nil, func(options *s3.Options) {
-		options.Region = "us-east-1"
+		options.Region = listBucketRegion(cl)
 	})
 	if err != nil {
 		return diag.WrapError(err)
