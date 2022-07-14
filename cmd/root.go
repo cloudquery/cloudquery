@@ -72,6 +72,7 @@ func newCmdRoot() *cobra.Command {
 	// add inner commands
 	rootCmd.PersistentFlags().String("config", "./cloudquery.yml", "path to configuration file. can be generated with 'init {provider}' command (env: CQ_CONFIG_PATH)")
 	rootCmd.PersistentFlags().Bool("no-verify", false, "disable plugins verification")
+	rootCmd.PersistentFlags().Bool("no-provider-update", false, "disable checking for new provider versions")
 	rootCmd.PersistentFlags().String("dsn", "", "database connection string (env: CQ_DSN) (example: 'postgres://postgres:pass@localhost:5432/postgres')")
 
 	// Logging Flags
@@ -106,6 +107,7 @@ func newCmdRoot() *cobra.Command {
 	_ = viper.BindPFlag("dsn", rootCmd.PersistentFlags().Lookup("dsn"))
 	_ = viper.BindPFlag("configPath", rootCmd.PersistentFlags().Lookup("config"))
 	_ = viper.BindPFlag("no-verify", rootCmd.PersistentFlags().Lookup("no-verify"))
+	_ = viper.BindPFlag("no-provider-update", rootCmd.PersistentFlags().Lookup("no-provider-update"))
 	_ = viper.BindPFlag("skip-build-tables", rootCmd.PersistentFlags().Lookup("skip-build-tables"))
 	_ = viper.BindPFlag("force-drop", rootCmd.PersistentFlags().Lookup("force-drop"))
 
