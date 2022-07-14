@@ -163,6 +163,7 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 	if viper.GetBool("no-provider-update") {
 		log.Debug().Msg("Skipping provider update check")
 		for _, provider := range c.Providers {
+			// Colorized output is designed to match the output when user uses `--no-verify`
 			ui.ColorizedOutput(ui.ColorInfo, "⚠️ %s@%s Skipped provider update check...\n", registry.ProviderRepoName(provider.Name), provider.Version)
 		}
 		return diags
