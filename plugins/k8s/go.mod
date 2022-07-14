@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/cloudquery/cq-provider-sdk v0.13.5
-	github.com/cloudquery/faker/v3 v3.7.6
+	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/thoas/go-funk v0.9.2
