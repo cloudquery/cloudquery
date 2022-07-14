@@ -158,9 +158,12 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 		ui.ColorizedOutput(ui.ColorError, "❌ failed to initialize provider: %s.\n\n", diags.Error())
 		return diags
 	}
-	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
+	ui.ColorizedOutput(ui.ColorProgress, " Finished provider initialization...\n\n")
 
 	if viper.GetBool("no-provider-update") {
+		for _, provider := range c.Providers {
+			ui.ColorizedOutput(ui.ColorInfo, "⚠️ %s@%s Skipped provider update check...\n", registry.ProviderRepoName(provider.Name), provider.Version)
+		}
 		log.Debug().Msg("Skipping provider update check")
 		return diags
 	}
