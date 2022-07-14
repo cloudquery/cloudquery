@@ -160,14 +160,16 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 	}
 	ui.ColorizedOutput(ui.ColorProgress, "Finished provider initialization...\n\n")
 
-	ui.ColorizedOutput(ui.ColorProgress, "Checking available provider updates...\n\n")
-	checkUpdateOpts := core.CheckUpdatesOptions{
-		Providers: core.ManagedProviders(c.PluginManager, c.Providers),
-	}
 	if viper.GetBool("no-provider-update") {
 		log.Debug().Msg("Skipping provider update check")
 		return diags
 	}
+
+	ui.ColorizedOutput(ui.ColorProgress, "Checking available provider updates...\n\n")
+	checkUpdateOpts := core.CheckUpdatesOptions{
+		Providers: core.ManagedProviders(c.PluginManager, c.Providers),
+	}
+
 	updates, dd := core.CheckAvailableUpdates(ctx, c.Registry, &checkUpdateOpts)
 	if dd.HasErrors() {
 		return diags.Add(dd)
