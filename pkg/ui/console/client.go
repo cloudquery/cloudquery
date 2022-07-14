@@ -164,6 +164,9 @@ func (c Client) DownloadProviders(ctx context.Context) (diags diag.Diagnostics) 
 	checkUpdateOpts := core.CheckUpdatesOptions{
 		Providers: core.ManagedProviders(c.PluginManager, c.Providers),
 	}
+	if viper.GetBool("no-provider-update") {
+		return diags
+	}
 	updates, dd := core.CheckAvailableUpdates(ctx, c.Registry, &checkUpdateOpts)
 	if dd.HasErrors() {
 		return diags.Add(dd)
