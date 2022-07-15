@@ -5,6 +5,18 @@
 data "google_project" "project" {
 }
 
+resource "google_project_service" "cloudrun" {
+  project = data.google_project.project.project_id
+  service = "run.googleapis.com"
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "secretmanager" {
+  project = data.google_project.project.project_id
+  service = "secretmanager.googleapis.com"
+  disable_on_destroy = false
+}
+
 resource "google_secret_manager_secret" "secret" {
   secret_id = "${lower(var.prefix)}-cloudrun-secret"
   replication {
