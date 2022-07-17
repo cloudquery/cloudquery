@@ -2,9 +2,6 @@
 
 The CloudQuery AWS provider extracts and transforms your AWS cloud assets configuration into PostgreSQL.
 
-This provider also supports additional capabilities:
-- [Terraform Drift Detection](https://docs.cloudquery.io/docs/cli/drift/overview)
-
 ## Install
 
 ```shell
