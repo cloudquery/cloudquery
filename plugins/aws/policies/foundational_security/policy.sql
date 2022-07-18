@@ -1,0 +1,33 @@
+\set framework 'foundational_security'
+\set execution_time ''''`date '+%Y-%m-%d %H:%M:%S'`''''::timestamp
+\i create_aws_policy_results.sql
+\i foundational_security/acm.sql
+\i foundational_security/apigateway.sql
+\i foundational_security/autoscaling.sql
+\i foundational_security/awsconfig.sql
+\i foundational_security/cloudfront.sql
+\i foundational_security/cloudtrail.sql
+\i foundational_security/codebuild.sql
+\i foundational_security/dms.sql
+\i foundational_security/dynamodb.sql
+\i foundational_security/ec2.sql
+\i foundational_security/ecs.sql
+\i foundational_security/efs.sql
+\i foundational_security/elastic_beanstalk.sql
+\i foundational_security/elasticsearch.sql
+\i foundational_security/elb.sql
+\i foundational_security/elbv2.sql
+\i foundational_security/emr.sql
+\i foundational_security/guardduty.sql
+\i foundational_security/iam.sql
+\i foundational_security/kms.sql
+\i foundational_security/lambda.sql
+\i foundational_security/rds.sql
+\i foundational_security/redshift.sql
+\i foundational_security/s3.sql
+\i foundational_security/sagemaker.sql
+\i foundational_security/secretmanager.sql
+\i foundational_security/sns.sql
+\i foundational_security/sqs.sql
+\i foundational_security/ssm.sql
+\i foundational_security/waf.sql
