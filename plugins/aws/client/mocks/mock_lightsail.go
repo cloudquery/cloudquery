@@ -35,6 +35,46 @@ func (m *MockLightsailClient) EXPECT() *MockLightsailClientMockRecorder {
 	return m.recorder
 }
 
+// GetBucketAccessKeys mocks base method.
+func (m *MockLightsailClient) GetBucketAccessKeys(arg0 context.Context, arg1 *lightsail.GetBucketAccessKeysInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBucketAccessKeysOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBucketAccessKeys", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetBucketAccessKeysOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBucketAccessKeys indicates an expected call of GetBucketAccessKeys.
+func (mr *MockLightsailClientMockRecorder) GetBucketAccessKeys(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketAccessKeys", reflect.TypeOf((*MockLightsailClient)(nil).GetBucketAccessKeys), varargs...)
+}
+
+// GetBuckets mocks base method.
+func (m *MockLightsailClient) GetBuckets(arg0 context.Context, arg1 *lightsail.GetBucketsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBucketsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBuckets", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetBucketsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBuckets indicates an expected call of GetBuckets.
+func (mr *MockLightsailClientMockRecorder) GetBuckets(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBuckets", reflect.TypeOf((*MockLightsailClient)(nil).GetBuckets), varargs...)
+}
+
 // GetInstances mocks base method.
 func (m *MockLightsailClient) GetInstances(arg0 context.Context, arg1 *lightsail.GetInstancesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstancesOutput, error) {
 	m.ctrl.T.Helper()
