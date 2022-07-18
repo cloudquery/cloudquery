@@ -238,6 +238,9 @@ func fetchEksClusterEncryptionConfigs(ctx context.Context, meta schema.ClientMet
 }
 func fetchEksClusterLoggings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*types.Cluster)
+	if p.Logging == nil {
+		return nil
+	}
 	res <- p.Logging.ClusterLogging
 	return nil
 }

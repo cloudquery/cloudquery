@@ -345,6 +345,9 @@ func fetchBackupSelections(ctx context.Context, meta schema.ClientMeta, parent *
 
 func fetchPlanRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	plan := parent.Item.(backup.GetBackupPlanOutput)
+	if plan.BackupPlan == nil {
+		return nil
+	}
 	res <- plan.BackupPlan.Rules
 	return nil
 }

@@ -309,6 +309,9 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 
 func fetchDmsReplicationInstanceReplicationSubnetGroupSubnets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	replicationInstance := parent.Item.(DmsReplicationInstanceWrapper)
+	if replicationInstance.ReplicationSubnetGroup == nil {
+		return nil
+	}
 	res <- replicationInstance.ReplicationSubnetGroup.Subnets
 	return nil
 }

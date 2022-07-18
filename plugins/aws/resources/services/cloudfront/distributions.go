@@ -836,6 +836,16 @@ func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta s
 }
 func fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Distribution)
+	if r.DistributionConfig == nil {
+		return nil
+	}
+	if r.DistributionConfig.DefaultCacheBehavior == nil {
+		return nil
+	}
+	if r.DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations == nil {
+		return nil
+	}
+
 	res <- r.DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations.Items
 	return nil
 }

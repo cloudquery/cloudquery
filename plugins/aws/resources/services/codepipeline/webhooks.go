@@ -161,6 +161,9 @@ func fetchCodepipelineWebhooks(ctx context.Context, meta schema.ClientMeta, pare
 }
 func fetchCodepipelineWebhookFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.ListWebhookItem)
+	if r.Definition == nil {
+		return nil
+	}
 	res <- r.Definition.Filters
 	return nil
 }
