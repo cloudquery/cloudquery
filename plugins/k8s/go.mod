@@ -8,9 +8,9 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/thoas/go-funk v0.9.2
-	k8s.io/api v0.24.2
-	k8s.io/apimachinery v0.24.2
-	k8s.io/client-go v0.24.2
+	k8s.io/api v0.24.3
+	k8s.io/apimachinery v0.24.3
+	k8s.io/client-go v0.24.3
 )
 
 require (
