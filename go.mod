@@ -53,7 +53,7 @@ require (
 	github.com/vbauerster/mpb/v6 v6.0.4
 	github.com/xeipuuv/gojsonschema v1.2.0
 	github.com/xo/dburl v0.11.0
-	google.golang.org/grpc v1.47.0
+	google.golang.org/grpc v1.48.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
