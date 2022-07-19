@@ -14,6 +14,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.28](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.27...v0.8.28) (2022-07-19)
+
+
+### Features
+
+* Policies ([#413](https://github.com/cloudquery/cq-provider-gcp/issues/413)) ([4ae6f57](https://github.com/cloudquery/cq-provider-gcp/commit/4ae6f57fe184b3ca32ce4fee2b7b3ee4fede5f48))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/faker/v3 to v3.7.7 ([#409](https://github.com/cloudquery/cq-provider-gcp/issues/409)) ([66b0858](https://github.com/cloudquery/cq-provider-gcp/commit/66b0858c9aa1b2251b497086a0c074b3815b488a))
+* **deps:** Update module google.golang.org/grpc to v1.48.0 ([#416](https://github.com/cloudquery/cq-provider-gcp/issues/416)) ([be83b6f](https://github.com/cloudquery/cq-provider-gcp/commit/be83b6f0a911ed82ccc5f4b47895e626fcbb5929))
+* **deps:** Update myrotvorets/set-commit-status-action digest to 85c3f9a ([#389](https://github.com/cloudquery/cq-provider-gcp/issues/389)) ([ce23dfa](https://github.com/cloudquery/cq-provider-gcp/commit/ce23dfa4af3727606251db50bcbd812efa3d1e02))
+* **deps:** Update tubone24/update_release digest to 87bc28c ([#390](https://github.com/cloudquery/cq-provider-gcp/issues/390)) ([b71defb](https://github.com/cloudquery/cq-provider-gcp/commit/b71defbc77648cd548b9cb3d52e9939ab6f01f2a))
+* **tests:** Enable APIs needed for Cloud Run ([#415](https://github.com/cloudquery/cq-provider-gcp/issues/415)) ([1efcf16](https://github.com/cloudquery/cq-provider-gcp/commit/1efcf166741938fc6753eea38bed8cf9cd8392d6))
+
 ## [0.8.27](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.26...v0.8.27) (2022-07-08)
 
 
