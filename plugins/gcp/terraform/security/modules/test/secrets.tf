@@ -34,16 +34,16 @@ resource "google_pubsub_topic_iam_member" "binding" {
 }
 
 resource "google_pubsub_topic" "pubsub-basic" {
-  name = "${var.prefix}-topic"
+  name = "${var.prefix}-secrets-topic"
 }
 
 resource "google_kms_key_ring" "keyring-us-east1" {
-  name     = "${var.prefix}-keyring"
+  name     = "${var.prefix}-secrets-keyring"
   location = "us-east1"
 }
 
 resource "google_kms_crypto_key" "key-us-east1" {
-  name            = "${var.prefix}-cryptokey"
+  name            = "${var.prefix}-secrets-cryptokey"
   key_ring        = google_kms_key_ring.keyring-us-east1.id
 }
 
