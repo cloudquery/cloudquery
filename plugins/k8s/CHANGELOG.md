@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.25](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.24...v0.5.25) (2022-07-18)
+
+
+### Features
+
+* Policies ([#228](https://github.com/cloudquery/cq-provider-k8s/issues/228)) ([ef7089c](https://github.com/cloudquery/cq-provider-k8s/commit/ef7089cde22a49a1addf23ac484c65c7293b0e37))
+
+
+### Bug Fixes
+
+* **deps:** Update kubernetes packages to v0.24.3 ([#229](https://github.com/cloudquery/cq-provider-k8s/issues/229)) ([7b57dac](https://github.com/cloudquery/cq-provider-k8s/commit/7b57dac7b92cb2bd3ab97a5cc7dd07f8c540b3df))
+* **deps:** Update module github.com/cloudquery/faker/v3 to v3.7.7 ([#226](https://github.com/cloudquery/cq-provider-k8s/issues/226)) ([be36855](https://github.com/cloudquery/cq-provider-k8s/commit/be36855894547a156dad9e4b5b776137de877147))
+
 ## [0.5.24](https://github.com/cloudquery/cq-provider-k8s/compare/v0.5.23...v0.5.24) (2022-07-08)
 
 
