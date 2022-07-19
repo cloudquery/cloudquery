@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.22](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.21...v0.5.22) (2022-07-19)
+
+
+### Bug Fixes
+
+* **deps:** Update myrotvorets/set-commit-status-action digest to 85c3f9a ([#158](https://github.com/cloudquery/cq-provider-okta/issues/158)) ([1f135f8](https://github.com/cloudquery/cq-provider-okta/commit/1f135f83c77a7643ef2b1fed6e9a756be8792f8b))
+* **deps:** Update tubone24/update_release digest to 87bc28c ([#159](https://github.com/cloudquery/cq-provider-okta/issues/159)) ([1518dd1](https://github.com/cloudquery/cq-provider-okta/commit/1518dd12696c3b80b469cd80290e8385e57a0f97))
+
 ## [0.5.21](https://github.com/cloudquery/cq-provider-okta/compare/v0.5.20...v0.5.21) (2022-07-08)
 
 
