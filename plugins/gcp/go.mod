@@ -12,7 +12,7 @@ require (
 	github.com/thoas/go-funk v0.9.2
 	golang.org/x/sys v0.0.0-20220627191245-f75cf1eec38b // indirect
 	google.golang.org/api v0.56.0
-	google.golang.org/grpc v1.47.0
+	google.golang.org/grpc v1.48.0
 )
 
 require (
