@@ -52,3 +52,10 @@ resource "google_kms_crypto_key" "key-us-east1" {
 #   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 #   member        = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-secretmanager.iam.gserviceaccount.com"
 # }
+
+resource "google_project_service_identity" "secrets_service_identity" {
+  provider = google-beta
+
+  project = data.google_project.project.project_id
+  service = "secretmanager.googleapis.com"
+}
