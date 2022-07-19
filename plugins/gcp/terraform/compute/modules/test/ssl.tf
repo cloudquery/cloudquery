@@ -18,3 +18,5 @@ resource "google_compute_managed_ssl_certificate" "gcp_compute_managed_ssl_certi
     domains = [var.domain, "ex.${var.domain}"]
   }
 }
+
+#####################
