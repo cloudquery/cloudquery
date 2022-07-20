@@ -23,6 +23,10 @@ resource "google_secret_manager_secret" "secret-basic" {
     name = google_pubsub_topic.pubsub-basic.id
   }
 
+  depends_on = [
+    google_project_service_identity.secrets_service_identity
+  ]
+
   # depends_on = [google_pubsub_topic_iam_member.binding, google_kms_crypto_key_iam_member.crypto_key]
 }
 
