@@ -224,6 +224,35 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 			"dsn",
 			true,
 		},
+		{
+			"should error if dsnfile is set from config",
+			&Connection{
+				Username: `user`,
+				Password: `pass`,
+				Host:     `localhost`,
+				Database: `postgres`,
+				DSNFile:  "fixtures/dsn_file.txt",
+			},
+			"postgres://postgres:pass@localhost:5432/postgres",
+			true,
+		},
+		{
+			"should error if both dsn and dsnfile are set",
+			&Connection{
+				DSN:     "some-dsn",
+				DSNFile: "fixtures/dsn_file.txt",
+			},
+			"some-dsn",
+			true,
+		},
+		{
+			"should use dsn from dsnfile",
+			&Connection{
+				DSNFile: "fixtures/dsn_file.txt",
+			},
+			"postgres://postgres:pass@localhost:5432/postgres",
+			false,
+		},
 	}
 	for i := range cases {
 		tc := cases[i]

@@ -22,6 +22,11 @@
               "type":"string",
               "default":"postgres://postgres:pass@localhost:5432/cloudquery"
             },
+            "dsn_file":{
+              "description":"CloudQuery connection DSN file",
+              "type":"string",
+              "default":"/path/to/file.txt"
+            },
             "username": {
               "description": "CloudQuery connection username",
               "type": "string"
@@ -50,6 +55,9 @@
           "oneOf": [
             {
               "required": ["dsn"]
+            },
+            {
+              "required": ["dsn_file"]
             },
             {
               "required": ["username", "password", "host", "port", "database", "sslmode"]
