@@ -3,7 +3,6 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -23,8 +22,8 @@ func K8sTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) {
 			Name:      "k8s_mock_test_provider",
 			Version:   "development",
 			Configure: Configure,
-			Config: func(f cqproto.ConfigFormat) provider.Config {
-				return NewConfig(f)
+			Config: func() provider.Config {
+				return &Config{}
 			},
 			ResourceMap: map[string]*schema.Table{
 				"test_resource": table,
@@ -55,8 +54,8 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 			ResourceMap: map[string]*schema.Table{
 				"test_resource": table,
 			},
-			Config: func(f cqproto.ConfigFormat) provider.Config {
-				return NewConfig(f)
+			Config: func() provider.Config {
+				return &Config{}
 			},
 		},
 		Config: cfg,
