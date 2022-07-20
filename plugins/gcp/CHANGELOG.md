@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.8.29](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.28...v0.8.29) (2022-07-20)
+
+
+### Features
+
+* Add 'security.secrets' resource ([#418](https://github.com/cloudquery/cq-provider-gcp/issues/418)) ([58c1abd](https://github.com/cloudquery/cq-provider-gcp/commit/58c1abd38e91c102896878811cef7e29dff3c3ae))
+
 ## [0.8.28](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.27...v0.8.28) (2022-07-19)
 
 
