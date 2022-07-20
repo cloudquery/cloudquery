@@ -1,10 +1,12 @@
 package config
 
 import (
+	"bytes"
 	_ "embed"
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -167,11 +169,30 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 
 func validateConnection(connection *Connection) diag.Diagnostics {
 	var diags diag.Diagnostics
-	// We support both a `dsn` string for backwards compatibility, or connection configuration parameters (host, database, etc.)
-	// If a user configured both, we error out unless the dsn was configured via a CLI flag (e.g. `cloudquery fetch --dsn <dsn>`)
+
+	dsnFromFlag := viper.GetString("dsn")
+
+	if dsnFromFlag == "" && connection.DSNFile != "" {
+		if connection.DSN != "" {
+			return diags.Add(diag.NewBaseError(
+				fmt.Errorf("invalid connection configuration"),
+				diag.USER, diag.WithOptionalSeverity(diag.ERROR),
+				diag.WithDetails("DSN file specified along with literal DSN, only one type is supported")),
+			)
+		}
+
+		dsnBytes, err := ioutil.ReadFile(connection.DSNFile)
+		if err != nil {
+			return diags.Add(diag.FromError(err, diag.USER, diag.WithSummary("Failed to read DSN file")))
+		}
+
+		connection.DSN = string(bytes.TrimSpace(dsnBytes))
+	}
+
+	// We support both a `dsn` string for backwards compatibility, a dsn file, or connection configuration parameters (host, database, etc.)
+	// If a user configured multiple, we error out unless the dsn was configured via a CLI flag (e.g. `cloudquery fetch --dsn <dsn>`)
 	if connection.DSN != "" {
 		// allow using a DSN flag even if the config file has explicitly attributes (user, password, host, database, etc.)
-		dsnFromFlag := viper.GetString("dsn")
 		if dsnFromFlag == "" && connection.IsAnyConnParamsSet() {
 			diags = append(diags, diag.NewBaseError(
 				fmt.Errorf("invalid connection configuration"),

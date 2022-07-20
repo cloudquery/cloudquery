@@ -44,9 +44,12 @@ type CloudQuery struct {
 }
 
 type Connection struct {
+	// These three blocks are mutually exclusive with each other (DSN, DSNFile, params...)
+
 	DSN string `yaml:"dsn,omitempty" json:"dsn,omitempty"`
 
-	// These params are mutually exclusive with DSN
+	DSNFile string `yaml:"dsn_file,omitempty" json:"dsn_file,omitempty"`
+
 	Type     string   `yaml:"type,omitempty" json:"type,omitempty"`
 	Username string   `yaml:"username,omitempty" json:"username,omitempty"`
 	Password string   `yaml:"password,omitempty" json:"password,omitempty"`
