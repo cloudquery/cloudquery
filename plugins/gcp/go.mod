@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-gcp
 go 1.17
 
 require (
-	github.com/cloudquery/cq-provider-sdk v0.13.5
+	github.com/cloudquery/cq-provider-sdk v0.14.1
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/googleapis/gax-go/v2 v2.1.1
 	github.com/hashicorp/go-hclog v1.2.1
@@ -35,7 +35,6 @@ require (
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-plugin v1.4.4 // indirect
@@ -52,7 +51,6 @@ require (
 	github.com/jackc/pgtype v1.11.0 // indirect
 	github.com/jackc/pgx/v4 v4.16.1 // indirect
 	github.com/jackc/puddle v1.2.1 // indirect
-	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lorenzosaino/go-sysctl v0.3.1 // indirect

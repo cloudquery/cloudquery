@@ -17,7 +17,6 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/resources/services/security"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/sql"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/storage"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -76,8 +75,8 @@ func Provider() *provider.Provider {
 			"kubernetes.clusters":   kubernetes.Clusters(),
 			"security.secrets":      security.Secrets(),
 		},
-		Config: func(f cqproto.ConfigFormat) provider.Config {
-			return client.NewConfig(f)
+		Config: func() provider.Config {
+			return &client.Config{}
 		},
 	}
 }

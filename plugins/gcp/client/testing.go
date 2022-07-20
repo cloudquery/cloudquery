@@ -3,7 +3,6 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -38,8 +37,8 @@ func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (
 			ResourceMap: map[string]*schema.Table{
 				"test_resource": table,
 			},
-			Config: func(f cqproto.ConfigFormat) provider.Config {
-				return NewConfig(f)
+			Config: func() provider.Config {
+				return &Config{}
 			},
 		},
 		Config: "",
