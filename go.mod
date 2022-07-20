@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
-	github.com/cloudquery/cq-provider-sdk v0.14.1-0.20220719152743-054d189a4102
+	github.com/cloudquery/cq-provider-sdk v0.14.1-0.20220720090040-f3bad7eafdef
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/hashicorp/go-hclog v1.2.1
