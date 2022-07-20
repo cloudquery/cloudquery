@@ -4,9 +4,9 @@ resource "azurerm_resource_group" "frontdoor" {
 }
 
 resource "azurerm_frontdoor" "test" {
-  name                = "${var.prefix}-frontdoor"
-  tags                = var.tags
-  location            = azurerm_resource_group.frontdoor.location
+  name = "${var.prefix}-frontdoor"
+  tags = var.tags
+
   resource_group_name = azurerm_resource_group.frontdoor.name
 
   enforce_backend_pools_certificate_name_check = false
@@ -15,7 +15,7 @@ resource "azurerm_frontdoor" "test" {
     name               = "exampleRoutingRule1"
     accepted_protocols = ["Http", "Https"]
     patterns_to_match  = ["/*"]
-    frontend_endpoints = ["exampleFrontendEndpoint1"]
+    frontend_endpoints = ["${var.prefix}-frontdoor"]
     forwarding_configuration {
       forwarding_protocol = "MatchRequest"
       backend_pool_name   = "exampleBackendBing"
@@ -44,7 +44,7 @@ resource "azurerm_frontdoor" "test" {
   }
 
   frontend_endpoint {
-    name      = "exampleFrontendEndpoint1"
-    host_name = "example-FrontDoor.azurefd.net"
+    name      = "${var.prefix}-frontdoor"
+    host_name = "${var.prefix}-frontdoor.azurefd.net"
   }
 }
