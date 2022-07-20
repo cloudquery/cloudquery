@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/resources/services/logging"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/monitoring"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/resource_manager"
+	"github.com/cloudquery/cq-provider-gcp/resources/services/security"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/sql"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/storage"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
@@ -73,6 +74,7 @@ func Provider() *provider.Provider {
 			"domains.registrations": domains.DomainsRegistration(),
 			"bigquery.datasets":     bigquery.BigqueryDatasets(),
 			"kubernetes.clusters":   kubernetes.Clusters(),
+			"security.secrets":      security.Secrets(),
 		},
 		Config: func(f cqproto.ConfigFormat) provider.Config {
 			return client.NewConfig(f)

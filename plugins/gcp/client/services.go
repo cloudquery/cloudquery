@@ -16,6 +16,7 @@ import (
 	"google.golang.org/api/logging/v2"
 	"google.golang.org/api/monitoring/v3"
 	"google.golang.org/api/option"
+	"google.golang.org/api/secretmanager/v1"
 	"google.golang.org/api/serviceusage/v1"
 	sql "google.golang.org/api/sqladmin/v1beta4"
 	"google.golang.org/api/storage/v1"
@@ -55,6 +56,7 @@ type Services struct {
 	ResourceManager *cloudresourcemanager.Service
 	ServiceUsage    *serviceusage.Service
 	Container       *container.Service
+	SecretManager   *secretmanager.Service
 }
 
 func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
@@ -121,6 +123,11 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 
+	secretManagerSvc, err := secretmanager.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Services{
 		Kms:             kmsSvc,
 		Storage:         storageSvc,
@@ -137,5 +144,6 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		ResourceManager: resourceManagerSvc,
 		ServiceUsage:    serviceusageManagerSvc,
 		Container:       containerSvc,
+		SecretManager:   secretManagerSvc,
 	}, nil
 }
