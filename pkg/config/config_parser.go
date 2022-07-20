@@ -170,7 +170,9 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 func validateConnection(connection *Connection) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	if connection.DSNFile != "" {
+	dsnFromFlag := viper.GetString("dsn")
+
+	if dsnFromFlag == "" && connection.DSNFile != "" {
 		if connection.DSN != "" {
 			return diags.Add(diag.NewBaseError(
 				fmt.Errorf("invalid connection configuration"),
@@ -191,7 +193,6 @@ func validateConnection(connection *Connection) diag.Diagnostics {
 	// If a user configured multiple, we error out unless the dsn was configured via a CLI flag (e.g. `cloudquery fetch --dsn <dsn>`)
 	if connection.DSN != "" {
 		// allow using a DSN flag even if the config file has explicitly attributes (user, password, host, database, etc.)
-		dsnFromFlag := viper.GetString("dsn")
 		if dsnFromFlag == "" && connection.IsAnyConnParamsSet() {
 			diags = append(diags, diag.NewBaseError(
 				fmt.Errorf("invalid connection configuration"),
