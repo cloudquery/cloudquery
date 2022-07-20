@@ -264,6 +264,9 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 			diags := ProcessConfig(&config)
 			assert.Equal(t, tc.expectedError, diags.HasErrors())
 			assert.Equal(t, tc.expectedResult, config.CloudQuery.Connection.DSN)
+			if tc.expectedError == false && diags.HasErrors() {
+				t.Logf("diags: %s", diags)
+			}
 		})
 	}
 }
