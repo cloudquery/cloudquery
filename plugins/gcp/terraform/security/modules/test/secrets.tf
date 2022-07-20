@@ -3,6 +3,10 @@ data "google_project" "project" {}
 resource "google_secret_manager_secret" "secret-basic" {
   secret_id = "${var.prefix}-secret"
 
+  labels = {
+    label = "my-label"
+  }
+
   replication {
     user_managed {
       replicas {
