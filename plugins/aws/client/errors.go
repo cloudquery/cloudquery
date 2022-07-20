@@ -44,6 +44,7 @@ var (
 	resourceNotExistsRegex   = regexp.MustCompile(`(\sThe )([A-Za-z0-9 -]+ )'([A-Za-z0-9-]+?)'( does not exist)`)
 	resourceNotFoundRegex    = regexp.MustCompile(`([A-Za-z0-9 -]+)( name not found - Could not find )([A-Za-z0-9 -]+)( named )'([A-Za-z0-9-]+?)'`)
 	autoscalingGroupNotFound = regexp.MustCompile(`(ValidationError: Group ).+( not found)`)
+	dnsErrorRegex            = regexp.MustCompile(`dial (?:tcp|udp): lookup .* on .*: [^:]+$`)
 )
 
 var errorCodeDescriptions = map[string]string{
@@ -181,6 +182,19 @@ func classifyError(err error, fallbackType diag.Type, accounts []string, opts ..
 					diag.WithSeverity(diag.WARNING),
 					ParseSummaryMessage(err),
 					diag.WithDetails("CloudQuery AWS provider has been throttled. Too many open files, try to increase your max file descriptors in your system or contact us on discord (https://cloudquery.io/discord)"),
+				)...),
+			),
+		}
+	}
+	if dnsErrorRegex.MatchString(err.Error()) {
+		return diag.Diagnostics{
+			RedactError(accounts, diag.NewBaseError(err,
+				diag.USER,
+				append(opts,
+					diag.WithType(diag.USER),
+					diag.WithSeverity(diag.ERROR),
+					ParseSummaryMessage(err),
+					diag.WithDetails("Encountered a DNS error. Please check your DNS and networking settings and try again."),
 				)...),
 			),
 		}
