@@ -11,21 +11,16 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/analytics"
 	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/internal/getter"
 	"github.com/cloudquery/cloudquery/pkg/config"
 	"github.com/cloudquery/cloudquery/pkg/core"
 	"github.com/cloudquery/cloudquery/pkg/core/database"
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cloudquery/pkg/policy"
 	"github.com/cloudquery/cloudquery/pkg/ui"
-	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/getsentry/sentry-go"
 	"github.com/google/uuid"
-	"github.com/hashicorp/go-hclog"
-	"github.com/olekukonko/tablewriter"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
@@ -330,150 +325,6 @@ func (c Client) RemoveStaleData(ctx context.Context, lastUpdate time.Duration, d
 	return diags
 }
 
-// =====================================================================================================================
-// 													Policy Commands
-// =====================================================================================================================
-
-func (c Client) RunPolicies(ctx context.Context, policySource, outputDir string, noResults, dbPersistence bool) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
-	log.Debug().Str("policy", policySource).Str("output_dir", outputDir).Bool("noResults", noResults).Bool("dbPersistence", dbPersistence).Msg("run policy received params")
-
-	// use config value for dbPersistence if not already enabled through the cli
-	if !dbPersistence && c.cfg.CloudQuery.Policy != nil {
-		dbPersistence = c.cfg.CloudQuery.Policy.DBPersistence
-	}
-
-	policiesToRun, err := ParseAndDetect(policySource)
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return diag.FromError(err, diag.RESOLVING)
-	}
-	log.Debug().Interface("policies", policiesToRun).Msg("policies to run")
-	ui.ColorizedOutput(ui.ColorProgress, "Starting policies run...\n\n")
-	var (
-		policyRunProgress ui.Progress
-		policyRunCallback policy.UpdateCallback
-	)
-	// if we are running in a terminal, build the progress bar
-	if ui.DoProgress() {
-		policyRunProgress, policyRunCallback = buildPolicyRunProgress(ctx, policiesToRun)
-	}
-	// Policies run request
-	resp, diags := policy.Run(ctx, c.StateManager, c.Storage, &policy.RunRequest{
-		Policies:      policiesToRun,
-		Directory:     c.cfg.CloudQuery.PolicyDirectory,
-		OutputDir:     outputDir,
-		RunCallback:   policyRunCallback,
-		DBPersistence: dbPersistence,
-	})
-	if resp != nil {
-		policiesToRun = resp.Policies
-	}
-	for _, p := range policiesToRun {
-		analytics.Capture("policy run", c.Providers, p.Analytic(dbPersistence), diags)
-	}
-
-	if policyRunProgress != nil {
-		policyRunProgress.MarkAllDone()
-		policyRunProgress.Wait()
-	}
-	if !noResults && resp != nil {
-		printPolicyResponse(resp.Executions)
-	}
-
-	if diags.HasErrors() {
-		ui.SleepBeforeError(ctx)
-		ui.ColorizedOutput(ui.ColorError, "❌ Failed to run policies\n\n")
-		return diags
-	}
-
-	ui.ColorizedOutput(ui.ColorProgress, "Finished policies run...\n\n")
-	return nil
-}
-
-func (c Client) TestPolicies(ctx context.Context, policySource, snapshotDestination string) error {
-	conn, err := sdkdb.New(ctx, hclog.NewNullLogger(), c.Storage.DSN())
-	if err != nil {
-		log.Error().Err(err).Msg("failed to connect to new database")
-		return err
-	}
-	defer conn.Close()
-	uniqueTempDir, err := os.MkdirTemp(os.TempDir(), "*-myOptionalSuffix")
-	if err != nil {
-		return err
-	}
-
-	p, diags := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: "test-policy", Source: policySource})
-	if diags.HasErrors() {
-		log.Error().Err(err).Msg("failed to load policy")
-		return diags
-	}
-
-	e := policy.NewExecutor(conn, c.StateManager, nil)
-	return p.Test(ctx, e, policySource, snapshotDestination, uniqueTempDir)
-}
-
-func (c Client) SnapshotPolicy(ctx context.Context, policySource, snapshotDestination string) error {
-	policiesToSnapshot, err := ParseAndDetect(policySource)
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return err
-	}
-	log.Debug().Strs("policies", policiesToSnapshot.All()).Msg("policies to snapshot")
-	for _, p := range policiesToSnapshot {
-		if err := c.snapshotControl(ctx, p, policySource, snapshotDestination); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (c Client) DescribePolicies(ctx context.Context, policySource string) error {
-	policiesToDescribe, err := ParseAndDetect(policySource)
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return err
-	}
-	log.Debug().Strs("policies", policiesToDescribe.All()).Msg("policies to describe")
-	for _, p := range policiesToDescribe {
-		if err := c.describePolicy(ctx, p, policySource); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (c Client) ValidatePolicy(ctx context.Context, policySource string) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
-	policyToValidate, err := ParseAndDetect(policySource)
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return diag.FromError(err, diag.USER)
-	}
-	if len(policyToValidate) > 1 {
-		return diag.FromError(fmt.Errorf("multiple policies given to validate, only one policy allowed at a time"), diag.USER)
-	}
-	return policy.Validate(ctx, c.Storage, &policy.ValidateRequest{
-		Policy:    policyToValidate[0],
-		Directory: c.cfg.CloudQuery.PolicyDirectory,
-	})
-}
-
-func (c Client) PrunePolicyExecutions(ctx context.Context, retentionPeriod string) (diags diag.Diagnostics) {
-	defer printDiagnostics("", &diags, viper.GetBool("redact-diags"), viper.GetBool("verbose"))
-	log.Debug().Str("retention_period", retentionPeriod).Msg("prune policy executions received params")
-	duration, err := time.ParseDuration(retentionPeriod)
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return diag.FromError(err, diag.USER)
-	}
-	pruneBefore := time.Now().Add(-duration)
-	if !pruneBefore.Before(time.Now()) {
-		return diag.FromError(fmt.Errorf("prune retention period can't be in the future"), diag.USER)
-	}
-	return policy.Prune(ctx, c.StateManager, pruneBefore)
-}
-
 func (c Client) Close() {
 	c.PluginManager.Shutdown()
 	if c.StateManager != nil {
@@ -493,48 +344,6 @@ func (Client) checkForUpdate(ctx context.Context) {
 	} else {
 		log.Debug().Msg("update check succeeded, no new version")
 	}
-}
-
-func (c Client) snapshotControl(ctx context.Context, p *policy.Policy, fullSelector, destination string) error {
-	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: p.Name, Source: p.Source})
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return fmt.Errorf("failed to load policies: %w", err)
-	}
-	if !p.HasChecks() {
-		return errors.New("no checks loaded")
-	}
-
-	_, subPath := getter.ParseSourceSubPolicy(fullSelector)
-	pol := p.Filter(subPath)
-	if pol.TotalQueries() != 1 {
-		return errors.New("selector must specify only a single control")
-	}
-	return policy.Snapshot(ctx, c.StateManager, c.Storage, &pol, destination, subPath)
-}
-
-func (c Client) describePolicy(ctx context.Context, p *policy.Policy, selector string) error {
-	p, err := policy.Load(ctx, c.cfg.CloudQuery.PolicyDirectory, &policy.Policy{Name: p.Name, Source: p.Source})
-	if err != nil {
-		ui.ColorizedOutput(ui.ColorError, err.Error())
-		return fmt.Errorf("failed to load policies: %w", err)
-	}
-	ui.ColorizedOutput(ui.ColorHeader, "Describe Policy %s output:\n\n", p.String())
-	t := &Table{writer: tablewriter.NewWriter(os.Stdout)}
-	t.SetHeaders("Path", "Description")
-
-	policyName, subPath := getter.ParseSourceSubPolicy(selector)
-
-	// The `buildDescribePolicyTable` builds the output based on Policy Name and Path
-	// In the case of no path, the PolicyName is just the root policy
-	if subPath == "" {
-		policyName = ""
-	}
-	pol := p.Filter(subPath)
-	buildDescribePolicyTable(t, policy.Policies{&pol}, policyName)
-	t.Render()
-	ui.ColorizedOutput(ui.ColorInfo, "To execute any policy use the path defined in the table above.\nFor example `cloudquery policy run %s`\n", buildPolicyPath(p.Name, getNestedPolicyExample(p.Policies[0], "")))
-	return nil
 }
 
 func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Progress, core.FetchUpdateCallback) {
@@ -586,48 +395,6 @@ func buildFetchProgress(ctx context.Context, providers []*config.Provider) (*Pro
 		}
 	}
 	return fetchProgress, fetchCallback
-}
-
-func buildPolicyRunProgress(ctx context.Context, policies policy.Policies) (*Progress, policy.UpdateCallback) {
-	policyRunProgress := NewProgress(ctx, func(o *ProgressOptions) {
-		o.AppendDecorators = []decor.Decorator{decor.CountersNoUnit(" Finished Checks: %d/%d")}
-	})
-
-	for _, p := range policies {
-		policyRunProgress.Add(p.Name, fmt.Sprintf("policy \"%s\" - ", p.Name), "evaluating - ", 1)
-	}
-
-	policyRunCallback := func(update policy.Update) {
-		bar := policyRunProgress.GetBar(update.PolicyName)
-		// try to get with policy source
-		if bar == nil {
-			bar = policyRunProgress.GetBar(update.Source)
-		}
-		if bar == nil {
-			policyRunProgress.AbortAll()
-			ui.ColorizedOutput(ui.ColorError, "❌ console UI failure, policy run will complete shortly\n")
-			return
-		}
-		if update.Error != "" {
-			policyRunProgress.Update(update.PolicyName, ui.StatusError, fmt.Sprintf("error: %s", update.Error), 0)
-			return
-		}
-
-		// set the total queries to track
-		if update.QueriesCount > 0 {
-			bar.SetTotal(int64(update.QueriesCount), false)
-		}
-
-		bar.b.IncrBy(update.DoneCount() - int(bar.b.Current()))
-
-		if update.AllDone() && bar.Status != ui.StatusWarn {
-			policyRunProgress.Update(update.PolicyName, ui.StatusOK, "policy run complete - ", 0)
-			bar.Done()
-			return
-		}
-	}
-
-	return policyRunProgress, policyRunCallback
 }
 
 func loadConfig(file string) (*config.Config, bool) {
