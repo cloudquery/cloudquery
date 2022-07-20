@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-azure/resources/services/cosmosdb"
 	"github.com/cloudquery/cq-provider-azure/resources/services/datalake"
 	"github.com/cloudquery/cq-provider-azure/resources/services/eventhub"
+	"github.com/cloudquery/cq-provider-azure/resources/services/frontdoor"
 	"github.com/cloudquery/cq-provider-azure/resources/services/iothub"
 	"github.com/cloudquery/cq-provider-azure/resources/services/keyvault"
 	"github.com/cloudquery/cq-provider-azure/resources/services/logic"
@@ -58,6 +59,7 @@ func Provider() *provider.Provider {
 			"datalake.storage_accounts":          datalake.StorageAccounts(),
 			"datalake.analytics_accounts":        datalake.AnalyticsAccounts(),
 			"eventhub.namespaces":                eventhub.EventHubNamespaces(),
+			"frontdoor.front_doors":              frontdoor.FrontDoors(),
 			"iothub.hubs":                        iothub.IothubHubs(),
 			// This resource is currently not working
 			// https://github.com/cloudquery/cq-provider-azure/issues/107

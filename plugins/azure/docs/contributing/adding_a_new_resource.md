@@ -2,20 +2,21 @@
 
 Some information can be found in the [docs for developing a new provider](https://docs.cloudquery.io/developers/developing-new-provider).
 
-As a prerequisite, in [google.golang.org/api](https://pkg.go.dev/go-autorest/autorest) ensure API calls exist to list/describe the desired resource, and make note of:
+As a prerequisite, ensure that API calls to list/describe the desired resource are present in
+[github.com/Azure/go-autorest/autorest](https://pkg.go.dev/github.com/Azure/go-autorest/autorest), and make note of:
 
-   - to which aws service the resource belongs
+   - to which Azure service the resource belongs
    - the schema of the returned object(s)
 
 ## Setting up the service
 
-If the service to which the resource belongs has not been used before in cq-provider-aws, there are a few steps that need to be done to configure it.
+If the service to which the resource belongs has not been used before in cq-provider-azure, there are a few steps that need to be done to configure it.
 
 1. Create the service interface in [client/services/services.go](./client/services/services.go)
    * Don't forget to add the new service interface name to the go:generate comment.
 1. Add the service to the `Services` struct in the [client/services/services.go](./client/services/services.go)
 1. Init the service in the `InitServices` function in [client/services/services.go](./client/services.go)
-1. Run `make generate` to create a mock for your new service. This will update [client/mocks/services.go](./client/mocks/services.go) automatically.
+1. Run `make generate-mocks` to create a mock for your new service. This will update [client/mocks/services.go](./client/mocks/services.go) automatically.
 
 ## Setting up the resource
 
@@ -44,7 +45,7 @@ For complex fields or fields that require further API calls, you can defined you
 
 #### Implementing Resolver Functions
 
-A few important things to note when adding functions that call the AWS API:
+A few important things to note when adding functions that call the Azure API:
 
 - If possible, always use an API call that allows you to fetch many resources at once
 - Take pagination into account. Ensure you fetch **all** of the resources

@@ -33,7 +33,7 @@ pg-stop:
 pg-connect:
 	psql -h localhost -p 5432 -U postgres -d postgres
 
-# build the cq aws provider
+# build the cq azure provider
 .PHONY: build
 build:
 	go build -o cq-provider

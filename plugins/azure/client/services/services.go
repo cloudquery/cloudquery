@@ -1,6 +1,8 @@
 package services
 
-import "github.com/Azure/go-autorest/autorest"
+import (
+	"github.com/Azure/go-autorest/autorest"
+)
 
 type Services struct {
 	AD                AD
@@ -12,6 +14,7 @@ type Services struct {
 	CosmosDb          CosmosDbClient
 	DataLake          DataLakeClient
 	EventHub          EventHubClient
+	FrontDoor         FrontDoorClient
 	IotHub            IotHubClient
 	KeyVault          KeyVaultClient
 	Logic             LogicClient
@@ -47,6 +50,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) (Services, er
 		CosmosDb:          NewCosmosDbClient(subscriptionId, auth),
 		DataLake:          NewDataLakeClient(subscriptionId, auth),
 		EventHub:          NewEventHubClient(subscriptionId, auth),
+		FrontDoor:         NewFrontDoorClient(subscriptionId, auth),
 		IotHub:            NewIotHubClient(subscriptionId, auth),
 		Logic:             NewLogicClient(subscriptionId, auth),
 		KeyVault:          keyVault,
