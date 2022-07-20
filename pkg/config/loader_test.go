@@ -19,25 +19,24 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const testConfig = `cloudquery {
-  connection {
-    dsn =  "postgres://postgres:pass@localhost:5432/postgres"
-  }
-  provider "test" {
-    source = "cloudquery"
-    version = "v0.0.0"
-  }
-}
+const testConfig = `
+cloudquery:
+  connection:
+    dsn: "postgres://postgres:pass@localhost:5432/postgres"
+  providers:
+    - name: test
+      source: cloudquery
+      version: v0.0.0
 
-provider "aws" {
-  configuration {
-	account "dev" {
-		role_arn ="12312312"
-	}
-	account "ron" {}
-  }
-  resources = ["slow_resource"]
-}`
+providers:
+  - name: aws
+    configuration:
+      accounts:
+        - id: "dev"
+          role_arn: "12312312"
+        - id: "ron"
+    resources: ["slow_resource"]
+`
 
 const expectedDuplicateProviderError = "provider with name aws already exists, use alias in provider configuration block"
 const expectedDuplicateAliasProviderError = "provider with alias same-aws for provider aws-2 already exists, give it a different alias"
@@ -46,16 +45,16 @@ const bucketName = "myBucket"
 const defaultPermissions = 0644
 
 type Account struct {
-	ID      string `yaml:"id" hcl:",label"`
-	RoleARN string `yaml:"role_arn,omitempty" hcl:"role_arn,optional"`
+	ID      string `yaml:"id"`
+	RoleARN string `yaml:"role_arn,omitempty"`
 }
 
 type AwsConfig struct {
-	Regions    []string  `yaml:"regions,omitempty" hcl:"regions,optional"`
-	Accounts   []Account `yaml:"accounts" hcl:"accounts,block"`
-	AWSDebug   bool      `yaml:"aws_debug,omitempty" hcl:"aws_debug,optional"`
-	MaxRetries int       `yaml:"max_retries,omitempty" hcl:"max_retries,optional" default:"5"`
-	MaxBackoff int       `yaml:"max_backoff,omitempty" hcl:"max_backoff,optional" default:"30"`
+	Regions    []string  `yaml:"regions,omitempty"`
+	Accounts   []Account `yaml:"accounts"`
+	AWSDebug   bool      `yaml:"aws_debug,omitempty"`
+	MaxRetries int       `yaml:"max_retries,omitempty" default:"5"`
+	MaxBackoff int       `yaml:"max_backoff,omitempty" default:"30"`
 }
 
 func TestLoader_LoadValidConfigFromFile(t *testing.T) {

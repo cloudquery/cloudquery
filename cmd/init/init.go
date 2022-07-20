@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cloudquery/pkg/ui/console"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/google/uuid"
 	"github.com/spf13/afero"
@@ -141,9 +140,8 @@ func generateConfig(ctx context.Context, c *console.Client, providers []string, 
 	for _, p := range providers {
 		pCfg, diags := core.GetProviderConfiguration(ctx, c.PluginManager, &core.GetProviderConfigOptions{
 			Provider: c.ConvertRequiredToRegistry(p),
-			Format:   cqproto.ConfigYAML,
 		})
-		if pCfg != nil && pCfg.Format != cqproto.ConfigYAML {
+		if pCfg != nil && pCfg.Format != 1 /* YAML */ {
 			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support YAML config. Please upgrade provider", p), diag.USER))
 		}
 		if diags.HasErrors() {

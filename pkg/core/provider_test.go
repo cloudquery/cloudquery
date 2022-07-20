@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v3"
@@ -122,7 +121,6 @@ func Test_GetProviderConfig(t *testing.T) {
 	ctx := context.Background()
 	pConfig, diags := GetProviderConfiguration(ctx, pm, &GetProviderConfigOptions{
 		Provider: provider,
-		Format:   cqproto.ConfigYAML,
 	})
 	if diags.HasErrors() {
 		t.FailNow()

@@ -13,13 +13,11 @@ import (
 
 type GetProviderConfigOptions struct {
 	Provider registry.Provider
-	Format   cqproto.ConfigFormat
 }
 
 type TestOptions struct {
 	Connection   cqproto.ConnectionDetails
 	Config       []byte
-	ConfigFormat cqproto.ConfigFormat
 	CreationInfo *plugin.CreationOptions
 }
 
@@ -44,9 +42,7 @@ func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *Get
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	defer pm.ClosePlugin(providerPlugin)
-	result, err := providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{
-		Format: opts.Format,
-	})
+	result, err := providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 	if err != nil {
 		return result, diag.FromError(err, diag.INTERNAL)
 	}
@@ -69,7 +65,6 @@ func Test(ctx context.Context, pm *plugin.Manager, opts TestOptions) (bool, erro
 		CloudQueryVersion: Version,
 		Connection:        opts.Connection,
 		Config:            opts.Config,
-		Format:            opts.ConfigFormat,
 	})
 	if err != nil {
 		return false, fmt.Errorf("provider test connection failed. Reason: %w", err)
