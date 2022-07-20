@@ -4,6 +4,24 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.31.9](https://github.com/cloudquery/cloudquery/compare/v0.31.8...v0.31.9) (2022-07-20)
+
+
+### Features
+
+* Add dsn_file connection option ([#1131](https://github.com/cloudquery/cloudquery/issues/1131)) ([114c4ed](https://github.com/cloudquery/cloudquery/commit/114c4edb7341702367cf25c011959a9a166dde70))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/hairyhenderson/go-fsimpl digest to 152ecd2 ([#1115](https://github.com/cloudquery/cloudquery/issues/1115)) ([830ae91](https://github.com/cloudquery/cloudquery/commit/830ae91bb8ebc2f94b9c724a5c0c19b3e2435e6c))
+* **deps:** Update github.com/ProtonMail/go-crypto digest to e85cedf ([#1123](https://github.com/cloudquery/cloudquery/issues/1123)) ([71421fc](https://github.com/cloudquery/cloudquery/commit/71421fcb17ef009ca538917b95074818ac7f4ab9))
+* **deps:** Update module github.com/google/go-github/v35 to v45 ([#1075](https://github.com/cloudquery/cloudquery/issues/1075)) ([94d0f01](https://github.com/cloudquery/cloudquery/commit/94d0f01f8f9a3b831ccdc200063c4d74df7ef810))
+* **deps:** Update module github.com/spf13/afero to v1.9.0 ([#1124](https://github.com/cloudquery/cloudquery/issues/1124)) ([fac9954](https://github.com/cloudquery/cloudquery/commit/fac9954defc4de54f7c166a072ab050e3aace0d0))
+* **deps:** Update module github.com/spf13/viper to v1.12.0 ([#1021](https://github.com/cloudquery/cloudquery/issues/1021)) ([2fa73aa](https://github.com/cloudquery/cloudquery/commit/2fa73aa95ce35bb91a88d23ee4942eef293f9fc7))
+* **deps:** Update module google.golang.org/grpc to v1.48.0 ([#1125](https://github.com/cloudquery/cloudquery/issues/1125)) ([c2e483b](https://github.com/cloudquery/cloudquery/commit/c2e483b279d38f6ddf241da908131b26b5917598))
+* **deps:** Update tubone24/update_release digest to 87bc28c ([#1116](https://github.com/cloudquery/cloudquery/issues/1116)) ([0748135](https://github.com/cloudquery/cloudquery/commit/074813584eb263412a3fd9b4784409e90ac2bc7d))
+
 ## [0.31.8](https://github.com/cloudquery/cloudquery/compare/v0.31.7...v0.31.8) (2022-07-14)
 
 
