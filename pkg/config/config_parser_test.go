@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"strings"
 	"testing"
 
@@ -122,6 +123,8 @@ providers:
 }
 
 func Test_ProcessConfig_Connection(t *testing.T) {
+	dir, _ := os.Getwd()
+
 	cases := []struct {
 		name           string
 		input          *Connection
@@ -231,7 +234,7 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 				Password: `pass`,
 				Host:     `localhost`,
 				Database: `postgres`,
-				DSNFile:  "./fixtures/dsn_file.txt",
+				DSNFile:  dir + "/fixtures/dsn_file.txt",
 			},
 			"postgres://postgres:pass@localhost:5432/postgres",
 			true,
@@ -240,7 +243,7 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 			"should error if both dsn and dsnfile are set",
 			&Connection{
 				DSN:     "some-dsn",
-				DSNFile: "./fixtures/dsn_file.txt",
+				DSNFile: dir + "/fixtures/dsn_file.txt",
 			},
 			"some-dsn",
 			true,
@@ -248,7 +251,7 @@ func Test_ProcessConfig_Connection(t *testing.T) {
 		{
 			"should use dsn from dsnfile",
 			&Connection{
-				DSNFile: "./fixtures/dsn_file.txt",
+				DSNFile: dir + "/fixtures/dsn_file.txt",
 			},
 			"postgres://postgres:pass@localhost:5432/postgres",
 			false,
