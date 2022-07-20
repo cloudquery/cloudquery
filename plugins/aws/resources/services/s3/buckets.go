@@ -545,7 +545,7 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, res
 
 	output, err := mgr.GetBucketRegion(ctx, *resource.Name)
 	if err != nil {
-		if c.IsNotFoundError(err) {
+		if isBucketNotFoundError(c, err) {
 			return nil
 		}
 		return diag.WrapError(err)
