@@ -18,6 +18,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.12.0](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.23...v0.12.0) (2022-07-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update SDK to v0.14.1 (#422)
+
+### Features
+
+* Policies ([#415](https://github.com/cloudquery/cq-provider-azure/issues/415)) ([70187ad](https://github.com/cloudquery/cq-provider-azure/commit/70187ad84b55306bc9bddf28989945760b096ca1))
+
+
+### Bug Fixes
+
+* **terraform:** Front Door Terraform resource specification fix ([#424](https://github.com/cloudquery/cq-provider-azure/issues/424)) ([347bb8e](https://github.com/cloudquery/cq-provider-azure/commit/347bb8eb14ea837814f122f7d6133b55f6e2f9ae))
+
+
+### Miscellaneous Chores
+
+* Update SDK to v0.14.1 ([#422](https://github.com/cloudquery/cq-provider-azure/issues/422)) ([92afc51](https://github.com/cloudquery/cq-provider-azure/commit/92afc5147d69c4d1225bf1f78885f2f621104ece))
+
 ## [0.11.23](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.22...v0.11.23) (2022-07-12)
 
 
