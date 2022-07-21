@@ -5,7 +5,7 @@ with data as (
     where viewer_protocol_policy = 'allow-all'
 )
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'CloudFront distributions should require encryption in transit' as title,

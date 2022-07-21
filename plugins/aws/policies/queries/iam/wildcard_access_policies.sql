@@ -37,7 +37,7 @@ allow_all_statements as (
 )
 
 select distinct
-    :execution_time,
+    :'execution_time'::timestamp,
     :'framework',
     :'check_id',
     'IAM customer managed policies that you create should not allow wildcard actions for services' AS title,

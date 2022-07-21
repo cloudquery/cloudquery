@@ -1,6 +1,6 @@
 insert into aws_policy_results
 SELECT
-  :execution_time as execution_time,
+  :'execution_time' as execution_time,
   :'framework' as framework,
   :'check_id' as check_id,
   'Elasticsearch domain error logging to CloudWatch Logs should be enabled' as title,

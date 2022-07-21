@@ -8,7 +8,7 @@ WITH snapshot_access_groups AS (
     FROM aws_ec2_ebs_snapshots
 )
 SELECT DISTINCT 
-  :execution_time as execution_time,
+  :'execution_time'::timestamp as execution_time,
   :'framework' as framework,
   :'check_id' as check_id,
   'Amazon EBS snapshots should not be public, determined by the ability to be restorable by anyone' as title,

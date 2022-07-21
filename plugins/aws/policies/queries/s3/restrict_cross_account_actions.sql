@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Amazon S3 permissions granted to other AWS accounts in bucket policies should be restricted' as title,

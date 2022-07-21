@@ -30,3 +30,15 @@ psql -U postgres -c "select * from aws_policy_results" --csv
 # HTML output
 psql -U postgres -c "select * from aws_policy_results" --html
 ```
+
+## Visualization
+
+Currently we have a pre-built compliance dashboard on top of the `aws_policy_results` table which is available [here](../dashboards/grafana/compliance.json)
+
+<img alt="Azure Asset Inventory Grafana Dashboard" src="../dashboards/grafana/compliance.png" width=50% height=50%>
+
+### Installation
+
+1. Execute one or more of the above policies.
+2. Add the CloudQuery postgres database as a data source to Grafana (`Configuration -> Data Sources -> Add Data Source`)
+3. Import [dashboards/azure/azure_asset_inventory.json](../dashboards/grafana/compliance.json) into Grafana (`Import -> Upload JSON File`).

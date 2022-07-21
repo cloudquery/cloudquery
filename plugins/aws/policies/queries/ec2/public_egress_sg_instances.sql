@@ -1,7 +1,7 @@
 insert into aws_policy_results
 -- Find all AWS instances that have a security group that allows unrestricted egress
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'All ec2 instances that have unrestricted access to the internet via a security group' as title,

@@ -33,7 +33,7 @@ allow_all_statements as (
 )
 
 select distinct
-    :execution_time,
+    :'execution_time'::timestamp,
     :'framework',
     :'check_id',
     'IAM policies should not allow full ''*'' administrative privileges' AS title,

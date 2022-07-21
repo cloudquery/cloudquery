@@ -27,7 +27,7 @@ with violations as (
 )
 
 select distinct
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'IAM policies should not allow full ''*'' administrative privileges' as title,

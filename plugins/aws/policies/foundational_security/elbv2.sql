@@ -1,3 +1,3 @@
 \set check_id 'ELBv2.1'
 \echo "Executing check ELBv2.1"
-\i queries/elb/elbv2_redirect_http_to_https.sql
+\ir ../queries/elb/elbv2_redirect_http_to_https.sql

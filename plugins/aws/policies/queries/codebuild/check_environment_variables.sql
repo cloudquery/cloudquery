@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select distinct
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'CodeBuild project environment variables should not contain clear text credentials' as title,

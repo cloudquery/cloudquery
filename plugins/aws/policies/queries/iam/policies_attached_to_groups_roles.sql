@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select distinct
-    :execution_time,
+    :'execution_time'::timestamp,
     :'framework',
     :'check_id',
     'IAM users should not have IAM policies attached',

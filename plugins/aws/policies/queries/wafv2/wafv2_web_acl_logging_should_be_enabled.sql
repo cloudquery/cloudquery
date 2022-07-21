@@ -2,7 +2,7 @@ insert into aws_policy_results
 (
 -- WAF Classic
 select
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'AWS WAF Classic global web ACL logging should be enabled' as title,
@@ -17,7 +17,7 @@ union
 (
 -- WAF V2
 select
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'AWS WAF Classic global web ACL logging should be enabled' as title,

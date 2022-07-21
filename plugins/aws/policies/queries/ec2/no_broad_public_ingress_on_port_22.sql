@@ -1,7 +1,7 @@
 -- uses view which uses aws_security_group_ingress_rules.sql query
 insert into aws_policy_results
 select
-  :execution_time,
+  :'execution_time',
   :'framework',
   :'check_id',
   'Ensure no security groups allow ingress from 0.0.0.0/0 to port 22 (Scored)',

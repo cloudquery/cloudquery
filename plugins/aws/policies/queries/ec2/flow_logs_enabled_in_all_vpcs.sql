@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select
-  :execution_time,
+  :'execution_time',
   :'framework',
   :'check_id',
   'VPC flow logging should be enabled in all VPCs',

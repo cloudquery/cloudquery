@@ -9,7 +9,7 @@ with endpoints as (
 )
 
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Amazon EC2 should be configured to use VPC endpoints that are created for the Amazon EC2 service' as title,

@@ -31,7 +31,7 @@ specific_categories as (
 )
 
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'An RDS event notifications subscription should be configured for critical database parameter group events' as title,

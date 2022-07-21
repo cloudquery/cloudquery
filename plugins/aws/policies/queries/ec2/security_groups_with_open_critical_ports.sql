@@ -1,7 +1,7 @@
 -- uses view which uses aws_security_group_ingress_rules.sql query
 insert into aws_policy_results
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Security groups should not allow unrestricted access to ports with high risk' as title,

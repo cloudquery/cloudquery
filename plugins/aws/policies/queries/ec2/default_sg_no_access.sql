@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select
-  :execution_time,
+  :'execution_time',
   :'framework',
   :'check_id',
   'The VPC default security group should not allow inbound and outbound traffic',

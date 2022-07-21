@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Secrets Manager secrets should be rotated within a specified number of days' as title,

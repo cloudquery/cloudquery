@@ -31,7 +31,7 @@ violations as (
 )
 
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'IAM customer managed policies should not allow decryption and re-encryption actions on all KMS keys' AS title,

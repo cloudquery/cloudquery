@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select
-  :execution_time as execution_time,
+  :'execution_time' as execution_time,
   :'framework' as framework,
   :'check_id' as check_id,
   'Amazon EFS should be configured to encrypt file data at rest using AWS KMS' as title,

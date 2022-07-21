@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Connections to Amazon Redshift clusters should be encrypted in transit' as title,

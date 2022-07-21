@@ -1,33 +1,41 @@
+\set ON_ERROR_STOP on
+SET TIME ZONE 'UTC';
+-- trick to set execution_time if not already set
+-- https://stackoverflow.com/questions/32582600/only-set-variable-in-psql-script-if-not-specified-on-the-command-line
+\set execution_time :execution_time
+SELECT CASE 
+  WHEN :'execution_time' = ':execution_time' THEN to_char(now(), 'YYYY-MM-dd HH24:MI:SS.US')
+  ELSE :'execution_time'
+END AS "execution_time"  \gset
 \set framework 'foundational_security'
-\set execution_time ''''`date '+%Y-%m-%d %H:%M:%S'`''''::timestamp
-\i create_aws_policy_results.sql
-\i foundational_security/acm.sql
-\i foundational_security/apigateway.sql
-\i foundational_security/autoscaling.sql
-\i foundational_security/awsconfig.sql
-\i foundational_security/cloudfront.sql
-\i foundational_security/cloudtrail.sql
-\i foundational_security/codebuild.sql
-\i foundational_security/dms.sql
-\i foundational_security/dynamodb.sql
-\i foundational_security/ec2.sql
-\i foundational_security/ecs.sql
-\i foundational_security/efs.sql
-\i foundational_security/elastic_beanstalk.sql
-\i foundational_security/elasticsearch.sql
-\i foundational_security/elb.sql
-\i foundational_security/elbv2.sql
-\i foundational_security/emr.sql
-\i foundational_security/guardduty.sql
-\i foundational_security/iam.sql
-\i foundational_security/kms.sql
-\i foundational_security/lambda.sql
-\i foundational_security/rds.sql
-\i foundational_security/redshift.sql
-\i foundational_security/s3.sql
-\i foundational_security/sagemaker.sql
-\i foundational_security/secretmanager.sql
-\i foundational_security/sns.sql
-\i foundational_security/sqs.sql
-\i foundational_security/ssm.sql
-\i foundational_security/waf.sql
+\ir ../create_aws_policy_results.sql
+\ir ./acm.sql
+\ir ./apigateway.sql
+\ir ./autoscaling.sql
+\ir ./awsconfig.sql
+\ir ./cloudfront.sql
+\ir ./cloudtrail.sql
+\ir ./codebuild.sql
+\ir ./dms.sql
+\ir ./dynamodb.sql
+\ir ./ec2.sql
+\ir ./ecs.sql
+\ir ./efs.sql
+\ir ./elastic_beanstalk.sql
+\ir ./elasticsearch.sql
+\ir ./elb.sql
+\ir ./elbv2.sql
+\ir ./emr.sql
+\ir ./guardduty.sql
+\ir ./iam.sql
+\ir ./kms.sql
+\ir ./lambda.sql
+\ir ./rds.sql
+\ir ./redshift.sql
+\ir ./s3.sql
+\ir ./sagemaker.sql
+\ir ./secretmanager.sql
+\ir ./sns.sql
+\ir ./sqs.sql
+\ir ./ssm.sql
+\ir ./waf.sql

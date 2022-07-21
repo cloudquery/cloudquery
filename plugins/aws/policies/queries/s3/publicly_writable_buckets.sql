@@ -38,7 +38,7 @@ with policy_allow_public as (
 )
 
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'S3 buckets should prohibit public write access' as title,

@@ -6,7 +6,7 @@ with enabled_detector_regions as (
 )
 
 select
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'GuardDuty should be enabled' AS title,
@@ -20,7 +20,7 @@ left join enabled_detector_regions e on e.region = r.region
 union
 -- Add any detector that is enabled but all data sources are disabled
 select
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'GuardDuty should be enabled (detectors)' AS title,

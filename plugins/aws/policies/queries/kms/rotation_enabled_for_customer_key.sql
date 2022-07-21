@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select
-  :execution_time,
+  :'execution_time',
   :'framework',
   :'check_id',
   'Ensure rotation for customer created CMKs is enabled (Scored)',

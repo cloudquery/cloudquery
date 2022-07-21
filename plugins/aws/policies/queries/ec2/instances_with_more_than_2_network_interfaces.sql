@@ -10,7 +10,7 @@ group by account_id,
     id
 )
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'EC2 instances should not use multiple ENIs' as title,

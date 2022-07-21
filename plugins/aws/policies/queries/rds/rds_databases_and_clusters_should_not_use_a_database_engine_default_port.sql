@@ -1,7 +1,7 @@
 insert into aws_policy_results
 (
     select
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'RDS databases and clusters should not use a database engine default port' as title,
@@ -15,7 +15,7 @@ insert into aws_policy_results
 union
 (
     select
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'RDS databases and clusters should not use a database engine default port' as title,

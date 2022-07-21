@@ -1,6 +1,6 @@
 insert into aws_policy_results
 select distinct
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Find all ec2 instances that have unrestricted access to the internet' AS title,
@@ -33,7 +33,7 @@ where sns in
 union
 -- Find all Lambda functions that do not run in a VPC
 select distinct
-    :execution_time as execution_time,
+    :'execution_time'::timestamp as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Find all ec2 instances that have unrestricted access to the internet' AS title,

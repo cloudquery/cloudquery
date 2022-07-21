@@ -1,7 +1,7 @@
 insert into aws_policy_results
 -- Find all AWS instances that are in a subnet that includes a catchall route
 select
-    :execution_time as execution_time,
+    :'execution_time' as execution_time,
     :'framework' as framework,
     :'check_id' as check_id,
     'Find all ec2 instances that have unrestricted access to the internet with a wide open security group and routing' as title,
