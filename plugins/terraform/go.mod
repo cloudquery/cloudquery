@@ -4,12 +4,11 @@ go 1.17
 
 require (
 	github.com/aws/aws-sdk-go v1.44.56
-	github.com/cloudquery/cq-provider-sdk v0.14.1
+	github.com/cloudquery/cq-provider-sdk v0.14.2
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/hashicorp/go-plugin v1.4.4 // indirect
-	github.com/hashicorp/hcl/v2 v2.13.0
+	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.3.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	golang.org/x/crypto v0.0.0-20220517005047-85d78b3ac167 // indirect
@@ -47,7 +46,6 @@ require (
 	github.com/jackc/pgx/v4 v4.16.1 // indirect
 	github.com/jackc/puddle v1.2.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
-	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lorenzosaino/go-sysctl v0.3.1 // indirect
@@ -61,7 +59,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/stats/v4 v4.6.3 // indirect
-	github.com/sergi/go-diff v1.2.0 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/thoas/go-funk v0.9.2 // indirect
