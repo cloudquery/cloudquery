@@ -5,15 +5,13 @@ import (
 )
 
 const (
-	policyShort = "Download and run CloudQuery policy"
+	policyDeprecated = "Please use psql directly to run policies. See https://docs.cloudquery.io/docs/policies"
 )
 
 func NewCmdPolicy() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "policy SUBCOMMAND",
-		Short: policyShort,
-		Long:  policyShort,
+		Use:        "policy SUBCOMMAND",
+		Deprecated: policyDeprecated,
 	}
-	cmd.AddCommand(newCmdPolicyDescribe(), newCmdPolicyDownload(), newCmdPolicyRun(), newCmdPolicySnapshot(), newCmdPolicyTest(), newCmdPolicyValidate(), newCmdPolicyPrune())
 	return cmd
 }
