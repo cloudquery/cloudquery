@@ -13,11 +13,11 @@ variable "project_id" {
 
 variable "region" {
   description = "Region where test resources will be deployed."
-  default    = "us-east1"
+  default     = "us-east1"
 }
 
 variable "labels" {
-  type = map(string)
+  type    = map(string)
   default = {
     "environment" = "cq-provider-gcp"
   }
