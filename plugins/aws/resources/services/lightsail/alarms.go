@@ -65,16 +65,10 @@ func Alarms() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "location_availability_zone",
+				Name:        "availability_zone",
 				Description: "The Availability Zone",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
-			},
-			{
-				Name:        "location_region_name",
-				Description: "The AWS Region name",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.RegionName"),
 			},
 			{
 				Name:        "metric_name",
@@ -88,13 +82,13 @@ func Alarms() *schema.Table {
 				Resolver:    schema.PathResolver("MonitoredResourceInfo.Arn"),
 			},
 			{
-				Name:        "monitored_resource_info_name",
+				Name:        "monitored_resource_name",
 				Description: "The name of the Lightsail resource being monitored",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("MonitoredResourceInfo.Name"),
 			},
 			{
-				Name:        "monitored_resource_info_resource_type",
+				Name:        "monitored_resource_resource_type",
 				Description: "The Lightsail resource type of the resource being monitored",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("MonitoredResourceInfo.ResourceType"),

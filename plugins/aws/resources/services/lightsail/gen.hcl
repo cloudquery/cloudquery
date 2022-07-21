@@ -152,4 +152,17 @@ resource "aws" "lightsail" "alarms" {
       path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
     }
   }
+
+  column "location" {
+    skip_prefix = true
+  }
+  column "region_name" {
+    skip = true
+  }
+  column "monitored_resource_info_name" {
+    rename = "monitored_resource_name"
+  }
+  column "monitored_resource_info_resource_type" {
+    rename = "monitored_resource_resource_type"
+  }
 }
