@@ -36,7 +36,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	}
 
 	if providerConfig.Domain == "" || providerConfig.Domain == exampleDomain {
-		return nil, diag.FromError(errors.New(`failed to configure provider, please set your okta "domain" in config.hcl`), diag.USER)
+		return nil, diag.FromError(errors.New(`failed to configure provider, please set your okta "domain" in cloudquery.yml`), diag.USER)
 	}
 
 	_, c, err := okta.NewClient(context.Background(), okta.WithOrgUrl(providerConfig.Domain), okta.WithToken(oktaToken), okta.WithCache(true))
