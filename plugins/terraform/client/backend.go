@@ -14,9 +14,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/hashicorp/hcl/v2"
-	"github.com/hashicorp/hcl/v2/gohcl"
 	"gopkg.in/yaml.v3"
 )
 
@@ -31,12 +28,9 @@ const (
 
 // BackendConfigBlock - abstract backend config
 type BackendConfigBlock struct {
-	BackendName     string                 `yaml:"name" hcl:"config,label"`
-	BackendType     string                 `yaml:"backend" hcl:"backend,attr"`
-	ConfigAttrsHCL  interface{}            `yaml:"-" hcl:"config,remain"`
-	ConfigAttrsYAML map[string]interface{} `yaml:",inline"`
-
-	format cqproto.ConfigFormat
+	BackendName string                 `yaml:"name"`
+	BackendType string                 `yaml:"backend"`
+	ConfigAttrs map[string]interface{} `yaml:",inline"`
 }
 
 type TerraformBackend struct {
@@ -46,14 +40,14 @@ type TerraformBackend struct {
 }
 
 type LocalBackendConfig struct {
-	Path string `yaml:"path" hcl:"path"`
+	Path string `yaml:"path"`
 }
 
 type S3BackendConfig struct {
-	Bucket  string `yaml:"bucket" hcl:"bucket"`
-	Key     string `yaml:"key" hcl:"key"`
-	Region  string `yaml:"region" hcl:"region"`
-	RoleArn string `yaml:"role_arn,omitempty" hcl:"role_arn,optional"`
+	Bucket  string `yaml:"bucket"`
+	Key     string `yaml:"key"`
+	Region  string `yaml:"region"`
+	RoleArn string `yaml:"role_arn,omitempty"`
 }
 
 // parseAndValidate received reader turn in into TerraformData state and validate the state version
@@ -71,17 +65,9 @@ func parseAndValidate(reader io.Reader) (*TerraformData, error) {
 func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error) {
 	var b S3BackendConfig
 
-	switch config.format {
-	case cqproto.ConfigHCL:
-		cfg := config.ConfigAttrsHCL.(hcl.Body)
-		if diags := gohcl.DecodeBody(cfg, nil, &b); diags != nil {
-			return nil, errors.New("cannot parse s3 backend config")
-		}
-	default:
-		cfgBytes, _ := yaml.Marshal(config.ConfigAttrsYAML)
-		if err := yaml.Unmarshal(cfgBytes, &b); err != nil {
-			return nil, fmt.Errorf("cannot parse s3 backend config: %w", err)
-		}
+	cfgBytes, _ := yaml.Marshal(config.ConfigAttrs)
+	if err := yaml.Unmarshal(cfgBytes, &b); err != nil {
+		return nil, fmt.Errorf("cannot parse s3 backend config: %w", err)
 	}
 
 	if b.Region == "" {
@@ -144,17 +130,9 @@ func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error
 func NewLocalTerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error) {
 	var b LocalBackendConfig
 
-	switch config.format {
-	case cqproto.ConfigHCL:
-		cfg := config.ConfigAttrsHCL.(hcl.Body)
-		if diags := gohcl.DecodeBody(cfg, nil, &b); diags != nil {
-			return nil, errors.New("cannot parse local backend config")
-		}
-	default:
-		cfgBytes, _ := yaml.Marshal(config.ConfigAttrsYAML)
-		if err := yaml.Unmarshal(cfgBytes, &b); err != nil {
-			return nil, fmt.Errorf("cannot parse local backend config: %w", err)
-		}
+	cfgBytes, _ := yaml.Marshal(config.ConfigAttrs)
+	if err := yaml.Unmarshal(cfgBytes, &b); err != nil {
+		return nil, fmt.Errorf("cannot parse local backend config: %w", err)
 	}
 
 	f, err := os.Open(b.Path)

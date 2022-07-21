@@ -8,10 +8,10 @@ import (
 
 func TestTfData(t *testing.T) {
 	cfg := `
-	config "mylocal" {
-      backend = "local"
-      path = "../examples/terraform.tfstate"
-    }
+    config:
+      - name: mylocal
+        backend: local
+        path: "../examples/terraform.tfstate"
 `
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
