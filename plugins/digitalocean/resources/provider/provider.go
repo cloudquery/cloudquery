@@ -3,7 +3,6 @@ package provider
 import (
 	"github.com/cloudquery/cq-provider-digitalocean/client"
 	"github.com/cloudquery/cq-provider-digitalocean/resources"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	sdkprovider "github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -41,8 +40,8 @@ func Provider() *sdkprovider.Provider {
 			"certificates":    resources.Certificates(),
 			"load_balancers":  resources.LoadBalancers(),
 		},
-		Config: func(f cqproto.ConfigFormat) sdkprovider.Config {
-			return client.NewConfig(f)
+		Config: func() sdkprovider.Config {
+			return &client.Config{}
 		},
 	}
 }
