@@ -36,6 +36,6 @@ func buildBucketsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 }
 
-func TestLambdaFunctions(t *testing.T) {
+func TestBuckets(t *testing.T) {
 	client.AwsMockTestHelper(t, Buckets(), buildBucketsMock, client.TestOptions{})
 }

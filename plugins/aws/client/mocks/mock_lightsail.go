@@ -35,6 +35,26 @@ func (m *MockLightsailClient) EXPECT() *MockLightsailClientMockRecorder {
 	return m.recorder
 }
 
+// GetAlarms mocks base method.
+func (m *MockLightsailClient) GetAlarms(arg0 context.Context, arg1 *lightsail.GetAlarmsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetAlarmsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAlarms", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetAlarmsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAlarms indicates an expected call of GetAlarms.
+func (mr *MockLightsailClientMockRecorder) GetAlarms(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAlarms", reflect.TypeOf((*MockLightsailClient)(nil).GetAlarms), varargs...)
+}
+
 // GetBucketAccessKeys mocks base method.
 func (m *MockLightsailClient) GetBucketAccessKeys(arg0 context.Context, arg1 *lightsail.GetBucketAccessKeysInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetBucketAccessKeysOutput, error) {
 	m.ctrl.T.Helper()
