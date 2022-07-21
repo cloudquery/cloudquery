@@ -68,7 +68,7 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/cq-gen v0.0.6
-	github.com/cloudquery/cq-provider-sdk v0.13.5
+	github.com/cloudquery/cq-provider-sdk v0.14.1
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/gocarina/gocsv v0.0.0-20220712153207-8b2118da4570
 	github.com/golang/mock v1.6.0
@@ -168,7 +168,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	google.golang.org/genproto v0.0.0-20220630174209-ad1d48641aa7 // indirect
-	google.golang.org/grpc v1.47.0 // indirect
+	google.golang.org/grpc v1.48.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
