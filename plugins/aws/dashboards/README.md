@@ -37,4 +37,4 @@ Checkout those tutorials:
 
 1. Execute one more of the AWS [policies](../policies/).
 2. Add the CloudQuery postgres database as a data source to Grafana (`Configuration -> Data Sources -> Add Data Source`)
-3. Import [../dashboards/grafana/compliance.png](../dashboards/grafana/compliance.png) into Grafana (`Import -> Upload JSON File`).
+3. Import [../dashboards/grafana/compliance.json](../dashboards/grafana/compliance.json) into Grafana (`Import -> Upload JSON File`).
