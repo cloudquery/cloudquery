@@ -195,6 +195,7 @@ func Provider() *provider.Provider {
 			"lightsail.database_snapshots":            lightsail.DatabaseSnapshots(),
 			"lightsail.disks":                         lightsail.Disks(),
 			"lightsail.instances":                     lightsail.Instances(),
+			"lightsail.load_balancers":                lightsail.LoadBalancers(),
 			"lightsail.static_ips":                    lightsail.StaticIps(),
 			"mq.brokers":                              mq.Brokers(),
 			"organizations.accounts":                  organizations.Accounts(),

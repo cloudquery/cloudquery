@@ -381,6 +381,8 @@ type LightsailClient interface {
 	GetCertificates(ctx context.Context, params *lightsail.GetCertificatesInput, optFns ...func(*lightsail.Options)) (*lightsail.GetCertificatesOutput, error)
 	GetStaticIps(ctx context.Context, params *lightsail.GetStaticIpsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetStaticIpsOutput, error)
 	GetRelationalDatabaseSnapshots(ctx context.Context, params *lightsail.GetRelationalDatabaseSnapshotsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseSnapshotsOutput, error)
+	GetLoadBalancers(ctx context.Context, params *lightsail.GetLoadBalancersInput, optFns ...func(*lightsail.Options)) (*lightsail.GetLoadBalancersOutput, error)
+	GetLoadBalancerTlsCertificates(ctx context.Context, params *lightsail.GetLoadBalancerTlsCertificatesInput, optFns ...func(*lightsail.Options)) (*lightsail.GetLoadBalancerTlsCertificatesOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_mq.go . MQClient

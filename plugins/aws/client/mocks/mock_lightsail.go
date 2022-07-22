@@ -175,6 +175,46 @@ func (mr *MockLightsailClientMockRecorder) GetInstances(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstances", reflect.TypeOf((*MockLightsailClient)(nil).GetInstances), varargs...)
 }
 
+// GetLoadBalancerTlsCertificates mocks base method.
+func (m *MockLightsailClient) GetLoadBalancerTlsCertificates(arg0 context.Context, arg1 *lightsail.GetLoadBalancerTlsCertificatesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetLoadBalancerTlsCertificatesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetLoadBalancerTlsCertificates", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetLoadBalancerTlsCertificatesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLoadBalancerTlsCertificates indicates an expected call of GetLoadBalancerTlsCertificates.
+func (mr *MockLightsailClientMockRecorder) GetLoadBalancerTlsCertificates(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancerTlsCertificates", reflect.TypeOf((*MockLightsailClient)(nil).GetLoadBalancerTlsCertificates), varargs...)
+}
+
+// GetLoadBalancers mocks base method.
+func (m *MockLightsailClient) GetLoadBalancers(arg0 context.Context, arg1 *lightsail.GetLoadBalancersInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetLoadBalancersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetLoadBalancers", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetLoadBalancersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLoadBalancers indicates an expected call of GetLoadBalancers.
+func (mr *MockLightsailClientMockRecorder) GetLoadBalancers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLoadBalancers", reflect.TypeOf((*MockLightsailClient)(nil).GetLoadBalancers), varargs...)
+}
+
 // GetRelationalDatabaseSnapshots mocks base method.
 func (m *MockLightsailClient) GetRelationalDatabaseSnapshots(arg0 context.Context, arg1 *lightsail.GetRelationalDatabaseSnapshotsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseSnapshotsOutput, error) {
 	m.ctrl.T.Helper()
