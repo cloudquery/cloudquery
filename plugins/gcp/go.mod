@@ -11,15 +11,18 @@ require (
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/spf13/cast v1.5.0
-	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
-	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
-	google.golang.org/api v0.56.0
+	google.golang.org/api v0.62.0
 	google.golang.org/grpc v1.48.0
 )
 
 require (
-	cloud.google.com/go v0.93.3 // indirect
+	github.com/stretchr/testify v1.8.0
+	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
+)
+
+require (
+	cloud.google.com/go v0.99.0 // indirect
 	github.com/BurntSushi/toml v1.1.0 // indirect
 	github.com/Masterminds/squirrel v1.5.3 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
@@ -34,7 +37,7 @@ require (
 	github.com/getkin/kin-openapi v0.83.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
-	github.com/go-openapi/swag v0.19.5 // indirect
+	github.com/go-openapi/swag v0.19.14 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -56,10 +59,11 @@ require (
 	github.com/jackc/pgx/v4 v4.16.1 // indirect
 	github.com/jackc/puddle v1.2.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/josharian/intern v1.0.0 // indirect
 	github.com/lann/builder v0.0.0-20180802200727-47ae307949d0 // indirect
 	github.com/lann/ps v0.0.0-20150810152359-62de8c46ede0 // indirect
 	github.com/lorenzosaino/go-sysctl v0.3.1 // indirect
-	github.com/mailru/easyjson v0.7.0 // indirect
+	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect

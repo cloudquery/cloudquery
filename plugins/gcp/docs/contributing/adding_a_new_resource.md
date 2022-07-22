@@ -11,27 +11,26 @@ As a prerequisite, in [google.golang.org/api](https://pkg.go.dev/google.golang.o
 
 If the service to which the resource belongs has not been used before in cq-provider-gcp, there are a few steps that need to be done to configure it.
 
-1. Create the service interface in [client/services.go](./client/services.go)
-   * Don't forget to add the new service interface name to the go:generate comment.
-1. Add the service to the `Services` struct in the [client/services.go](./client/services.go)
-1. Init the service in the `initServices` function in [client/services.go](./client/services.go)
+1. Create the service interface in [client/services.go](../../client/services.go)
+2. Add the service to the `Services` struct in the [client/services.go](../../client/services.go)
+3. Init the service in the `initServices` function in [client/services.go](../../client/services.go)
 
 ## Setting up the resource
 
 ### Skeleton
 
 1. Create a file under `resources/` that follows the pattern of `resources/<service>/<resource_name>`.
-1. In that file, create a function that returns a `*schema.Table`
-1. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config yml file.
-1. Add a test file at `resources/<service>/<resource>_test.go`. Follow other examples to create a test for the resource.
-1. Run `go run docs/docs.go` to generate the documentation for the new resource
+2. In that file, create a function that returns a `*schema.Table`
+3. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config yml file.
+4. Add a test file at `resources/<service>/<resource>_test.go`. Follow other examples to create a test for the resource.
+5. Run `go run docs/docs.go` to generate the documentation for the new resource
 
 ### Implementation
 
 Now that the skeleton has been set up, you can start to actually implement the resource. This consists of two parts: 
 
 1. Defining the schema
-1. Implementing resolver functions
+2. Implementing resolver functions
 
 #### Defining the schema
 

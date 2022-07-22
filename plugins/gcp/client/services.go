@@ -16,6 +16,7 @@ import (
 	"google.golang.org/api/logging/v2"
 	"google.golang.org/api/monitoring/v3"
 	"google.golang.org/api/option"
+	"google.golang.org/api/run/v1"
 	"google.golang.org/api/secretmanager/v1"
 	"google.golang.org/api/serviceusage/v1"
 	sql "google.golang.org/api/sqladmin/v1beta4"
@@ -41,47 +42,39 @@ const (
 )
 
 type Services struct {
-	Kms             *kms.Service
-	Storage         *storage.Service
-	Sql             *sql.Service
-	Iam             *iam.Service
+	BigQuery        *bigquery.Service
 	CloudBilling    *cloudbilling.APIService
 	CloudFunctions  *cloudfunctions.Service
-	Domain          *domains.Service
+	CloudRun        *run.APIService
 	Compute         *compute.Service
-	BigQuery        *bigquery.Service
+	Container       *container.Service
 	Dns             *dns.Service
+	Domain          *domains.Service
+	Iam             *iam.Service
+	Kms             *kms.Service
 	Logging         *logging.Service
 	Monitoring      *monitoring.Service
 	ResourceManager *cloudresourcemanager.Service
 	ServiceUsage    *serviceusage.Service
-	Container       *container.Service
 	SecretManager   *secretmanager.Service
+	Sql             *sql.Service
+	Storage         *storage.Service
 }
 
 func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
-	kmsSvc, err := kms.NewService(ctx, options...)
+	bigQuerySvc, err := bigquery.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	storageSvc, err := storage.NewService(ctx, options...)
+	cloudBillingSvc, err := cloudbilling.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	sqlSvc, err := sql.NewService(ctx, options...)
+	cloudFunctionsSvc, err := cloudfunctions.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	iamSvc, err := iam.NewService(ctx, options...)
-	if err != nil {
-		return nil, err
-	}
-	cfSvc, err := cloudfunctions.NewService(ctx, options...)
-	if err != nil {
-		return nil, err
-	}
-
-	domainSvc, err := domains.NewService(ctx, options...)
+	cloudRunSvc, err := run.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -89,11 +82,23 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	if err != nil {
 		return nil, err
 	}
-	bigquerySvc, err := bigquery.NewService(ctx, options...)
+	containerSvc, err := container.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	domainSvc, err := domains.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
 	dnsSvc, err := dns.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	iamSvc, err := iam.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	kmsSvc, err := kms.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -109,41 +114,40 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	if err != nil {
 		return nil, err
 	}
-	cloudbillingSvc, err := cloudbilling.NewService(ctx, options...)
-	if err != nil {
-		return nil, err
-	}
-	serviceusageManagerSvc, err := serviceusage.NewService(ctx, options...)
-	if err != nil {
-		return nil, err
-	}
-
-	containerSvc, err := container.NewService(ctx, options...)
-	if err != nil {
-		return nil, err
-	}
-
 	secretManagerSvc, err := secretmanager.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	serviceUsageManagerSvc, err := serviceusage.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	sqlSvc, err := sql.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	storageSvc, err := storage.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Services{
-		Kms:             kmsSvc,
-		Storage:         storageSvc,
-		Sql:             sqlSvc,
-		Iam:             iamSvc,
-		CloudBilling:    cloudbillingSvc,
-		CloudFunctions:  cfSvc,
-		Domain:          domainSvc,
+		BigQuery:        bigQuerySvc,
+		CloudBilling:    cloudBillingSvc,
+		CloudFunctions:  cloudFunctionsSvc,
+		CloudRun:        cloudRunSvc,
 		Compute:         computeSvc,
-		BigQuery:        bigquerySvc,
+		Container:       containerSvc,
 		Dns:             dnsSvc,
+		Domain:          domainSvc,
+		Iam:             iamSvc,
+		Kms:             kmsSvc,
 		Logging:         loggingSvc,
 		Monitoring:      monitoringSvc,
 		ResourceManager: resourceManagerSvc,
-		ServiceUsage:    serviceusageManagerSvc,
-		Container:       containerSvc,
 		SecretManager:   secretManagerSvc,
+		ServiceUsage:    serviceUsageManagerSvc,
+		Sql:             sqlSvc,
+		Storage:         storageSvc,
 	}, nil
 }
