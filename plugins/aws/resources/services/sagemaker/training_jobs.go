@@ -10,17 +10,15 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 )
-
-const MAX_GOROUTINES = 10
 
 func SagemakerTrainingJobs() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_sagemaker_training_jobs",
-		Description:   "Provides summary information about a training job.",
-		Resolver:      fetchSagemakerTrainingJobs,
+		Name:        "aws_sagemaker_training_jobs",
+		Description: "Provides summary information about a training job.",
+		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listSagemakerTrainingJobs, sagemakerTrainingJobsDetail))
+		},
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
@@ -566,26 +564,27 @@ func SagemakerTrainingJobs() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchTrainingJobDefinition(ctx context.Context, res chan<- interface{}, svc client.SageMakerClient, region string, n types.TrainingJobSummary) error {
+func sagemakerTrainingJobsDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, detail interface{}) {
+	c := meta.(*client.Client)
+	svc := c.Services().SageMaker
+	n := detail.(types.TrainingJobSummary)
 	config := sagemaker.DescribeTrainingJobInput{
 		TrainingJobName: n.TrainingJobName,
 	}
 	response, err := svc.DescribeTrainingJob(ctx, &config, func(options *sagemaker.Options) {
-		options.Region = region
+		options.Region = c.Region
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		errorChan <- diag.WrapError(err)
+		return
 	}
-
-	res <- response
-	return nil
+	resultsChan <- response
 }
 
-func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func listSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListTrainingJobsInput{}
-	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 
 	for {
 		response, err := svc.ListTrainingJobs(ctx, &config, func(options *sagemaker.Options) {
@@ -594,21 +593,8 @@ func fetchSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, _ *
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		errs, ctx := errgroup.WithContext(ctx)
 		for _, d := range response.TrainingJobSummaries {
-			if err := sem.Acquire(ctx, 1); err != nil {
-				return diag.WrapError(err)
-			}
-			func(summary types.TrainingJobSummary) {
-				errs.Go(func() error {
-					defer sem.Release(1)
-					return fetchTrainingJobDefinition(ctx, res, svc, c.Region, summary)
-				})
-			}(d)
-		}
-		err = errs.Wait()
-		if err != nil {
-			return diag.WrapError(err)
+			res <- d
 		}
 		if aws.ToString(response.NextToken) == "" {
 			break

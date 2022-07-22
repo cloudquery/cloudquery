@@ -10,8 +10,6 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 )
 
 type TaskDefinitionWrapper struct {
@@ -19,13 +17,13 @@ type TaskDefinitionWrapper struct {
 	Tags []types.Tag
 }
 
-const MAX_GOROUTINES = 10
-
 func EcsTaskDefinitions() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_ecs_task_definitions",
-		Description:   "The details of a task definition which describes the container and volume definitions of an Amazon Elastic Container Service task",
-		Resolver:      listEcsTaskDefinitions,
+		Name:        "aws_ecs_task_definitions",
+		Description: "The details of a task definition which describes the container and volume definitions of an Amazon Elastic Container Service task",
+		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listEcsTaskDefinitions, ecsTaskDefinitionDetail))
+		},
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ecs"),
 		IgnoreError:   client.IgnoreCommonErrors,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
@@ -614,34 +612,35 @@ func EcsTaskDefinitions() *schema.Table {
 		},
 	}
 }
-
-func fetchEcsTaskDefinition(ctx context.Context, res chan<- interface{}, svc client.EcsClient, region, taskArn string) error {
+func ecsTaskDefinitionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, detail interface{}) {
+	c := meta.(*client.Client)
+	svc := c.Services().ECS
+	taskArn := detail.(string)
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
 		TaskDefinition: aws.String(taskArn),
 		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
 	}, func(o *ecs.Options) {
-		o.Region = region
+		o.Region = c.Region
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		errorChan <- diag.WrapError(err)
+		return
 	}
 	if describeTaskDefinitionOutput.TaskDefinition == nil {
-		return nil
+		return
 	}
-	res <- TaskDefinitionWrapper{
+	resultsChan <- TaskDefinitionWrapper{
 		TaskDefinition: describeTaskDefinitionOutput.TaskDefinition,
 		Tags:           describeTaskDefinitionOutput.Tags,
 	}
-	return nil
 }
 
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, res chan<- interface{}) error {
 	var config ecs.ListTaskDefinitionsInput
-	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
 	for {
@@ -651,26 +650,9 @@ func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent 
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		if len(listClustersOutput.TaskDefinitionArns) == 0 {
-			return nil
+		for _, taskDefinitionArn := range listClustersOutput.TaskDefinitionArns {
+			res <- taskDefinitionArn
 		}
-		errs, ctx := errgroup.WithContext(ctx)
-		for _, t := range listClustersOutput.TaskDefinitionArns {
-			if err := sem.Acquire(ctx, 1); err != nil {
-				return diag.WrapError(err)
-			}
-			func(arn string) {
-				errs.Go(func() error {
-					defer sem.Release(1)
-					return fetchEcsTaskDefinition(ctx, res, svc, region, arn)
-				})
-			}(t)
-		}
-		err = errs.Wait()
-		if err != nil {
-			return diag.WrapError(err)
-		}
-
 		if listClustersOutput.NextToken == nil {
 			break
 		}

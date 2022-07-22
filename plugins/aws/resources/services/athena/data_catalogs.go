@@ -9,18 +9,16 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"golang.org/x/sync/errgroup"
-	"golang.org/x/sync/semaphore"
 )
-
-const MAX_GOROUTINES = 10
 
 //go:generate cq-gen --resource data_catalogs --config gen.hcl --output .
 func DataCatalogs() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_athena_data_catalogs",
-		Description:  "Contains information about a data catalog in an Amazon Web Services account",
-		Resolver:     fetchAthenaDataCatalogs,
+		Name:        "aws_athena_data_catalogs",
+		Description: "Contains information about a data catalog in an Amazon Web Services account",
+		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listDataCatalogs, dataCatalogDetail))
+		},
 		Multiplex:    client.ServiceAccountRegionMultiplexer("athena"),
 		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
@@ -214,11 +212,10 @@ func DataCatalogs() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func listDataCatalogs(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
 	input := athena.ListDataCatalogsInput{}
-	var sem = semaphore.NewWeighted(int64(MAX_GOROUTINES))
 	for {
 		response, err := svc.ListDataCatalogs(ctx, &input, func(options *athena.Options) {
 			options.Region = c.Region
@@ -226,21 +223,8 @@ func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		errs, ctx := errgroup.WithContext(ctx)
-		for _, d := range response.DataCatalogsSummary {
-			if err := sem.Acquire(ctx, 1); err != nil {
-				return diag.WrapError(err)
-			}
-			func(summary types.DataCatalogSummary) {
-				errs.Go(func() error {
-					defer sem.Release(1)
-					return fetchDataCatalog(ctx, res, c, summary)
-				})
-			}(d)
-		}
-		err = errs.Wait()
-		if err != nil {
-			return diag.WrapError(err)
+		for _, item := range response.DataCatalogsSummary {
+			detailChan <- item
 		}
 		if aws.ToString(response.NextToken) == "" {
 			break
@@ -335,7 +319,9 @@ func fetchAthenaDataCatalogDatabaseTablePartitionKeys(ctx context.Context, meta 
 //                                                  User Defined Helpers
 // ====================================================================================================================
 
-func fetchDataCatalog(ctx context.Context, res chan<- interface{}, c *client.Client, catalogSummary types.DataCatalogSummary) error {
+func dataCatalogDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+	c := meta.(*client.Client)
+	catalogSummary := listInfo.(types.DataCatalogSummary)
 	svc := c.Services().Athena
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
@@ -346,16 +332,15 @@ func fetchDataCatalog(ctx context.Context, res chan<- interface{}, c *client.Cli
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
 		// relations can be fetched by its name
 		if *catalogSummary.CatalogName == "AwsDataCatalog" {
-			res <- types.DataCatalog{Name: catalogSummary.CatalogName, Type: catalogSummary.Type}
-			return nil
+			resultsChan <- types.DataCatalog{Name: catalogSummary.CatalogName, Type: catalogSummary.Type}
+			return
 		}
 		if c.IsNotFoundError(err) {
-			return nil
+			return
 		}
-		return diag.WrapError(err)
+		errorChan <- diag.WrapError(err)
 	}
-	res <- *dc.DataCatalog
-	return nil
+	resultsChan <- *dc.DataCatalog
 }
 
 func createDataCatalogArn(cl *client.Client, catalogName string) string {
