@@ -380,6 +380,7 @@ type LightsailClient interface {
 	GetAlarms(ctx context.Context, params *lightsail.GetAlarmsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetAlarmsOutput, error)
 	GetCertificates(ctx context.Context, params *lightsail.GetCertificatesInput, optFns ...func(*lightsail.Options)) (*lightsail.GetCertificatesOutput, error)
 	GetStaticIps(ctx context.Context, params *lightsail.GetStaticIpsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetStaticIpsOutput, error)
+	GetRelationalDatabaseSnapshots(ctx context.Context, params *lightsail.GetRelationalDatabaseSnapshotsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseSnapshotsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_mq.go . MQClient

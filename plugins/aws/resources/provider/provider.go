@@ -192,6 +192,7 @@ func Provider() *provider.Provider {
 			"lightsail.alarms":                        lightsail.Alarms(),
 			"lightsail.buckets":                       lightsail.Buckets(),
 			"lightsail.certificates":                  lightsail.Certificates(),
+			"lightsail.database_snapshots":            lightsail.DatabaseSnapshots(),
 			"lightsail.disks":                         lightsail.Disks(),
 			"lightsail.instances":                     lightsail.Instances(),
 			"lightsail.static_ips":                    lightsail.StaticIps(),
