@@ -81,6 +81,7 @@ var notFoundErrorSubstrings = []string{
 	"NotFound",
 	"ResourceNotFoundException",
 	"WAFNonexistentItemException",
+	"NoSuchResource",
 }
 
 var accessDeniedErrorStrings = map[string]struct{}{

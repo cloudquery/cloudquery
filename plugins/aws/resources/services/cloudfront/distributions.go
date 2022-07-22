@@ -800,6 +800,9 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 		options.Region = cl.Region
 	})
 	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
 		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags.Items)))
