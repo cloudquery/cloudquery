@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -827,20 +828,25 @@ func Ec2Instances() *schema.Table {
 // ====================================================================================================================
 
 func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	var config ec2.DescribeInstancesInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
+	for {
+		output, err := svc.DescribeInstances(ctx, &config, func(options *ec2.Options) {
+			options.Region = c.Region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		for _, reservation := range output.Reservations {
+			res <- reservation.Instances
+		}
 
-	response, err := svc.DescribeInstances(ctx, &ec2.DescribeInstancesInput{}, func(o *ec2.Options) {
-		o.Region = c.Region
-	})
-	if err != nil {
-		return diag.WrapError(err)
+		if aws.ToString(output.NextToken) == "" {
+			break
+		}
+		config.NextToken = output.NextToken
 	}
-
-	for _, reservation := range response.Reservations {
-		res <- reservation.Instances
-	}
-
 	return nil
 }
 func resolveEc2InstanceStateTransitionReasonTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

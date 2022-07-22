@@ -22,9 +22,17 @@ func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	l.Instances[0].StateTransitionReason = aws.String("User initiated (2021-11-26 11:33:00 GMT)")
 	creationDate := "1994-11-05T08:15:30-05:00"
 	l.Instances[0].ElasticGpuAssociations[0].ElasticGpuAssociationTime = &creationDate
-	m.EXPECT().DescribeInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+	nextToken := "test"
+	// this test ensures that pagination works by returning a token once, but not the second time
+	m.EXPECT().DescribeInstances(gomock.Any(), gomock.Any(), gomock.Any()).Times(1).Return(
+		&ec2.DescribeInstancesOutput{
+			Reservations: []ec2Types.Reservation{},
+			NextToken:    &nextToken,
+		}, nil)
+	m.EXPECT().DescribeInstances(gomock.Any(), gomock.Any(), gomock.Any()).Times(1).Return(
 		&ec2.DescribeInstancesOutput{
 			Reservations: []ec2Types.Reservation{l},
+			NextToken:    nil,
 		}, nil)
 	return client.Services{
 		EC2: m,
