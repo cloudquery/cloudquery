@@ -1,10 +1,9 @@
 \set framework 'cis_v1.2.0'
-\set execution_time `date '+%Y-%m-%d %H:%M:%S'`
-\i create_gcp_policy_results.sql
-\i cis_v1.2.0/section_1.sql
-\i cis_v1.2.0/section_2.sql
-\i cis_v1.2.0/section_3.sql
-\i cis_v1.2.0/section_4.sql
-\i cis_v1.2.0/section_5.sql
-\i cis_v1.2.0/section_6.sql
-\i cis_v1.2.0/section_7.sql
+\ir ../create_gcp_policy_results.sql
+\ir section_1.sql
+\ir section_2.sql
+\ir section_3.sql
+\ir section_4.sql
+\ir section_5.sql
+\ir section_6.sql
+\ir section_7.sql
