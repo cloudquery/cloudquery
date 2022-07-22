@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/cloudquery/cq-gen v0.0.6
-	github.com/cloudquery/cq-provider-sdk v0.14.3
+	github.com/cloudquery/cq-provider-sdk v0.14.4
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.4.0
