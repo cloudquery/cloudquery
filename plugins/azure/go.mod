@@ -7,7 +7,7 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.27
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/cloudquery/cq-gen v0.0.6
-	github.com/cloudquery/cq-provider-sdk v0.14.3
+	github.com/cloudquery/cq-provider-sdk v0.14.4
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/golang/mock v1.6.0
