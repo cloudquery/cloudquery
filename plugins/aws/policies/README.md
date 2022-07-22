@@ -14,8 +14,10 @@ CloudQuery SQL Policies for AWS
 You can execute policies with `psql`. For example:
 
 ```bash
-# Execute the whole CIS Policy
-psql -U postgres -f  ./cis_v1.2.0/policy.sql
+# Set DSN to your PostgreSQL populated by CloudQuery
+export DSN=postgres://postgres:pass@localhost:5432/postgres
+# Execute CIS V1.2.0 Policy
+psql ${DSN} -f  ./cis_v1.2.0/policy.sql
 ```
 
 This will create all the results in `aws_policy_results` table which you can query directly, connect to any BI system (Grafana, Preset, AWS QuickSight, PowerBI, ...).
@@ -23,12 +25,14 @@ This will create all the results in `aws_policy_results` table which you can que
 You can also output it into CSV or HTML with the following built-in psql commands:
 
 ```
+# Set DSN to your PostgreSQL populated by CloudQuery
+export DSN=postgres://postgres:pass@localhost:5432/postgres
 # default tabular output
-psql -U postgres -c "select * from aws_policy_results"
+psql ${DSN} -c "select * from aws_policy_results"
 # CSV output
-psql -U postgres -c "select * from aws_policy_results" --csv
+psql ${DSN} -c "select * from aws_policy_results" --csv
 # HTML output
-psql -U postgres -c "select * from aws_policy_results" --html
+psql ${DSN} -c "select * from aws_policy_results" --html
 ```
 
 ## Dashboards
