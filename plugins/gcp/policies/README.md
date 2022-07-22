@@ -11,23 +11,26 @@ You can execute policies with `psql`. For example:
 
 ```bash
 # Execute CIS V1.2.0 Policy
-psql postgres://postgres:pass@localhost:5432/postgres -f  ./cis_v1.2.0/policy.sql
+psql ${DSN} -f  ./cis_v1.2.0/policy.sql
 ```
 
 This will create all the results in `gcp_policy_results` table which you can query directly, connect to any BI system (Grafana, Preset, AWS QuickSight, PowerBI, ...).
 
 You can also output it into CSV or HTML with the following built-in psql commands:
 
-```
+```bash
+# Set DSN to your PostgreSQL populated by CloudQuery
+export DSN=postgres://postgres:pass@localhost:5432/postgres
+
 # default tabular output
-psql "postgres://postgres:pass@localhost:5432/postgres" -c "select * from gcp_policy_results"
+psql ${DSN} -c "select * from gcp_policy_results"
 # CSV output
-psql "postgres://postgres:pass@localhost:5432/postgres" -c "select * from gcp_policy_results" --csv
+psql ${DSN} -c "select * from gcp_policy_results" --csv
 # HTML output
-psql "postgres://postgres:pass@localhost:5432/postgres" -c "select * from gcp_policy_results" --html
+psql ${DSN} -c "select * from gcp_policy_results" --html
 
 # see only failed checks
-psql "postgres://postgres:pass@localhost:5432/postgres" -c "select * from gcp_policy_results where status='fail'"
+psql ${DSN} -c "select * from gcp_policy_results where status='fail'"
 ```
 
 ## Dashboards
