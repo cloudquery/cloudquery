@@ -174,3 +174,23 @@ func (mr *MockLightsailClientMockRecorder) GetInstances(arg0, arg1 interface{}, 
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstances", reflect.TypeOf((*MockLightsailClient)(nil).GetInstances), varargs...)
 }
+
+// GetStaticIps mocks base method.
+func (m *MockLightsailClient) GetStaticIps(arg0 context.Context, arg1 *lightsail.GetStaticIpsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetStaticIpsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetStaticIps", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetStaticIpsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetStaticIps indicates an expected call of GetStaticIps.
+func (mr *MockLightsailClientMockRecorder) GetStaticIps(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStaticIps", reflect.TypeOf((*MockLightsailClient)(nil).GetStaticIps), varargs...)
+}
