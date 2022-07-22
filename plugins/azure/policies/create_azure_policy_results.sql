@@ -1,5 +1,5 @@
 create table if not exists azure_policy_results (
-    execution_time time,
+    execution_time timestamp with time zone,
     framework varchar(255),
     check_id varchar(255),
     title text,
