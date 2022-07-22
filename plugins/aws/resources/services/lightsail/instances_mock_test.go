@@ -30,6 +30,26 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	var p lightsail.GetInstancePortStatesOutput
+	if err := faker.FakeData(&p); err != nil {
+		t.Fatal(err)
+	}
+	mock.EXPECT().GetInstancePortStates(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(&p, nil)
+
+	var a lightsail.GetInstanceAccessDetailsOutput
+	if err := faker.FakeData(&a); err != nil {
+		t.Fatal(err)
+	}
+	mock.EXPECT().GetInstanceAccessDetails(
+		gomock.Any(),
+		gomock.Any(),
+		gomock.Any(),
+	).Return(&a, nil)
+
 	return client.Services{Lightsail: mock}
 }
 

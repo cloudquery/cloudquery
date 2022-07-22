@@ -155,6 +155,66 @@ func (mr *MockLightsailClientMockRecorder) GetDisks(arg0, arg1 interface{}, arg2
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDisks", reflect.TypeOf((*MockLightsailClient)(nil).GetDisks), varargs...)
 }
 
+// GetInstanceAccessDetails mocks base method.
+func (m *MockLightsailClient) GetInstanceAccessDetails(arg0 context.Context, arg1 *lightsail.GetInstanceAccessDetailsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceAccessDetailsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetInstanceAccessDetails", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetInstanceAccessDetailsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceAccessDetails indicates an expected call of GetInstanceAccessDetails.
+func (mr *MockLightsailClientMockRecorder) GetInstanceAccessDetails(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceAccessDetails", reflect.TypeOf((*MockLightsailClient)(nil).GetInstanceAccessDetails), varargs...)
+}
+
+// GetInstancePortStates mocks base method.
+func (m *MockLightsailClient) GetInstancePortStates(arg0 context.Context, arg1 *lightsail.GetInstancePortStatesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstancePortStatesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetInstancePortStates", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetInstancePortStatesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstancePortStates indicates an expected call of GetInstancePortStates.
+func (mr *MockLightsailClientMockRecorder) GetInstancePortStates(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstancePortStates", reflect.TypeOf((*MockLightsailClient)(nil).GetInstancePortStates), varargs...)
+}
+
+// GetInstanceSnapshots mocks base method.
+func (m *MockLightsailClient) GetInstanceSnapshots(arg0 context.Context, arg1 *lightsail.GetInstanceSnapshotsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceSnapshotsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetInstanceSnapshots", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetInstanceSnapshotsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInstanceSnapshots indicates an expected call of GetInstanceSnapshots.
+func (mr *MockLightsailClientMockRecorder) GetInstanceSnapshots(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInstanceSnapshots", reflect.TypeOf((*MockLightsailClient)(nil).GetInstanceSnapshots), varargs...)
+}
+
 // GetInstances mocks base method.
 func (m *MockLightsailClient) GetInstances(arg0 context.Context, arg1 *lightsail.GetInstancesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstancesOutput, error) {
 	m.ctrl.T.Helper()

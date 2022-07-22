@@ -388,6 +388,9 @@ type LightsailClient interface {
 	GetRelationalDatabaseEvents(ctx context.Context, params *lightsail.GetRelationalDatabaseEventsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseEventsOutput, error)
 	GetRelationalDatabaseLogEvents(ctx context.Context, params *lightsail.GetRelationalDatabaseLogEventsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseLogEventsOutput, error)
 	GetRelationalDatabaseLogStreams(ctx context.Context, params *lightsail.GetRelationalDatabaseLogStreamsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseLogStreamsOutput, error)
+	GetInstanceSnapshots(ctx context.Context, params *lightsail.GetInstanceSnapshotsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetInstanceSnapshotsOutput, error)
+	GetInstancePortStates(ctx context.Context, params *lightsail.GetInstancePortStatesInput, optFns ...func(*lightsail.Options)) (*lightsail.GetInstancePortStatesOutput, error)
+	GetInstanceAccessDetails(ctx context.Context, params *lightsail.GetInstanceAccessDetailsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetInstanceAccessDetailsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_mq.go . MQClient

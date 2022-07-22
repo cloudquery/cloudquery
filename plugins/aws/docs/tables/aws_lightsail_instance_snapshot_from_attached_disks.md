@@ -1,12 +1,13 @@
 
-# Table: aws_lightsail_instance_hardware_disks
+# Table: aws_lightsail_instance_snapshot_from_attached_disks
 Describes a block storage disk
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|instance_cq_id|uuid|Unique CloudQuery ID of aws_lightsail_instances table (FK)|
+|instance_snapshot_cq_id|uuid|Unique CloudQuery ID of aws_lightsail_instance_snapshots table (FK)|
 |arn|text|The Amazon Resource Name (ARN) of the disk|
 |attached_to|text|The resources to which the disk is attached|
+|attachment_state|text|(Deprecated) The attachment state of the disk|
 |created_at|timestamp without time zone|The date when the disk was created|
 |gb_in_use|integer|(Deprecated) The number of GB in use by the disk|
 |iops|integer|The input/output operations per second (IOPS) of the disk|
