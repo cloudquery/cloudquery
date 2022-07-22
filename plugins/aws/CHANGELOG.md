@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.13.1](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.0...v0.13.1) (2022-07-22)
+
+
+### Features
+
+* Added lightsail alarms ([#1242](https://github.com/cloudquery/cq-provider-aws/issues/1242)) ([19e3476](https://github.com/cloudquery/cq-provider-aws/commit/19e3476ae032765acb50a7f934a3da311fa9fadc))
+* Added lightsail certificates ([#1245](https://github.com/cloudquery/cq-provider-aws/issues/1245)) ([0ee77fc](https://github.com/cloudquery/cq-provider-aws/commit/0ee77fcbe0124a21d4eb6ae2ca49954f195a840b))
+* Added lightsail database snapshots ([#1263](https://github.com/cloudquery/cq-provider-aws/issues/1263)) ([6749225](https://github.com/cloudquery/cq-provider-aws/commit/6749225829e3262d83e9ba44d15a0f055dc0f8e2))
+* Added lightsail databases ([#1251](https://github.com/cloudquery/cq-provider-aws/issues/1251)) ([72c2702](https://github.com/cloudquery/cq-provider-aws/commit/72c2702bcd0046f5354e20b9d6d953eb063b1bda))
+* Added lightsail disks ([#1240](https://github.com/cloudquery/cq-provider-aws/issues/1240)) ([fab23e0](https://github.com/cloudquery/cq-provider-aws/commit/fab23e0737078c6cd5543aef0a4da8b8e90895d7))
+* Added lightsail load balancers ([#1254](https://github.com/cloudquery/cq-provider-aws/issues/1254)) ([382bb7f](https://github.com/cloudquery/cq-provider-aws/commit/382bb7fc96d99b7f82eefbe241a4fa1ed54d7ee6))
+* Added lightsail static ips ([#1248](https://github.com/cloudquery/cq-provider-aws/issues/1248)) ([62a85f7](https://github.com/cloudquery/cq-provider-aws/commit/62a85f7ec13bd169a47ed939599820c82f9a2cf4))
+* Remove non standard List/Detail implementations ([#1237](https://github.com/cloudquery/cq-provider-aws/issues/1237)) ([004a544](https://github.com/cloudquery/cq-provider-aws/commit/004a5444741d3e7d6fa1020449ce3ab6be6e5213))
+
+
+### Bug Fixes
+
+* Correctly use pagination on EC2 instance list response ([#1270](https://github.com/cloudquery/cq-provider-aws/issues/1270)) ([aebcc3c](https://github.com/cloudquery/cq-provider-aws/commit/aebcc3cb483bcbc81626de51681513ae3fd8580b))
+* Default execution_time for main policy ([#1264](https://github.com/cloudquery/cq-provider-aws/issues/1264)) ([f8f0590](https://github.com/cloudquery/cq-provider-aws/commit/f8f0590c842f1040915359b30110a6d134622001))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.3 ([#1265](https://github.com/cloudquery/cq-provider-aws/issues/1265)) ([4ebc1d9](https://github.com/cloudquery/cq-provider-aws/commit/4ebc1d9df187c6deabe800eeddd77dc26f7ea8dc))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.4 ([#1268](https://github.com/cloudquery/cq-provider-aws/issues/1268)) ([1bd574d](https://github.com/cloudquery/cq-provider-aws/commit/1bd574d15070e0e6e5fa65e73a4c76c5e45c5532))
+* Ignore CF distributions NoSuchResource on ListTags ([#1238](https://github.com/cloudquery/cq-provider-aws/issues/1238)) ([01efd1a](https://github.com/cloudquery/cq-provider-aws/commit/01efd1af29e56e5a8c6aae9b87ab63868451c426))
+* Ignore some not founds in lambda functions ([#1252](https://github.com/cloudquery/cq-provider-aws/issues/1252)) ([865e1c6](https://github.com/cloudquery/cq-provider-aws/commit/865e1c66ee8058252af69d602ad76cbb5e0038e5))
+* Lightsail alarms adjusted ([#1260](https://github.com/cloudquery/cq-provider-aws/issues/1260)) ([6f1e3a0](https://github.com/cloudquery/cq-provider-aws/commit/6f1e3a01fe119adf0e5e537a78bebed5ddc4c292))
+
 ## [0.13.0](https://github.com/cloudquery/cq-provider-aws/compare/v0.12.29...v0.13.0) (2022-07-21)
 
 
