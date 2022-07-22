@@ -91,10 +91,11 @@ func BigqueryDatasets() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "satisfies_pzs",
-				Description: "Reserved for future use",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("SatisfiesPZS"),
+				Name:          "satisfies_pzs",
+				Description:   "Reserved for future use",
+				Type:          schema.TypeBool,
+				Resolver:      schema.PathResolver("SatisfiesPZS"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "self_link",

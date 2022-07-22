@@ -800,8 +800,6 @@ func fetchComputeInstanceSchedulingNodeAffinities(ctx context.Context, meta sche
 }
 func fetchComputeInstanceServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.Instance)
-	if r.Scheduling != nil {
-		res <- r.ServiceAccounts
-	}
+	res <- r.ServiceAccounts
 	return nil
 }

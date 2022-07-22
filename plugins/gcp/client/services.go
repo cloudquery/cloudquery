@@ -16,6 +16,7 @@ import (
 	"google.golang.org/api/logging/v2"
 	"google.golang.org/api/monitoring/v3"
 	"google.golang.org/api/option"
+	"google.golang.org/api/redis/v1"
 	"google.golang.org/api/run/v1"
 	"google.golang.org/api/secretmanager/v1"
 	"google.golang.org/api/serviceusage/v1"
@@ -36,6 +37,7 @@ const (
 	DomainsService              GcpService = "domains.googleapis.com"
 	IamService                  GcpService = "iam.googleapis.com"
 	LoggingService              GcpService = "logging.googleapis.com"
+	RedisService                GcpService = "redis.googleapis.com"
 	MonitoringService           GcpService = "monitoring.googleapis.com"
 	SqlAdminService             GcpService = "sqladmin.googleapis.com"
 	StorageService              GcpService = "storage-api.googleapis.com"
@@ -54,6 +56,7 @@ type Services struct {
 	Kms             *kms.Service
 	Logging         *logging.Service
 	Monitoring      *monitoring.Service
+	Redis           *redis.Service
 	ResourceManager *cloudresourcemanager.Service
 	ServiceUsage    *serviceusage.Service
 	SecretManager   *secretmanager.Service
@@ -110,6 +113,12 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	if err != nil {
 		return nil, err
 	}
+
+	redisSvc, err := redis.NewService(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+
 	resourceManagerSvc, err := cloudresourcemanager.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
@@ -144,6 +153,7 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		Kms:             kmsSvc,
 		Logging:         loggingSvc,
 		Monitoring:      monitoringSvc,
+		Redis:           redisSvc,
 		ResourceManager: resourceManagerSvc,
 		SecretManager:   secretManagerSvc,
 		ServiceUsage:    serviceUsageManagerSvc,

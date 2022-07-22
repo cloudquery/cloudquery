@@ -115,9 +115,5 @@ func resolveBigqueryDatasetAccessTargetTypes(ctx context.Context, meta schema.Cl
 	if p.Dataset == nil {
 		return nil
 	}
-	result := make([]string, 0, len(p.Dataset.TargetTypes))
-	for _, t := range p.Dataset.TargetTypes {
-		result = append(result, t.TargetType)
-	}
-	return diag.WrapError(resource.Set(c.Name, result))
+	return diag.WrapError(resource.Set(c.Name, p.Dataset.TargetTypes))
 }

@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/cq-provider-gcp/resources/services/kms"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/kubernetes"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/logging"
+	"github.com/cloudquery/cq-provider-gcp/resources/services/memorystore"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/monitoring"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/resource_manager"
 	"github.com/cloudquery/cq-provider-gcp/resources/services/security"
@@ -68,6 +69,7 @@ func Provider() *provider.Provider {
 			"kubernetes.clusters":          kubernetes.Clusters(),
 			"logging.metrics":              logging.LoggingMetrics(),
 			"logging.sinks":                logging.LoggingSinks(),
+			"memorystore.redis_instances":  memorystore.RedisInstances(),
 			"monitoring.alert_policies":    monitoring.MonitoringAlertPolicies(),
 			"resource_manager.folders":     resource_manager.ResourceManagerFolders(),
 			"resource_manager.projects":    resource_manager.ResourceManagerProjects(),
