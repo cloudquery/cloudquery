@@ -254,7 +254,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select fetch_date as time, 1 from gcp_resources order by fetch_date desc limit 1;",
+          "rawSql": "select to_timestamp(cq_meta::JSONB->>'last_updated', 'YYYY-MM-DDTH24:MI:SS.US')::timestamp as time, 1  from gcp_compute_instances  order by time desc limit 1;",
           "refId": "A"
         }
       ],
