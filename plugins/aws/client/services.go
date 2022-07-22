@@ -383,6 +383,11 @@ type LightsailClient interface {
 	GetRelationalDatabaseSnapshots(ctx context.Context, params *lightsail.GetRelationalDatabaseSnapshotsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseSnapshotsOutput, error)
 	GetLoadBalancers(ctx context.Context, params *lightsail.GetLoadBalancersInput, optFns ...func(*lightsail.Options)) (*lightsail.GetLoadBalancersOutput, error)
 	GetLoadBalancerTlsCertificates(ctx context.Context, params *lightsail.GetLoadBalancerTlsCertificatesInput, optFns ...func(*lightsail.Options)) (*lightsail.GetLoadBalancerTlsCertificatesOutput, error)
+	GetRelationalDatabases(ctx context.Context, params *lightsail.GetRelationalDatabasesInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabasesOutput, error)
+	GetRelationalDatabaseParameters(ctx context.Context, params *lightsail.GetRelationalDatabaseParametersInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseParametersOutput, error)
+	GetRelationalDatabaseEvents(ctx context.Context, params *lightsail.GetRelationalDatabaseEventsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseEventsOutput, error)
+	GetRelationalDatabaseLogEvents(ctx context.Context, params *lightsail.GetRelationalDatabaseLogEventsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseLogEventsOutput, error)
+	GetRelationalDatabaseLogStreams(ctx context.Context, params *lightsail.GetRelationalDatabaseLogStreamsInput, optFns ...func(*lightsail.Options)) (*lightsail.GetRelationalDatabaseLogStreamsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_mq.go . MQClient
