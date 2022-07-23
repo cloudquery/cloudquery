@@ -141,9 +141,7 @@ func generateConfig(ctx context.Context, c *console.Client, providers []string, 
 		pCfg, diags := core.GetProviderConfiguration(ctx, c.PluginManager, &core.GetProviderConfigOptions{
 			Provider: c.ConvertRequiredToRegistry(p),
 		})
-		if pCfg != nil && pCfg.Format != 1 /* YAML */ {
-			diags = diags.Add(diag.FromError(fmt.Errorf("provider %s doesn't support YAML config. Please upgrade provider", p), diag.USER))
-		}
+
 		if diags.HasErrors() {
 			return nil, diags
 		}

@@ -184,4 +184,4 @@ require (
 	honnef.co/go/tools v0.3.2 // indirect
 )
 
-//replace github.com/cloudquery/cq-provider-sdk => ../cq-provider-sdk
+replace github.com/cloudquery/cq-provider-sdk => ../cq-provider-sdk
