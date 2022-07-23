@@ -308,7 +308,10 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 			Status:           sts,
 		}, d
 	}
-	diags = diags.Add(convertToConfigureDiags(resp.Diagnostics))
+	if resp.Error != "" {
+		diags = diags.Add(diag.FromError(fmt.Errorf("%s", resp.Error), diag.USER))
+	}
+
 	if diags.HasErrors() {
 		return &ProviderFetchSummary{
 			Name:             info.Provider.Name,
