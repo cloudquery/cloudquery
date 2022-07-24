@@ -2,21 +2,27 @@ package init
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/internal/firebase"
 	"github.com/cloudquery/cloudquery/pkg/config"
+	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/spf13/cobra"
 )
 
 const (
-	initShort   = "Generate initial cloudquery.yml for fetch command"
+	initShort   = "Generate initial provider.cq.yml for fetch command"
 	initExample = `
-  # Downloads aws provider and generates cloudquery.yml for aws provider
+  # Downloads aws provider and generates aws.cq.yml for aws provider
   cloudquery init aws
+	
+	# Downloads aws provider and generates aws.cq.yml for aws provider
+	cloudquery init gcp
 
-  # Downloads aws,gcp providers and generates one cloudquery.yml with both providers
-  cloudquery init aws gcp`
+	`
 )
 
 func NewCmdInit() *cobra.Command {
@@ -25,13 +31,55 @@ func NewCmdInit() *cobra.Command {
 		Short:   initShort,
 		Long:    initShort,
 		Example: initExample,
-		Args:    cobra.MinimumNArgs(1),
+		Args:    cobra.ExactArgs(1),
 		RunE:    runInit,
 	}
 	return initCmd
 }
 
 func runInit(cmd *cobra.Command, args []string) error {
+	hub := registry.NewRegistryHub(firebase.CloudQueryRegistryURL)
+	pm, err := plugin.NewManager(hub, plugin.WithAllowReattach())
+	if err != nil {
+		return fmt.Errorf("failed to create plugin manager: %w", err)
+	}
+	providerName := args[0]
+	org, name, version, err := ParseProviderCLIArg(providerName)
+	if err != nil {
+		return fmt.Errorf("failed to parse provider name: %w", err)
+	}
+
+	providerBinary, err := hub.Download(cmd.Context(),
+		registry.Provider{
+			Name:    name,
+			Version: version,
+			Source:  org,
+		},
+		false)
+	if err != nil {
+		return fmt.Errorf("failed to download provider %q: %w", providerName, err)
+	}
+	fmt.Println("Downloaded provider: ", providerBinary.Name)
+	p, err := pm.CreatePlugin(&plugin.CreationOptions{
+		Provider: registry.Provider{
+			Name:    name,
+			Version: version,
+		},
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create plugin %q: %w", providerName, err)
+	}
+	res, err := p.Provider().GetProviderConfig(cmd.Context(), &cqproto.GetProviderConfigRequest{})
+	if err != nil {
+		return fmt.Errorf("failed to get provider config %q: %w", providerName, err)
+	}
+	err = os.WriteFile(fmt.Sprintf("./%s.cq.yml", providerName), res.Config, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to write provider config %q: %w", providerName, err)
+	}
+
+	fmt.Println("Generated provider config: ", fmt.Sprintf("./%s.cq.yml", providerName))
+
 	return nil
 }
 

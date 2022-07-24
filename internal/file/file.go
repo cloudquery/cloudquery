@@ -8,7 +8,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/afero"
 )
 
@@ -36,15 +36,15 @@ func NewOsFs() *OsFs {
 // DownloadFile will download url to a local file. It's efficient because it will
 // write as it downloads and not load the whole file into memory. We pass an io.TeeReader
 // into Copy() to report progress on the download.
-func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {
-	if err := o.downloadFile(ctx, filepath, url, progressUpdater); err != nil {
+func (o *OsFs) DownloadFile(ctx context.Context, filepath, url string) error {
+	if err := o.downloadFile(ctx, filepath, url); err != nil {
 		return err
 	}
 
 	return o.fs.Rename(filepath+".tmp", filepath)
 }
 
-func (o *OsFs) downloadFile(ctx context.Context, filepath, url string, progressUpdater ui.ProgressUpdateFunc) error {
+func (o *OsFs) downloadFile(ctx context.Context, filepath, url string) error {
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := o.fs.Create(filepath + ".tmp")
@@ -68,11 +68,12 @@ func (o *OsFs) downloadFile(ctx context.Context, filepath, url string, progressU
 	}
 
 	var reader io.Reader = resp.Body
-	if progressUpdater != nil {
-		reader = progressUpdater(resp.Body, resp.ContentLength)
-	}
+	bar := progressbar.DefaultBytes(
+		resp.ContentLength,
+		"downloading",
+	)
 	// Create our progress reporter and pass it to be used alongside our writer
-	if _, err = io.Copy(out, reader); err != nil {
+	if _, err = io.Copy(io.MultiWriter(out, bar), reader); err != nil {
 		return err
 	}
 	return nil

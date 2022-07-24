@@ -26,4 +26,5 @@ database-data/*
 dest/*
 outfile
 test_init_config.yml
+*.cq.yml
 telemetry-random-id
