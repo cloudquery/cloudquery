@@ -6,7 +6,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/xo/dburl"
 )
 
@@ -33,7 +32,6 @@ type Config struct {
 }
 
 type CloudQuery struct {
-	Logger     *logging.Config   `yaml:"logging,omitempty" json:"logging,omitempty"`
 	Providers  RequiredProviders `yaml:"providers,omitempty" json:"providers,omitempty"`
 	Connection *Connection       `yaml:"connection,omitempty" json:"connection,omitempty"`
 	Policy     *Policy           `yaml:"policy,omitempty" json:"policy,omitempty"`

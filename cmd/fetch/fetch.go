@@ -2,7 +2,6 @@ package fetch
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 const (
@@ -21,13 +20,10 @@ func NewCmdFetch() *cobra.Command {
 		Short:   fetchShort,
 		Long:    fetchLong,
 		Example: fetchExample,
+		Args:    cobra.ExactArgs(1),
 		RunE:    fetch,
 	}
-	fetchCmd.Flags().Bool("skip-schema-upgrade", false, "skip schema upgrade of provider fetch, disabling this flag might cause issues")
-	_ = viper.BindPFlag("skip-schema-upgrade", fetchCmd.Flags().Lookup("skip-schema-upgrade"))
-	fetchCmd.Flags().Bool("redact-diags", false, "show redacted diagnostics only")
-	_ = viper.BindPFlag("redact-diags", fetchCmd.Flags().Lookup("redact-diags"))
-	_ = fetchCmd.Flags().MarkHidden("redact-diags")
+
 	return fetchCmd
 }
 

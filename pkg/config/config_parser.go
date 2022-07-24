@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/Masterminds/semver/v3"
-	"github.com/cloudquery/cloudquery/internal/logging"
 	"github.com/spf13/viper"
 	"github.com/xeipuuv/gojsonschema"
 	"gopkg.in/yaml.v3"
@@ -126,8 +125,6 @@ func decodeConfig(r io.Reader) (*Config, *gojsonschema.Result, error) {
 		Providers  []*Provider `yaml:"providers" json:"providers"`
 	}
 
-	lgc := logging.GlobalConfig
-	yc.CloudQuery.Logger = &lgc
 	d := yaml.NewDecoder(r)
 	d.KnownFields(true)
 	if err := d.Decode(&yc); err != nil {

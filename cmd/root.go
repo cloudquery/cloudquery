@@ -50,7 +50,6 @@ func newCmdRoot() *cobra.Command {
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
-			bindFlags(cmd, viper.GetViper())
 			zerolog.Logger = NewLogger()
 			initSentry()
 
@@ -104,7 +103,7 @@ func newCmdRoot() *cobra.Command {
 			panic(err)
 		}
 	}
-
+	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(
 		initCmd.NewCmdInit(), fetch.NewCmdFetch(), policy.NewCmdPolicy(), provider.NewCmdProvider(),
@@ -133,15 +132,6 @@ func initViper() {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
-}
-
-// Bind each cobra flag to its associated viper configuration (config file and environment variable)
-func bindFlags(cmd *cobra.Command, v *viper.Viper) {
-	cmd.Flags().VisitAll(func(f *pflag.Flag) {
-		if err := v.BindPFlag(f.Name, f); err != nil {
-			panic(err)
-		}
-	})
 }
 
 func initAnalytics() {
