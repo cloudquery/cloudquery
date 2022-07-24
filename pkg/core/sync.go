@@ -5,14 +5,12 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
-	"strings"
 
 	"github.com/cloudquery/cloudquery/pkg/core/state"
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/migration"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/georgysavva/scany/pgxscan"
@@ -52,12 +50,12 @@ func (s SyncState) String() string {
 	return "Unknown"
 }
 
-func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) (*SyncResult, diag.Diagnostics) {
+func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) (*SyncResult, error) {
 	log.Info().Stringer("provider", provider).Msg("syncing provider schema")
 
-	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
-	if diags.HasDiags() {
-		return nil, diags
+	s, err := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
+	if err != nil {
+		return nil, err
 	}
 
 	provider.Version = s.Version // override any "latest"
@@ -69,12 +67,12 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 	}
 
 	if want.ParsedVersion == nil {
-		return nil, diag.FromError(fmt.Errorf("expected provider version from schema to be a valid semantic version but got %q. If you're trying to debug a provider %s", s.Version, ui.Link("see our docs", "https://docs.cloudquery.io/docs/developers/debugging")), diag.USER)
+		return nil, fmt.Errorf("expected provider version from schema to be a valid semantic version but got %q. If you're trying to debug a provider %s", s.Version, ui.Link("see our docs", "https://docs.cloudquery.io/docs/developers/debugging"))
 	}
 
 	cur, err := sta.GetProvider(ctx, provider)
 	if err != nil {
-		return nil, diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+		return nil, fmt.Errorf("state failed: %w", err)
 	}
 
 	res := &SyncResult{
@@ -97,47 +95,47 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("downgrading provider schema")
 		res.State = Downgraded
 	default:
-		return nil, diag.FromError(fmt.Errorf("sync: unhandled case"), diag.INTERNAL)
+		return nil, fmt.Errorf("sync: unhandled case")
 	}
 
 	if res.State != NoChange {
-		diags = diags.Add(syncTables(ctx, sta, cur, want, s.ResourceTables))
+		// TODO
 	}
 
-	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Uint64("errors", diags.Errors()).Msg("provider sync complete")
-	return res, diags
+	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Uint64("errors", 0).Msg("provider sync complete")
+	return res, nil
 }
 
-func Drop(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
+func Drop(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) error {
 	log.Warn().Stringer("provider", provider).Msg("dropping provider schema")
-	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
-	if diags.HasDiags() {
-		return diags
+	s, err := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
+	if err != nil {
+		return err
 	}
 
 	tx, err := sta.ProviderSync(ctx)
 	if err != nil {
-		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+		return fmt.Errorf("state failed: %w", err)
 	}
 	defer tx.Rollback(ctx) // nolint:errcheck
 
 	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
-	if diags := dropProviderTables(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); diags.HasDiags() {
-		return diags
+	if err := dropProviderTables(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); err != nil {
+		return err
 	}
 
 	if err := tx.UninstallProvider(ctx, provider); err != nil {
-		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+		return fmt.Errorf("state failed: %w", err)
 	}
 
 	if err := tx.Commit(ctx); err != nil {
-		return diag.FromError(err, diag.DATABASE)
+		return fmt.Errorf("failed to commit: %w", err)
 	}
 
 	return nil
 }
 
-func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provider, resourceTables map[string]*schema.Table) diag.Diagnostics {
+func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provider, resourceTables map[string]*schema.Table) error {
 	want.Tables = resourceTableNames(resourceTables)
 	want.Signatures = resourceSignatures(resourceTables)
 
@@ -155,39 +153,39 @@ func syncTables(ctx context.Context, sta *state.Client, cur, want *state.Provide
 
 	tx, err := sta.ProviderSync(ctx)
 	if err != nil {
-		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+		return fmt.Errorf("state failed: %w", err)
 	}
 	defer tx.Rollback(ctx) // nolint:errcheck
 
 	// If a single SQL fails, all following commands also fail with "current transaction is aborted"
-	if diags := dropProviderTables(ctx, tx, want.Registry(), curTables, curSignatures, want.Signatures); diags.HasErrors() {
-		return diags
+	if err := dropProviderTables(ctx, tx, want.Registry(), curTables, curSignatures, want.Signatures); err != nil {
+		return err
 	}
-	if diags := createProviderTables(ctx, tx, resourceTables); diags.HasErrors() {
-		return diags
+	if err := createProviderTables(ctx, tx, resourceTables); err != nil {
+		return err
 	}
 
 	if err := tx.UninstallProvider(ctx, want.Registry()); err != nil {
-		return diag.FromError(fmt.Errorf("uninstall provider failed: %w", err), diag.INTERNAL)
+		return fmt.Errorf("uninstall failed: %w", err)
 	}
 
 	if err := tx.InstallProvider(ctx, want); err != nil {
-		return diag.FromError(fmt.Errorf("state failed: %w", err), diag.INTERNAL)
+		return fmt.Errorf("state failed: %w", err)
 	}
 
 	if err := tx.Commit(ctx); err != nil {
-		return diag.FromError(err, diag.DATABASE)
+		return fmt.Errorf("commit failed: %w", err)
 	}
 
 	return nil
 }
 
-func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) (diags diag.Diagnostics) {
+func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider registry.Provider, tableNames map[string][]string, curSignatures, wantSignatures map[string]string) error {
 	{
 		migTable := fmt.Sprintf("%s_%s_schema_migrations", provider.Source, provider.Name)
 		q := fmt.Sprintf(dropTableSQL, strconv.Quote(migTable))
 		if err := db.Exec(ctx, q); err != nil {
-			return diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(migTable))
+			return fmt.Errorf("failed to drop %s: %w", migTable, err)
 		}
 	}
 
@@ -202,42 +200,38 @@ func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider 
 		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("deleting tables and all relations")
 		for _, t := range tables {
 			if !force {
-				diags = diags.Add(safeToDropTable(ctx, db, name, t))
-			}
-			if diags.HasErrors() { // Don't actually drop any table if we have safety warnings
-				continue
+				if err := safeToDropTable(ctx, db, name, t); err != nil {
+					return err
+				}
 			}
 			if err := db.Exec(ctx, fmt.Sprintf(dropTableSQL, strconv.Quote(t))); err != nil {
-				diags = diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("drop table failed"), diag.WithResourceName(t)))
-				return diags
+				return err
 			}
 		}
 	}
 
-	return diags
+	return nil
 }
 
-func createProviderTables(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func createProviderTables(ctx context.Context, db execution.QueryExecer, resourceTables map[string]*schema.Table) error {
 	// We didn't filter which tables we already have in the DB (and didn't drop due to signature matches) and trust that all CREATE TABLE statements will have IF NOT EXISTS
 	for _, t := range sort.StringSlice(funk.Keys(resourceTables).([]string)) {
 		up, err := migration.CreateTableDefinitions(ctx, schema.PostgresDialect{}, resourceTables[t], nil)
 		if err != nil {
-			diags = diags.Add(diag.FromError(err, diag.INTERNAL, diag.WithSummary("failed to get create table definition"), diag.WithResourceName(t)))
+			log.Err(err)
 			continue
 		}
 		for _, sql := range up {
 			if err := db.Exec(ctx, sql); err != nil {
-				return diags.Add(diag.FromError(err, diag.DATABASE, diag.WithSummary("error creating table"), diag.WithResourceName(t)))
+				return fmt.Errorf("failed to create table %s: %w", t, err)
 			}
 		}
 	}
 
-	return diags
+	return nil
 }
 
-func safeToDropTable(ctx context.Context, db execution.QueryExecer, resName, table string) diag.Diagnostics {
+func safeToDropTable(ctx context.Context, db execution.QueryExecer, resName, table string) error {
 	rows, err := db.Query(ctx, `
 SELECT DISTINCT CONCAT(dependent_ns.nspname, '.', dependent_view.relname) as dependent_view
 FROM pg_depend
@@ -250,20 +244,16 @@ JOIN pg_namespace source_ns ON source_ns.oid = source_table.relnamespace
 WHERE source_ns.nspname = current_schema() AND source_table.relname = $1 AND pg_attribute.attnum > 0 ORDER BY 1
 `, table)
 	if err != nil {
-		return diag.FromError(err, diag.DATABASE, diag.WithSummary("error checking dependent views"))
+		return fmt.Errorf("failed to query dependent views: %w", err)
 	}
 
 	var dependentViews []string
 	if err := pgxscan.ScanAll(&dependentViews, rows); err != nil {
-		return diag.FromError(err, diag.DATABASE)
+		return err
 	}
 
 	if len(dependentViews) > 0 {
-		return diag.Diagnostics{diag.NewBaseError(nil, diag.USER,
-			diag.WithSummary("One or more views depend on table %q, which is about to be dropped. Run with --force-drop to override this message, which will drop ALL dependent views.", table),
-			diag.WithDetails("%s", strings.Join(dependentViews, ", ")),
-			diag.WithResourceName(resName),
-		)}
+		return fmt.Errorf("One or more views depend on table %q, which is about to be dropped. Run with --force-drop to override this message, which will drop ALL dependent views.")
 	}
 
 	return nil

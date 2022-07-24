@@ -7,7 +7,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/jackc/pgconn"
 	"github.com/lib/pq"
 	gcodes "google.golang.org/grpc/codes"
@@ -29,26 +28,6 @@ const (
 )
 
 var sqlStateRegex = regexp.MustCompile(`\(SQLSTATE ([0-9A-Z]{5})\)`)
-
-// ShouldIgnoreDiag checks the wire-transferred diagnostic against errors we don't want to process.
-func ShouldIgnoreDiag(d diag.Diagnostic) bool {
-	if d.Severity() == diag.IGNORE ||
-		(d.Severity() == diag.WARNING && (d.Type() == diag.ACCESS || d.Type() == diag.THROTTLE)) ||
-		d.Type() == diag.USER {
-		return true
-	}
-
-	if d.Type() == diag.DATABASE {
-		ret := sqlStateRegex.FindStringSubmatch(d.Error())
-		if len(ret) > 1 && shouldIgnorePgCode(ret[1]) {
-			return true
-		}
-		if classifyError(d) == errConn {
-			return true
-		}
-	}
-	return false
-}
 
 // classifyError classifies given error by type and internals. Successfully classified (not errNoClass) errors don't get reported to sentry.
 func classifyError(err error) errClass {
@@ -112,12 +91,4 @@ func shouldIgnorePgCode(code string) bool {
 		}
 	}
 	return false
-}
-
-func isSentryDiagnostic(d diag.Diagnostic) (bool, map[string]string, bool) {
-	cd, ok := diag.UnsquashDiag(d).(sentryDiag)
-	if !ok {
-		return false, nil, false
-	}
-	return cd.IsSentryDiagnostic()
 }

@@ -2,7 +2,6 @@ package core
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -20,7 +19,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
@@ -46,9 +44,6 @@ type ResourceFetchSummary struct {
 	Status string `json:"status,omitempty"`
 	// Total Amount of resources collected by this resource
 	ResourceCount uint64 `json:"resource_count,omitempty"`
-	// Diagnostics of failed resource fetch, the diagnostic provides insights such as severity, summary and
-	// details on how to solve this issue
-	Diagnostics diag.Diagnostics `json:"-"`
 	// TelemetryEvents is a list of telemetry events that occurred during the fetch
 	TelemetryEvents []analytics.TelemetryEvent `json:"-"`
 	// Duration in seconds
@@ -99,7 +94,6 @@ type FetchOptions struct {
 
 type fetchResult struct {
 	summary *ProviderFetchSummary
-	diags   diag.Diagnostics
 }
 
 const (
@@ -142,14 +136,6 @@ func (p ProviderFetchSummary) String() string {
 	return p.Name
 }
 
-func (p ProviderFetchSummary) Diagnostics() diag.Diagnostics {
-	var allDiags diag.Diagnostics
-	for _, s := range p.FetchedResources {
-		allDiags = append(allDiags, s.Diagnostics...)
-	}
-	return allDiags
-}
-
 func (p ProviderFetchSummary) Properties() map[string]interface{} {
 	rd := make(map[string]float64, len(p.FetchedResources))
 	for rn, r := range p.FetchedResources {
@@ -162,7 +148,6 @@ func (p ProviderFetchSummary) Properties() map[string]interface{} {
 		"fetch_total_resources_count": p.TotalResourcesFetched,
 		"fetch_resources_durations":   rd,
 		"fetch_duration":              math.Round(p.Duration.Seconds()*100) / 100,
-		"fetch_diags":                 analytics.SummarizeDiagnostics(p.Diagnostics()),
 		"fetch_status":                p.Status.String(),
 	}
 }
@@ -186,22 +171,13 @@ func (f FetchUpdate) DoneCount() int {
 	return count
 }
 
-func (fr FetchResponse) HasErrors() bool {
-	for _, p := range fr.ProviderFetchSummary {
-		if p.Diagnostics().HasErrors() {
-			return true
-		}
-	}
-	return false
-}
-
-func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (res *FetchResponse, diagnostics diag.Diagnostics) {
+func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm *plugin.Manager, opts *FetchOptions) (*FetchResponse, error) {
 	var err error
 	fetchId := opts.FetchId
 	if fetchId == uuid.Nil {
 		fetchId, err = uuid.NewUUID()
 		if err != nil {
-			return nil, diag.FromError(err, diag.INTERNAL)
+			return nil, fmt.Errorf("failed to generate fetch id: %w", err)
 		}
 	}
 	// set metadata we want to pass to
@@ -209,7 +185,6 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("received fetch request")
 
 	var (
-		diags          diag.Diagnostics
 		fetchSummaries = make(chan fetchResult, len(opts.ProvidersInfo))
 		wg             sync.WaitGroup
 		start          = time.Now()
@@ -217,28 +192,27 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 
 	dsnURI, err := parseDSN(storage)
 	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, fmt.Errorf("failed to parse dsn: %w", err)
 	}
 	for _, providerInfo := range opts.ProvidersInfo {
 		if len(providerInfo.Config.Resources) == 0 {
 			log.Warn().Str("provider", providerInfo.Config.Name).Str("alias", providerInfo.Config.Alias).Msg("skipping provider which configured with 0 resources to fetch")
-			diags = diags.Add(diag.FromError(nil, diag.INTERNAL, diag.WithSeverity(diag.WARNING), diag.WithSummary("skipping provider %s which configured with 0 resources to fetch", providerInfo.Config.Name)))
 			continue
 		}
 		wg.Add(1)
 		go func(info ProviderInfo) {
 			defer wg.Done()
 			start := time.Now()
-			s, d := runProviderFetch(ctx, pm, info, dsnURI, metadata, opts)
+			s, _ := runProviderFetch(ctx, pm, info, dsnURI, metadata, opts)
 			if _, ok := ctx.Deadline(); ok {
-				fetchSummaries <- fetchResult{s, d}
+				fetchSummaries <- fetchResult{s}
 				return
 			}
 			// TODO: if context deadline exceeds in fetch, do we still want to run the save?
 			if err := sta.SaveFetchSummary(ctx, createFetchSummary(fetchId, start, s)); err != nil {
-				d = d.Add(diag.FromError(err, diag.INTERNAL))
+				log.Error().Err(err).Msg("failed to save fetch summary")
 			}
-			fetchSummaries <- fetchResult{s, d}
+			fetchSummaries <- fetchResult{s}
 		}(providerInfo)
 	}
 	wg.Wait()
@@ -250,18 +224,13 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 	close(fetchSummaries)
 	for ps := range fetchSummaries {
 		response.ProviderFetchSummary[ps.summary.String()] = ps.summary
-		if ps.diags.HasDiags() {
-			diags = diags.Add(ps.diags)
-		}
 		response.TotalFetched += ps.summary.TotalResourcesFetched
 	}
-	events, filtered := analytics.FilterTelemetryEvents(diags)
-	response.TelemetryEvents = events
-	return response, filtered
+
+	return response, nil
 }
 
-func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsnURI string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, diag.Diagnostics) {
-	var diags diag.Diagnostics
+func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo, dsnURI string, metadata map[string]interface{}, opts *FetchOptions) (*ProviderFetchSummary, error) {
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
@@ -273,7 +242,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	})
 	if err != nil {
 		pLog.Error().Err(err).Msg("failed to create provider plugin")
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, fmt.Errorf("failed to create provider plugin: %w", err)
 	}
 	defer pm.ClosePlugin(providerPlugin)
 
@@ -286,50 +255,19 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		Config: cfg.ConfigBytes,
 	})
 	if err != nil {
-		pLog.Error().Err(err).Msg("failed to configure provider")
-		var (
-			d   diag.Diagnostics
-			sts FetchStatus
-		)
-
-		if cqerrors.IsCancelation(err) {
-			d = cqerrors.CancelationDiag(err)
-			sts = FetchCanceled
-		} else {
-			d = diag.FromError(err, diag.INTERNAL)
-			sts = FetchConfigureFailed
-		}
-
-		return &ProviderFetchSummary{
-			Name:             info.Provider.Name,
-			Alias:            info.Config.Alias,
-			Version:          providerPlugin.Version(),
-			FetchedResources: make(map[string]ResourceFetchSummary),
-			Status:           sts,
-		}, d
+		return nil, fmt.Errorf("failed to configure provider: %w", err)
 	}
 	if resp.Error != "" {
-		diags = diags.Add(diag.FromError(fmt.Errorf("%s", resp.Error), diag.USER))
-	}
-
-	if diags.HasErrors() {
-		return &ProviderFetchSummary{
-			Name:             info.Provider.Name,
-			Alias:            info.Config.Alias,
-			Version:          providerPlugin.Version(),
-			FetchedResources: make(map[string]ResourceFetchSummary),
-			Status:           FetchConfigureFailed,
-		}, diags
+		return nil, fmt.Errorf("failed to configure provider with message: %w", resp.Error)
 	}
 
 	pLog.Info().Msg("provider configured successfully")
-	summary, fetchDiags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
-	diags = diags.Add(convertToFetchDiags(fetchDiags, info.Provider.Name, providerPlugin.Version()))
+	summary, err := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
 
-	return summary, diags
+	return summary, err
 }
 
-func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, diag.Diagnostics) {
+func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugin.Plugin, info ProviderInfo, metadata map[string]interface{}, callback FetchUpdateCallback) (*ProviderFetchSummary, error) {
 	var (
 		start   = time.Now()
 		summary = &ProviderFetchSummary{
@@ -340,7 +278,6 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 			Status:                FetchFinished,
 			TotalResourcesFetched: 0,
 		}
-		diags diag.Diagnostics
 	)
 	// Set fetch duration one function end
 	defer func() {
@@ -348,10 +285,9 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 	}()
 
 	var resources []string
-	resources, diags = normalizeResources(ctx, providerPlugin, info.Config.Resources, info.Config.SkipResources)
-	if diags.HasErrors() {
-		summary.Status = FetchFailed
-		return summary, diags
+	resources, err := normalizeResources(ctx, providerPlugin, info.Config.Resources, info.Config.SkipResources)
+	if err != nil {
+		return nil, err
 	}
 
 	pLog.Info().Msg("provider started fetching resources")
@@ -365,7 +301,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 		})
 	if err != nil {
 		summary.Status = FetchFailed
-		return summary, diag.FromError(err, diag.INTERNAL)
+		return summary, fmt.Errorf("failed to fetch resources: %w", err)
 	}
 
 	for {
@@ -381,52 +317,38 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 					Version:           providerPlugin.Version(),
 					FinishedResources: resp.FinishedResources,
 					ResourceCount:     resp.ResourceCount,
-					DiagnosticCount:   diags.BySeverity(diag.WARNING, diag.ERROR, diag.PANIC).Len(),
 				})
 				// pLog.Debug().Str("resource", resp.ResourceName).Uint64("finishedCount", resp.ResourceCount).
 				//	Bool("finished", update.AllDone()).Int("finishCount", update.DoneCount()).Msg("received fetch update")
 			}
 			summary.TotalResourcesFetched += resp.ResourceCount
-			events, rdiags := analytics.FilterTelemetryEvents(resp.Summary.Diagnostics)
-			summary.FetchedResources[resp.ResourceName] = ResourceFetchSummary{
-				resp.Summary.Status.String(),
-				resp.Summary.ResourceCount,
-				rdiags,
-				events,
-				time.Since(start),
-			}
+			summary.FetchedResources[resp.ResourceName] = ResourceFetchSummary{}
 			if resp.Error != "" {
 				pLog.Warn().Err(err).Str("resource", resp.ResourceName).Msg("received resource fetch error")
-				diags = diags.Add(diag.FromError(errors.New(resp.Error), diag.RESOLVING, diag.WithResourceName(resp.ResourceName)))
 			}
 			// TODO: print diags, specific to resource into log?
-			if rdiags.HasDiags() {
-				pLog.Warn().Str("resource", resp.ResourceName).Msg("received resource fetch diagnostics")
-				diags = diags.Add(rdiags)
-			}
 		case io.EOF:
 			// This case means the stream closed peacefully, i.e the provider finished without any error
 			pLog.Info().TimeDiff("execution", time.Now(), start).Msg("provider finished fetch")
-			return summary, diags
+			return summary, nil
 		default:
 			if callback != nil {
 				callback(FetchUpdate{
-					Name:            info.Provider.Name,
-					Alias:           info.Config.Alias,
-					Version:         providerPlugin.Version(),
-					Error:           err.Error(),
-					DiagnosticCount: diags.Len(),
+					Name:    info.Provider.Name,
+					Alias:   info.Config.Alias,
+					Version: providerPlugin.Version(),
+					Error:   err.Error(),
 				})
 			}
 			// We received an error, first lets check if we got canceled, if not we log the error and add to diags
 			if cqerrors.IsCancelation(err) {
 				pLog.Warn().TimeDiff("execution", time.Now(), start).Msg("provider fetch was canceled")
 				summary.Status = FetchCanceled
-				return summary, diags.Add(cqerrors.CancelationDiag(err))
+				return summary, err
 			}
 			pLog.Error().Err(err).Msg("received unexpected provider fetch error")
 			summary.Status = FetchFailed
-			return summary, diags.Add(diag.FromError(err, diag.INTERNAL))
+			return summary, err
 		}
 	}
 }
@@ -436,20 +358,26 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 // * wildcard expansion
 // * verify no unknown resources
 // * verify no duplicate resources
-func normalizeResources(ctx context.Context, provider plugin.Plugin, resources, skip []string) ([]string, diag.Diagnostics) {
+func normalizeResources(ctx context.Context, provider plugin.Plugin, resources, skip []string) ([]string, error) {
 	s, err := provider.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, fmt.Errorf("failed to get provider schema: %w", err)
 	}
 
 	return doNormalizeResources(resources, skip, s.ResourceTables)
 }
 
 // doNormalizeResources matches the given two resource lists to all provider resources and returns the requested resources (excluding skip resources) as another list.
-func doNormalizeResources(resources, skip []string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
-	useRes, diags := doGlobResources(resources, false, all)
-	skipRes, dd := doGlobResources(skip, true, all)
-	return funk.Subtract(useRes, skipRes).([]string), diags.Add(dd)
+func doNormalizeResources(resources, skip []string, all map[string]*schema.Table) ([]string, error) {
+	useRes, err := doGlobResources(resources, false, all)
+	if err != nil {
+		return nil, err
+	}
+	skipRes, err := doGlobResources(skip, true, all)
+	if err != nil {
+		return nil, err
+	}
+	return funk.Subtract(useRes, skipRes).([]string), nil
 }
 
 // doGlobResources returns a canonical list of resources given a list of requested and all known resources.
@@ -458,11 +386,11 @@ func doNormalizeResources(resources, skip []string, all map[string]*schema.Table
 // * wildcard is present and other explicit resource is requested;
 // * one of explicitly requested resources is not present in all known;
 // * some resource is specified more than once (duplicate).
-func doGlobResources(requested []string, allowWild bool, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
+func doGlobResources(requested []string, allowWild bool, all map[string]*schema.Table) ([]string, error) {
 	if allowWild {
 		for _, s := range requested {
 			if s == "*" {
-				return nil, diag.FromError(fmt.Errorf("wildcard resource can only be in the requested resources list"), diag.USER, diag.WithDetails("you can only use * in the resources part of the configuration"))
+				return nil, fmt.Errorf("wildcard resource is not allowed")
 			}
 		}
 	} else if len(requested) == 1 && requested[0] == "*" {
@@ -476,11 +404,11 @@ func doGlobResources(requested []string, allowWild bool, all map[string]*schema.
 	seen := make(map[string]struct{})
 	for _, r := range requested {
 		if r == "" {
-			return nil, diag.FromError(errors.New("invalid resource"), diag.USER, diag.WithDetails("empty resource names are not allowed"))
+			return nil, fmt.Errorf("empty not allowed")
 		}
 
 		if _, ok := seen[r]; ok {
-			return nil, diag.FromError(fmt.Errorf("resource %q is duplicate", r), diag.USER, diag.WithDetails("configuration has duplicate resources"))
+			return nil, fmt.Errorf("resource %q is duplicate", r)
 		}
 		seen[r] = struct{}{}
 
@@ -490,14 +418,14 @@ func doGlobResources(requested []string, allowWild bool, all map[string]*schema.
 		}
 
 		if r == "*" {
-			return nil, diag.FromError(fmt.Errorf("wildcard resource must be the only one in the list"), diag.USER, diag.WithDetails("you can only use * or a list of resources in configuration, but not both"))
+			return nil, fmt.Errorf("wildcard resource must be the only one in the list")
 		}
 
-		switch globMatches, diags := matchResourceGlob(r, all); {
-		case diags.HasDiags():
-			return nil, diags
+		switch globMatches, err := matchResourceGlob(r, all); {
+		case err != nil:
+			return nil, err
 		case len(globMatches) == 0:
-			return nil, diag.FromError(fmt.Errorf("resource %q does not exist", r), diag.USER, diag.WithDetails("configuration refers to a non-existing resource. Maybe you recently downgraded the provider but kept the config, or a typo perhaps?"))
+			return nil, fmt.Errorf("resource %q does not exist", r)
 		default:
 			result = append(result, globMatches...)
 		}
@@ -508,13 +436,13 @@ func doGlobResources(requested []string, allowWild bool, all map[string]*schema.
 
 // matchResourceGlob matches pattern to the given resources, returns matched resources or diags
 // pattern should end with .*, exact matches are not handled.
-func matchResourceGlob(pattern string, all map[string]*schema.Table) ([]string, diag.Diagnostics) {
+func matchResourceGlob(pattern string, all map[string]*schema.Table) ([]string, error) {
 	var result []string
 	wildPos := strings.Index(pattern, ".*")
 
 	if wildPos > 0 {
 		if wildPos != len(pattern)-2 { // make sure it ends with .*
-			return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("resource match should end with `.*`"))
+			return nil, fmt.Errorf("resource match should end with `.*`")
 		}
 		for k := range all {
 			if strings.HasPrefix(k, pattern[:wildPos+1]) { // include the "." in the match
@@ -522,7 +450,7 @@ func matchResourceGlob(pattern string, all map[string]*schema.Table) ([]string, 
 			}
 		}
 	} else if wildPos == 0 || strings.Contains(pattern, "*") {
-		return nil, diag.FromError(errors.New("invalid wildcard syntax"), diag.USER, diag.WithDetails("you can only use `*` or `resource.*` or full resource name"))
+		return nil, fmt.Errorf("invalid wildcard syntax")
 	}
 
 	return result, nil
@@ -542,9 +470,7 @@ func createFetchSummary(fetchId uuid.UUID, start time.Time, ps *ProviderFetchSum
 		CreatedAt:          time.Now().UTC(),
 		Start:              start,
 		Finish:             time.Now().UTC(),
-		IsSuccess:          !ps.Diagnostics().HasErrors(),
 		TotalResourceCount: ps.TotalResourcesFetched,
-		TotalErrorsCount:   ps.Diagnostics().Errors(),
 		ProviderName:       ps.Name,
 		ProviderAlias:      ps.Alias,
 		ProviderVersion:    ps.Version,
@@ -559,7 +485,6 @@ func parseFetchedResources(resources map[string]ResourceFetchSummary) []state.Re
 		rfs = append(rfs, state.ResourceFetchSummary{
 			ResourceName:  k,
 			Status:        v.Status,
-			Error:         v.Diagnostics.Error(),
 			ResourceCount: v.ResourceCount,
 		})
 	}

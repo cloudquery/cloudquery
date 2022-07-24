@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/rs/zerolog/log"
 )
 
@@ -22,18 +21,18 @@ type ProviderSchema struct {
 	Unmanaged       bool
 }
 
-func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *GetProviderSchemaOptions) (*ProviderSchema, diag.Diagnostics) {
+func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *GetProviderSchemaOptions) (*ProviderSchema, error) {
 	log.Info().Stringer("provider", request.Provider).Msg("requesting provider schema")
 	providerPlugin, err := manager.CreatePlugin(&plugin.CreationOptions{Provider: request.Provider})
 	if err != nil {
 		log.Error().Stringer("provider", request.Provider).Err(err).Msg("failed to create provider plugin")
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, err
 	}
 	defer manager.ClosePlugin(providerPlugin)
 
 	schema, err := providerPlugin.Provider().GetProviderSchema(ctx, &cqproto.GetProviderSchemaRequest{})
 	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, err
 	}
 	log.Debug().Stringer("provider", request.Provider).Msg("retrieved provider schema successfully")
 	// set version if schema didn't return it.

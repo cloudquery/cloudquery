@@ -3,7 +3,6 @@ package config
 import (
 	"bytes"
 	_ "embed"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -13,7 +12,6 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
 	"github.com/xeipuuv/gojsonschema"
 	"gopkg.in/yaml.v3"
@@ -22,22 +20,23 @@ import (
 //go:embed schema.json
 var configSchemaYAML []byte
 
-func (p *Parser) LoadConfigFromSource(data []byte) (*Config, diag.Diagnostics) {
+func (p *Parser) LoadConfigFromSource(data []byte) (*Config, *gojsonschema.Result, error) {
 	newData := os.Expand(string(data), p.getVariableValue)
-	config, diags := decodeConfig(strings.NewReader(newData))
-
-	if diags.HasErrors() {
-		return nil, diags
+	config, results, err := decodeConfig(strings.NewReader(newData))
+	if err != nil || !results.Valid() {
+		return nil, results, err
 	}
 
-	diags = diags.Add(ProcessConfig(config))
-	return config, diags
+	if err := ProcessConfig(config); err != nil {
+		return nil, nil, err
+	}
+	return config, nil, nil
 }
 
-func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
-	contents, diags := p.LoadFile(path)
-	if diags.HasErrors() {
-		return nil, diags
+func (p *Parser) LoadConfigFile(path string) (*Config, *gojsonschema.Result, error) {
+	contents, err := p.LoadFile(path)
+	if err != nil {
+		return nil, nil, err
 	}
 	return p.LoadConfigFromSource(contents)
 }
@@ -47,16 +46,15 @@ func (p *Parser) LoadConfigFile(path string) (*Config, diag.Diagnostics) {
 // 2. Overrides configuration values from CLI flags
 // 3. Validates the configuration provided by the user
 // 4. Normalizes the configuration to make it easier to use
-func ProcessConfig(config *Config) diag.Diagnostics {
+func ProcessConfig(config *Config) error {
 	assignDefaults(config)
 	overrideFromCLIFlags(config)
-	diags := validate(config)
-	if diags.HasErrors() {
-		return diags
+	if err := validate(config); err != nil {
+		return err
 	}
 
 	normalize(config)
-	return diags
+	return nil
 }
 
 func ParseVersion(version string) (*semver.Version, error) {
@@ -71,13 +69,18 @@ func isVersionLatest(version string) bool {
 	return version == "latest"
 }
 
-func validate(config *Config) diag.Diagnostics {
-	var diags diag.Diagnostics
+func validate(config *Config) error {
+	if err := validateCloudQueryProviders(config.CloudQuery.Providers); err != nil {
+		return err
+	}
+	if err := validateConnection(config.CloudQuery.Connection); err != nil {
+		return err
+	}
 
-	diags = diags.Add(validateCloudQueryProviders(config.CloudQuery.Providers))
-	diags = diags.Add(validateConnection(config.CloudQuery.Connection))
-
-	return diags.Add(validateProvidersBlock(config))
+	if err := validateProvidersBlock(config); err != nil {
+		return err
+	}
+	return nil
 }
 
 func assignDefaults(config *Config) {
@@ -102,9 +105,7 @@ func overrideFromCLIFlags(config *Config) {
 	}
 }
 
-func validateCloudQueryProviders(providers RequiredProviders) diag.Diagnostics {
-	var diags diag.Diagnostics
-
+func validateCloudQueryProviders(providers RequiredProviders) error {
 	for _, cp := range providers {
 		if isVersionLatest(cp.Version) {
 			continue
@@ -112,14 +113,14 @@ func validateCloudQueryProviders(providers RequiredProviders) diag.Diagnostics {
 
 		_, err := ParseVersion(cp.Version)
 		if err != nil {
-			diags = diags.Add(diag.FromError(fmt.Errorf("Provider %q version %q is invalid. Please set to 'latest' a or valid semantic version", cp.Name, cp.Version), diag.USER))
+			return fmt.Errorf("Provider %q version %q is invalid. Please set to 'latest' a or valid semantic version", cp.Name, cp.Version)
 		}
 	}
 
-	return diags
+	return nil
 }
 
-func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
+func decodeConfig(r io.Reader) (*Config, *gojsonschema.Result, error) {
 	var yc struct {
 		CloudQuery CloudQuery  `yaml:"cloudquery" json:"cloudquery"`
 		Providers  []*Provider `yaml:"providers" json:"providers"`
@@ -130,60 +131,45 @@ func decodeConfig(r io.Reader) (*Config, diag.Diagnostics) {
 	d := yaml.NewDecoder(r)
 	d.KnownFields(true)
 	if err := d.Decode(&yc); err != nil {
-		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to parse yaml"))
+		return nil, nil, fmt.Errorf("failed to decode config: %w", err)
 	}
 
 	schemaLoader := gojsonschema.NewBytesLoader(configSchemaYAML)
 	documentLoader := gojsonschema.NewGoLoader(yc)
 	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
 	if err != nil {
-		return nil, diag.FromError(err, diag.USER, diag.WithSummary("Failed to validate config"))
+		return nil, nil, fmt.Errorf("failed to validate config: %w", err)
 	}
 	if !result.Valid() {
-		errs := result.Errors()
-		if len(errs) == 0 {
-			return nil, diag.FromError(errors.New("Failed to validate config with schema"), diag.USER, diag.WithSummary("Invalid configuration"))
-		}
-		var diags diag.Diagnostics
-		for _, e := range errs {
-			diags = diags.Add(
-				diag.FromError(errors.New(e.String()), diag.USER, diag.WithDetails("%s", e.Description()), diag.WithSummary("Config field %q has error of type %s", e.Field(), e.Type())),
-			)
-		}
-		return nil, diags
+		return nil, result, nil
 	}
 
 	providers := yc.Providers
 	for _, p := range providers {
 		p.ConfigBytes, err = yaml.Marshal(p.Configuration)
 		if err != nil {
-			return nil, diag.FromError(err, diag.INTERNAL, diag.WithSummary("Configuration marshal failed"))
+			return nil, nil, fmt.Errorf("failed to marshal provider configuration: %w", err)
 		}
 	}
 
 	return &Config{
 		CloudQuery: yc.CloudQuery,
 		Providers:  providers,
-	}, nil
+	}, nil, nil
 }
 
-func validateConnection(connection *Connection) diag.Diagnostics {
-	var diags diag.Diagnostics
+func validateConnection(connection *Connection) error {
 
 	dsnFromFlag := viper.GetString("dsn")
 
 	if dsnFromFlag == "" && connection.DSNFile != "" {
 		if connection.DSN != "" {
-			return diags.Add(diag.NewBaseError(
-				fmt.Errorf("invalid connection configuration"),
-				diag.USER, diag.WithOptionalSeverity(diag.ERROR),
-				diag.WithDetails("DSN file specified along with literal DSN, only one type is supported")),
-			)
+			return fmt.Errorf("DSN file specified along with literal DSN, only one type is supported")
 		}
 
 		dsnBytes, err := ioutil.ReadFile(connection.DSNFile)
 		if err != nil {
-			return diags.Add(diag.FromError(err, diag.USER, diag.WithSummary("Failed to read DSN file")))
+			return fmt.Errorf("failed to read DSN file: %w", err)
 		}
 
 		connection.DSN = string(bytes.TrimSpace(dsnBytes))
@@ -194,36 +180,23 @@ func validateConnection(connection *Connection) diag.Diagnostics {
 	if connection.DSN != "" {
 		// allow using a DSN flag even if the config file has explicitly attributes (user, password, host, database, etc.)
 		if dsnFromFlag == "" && connection.IsAnyConnParamsSet() {
-			diags = append(diags, diag.NewBaseError(
-				fmt.Errorf("invalid connection configuration"),
-				diag.USER, diag.WithOptionalSeverity(diag.ERROR),
-				diag.WithDetails("DSN specified along with explicit attributes, only one type is supported")),
-			)
+			return fmt.Errorf("DSN specified along with explicit attributes, only one type is supported")
 		}
-		return diags
+		return nil
 	}
 
 	if connection.Host == "" {
-		diags = append(diags, diag.NewBaseError(
-			fmt.Errorf("invalid connection configuration"),
-			diag.USER, diag.WithOptionalSeverity(diag.ERROR),
-			diag.WithDetails("missing host")),
-		)
+		return fmt.Errorf("host is required")
 	}
 	if connection.Database == "" {
-		diags = append(diags, diag.NewBaseError(
-			fmt.Errorf("invalid connection configuration"),
-			diag.USER, diag.WithOptionalSeverity(diag.ERROR),
-			diag.WithDetails("missing database")),
-		)
+		return fmt.Errorf("database is required")
 	}
 
-	return diags
+	return nil
 }
 
 // Validates the `cloudquery.providers` configuration block
-func validateProvidersBlock(config *Config) diag.Diagnostics {
-	var diags diag.Diagnostics
+func validateProvidersBlock(config *Config) error {
 	existingProviders := make(map[string]bool, len(config.Providers))
 
 	// We don't allow duplicate provider names or aliases
@@ -231,20 +204,18 @@ func validateProvidersBlock(config *Config) diag.Diagnostics {
 		if provider.Alias != "" {
 			_, aliasExists := existingProviders[provider.Alias]
 			if aliasExists {
-				diags = diags.Add(diag.FromError(fmt.Errorf("provider with alias %s for provider %s already exists, give it a different alias", provider.Alias, provider.Name), diag.USER, diag.WithSummary("Duplicate Alias")))
 				continue
 			}
 			existingProviders[provider.Alias] = true
 		} else {
 			_, nameExists := existingProviders[provider.Name]
 			if nameExists {
-				diags = diags.Add(diag.FromError(fmt.Errorf("provider with name %s already exists, use alias in provider configuration block", provider.Name), diag.USER, diag.WithSummary("Provider Alias Required")))
 				continue
 			}
 			existingProviders[provider.Name] = true
 		}
 	}
-	return diags
+	return nil
 }
 
 func normalize(config *Config) {

@@ -4,7 +4,6 @@ import (
 	"context"
 	stderrors "errors"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	gcodes "google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -19,8 +18,4 @@ func IsCancelation(err error) bool {
 	}
 
 	return false
-}
-
-func CancelationDiag(err error) diag.Diagnostics {
-	return diag.Diagnostics{diag.NewBaseError(err, diag.USER, diag.WithSummary("operation was canceled by user"))}
 }

@@ -2,11 +2,11 @@ package core
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/rs/zerolog/log"
 )
 
@@ -24,12 +24,12 @@ type DownloadResult struct {
 }
 
 // Download one or more providers from remote registry
-func Download(ctx context.Context, manager *plugin.Manager, opts *DownloadOptions) (*DownloadResult, diag.Diagnostics) {
+func Download(ctx context.Context, manager *plugin.Manager, opts *DownloadOptions) (*DownloadResult, error) {
 	log.Info().Interface("providers", opts.Providers).Msg("downloading providers")
 	startTime := time.Now()
 	downloaded, err := manager.DownloadProviders(ctx, opts.Providers, opts.NoVerify)
 	if err != nil {
-		return nil, diag.Diagnostics{diag.NewBaseError(err, diag.INTERNAL, diag.WithSeverity(diag.ERROR), diag.WithSummary("failed to download providers"))}
+		return nil, fmt.Errorf("failed to download providers: %w", err)
 	}
 	log.Info().Interface("providers", opts.Providers).Dur("duration", time.Since(startTime)).Msg("providers download successfully")
 	return &DownloadResult{downloaded}, nil

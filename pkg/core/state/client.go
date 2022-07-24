@@ -10,7 +10,6 @@ import (
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/hashicorp/go-hclog"
@@ -38,13 +37,13 @@ func NewClient(ctx context.Context, clientDns string) (*Client, error) {
 
 	db, err := sdkdb.New(ctx, c.Logger, c.dsn)
 	if err != nil {
-		return nil, diag.FromError(err, diag.DATABASE)
+		return nil, fmt.Errorf("failed to create database connection: %w", err)
 	}
 	c.db = db
 
 	// migrate CloudQuery core tables to latest version
 	if err = c.migrateCore(ctx); err != nil {
-		return nil, diag.FromError(err, diag.DATABASE, diag.WithSummary("failed to migrate cloudquery_core tables"))
+		return nil, fmt.Errorf("failed to migrate core schema: %w", err)
 	}
 
 	return c, nil

@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"fmt"
 	"sort"
 	"time"
 
@@ -10,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/doug-martin/goqu/v9"
@@ -44,18 +44,17 @@ func (p PurgeProviderDataResult) Resources() []string {
 }
 
 // PurgeProviderData purges resources that were not updated recently, if dry run is set to true, no resources will be removed.
-func PurgeProviderData(ctx context.Context, storage database.Storage, manager *plugin.Manager, opts *PurgeProviderDataOptions) (*PurgeProviderDataResult, diag.Diagnostics) {
+func PurgeProviderData(ctx context.Context, storage database.Storage, manager *plugin.Manager, opts *PurgeProviderDataOptions) (*PurgeProviderDataResult, error) {
 	if len(opts.Providers) == 0 {
-		return nil, diag.Diagnostics{diag.NewBaseError(nil, diag.INTERNAL, diag.WithSeverity(diag.WARNING), diag.WithSummary("no providers were given"))}
+		return nil, fmt.Errorf("no providers specified")
 	}
 	log.Info().Interface("providers", opts.Providers).Bool("dry-run", opts.DryRun).Msg("purging stale data for providers")
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "database"), storage.DSN())
 	if err != nil {
-		return nil, diag.FromError(err, diag.DATABASE)
+		return nil, err
 	}
 	defer db.Close()
 	var (
-		diags  diag.Diagnostics
 		result = PurgeProviderDataResult{
 			TotalAffected:     0,
 			AffectedResources: make(map[string]int),
@@ -66,13 +65,15 @@ func PurgeProviderData(ctx context.Context, storage database.Storage, manager *p
 	for _, p := range opts.Providers {
 		log.Debug().Stringer("provider", p).TimeDiff("since", lastUpdateTime, time.Now().UTC()).Msg("cleaning stale data for provider")
 		affectedResources, affected, err := removeProviderStaleData(ctx, db, manager, p, lastUpdateTime, opts.DryRun)
-		diags = diags.Add(err)
+		if err != nil {
+			return nil, err
+		}
 		result.TotalAffected += affected
 		for k, v := range affectedResources {
 			result.AffectedResources[k] = v
 		}
 	}
-	return &result, diags
+	return &result, nil
 }
 
 func removeProviderStaleData(ctx context.Context, storage execution.Storage, manager *plugin.Manager, provider registry.Provider, lastUpdateTime time.Time, dryRun bool) (map[string]int, int, error) {
@@ -81,7 +82,6 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, man
 		return nil, 0, err
 	}
 	var (
-		diags             diag.Diagnostics
 		logger            = log.With().Bool("dry-run", dryRun).Stringer("provider", provider).Logger()
 		totalAffected     int
 		affectedResources = make(map[string]int)
@@ -92,7 +92,7 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, man
 		if dryRun {
 			affected, err := dryRunPurge(ctx, storage, t, lastUpdateTime)
 			if err != nil {
-				return nil, 0, diags.Add(err)
+				return nil, 0, err
 			}
 			if affected > 0 {
 				logger.Info().Str("table", t.Name).Int("affected", affected).Msgf("%d resources will removed from table", affected)
@@ -102,12 +102,10 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, man
 			continue
 		}
 		if err := storage.RemoveStaleData(ctx, t, lastUpdateTime, nil); err != nil {
-			diags = diags.Add(diag.NewBaseError(err, diag.DATABASE, diag.WithSeverity(diag.WARNING),
-				diag.WithSummary("failed to remove stale data from %s", t.Name),
-				diag.WithDetails("table might not exist, is your provider schema version the same as the provider configured?")))
+			return nil, 0, err
 		}
 	}
-	return affectedResources, totalAffected, diags
+	return affectedResources, totalAffected, err
 }
 
 func dryRunPurge(ctx context.Context, storage execution.Storage, t *schema.Table, lastUpdateTime time.Time) (int, error) {
@@ -117,11 +115,11 @@ func dryRunPurge(ctx context.Context, storage execution.Storage, t *schema.Table
 	sql, args, _ := q.ToSQL()
 	result, err := storage.Query(ctx, sql, args...)
 	if err != nil {
-		return 0, diag.NewBaseError(err, diag.DATABASE)
+		return 0, err
 	}
 	var affected int
 	if err := pgxscan.ScanOne(&affected, result); err != nil {
-		return 0, diag.NewBaseError(err, diag.DATABASE)
+		return 0, err
 	}
 	return affected, nil
 }

@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/cloudquery/pkg/plugin"
 	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/cqproto"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/rs/zerolog/log"
 )
 
@@ -35,16 +34,16 @@ type AvailableUpdate struct {
 	AvailableVersion string
 }
 
-func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *GetProviderConfigOptions) (*cqproto.GetProviderConfigResponse, diag.Diagnostics) {
+func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *GetProviderConfigOptions) (*cqproto.GetProviderConfigResponse, error) {
 	providerPlugin, err := pm.CreatePlugin(&plugin.CreationOptions{Provider: opts.Provider})
 	if err != nil {
 		log.Error().Err(err).Str("provider", opts.Provider.Name).Str("version", opts.Provider.Version).Msg("failed to create provider plugin")
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, err
 	}
 	defer pm.ClosePlugin(providerPlugin)
 	result, err := providerPlugin.Provider().GetProviderConfig(ctx, &cqproto.GetProviderConfigRequest{})
 	if err != nil {
-		return result, diag.FromError(err, diag.INTERNAL)
+		return result, err
 	}
 	return result, nil
 }
@@ -76,9 +75,8 @@ func Test(ctx context.Context, pm *plugin.Manager, opts TestOptions) (bool, erro
 
 // CheckAvailableUpdates checks if any updates are available for providers, if a provider's version is set to latest,
 // update will check vs "latest" available provider located in the local disk.
-func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *CheckUpdatesOptions) ([]AvailableUpdate, diag.Diagnostics) {
+func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *CheckUpdatesOptions) ([]AvailableUpdate, error) {
 	var (
-		diags   diag.Diagnostics
 		updates = make([]AvailableUpdate, 0, len(opts.Providers))
 	)
 	for _, p := range opts.Providers {
@@ -96,7 +94,7 @@ func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *Che
 		updateVersion, err := reg.CheckUpdate(ctx, p)
 		if err != nil {
 			log.Error().Err(err).Str("provider", p.Name).Str("version", version).Msg("failed to check provider update")
-			diags = diags.Add(diag.FromError(err, diag.INTERNAL))
+			return nil, err
 		}
 		// if we didn't receive an updateVersion or the updateVersion == the version we have installed on disk
 		// we will skip passing an available update
@@ -111,7 +109,7 @@ func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *Che
 			AvailableVersion: updateVersion,
 		})
 	}
-	return updates, diags
+	return updates, nil
 }
 
 // ManagedProviders returns list of providers which are not in reattach mode
