@@ -26,7 +26,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.8
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.7
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.8
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.47.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.7
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.10
@@ -107,7 +107,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/athena v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.16.3
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.16.7
