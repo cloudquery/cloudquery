@@ -95,7 +95,7 @@ func Provider() *provider.Provider {
 			"security.pricings":                    security.SecurityPricings(),
 			"security.settings":                    security.SecuritySettings(),
 			"security.jit_network_access_policies": security.SecurityJitNetworkAccessPolicies(),
-			"servicebus.namespaces":                servicebus.ServicebusNamespaces(),
+			"servicebus.namespaces":                servicebus.Namespaces(),
 			"sql.servers":                          sql.SQLServers(),
 			"sql.managed_instances":                sql.SqlManagedInstances(),
 			"storage.accounts":                     storage.StorageAccounts(),
