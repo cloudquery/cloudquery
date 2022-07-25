@@ -25,7 +25,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/configservice v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.20.0
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.8
-	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.7
+	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.8
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.47.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.7

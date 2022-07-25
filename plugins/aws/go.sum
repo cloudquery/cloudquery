@@ -194,8 +194,8 @@ github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.20.0 h1:lz0L+dd
 github.com/aws/aws-sdk-go-v2/service/databasemigrationservice v1.20.0/go.mod h1:3vJt8vwjBuLQUKl2+7Zejw7PJkBwtufaqz12o3s5StM=
 github.com/aws/aws-sdk-go-v2/service/dax v1.11.8 h1:iOGDTNDL1FHLsVPtkn3kbjkmvyCakKhHWtyaMiDGZYQ=
 github.com/aws/aws-sdk-go-v2/service/dax v1.11.8/go.mod h1:5jJ1RC1p4xEUKfjWMQZPu1pAWkitpoDXHu8g/GAf6B4=
-github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.7 h1:9luaaN+4Y9MdBB3TPefCk0Ybj7Wdn7JqMsMAyRYVhrU=
-github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.7/go.mod h1:zHiwUQhQgrdRAK/WgbA84GRL+XRimQc0KKE752cIxBk=
+github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.8 h1:mL939nNwhNBfhGBDNuyYUtw2Gb7QQ3CGQFe4dT5J/sc=
+github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.8/go.mod h1:AjWvWtKJM/XkhGxCjzKDIU2QoofOgpWqS0YtxHNKxh8=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.9 h1:QTPDno4J5TyfpPi3dqCZpD+y7wbHtHhUQwnNGUHUGvg=
 github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.9/go.mod h1:Req/32OLRbXpPX5TxHkwf2Ln9qclJCV6n1S7v0v+FWo=
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.47.1 h1:JcIbETcqzxsfxzVT6/yzygaDElovwoPStEJJGimH+fQ=
