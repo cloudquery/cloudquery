@@ -29,7 +29,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.47.1
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.7
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.10
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.11
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.5
 	github.com/aws/aws-sdk-go-v2/service/eks v1.21.3
 	github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk v1.14.8
