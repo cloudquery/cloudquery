@@ -215,6 +215,26 @@ func (mr *MockEc2ClientMockRecorder) DescribeInstanceStatus(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceStatus", reflect.TypeOf((*MockEc2Client)(nil).DescribeInstanceStatus), varargs...)
 }
 
+// DescribeInstanceTypes mocks base method.
+func (m *MockEc2Client) DescribeInstanceTypes(arg0 context.Context, arg1 *ec2.DescribeInstanceTypesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstanceTypesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeInstanceTypes", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeInstanceTypesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeInstanceTypes indicates an expected call of DescribeInstanceTypes.
+func (mr *MockEc2ClientMockRecorder) DescribeInstanceTypes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceTypes", reflect.TypeOf((*MockEc2Client)(nil).DescribeInstanceTypes), varargs...)
+}
+
 // DescribeInstances mocks base method.
 func (m *MockEc2Client) DescribeInstances(arg0 context.Context, arg1 *ec2.DescribeInstancesInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeInstancesOutput, error) {
 	m.ctrl.T.Helper()

@@ -215,5 +215,38 @@ resource "aws" "ec2" "hosts" {
     description = "The Amazon Resource Name (ARN) for the dedicated host."
     generate_resolver = false
   }
+}
 
+
+resource "aws" "ec2" "instance_types" {
+  path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.InstanceTypeInfo"
+  ignoreError "IgnoreAccessDenied" {
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+  }
+  deleteFilter "AccountRegionFilter" {
+    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+  }
+  multiplex "AwsAccountRegion" {
+    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    params = ["ec2"]
+  }
+
+  options {
+    primary_keys = ["account_id", "region", "instance_type"]
+  }
+
+  userDefinedColumn "account_id" {
+    description = "The AWS Account ID of the resource."
+    type        = "string"
+    resolver "resolveAWSAccount" {
+      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+    }
+  }
+  userDefinedColumn "region" {
+    type        = "string"
+    description = "The AWS Region of the resource."
+    resolver "resolveAWSRegion" {
+      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+    }
+  }
 }

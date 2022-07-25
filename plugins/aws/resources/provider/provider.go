@@ -135,6 +135,7 @@ func Provider() *provider.Provider {
 			"ec2.images":                              ec2.Ec2Images(),
 			"ec2.instance_statuses":                   ec2.Ec2InstanceStatuses(),
 			"ec2.instances":                           ec2.Ec2Instances(),
+			"ec2.instance_types":                      ec2.InstanceTypes(),
 			"ec2.internet_gateways":                   ec2.Ec2InternetGateways(),
 			"ec2.network_interfaces":                  ec2.NetworkInterfaces(),
 			"ec2.nat_gateways":                        ec2.Ec2NatGateways(),
