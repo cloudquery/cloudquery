@@ -24,7 +24,7 @@ resource "kubernetes_deployment" "core_nodes" {
 
       spec {
         container {
-          image = "nginx:1.23.0"
+          image = "nginx:1.23.1"
           name  = "example"
 
           resources {

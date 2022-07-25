@@ -6,7 +6,7 @@ resource "kubernetes_pod" "core_pod" {
 
   spec {
     container {
-      image = "nginx:1.23.0"
+      image = "nginx:1.23.1"
       name  = "example"
 
       env {

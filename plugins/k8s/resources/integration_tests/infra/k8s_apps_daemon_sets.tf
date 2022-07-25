@@ -22,7 +22,7 @@ resource "kubernetes_daemonset" "apps_daemon_set" {
 
       spec {
         container {
-          image = "nginx:1.23.0"
+          image = "nginx:1.23.1"
           name  = "example"
 
           resources {
