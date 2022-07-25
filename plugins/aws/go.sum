@@ -182,8 +182,8 @@ github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.15.10 h1:i4iFDBClrtYE/l5d
 github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.15.10/go.mod h1:qZ+mnaag/eWCF6gNVIVwjCjXuNbE0BuWJWKWh2TRAJ8=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.8 h1:dyEIbHdZQFyFxc9jFbAkhffG/PsGKLZ66Ti5QIBMls8=
 github.com/aws/aws-sdk-go-v2/service/codebuild v1.19.8/go.mod h1:p2XhFdcr5CZYx4fyXMuQNdwYqHCMfNEYoLIachozcVA=
-github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.7 h1:w0Ie/YMk0F6LcXOtCg2xggCD++55tx/DIW4HlnlTU0U=
-github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.7/go.mod h1:ildHf6VgHF1g3Zj3Z6CLNnL981Fafy4K8fmO0aLcP3Q=
+github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.8 h1:X3MgHIPTGKRzB1qdzSJY2I/TCbemlp8Otiye4rNq4OE=
+github.com/aws/aws-sdk-go-v2/service/codepipeline v1.13.8/go.mod h1:xAZ6B113asql0xUzIunnaKvNA2H8F6IwxMMZsg6T6RU=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.13.7 h1:aVoNsxVHNSTklRFJ22RWHvgfLWxTZ3+iPpLEvNgzB90=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentity v1.13.7/go.mod h1:naL7DtHFTKk3eF0NM/ZjnKrfSZQK47gAs2drtLeXfz0=
 github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.17.3 h1:xtwjqxVDO9tAmoUXVfJyMKFLVJlosjKrFLLuW4V8VO0=
