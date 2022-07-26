@@ -155,6 +155,46 @@ func (mr *MockLightsailClientMockRecorder) GetDisks(arg0, arg1 interface{}, arg2
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDisks", reflect.TypeOf((*MockLightsailClient)(nil).GetDisks), varargs...)
 }
 
+// GetDistributionLatestCacheReset mocks base method.
+func (m *MockLightsailClient) GetDistributionLatestCacheReset(arg0 context.Context, arg1 *lightsail.GetDistributionLatestCacheResetInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDistributionLatestCacheResetOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDistributionLatestCacheReset", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetDistributionLatestCacheResetOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDistributionLatestCacheReset indicates an expected call of GetDistributionLatestCacheReset.
+func (mr *MockLightsailClientMockRecorder) GetDistributionLatestCacheReset(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDistributionLatestCacheReset", reflect.TypeOf((*MockLightsailClient)(nil).GetDistributionLatestCacheReset), varargs...)
+}
+
+// GetDistributions mocks base method.
+func (m *MockLightsailClient) GetDistributions(arg0 context.Context, arg1 *lightsail.GetDistributionsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDistributionsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDistributions", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetDistributionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDistributions indicates an expected call of GetDistributions.
+func (mr *MockLightsailClientMockRecorder) GetDistributions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDistributions", reflect.TypeOf((*MockLightsailClient)(nil).GetDistributions), varargs...)
+}
+
 // GetInstanceAccessDetails mocks base method.
 func (m *MockLightsailClient) GetInstanceAccessDetails(arg0 context.Context, arg1 *lightsail.GetInstanceAccessDetailsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetInstanceAccessDetailsOutput, error) {
 	m.ctrl.T.Helper()
