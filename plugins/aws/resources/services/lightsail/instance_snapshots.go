@@ -20,8 +20,8 @@ func InstanceSnapshots() *schema.Table {
 		Multiplex:     client.ServiceAccountRegionMultiplexer("lightsail"),
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
-		IgnoreInTests: true, // can't be deployed using terraform.
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -211,7 +211,7 @@ func InstanceSnapshots() *schema.Table {
 						Name:        "tags",
 						Description: "The tag keys and optional values for the resource",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveInstanceSnapshotFromAttachedDisksTags,
+						Resolver:    client.ResolveTags,
 					},
 				},
 				Relations: []*schema.Table{
@@ -287,12 +287,6 @@ func fetchLightsailInstanceSnapshotFromAttachedDisks(ctx context.Context, meta s
 	r := parent.Item.(types.InstanceSnapshot)
 	res <- r.FromAttachedDisks
 	return nil
-}
-func resolveInstanceSnapshotFromAttachedDisksTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Disk)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchLightsailInstanceSnapshotFromAttachedDiskAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Disk)

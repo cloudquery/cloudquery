@@ -43,22 +43,22 @@ func Buckets() *schema.Table {
 				Name:          "access_log_config_enabled",
 				Description:   "A Boolean value that indicates whether bucket access logging is enabled for the bucket",
 				Type:          schema.TypeBool,
-				IgnoreInTests: true,
 				Resolver:      schema.PathResolver("AccessLogConfig.Enabled"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:          "access_log_config_destination",
 				Description:   "The name of the bucket where the access logs are saved",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
 				Resolver:      schema.PathResolver("AccessLogConfig.Destination"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:          "access_log_config_prefix",
 				Description:   "The optional object prefix for the bucket access log",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
 				Resolver:      schema.PathResolver("AccessLogConfig.Prefix"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "access_rules_allow_public_overrides",
@@ -135,8 +135,8 @@ func Buckets() *schema.Table {
 				Name:          "state_message",
 				Description:   "A message that describes the state of the bucket",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
 				Resolver:      schema.PathResolver("State.Message"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "support_code",
@@ -147,7 +147,7 @@ func Buckets() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the bucket",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveBucketsTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "url",
@@ -234,12 +234,6 @@ func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *
 		input.PageToken = response.NextPageToken
 	}
 	return nil
-}
-func resolveBucketsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Bucket)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Bucket)

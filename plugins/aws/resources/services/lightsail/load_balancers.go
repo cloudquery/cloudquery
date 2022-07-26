@@ -115,7 +115,7 @@ func LoadBalancers() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the resource",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveLoadBalancersTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "tls_policy_name",
@@ -326,7 +326,7 @@ func LoadBalancers() *schema.Table {
 						Name:        "tags",
 						Description: "The tag keys and optional values for the resource",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveLoadBalancerTLSCertificatesTags,
+						Resolver:    client.ResolveTags,
 					},
 				},
 			},
@@ -365,12 +365,6 @@ func resolveLoadBalancersPublicPorts(ctx context.Context, meta schema.ClientMeta
 	}
 	return diag.WrapError(resource.Set(c.Name, ports))
 }
-func resolveLoadBalancersTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.LoadBalancer)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
-}
 func fetchLightsailLoadBalancerInstanceHealthSummaries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.LoadBalancer)
 	res <- r.InstanceHealthSummary
@@ -399,10 +393,4 @@ func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.
 	}
 	res <- response.TlsCertificates
 	return nil
-}
-func resolveLoadBalancerTLSCertificatesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.LoadBalancerTlsCertificate)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
 }

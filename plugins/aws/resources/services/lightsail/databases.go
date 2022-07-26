@@ -13,14 +13,6 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-const MAX_GOROUTINES = 10
-
-type LogEventWrapper struct {
-	types.LogEvent
-	// An object describing the result of your get relational database log streams request.
-	LogStreamName string
-}
-
 //go:generate cq-gen --resource databases --config gen.hcl --output .
 func Databases() *schema.Table {
 	return &schema.Table{
@@ -136,24 +128,9 @@ func Databases() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "pending_modified_values_backup_retention_enabled",
-				Description:   "A Boolean value indicating whether automated backup retention is enabled",
-				Type:          schema.TypeBool,
-				Resolver:      schema.PathResolver("PendingModifiedValues.BackupRetentionEnabled"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "pending_modified_values_engine_version",
-				Description:   "The database engine version",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PendingModifiedValues.EngineVersion"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "pending_modified_values_master_user_password",
-				Description:   "The password for the master user of the database",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PendingModifiedValues.MasterUserPassword"),
+				Name:          "pending_modified_values",
+				Description:   "Describes pending database value modifications",
+				Type:          schema.TypeJSON,
 				IgnoreInTests: true,
 			},
 			{
@@ -206,7 +183,7 @@ func Databases() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the resource",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDatabasesTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -384,12 +361,6 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func resolveDatabasesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.RelationalDatabase)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
-}
 func fetchLightsailDatabasePendingMaintenanceActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RelationalDatabase)
 	res <- r.PendingMaintenanceActions
@@ -456,7 +427,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	endTime := time.Now()
 	startTime := endTime.Add(-time.Hour * 24 * 14) //two weeks
 	errs, ctx := errgroup.WithContext(ctx)
-	errs.SetLimit(MAX_GOROUTINES)
+	errs.SetLimit(MaxGoroutines)
 	for _, s := range streams.LogStreams {
 		func(database, stream string, startTime, endTime time.Time) {
 			errs.Go(func() error {
@@ -474,6 +445,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 // ====================================================================================================================
 //                                                  User Defined Helpers
 // ====================================================================================================================
+
 func fetchLogEvents(ctx context.Context, res chan<- interface{}, c *client.Client, database, stream string, startTime, endTime time.Time) error {
 	svc := c.Services().Lightsail
 	input := lightsail.GetRelationalDatabaseLogEventsInput{

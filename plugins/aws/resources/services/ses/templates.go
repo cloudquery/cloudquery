@@ -93,6 +93,7 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 			if err != nil {
 				return diag.WrapError(err)
 			}
+
 			res <- &Template{
 				TemplateName:         getOutput.TemplateName,
 				CreatedTimestamp:     templateMeta.CreatedTimestamp,

@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
-	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -21,7 +20,7 @@ func DatabaseSnapshots() *schema.Table {
 		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-		IgnoreInTests: true, // can't be created using terraform.
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -110,7 +109,7 @@ func DatabaseSnapshots() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the resource",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDatabaseSnapshotsTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 	}
@@ -138,10 +137,4 @@ func fetchLightsailDatabaseSnapshots(ctx context.Context, meta schema.ClientMeta
 		input.PageToken = response.NextPageToken
 	}
 	return nil
-}
-func resolveDatabaseSnapshotsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.RelationalDatabaseSnapshot)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
 }

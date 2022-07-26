@@ -121,7 +121,7 @@ func Disks() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the resource",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDisksTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -252,7 +252,7 @@ func Disks() *schema.Table {
 						Name:        "tags",
 						Description: "The tag keys and optional values for the resource",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveDiskSnapshotsTags,
+						Resolver:    client.ResolveTags,
 					},
 				},
 			},
@@ -283,12 +283,6 @@ func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-func resolveDisksTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Disk)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
-}
 func fetchLightsailDiskAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Disk)
 	res <- r.AddOns
@@ -312,10 +306,4 @@ func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, pa
 		input.PageToken = response.NextPageToken
 	}
 	return nil
-}
-func resolveDiskSnapshotsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.DiskSnapshot)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
 }

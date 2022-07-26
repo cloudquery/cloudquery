@@ -156,7 +156,7 @@ func Instances() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the resource",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveInstancesTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "username",
@@ -292,7 +292,7 @@ func Instances() *schema.Table {
 						Name:        "tags",
 						Description: "The tag keys and optional values for the resource",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveInstanceHardwareDisksTags,
+						Resolver:    client.ResolveTags,
 					},
 				},
 				Relations: []*schema.Table{
@@ -488,10 +488,6 @@ func ResolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func resolveInstancesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Instance)
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(r.Tags)))
-}
 func fetchLightsailInstanceAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(types.Instance)
 	res <- instance.AddOns
@@ -504,10 +500,6 @@ func fetchLightsailInstanceHardwareDisks(ctx context.Context, meta schema.Client
 	}
 	res <- instance.Hardware.Disks
 	return nil
-}
-func resolveInstanceHardwareDisksTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Disk)
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(r.Tags)))
 }
 func fetchLightsailInstanceHardwareDiskAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	disk := parent.Item.(types.Disk)
@@ -522,7 +514,6 @@ func fetchLightsailInstanceNetworkingPorts(ctx context.Context, meta schema.Clie
 	res <- instance.Networking.Ports
 	return nil
 }
-
 func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Instance)
 	cli := meta.(*client.Client)

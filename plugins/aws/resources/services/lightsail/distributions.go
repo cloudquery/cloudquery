@@ -12,11 +12,6 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-type DistributionWrapper struct {
-	*types.LightsailDistribution
-	*lightsail.GetDistributionLatestCacheResetOutput
-}
-
 //go:generate cq-gen --resource distributions --config gen.hcl --output .
 func Distributions() *schema.Table {
 	return &schema.Table{
@@ -212,7 +207,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 		}
 
 		errs, ctx := errgroup.WithContext(ctx)
-		errs.SetLimit(MAX_GOROUTINES)
+		errs.SetLimit(MaxGoroutines)
 		for _, d := range response.Distributions {
 			func(d types.LightsailDistribution) {
 				errs.Go(func() error {

@@ -154,7 +154,7 @@ func Certificates() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the resource",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveCertificatesTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -256,12 +256,6 @@ func fetchLightsailCertificates(ctx context.Context, meta schema.ClientMeta, par
 		res <- cer.CertificateDetail
 	}
 	return nil
-}
-func resolveCertificatesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(*types.Certificate)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
 }
 func fetchLightsailCertificateDomainValidationRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*types.Certificate)
