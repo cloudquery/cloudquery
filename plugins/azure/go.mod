@@ -1,6 +1,6 @@
 module github.com/cloudquery/cq-provider-azure
 
-go 1.17
+go 1.18
 
 require (
 	github.com/Azure/azure-sdk-for-go v61.6.0+incompatible

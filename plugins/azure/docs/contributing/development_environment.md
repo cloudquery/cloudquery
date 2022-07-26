@@ -1,7 +1,7 @@
 # Development Environment Setup
 
 ## Requirements
- * [Go](https://go.dev/doc/install) 1.17+ (to build the provider)
+ * [Go](https://go.dev/doc/install) 1.18+ (to build the provider)
  * [Terraform](https://www.terraform.io/downloads) (Needed only to run integration tests)
 
 ## Quick Start
