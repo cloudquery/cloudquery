@@ -13,6 +13,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.6.0](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.24...v0.6.0) (2022-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update SDK to v0.14.1 (#203)
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.2 ([#201](https://github.com/cloudquery/cq-provider-digitalocean/issues/201)) ([cfdb788](https://github.com/cloudquery/cq-provider-digitalocean/commit/cfdb78818237bb0ba727299cb91e67423878354d))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.3 ([#204](https://github.com/cloudquery/cq-provider-digitalocean/issues/204)) ([d2ce98b](https://github.com/cloudquery/cq-provider-digitalocean/commit/d2ce98bfab8263ecae15cc0a569c758dd25597b3))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.4 ([#205](https://github.com/cloudquery/cq-provider-digitalocean/issues/205)) ([535e160](https://github.com/cloudquery/cq-provider-digitalocean/commit/535e160c7cf5efc7f6db1a5b8d5fefd225440c42))
+* **deps:** Update Terraform tls to v4 ([#208](https://github.com/cloudquery/cq-provider-digitalocean/issues/208)) ([5d2d735](https://github.com/cloudquery/cq-provider-digitalocean/commit/5d2d735472525beb7fcde2258c50188d51f23afc))
+* **deps:** Update tubone24/update_release digest to 87bc28c ([#182](https://github.com/cloudquery/cq-provider-digitalocean/issues/182)) ([f5b0d8e](https://github.com/cloudquery/cq-provider-digitalocean/commit/f5b0d8e1e828b4618b18750708726842e9c0cfb2))
+
+
+### Miscellaneous Chores
+
+* Update SDK to v0.14.1 ([#203](https://github.com/cloudquery/cq-provider-digitalocean/issues/203)) ([cfcdc3c](https://github.com/cloudquery/cq-provider-digitalocean/commit/cfcdc3ce7d7d32339b3c5bca6465e7564f7d7fc4))
+
 ## [0.5.24](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.5.23...v0.5.24) (2022-07-11)
 
 
