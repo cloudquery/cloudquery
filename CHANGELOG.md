@@ -4,6 +4,14 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.32.1](https://github.com/cloudquery/cloudquery/compare/v0.32.0...v0.32.1) (2022-07-27)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/term digest to a9ba230 ([#1141](https://github.com/cloudquery/cloudquery/issues/1141)) ([99b63fd](https://github.com/cloudquery/cloudquery/commit/99b63fd65777ef0b3d4c48ef3ac9413e40f87384))
+* **deps:** Update module github.com/spf13/afero to v1.9.2 ([#1143](https://github.com/cloudquery/cloudquery/issues/1143)) ([a214d0c](https://github.com/cloudquery/cloudquery/commit/a214d0cb1ff1c7197b1b45646678447d324e2b2e))
+
 ## [0.32.0](https://github.com/cloudquery/cloudquery/compare/v0.31.9...v0.32.0) (2022-07-25)
 
 
