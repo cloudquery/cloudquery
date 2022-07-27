@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
-	github.com/cloudquery/cq-provider-sdk v0.14.2
+	github.com/cloudquery/cq-provider-sdk v0.14.5
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/hashicorp/go-hclog v1.2.1
@@ -170,7 +170,7 @@ require (
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20220617184016-355a448f1bc9 // indirect
 	golang.org/x/oauth2 v0.0.0-20220608161450-d0670ef3b1eb // indirect
-	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
+	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
 	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.11 // indirect
