@@ -115,6 +115,66 @@ func (mr *MockLightsailClientMockRecorder) GetCertificates(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCertificates", reflect.TypeOf((*MockLightsailClient)(nil).GetCertificates), varargs...)
 }
 
+// GetContainerImages mocks base method.
+func (m *MockLightsailClient) GetContainerImages(arg0 context.Context, arg1 *lightsail.GetContainerImagesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerImagesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetContainerImages", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetContainerImagesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetContainerImages indicates an expected call of GetContainerImages.
+func (mr *MockLightsailClientMockRecorder) GetContainerImages(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContainerImages", reflect.TypeOf((*MockLightsailClient)(nil).GetContainerImages), varargs...)
+}
+
+// GetContainerServiceDeployments mocks base method.
+func (m *MockLightsailClient) GetContainerServiceDeployments(arg0 context.Context, arg1 *lightsail.GetContainerServiceDeploymentsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerServiceDeploymentsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetContainerServiceDeployments", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetContainerServiceDeploymentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetContainerServiceDeployments indicates an expected call of GetContainerServiceDeployments.
+func (mr *MockLightsailClientMockRecorder) GetContainerServiceDeployments(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContainerServiceDeployments", reflect.TypeOf((*MockLightsailClient)(nil).GetContainerServiceDeployments), varargs...)
+}
+
+// GetContainerServices mocks base method.
+func (m *MockLightsailClient) GetContainerServices(arg0 context.Context, arg1 *lightsail.GetContainerServicesInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetContainerServicesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetContainerServices", varargs...)
+	ret0, _ := ret[0].(*lightsail.GetContainerServicesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetContainerServices indicates an expected call of GetContainerServices.
+func (mr *MockLightsailClientMockRecorder) GetContainerServices(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetContainerServices", reflect.TypeOf((*MockLightsailClient)(nil).GetContainerServices), varargs...)
+}
+
 // GetDiskSnapshots mocks base method.
 func (m *MockLightsailClient) GetDiskSnapshots(arg0 context.Context, arg1 *lightsail.GetDiskSnapshotsInput, arg2 ...func(*lightsail.Options)) (*lightsail.GetDiskSnapshotsOutput, error) {
 	m.ctrl.T.Helper()
