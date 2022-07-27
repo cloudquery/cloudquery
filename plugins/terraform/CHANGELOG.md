@@ -5,6 +5,28 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0](https://github.com/cloudquery/cq-provider-terraform/compare/v0.4.20...v0.5.0) (2022-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update SDK to v0.14.1 (#143)
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go to v1.44.56 ([#139](https://github.com/cloudquery/cq-provider-terraform/issues/139)) ([43b1c60](https://github.com/cloudquery/cq-provider-terraform/commit/43b1c602050677d10e83a58daaa192ca1060e4a4))
+* **deps:** Update module github.com/aws/aws-sdk-go to v1.44.61 ([#148](https://github.com/cloudquery/cq-provider-terraform/issues/148)) ([21c84a4](https://github.com/cloudquery/cq-provider-terraform/commit/21c84a496618169c0e3e6293028ca3109b1b56a0))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.2 ([#141](https://github.com/cloudquery/cq-provider-terraform/issues/141)) ([dce1689](https://github.com/cloudquery/cq-provider-terraform/commit/dce168916790c2e63d8df5ec0509ce894d9e5cc8))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.3 ([#144](https://github.com/cloudquery/cq-provider-terraform/issues/144)) ([a4f19b8](https://github.com/cloudquery/cq-provider-terraform/commit/a4f19b8e08c039fbcd86b16515611eaa2f539ad0))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.4 ([#145](https://github.com/cloudquery/cq-provider-terraform/issues/145)) ([76f3b3f](https://github.com/cloudquery/cq-provider-terraform/commit/76f3b3f1a533bf24eebe7e1a6b201cd866e24b93))
+* **deps:** Update myrotvorets/set-commit-status-action digest to 85c3f9a ([#127](https://github.com/cloudquery/cq-provider-terraform/issues/127)) ([5c07a9b](https://github.com/cloudquery/cq-provider-terraform/commit/5c07a9b7dad9750c832f15890dde852397efac55))
+* **deps:** Update tubone24/update_release digest to 87bc28c ([#128](https://github.com/cloudquery/cq-provider-terraform/issues/128)) ([e7b602a](https://github.com/cloudquery/cq-provider-terraform/commit/e7b602a450906f7586abc25210fe001192cf2e18))
+
+
+### Miscellaneous Chores
+
+* Update SDK to v0.14.1 ([#143](https://github.com/cloudquery/cq-provider-terraform/issues/143)) ([161db1f](https://github.com/cloudquery/cq-provider-terraform/commit/161db1f7998960c9861eab40d9a6847da4f0e664))
+
 ## [0.4.20](https://github.com/cloudquery/cq-provider-terraform/compare/v0.4.19...v0.4.20) (2022-07-11)
 
 
