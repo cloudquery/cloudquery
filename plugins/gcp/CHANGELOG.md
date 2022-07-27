@@ -14,6 +14,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.9.1](https://github.com/cloudquery/cq-provider-gcp/compare/v0.9.0...v0.9.1) (2022-07-27)
+
+
+### Features
+
+* Add inventory and compliance dashboards ([#436](https://github.com/cloudquery/cq-provider-gcp/issues/436)) ([a3bc5fb](https://github.com/cloudquery/cq-provider-gcp/commit/a3bc5fbca920aaf9c7117e22b527cbd550b309e1))
+* Add support for Cloud Run Services ([#411](https://github.com/cloudquery/cq-provider-gcp/issues/411)) ([522bfae](https://github.com/cloudquery/cq-provider-gcp/commit/522bfaeff53d79b6fe19b2e1e8ad0f3c641c199d))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/sync digest to 886fb93 ([#442](https://github.com/cloudquery/cq-provider-gcp/issues/442)) ([bb71fcd](https://github.com/cloudquery/cq-provider-gcp/commit/bb71fcd8c61235a8284d5fc9df5f415b7d308ad7))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.2 ([#433](https://github.com/cloudquery/cq-provider-gcp/issues/433)) ([f4f075d](https://github.com/cloudquery/cq-provider-gcp/commit/f4f075d743c2736c3a5e893016f0a8ec7e3de543))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.3 ([#439](https://github.com/cloudquery/cq-provider-gcp/issues/439)) ([85c6d26](https://github.com/cloudquery/cq-provider-gcp/commit/85c6d269a0f509ccaff9655e03fb6655c580618d))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.4 ([#441](https://github.com/cloudquery/cq-provider-gcp/issues/441)) ([caedae5](https://github.com/cloudquery/cq-provider-gcp/commit/caedae5bc51577f6c8c0fc36d73eabfbce48d758))
+* **deps:** Update module google.golang.org/api to v0.89.0 ([#393](https://github.com/cloudquery/cq-provider-gcp/issues/393)) ([4ad0f2f](https://github.com/cloudquery/cq-provider-gcp/commit/4ad0f2f064e092a5a2489139218d8f570ae95177))
+* Update policies execution time ([#438](https://github.com/cloudquery/cq-provider-gcp/issues/438)) ([9f1f15b](https://github.com/cloudquery/cq-provider-gcp/commit/9f1f15b844ff068e04544f67afe48c6a530f039f))
+
 ## [0.9.0](https://github.com/cloudquery/cq-provider-gcp/compare/v0.8.29...v0.9.0) (2022-07-20)
 
 
