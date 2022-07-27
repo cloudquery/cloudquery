@@ -39,6 +39,7 @@ __debug_bin
 ./terraform/terraform-override.tf
 .env
 terraform/downloaded*
+config.hcl
 cloudquery.yml
 terraform/tfplan.binary
 cq-provider*
