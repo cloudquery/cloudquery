@@ -138,9 +138,9 @@ jobs:
       # for other inputs such as version, and pricing-api-endpoint (for self-hosted users).
       - name: Setup Infracost
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
-        uses: infracost/actions/setup@v2
-        with:
-          api-key: ${{ secrets.INFRACOST_API_KEY }}
+        # uses: infracost/actions/setup@v2
+        run: |
+          curl -o /tmp/infracost https://infracost-public-dumps.s3.amazonaws.com/builds/1923/infracost-linux-amd64
 
       - name: Run Infracost
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
