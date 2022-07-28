@@ -339,6 +339,7 @@ func dataCatalogDetail(ctx context.Context, meta schema.ClientMeta, resultsChan 
 			return
 		}
 		errorChan <- diag.WrapError(err)
+		return
 	}
 	resultsChan <- *dc.DataCatalog
 }
