@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/aws/aws-sdk-go v1.44.61
-	github.com/cloudquery/cq-provider-sdk v0.14.5
+	github.com/cloudquery/cq-provider-sdk v0.14.6
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/hashicorp/go-plugin v1.4.4 // indirect
