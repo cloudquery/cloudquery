@@ -18,6 +18,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.12.1](https://github.com/cloudquery/cq-provider-azure/compare/v0.12.0...v0.12.1) (2022-07-28)
+
+
+### Features
+
+* Add Azure Front Door CDN resource ([#416](https://github.com/cloudquery/cq-provider-azure/issues/416)) ([f5cec30](https://github.com/cloudquery/cq-provider-azure/commit/f5cec307aa3081125c92e8c6f57465f8da52148e))
+* Add dashboards ([#430](https://github.com/cloudquery/cq-provider-azure/issues/430)) ([1ca6e0c](https://github.com/cloudquery/cq-provider-azure/commit/1ca6e0c27e213f1e0120d2c03f75868b5c351e49))
+* Added servicebus topics ([#419](https://github.com/cloudquery/cq-provider-azure/issues/419)) ([00accb7](https://github.com/cloudquery/cq-provider-azure/commit/00accb7e74a667046c85f42ac626f1fe048d8f39))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.6 ([#427](https://github.com/cloudquery/cq-provider-azure/issues/427)) ([25baa83](https://github.com/cloudquery/cq-provider-azure/commit/25baa83188d59eb909f542e6bd94b44f9920dd24))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.2 ([#423](https://github.com/cloudquery/cq-provider-azure/issues/423)) ([88db3a1](https://github.com/cloudquery/cq-provider-azure/commit/88db3a16e5829c9eebbd0d6ab5d88d15cd46d61a))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.3 ([#429](https://github.com/cloudquery/cq-provider-azure/issues/429)) ([ba4ea62](https://github.com/cloudquery/cq-provider-azure/commit/ba4ea625052a66dc9f224e7cac76bd5ab67e014f))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.4 ([#431](https://github.com/cloudquery/cq-provider-azure/issues/431)) ([90dc83c](https://github.com/cloudquery/cq-provider-azure/commit/90dc83cd08399653667510eaf7fbc9a6706fb2ee))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.5 ([#436](https://github.com/cloudquery/cq-provider-azure/issues/436)) ([dfe72e6](https://github.com/cloudquery/cq-provider-azure/commit/dfe72e6aec1f8601ae7d015dec3a00d139f4c360))
+* **deps:** Update myrotvorets/set-commit-status-action digest to 9d8a3c7 ([#388](https://github.com/cloudquery/cq-provider-azure/issues/388)) ([40dc1c2](https://github.com/cloudquery/cq-provider-azure/commit/40dc1c2b5687b7b8d7d4954a96617c85bcdeacd4))
+
 ## [0.12.0](https://github.com/cloudquery/cq-provider-azure/compare/v0.11.23...v0.12.0) (2022-07-20)
 
 
