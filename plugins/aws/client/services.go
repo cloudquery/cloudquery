@@ -36,6 +36,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -743,4 +744,11 @@ type ShieldClient interface {
 type SESClient interface {
 	GetEmailTemplate(ctx context.Context, params *sesv2.GetEmailTemplateInput, optFns ...func(*sesv2.Options)) (*sesv2.GetEmailTemplateOutput, error)
 	ListEmailTemplates(ctx context.Context, params *sesv2.ListEmailTemplatesInput, optFns ...func(*sesv2.Options)) (*sesv2.ListEmailTemplatesOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
+type GlueClient interface {
+	GetTags(ctx context.Context, params *glue.GetTagsInput, optFns ...func(*glue.Options)) (*glue.GetTagsOutput, error)
+	GetWorkflow(ctx context.Context, params *glue.GetWorkflowInput, optFns ...func(*glue.Options)) (*glue.GetWorkflowOutput, error)
+	ListWorkflows(ctx context.Context, params *glue.ListWorkflowsInput, optFns ...func(*glue.Options)) (*glue.ListWorkflowsOutput, error)
 }

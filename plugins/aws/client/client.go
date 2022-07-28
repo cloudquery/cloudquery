@@ -46,6 +46,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -149,6 +150,7 @@ type Services struct {
 	ElasticBeanstalk       ElasticbeanstalkClient
 	ElasticSearch          ElasticSearch
 	FSX                    FsxClient
+	Glue                   GlueClient
 	GuardDuty              GuardDutyClient
 	IAM                    IamClient
 	IOT                    IOTClient
@@ -645,6 +647,7 @@ func initServices(region string, c aws.Config) Services {
 		ELBv2:                  elbv2.NewFromConfig(awsCfg),
 		EMR:                    emr.NewFromConfig(awsCfg),
 		FSX:                    fsx.NewFromConfig(awsCfg),
+		Glue:                   glue.NewFromConfig(awsCfg),
 		GuardDuty:              guardduty.NewFromConfig(awsCfg),
 		IAM:                    iam.NewFromConfig(awsCfg),
 		KMS:                    kms.NewFromConfig(awsCfg),

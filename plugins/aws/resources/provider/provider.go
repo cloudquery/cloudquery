@@ -36,6 +36,7 @@ import (
 	"github.com/cloudquery/cq-provider-aws/resources/services/elbv2"
 	"github.com/cloudquery/cq-provider-aws/resources/services/emr"
 	"github.com/cloudquery/cq-provider-aws/resources/services/fsx"
+	"github.com/cloudquery/cq-provider-aws/resources/services/glue"
 	"github.com/cloudquery/cq-provider-aws/resources/services/guardduty"
 	"github.com/cloudquery/cq-provider-aws/resources/services/iam"
 	"github.com/cloudquery/cq-provider-aws/resources/services/iot"
@@ -166,6 +167,7 @@ func Provider() *provider.Provider {
 			"emr.block_public_access_configs":         emr.EmrBlockPublicAccessConfigs(),
 			"emr.clusters":                            emr.EmrClusters(),
 			"fsx.backups":                             fsx.FsxBackups(),
+			"glue.workflows":                          glue.Workflows(),
 			"guardduty.detectors":                     guardduty.GuarddutyDetectors(),
 			"iam.accounts":                            iam.IamAccounts(),
 			"iam.groups":                              iam.IamGroups(),

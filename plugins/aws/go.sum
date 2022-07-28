@@ -220,6 +220,8 @@ github.com/aws/aws-sdk-go-v2/service/emr v1.20.0 h1:2xjz2hES5SnQLgmW1bBVdVz6j0mj
 github.com/aws/aws-sdk-go-v2/service/emr v1.20.0/go.mod h1:OVVv6VrQG33CuCR+V0GiaBuWbwYGogGxWGi9TDrM2yk=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.24.2 h1:8ko+AFpvJUbpjtCIEgtaXcXtndkZBi0N7e2ePGocqf8=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.24.2/go.mod h1:K3Ym90NBYdXV+BCHvpuiDXCeMAtayFdiGdJ0I1uop5Q=
+github.com/aws/aws-sdk-go-v2/service/glue v1.28.1 h1:rG+jzafWyw73tdv+48e4jZYyehihEORcEcqzyBbZUGA=
+github.com/aws/aws-sdk-go-v2/service/glue v1.28.1/go.mod h1:JpqCaI8ytHaConkpUXxhWibisAti9SA3KvYR5GLxHXk=
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.14.1 h1:5bWqv1hwsELtYvmBpuOtOmfW/PqHYUBVBh3RQ54+PKs=
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.14.1/go.mod h1:zeMwk8nXD/85ck1aCJs82TXj+QZcT4wNWmdU62+h9LM=
 github.com/aws/aws-sdk-go-v2/service/iam v1.18.8 h1:MYOkrSNwOUokctOnhGUNM9J/yNu87roEmdKcJ74d4eA=
