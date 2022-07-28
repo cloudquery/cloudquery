@@ -212,8 +212,8 @@ github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58/go.mod h1:EOBUe0h
 github.com/cloudquery/cq-gen v0.0.6 h1:M0gF12S/yGxL3QC6Qz26i/CydwGK/A7eo94hWX2Gh9w=
 github.com/cloudquery/cq-gen v0.0.6/go.mod h1:HkzXVCMuwMnoj65HqGSf2h4uxXMWZAKxNog4tIMi58M=
 github.com/cloudquery/cq-provider-sdk v0.8.2/go.mod h1:IHxqY7TOttWhNQhMRqYl1vBo2JS2szLAf5Mhg78MwTQ=
-github.com/cloudquery/cq-provider-sdk v0.14.4 h1:0ZwH7qxmhxmqRmEYFYeXu2ABqLJSJcmoNRl+8Cum0pw=
-github.com/cloudquery/cq-provider-sdk v0.14.4/go.mod h1:Zr/PbvBI6IQh6VZfWXcMsTPT+z7TzkGZxLtJO8lO2BM=
+github.com/cloudquery/cq-provider-sdk v0.14.5 h1:ltuBg+MvltXisazwGHuT8Er+pHYx7GwSnJBvGglipbY=
+github.com/cloudquery/cq-provider-sdk v0.14.5/go.mod h1:OymDCA64mAcclVnQi2bSsVoMrbxNXVvdfbiDRp/6tK0=
 github.com/cloudquery/faker/v3 v3.7.4/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
 github.com/cloudquery/faker/v3 v3.7.5/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
 github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=
@@ -1317,8 +1317,8 @@ golang.org/x/sync v0.0.0-20200625203802-6e8e738ad208/go.mod h1:RxMgew5VJxzue5/jJ
 golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20201207232520-09787c993a3a/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
-golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f h1:Ax0t5p6N38Ga0dThY21weqDEyz2oklo4IvDkpigvkD8=
-golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
+golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 h1:uVc8UZUe6tr40fFVnUP5Oj+veunVezqYl9z7DYw9xzw=
+golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sys v0.0.0-20180224232135-f6cff0780e54/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180830151530-49385e6e1522/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20180905080454-ebe1bf3edb33/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=

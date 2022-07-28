@@ -7,14 +7,14 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.27
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/cloudquery/cq-gen v0.0.6
-	github.com/cloudquery/cq-provider-sdk v0.14.4
+	github.com/cloudquery/cq-provider-sdk v0.14.5
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.2.1
 	github.com/stretchr/testify v1.8.0
 	github.com/tombuildsstuff/giovanni v0.20.0
-	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
+	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
 )
 
 require (
