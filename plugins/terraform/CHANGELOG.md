@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1](https://github.com/cloudquery/cq-provider-terraform/compare/v0.5.0...v0.5.1) (2022-07-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.5 ([#150](https://github.com/cloudquery/cq-provider-terraform/issues/150)) ([4d8e03e](https://github.com/cloudquery/cq-provider-terraform/commit/4d8e03e6bfa4be1e01503593d0cf051933f2a187))
+
 ## [0.5.0](https://github.com/cloudquery/cq-provider-terraform/compare/v0.4.20...v0.5.0) (2022-07-27)
 
 
