@@ -20,7 +20,7 @@ jobs:
         if: startsWith(github.head_ref, 'release')
         uses: actions/setup-go@v3
         with:
-          go-version: 1.17
+          go-version: 1.18
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release')
         uses: goreleaser/goreleaser-action@v3
