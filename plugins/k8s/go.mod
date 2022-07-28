@@ -1,6 +1,6 @@
 module github.com/cloudquery/cq-provider-k8s
 
-go 1.17
+go 1.18
 
 require (
 	github.com/cloudquery/cq-provider-sdk v0.14.5
