@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.12.2](https://github.com/cloudquery/cq-provider-azure/compare/v0.12.1...v0.12.2) (2022-07-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.6 ([#438](https://github.com/cloudquery/cq-provider-azure/issues/438)) ([b4ff9c5](https://github.com/cloudquery/cq-provider-azure/commit/b4ff9c572f4868d3a056d92454ee2839b74adc37))
+
 ## [0.12.1](https://github.com/cloudquery/cq-provider-azure/compare/v0.12.0...v0.12.1) (2022-07-28)
 
 
