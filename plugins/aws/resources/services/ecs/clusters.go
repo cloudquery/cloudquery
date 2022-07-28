@@ -383,7 +383,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "aws_ecs_cluster_task_attachments",
 						Description: "An object representing a container instance or task attachment.",
-						Resolver:    fetchEcsClusterTaskAttachments,
+						Resolver:    schema.PathTableResolver("Attachments"),
 						Columns: []schema.Column{
 							{
 								Name:        "cluster_task_cq_id",
@@ -417,7 +417,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "aws_ecs_cluster_task_containers",
 						Description: "A Docker container that's part of a task.",
-						Resolver:    fetchEcsClusterTaskContainers,
+						Resolver:    schema.PathTableResolver("Containers"),
 						Columns: []schema.Column{
 							{
 								Name:        "cluster_task_cq_id",
@@ -707,7 +707,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "aws_ecs_cluster_service_deployments",
 						Description: "The details of an Amazon ECS service deployment",
-						Resolver:    fetchEcsClusterServiceDeployments,
+						Resolver:    schema.PathTableResolver("Deployments"),
 						Columns: []schema.Column{
 							{
 								Name:        "cluster_service_cq_id",
@@ -817,7 +817,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "aws_ecs_cluster_service_events",
 						Description: "The details for an event that's associated with a service.",
-						Resolver:    fetchEcsClusterServiceEvents,
+						Resolver:    schema.PathTableResolver("Events"),
 						Columns: []schema.Column{
 							{
 								Name:        "cluster_service_cq_id",
@@ -845,7 +845,7 @@ func Clusters() *schema.Table {
 					{
 						Name:          "aws_ecs_cluster_service_load_balancers",
 						Description:   "The load balancer configuration to use with a service or task set",
-						Resolver:      fetchEcsClusterServiceLoadBalancers,
+						Resolver:      schema.PathTableResolver("LoadBalancers"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -880,7 +880,7 @@ func Clusters() *schema.Table {
 					{
 						Name:          "aws_ecs_cluster_service_service_registries",
 						Description:   "The details for the service registry",
-						Resolver:      fetchEcsClusterServiceServiceRegistries,
+						Resolver:      schema.PathTableResolver("ServiceRegistries"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -914,7 +914,7 @@ func Clusters() *schema.Table {
 					{
 						Name:          "aws_ecs_cluster_service_task_sets",
 						Description:   "Information about a set of Amazon ECS tasks in either an CodeDeploy or an EXTERNAL deployment",
-						Resolver:      fetchEcsClusterServiceTaskSets,
+						Resolver:      schema.PathTableResolver("TaskSets"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -1064,7 +1064,7 @@ func Clusters() *schema.Table {
 							{
 								Name:          "aws_ecs_cluster_service_task_set_load_balancers",
 								Description:   "The load balancer configuration to use with a service or task set",
-								Resolver:      fetchEcsClusterServiceTaskSetLoadBalancers,
+								Resolver:      schema.PathTableResolver("LoadBalancers"),
 								IgnoreInTests: true,
 								Columns: []schema.Column{
 									{
@@ -1098,7 +1098,7 @@ func Clusters() *schema.Table {
 							{
 								Name:          "aws_ecs_cluster_service_task_set_service_registries",
 								Description:   "The details for the service registry",
-								Resolver:      fetchEcsClusterServiceTaskSetServiceRegistries,
+								Resolver:      schema.PathTableResolver("ServiceRegistries"),
 								IgnoreInTests: true,
 								Columns: []schema.Column{
 									{
@@ -1236,7 +1236,7 @@ func Clusters() *schema.Table {
 					{
 						Name:          "aws_ecs_cluster_container_instance_attachments",
 						Description:   "An object representing a container instance or task attachment.",
-						Resolver:      fetchEcsClusterContainerInstanceAttachments,
+						Resolver:      schema.PathTableResolver("Attachments"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -1271,7 +1271,7 @@ func Clusters() *schema.Table {
 					{
 						Name:          "aws_ecs_cluster_container_instance_attributes",
 						Description:   "An attribute is a name-value pair that's associated with an Amazon ECS object. Use attributes to extend the Amazon ECS data model by adding custom metadata to your resources",
-						Resolver:      fetchEcsClusterContainerInstanceAttributes,
+						Resolver:      schema.PathTableResolver("Attributes"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -1305,7 +1305,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "aws_ecs_cluster_container_instance_health_status_details",
 						Description: "An object representing the result of a container instance health status check.",
-						Resolver:    fetchEcsClusterContainerInstanceHealthStatusDetails,
+						Resolver:    schema.PathTableResolver("HealthStatus.Details"),
 						Columns: []schema.Column{
 							{
 								Name:        "cluster_container_instance_cq_id",
@@ -1338,7 +1338,7 @@ func Clusters() *schema.Table {
 					{
 						Name:          "aws_ecs_cluster_container_instance_registered_resources",
 						Description:   "Describes the resources available for a container instance.",
-						Resolver:      fetchEcsClusterContainerInstanceRegisteredResources,
+						Resolver:      schema.PathTableResolver("RegisteredResources"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -1382,7 +1382,7 @@ func Clusters() *schema.Table {
 					{
 						Name:          "aws_ecs_cluster_container_instance_remaining_resources",
 						Description:   "Describes the resources available for a container instance.",
-						Resolver:      fetchEcsClusterContainerInstanceRemainingResources,
+						Resolver:      schema.PathTableResolver("RemainingResources"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -1602,11 +1602,7 @@ func resolveClusterTasksOverrides(ctx context.Context, meta schema.ClientMeta, r
 	}
 	return diag.WrapError(resource.Set(c.Name, data))
 }
-func fetchEcsClusterTaskAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(types.Task)
-	res <- p.Attachments
-	return nil
-}
+
 func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.Attachment)
 	j := make(map[string]interface{})
@@ -1616,11 +1612,7 @@ func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.Clien
 
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func fetchEcsClusterTaskContainers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(types.Task)
-	res <- p.Containers
-	return nil
-}
+
 func resolveClusterTaskContainersManagedAgents(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.Container)
 	data, err := json.Marshal(p.ManagedAgents)
@@ -1708,11 +1700,7 @@ func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.Cl
 
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func fetchEcsClusterServiceDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
-	res <- service.Deployments
-	return nil
-}
+
 func resolveClusterServiceDeploymentsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	deployment := resource.Item.(types.Deployment)
 	data, err := json.Marshal(deployment.CapacityProviderStrategy)
@@ -1721,26 +1709,7 @@ func resolveClusterServiceDeploymentsCapacityProviderStrategy(ctx context.Contex
 	}
 	return diag.WrapError(resource.Set(c.Name, data))
 }
-func fetchEcsClusterServiceEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
-	res <- service.Events
-	return nil
-}
-func fetchEcsClusterServiceLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
-	res <- service.LoadBalancers
-	return nil
-}
-func fetchEcsClusterServiceServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
-	res <- service.ServiceRegistries
-	return nil
-}
-func fetchEcsClusterServiceTaskSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	service := parent.Item.(types.Service)
-	res <- service.TaskSets
-	return nil
-}
+
 func resolveClusterServiceTaskSetsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	taskSet := resource.Item.(types.TaskSet)
 	data, err := json.Marshal(taskSet.CapacityProviderStrategy)
@@ -1749,16 +1718,7 @@ func resolveClusterServiceTaskSetsCapacityProviderStrategy(ctx context.Context, 
 	}
 	return diag.WrapError(resource.Set(c.Name, data))
 }
-func fetchEcsClusterServiceTaskSetLoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	taskSet := parent.Item.(types.TaskSet)
-	res <- taskSet.LoadBalancers
-	return nil
-}
-func fetchEcsClusterServiceTaskSetServiceRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	taskSet := parent.Item.(types.TaskSet)
-	res <- taskSet.ServiceRegistries
-	return nil
-}
+
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
@@ -1796,11 +1756,7 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 	}
 	return nil
 }
-func fetchEcsClusterContainerInstanceAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
-	res <- instance.Attachments
-	return nil
-}
+
 func resolveClusterContainerInstanceAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	attachment := resource.Item.(types.Attachment)
 	details := make(map[string]*string)
@@ -1808,27 +1764,4 @@ func resolveClusterContainerInstanceAttachmentsDetails(ctx context.Context, meta
 		details[*s.Name] = s.Value
 	}
 	return diag.WrapError(resource.Set(c.Name, details))
-}
-func fetchEcsClusterContainerInstanceAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
-	res <- instance.Attributes
-	return nil
-}
-func fetchEcsClusterContainerInstanceHealthStatusDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
-	if instance.HealthStatus == nil || instance.HealthStatus.Details == nil {
-		return nil
-	}
-	res <- instance.HealthStatus.Details
-	return nil
-}
-func fetchEcsClusterContainerInstanceRegisteredResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
-	res <- instance.RegisteredResources
-	return nil
-}
-func fetchEcsClusterContainerInstanceRemainingResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.ContainerInstance)
-	res <- instance.RemainingResources
-	return nil
 }
