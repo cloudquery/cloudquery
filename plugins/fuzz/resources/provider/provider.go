@@ -7,8 +7,7 @@ import (
 	"math/rand"
 	"time"
 
-	env "github.com/caitlinelfring/go-env-default"
-	"github.com/cloudquery/cq-provider-sdk/cqproto"
+	"github.com/caitlinelfring/go-env-default"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -16,7 +15,6 @@ import (
 )
 
 type Configuration struct {
-	requestedFormat cqproto.ConfigFormat
 }
 
 type TestClient struct {
@@ -54,17 +52,8 @@ func (t TestClient) Logger() hclog.Logger {
 	return t.L
 }
 
-func (c Configuration) Example() string {
-	switch c.requestedFormat {
-	case cqproto.ConfigHCL:
-		return `configuration {}`
-	default:
-		return ``
-	}
-}
-
-func (c Configuration) Format() cqproto.ConfigFormat {
-	return c.requestedFormat
+func (Configuration) Example() string {
+	return ``
 }
 
 func FuzzProvider() *provider.Provider {
@@ -84,8 +73,8 @@ func FuzzProvider() *provider.Provider {
 			return &TestClient{L: logger}, nil
 		},
 		ResourceMap: resourceMap,
-		Config: func(f cqproto.ConfigFormat) provider.Config {
-			return newConfiguration(f)
+		Config: func() provider.Config {
+			return Configuration{}
 		},
 	}
 }
@@ -184,11 +173,5 @@ func getResolverFunc(config fuzzConfig) schema.TableResolver {
 			res <- getExampleData()
 			return nil
 		}
-	}
-}
-
-func newConfiguration(f cqproto.ConfigFormat) *Configuration {
-	return &Configuration{
-		requestedFormat: f,
 	}
 }
