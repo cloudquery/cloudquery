@@ -136,20 +136,28 @@ jobs:
 
       # Install the Infracost CLI, see https://github.com/infracost/actions/tree/master/setup
       # for other inputs such as version, and pricing-api-endpoint (for self-hosted users).
+#          - name: Setup Infracost
+#        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
+#        # uses: infracost/actions/setup@v2
+#        run: |
+#          curl -o /tmp/infracost https://infracost-public-dumps.s3.amazonaws.com/builds/1923/infracost-linux-amd64
       - name: Setup Infracost
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         # uses: infracost/actions/setup@v2
         run: |
           curl -o /tmp/infracost https://infracost-public-dumps.s3.amazonaws.com/builds/1923/infracost-linux-amd64
-
+          chmod +x /tmp/infracost
+          /tmp/infracost configure set api_key ${{ secrets.INFRACOST_API_KEY }}
+        with:
+          api-key: ${{ secrets.INFRACOST_API_KEY }}
       - name: Run Infracost
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
-        run: infracost breakdown --config-file=/tmp/infracost.yml --format=json --out-file=/tmp/infracost.json
+        run: /tmp/infracost breakdown --config-file=/tmp/infracost.yml --format=json --out-file=/tmp/infracost.json
 
       - name: Post the comment
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request_target'
         run: |
-            infracost comment github --path=/tmp/infracost.json \
+          /tmp/infracost comment github --path=/tmp/infracost.json \
                                     --repo=$GITHUB_REPOSITORY \
                                     --github-token=${{github.token}} \
                                     --pull-request=${{github.event.pull_request.number}} \
