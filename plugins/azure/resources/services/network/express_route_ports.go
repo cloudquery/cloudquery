@@ -11,12 +11,13 @@ import (
 
 func NetworkExpressRoutePorts() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_network_express_route_ports",
-		Description:  "Azure Network Express Route Ports",
-		Resolver:     fetchNetworkExpressRoutePorts,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:          "azure_network_express_route_ports",
+		Description:   "Azure Network Express Route Ports",
+		Resolver:      fetchNetworkExpressRoutePorts,
+		Multiplex:     client.SubscriptionMultiplex,
+		DeleteFilter:  client.DeleteSubscriptionFilter,
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:        "subscription_id",

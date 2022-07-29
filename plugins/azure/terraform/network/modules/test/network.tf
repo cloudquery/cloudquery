@@ -3,15 +3,6 @@ resource "azurerm_resource_group" "network" {
   location = "East US"
 }
 
-resource "azurerm_express_route_port" "er_port" {
-  name                = "${var.prefix}-er-port"
-  resource_group_name = azurerm_resource_group.network.name
-  location            = azurerm_resource_group.network.location
-  peering_location    = "Equinix-Amsterdam-AM5"
-  bandwidth_in_gbps   = 10
-  encapsulation       = "Dot1Q"
-}
-
 resource "azurerm_express_route_circuit" "er_circuit" {
   name                  = "${var.prefix}-circuit"
   resource_group_name   = azurerm_resource_group.network.name
