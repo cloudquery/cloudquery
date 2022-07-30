@@ -19,7 +19,7 @@ func Test_loggerWarningColor(t *testing.T) {
 		Verbose:               true,
 		console:               &b,
 	})
-	log.Warn().Msg("test")
+	log.Warn().Msg("Test")
 
 	// skip first line
 	out := b.String()

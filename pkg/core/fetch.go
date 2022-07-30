@@ -206,7 +206,7 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 	}
 	// set metadata we want to pass to
 	metadata := map[string]interface{}{schema.FetchIdMetaKey: fetchId}
-	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("received fetch request")
+	log.Info().Interface("extra_fields", opts.ExtraFields).Msg("Received fetch request")
 
 	var (
 		diags          diag.Diagnostics
@@ -221,7 +221,7 @@ func Fetch(ctx context.Context, sta *state.Client, storage database.Storage, pm 
 	}
 	for _, providerInfo := range opts.ProvidersInfo {
 		if len(providerInfo.Config.Resources) == 0 {
-			log.Warn().Str("provider", providerInfo.Config.Name).Str("alias", providerInfo.Config.Alias).Msg("skipping provider which configured with 0 resources to fetch")
+			log.Warn().Str("provider", providerInfo.Config.Name).Str("alias", providerInfo.Config.Alias).Msg("Skipping provider which configured with 0 resources to fetch")
 			diags = diags.Add(diag.FromError(nil, diag.INTERNAL, diag.WithSeverity(diag.WARNING), diag.WithSummary("skipping provider %s which configured with 0 resources to fetch", providerInfo.Config.Name)))
 			continue
 		}
@@ -265,19 +265,19 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 	cfg := info.Config
 	pLog := log.With().Str("provider", cfg.Name).Str("alias", cfg.Alias).Logger()
 
-	pLog.Debug().Str("name", info.Provider.String()).Str("alias", cfg.Alias).Msg("creating provider plugin")
+	pLog.Debug().Str("name", info.Provider.String()).Str("alias", cfg.Alias).Msg("Creating provider plugin")
 	providerPlugin, err := pm.CreatePlugin(&plugin.CreationOptions{
 		Provider: info.Provider,
 		Alias:    cfg.Alias,
 		Env:      cfg.Env,
 	})
 	if err != nil {
-		pLog.Error().Err(err).Msg("failed to create provider plugin")
+		pLog.Error().Err(err).Msg("Failed to create provider plugin")
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	defer pm.ClosePlugin(providerPlugin)
 
-	pLog.Info().Msg("requesting provider to configure")
+	pLog.Info().Msg("Requesting provider to configure")
 	resp, err := providerPlugin.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
 		Connection: cqproto.ConnectionDetails{
@@ -286,7 +286,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		Config: cfg.ConfigBytes,
 	})
 	if err != nil {
-		pLog.Error().Err(err).Msg("failed to configure provider")
+		pLog.Error().Err(err).Msg("Failed to configure provider")
 		var (
 			d   diag.Diagnostics
 			sts FetchStatus
@@ -319,7 +319,7 @@ func runProviderFetch(ctx context.Context, pm *plugin.Manager, info ProviderInfo
 		}, diags
 	}
 
-	pLog.Info().Msg("provider configured successfully")
+	pLog.Info().Msg("Provider configured successfully")
 	summary, fetchDiags := executeFetch(ctx, pLog, providerPlugin, info, metadata, opts.UpdateCallback)
 	diags = diags.Add(convertToFetchDiags(fetchDiags, info.Provider.Name, providerPlugin.Version()))
 
@@ -351,7 +351,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 		return summary, diags
 	}
 
-	pLog.Info().Msg("provider started fetching resources")
+	pLog.Info().Msg("Provider started fetching resources")
 	stream, err := providerPlugin.Provider().FetchResources(ctx,
 		&cqproto.FetchResourcesRequest{
 			Resources:             resources,
@@ -370,7 +370,7 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 		switch err {
 		case nil:
 			// We didn't receive an error we received a response
-			pLog.Debug().Str("resource", resp.ResourceName).Uint64("fetched", resp.ResourceCount).Msg("resource fetched successfully")
+			pLog.Debug().Str("resource", resp.ResourceName).Uint64("fetched", resp.ResourceCount).Msg("Resource fetched successfully")
 			if callback != nil {
 				callback(FetchUpdate{
 					Name:              info.Provider.Name,
@@ -393,17 +393,17 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 				time.Since(start),
 			}
 			if resp.Error != "" {
-				pLog.Warn().Err(err).Str("resource", resp.ResourceName).Msg("received resource fetch error")
+				pLog.Warn().Err(err).Str("resource", resp.ResourceName).Msg("Received resource fetch error")
 				diags = diags.Add(diag.FromError(errors.New(resp.Error), diag.RESOLVING, diag.WithResourceName(resp.ResourceName)))
 			}
 			// TODO: print diags, specific to resource into log?
 			if rdiags.HasDiags() {
-				pLog.Warn().Str("resource", resp.ResourceName).Msg("received resource fetch diagnostics")
+				pLog.Warn().Str("resource", resp.ResourceName).Msg("Received resource fetch diagnostics")
 				diags = diags.Add(rdiags)
 			}
 		case io.EOF:
 			// This case means the stream closed peacefully, i.e the provider finished without any error
-			pLog.Info().TimeDiff("execution", time.Now(), start).Msg("provider finished fetch")
+			pLog.Info().TimeDiff("execution", time.Now(), start).Msg("Provider finished fetch")
 			return summary, diags
 		default:
 			if callback != nil {
@@ -417,11 +417,11 @@ func executeFetch(ctx context.Context, pLog zerolog.Logger, providerPlugin plugi
 			}
 			// We received an error, first lets check if we got canceled, if not we log the error and add to diags
 			if cqerrors.IsCancelation(err) {
-				pLog.Warn().TimeDiff("execution", time.Now(), start).Msg("provider fetch was canceled")
+				pLog.Warn().TimeDiff("execution", time.Now(), start).Msg("Provider fetch was canceled")
 				summary.Status = FetchCanceled
 				return summary, diags.Add(cqerrors.CancelationDiag(err))
 			}
-			pLog.Error().Err(err).Msg("received unexpected provider fetch error")
+			pLog.Error().Err(err).Msg("Received unexpected provider fetch error")
 			summary.Status = FetchFailed
 			return summary, diags.Add(diag.FromError(err, diag.INTERNAL))
 		}

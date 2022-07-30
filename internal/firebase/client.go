@@ -37,7 +37,7 @@ func (f *Client) IsProviderRegistered(organization, providerName string) bool {
 	u := fmt.Sprintf(f.url+providerVerification, organization, providerName)
 	res, err := http.Get(u)
 	if err != nil {
-		log.Error().Err(err).Msg("failed to check if provider is registered")
+		log.Error().Err(err).Msg("Failed to check if provider is registered")
 		return false
 	}
 	if res.StatusCode != http.StatusOK {

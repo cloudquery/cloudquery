@@ -53,7 +53,7 @@ func (s SyncState) String() string {
 }
 
 func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) (*SyncResult, diag.Diagnostics) {
-	log.Info().Stringer("provider", provider).Msg("syncing provider schema")
+	log.Info().Stringer("provider", provider).Msg("Syncing provider schema")
 
 	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
 	if diags.HasDiags() {
@@ -86,15 +86,15 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 
 	switch {
 	case cur == nil || cur.ParsedVersion == nil: // New install (or older provider)
-		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("installing provider schema")
+		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("Installing provider schema")
 		res.State = Installed
 	case cur.ParsedVersion.Equal(want.ParsedVersion): // Same version
 		res.State = NoChange
 	case cur.ParsedVersion.LessThan(want.ParsedVersion): // Upgrade
-		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("upgrading provider schema")
+		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("Upgrading provider schema")
 		res.State = Upgraded
 	case cur.ParsedVersion.GreaterThan(want.ParsedVersion): // Downgrade
-		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("downgrading provider schema")
+		log.Debug().Stringer("provider", provider).Str("version", provider.Version).Msg("Downgrading provider schema")
 		res.State = Downgraded
 	default:
 		return nil, diag.FromError(fmt.Errorf("sync: unhandled case"), diag.INTERNAL)
@@ -104,12 +104,12 @@ func Sync(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 		diags = diags.Add(syncTables(ctx, sta, cur, want, s.ResourceTables))
 	}
 
-	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Uint64("errors", diags.Errors()).Msg("provider sync complete")
+	log.Debug().Stringer("provider", provider).Stringer("state", res.State).Uint64("errors", diags.Errors()).Msg("Provider sync complete")
 	return res, diags
 }
 
 func Drop(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider registry.Provider) diag.Diagnostics {
-	log.Warn().Stringer("provider", provider).Msg("dropping provider schema")
+	log.Warn().Stringer("provider", provider).Msg("Dropping provider schema")
 	s, diags := GetProviderSchema(ctx, pm, &GetProviderSchemaOptions{Provider: provider})
 	if diags.HasDiags() {
 		return diags
@@ -121,7 +121,7 @@ func Drop(ctx context.Context, sta *state.Client, pm *plugin.Manager, provider r
 	}
 	defer tx.Rollback(ctx) // nolint:errcheck
 
-	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("dropping provider tables")
+	log.Info().Str("provider", provider.Name).Str("version", provider.Version).Msg("Dropping provider tables")
 	if diags := dropProviderTables(ctx, tx, provider, resourceTableNames(s.ResourceTables), nil, nil); diags.HasDiags() {
 		return diags
 	}
@@ -195,11 +195,11 @@ func dropProviderTables(ctx context.Context, db execution.QueryExecer, provider 
 
 	for name, tables := range tableNames {
 		if curSignatures != nil && wantSignatures != nil && curSignatures[name] != "" && wantSignatures[name] == curSignatures[name] {
-			log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("keeping tables and all data")
+			log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("Keeping tables and all data")
 			continue
 		}
 
-		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("deleting tables and all relations")
+		log.Debug().Str("resource", name).Str("provider", provider.Name).Msg("Deleting tables and all relations")
 		for _, t := range tables {
 			if !force {
 				diags = diags.Add(safeToDropTable(ctx, db, name, t))

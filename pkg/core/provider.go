@@ -38,7 +38,7 @@ type AvailableUpdate struct {
 func GetProviderConfiguration(ctx context.Context, pm *plugin.Manager, opts *GetProviderConfigOptions) (*cqproto.GetProviderConfigResponse, diag.Diagnostics) {
 	providerPlugin, err := pm.CreatePlugin(&plugin.CreationOptions{Provider: opts.Provider})
 	if err != nil {
-		log.Error().Err(err).Str("provider", opts.Provider.Name).Str("version", opts.Provider.Version).Msg("failed to create provider plugin")
+		log.Error().Err(err).Str("provider", opts.Provider.Name).Str("version", opts.Provider.Version).Msg("Failed to create provider plugin")
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	defer pm.ClosePlugin(providerPlugin)
@@ -59,7 +59,7 @@ func Test(ctx context.Context, pm *plugin.Manager, opts TestOptions) (bool, erro
 		return false, err
 	}
 	defer pm.ClosePlugin(p)
-	log.Info().Str("provider", opts.CreationInfo.Provider.Name).Str("version", opts.CreationInfo.Provider.Version).Msg("requesting provider to configure")
+	log.Info().Str("provider", opts.CreationInfo.Provider.Name).Str("version", opts.CreationInfo.Provider.Version).Msg("Requesting provider to configure")
 	// TODO: check configure provider response errors/diagnostics
 	_, err = p.Provider().ConfigureProvider(ctx, &cqproto.ConfigureProviderRequest{
 		CloudQueryVersion: Version,
@@ -92,19 +92,19 @@ func CheckAvailableUpdates(ctx context.Context, reg registry.Registry, opts *Che
 			}
 			version = pb.Version
 		}
-		log.Info().Str("provider", p.Name).Str("version", version).Msg("checking update for provider")
+		log.Info().Str("provider", p.Name).Str("version", version).Msg("Checking update for provider")
 		updateVersion, err := reg.CheckUpdate(ctx, p)
 		if err != nil {
-			log.Error().Err(err).Str("provider", p.Name).Str("version", version).Msg("failed to check provider update")
+			log.Error().Err(err).Str("provider", p.Name).Str("version", version).Msg("Failed to check provider update")
 			diags = diags.Add(diag.FromError(err, diag.INTERNAL))
 		}
 		// if we didn't receive an updateVersion or the updateVersion == the version we have installed on disk
 		// we will skip passing an available update
 		if updateVersion == "" || updateVersion == version {
-			log.Debug().Str("provider", p.Name).Str("version", version).Str("new_version", updateVersion).Msg("no update found for provider")
+			log.Debug().Str("provider", p.Name).Str("version", version).Str("new_version", updateVersion).Msg("No update found for provider")
 			continue
 		}
-		log.Info().Str("provider", p.Name).Str("version", p.Version).Str("new_version", updateVersion).Msg("update available for provider")
+		log.Info().Str("provider", p.Name).Str("version", p.Version).Str("new_version", updateVersion).Msg("Update available for provider")
 		updates = append(updates, AvailableUpdate{
 			Name:             p.Name,
 			CurrentVersion:   version,

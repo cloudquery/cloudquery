@@ -99,7 +99,7 @@ func Configure(config Config) zerolog.Logger {
 		Int("maxSizeMB", config.MaxSize).
 		Int("maxBackups", config.MaxBackups).
 		Int("maxAgeInDays", config.MaxAge).
-		Msg("logging configured")
+		Msg("Logging configured")
 
 	return logger
 }
@@ -127,7 +127,7 @@ func Reconfigure(originalConfig, updatedConfig Config) {
 
 func newRollingFile(config Config) io.Writer {
 	if err := os.MkdirAll(config.Directory, 0744); err != nil {
-		log.Error().Err(err).Str("path", config.Directory).Msg("can't create logging directory")
+		log.Error().Err(err).Str("path", config.Directory).Msg("Can't create logging directory")
 		return nil
 	}
 

@@ -87,10 +87,10 @@ func (m *Manager) CreatePlugin(opts *CreationOptions) (Plugin, error) {
 
 	p := m.clients.Get(opts.Provider, opts.Alias)
 	if p != nil {
-		log.Debug().Stringer("provider", opts.Provider).Str("alias", opts.Alias).Msg("using existing plugin")
+		log.Debug().Stringer("provider", opts.Provider).Str("alias", opts.Alias).Msg("Using existing plugin")
 		return p, nil
 	}
-	log.Info().Str("provider", providerName).Str("alias", opts.Alias).Msg("plugin doesn't exist, creating...")
+	log.Info().Str("provider", providerName).Str("alias", opts.Alias).Msg("Plugin doesn't exist, creating...")
 	details, err := m.registry.Get(opts.Provider.Name, opts.Provider.Version)
 	if err != nil {
 		return nil, fmt.Errorf("no such provider %s. plugin might be missing from directory or wasn't downloaded", providerName)
@@ -116,11 +116,11 @@ func (m *Manager) Shutdown() {
 // ClosePlugin kills a plugin instance and removes it from the managed plugins.
 func (m *Manager) ClosePlugin(p Plugin) {
 	if p.Version() == Unmanaged {
-		log.Warn().Str("provider", p.Name()).Msg("not closing unmanaged provider")
+		log.Warn().Str("provider", p.Name()).Msg("Not closing unmanaged provider")
 		return
 	}
 	if err := m.killProvider(p.Name()); err != nil {
-		log.Warn().Str("provider", p.Name()).Msg("failed to kill provider")
+		log.Warn().Str("provider", p.Name()).Msg("Failed to kill provider")
 	}
 }
 
@@ -136,7 +136,7 @@ func (m *Manager) reattachProviders() error {
 		return err
 	}
 	for name, cfg := range unmanagedProviders {
-		log.Debug().Str("name", name).Str("address", cfg.Addr.String()).Int("pid", cfg.Pid).Msg("reattaching unmanaged plugin")
+		log.Debug().Str("name", name).Str("address", cfg.Addr.String()).Int("pid", cfg.Pid).Msg("Reattaching unmanaged plugin")
 		plugin, err := newUnmanagedPlugin(name, cfg)
 		if err != nil {
 			return err

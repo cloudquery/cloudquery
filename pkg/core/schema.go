@@ -23,10 +23,10 @@ type ProviderSchema struct {
 }
 
 func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *GetProviderSchemaOptions) (*ProviderSchema, diag.Diagnostics) {
-	log.Info().Stringer("provider", request.Provider).Msg("requesting provider schema")
+	log.Info().Stringer("provider", request.Provider).Msg("Requesting provider schema")
 	providerPlugin, err := manager.CreatePlugin(&plugin.CreationOptions{Provider: request.Provider})
 	if err != nil {
-		log.Error().Stringer("provider", request.Provider).Err(err).Msg("failed to create provider plugin")
+		log.Error().Stringer("provider", request.Provider).Err(err).Msg("Failed to create provider plugin")
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
 	defer manager.ClosePlugin(providerPlugin)
@@ -35,7 +35,7 @@ func GetProviderSchema(ctx context.Context, manager *plugin.Manager, request *Ge
 	if err != nil {
 		return nil, diag.FromError(err, diag.INTERNAL)
 	}
-	log.Debug().Stringer("provider", request.Provider).Msg("retrieved provider schema successfully")
+	log.Debug().Stringer("provider", request.Provider).Msg("Retrieved provider schema successfully")
 	// set version if schema didn't return it.
 	if schema.Version == "" {
 		schema.Version = request.Provider.Version

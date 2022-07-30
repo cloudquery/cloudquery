@@ -71,7 +71,7 @@ func (h Hub) Get(providerName, providerVersion string) (ProviderBinary, error) {
 			}
 			currentVersion, err := version.NewVersion(p.Version)
 			if err != nil {
-				log.Warn().Str("provider", providerName).Str("version", providerVersion).Msg("bad version provider exists in directory")
+				log.Warn().Str("provider", providerName).Str("version", providerVersion).Msg("Bad version provider exists in directory")
 				continue
 			}
 			if currentVersion.GreaterThan(latestVersion) {
@@ -132,7 +132,7 @@ func (h Hub) Download(ctx context.Context, provider Provider, noVerify bool) (Pr
 		return h.downloadProvider(ctx, provider, requestedVersion, noVerify)
 	}
 	if p.Version != requestedVersion {
-		log.Info().Str("current", p.Version).Str("requested", requestedVersion).Msg("current version is not as requested version updating provider")
+		log.Info().Str("current", p.Version).Str("requested", requestedVersion).Msg("Current version is not as requested version updating provider")
 		return h.downloadProvider(ctx, provider, requestedVersion, noVerify)
 	}
 
@@ -171,22 +171,22 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 	if h.ProgressUpdater != nil {
 		h.ProgressUpdater.Update(provider.Name, ui.StatusInProgress, "Verifying...", 1)
 	}
-	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums file")
+	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("Downloading checksums file")
 	// download checksums
 	osFs := file.NewOsFs()
 	if err := osFs.DownloadFile(ctx, checksumsPath, checksumsURL, nil); err != nil {
 		l.Error().Err(err).Msg("failed to download checksums file")
 		return false
 	}
-	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums signature")
+	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("Downloading checksums signature")
 	// download checksums signature
 	if err := osFs.DownloadFile(ctx, checksumsPath+".sig", checksumsURL+".sig", nil); err != nil {
-		l.Error().Err(err).Msg("failed to download signature file")
+		l.Error().Err(err).Msg("Failed to download signature file")
 		return false
 	}
 	err := validateFile(checksumsPath, checksumsPath+".sig")
 	if err != nil {
-		l.Error().Err(err).Msg("validating provider signature failed")
+		l.Error().Err(err).Msg("Validating provider signature failed")
 		if h.ProgressUpdater != nil {
 			h.ProgressUpdater.Update(provider.Name, ui.StatusError, "Bad signature", 0)
 		}
@@ -194,7 +194,7 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 	}
 	providerPath := h.getProviderPath(provider.Source, provider.Name, version)
 	if err = validateChecksumProvider(providerPath, checksumsPath); err != nil {
-		l.Error().Err(err).Msg("validating provider checksum failed")
+		l.Error().Err(err).Msg("Validating provider checksum failed")
 		if h.ProgressUpdater != nil {
 			h.ProgressUpdater.Update(provider.Name, ui.StatusError, "Bad checksum", 0)
 		}
@@ -257,15 +257,15 @@ func (Hub) getLatestRelease(ctx context.Context, organization, providerName stri
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
 	if noVerify {
-		log.Warn().Str("provider", providerName).Msg("skipping plugin registry verification")
+		log.Warn().Str("provider", providerName).Msg("Skipping plugin registry verification")
 		return true
 	}
-	log.Debug().Str("provider", providerName).Str("version", version).Msg("verifying provider plugin is registered")
+	log.Debug().Str("provider", providerName).Str("version", version).Msg("Verifying provider plugin is registered")
 	if !h.isProviderRegistered(organization, providerName) {
 		return false
 	}
 
-	log.Debug().Str("provider", providerName).Str("version", version).Msg("provider plugin is registered")
+	log.Debug().Str("provider", providerName).Str("version", version).Msg("Provider plugin is registered")
 	return true
 }
 
@@ -283,7 +283,7 @@ func (h Hub) loadExisting() {
 	osFs := file.NewOsFs()
 	_ = osFs.WalkPathTree(h.PluginDirectory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
-			log.Debug().Str("directory", h.PluginDirectory).Msg("failed to read plugin directory, no existing plugins loaded")
+			log.Debug().Str("directory", h.PluginDirectory).Msg("Failed to read plugin directory, no existing plugins loaded")
 			return nil
 		}
 		if info.IsDir() {
@@ -295,9 +295,9 @@ func (h Hub) loadExisting() {
 		}
 		provider := filepath.Base(filepath.Dir(path))
 		if strings.HasSuffix(path, ".tmp") {
-			log.Debug().Str("provider", provider).Msg("found temp provider file, cleaning up")
+			log.Debug().Str("provider", provider).Msg("Found temp provider file, cleaning up")
 			if err := osFs.Remove(path); err != nil {
-				log.Warn().Str("provider", provider).Msg("failed to remove temp provider file")
+				log.Warn().Str("provider", provider).Msg("Failed to remove temp provider file")
 			}
 			return nil
 		}
@@ -312,7 +312,7 @@ func (h Hub) loadExisting() {
 			},
 			FilePath: path,
 		}
-		log.Debug().Str("provider", provider).Str("version", pVersion).Msg("found existing provider")
+		log.Debug().Str("provider", provider).Str("version", pVersion).Msg("Found existing provider")
 		return nil
 	})
 }

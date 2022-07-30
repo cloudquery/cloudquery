@@ -48,7 +48,7 @@ func PurgeProviderData(ctx context.Context, storage database.Storage, manager *p
 	if len(opts.Providers) == 0 {
 		return nil, diag.Diagnostics{diag.NewBaseError(nil, diag.INTERNAL, diag.WithSeverity(diag.WARNING), diag.WithSummary("no providers were given"))}
 	}
-	log.Info().Interface("providers", opts.Providers).Bool("dry-run", opts.DryRun).Msg("purging stale data for providers")
+	log.Info().Interface("providers", opts.Providers).Bool("dry-run", opts.DryRun).Msg("Purging stale data for providers")
 	db, err := sdkdb.New(ctx, logging.NewZHcLog(&log.Logger, "database"), storage.DSN())
 	if err != nil {
 		return nil, diag.FromError(err, diag.DATABASE)
@@ -64,7 +64,7 @@ func PurgeProviderData(ctx context.Context, storage database.Storage, manager *p
 
 	lastUpdateTime := time.Now().UTC().Add(-opts.LastUpdate)
 	for _, p := range opts.Providers {
-		log.Debug().Stringer("provider", p).TimeDiff("since", lastUpdateTime, time.Now().UTC()).Msg("cleaning stale data for provider")
+		log.Debug().Stringer("provider", p).TimeDiff("since", lastUpdateTime, time.Now().UTC()).Msg("Cleaning stale data for provider")
 		affectedResources, affected, err := removeProviderStaleData(ctx, db, manager, p, lastUpdateTime, opts.DryRun)
 		diags = diags.Add(err)
 		result.TotalAffected += affected
@@ -88,7 +88,7 @@ func removeProviderStaleData(ctx context.Context, storage execution.Storage, man
 	)
 
 	for r, t := range providerSchema.ResourceTables {
-		logger.Debug().Str("table", t.Name).Msg("purging data from table")
+		logger.Debug().Str("table", t.Name).Msg("Purging data from table")
 		if dryRun {
 			affected, err := dryRunPurge(ctx, storage, t, lastUpdateTime)
 			if err != nil {

@@ -137,7 +137,7 @@ func New(opts ...Option) *Client {
 
 	ac, err := analytics.NewWithConfig(c.apikey, "https://cloudquerypgm.dataplane.rudderstack.com", cfg)
 	if err != nil {
-		log.Error().Err(err).Msg("failed to initialize analytics client, client is disabled")
+		log.Error().Err(err).Msg("Failed to initialize analytics client, client is disabled")
 		c.disabled = true
 	}
 	c.client = ac
@@ -198,7 +198,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 		eventProps[k] = v
 	}
 	if c.inspect {
-		log.Info().Interface("data", eventProps).Str("event", eventType).Msg("inspect analytics event")
+		log.Info().Interface("data", eventProps).Str("event", eventType).Msg("Inspect analytics event")
 		// if inspect is turned on we only return inspect messages
 		return
 	}
@@ -206,7 +206,7 @@ func Capture(eventType string, providers registry.Providers, data Message, diags
 	event := analytics.Track{UserId: c.userId, Event: eventType, Timestamp: time.Now().UTC(), Properties: eventProps}
 	if err := c.client.Enqueue(event); err != nil {
 		if c.debug {
-			log.Error().Err(err).Msg("failed to send analytics")
+			log.Error().Err(err).Msg("Failed to send analytics")
 		}
 	}
 }

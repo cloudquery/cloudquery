@@ -101,9 +101,9 @@ func CreateClientFromConfig(ctx context.Context, cfg *config.Config, instanceId 
 			if !ok {
 				return nil, fmt.Errorf("validate: %w", err)
 			}
-			log.Warn().Err(err).Msg("database validation warning")
+			log.Warn().Err(err).Msg("Database validation warning")
 		} else if !ok {
-			log.Warn().Msg("database validation warning")
+			log.Warn().Msg("Database validation warning")
 		}
 
 		if dbId, ok := dialect.Identifier(ctx); ok {
@@ -335,14 +335,14 @@ func (c Client) Close() {
 func (Client) checkForUpdate(ctx context.Context) {
 	v, err := core.CheckCoreUpdate(ctx, afero.Afero{Fs: afero.NewOsFs()}, time.Now().Unix(), core.UpdateCheckPeriod)
 	if err != nil {
-		log.Warn().Err(err).Msg("update check failed")
+		log.Warn().Err(err).Msg("Update check failed")
 		return
 	}
 	if v != nil {
 		ui.ColorizedOutput(ui.ColorInfo, "An update to CloudQuery core is available: %s!\n\n", v)
-		log.Debug().Str("new_version", v.String()).Msg("update check succeeded")
+		log.Debug().Str("new_version", v.String()).Msg("Update check succeeded")
 	} else {
-		log.Debug().Msg("update check succeeded, no new version")
+		log.Debug().Msg("Update check succeeded, no new version")
 	}
 }
 

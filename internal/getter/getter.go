@@ -70,7 +70,7 @@ var (
 )
 
 func Get(ctx context.Context, installPath, url string, options ...getter.ClientOption) error {
-	log.Debug().Str("url", url).Msg("getting source from url")
+	log.Debug().Str("url", url).Msg("Getting source from url")
 	pwd, _ := os.Getwd()
 	client := getter.Client{
 		Src:           url,

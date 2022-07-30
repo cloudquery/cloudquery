@@ -21,21 +21,21 @@ func checkAndSetUlimitUnix() {
 
 	rlimit, err := getUlimit()
 	if err != nil {
-		logger.Err(err).Msg("checkAndSetUlimitUnix: failed getting ulimit")
+		logger.Err(err).Msg("CheckAndSetUlimitUnix: failed getting ulimit")
 		return
 	}
-	logger.Info().Uint64("hard_ulimit", rlimit.Max).Uint64("soft_ulimit", rlimit.Cur).Msg("limits (before adjustment)")
+	logger.Info().Uint64("hard_ulimit", rlimit.Max).Uint64("soft_ulimit", rlimit.Cur).Msg("Limits (before adjustment)")
 
 	if err := setUlimit(); err != nil {
-		logger.Err(err).Msg("failed setting ulimit")
+		logger.Err(err).Msg("Failed setting ulimit")
 	}
 
 	rlimit, err = getUlimit()
 	if err != nil {
-		logger.Err(err).Msg("checkAndSetUlimitUnix: failed getting ulimit")
+		logger.Err(err).Msg("CheckAndSetUlimitUnix: failed getting ulimit")
 		return
 	}
-	logger.Info().Uint64("hard_ulimit", rlimit.Max).Uint64("soft_ulimit", rlimit.Cur).Msg("limits (after adjustment)")
+	logger.Info().Uint64("hard_ulimit", rlimit.Max).Uint64("soft_ulimit", rlimit.Cur).Msg("Limits (after adjustment)")
 }
 
 func setUlimit() error {
@@ -45,7 +45,7 @@ func setUlimit() error {
 	// If it fails we just log at "INFO" level.
 	if err := setHardUlimit(); err != nil {
 		// Just an info log here, since it's really not actionable.
-		logger.Info().AnErr("err", err).Msg("failed setting hard ulimit")
+		logger.Info().AnErr("err", err).Msg("Failed setting hard ulimit")
 	}
 
 	return setSoftUlimit()
@@ -59,7 +59,7 @@ func setHardUlimit() error {
 	}
 
 	if rLimit.Max < ulimitUnix {
-		logger.Info().Uint64("previous_ulimit", rLimit.Max).Uint64("new_ulimit", ulimitUnix).Msg("adjusting hard ulimit")
+		logger.Info().Uint64("previous_ulimit", rLimit.Max).Uint64("new_ulimit", ulimitUnix).Msg("Adjusting hard ulimit")
 		rLimit.Max = ulimitUnix
 		return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rLimit)
 	}
@@ -77,7 +77,7 @@ func setSoftUlimit() error {
 
 	desiredUlimit := min(rlimit.Max, ulimitUnix)
 	if rlimit.Cur < desiredUlimit {
-		logger.Info().Uint64("previous_ulimit", rlimit.Cur).Uint64("new_ulimit", desiredUlimit).Msg("adjusting soft ulimit")
+		logger.Info().Uint64("previous_ulimit", rlimit.Cur).Uint64("new_ulimit", desiredUlimit).Msg("Adjusting soft ulimit")
 		rlimit.Cur = desiredUlimit
 		return syscall.Setrlimit(syscall.RLIMIT_NOFILE, &rlimit)
 	}
