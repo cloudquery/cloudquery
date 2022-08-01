@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -35,11 +36,17 @@ type Services struct {
 	Web               WebClient
 }
 
-func InitServices(subscriptionId string, auth autorest.Authorizer) (Services, error) {
+func InitServices(subscriptionId string, auth autorest.Authorizer, azCred azcore.TokenCredential) (Services, error) {
 	keyVault, err := NewKeyVaultClient(subscriptionId, auth)
 	if err != nil {
 		return Services{}, err
 	}
+
+	subscriptionsClient, err := NewSubscriptionsClient(subscriptionId, auth, azCred)
+	if err != nil {
+		return Services{}, err
+	}
+
 	return Services{
 		AD:                NewADClient(subscriptionId, auth),
 		Authorization:     NewAuthorizationClient(subscriptionId, auth),
@@ -67,7 +74,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer) (Services, er
 		SQL:               NewSQLClient(subscriptionId, auth),
 		Storage:           NewStorageClient(subscriptionId, auth),
 		StreamAnalytics:   NewStreamAnalyticsClient(subscriptionId, auth),
-		Subscriptions:     NewSubscriptionsClient(subscriptionId, auth),
+		Subscriptions:     subscriptionsClient,
 		Web:               NewWebClient(subscriptionId, auth),
 	}, nil
 }

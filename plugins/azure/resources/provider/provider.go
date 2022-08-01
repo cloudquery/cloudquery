@@ -44,7 +44,7 @@ func Provider() *provider.Provider {
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
 		ResourceMap: map[string]*schema.Table{
-			"account.locations":                  account.AccountLocations(),
+			"account.locations":                  account.Locations(),
 			"authorization.role_assignments":     authorization.AuthorizationRoleAssignments(),
 			"authorization.role_definitions":     authorization.AuthorizationRoleDefinitions(),
 			"batch.accounts":                     batch.BatchAccounts(),
@@ -100,7 +100,8 @@ func Provider() *provider.Provider {
 			"sql.managed_instances":                sql.SqlManagedInstances(),
 			"storage.accounts":                     storage.StorageAccounts(),
 			"streamanalytics.jobs":                 streamanalytics.StreamanalyticsJobs(),
-			"subscription.subscriptions":           subscription.SubscriptionSubscriptions(),
+			"subscription.subscriptions":           subscription.Subscriptions(),
+			"subscription.tenants":                 subscription.Tenants(),
 			"web.apps":                             web.WebApps(),
 		},
 		Config: func() provider.Config {

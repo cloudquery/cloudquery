@@ -12,11 +12,11 @@ As a prerequisite, ensure that API calls to list/describe the desired resource a
 
 If the service to which the resource belongs has not been used before in cq-provider-azure, there are a few steps that need to be done to configure it.
 
-1. Create the service interface in [client/services/services.go](./client/services/services.go)
-   * Don't forget to add the new service interface name to the go:generate comment.
-1. Add the service to the `Services` struct in the [client/services/services.go](./client/services/services.go)
-1. Init the service in the `InitServices` function in [client/services/services.go](./client/services.go)
-1. Run `make generate-mocks` to create a mock for your new service. This will update [client/mocks/services.go](./client/mocks/services.go) automatically.
+1. Create the service interface in [client/services](../../client/services)
+2. Add the new service interface name to the go:generate comment in [client/services/services.go](../../client/services/services.go).
+3. Add the service to the `Services` struct in [client/services/services.go](../../client/services/services.go)
+4. Init the service in the `InitServices` function in [client/services/services.go](../../client/services/services.go)
+5. Run `make generate-mocks` to create a mock for your new service. This will update [client/services/mocks](../../client/services/mocks) automatically.
 
 ## Setting up the resource
 

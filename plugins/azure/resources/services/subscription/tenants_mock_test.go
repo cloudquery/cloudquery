@@ -13,27 +13,27 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockSubscriptionsClient(ctrl)
+func buildTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	m := mocks.NewMockTenantsClient(ctrl)
 
 	var subscriptionID string
 	if err := faker.FakeData(&subscriptionID); err != nil {
 		t.Fatal(err)
 	}
 
-	var model armsubscriptions.Subscription
+	var model armsubscriptions.TenantIDDescription
 	if err := faker.FakeData(&model); err != nil {
 		t.Fatal(err)
 	}
-	pager := runtime.NewPager[armsubscriptions.ClientListResponse](runtime.PagingHandler[armsubscriptions.ClientListResponse]{
-		More: func(page armsubscriptions.ClientListResponse) bool {
+	pager := runtime.NewPager[armsubscriptions.TenantsClientListResponse](runtime.PagingHandler[armsubscriptions.TenantsClientListResponse]{
+		More: func(page armsubscriptions.TenantsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *armsubscriptions.ClientListResponse) (armsubscriptions.ClientListResponse, error) {
-			return armsubscriptions.ClientListResponse{
-				SubscriptionListResult: armsubscriptions.SubscriptionListResult{
+		Fetcher: func(ctx context.Context, page *armsubscriptions.TenantsClientListResponse) (armsubscriptions.TenantsClientListResponse, error) {
+			return armsubscriptions.TenantsClientListResponse{
+				TenantListResult: armsubscriptions.TenantListResult{
 					NextLink: nil,
-					Value:    []*armsubscriptions.Subscription{&model},
+					Value:    []*armsubscriptions.TenantIDDescription{&model},
 				},
 			}, nil
 		},
@@ -45,11 +45,11 @@ func buildSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 	return services.Services{
 		Subscriptions: services.Subscriptions{
 			SubscriptionID: subscriptionID,
-			Subscriptions:  m,
+			Tenants:        m,
 		},
 	}
 }
 
-func TestSubscriptions(t *testing.T) {
-	client.AzureMockTestHelper(t, Subscriptions(), buildSubscriptionsMock, client.TestOptions{})
+func TestTenants(t *testing.T) {
+	client.AzureMockTestHelper(t, Tenants(), buildTenantsMock, client.TestOptions{})
 }

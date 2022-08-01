@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	// Import all autorest modules
 	_ "github.com/Azure/go-autorest/autorest"
@@ -67,6 +69,17 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		}
 	}
 
+	logger.Info("Trying to authenticate via CLI (azidentity)")
+	var azCred azcore.TokenCredential
+	azCred, err = azidentity.NewAzureCLICredential(nil)
+	if err != nil {
+		logger.Info("Trying to authenticate via environment variables (azidentity)")
+		azCred, err = azidentity.NewEnvironmentCredential(nil)
+		if err != nil {
+			return nil, diag.FromError(err, diag.USER)
+		}
+	}
+
 	client := NewAzureClient(logger, providerConfig.Subscriptions)
 
 	if len(providerConfig.Subscriptions) == 0 {
@@ -95,7 +108,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 			}
 		}
 		client.subscriptions = subscriptions
-		logger.Info("No subscriptions specified going to using all available ones", "subscriptions", subscriptions)
+		logger.Info("No subscriptions specified, going to using all available ones", "subscriptions", subscriptions)
 	}
 
 	if len(client.subscriptions) == 0 {
@@ -103,7 +116,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	}
 
 	for _, sub := range client.subscriptions {
-		svcs, err := services.InitServices(sub, azureAuth)
+		svcs, err := services.InitServices(sub, azureAuth, azCred)
 		if err != nil {
 			return nil, classifyError(err, diag.INTERNAL, sub)
 		}
