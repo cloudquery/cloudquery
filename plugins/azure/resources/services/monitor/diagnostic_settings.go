@@ -12,8 +12,6 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-const maxGoroutines = 10
-
 // diagnosticSetting is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
 type diagnosticSetting struct {
 	// DiagnosticSettings - Properties of a Diagnostic Settings Resource.
@@ -28,6 +26,8 @@ type diagnosticSetting struct {
 	// ResourceURI is a resource URI which this diagnostic setting belongs to
 	ResourceURI string
 }
+
+const maxGoroutines = 10
 
 func MonitorDiagnosticSettings() *schema.Table {
 	return &schema.Table{
