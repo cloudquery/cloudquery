@@ -11,14 +11,14 @@ import (
 	"github.com/okta/okta-sdk-golang/v2/okta"
 )
 
-const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
-
 type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
 	logger hclog.Logger
 	Okta   *okta.Client
 }
+
+const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
 
 func (c *Client) Logger() hclog.Logger {
 	return c.logger
