@@ -50,6 +50,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
+	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
@@ -136,24 +137,25 @@ type Services struct {
 	CognitoUserPools       CognitoUserPoolsClient
 	ConfigService          ConfigServiceClient
 	DAX                    DAXClient
-	DMS                    DatabasemigrationserviceClient
 	Directconnect          DirectconnectClient
+	DMS                    DatabasemigrationserviceClient
 	DynamoDB               DynamoDBClient
 	EC2                    Ec2Client
 	ECR                    EcrClient
 	ECS                    EcsClient
 	EFS                    EfsClient
-	ELBv1                  ElbV1Client
-	ELBv2                  ElbV2Client
-	EMR                    EmrClient
 	Eks                    EksClient
 	ElasticBeanstalk       ElasticbeanstalkClient
 	ElasticSearch          ElasticSearch
+	ELBv1                  ElbV1Client
+	ELBv2                  ElbV2Client
+	EMR                    EmrClient
 	FSX                    FsxClient
 	Glue                   GlueClient
 	GuardDuty              GuardDutyClient
 	IAM                    IamClient
 	IOT                    IOTClient
+	Kinesis                KinesisClient
 	KMS                    KmsClient
 	Lambda                 LambdaClient
 	Lightsail              LightsailClient
@@ -167,16 +169,16 @@ type Services struct {
 	S3                     S3Client
 	S3Control              S3ControlClient
 	S3Manager              S3ManagerClient
+	SageMaker              SageMakerClient
+	SecretsManager         SecretsManagerClient
 	SES                    SESClient
 	Shield                 ShieldClient
 	SNS                    SnsClient
 	SQS                    SQSClient
 	SSM                    SSMClient
-	SageMaker              SageMakerClient
-	SecretsManager         SecretsManagerClient
 	Waf                    WafClient
-	WafV2                  WafV2Client
 	WafRegional            WafRegionalClient
+	WafV2                  WafV2Client
 	Workspaces             WorkspacesClient
 	Xray                   XrayClient
 }
@@ -619,18 +621,18 @@ func initServices(region string, c aws.Config) Services {
 		Apigateway:             apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:           apigatewayv2.NewFromConfig(awsCfg),
 		ApplicationAutoscaling: applicationautoscaling.NewFromConfig(awsCfg),
-		Autoscaling:            autoscaling.NewFromConfig(awsCfg),
 		Athena:                 athena.NewFromConfig(awsCfg),
+		Autoscaling:            autoscaling.NewFromConfig(awsCfg),
 		Backup:                 backup.NewFromConfig(awsCfg),
+		Cloudformation:         cloudformation.NewFromConfig(awsCfg),
 		Cloudfront:             cloudfront.NewFromConfig(awsCfg),
 		Cloudtrail:             cloudtrail.NewFromConfig(awsCfg),
 		Cloudwatch:             cloudwatch.NewFromConfig(awsCfg),
 		CloudwatchLogs:         cloudwatchlogs.NewFromConfig(awsCfg),
-		Cloudformation:         cloudformation.NewFromConfig(awsCfg),
-		CognitoIdentityPools:   cognitoidentity.NewFromConfig(awsCfg),
-		CognitoUserPools:       cognitoidentityprovider.NewFromConfig(awsCfg),
 		Codebuild:              codebuild.NewFromConfig(awsCfg),
 		CodePipeline:           codepipeline.NewFromConfig(awsCfg),
+		CognitoIdentityPools:   cognitoidentity.NewFromConfig(awsCfg),
+		CognitoUserPools:       cognitoidentityprovider.NewFromConfig(awsCfg),
 		ConfigService:          configservice.NewFromConfig(awsCfg),
 		DAX:                    dax.NewFromConfig(awsCfg),
 		Directconnect:          directconnect.NewFromConfig(awsCfg),
@@ -650,6 +652,8 @@ func initServices(region string, c aws.Config) Services {
 		Glue:                   glue.NewFromConfig(awsCfg),
 		GuardDuty:              guardduty.NewFromConfig(awsCfg),
 		IAM:                    iam.NewFromConfig(awsCfg),
+		IOT:                    iot.NewFromConfig(awsCfg),
+		Kinesis:                kinesis.NewFromConfig(awsCfg),
 		KMS:                    kms.NewFromConfig(awsCfg),
 		Lambda:                 lambda.NewFromConfig(awsCfg),
 		Lightsail:              lightsail.NewFromConfig(awsCfg),
@@ -668,13 +672,12 @@ func initServices(region string, c aws.Config) Services {
 		SES:                    sesv2.NewFromConfig(awsCfg),
 		Shield:                 shield.NewFromConfig(awsCfg),
 		SNS:                    sns.NewFromConfig(awsCfg),
-		SSM:                    ssm.NewFromConfig(awsCfg),
 		SQS:                    sqs.NewFromConfig(awsCfg),
+		SSM:                    ssm.NewFromConfig(awsCfg),
 		Waf:                    waf.NewFromConfig(awsCfg),
-		WafV2:                  wafv2.NewFromConfig(awsCfg),
 		WafRegional:            wafregional.NewFromConfig(awsCfg),
+		WafV2:                  wafv2.NewFromConfig(awsCfg),
 		Workspaces:             workspaces.NewFromConfig(awsCfg),
-		IOT:                    iot.NewFromConfig(awsCfg),
 		Xray:                   xray.NewFromConfig(awsCfg),
 	}
 }

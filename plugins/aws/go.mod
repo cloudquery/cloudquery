@@ -41,6 +41,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.8
 	github.com/aws/aws-sdk-go-v2/service/iot v1.25.4
+	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/kms v1.17.4
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.23.3
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.22.2
