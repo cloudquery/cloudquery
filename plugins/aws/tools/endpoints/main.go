@@ -10,10 +10,6 @@ import (
 	"github.com/cloudquery/cq-provider-aws/client"
 )
 
-const (
-	awsEndpointFile = "https://raw.githubusercontent.com/aws/aws-sdk-go-v2/main/codegen/smithy-aws-go-codegen/src/main/resources/software/amazon/smithy/aws/go/codegen/endpoints.json"
-)
-
 type supportedServicesData struct {
 	// nested structs are ok here to simplify JSON unmarshaling
 	// nolint:revive
@@ -27,6 +23,10 @@ type supportedServicesData struct {
 		} `json:"services"`
 	} `json:"partitions"`
 }
+
+const (
+	awsEndpointFile = "https://raw.githubusercontent.com/aws/aws-sdk-go-v2/main/codegen/smithy-aws-go-codegen/src/main/resources/software/amazon/smithy/aws/go/codegen/endpoints.json"
+)
 
 func getPartitionRegionServiceData() (*client.SupportedServiceRegionsData, error) {
 	// fetch the aws endpoints json file

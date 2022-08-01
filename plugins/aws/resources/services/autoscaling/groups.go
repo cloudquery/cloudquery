@@ -15,12 +15,12 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-var groupNotFoundRegex = regexp.MustCompile(`AutoScalingGroup name not found|Group .* not found`)
-
 type autoscalingGroupWrapper struct {
 	types.AutoScalingGroup
 	NotificationConfigurations []types.NotificationConfiguration
 }
+
+var groupNotFoundRegex = regexp.MustCompile(`AutoScalingGroup name not found|Group .* not found`)
 
 func AutoscalingGroups() *schema.Table {
 	return &schema.Table{
