@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -19,6 +20,7 @@ type Client struct {
 	kConfig  api.Config
 	config   *Config
 	contexts []string
+	paths    map[string]struct{}
 
 	Context string
 }
@@ -99,6 +101,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		config:   cfg,
 		contexts: contexts,
 		Context:  contexts[0],
+		paths:    make(map[string]struct{}),
 	}
 
 	for _, ctxName := range contexts {
@@ -106,6 +109,10 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		kClient, err := buildKubeClient(kCfg, ctxName)
 		if err != nil {
 			return nil, diag.FromError(fmt.Errorf("failed to build k8s client for context %q: %w", ctxName, err), diag.INTERNAL)
+		}
+		c.paths, err = getAPIsMap(kClient)
+		if err != nil {
+			c.Logger().Warn("Failed to get OpenAPI schema. It might be not supported in the current version of Kubernetes. OpenAPI has been supported since Kubernetes 1.4", "err", err)
 		}
 		c.services[ctxName] = initServices(kClient)
 	}
@@ -127,6 +134,21 @@ func buildKubeClient(kubeConfig api.Config, ctx string) (*kubernetes.Clientset, 
 		return nil, err
 	}
 	return kubernetes.NewForConfig(restConfig)
+}
+
+func getAPIsMap(client *kubernetes.Clientset) (map[string]struct{}, error) {
+	doc, err := client.OpenAPISchema()
+	if err != nil {
+		return nil, err
+	}
+	paths := make(map[string]struct{})
+	for _, p := range doc.Paths.Path {
+		path := p.Name
+		if strings.HasPrefix(path, "/apis/") {
+			paths[path] = struct{}{}
+		}
+	}
+	return paths, nil
 }
 
 func initServices(client *kubernetes.Clientset) Services {

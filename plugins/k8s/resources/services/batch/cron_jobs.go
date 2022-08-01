@@ -16,7 +16,7 @@ func CronJobs() *schema.Table {
 		Name:         "k8s_batch_cron_jobs",
 		Description:  "CronJob represents the configuration of a single cron job.",
 		Resolver:     fetchBatchCronJobs,
-		Multiplex:    client.ContextMultiplex,
+		Multiplex:    client.APIFilterContextMultiplex("/apis/batch/v1/cronjobs"),
 		DeleteFilter: client.DeleteContextFilter,
 		IgnoreError:  client.IgnoreForbiddenNotFound,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"uid"}},

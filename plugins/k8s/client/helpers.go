@@ -36,6 +36,27 @@ func ContextMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 	return clients
 }
 
+// APIFilterContextMultiplex returns a list of clients for each context from the cq config
+func APIFilterContextMultiplex(path string) func(meta schema.ClientMeta) []schema.ClientMeta {
+	return func(meta schema.ClientMeta) []schema.ClientMeta {
+		client := meta.(*Client)
+
+		// in kubernetes version below 1.4 paths is nil
+		if client.paths != nil {
+			if _, ok := client.paths[path]; !ok {
+				client.Logger().Warn("The resource is not supported by current version of k8s", "path", path)
+				return []schema.ClientMeta{}
+			}
+		}
+
+		clients := make([]schema.ClientMeta, 0, len(client.contexts))
+		for _, ctxName := range client.contexts {
+			clients = append(clients, client.WithContext(ctxName))
+		}
+		return clients
+	}
+}
+
 // DeleteContextFilter returns a delete filter that cleans up the data belonging to the k8s context.
 func DeleteContextFilter(meta schema.ClientMeta, _ *schema.Resource) []interface{} {
 	client := meta.(*Client)
