@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go v1.44.66
 	github.com/cloudquery/cq-provider-sdk v0.14.6
 	github.com/fatih/color v1.13.0 // indirect
-	github.com/hashicorp/go-hclog v1.2.1
+	github.com/hashicorp/go-hclog v1.2.2
 	github.com/hashicorp/go-plugin v1.4.4 // indirect
 	github.com/hashicorp/hcl/v2 v2.13.0 // indirect
 	github.com/jackc/pgproto3/v2 v2.3.0 // indirect
