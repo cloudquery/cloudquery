@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.4.0
-	github.com/hashicorp/go-hclog v1.2.1
+	github.com/hashicorp/go-hclog v1.2.2
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/spf13/cast v1.5.0
 	github.com/stretchr/testify v1.8.0
