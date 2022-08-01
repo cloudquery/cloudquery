@@ -4,10 +4,6 @@ import (
 	"encoding/json"
 )
 
-const (
-	StateVersion = 4
-)
-
 // Hashicorp terraform state v4
 // https://github.com/hashicorp/terraform/blob/main/internal/states/statefile/version4.go
 
@@ -56,3 +52,7 @@ type Instance struct {
 
 	CreateBeforeDestroy bool `json:"create_before_destroy,omitempty"`
 }
+
+const (
+	StateVersion = 4
+)
