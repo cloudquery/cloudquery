@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-go@v3
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
-          go-version: 1.17
+          go-version: 1.18
 
       - name: golangci-lint
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
