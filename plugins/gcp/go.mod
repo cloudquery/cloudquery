@@ -14,7 +14,7 @@ require (
 	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4
-	google.golang.org/api v0.89.0
+	google.golang.org/api v0.90.0
 	google.golang.org/grpc v1.48.0
 )
 
