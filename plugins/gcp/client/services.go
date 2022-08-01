@@ -26,23 +26,6 @@ import (
 
 type GcpService string
 
-const (
-	BigQueryService             GcpService = "bigquery.googleapis.com"
-	CloudBillingService         GcpService = "cloudbilling.googleapis.com"
-	CloudFunctionsService       GcpService = "cloudfunctions.googleapis.com"
-	CloudKmsService             GcpService = "cloudkms.googleapis.com"
-	CloudResourceManagerService GcpService = "cloudresourcemanager.googleapis.com"
-	ComputeService              GcpService = "compute.googleapis.com"
-	DnsService                  GcpService = "dns.googleapis.com"
-	DomainsService              GcpService = "domains.googleapis.com"
-	IamService                  GcpService = "iam.googleapis.com"
-	LoggingService              GcpService = "logging.googleapis.com"
-	RedisService                GcpService = "redis.googleapis.com"
-	MonitoringService           GcpService = "monitoring.googleapis.com"
-	SqlAdminService             GcpService = "sqladmin.googleapis.com"
-	StorageService              GcpService = "storage-api.googleapis.com"
-)
-
 type Services struct {
 	BigQuery        *bigquery.Service
 	CloudBilling    *cloudbilling.APIService
@@ -63,6 +46,23 @@ type Services struct {
 	Sql             *sql.Service
 	Storage         *storage.Service
 }
+
+const (
+	BigQueryService             GcpService = "bigquery.googleapis.com"
+	CloudBillingService         GcpService = "cloudbilling.googleapis.com"
+	CloudFunctionsService       GcpService = "cloudfunctions.googleapis.com"
+	CloudKmsService             GcpService = "cloudkms.googleapis.com"
+	CloudResourceManagerService GcpService = "cloudresourcemanager.googleapis.com"
+	ComputeService              GcpService = "compute.googleapis.com"
+	DnsService                  GcpService = "dns.googleapis.com"
+	DomainsService              GcpService = "domains.googleapis.com"
+	IamService                  GcpService = "iam.googleapis.com"
+	LoggingService              GcpService = "logging.googleapis.com"
+	RedisService                GcpService = "redis.googleapis.com"
+	MonitoringService           GcpService = "monitoring.googleapis.com"
+	SqlAdminService             GcpService = "sqladmin.googleapis.com"
+	StorageService              GcpService = "storage-api.googleapis.com"
+)
 
 func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
 	bigQuerySvc, err := bigquery.NewService(ctx, options...)

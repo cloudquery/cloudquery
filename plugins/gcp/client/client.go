@@ -16,10 +16,6 @@ import (
 	"google.golang.org/api/option"
 )
 
-const defaultProjectIdName = "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
-
-const serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
-
 type Client struct {
 	projects []string
 	logger   hclog.Logger
@@ -30,6 +26,11 @@ type Client struct {
 	// this is set by table client multiplexer
 	ProjectId string
 }
+
+const (
+	defaultProjectIdName = "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
+	serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
+)
 
 func NewGcpClient(log hclog.Logger, bo BackoffSettings, projects []string, services *Services) *Client {
 	c := &Client{
