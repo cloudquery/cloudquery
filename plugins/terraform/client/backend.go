@@ -19,13 +19,6 @@ import (
 
 type BackendType string
 
-// currently supported backends type
-// full list - https://www.terraform.io/docs/language/settings/backends/index.html
-const (
-	LOCAL BackendType = "local"
-	S3    BackendType = "s3"
-)
-
 // BackendConfigBlock - abstract backend config
 type BackendConfigBlock struct {
 	BackendName string                 `yaml:"name"`
@@ -49,6 +42,13 @@ type S3BackendConfig struct {
 	Region  string `yaml:"region"`
 	RoleArn string `yaml:"role_arn,omitempty"`
 }
+
+// currently supported backends type
+// full list - https://www.terraform.io/docs/language/settings/backends/index.html
+const (
+	LOCAL BackendType = "local"
+	S3    BackendType = "s3"
+)
 
 // parseAndValidate received reader turn in into TerraformData state and validate the state version
 func parseAndValidate(reader io.Reader) (*TerraformData, error) {
