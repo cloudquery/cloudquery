@@ -9,7 +9,7 @@ require (
 	github.com/aws/smithy-go v1.12.0
 	github.com/cloudquery/cq-provider-sdk v0.14.6
 	github.com/digitalocean/godo v1.81.0
-	github.com/hashicorp/go-hclog v1.2.1
+	github.com/hashicorp/go-hclog v1.2.2
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cast v1.5.0
 	github.com/thoas/go-funk v0.9.2
