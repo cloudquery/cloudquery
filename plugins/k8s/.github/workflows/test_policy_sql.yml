@@ -1,3 +1,6 @@
+{{! the empty template/value use below tells github to use this file only if we have a .values.yml file for the provider }}
+{{=<% %>=}}
+
 # DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 name: SQL Policy Validation Test
 on:
