@@ -3,7 +3,7 @@ module github.com/cloudquery/cq-provider-terraform
 go 1.18
 
 require (
-	github.com/aws/aws-sdk-go v1.44.61
+	github.com/aws/aws-sdk-go v1.44.66
 	github.com/cloudquery/cq-provider-sdk v0.14.6
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/hashicorp/go-hclog v1.2.1
