@@ -14,7 +14,7 @@ func Provider() *provider.Provider {
 			"users": Users(),
 		},
 		Config: func() provider.Config {
-			return client.Config{}
+			return &client.Config{}
 		},
 		ErrorClassifier: client.ErrorClassifier,
 	}
