@@ -2,10 +2,15 @@ package services
 
 import (
 	"context"
-	"github.com/cloudflare/cloudflare-go"
 
+	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
+
+type IpWrapper struct {
+	Ip   string
+	Type string
+}
 
 //go:generate cq-gen --resource ips --config ips.hcl --output .
 func Ips() *schema.Table {
@@ -30,11 +35,6 @@ func Ips() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
-
-type IpWrapper struct {
-	Ip   string
-	Type string
-}
 
 func fetchIps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	resp, err := cloudflare.IPs()

@@ -3,15 +3,13 @@ package client
 import (
 	"context"
 	"errors"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"os"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"
 )
-
-const MaxItemsPerPage = 200
 
 type AccountZones map[string]struct {
 	AccountId string
@@ -26,11 +24,13 @@ type Client struct {
 	ClientApi     Api
 }
 
-func NewClient(log hclog.Logger, ClientApi Api, accountsZones AccountZones) Client {
+const MaxItemsPerPage = 200
+
+func NewClient(log hclog.Logger, clientApi Api, accountsZones AccountZones) Client {
 	return Client{
 		logger:        log,
 		AccountsZones: accountsZones,
-		ClientApi:     ClientApi,
+		ClientApi:     clientApi,
 	}
 }
 
@@ -125,11 +125,11 @@ func (c *Client) withAccountId(accountId string) *Client {
 	}
 }
 
-func (c *Client) withZoneId(AccountId, zoneId string) *Client {
+func (c *Client) withZoneId(accountId, zoneId string) *Client {
 	return &Client{
 		AccountsZones: c.AccountsZones,
-		logger:        c.logger.With("account_id", obfuscateId(AccountId), "zone_id", obfuscateId(zoneId)),
-		AccountId:     AccountId,
+		logger:        c.logger.With("account_id", obfuscateId(accountId), "zone_id", obfuscateId(zoneId)),
+		AccountId:     accountId,
 		ZoneId:        zoneId,
 		ClientApi:     c.ClientApi,
 	}

@@ -1,15 +1,15 @@
 package client
 
 import (
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/golang/mock/gomock"
-	"github.com/hashicorp/go-hclog"
 	"testing"
 
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
+	"github.com/golang/mock/gomock"
+	"github.com/hashicorp/go-hclog"
 )
 
 const (

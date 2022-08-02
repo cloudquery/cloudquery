@@ -10,7 +10,7 @@ type Config struct {
 	Zones    []string `yaml:"zones,omitempty"`
 }
 
-func (c Config) Example() string {
+func (Config) Example() string {
 	return `
 // Use can use either the API token or the API key
 // API token is preferred

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/cloudflare/cloudflare-go"
-	_ "github.com/golang/mock/gomock"
 )
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_client.go . Api

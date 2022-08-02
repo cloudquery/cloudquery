@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
