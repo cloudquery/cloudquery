@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.13.4](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.3...v0.13.4) (2022-08-02)
+
+
+### Features
+
+* Add Kinesis Data Stream support ([#1348](https://github.com/cloudquery/cq-provider-aws/issues/1348)) ([767bfab](https://github.com/cloudquery/cq-provider-aws/commit/767bfaba0d382d6971023bdd13535d0a6cd95ec6))
+* Add Tags for ECR Repo ([#1369](https://github.com/cloudquery/cq-provider-aws/issues/1369)) ([3b31598](https://github.com/cloudquery/cq-provider-aws/commit/3b31598782e450b04c31a95938b2df9906828adf))
+* Added glue databases and tables ([#1345](https://github.com/cloudquery/cq-provider-aws/issues/1345)) ([0284a37](https://github.com/cloudquery/cq-provider-aws/commit/0284a37e7ebafbdcf15140a1ccdedde09f0bb13b))
+* Added glue jobs ([#1352](https://github.com/cloudquery/cq-provider-aws/issues/1352)) ([562a6b3](https://github.com/cloudquery/cq-provider-aws/commit/562a6b334ee077f5fab76cdd3321ea7ddfec3f91))
+* Column Resolvers    ([#1301](https://github.com/cloudquery/cq-provider-aws/issues/1301)) ([9b2dbed](https://github.com/cloudquery/cq-provider-aws/commit/9b2dbed888f44b4430c66051ce9e30d9ecea7673))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.7 ([#1362](https://github.com/cloudquery/cq-provider-aws/issues/1362)) ([3060854](https://github.com/cloudquery/cq-provider-aws/commit/3060854773cca20f7b18980b02193bb15273649e))
+* **deps:** Update module github.com/hashicorp/go-hclog to v1.2.2 ([#1350](https://github.com/cloudquery/cq-provider-aws/issues/1350)) ([82ec301](https://github.com/cloudquery/cq-provider-aws/commit/82ec301d9eed9fe00812d7e8d0d89b3ff753faaa))
+* Update endpoints ([#1347](https://github.com/cloudquery/cq-provider-aws/issues/1347)) ([3191f3e](https://github.com/cloudquery/cq-provider-aws/commit/3191f3e08f2c1142e5a79a76ec6e5b0a0da9f30c))
+
 ## [0.13.3](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.2...v0.13.3) (2022-07-28)
 
 
