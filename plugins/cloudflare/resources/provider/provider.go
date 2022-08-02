@@ -22,10 +22,10 @@ func Provider() *provider.Provider {
 			"zones":       services.Zones(),
 			"ips":         services.Ips(),
 			"dns_records": services.DNSRecords(),
+			"waf":         services.Wafs(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
 		},
 	}
-
 }

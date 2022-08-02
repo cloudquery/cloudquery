@@ -18,7 +18,7 @@ resource "cloudflare" "" "zones" {
   userDefinedColumn "account_id" {
     description = "The Account ID of the resource."
     type        = "string"
-    resolver "resolveAWSAccount" {
+    resolver "resolveCFAccount" {
       path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
     }
   }
@@ -220,14 +220,6 @@ resource "cloudflare" "" "zones" {
   column "plan_pending_externally_managed" {
     description = "True if zone plan is externally managed."
   }
-
-  #  column "wildcard_proxiable" {
-  #    description = ""
-  #  }
-  #
-  #  column "phishing_detected" {
-  #    description = ""
-  #  }
 
   column "account" {
     skip        = true

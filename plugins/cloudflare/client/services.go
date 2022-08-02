@@ -15,4 +15,8 @@ type Api interface {
 	ListZonesContext(ctx context.Context, opts ...cloudflare.ReqOption) (r cloudflare.ZonesResponse, err error)
 
 	DNSRecords(ctx context.Context, zoneID string, rr cloudflare.DNSRecord) ([]cloudflare.DNSRecord, error)
+
+	ListWAFPackages(ctx context.Context, zoneID string) ([]cloudflare.WAFPackage, error)
+	ListWAFGroups(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFGroup, error)
+	ListWAFRules(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFRule, error)
 }

@@ -14,7 +14,7 @@ resource "cloudflare" "" "dns_records" {
   userDefinedColumn "account_id" {
     description = "The Account ID of the resource."
     type        = "string"
-    resolver "resolveAWSAccount" {
+    resolver "resolveCFAccount" {
       path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
     }
   }

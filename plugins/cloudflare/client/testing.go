@@ -21,9 +21,8 @@ func CFMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T
 	t.Helper()
 	ctrl := gomock.NewController(t)
 
-	cfg := `
-		accounts = ["test_account"]
-	`
+	cfg := ""
+
 	providertest.TestResource(t, providertest.ResourceTestCase{
 		Provider: &provider.Provider{
 			Name:    "cloudflare_mock_test_provider",
