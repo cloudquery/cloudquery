@@ -168,6 +168,7 @@ func Provider() *provider.Provider {
 			"emr.block_public_access_configs":         emr.EmrBlockPublicAccessConfigs(),
 			"emr.clusters":                            emr.EmrClusters(),
 			"fsx.backups":                             fsx.FsxBackups(),
+			"glue.jobs":                               glue.Jobs(),
 			"glue.workflows":                          glue.Workflows(),
 			"guardduty.detectors":                     guardduty.GuarddutyDetectors(),
 			"iam.accounts":                            iam.IamAccounts(),
