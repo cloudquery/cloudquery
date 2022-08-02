@@ -169,6 +169,7 @@ type CloudtrailClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_cloudwatch.go . CloudwatchClient
 type CloudwatchClient interface {
 	DescribeAlarms(ctx context.Context, params *cloudwatch.DescribeAlarmsInput, optFns ...func(*cloudwatch.Options)) (*cloudwatch.DescribeAlarmsOutput, error)
+	ListTagsForResource(ctx context.Context, params *cloudwatch.ListTagsForResourceInput, optFns ...func(*cloudwatch.Options)) (*cloudwatch.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_cloudwatchlogs.go . CloudwatchLogsClient

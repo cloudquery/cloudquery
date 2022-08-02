@@ -5,6 +5,7 @@ The details about a metric alarm.
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
+|tags|jsonb||
 |region|text|The AWS Region of the resource.|
 |actions_enabled|boolean|Indicates whether actions should be executed during any changes to the alarm state.|
 |actions|text[]|The actions to execute when this alarm transitions to the ALARM state from any other state.|

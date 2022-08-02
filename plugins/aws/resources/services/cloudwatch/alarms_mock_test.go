@@ -26,6 +26,14 @@ func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&cloudwatch.DescribeAlarmsOutput{
 			MetricAlarms: []types.MetricAlarm{a},
 		}, nil)
+
+	tagResponse := cloudwatch.ListTagsForResourceOutput{}
+	err = faker.FakeData(&tagResponse)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
+
 	return services
 }
 

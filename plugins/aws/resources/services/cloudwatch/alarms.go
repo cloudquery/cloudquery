@@ -13,20 +13,24 @@ import (
 
 func CloudwatchAlarms() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_cloudwatch_alarms",
-		Description:   "The details about a metric alarm.",
-		Resolver:      fetchCloudwatchAlarms,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("logs"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-		IgnoreInTests: true,
+		Name:         "aws_cloudwatch_alarms",
+		Description:  "The details about a metric alarm.",
+		Resolver:     fetchCloudwatchAlarms,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
+		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveCloudwatchAlarmTags,
 			},
 			{
 				Name:        "region",
@@ -311,4 +315,19 @@ func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context,
 		dimensions[*d.Name] = d.Value
 	}
 	return diag.WrapError(resource.Set("metric_stat_metric_dimensions", dimensions))
+}
+
+func resolveCloudwatchAlarmTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Cloudwatch
+	alarm := resource.Item.(types.MetricAlarm)
+
+	input := cloudwatch.ListTagsForResourceInput{
+		ResourceARN: alarm.AlarmArn,
+	}
+	output, err := svc.ListTagsForResource(ctx, &input)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(output.Tags)))
 }
