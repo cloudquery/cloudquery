@@ -1,8 +1,13 @@
 package client
 
 import (
+	"context"
+
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/google/go-github/v45/github"
 	"github.com/hashicorp/go-hclog"
+	"golang.org/x/oauth2"
 )
 
 type Client struct {
@@ -11,24 +16,47 @@ type Client struct {
 	logger hclog.Logger
 
 	// CHANGEME:  Usually you store here your 3rd party clients and use them in the fetcher
-	ThirdPartyClient interface{}
+	Github GithubServices
+
+	Org string
+
+	Orgs []string
 }
 
 func (c *Client) Logger() hclog.Logger {
 	return c.logger
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, error) {
+func (c Client) WithOrg(org string) schema.ClientMeta {
+	return &Client{
+		logger: c.logger.With("org", org),
+		Github: c.Github,
+		Org:    org,
+		Orgs:   c.Orgs,
+	}
+}
+
+func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
 	_ = providerConfig
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: providerConfig.AccessToken},
+	)
+	tc := oauth2.NewClient(context.Background(), ts)
+
+	client := github.NewClient(tc)
+
 	// Init your client and 3rd party clients using the user's configuration
 	// passed by the SDK providerConfig
-	client := Client{
+	return &Client{
 		logger: logger,
-		// CHANGEME: pass the initialized third pard client
-		ThirdPartyClient: nil,
-	}
-
-	// Return the initialized client and it will be passed to your resources
-	return &client, nil
+		Github: GithubServices{
+			Teams:         client.Teams,
+			Billing:       client.Billing,
+			Repositories:  client.Repositories,
+			Organizations: client.Organizations,
+			Issues:        client.Issues,
+		},
+		Orgs: []string{"cloudquery"},
+	}, nil
 }

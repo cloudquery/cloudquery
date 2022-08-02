@@ -6,9 +6,7 @@ import (
 	"os"
 	"path"
 
-	// CHNAGE ME: Change this to your own provider GitHub
-	"github.com/cloudquery/cq-provider-template/resources"
-
+	"github.com/cloudquery/cq-provider-github/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )
 
@@ -27,7 +25,7 @@ func main() {
 
 	}
 
-	if err = docs.GenerateDocs(resources.Provider(), outputPath); err != nil {
+	if err = docs.GenerateDocs(provider.Provider(), outputPath, true); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to generate docs: %s\n", err)
 	}
 }

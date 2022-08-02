@@ -1,1 +1,0 @@
--- This is stub empty up migrations
