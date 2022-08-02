@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.2](https://github.com/cloudquery/cq-provider-okta/compare/v0.6.1...v0.6.2) (2022-08-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.6 ([#184](https://github.com/cloudquery/cq-provider-okta/issues/184)) ([091c80c](https://github.com/cloudquery/cq-provider-okta/commit/091c80c51fd80638313d534c705c4e341106fa02))
+* **deps:** Update module github.com/hashicorp/go-hclog to v1.2.2 ([#187](https://github.com/cloudquery/cq-provider-okta/issues/187)) ([9df1865](https://github.com/cloudquery/cq-provider-okta/commit/9df1865f8be72a552377e382f88a93e5c7cbe9b2))
+* Fix init issue ([#194](https://github.com/cloudquery/cq-provider-okta/issues/194)) ([8e1bc13](https://github.com/cloudquery/cq-provider-okta/commit/8e1bc133ac3e8b7f993199333e25382945fcfa67))
+
 ## [0.6.1](https://github.com/cloudquery/cq-provider-okta/compare/v0.6.0...v0.6.1) (2022-07-28)
 
 
