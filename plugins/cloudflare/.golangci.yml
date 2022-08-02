@@ -27,6 +27,9 @@ linters-settings:
       - var
       - func
     disable-dec-order-check: false
+  wrapcheck:
+    ignoreSigs:
+      - diag.WrapError
 
   revive:
     enable-all-rules: true
@@ -69,6 +72,8 @@ linters-settings:
         disabled: true
       - name: flag-parameter
         disabled: true
+      - name: nested-structs
+        disabled: true
 
 linters:
   enable:
@@ -96,6 +101,7 @@ linters:
     - unparam
     - unused
     - varcheck
+    - wrapcheck
 
 issues:
   exclude-rules:
@@ -104,6 +110,7 @@ issues:
       linters:
         - dupl
         - gocritic
+        - wrapcheck
       # Exclude some linters from running on resource files.
     - path: resources(\\|\/).*\.go
       linters:
@@ -112,3 +119,7 @@ issues:
     - path: services\.go
       linters:
         - dupl
+    # Run wrapcheck only on resources files.
+    - path: '(client|test|tools)(\\|\/).*\.go'
+      linters:
+        - wrapcheck

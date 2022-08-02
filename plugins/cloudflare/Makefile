@@ -33,7 +33,7 @@ pg-stop:
 pg-connect:
 	psql -h localhost -p 5432 -U postgres -d postgres
 
-# build the cq cloudflare provider
+# build the cq aws provider
 .PHONY: build
 build:
 	go build -o cq-provider
@@ -46,9 +46,9 @@ run: build
 # Run a fetch command
 .PHONY: fetch
 fetch:
-	CQ_PROVIDER_DEBUG=1 CQ_REATTACH_PROVIDERS=.cq_reattach cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" -v --fail-on-error
+	CQ_PROVIDER_DEBUG=1 CQ_REATTACH_PROVIDERS=.cq_reattach cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable" -v
 
-# Generate mocks for mock/unit testing
+# Generate mocks for mock/unit testing 
 .PHONY: generate-mocks
 generate-mocks:
 	go generate ./client/services/...
@@ -63,11 +63,13 @@ test-unit:
 test-integration:
 	@if [[ "$(tableName)" == "" ]]; then go test -run=TestIntegration -timeout 3m -tags=integration ./...; else go test -run="TestIntegration/$(tableName)" -timeout 3m -tags=integration ./...; fi
 
-# Create a DB migration
-.PHONY: db-migration
-db-migration:
-    # Get latest migration file, trim extention, increment patch and then order
-	$(eval prefixSuggestion:=$(shell ls -1 resources/provider/migrations/postgres/ | tail -1 | awk '{print substr($$0, 1, length($$0)-7)}' | awk -F. -v OFS=. '{$$NF += 1 ; print}' | awk -F_ -v OFS=_ '{$$1 += 1 ; print}'))
-	@if [[ "$(prefix)" == "" ]]; then echo "Invalid prefix, see example 'make db-migration prefix=$(prefixSuggestion)'" && exit 1; fi;
-	go run tools/migrations/main.go -prefix "${prefix}" -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
-	go run tools/migrations/main.go -prefix "${prefix}" -fake-tsdb -dsn 'postgres://postgres:pass@localhost:5432/postgres?sslmode=disable'
+# Install tools
+.PHONY: install-tools
+install-tools:
+	@echo Installing tools from tools/tool.go
+	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
+
+# Install pre-commit hooks. This requires pre-commit to be installed (https://pre-commit.com/)
+.PHONY: install-hooks
+install-hooks:
+	pre-commit install

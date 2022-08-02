@@ -9,10 +9,10 @@ cloudquery.zip
 .go-version
 /config.yml
 dist/
+tmp/
 vendor/
 bin/
 .release-env
-cq-provider-cloudflare
 *.exe
 *.log
 .cq_reattach
@@ -40,5 +40,6 @@ __debug_bin
 .env
 terraform/downloaded*
 config.hcl
+cloudquery.yml
 terraform/tfplan.binary
-cq-provider
+cq-provider*
