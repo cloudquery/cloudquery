@@ -27,11 +27,13 @@ func Zones() *schema.Table {
 				Name:        "host_name",
 				Description: "Zone host name.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Host.Name"),
 			},
 			{
 				Name:        "host_website",
 				Description: "Zone host website.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Host.Website"),
 			},
 			{
 				Name:        "id",

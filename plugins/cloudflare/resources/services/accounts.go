@@ -11,11 +11,10 @@ import (
 //go:generate cq-gen --resource accounts --config accounts.hcl --output .
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:          "cloudflare_accounts",
-		Description:   "Account represents the root object that owns resources.",
-		Resolver:      fetchAccounts,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
-		IgnoreInTests: true,
+		Name:        "cloudflare_accounts",
+		Description: "Account represents the root object that owns resources.",
+		Resolver:    fetchAccounts,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "id",
