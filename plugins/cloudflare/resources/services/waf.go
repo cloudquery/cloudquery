@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cq-provider-cloudflare/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -209,7 +210,7 @@ func fetchWafs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 
 	resp, err := svc.ClientApi.ListWAFPackages(ctx, zoneId)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- resp
 
@@ -222,7 +223,7 @@ func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 	resp, err := svc.ClientApi.ListWAFGroups(ctx, zoneId, pack.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- resp
 
@@ -235,7 +236,7 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 	resp, err := svc.ClientApi.ListWAFRules(ctx, zoneId, pack.ID)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- resp
 

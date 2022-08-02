@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cq-provider-cloudflare/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -114,7 +115,7 @@ func fetchDnsRecords(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 	records, err := svc.ClientApi.DNSRecords(ctx, zoneId, cloudflare.DNSRecord{})
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- records
 	return nil

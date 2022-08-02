@@ -5,6 +5,7 @@ import (
 
 	cloudflare "github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cq-provider-cloudflare/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -171,7 +172,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for {
 		accounts, resp, err := svc.ClientApi.Accounts(ctx, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- accounts
 		if resp.TotalPages == resp.Page {
@@ -193,7 +194,7 @@ func fetchAccountMembers(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		accountMembers, resp, err := svc.ClientApi.AccountMembers(ctx, account.ID, opt)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- accountMembers
 		if resp.TotalPages == resp.Page {

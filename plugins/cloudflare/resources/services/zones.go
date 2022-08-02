@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cq-provider-cloudflare/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -300,7 +301,7 @@ func fetchZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 
 	resp, err := svc.ClientApi.ListZonesContext(ctx, opts)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- resp.Result
 

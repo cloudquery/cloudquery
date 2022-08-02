@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -39,7 +40,7 @@ func Ips() *schema.Table {
 func fetchIps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	resp, err := cloudflare.IPs()
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 
 	for _, ip := range resp.IPv4CIDRs {
