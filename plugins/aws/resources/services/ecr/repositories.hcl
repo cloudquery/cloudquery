@@ -48,7 +48,10 @@ resource "aws" "ecr" "repositories" {
     }
   }
 
-
+  userDefinedColumn "tags" {
+    type              = "json"
+    generate_resolver = true
+  }
   user_relation "aws" "ecr" "images" {
     path = "github.com/aws/aws-sdk-go-v2/service/ecr/types.ImageDetail"
     userDefinedColumn "account_id" {

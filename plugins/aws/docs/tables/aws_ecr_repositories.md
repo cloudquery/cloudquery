@@ -6,6 +6,7 @@ An object representing a repository.
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
+|tags|jsonb||
 |created_at|timestamp without time zone|The date and time, in JavaScript date format, when the repository was created.|
 |encryption_configuration_encryption_type|text|The encryption type to use|
 |encryption_configuration_kms_key|text|If you use the KMS encryption type, specify the KMS key to use for encryption. The alias, key ID, or full ARN of the KMS key can be specified|
