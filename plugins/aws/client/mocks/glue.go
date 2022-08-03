@@ -215,6 +215,26 @@ func (mr *MockGlueClientMockRecorder) GetTags(arg0, arg1 interface{}, arg2 ...in
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTags", reflect.TypeOf((*MockGlueClient)(nil).GetTags), varargs...)
 }
 
+// GetTrigger mocks base method.
+func (m *MockGlueClient) GetTrigger(arg0 context.Context, arg1 *glue.GetTriggerInput, arg2 ...func(*glue.Options)) (*glue.GetTriggerOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTrigger", varargs...)
+	ret0, _ := ret[0].(*glue.GetTriggerOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTrigger indicates an expected call of GetTrigger.
+func (mr *MockGlueClientMockRecorder) GetTrigger(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTrigger", reflect.TypeOf((*MockGlueClient)(nil).GetTrigger), varargs...)
+}
+
 // GetWorkflow mocks base method.
 func (m *MockGlueClient) GetWorkflow(arg0 context.Context, arg1 *glue.GetWorkflowInput, arg2 ...func(*glue.Options)) (*glue.GetWorkflowOutput, error) {
 	m.ctrl.T.Helper()
@@ -233,6 +253,26 @@ func (mr *MockGlueClientMockRecorder) GetWorkflow(arg0, arg1 interface{}, arg2 .
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetWorkflow", reflect.TypeOf((*MockGlueClient)(nil).GetWorkflow), varargs...)
+}
+
+// ListTriggers mocks base method.
+func (m *MockGlueClient) ListTriggers(arg0 context.Context, arg1 *glue.ListTriggersInput, arg2 ...func(*glue.Options)) (*glue.ListTriggersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTriggers", varargs...)
+	ret0, _ := ret[0].(*glue.ListTriggersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTriggers indicates an expected call of ListTriggers.
+func (mr *MockGlueClientMockRecorder) ListTriggers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTriggers", reflect.TypeOf((*MockGlueClient)(nil).ListTriggers), varargs...)
 }
 
 // ListWorkflows mocks base method.
