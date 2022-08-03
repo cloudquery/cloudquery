@@ -5,7 +5,7 @@ add_generate     = true
 resource "github" "" "issues" {
   path = "github.com/google/go-github/v45/github.Issue"
   options {
-    primary_keys = ["id"]
+    primary_keys = ["org", "id"]
   }
 
   multiplex "OrgMultiplex" {

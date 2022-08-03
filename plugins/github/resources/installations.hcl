@@ -5,7 +5,7 @@ add_generate     = true
 resource "github" "" "installations" {
   path = "github.com/google/go-github/v45/github.Installation"
   options {
-    primary_keys = ["id"]
+    primary_keys = ["org", "id"]
   }
   multiplex "OrgMultiplex" {
     path = "github.com/cloudquery/cq-provider-github/client.OrgMultiplex"

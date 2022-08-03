@@ -5,7 +5,7 @@ add_generate     = true
 resource "github" "" "external_groups" {
   path = "github.com/google/go-github/v45/github.ExternalGroup"
   options {
-    primary_keys = ["group_id"]
+    primary_keys = ["org", "group_id"]
   }
 
   multiplex "OrgMultiplex" {

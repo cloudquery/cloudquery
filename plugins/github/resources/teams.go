@@ -18,7 +18,7 @@ func Teams() *schema.Table {
 		Resolver:    fetchTeams,
 		Multiplex:   client.OrgMultiplex,
 		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "org",

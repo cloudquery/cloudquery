@@ -18,7 +18,7 @@ func Issues() *schema.Table {
 		Resolver:    fetchIssues,
 		Multiplex:   client.OrgMultiplex,
 		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "org",

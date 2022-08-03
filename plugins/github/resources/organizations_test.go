@@ -18,7 +18,22 @@ func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 	if err := faker.FakeData(&cs); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().Get(gomock.Any(), "testorg").Return(cs, &github.Response{}, nil)
+	mock.EXPECT().Get(gomock.Any(), gomock.Any()).Return(cs, &github.Response{}, nil)
+
+	var u github.User
+	if err := faker.FakeDataSkipFields(&u, []string{"Parent"}); err != nil {
+		t.Fatal(err)
+	}
+	mock.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		[]*github.User{&u}, &github.Response{}, nil)
+
+	var m github.Membership
+	if err := faker.FakeDataSkipFields(&m, []string{}); err != nil {
+		t.Fatal(err)
+	}
+	mock.EXPECT().GetOrgMembership(gomock.Any(), *u.Name, gomock.Any()).Return(
+		&m, &github.Response{}, nil)
+
 	return client.GithubServices{Organizations: mock}
 }
 

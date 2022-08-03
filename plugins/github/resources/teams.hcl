@@ -32,7 +32,7 @@ resource "github" "" "teams" {
   }
 
   options {
-    primary_keys = ["id"]
+    primary_keys = ["org", "id"]
   }
 
   user_relation "github" "" "members" {

@@ -18,7 +18,7 @@ func Installations() *schema.Table {
 		Resolver:    fetchInstallations,
 		Multiplex:   client.OrgMultiplex,
 		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "org",

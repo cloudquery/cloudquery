@@ -57,6 +57,6 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 			Organizations: client.Organizations,
 			Issues:        client.Issues,
 		},
-		Orgs: []string{"cloudquery"},
+		Orgs: providerConfig.Orgs,
 	}, nil
 }

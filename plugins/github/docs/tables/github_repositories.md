@@ -4,6 +4,7 @@ Repository represents a GitHub repository.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
+|org|text|The Github Organization of the resource.|
 |id|bigint||
 |node_id|text||
 |owner_login|text||

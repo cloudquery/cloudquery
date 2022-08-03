@@ -17,8 +17,14 @@ func Repositories() *schema.Table {
 		Resolver:    fetchRepositories,
 		Multiplex:   client.OrgMultiplex,
 		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org", "id"}},
 		Columns: []schema.Column{
+			{
+				Name:        "org",
+				Description: "The Github Organization of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveOrg,
+			},
 			{
 				Name:     "id",
 				Type:     schema.TypeBigInt,
