@@ -170,6 +170,7 @@ func Provider() *provider.Provider {
 			"fsx.backups":                             fsx.FsxBackups(),
 			"glue.databases":                          glue.Databases(),
 			"glue.jobs":                               glue.Jobs(),
+			"glue.ml_transforms":                      glue.MlTransforms(),
 			"glue.workflows":                          glue.Workflows(),
 			"guardduty.detectors":                     guardduty.GuarddutyDetectors(),
 			"iam.accounts":                            iam.IamAccounts(),

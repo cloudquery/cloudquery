@@ -758,6 +758,8 @@ type GlueClient interface {
 	GetJobRuns(ctx context.Context, params *glue.GetJobRunsInput, optFns ...func(*glue.Options)) (*glue.GetJobRunsOutput, error)
 	GetDatabases(ctx context.Context, params *glue.GetDatabasesInput, optFns ...func(*glue.Options)) (*glue.GetDatabasesOutput, error)
 	GetTables(ctx context.Context, params *glue.GetTablesInput, optFns ...func(*glue.Options)) (*glue.GetTablesOutput, error)
+	GetMLTransforms(ctx context.Context, params *glue.GetMLTransformsInput, optFns ...func(*glue.Options)) (*glue.GetMLTransformsOutput, error)
+	GetMLTaskRuns(ctx context.Context, params *glue.GetMLTaskRunsInput, optFns ...func(*glue.Options)) (*glue.GetMLTaskRunsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/kinesis.go . KinesisClient
