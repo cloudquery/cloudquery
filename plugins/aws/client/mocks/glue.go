@@ -75,6 +75,26 @@ func (mr *MockGlueClientMockRecorder) GetDatabases(arg0, arg1 interface{}, arg2 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDatabases", reflect.TypeOf((*MockGlueClient)(nil).GetDatabases), varargs...)
 }
 
+// GetDevEndpoints mocks base method.
+func (m *MockGlueClient) GetDevEndpoints(arg0 context.Context, arg1 *glue.GetDevEndpointsInput, arg2 ...func(*glue.Options)) (*glue.GetDevEndpointsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDevEndpoints", varargs...)
+	ret0, _ := ret[0].(*glue.GetDevEndpointsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDevEndpoints indicates an expected call of GetDevEndpoints.
+func (mr *MockGlueClientMockRecorder) GetDevEndpoints(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDevEndpoints", reflect.TypeOf((*MockGlueClient)(nil).GetDevEndpoints), varargs...)
+}
+
 // GetJobRuns mocks base method.
 func (m *MockGlueClient) GetJobRuns(arg0 context.Context, arg1 *glue.GetJobRunsInput, arg2 ...func(*glue.Options)) (*glue.GetJobRunsOutput, error) {
 	m.ctrl.T.Helper()
