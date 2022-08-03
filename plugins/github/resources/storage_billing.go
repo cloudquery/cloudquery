@@ -14,6 +14,7 @@ func StorageBillings() *schema.Table {
 		Description: "StorageBilling represents a GitHub Storage billing.",
 		Resolver:    fetchStorageBillings,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org"}},
 		Columns: []schema.Column{
 			{

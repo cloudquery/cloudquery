@@ -16,6 +16,7 @@ func Repositories() *schema.Table {
 		Description: "Repository represents a GitHub repository.",
 		Resolver:    fetchRepositories,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{

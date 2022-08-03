@@ -17,6 +17,7 @@ func Installations() *schema.Table {
 		Description: "Installation represents a GitHub Apps installation.",
 		Resolver:    fetchInstallations,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{

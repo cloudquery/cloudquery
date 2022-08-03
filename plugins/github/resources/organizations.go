@@ -13,6 +13,7 @@ func Organizations() *schema.Table {
 		Name:        "github_organizations",
 		Description: "Organization represents a GitHub organization account.",
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Resolver:    fetchOrganizations,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{

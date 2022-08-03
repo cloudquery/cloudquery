@@ -17,6 +17,7 @@ func Issues() *schema.Table {
 		Description: "Issue represents a GitHub issue on a repository.  Note: As far as the GitHub API is concerned, every pull request is an issue, but not every issue is a pull request",
 		Resolver:    fetchIssues,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{

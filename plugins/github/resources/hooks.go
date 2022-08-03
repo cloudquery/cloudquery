@@ -15,6 +15,7 @@ func Hooks() *schema.Table {
 		Description: "Hook represents a GitHub (web and service) hook for a repository.",
 		Resolver:    fetchHooks,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{

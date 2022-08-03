@@ -16,6 +16,7 @@ func ExternalGroups() *schema.Table {
 		Description: "ExternalGroup represents an external group.",
 		Resolver:    fetchExternalGroups,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"group_id"}},
 		Columns: []schema.Column{
 			{

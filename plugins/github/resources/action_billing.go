@@ -14,6 +14,7 @@ func ActionBillings() *schema.Table {
 		Description: "ActionBilling represents a GitHub Action billing.",
 		Resolver:    fetchActionBillings,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org"}},
 		Columns: []schema.Column{
 			{

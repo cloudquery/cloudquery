@@ -17,6 +17,7 @@ func Teams() *schema.Table {
 		Description: "Team represents a team within a GitHub organization",
 		Resolver:    fetchTeams,
 		Multiplex:   client.OrgMultiplex,
+		IgnoreError: client.IgnoreError,
 		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
