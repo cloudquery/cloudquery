@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/google/go-github/v45/github"
-
 	"github.com/cloudquery/cq-provider-github/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/google/go-github/v45/github"
 )
 
 //go:generate cq-gen --resource  --config installations.hcl --output .
@@ -792,7 +792,7 @@ func fetchInstallations(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		installations, resp, err := c.Github.Organizations.ListInstallations(ctx, c.Org, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- installations.Installations
 		opts.Page = resp.NextPage
@@ -809,9 +809,9 @@ func resolveInstallationsAccountTextMatches(ctx context.Context, meta schema.Cli
 	}
 	j, err := json.Marshal(u.Account.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveInstallationsSuspendedByTextMatches(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	u := resource.Item.(*github.Installation)
@@ -820,7 +820,7 @@ func resolveInstallationsSuspendedByTextMatches(ctx context.Context, meta schema
 	}
 	j, err := json.Marshal(u.SuspendedBy.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }

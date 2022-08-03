@@ -5,10 +5,9 @@ import (
 
 	"github.com/cloudquery/cq-provider-github/client"
 	"github.com/cloudquery/cq-provider-github/client/mocks"
-	"github.com/google/go-github/v45/github"
-
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
+	"github.com/google/go-github/v45/github"
 )
 
 func buildPackageBilling(t *testing.T, ctrl *gomock.Controller) client.GithubServices {

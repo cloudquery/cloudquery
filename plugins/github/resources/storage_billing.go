@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-github/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -47,7 +48,7 @@ func fetchStorageBillings(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	billing, _, err := c.Github.Billing.GetStorageBillingOrg(ctx, c.Org)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- billing
 	return nil

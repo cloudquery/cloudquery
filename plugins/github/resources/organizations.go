@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/cloudquery/cq-provider-github/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/google/go-github/v45/github"
 )
@@ -551,7 +552,7 @@ func fetchOrganizations(ctx context.Context, meta schema.ClientMeta, parent *sch
 	c := meta.(*client.Client)
 	org, _, err := c.Github.Organizations.Get(ctx, c.Org)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- org
 	return nil
@@ -567,7 +568,7 @@ func fetchOrganizationMembers(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		members, resp, err := c.Github.Organizations.ListMembers(ctx, c.Org, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- members
 		opts.Page = resp.NextPage
@@ -581,9 +582,9 @@ func resolveOrganizationMembersTextMatches(ctx context.Context, meta schema.Clie
 	u := resource.Item.(*github.User)
 	j, err := json.Marshal(u.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchOrganizationMemberMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -591,7 +592,7 @@ func fetchOrganizationMemberMemberships(ctx context.Context, meta schema.ClientM
 
 	membership, _, err := c.Github.Organizations.GetOrgMembership(ctx, *m.Name, c.Org)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- membership
 	return nil

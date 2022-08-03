@@ -4,10 +4,10 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/google/go-github/v45/github"
-
 	"github.com/cloudquery/cq-provider-github/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/google/go-github/v45/github"
 )
 
 //go:generate cq-gen --resource  --config issues.hcl --output .
@@ -1563,7 +1563,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	for {
 		issues, resp, err := c.Github.Issues.ListByOrg(ctx, c.Org, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- issues
 		opts.Page = resp.NextPage
@@ -1580,9 +1580,9 @@ func resolveIssuesUserTextMatches(ctx context.Context, meta schema.ClientMeta, r
 	}
 	j, err := json.Marshal(i.User.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveIssuesAssigneeTextMatches(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*github.Issue)
@@ -1591,9 +1591,9 @@ func resolveIssuesAssigneeTextMatches(ctx context.Context, meta schema.ClientMet
 	}
 	j, err := json.Marshal(i.Assignee.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveIssuesClosedByTextMatches(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*github.Issue)
@@ -1602,9 +1602,9 @@ func resolveIssuesClosedByTextMatches(ctx context.Context, meta schema.ClientMet
 	}
 	j, err := json.Marshal(i.ClosedBy.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func resolveIssuesMilestoneCreatorTextMatches(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*github.Issue)
@@ -1616,9 +1616,9 @@ func resolveIssuesMilestoneCreatorTextMatches(ctx context.Context, meta schema.C
 	}
 	j, err := json.Marshal(i.Milestone.Creator.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 
 func resolveIssuesRepositoryId(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -1627,15 +1627,15 @@ func resolveIssuesRepositoryId(ctx context.Context, meta schema.ClientMeta, reso
 	if i.Repository == nil {
 		return nil
 	}
-	return resource.Set(c.Name, i.Repository.ID)
+	return diag.WrapError(resource.Set(c.Name, i.Repository.ID))
 }
 func resolveIssuesTextMatches(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*github.Issue)
 	j, err := json.Marshal(i.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }
 func fetchIssueLabels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	i := parent.Item.(*github.Issue)
@@ -1651,7 +1651,7 @@ func resolveIssueAssigneesTextMatches(ctx context.Context, meta schema.ClientMet
 	i := resource.Item.(*github.User)
 	j, err := json.Marshal(i.TextMatches)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
-	return resource.Set(c.Name, j)
+	return diag.WrapError(resource.Set(c.Name, j))
 }

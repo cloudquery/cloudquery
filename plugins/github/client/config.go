@@ -9,6 +9,9 @@ func NewConfig() *Config {
 	return &Config{}
 }
 
-func (c Config) Example() string {
-	return ""
+func (Config) Example() string {
+	return `
+		access_token: <Access Token HERE>
+		orgs: ["cloudquery"]
+`
 }

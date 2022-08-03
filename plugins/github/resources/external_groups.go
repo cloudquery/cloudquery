@@ -3,10 +3,10 @@ package resources
 import (
 	"context"
 
-	"github.com/google/go-github/v45/github"
-
 	"github.com/cloudquery/cq-provider-github/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/google/go-github/v45/github"
 )
 
 //go:generate cq-gen --resource  --config external_groups.hcl --output .
@@ -112,7 +112,7 @@ func fetchExternalGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		groups, resp, err := c.Github.Teams.ListExternalGroups(ctx, c.Org, opts)
 		if err != nil {
-			return err
+			return diag.WrapError(err)
 		}
 		res <- groups.Groups
 		opts.Page = resp.NextPage

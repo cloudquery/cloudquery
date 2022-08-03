@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cq-provider-github/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -62,7 +63,7 @@ func fetchActionBillings(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	billing, _, err := c.Github.Billing.GetActionsBillingOrg(ctx, c.Org)
 	if err != nil {
-		return err
+		return diag.WrapError(err)
 	}
 	res <- billing
 	return nil
