@@ -5,6 +5,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+// TODO - delete
+
 func ErrorClassifier(_ schema.ClientMeta, resourceName string, err error) diag.Diagnostics {
 	return classifyError(err, diag.RESOLVING, diag.WithResourceName(resourceName))
 }

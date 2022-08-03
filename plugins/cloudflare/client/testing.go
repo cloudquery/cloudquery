@@ -17,7 +17,7 @@ const (
 	TestZoneID    = "test_zone"
 )
 
-func CFMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Api) {
+func CFMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Clients) {
 	t.Helper()
 	ctrl := gomock.NewController(t)
 
@@ -28,9 +28,11 @@ func CFMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T
 			Name:    "cloudflare_mock_test_provider",
 			Version: "development",
 			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
-				c := NewClient(logging.New(&hclog.LoggerOptions{
+				clients := builder(t, ctrl)
+
+				c := New(logging.New(&hclog.LoggerOptions{
 					Level: hclog.Warn,
-				}), builder(t, ctrl), AccountZones{
+				}), clients, clients[TestAccountID], AccountZones{
 					TestAccountID: {
 						AccountId: TestAccountID,
 						Zones:     []string{TestZoneID},

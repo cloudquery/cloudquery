@@ -23,6 +23,14 @@ resource "cloudflare" "" "waf" {
     }
   }
 
+  userDefinedColumn "zone_id" {
+    description = "Zone identifier tag."
+    type        = "string"
+    resolver "resolveCFZone" {
+      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveZoneId"
+    }
+  }
+
   column "id" {
     description = "The unique identifier of a WAF package."
   }

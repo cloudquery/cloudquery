@@ -5,6 +5,7 @@ WAFPackage represents a WAF package configuration.
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |account_id|text|The Account ID of the resource.|
+|zone_id|text|Zone identifier tag.|
 |id|text|The unique identifier of a WAF package.|
 |name|text|The name of the WAF package.|
 |description|text|A summary of the purpose/function of the WAF package.|

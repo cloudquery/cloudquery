@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildZones(t *testing.T, ctrl *gomock.Controller) client.Api {
+func buildZones(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var zonesResp cloudflare.ZonesResponse
@@ -25,7 +25,9 @@ func buildZones(t *testing.T, ctrl *gomock.Controller) client.Api {
 		nil,
 	)
 
-	return mock
+	return client.Clients{
+		client.TestAccountID: mock,
+	}
 }
 
 func TestZones(t *testing.T) {

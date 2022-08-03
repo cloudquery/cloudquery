@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildDNSRecords(t *testing.T, ctrl *gomock.Controller) client.Api {
+func buildDNSRecords(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var record cloudflare.DNSRecord
@@ -36,7 +36,9 @@ func buildDNSRecords(t *testing.T, ctrl *gomock.Controller) client.Api {
 		nil,
 	)
 
-	return mock
+	return client.Clients{
+		client.TestAccountID: mock,
+	}
 }
 
 func TestDNSRecords(t *testing.T) {

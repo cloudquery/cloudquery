@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildWafs(t *testing.T, ctrl *gomock.Controller) client.Api {
+func buildWafs(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var wafPackage cloudflare.WAFPackage
@@ -61,7 +61,9 @@ func buildWafs(t *testing.T, ctrl *gomock.Controller) client.Api {
 		nil,
 	)
 
-	return mock
+	return client.Clients{
+		client.TestAccountID: mock,
+	}
 }
 
 func TestWafs(t *testing.T) {

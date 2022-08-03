@@ -16,20 +16,26 @@ type AccountZones map[string]struct {
 	Zones     []string
 }
 
+type Clients map[string]Api
+
 type Client struct {
-	AccountsZones AccountZones
-	AccountId     string
-	ZoneId        string
-	logger        hclog.Logger
-	ClientApi     Api
+	logger hclog.Logger
+
+	accountsZones AccountZones
+	clients       Clients
+
+	ClientApi Api
+	AccountId string
+	ZoneId    string
 }
 
 const MaxItemsPerPage = 200
 
-func NewClient(log hclog.Logger, clientApi Api, accountsZones AccountZones) Client {
+func New(logger hclog.Logger, clients Clients, clientApi Api, accountsZones AccountZones) Client {
 	return Client{
-		logger:        log,
-		AccountsZones: accountsZones,
+		logger:        logger,
+		accountsZones: accountsZones,
+		clients:       clients,
 		ClientApi:     clientApi,
 	}
 }
@@ -73,8 +79,8 @@ func getCloudflareClient(config *Config) (*cloudflare.API, error) {
 
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	var diags diag.Diagnostics
-	ctx := context.Background()
 
+	ctx := context.Background()
 	providerConfig := config.(*Config)
 
 	clientApi, err := getCloudflareClient(providerConfig)
@@ -112,26 +118,42 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		}
 	}
 
-	c := NewClient(logger, clientApi, accountsZones)
+	if len(accountsZones) == 0 {
+		return nil, diags.Add(classifyError(errors.New("no accounts found"), diag.INTERNAL, diag.WithSeverity(diag.ERROR))) // TODO remove diag
+	}
+
+	clients := make(Clients)
+	for _, account := range accountsZones {
+		c, err := getCloudflareClient(providerConfig)
+		if err != nil {
+			return nil, diags.Add(classifyError(err, diag.INTERNAL, diag.WithSeverity(diag.ERROR))) // TODO remove diag
+		}
+		c.AccountID = account.AccountId
+		clients[account.AccountId] = c
+	}
+
+	c := New(logger, clients, clientApi, accountsZones)
 	return &c, nil
 }
 
 func (c *Client) withAccountId(accountId string) *Client {
 	return &Client{
-		AccountsZones: c.AccountsZones,
 		logger:        c.logger.With("account_id", obfuscateId(accountId)),
+		accountsZones: c.accountsZones,
+		clients:       c.clients,
+		ClientApi:     c.clients[accountId],
 		AccountId:     accountId,
-		ClientApi:     c.ClientApi,
 	}
 }
 
 func (c *Client) withZoneId(accountId, zoneId string) *Client {
 	return &Client{
-		AccountsZones: c.AccountsZones,
 		logger:        c.logger.With("account_id", obfuscateId(accountId), "zone_id", obfuscateId(zoneId)),
+		accountsZones: c.accountsZones,
+		clients:       c.clients,
+		ClientApi:     c.clients[accountId],
 		AccountId:     accountId,
 		ZoneId:        zoneId,
-		ClientApi:     c.ClientApi,
 	}
 }
 
