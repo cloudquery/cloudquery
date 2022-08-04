@@ -111,6 +111,7 @@ func Provider() *provider.Provider {
 			"cloudtrail.trails":                       cloudtrail.CloudtrailTrails(),
 			"cloudwatch.alarms":                       cloudwatch.CloudwatchAlarms(),
 			"cloudwatchlogs.filters":                  cloudwatchlogs.CloudwatchlogsFilters(),
+			"cloudwatchlogs.log_groups":               cloudwatchlogs.LogGroups(),
 			"codebuild.projects":                      codebuild.CodebuildProjects(),
 			"codepipeline.pipelines":                  codepipeline.Pipelines(),
 			"codepipeline.webhooks":                   codepipeline.Webhooks(),
