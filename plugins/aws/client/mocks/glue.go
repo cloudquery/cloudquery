@@ -35,6 +35,26 @@ func (m *MockGlueClient) EXPECT() *MockGlueClientMockRecorder {
 	return m.recorder
 }
 
+// GetCrawlers mocks base method.
+func (m *MockGlueClient) GetCrawlers(arg0 context.Context, arg1 *glue.GetCrawlersInput, arg2 ...func(*glue.Options)) (*glue.GetCrawlersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetCrawlers", varargs...)
+	ret0, _ := ret[0].(*glue.GetCrawlersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetCrawlers indicates an expected call of GetCrawlers.
+func (mr *MockGlueClientMockRecorder) GetCrawlers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetCrawlers", reflect.TypeOf((*MockGlueClient)(nil).GetCrawlers), varargs...)
+}
+
 // GetDataCatalogEncryptionSettings mocks base method.
 func (m *MockGlueClient) GetDataCatalogEncryptionSettings(arg0 context.Context, arg1 *glue.GetDataCatalogEncryptionSettingsInput, arg2 ...func(*glue.Options)) (*glue.GetDataCatalogEncryptionSettingsOutput, error) {
 	m.ctrl.T.Helper()
