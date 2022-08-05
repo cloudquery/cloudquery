@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -111,7 +110,7 @@ func Ec2Subnets() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the subnet.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2SubnetsTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "vpc_id",
@@ -123,7 +122,7 @@ func Ec2Subnets() *schema.Table {
 			{
 				Name:          "aws_ec2_subnet_ipv6_cidr_block_association_sets",
 				Description:   "Describes an IPv6 CIDR block associated with a subnet.",
-				Resolver:      fetchEc2SubnetIpv6CidrBlockAssociationSets,
+				Resolver:      schema.PathTableResolver("Ipv6CidrBlockAssociationSet"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -181,18 +180,5 @@ func fetchEc2Subnets(ctx context.Context, meta schema.ClientMeta, parent *schema
 		}
 		config.NextToken = output.NextToken
 	}
-	return nil
-}
-func resolveEc2SubnetsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Subnet)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchEc2SubnetIpv6CidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Subnet)
-	res <- r.Ipv6CidrBlockAssociationSet
 	return nil
 }

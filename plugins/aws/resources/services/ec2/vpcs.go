@@ -75,7 +75,7 @@ func Ec2Vpcs() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the VPC.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2vpcTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "id",
@@ -88,7 +88,7 @@ func Ec2Vpcs() *schema.Table {
 			{
 				Name:        "aws_ec2_vpc_cidr_block_association_sets",
 				Description: "Describes an IPv4 CIDR block associated with a VPC.",
-				Resolver:    fetchEc2VpcCidrBlockAssociationSets,
+				Resolver:    schema.PathTableResolver("CidrBlockAssociationSet"),
 				Columns: []schema.Column{
 					{
 						Name:        "vpc_cq_id",
@@ -124,7 +124,7 @@ func Ec2Vpcs() *schema.Table {
 			{
 				Name:        "aws_ec2_vpc_ipv6_cidr_block_association_sets",
 				Description: "Describes an IPv6 CIDR block associated with a VPC.",
-				Resolver:    fetchEc2VpcIpv6CidrBlockAssociationSets,
+				Resolver:    schema.PathTableResolver("Ipv6CidrBlockAssociationSet"),
 				Columns: []schema.Column{
 					{
 						Name:        "vpc_cq_id",
@@ -191,23 +191,5 @@ func fetchEc2Vpcs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		}
 		config.NextToken = output.NextToken
 	}
-	return nil
-}
-func resolveEc2vpcTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Vpc)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchEc2VpcCidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Vpc)
-	res <- r.CidrBlockAssociationSet
-	return nil
-}
-func fetchEc2VpcIpv6CidrBlockAssociationSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Vpc)
-	res <- r.Ipv6CidrBlockAssociationSet
 	return nil
 }

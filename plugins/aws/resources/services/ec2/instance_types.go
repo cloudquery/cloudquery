@@ -5,9 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -314,7 +312,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "aws_ec2_instance_type_fpga_info_fpgas",
 				Description: "Describes the FPGA accelerator for the instance type.",
-				Resolver:    fetchEc2InstanceTypeFpgaInfoFpgas,
+				Resolver:    schema.PathTableResolver("FpgaInfo.Fpgas"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_type_cq_id",
@@ -348,7 +346,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "aws_ec2_instance_type_gpu_info_gpus",
 				Description: "Describes the GPU accelerators for the instance type.",
-				Resolver:    fetchEc2InstanceTypeGpuInfoGpus,
+				Resolver:    schema.PathTableResolver("GpuInfo.Gpus"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_type_cq_id",
@@ -382,7 +380,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "aws_ec2_instance_type_inference_accelerator_info_accelerators",
 				Description: "Describes the Inference accelerators for the instance type.",
-				Resolver:    fetchEc2InstanceTypeInferenceAcceleratorInfoAccelerators,
+				Resolver:    schema.PathTableResolver("InferenceAcceleratorInfo.Accelerators"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_type_cq_id",
@@ -410,7 +408,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "aws_ec2_instance_type_instance_storage_info_disks",
 				Description: "Describes a disk.",
-				Resolver:    fetchEc2InstanceTypeInstanceStorageInfoDisks,
+				Resolver:    schema.PathTableResolver("InstanceStorageInfo.Disks"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_type_cq_id",
@@ -439,7 +437,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "aws_ec2_instance_type_network_info_network_cards",
 				Description: "Describes the network card support of the instance type.",
-				Resolver:    fetchEc2InstanceTypeNetworkInfoNetworkCards,
+				Resolver:    schema.PathTableResolver("NetworkInfo.NetworkCards"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_type_cq_id",
@@ -491,50 +489,5 @@ func fetchEc2InstanceTypes(ctx context.Context, meta schema.ClientMeta, parent *
 		config.NextToken = response.NextToken
 	}
 
-	return nil
-}
-func fetchEc2InstanceTypeFpgaInfoFpgas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	// This is a generated base implementation. You may edit it if necessary.
-	p := helpers.ToPointer(parent.Item).(*types.InstanceTypeInfo)
-	if p.FpgaInfo == nil {
-		return nil
-	}
-	res <- p.FpgaInfo.Fpgas
-	return nil
-}
-func fetchEc2InstanceTypeGpuInfoGpus(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	// This is a generated base implementation. You may edit it if necessary.
-	p := helpers.ToPointer(parent.Item).(*types.InstanceTypeInfo)
-	if p.GpuInfo == nil {
-		return nil
-	}
-	res <- p.GpuInfo.Gpus
-	return nil
-}
-func fetchEc2InstanceTypeInferenceAcceleratorInfoAccelerators(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	// This is a generated base implementation. You may edit it if necessary.
-	p := helpers.ToPointer(parent.Item).(*types.InstanceTypeInfo)
-	if p.InferenceAcceleratorInfo == nil {
-		return nil
-	}
-	res <- p.InferenceAcceleratorInfo.Accelerators
-	return nil
-}
-func fetchEc2InstanceTypeInstanceStorageInfoDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	// This is a generated base implementation. You may edit it if necessary.
-	p := helpers.ToPointer(parent.Item).(*types.InstanceTypeInfo)
-	if p.InstanceStorageInfo == nil {
-		return nil
-	}
-	res <- p.InstanceStorageInfo.Disks
-	return nil
-}
-func fetchEc2InstanceTypeNetworkInfoNetworkCards(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	// This is a generated base implementation. You may edit it if necessary.
-	p := helpers.ToPointer(parent.Item).(*types.InstanceTypeInfo)
-	if p.NetworkInfo == nil {
-		return nil
-	}
-	res <- p.NetworkInfo.NetworkCards
 	return nil
 }

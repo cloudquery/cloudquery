@@ -112,7 +112,7 @@ func Ec2FlowLogs() *schema.Table {
 				Name:        "tags",
 				Description: "The tags for the flow log.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2flowLogTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "traffic_type",
@@ -144,12 +144,4 @@ func fetchEc2FlowLogs(ctx context.Context, meta schema.ClientMeta, parent *schem
 		config.NextToken = output.NextToken
 	}
 	return nil
-}
-func resolveEc2flowLogTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.FlowLog)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
 }

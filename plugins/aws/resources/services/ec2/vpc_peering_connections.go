@@ -52,13 +52,13 @@ func Ec2VpcPeeringConnections() *schema.Table {
 				Name:        "accepter_cidr_block_set",
 				Description: "Information about the IPv4 CIDR blocks for the VPC.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveEc2vpcPeeringConnectionAccepterCidrBlockSet,
+				Resolver:    schema.PathResolver("AccepterVpcInfo.CidrBlockSet.CidrBlock"),
 			},
 			{
 				Name:        "accepter_ipv6_cidr_block_set",
 				Description: "The IPv6 CIDR block for the VPC.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveEc2vpcPeeringConnectionAccepterIpv6CidrBlockSet,
+				Resolver:    schema.PathResolver("AccepterVpcInfo.Ipv6CidrBlockSet.Ipv6CidrBlock"),
 			},
 			{
 				Name:        "accepter_owner_id",
@@ -111,13 +111,13 @@ func Ec2VpcPeeringConnections() *schema.Table {
 				Name:        "requester_cidr_block_set",
 				Description: "Information about the IPv4 CIDR blocks for the VPC.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveEc2vpcPeeringConnectionRequesterCidrBlockSet,
+				Resolver:    schema.PathResolver("RequesterVpcInfo.CidrBlockSet.CidrBlock"),
 			},
 			{
 				Name:        "requester_ipv6_cidr_block_set",
 				Description: "The IPv6 CIDR block for the VPC.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveEc2vpcPeeringConnectionRequesterIpv6CidrBlockSet,
+				Resolver:    schema.PathResolver("RequesterVpcInfo.Ipv6CidrBlockSet.Ipv6CidrBlock"),
 			},
 			{
 				Name:        "requester_owner_id",
@@ -171,7 +171,7 @@ func Ec2VpcPeeringConnections() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the resource.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2vpcPeeringConnectionTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "id",
@@ -204,45 +204,4 @@ func fetchEc2VpcPeeringConnections(ctx context.Context, meta schema.ClientMeta, 
 		config.NextToken = output.NextToken
 	}
 	return nil
-}
-func resolveEc2vpcPeeringConnectionAccepterCidrBlockSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VpcPeeringConnection)
-	blocks := make([]*string, len(r.AccepterVpcInfo.CidrBlockSet))
-	for i, b := range r.AccepterVpcInfo.CidrBlockSet {
-		blocks[i] = b.CidrBlock
-	}
-	return diag.WrapError(resource.Set("accepter_cidr_block_set", blocks))
-}
-func resolveEc2vpcPeeringConnectionAccepterIpv6CidrBlockSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VpcPeeringConnection)
-	blocks := make([]*string, len(r.AccepterVpcInfo.Ipv6CidrBlockSet))
-	for i, b := range r.AccepterVpcInfo.Ipv6CidrBlockSet {
-		blocks[i] = b.Ipv6CidrBlock
-	}
-	return diag.WrapError(resource.Set("accepter_ipv6_cidr_block_set", blocks))
-}
-func resolveEc2vpcPeeringConnectionRequesterCidrBlockSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VpcPeeringConnection)
-	blocks := make([]*string, len(r.RequesterVpcInfo.CidrBlockSet))
-	for i, b := range r.RequesterVpcInfo.CidrBlockSet {
-		blocks[i] = b.CidrBlock
-	}
-	return diag.WrapError(resource.Set("requester_cidr_block_set", blocks))
-}
-func resolveEc2vpcPeeringConnectionRequesterIpv6CidrBlockSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VpcPeeringConnection)
-
-	blocks := make([]*string, len(r.RequesterVpcInfo.Ipv6CidrBlockSet))
-	for i, b := range r.RequesterVpcInfo.Ipv6CidrBlockSet {
-		blocks[i] = b.Ipv6CidrBlock
-	}
-	return diag.WrapError(resource.Set("requester_ipv6_cidr_block_set", blocks))
-}
-func resolveEc2vpcPeeringConnectionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VpcPeeringConnection)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
 }

@@ -74,7 +74,7 @@ func Ec2CustomerGateways() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the customer gateway.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2customerGatewayTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "type",
@@ -99,14 +99,6 @@ func fetchEc2CustomerGateways(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	res <- response.CustomerGateways
 	return nil
-}
-func resolveEc2customerGatewayTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.CustomerGateway)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func resolveCustomerGatewayArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

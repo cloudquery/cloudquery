@@ -61,7 +61,7 @@ func Ec2NetworkAcls() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the network ACL.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2networkACLTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "vpc_id",
@@ -73,7 +73,7 @@ func Ec2NetworkAcls() *schema.Table {
 			{
 				Name:        "aws_ec2_network_acl_associations",
 				Description: "Describes an association between a network ACL and a subnet.",
-				Resolver:    fetchEc2NetworkAclAssociations,
+				Resolver:    schema.PathTableResolver("Associations"),
 				Columns: []schema.Column{
 					{
 						Name:        "network_acl_cq_id",
@@ -96,7 +96,7 @@ func Ec2NetworkAcls() *schema.Table {
 			{
 				Name:        "aws_ec2_network_acl_entries",
 				Description: "Describes an entry in a network ACL.",
-				Resolver:    fetchEc2NetworkAclEntries,
+				Resolver:    schema.PathTableResolver("Entries"),
 				Columns: []schema.Column{
 					{
 						Name:        "network_acl_cq_id",
@@ -188,23 +188,5 @@ func fetchEc2NetworkAcls(ctx context.Context, meta schema.ClientMeta, parent *sc
 		}
 		config.NextToken = output.NextToken
 	}
-	return nil
-}
-func resolveEc2networkACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.NetworkAcl)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchEc2NetworkAclAssociations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.NetworkAcl)
-	res <- r.Associations
-	return nil
-}
-func fetchEc2NetworkAclEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.NetworkAcl)
-	res <- r.Entries
 	return nil
 }

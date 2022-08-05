@@ -85,7 +85,7 @@ func Ec2VpcEndpointServices() *schema.Table {
 				Name:        "private_dns_names",
 				Description: "The private DNS names assigned to the VPC endpoint service.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveEc2VpcEndpointServicePrivateDnsNames,
+				Resolver:    schema.PathResolver("PrivateDnsNames.PrivateDnsName"),
 			},
 			{
 				Name:        "id",
@@ -102,13 +102,13 @@ func Ec2VpcEndpointServices() *schema.Table {
 				Name:        "service_type",
 				Description: "The type of service.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveEc2VpcEndpointServiceServiceType,
+				Resolver:    schema.PathResolver("ServiceType.ServiceType"),
 			},
 			{
 				Name:        "tags",
 				Description: "Any tags assigned to the service.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2VpcEndpointServiceTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "vpc_endpoint_policy_supported",
@@ -140,24 +140,4 @@ func fetchEc2VpcEndpointServices(ctx context.Context, meta schema.ClientMeta, _ 
 		config.NextToken = output.NextToken
 	}
 	return nil
-}
-func resolveEc2VpcEndpointServicePrivateDnsNames(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ServiceDetail)
-	pdn := make([]string, 0, len(r.PrivateDnsNames))
-	for _, n := range r.PrivateDnsNames {
-		pdn = append(pdn, *n.PrivateDnsName)
-	}
-	return diag.WrapError(resource.Set(c.Name, pdn))
-}
-func resolveEc2VpcEndpointServiceServiceType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ServiceDetail)
-	st := make([]string, 0, len(r.ServiceType))
-	for _, std := range r.ServiceType {
-		st = append(st, string(std.ServiceType))
-	}
-	return diag.WrapError(resource.Set(c.Name, st))
-}
-func resolveEc2VpcEndpointServiceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ServiceDetail)
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(r.Tags)))
 }

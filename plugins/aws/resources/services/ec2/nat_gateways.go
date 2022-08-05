@@ -119,7 +119,7 @@ func Ec2NatGateways() *schema.Table {
 				Name:        "tags",
 				Description: "The tags for the NAT gateway.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2natGatewayTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "vpc_id",
@@ -131,7 +131,7 @@ func Ec2NatGateways() *schema.Table {
 			{
 				Name:        "aws_ec2_nat_gateway_addresses",
 				Description: "Describes the IP addresses and network interface associated with a NAT gateway.",
-				Resolver:    fetchEc2NatGatewayAddresses,
+				Resolver:    schema.PathTableResolver("NatGatewayAddresses"),
 				Columns: []schema.Column{
 					{
 						Name:        "nat_gateway_cq_id",
@@ -185,18 +185,5 @@ func fetchEc2NatGateways(ctx context.Context, meta schema.ClientMeta, parent *sc
 		}
 		config.NextToken = output.NextToken
 	}
-	return nil
-}
-func resolveEc2natGatewayTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.NatGateway)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchEc2NatGatewayAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.NatGateway)
-	res <- r.NatGatewayAddresses
 	return nil
 }

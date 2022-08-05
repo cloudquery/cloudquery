@@ -108,7 +108,7 @@ func Ec2VpcEndpoints() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the VPC endpoint.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2vpcEndpointTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "id",
@@ -131,7 +131,7 @@ func Ec2VpcEndpoints() *schema.Table {
 			{
 				Name:          "aws_ec2_vpc_endpoint_dns_entries",
 				Description:   "Describes a DNS entry.",
-				Resolver:      fetchEc2VpcEndpointDnsEntries,
+				Resolver:      schema.PathTableResolver("DnsEntries"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -155,7 +155,7 @@ func Ec2VpcEndpoints() *schema.Table {
 			{
 				Name:          "aws_ec2_vpc_endpoint_groups",
 				Description:   "Describes a security group.",
-				Resolver:      fetchEc2VpcEndpointGroups,
+				Resolver:      schema.PathTableResolver("Groups"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -200,25 +200,5 @@ func fetchEc2VpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		config.NextToken = output.NextToken
 	}
-	return nil
-}
-func resolveEc2vpcEndpointTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VpcEndpoint)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchEc2VpcEndpointDnsEntries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	endpoint := parent.Item.(types.VpcEndpoint)
-	res <- endpoint.DnsEntries
-
-	return nil
-}
-func fetchEc2VpcEndpointGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	endpoint := parent.Item.(types.VpcEndpoint)
-	res <- endpoint.Groups
-
 	return nil
 }

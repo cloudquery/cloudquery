@@ -72,7 +72,7 @@ func Ec2SecurityGroups() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the security group.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2securityGroupTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:          "vpc_id",
@@ -144,7 +144,7 @@ func Ec2SecurityGroups() *schema.Table {
 					{
 						Name:          "aws_ec2_security_group_ip_permission_prefix_list_ids",
 						Description:   "Describes a prefix list ID.",
-						Resolver:      fetchEc2SecurityGroupIpPermissionPrefixListIds,
+						Resolver:      schema.PathTableResolver("PrefixListIds"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -168,7 +168,7 @@ func Ec2SecurityGroups() *schema.Table {
 					{
 						Name:        "aws_ec2_security_group_ip_permission_user_id_group_pairs",
 						Description: "Describes a security group and AWS account ID pair.",
-						Resolver:    fetchEc2SecurityGroupIpPermissionUserIdGroupPairs,
+						Resolver:    schema.PathTableResolver("UserIdGroupPairs"),
 						Columns: []schema.Column{
 							{
 								Name:        "security_group_ip_permission_cq_id",
@@ -230,24 +230,22 @@ func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	var config ec2.DescribeSecurityGroupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
-
-	response, err := svc.DescribeSecurityGroups(ctx, &config, func(o *ec2.Options) {
-		o.Region = c.Region
-	})
-	if err != nil {
-		return diag.WrapError(err)
+	for {
+		output, err := svc.DescribeSecurityGroups(ctx, &config, func(o *ec2.Options) {
+			o.Region = c.Region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		res <- output.SecurityGroups
+		if aws.ToString(output.NextToken) == "" {
+			break
+		}
+		config.NextToken = output.NextToken
 	}
-	res <- response.SecurityGroups
 	return nil
 }
-func resolveEc2securityGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.SecurityGroup)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
+
 func fetchEc2SecurityGroupIpPermissions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	securityGroup := parent.Item.(types.SecurityGroup)
 
@@ -285,15 +283,5 @@ func fetchEc2SecurityGroupIpPermissionIpRanges(ctx context.Context, meta schema.
 		ipRanges = append(ipRanges, customIpRange{aws.ToString(ip.CidrIpv6), aws.ToString(ip.Description), "ipv6"})
 	}
 	res <- ipRanges
-	return nil
-}
-func fetchEc2SecurityGroupIpPermissionPrefixListIds(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	securityGroupIpPermission := parent.Item.(ipPermission)
-	res <- securityGroupIpPermission.PrefixListIds
-	return nil
-}
-func fetchEc2SecurityGroupIpPermissionUserIdGroupPairs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	securityGroupIpPermission := parent.Item.(ipPermission)
-	res <- securityGroupIpPermission.UserIdGroupPairs
 	return nil
 }

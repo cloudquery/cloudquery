@@ -56,14 +56,14 @@ func Ec2InternetGateways() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the internet gateway.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2internetGatewayTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_ec2_internet_gateway_attachments",
 				Description: "Describes the attachment of a VPC to an internet gateway or an egress-only internet gateway.",
-				Resolver:    fetchEc2InternetGatewayAttachments,
+				Resolver:    schema.PathTableResolver("Attachments"),
 				Columns: []schema.Column{
 					{
 						Name:        "internet_gateway_cq_id",
@@ -107,18 +107,5 @@ func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, paren
 		}
 		config.NextToken = output.NextToken
 	}
-	return nil
-}
-func resolveEc2internetGatewayTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.InternetGateway)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchEc2InternetGatewayAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.InternetGateway)
-	res <- r.Attachments
 	return nil
 }

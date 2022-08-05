@@ -104,7 +104,7 @@ func Ec2EbsSnapshots() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the snapshot.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2ebsSnapshotTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "volume_id",
@@ -178,12 +178,4 @@ func resolveEc2ebsSnapshotCreateVolumePermissions(ctx context.Context, meta sche
 	}
 
 	return diag.WrapError(resource.Set("create_volume_permissions", b))
-}
-func resolveEc2ebsSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Snapshot)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
 }

@@ -167,7 +167,7 @@ func Ec2Images() *schema.Table {
 				Name:        "tags",
 				Description: "Any tags assigned to the image.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEc2imageTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "usage_operation",
@@ -196,7 +196,7 @@ func Ec2Images() *schema.Table {
 			{
 				Name:          "aws_ec2_image_block_device_mappings",
 				Description:   "Describes a block device mapping.",
-				Resolver:      fetchEc2ImageBlockDeviceMappings,
+				Resolver:      schema.PathTableResolver("BlockDeviceMappings"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -324,20 +324,7 @@ func resolveEc2imageProductCodes(ctx context.Context, meta schema.ClientMeta, re
 	for _, t := range r.ProductCodes {
 		productCodes[*t.ProductCodeId] = string(t.ProductCodeType)
 	}
-	return diag.WrapError(resource.Set("product_codes", productCodes))
-}
-func resolveEc2imageTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Image)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchEc2ImageBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Image)
-	res <- r.BlockDeviceMappings
-	return nil
+	return diag.WrapError(resource.Set(c.Name, productCodes))
 }
 
 func resolveEc2ImageLastLaunchedTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
