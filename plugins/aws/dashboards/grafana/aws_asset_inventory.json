@@ -396,25 +396,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select cq_id, cq_table, account_id, region, arn, fetch_date from aws_resources where account_id in (${account_ids}) and region in (${regions}) and cq_table in (${cq_tables}) ;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "refId": "A"
         }
       ],
       "title": "AWS Resources",
@@ -469,27 +451,7 @@
           "metricColumn": "none",
           "rawQuery": true,
           "rawSql": "select cq_table, count(*) from aws_resources where account_id in (${account_ids}) and region in (${regions}) group by cq_table order by count desc;",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "data_transfer_progress_current_rate_in_mega_bytes_per_second"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "table": "aws_redshift_clusters",
-          "timeColumn": "cluster_create_time",
-          "timeColumnType": "timestamp",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
+          "refId": "A"
         }
       ],
       "title": "Count by Resource Type",
