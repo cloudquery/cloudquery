@@ -170,6 +170,7 @@ func Provider() *provider.Provider {
 			"emr.clusters":                            emr.EmrClusters(),
 			"fsx.backups":                             fsx.FsxBackups(),
 			"glue.classifiers":                        glue.Classifiers(),
+			"glue.connections":                        glue.Connections(),
 			"glue.crawlers":                           glue.Crawlers(),
 			"glue.databases":                          glue.Databases(),
 			"glue.datacatalog_encryption_settings":    glue.DatacatalogEncryptionSettings(),
