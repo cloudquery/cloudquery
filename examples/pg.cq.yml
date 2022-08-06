@@ -1,0 +1,6 @@
+kind: destination
+spec:
+  name: postgresql
+  version: latest
+  spec:
+    connection_string: postgresql://postgres:pass@localhost:5432/postgres

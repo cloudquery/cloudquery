@@ -5,8 +5,11 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/internal/plugin"
+	"github.com/cloudquery/cq-provider-sdk/clients"
 	"github.com/cloudquery/cq-provider-sdk/plugins"
 	"github.com/cloudquery/cq-provider-sdk/spec"
+	"github.com/pkg/errors"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
 )
@@ -23,7 +26,7 @@ const (
 
 func NewCmdFetch() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "fetch",
+		Use:     "fetch [directory]",
 		Short:   fetchShort,
 		Long:    fetchLong,
 		Example: fetchExample,
@@ -41,7 +44,7 @@ func fetch(cmd *cobra.Command, args []string) error {
 	fmt.Println("Loading specs from directory: ", directory)
 	specReader, err := spec.NewSpecReader(directory)
 	if err != nil {
-		return fmt.Errorf("failed to load specs from directory %s: %w", directory, err)
+		return errors.Wrapf(err, "failed to load specs from directory %s", directory)
 	}
 	if len(specReader.Connections()) == 0 {
 		fmt.Println("No connections specs found in directory: ", directory)
@@ -51,7 +54,7 @@ func fetch(cmd *cobra.Command, args []string) error {
 	defer pm.CloseAll(cmd.Context())
 	for _, connSpec := range specReader.Connections() {
 		if err := fetchConnection(cmd.Context(), specReader, connSpec, pm); err != nil {
-			return fmt.Errorf("failed to fetch connection %s->%s: %w", connSpec.Source, connSpec.Destination, err)
+			return errors.Wrapf(err, "failed to fetch connection %s->%s", connSpec.Source, connSpec.Destination)
 		}
 		// destSpec := specs.GetDestinatinoByName(connSpec.Destination)
 	}
@@ -64,7 +67,7 @@ func fetchConnection(ctx context.Context, specReader *spec.SpecReader, connSpec 
 
 	sourceClient, err := pm.GetSourcePluginClient(ctx, sourceSpec)
 	if err != nil {
-		return fmt.Errorf("failed to get source plugin client: %w", err)
+		return errors.Wrap(err, "failed to get source plugin client")
 	}
 
 	destinationClient, err := pm.GetDestinationClient(
@@ -73,40 +76,64 @@ func fetchConnection(ctx context.Context, specReader *spec.SpecReader, connSpec 
 		plugins.DestinationPluginOptions{},
 	)
 	if err != nil {
-		return fmt.Errorf("failed to get destination plugin client: %w", err)
+		return errors.Wrap(err, "failed to get destination plugin client")
 	}
 	if err := destinationClient.Configure(ctx, specReader.GetDestinatinoByName(connSpec.Destination)); err != nil {
-		return fmt.Errorf("failed to configure destination plugin client: %w", err)
+		return errors.Wrap(err, "failed to configure destination plugin client")
 	}
 	tables, err := sourceClient.GetTables(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to get tables: %w", err)
+		return errors.Wrap(err, "failed to get tables")
 	}
 	if err := destinationClient.CreateTables(ctx, tables); err != nil {
-		return fmt.Errorf("failed to create tables: %w", err)
+		return errors.Wrap(err, "failed to create tables")
 	}
-	resources := make(chan []byte)
+
+	validationResult, err := sourceClient.Configure(ctx, sourceSpec)
+	if err != nil {
+		return errors.Wrap(err, "failed to configure source plugin client")
+	}
+	if validationResult != nil && !validationResult.Valid() {
+		for _, err := range validationResult.Errors() {
+			fmt.Printf("Spec Error at Field: %s, %s\n", err.Field(), err.Description())
+		}
+		return errors.New("spec validation failed")
+	}
+	resources := make(chan *clients.FetchResultMessage)
 	g, ctx := errgroup.WithContext(ctx)
+	fmt.Println("Starting fetch for: ", connSpec.Source, "->", connSpec.Destination)
 	g.Go(func() error {
 		defer close(resources)
-		jsonSchemaResult, err := sourceClient.Fetch(ctx, sourceSpec, resources)
-		if err != nil {
-			return fmt.Errorf("failed to fetch resources: %w", err)
-		}
-		for _, resultError := range jsonSchemaResult.Errors() {
-			fmt.Println(resultError.String())
-		}
-		return fmt.Errorf("failed to validate schema")
-	})
-
-	g.Go(func() error {
-		// defer close(resources)
-		if err := destinationClient.Save(ctx, resources); err != nil {
-			return fmt.Errorf("failed to save resources: %w", err)
+		if err := sourceClient.Fetch(ctx, sourceSpec, resources); err != nil {
+			return errors.Wrap(err, "failed to fetch resources")
 		}
 		return nil
 	})
 
-	return g.Wait()
+	bar := progressbar.NewOptions(-1,
+		progressbar.OptionSetDescription("Fetching"),
+		progressbar.OptionShowCount(),
+		progressbar.OptionShowIts(),
+	)
 
+	g.Go(func() error {
+		for _ = range resources {
+			// fmt.Println("fetched")
+			bar.Add(1)
+			// if err := destinationClient.Save(ctx, resource); err != nil {
+			// 	return errors.Wrapf(err, "failed to save resources")
+			// }
+			// fmt.Println("save")
+		}
+		return nil
+	})
+
+	if err := g.Wait(); err != nil {
+		bar.Finish()
+		return errors.Wrap(err, "failed to fetch resources")
+	}
+	bar.Finish()
+
+	fmt.Println("Fetch completed successfully")
+	return nil
 }

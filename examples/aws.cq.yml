@@ -1,0 +1,7 @@
+kind: source
+spec:
+  name: gcp
+  version: development
+  path: localhost:7777
+  registry: grpc
+  tables: ["*"]

@@ -1,0 +1,4 @@
+kind: connection
+spec:
+  source: gcp
+  destination: postgresql

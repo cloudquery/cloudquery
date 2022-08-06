@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/schema"
 	"github.com/cloudquery/cq-provider-sdk/spec"
 	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
 
@@ -24,16 +25,16 @@ type PostgreSqlPlugin struct {
 func (p *PostgreSqlPlugin) Configure(ctx context.Context, spec spec.DestinationSpec) error {
 	var specPostgreSql PostgreSqlSpec
 	if err := spec.Spec.Decode(&specPostgreSql); err != nil {
-		return fmt.Errorf("failed to decode spec: %w", err)
+		return errors.Wrap(err, "failed to decode spec")
 	}
 	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
 	if err != nil {
-		return fmt.Errorf("failed to parse connection string: %w", err)
+		return errors.Wrap(err, "failed to parse connection string")
 	}
 	// pgxConfig.ConnConfig.Logger = zerologadapter.NewLogger(opts.Logger)
 	p.conn, err = pgxpool.ConnectConfig(ctx, pgxConfig)
 	if err != nil {
-		return fmt.Errorf("failed to connect to postgresql: %w", err)
+		return errors.Wrap(err, "failed to connect to postgresql")
 	}
 	return nil
 }
@@ -42,7 +43,7 @@ func (p *PostgreSqlPlugin) Save(ctx context.Context, resources []*schema.Resourc
 	for _, resource := range resources {
 		sql, values, err := sq.Insert(resource.TableName()).Columns(resource.Columns()...).Values([]interface{}{""}).ToSql()
 		if err != nil {
-			return fmt.Errorf("failed to generate insert sql: %w", err)
+			return errors.Wrap(err, "failed to generate insert sql")
 		}
 		_, err = p.conn.Exec(ctx, sql, values...)
 		if err != nil {
@@ -70,7 +71,7 @@ func (p *PostgreSqlPlugin) CreateTables(ctx context.Context, table []*schema.Tab
 		for i, c := range t.Columns {
 			pgType, err := SchemaTypeToPg(c.Type)
 			if err != nil {
-				return fmt.Errorf("failed to convert schema type to postgresql type: %w", err)
+				return errors.Wrap(err, "failed to convert schema type to postgresql type")
 			}
 			sb.WriteString(fmt.Sprintf("%s %s", c.Name, pgType))
 			if i != totalColumns-1 {
@@ -129,6 +130,6 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	case schema.TypeIntArray:
 		return "INET[]", nil
 	default:
-		return "", fmt.Errorf("unsupported schema type: %s", t)
+		return "", errors.Errorf("unsupported schema type: %s", t)
 	}
 }

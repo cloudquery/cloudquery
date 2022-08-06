@@ -5,7 +5,6 @@
 package plugin
 
 import (
-	"fmt"
 	"os/exec"
 	"strings"
 
@@ -15,6 +14,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/clients"
 	"github.com/cloudquery/cq-provider-sdk/plugins"
 	"github.com/cloudquery/cq-provider-sdk/spec"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc"
 )
 
@@ -33,7 +33,7 @@ func hasAnyPrefix(s string, prefixes []string) bool {
 // aws@v1.0.0 -> cloudquery, aws, v1.0.0
 func parsePluginName(name string) (string, string, string, error) {
 	if len(name) == 0 {
-		return "", "", "", fmt.Errorf("plugin name is empty")
+		return "", "", "", errors.New("plugin name is empty")
 	}
 
 	organization := "cloudquery"
@@ -42,7 +42,7 @@ func parsePluginName(name string) (string, string, string, error) {
 
 	pluginPart := strings.Split(name, "@")
 	if len(pluginPart) > 2 {
-		return "", "", "", fmt.Errorf("invalid plugin name: %s. only one @ is allowed", name)
+		return "", "", "", errors.Errorf("invalid plugin name: %s. only one @ is allowed", name)
 	}
 	if len(pluginPart) == 2 {
 		version = pluginPart[1]
@@ -50,7 +50,7 @@ func parsePluginName(name string) (string, string, string, error) {
 
 	pluginPart = strings.Split(pluginPart[0], "/")
 	if len(pluginPart) > 2 {
-		return "", "", "", fmt.Errorf("invalid plugin name: %s. only one / is allowed", name)
+		return "", "", "", errors.Errorf("invalid plugin name: %s. only one / is allowed", name)
 	}
 
 	if len(pluginPart) == 2 {
@@ -71,7 +71,7 @@ func NewPluginManager() *PluginManager {
 func (p *PluginManager) Download(ctx context.Context, name string) error {
 	// org, name, version, err := parsePluginName(name)
 	// if err != nil {
-	// 	return fmt.Errorf("failed to parse plugin name: %w", err)
+	// 	return errors.Wrap("failed to parse plugin name", err)
 	// }
 
 	return nil
@@ -82,7 +82,7 @@ func (p *PluginManager) GetDestinationClient(ctx context.Context, spec spec.Dest
 	case "postgresql":
 		return clients.NewLocalDestinationClient(&destinations.PostgreSqlPlugin{}), nil
 	default:
-		return nil, fmt.Errorf("unknown destination type: %s", spec.Name)
+		return nil, errors.Errorf("unknown destination type: %s", spec.Name)
 	}
 }
 
