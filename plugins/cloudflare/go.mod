@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/cloudflare/cloudflare-go v0.46.0
-	github.com/cloudquery/cq-gen v0.0.7
+	github.com/cloudquery/cq-gen v0.0.8
 	github.com/cloudquery/cq-provider-sdk v0.14.6
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/golang/mock v1.6.0
