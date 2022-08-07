@@ -14,6 +14,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.9.3](https://github.com/cloudquery/cq-provider-gcp/compare/v0.9.2...v0.9.3) (2022-08-05)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.7 ([#462](https://github.com/cloudquery/cq-provider-gcp/issues/462)) ([f416c48](https://github.com/cloudquery/cq-provider-gcp/commit/f416c48bd1cf2440be5f8c8996e3277351f95480))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.8 ([#464](https://github.com/cloudquery/cq-provider-gcp/issues/464)) ([abcdb97](https://github.com/cloudquery/cq-provider-gcp/commit/abcdb9709ab6a8e155d8ba940db31b0442365161))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.6 ([#451](https://github.com/cloudquery/cq-provider-gcp/issues/451)) ([2b48563](https://github.com/cloudquery/cq-provider-gcp/commit/2b48563b91f5be4fd30443f4888297149a0111d0))
+* **deps:** Update module github.com/hashicorp/go-hclog to v1.2.2 ([#453](https://github.com/cloudquery/cq-provider-gcp/issues/453)) ([fbd7d2e](https://github.com/cloudquery/cq-provider-gcp/commit/fbd7d2efa66116f93e45db8ff64a24014943a0da))
+* **deps:** Update module google.golang.org/api to v0.90.0 ([#454](https://github.com/cloudquery/cq-provider-gcp/issues/454)) ([76a50bc](https://github.com/cloudquery/cq-provider-gcp/commit/76a50bcb1460b33ffbf0c450f0801f0a5b791d0c))
+* **deps:** Update tubone24/update_release digest to b9bbf61 ([#444](https://github.com/cloudquery/cq-provider-gcp/issues/444)) ([51cce75](https://github.com/cloudquery/cq-provider-gcp/commit/51cce75430107df1a08c1105958fec7ff2369349))
+
 ## [0.9.2](https://github.com/cloudquery/cq-provider-gcp/compare/v0.9.1...v0.9.2) (2022-07-28)
 
 
