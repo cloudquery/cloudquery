@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.13.5](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.4...v0.13.5) (2022-08-05)
+
+
+### Features
+
+* Add CloudWatch Logs Log Group Resource ([#1317](https://github.com/cloudquery/cq-provider-aws/issues/1317)) ([5ae109e](https://github.com/cloudquery/cq-provider-aws/commit/5ae109e1afce58c41d7de7b7271c804fe3f91201))
+* Add tags for Cloudwatch alarms ([#1374](https://github.com/cloudquery/cq-provider-aws/issues/1374)) ([07bd11b](https://github.com/cloudquery/cq-provider-aws/commit/07bd11bd4cf393340ccfdb433765414867537ce5))
+* Added glue classifiers ([#1389](https://github.com/cloudquery/cq-provider-aws/issues/1389)) ([d7722e5](https://github.com/cloudquery/cq-provider-aws/commit/d7722e502ce8102dc5122a7b24f0ebf2fe91c8b5))
+* Added glue connections ([#1388](https://github.com/cloudquery/cq-provider-aws/issues/1388)) ([516721e](https://github.com/cloudquery/cq-provider-aws/commit/516721eda3f5c10da165a4eb6621b61ed3db6213))
+* Added glue crawlers ([#1363](https://github.com/cloudquery/cq-provider-aws/issues/1363)) ([177e690](https://github.com/cloudquery/cq-provider-aws/commit/177e69073600ebd23d1bad84547a338977cbabae))
+* Added glue data catalog encryption settings ([#1356](https://github.com/cloudquery/cq-provider-aws/issues/1356)) ([a6c6246](https://github.com/cloudquery/cq-provider-aws/commit/a6c6246e24c3b72d5588b03f4cb4b7fb427ba62b))
+* Added glue dev endpoints ([#1361](https://github.com/cloudquery/cq-provider-aws/issues/1361)) ([2cbec07](https://github.com/cloudquery/cq-provider-aws/commit/2cbec07282f09866438472976d0fec2df76b3443))
+* Added glue ml transforms ([#1365](https://github.com/cloudquery/cq-provider-aws/issues/1365)) ([baffddf](https://github.com/cloudquery/cq-provider-aws/commit/baffddf6b6089e517213bcd282ce9452850a2991))
+* Added glue security configurations ([#1382](https://github.com/cloudquery/cq-provider-aws/issues/1382)) ([4d1cf3e](https://github.com/cloudquery/cq-provider-aws/commit/4d1cf3e49483cd47f5e8a42aa4bc91b90e2b5794))
+* Implement Glue Triggers resource ([#1322](https://github.com/cloudquery/cq-provider-aws/issues/1322)) ([8261048](https://github.com/cloudquery/cq-provider-aws/commit/82610486e3190db9a599fe61b2c9ab77ea3d3e74))
+* Update EC2 Services ([#1383](https://github.com/cloudquery/cq-provider-aws/issues/1383)) ([cc33980](https://github.com/cloudquery/cq-provider-aws/commit/cc33980c893ba43c7ebe283e1a88b3f6cb11583c))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.8 ([#1392](https://github.com/cloudquery/cq-provider-aws/issues/1392)) ([90d8fa5](https://github.com/cloudquery/cq-provider-aws/commit/90d8fa52d71c90b228d539d19f06089fda68a02c))
+* **deps:** Update tubone24/update_release digest to 2146f15 ([#1349](https://github.com/cloudquery/cq-provider-aws/issues/1349)) ([37dee52](https://github.com/cloudquery/cq-provider-aws/commit/37dee5271bee28643e97566c61bbc1c8c19ffe82))
+* Update endpoints ([#1375](https://github.com/cloudquery/cq-provider-aws/issues/1375)) ([0b20ba8](https://github.com/cloudquery/cq-provider-aws/commit/0b20ba86c11e75a65c5d1a1703484456c8a02dd8))
+* Update endpoints ([#1386](https://github.com/cloudquery/cq-provider-aws/issues/1386)) ([9af45f7](https://github.com/cloudquery/cq-provider-aws/commit/9af45f700c95df17b218672bd8c3bac35b869c73))
+
 ## [0.13.4](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.3...v0.13.4) (2022-08-02)
 
 
