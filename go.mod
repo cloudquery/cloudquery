@@ -36,7 +36,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v35 v35.3.0
 	github.com/google/uuid v1.3.0
-	github.com/hairyhenderson/go-fsimpl v0.0.0-20220716131823-152ecd217a2e
+	github.com/hairyhenderson/go-fsimpl v0.0.0-20220730140024-5cfe3b43365b
 	github.com/hashicorp/go-getter v1.6.2
 	github.com/jackc/pgconn v1.12.1
 	github.com/johannesboyne/gofakes3 v0.0.0-20220627085814-c3ac35da23b2
@@ -74,7 +74,7 @@ require (
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
-	github.com/aws/aws-sdk-go v1.44.56 // indirect
+	github.com/aws/aws-sdk-go v1.44.66 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.16.7 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.1 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.15.14 // indirect
