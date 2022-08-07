@@ -12,7 +12,7 @@ The CloudQuery Azure provider pulls configuration out of Azure resources, normal
 
 CloudQuery needs to be authenticated with your Azure account in order to fetch information about your cloud setup.
 
-You can either authenticate with az login (when running cloudquery locally), or by using a "service principal" and exporting environment variables (appropriate for automated deployments).
+You can either authenticate with `az login` (when running CloudQuery locally), or by using a "service principal" and exporting environment variables (appropriate for automated deployments).
 
 You can find out more about authentication with Azure at Azure's [documentation](https://github.com/Azure/azure-sdk-for-go) for the golang sdk.
 
@@ -24,7 +24,7 @@ First, install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/instal
 az login
 ```
 
-You are now authenticated with cloudquery!
+You are now authenticated with CloudQuery!
 
 #### Authentication with Environment Variables
 
@@ -100,25 +100,25 @@ providers:
       - "*"
 ```
 
-By default cloudquery will fetch all configuration from **all** resources in **all** subscription. You can change this behaviour with the following arguments:
+By default, CloudQuery will fetch all configuration from **all** resources in **all** subscription. You can change this behaviour with the following arguments:
 
 - `subscriptions` **(Optional)** - Specify multiple subscriptions to fetch data from them concurrently.
 
 ### Query Examples
 
-#### Find all mysql servers
+#### Find all MySQL servers
 
  ```sql
  SELECT * FROM azure_mysql_servers;
  ```
 
-#### Find storage accounts which allowing non https traffic
+#### Find storage accounts that are allowing non-HTTPS traffic
 
  ```sql
  SELECT * from azure_storage_accounts where enable_https_traffic_only = false;
  ```
 
-#### Find all expired key vault
+#### Find all expired key vaults
 
  ```sql
  SELECT * from azure_keyvault_vault_keys where attributes_expires >= extract(epoch from now()) * 1000;
