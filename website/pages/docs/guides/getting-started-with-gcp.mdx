@@ -1,0 +1,115 @@
+---
+title: Getting started with GCP
+description: Learn how to fetch configuration from GCP
+---
+
+import DownloadSection from './_getting-started-download-section.mdx'
+import SpawnSection from './_getting-started-spawn-section.mdx'
+import ReadonlyTip from './_getting-started-readonly-tip.mdx'
+import ExploreSection from './_getting-started-explore-section.mdx'
+import { Tabs, Tab } from '../../../components/Tabs'
+
+# Getting Started with GCP
+
+<DownloadSection />
+
+## Running
+
+### Init command
+
+After installing CloudQuery, you need to generate a `cloudquery.yml` file that will describe which cloud provider you want to use and which resources you want CloudQuery to ETL:
+
+```bash
+cloudquery init gcp
+
+# cloudquery init gcp aws # This will generate a config containing gcp and aws providers
+# cloudquery init --help # Show all possible auto generated configs and flags
+```
+
+All official and approved community providers are listed at [CloudQuery Hub](https://hub.cloudquery.io) with their respective documentation.
+
+<SpawnSection />
+
+### Authenticate with GCP
+
+CloudQuery needs to be authenticated with your GCP account in order to `fetch` information about your cloud setup.
+
+<ReadonlyTip />
+
+You need to set the GOOGLE_APPLICATION_CREDENTIALS environment variable - see [GCP documentation](https://cloud.google.com/docs/authentication/getting-started#command-line) for more details on where to get it.
+
+<Tabs
+  defaultValue="linux_and_osx"
+  values={[
+    {label: 'Linux and OSX', value: 'linux_and_osx'},
+    {label: 'Windows (CMD)', value: 'windows_cmd'},
+    {label: 'Windows (PowerShell)', value: 'windows_powershell'}
+  ]}>
+
+<Tab value='linux_and_osx'>
+
+```bash
+export GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
+```
+
+</Tab>
+
+<Tab value='windows_cmd'>
+
+```bash
+SET GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
+```
+
+</Tab>
+
+<Tab value='windows_powershell'>
+
+```powershell
+$Env:GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
+```
+
+</Tab>
+
+</Tabs>
+
+### Fetch Command
+
+Once `cloudquery.yml` is generated and you are authenticated with GCP, run the following command to fetch the resources.
+
+```bash
+cloudquery fetch
+# cloudquery fetch --help # Show all possible fetch flags
+```
+
+### Exploring and Running Queries
+
+<ExploreSection/>
+
+Schema and tables for GCP are available in [CloudQuery Hub](https://hub.cloudquery.io/providers/cloudquery/gcp/latest/schema).
+
+Here is an example query for GCP:
+
+#### Find all buckets Without uniform bucket level access
+
+```sql
+SELECT project_id, name, self_link AS link
+FROM gcp_storage_buckets
+WHERE iam_configuration_uniform_bucket_level_access_enabled = FALSE;
+```
+
+### Policy Command
+
+CloudQuery Policies allow users to write security, governance, cost, and compliance rules, 
+using SQL as the query layer and HCL as the logical layer.
+
+All official and approved community policies are listed on [Github](https://github.com/cloudquery/cq-provider-gcp/tree/main/policies).
+
+#### Execute a policy
+
+```bash
+cloudquery policy run gcp//cis_v1.2.0
+```
+
+## Next Steps
+
+At [Cloudquery Hub](https://hub.cloudquery.io/providers/cloudquery/gcp/latest), you can read more about the CloudQuery GCP provider - including exploring the SQL schema, and advanced configurations.

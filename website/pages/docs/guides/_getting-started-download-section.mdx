@@ -1,0 +1,102 @@
+import { Tabs, Tab } from '../../../components/Tabs'
+
+## Download and Install
+
+You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
+
+<Tabs
+  items={['linux, osx, windows']}>
+
+<Tab value="linux">
+
+<Tabs
+defaultValue="precompiled_x86_64"
+values={[
+    {label: 'Precompiled Binaries (x86_64)', value: 'precompiled_x86_64'},
+    {label: 'Precompiled Binaries (arm64)', value: 'precompiled_arm64'}
+]}>
+
+<Tab value="precompiled_x86_64">
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_linux_x86_64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+<Tab value="precompiled_arm64">
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_linux_arm64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+<Tab value="osx">
+<Tabs
+  items={['homebrew', 'x86_64', 'arm64']}>
+
+<Tab value="homebrew">
+
+```bash
+brew install cloudquery/tap/cloudquery
+
+# After initial install you can upgrade the version via:
+# brew upgrade cloudquery
+```
+</Tab>
+
+<Tab value="precompiled_x86_64">
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_darwin_x86_64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+<Tab value="precompiled_arm64">
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_darwin_arm64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+<Tab value="windows">
+
+<Tabs
+  items={['cmd', 'powershell']}>
+
+<Tab value="precompiled_cmd">
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_windows_x86_64.exe -o cloudquery.exe
+```
+
+</Tab>
+
+<Tab value="precompiled_powershell">
+
+```powershell
+Invoke-WebRequest https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_windows_x86_64.exe -o cloudquery.exe
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+</Tabs>
