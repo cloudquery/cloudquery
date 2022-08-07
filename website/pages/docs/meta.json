@@ -1,0 +1,15 @@
+{
+  "index": "Introduction",
+  "guides": "Guides",
+  "core-concepts": "Core Concepts",
+  "cli-reference": "CLI Reference",
+  "changelog": {
+    "title": "Changelog",
+    "href": "https://github.com/cloudquery/cloudquery/releases",
+    "newWindow": true
+  },
+  "security": "Security",
+  "troubleshooting": "Troubleshooting",
+  "glossary": "Glossary",
+  "faq": "FAQ"
+}
