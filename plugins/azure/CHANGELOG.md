@@ -18,6 +18,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.12.3](https://github.com/cloudquery/cq-provider-azure/compare/v0.12.2...v0.12.3) (2022-08-07)
+
+
+### Features
+
+* Add support for Tenants ([#412](https://github.com/cloudquery/cq-provider-azure/issues/412)) ([940af7f](https://github.com/cloudquery/cq-provider-azure/commit/940af7fdf18ef8e96a178177095947edca21de1c))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/go-autorest/autorest to v0.11.28 ([#443](https://github.com/cloudquery/cq-provider-azure/issues/443)) ([bc87594](https://github.com/cloudquery/cq-provider-azure/commit/bc8759439a0123aaf7d9359e6970abe3c8d3404e))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.7 ([#453](https://github.com/cloudquery/cq-provider-azure/issues/453)) ([361d908](https://github.com/cloudquery/cq-provider-azure/commit/361d90883c42331304fcbf9f5ffa9579a94a5bb1))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.8 ([#457](https://github.com/cloudquery/cq-provider-azure/issues/457)) ([7d61851](https://github.com/cloudquery/cq-provider-azure/commit/7d618516c3ac4a945308e248eebeb7fba9a442c7))
+* **deps:** Update module github.com/hashicorp/go-hclog to v1.2.2 ([#444](https://github.com/cloudquery/cq-provider-azure/issues/444)) ([6c769c9](https://github.com/cloudquery/cq-provider-azure/commit/6c769c955a9b8874f4b3cc297584851f079c2059))
+* **deps:** Update tubone24/update_release digest to 2146f15 ([#389](https://github.com/cloudquery/cq-provider-azure/issues/389)) ([e5682fd](https://github.com/cloudquery/cq-provider-azure/commit/e5682fd6b3a169c7ff47483c0727f079e4cf92d4))
+* **docs:** Some minor docs fixes ([#454](https://github.com/cloudquery/cq-provider-azure/issues/454)) ([6feb015](https://github.com/cloudquery/cq-provider-azure/commit/6feb01553b2d3d14c4c168ed57d19daa25fd32f5))
+* **tests:** Remove terraform for Azure ExpressRoute port ([#440](https://github.com/cloudquery/cq-provider-azure/issues/440)) ([7413740](https://github.com/cloudquery/cq-provider-azure/commit/7413740d6e0f5378642aeb903086a7db8a17db53))
+
 ## [0.12.2](https://github.com/cloudquery/cq-provider-azure/compare/v0.12.1...v0.12.2) (2022-07-28)
 
 
