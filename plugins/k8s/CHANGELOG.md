@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.2](https://github.com/cloudquery/cq-provider-k8s/compare/v0.6.1...v0.6.2) (2022-08-07)
+
+
+### Features
+
+* Added api filter multiplexer ([#185](https://github.com/cloudquery/cq-provider-k8s/issues/185)) ([c937ef7](https://github.com/cloudquery/cq-provider-k8s/commit/c937ef739f138641cbc06ba0864b5cd977f9b217))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.6 ([#250](https://github.com/cloudquery/cq-provider-k8s/issues/250)) ([ff1e7cc](https://github.com/cloudquery/cq-provider-k8s/commit/ff1e7cca81c6dc417d8ba5ed5d2d376d483af4f6))
+* **deps:** Update module github.com/hashicorp/go-hclog to v1.2.2 ([#252](https://github.com/cloudquery/cq-provider-k8s/issues/252)) ([c648ffd](https://github.com/cloudquery/cq-provider-k8s/commit/c648ffd40fbdb0115249b34431d602292908a88d))
+* **deps:** Update tubone24/update_release digest to 2146f15 ([#242](https://github.com/cloudquery/cq-provider-k8s/issues/242)) ([db73394](https://github.com/cloudquery/cq-provider-k8s/commit/db73394fab41e1563087e901575edbaa1b1eb1d7))
+
 ## [0.6.1](https://github.com/cloudquery/cq-provider-k8s/compare/v0.6.0...v0.6.1) (2022-07-28)
 
 
