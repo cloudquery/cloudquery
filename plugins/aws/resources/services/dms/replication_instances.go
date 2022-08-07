@@ -205,7 +205,7 @@ func DmsReplicationInstances() *schema.Table {
 			{
 				Name:          "aws_dms_replication_instance_replication_subnet_group_subnets",
 				Description:   "In response to a request by the DescribeReplicationSubnetGroups operation, this object identifies a subnet by its given Availability Zone, subnet identifier, and status.",
-				Resolver:      fetchDmsReplicationInstanceReplicationSubnetGroupSubnets,
+				Resolver:      schema.PathTableResolver("ReplicationSubnetGroup.Subnets"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -235,7 +235,7 @@ func DmsReplicationInstances() *schema.Table {
 			{
 				Name:          "aws_dms_replication_instance_vpc_security_groups",
 				Description:   "Describes the status of a security group associated with the virtual private cloud (VPC) hosting your replication and DB instances.",
-				Resolver:      fetchDmsReplicationInstanceVpcSecurityGroups,
+				Resolver:      schema.PathTableResolver("VpcSecurityGroups"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -304,20 +304,5 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 		}
 		res <- wrapper
 	}
-	return nil
-}
-
-func fetchDmsReplicationInstanceReplicationSubnetGroupSubnets(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	replicationInstance := parent.Item.(DmsReplicationInstanceWrapper)
-	if replicationInstance.ReplicationSubnetGroup == nil {
-		return nil
-	}
-	res <- replicationInstance.ReplicationSubnetGroup.Subnets
-	return nil
-}
-
-func fetchDmsReplicationInstanceVpcSecurityGroups(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	replicationInstance := parent.Item.(DmsReplicationInstanceWrapper)
-	res <- replicationInstance.VpcSecurityGroups
 	return nil
 }

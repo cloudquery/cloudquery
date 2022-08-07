@@ -180,7 +180,7 @@ func CloudwatchAlarms() *schema.Table {
 			{
 				Name:          "aws_cloudwatch_alarm_metrics",
 				Description:   "This structure is used in both GetMetricData and PutMetricAlarm.",
-				Resolver:      fetchCloudwatchAlarmMetrics,
+				Resolver:      schema.PathTableResolver("Metrics"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -300,11 +300,7 @@ func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMet
 	}
 	return diag.WrapError(resource.Set("dimensions", dimensions))
 }
-func fetchCloudwatchAlarmMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	alarm := parent.Item.(types.MetricAlarm)
-	res <- alarm.Metrics
-	return nil
-}
+
 func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	metric := resource.Item.(types.MetricDataQuery)
 	if metric.MetricStat == nil || metric.MetricStat.Metric == nil {

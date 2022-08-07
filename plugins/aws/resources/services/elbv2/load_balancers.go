@@ -143,7 +143,7 @@ func Elbv2LoadBalancers() *schema.Table {
 			{
 				Name:        "aws_elbv2_load_balancer_availability_zones",
 				Description: "Information about an Availability Zone.",
-				Resolver:    fetchElbv2LoadBalancerAvailabilityZones,
+				Resolver:    schema.PathTableResolver("AvailabilityZones"),
 				Columns: []schema.Column{
 					{
 						Name:        "load_balancer_cq_id",
@@ -178,7 +178,7 @@ func Elbv2LoadBalancers() *schema.Table {
 					{
 						Name:          "aws_elbv2_load_balancer_availability_zone_addresses",
 						Description:   "Information about a static IP address for a load balancer.",
-						Resolver:      fetchElbv2LoadBalancerAvailabilityZoneAddresses,
+						Resolver:      schema.PathTableResolver("LoadBalancerAddresses"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -378,16 +378,6 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 	}
 
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func fetchElbv2LoadBalancerAvailabilityZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(types.LoadBalancer)
-	res <- p.AvailabilityZones
-	return nil
-}
-func fetchElbv2LoadBalancerAvailabilityZoneAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(types.AvailabilityZone)
-	res <- p.LoadBalancerAddresses
-	return nil
 }
 
 // ====================================================================================================================

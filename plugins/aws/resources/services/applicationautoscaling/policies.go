@@ -2,7 +2,6 @@ package applicationautoscaling
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
@@ -82,19 +81,19 @@ func ApplicationautoscalingPolicies() *schema.Table {
 				Name:        "alarms",
 				Description: "The CloudWatch alarms associated with the scaling policy.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveApplicationautoscalingPolicyAlarms,
+				Resolver:    schema.PathResolver("Alarms"),
 			},
 			{
 				Name:        "step_scaling_policy_configuration",
 				Description: "A step scaling policy.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveApplicationautoscalingPolicyStepScalingPolicyConfiguration,
+				Resolver:    schema.PathResolver("StepScalingPolicyConfiguration"),
 			},
 			{
 				Name:        "target_tracking_scaling_policy_configuration",
 				Description: "A target tracking scaling policy.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveApplicationautoscalingPolicyTargetTrackingScalingPolicyConfiguration,
+				Resolver:    schema.PathResolver("TargetTrackingScalingPolicyConfiguration"),
 			},
 		},
 	}
@@ -127,28 +126,4 @@ func fetchApplicationautoscalingPolicies(ctx context.Context, meta schema.Client
 	}
 
 	return nil
-}
-func resolveApplicationautoscalingPolicyAlarms(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ScalingPolicy)
-	if r.Alarms == nil {
-		return nil
-	}
-	b, _ := json.Marshal(r.Alarms)
-	return diag.WrapError(resource.Set(c.Name, b))
-}
-func resolveApplicationautoscalingPolicyStepScalingPolicyConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ScalingPolicy)
-	if r.StepScalingPolicyConfiguration == nil {
-		return nil
-	}
-	b, _ := json.Marshal(r.StepScalingPolicyConfiguration)
-	return diag.WrapError(resource.Set(c.Name, b))
-}
-func resolveApplicationautoscalingPolicyTargetTrackingScalingPolicyConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ScalingPolicy)
-	if r.TargetTrackingScalingPolicyConfiguration == nil {
-		return nil
-	}
-	b, _ := json.Marshal(r.TargetTrackingScalingPolicyConfiguration)
-	return diag.WrapError(resource.Set(c.Name, b))
 }

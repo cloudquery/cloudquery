@@ -148,7 +148,7 @@ func EksClusters() *schema.Table {
 			{
 				Name:          "aws_eks_cluster_encryption_configs",
 				Description:   "The encryption configuration for the cluster.",
-				Resolver:      fetchEksClusterEncryptionConfigs,
+				Resolver:      schema.PathTableResolver("EncryptionConfig"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -173,7 +173,7 @@ func EksClusters() *schema.Table {
 			{
 				Name:        "aws_eks_cluster_loggings",
 				Description: "An object representing the enabled or disabled Kubernetes control plane logs for your cluster.",
-				Resolver:    fetchEksClusterLoggings,
+				Resolver:    schema.PathTableResolver("Logging.ClusterLogging"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -231,19 +231,7 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func fetchEksClusterEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(*types.Cluster)
-	res <- p.EncryptionConfig
-	return nil
-}
-func fetchEksClusterLoggings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(*types.Cluster)
-	if p.Logging == nil {
-		return nil
-	}
-	res <- p.Logging.ClusterLogging
-	return nil
-}
+
 func resolveEksClusterLoggingTypes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	logSetup := resource.Item.(types.LogSetup)
 	logTypes := make([]string, len(logSetup.Types))

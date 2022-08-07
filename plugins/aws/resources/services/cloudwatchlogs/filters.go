@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
-	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -61,7 +60,7 @@ func CloudwatchlogsFilters() *schema.Table {
 			{
 				Name:          "aws_cloudwatchlogs_filter_metric_transformations",
 				Description:   "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
-				Resolver:      fetchCloudwatchlogsFilterMetricTransformations,
+				Resolver:      schema.PathTableResolver("MetricTransformations"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -116,9 +115,5 @@ func fetchCloudwatchlogsFilters(ctx context.Context, meta schema.ClientMeta, par
 		}
 		config.NextToken = response.NextToken
 	}
-	return nil
-}
-func fetchCloudwatchlogsFilterMetricTransformations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	res <- parent.Item.(types.MetricFilter).MetricTransformations
 	return nil
 }

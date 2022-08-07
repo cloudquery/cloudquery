@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -161,7 +160,7 @@ func NetworkInterfaces() *schema.Table {
 				Name:        "groups",
 				Description: "The tags assigned to the egress-only internet gateway.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveNetworkInterfacesGroups,
+				Resolver:    schema.PathResolver("Groups"),
 			},
 			{
 				Name:        "interface_type",
@@ -360,13 +359,4 @@ func fetchEc2NetworkInterfaces(ctx context.Context, meta schema.ClientMeta, pare
 		input.NextToken = output.NextToken
 	}
 	return nil
-}
-func resolveNetworkInterfacesGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	ni := resource.Item.(types.NetworkInterface)
-	b, err := json.Marshal(ni.Groups)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-
-	return diag.WrapError(resource.Set(c.Name, b))
 }

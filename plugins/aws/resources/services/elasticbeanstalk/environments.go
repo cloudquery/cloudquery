@@ -373,7 +373,7 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 			{
 				Name:          "aws_elasticbeanstalk_environment_links",
 				Description:   "A link to another environment, defined in the environment's manifest",
-				Resolver:      fetchElasticbeanstalkEnvironmentLinks,
+				Resolver:      schema.PathTableResolver("EnvironmentLinks"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -454,11 +454,6 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 		tags[*s.Key] = s.Value
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func fetchElasticbeanstalkEnvironmentLinks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(types.EnvironmentDescription)
-	res <- p.EnvironmentLinks
-	return nil
 }
 
 func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

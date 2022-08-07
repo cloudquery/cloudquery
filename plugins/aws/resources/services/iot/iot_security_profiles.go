@@ -2,11 +2,9 @@ package iot
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
-	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -54,7 +52,7 @@ func IotSecurityProfiles() *schema.Table {
 				Name:        "additional_metrics_to_retain_v2",
 				Description: "A list of metrics whose data is retained (stored)",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveIotSecurityProfilesAdditionalMetricsToRetainV2,
+				Resolver:    schema.PathResolver("AdditionalMetricsToRetainV2"),
 			},
 			{
 				Name:        "alert_targets",
@@ -99,7 +97,7 @@ func IotSecurityProfiles() *schema.Table {
 			{
 				Name:        "aws_iot_security_profile_behaviors",
 				Description: "A Device Defender security profile behavior.",
-				Resolver:    fetchIotSecurityProfileBehaviors,
+				Resolver:    schema.PathTableResolver("Behaviors"),
 				Columns: []schema.Column{
 					{
 						Name:        "security_profile_cq_id",
@@ -152,7 +150,7 @@ func IotSecurityProfiles() *schema.Table {
 						Name:        "criteria_value",
 						Description: "The value to be compared with the metric.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveIotSecurityProfileBehaviorsCriteriaValue,
+						Resolver:    schema.PathResolver("Criteria.Value"),
 					},
 					{
 						Name:        "metric",
@@ -275,39 +273,4 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 		input.NextToken = response.NextToken
 	}
 	return diag.WrapError(diag.WrapError(resource.Set(c.Name, tags)))
-}
-func resolveIotSecurityProfilesAdditionalMetricsToRetainV2(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
-
-	if i.AdditionalMetricsToRetainV2 == nil {
-		return nil
-	}
-
-	b, err := json.Marshal(i.AdditionalMetricsToRetainV2)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
-}
-func fetchIotSecurityProfileBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	i := parent.Item.(*iot.DescribeSecurityProfileOutput)
-	if i.Behaviors == nil {
-		return nil
-	}
-
-	res <- i.Behaviors
-	return nil
-}
-func resolveIotSecurityProfileBehaviorsCriteriaValue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(types.Behavior)
-	if i.Criteria == nil || i.Criteria.Value == nil {
-		return nil
-	}
-
-	data, err := json.Marshal(i.Criteria.Value)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-
-	return diag.WrapError(resource.Set(c.Name, data))
 }

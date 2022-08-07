@@ -2,7 +2,6 @@ package backup
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"strings"
 
@@ -160,7 +159,7 @@ func Vaults() *schema.Table {
 						Name:        "created_by",
 						Description: "Contains identifying information about the creation of a recovery point.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveVaultRecoveryPointCreatedBy,
+						Resolver:    schema.PathResolver("CreatedBy"),
 					},
 					{
 						Name:        "creation_date",
@@ -354,15 +353,6 @@ func fetchVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, paren
 		params.NextToken = result.NextToken
 	}
 	return nil
-}
-
-func resolveVaultRecoveryPointCreatedBy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rp := resource.Item.(types.RecoveryPointByBackupVault)
-	b, err := json.Marshal(rp.CreatedBy)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

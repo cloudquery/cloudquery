@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
-	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -53,7 +52,7 @@ func IamVirtualMfaDevices() *schema.Table {
 				Name:        "tags",
 				Description: "A list of tags that are attached to the virtual MFA device. For more information about tagging, see Tagging IAM resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html) in the IAM User Guide. ",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveIamVirtualMfaDeviceTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "user_arn",
@@ -107,7 +106,7 @@ func IamVirtualMfaDevices() *schema.Table {
 				Name:        "user_tags",
 				Description: "A list of tags that are associated with the user. For more information about tagging, see Tagging IAM resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html) in the IAM User Guide. ",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveIamVirtualMfaDeviceUserTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 	}
@@ -132,23 +131,4 @@ func fetchIamVirtualMfaDevices(ctx context.Context, meta schema.ClientMeta, pare
 	}
 
 	return nil
-}
-func resolveIamVirtualMfaDeviceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VirtualMFADevice)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func resolveIamVirtualMfaDeviceUserTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VirtualMFADevice)
-	if r.User == nil {
-		return nil
-	}
-	tags := map[string]*string{}
-	for _, t := range r.User.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set(c.Name, tags))
 }

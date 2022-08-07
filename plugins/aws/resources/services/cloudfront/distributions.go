@@ -374,7 +374,7 @@ func CloudfrontDistributions() *schema.Table {
 			{
 				Name:          "aws_cloudfront_distribution_default_cache_behavior_functions",
 				Description:   "A complex type that contains a Lambda function association.",
-				Resolver:      fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions,
+				Resolver:      schema.PathTableResolver("DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations.Items"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -404,7 +404,7 @@ func CloudfrontDistributions() *schema.Table {
 			{
 				Name:        "aws_cloudfront_distribution_origins",
 				Description: "An origin",
-				Resolver:    fetchCloudfrontDistributionOrigins,
+				Resolver:    schema.PathTableResolver("DistributionConfig.Origins.Items"),
 				Columns: []schema.Column{
 					{
 						Name:        "distribution_cq_id",
@@ -508,7 +508,7 @@ func CloudfrontDistributions() *schema.Table {
 			{
 				Name:        "aws_cloudfront_distribution_cache_behaviors",
 				Description: "A complex type that describes how CloudFront processes requests",
-				Resolver:    fetchCloudfrontDistributionCacheBehaviors,
+				Resolver:    schema.PathTableResolver("DistributionConfig.CacheBehaviors.Items"),
 				Columns: []schema.Column{
 					{
 						Name:        "distribution_cq_id",
@@ -657,7 +657,7 @@ func CloudfrontDistributions() *schema.Table {
 					{
 						Name:          "aws_cloudfront_distribution_cache_behavior_lambda_functions",
 						Description:   "A complex type that contains a Lambda function association.",
-						Resolver:      fetchCloudfrontDistributionCacheBehaviorLambdaFunctions,
+						Resolver:      schema.PathTableResolver("LambdaFunctionAssociations.Items"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -689,7 +689,7 @@ func CloudfrontDistributions() *schema.Table {
 			{
 				Name:        "aws_cloudfront_distribution_custom_error_responses",
 				Description: "A complex type that controls:  * Whether CloudFront replaces HTTP status codes in the 4xx and 5xx range with custom error messages before returning the response to the viewer.  * How long CloudFront caches HTTP status codes in the 4xx and 5xx range.  For more information about custom error pages, see Customizing Error Responses (https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/custom-error-pages.html) in the Amazon CloudFront Developer Guide.",
-				Resolver:    fetchCloudfrontDistributionCustomErrorResponses,
+				Resolver:    schema.PathTableResolver("DistributionConfig.CustomErrorResponses.Items"),
 				Columns: []schema.Column{
 					{
 						Name:        "distribution_cq_id",
@@ -723,7 +723,7 @@ func CloudfrontDistributions() *schema.Table {
 			{
 				Name:          "aws_cloudfront_distribution_origin_groups",
 				Description:   "An origin group includes two origins (a primary origin and a second origin to failover to) and a failover criteria that you specify",
-				Resolver:      fetchCloudfrontDistributionOriginGroups,
+				Resolver:      schema.PathTableResolver("DistributionConfig.OriginGroups.Items"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -736,7 +736,7 @@ func CloudfrontDistributions() *schema.Table {
 						Name:        "failover_criteria_status_codes",
 						Description: "The items (status codes) for an origin group.",
 						Type:        schema.TypeIntArray,
-						Resolver:    resolveCloudfrontDistributionOriginGroupsFailoverCriteriaStatusCodes,
+						Resolver:    schema.PathResolver("FailoverCriteria.StatusCodes.Items"),
 					},
 					{
 						Name:        "id",
@@ -747,7 +747,7 @@ func CloudfrontDistributions() *schema.Table {
 						Name:        "members_origin_ids",
 						Description: "Items (origins) in an origin group.",
 						Type:        schema.TypeStringArray,
-						Resolver:    resolveCloudfrontDistributionOriginGroupsMembersOriginIds,
+						Resolver:    schema.PathResolver("Members.Items.OriginId"),
 					},
 				},
 			},
@@ -837,29 +837,7 @@ func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta s
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func fetchCloudfrontDistributionDefaultCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Distribution)
-	if r.DistributionConfig == nil {
-		return nil
-	}
-	if r.DistributionConfig.DefaultCacheBehavior == nil {
-		return nil
-	}
-	if r.DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations == nil {
-		return nil
-	}
 
-	res <- r.DistributionConfig.DefaultCacheBehavior.LambdaFunctionAssociations.Items
-	return nil
-}
-func fetchCloudfrontDistributionOrigins(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution := parent.Item.(types.Distribution)
-	if distribution.DistributionConfig.Origins == nil {
-		return nil
-	}
-	res <- distribution.DistributionConfig.Origins.Items
-	return nil
-}
 func resolveCloudfrontDistributionOriginsCustomHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Origin)
 	if r.CustomHeaders == nil {
@@ -870,55 +848,4 @@ func resolveCloudfrontDistributionOriginsCustomHeaders(ctx context.Context, meta
 		tags[*t.HeaderName] = *t.HeaderValue
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func fetchCloudfrontDistributionCacheBehaviors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution := parent.Item.(types.Distribution)
-	if distribution.DistributionConfig.CacheBehaviors != nil {
-		res <- distribution.DistributionConfig.CacheBehaviors.Items
-	}
-	return nil
-}
-func fetchCloudfrontDistributionCacheBehaviorLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cacheBehavior := parent.Item.(types.CacheBehavior)
-	if cacheBehavior.LambdaFunctionAssociations == nil {
-		return nil
-	}
-	res <- cacheBehavior.LambdaFunctionAssociations.Items
-	return nil
-}
-func fetchCloudfrontDistributionCustomErrorResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution := parent.Item.(types.Distribution)
-	if distribution.DistributionConfig.CustomErrorResponses != nil {
-		res <- distribution.DistributionConfig.CustomErrorResponses.Items
-	}
-	return nil
-}
-func fetchCloudfrontDistributionOriginGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	distribution := parent.Item.(types.Distribution)
-	if distribution.DistributionConfig.OriginGroups != nil {
-		res <- distribution.DistributionConfig.OriginGroups.Items
-	}
-	return nil
-}
-func resolveCloudfrontDistributionOriginGroupsFailoverCriteriaStatusCodes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	origin := resource.Item.(types.OriginGroup)
-	if origin.FailoverCriteria == nil || origin.FailoverCriteria.StatusCodes == nil {
-		return nil
-	}
-	data := make([]int, 0, *origin.FailoverCriteria.StatusCodes.Quantity)
-	for _, i := range origin.FailoverCriteria.StatusCodes.Items {
-		data = append(data, int(i))
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveCloudfrontDistributionOriginGroupsMembersOriginIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.OriginGroup)
-	if r.Members == nil {
-		return nil
-	}
-	members := make([]string, 0, *r.Members.Quantity)
-	for _, t := range r.Members.Items {
-		members = append(members, *t.OriginId)
-	}
-	return diag.WrapError(resource.Set(c.Name, members))
 }

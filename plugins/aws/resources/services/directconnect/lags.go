@@ -55,7 +55,7 @@ func DirectconnectLags() *schema.Table {
 				Name:        "connection_ids",
 				Description: "The list of IDs of Direct Connect Connections bundled by the LAG",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveDirectconnectLagConnectionIds,
+				Resolver:    schema.PathResolver("Connections.ConnectionId"),
 			},
 			{
 				Name:        "connections_bandwidth",
@@ -129,14 +129,14 @@ func DirectconnectLags() *schema.Table {
 				Name:        "tags",
 				Description: "The tags associated with the LAG.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDirectconnectLagTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:          "aws_directconnect_lag_mac_sec_keys",
 				Description:   "The MAC Security (MACsec) security keys associated with the LAG.",
-				Resolver:      fetchDirectconnectLagMacSecKeys,
+				Resolver:      schema.PathTableResolver("MacSecKeys"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -193,28 +193,4 @@ func fetchDirectconnectLags(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	res <- output.Lags
 	return nil
-}
-
-func resolveDirectconnectLagTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Lag)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-
-func fetchDirectconnectLagMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	connection := parent.Item.(types.Lag)
-	res <- connection.MacSecKeys
-	return nil
-}
-
-func resolveDirectconnectLagConnectionIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Lag)
-	connectionIds := make([]*string, len(r.Connections))
-	for i, connection := range r.Connections {
-		connectionIds[i] = connection.ConnectionId
-	}
-	return diag.WrapError(resource.Set("connection_ids", connectionIds))
 }

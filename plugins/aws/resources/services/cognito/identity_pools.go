@@ -94,7 +94,7 @@ func CognitoIdentityPools() *schema.Table {
 			{
 				Name:          "aws_cognito_identity_pool_cognito_identity_providers",
 				Description:   "A provider representing an Amazon Cognito user pool and its client ID.",
-				Resolver:      fetchCognitoIdentityPoolCognitoIdentityProviders,
+				Resolver:      schema.PathTableResolver("CognitoIdentityProviders"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -159,11 +159,5 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		params.NextToken = out.NextToken
 	}
-	return nil
-}
-
-func fetchCognitoIdentityPoolCognitoIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pool := parent.Item.(*cognitoidentity.DescribeIdentityPoolOutput)
-	res <- pool.CognitoIdentityProviders
 	return nil
 }

@@ -61,7 +61,7 @@ func RedshiftSubnetGroups() *schema.Table {
 				Name:        "tags",
 				Description: "The list of tags for the cluster subnet group.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRedshiftSubnetGroupTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "vpc_id",
@@ -73,7 +73,7 @@ func RedshiftSubnetGroups() *schema.Table {
 			{
 				Name:        "aws_redshift_subnet_group_subnets",
 				Description: "Describes a subnet.",
-				Resolver:    fetchRedshiftSubnetGroupSubnets,
+				Resolver:    schema.PathTableResolver("Subnets"),
 				Columns: []schema.Column{
 					{
 						Name:        "subnet_group_cq_id",
@@ -129,19 +129,6 @@ func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		config.Marker = response.Marker
 	}
-	return nil
-}
-func resolveRedshiftSubnetGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ClusterSubnetGroup)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchRedshiftSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	clusterSubnetGroup := parent.Item.(types.ClusterSubnetGroup)
-	res <- clusterSubnetGroup.Subnets
 	return nil
 }
 func resolveRedshiftSubnetGroupSubnetSubnetAvailabilityZoneSupportedPlatforms(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

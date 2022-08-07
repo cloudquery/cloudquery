@@ -2,7 +2,6 @@ package acm
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
@@ -60,13 +59,13 @@ func AcmCertificates() *schema.Table {
 				Name:        "domain_validation_options",
 				Description: "Contains information about the initial validation of each domain name that occurs as a result of the RequestCertificate request.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveACMCertificateJSONField(func(cd *types.CertificateDetail) interface{} { return cd.DomainValidationOptions }),
+				Resolver:    schema.PathResolver("DomainValidationOptions"),
 			},
 			{
 				Name:        "extended_key_usages",
 				Description: "Contains a list of Extended Key Usage X.509 v3 extension objects.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveACMCertificateJSONField(func(cd *types.CertificateDetail) interface{} { return cd.ExtendedKeyUsages }),
+				Resolver:    schema.PathResolver("ExtendedKeyUsages"),
 			},
 			{
 				Name:        "failure_reason",
@@ -102,7 +101,7 @@ func AcmCertificates() *schema.Table {
 				Name:        "key_usages",
 				Description: "A list of Key Usage X.509 v3 extension objects. Each object is a string value that identifies the purpose of the public key contained in the certificate.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveACMCertificateKeyUsages,
+				Resolver:    schema.PathResolver("KeyUsages.Name"),
 			},
 			{
 				Name:        "not_after",
@@ -129,12 +128,7 @@ func AcmCertificates() *schema.Table {
 				Name:        "renewal_summary_domain_validation_options",
 				Description: "Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal.",
 				Type:        schema.TypeJSON,
-				Resolver: resolveACMCertificateJSONField(func(cd *types.CertificateDetail) interface{} {
-					if cd.RenewalSummary == nil {
-						return nil
-					}
-					return cd.RenewalSummary.DomainValidationOptions
-				}),
+				Resolver:    schema.PathResolver("RenewalSummary.DomainValidationOptions"),
 			},
 			{
 				Name:        "renewal_summary_status",
@@ -232,26 +226,6 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 		input.NextToken = output.NextToken
 	}
 	return nil
-}
-
-func resolveACMCertificateKeyUsages(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cert := resource.Item.(*types.CertificateDetail)
-	result := make([]string, 0, len(cert.KeyUsages))
-	for _, v := range cert.KeyUsages {
-		result = append(result, string(v.Name))
-	}
-	return diag.WrapError(resource.Set(c.Name, result))
-}
-
-func resolveACMCertificateJSONField(getter func(*types.CertificateDetail) interface{}) func(context.Context, schema.ClientMeta, *schema.Resource, schema.Column) error {
-	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		cert := resource.Item.(*types.CertificateDetail)
-		b, err := json.Marshal(getter(cert))
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		return diag.WrapError(resource.Set(c.Name, b))
-	}
 }
 
 func resolveACMCertificateTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

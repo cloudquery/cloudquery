@@ -2,7 +2,6 @@ package emr
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/cloudquery/cq-provider-aws/client"
@@ -48,7 +47,7 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 				Name:          "configurations",
 				Description:   "A list of additional configurations to apply within a configuration object.",
 				Type:          schema.TypeJSON,
-				Resolver:      resolveEmrBlockPublicAccessConfigConfigurations,
+				Resolver:      schema.PathResolver("BlockPublicAccessConfiguration.Configurations"),
 				IgnoreInTests: true,
 			},
 			{
@@ -75,7 +74,7 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 			{
 				Name:        "aws_emr_block_public_access_config_port_ranges",
 				Description: "A list of port ranges that are permitted to allow inbound traffic from all public IP addresses",
-				Resolver:    fetchEmrBlockPublicAccessConfigPermittedPublicSecurityGroupRuleRanges,
+				Resolver:    schema.PathTableResolver("BlockPublicAccessConfiguration.PermittedPublicSecurityGroupRuleRanges"),
 				Columns: []schema.Column{
 					{
 						Name:        "block_public_access_config_cq_id",
@@ -116,26 +115,5 @@ func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMet
 		return diag.WrapError(err)
 	}
 	res <- out
-	return nil
-}
-
-func resolveEmrBlockPublicAccessConfigConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	out := resource.Item.(*emr.GetBlockPublicAccessConfigurationOutput)
-	if out.BlockPublicAccessConfiguration == nil {
-		return nil
-	}
-	b, err := json.Marshal(out.BlockPublicAccessConfiguration.Configurations)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
-}
-
-func fetchEmrBlockPublicAccessConfigPermittedPublicSecurityGroupRuleRanges(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	out := parent.Item.(*emr.GetBlockPublicAccessConfigurationOutput)
-	if out.BlockPublicAccessConfiguration == nil {
-		return nil
-	}
-	res <- out.BlockPublicAccessConfiguration.PermittedPublicSecurityGroupRuleRanges
 	return nil
 }

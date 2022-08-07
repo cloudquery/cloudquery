@@ -93,7 +93,7 @@ func DirectconnectGateways() *schema.Table {
 						Name:        "allowed_prefixes_to_direct_connect_gateway",
 						Description: "The Amazon VPC prefixes to advertise to the Direct Connect gateway.",
 						Type:        schema.TypeStringArray,
-						Resolver:    resolveDirectconnectGatewayAssociationAllowedPrefixes,
+						Resolver:    schema.PathResolver("AllowedPrefixesToDirectConnectGateway.Cidr"),
 					},
 					{
 						Name:        "associated_gateway_id",
@@ -270,13 +270,4 @@ func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.Clien
 		config.NextToken = output.NextToken
 	}
 	return nil
-}
-
-func resolveDirectconnectGatewayAssociationAllowedPrefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.DirectConnectGatewayAssociation)
-	allowedPrefixes := make([]*string, len(r.AllowedPrefixesToDirectConnectGateway))
-	for i, prefix := range r.AllowedPrefixesToDirectConnectGateway {
-		allowedPrefixes[i] = prefix.Cidr
-	}
-	return diag.WrapError(resource.Set(c.Name, allowedPrefixes))
 }

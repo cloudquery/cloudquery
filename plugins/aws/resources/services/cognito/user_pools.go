@@ -2,7 +2,6 @@ package cognito
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
@@ -39,7 +38,7 @@ func CognitoUserPools() *schema.Table {
 				Name:          "account_recovery_setting",
 				Description:   "Use this setting to define which verified available method a user can use to recover their password when they call ForgotPassword",
 				Type:          schema.TypeJSON,
-				Resolver:      resolveCognitoUserPoolAccountRecoverySetting,
+				Resolver:      schema.PathResolver("AccountRecoverySetting"),
 				IgnoreInTests: true,
 			},
 			{
@@ -445,7 +444,7 @@ func CognitoUserPools() *schema.Table {
 			{
 				Name:        "aws_cognito_user_pool_schema_attributes",
 				Description: "Contains information about the schema attribute.",
-				Resolver:    fetchCognitoUserPoolSchemaAttributes,
+				Resolver:    schema.PathTableResolver("SchemaAttributes"),
 				Columns: []schema.Column{
 					{
 						Name:        "user_pool_cq_id",
@@ -611,21 +610,6 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 		}
 		params.NextToken = out.NextToken
 	}
-	return nil
-}
-
-func resolveCognitoUserPoolAccountRecoverySetting(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	pool := resource.Item.(*types.UserPoolType)
-	data, err := json.Marshal(pool.AccountRecoverySetting)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-
-func fetchCognitoUserPoolSchemaAttributes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	pool := parent.Item.(*types.UserPoolType)
-	res <- pool.SchemaAttributes
 	return nil
 }
 

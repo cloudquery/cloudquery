@@ -51,42 +51,42 @@ func Elbv1LoadBalancers() *schema.Table {
 			{
 				Name:     "attributes_access_log_enabled",
 				Type:     schema.TypeBool,
-				Resolver: resolveElbv1loadBalancerAttributesAccessLogEnabled,
+				Resolver: schema.PathResolver("Attributes.AccessLog.Enabled"),
 			},
 			{
 				Name:     "attributes_access_log_s3_bucket_name",
 				Type:     schema.TypeString,
-				Resolver: resolveElbv1loadBalancerAttributesAccessLogS3BucketName,
+				Resolver: schema.PathResolver("Attributes.AccessLog.S3BucketName"),
 			},
 			{
 				Name:     "attributes_access_log_s3_bucket_prefix",
 				Type:     schema.TypeString,
-				Resolver: resolveElbv1loadBalancerAttributesAccessLogS3BucketPrefix,
+				Resolver: schema.PathResolver("Attributes.AccessLog.S3BucketPrefix"),
 			},
 			{
 				Name:     "attributes_access_log_emit_interval",
 				Type:     schema.TypeInt,
-				Resolver: resolveElbv1loadBalancerAttributesAccessLogEmitInterval,
+				Resolver: schema.PathResolver("Attributes.AccessLog.EmitInterval"),
 			},
 			{
 				Name:     "attributes_connection_settings_idle_timeout",
 				Type:     schema.TypeInt,
-				Resolver: resolveElbv1loadBalancerAttributesConnectionSettingsIdleTimeout,
+				Resolver: schema.PathResolver("Attributes.ConnectionSettings.IdleTimeout"),
 			},
 			{
 				Name:     "attributes_cross_zone_load_balancing_enabled",
 				Type:     schema.TypeBool,
-				Resolver: resolveElbv1loadBalancerAttributesCrossZoneLoadBalancingEnabled,
+				Resolver: schema.PathResolver("Attributes.CrossZoneLoadBalancing.Enabled"),
 			},
 			{
 				Name:     "attributes_connection_draining_enabled",
 				Type:     schema.TypeBool,
-				Resolver: resolveElbv1loadBalancerAttributesConnectionDrainingEnabled,
+				Resolver: schema.PathResolver("Attributes.ConnectionDraining.Enabled"),
 			},
 			{
 				Name:     "attributes_connection_draining_timeout",
 				Type:     schema.TypeInt,
-				Resolver: resolveElbv1loadBalancerAttributesConnectionDrainingTimeout,
+				Resolver: schema.PathResolver("Attributes.ConnectionDraining.Timeout"),
 			},
 			{
 				Name:     "attributes_additional_attributes",
@@ -158,7 +158,7 @@ func Elbv1LoadBalancers() *schema.Table {
 				Name:        "instances",
 				Description: "The IDs of the instances for the load balancer.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveElbv1loadBalancerInstances,
+				Resolver:    schema.PathResolver("Instances.InstanceId"),
 			},
 			{
 				Name:        "name",
@@ -210,7 +210,7 @@ func Elbv1LoadBalancers() *schema.Table {
 			{
 				Name:          "aws_elbv1_load_balancer_backend_server_descriptions",
 				Description:   "Information about the configuration of an EC2 instance.",
-				Resolver:      fetchElbv1LoadBalancerBackendServerDescriptions,
+				Resolver:      schema.PathTableResolver("BackendServerDescriptions"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -240,7 +240,7 @@ func Elbv1LoadBalancers() *schema.Table {
 			{
 				Name:          "aws_elbv1_load_balancer_listeners",
 				Description:   "The policies enabled for a listener.",
-				Resolver:      fetchElbv1LoadBalancerListeners,
+				Resolver:      schema.PathTableResolver("ListenerDescriptions"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -295,7 +295,7 @@ func Elbv1LoadBalancers() *schema.Table {
 			{
 				Name:          "aws_elbv1_load_balancer_policies_app_cookie_stickiness",
 				Description:   "Information about a policy for application-controlled session stickiness.",
-				Resolver:      fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies,
+				Resolver:      schema.PathTableResolver("Policies.AppCookieStickinessPolicies"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -325,7 +325,7 @@ func Elbv1LoadBalancers() *schema.Table {
 			{
 				Name:          "aws_elbv1_load_balancer_policies_lb_cookie_stickiness",
 				Description:   "Information about a policy for duration-based session stickiness.",
-				Resolver:      fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies,
+				Resolver:      schema.PathTableResolver("Policies.LBCookieStickinessPolicies"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -456,63 +456,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 
 	return nil
 }
-func resolveElbv1loadBalancerAttributesAccessLogEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.AccessLog == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.AccessLog.Enabled))
-}
-func resolveElbv1loadBalancerAttributesAccessLogS3BucketName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.AccessLog == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.AccessLog.S3BucketName))
-}
-func resolveElbv1loadBalancerAttributesAccessLogS3BucketPrefix(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.AccessLog == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.AccessLog.S3BucketPrefix))
-}
-func resolveElbv1loadBalancerAttributesAccessLogEmitInterval(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.AccessLog == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.AccessLog.EmitInterval))
-}
-func resolveElbv1loadBalancerAttributesConnectionSettingsIdleTimeout(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.ConnectionSettings == nil {
-		return nil
-	}
 
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.ConnectionSettings.IdleTimeout))
-}
-func resolveElbv1loadBalancerAttributesCrossZoneLoadBalancingEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.CrossZoneLoadBalancing == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.CrossZoneLoadBalancing.Enabled))
-}
-func resolveElbv1loadBalancerAttributesConnectionDrainingEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.ConnectionDraining == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.ConnectionDraining.Enabled))
-}
-func resolveElbv1loadBalancerAttributesConnectionDrainingTimeout(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil && r.Attributes.ConnectionDraining == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Attributes.ConnectionDraining.Timeout))
-}
 func resolveElbv1loadBalancerAttributesAdditionalAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(ELBv1LoadBalancerWrapper)
 	if r.Attributes == nil {
@@ -525,42 +469,7 @@ func resolveElbv1loadBalancerAttributesAdditionalAttributes(ctx context.Context,
 	}
 	return diag.WrapError(resource.Set(c.Name, response))
 }
-func resolveElbv1loadBalancerInstances(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	response := make([]string, 0, len(r.Instances))
-	for _, i := range r.Instances {
-		response = append(response, *i.InstanceId)
-	}
-	return diag.WrapError(resource.Set(c.Name, response))
-}
-func fetchElbv1LoadBalancerBackendServerDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(ELBv1LoadBalancerWrapper)
-	res <- r.BackendServerDescriptions
-	return nil
-}
-func fetchElbv1LoadBalancerListeners(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(ELBv1LoadBalancerWrapper)
-	res <- r.ListenerDescriptions
-	return nil
-}
-func fetchElbv1LoadBalancerPoliciesAppCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(ELBv1LoadBalancerWrapper)
 
-	if r.Policies == nil {
-		return nil
-	}
-	res <- r.Policies.AppCookieStickinessPolicies
-	return nil
-}
-func fetchElbv1LoadBalancerPoliciesLbCookieStickinessPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(ELBv1LoadBalancerWrapper)
-
-	if r.Policies == nil {
-		return nil
-	}
-	res <- r.Policies.LBCookieStickinessPolicies
-	return nil
-}
 func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(ELBv1LoadBalancerWrapper)
 	c := meta.(*client.Client)

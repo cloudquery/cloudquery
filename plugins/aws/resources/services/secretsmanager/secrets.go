@@ -135,7 +135,7 @@ func SecretsmanagerSecrets() *schema.Table {
 				Name:        "tags",
 				Description: "The list of user-defined tags associated with the secret",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveSecretsmanagerSecretsTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 	}
@@ -226,13 +226,4 @@ func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.Cl
 		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
-}
-
-func resolveSecretsmanagerSecretsTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(WrappedSecret)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set(c.Name, tags))
 }

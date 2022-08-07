@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -391,7 +390,7 @@ func IotTopicRules() *schema.Table {
 				Name:          "error_action_iot_site_wise",
 				Description:   "Sends data from the MQTT message that triggered the rule to IoT SiteWise asset properties.",
 				Type:          schema.TypeJSON,
-				Resolver:      resolveIotTopicRulesErrorActionIotSiteWise,
+				Resolver:      schema.PathResolver("Rule.ErrorAction.IotSiteWise"),
 				IgnoreInTests: true,
 			},
 			{
@@ -686,7 +685,7 @@ func IotTopicRules() *schema.Table {
 			{
 				Name:        "aws_iot_topic_rule_actions",
 				Description: "Describes the actions associated with a rule.",
-				Resolver:    fetchIotTopicRuleActions,
+				Resolver:    schema.PathTableResolver("Rule.Actions"),
 				Columns: []schema.Column{
 					{
 						Name:        "topic_rule_cq_id",
@@ -1027,7 +1026,7 @@ func IotTopicRules() *schema.Table {
 						Name:          "iot_site_wise",
 						Description:   "Sends data from the MQTT message that triggered the rule to IoT SiteWise asset properties.",
 						Type:          schema.TypeJSON,
-						Resolver:      resolveIotTopicRuleActionsIotSiteWise,
+						Resolver:      schema.PathResolver("IotSiteWise"),
 						IgnoreInTests: true,
 					},
 					{
@@ -1375,17 +1374,6 @@ func resolveIotTopicRulesErrorActionHttpHeaders(ctx context.Context, meta schema
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func resolveIotTopicRulesErrorActionIotSiteWise(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(*iot.GetTopicRuleOutput)
-	if i.Rule == nil || i.Rule.ErrorAction == nil || i.Rule.ErrorAction.IotSiteWise == nil {
-		return nil
-	}
-	b, err := json.Marshal(i.Rule.ErrorAction.IotSiteWise)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
-}
 func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
 	if i.Rule == nil || i.Rule.ErrorAction == nil || i.Rule.ErrorAction.Timestream == nil {
@@ -1397,14 +1385,6 @@ func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, me
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func fetchIotTopicRuleActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	i := parent.Item.(*iot.GetTopicRuleOutput)
-	if i.Rule == nil {
-		return nil
-	}
-	res <- i.Rule.Actions
-	return nil
-}
 func resolveIotTopicRuleActionsHttpHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.Action)
 	if i.Http == nil {
@@ -1415,17 +1395,6 @@ func resolveIotTopicRuleActionsHttpHeaders(ctx context.Context, meta schema.Clie
 		j[*h.Key] = *h.Value
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
-}
-func resolveIotTopicRuleActionsIotSiteWise(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(types.Action)
-	if i.IotSiteWise == nil {
-		return nil
-	}
-	b, err := json.Marshal(i.IotSiteWise)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
 }
 func resolveIotTopicRuleActionsTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.Action)

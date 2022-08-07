@@ -455,7 +455,7 @@ func RedshiftClusters() *schema.Table {
 				Name:        "tags",
 				Description: "The list of tags for the cluster.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRedshiftClusterTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "total_storage_capacity_in_mega_bytes",
@@ -478,7 +478,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "aws_redshift_cluster_nodes",
 				Description: "The identifier of a node in a cluster.",
-				Resolver:    fetchRedshiftClusterNodes,
+				Resolver:    schema.PathTableResolver("ClusterNodes"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -508,7 +508,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "aws_redshift_cluster_parameter_groups",
 				Description: "Describes the status of a parameter group.",
-				Resolver:    fetchRedshiftClusterParameterGroups,
+				Resolver:    schema.PathTableResolver("ClusterParameterGroups"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -590,7 +590,7 @@ func RedshiftClusters() *schema.Table {
 					{
 						Name:          "aws_redshift_cluster_parameter_group_status_lists",
 						Description:   "Describes the status of a parameter group.",
-						Resolver:      fetchRedshiftClusterParameterGroupStatusLists,
+						Resolver:      schema.PathTableResolver("ClusterParameterStatusList"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -621,7 +621,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:          "aws_redshift_cluster_security_groups",
 				Description:   "Describes a cluster security group.",
-				Resolver:      fetchRedshiftClusterSecurityGroups,
+				Resolver:      schema.PathTableResolver("ClusterSecurityGroups"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -645,7 +645,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:          "aws_redshift_cluster_deferred_maintenance_windows",
 				Description:   "Describes a deferred maintenance window .",
-				Resolver:      fetchRedshiftClusterDeferredMaintenanceWindows,
+				Resolver:      schema.PathTableResolver("DeferredMaintenanceWindows"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -674,7 +674,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:          "aws_redshift_cluster_endpoint_vpc_endpoints",
 				Description:   "The connection endpoint for connecting to an Amazon Redshift cluster through the proxy.",
-				Resolver:      fetchRedshiftClusterEndpointVpcEndpoints,
+				Resolver:      schema.PathTableResolver("Endpoint.VpcEndpoints"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -698,7 +698,7 @@ func RedshiftClusters() *schema.Table {
 					{
 						Name:          "aws_redshift_cluster_endpoint_vpc_endpoint_network_interfaces",
 						Description:   "Describes a network interface.",
-						Resolver:      fetchRedshiftClusterEndpointVpcEndpointNetworkInterfaces,
+						Resolver:      schema.PathTableResolver("NetworkInterfaces"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -734,7 +734,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:          "aws_redshift_cluster_iam_roles",
 				Description:   "An AWS Identity and Access Management (IAM) role that can be used by the associated Amazon Redshift cluster to access other AWS services.",
-				Resolver:      fetchRedshiftClusterIamRoles,
+				Resolver:      schema.PathTableResolver("IamRoles"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -758,7 +758,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "aws_redshift_cluster_vpc_security_groups",
 				Description: "Describes the members of a VPC security group.",
-				Resolver:    fetchRedshiftClusterVpcSecurityGroups,
+				Resolver:    schema.PathTableResolver("VpcSecurityGroups"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -805,14 +805,7 @@ func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func resolveRedshiftClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Cluster)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set(c.Name, tags))
-}
+
 func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Cluster)
 
@@ -830,16 +823,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 
 	return diag.WrapError(resource.Set(c.Name, response))
 }
-func fetchRedshiftClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	res <- cluster.ClusterNodes
-	return nil
-}
-func fetchRedshiftClusterParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	res <- cluster.ClusterParameterGroups
-	return nil
-}
+
 func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	parameterGroup := parent.Item.(types.ClusterParameterGroupStatus)
 	config := redshift.DescribeClusterParametersInput{
@@ -861,43 +845,5 @@ func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, 
 		config.Marker = response.Marker
 	}
 
-	return nil
-}
-func fetchRedshiftClusterParameterGroupStatusLists(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	parameterGroup := parent.Item.(types.ClusterParameterGroupStatus)
-	res <- parameterGroup.ClusterParameterStatusList
-	return nil
-}
-func fetchRedshiftClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	res <- cluster.ClusterSecurityGroups
-	return nil
-}
-func fetchRedshiftClusterDeferredMaintenanceWindows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	res <- cluster.DeferredMaintenanceWindows
-	return nil
-}
-func fetchRedshiftClusterEndpointVpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	if cluster.Endpoint == nil {
-		return nil
-	}
-	res <- cluster.Endpoint.VpcEndpoints
-	return nil
-}
-func fetchRedshiftClusterEndpointVpcEndpointNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	vpcEndpoint := parent.Item.(types.VpcEndpoint)
-	res <- vpcEndpoint.NetworkInterfaces
-	return nil
-}
-func fetchRedshiftClusterIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	res <- cluster.IamRoles
-	return nil
-}
-func fetchRedshiftClusterVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
-	res <- cluster.VpcSecurityGroups
 	return nil
 }

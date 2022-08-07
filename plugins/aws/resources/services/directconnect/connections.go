@@ -127,7 +127,7 @@ func DirectconnectConnections() *schema.Table {
 				Name:        "tags",
 				Description: "The tags associated with the connection.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDirectconnectConnectionTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "vlan",
@@ -139,7 +139,7 @@ func DirectconnectConnections() *schema.Table {
 			{
 				Name:          "aws_directconnect_connection_mac_sec_keys",
 				Description:   "The MAC Security (MACsec) security keys associated with the connection.",
-				Resolver:      fetchDirectconnectConnectionMacSecKeys,
+				Resolver:      schema.PathTableResolver("MacSecKeys"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -195,19 +195,5 @@ func fetchDirectconnectConnections(ctx context.Context, meta schema.ClientMeta, 
 		return diag.WrapError(err)
 	}
 	res <- output.Connections
-	return nil
-}
-
-func resolveDirectconnectConnectionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Connection)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchDirectconnectConnectionMacSecKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	connection := parent.Item.(types.Connection)
-	res <- connection.MacSecKeys
 	return nil
 }

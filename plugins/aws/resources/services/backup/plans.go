@@ -2,11 +2,9 @@ package backup
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
-	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -78,7 +76,7 @@ func Plans() *schema.Table {
 				Name:          "advanced_backup_settings",
 				Description:   "Contains a list of backup options for a resource type.",
 				Type:          schema.TypeJSON,
-				Resolver:      resolvePlanAdvancedBackupSettings,
+				Resolver:      schema.PathResolver("AdvancedBackupSettings"),
 				IgnoreInTests: true,
 			},
 			{
@@ -92,7 +90,7 @@ func Plans() *schema.Table {
 			{
 				Name:        "aws_backup_plan_rules",
 				Description: "Specifies a scheduled task used to back up a selection of resources.",
-				Resolver:    fetchPlanRules,
+				Resolver:    schema.PathTableResolver("BackupPlan.Rules"),
 				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
 				Columns: []schema.Column{
 					{
@@ -121,7 +119,7 @@ func Plans() *schema.Table {
 						Name:          "copy_actions",
 						Description:   "The details of the copy operation.",
 						Type:          schema.TypeJSON,
-						Resolver:      resolveRuleCopyActions,
+						Resolver:      schema.PathResolver("CopyActions"),
 						IgnoreInTests: true,
 					},
 					{
@@ -211,13 +209,13 @@ func Plans() *schema.Table {
 						Name:        "conditions",
 						Description: "A list of conditions that you define to assign resources to your backup plans using tags.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveSelectionConditions,
+						Resolver:    schema.PathResolver("BackupSelection.Conditions"),
 					},
 					{
 						Name:        "list_of_tags",
 						Description: "A list of conditions that you define to assign resources to your backup plans using tags.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveSelectionListOfTags,
+						Resolver:    schema.PathResolver("BackupSelection.ListOfTags"),
 					},
 					{
 						Name:        "not_resources",
@@ -271,15 +269,6 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 		params.NextToken = result.NextToken
 	}
 	return nil
-}
-
-func resolvePlanAdvancedBackupSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	plan := resource.Item.(backup.GetBackupPlanOutput)
-	b, err := json.Marshal(plan.AdvancedBackupSettings)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
 }
 
 func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -341,46 +330,4 @@ func fetchBackupSelections(ctx context.Context, meta schema.ClientMeta, parent *
 		params.NextToken = result.NextToken
 	}
 	return nil
-}
-
-func fetchPlanRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	plan := parent.Item.(backup.GetBackupPlanOutput)
-	if plan.BackupPlan == nil {
-		return nil
-	}
-	res <- plan.BackupPlan.Rules
-	return nil
-}
-
-func resolveRuleCopyActions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(types.BackupRule)
-	b, err := json.Marshal(rule.CopyActions)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
-}
-
-func resolveSelectionConditions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s := resource.Item.(backup.GetBackupSelectionOutput)
-	if s.BackupSelection == nil || s.BackupSelection.Conditions == nil {
-		return nil
-	}
-	b, err := json.Marshal(s.BackupSelection.Conditions)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
-}
-
-func resolveSelectionListOfTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s := resource.Item.(backup.GetBackupSelectionOutput)
-	if s.BackupSelection == nil || len(s.BackupSelection.ListOfTags) == 0 {
-		return nil
-	}
-	b, err := json.Marshal(s.BackupSelection.ListOfTags)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, b))
 }

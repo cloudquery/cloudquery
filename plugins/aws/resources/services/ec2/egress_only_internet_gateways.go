@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
@@ -47,7 +46,7 @@ func EgressOnlyInternetGateways() *schema.Table {
 				Name:        "attachments",
 				Description: "Information about the attachment of the egress-only internet gateway.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEgressOnlyInternetGatewaysAttachments,
+				Resolver:    schema.PathResolver("Attachments"),
 			},
 			{
 				Name:        "id",
@@ -87,13 +86,4 @@ func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientM
 		input.NextToken = output.NextToken
 	}
 	return nil
-}
-func resolveEgressOnlyInternetGatewaysAttachments(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	egress := resource.Item.(types.EgressOnlyInternetGateway)
-	b, err := json.Marshal(egress.Attachments)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-
-	return diag.WrapError(resource.Set(c.Name, b))
 }

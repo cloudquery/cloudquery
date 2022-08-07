@@ -2,7 +2,6 @@ package wafv2
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
@@ -64,7 +63,7 @@ func Wafv2WebAcls() *schema.Table {
 				Name:        "default_action",
 				Description: "The action to perform if none of the Rules contained in the WebACL match.  ",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveWafv2webACLDefaultAction,
+				Resolver:    schema.PathResolver("DefaultAction"),
 			},
 			{
 				Name:        "id",
@@ -124,14 +123,14 @@ func Wafv2WebAcls() *schema.Table {
 				Name:        "logging_configuration",
 				Description: "The LoggingConfiguration for the specified web ACL.",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveWafV2WebACLRuleLoggingConfiguration,
+				Resolver:    schema.PathResolver("LoggingConfiguration.LogDestinationConfigs"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_wafv2_web_acl_rules",
 				Description: "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
-				Resolver:    fetchWafv2WebAclRules,
+				Resolver:    schema.PathTableResolver("Rules"),
 				Columns: []schema.Column{
 					{
 						Name:        "web_acl_cq_id",
@@ -153,7 +152,7 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "statement",
 						Description: "The AWS WAF processing statement for the rule, for example ByteMatchStatement or SizeConstraintStatement.  ",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2webACLRuleStatement,
+						Resolver:    schema.PathResolver("Statement"),
 					},
 					{
 						Name:        "visibility_config_cloud_watch_metrics_enabled",
@@ -177,13 +176,13 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "action",
 						Description: "The action that AWS WAF should take on a web request when it matches the rule statement",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2webACLRuleAction,
+						Resolver:    schema.PathResolver("Action"),
 					},
 					{
 						Name:        "override_action",
 						Description: "The override action to apply to the rules in a rule group",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2webACLRuleOverrideAction,
+						Resolver:    schema.PathResolver("OverrideAction"),
 					},
 					{
 						Name:        "labels",
@@ -196,7 +195,7 @@ func Wafv2WebAcls() *schema.Table {
 			{
 				Name:          "aws_wafv2_web_acl_post_process_firewall_manager_rule_groups",
 				Description:   "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
-				Resolver:      fetchWafv2WebAclPostProcessFirewallManagerRuleGroups,
+				Resolver:      schema.PathTableResolver("PostProcessFirewallManagerRuleGroups"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -209,7 +208,7 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "statement",
 						Description: "The processing guidance for an AWS Firewall Manager rule",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2webACLPostProcessFirewallManagerRuleGroupStatement,
+						Resolver:    schema.PathResolver("FirewallManagerStatement"),
 					},
 					{
 						Name:        "name",
@@ -220,7 +219,7 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "override_action",
 						Description: "The override action to apply to the rules in a rule group",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2webACLPostProcessFirewallManagerRuleGroupOverrideAction,
+						Resolver:    schema.PathResolver("OverrideAction"),
 					},
 					{
 						Name:        "priority",
@@ -250,7 +249,7 @@ func Wafv2WebAcls() *schema.Table {
 			{
 				Name:          "aws_wafv2_web_acl_pre_process_firewall_manager_rule_groups",
 				Description:   "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
-				Resolver:      fetchWafv2WebAclPreProcessFirewallManagerRuleGroups,
+				Resolver:      schema.PathTableResolver("PreProcessFirewallManagerRuleGroups"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -263,7 +262,7 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "statement",
 						Description: "The processing guidance for an AWS Firewall Manager rule",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2webACLPreProcessFirewallManagerRuleGroupStatement,
+						Resolver:    schema.PathResolver("FirewallManagerStatement"),
 					},
 					{
 						Name:        "name",
@@ -274,7 +273,7 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "override_action",
 						Description: "The override action to apply to the rules in a rule group",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2webACLPreProcessFirewallManagerRuleGroupOverrideAction,
+						Resolver:    schema.PathResolver("OverrideAction"),
 					},
 					{
 						Name:        "priority",
@@ -304,7 +303,7 @@ func Wafv2WebAcls() *schema.Table {
 			{
 				Name:        "aws_wafv2_web_acl_logging_configuration",
 				Description: "The LoggingConfiguration for the specified web ACL.",
-				Resolver:    fetchWafv2WebACLLoggingConfiguration,
+				Resolver:    schema.PathTableResolver("LoggingConfiguration"),
 				Columns: []schema.Column{
 					{
 						Name:        "web_acl_cq_id",
@@ -326,7 +325,7 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "logging_filter",
 						Description: "Filtering that specifies which web requests are kept in the logs and which are dropped. You can filter on the rule action and on the web request labels that were applied by matching rules during web ACL evaluation.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2WebACLLoggingConfigurationLoggingFilter,
+						Resolver:    schema.PathResolver("LoggingFilter"),
 					},
 					{
 						Name:        "managed_by_firewall_manager",
@@ -337,7 +336,7 @@ func Wafv2WebAcls() *schema.Table {
 						Name:        "redacted_fields",
 						Description: "The parts of the request that you want redacted from the logs. For example, if you redact the cookie field, the cookie field in the firehose will be xxx. You can specify only the following fields for redaction: UriPath, QueryString, SingleHeader, Method, and JsonBody.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveWafv2WebACLLoggingConfigurationRedactedFields,
+						Resolver:    schema.PathResolver("RedactedFields"),
 					},
 				},
 			},
@@ -470,55 +469,7 @@ func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	return diag.WrapError(resource.Set(c.Name, outputTags))
 }
-func resolveWafv2webACLDefaultAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	webACL := resource.Item.(*WebACLWrapper)
-	if webACL.DefaultAction == nil {
-		return nil
-	}
-	data, err := json.Marshal(webACL.DefaultAction)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func fetchWafv2WebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*WebACLWrapper)
-	res <- webACL.Rules
-	return nil
-}
-func resolveWafv2webACLRuleStatement(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(types.Rule)
-	if rule.Statement == nil {
-		return nil
-	}
-	data, err := json.Marshal(rule.Statement)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveWafv2webACLRuleAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(types.Rule)
-	if rule.Action == nil {
-		return nil
-	}
-	data, err := json.Marshal(rule.Action)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveWafv2webACLRuleOverrideAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(types.Rule)
-	if rule.OverrideAction == nil {
-		return nil
-	}
-	data, err := json.Marshal(rule.OverrideAction)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
+
 func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(types.Rule)
 	labels := make([]string, len(rule.RuleLabels))
@@ -526,89 +477,4 @@ func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, r
 		labels[i] = aws.ToString(rule.RuleLabels[i].Name)
 	}
 	return diag.WrapError(resource.Set(c.Name, labels))
-}
-func fetchWafv2WebAclPostProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*WebACLWrapper)
-	res <- webACL.PostProcessFirewallManagerRuleGroups
-	return nil
-}
-func resolveWafv2webACLPostProcessFirewallManagerRuleGroupStatement(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	firewallManagerRuleGroup := resource.Item.(types.FirewallManagerRuleGroup)
-	if firewallManagerRuleGroup.FirewallManagerStatement == nil {
-		return nil
-	}
-	data, err := json.Marshal(firewallManagerRuleGroup.FirewallManagerStatement)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveWafv2webACLPostProcessFirewallManagerRuleGroupOverrideAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	firewallManagerRuleGroup := resource.Item.(types.FirewallManagerRuleGroup)
-	if firewallManagerRuleGroup.OverrideAction == nil {
-		return nil
-	}
-	data, err := json.Marshal(firewallManagerRuleGroup.OverrideAction)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func fetchWafv2WebAclPreProcessFirewallManagerRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*WebACLWrapper)
-	res <- webACL.PreProcessFirewallManagerRuleGroups
-	return nil
-}
-func resolveWafv2webACLPreProcessFirewallManagerRuleGroupStatement(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	firewallManagerRuleGroup := resource.Item.(types.FirewallManagerRuleGroup)
-	if firewallManagerRuleGroup.FirewallManagerStatement == nil {
-		return nil
-	}
-	data, err := json.Marshal(firewallManagerRuleGroup.FirewallManagerStatement)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveWafv2webACLPreProcessFirewallManagerRuleGroupOverrideAction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	firewallManagerRuleGroup := resource.Item.(types.FirewallManagerRuleGroup)
-	if firewallManagerRuleGroup.OverrideAction == nil {
-		return nil
-	}
-	data, err := json.Marshal(firewallManagerRuleGroup.OverrideAction)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func fetchWafv2WebACLLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- interface{}) error {
-	rule := resource.Item.(*WebACLWrapper)
-	res <- rule.LoggingConfiguration
-	return nil
-}
-func resolveWafv2WebACLLoggingConfigurationRedactedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	if conf := resource.Item.(*types.LoggingConfiguration); conf != nil {
-		out, err := json.Marshal(conf.RedactedFields)
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		return diag.WrapError(resource.Set(c.Name, out))
-	}
-	return nil
-}
-func resolveWafv2WebACLLoggingConfigurationLoggingFilter(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	if conf := resource.Item.(*types.LoggingConfiguration); conf != nil {
-		out, err := json.Marshal(conf.LoggingFilter)
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		return diag.WrapError(resource.Set(c.Name, out))
-	}
-	return nil
-}
-func resolveWafV2WebACLRuleLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	if rule := resource.Item.(*WebACLWrapper); rule.LoggingConfiguration != nil {
-		return diag.WrapError(resource.Set(c.Name, rule.LoggingConfiguration.LogDestinationConfigs))
-	}
-	return nil
 }

@@ -92,7 +92,7 @@ func IamPolicies() *schema.Table {
 			{
 				Name:        "aws_iam_policy_versions",
 				Description: "Contains information about a version of a managed policy.",
-				Resolver:    fetchIamPolicyVersions,
+				Resolver:    schema.PathTableResolver("PolicyVersionList"),
 				Columns: []schema.Column{
 					{
 						Name:        "policy_cq_id",
@@ -150,11 +150,6 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 		}
 		config.Marker = response.Marker
 	}
-	return nil
-}
-func fetchIamPolicyVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.ManagedPolicyDetail)
-	res <- r.PolicyVersionList
 	return nil
 }
 func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

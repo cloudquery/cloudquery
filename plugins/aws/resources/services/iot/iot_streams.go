@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
-	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -77,7 +76,7 @@ func IotStreams() *schema.Table {
 			{
 				Name:        "aws_iot_stream_files",
 				Description: "Represents a file to stream.",
-				Resolver:    fetchIotStreamFiles,
+				Resolver:    schema.PathTableResolver("Files"),
 				Columns: []schema.Column{
 					{
 						Name:        "stream_cq_id",
@@ -152,10 +151,4 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 		input.NextToken = response.NextToken
 	}
 	return diags
-}
-func fetchIotStreamFiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	i := parent.Item.(*types.StreamInfo)
-
-	res <- i.Files
-	return nil
 }

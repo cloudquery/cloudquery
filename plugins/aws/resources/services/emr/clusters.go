@@ -2,11 +2,9 @@ package emr
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
-	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -39,7 +37,7 @@ func EmrClusters() *schema.Table {
 				Name:        "applications",
 				Description: "The applications installed on this cluster.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEMRClusterJSONField(func(c *types.Cluster) interface{} { return c.Applications }),
+				Resolver:    schema.PathResolver("Applications"),
 			},
 			{
 				Name:        "auto_scaling_role",
@@ -61,7 +59,7 @@ func EmrClusters() *schema.Table {
 				Name:        "configurations",
 				Description: "The list of Configurations supplied to the EMR cluster.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEMRClusterJSONField(func(c *types.Cluster) interface{} { return c.Configurations }),
+				Resolver:    schema.PathResolver("Configurations"),
 			},
 			{
 				Name:          "custom_ami_id",
@@ -221,7 +219,7 @@ func EmrClusters() *schema.Table {
 				Name:        "placement_groups",
 				Description: "Placement group configured for an Amazon EMR cluster.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEMRClusterJSONField(func(c *types.Cluster) interface{} { return c.PlacementGroups }),
+				Resolver:    schema.PathResolver("PlacementGroups"),
 			},
 			{
 				Name:        "release_label",
@@ -349,15 +347,4 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 		config.Marker = response.Marker
 	}
 	return nil
-}
-
-func resolveEMRClusterJSONField(getter func(c *types.Cluster) interface{}) func(context.Context, schema.ClientMeta, *schema.Resource, schema.Column) error {
-	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		cl := resource.Item.(*types.Cluster)
-		b, err := json.Marshal(getter(cl))
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		return diag.WrapError(resource.Set(c.Name, b))
-	}
 }

@@ -114,13 +114,13 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 				Name:        "route_filter_prefixes",
 				Description: "The routes to be advertised to the AWS network in this Region",
 				Type:        schema.TypeStringArray,
-				Resolver:    resolveDirectconnectVirtualInterfaceRouteFilterPrefixes,
+				Resolver:    schema.PathResolver("RouteFilterPrefixes.Cidr"),
 			},
 			{
 				Name:        "tags",
 				Description: "The tags associated with the virtual interface.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDirectconnectVirtualInterfaceTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "virtual_gateway_id",
@@ -158,7 +158,7 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 			{
 				Name:          "aws_directconnect_virtual_interface_bgp_peers",
 				Description:   "Information about a BGP peer. ",
-				Resolver:      fetchDirectconnectVirtualInterfaceBgpPeers,
+				Resolver:      schema.PathTableResolver("BgpPeers"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -238,26 +238,5 @@ func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.Client
 		return diag.WrapError(err)
 	}
 	res <- output.VirtualInterfaces
-	return nil
-}
-func resolveDirectconnectVirtualInterfaceRouteFilterPrefixes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VirtualInterface)
-	routeFilterPrefixes := make([]*string, len(r.RouteFilterPrefixes))
-	for i, prefix := range r.RouteFilterPrefixes {
-		routeFilterPrefixes[i] = prefix.Cidr
-	}
-	return diag.WrapError(resource.Set("route_filter_prefixes", routeFilterPrefixes))
-}
-func resolveDirectconnectVirtualInterfaceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.VirtualInterface)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchDirectconnectVirtualInterfaceBgpPeers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	virtualInterface := parent.Item.(types.VirtualInterface)
-	res <- virtualInterface.BgpPeers
 	return nil
 }

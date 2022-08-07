@@ -2,7 +2,6 @@ package iot
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -103,7 +102,7 @@ func IotThingGroups() *schema.Table {
 				Name:        "root_to_parent_thing_groups",
 				Description: "The root parent thing group.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveIotThingGroupsRootToParentThingGroups,
+				Resolver:    schema.PathResolver("ThingGroupMetadata.RootToParentThingGroups"),
 			},
 			{
 				Name:        "name",
@@ -257,17 +256,4 @@ func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resou
 		input.NextToken = response.NextToken
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func resolveIotThingGroupsRootToParentThingGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(*iot.DescribeThingGroupOutput)
-	if i.ThingGroupMetadata == nil {
-		return nil
-	}
-
-	data, err := json.Marshal(i.ThingGroupMetadata.RootToParentThingGroups)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-
-	return diag.WrapError(resource.Set(c.Name, data))
 }

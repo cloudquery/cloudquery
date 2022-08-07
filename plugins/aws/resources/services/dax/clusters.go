@@ -166,7 +166,7 @@ func DaxClusters() *schema.Table {
 			{
 				Name:        "aws_dax_cluster_nodes",
 				Description: "Represents an individual node within a DAX cluster.",
-				Resolver:    fetchDaxClusterNodes,
+				Resolver:    schema.PathTableResolver("Nodes"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -274,11 +274,4 @@ func resolveDaxClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta
 		}
 	}
 	return diag.WrapError(resource.Set(c.Name, val))
-}
-func fetchDaxClusterNodes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Cluster)
-	for i := range r.Nodes {
-		res <- r.Nodes[i]
-	}
-	return nil
 }

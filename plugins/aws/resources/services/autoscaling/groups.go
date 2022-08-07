@@ -2,7 +2,6 @@ package autoscaling
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"regexp"
 
@@ -217,7 +216,7 @@ func AutoscalingGroups() *schema.Table {
 			{
 				Name:        "aws_autoscaling_group_instances",
 				Description: "Describes an EC2 instance.",
-				Resolver:    fetchAutoscalingGroupInstances,
+				Resolver:    schema.PathTableResolver("Instances"),
 				Columns: []schema.Column{
 					{
 						Name:        "group_cq_id",
@@ -294,7 +293,7 @@ func AutoscalingGroups() *schema.Table {
 			{
 				Name:        "aws_autoscaling_group_tags",
 				Description: "Describes a tag for an Auto Scaling group.",
-				Resolver:    fetchAutoscalingGroupTags,
+				Resolver:    schema.PathTableResolver("Tags"),
 				Columns: []schema.Column{
 					{
 						Name:        "group_cq_id",
@@ -414,7 +413,7 @@ func AutoscalingGroups() *schema.Table {
 						Name:        "step_adjustments",
 						Description: "A set of adjustments that enable you to scale based on the size of the alarm breach.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveAutoscalingGroupScalingPoliciesStepAdjustments,
+						Resolver:    schema.PathResolver("StepAdjustments"),
 					},
 					{
 						Name:        "target_tracking_configuration_target_value",
@@ -684,16 +683,6 @@ func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema
 
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func fetchAutoscalingGroupInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(autoscalingGroupWrapper)
-	res <- p.Instances
-	return nil
-}
-func fetchAutoscalingGroupTags(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(autoscalingGroupWrapper)
-	res <- p.Tags
-	return nil
-}
 func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(autoscalingGroupWrapper)
 	cl := meta.(*client.Client)
@@ -726,14 +715,6 @@ func resolveAutoscalingGroupScalingPoliciesAlarms(ctx context.Context, meta sche
 		j[*a.AlarmName] = *a.AlarmARN
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
-}
-func resolveAutoscalingGroupScalingPoliciesStepAdjustments(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.ScalingPolicy)
-	data, err := json.Marshal(p.StepAdjustments)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
 }
 func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomizedMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.ScalingPolicy)

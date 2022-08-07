@@ -104,7 +104,7 @@ func EfsFilesystems() *schema.Table {
 				Name:        "tags",
 				Description: "The tags associated with the file system, presented as an array of Tag objects. ",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveEfsFilesystemsTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "availability_zone_id",
@@ -195,12 +195,4 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	}
 
 	return diag.WrapError(resource.Set(c.Name, response.BackupPolicy.Status))
-}
-func resolveEfsFilesystemsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.FileSystemDescription)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
 }

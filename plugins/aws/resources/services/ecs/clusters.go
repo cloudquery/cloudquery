@@ -2,7 +2,6 @@ package ecs
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -113,7 +112,7 @@ func Clusters() *schema.Table {
 				Name:        "default_capacity_provider_strategy",
 				Description: "The default capacity provider strategy for the cluster",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveClustersDefaultCapacityProviderStrategy,
+				Resolver:    schema.PathResolver("DefaultCapacityProviderStrategy"),
 			},
 			{
 				Name:        "pending_tasks_count",
@@ -158,7 +157,7 @@ func Clusters() *schema.Table {
 			{
 				Name:          "aws_ecs_cluster_attachments",
 				Description:   "An object representing a container instance or task attachment.",
-				Resolver:      fetchEcsClusterAttachments,
+				Resolver:      schema.PathTableResolver("Attachments"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -206,7 +205,7 @@ func Clusters() *schema.Table {
 						Name:        "attributes",
 						Description: "The attributes of the task",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveClusterTasksAttributes,
+						Resolver:    schema.PathResolver("Attributes"),
 					},
 					{
 						Name:        "availability_zone",
@@ -283,7 +282,7 @@ func Clusters() *schema.Table {
 						Name:        "inference_accelerators",
 						Description: "The Elastic Inference accelerator that's associated with the task.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveClusterTasksInferenceAccelerators,
+						Resolver:    schema.PathResolver("InferenceAccelerators"),
 					},
 					{
 						Name:        "last_status",
@@ -304,7 +303,7 @@ func Clusters() *schema.Table {
 						Name:        "overrides",
 						Description: "One or more container overrides.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveClusterTasksOverrides,
+						Resolver:    schema.PathResolver("Overrides"),
 					},
 					{
 						Name:        "platform_family",
@@ -469,7 +468,7 @@ func Clusters() *schema.Table {
 								Name:        "managed_agents",
 								Description: "The details of any Amazon ECS managed agents associated with the container.",
 								Type:        schema.TypeJSON,
-								Resolver:    resolveClusterTaskContainersManagedAgents,
+								Resolver:    schema.PathResolver("ManagedAgents"),
 							},
 							{
 								Name:        "memory",
@@ -490,13 +489,13 @@ func Clusters() *schema.Table {
 								Name:        "network_bindings",
 								Description: "The network bindings associated with the container.",
 								Type:        schema.TypeJSON,
-								Resolver:    resolveClusterTaskContainersNetworkBindings,
+								Resolver:    schema.PathResolver("NetworkBindings"),
 							},
 							{
 								Name:        "network_interfaces",
 								Description: "The network interfaces associated with the container.",
 								Type:        schema.TypeJSON,
-								Resolver:    resolveClusterTaskContainersNetworkInterfaces,
+								Resolver:    schema.PathResolver("NetworkInterfaces"),
 							},
 							{
 								Name:        "reason",
@@ -532,7 +531,7 @@ func Clusters() *schema.Table {
 						Name:          "capacity_provider_strategy",
 						Description:   "The capacity provider strategy the service uses",
 						Type:          schema.TypeJSON,
-						Resolver:      resolveClusterServicesCapacityProviderStrategy,
+						Resolver:      schema.PathResolver("CapacityProviderStrategy"),
 						IgnoreInTests: true,
 					},
 					{
@@ -719,7 +718,7 @@ func Clusters() *schema.Table {
 								Name:          "capacity_provider_strategy",
 								Description:   "The capacity provider strategy that the deployment is using.",
 								Type:          schema.TypeJSON,
-								Resolver:      resolveClusterServiceDeploymentsCapacityProviderStrategy,
+								Resolver:      schema.PathResolver("CapacityProviderStrategy"),
 								IgnoreInTests: true,
 							},
 							{
@@ -927,7 +926,7 @@ func Clusters() *schema.Table {
 								Name:          "capacity_provider_strategy",
 								Description:   "The capacity provider strategy that are associated with the task set.",
 								Type:          schema.TypeJSON,
-								Resolver:      resolveClusterServiceTaskSetsCapacityProviderStrategy,
+								Resolver:      schema.PathResolver("CapacityProviderStrategy"),
 								IgnoreInTests: true,
 							},
 							{
@@ -1462,17 +1461,7 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func resolveClustersDefaultCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster, ok := resource.Item.(types.Cluster)
-	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
-	}
-	data, err := json.Marshal(cluster.DefaultCapacityProviderStrategy)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
+
 func resolveClustersSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cluster, ok := resource.Item.(types.Cluster)
 	if !ok {
@@ -1515,14 +1504,6 @@ func resolveClustersTags(ctx context.Context, meta schema.ClientMeta, resource *
 		tags[*s.Key] = s.Value
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func fetchEcsClusterAttachments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster, ok := parent.Item.(types.Cluster)
-	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", parent.Item))
-	}
-	res <- cluster.Attachments
-	return nil
 }
 func resolveClusterAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	attachment, ok := resource.Item.(types.Attachment)
@@ -1575,33 +1556,6 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func resolveClusterTasksAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Task)
-	data, err := json.Marshal(p.Attributes)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveClusterTasksInferenceAccelerators(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Task)
-	data, err := json.Marshal(p.InferenceAccelerators)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveClusterTasksOverrides(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Task)
-	if p.Overrides == nil {
-		return nil
-	}
-	data, err := json.Marshal(p.Overrides)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
 
 func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.Attachment)
@@ -1613,30 +1567,6 @@ func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.Clien
 	return diag.WrapError(resource.Set(c.Name, j))
 }
 
-func resolveClusterTaskContainersManagedAgents(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Container)
-	data, err := json.Marshal(p.ManagedAgents)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveClusterTaskContainersNetworkBindings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Container)
-	data, err := json.Marshal(p.NetworkBindings)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveClusterTaskContainersNetworkInterfaces(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Container)
-	data, err := json.Marshal(p.NetworkInterfaces)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
@@ -1674,14 +1604,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func resolveClusterServicesCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Service)
-	data, err := json.Marshal(service.CapacityProviderStrategy)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
+
 func resolveClusterServicesPlacementConstraints(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	service := resource.Item.(types.Service)
 	j := make(map[string]interface{})
@@ -1691,6 +1614,7 @@ func resolveClusterServicesPlacementConstraints(ctx context.Context, meta schema
 
 	return diag.WrapError(resource.Set(c.Name, j))
 }
+
 func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	service := resource.Item.(types.Service)
 	j := make(map[string]interface{})
@@ -1699,24 +1623,6 @@ func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.Cl
 	}
 
 	return diag.WrapError(resource.Set(c.Name, j))
-}
-
-func resolveClusterServiceDeploymentsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	deployment := resource.Item.(types.Deployment)
-	data, err := json.Marshal(deployment.CapacityProviderStrategy)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-
-func resolveClusterServiceTaskSetsCapacityProviderStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	taskSet := resource.Item.(types.TaskSet)
-	data, err := json.Marshal(taskSet.CapacityProviderStrategy)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
 }
 
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
