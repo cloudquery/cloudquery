@@ -1555,6 +1555,8 @@ func Issues() *schema.Table {
 func fetchIssues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	opts := &github.IssueListOptions{
+		Filter: "all",
+		State:  "all",
 		ListOptions: github.ListOptions{
 			Page:    0,
 			PerPage: 100,

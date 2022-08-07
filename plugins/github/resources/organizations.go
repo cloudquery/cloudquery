@@ -589,8 +589,10 @@ func resolveOrganizationMembersTextMatches(ctx context.Context, meta schema.Clie
 func fetchOrganizationMemberMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	m := parent.Item.(*github.User)
-
-	membership, _, err := c.Github.Organizations.GetOrgMembership(ctx, *m.Name, c.Org)
+	if m == nil {
+		return nil
+	}
+	membership, _, err := c.Github.Organizations.GetOrgMembership(ctx, *m.Login, c.Org)
 	if err != nil {
 		return diag.WrapError(err)
 	}
