@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.13](https://github.com/cloudquery/cq-provider-fuzz/compare/v0.0.12...v0.0.13) (2022-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update tubone24/update_release digest to 2146f15 ([#44](https://github.com/cloudquery/cq-provider-fuzz/issues/44)) ([2629965](https://github.com/cloudquery/cq-provider-fuzz/commit/2629965e2740ddb39398f212731c4e5272ab9984))
+
 ## [0.0.12](https://github.com/cloudquery/cq-provider-fuzz/compare/v0.0.11...v0.0.12) (2022-07-27)
 
 
