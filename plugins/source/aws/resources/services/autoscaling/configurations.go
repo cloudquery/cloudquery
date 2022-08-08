@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
-	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -154,7 +153,7 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 			{
 				Name:        "aws_autoscaling_launch_configuration_block_device_mappings",
 				Description: "Describes a block device mapping.",
-				Resolver:    fetchAutoscalingLaunchConfigurationBlockDeviceMappings,
+				Resolver:    schema.PathTableResolver("BlockDeviceMappings"),
 				Columns: []schema.Column{
 					{
 						Name:        "launch_configuration_cq_id",
@@ -243,9 +242,5 @@ func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.Clien
 		}
 		config.NextToken = output.NextToken
 	}
-	return nil
-}
-func fetchAutoscalingLaunchConfigurationBlockDeviceMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	res <- parent.Item.(types.LaunchConfiguration).BlockDeviceMappings
 	return nil
 }

@@ -209,7 +209,7 @@ func Snapshots() *schema.Table {
 			{
 				Name:        "aws_redshift_snapshot_accounts_with_restore_access",
 				Description: "Describes an AWS customer account authorized to restore a snapshot.",
-				Resolver:    fetchRedshiftSnapshotAccountsWithRestoreAccesses,
+				Resolver:    schema.PathTableResolver("AccountsWithRestoreAccess"),
 				Columns: []schema.Column{
 					{
 						Name:        "snapshot_cq_id",
@@ -257,12 +257,6 @@ func fetchRedshiftSnapshots(ctx context.Context, meta schema.ClientMeta, parent 
 		}
 		params.Marker = result.Marker
 	}
-	return nil
-}
-
-func fetchRedshiftSnapshotAccountsWithRestoreAccesses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	s := parent.Item.(types.Snapshot)
-	res <- s.AccountsWithRestoreAccess
 	return nil
 }
 

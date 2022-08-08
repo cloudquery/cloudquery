@@ -83,7 +83,7 @@ func Apigatewayv2DomainNames() *schema.Table {
 			{
 				Name:        "aws_apigatewayv2_domain_name_configurations",
 				Description: "The domain name configuration.",
-				Resolver:    fetchApigatewayv2DomainNameConfigurations,
+				Resolver:    schema.PathTableResolver("DomainNameConfigurations"),
 				Columns: []schema.Column{
 					{
 						Name:        "domain_name_cq_id",
@@ -209,12 +209,6 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _
 		}
 		config.NextToken = response.NextToken
 	}
-	return nil
-}
-
-func fetchApigatewayv2DomainNameConfigurations(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.DomainName)
-	res <- r.DomainNameConfigurations
 	return nil
 }
 

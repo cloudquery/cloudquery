@@ -69,7 +69,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:        "current_deployment_public_endpoint_container_port",
 				Description: "The port of the specified container to which traffic is forwarded to",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("CurrentDeployment.PublicEndpoint.ContainerPort"),
 			},
 			{
@@ -87,7 +87,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:        "current_deployment_version",
 				Description: "The version number of the deployment",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("CurrentDeployment.Version"),
 			},
 			{
@@ -125,7 +125,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:          "next_deployment_public_endpoint_container_port",
 				Description:   "The port of the specified container to which traffic is forwarded to",
-				Type:          schema.TypeInt,
+				Type:          schema.TypeBigInt,
 				Resolver:      schema.PathResolver("NextDeployment.PublicEndpoint.ContainerPort"),
 				IgnoreInTests: true,
 			},
@@ -145,7 +145,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:          "next_deployment_version",
 				Description:   "The version number of the deployment",
-				Type:          schema.TypeInt,
+				Type:          schema.TypeBigInt,
 				Resolver:      schema.PathResolver("NextDeployment.Version"),
 				IgnoreInTests: true,
 			},
@@ -195,7 +195,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:        "scale",
 				Description: "The scale specification of the container service",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "state",
@@ -258,7 +258,7 @@ func ContainerServices() *schema.Table {
 					{
 						Name:        "public_endpoint_container_port",
 						Description: "The port of the specified container to which traffic is forwarded to",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 						Resolver:    schema.PathResolver("PublicEndpoint.ContainerPort"),
 					},
 					{
@@ -275,15 +275,14 @@ func ContainerServices() *schema.Table {
 					{
 						Name:        "version",
 						Description: "The version number of the deployment",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 				},
 			},
 			{
-				Name:          "aws_lightsail_container_service_images",
-				Description:   "Describes a container image that is registered to an Amazon Lightsail container service",
-				Resolver:      fetchLightsailContainerServiceImages,
-				IgnoreInTests: true,
+				Name:        "aws_lightsail_container_service_images",
+				Description: "Describes a container image that is registered to an Amazon Lightsail container service",
+				Resolver:    fetchLightsailContainerServiceImages,
 				Columns: []schema.Column{
 					{
 						Name:        "container_service_cq_id",

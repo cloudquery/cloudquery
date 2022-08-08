@@ -67,7 +67,7 @@ func LoadBalancers() *schema.Table {
 			{
 				Name:        "instance_port",
 				Description: "The port where the load balancer will direct traffic to your Lightsail instances",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "ip_address_type",
@@ -127,7 +127,7 @@ func LoadBalancers() *schema.Table {
 			{
 				Name:        "aws_lightsail_load_balancer_instance_health_summary",
 				Description: "Describes information about the health of the instance",
-				Resolver:    fetchLightsailLoadBalancerInstanceHealthSummaries,
+				Resolver:    schema.PathTableResolver("InstanceHealthSummary"),
 				Columns: []schema.Column{
 					{
 						Name:        "load_balancer_cq_id",
@@ -155,7 +155,7 @@ func LoadBalancers() *schema.Table {
 			{
 				Name:          "aws_lightsail_load_balancer_tls_certificate_summaries",
 				Description:   "Provides a summary of SSL/TLS certificate metadata",
-				Resolver:      fetchLightsailLoadBalancerTlsCertificateSummaries,
+				Resolver:      schema.PathTableResolver("TlsCertificateSummaries"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -362,16 +362,6 @@ func resolveLoadBalancersPublicPorts(ctx context.Context, meta schema.ClientMeta
 		ports = append(ports, int(p))
 	}
 	return diag.WrapError(resource.Set(c.Name, ports))
-}
-func fetchLightsailLoadBalancerInstanceHealthSummaries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.LoadBalancer)
-	res <- r.InstanceHealthSummary
-	return nil
-}
-func fetchLightsailLoadBalancerTlsCertificateSummaries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.LoadBalancer)
-	res <- r.TlsCertificateSummaries
-	return nil
 }
 func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.LoadBalancer)

@@ -264,7 +264,7 @@ func Buckets() *schema.Table {
 			{
 				Name:          "aws_s3_bucket_replication_rules",
 				Description:   "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
-				Resolver:      fetchS3BucketReplicationRules,
+				Resolver:      schema.PathTableResolver("ReplicationRules"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -347,7 +347,7 @@ func Buckets() *schema.Table {
 						Name:        "filter",
 						Description: "A filter that identifies the subset of objects to which the replication rule applies",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveS3BucketReplicationRuleFilter,
+						Resolver:    schema.PathResolver("Filter"),
 					},
 					{
 						Name:        "id",
@@ -424,7 +424,7 @@ func Buckets() *schema.Table {
 						Name:        "filter",
 						Description: "The Filter is used to identify objects that a Lifecycle Rule applies to",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveS3BucketLifecycleFilter,
+						Resolver:    schema.PathResolver("Filter"),
 					},
 					{
 						Name:        "id",
@@ -442,7 +442,7 @@ func Buckets() *schema.Table {
 						Name:        "noncurrent_version_transitions",
 						Description: "Specifies the transition rule for the lifecycle rule that describes when noncurrent objects transition to a specific storage class",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveS3BucketLifecycleNoncurrentVersionTransitions,
+						Resolver:    schema.PathResolver("Transitions"),
 					},
 					{
 						Name:        "prefix",
@@ -453,7 +453,7 @@ func Buckets() *schema.Table {
 						Name:        "transitions",
 						Description: "Specifies when an Amazon S3 object transitions to a specified storage class.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveS3BucketLifecycleTransitions,
+						Resolver:    schema.PathResolver("Transitions"),
 					},
 				},
 			},
@@ -643,24 +643,7 @@ func fetchS3BucketEncryptionRules(ctx context.Context, meta schema.ClientMeta, p
 	res <- aclOutput.ServerSideEncryptionConfiguration.Rules
 	return nil
 }
-func fetchS3BucketReplicationRules(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	bucket := parent.Item.(*WrappedBucket)
-	if bucket.ReplicationRules != nil {
-		res <- bucket.ReplicationRules
-	}
-	return nil
-}
-func resolveS3BucketReplicationRuleFilter(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	rule := resource.Item.(types.ReplicationRule)
-	if rule.Filter == nil {
-		return nil
-	}
-	data, err := json.Marshal(rule.Filter)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set("filter", data))
-}
+
 func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*WrappedBucket)
 	c := meta.(*client.Client)
@@ -679,39 +662,6 @@ func fetchS3BucketLifecycles(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	res <- lifecycleOutput.Rules
 	return nil
-}
-func resolveS3BucketLifecycleFilter(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	lc := resource.Item.(types.LifecycleRule)
-	if lc.Filter == nil {
-		return nil
-	}
-	data, err := json.Marshal(lc.Filter)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set("filter", data))
-}
-func resolveS3BucketLifecycleNoncurrentVersionTransitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	lc := resource.Item.(types.LifecycleRule)
-	if lc.Transitions == nil {
-		return nil
-	}
-	data, err := json.Marshal(lc.Transitions)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set("noncurrent_version_transitions", data))
-}
-func resolveS3BucketLifecycleTransitions(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	lc := resource.Item.(types.LifecycleRule)
-	if lc.Transitions == nil {
-		return nil
-	}
-	data, err := json.Marshal(lc.Transitions)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set("transitions", data))
 }
 
 // ====================================================================================================================

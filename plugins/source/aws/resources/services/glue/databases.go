@@ -213,7 +213,7 @@ func Databases() *schema.Table {
 					{
 						Name:        "aws_glue_database_table_partition_keys",
 						Description: "A column in a Table",
-						Resolver:    fetchGlueDatabaseTablePartitionKeys,
+						Resolver:    schema.PathTableResolver("PartitionKeys"),
 						Columns: []schema.Column{
 							{
 								Name:        "database_table_cq_id",
@@ -293,11 +293,6 @@ func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		input.NextToken = result.NextToken
 	}
-	return nil
-}
-func fetchGlueDatabaseTablePartitionKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Table)
-	res <- r.PartitionKeys
 	return nil
 }
 

@@ -57,12 +57,12 @@ func Alarms() *schema.Table {
 			{
 				Name:        "datapoints_to_alarm",
 				Description: "The number of data points that must not within the specified threshold to trigger the alarm",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "evaluation_periods",
 				Description: "The number of periods over which data is compared to the specified threshold",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "availability_zone",
@@ -111,7 +111,7 @@ func Alarms() *schema.Table {
 			{
 				Name:        "period",
 				Description: "The period, in seconds, over which the statistic is applied",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "resource_type",

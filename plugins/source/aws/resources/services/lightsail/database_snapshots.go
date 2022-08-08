@@ -93,7 +93,7 @@ func DatabaseSnapshots() *schema.Table {
 			{
 				Name:        "size_in_gb",
 				Description: "The size of the disk in GB (for example, 32) for the database snapshot",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "state",

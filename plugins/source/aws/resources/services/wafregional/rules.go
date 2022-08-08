@@ -67,7 +67,7 @@ func Rules() *schema.Table {
 			{
 				Name:        "aws_wafregional_rule_predicates",
 				Description: "This is AWS WAF Classic documentation",
-				Resolver:    fetchWafregionalRulePredicates,
+				Resolver:    schema.PathTableResolver("Predicates"),
 				Columns: []schema.Column{
 					{
 						Name:        "rule_cq_id",
@@ -128,11 +128,6 @@ func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return nil
-}
-func fetchWafregionalRulePredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Rule)
-	res <- r.Predicates
 	return nil
 }
 func resolveRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

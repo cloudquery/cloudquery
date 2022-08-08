@@ -2,7 +2,6 @@ package workspaces
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
@@ -79,7 +78,7 @@ func Workspaces() *schema.Table {
 				Name:        "modification_states",
 				Description: "The modification states of the WorkSpace.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveWorkspacesModificationStates,
+				Resolver:    schema.PathResolver("ModificationStates"),
 			},
 			{
 				Name:          "root_volume_encryption_enabled",
@@ -174,16 +173,4 @@ func fetchWorkspacesWorkspaces(ctx context.Context, meta schema.ClientMeta, _ *s
 		input.NextToken = output.NextToken
 	}
 	return nil
-}
-func resolveWorkspacesModificationStates(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Workspace)
-	if r.ModificationStates == nil {
-		return nil
-	}
-
-	data, err := json.Marshal(r.ModificationStates)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
 }

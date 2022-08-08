@@ -12,7 +12,7 @@ Describes a load balancer
 |dns_name|text|The DNS name of your Lightsail load balancer|
 |health_check_path|text|The path you specified to perform your health checks|
 |https_redirection_enabled|boolean|A Boolean value that indicates whether HTTPS redirection is enabled for the load balancer|
-|instance_port|integer|The port where the load balancer will direct traffic to your Lightsail instances|
+|instance_port|bigint|The port where the load balancer will direct traffic to your Lightsail instances|
 |ip_address_type|text|The IP address type of the load balancer|
 |availability_zone|text|The Availability Zone|
 |name|text|The name of the load balancer (eg, my-load-balancer)|

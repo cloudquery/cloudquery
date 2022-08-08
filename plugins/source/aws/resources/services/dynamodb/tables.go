@@ -303,7 +303,7 @@ func DynamodbTables() *schema.Table {
 			{
 				Name:        "aws_dynamodb_table_local_secondary_indexes",
 				Description: "Represents the properties of a local secondary index.",
-				Resolver:    fetchDynamodbTableLocalSecondaryIndexes,
+				Resolver:    schema.PathTableResolver("LocalSecondaryIndexes"),
 				Columns: []schema.Column{
 					{
 						Name:        "table_cq_id",
@@ -619,13 +619,6 @@ func fetchDynamodbTableGlobalSecondaryIndexes(ctx context.Context, meta schema.C
 func resolveDynamodbTableGlobalSecondaryIndexKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.GlobalSecondaryIndexDescription)
 	return diag.WrapError(resource.Set(c.Name, marshalKeySchema(r.KeySchema)))
-}
-func fetchDynamodbTableLocalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(*types.TableDescription)
-	for i := range p.LocalSecondaryIndexes {
-		res <- p.LocalSecondaryIndexes[i]
-	}
-	return nil
 }
 func resolveDynamodbTableLocalSecondaryIndexKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.LocalSecondaryIndexDescription)

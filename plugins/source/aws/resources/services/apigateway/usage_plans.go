@@ -105,7 +105,7 @@ func ApigatewayUsagePlans() *schema.Table {
 			{
 				Name:          "aws_apigateway_usage_plan_api_stages",
 				Description:   "API stage name of the associated API stage in a usage plan.",
-				Resolver:      fetchApigatewayUsagePlanApiStages,
+				Resolver:      schema.PathTableResolver("ApiStages"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -210,11 +210,6 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		config.Position = response.Position
 	}
-	return nil
-}
-func fetchApigatewayUsagePlanApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.UsagePlan)
-	res <- r.ApiStages
 	return nil
 }
 func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

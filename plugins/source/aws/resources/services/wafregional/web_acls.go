@@ -73,7 +73,7 @@ func WebAcls() *schema.Table {
 			{
 				Name:        "aws_wafregional_web_acl_rules",
 				Description: "The action for each Rule in a WebACL",
-				Resolver:    fetchWafregionalWebAclRules,
+				Resolver:    schema.PathTableResolver("Rules"),
 				Columns: []schema.Column{
 					{
 						Name:        "web_acl_cq_id",
@@ -153,11 +153,6 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return nil
-}
-func fetchWafregionalWebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	acl := parent.Item.(types.WebACL)
-	res <- acl.Rules
 	return nil
 }
 func resolveWebACLRulesExcludedRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

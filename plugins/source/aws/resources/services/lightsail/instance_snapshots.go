@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
-	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -94,7 +93,7 @@ func InstanceSnapshots() *schema.Table {
 			{
 				Name:        "size_in_gb",
 				Description: "The size in GB of the SSD",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "state",
@@ -110,14 +109,14 @@ func InstanceSnapshots() *schema.Table {
 				Name:        "tags",
 				Description: "The tag keys and optional values for the resource",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveInstanceSnapshotsTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_lightsail_instance_snapshot_from_attached_disks",
 				Description: "Describes a block storage disk",
-				Resolver:    fetchLightsailInstanceSnapshotFromAttachedDisks,
+				Resolver:    schema.PathTableResolver("FromAttachedDisks"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_snapshot_cq_id",
@@ -148,12 +147,12 @@ func InstanceSnapshots() *schema.Table {
 					{
 						Name:        "gb_in_use",
 						Description: "(Deprecated) The number of GB in use by the disk",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "iops",
 						Description: "The input/output operations per second (IOPS) of the disk",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "is_attached",
@@ -195,7 +194,7 @@ func InstanceSnapshots() *schema.Table {
 					{
 						Name:        "size_in_gb",
 						Description: "The size of the disk in GB",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "state",
@@ -218,7 +217,7 @@ func InstanceSnapshots() *schema.Table {
 					{
 						Name:        "aws_lightsail_instance_snapshot_from_attached_disk_add_ons",
 						Description: "Describes an add-on that is enabled for an Amazon Lightsail resource",
-						Resolver:    fetchLightsailInstanceSnapshotFromAttachedDiskAddOns,
+						Resolver:    schema.PathTableResolver("AddOns"),
 						Columns: []schema.Column{
 							{
 								Name:        "instance_snapshot_from_attached_disk_cq_id",
@@ -273,21 +272,5 @@ func fetchLightsailInstanceSnapshots(ctx context.Context, meta schema.ClientMeta
 		}
 		input.PageToken = response.NextPageToken
 	}
-	return nil
-}
-func resolveInstanceSnapshotsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.InstanceSnapshot)
-	tags := make(map[string]string)
-	client.TagsIntoMap(r.Tags, tags)
-	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func fetchLightsailInstanceSnapshotFromAttachedDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.InstanceSnapshot)
-	res <- r.FromAttachedDisks
-	return nil
-}
-func fetchLightsailInstanceSnapshotFromAttachedDiskAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Disk)
-	res <- r.AddOns
 	return nil
 }

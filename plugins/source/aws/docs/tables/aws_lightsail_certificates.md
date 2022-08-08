@@ -10,7 +10,7 @@ Describes the full details of an Amazon Lightsail SSL/TLS certificate
 |created_at|timestamp without time zone|The timestamp when the certificate was created|
 |domain_name|text|The domain name of the certificate|
 |eligible_to_renew|text|The renewal eligibility of the certificate|
-|in_use_resource_count|integer|The number of Lightsail resources that the certificate is attached to|
+|in_use_resource_count|bigint|The number of Lightsail resources that the certificate is attached to|
 |issued_at|timestamp without time zone|The timestamp when the certificate was issued|
 |issuer_ca|text|The certificate authority that issued the certificate|
 |key_algorithm|text|The algorithm used to generate the key pair (the public and private key) of the certificate|

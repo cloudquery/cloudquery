@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
-	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -57,13 +56,13 @@ func Disks() *schema.Table {
 			{
 				Name:          "gb_in_use",
 				Description:   "(Deprecated) The number of GB in use by the disk",
-				Type:          schema.TypeInt,
+				Type:          schema.TypeBigInt,
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "iops",
 				Description: "The input/output operations per second (IOPS) of the disk",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "is_attached",
@@ -105,7 +104,7 @@ func Disks() *schema.Table {
 			{
 				Name:        "size_in_gb",
 				Description: "The size of the disk in GB",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "state",
@@ -128,7 +127,7 @@ func Disks() *schema.Table {
 			{
 				Name:          "aws_lightsail_disk_add_ons",
 				Description:   "Describes an add-on that is enabled for an Amazon Lightsail resource",
-				Resolver:      fetchLightsailDiskAddOns,
+				Resolver:      schema.PathTableResolver("AddOns"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -236,7 +235,7 @@ func Disks() *schema.Table {
 					{
 						Name:        "size_in_gb",
 						Description: "The size of the disk in GB",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "state",
@@ -279,11 +278,6 @@ func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *sc
 		}
 		input.PageToken = response.NextPageToken
 	}
-	return nil
-}
-func fetchLightsailDiskAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Disk)
-	res <- r.AddOns
 	return nil
 }
 func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
-	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -56,7 +55,7 @@ func Certificates() *schema.Table {
 			{
 				Name:        "in_use_resource_count",
 				Description: "The number of Lightsail resources that the certificate is attached to",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:          "issued_at",
@@ -161,7 +160,7 @@ func Certificates() *schema.Table {
 			{
 				Name:          "aws_lightsail_certificate_domain_validation_records",
 				Description:   "Describes the domain validation records of an Amazon Lightsail SSL/TLS certificate",
-				Resolver:      fetchLightsailCertificateDomainValidationRecords,
+				Resolver:      schema.PathTableResolver("DomainValidationRecords"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -198,7 +197,7 @@ func Certificates() *schema.Table {
 			{
 				Name:          "aws_lightsail_certificate_renewal_summary_domain_validation_records",
 				Description:   "Describes the domain validation records of an Amazon Lightsail SSL/TLS certificate",
-				Resolver:      fetchLightsailCertificateRenewalSummaryDomainValidationRecords,
+				Resolver:      schema.PathTableResolver("RenewalSummary.DomainValidationRecords"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -253,18 +252,5 @@ func fetchLightsailCertificates(ctx context.Context, meta schema.ClientMeta, par
 	for _, cer := range response.Certificates {
 		res <- cer.CertificateDetail
 	}
-	return nil
-}
-func fetchLightsailCertificateDomainValidationRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(*types.Certificate)
-	res <- r.DomainValidationRecords
-	return nil
-}
-func fetchLightsailCertificateRenewalSummaryDomainValidationRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(*types.Certificate)
-	if r.RenewalSummary == nil {
-		return nil
-	}
-	res <- r.RenewalSummary.DomainValidationRecords
 	return nil
 }

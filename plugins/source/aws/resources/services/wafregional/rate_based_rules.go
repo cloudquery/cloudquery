@@ -77,7 +77,7 @@ func RateBasedRules() *schema.Table {
 			{
 				Name:        "aws_wafregional_rate_based_rule_match_predicates",
 				Description: "This is AWS WAF Classic documentation",
-				Resolver:    fetchWafregionalRateBasedRuleMatchPredicates,
+				Resolver:    schema.PathTableResolver("MatchPredicates"),
 				Columns: []schema.Column{
 					{
 						Name:        "rate_based_rule_cq_id",
@@ -160,11 +160,6 @@ func resolveRateBasedRuleTags(ctx context.Context, meta schema.ClientMeta, resou
 		params.NextMarker = result.NextMarker
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func fetchWafregionalRateBasedRuleMatchPredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	rule := parent.Item.(types.RateBasedRule)
-	res <- rule.MatchPredicates
-	return nil
 }
 func resolveRateBasedRuleARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return diag.WrapError(resource.Set(c.Name, rateBasedRuleARN(meta, *resource.Item.(types.RateBasedRule).RuleId)))

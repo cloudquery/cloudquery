@@ -375,7 +375,7 @@ func Functions() *schema.Table {
 				Name:          "tags",
 				Description:   "The function's tags (https://docs.aws.amazon.com/lambda/latest/dg/tagging.html).",
 				Type:          schema.TypeJSON,
-				Resolver:      resolveFunctionsTags,
+				Resolver:      schema.PathResolver("Tags"),
 				IgnoreInTests: true,
 			},
 		},
@@ -383,7 +383,7 @@ func Functions() *schema.Table {
 			{
 				Name:          "aws_lambda_function_file_system_configs",
 				Description:   "Details about the connection between a Lambda function and an Amazon EFS file system. ",
-				Resolver:      fetchLambdaFunctionFileSystemConfigs,
+				Resolver:      schema.PathTableResolver("Configuration.FileSystemConfigs"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -413,7 +413,7 @@ func Functions() *schema.Table {
 			{
 				Name:        "aws_lambda_function_layers",
 				Description: "An Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).",
-				Resolver:    fetchLambdaFunctionLayers,
+				Resolver:    schema.PathTableResolver("Configuration.Layers"),
 				Columns: []schema.Column{
 					{
 						Name:        "function_cq_id",
@@ -585,7 +585,7 @@ func Functions() *schema.Table {
 						Name:        "url_config_cors",
 						Description: "The cross-origin resource sharing (CORS) (https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) settings for your function URL.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveFunctionAliasesUrlConfigCors,
+						Resolver:    schema.PathResolver("UrlConfig.Cors"),
 					},
 				},
 			},
@@ -832,7 +832,7 @@ func Functions() *schema.Table {
 					{
 						Name:          "aws_lambda_function_version_file_system_configs",
 						Description:   "Details about the connection between a Lambda function and an Amazon EFS file system (https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem.html).",
-						Resolver:      fetchLambdaFunctionVersionFileSystemConfigs,
+						Resolver:      schema.PathTableResolver("FileSystemConfigs"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -856,7 +856,7 @@ func Functions() *schema.Table {
 					{
 						Name:        "aws_lambda_function_version_layers",
 						Description: "An Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).",
-						Resolver:    fetchLambdaFunctionVersionLayers,
+						Resolver:    schema.PathTableResolver("Layers"),
 						Columns: []schema.Column{
 							{
 								Name:        "function_version_cq_id",
@@ -983,7 +983,7 @@ func Functions() *schema.Table {
 						Name:        "criteria_filters",
 						Description: "A list of filters.",
 						Type:        schema.TypeStringArray,
-						Resolver:    resolveFunctionEventSourceMappingsCriteriaFilters,
+						Resolver:    schema.PathResolver("FilterCriteria.Filters.Pattern"),
 					},
 					{
 						Name:        "function_arn",
@@ -1040,7 +1040,7 @@ func Functions() *schema.Table {
 						Name:        "source_access_configurations",
 						Description: "An array of the authentication protocol, VPC components, or virtual host to secure and define your event source.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveFunctionEventSourceMappingsSourceAccessConfigurations,
+						Resolver:    schema.PathResolver("SourceAccessConfigurations"),
 					},
 					{
 						Name:        "starting_position",
@@ -1216,24 +1216,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	}
 	return diag.WrapError(resource.Set("code_signing_last_modified", codeSigningLastModified))
 }
-func fetchLambdaFunctionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(*lambda.GetFunctionOutput)
-	if r.Configuration == nil {
-		return nil
-	}
 
-	res <- r.Configuration.FileSystemConfigs
-	return nil
-}
-func fetchLambdaFunctionLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(*lambda.GetFunctionOutput)
-	if r.Configuration == nil {
-		return nil
-	}
-
-	res <- r.Configuration.Layers
-	return nil
-}
 func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
@@ -1304,17 +1287,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-func resolveFunctionAliasesUrlConfigCors(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(AliasWrapper)
-	if p.UrlConfig == nil || p.UrlConfig.Cors == nil {
-		return nil
-	}
-	data, err := json.Marshal(p.UrlConfig.Cors)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
+
 func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
@@ -1342,18 +1315,7 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	}
 	return nil
 }
-func fetchLambdaFunctionVersionFileSystemConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.FunctionConfiguration)
 
-	res <- r.FileSystemConfigs
-	return nil
-}
-func fetchLambdaFunctionVersionLayers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.FunctionConfiguration)
-
-	res <- r.Layers
-	return nil
-}
 func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*lambda.GetFunctionOutput)
 	if p.Configuration == nil {
@@ -1409,37 +1371,4 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 		config.Marker = output.NextMarker
 	}
 	return nil
-}
-func resolveFunctionEventSourceMappingsCriteriaFilters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.EventSourceMappingConfiguration)
-	if p.FilterCriteria == nil {
-		return nil
-	}
-
-	filters := make([]string, 0, len(p.FilterCriteria.Filters))
-	for _, f := range p.FilterCriteria.Filters {
-		filters = append(filters, *f.Pattern)
-	}
-
-	return diag.WrapError(resource.Set(c.Name, filters))
-}
-func resolveFunctionEventSourceMappingsSourceAccessConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.EventSourceMappingConfiguration)
-	if len(p.SourceAccessConfigurations) == 0 {
-		return nil
-	}
-
-	data, err := json.Marshal(p.SourceAccessConfigurations)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-
-func resolveFunctionsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(*lambda.GetFunctionOutput)
-	if r.Tags == nil {
-		return diag.WrapError(resource.Set(c.Name, make(map[string]string)))
-	}
-	return diag.WrapError(resource.Set(c.Name, r.Tags))
 }
