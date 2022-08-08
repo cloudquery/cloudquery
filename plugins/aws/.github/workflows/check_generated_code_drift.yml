@@ -1,0 +1,61 @@
+name: check_generated_code_drift
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'resources/services/**/*'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'resources/services/**/*'
+jobs:
+  check_generated_code_drift:
+    name: Check Generated Code for Drift
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            src:
+              - 'resources/services/**/*'
+      - name: Set up Go 1.x
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.18
+      - name: Install tools
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        run: |
+          make install-tools
+      - uses: actions/cache@v3
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go }}-
+      - name: Run go generate on changed service directories
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        run: |
+          ./scripts/regenerate-changed-directories.sh
+      - name: Fail if any files are changed
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        run: |
+          echo "List of files changed after running go generate:"
+          git status -s ./resources/services
+          test "$(git status -s ./resources/services | wc -l)" -eq 0
