@@ -1,0 +1,45 @@
+.DS_store
+crash.log
+.idea
+.vscode
+cloudquery
+cloudquery.db
+cloudquery.zip
+# goenv
+.go-version
+/config.yml
+dist/
+tmp/
+vendor/
+bin/
+.release-env
+*.exe
+*.log
+.cq_reattach
+.cq/*
+# Local .terraform directories
+**/.terraform/*
+# Local .terraform.lock.hcl files
+**/terraform/**/local/.terraform.lock.hcl
+node_modules/
+# .tfstate files
+*.tfstate
+*.tfstate.*
+.swp
+tflog
+
+__debug_bin
+#test directories
+**/.test/*
+**/snapshots/*
+./terraform/tmp
+./terraform/builds
+./terraform/.terraform
+./terraform/.terraform.loch.hcl
+./terraform/terraform-override.tf
+.env
+terraform/downloaded*
+config.hcl
+cloudquery.yml
+terraform/tfplan.binary
+cq-provider*
