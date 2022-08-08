@@ -1,6 +1,6 @@
 
 # Table: aws_codepipeline_webhook_filters
-The event criteria that specify when a webhook notification is sent to your URL.
+The event criteria that specify when a webhook notification is sent to your URL
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

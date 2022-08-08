@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
-	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/cloudquery/cq-provider-aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -15,7 +14,7 @@ import (
 func Webhooks() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_codepipeline_webhooks",
-		Description:  "The detail returned for each webhook after listing webhooks, such as the webhook URL, the webhook name, and the webhook ARN.",
+		Description:  "The detail returned for each webhook after listing webhooks, such as the webhook URL, the webhook name, and the webhook ARN",
 		Resolver:     fetchCodepipelineWebhooks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
 		IgnoreError:  client.IgnoreCommonErrors,
@@ -36,27 +35,25 @@ func Webhooks() *schema.Table {
 			},
 			{
 				Name:        "authentication",
-				Description: "Supported options are GITHUB_HMAC, IP, and UNAUTHENTICATED.  * For information about the authentication scheme implemented by GITHUB_HMAC, see Securing your webhooks (https://developer.github.com/webhooks/securing/) on the GitHub Developer website.  * IP rejects webhooks trigger requests unless they originate from an IP address in the IP range whitelisted in the authentication configuration.  * UNAUTHENTICATED accepts all webhook trigger requests regardless of origin.  This member is required.",
+				Description: "Supported options are GITHUB_HMAC, IP, and UNAUTHENTICATED",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Definition.Authentication"),
 			},
 			{
-				Name:          "authentication_allowed_ip_range",
-				Description:   "The property used to configure acceptance of webhooks in an IP address range. For IP, only the AllowedIPRange property must be set",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("Definition.AuthenticationConfiguration.AllowedIPRange"),
-				IgnoreInTests: true,
+				Name:        "authentication_allowed_ip_range",
+				Description: "The property used to configure acceptance of webhooks in an IP address range For IP, only the AllowedIPRange property must be set",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Definition.AuthenticationConfiguration.AllowedIPRange"),
 			},
 			{
-				Name:          "authentication_secret_token",
-				Description:   "The property used to configure GitHub authentication",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("Definition.AuthenticationConfiguration.SecretToken"),
-				IgnoreInTests: true,
+				Name:        "authentication_secret_token",
+				Description: "The property used to configure GitHub authentication",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("Definition.AuthenticationConfiguration.SecretToken"),
 			},
 			{
 				Name:        "name",
-				Description: "The name of the webhook.  This member is required.",
+				Description: "The name of the webhook",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Definition.Name"),
 			},
@@ -68,7 +65,7 @@ func Webhooks() *schema.Table {
 			},
 			{
 				Name:        "target_pipeline",
-				Description: "The name of the pipeline you want to connect to the webhook.  This member is required.",
+				Description: "The name of the pipeline you want to connect to the webhook",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Definition.TargetPipeline"),
 			},
@@ -79,30 +76,27 @@ func Webhooks() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the webhook.",
+				Description: "The Amazon Resource Name (ARN) of the webhook",
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "error_code",
-				Description:   "The number code of the error.",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:        "error_code",
+				Description: "The number code of the error",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:          "error_message",
-				Description:   "The text of the error message about the webhook.",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:        "error_message",
+				Description: "The text of the error message about the webhook",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:          "last_triggered",
-				Description:   "The date and time a webhook was last successfully triggered, in timestamp format.",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
+				Name:        "last_triggered",
+				Description: "The date and time a webhook was last successfully triggered, in timestamp format",
+				Type:        schema.TypeTimestamp,
 			},
 			{
 				Name:        "tags",
-				Description: "The tags associated with the webhook.",
+				Description: "The tags associated with the webhook",
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
@@ -110,8 +104,8 @@ func Webhooks() *schema.Table {
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_codepipeline_webhook_filters",
-				Description: "The event criteria that specify when a webhook notification is sent to your URL.",
-				Resolver:    fetchCodepipelineWebhookFilters,
+				Description: "The event criteria that specify when a webhook notification is sent to your URL",
+				Resolver:    schema.PathTableResolver("Definition.Filters"),
 				Columns: []schema.Column{
 					{
 						Name:        "webhook_cq_id",
@@ -157,13 +151,5 @@ func fetchCodepipelineWebhooks(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		config.NextToken = response.NextToken
 	}
-	return nil
-}
-func fetchCodepipelineWebhookFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.ListWebhookItem)
-	if r.Definition == nil {
-		return nil
-	}
-	res <- r.Definition.Filters
 	return nil
 }

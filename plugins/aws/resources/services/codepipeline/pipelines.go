@@ -2,7 +2,6 @@ package codepipeline
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
@@ -12,16 +11,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-type StageWrapper struct {
-	types.StageDeclaration
-	StageOrder int32
-}
-
 //go:generate cq-gen --resource pipelines --config gen.hcl --output .
 func Pipelines() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_codepipeline_pipelines",
-		Description:  "Represents the output of a GetPipeline action.",
+		Description:  "Represents the output of a GetPipeline action",
 		Resolver:     fetchCodepipelinePipelines,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
 		IgnoreError:  client.IgnoreCommonErrors,
@@ -44,35 +38,35 @@ func Pipelines() *schema.Table {
 				Name:        "tags",
 				Description: "The tags associated with the pipeline.",
 				Type:        schema.TypeJSON,
-				Resolver:    ResolveCodepipelinePipelineTags,
+				Resolver:    resolveCodepipelinePipelineTags,
 			},
 			{
 				Name:        "created",
-				Description: "The date and time the pipeline was created, in timestamp format.",
+				Description: "The date and time the pipeline was created, in timestamp format",
 				Type:        schema.TypeTimestamp,
 				Resolver:    schema.PathResolver("Metadata.Created"),
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the pipeline.",
+				Description: "The Amazon Resource Name (ARN) of the pipeline",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Metadata.PipelineArn"),
 			},
 			{
 				Name:        "updated",
-				Description: "The date and time the pipeline was last updated, in timestamp format.",
+				Description: "The date and time the pipeline was last updated, in timestamp format",
 				Type:        schema.TypeTimestamp,
 				Resolver:    schema.PathResolver("Metadata.Updated"),
 			},
 			{
 				Name:        "name",
-				Description: "The name of the pipeline.  This member is required.",
+				Description: "The name of the pipeline",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Pipeline.Name"),
 			},
 			{
 				Name:        "role_arn",
-				Description: "The Amazon Resource Name (ARN) for AWS CodePipeline to use to either perform actions with no actionRoleArn, or to use to assume roles for actions with an actionRoleArn.",
+				Description: "The Amazon Resource Name (ARN) for AWS CodePipeline to use to either perform actions with no actionRoleArn, or to use to assume roles for actions with an actionRoleArn",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Pipeline.RoleArn"),
 			},
@@ -84,7 +78,7 @@ func Pipelines() *schema.Table {
 			},
 			{
 				Name:        "artifact_store_type",
-				Description: "The type of the artifact store, such as S3.  This member is required.",
+				Description: "The type of the artifact store, such as S3",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Pipeline.ArtifactStore.Type"),
 			},
@@ -96,28 +90,27 @@ func Pipelines() *schema.Table {
 			},
 			{
 				Name:        "artifact_store_encryption_key_type",
-				Description: "The type of encryption key, such as an AWS Key Management Service (AWS KMS) key. When creating or updating a pipeline, the value must be set to 'KMS'.",
+				Description: "The type of encryption key, such as an AWS Key Management Service (AWS KMS) key When creating or updating a pipeline, the value must be set to 'KMS'",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Pipeline.ArtifactStore.EncryptionKey.Type"),
 			},
 			{
-				Name:          "artifact_stores",
-				Description:   "A mapping of artifactStore objects and their corresponding AWS Regions",
-				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("Pipeline.ArtifactStores"),
-				IgnoreInTests: true,
+				Name:        "artifact_stores",
+				Description: "A mapping of artifactStore objects and their corresponding AWS Regions",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Pipeline.ArtifactStores"),
 			},
 			{
 				Name:        "version",
 				Description: "The version number of the pipeline",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("Pipeline.Version"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_codepipeline_pipeline_stages",
-				Description: "Represents information about a stage and its definition.",
+				Description: "Represents information about a stage and its definition",
 				Resolver:    fetchCodepipelinePipelineStages,
 				Columns: []schema.Column{
 					{
@@ -129,26 +122,26 @@ func Pipelines() *schema.Table {
 					{
 						Name:        "stage_order",
 						Description: "The stage order in the pipeline.",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "name",
-						Description: "The name of the stage.  This member is required.",
+						Description: "The name of the stage",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:          "blockers",
-						Description:   "Reserved for future use.",
+						Description:   "Reserved for future use",
 						Type:          schema.TypeJSON,
-						Resolver:      resolvePipelineStagesBlockers,
+						Resolver:      schema.PathResolver("Blockers"),
 						IgnoreInTests: true,
 					},
 				},
 				Relations: []*schema.Table{
 					{
 						Name:        "aws_codepipeline_pipeline_stage_actions",
-						Description: "Represents information about an action declaration.",
-						Resolver:    fetchCodepipelinePipelineStageActions,
+						Description: "Represents information about an action declaration",
+						Resolver:    schema.PathTableResolver("Actions"),
 						Columns: []schema.Column{
 							{
 								Name:        "pipeline_stage_cq_id",
@@ -176,13 +169,13 @@ func Pipelines() *schema.Table {
 							},
 							{
 								Name:        "version",
-								Description: "A string that describes the action version.  This member is required.",
+								Description: "A string that describes the action version",
 								Type:        schema.TypeString,
 								Resolver:    schema.PathResolver("ActionTypeId.Version"),
 							},
 							{
 								Name:        "name",
-								Description: "The action declaration's name.  This member is required.",
+								Description: "The action declaration's name",
 								Type:        schema.TypeString,
 							},
 							{
@@ -192,9 +185,9 @@ func Pipelines() *schema.Table {
 							},
 							{
 								Name:        "input_artifacts",
-								Description: "The name or ID of the artifact consumed by the action, such as a test or build artifact.",
+								Description: "The name or ID of the artifact consumed by the action, such as a test or build artifact",
 								Type:        schema.TypeStringArray,
-								Resolver:    resolvePipelineStageActionsInputArtifacts,
+								Resolver:    schema.PathResolver("InputArtifacts.Name"),
 							},
 							{
 								Name:          "namespace",
@@ -204,13 +197,13 @@ func Pipelines() *schema.Table {
 							},
 							{
 								Name:        "output_artifacts",
-								Description: "The name or ID of the result of the action declaration, such as a test or build artifact.",
+								Description: "The name or ID of the result of the action declaration, such as a test or build artifact",
 								Type:        schema.TypeStringArray,
-								Resolver:    resolvePipelineStageActionsOutputArtifacts,
+								Resolver:    schema.PathResolver("OutputArtifacts.Name"),
 							},
 							{
 								Name:          "region",
-								Description:   "The action declaration's AWS Region, such as us-east-1.",
+								Description:   "The action declaration's AWS Region, such as us-east-1",
 								Type:          schema.TypeString,
 								IgnoreInTests: true,
 							},
@@ -222,8 +215,8 @@ func Pipelines() *schema.Table {
 							},
 							{
 								Name:        "run_order",
-								Description: "The order in which actions are run.",
-								Type:        schema.TypeInt,
+								Description: "The order in which actions are run",
+								Type:        schema.TypeBigInt,
 							},
 						},
 					},
@@ -268,7 +261,7 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-func ResolveCodepipelinePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveCodepipelinePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	pipeline := resource.Item.(*codepipeline.GetPipelineOutput)
 
 	cl := meta.(*client.Client)
@@ -285,6 +278,11 @@ func ResolveCodepipelinePipelineTags(ctx context.Context, meta schema.ClientMeta
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
 }
 func fetchCodepipelinePipelineStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	type StageWrapper struct {
+		types.StageDeclaration
+		StageOrder int32
+	}
+
 	r := parent.Item.(*codepipeline.GetPipelineOutput)
 	for i, stage := range r.Pipeline.Stages {
 		res <- StageWrapper{
@@ -293,33 +291,4 @@ func fetchCodepipelinePipelineStages(ctx context.Context, meta schema.ClientMeta
 		}
 	}
 	return nil
-}
-func resolvePipelineStagesBlockers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(StageWrapper)
-	data, err := json.Marshal(r.Blockers)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func fetchCodepipelinePipelineStageActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(StageWrapper)
-	res <- r.Actions
-	return nil
-}
-func resolvePipelineStageActionsInputArtifacts(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ActionDeclaration)
-	artifacts := make([]*string, 0)
-	for _, a := range r.InputArtifacts {
-		artifacts = append(artifacts, a.Name)
-	}
-	return diag.WrapError(resource.Set(c.Name, artifacts))
-}
-func resolvePipelineStageActionsOutputArtifacts(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ActionDeclaration)
-	artifacts := make([]*string, 0)
-	for _, a := range r.OutputArtifacts {
-		artifacts = append(artifacts, a.Name)
-	}
-	return diag.WrapError(resource.Set(c.Name, artifacts))
 }
