@@ -1,0 +1,16 @@
+cloudquery:
+  providers:
+    - name: azure
+      version: latest
+  connection:
+    type: postgres
+    username: postgres
+    password: pass
+    host: localhost
+    port: 5432
+    database: postgres
+    sslmode: disable
+providers:
+  - name: azure
+    resources:
+      - '*'
