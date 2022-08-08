@@ -9,7 +9,6 @@ authors: yevgenypats
 
 In this blog post, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your cloud asset inventory in PostgreSQL and build a fully automated Restful API query layer with [PostgREST](https://postgrest.org/en/stable/). This can be used as a base for many custom use cases: from infrastructure search to security, cost and infrastructure automation.
 
-
 ## General Architecture
 
 - **ETL (Extract-Transform-Load) ingestion layer:** [CloudQuery](https://github.com/cloudquery/cloudquery)
@@ -40,7 +39,7 @@ Full full details, checkout [PostgREST](https://postgrest.org/en/stable/tutorial
 
 To run it locally, all you need is the following `cq.conf` file as input for PostgREST (adjust the PG URL accordingly):
 
-```plain text
+```
 db-uri = "postgres://postgres:pass@localhost:5432/postgres"
 db-schemas = "public"
 db-anon-role = "postgres"
