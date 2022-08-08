@@ -15,9 +15,9 @@ func Ec2KeyPairs() *schema.Table {
 		Description:   "Describes an EC2 Key Pair.",
 		Resolver:      fetchEc2KeyPairs,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreCommonErrors,
+		IgnoreError:   client.IgnoreWithInvalidAction,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "key_name"}},
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"key_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
