@@ -257,9 +257,7 @@ func fetchDirectconnectGatewayAttachments(ctx context.Context, meta schema.Clien
 	svc := c.Services().Directconnect
 	config := directconnect.DescribeDirectConnectGatewayAttachmentsInput{DirectConnectGatewayId: gateway.DirectConnectGatewayId}
 	for {
-		output, err := svc.DescribeDirectConnectGatewayAttachments(ctx, &config, func(options *directconnect.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeDirectConnectGatewayAttachments(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

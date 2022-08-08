@@ -388,9 +388,7 @@ func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeTransitGateways(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeTransitGateways(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -417,9 +415,7 @@ func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMe
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeTransitGatewayAttachments(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeTransitGatewayAttachments(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -446,9 +442,7 @@ func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMe
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeTransitGatewayRouteTables(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeTransitGatewayRouteTables(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -475,9 +469,7 @@ func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.Clien
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeTransitGatewayVpcAttachments(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeTransitGatewayVpcAttachments(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -505,9 +497,7 @@ func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.C
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeTransitGatewayPeeringAttachments(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeTransitGatewayPeeringAttachments(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -535,9 +525,7 @@ func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.Cli
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeTransitGatewayMulticastDomains(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeTransitGatewayMulticastDomains(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

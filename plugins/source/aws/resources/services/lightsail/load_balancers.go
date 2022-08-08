@@ -343,9 +343,7 @@ func fetchLightsailLoadBalancers(ctx context.Context, meta schema.ClientMeta, pa
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetLoadBalancers(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetLoadBalancers(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -382,9 +380,7 @@ func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	response, err := svc.GetLoadBalancerTlsCertificates(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
-	})
+	response, err := svc.GetLoadBalancerTlsCertificates(ctx, &input)
 	if err != nil {
 		if c.IsNotFoundError(err) {
 			return nil

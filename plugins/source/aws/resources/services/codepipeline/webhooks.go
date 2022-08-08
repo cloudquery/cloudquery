@@ -138,9 +138,7 @@ func fetchCodepipelineWebhooks(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().CodePipeline
 	config := codepipeline.ListWebhooksInput{}
 	for {
-		response, err := svc.ListWebhooks(ctx, &config, func(options *codepipeline.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListWebhooks(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

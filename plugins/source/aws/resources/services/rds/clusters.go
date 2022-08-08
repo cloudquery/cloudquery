@@ -494,9 +494,7 @@ func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	for {
-		response, err := svc.DescribeDBClusters(ctx, &config, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeDBClusters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

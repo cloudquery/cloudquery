@@ -161,9 +161,7 @@ func fetchLightsailAlarms(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetAlarms(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetAlarms(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

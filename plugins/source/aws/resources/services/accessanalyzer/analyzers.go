@@ -270,9 +270,7 @@ func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 		AnalyzerArn: analyzer.Arn,
 	}
 	for {
-		response, err := svc.ListFindings(ctx, &config, func(options *accessanalyzer.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListFindings(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -298,9 +296,7 @@ func fetchAccessAnalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.Cl
 		AnalyzerName: analyzer.Name,
 	}
 	for {
-		response, err := svc.ListArchiveRules(ctx, &config, func(options *accessanalyzer.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListArchiveRules(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

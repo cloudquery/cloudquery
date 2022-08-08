@@ -360,9 +360,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv2
 	for {
-		response, err := svc.DescribeListeners(ctx, &config, func(options *elbv2.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeListeners(ctx, &config)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil

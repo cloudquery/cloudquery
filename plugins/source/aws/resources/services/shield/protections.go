@@ -86,9 +86,7 @@ func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := c.Services().Shield
 	config := shield.ListProtectionsInput{}
 	for {
-		output, err := svc.ListProtections(ctx, &config, func(o *shield.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.ListProtections(ctx, &config)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil

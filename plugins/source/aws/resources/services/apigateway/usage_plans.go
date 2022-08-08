@@ -200,9 +200,7 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	for {
-		response, err := svc.GetUsagePlans(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetUsagePlans(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -225,9 +223,7 @@ func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, p
 	svc := c.Services().Apigateway
 	config := apigateway.GetUsagePlanKeysInput{UsagePlanId: r.Id}
 	for {
-		response, err := svc.GetUsagePlanKeys(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetUsagePlanKeys(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

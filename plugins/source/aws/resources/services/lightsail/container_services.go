@@ -320,9 +320,7 @@ func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta
 	var input lightsail.GetContainerServicesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	response, err := svc.GetContainerServices(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
-	})
+	response, err := svc.GetContainerServices(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -336,9 +334,7 @@ func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	deployments, err := svc.GetContainerServiceDeployments(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
-	})
+	deployments, err := svc.GetContainerServiceDeployments(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -352,9 +348,7 @@ func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.Clien
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	deployments, err := svc.GetContainerImages(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
-	})
+	deployments, err := svc.GetContainerImages(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}

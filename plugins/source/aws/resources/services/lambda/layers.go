@@ -177,9 +177,7 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
 	for {
-		response, err := svc.ListLayers(ctx, &input, func(options *lambda.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListLayers(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

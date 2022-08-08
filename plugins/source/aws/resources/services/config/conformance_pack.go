@@ -161,9 +161,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 	config := configservice.DescribeConformancePacksInput{}
 	var ae smithy.APIError
 	for {
-		resp, err := c.Services().ConfigService.DescribeConformancePacks(ctx, &config, func(options *configservice.Options) {
-			options.Region = c.Region
-		})
+		resp, err := c.Services().ConfigService.DescribeConformancePacks(ctx, &config)
 
 		// This is a workaround until this bug is fixed = https://github.com/aws/aws-sdk-go-v2/issues/1539
 		if (c.Region == "af-south-1" || c.Region == "ap-northeast-3") && errors.As(err, &ae) && ae.ErrorCode() == "AccessDeniedException" {
@@ -198,9 +196,7 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 		ConformancePackName: conformancePackDetail.ConformancePackName,
 	}
 	for {
-		resp, err := cs.DescribeConformancePackCompliance(ctx, &params, func(options *configservice.Options) {
-			options.Region = c.Region
-		})
+		resp, err := cs.DescribeConformancePackCompliance(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -212,9 +208,7 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 				},
 			}
 			for {
-				output, err := cs.GetConformancePackComplianceDetails(ctx, detailParams, func(options *configservice.Options) {
-					options.Region = c.Region
-				})
+				output, err := cs.GetConformancePackComplianceDetails(ctx, detailParams)
 				if err != nil {
 					return diag.WrapError(err)
 				}

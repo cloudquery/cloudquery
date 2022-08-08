@@ -347,9 +347,7 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabases(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabases(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -374,9 +372,7 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabaseParameters(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseParameters(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -397,9 +393,7 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabaseEvents(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseEvents(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -418,9 +412,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	streams, err := svc.GetRelationalDatabaseLogStreams(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
-	})
+	streams, err := svc.GetRelationalDatabaseLogStreams(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -455,9 +447,7 @@ func fetchLogEvents(ctx context.Context, res chan<- interface{}, c *client.Clien
 		EndTime:                &endTime,
 	}
 	for {
-		response, err := svc.GetRelationalDatabaseLogEvents(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseLogEvents(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

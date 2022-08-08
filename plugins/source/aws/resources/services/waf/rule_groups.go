@@ -71,9 +71,7 @@ func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	service := c.Services().Waf
 	config := waf.ListRuleGroupsInput{}
 	for {
-		output, err := service.ListRuleGroups(ctx, &config, func(options *waf.Options) {
-			options.Region = c.Region
-		})
+		output, err := service.ListRuleGroups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -108,9 +106,7 @@ func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, res
 	listActivatedRulesConfig := waf.ListActivatedRulesInRuleGroupInput{RuleGroupId: ruleGroup.RuleGroupId}
 	var ruleIDs []string
 	for {
-		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig, func(options *waf.Options) {
-			options.Region = awsClient.Region
-		})
+		rules, err := service.ListActivatedRulesInRuleGroup(ctx, &listActivatedRulesConfig)
 		if err != nil {
 			return diag.WrapError(err)
 		}

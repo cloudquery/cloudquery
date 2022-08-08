@@ -302,9 +302,7 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
 	for {
-		output, err := svc.DescribeStacks(ctx, &config, func(options *cloudformation.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeStacks(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -337,9 +335,7 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
 	for {
-		output, err := svc.ListStackResources(ctx, &config, func(options *cloudformation.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.ListStackResources(ctx, &config)
 		if err != nil {
 			if client.IsErrorRegex(err, "ValidationError", validStackNotFoundRegex) {
 				meta.Logger().Debug("received ValidationError on ListStackResources, stack does not exist", "region", c.Region, "err", err)

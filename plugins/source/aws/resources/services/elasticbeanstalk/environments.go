@@ -406,9 +406,7 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	c := meta.(*client.Client)
 	svc := c.Services().ElasticBeanstalk
 	for {
-		response, err := svc.DescribeEnvironments(ctx, &config, func(options *elasticbeanstalk.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeEnvironments(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -464,9 +462,7 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,
 	}
-	output, err := svc.DescribeConfigurationOptions(ctx, &configOptionsIn, func(options *elasticbeanstalk.Options) {
-		options.Region = c.Region
-	})
+	output, err := svc.DescribeConfigurationOptions(ctx, &configOptionsIn)
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment
@@ -495,9 +491,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,
 	}
-	output, err := svc.DescribeConfigurationSettings(ctx, &configOptionsIn, func(options *elasticbeanstalk.Options) {
-		options.Region = c.Region
-	})
+	output, err := svc.DescribeConfigurationSettings(ctx, &configOptionsIn)
 	if err != nil {
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment

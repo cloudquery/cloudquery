@@ -277,9 +277,7 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudwatch
 	for {
-		response, err := svc.DescribeAlarms(ctx, &config, func(o *cloudwatch.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeAlarms(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)

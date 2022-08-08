@@ -310,9 +310,7 @@ func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv2
 	for {
-		response, err := svc.DescribeLoadBalancers(ctx, &config, func(options *elbv2.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

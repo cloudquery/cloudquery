@@ -48,9 +48,7 @@ func fetchBackupGlobalSettings(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().Backup
 	input := backup.DescribeGlobalSettingsInput{}
 
-	output, err := svc.DescribeGlobalSettings(ctx, &input, func(o *backup.Options) {
-		o.Region = c.Region
-	})
+	output, err := svc.DescribeGlobalSettings(ctx, &input)
 	if err != nil {
 		if client.IgnoreAccessDeniedServiceDisabled(err) || client.IsAWSError(err, "ERROR_9601") /* "Your account is not a member of an organization" */ {
 			meta.Logger().Debug("received access denied on DescribeGlobalSettings", "err", err)

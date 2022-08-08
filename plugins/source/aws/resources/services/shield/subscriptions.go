@@ -96,9 +96,7 @@ func fetchShieldSubscriptions(ctx context.Context, meta schema.ClientMeta, paren
 	c := meta.(*client.Client)
 	svc := c.Services().Shield
 	config := shield.DescribeSubscriptionInput{}
-	output, err := svc.DescribeSubscription(ctx, &config, func(o *shield.Options) {
-		o.Region = c.Region
-	})
+	output, err := svc.DescribeSubscription(ctx, &config)
 	if err != nil {
 		if c.IsNotFoundError(err) {
 			return nil

@@ -95,9 +95,7 @@ func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, paren
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeInternetGateways(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeInternetGateways(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

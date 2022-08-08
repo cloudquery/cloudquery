@@ -192,9 +192,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 	}
 
 	for {
-		response, err := svc.ListSecurityProfiles(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListSecurityProfiles(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -229,9 +227,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 
 	var targets []string
 	for {
-		response, err := svc.ListTargetsForSecurityProfile(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTargetsForSecurityProfile(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -257,9 +253,7 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 	tags := make(map[string]string)
 
 	for {
-		response, err := svc.ListTagsForResource(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
 			return diag.WrapError(err)

@@ -456,9 +456,7 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 	svc := c.Services().Lightsail
 	input := lightsail.GetInstancesInput{}
 	for {
-		output, err := svc.GetInstances(ctx, &input, func(o *lightsail.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.GetInstances(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -476,9 +474,7 @@ func ResolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	cli := meta.(*client.Client)
 	svc := cli.Services().Lightsail
 	input := lightsail.GetInstanceAccessDetailsInput{InstanceName: r.Name}
-	output, err := svc.GetInstanceAccessDetails(ctx, &input, func(o *lightsail.Options) {
-		o.Region = cli.Region
-	})
+	output, err := svc.GetInstanceAccessDetails(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -519,9 +515,7 @@ func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMet
 	cli := meta.(*client.Client)
 	svc := cli.Services().Lightsail
 	input := lightsail.GetInstancePortStatesInput{InstanceName: r.Name}
-	output, err := svc.GetInstancePortStates(ctx, &input, func(o *lightsail.Options) {
-		o.Region = cli.Region
-	})
+	output, err := svc.GetInstancePortStates(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}

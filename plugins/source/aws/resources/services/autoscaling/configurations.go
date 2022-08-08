@@ -232,9 +232,7 @@ func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.Clien
 	svc := c.Services().Autoscaling
 	config := autoscaling.DescribeLaunchConfigurationsInput{}
 	for {
-		output, err := svc.DescribeLaunchConfigurations(ctx, &config, func(o *autoscaling.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeLaunchConfigurations(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

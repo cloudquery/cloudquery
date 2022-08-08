@@ -124,9 +124,7 @@ func fetchLightsailDatabaseSnapshots(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabaseSnapshots(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseSnapshots(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

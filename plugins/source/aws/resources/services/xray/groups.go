@@ -81,9 +81,7 @@ func fetchXrayGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 	svc := c.Services().Xray
 	input := xray.GetGroupsInput{}
 	for {
-		output, err := svc.GetGroups(ctx, &input, func(o *xray.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.GetGroups(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -102,9 +100,7 @@ func ResolveXrayGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	svc := cl.Services().Xray
 	params := xray.ListTagsForResourceInput{ResourceARN: group.GroupARN}
 
-	output, err := svc.ListTagsForResource(ctx, &params, func(o *xray.Options) {
-		o.Region = cl.Region
-	})
+	output, err := svc.ListTagsForResource(ctx, &params)
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

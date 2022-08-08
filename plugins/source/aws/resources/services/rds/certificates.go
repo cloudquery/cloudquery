@@ -85,9 +85,7 @@ func fetchRdsCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	for {
-		response, err := svc.DescribeCertificates(ctx, &config, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeCertificates(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -764,9 +764,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudfront
 	for {
-		response, err := svc.ListDistributions(ctx, &config, func(options *cloudfront.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListDistributions(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

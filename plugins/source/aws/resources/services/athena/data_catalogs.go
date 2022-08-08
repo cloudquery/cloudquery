@@ -217,9 +217,7 @@ func listDataCatalogs(ctx context.Context, meta schema.ClientMeta, detailChan ch
 	svc := c.Services().Athena
 	input := athena.ListDataCatalogsInput{}
 	for {
-		response, err := svc.ListDataCatalogs(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListDataCatalogs(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -268,9 +266,7 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 		CatalogName: parent.Item.(types.DataCatalog).Name,
 	}
 	for {
-		response, err := svc.ListDatabases(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListDatabases(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -291,9 +287,7 @@ func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.Clien
 		DatabaseName: parent.Item.(types.Database).Name,
 	}
 	for {
-		response, err := svc.ListTableMetadata(ctx, &input, func(options *athena.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTableMetadata(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -325,8 +319,6 @@ func dataCatalogDetail(ctx context.Context, meta schema.ClientMeta, resultsChan 
 	svc := c.Services().Athena
 	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
 		Name: catalogSummary.CatalogName,
-	}, func(options *athena.Options) {
-		options.Region = c.Region
 	})
 	if err != nil {
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its

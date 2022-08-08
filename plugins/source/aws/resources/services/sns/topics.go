@@ -115,9 +115,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	svc := c.Services().SNS
 	config := sns.ListTopicsInput{}
 	for {
-		output, err := svc.ListTopics(ctx, &config, func(o *sns.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.ListTopics(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -138,9 +136,7 @@ func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resourc
 	params := sns.GetTopicAttributesInput{
 		TopicArn: topic.TopicArn,
 	}
-	output, err := svc.GetTopicAttributes(ctx, &params, func(o *sns.Options) {
-		o.Region = c.Region
-	})
+	output, err := svc.GetTopicAttributes(ctx, &params)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -197,9 +193,7 @@ func resolveTopicTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	tagParams := sns.ListTagsForResourceInput{
 		ResourceArn: topic.TopicArn,
 	}
-	tags, err := svc.ListTagsForResource(ctx, &tagParams, func(o *sns.Options) {
-		o.Region = c.Region
-	})
+	tags, err := svc.ListTagsForResource(ctx, &tagParams)
 	if err != nil {
 		return diag.WrapError(err)
 	}

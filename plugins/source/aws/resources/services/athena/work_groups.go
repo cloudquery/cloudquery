@@ -416,9 +416,7 @@ func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan
 	svc := c.Services().Athena
 	input := athena.ListWorkGroupsInput{}
 	for {
-		response, err := svc.ListWorkGroups(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListWorkGroups(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -469,9 +467,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListPreparedStatementsInput{WorkGroup: wg.Name}
 	for {
-		response, err := svc.ListPreparedStatements(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListPreparedStatements(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -479,8 +475,6 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 			dc, err := svc.GetPreparedStatement(ctx, &athena.GetPreparedStatementInput{
 				WorkGroup:     wg.Name,
 				StatementName: d.StatementName,
-			}, func(options *athena.Options) {
-				options.Region = c.Region
 			})
 			if err != nil {
 				if c.IsNotFoundError(err) {
@@ -504,17 +498,13 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListQueryExecutionsInput{WorkGroup: wg.Name}
 	for {
-		response, err := svc.ListQueryExecutions(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListQueryExecutions(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		for _, d := range response.QueryExecutionIds {
 			dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
 				QueryExecutionId: aws.String(d),
-			}, func(options *athena.Options) {
-				options.Region = c.Region
 			})
 			if err != nil {
 				if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
@@ -538,17 +528,13 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 	wg := parent.Item.(types.WorkGroup)
 	input := athena.ListNamedQueriesInput{WorkGroup: wg.Name}
 	for {
-		response, err := svc.ListNamedQueries(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListNamedQueries(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		for _, d := range response.NamedQueryIds {
 			dc, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{
 				NamedQueryId: aws.String(d),
-			}, func(options *athena.Options) {
-				options.Region = c.Region
 			})
 			if err != nil {
 				if c.IsNotFoundError(err) {
@@ -577,8 +563,6 @@ func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan ch
 	wg := summary.(types.WorkGroupSummary)
 	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
 		WorkGroup: wg.Name,
-	}, func(options *athena.Options) {
-		options.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {

@@ -219,20 +219,18 @@ func SsmDocuments() *schema.Table {
 func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().SSM
-	optsFn := func(o *ssm.Options) {
-		o.Region = cl.Region
-	}
+
 	params := ssm.ListDocumentsInput{
 		Filters: []types.DocumentKeyValuesFilter{{Key: aws.String("Owner"), Values: []string{"Self"}}},
 	}
 	for {
-		output, err := svc.ListDocuments(ctx, &params, optsFn)
+		output, err := svc.ListDocuments(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 
 		for _, d := range output.DocumentIdentifiers {
-			dd, err := svc.DescribeDocument(ctx, &ssm.DescribeDocumentInput{Name: d.Name}, optsFn)
+			dd, err := svc.DescribeDocument(ctx, &ssm.DescribeDocumentInput{Name: d.Name})
 			if err != nil {
 				return diag.WrapError(err)
 			}
@@ -261,9 +259,7 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 	d := resource.Item.(*types.DocumentDescription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().SSM
-	optsFn := func(o *ssm.Options) {
-		o.Region = cl.Region
-	}
+
 	input := ssm.DescribeDocumentPermissionInput{
 		Name:           d.Name,
 		PermissionType: types.DocumentPermissionTypeShare,
@@ -271,7 +267,7 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 	var accountIDs []string
 	var infoList []types.AccountSharingInfo
 	for {
-		output, err := svc.DescribeDocumentPermission(ctx, &input, optsFn)
+		output, err := svc.DescribeDocumentPermission(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -244,9 +244,7 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 	svc := cl.Services().Backup
 	params := backup.ListBackupPlansInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupPlans.html
 	for {
-		result, err := svc.ListBackupPlans(ctx, &params, func(o *backup.Options) {
-			o.Region = cl.Region
-		})
+		result, err := svc.ListBackupPlans(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -305,9 +303,7 @@ func fetchBackupSelections(ctx context.Context, meta schema.ClientMeta, parent *
 		MaxResults:   aws.Int32(1000), // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupSelections.html
 	}
 	for {
-		result, err := svc.ListBackupSelections(ctx, &params, func(o *backup.Options) {
-			o.Region = cl.Region
-		})
+		result, err := svc.ListBackupSelections(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}

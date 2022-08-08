@@ -60,9 +60,7 @@ func fetchXrayEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().Xray
 	input := xray.GetEncryptionConfigInput{}
-	output, err := svc.GetEncryptionConfig(ctx, &input, func(o *xray.Options) {
-		o.Region = c.Region
-	})
+	output, err := svc.GetEncryptionConfig(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}

@@ -247,9 +247,7 @@ func fetchRedshiftSnapshots(ctx context.Context, meta schema.ClientMeta, parent 
 		MaxRecords:        aws.Int32(100),
 	}
 	for {
-		result, err := svc.DescribeClusterSnapshots(ctx, &params, func(o *redshift.Options) {
-			o.Region = cl.Region
-		})
+		result, err := svc.DescribeClusterSnapshots(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}

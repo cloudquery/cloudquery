@@ -122,9 +122,7 @@ func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMe
 	var config elasticbeanstalk.DescribeApplicationsInput
 	c := meta.(*client.Client)
 	svc := c.Services().ElasticBeanstalk
-	output, err := svc.DescribeApplications(ctx, &config, func(options *elasticbeanstalk.Options) {
-		options.Region = c.Region
-	})
+	output, err := svc.DescribeApplications(ctx, &config)
 	if err != nil {
 		return diag.WrapError(err)
 	}

@@ -158,9 +158,7 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 		StartTime: &types.TimeRange{FromInclusive: &start},
 	}
 	for {
-		output, err := svc.ListAttacks(ctx, &config, func(o *shield.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.ListAttacks(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -263,9 +263,7 @@ func fetchLightsailInstanceSnapshots(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetInstanceSnapshots(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetInstanceSnapshots(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

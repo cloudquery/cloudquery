@@ -429,9 +429,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 
 	var config elbv1.DescribeLoadBalancersInput
 	for {
-		response, err := svc.DescribeLoadBalancers(ctx, &config, func(options *elbv1.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

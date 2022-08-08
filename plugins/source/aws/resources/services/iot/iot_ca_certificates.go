@@ -121,9 +121,7 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 
 	svc := c.Services().IOT
 	for {
-		response, err := svc.ListCACertificates(ctx, &input, func(options *iot.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListCACertificates(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -156,9 +154,7 @@ func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.Client
 
 	var certs []string
 	for {
-		response, err := svc.ListCertificatesByCA(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListCertificatesByCA(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

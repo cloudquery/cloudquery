@@ -246,9 +246,7 @@ func fetchLightsailCertificates(ctx context.Context, meta schema.ClientMeta, par
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	response, err := svc.GetCertificates(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
-	})
+	response, err := svc.GetCertificates(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}

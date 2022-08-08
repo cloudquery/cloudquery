@@ -269,9 +269,7 @@ func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetDisks(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetDisks(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -293,9 +291,7 @@ func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, pa
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetDiskSnapshots(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetDiskSnapshots(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

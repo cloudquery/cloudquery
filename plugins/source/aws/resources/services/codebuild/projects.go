@@ -691,18 +691,14 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := c.Services().Codebuild
 	config := codebuild.ListProjectsInput{}
 	for {
-		response, err := svc.ListProjects(ctx, &config, func(options *codebuild.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListProjects(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		if len(response.Projects) == 0 {
 			break
 		}
-		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: response.Projects}, func(options *codebuild.Options) {
-			options.Region = c.Region
-		})
+		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: response.Projects})
 		if err != nil {
 			return diag.WrapError(err)
 		}

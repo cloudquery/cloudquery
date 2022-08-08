@@ -151,9 +151,7 @@ func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	svc := c.Services().EC2
 	config := ec2.DescribeVolumesInput{}
 	for {
-		response, err := svc.DescribeVolumes(ctx, &config, func(o *ec2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeVolumes(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

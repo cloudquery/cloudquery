@@ -754,9 +754,7 @@ func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	for {
-		response, err := svc.DescribeDBInstances(ctx, &config, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeDBInstances(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

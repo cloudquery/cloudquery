@@ -169,9 +169,7 @@ func fetchRdsClusterSnapshots(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().RDS
 	var input rds.DescribeDBClusterSnapshotsInput
 	for {
-		output, err := svc.DescribeDBClusterSnapshots(ctx, &input, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeDBClusterSnapshots(ctx, &input)
 		if err != nil {
 			return nil
 		}

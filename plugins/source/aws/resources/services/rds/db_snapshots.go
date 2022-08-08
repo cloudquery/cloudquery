@@ -210,9 +210,7 @@ func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().RDS
 	var input rds.DescribeDBSnapshotsInput
 	for {
-		output, err := svc.DescribeDBSnapshots(ctx, &input, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeDBSnapshots(ctx, &input)
 		if err != nil {
 			return nil
 		}
