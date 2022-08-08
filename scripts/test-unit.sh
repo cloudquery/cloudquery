@@ -40,9 +40,7 @@ for f in $GO_MOD_DIRS; do
             fi
         fi
         echo "Running unit tests $f"
-        go get -v -t -d ./...
-        go build -v .
-        go test ./...
+        go test -v ./...
         cd -
     fi
 done
