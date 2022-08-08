@@ -1,0 +1,13 @@
+{
+  "cli": "0.32.1",
+  "plugins/aws": "0.2.9",
+  "plugins/azure": "0.2.9",
+  "plugins/cloudflare": "0.2.9",
+  "plugins/digitalocean": "0.2.9",
+  "plugins/fuzz": "0.2.9",
+  "plugins/gcp": "0.2.9",
+  "plugins/github": "0.2.9",
+  "plugins/k8s": "0.2.9",
+  "plugins/okta": "0.2.9",
+  "plugins/terraform": "0.2.9"
+}
