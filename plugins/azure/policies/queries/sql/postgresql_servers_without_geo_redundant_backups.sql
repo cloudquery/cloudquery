@@ -1,0 +1,13 @@
+insert into azure_policy_results
+SELECT
+  :'execution_time',
+  :'framework',
+  :'check_id',
+  'Geo-redundant backup should be enabled for Azure Database for PostgreSQL',
+  subscription_id,
+  id,
+  case
+    when storage_profile_geo_redundant_backup IS DISTINCT FROM 'Enabled'
+      then 'fail' else 'pass'
+  end
+FROM azure_postgresql_servers
