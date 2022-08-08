@@ -8,22 +8,12 @@ install-cq:
 	curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_${ARCH} -o cloudquery
 	chmod a+x cloudquery
 
-# start a timescale db running in a local container
-.PHONY: ts-start
-ts-start:
-	docker run -p 5433:5432 -e POSTGRES_PASSWORD=pass -d timescale/timescaledb:latest-pg14
-
-# stop the timescale db running in a local container
-.PHONY: ts-stop
-ts-stop:
-	docker stop $$(docker ps -q --filter ancestor=timescale/timescaledb:latest-pg14)
-
-# start a running docker container
+# start postgres in docker container
 .PHONY: pg-start
 pg-start:
 	docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
 
-# stop a running docker container
+# stop running postgres docker container
 .PHONY: pg-stop
 pg-stop:
 	docker stop $$(docker ps -q --filter ancestor=postgres:latest)
@@ -33,7 +23,7 @@ pg-stop:
 pg-connect:
 	psql -h localhost -p 5432 -U postgres -d postgres
 
-# build the cq aws provider
+# build the cq provider
 .PHONY: build
 build:
 	go build -o cq-provider
@@ -58,7 +48,7 @@ generate-mocks:
 test-unit:
 	go test -timeout 3m ./...
 
-# Run an integration tests
+# Run integration tests
 .PHONY: test-integration
 test-integration:
 	@if [[ "$(tableName)" == "" ]]; then go test -run=TestIntegration -timeout 3m -tags=integration ./...; else go test -run="TestIntegration/$(tableName)" -timeout 3m -tags=integration ./...; fi
