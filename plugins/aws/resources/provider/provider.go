@@ -177,6 +177,7 @@ func Provider() *provider.Provider {
 			"glue.dev_endpoints":                      glue.DevEndpoints(),
 			"glue.jobs":                               glue.Jobs(),
 			"glue.ml_transforms":                      glue.MlTransforms(),
+			"glue.registries":                         glue.Registries(),
 			"glue.triggers":                           glue.Triggers(),
 			"glue.security_configurations":            glue.SecurityConfigurations(),
 			"glue.workflows":                          glue.Workflows(),
