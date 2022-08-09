@@ -206,3 +206,19 @@ func (mr *MockApiMockRecorder) ListZonesContext(arg0 interface{}, arg1 ...interf
 	varargs := append([]interface{}{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListZonesContext", reflect.TypeOf((*MockApi)(nil).ListZonesContext), varargs...)
 }
+
+// ZoneLevelAccessGroups mocks base method.
+func (m *MockApi) ZoneLevelAccessGroups(arg0 context.Context, arg1 string, arg2 cloudflare.PaginationOptions) ([]cloudflare.AccessGroup, cloudflare.ResultInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ZoneLevelAccessGroups", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]cloudflare.AccessGroup)
+	ret1, _ := ret[1].(cloudflare.ResultInfo)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ZoneLevelAccessGroups indicates an expected call of ZoneLevelAccessGroups.
+func (mr *MockApiMockRecorder) ZoneLevelAccessGroups(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ZoneLevelAccessGroups", reflect.TypeOf((*MockApi)(nil).ZoneLevelAccessGroups), arg0, arg1, arg2)
+}

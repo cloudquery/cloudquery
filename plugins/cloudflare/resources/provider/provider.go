@@ -18,6 +18,7 @@ func Provider() *provider.Provider {
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
 		ResourceMap: map[string]*schema.Table{
+			"access_groups":   services.AccessGroups(),
 			"accounts":        services.Accounts(),
 			"zones":           services.Zones(),
 			"ips":             services.Ips(),
