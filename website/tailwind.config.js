@@ -31,6 +31,11 @@ module.exports = {
         red: colors.red,
         yellow: colors.yellow,
       },
+      fill: {
+        gray: colors.zinc[400],
+        white: colors.zinc[100],
+        dark: colors.zinc[600],
+      },
       screens: {
         sm: "640px",
         md: "768px",
