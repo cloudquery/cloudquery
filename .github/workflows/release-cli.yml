@@ -1,0 +1,65 @@
+name: release-cli
+on:
+  push:
+    tags:
+      - 'cli/v*.*.*'
+env:
+  CGO_ENABLED: 0
+
+jobs:
+  release-cli:
+    runs-on: ubuntu-latest
+    steps:
+      # Tag format is cli/<version>
+      - name: Split tag
+        id: split
+        run: |
+          tag=${{github.ref_name}}
+          echo ::set-output name=version::${tag##*/}
+      # Fail if not a valid SemVer string
+      - name: Parse semver string
+        id: semver_parser
+        uses: booxmedialtd/ws-action-parse-semver@966a26512c94239a00aa10b1b0c196906f7e1909
+        with:
+          input_string: ${{steps.split.outputs.version}}
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - name: Install GoReleaser
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        run: goreleaser release --rm-dist --skip-validate --skip-publish -f ./cli/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+
+      - name: Login to Docker Registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | \
+          docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
+      # # Publish to GitHub and Homebrew
+      # - name: Run GoReleaser Release
+      #   if: steps.semver_parser.outputs.prerelease == ''
+      #   run: goreleaser release --rm-dist -f ./cli/.goreleaser.yaml
+      #   env:
+      #     GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+      #     GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+
+      # Publish only to GitHub
+      - name: Run GoReleaser PreRelease
+        # if: steps.semver_parser.outputs.prerelease != ''
+        run: goreleaser release --rm-dist -f ./cli/.goreleaser.prerelease.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

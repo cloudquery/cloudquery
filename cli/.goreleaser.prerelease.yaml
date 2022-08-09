@@ -1,7 +1,13 @@
-# DONT EDIT. This file is synced from https://github.com/cloudquery/.github
+project_name: cli
+
+monorepo:
+  tag_prefix: cli/
+  dir: cli
+
 before:
   hooks:
-    - go mod download
+    - cmd: go mod download
+      dir: ./cli
 builds:
   - flags:
       - -buildmode=exe
@@ -11,7 +17,7 @@ builds:
       - GO111MODULE=on
     main: ./main.go
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/pkg/core.Version={{.Version}} -X github.com/cloudquery/cloudquery/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cmd.Date={{.Date}} -X github.com/cloudquery/cloudquery/cmd.APIKey=28iMwucm5GXsoevNGSfDl1LC6zV
+      - -s -w -X github.com/cloudquery/cloudquery/cli/pkg/core.Version={{.Version}} -X github.com/cloudquery/cloudquery/cli/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cli/cmd.Date={{.Date}} -X github.com/cloudquery/cloudquery/cli/cmd.APIKey=28iMwucm5GXsoevNGSfDl1LC6zV
     goos:
       - windows
       - linux
@@ -42,17 +48,6 @@ archives:
       386: i386
       amd64: x86_64
     format: zip
-dockers:
-  -
-    goos: linux
-    goarch: amd64
-    dockerfile: Dockerfile.goreleaser
-    image_templates:
-      - "ghcr.io/cloudquery/cloudquery:latest"
-      - "ghcr.io/cloudquery/cloudquery:{{.Version}}"
-      - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}"
-    build_flag_templates:
-      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
 checksum:
   name_template: 'checksums.txt'
 changelog:
@@ -61,6 +56,5 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-      
 release:
-  prerelease: auto
+  prerelease: true

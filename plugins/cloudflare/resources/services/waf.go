@@ -12,23 +12,18 @@ import (
 //go:generate cq-gen --resource waf --config waf.hcl --output .
 func Wafs() *schema.Table {
 	return &schema.Table{
-		Name:        "cloudflare_waf",
-		Description: "WAFPackage represents a WAF package configuration.",
-		Resolver:    fetchWafs,
-		Multiplex:   client.ZoneMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:         "cloudflare_waf",
+		Description:  "WAFPackage represents a WAF package configuration.",
+		Resolver:     fetchWafs,
+		Multiplex:    client.ZoneMultiplex,
+		DeleteFilter: client.DeleteAccountZoneFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAccountId,
-			},
-			{
-				Name:        "zone_id",
-				Description: "Zone identifier tag.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveZoneId,
 			},
 			{
 				Name:        "id",

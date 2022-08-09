@@ -12,11 +12,12 @@ import (
 //go:generate cq-gen --resource zones --config zones.hcl --output .
 func Zones() *schema.Table {
 	return &schema.Table{
-		Name:        "cloudflare_zones",
-		Description: "Zone describes a Cloudflare zone.",
-		Resolver:    fetchZones,
-		Multiplex:   client.AccountMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:         "cloudflare_zones",
+		Description:  "Zone describes a Cloudflare zone.",
+		Resolver:     fetchZones,
+		Multiplex:    client.AccountMultiplex,
+		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

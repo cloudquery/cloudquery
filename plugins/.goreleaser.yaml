@@ -1,6 +1,7 @@
 before:
   hooks:
-    - go mod download
+    - cmd: go mod download
+      dir: ./plugins/{{ .Var.component }}
 builds:
   - flags:
       - -buildmode=exe
@@ -8,8 +9,7 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     ldflags:
-      - -s -w -X github.com/cloudquery/cq-provider-github/resources.Version={{.Version}}
-
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/provider.Version={{.Version}}
     goos:
       - windows
       - linux
@@ -18,8 +18,8 @@ builds:
       - amd64
       - arm64
     ignore:
-       - goos: windows
-         goarch: arm64
+      - goos: windows
+        goarch: arm64
 archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: binary
@@ -39,3 +39,5 @@ signs:
       - "${signature}"
       - "--detach-sign"
       - "${artifact}"
+release:
+  prerelease: true

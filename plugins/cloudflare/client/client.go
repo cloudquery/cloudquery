@@ -44,37 +44,25 @@ func (c *Client) Logger() hclog.Logger {
 	return c.logger
 }
 
-func getCloudflareClient(config *Config) (*cloudflare.API, error) {
-	// Try to get the API token from the environment
-	token := config.Token
-	if token == "" {
-		token = getApiTokenFromEnv()
+func (c *Client) withAccountId(accountId string) *Client {
+	return &Client{
+		logger:        c.logger.With("account_id", obfuscateId(accountId)),
+		accountsZones: c.accountsZones,
+		clients:       c.clients,
+		ClientApi:     c.clients[accountId],
+		AccountId:     accountId,
 	}
+}
 
-	if token != "" {
-		clientApi, err := cloudflare.NewWithAPIToken(token)
-		if err != nil {
-			return nil, err
-		}
-		return clientApi, nil
+func (c *Client) withZoneId(accountId, zoneId string) *Client {
+	return &Client{
+		logger:        c.logger.With("account_id", obfuscateId(accountId), "zone_id", obfuscateId(zoneId)),
+		accountsZones: c.accountsZones,
+		clients:       c.clients,
+		ClientApi:     c.clients[accountId],
+		AccountId:     accountId,
+		ZoneId:        zoneId,
 	}
-
-	apiKey := config.ApiKey
-	apiEmail := config.ApiEmail
-
-	if config.ApiKey == "" || config.ApiEmail == "" {
-		apiKey, apiEmail = getApiKeyAndEmailFromEnv()
-	}
-
-	if apiKey != "" && apiEmail != "" {
-		clientApi, err := cloudflare.New(apiKey, apiEmail)
-		if err != nil {
-			return nil, err
-		}
-		return clientApi, nil
-	}
-
-	return nil, errors.New("no API token or API key/email provided")
 }
 
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
@@ -136,25 +124,28 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	return &c, nil
 }
 
-func (c *Client) withAccountId(accountId string) *Client {
-	return &Client{
-		logger:        c.logger.With("account_id", obfuscateId(accountId)),
-		accountsZones: c.accountsZones,
-		clients:       c.clients,
-		ClientApi:     c.clients[accountId],
-		AccountId:     accountId,
+func getCloudflareClient(config *Config) (*cloudflare.API, error) {
+	// Try to get the API token from the environment
+	token := config.Token
+	if token == "" {
+		token = getApiTokenFromEnv()
 	}
-}
 
-func (c *Client) withZoneId(accountId, zoneId string) *Client {
-	return &Client{
-		logger:        c.logger.With("account_id", obfuscateId(accountId), "zone_id", obfuscateId(zoneId)),
-		accountsZones: c.accountsZones,
-		clients:       c.clients,
-		ClientApi:     c.clients[accountId],
-		AccountId:     accountId,
-		ZoneId:        zoneId,
+	if token != "" {
+		return cloudflare.NewWithAPIToken(token)
 	}
+
+	apiKey, apiEmail := config.ApiKey, config.ApiEmail
+
+	if config.ApiKey == "" || config.ApiEmail == "" {
+		apiKey, apiEmail = getApiKeyAndEmailFromEnv()
+	}
+
+	if apiKey != "" && apiEmail != "" {
+		return cloudflare.New(apiKey, apiEmail)
+	}
+
+	return nil, errors.New("no API token or API key/email provided")
 }
 
 func obfuscateId(accountId string) string {

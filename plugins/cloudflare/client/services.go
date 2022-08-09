@@ -23,4 +23,8 @@ type Api interface {
 	ListWorkerRoutes(ctx context.Context, zoneID string) (cloudflare.WorkerRoutesResponse, error)
 	ListWorkerCronTriggers(ctx context.Context, accountID, scriptName string) ([]cloudflare.WorkerCronTrigger, error)
 	ListWorkersSecrets(ctx context.Context, script string) (cloudflare.WorkersListSecretsResponse, error)
+
+	ListCertificatePacks(ctx context.Context, zoneID string) ([]cloudflare.CertificatePack, error)
+
+	ZoneLevelAccessGroups(ctx context.Context, zoneID string, pageOpts cloudflare.PaginationOptions) ([]cloudflare.AccessGroup, cloudflare.ResultInfo, error)
 }
