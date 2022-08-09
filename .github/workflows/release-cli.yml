@@ -37,7 +37,6 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        uses: goreleaser/goreleaser-action@v3
         run: goreleaser release --rm-dist --skip-validate --skip-publish -f ./cli/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
@@ -48,22 +47,19 @@ jobs:
           echo "${{ secrets.GITHUB_TOKEN }}" | \
           docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
-      # Publish to GitHub and Homebrew
+      # # Publish to GitHub and Homebrew
       # - name: Run GoReleaser Release
       #   if: steps.semver_parser.outputs.prerelease == ''
-      #   uses: goreleaser/goreleaser-action@v3
-      #   with:
-      #     version: latest
-      #     args: release --rm-dist -f ./cli/.goreleaser.yaml
+      #   run: goreleaser release --rm-dist -f ./cli/.goreleaser.yaml
       #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+      #     GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
 
       # Publish only to GitHub
       - name: Run GoReleaser PreRelease
         # if: steps.semver_parser.outputs.prerelease != ''
-        uses: goreleaser/goreleaser-action@v3
-        with:
-          version: latest
-          args: release --rm-dist -f ./cli/.goreleaser.prerelease.yaml
+        run: goreleaser release --rm-dist -f ./cli/.goreleaser.prerelease.yaml
         env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
