@@ -1,0 +1,19 @@
+{
+  "release-type": "go",
+  "packages": {
+    "cli": { "component": "cli" },
+    "plugins/aws": { "component": "plugins/aws" },
+    "plugins/azure": { "component": "plugins/azure" },
+    "plugins/cloudflare": { "component": "plugins/cloudflare" },
+    "plugins/digitalocean": { "component": "plugins/digitalocean" },
+    "plugins/fuzz": { "component": "plugins/fuzz" },
+    "plugins/gcp": { "component": "plugins/gcp" },
+    "plugins/github": { "component": "plugins/github" },
+    "plugins/k8s": { "component": "plugins/k8s" },
+    "plugins/okta": { "component": "plugins/okta" },
+    "plugins/terraform": { "component": "plugins/terraform" }
+  },
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "tag-separator": "/"
+}
