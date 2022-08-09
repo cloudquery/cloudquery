@@ -9,4 +9,5 @@ monorepo:
 
 includes:
   - from_file:
-      path: ../.goreleaser.yaml
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
