@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/cloudquery/cq-provider-github/compare/v0.1.2...v0.1.3) (2022-08-09)
+
+
+### Bug Fixes
+
+* Remove Imposter releaser ([#23](https://github.com/cloudquery/cq-provider-github/issues/23)) ([9d47435](https://github.com/cloudquery/cq-provider-github/commit/9d47435c982e12f4415ba2bc36059b4f8576d903))
+
 ## [0.1.2](https://github.com/cloudquery/cq-provider-github/compare/v0.1.1...v0.1.2) (2022-08-07)
 
 
