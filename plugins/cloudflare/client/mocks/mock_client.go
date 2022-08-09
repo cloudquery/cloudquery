@@ -82,6 +82,21 @@ func (mr *MockApiMockRecorder) DNSRecords(arg0, arg1, arg2 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DNSRecords", reflect.TypeOf((*MockApi)(nil).DNSRecords), arg0, arg1, arg2)
 }
 
+// ListCertificatePacks mocks base method.
+func (m *MockApi) ListCertificatePacks(arg0 context.Context, arg1 string) ([]cloudflare.CertificatePack, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListCertificatePacks", arg0, arg1)
+	ret0, _ := ret[0].([]cloudflare.CertificatePack)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListCertificatePacks indicates an expected call of ListCertificatePacks.
+func (mr *MockApiMockRecorder) ListCertificatePacks(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCertificatePacks", reflect.TypeOf((*MockApi)(nil).ListCertificatePacks), arg0, arg1)
+}
+
 // ListWAFGroups mocks base method.
 func (m *MockApi) ListWAFGroups(arg0 context.Context, arg1, arg2 string) ([]cloudflare.WAFGroup, error) {
 	m.ctrl.T.Helper()

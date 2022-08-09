@@ -18,14 +18,15 @@ func Provider() *provider.Provider {
 		Configure:       client.Configure,
 		ErrorClassifier: client.ErrorClassifier,
 		ResourceMap: map[string]*schema.Table{
-			"access_groups":   services.AccessGroups(),
-			"accounts":        services.Accounts(),
-			"zones":           services.Zones(),
-			"ips":             services.Ips(),
-			"dns_records":     services.DNSRecords(),
-			"wafs":            services.Wafs(),
-			"workers_scripts": services.WorkersScripts(),
-			"workers_routes":  services.WorkersRoutes(),
+			"access_groups":     services.AccessGroups(),
+			"accounts":          services.Accounts(),
+			"certificate_packs": services.CertificatePacks(),
+			"dns_records":       services.DNSRecords(),
+			"ips":               services.Ips(),
+			"wafs":              services.Wafs(),
+			"workers_scripts":   services.WorkersScripts(),
+			"workers_routes":    services.WorkersRoutes(),
+			"zones":             services.Zones(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
