@@ -12,10 +12,11 @@ import (
 //go:generate cq-gen --resource accounts --config accounts.hcl --output .
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:        "cloudflare_accounts",
-		Description: "Account represents the root object that owns resources.",
-		Resolver:    fetchAccounts,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:         "cloudflare_accounts",
+		Description:  "Account represents the root object that owns resources.",
+		Resolver:     fetchAccounts,
+		DeleteFilter: client.DeleteFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "id",
@@ -175,7 +176,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			return diag.WrapError(err)
 		}
 		res <- accounts
-		if resp.TotalPages == resp.Page {
+		if !resp.HasMorePages() {
 			break
 		}
 		opt.Page = resp.Page + 1
@@ -197,7 +198,7 @@ func fetchAccountMembers(ctx context.Context, meta schema.ClientMeta, parent *sc
 			return diag.WrapError(err)
 		}
 		res <- accountMembers
-		if resp.TotalPages == resp.Page {
+		if !resp.HasMorePages() {
 			break
 		}
 		opt.Page = resp.Page + 1

@@ -15,19 +15,15 @@ resource "cloudflare" "" "waf" {
     ]
   }
 
+  deleteFilter "DeleteAccountZoneFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountZoneFilter"
+  }
+
   userDefinedColumn "account_id" {
     description = "The Account ID of the resource."
     type        = "string"
     resolver "resolveCFAccount" {
       path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
-    }
-  }
-
-  userDefinedColumn "zone_id" {
-    description = "Zone identifier tag."
-    type        = "string"
-    resolver "resolveCFZone" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveZoneId"
     }
   }
 

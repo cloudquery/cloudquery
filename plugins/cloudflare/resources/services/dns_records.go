@@ -12,10 +12,11 @@ import (
 //go:generate cq-gen --resource dns_records --config dns_records.hcl --output .
 func DNSRecords() *schema.Table {
 	return &schema.Table{
-		Name:        "cloudflare_dns_records",
-		Description: "DNSRecord represents a DNS record in a zone.",
-		Multiplex:   client.ZoneMultiplex,
-		Resolver:    fetchDnsRecords,
+		Name:         "cloudflare_dns_records",
+		Description:  "DNSRecord represents a DNS record in a zone.",
+		Multiplex:    client.ZoneMultiplex,
+		DeleteFilter: client.DeleteAccountZoneFilter,
+		Resolver:     fetchDnsRecords,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

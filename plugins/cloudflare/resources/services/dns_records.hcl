@@ -11,6 +11,10 @@ resource "cloudflare" "" "dns_records" {
     ]
   }
 
+  deleteFilter "DeleteAccountZoneFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountZoneFilter"
+  }
+
   userDefinedColumn "account_id" {
     description = "The Account ID of the resource."
     type        = "string"

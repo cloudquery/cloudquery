@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/cloudquery/cq-provider-cloudflare/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -16,8 +17,9 @@ type IpWrapper struct {
 //go:generate cq-gen --resource ips --config ips.hcl --output .
 func Ips() *schema.Table {
 	return &schema.Table{
-		Name:     "cloudflare_ips",
-		Resolver: fetchIps,
+		Name:         "cloudflare_ips",
+		Resolver:     fetchIps,
+		DeleteFilter: client.DeleteFilter,
 		Columns: []schema.Column{
 			{
 				Name:        "ip",

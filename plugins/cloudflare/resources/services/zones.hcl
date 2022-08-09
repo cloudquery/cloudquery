@@ -9,6 +9,10 @@ resource "cloudflare" "" "zones" {
     path   = "github.com/cloudquery/cq-provider-cloudflare/client.AccountMultiplex"
   }
 
+  deleteFilter "DeleteAccountFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountFilter"
+  }
+
   options {
     primary_keys = [
       "id"
