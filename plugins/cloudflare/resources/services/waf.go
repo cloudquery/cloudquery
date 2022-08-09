@@ -25,12 +25,6 @@ func Wafs() *schema.Table {
 				Resolver:    client.ResolveAccountId,
 			},
 			{
-				Name:        "zone_id",
-				Description: "Zone identifier tag.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveZoneId,
-			},
-			{
 				Name:        "id",
 				Description: "The unique identifier of a WAF package.",
 				Type:        schema.TypeString,
