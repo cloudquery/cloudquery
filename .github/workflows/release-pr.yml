@@ -1,11 +1,11 @@
-name: release-please
+name: release-please-monorepo
 on:
   push:
     branches:
       - monorepo
 
 jobs:
-  release-please:
+  release-pr-monorepo:
     runs-on: ubuntu-latest
     outputs:
       releases: ${{ steps.release.outputs }}
@@ -16,7 +16,7 @@ jobs:
           command: manifest
           token: ${{ secrets.GH_CQ_BOT }}
           default-branch: monorepo
-  mark-prerelease:
+  mark-prerelease-monorepo:
     needs: [release-please]
     runs-on: ubuntu-latest
     strategy:

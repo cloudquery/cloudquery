@@ -1,4 +1,4 @@
-name: release
+name: release-plugin
 on:
   push:
     tags:
@@ -7,7 +7,7 @@ env:
   CGO_ENABLED: 0
 
 jobs:
-  release-binary:
+  release-plugin-binary:
     runs-on: ubuntu-latest
     steps:
       # Tag format is plugins/<name>/<version>
