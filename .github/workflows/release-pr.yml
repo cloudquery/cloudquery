@@ -15,6 +15,7 @@ jobs:
         with:
           command: manifest
           token: ${{ secrets.GH_CQ_BOT }}
+          default-branch: monorepo
   mark-prerelease:
     needs: [release-please]
     runs-on: ubuntu-latest
