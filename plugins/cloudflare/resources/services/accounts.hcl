@@ -11,6 +11,10 @@ resource "cloudflare" "" "accounts" {
     ]
   }
 
+  deleteFilter "DeleteFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteFilter"
+  }
+
   column "id" {
     description = "The unique universal identifier for a Cloudflare account."
   }

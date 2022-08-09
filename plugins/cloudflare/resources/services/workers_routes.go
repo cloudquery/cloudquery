@@ -11,11 +11,12 @@ import (
 //go:generate cq-gen --resource workers_routes --config workers.hcl --output .
 func WorkersRoutes() *schema.Table {
 	return &schema.Table{
-		Name:        "cloudflare_workers_routes",
-		Description: "WorkerRoute is used to map traffic matching a URL pattern to a workers  API reference: https://api.cloudflare.com/#worker-routes-properties",
-		Resolver:    fetchWorkersRoutes,
-		Multiplex:   client.ZoneMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:         "cloudflare_workers_routes",
+		Description:  "WorkerRoute is used to map traffic matching a URL pattern to a workers  API reference: https://api.cloudflare.com/#worker-routes-properties",
+		Resolver:     fetchWorkersRoutes,
+		Multiplex:    client.ZoneMultiplex,
+		DeleteFilter: client.DeleteAccountZoneFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

@@ -12,11 +12,12 @@ import (
 //go:generate cq-gen --resource workers_scripts --config workers.hcl --output .
 func WorkersScripts() *schema.Table {
 	return &schema.Table{
-		Name:        "cloudflare_workers_scripts",
-		Description: "WorkerMetaData contains worker script information such as size, creation & modification dates.",
-		Resolver:    fetchWorkersScripts,
-		Multiplex:   client.AccountMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:         "cloudflare_workers_scripts",
+		Description:  "WorkerMetaData contains worker script information such as size, creation & modification dates.",
+		Resolver:     fetchWorkersScripts,
+		Multiplex:    client.AccountMultiplex,
+		DeleteFilter: client.DeleteAccountFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

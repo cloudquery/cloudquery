@@ -9,6 +9,10 @@ resource "cloudflare" "" "workers_scripts" {
     path   = "github.com/cloudquery/cq-provider-cloudflare/client.AccountMultiplex"
   }
 
+  deleteFilter "DeleteAccountFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountFilter"
+  }
+
   options {
     primary_keys = [
       "id"
@@ -102,9 +106,13 @@ resource "cloudflare" "" "workers_scripts" {
 resource "cloudflare" "" "workers_routes" {
   path = "github.com/cloudflare/cloudflare-go/.WorkerRoute"
 
-    multiplex "CFZone" {
+  multiplex "CFZone" {
       path   = "github.com/cloudquery/cq-provider-cloudflare/client.ZoneMultiplex"
     }
+
+  deleteFilter "DeleteAccountZoneFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountZoneFilter"
+  }
 
   options {
     primary_keys = [

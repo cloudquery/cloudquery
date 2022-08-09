@@ -3,6 +3,11 @@ output_directory = "."
 add_generate     = true
 
 resource "cloudflare" "" "ips" {
+
+  deleteFilter "DeleteFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteFilter"
+  }
+
   userDefinedColumn "ip" {
     type = "string"
     description = "Cloudflare ip cidr address."
