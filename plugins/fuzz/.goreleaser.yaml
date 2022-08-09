@@ -1,11 +1,11 @@
 variables:
   component: fuzz
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/fuzz
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/fuzz/
+  dir: plugins/fuzz
 
 includes:
   - from_file:

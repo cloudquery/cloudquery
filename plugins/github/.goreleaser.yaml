@@ -1,11 +1,11 @@
 variables:
   component: github
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/github
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/github/
+  dir: plugins/github
 
 includes:
   - from_file:

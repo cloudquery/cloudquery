@@ -1,11 +1,11 @@
 variables:
   component: digitalocean
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/digitalocean
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/digitalocean/
+  dir: plugins/digitalocean
 
 includes:
   - from_file:

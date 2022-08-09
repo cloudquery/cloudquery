@@ -4,49 +4,12 @@ monorepo:
   tag_prefix: cli/
   dir: cli
 
-before:
-  hooks:
-    - go mod download
-builds:
-  - flags:
-      - -buildmode=exe
-    env:
-      - GOGC=off
-      - CGO_ENABLED=0
-      - GO111MODULE=on
-    main: ./main.go
-    ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/cli/pkg/core.Version={{.Version}} -X github.com/cloudquery/cloudquery/cli/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cli/cmd.Date={{.Date}} -X github.com/cloudquery/cloudquery/cli/cmd.APIKey=28iMwucm5GXsoevNGSfDl1LC6zV
-    goos:
-      - windows
-      - linux
-      - darwin
-    goarch:
-      - amd64
-      - arm64
-    ignore:
-      - goos: windows
-        goarch: arm64
-archives:
-  -
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
-    format: binary
-  -
-    id: homebrew
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
-    format: zip
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      # Include everything from pre-release (build & publish to GitHub), plus publish to docker and Homebrew
+      path: ./cli/.goreleaser.prerelease.yaml
+
 # dockers:
 #   -
 #     goos: linux
@@ -58,17 +21,6 @@ archives:
 #       - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}"
 #     build_flag_templates:
 #       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
-checksum:
-  name_template: 'checksums.txt'
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - '^docs:'
-      - '^test:'
-      
-release:
-  prerelease: true
 
 # brews:
 #   -

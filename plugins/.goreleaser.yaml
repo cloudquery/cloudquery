@@ -1,6 +1,6 @@
 before:
   hooks:
-    - go mod download
+    - cd plugins/{{ .Var.component }} && go mod download
 builds:
   - flags:
       - -buildmode=exe

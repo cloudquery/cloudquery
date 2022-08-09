@@ -1,11 +1,11 @@
 variables:
   component: k8s
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/k8s
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/k8s/
+  dir: plugins/k8s
 
 includes:
   - from_file:

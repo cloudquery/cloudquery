@@ -1,11 +1,11 @@
 variables:
   component: azure
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/azure
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/azure/
+  dir: plugins/azure
 
 includes:
   - from_file:

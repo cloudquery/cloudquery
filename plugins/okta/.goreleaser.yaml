@@ -1,11 +1,11 @@
 variables:
   component: okta
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/okta
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/okta/
+  dir: plugins/okta
 
 includes:
   - from_file:

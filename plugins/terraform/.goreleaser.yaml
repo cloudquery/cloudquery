@@ -1,11 +1,11 @@
 variables:
   component: terraform
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/terraform
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/terraform/
+  dir: plugins/terraform
 
 includes:
   - from_file:
