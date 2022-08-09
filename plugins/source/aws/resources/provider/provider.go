@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
@@ -95,6 +96,7 @@ func Provider() *provider.Provider {
 			"apigatewayv2.domain_names":               apigatewayv2.Apigatewayv2DomainNames(),
 			"apigatewayv2.vpc_links":                  apigatewayv2.Apigatewayv2VpcLinks(),
 			"applicationautoscaling.policies":         applicationautoscaling.ApplicationautoscalingPolicies(),
+			"appsync.graphql_apis":                    appsync.GraphqlApis(),
 			"athena.data_catalogs":                    athena.DataCatalogs(),
 			"athena.work_groups":                      athena.WorkGroups(),
 			"autoscaling.groups":                      autoscaling.AutoscalingGroups(),

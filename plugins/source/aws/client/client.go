@@ -17,6 +17,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -123,6 +124,7 @@ type Services struct {
 	Apigateway             ApigatewayClient
 	Apigatewayv2           Apigatewayv2Client
 	ApplicationAutoscaling ApplicationAutoscalingClient
+	AppSync                AppSyncClient
 	Athena                 AthenaClient
 	Autoscaling            AutoscalingClient
 	Backup                 BackupClient
@@ -621,6 +623,7 @@ func initServices(region string, c aws.Config) Services {
 		Apigateway:             apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:           apigatewayv2.NewFromConfig(awsCfg),
 		ApplicationAutoscaling: applicationautoscaling.NewFromConfig(awsCfg),
+		AppSync:                appsync.NewFromConfig(awsCfg),
 		Athena:                 athena.NewFromConfig(awsCfg),
 		Autoscaling:            autoscaling.NewFromConfig(awsCfg),
 		Backup:                 backup.NewFromConfig(awsCfg),
