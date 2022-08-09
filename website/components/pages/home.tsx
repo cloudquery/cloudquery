@@ -12,6 +12,7 @@ import Features from "../Features";
 import { Marquee } from "../clients/Marquee";
 import { users } from "../clients/users";
 import { useTheme } from "next-themes";
+import {Integrations} from "../Integrations";
 
 export default function Home() {
   const onClick = () => {
@@ -104,6 +105,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl md:text-center dark:text-white">
             Integrations
           </h2>
+          <Integrations />
         </div>
         <Container>
           <div className="px-4 py-16 mx-auto mt-10 sm:max-w-none sm:flex sm:justify-center">
