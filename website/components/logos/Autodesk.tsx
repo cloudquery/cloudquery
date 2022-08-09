@@ -4,7 +4,7 @@ export const AutodeskLogo = ({ height = 20 }) => {
       <svg
          xmlns="http://www.w3.org/2000/svg"
          xmlnsXlink="http://www.w3.org/1999/xlink"
-         width="150"
+         width={140}
          height={height}
          viewBox="-0.504 0.5 1000.01 166.086">
          <g transform="matrix(.2176 0 0 -.2176 -407.546 106.545)">

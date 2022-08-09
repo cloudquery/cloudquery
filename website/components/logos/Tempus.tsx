@@ -1,6 +1,6 @@
 export const TempusLogo = ({ height = 16 }) => {
 	return (
-		<svg width="150" height={height} viewBox="0 0 303 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<svg width={140} height={height} viewBox="0 0 303 50" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<g clipPath="url(#clip0)">
 				<rect width="303" height="50" fill="transparent" />
 				<path d="M94.5513 36.0786V46.0315H58.0402V3.94385H94.1948V13.8357H70.1507V19.6199H92.3542V29.756H70.1507V36.073L94.5513 36.0786Z" className="fill-gray" />
