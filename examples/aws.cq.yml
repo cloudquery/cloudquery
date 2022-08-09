@@ -1,7 +1,11 @@
 kind: source
+apiVersion: cloudquery.io/v1alpha1
 spec:
   name: gcp
   version: development
   path: localhost:7777
   registry: grpc
   tables: ["*"]
+  exclude_tables: ["_"]
+  spec:
+    projects_ids: ["asd"]

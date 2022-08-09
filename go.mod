@@ -15,6 +15,8 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
+	github.com/ProtonMail/go-crypto v0.0.0-20220730123233-d6ffb7692adf // indirect
+	github.com/cloudflare/circl v1.1.0 // indirect
 	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/georgysavva/scany v1.0.0 // indirect

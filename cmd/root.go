@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cmd/fetch"
-	"github.com/cloudquery/cloudquery/cmd/flags"
 	"github.com/cloudquery/cloudquery/cmd/generate"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -41,7 +40,6 @@ func newCmdRoot() *cobra.Command {
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
-
 			zerologLevel, err := zerolog.ParseLevel("debug")
 			if err != nil {
 				return err
@@ -66,28 +64,30 @@ func newCmdRoot() *cobra.Command {
 		},
 	}
 
-	cmd.PersistentFlags().String(flags.DataDir, "./.cq", "set persistent data directory (env: CQ_DATA_DIR)")
-	cmd.PersistentFlags().String(flags.Color, "auto", "Enable colorized output (on, off, auto)")
+	cmd.PersistentFlags().String("data-dir", "./.cq", "set persistent data directory (env: CQ_DATA_DIR)")
+
+	cmd.PersistentFlags().String("color", "auto", "Enable colorized output (on, off, auto)")
 
 	// Logging Flags
-	cmd.PersistentFlags().BoolP(flags.Verbose, "v", false, "enable verbose logging")
-	cmd.PersistentFlags().Bool(flags.LogConsole, false, "enable console logging")
-	cmd.PersistentFlags().String(flags.LogFormat, "text", "Logging format (json, text)")
-	cmd.PersistentFlags().Bool(flags.NoLogFile, false, "Disable logging to file")
-	cmd.PersistentFlags().String(flags.LogFileName, "cloudquery.log", "Log filename")
+	cmd.PersistentFlags().BoolP("verbose", "v", false, "enable verbose logging")
+	cmd.PersistentFlags().Bool("log-console", false, "enable console logging")
+	cmd.PersistentFlags().String("log-format", "text", "Logging format (json, text)")
+	cmd.PersistentFlags().Bool("no-log-file", false, "Disable logging to file")
+	cmd.PersistentFlags().String("log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemtry (analytics) flags
-	cmd.PersistentFlags().Bool(flags.NoTelemetry, false, "disable telemetry collection")
-	cmd.PersistentFlags().Bool(flags.TelemetryInspect, false, "enable telemetry inspection")
-	cmd.PersistentFlags().Bool(flags.TelemtryDebug, false, "enable telemetry debug logging")
+	cmd.PersistentFlags().Bool("no-telemetry", false, "disable telemetry collection")
+	// we dont need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
+	// the only exception is the telemetry as people might want to put in a bash starter script
+	viper.BindPFlag("no-telemetry", cmd.PersistentFlags().Lookup("no-telemetry"))
+	cmd.PersistentFlags().Bool("telemetry-inspect", false, "enable telemetry inspection")
+	cmd.PersistentFlags().Bool("telemetry-debug", false, "enable telemetry debug logging")
 
 	// Sentry (error reporting) flags
-	cmd.PersistentFlags().Bool(flags.SentryDebug, false, "enable Sentry debug mode")
-	cmd.PersistentFlags().String(flags.SentryDSN, "https://5ff9e378a79d4ba2821f540b036286e9@o912044.ingest.sentry.io/6106324", "Sentry DSN")
+	cmd.PersistentFlags().Bool("sentry-debug", false, "enable Sentry debug mode")
+	cmd.PersistentFlags().String("sentry-dsn", "https://5ff9e378a79d4ba2821f540b036286e9@o912044.ingest.sentry.io/6106324", "Sentry DSN")
 
-	hiddenFlags := []string{
-		flags.TelemetryInspect, flags.TelemtryDebug,
-		flags.SentryDebug, flags.SentryDSN}
+	hiddenFlags := []string{"telemtry-inspect", "telemetry-debug", "sentry-debug", "sentry-dsn"}
 	for _, f := range hiddenFlags {
 		err := cmd.PersistentFlags().MarkHidden(f)
 		if err != nil {

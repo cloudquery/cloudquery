@@ -1,4 +1,4 @@
 kind: connection
 spec:
-  source: gcp
-  destination: postgresql
+  source: "gcp"
+  destinations: ["postgresql"]
