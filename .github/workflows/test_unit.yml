@@ -26,6 +26,8 @@ jobs:
       - id: set-matrix
         run: ./scripts/resolve-modules.sh
   test_unit:
+    name: Unit Tests
+    needs: resolve-modules
     strategy:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
     runs-on: ubuntu-latest
@@ -79,8 +81,10 @@ jobs:
 
       - name: Build
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
-        run: make build-changed
+        run: go build .
+        working-directory: ${{ matrix.workdir }}
 
       - name: Test
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
-        run: make test-unit-changed
+        run: go test -v ./...
+        working-directory: ${{ matrix.workdir }}
