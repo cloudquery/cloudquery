@@ -175,7 +175,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			return diag.WrapError(err)
 		}
 		res <- accounts
-		if resp.TotalPages == resp.Page {
+		if !resp.HasMorePages() {
 			break
 		}
 		opt.Page = resp.Page + 1
@@ -197,7 +197,7 @@ func fetchAccountMembers(ctx context.Context, meta schema.ClientMeta, parent *sc
 			return diag.WrapError(err)
 		}
 		res <- accountMembers
-		if resp.TotalPages == resp.Page {
+		if !resp.HasMorePages() {
 			break
 		}
 		opt.Page = resp.Page + 1
