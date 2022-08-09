@@ -10,7 +10,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      # Tag format is cq-plugin-<name>/<version>
+      # Tag format is cli/<version>
       - name: Split tag
         id: split
         run: |
