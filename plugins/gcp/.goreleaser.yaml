@@ -1,11 +1,11 @@
 variables:
   component: gcp
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/gcp
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/gcp/
+  dir: plugins/gcp
 
 includes:
   - from_file:

@@ -6,7 +6,7 @@ monorepo:
 
 before:
   hooks:
-    - go mod download
+    - cd cli && go mod download
 builds:
   - flags:
       - -buildmode=exe
@@ -47,17 +47,6 @@ archives:
       386: i386
       amd64: x86_64
     format: zip
-dockers:
-  -
-    goos: linux
-    goarch: amd64
-    dockerfile: Dockerfile.goreleaser
-    image_templates:
-      - "ghcr.io/cloudquery/cloudquery:latest"
-      - "ghcr.io/cloudquery/cloudquery:{{.Version}}"
-      - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}"
-    build_flag_templates:
-      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
 checksum:
   name_template: 'checksums.txt'
 changelog:
@@ -66,6 +55,5 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-      
 release:
   prerelease: true

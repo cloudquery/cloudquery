@@ -1,11 +1,11 @@
 variables:
   component: aws
 
-project_name: plugins/{{ .Var.component }}
+project_name: plugins/aws
 
 monorepo:
-  tag_prefix: plugins/{{ .Var.component }}/
-  dir: plugins/{{ .Var.component }}
+  tag_prefix: plugins/aws/
+  dir: plugins/aws
 
 includes:
   - from_file:
