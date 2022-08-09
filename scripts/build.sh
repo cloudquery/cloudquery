@@ -5,7 +5,7 @@ CHANGE_ONLY="false"
 GO_MOD_DIRS=$(find . -type f -name "go.mod" | xargs -n1 dirname)
 
 print_usage() {
-    echo "Runs go build on all modules."
+    echo "Runs go build on all modules. Output is written to ./bin"
     echo
     echo "Syntax: ./build.sh [-c]"
     echo "options:"
@@ -24,6 +24,7 @@ done
 
 echo "Running go build with the following options:"
 echo "CHANGE_ONLY: $CHANGE_ONLY"
+echo "OUTPUT_DIR: $PWD/bin"
 
 echo $@
 
@@ -40,7 +41,7 @@ for f in $GO_MOD_DIRS; do
                 continue
             fi
         fi
-        echo "Running go build $f"
+        echo "Running go build on $f"
         go build -v -o $BASEDIR/bin/ .
         cd -
     fi
