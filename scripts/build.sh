@@ -14,7 +14,7 @@ print_usage() {
     echo
 }
 
-while getopts 'c:' flag; do
+while getopts 'cp:' flag; do
   case "${flag}" in
     c) CHANGE_ONLY='true' ;;
     *) print_usage
@@ -29,6 +29,7 @@ echo $@
 
 for f in $GO_MOD_DIRS; do
     if [ -d $f ]; then
+        BASEDIR=$PWD
         cd $f
         CHANGES=""
         if [ "$CHANGE_ONLY" = "true" ]; then
@@ -40,7 +41,7 @@ for f in $GO_MOD_DIRS; do
             fi
         fi
         echo "Running go build $f"
-        go build -v .
+        go build -v -o $BASEDIR/bin/ .
         cd -
     fi
 done

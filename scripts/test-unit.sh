@@ -14,7 +14,7 @@ print_usage() {
     echo
 }
 
-while getopts 'c:' flag; do
+while getopts 'cp:' flag; do
   case "${flag}" in
     c) CHANGE_ONLY='true' ;;
     *) print_usage
