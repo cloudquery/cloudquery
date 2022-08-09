@@ -15,16 +15,23 @@ env:
   CQ_NO_TELEMETRY: 1
 
 jobs:
+  resolve-modules:
+    name: Resolve Modules
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v2
+      - id: set-matrix
+        run: ./scripts/resolve-modules.sh
   test_unit:
     strategy:
-      matrix:
-        dbversion: ["postgres:10"]
-        go: ["1.18"]
-        platform: [ubuntu-latest] # can not run in macOS and windowsOS
-    runs-on: ${{ matrix.platform }}
+      matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
+    runs-on: ubuntu-latest
     services:
       postgres:
-        image: ${{ matrix.dbversion }}
+        image: postgres:10
         env:
           POSTGRES_PASSWORD: pass
           POSTGRES_USER: postgres
@@ -52,7 +59,7 @@ jobs:
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
         with:
-          go-version: ^${{ matrix.go }}
+          go-version: ^1.18
       - uses: actions/cache@v3
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
