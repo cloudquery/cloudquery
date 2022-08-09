@@ -6,7 +6,8 @@ monorepo:
 
 before:
   hooks:
-    - cd cli && go mod download
+    - cmd: go mod download
+      dir: ./cli
 builds:
   - flags:
       - -buildmode=exe
