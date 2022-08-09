@@ -1,40 +1,17 @@
 import { DuplicateIcon } from "@heroicons/react/outline";
 import copy from "copy-to-clipboard";
 import Head from "next/head";
-import Image from "next/future/image";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
-
-
 import { Container } from "../Container";
-// import Tweet, { Mention } from "../Tweet";
 import Features from "../Features";
-import { Marquee } from "../clients/Marquee";
-import { users } from "../clients/users";
-import { useTheme } from "next-themes";
+import { LogosBlock } from "../clients/LogosBlock";
 
 export default function Home() {
   const onClick = () => {
     copy("brew install cloudquery");
     toast.success("Copied to clipboard");
   };
-
-  const { theme } = useTheme();
-
-  const showcase = users
-    .filter((p) => p.pinned)
-    .map((user, index) => (
-      <Image
-        key={`${user.infoLink}-${theme}-${index}-light`}
-        src={user.image}
-        alt={user.caption}
-        width={user.style?.width ?? 100}
-        height={75}
-        style={{ width: "auto" }}
-        priority={true}
-        className="inline w-auto mx-8"
-      />
-    ));
 
   return (
     <>
@@ -81,20 +58,17 @@ export default function Home() {
           <p className="pb-8 text-sm font-semibold tracking-wide text-center text-gray-400 uppercase dark:text-gray-500">
             Trusted by teams from around the world
           </p>
-          <Marquee>
-            {showcase}
-            {/* {showcaseLight} */}
-          </Marquee>
+          <LogosBlock />
         </div>
       </div>
 
       <div className="relative from-gray-50 to-gray-100">
         <div className="px-4 py-16 mx-auto sm:pt-20 sm:pb-24 lg:max-w-7xl lg:pt-24">
           <h2 className="text-4xl font-extrabold tracking-tight lg:text-5xl xl:text-6xl lg:text-center dark:text-white">
-          Data analysis, security, auditing, and compliance
+            Data analysis, security, auditing, and compliance
           </h2>
           <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
-          Leverage SQL to get visibility into your cloud infrastructure and SaaS applications.
+            Leverage SQL to get visibility into your cloud infrastructure and SaaS applications.
           </p>
           <Features />
         </div>
