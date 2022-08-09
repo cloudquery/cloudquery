@@ -1,14 +1,17 @@
 ---
 title: Running AWS Foundational Security Best Practices with CloudQuery Policies
 tag: security
-date: '2022-02-07T00:00:00'
+date: 2022/02/07
 description: >-
   Automate, customize, codify and run AWS Foundational Security Best Practices
   with CloudQuery Policies.
-authors: mikeelsmore
-image: >-
-  /img/blog_covers/running-aws-foundational-security-best-practices-with-cloudquery-policies.jpg
+author: mikeelsmore
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 Back in mid-2020 AWS Security Hub released a new security standard called AWS Foundational Security Best Practices. This new standard sets security controls to detect when an AWS account or deployed resources don’t match up to the best practices set out by the AWS security experts. The complete standard can be found in the [AWS Security Hub documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp.html).
 

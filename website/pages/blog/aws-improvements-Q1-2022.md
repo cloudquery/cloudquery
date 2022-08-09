@@ -1,13 +1,17 @@
 ---
 title: Q1 Improvements for the AWS Provider
 tag: recap
-date: '2022-03-30T00:00:00'
+date: 2022/03/30
 description: >-
   Highlight the improvements to the CloudQuery AWS Provider that have landed in
   the first quarter of 2022.
-authors: benjamin
-
+author: benjamin
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 
 ## Q1 2022

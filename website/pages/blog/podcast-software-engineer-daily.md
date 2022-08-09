@@ -1,14 +1,18 @@
 ---
 title: Open Source Cloud Asset Inventory with Yevgeny Pats @ Software Engineer Daily
 tag: guest
-date: '2022-06-14T00:00:00'
+date: 2022/06/14
 description: >-
   Podcast episode with Yevgeny Pats hosted by Alex DeBrie. In this episode we’ll
   discuss CloudQuery, Yevgeny’s entrepreneurial background and raising funding
   with an open source project.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 
 ### Play podcast at:

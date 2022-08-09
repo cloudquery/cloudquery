@@ -1,11 +1,15 @@
 ---
 title: Keyless access to AWS in GitHub Actions with OIDC
 tag: security
-date: "2022-03-28T00:00:00"
+date: 2022/03/28
 description: A guide to configuring OpenID Connect access to AWS from GitHub Actions
-authors: mikeelsmore
-
+author: mikeelsmore
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 With this blog, we will show you how to access your AWS environment without storing IAM credentials in GitHub by using OpenID Connect (OIDC).
 
@@ -27,40 +31,40 @@ We've got three different ways to do this [AWS Console](#aws-console), [AWS CLI]
 
 Once you are logged into the AWS Console, head to IAM and select `Identity providers`:
 
-![Identity providers](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image4.png)
+![Identity providers](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image4.png)
 
 Select the `Add provider` button in the top right corner
 
-![Add provider](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image5.png)
+![Add provider](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image5.png)
 
 On the `Add an Identity provider` screen, you will want to select `OpenID Connect` as the `Provider type`, and then add the following information to the fields
 
 - Provider URL: `https://token.actions.githubusercontent.com`
 - Audience: `https://github.com/(org name)` (so in our case `https://github.com/cloudquery`)
 
-![Add an Identity provider](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image6.png)
+![Add an Identity provider](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image6.png)
 
 Make sure to select `Get thumbprint` to get the certificates, and then `Add provider` in the bottom right.
 
 The next step is to add a role for the provider to assume when the GitHub Action accesses AWS. head to `Roles` within `IAM`:
 
-![Roles](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image2.png)
+![Roles](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image2.png)
 
 Select `Create role` in the top right.
 
-![Create role](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image1.png)
+![Create role](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image1.png)
 
 Now we need to identify our OpenID Connect provider. Select `Web identity` from the `Trusted entity types`, select the `token.actions.githubusercontent.com` from the `Identity provider` drop-down, and then select the `Audience` you added a moment ago. Then hit `next`.
 
-![Select trusted entity](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image7.png)
+![Select trusted entity](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image7.png)
 
 The next step is to either assign or create the permissions the role will need, so what permissions do your GitHub Actions need to work within AWS. This is entirely up to your needs, so best to do reading around AWS Roles and service permissions.
 
-![Add permissions](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image3.png)
+![Add permissions](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image3.png)
 
 The final step in creating the Role is to name it and provide a relevant description. You can also add more permissions or even adapt the `trusted entities` ( which Identity providers have access to the role).
 
-![Review role](/img/blog/keyless-access-to-aws-in-github-actions-with-oidc/image8.png)
+![Review role](/images/blog/keyless-access-to-aws-in-github-actions-with-oidc/image8.png)
 
 ### AWS CLI
 

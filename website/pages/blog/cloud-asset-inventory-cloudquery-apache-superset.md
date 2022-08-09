@@ -3,14 +3,18 @@ title: >-
   How to Build Open Source Cloud Asset Inventory with CloudQuery and Apache
   Superset (Preset)
 tag: tutorial
-date: '2022-06-01T00:00:00'
+date: 2022/06/01
 description: >-
   How to setup CloudQuery to build your cloud asset inventory in PostgreSQL and
   connect it to Apache Superset (or a hosted version such as preset.io) for
   visualization, monitoring and reporting.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Apache Superset](https://superset.apache.org/) (or a hosted version such as [preset.io](https://preset.io)) for visualization, monitoring and reporting.
 
@@ -50,7 +54,7 @@ By default RDS Aurora instances are not accessible from the public internet. In 
 
 Now you can connect preset to your PostgreSQL database by clicking **“New Database”**, choosing **PostgreSQL** and filling-in the following form:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-apache-superset/1.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-apache-superset/1.png)
 
 If all your credentials are correct, click **connect** and then **finish**
 
@@ -60,23 +64,23 @@ To be able to create **charts** that you will later add to a **dashboard** you f
 
 In this guide we will create a dataset from a [view](https://github.com/cloudquery/cq-provider-aws/blob/main/views/resources.sql) (also, see [blog](https://www.cloudquery.io/blog/aws-resources-view)) we already created on our database but you can also create a dataset from any complex query you can think off in **Superset SQL Lab**.
 
-![](/img/blog/cloud-asset-inventory-cloudquery-apache-superset/2.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-apache-superset/2.png)
 
 ### Step 5: Create your first chart!
 
 Now you are ready to create your first chart on top of our [AWS Resource View](https://github.com/cloudquery/cq-provider-aws/blob/main/views/resources.sql) (Also, see [blog](https://www.cloudquery.io/blog/aws-resources-view))! Choose the dataset you created in the last step (in this case `aws_resources`) and choose the chart type you want to create (we will take the **Bar Chart** but you can also change this in the chart screen).
 
-![](/img/blog/cloud-asset-inventory-cloudquery-apache-superset/3.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-apache-superset/3.png)
 
 If you are familiar with the Superset UI this step is pretty easy where you just choose or drag and drop the columns you want to visualize (and you can always revert to plain SQL if needed).
 
-![](/img/blog/cloud-asset-inventory-cloudquery-apache-superset/4.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-apache-superset/4.png)
 
 ### Step 6: Save & Add to dashboard
 
 Click **Save** and choose the **Dashboard** you want to add the chart (or create a new one if you don’t have one) and then click **Save** again or **Save & Go to Dashboard**
 
-![](/img/blog/cloud-asset-inventory-cloudquery-apache-superset/5.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-apache-superset/5.png)
 
 You can now repeat steps **4-5** or **3-5** to create all charts you need and add them to your dashboard/s.
 
@@ -84,7 +88,7 @@ You can now repeat steps **4-5** or **3-5** to create all charts you need and ad
 
 Now we are at the final stage where you can edit, resize and tweak the charts/widgets so it looks something like this:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-apache-superset/6.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-apache-superset/6.png)
 
 You can add **Filters** to make the dashboard more interactive and you can now share this with other team members, send links, image of dashboards as well as periodic alerts and reports via Superset.
 

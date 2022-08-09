@@ -1,12 +1,17 @@
 import Image from "next/image";
 import type { AuthorDetails } from "../content/team";
 
-export const Avatar = ({ name, picture, twitterUsername }: AuthorDetails) => {
+export const Avatar = ({
+  name,
+  url,
+  image_url,
+  twitterUsername,
+}: AuthorDetails) => {
   return (
     <div className="flex items-center flex-shrink-0 md:justify-start">
       <div className="w-[32px] h-[32px]">
         <Image
-          src={picture}
+          src={image_url}
           height={32}
           width={32}
           layout="fixed"
@@ -22,12 +27,12 @@ export const Avatar = ({ name, picture, twitterUsername }: AuthorDetails) => {
         <dt className="sr-only">Twitter</dt>
         <dd>
           <a
-            href={`https://twitter.com/${twitterUsername}`}
+            href={url}
             className="text-xs text-blue-500 no-underline betterhover:hover:text-blue-600 betterhover:hover:underline"
             target="_blank"
             rel="noopener noreferrer"
           >
-            {`@${twitterUsername}`}
+            {twitterUsername ? `@${twitterUsername}` : url}
           </a>
         </dd>
       </dl>

@@ -1,13 +1,17 @@
 ---
 title: Releasing CloudQuery v0.20.0
 tag: announcement
-date: '2022-01-26T00:00:00'
+date: 2022/01/26
 description: >-
   Releasing CloudQuery v0.20.0, find out what's happened and how it'll effect
   you.
-authors: roneliahu
-
+author: roneliahu
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 
 ## v0.20.0 - Improved migrations, new protocol and stability

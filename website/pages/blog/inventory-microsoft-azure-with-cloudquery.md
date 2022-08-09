@@ -1,11 +1,15 @@
 ---
 title: Inventory Microsoft Azure with CloudQuery
-tags: guest
-date: '2021-11-30T00:00:00'
+tag: guest
+date: 2021/11/30
 description: Inventory Microsoft Azure with CloudQuery
-authors: giselatorres
-
+author: giselatorres
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 [Originally posted at [https://www.returngis.net/2021/11/haz-inventario-de-microsoft-azure-con-cloudquery/](https://www.returngis.net/2021/11/haz-inventario-de-microsoft-azure-con-cloudquery/)]
 
@@ -32,7 +36,7 @@ cloudquery init azure
 
 By doing this, it generates a file called **config.hcl** which we can customize, indicating which subscriptions we want to bring the data from, what types of resources, and so on.
 
-![cloudquery init generates the config.hcl file](/img/blog/inventory-microsoft-azure-with-cloudquery/cloudquery-config.hcl-file-1536x922.png 'cloudquery init generates the config.hcl file')
+![cloudquery init generates the config.hcl file](/images/blog/inventory-microsoft-azure-with-cloudquery/cloudquery-config.hcl-file-1536x922.png 'cloudquery init generates the config.hcl file')
 
 If we do not modify anything, all the resources of all the subscriptions to which they have access will be brought. Now we have our project ready to retrieve the information of our subscriptions.
 
@@ -77,11 +81,11 @@ export AZURE_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 
 To finish the configuration, we need the main service that we just created to be associated with an Azure Active Directory role called **Application administrator**, which you can find in the Azure AD resource, in the **Roles and administrators section**:
 
-![Azure AD - Roles and administrators - Application Administrator](/img/blog/inventory-microsoft-azure-with-cloudquery/Azure-AD-Application-administrator-role.png 'Azure AD - Roles and administrators - Application Administrator')
+![Azure AD - Roles and administrators - Application Administrator](/images/blog/inventory-microsoft-azure-with-cloudquery/Azure-AD-Application-administrator-role.png 'Azure AD - Roles and administrators - Application Administrator')
 
 Once in it, look for the main service that we have called **cloudquery**, through the Add assignments button, and associate it permanently.
 
-![Add the main service to the Application Administrator role](/img/blog/inventory-microsoft-azure-with-cloudquery/Azure-AD-Application-administrator-cloudquery-assigment-2048x542.png 'Add the main service to the Application Administrator role')
+![Add the main service to the Application Administrator role](/images/blog/inventory-microsoft-azure-with-cloudquery/Azure-AD-Application-administrator-cloudquery-assigment-2048x542.png 'Add the main service to the Application Administrator role')
 
 ## Dump the information in Postgres with CloudQuery
 
@@ -94,7 +98,7 @@ cloudquery fetch --dsn "postgres://postgres:pass@localhost:5432/postgres?sslmode
 
 This uses the environment variables that we have previously configured, with the information of our main service, and the postgres that we have generated in Docker. Once the process finishes, you will see that you have a bunch of generated tables (for this example I have used [DataGrip](https://www.jetbrains.com/datagrip/) as GUI):
 
-![92 CloudQuery generated tables in Postgres](/img/blog/inventory-microsoft-azure-with-cloudquery/92-tablas-generadas-por-CloudQuery-en-postgres-1095x1536.png '92 CloudQuery generated tables in Postgres')
+![92 CloudQuery generated tables in Postgres](/images/blog/inventory-microsoft-azure-with-cloudquery/92-tablas-generadas-por-CloudQuery-en-postgres-1095x1536.png '92 CloudQuery generated tables in Postgres')
 
 You can make queries like these, simply to retrieve resources of a specific type:
 

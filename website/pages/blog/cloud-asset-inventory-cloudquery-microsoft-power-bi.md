@@ -3,13 +3,17 @@ title: >-
   How to Build Open Source Cloud Asset Inventory with CloudQuery and Microsoft
   Power BI
 tag: tutorial
-date: '2022-07-10T20:00:00.000'
+date: 2022/07/10
 description: >-
   How to setup CloudQuery to build your cloud asset inventory in PostgreSQL and
   connect it to Microsoft Power BI for visualization, monitoring and reporting.
-authors: itay
-
+author: itay
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Microsoft Power BI](https://powerbi.microsoft.com/) for visualization, monitoring and reporting.
 
@@ -52,7 +56,7 @@ See connection [full walkthrough](https://docs.microsoft.com/en-us/power-query/c
 
 Click `Get Data` and choose PostgresSQL database (In this tutorial we will connect to publicly accessible PostgresSQL server with authorized IP) and fill-in the connection details:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi/image0.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi/image0.png)
 
 ### Step 4: Visualize the Data!
 
@@ -62,11 +66,11 @@ Choose the table you want to visualize, in this case we will choose the `azure_r
 
 **Choose the table to visualize**
 
-![](/img/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi/image1.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi/image1.png)
 
 **Design your report**
 
-![](/img/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi/image2.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi/image2.png)
 
 You can reuse Power BI to export/share those reports as well!
 

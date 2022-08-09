@@ -1,11 +1,15 @@
 ---
 title: Introducing CloudQuery SDK
 tag: product
-date: '2021-04-07T00:00:00'
+date: 2021/04/07
 description: Introducing simple and extensible SDK to query your cloud
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 Today we are pleased to announce the release of [CloudQuery SDK](https://github.com/cloudquery/cq-provider-sdk)!
 
@@ -35,7 +39,7 @@ For a quick snippet continue reading!
 CloudQuery has a pluggable architecture and is using the [go-plugin](https://github.com/hashicorp/go-plugin) to load, run and communicate between providers via gRPC.
 To develop a new provider for CloudQuery you don’t need to understand the inner workings go-plugin as those are abstracted away cq-provider-sdk.
 
-![](/img/blog/cloudquery-sdk-architecture.png)
+![](/images/blog/cloudquery-sdk-architecture.png)
 
 ### Example
 

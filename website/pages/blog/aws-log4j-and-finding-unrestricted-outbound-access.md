@@ -1,14 +1,18 @@
 ---
 title: 'AWS, Log4j and Finding Unrestricted Outbound Access'
 tag: security
-date: '2021-12-15T00:00:00'
+date: 2021/12/15
 description: >-
   The Log4jshell (log4j) vulnerability (CVE-2021-44228) emphasized more than
   ever the importance of setting network controls & policies not only on inbound
   traffic but also on outbound traffic.
-authors: benjamin
-
+author: benjamin
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 The Log4shell (log4j) vulnerability (CVE-2021-44228) emphasized more than ever the importance of setting network controls & policies not only on inbound traffic but also on outbound traffic.
 
@@ -32,7 +36,7 @@ The third point is a “critical” requirement, as without it your application 
 
 There are numerous ways to allow/disallow outbound access from an EC2. Following is a diagram:
 
-![](/img/blog/outbound-architecture.png)
+![](/images/blog/outbound-architecture.png)
 
 ### Security Groups
 

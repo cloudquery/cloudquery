@@ -3,13 +3,17 @@ title: >-
   How to Build Open Source Cloud Asset Inventory with CloudQuery and Google Data
   Studio
 tag: tutorial
-date: '2022-06-15T00:00:00'
+date: 2022/06/15
 description: >-
   How to setup CloudQuery to build your cloud asset inventory in PostgreSQL and
   connect it to Google Data Studio for visualization, monitoring and reporting.
-authors: itay
-
+author: itay
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Google Data Studio](https://marketingplatform.google.com/about/data-studio/) for visualization, monitoring and reporting.
 
@@ -44,7 +48,7 @@ See connection [full walkthrough](https://support.google.com/datastudio/answer/7
 
 Click Create New datasource and choose PostgresSQL (In this tutorial we will connect to publicly accessible RDS with authorized Data Studio IP Address) and fill-in the connection details:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-google-data-studio/step2.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-google-data-studio/step2.png)
 
 ### Step 3: Visualize the Data!
 
@@ -53,10 +57,10 @@ Choose the table you want to visualize, in this case we will choose the `gcp_res
 💡 To create the `gcp_resources` view, run the following [view](https://github.com/cloudquery/cq-provider-gcp/blob/main/views/resource.sql) before importing to the data studio.
 
 **Choose the table to visualize**
-![](/img/blog/cloud-asset-inventory-cloudquery-google-data-studio/step3-1.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-google-data-studio/step3-1.png)
 
 **Design your report**
-![](/img/blog/cloud-asset-inventory-cloudquery-google-data-studio/step3-2.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-google-data-studio/step3-2.png)
 
 You can reuse Data Studio to export/share those reports as well!
 

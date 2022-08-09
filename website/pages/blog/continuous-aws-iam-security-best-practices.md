@@ -1,13 +1,17 @@
 ---
 title: Continuous AWS IAM Security Best Practices
 tag: security
-date: '2021-03-15T00:00:00'
+date: 2021/03/15
 description: >-
   Walkthrough on how to automate, validate and monitor AWS IAM Security best
   practices with CloudQuery
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 There are some great guides on the internet for AWS Security best practices (both official and unofficial).
 However, one of the challenges we saw with those guides is that they tell you what the end goal is,

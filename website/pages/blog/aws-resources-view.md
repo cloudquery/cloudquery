@@ -1,14 +1,18 @@
 ---
 title: Introducing AWS Resources View
 tag: security
-date: '2022-05-24T00:00:00'
+date: 2022/05/24
 description: >-
   Here at CloudQuery we built a simple aws_resources view, to demonstrate the
   power of using a SQL database to create a single pane for all your fetched AWS
   resources.
-authors: roneliahu
-
+author: roneliahu
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 As of the writing of this blog, CloudQuery supports over 155 resources across 61 services in AWS! and many more in GCP, Azure, etc. Although this gives users the capabilities to answer many of their questions regarding your security, visibility and infrastructure, it would be great to have a single view of all your AWS resources, right?
 
@@ -71,7 +75,7 @@ end $$;
 select * from aws_resources limit 100;
 ```
 
-![List of All AWS Resources](/img/blog/aws-resources-view/all-resources.png)
+![List of All AWS Resources](/images/blog/aws-resources-view/all-resources.png)
 
 ## Example Queries
 
@@ -81,7 +85,7 @@ select * from aws_resources limit 100;
 select * from aws_resources where tags = '{}';
 ```
 
-![Table of AWS Resources that don't have tags](/img/blog/aws-resources-view/resources-without-tags.png)
+![Table of AWS Resources that don't have tags](/images/blog/aws-resources-view/resources-without-tags.png)
 
 ### What resources don’t have any of these tags?
 
@@ -91,7 +95,7 @@ select * from aws_resources where not tags ?| array['name', 'version'];
 
 We can easily invert this or make sure that `all` of these tags exist with the `?&` operator instead.
 
-![Table of AWS Resources that don't have particular tags](/img/blog/aws-resources-view/resources-without-particular-tags.png)
+![Table of AWS Resources that don't have particular tags](/images/blog/aws-resources-view/resources-without-particular-tags.png)
 
 ### What resources of Type Z in service X exist in Region Y?
 
@@ -102,7 +106,7 @@ AND service = 'ec2' AND (type = 'instance' OR type = 'network-interface');
 
 Here we can easily query all resources in the `ec2` service from the `us-east` regions, that they are of type `instance` and `network-interface`
 
-![AWS Resources of type Z in service X in region Y](/img/blog/aws-resources-view/resources-of-type-z-in-service-x-in-region-y.png)
+![AWS Resources of type Z in service X in region Y](/images/blog/aws-resources-view/resources-of-type-z-in-service-x-in-region-y.png)
 
 ### Join To existing tables
 

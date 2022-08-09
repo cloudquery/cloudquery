@@ -1,13 +1,17 @@
 ---
 title: Deploying CloudQuery into an AWS Organization
 tag: tutorial
-date: '2022-07-13T22:00:00.000'
+date: 2022/07/13
 description: >-
   Tutorial for setting up AWS IAM permissions in an AWS Organization so that
   CloudQuery can fetch all resources in all accounts
-authors: benjamin
-
+author: benjamin
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 CloudQuery makes fetching resources from your entire organization simple as long as you have the proper IAM trust relationships and permissions setup. In this blog post we will walk through one way of setting up these permissions so that you can have access to all of your configuration data in a single queryable database.
 
@@ -16,7 +20,7 @@ CloudQuery makes fetching resources from your entire organization simple as long
 
 We will be deploying a single CloudFormation template in an admin account and then relying on CloudFormation StackSets to propagate the configurations to all of the member accounts. In the admin account we will create an IAM role that is able to list all of the accounts in the organization as well as assume a role in the member accounts. In the member accounts we will be deploying a single IAM role that has a trust policy to only allow the role in the admin account to assume it. The permissions for the IAM role in the member account are locked down so that the role can only access metadata about the configuration and never has access to your code or data.
 
-![](/img/blog/deploying-cloudquery-into-aws-org/image0.png)
+![](/images/blog/deploying-cloudquery-into-aws-org/image0.png)
 
 ## Prerequisites:
 

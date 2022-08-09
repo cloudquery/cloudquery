@@ -1,13 +1,17 @@
 ---
 title: How to run AWS CIS Benchmark with CloudQuery
 tag: security
-date: '2021-02-15T00:00:00'
+date: 2021/02/15
 description: >-
   Learn how to run AWS CIS benchmark with CloudQuery using customizable SQL
   statements.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { Authors } from "../../components/Authors"
+
+<Authors/>
+
 
 
 ## Intro
