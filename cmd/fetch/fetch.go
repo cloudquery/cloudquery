@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/internal/plugin"
-	"github.com/cloudquery/cq-provider-sdk/clients"
-	"github.com/cloudquery/cq-provider-sdk/plugins"
-	"github.com/cloudquery/cq-provider-sdk/spec"
+	"github.com/cloudquery/plugin-sdk/clients"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
@@ -42,7 +42,7 @@ func fetch(cmd *cobra.Command, args []string) error {
 		directory = args[0]
 	}
 	fmt.Println("Loading specs from directory: ", directory)
-	specReader, err := spec.NewSpecReader(directory)
+	specReader, err := specs.NewSpecReader(directory)
 	if err != nil {
 		return errors.Wrapf(err, "failed to load specs from directory %s", directory)
 	}
@@ -62,7 +62,7 @@ func fetch(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func fetchConnection(ctx context.Context, specReader *spec.SpecReader, connSpec spec.ConnectionSpec, pm *plugin.PluginManager) error {
+func fetchConnection(ctx context.Context, specReader *specs.SpecReader, connSpec specs.ConnectionSpec, pm *plugin.PluginManager) error {
 	sourceSpec := specReader.GetSourceByName(connSpec.Source)
 
 	sourceClient, err := pm.GetSourcePluginClient(ctx, sourceSpec)

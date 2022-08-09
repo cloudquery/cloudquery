@@ -15,13 +15,14 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/internal/destinations"
-	"github.com/cloudquery/cq-provider-sdk/clients"
-	"github.com/cloudquery/cq-provider-sdk/plugins"
-	"github.com/cloudquery/cq-provider-sdk/spec"
+	"github.com/cloudquery/plugin-sdk/clients"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 const unixSocketPrefix = "/tmp/cq-plugins/"
@@ -112,33 +113,24 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	return p
 }
 
-func (p *PluginManager) Download(ctx context.Context, spec spec.SourceSpec) error {
+func (p *PluginManager) Download(ctx context.Context, spec specs.SourceSpec) error {
 	if spec.Registry == "local" || spec.Registry == "grpc" {
 		p.logger.Info().Str("registry", spec.Registry).Msg("skiping plugin download")
 		return nil
 	}
 
-	// this means we are using github as a registry as the only supported ones right now are github,local,grpc
-	if spec.Path != "" {
-		spec.Path = spec.Name
-		// do some basic normalization
-		if !strings.Contains(spec.Path, "/") {
-			// if it doesn't contain / then add default cloudquery org
-			spec.Path = "cloudquery/" + spec.Path
-		}
-	}
 	pathSplit := strings.Split(spec.Path, "/")
 	org, repo := pathSplit[0], pathSplit[1]
-	if spec.Version == "" {
-		spec.Version = "latest"
-		return fmt.Errorf("not supporting latest yet")
-	}
-	// pluginName := fmt.Sprintf("%s/%s", org, repo)
 	pluginName := fmt.Sprintf("cq-provider-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
-	pluginPath := filepath.Join(p.directory, "plugins", spec.Registry, org, repo, spec.Version, pluginName)
+	dirPath := filepath.Join(p.directory, "plugins", spec.Registry, org, repo, spec.Version)
+	pluginPath := filepath.Join(dirPath, pluginName)
+	if err := os.MkdirAll(dirPath, 0755); err != nil {
+		return errors.Wrapf(err, "failed to create plugin directory: %s", dirPath)
+	}
 	if _, err := os.Stat(pluginPath); err == nil {
 		fmt.Printf("Plugin already exists at %s. Skipping download.\n", pluginPath)
 		p.logger.Info().Str("path", pluginPath).Msg("Plugin already exists. Skipping download.")
+		return nil
 	}
 
 	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
@@ -152,7 +144,7 @@ func (p *PluginManager) Download(ctx context.Context, spec spec.SourceSpec) erro
 	return nil
 }
 
-func (p *PluginManager) GetDestinationClient(ctx context.Context, spec spec.DestinationSpec, opts plugins.DestinationPluginOptions) (*clients.DestinationClient, error) {
+func (p *PluginManager) GetDestinationClient(ctx context.Context, spec specs.DestinationSpec, opts plugins.DestinationPluginOptions) (*clients.DestinationClient, error) {
 	switch spec.Name {
 	case "postgresql":
 		return clients.NewLocalDestinationClient(&destinations.PostgreSqlPlugin{}), nil
@@ -161,7 +153,7 @@ func (p *PluginManager) GetDestinationClient(ctx context.Context, spec spec.Dest
 	}
 }
 
-func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec spec.SourceSpec) (*clients.SourceClient, error) {
+func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.SourceSpec) (*clients.SourceClient, error) {
 	if p.plugins[spec.Registry] != nil && p.plugins[spec.Registry][spec.Path] != nil {
 		return p.plugins[spec.Registry][spec.Path].sourceClient, nil
 	}
@@ -192,7 +184,7 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec spec.Sou
 	default:
 		return nil, fmt.Errorf("unknown registry: %s", spec.Registry)
 	}
-	conn, err := grpc.Dial(grpcTarget, grpc.WithInsecure(), grpc.WithBlock())
+	conn, err := grpc.Dial(grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		pl.cmd.Process.Kill()
 		return nil, err
@@ -203,20 +195,17 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec spec.Sou
 	return p.plugins[spec.Registry][spec.Path].sourceClient, nil
 }
 
-func (p *PluginManager) ClosePlugin(ctx context.Context, name string) error {
-	return nil
-}
-
 func (p *PluginManager) CloseAll(ctx context.Context) error {
-	// for _, plugins
-	// for _,
-	// for _, c := range p.sourceClient {
-	// 	c.
-	// }
-	// for _, cmd := range p.plugins {
-	// 	if err := cmd..Kill(); err != nil {
-	// 		return errors.Wrap(err, "failed to kill plugin")
-	// 	}
-	// }
+	for registryName, registry := range p.plugins {
+		for path, pl := range registry {
+			p.logger.Info().Str("registry", registryName).Str("plugin", path).Msg("closing plugin")
+			if err := pl.conn.Close(); err != nil {
+				p.logger.Error().Str("registry", registryName).Str("plugin", path).Err(err)
+			}
+			if err := pl.cmd.Process.Kill(); err != nil {
+				p.logger.Error().Str("registry", registryName).Str("plugin", path).Err(err)
+			}
+		}
+	}
 	return nil
 }

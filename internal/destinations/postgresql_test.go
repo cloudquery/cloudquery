@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/cq-provider-sdk/schema"
-	"github.com/cloudquery/cq-provider-sdk/spec"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/spec"
 	"github.com/rs/zerolog"
 )
 

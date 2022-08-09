@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/Masterminds/squirrel v1.5.3
-	github.com/cloudquery/cq-provider-sdk v0.0.0
+	github.com/cloudquery/cq-plugin-sdk v0.0.1
 	github.com/jackc/pgx/v4 v4.16.1
 	github.com/rs/zerolog v1.27.0
 	github.com/spf13/cobra v1.5.0
@@ -18,6 +18,7 @@ require (
 	github.com/ProtonMail/go-crypto v0.0.0-20220730123233-d6ffb7692adf // indirect
 	github.com/cloudflare/circl v1.1.0 // indirect
 	github.com/cloudquery/faker/v3 v3.7.7 // indirect
+	github.com/cloudquery/plugin-sdk v0.0.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/georgysavva/scany v1.0.0 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
@@ -79,4 +80,4 @@ require (
 	honnef.co/go/tools v0.3.2 // indirect
 )
 
-replace github.com/cloudquery/cq-provider-sdk => ../cq-provider-sdk
+replace github.com/cloudquery/plugin-sdk => ../plugin-sdk

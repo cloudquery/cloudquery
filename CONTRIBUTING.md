@@ -50,7 +50,7 @@ CloudQuery has a pluggable architecture and is using the go-plugin to load, run,
 - Running policy packs
 - Repository for CQ Core can be found 
 
-#### CQ Provider SDK [Repo](https://github.com/cloudquery/cq-provider-sdk):
+#### CQ Provider SDK [Repo](https://github.com/cloudquery/plugin-sdk):
 - Interacting with CQ Core for initialization and configuration
 - Helper functions for defining table schemas
 - Methods for testing the resource

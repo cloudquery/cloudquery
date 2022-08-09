@@ -1,5 +1,4 @@
 kind: source
-apiVersion: cloudquery.io/v1alpha1
 spec:
   name: gcp
   version: development
@@ -9,3 +8,5 @@ spec:
   exclude_tables: ["_"]
   spec:
     projects_ids: ["asd"]
+  destinations:
+    - name: "postgresql"

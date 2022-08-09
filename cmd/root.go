@@ -87,7 +87,7 @@ func newCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().Bool("sentry-debug", false, "enable Sentry debug mode")
 	cmd.PersistentFlags().String("sentry-dsn", "https://5ff9e378a79d4ba2821f540b036286e9@o912044.ingest.sentry.io/6106324", "Sentry DSN")
 
-	hiddenFlags := []string{"telemtry-inspect", "telemetry-debug", "sentry-debug", "sentry-dsn"}
+	hiddenFlags := []string{"telemetry-inspect", "telemetry-debug", "sentry-debug", "sentry-dsn"}
 	for _, f := range hiddenFlags {
 		err := cmd.PersistentFlags().MarkHidden(f)
 		if err != nil {

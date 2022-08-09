@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/cloudquery/cq-provider-sdk/schema"
-	"github.com/cloudquery/cq-provider-sdk/spec"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -22,7 +22,7 @@ type PostgreSqlPlugin struct {
 	logger zerolog.Logger
 }
 
-func (p *PostgreSqlPlugin) Configure(ctx context.Context, spec spec.DestinationSpec) error {
+func (p *PostgreSqlPlugin) Configure(ctx context.Context, spec specs.DestinationSpec) error {
 	var specPostgreSql PostgreSqlSpec
 	if err := spec.Spec.Decode(&specPostgreSql); err != nil {
 		return errors.Wrap(err, "failed to decode spec")

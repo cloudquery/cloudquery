@@ -5,8 +5,8 @@ import (
 
 	"github.com/cloudquery/cloudquery/cmd/enum"
 	"github.com/cloudquery/cloudquery/internal/plugin"
-	"github.com/cloudquery/cq-provider-sdk/plugins"
-	"github.com/cloudquery/cq-provider-sdk/spec"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -51,7 +51,7 @@ func runGen(cmd *cobra.Command, args []string) error {
 }
 
 func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error {
-	sourceSpec := spec.SourceSpec{
+	sourceSpec := specs.SourceSpec{
 		Name:     path,
 		Path:     path,
 		Registry: cmd.Flag("registry").Value.String(),
@@ -69,7 +69,7 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error 
 }
 
 func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager) error {
-	destSpec := spec.DestinationSpec{
+	destSpec := specs.DestinationSpec{
 		Name:     path,
 		Path:     path,
 		Registry: cmd.Flag("registry").Value.String(),
