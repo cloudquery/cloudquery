@@ -30,6 +30,7 @@ jobs:
     needs: resolve-modules
     strategy:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
+      fail-fast: false
     runs-on: ubuntu-latest
     services:
       postgres:
