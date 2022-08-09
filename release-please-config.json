@@ -1,4 +1,5 @@
 {
+  "bootstrap-sha": "a19c572b7c8dac79dd63b5e84414fc9dd36b1fb3",
   "release-type": "go",
   "packages": {
     "cli": { "component": "cli" },
