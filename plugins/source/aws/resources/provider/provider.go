@@ -31,6 +31,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/efs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eks"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticsearch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1"
@@ -161,6 +162,7 @@ func Provider() *provider.Provider {
 			"ecs.task_definitions":                    ecs.EcsTaskDefinitions(),
 			"efs.filesystems":                         efs.EfsFilesystems(),
 			"eks.clusters":                            eks.EksClusters(),
+			"elasticache.clusters":                    elasticache.Clusters(),
 			"elasticbeanstalk.application_versions":   elasticbeanstalk.ApplicationVersions(),
 			"elasticbeanstalk.applications":           elasticbeanstalk.ElasticbeanstalkApplications(),
 			"elasticbeanstalk.environments":           elasticbeanstalk.ElasticbeanstalkEnvironments(),
