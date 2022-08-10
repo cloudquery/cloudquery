@@ -5,6 +5,21 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.2](https://github.com/cloudquery/cloudquery/compare/plugins/cloudflare-v0.0.1...plugins/cloudflare/v0.0.2) (2022-08-10)
+
+
+### Features
+
+* Added access groups ([#14](https://github.com/cloudquery/cloudquery/issues/14)) ([184bc65](https://github.com/cloudquery/cloudquery/commit/184bc65794515d4053b2b16f53cf2df451c20181))
+* Added certificate packs ([#12](https://github.com/cloudquery/cloudquery/issues/12)) ([f41a2ac](https://github.com/cloudquery/cloudquery/commit/f41a2ac1a8e911dfe5e9ba132ba8bc2961dc2c39))
+
+
+### Bug Fixes
+
+* Cleanup ([#16](https://github.com/cloudquery/cloudquery/issues/16)) ([fbc6db3](https://github.com/cloudquery/cloudquery/commit/fbc6db3d89bcd45a3d032f0b6ff91be040a7cc6d))
+* Remove redundant col ([#15](https://github.com/cloudquery/cloudquery/issues/15)) ([193a8f8](https://github.com/cloudquery/cloudquery/commit/193a8f82e75d4a38a3cf9f54cedae5d048289698))
+* Updated account pagination ([#13](https://github.com/cloudquery/cloudquery/issues/13)) ([3f064dc](https://github.com/cloudquery/cloudquery/commit/3f064dc88f698ac9c64bee3e5187d560e176f569))
+
 ## [0.1.1](https://github.com/cloudquery/cq-provider-cloudflare/compare/v0.1.0...v0.1.1) (2022-08-09)
 
 
