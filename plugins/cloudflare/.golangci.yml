@@ -115,6 +115,7 @@ issues:
     - path: resources(\\|\/).*\.go
       linters:
         - dupl
+        - decorder
     # Exclude some linters from running on services files.
     - path: services\.go
       linters:
