@@ -34,6 +34,10 @@ jobs:
           filters: |
             module_files:
               - '${{ matrix.workdir }}/**'
+      - uses: actions/setup-go@v3
+        if: steps.changes.outputs.module_files == 'true'
+        with:
+          go-version: 1.18
       # Plugins and CLI have different linting configurations
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
