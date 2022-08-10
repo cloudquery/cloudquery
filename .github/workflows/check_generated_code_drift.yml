@@ -18,13 +18,8 @@ jobs:
           "aws",
           "azure",
           "cloudflare",
-          "digitalocean",
-          "fuzz",
           "gcp",
           "github",
-          "k8s",
-          "okta",
-          "terraform",
         ]
       fail-fast: false
     steps:
@@ -46,6 +41,7 @@ jobs:
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           make install-tools
+        working-directory: ./plugins/${{ matrix.plugin }}
       - uses: actions/cache@v3
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
