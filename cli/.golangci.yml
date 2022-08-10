@@ -1,14 +1,10 @@
-# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 run:
   tests: true
+  timeout: 5m
   skip-dirs:
     - bin
     - docs
-    - client/mocks
-    - resources/forks
-  timeout: 3m
-  build-tags:
-    - all
+    - cqproto/internal
 
 linters-settings:
   errcheck:
@@ -27,9 +23,6 @@ linters-settings:
       - var
       - func
     disable-dec-order-check: false
-  wrapcheck:
-    ignoreSigs:
-      - diag.WrapError
 
   revive:
     enable-all-rules: true
@@ -68,8 +61,6 @@ linters-settings:
         disabled: true
       - name: confusing-naming
         disabled: true
-      - name: confusing-results
-        disabled: true
       - name: flag-parameter
         disabled: true
       - name: nested-structs
@@ -101,25 +92,4 @@ linters:
     - unparam
     - unused
     - varcheck
-    - wrapcheck
 
-issues:
-  exclude-rules:
-    # Exclude some linters from running on tests files.
-    - path: _test\.go
-      linters:
-        - dupl
-        - gocritic
-        - wrapcheck
-      # Exclude some linters from running on resource files.
-    - path: resources(\\|\/).*\.go
-      linters:
-        - dupl
-    # Exclude some linters from running on services files.
-    - path: services\.go
-      linters:
-        - dupl
-    # Run wrapcheck only on resources files.
-    - path: '(client|test|tools)(\\|\/).*\.go'
-      linters:
-        - wrapcheck

@@ -1,34 +1,54 @@
-# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
-name: lint_golang
+name: lint-monorepo
 on:
   push:
     branches:
       - main
+      - monorepo
   pull_request:
     branches:
       - main
-
+      - monorepo
 jobs:
-  golangci:
-    name: Lint with GolangCI
+  resolve-modules:
+    name: Resolve Modules
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v3
+      - id: set-matrix
+        run: ./scripts/resolve-modules.sh
+  golangci:
+    name: Linter
+    needs: resolve-modules
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: changes
         with:
           filters: |
-            src:
-              - '!(terraform/**/*|scripts/**/*)'
-
+            module_files:
+              - '${{ matrix.workdir }}/**'
       - uses: actions/setup-go@v3
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changes.outputs.module_files == 'true'
         with:
           go-version: 1.18
-
+      # Plugins and CLI have different linting configurations
       - name: golangci-lint
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: golangci/golangci-lint-action@v3
+        if: steps.changes.outputs.module_files == 'true' && matrix.workdir == 'cli'
         with:
-          version: v1.47.1
-          args: --timeout 10m --verbose
+          version: v1.47.3
+          working-directory: ${{ matrix.workdir }}
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        if: steps.changes.outputs.module_files == 'true' && matrix.workdir != 'cli'
+        with:
+          version: v1.47.3
+          working-directory: ${{ matrix.workdir }}
+          args: "--config ${GITHUB_WORKSPACE}/plugins/.golangci.yml" 

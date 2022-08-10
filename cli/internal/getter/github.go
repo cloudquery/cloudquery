@@ -6,15 +6,15 @@ import (
 	"strings"
 )
 
+// GitHubDetector implements Detector to detect GitHub URLs and turn
+// them into URLs that the Git Getter can understand.
+type GitHubDetector struct{}
+
 var (
 	repoToFirebasePath = map[string]string{
 		"cloudquery-policies": "cloudquery",
 	}
 )
-
-// GitHubDetector implements Detector to detect GitHub URLs and turn
-// them into URLs that the Git Getter can understand.
-type GitHubDetector struct{}
 
 func (d *GitHubDetector) Detect(src, _ string) (string, bool, error) {
 	if len(src) == 0 {

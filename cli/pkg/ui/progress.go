@@ -6,14 +6,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const (
-	StatusOK         = "ok"
-	StatusError      = "error"
-	StatusWarn       = "warn"
-	StatusInProgress = "in_progress"
-	StatusInfo       = "info"
-)
-
 // Progress is used to provide an updating progress to the user. The progress
 // usually has one or more bars
 type Progress interface {
@@ -37,6 +29,14 @@ type Progress interface {
 }
 
 type ProgressUpdateFunc func(io.Reader, int64) io.Reader
+
+const (
+	StatusOK         = "ok"
+	StatusError      = "error"
+	StatusWarn       = "warn"
+	StatusInProgress = "in_progress"
+	StatusInfo       = "info"
+)
 
 // CreateProgressUpdater creates a progress update callback method for periodic updates.
 func CreateProgressUpdater(progress Progress, displayName string) ProgressUpdateFunc {
