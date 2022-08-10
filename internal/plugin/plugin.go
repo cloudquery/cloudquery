@@ -6,6 +6,8 @@ package plugin
 
 import (
 	"archive/zip"
+	"bufio"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -183,8 +185,9 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 	// 	return nil, errors.Wrapf(err, "failed to create unixpath directory: %s", filepath.Dir(grpcTarget))
 	// }
 	cmd := exec.Command(pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
-		"--log-level", p.logger.GetLevel().String())
-	cmd.Stdout = os.Stdout
+		"--log-level", p.logger.GetLevel().String(), "--log-format", "json")
+	reader, writer := io.Pipe()
+	cmd.Stdout = writer
 	cmd.Stderr = os.Stderr
 	if err := cmd.Start(); err != nil {
 		return nil, errors.Wrapf(err, "failed to start plugin: %s", pluginPath)
@@ -193,6 +196,20 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 		if err := cmd.Wait(); err != nil {
 			fmt.Printf("plugin %s exited with error: %v\n", spec.Path, err)
 			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("plugin exited")
+		}
+	}()
+	go func() {
+		scanner := bufio.NewScanner(reader)
+		for scanner.Scan() {
+			var structuredLogLine map[string]interface{}
+			b := scanner.Bytes()
+			if err := json.Unmarshal(b, &structuredLogLine); err != nil {
+				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
+			} else {
+				jsonToLog(structuredLogLine, p.logger)
+				// p.logger.js
+				// p.logger.Output()
+			}
 		}
 	}()
 	// remove the socket file if it exists

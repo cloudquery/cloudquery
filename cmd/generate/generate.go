@@ -2,6 +2,7 @@ package generate
 
 import (
 	"fmt"
+
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cmd/enum"
@@ -9,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
 
@@ -40,7 +42,7 @@ func NewCmdInit() *cobra.Command {
 
 func runGen(cmd *cobra.Command, args []string) error {
 
-	pluginManager := plugin.NewPluginManager()
+	pluginManager := plugin.NewPluginManager(plugin.WithLogger(log.Logger))
 	switch args[0] {
 	case "source":
 		return genSource(cmd, args[1], pluginManager)

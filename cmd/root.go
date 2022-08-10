@@ -1,9 +1,11 @@
 package cmd
 
 import (
+	"io"
 	"os"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/cmd/enum"
 	"github.com/cloudquery/cloudquery/cmd/fetch"
 	"github.com/cloudquery/cloudquery/cmd/generate"
 	"github.com/rs/zerolog"
@@ -29,8 +31,14 @@ Find more information at:
 )
 
 func newCmdRoot() *cobra.Command {
-	// logLevel := newEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
-	// logFormat := newEnum([]string{"text", "json"}, "text")
+	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
+	logFormat := enum.NewEnum([]string{"text", "json"}, "json")
+	noColor := false
+	logConsole := false
+	noLogFile := false
+	logFileName := "cloudquery.log"
+
+	var logFile *os.File
 	cmd := &cobra.Command{
 		Use:     "cloudquery",
 		Short:   rootShort,
@@ -40,27 +48,39 @@ func newCmdRoot() *cobra.Command {
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
-			zerologLevel, err := zerolog.ParseLevel("debug")
+			zerologLevel, err := zerolog.ParseLevel(logLevel.String())
 			if err != nil {
 				return err
 			}
-			// var logger zerolog.Logger
-			// if viper.Get(flags.LogFormat) == "json" {
-			log.Logger = zerolog.New(os.Stderr).Level(zerologLevel)
-			// zerolog.ConsoleWriter
-			// } else {
-			// 	logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerologLevel)
-			// }
+			var writers []io.Writer
+			if !noLogFile {
+				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+				if err != nil {
+					return err
+				}
+				if logFormat.String() == "text" {
+					writers = append(writers, zerolog.ConsoleWriter{Out: logFile, NoColor: noColor})
+				} else {
+					writers = append(writers, logFile)
+				}
+			}
+			if logConsole {
+				if logFormat.String() == "text" {
+					writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: noColor})
+				} else {
+					writers = append(writers, os.Stderr)
+				}
+			}
 
-			// log.Logger = logger
-			// log.Logger
-
-			// if !viper.GetBool(flags.NoTelemetry) {
-			// 	fmt.Println("Anonymous telemetry collection and crash reporting enabled. Run with --no-telemetry to disable, or check docs at https://docs.cloudquery.io/docs/cli/telemetry")
-			// }
+			mw := io.MultiWriter(writers...)
+			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Timestamp().Logger()
+			log.Logger.Info().Msg("logging initialized")
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
+			if logFile != nil {
+				logFile.Close()
+			}
 			// analytics.Close()
 		},
 	}
@@ -70,11 +90,11 @@ func newCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().String("color", "auto", "Enable colorized output (on, off, auto)")
 
 	// Logging Flags
-	cmd.PersistentFlags().BoolP("verbose", "v", false, "enable verbose logging")
-	cmd.PersistentFlags().Bool("log-console", false, "enable console logging")
-	cmd.PersistentFlags().String("log-format", "text", "Logging format (json, text)")
-	cmd.PersistentFlags().Bool("no-log-file", false, "Disable logging to file")
-	cmd.PersistentFlags().String("log-file-name", "cloudquery.log", "Log filename")
+	cmd.PersistentFlags().BoolVar(&logConsole, "log-console", false, "enable console logging")
+	cmd.PersistentFlags().Var(logFormat, "log-format", "Logging format (json, text)")
+	cmd.PersistentFlags().Var(logLevel, "log-level", "Logging level")
+	cmd.PersistentFlags().BoolVar(&noLogFile, "no-log-file", false, "Disable logging to file")
+	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemtry (analytics) flags
 	cmd.PersistentFlags().Bool("no-telemetry", false, "disable telemetry collection")

@@ -1,4 +1,0 @@
-kind: connection
-spec:
-  source: "gcp"
-  destinations: ["postgresql"]
