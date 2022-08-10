@@ -1,9 +1,11 @@
 set -x
 set -e
 
+BASE_BRANCH="${BASE_BRANCH:-origin/main}"
+
 for d in ./resources/services/*/ ; do
   # check whether directory changed in this branch
-  if git diff --quiet origin/main HEAD -- $d; then
+  if git diff --quiet $BASE_BRANCH HEAD -- $d; then
     echo "no changes in $d";
     continue;
   fi
