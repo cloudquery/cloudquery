@@ -103,7 +103,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	if _, err := os.Stat(pluginPath); err == nil {
 		fmt.Printf("Plugin already exists at %s. Skipping download.\n", pluginPath)
 		p.logger.Info().Str("path", pluginPath).Msg("Plugin already exists. Skipping download.")
-		return "", nil
+		return pluginPath, nil
 	}
 
 	if err := os.MkdirAll(dirPath, 0755); err != nil {
@@ -187,7 +187,7 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 	cmd := exec.Command(pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
 		"--log-level", p.logger.GetLevel().String())
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = p.logger
+	cmd.Stderr = os.Stderr
 	if err := cmd.Start(); err != nil {
 		return nil, errors.Wrapf(err, "failed to start plugin: %s", pluginPath)
 	}
@@ -197,7 +197,7 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("plugin exited")
 		}
 	}()
-	conn, err := grpc.Dial(grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
 			fmt.Println("failed to kill plugin", err)
