@@ -31,7 +31,7 @@ jobs:
         with:
           filters: |
             src:
-              - "./plugins/${{ matrix.plugin }}/**"
+              - "./plugins/source/${{ matrix.plugin }}/**"
       - name: Set up Go 1.x
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
@@ -41,7 +41,7 @@ jobs:
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           make install-tools
-        working-directory: ./plugins/${{ matrix.plugin }}
+        working-directory: ./plugins/source/${{ matrix.plugin }}
       - uses: actions/cache@v3
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
@@ -64,18 +64,18 @@ jobs:
           BASE_BRANCH: ${{ github.base_ref }}
         run: |
           ../../scripts/check-new-files-have-check-for-changes-flag.sh
-        working-directory: ./plugins/${{ matrix.plugin }}
+        working-directory: ./plugins/source/${{ matrix.plugin }}
       - name: Run go generate on changed service directories
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         env:
           BASE_BRANCH: ${{ github.base_ref }}
         run: |
           ../../scripts/regenerate-changed-directories.sh
-        working-directory: ./plugins/${{ matrix.plugin }}
+        working-directory: ./plugins/source/${{ matrix.plugin }}
       - name: Fail if any files are changed
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           echo "List of files changed after running go generate:"
           git status -s ./resources/services
           test "$(git status -s ./resources/services | wc -l)" -eq 0
-        working-directory: ./plugins/${{ matrix.plugin }}
+        working-directory: ./plugins/source/${{ matrix.plugin }}
