@@ -52,19 +52,19 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: dorny/paths-filter@v2
-        id: changes
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v25
         with:
-          filters: |
-            src:
-              - "${{ matrix.workdir }}/**"
+          files: |
+            ${{ matrix.workdir }}
       - name: Set up Go 1.x
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
         with:
           go-version: ^1.18
       - uses: actions/cache@v3
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         with:
           # In order:
           # * Module download cache
@@ -81,16 +81,16 @@ jobs:
             ${{ runner.os }}-go-1.18-
 
       - name: Get dependencies
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
 
       - name: Build
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         run: go build .
         working-directory: ${{ matrix.workdir }}
 
       - name: Test
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         run: go test -v ./...
         working-directory: ${{ matrix.workdir }}

@@ -26,24 +26,30 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: dorny/paths-filter@v2
-        id: changes
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v25
         with:
+<<<<<<< HEAD
           filters: |
             src:
               - "./plugins/source/${{ matrix.plugin }}/**"
+=======
+          files: |
+            plugins/${{ matrix.plugin }}
+>>>>>>> upstream/monorepo
       - name: Set up Go 1.x
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
         with:
           go-version: ^1.18
       - name: Install tools
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         run: |
           make install-tools
         working-directory: ./plugins/source/${{ matrix.plugin }}
       - uses: actions/cache@v3
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         with:
           # In order:
           # * Module download cache
@@ -60,21 +66,21 @@ jobs:
             ${{ runner.os }}-go-1.18-
 #            TODO: Enable again once monorepo migration is done
 #      - name: Fail if new cq-gen config file is missing //check-for-changes
-#        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+#        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
 #        env:
 #          BASE_BRANCH: ${{ github.base_ref }}
 #        run: |
 #          ../../scripts/check-new-files-have-check-for-changes-flag.sh
 #        working-directory: ./plugins/source/${{ matrix.plugin }}
       - name: Run go generate on changed service directories
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         env:
           BASE_BRANCH: ${{ github.base_ref }}
         run: |
           ../../scripts/regenerate-changed-directories.sh
         working-directory: ./plugins/source/${{ matrix.plugin }}
       - name: Fail if any files are changed
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         run: |
           echo "List of files changed after running go generate:"
           git status -s ./resources/services
