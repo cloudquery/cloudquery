@@ -2,6 +2,7 @@ package generate
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/cmd/enum"
 	"github.com/cloudquery/cloudquery/internal/plugin"
@@ -23,7 +24,7 @@ cloudquery generate gcp
 )
 
 func NewCmdInit() *cobra.Command {
-	registry := enum.NewEnum([]string{"hub", "local", "grpc"}, "hub")
+	registry := enum.NewEnum([]string{"github", "local", "grpc"}, "github")
 	cmd := &cobra.Command{
 		Use:     "generate <source/destination/connection> <path>",
 		Aliases: []string{"gen"},
@@ -51,18 +52,27 @@ func runGen(cmd *cobra.Command, args []string) error {
 }
 
 func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error {
+	if !strings.Contains(path, "/") {
+		path = "cloudquery/" + path
+	}
+	version := "latest"
+	if strings.Contains(path, "@") {
+		version = strings.Split(path, "@")[1]
+	}
+
 	sourceSpec := specs.SourceSpec{
 		Name:     path,
 		Path:     path,
 		Registry: cmd.Flag("registry").Value.String(),
+		Version:  version,
 	}
 	sourceClient, err := pm.GetSourcePluginClient(cmd.Context(), sourceSpec)
 	if err != nil {
-		return errors.Errorf("failed to get plugin client: %w", err)
+		return errors.Wrap(err, "failed to get plugin client")
 	}
 	res, err := sourceClient.GetExampleConfig(cmd.Context())
 	if err != nil {
-		return errors.Errorf("failed to get example config: %w", err)
+		return errors.Wrap(err, "failed to get example config")
 	}
 	fmt.Println(res)
 	return nil

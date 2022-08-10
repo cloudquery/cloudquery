@@ -105,15 +105,19 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 		p.logger.Info().Str("path", pluginPath).Msg("Plugin already exists. Skipping download.")
 		return "", nil
 	}
-	fmt.Println("Downloading plugin from github. path: ", pluginPath)
 
 	if err := os.MkdirAll(dirPath, 0755); err != nil {
-		return "", errors.Wrapf(err, "failed to create plugin directory: %s", dirPath)
+		return "", errors.Wrapf(err, "failed to create plugin directory: %s\n", dirPath)
 	}
 	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
 	// For example:
 	// https://github.com/cloudquery/cq-source-aws/releases/download/v1.0.1/cq-source-aws_darwin_amd64.zip
 	pluginUrl := fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+	if spec.Version == "latest" {
+		// https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
+		pluginUrl = fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/latest/download/cq-source-%s_%s_%s.zip", org, repo, repo, runtime.GOOS, runtime.GOARCH)
+	}
+	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", pluginUrl, pluginPath)
 	if err := downloadFile(pluginPath+".zip", pluginUrl); err != nil {
 		return "", errors.Wrap(err, "failed to download plugin")
 	}
