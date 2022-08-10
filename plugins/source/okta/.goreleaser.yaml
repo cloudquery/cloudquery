@@ -1,13 +1,13 @@
 variables:
   component: okta
 
-project_name: plugins/okta
+project_name: plugins/source/okta
 
 monorepo:
-  tag_prefix: plugins/okta/
-  dir: plugins/okta
+  tag_prefix: plugins/source/okta/
+  dir: plugins/source/okta
 
 includes:
   - from_file:
       # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      path: ./plugins/.goreleaser.yaml
+      path: ./plugins/source/.goreleaser.yaml

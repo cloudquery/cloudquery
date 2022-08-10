@@ -1,7 +1,7 @@
 before:
   hooks:
     - cmd: go mod download
-      dir: ./plugins/{{ .Var.component }}
+      dir: ./plugins/source/{{ .Var.component }}
 builds:
   - flags:
       - -buildmode=exe
@@ -9,7 +9,7 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/provider.Version={{.Version}}
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/source/{{ .Var.component }}/resources/provider.Version={{.Version}}
     goos:
       - windows
       - linux
