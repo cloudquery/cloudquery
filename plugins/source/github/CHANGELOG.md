@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.4](https://github.com/cloudquery/cq-provider-github/compare/v0.1.3...v0.1.4) (2022-08-10)
+
+
+### Features
+
+* Ignore forbidden errors ([#27](https://github.com/cloudquery/cq-provider-github/issues/27)) ([535898a](https://github.com/cloudquery/cq-provider-github/commit/535898a020997b01db48d291cad56b275d1357bd))
+
+
+### Bug Fixes
+
+* Small readme fixes ([#25](https://github.com/cloudquery/cq-provider-github/issues/25)) ([4caea14](https://github.com/cloudquery/cq-provider-github/commit/4caea14916b0ccfd94083761f3233a9fa1ba6c8c))
+
 ## [0.1.3](https://github.com/cloudquery/cq-provider-github/compare/v0.1.2...v0.1.3) (2022-08-09)
 
 
