@@ -13,6 +13,7 @@ require("prismjs/components/prism-powershell");
 require("prismjs/components/prism-hcl");
 require("prismjs/components/prism-ini");
 require("prismjs/components/prism-docker");
+require("prismjs/components/prism-toml");
 
 type NextraAppProps = AppProps & {
   Component: AppProps["Component"] & {
