@@ -1,7 +1,7 @@
 ---
-id: "completion_zsh"
+id: completion_zsh
 hide_title: true
-sidebar_label: "completion zsh"
+sidebar_label: completion zsh
 ---
 ## cloudquery completion zsh
 

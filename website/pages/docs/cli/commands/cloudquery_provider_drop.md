@@ -1,7 +1,7 @@
 ---
-id: "provider_drop"
+id: provider_drop
 hide_title: true
-sidebar_label: "provider drop"
+sidebar_label: provider drop
 ---
 ## cloudquery provider drop
 

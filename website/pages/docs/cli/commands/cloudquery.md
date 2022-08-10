@@ -1,7 +1,7 @@
 ---
-id: "cloudquery"
+id: cloudquery
 hide_title: true
-sidebar_label: "cloudquery"
+sidebar_label: cloudquery
 ---
 ## cloudquery
 

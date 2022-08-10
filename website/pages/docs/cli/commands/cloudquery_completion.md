@@ -1,8 +1,9 @@
 ---
-id: "completion"
+id: completion
 hide_title: true
-sidebar_label: "completion"
+sidebar_label: completion
 ---
+
 ## cloudquery completion
 
 Generate the autocompletion script for the specified shell
@@ -11,7 +12,6 @@ Generate the autocompletion script for the specified shell
 
 Generate the autocompletion script for cloudquery for the specified shell.
 See each sub-command's help for details on how to use the generated script.
-
 
 ### Options
 
@@ -45,9 +45,8 @@ See each sub-command's help for details on how to use the generated script.
 
 ### SEE ALSO
 
-* [cloudquery](cloudquery.md)	 - CloudQuery CLI
-* [cloudquery completion bash](cloudquery_completion_bash.md)	 - Generate the autocompletion script for bash
-* [cloudquery completion fish](cloudquery_completion_fish.md)	 - Generate the autocompletion script for fish
-* [cloudquery completion powershell](cloudquery_completion_powershell.md)	 - Generate the autocompletion script for powershell
-* [cloudquery completion zsh](cloudquery_completion_zsh.md)	 - Generate the autocompletion script for zsh
-
+- [cloudquery](cloudquery.md) - CloudQuery CLI
+- [cloudquery completion bash](cloudquery_completion_bash.md) - Generate the autocompletion script for bash
+- [cloudquery completion fish](cloudquery_completion_fish.md) - Generate the autocompletion script for fish
+- [cloudquery completion powershell](cloudquery_completion_powershell.md) - Generate the autocompletion script for powershell
+- [cloudquery completion zsh](cloudquery_completion_zsh.md) - Generate the autocompletion script for zsh

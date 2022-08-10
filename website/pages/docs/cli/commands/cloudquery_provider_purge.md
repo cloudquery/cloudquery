@@ -1,7 +1,7 @@
 ---
-id: "provider_purge"
+id: provider_purge
 hide_title: true
-sidebar_label: "provider purge"
+sidebar_label: provider purge
 ---
 ## cloudquery provider purge
 

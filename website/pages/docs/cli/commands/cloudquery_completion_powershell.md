@@ -1,7 +1,7 @@
 ---
-id: "completion_powershell"
+id: completion_powershell
 hide_title: true
-sidebar_label: "completion powershell"
+sidebar_label: completion powershell
 ---
 ## cloudquery completion powershell
 

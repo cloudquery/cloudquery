@@ -1,7 +1,7 @@
 ---
-id: "completion_bash"
+id: completion_bash
 hide_title: true
-sidebar_label: "completion bash"
+sidebar_label: completion bash
 ---
 ## cloudquery completion bash
 

@@ -1,7 +1,7 @@
 ---
-id: "completion_fish"
+id: completion_fish
 hide_title: true
-sidebar_label: "completion fish"
+sidebar_label: completion fish
 ---
 ## cloudquery completion fish
 

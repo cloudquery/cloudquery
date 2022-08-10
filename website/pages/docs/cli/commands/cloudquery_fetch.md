@@ -1,7 +1,7 @@
 ---
-id: "fetch"
+id: fetch
 hide_title: true
-sidebar_label: "fetch"
+sidebar_label: fetch
 ---
 ## cloudquery fetch
 

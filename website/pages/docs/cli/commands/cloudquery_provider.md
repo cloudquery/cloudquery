@@ -1,7 +1,7 @@
 ---
-id: "provider"
+id: provider
 hide_title: true
-sidebar_label: "provider"
+sidebar_label: provider
 ---
 ## cloudquery provider
 

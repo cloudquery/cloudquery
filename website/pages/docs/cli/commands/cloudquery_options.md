@@ -1,7 +1,7 @@
 ---
-id: "options"
+id: options
 hide_title: true
-sidebar_label: "options"
+sidebar_label: options
 ---
 ## cloudquery options
 

@@ -41,7 +41,7 @@ cloudquery:
 
 Once `cloudquery.yml` is generated, run the following command to fetch the resources. \(You need to be authenticated — see relevant section under each provider\):
 
-```text
+```powershell
 cloudquery fetch
 # cloudquery fetch --help # Show all possible fetch flags
 ```

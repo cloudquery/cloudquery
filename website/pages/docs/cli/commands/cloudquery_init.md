@@ -1,7 +1,7 @@
 ---
-id: "init"
+id: init
 hide_title: true
-sidebar_label: "init"
+sidebar_label: init
 ---
 ## cloudquery init
 

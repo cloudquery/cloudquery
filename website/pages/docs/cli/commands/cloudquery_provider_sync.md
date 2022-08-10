@@ -1,7 +1,7 @@
 ---
-id: "provider_sync"
+id: provider_sync
 hide_title: true
-sidebar_label: "provider sync"
+sidebar_label: provider sync
 ---
 ## cloudquery provider sync
 

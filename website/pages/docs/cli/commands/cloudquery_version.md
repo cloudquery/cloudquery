@@ -1,7 +1,7 @@
 ---
-id: "version"
+id: version
 hide_title: true
-sidebar_label: "version"
+sidebar_label: version
 ---
 ## cloudquery version
 
