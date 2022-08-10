@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/spec"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 )
 
@@ -34,7 +34,7 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
 	ctx := context.Background()
 	p := PostgreSqlPlugin{}
-	if err := p.Configure(ctx, l, &spec.DestinationSpec{
+	if err := p.Configure(ctx, l, &specs.DestinationSpec{
 		Name:    "postgresql",
 		Version: "test",
 		Spec: &PostgreSqlSpec{

@@ -1,10 +1,10 @@
 kind: source
 spec:
-  name: someorg/gcp
+  name: gcp
   version: v1.0.0
   path: someorg/cq-source-gcp
   tables: ["*"]
-  exclude_tables: ["_"]
+  skip_tables: ["_"]
   spec:
     projects_ids: ["asd"]
   destinations:

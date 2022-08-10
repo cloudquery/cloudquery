@@ -78,7 +78,7 @@ func newCmdRoot() *cobra.Command {
 
 	// Telemtry (analytics) flags
 	cmd.PersistentFlags().Bool("no-telemetry", false, "disable telemetry collection")
-	// we dont need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
+	// we don't need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
 	// the only exception is the telemetry as people might want to put in a bash starter script
 	viper.BindPFlag("no-telemetry", cmd.PersistentFlags().Lookup("no-telemetry"))
 	cmd.PersistentFlags().Bool("telemetry-inspect", false, "enable telemetry inspection")

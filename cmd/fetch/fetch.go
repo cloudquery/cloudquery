@@ -47,7 +47,7 @@ func fetch(cmd *cobra.Command, args []string) error {
 		return errors.Wrapf(err, "failed to load specs from directory %s", directory)
 	}
 	if len(specReader.Connections()) == 0 {
-		fmt.Println("No connections specs found in directory: ", directory)
+		fmt.Println("No connections found in directory: ", directory)
 		return nil
 	}
 	pm := plugin.NewPluginManager()
@@ -64,6 +64,9 @@ func fetch(cmd *cobra.Command, args []string) error {
 
 func fetchConnection(ctx context.Context, specReader *specs.SpecReader, connSpec specs.ConnectionSpec, pm *plugin.PluginManager) error {
 	sourceSpec := specReader.GetSourceByName(connSpec.Source)
+	if sourceSpec.Name == "" {
+		return fmt.Errorf("unknown source spec %s", connSpec.Source)
+	}
 
 	sourceClient, err := pm.GetSourcePluginClient(ctx, sourceSpec)
 	if err != nil {
@@ -72,13 +75,13 @@ func fetchConnection(ctx context.Context, specReader *specs.SpecReader, connSpec
 
 	destinationClient, err := pm.GetDestinationClient(
 		ctx,
-		specReader.GetDestinatinoByName(connSpec.Destination),
+		specReader.GetDestinationByName(connSpec.Destination),
 		plugins.DestinationPluginOptions{},
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to get destination plugin client")
 	}
-	if err := destinationClient.Configure(ctx, specReader.GetDestinatinoByName(connSpec.Destination)); err != nil {
+	if err := destinationClient.Configure(ctx, specReader.GetDestinationByName(connSpec.Destination)); err != nil {
 		return errors.Wrap(err, "failed to configure destination plugin client")
 	}
 	tables, err := sourceClient.GetTables(ctx)
