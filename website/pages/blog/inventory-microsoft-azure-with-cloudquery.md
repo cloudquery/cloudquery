@@ -6,9 +6,9 @@ description: Inventory Microsoft Azure with CloudQuery
 author: giselatorres
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 [Originally posted at [https://www.returngis.net/2021/11/haz-inventario-de-microsoft-azure-con-cloudquery/](https://www.returngis.net/2021/11/haz-inventario-de-microsoft-azure-con-cloudquery/)]

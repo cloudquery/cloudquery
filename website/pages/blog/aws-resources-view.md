@@ -9,9 +9,9 @@ description: >-
 author: roneliahu
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 As of the writing of this blog, CloudQuery supports over 155 resources across 61 services in AWS! and many more in GCP, Azure, etc. Although this gives users the capabilities to answer many of their questions regarding your security, visibility and infrastructure, it would be great to have a single view of all your AWS resources, right?

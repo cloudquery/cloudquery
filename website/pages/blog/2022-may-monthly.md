@@ -8,9 +8,9 @@ description: >-
 author: benjamin
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 Welcome to CloudQuery’s latest product news! This month we’ve been heads-down working on some new features but most

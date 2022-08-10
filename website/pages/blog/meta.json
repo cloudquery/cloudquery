@@ -8,6 +8,7 @@
     },
     "searchable": false
   },
+  "introducing-the-github-cloudquery-provider": "Introducing The GitHub CloudQuery Provider",
   "configuring-workload-identity-federation-between-gcp-and-aws-eks": "Configuring Workload identity federation between GCP and AWS EKS",
   "open-source-cspm": "Building Open Source CSPM with CloudQuery, PostgreSQL and Grafana",
   "deploying-cloudquery-into-aws-org": "Deploying CloudQuery into an AWS Organization",

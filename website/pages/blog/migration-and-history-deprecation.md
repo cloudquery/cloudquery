@@ -8,9 +8,9 @@ description: >-
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 This is a short note that v0.24.0 is deprecating migrations from cloudquery together with history.

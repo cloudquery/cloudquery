@@ -6,9 +6,9 @@ description: Unbundling the cloud security stack with a data platform
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In this blog post, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your own customizable compliance, CSPM (Cloud Security Posture Management) dashboard with PostgreSQL and Grafana.

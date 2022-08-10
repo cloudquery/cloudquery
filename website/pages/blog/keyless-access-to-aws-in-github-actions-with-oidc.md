@@ -6,9 +6,9 @@ description: A guide to configuring OpenID Connect access to AWS from GitHub Act
 author: mikeelsmore
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 With this blog, we will show you how to access your AWS environment without storing IAM credentials in GitHub by using OpenID Connect (OIDC).

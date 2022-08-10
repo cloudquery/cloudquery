@@ -8,9 +8,9 @@ description: >-
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 CloudQuery policies gives you a powerful way to automate, customize, codify, and run your cloud security & compliance continuously with HCL and SQL. In this blog we will show you how to run our open-source AWS PCI DSS (Payment Card Industry Data Security Standard) compliance policy. Official PCI DSS Guide is available [here](https://www.pcisecuritystandards.org/).

@@ -9,9 +9,9 @@ description: >-
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 Today, we announce that we raised $15M Series A round led by Tiger Global, with participation from our existing investors: Boldstart, Mango Capital, Work-Bench and Haystack alongside amazing angel investors from the industry.

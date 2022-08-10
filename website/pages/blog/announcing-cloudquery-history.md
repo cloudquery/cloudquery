@@ -6,9 +6,9 @@ description: Announcing CloudQuery History
 author: roneliahu
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 **This feature was deprecated, [see blog post](https://www.cloudquery.io/blog/migration-and-history-deprecation).**

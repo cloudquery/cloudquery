@@ -8,9 +8,9 @@ description: >-
 author: mikeelsmore
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 AWS SSO and AWS Organization were released around 2017 and are probably the best way to manage AWS access at scale.

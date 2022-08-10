@@ -8,9 +8,9 @@ description: >-
 author: benjamin
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In this blog we will walk through how to create a role an external account that we want to AssumeRole into. In our example we will provide the new role in the external account with broad ReadOnly permissions (but you are free to change to whatever you want).

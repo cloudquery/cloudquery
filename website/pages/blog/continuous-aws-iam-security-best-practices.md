@@ -8,9 +8,9 @@ description: >-
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 There are some great guides on the internet for AWS Security best practices (both official and unofficial).

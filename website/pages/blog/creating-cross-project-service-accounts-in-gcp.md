@@ -8,9 +8,9 @@ description: >-
 author: mikeelsmore
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In Google Cloud Platform (GCP) it is common to have multiple projects for different environments (like `dev`, `staging`, `prod`, `prod-team1`, etc.). It is also a common use-case to have one set of credentials (service account) to access multiple accounts, For example:

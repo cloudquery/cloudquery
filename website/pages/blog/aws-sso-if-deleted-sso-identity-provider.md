@@ -8,9 +8,9 @@ description: >-
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In this short tutorial we will go through what to do if you accidentally deleted the `AWSSSO_asd123456678_DO_NO_DELETE` identity provider from an org account which is used by AWS SSO (take a look at our previous blog setting up [AWS SSO with Google Workspace](https://www.cloudquery.io/blog/aws-sso-tutorial-with-google-workspace-as-an-idp)).

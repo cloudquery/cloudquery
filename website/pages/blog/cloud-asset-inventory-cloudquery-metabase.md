@@ -8,9 +8,9 @@ description: >-
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Metabase](https://www.metabase.com/) for visualization, monitoring and reporting.

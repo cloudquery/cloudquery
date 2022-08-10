@@ -6,9 +6,9 @@ description: Announcing First Release of CloudQuery Hub
 author: roneliahu
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 Today, we're excited to announce the availability of [CloudQuery Hub](https://hub.cloudquery.io).

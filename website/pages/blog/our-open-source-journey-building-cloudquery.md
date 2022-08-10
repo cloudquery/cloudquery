@@ -9,9 +9,9 @@ description: >-
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In this blog, we will share why we started CloudQuery as an open-source cloud asset inventory, as well as some of our product and technical decisions along the way.

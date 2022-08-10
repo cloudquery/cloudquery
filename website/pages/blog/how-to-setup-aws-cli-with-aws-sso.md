@@ -6,9 +6,9 @@ description: A step-by-step guide to setup AWS CLI with AWS SSO
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 AWS SSO makes it easy to centrally manage SSO Access to multiple AWS accounts, moves the authentication to the IdP (Identity Provider) and removes the need for managing static, long-lived credentials.

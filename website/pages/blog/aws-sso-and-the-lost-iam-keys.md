@@ -6,9 +6,9 @@ description: AWS SSO and IAM Security Best Practices
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 [AWS SSO](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html) is one of the best and most popular ways to centrally manage access of users/developers to AWS Accounts, especially when combined with [AWS Organizations](https://aws.amazon.com/organizations/) for multi-account access and management.

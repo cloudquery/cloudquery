@@ -10,9 +10,9 @@ description: >-
 author: itay
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Google Data Studio](https://marketingplatform.google.com/about/data-studio/) for visualization, monitoring and reporting.

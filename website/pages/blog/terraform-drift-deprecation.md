@@ -6,9 +6,9 @@ description: Cloudquery 0.27.0 is deprecating Terraform drift functionality.
 author: benjamin
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 This is a short note that v0.27.0 is deprecating Terraform drift functionality.

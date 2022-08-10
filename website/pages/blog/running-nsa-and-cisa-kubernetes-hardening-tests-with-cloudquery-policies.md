@@ -10,9 +10,9 @@ description: >-
 author: danielspangenberg
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 On August 3rd, 2021, USA's National Security Agency (NSA) and the Cybersecurity and Infrastructure Security Agency (CISA) released, [“Kubernetes Hardening Guidance”](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF). The guide describes in great detail the challenges in the security k8s environment, base threat model and guidance on how to provide secure configuration to minimize risk.

@@ -6,9 +6,9 @@ description: Search everything you have in the cloud with GraphQL.
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 In this blog post, we will walk you through how to setup [CloudQuery](https://github.com/cloudquery/cloudquery) to build your cloud asset inventory in PostgreSQL and build a GraphQL API query layer with [PostGraphile](https://github.com/graphile/postgraphile) on top of it. this can be used to build different use cases on from search to security, cost and infrastructure automation.

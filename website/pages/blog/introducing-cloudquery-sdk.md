@@ -6,9 +6,9 @@ description: Introducing simple and extensible SDK to query your cloud
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 Today we are pleased to announce the release of [CloudQuery SDK](https://github.com/cloudquery/cq-provider-sdk)!

@@ -6,9 +6,9 @@ description: Adding CQ Policies to CQ Hub
 author: yevgenypats
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 Today, we’re excited to announce the availability of [CloudQuery Policies](https://www.cloudquery.io/blog/announcing-cloudquery-policies) in [CloudQuery Hub](https://hub.cloudquery.io/).

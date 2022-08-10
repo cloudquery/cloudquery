@@ -6,9 +6,9 @@ description: Announcing First Release of CloudQuery Policies
 author: michelvocks
 ---
 
-import { Authors } from "../../components/Authors"
+import { BlogHeader } from "../../components/BlogHeader"
 
-<Authors/>
+<BlogHeader/>
 
 
 We are excited to announce the release of the CloudQuery Policies!
