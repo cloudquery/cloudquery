@@ -46,15 +46,15 @@ func fetch(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return errors.Wrapf(err, "failed to load specs from directory %s", directory)
 	}
-	if len(specReader.Connections()) == 0 {
-		fmt.Println("No connections specs found in directory: ", directory)
-		return nil
-	}
+
 	pm := plugin.NewPluginManager()
 	defer pm.CloseAll(cmd.Context())
-	for _, connSpec := range specReader.Connections() {
-		if err := fetchConnection(cmd.Context(), specReader, connSpec, pm); err != nil {
-			return errors.Wrapf(err, "failed to fetch connection %s->%s", connSpec.Source, connSpec.Destination)
+	for _, sourceSpec := range specReader.GetSources() {
+		for _, destination := range sourceSpec.Destinations {
+			destSpec := specReader.GetDestinatinoByName(destination)
+			if err := fetchConnection(cmd.Context(), pm, sourceSpec, destSpec); err != nil {
+				return errors.Wrapf(err, "failed to fetch connection %s->%s", sourceSpec.Name, destSpec.Name)
+			}
 		}
 		// destSpec := specs.GetDestinatinoByName(connSpec.Destination)
 	}
@@ -62,9 +62,7 @@ func fetch(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func fetchConnection(ctx context.Context, specReader *specs.SpecReader, connSpec specs.ConnectionSpec, pm *plugin.PluginManager) error {
-	sourceSpec := specReader.GetSourceByName(connSpec.Source)
-
+func fetchConnection(ctx context.Context, pm *plugin.PluginManager, sourceSpec specs.SourceSpec, destSpec specs.DestinationSpec) error {
 	sourceClient, err := pm.GetSourcePluginClient(ctx, sourceSpec)
 	if err != nil {
 		return errors.Wrap(err, "failed to get source plugin client")
@@ -72,13 +70,13 @@ func fetchConnection(ctx context.Context, specReader *specs.SpecReader, connSpec
 
 	destinationClient, err := pm.GetDestinationClient(
 		ctx,
-		specReader.GetDestinatinoByName(connSpec.Destination),
+		destSpec,
 		plugins.DestinationPluginOptions{},
 	)
 	if err != nil {
 		return errors.Wrap(err, "failed to get destination plugin client")
 	}
-	if err := destinationClient.Configure(ctx, specReader.GetDestinatinoByName(connSpec.Destination)); err != nil {
+	if err := destinationClient.Configure(ctx, destSpec); err != nil {
 		return errors.Wrap(err, "failed to configure destination plugin client")
 	}
 	tables, err := sourceClient.GetTables(ctx)
@@ -101,7 +99,7 @@ func fetchConnection(ctx context.Context, specReader *specs.SpecReader, connSpec
 	}
 	resources := make(chan *clients.FetchResultMessage)
 	g, ctx := errgroup.WithContext(ctx)
-	fmt.Println("Starting fetch for: ", connSpec.Source, "->", connSpec.Destination)
+	fmt.Println("Starting fetch for: ", sourceSpec.Name, "->", destSpec.Name)
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Fetch(ctx, sourceSpec, resources); err != nil {
