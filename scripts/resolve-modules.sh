@@ -1,6 +1,6 @@
 #!/bin/bash
 # Recursively finds all directories with a go.mod file and creates
-# a GitHub Actions JSON output option. This is used by the linter action.
+# a GitHub Actions JSON output option. This is used by several actions.
 
 echo "Resolving modules in $(pwd)"
 

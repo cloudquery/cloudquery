@@ -1,4 +1,3 @@
-# DO NOT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 name: endpoints-generation
 on:
   schedule:
@@ -29,7 +28,7 @@ jobs:
 
       - name: regenerate partition_service_region file
         run: |
-          go run ./tools/endpoints/main.go
+          go run ./plugins/aws/tools/endpoints/main.go
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
