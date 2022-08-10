@@ -9,15 +9,16 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+//go:generate cq-gen --resource key_pairs --config gen.hcl --output .
 func Ec2KeyPairs() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_ec2_key_pairs",
 		Description:   "Describes an EC2 Key Pair.",
 		Resolver:      fetchEc2KeyPairs,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreWithInvalidAction,
+		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter:  client.DeleteAccountRegionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"key_name"}},
+		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"key_pair_id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
