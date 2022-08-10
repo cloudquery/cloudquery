@@ -27,8 +27,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const unixSocketPrefix = "/tmp/cq-plugins/"
-
 type Plugin struct {
 	cmd          *exec.Cmd
 	conn         *grpc.ClientConn
@@ -154,21 +152,20 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 		return p.plugins[spec.Registry][spec.Path].sourceClient, nil
 	}
 	pl := Plugin{}
-	var grpcTarget string
+	// var grpcTarget string
 	var pluginPath string
 	switch spec.Registry {
 	case "grpc":
 		// This is a special case as we dont spawn any process
-		conn, err := grpc.Dial(grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(spec.Path, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to dial grpc target: %s", grpcTarget)
+			return nil, errors.Wrapf(err, "failed to dial grpc target: %s", spec.Path)
 		}
 		pl.conn = conn
 		pl.sourceClient = clients.NewSourceClient(conn)
 		p.plugins[spec.Registry][spec.Path] = &pl
 		return p.plugins[spec.Registry][spec.Path].sourceClient, nil
 	case "local":
-		grpcTarget = unixSocketPrefix + spec.Path
 		pluginPath = spec.Path
 	case "github":
 		var err error
@@ -176,14 +173,15 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to download plugin")
 		}
-		grpcTarget = unixSocketPrefix + spec.Path
+		// grpcTarget = unixSocketPrefix + spec.Path
 	default:
 		return nil, fmt.Errorf("unknown registry: %s", spec.Registry)
 	}
+	grpcTarget := generateRandomUnixSocketName()
 	// spawn the plugin first and then connect
-	if err := os.MkdirAll(filepath.Dir(grpcTarget), 0755); err != nil {
-		return nil, errors.Wrapf(err, "failed to create unixpath directory: %s", filepath.Dir(grpcTarget))
-	}
+	// if err := os.MkdirAll(filepath.Dir(grpcTarget), 0755); err != nil {
+	// 	return nil, errors.Wrapf(err, "failed to create unixpath directory: %s", filepath.Dir(grpcTarget))
+	// }
 	cmd := exec.Command(pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
 		"--log-level", p.logger.GetLevel().String())
 	cmd.Stdout = os.Stdout
@@ -197,6 +195,8 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("plugin exited")
 		}
 	}()
+	// remove the socket file if it exists
+	// os.Remove(grpcTarget)
 	conn, err := grpc.Dial("unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
