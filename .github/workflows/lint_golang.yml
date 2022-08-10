@@ -28,26 +28,28 @@ jobs:
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: changes
         with:
-          filters: |
-            module_files:
-              - '${{ matrix.workdir }}/**'
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v25
+        with:
+          files: |
+            ${{ matrix.workdir }}
       - uses: actions/setup-go@v3
-        if: steps.changes.outputs.module_files == 'true'
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         with:
           go-version: 1.18
       # Plugins and CLI have different linting configurations
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
-        if: steps.changes.outputs.module_files == 'true' && matrix.workdir == 'cli'
+        if: (steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request') && matrix.workdir == 'cli'
         with:
           version: v1.47.3
           working-directory: ${{ matrix.workdir }}
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
-        if: steps.changes.outputs.module_files == 'true' && matrix.workdir != 'cli'
+        if: (steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request') && matrix.workdir != 'cli'
         with:
           version: v1.47.3
           working-directory: ${{ matrix.workdir }}
