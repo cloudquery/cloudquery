@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor"
-	"github.com/cloudquery/cq-provider-azure/client"
-	"github.com/cloudquery/cq-provider-azure/client/services"
-	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client/services"
+	"github.com/cloudquery/cloudquery/plugins/azure/client/services/mocks"
 	"github.com/golang/mock/gomock"
 )
 

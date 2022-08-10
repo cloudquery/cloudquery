@@ -15,20 +15,20 @@ description_modifier "remove_field_name" {
 resource "gcp" "serviceusage" "services" {
   path = "google.golang.org/api/serviceusage/v1.GoogleApiServiceusageV1Service"
   ignoreError "IgnoreError" {
-    path = "github.com/cloudquery/cq-provider-gcp/client.IgnoreErrorHandler"
+    path = "github.com/cloudquery/cloudquery/plugins/gcp/client.IgnoreErrorHandler"
   }
   multiplex "ProjectMultiplex" {
-    path = "github.com/cloudquery/cq-provider-gcp/client.ProjectMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/gcp/client.ProjectMultiplex"
   }
   deleteFilter "ProjectDeleteFilter" {
-    path = "github.com/cloudquery/cq-provider-gcp/client.DeleteProjectFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/gcp/client.DeleteProjectFilter"
   }
 
   userDefinedColumn "project_id" {
     type        = "string"
     description = "GCP Project Id of the resource"
     resolver "resolveResourceProject" {
-      path = "github.com/cloudquery/cq-provider-gcp/client.ResolveProject"
+      path = "github.com/cloudquery/cloudquery/plugins/gcp/client.ResolveProject"
     }
   }
   options {

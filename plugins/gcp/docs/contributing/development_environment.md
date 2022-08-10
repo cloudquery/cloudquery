@@ -11,7 +11,7 @@
 Clone the repository:
 
 ```bash
-git clone https://github.com/cloudquery/cq-provider-gcp
+git clone https://github.com/cloudquery/cloudquery/plugins/gcp
 ```
 
 Build the provider:

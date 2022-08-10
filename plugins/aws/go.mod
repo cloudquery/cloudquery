@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-aws
+module github.com/cloudquery/cloudquery/plugins/aws
 
 go 1.18
 

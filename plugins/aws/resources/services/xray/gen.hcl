@@ -5,13 +5,13 @@ add_generate     = true
 resource "aws" "xray" "encryption_config" {
   path = "github.com/aws/aws-sdk-go-v2/service/xray/types.EncryptionConfig"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["xray"]
   }
 
@@ -19,14 +19,14 @@ resource "aws" "xray" "encryption_config" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -39,13 +39,13 @@ resource "aws" "xray" "encryption_config" {
 resource "aws" "xray" "sampling_rules" {
   path = "github.com/aws/aws-sdk-go-v2/service/xray/types.SamplingRuleRecord"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["xray"]
   }
 
@@ -53,14 +53,14 @@ resource "aws" "xray" "sampling_rules" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -77,7 +77,7 @@ resource "aws" "xray" "sampling_rules" {
   }
 
   userDefinedColumn "tags" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
   }
 }
@@ -85,13 +85,13 @@ resource "aws" "xray" "sampling_rules" {
 resource "aws" "xray" "groups" {
   path = "github.com/aws/aws-sdk-go-v2/service/xray/types.GroupSummary"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["xray"]
   }
 
@@ -99,14 +99,14 @@ resource "aws" "xray" "groups" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -123,7 +123,7 @@ resource "aws" "xray" "groups" {
   }
 
   userDefinedColumn "tags" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
   }
 }

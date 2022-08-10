@@ -3,7 +3,7 @@ package resources
 import (
 	"context"
 
-	"github.com/cloudquery/cq-provider-okta/client"
+	"github.com/cloudquery/cloudquery/plugins/okta/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/okta/okta-sdk-golang/v2/okta"

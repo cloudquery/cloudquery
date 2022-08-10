@@ -43,3 +43,4 @@ config.hcl
 cloudquery.yml
 terraform/tfplan.binary
 cq-provider*
+cloudflare

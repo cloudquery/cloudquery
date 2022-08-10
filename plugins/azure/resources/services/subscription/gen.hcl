@@ -11,14 +11,14 @@ description_modifier "remove_field_name" {
 }
 
 resource "azure" "subscription" "subscriptions" {
-  path = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.Subscription"
+  path        = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.Subscription"
   description = "Azure subscription information"
 
   userDefinedColumn "subscription_id" {
     type        = "string"
     description = "Azure subscription id"
     resolver "resolveAzureSubscription" {
-      path = "github.com/cloudquery/cq-provider-azure/client.ResolveAzureSubscription"
+      path = "github.com/cloudquery/cloudquery/plugins/azure/client.ResolveAzureSubscription"
     }
   }
   column "subscription_id" {
@@ -43,23 +43,23 @@ resource "azure" "subscription" "subscriptions" {
   }
 
   column "managed_by_tenants" {
-    type = "stringArray"
+    type              = "stringArray"
     generate_resolver = true
   }
 
   ignore_columns_in_tests = ["tags"]
 
   multiplex "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.SubscriptionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/azure/client.SubscriptionMultiplex"
   }
 
   deleteFilter "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.DeleteSubscriptionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/azure/client.DeleteSubscriptionFilter"
   }
 }
 
 resource "azure" "subscription" "tenants" {
-  path = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.TenantIDDescription"
+  path        = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.TenantIDDescription"
   description = "Azure tenant information"
 
   options {
@@ -69,13 +69,13 @@ resource "azure" "subscription" "tenants" {
   }
 
   column "id" {
-    type = "string"
+    type        = "string"
     description = "The fully qualified ID of the tenant"
   }
 
-  ignore_columns_in_tests = ["country","country_code","display_name","tenant_branding_logo_url","default_domain","domains","tenant_type"]
+  ignore_columns_in_tests = ["country", "country_code", "display_name", "tenant_branding_logo_url", "default_domain", "domains", "tenant_type"]
 
   multiplex "SingleSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.SubscriptionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/azure/client.SubscriptionMultiplex"
   }
 }

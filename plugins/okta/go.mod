@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-okta
+module github.com/cloudquery/cloudquery/plugins/okta
 
 go 1.18
 

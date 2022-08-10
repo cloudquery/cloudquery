@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
 	"github.com/fatih/color"
 	"github.com/vbauerster/mpb/v6"
 	"github.com/vbauerster/mpb/v6/decor"

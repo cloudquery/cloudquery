@@ -9,13 +9,13 @@ description_modifier "remove_read_only" {
 resource "aws" "glue" "triggers" {
   path = "github.com/aws/aws-sdk-go-v2/service/glue/types.Trigger"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["glue"]
   }
   options {
@@ -25,25 +25,25 @@ resource "aws" "glue" "triggers" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
   userDefinedColumn "arn" {
-    type        = "string"
-    description = "The Amazon Resource Name (ARN) of the trigger."
+    type              = "string"
+    description       = "The Amazon Resource Name (ARN) of the trigger."
     generate_resolver = true
   }
 
   userDefinedColumn "tags" {
-    type = "json"
-    description = "Resource tags."
+    type              = "json"
+    description       = "Resource tags."
     generate_resolver = true
   }
 
@@ -57,7 +57,7 @@ resource "aws" "glue" "triggers" {
 
   relation "aws" "glue" "actions" {
     column "notification_property" {
-        skip_prefix = true
+      skip_prefix = true
     }
   }
 

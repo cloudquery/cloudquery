@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/cloudquery/cq-provider-github/client"
+	"github.com/cloudquery/cloudquery/plugins/github/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/google/go-github/v45/github"

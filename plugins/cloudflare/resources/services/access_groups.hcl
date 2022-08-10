@@ -6,7 +6,7 @@ resource "cloudflare" "" "access_groups" {
   path = "github.com/cloudflare/cloudflare-go/.AccessGroup"
 
   multiplex "CFZone" {
-    path   = "github.com/cloudquery/cq-provider-cloudflare/client.ZoneMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ZoneMultiplex"
   }
 
   options {
@@ -19,7 +19,7 @@ resource "cloudflare" "" "access_groups" {
     description = "The Account ID of the resource."
     type        = "string"
     resolver "resolveCFAccount" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+      path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveAccountId"
     }
   }
 
@@ -27,7 +27,7 @@ resource "cloudflare" "" "access_groups" {
     description = "Zone identifier tag."
     type        = "string"
     resolver "resolveCFZone" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveZoneId"
+      path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveZoneId"
     }
   }
 

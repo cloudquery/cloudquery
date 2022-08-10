@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/file"
-	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/cloudquery/cloudquery/cli/internal/file"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui/console"
 	"github.com/spf13/afero"
 	"github.com/vbauerster/mpb/v6/decor"
 )

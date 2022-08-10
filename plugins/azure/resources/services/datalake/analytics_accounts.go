@@ -6,7 +6,7 @@ import (
 	"net"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/analytics/mgmt/account"
-	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

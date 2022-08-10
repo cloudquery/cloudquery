@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-gcp
+module github.com/cloudquery/cloudquery/plugins/gcp
 
 go 1.18
 

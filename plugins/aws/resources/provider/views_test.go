@@ -4,7 +4,7 @@ import (
 	_ "embed"
 	"testing"
 
-	"github.com/cloudquery/cq-provider-aws/views"
+	"github.com/cloudquery/cloudquery/plugins/aws/views"
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 

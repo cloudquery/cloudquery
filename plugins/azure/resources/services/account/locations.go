@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
-	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"

@@ -7,7 +7,7 @@ import (
 	aws "github.com/aws/aws-sdk-go-v2/aws"
 	s3control "github.com/aws/aws-sdk-go-v2/service/s3control"
 	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
-	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cloudquery/plugins/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

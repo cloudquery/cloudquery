@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/gcp/client"
 	faker "github.com/cloudquery/faker/v3"
 	"github.com/julienschmidt/httprouter"
 	monitoring "google.golang.org/api/monitoring/v3"

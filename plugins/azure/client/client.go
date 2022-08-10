@@ -7,10 +7,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
+
 	// Import all autorest modules
 	_ "github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure/auth"
-	"github.com/cloudquery/cq-provider-azure/client/services"
+	"github.com/cloudquery/cloudquery/plugins/azure/client/services"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/hashicorp/go-hclog"

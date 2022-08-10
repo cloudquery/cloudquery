@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/smithy-go"
-	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cloudquery/plugins/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"

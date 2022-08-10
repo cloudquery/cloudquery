@@ -6,11 +6,11 @@ resource "cloudflare" "" "zones" {
   path = "github.com/cloudflare/cloudflare-go/.Zone"
 
   multiplex "CFAccount" {
-    path   = "github.com/cloudquery/cq-provider-cloudflare/client.AccountMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.AccountMultiplex"
   }
 
   deleteFilter "DeleteAccountFilter" {
-    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.DeleteAccountFilter"
   }
 
   options {
@@ -23,7 +23,7 @@ resource "cloudflare" "" "zones" {
     description = "The Account ID of the resource."
     type        = "string"
     resolver "resolveCFAccount" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+      path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveAccountId"
     }
   }
 
@@ -136,27 +136,27 @@ resource "cloudflare" "" "zones" {
   }
 
   column "plan_zone_plan_common_id" {
-    rename = "plan_id"
+    rename      = "plan_id"
     description = "The unique universal identifier for a Cloudflare zone plan."
   }
 
   column "plan_zone_plan_common_name" {
-    rename = "plan_name"
+    rename      = "plan_name"
     description = "Cloudflare zone plan name."
   }
 
   column "plan_zone_plan_common_price" {
-    rename = "plan_price"
+    rename      = "plan_price"
     description = "Cloudflare zone plan price."
   }
 
   column "plan_zone_plan_common_currency" {
-    rename = "plan_currency"
+    rename      = "plan_currency"
     description = "Cloudflare zone plan currency."
   }
 
   column "plan_zone_plan_common_frequency" {
-    rename = "plan_frequency"
+    rename      = "plan_frequency"
     description = "Cloudflare zone plan frequency."
   }
 
@@ -181,27 +181,27 @@ resource "cloudflare" "" "zones" {
   }
 
   column "plan_pending_zone_plan_common_id" {
-    rename = "plan_pending_id"
+    rename      = "plan_pending_id"
     description = "The unique universal identifier for a Cloudflare zone plan."
   }
 
   column "plan_pending_zone_plan_common_name" {
-    rename = "plan_pending_name"
+    rename      = "plan_pending_name"
     description = "Cloudflare zone plan name."
   }
 
   column "plan_pending_zone_plan_common_price" {
-    rename = "plan_pending_price"
+    rename      = "plan_pending_price"
     description = "Cloudflare zone plan price."
   }
 
   column "plan_pending_zone_plan_common_currency" {
-    rename = "plan_pending_currency"
+    rename      = "plan_pending_currency"
     description = "Cloudflare zone plan currency."
   }
 
   column "plan_pending_zone_plan_common_frequency" {
-    rename = "plan_pending_frequency"
+    rename      = "plan_pending_frequency"
     description = "Cloudflare zone plan frequency."
   }
 

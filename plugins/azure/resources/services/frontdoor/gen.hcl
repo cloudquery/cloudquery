@@ -10,7 +10,7 @@ resource "azure" "" "front_doors" {
     type        = "string"
     description = "Azure subscription ID"
     resolver "resolveAzureSubscription" {
-      path = "github.com/cloudquery/cq-provider-azure/client.ResolveAzureSubscription"
+      path = "github.com/cloudquery/cloudquery/plugins/azure/client.ResolveAzureSubscription"
     }
   }
 
@@ -22,11 +22,11 @@ resource "azure" "" "front_doors" {
   }
 
   multiplex "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.SubscriptionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/azure/client.SubscriptionMultiplex"
   }
 
   deleteFilter "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.DeleteSubscriptionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/azure/client.DeleteSubscriptionFilter"
   }
 
   column "id" {

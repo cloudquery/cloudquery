@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/cli/internal/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/johannesboyne/gofakes3"
 	"github.com/johannesboyne/gofakes3/backend/s3mem"

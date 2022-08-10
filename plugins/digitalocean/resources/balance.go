@@ -3,7 +3,7 @@ package resources
 import (
 	"context"
 
-	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cloudquery/plugins/digitalocean/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

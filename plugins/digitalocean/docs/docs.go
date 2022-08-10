@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/cloudquery/cq-provider-digitalocean/resources/provider"
+	"github.com/cloudquery/cloudquery/plugins/digitalocean/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )
 

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/Azure/azure-sdk-for-go/services/frontdoor/mgmt/2020-11-01/frontdoor"
-	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

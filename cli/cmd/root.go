@@ -5,16 +5,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cmd/fetch"
-	initCmd "github.com/cloudquery/cloudquery/cmd/init"
-	"github.com/cloudquery/cloudquery/cmd/options"
-	"github.com/cloudquery/cloudquery/cmd/policy"
-	"github.com/cloudquery/cloudquery/cmd/provider"
-	"github.com/cloudquery/cloudquery/cmd/utils"
-	"github.com/cloudquery/cloudquery/internal/analytics"
-	"github.com/cloudquery/cloudquery/internal/logging"
-	"github.com/cloudquery/cloudquery/pkg/core"
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/cmd/fetch"
+	initCmd "github.com/cloudquery/cloudquery/cli/cmd/init"
+	"github.com/cloudquery/cloudquery/cli/cmd/options"
+	"github.com/cloudquery/cloudquery/cli/cmd/policy"
+	"github.com/cloudquery/cloudquery/cli/cmd/provider"
+	"github.com/cloudquery/cloudquery/cli/cmd/utils"
+	"github.com/cloudquery/cloudquery/cli/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/internal/logging"
+	"github.com/cloudquery/cloudquery/cli/pkg/core"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/getsentry/sentry-go"
 	zerolog "github.com/rs/zerolog/log"
@@ -28,7 +28,7 @@ import (
 var fileDescriptorF func()
 
 var (
-	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cmd.Variable=Value"
+	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cli/cmd.Variable=Value"
 
 	Commit    = "development"
 	Date      = "unknown"

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/cloudquery/cloudquery/plugins/terraform/resources"
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
-	"github.com/cloudquery/cq-provider-terraform/resources"
 )
 
 func main() {

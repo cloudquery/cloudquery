@@ -6,7 +6,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/cloudquery/cq-provider-github/resources/provider"
+	"github.com/cloudquery/cloudquery/plugins/github/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )
 

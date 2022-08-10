@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/pkg/core/state"
-	"github.com/cloudquery/cloudquery/pkg/plugin"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/cli/internal/firebase"
+	"github.com/cloudquery/cloudquery/cli/pkg/core/state"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin/registry"
 	"github.com/jackc/pgx/v4"
 	"github.com/stretchr/testify/assert"
 )

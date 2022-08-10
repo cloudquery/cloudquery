@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	"github.com/cloudquery/cq-provider-cloudflare/client"
+	"github.com/cloudquery/cloudquery/plugins/cloudflare/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

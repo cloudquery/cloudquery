@@ -8,8 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis/types"
 	"github.com/bxcodec/faker"
-	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-aws/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/aws/client/mocks"
 	"github.com/golang/mock/gomock"
 )
 

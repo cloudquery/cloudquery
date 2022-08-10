@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice"
-	"github.com/cloudquery/cq-provider-azure/client"
-	"github.com/cloudquery/cq-provider-azure/client/services"
-	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client/services"
+	"github.com/cloudquery/cloudquery/plugins/azure/client/services/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"

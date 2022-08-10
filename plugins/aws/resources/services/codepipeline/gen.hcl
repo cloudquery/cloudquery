@@ -14,13 +14,13 @@ description_modifier "remove_extra_info" {
 resource "aws" "codepipeline" "pipelines" {
   path = "github.com/aws/aws-sdk-go-v2/service/codepipeline.GetPipelineOutput"
   ignoreError "IgnoreCommonErrors" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["codepipeline"]
   }
 
@@ -32,14 +32,14 @@ resource "aws" "codepipeline" "pipelines" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -68,15 +68,15 @@ resource "aws" "codepipeline" "pipelines" {
     }
 
     column "blockers" {
-      type              = "JSON"
+      type = "JSON"
       resolver "pathResolver" {
-        path = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
+        path   = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
         params = ["Blockers"]
       }
     }
 
     relation "aws" "codepipeline" "actions" {
-      path = "github.com/aws/aws-sdk-go-v2/service/codepipeline/types.ActionDeclaration"
+      path                    = "github.com/aws/aws-sdk-go-v2/service/codepipeline/types.ActionDeclaration"
       ignore_columns_in_tests = ["namespace", "region", "role_arn"]
 
       column "action_type_id" {
@@ -84,17 +84,17 @@ resource "aws" "codepipeline" "pipelines" {
       }
 
       column "input_artifacts" {
-        type              = "stringarray"
+        type = "stringarray"
         resolver "pathResolver" {
-          path = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
+          path   = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
           params = ["InputArtifacts.Name"]
         }
       }
 
       column "output_artifacts" {
-        type              = "stringarray"
+        type = "stringarray"
         resolver "pathResolver" {
-          path = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
+          path   = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
           params = ["OutputArtifacts.Name"]
         }
       }
@@ -117,13 +117,13 @@ resource "aws" "codepipeline" "pipelines" {
 resource "aws" "codepipeline" "webhooks" {
   path = "github.com/aws/aws-sdk-go-v2/service/codepipeline/types.ListWebhookItem"
   ignoreError "IgnoreCommonErrors" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["codepipeline"]
   }
 
@@ -135,14 +135,14 @@ resource "aws" "codepipeline" "webhooks" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -158,7 +158,7 @@ resource "aws" "codepipeline" "webhooks" {
   column "tags" {
     type = "JSON"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveTags"
     }
     description = "The tags associated with the webhook."
   }

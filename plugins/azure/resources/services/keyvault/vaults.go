@@ -6,7 +6,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 	keyvault71 "github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault"
-	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
-	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cloudquery/plugins/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/mitchellh/mapstructure"

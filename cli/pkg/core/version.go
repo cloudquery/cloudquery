@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/persistentdata"
+	"github.com/cloudquery/cloudquery/cli/internal/persistentdata"
 	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"

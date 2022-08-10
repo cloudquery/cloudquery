@@ -3,8 +3,8 @@ package core
 import (
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/config"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/cli/pkg/config"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin/registry"
 )
 
 func ParseProviderSource(requestedProvider *config.RequiredProvider) (org string, provider string, err error) {

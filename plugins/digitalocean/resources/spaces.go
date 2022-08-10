@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/aws/smithy-go"
-	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cloudquery/plugins/digitalocean/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/pkg/errors"

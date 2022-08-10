@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/cloudquery/cloudquery/plugins/terraform/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-terraform/client"
 )
 
 var providerNameRegex = regexp.MustCompile(`^.*\["(?P<Hostname>.*)/(?P<Namespace>.*)/(?P<Type>.*)"\].*?$`)

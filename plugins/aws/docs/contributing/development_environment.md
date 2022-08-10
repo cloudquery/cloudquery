@@ -11,7 +11,7 @@
 Clone the repository:
 
 ```bash
-git clone https://github.com/cloudquery/cq-provider-aws
+git clone https://github.com/cloudquery/cloudquery/plugins/aws
 ```
 
 Build the provider:

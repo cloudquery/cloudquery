@@ -1,8 +1,8 @@
 package provider
 
 import (
-	"github.com/cloudquery/cq-provider-digitalocean/client"
-	"github.com/cloudquery/cq-provider-digitalocean/resources"
+	"github.com/cloudquery/cloudquery/plugins/digitalocean/client"
+	"github.com/cloudquery/cloudquery/plugins/digitalocean/resources"
 	sdkprovider "github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

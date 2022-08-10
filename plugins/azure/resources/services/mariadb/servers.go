@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
-	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

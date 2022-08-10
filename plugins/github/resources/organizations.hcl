@@ -8,7 +8,7 @@ resource "github" "" "organizations" {
     primary_keys = ["id"]
   }
   multiplex "OrgMultiplex" {
-    path = "github.com/cloudquery/cq-provider-github/client.OrgMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/github/client.OrgMultiplex"
   }
 
 
@@ -28,7 +28,7 @@ resource "github" "" "organizations" {
       type        = "string"
       description = "The Github Organization of the resource."
       resolver "resolveOrg" {
-        path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
+        path = "github.com/cloudquery/cloudquery/plugins/github/client.ResolveOrg"
       }
     }
 

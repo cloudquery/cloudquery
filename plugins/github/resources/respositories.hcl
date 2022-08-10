@@ -6,14 +6,14 @@ resource "github" "" "repositories" {
   path = "github.com/google/go-github/v45/github.Repository"
 
   multiplex "OrgMultiplex" {
-    path = "github.com/cloudquery/cq-provider-github/client.OrgMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/github/client.OrgMultiplex"
   }
 
   userDefinedColumn "org" {
     type        = "string"
     description = "The Github Organization of the resource."
     resolver "resolveOrg" {
-      path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
+      path = "github.com/cloudquery/cloudquery/plugins/github/client.ResolveOrg"
     }
   }
 
@@ -33,17 +33,17 @@ resource "github" "" "repositories" {
   }
 
   column "s_v_n_url" {
-    type = "string"
+    type   = "string"
     rename = "svn_url"
   }
 
   column "use_squash_p_r_title_as_default" {
-    type = "bool"
+    type   = "bool"
     rename = "use_squash_pr_title_as_default"
   }
 
   column "license_s_p_d_x_id" {
-    type = "string"
+    type   = "string"
     rename = "license_spdx_id"
   }
 

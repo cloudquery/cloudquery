@@ -6,7 +6,7 @@ package core
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/k8s/client"
 )
 
 func TestIntegrationNamespaces(t *testing.T) {

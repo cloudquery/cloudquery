@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/k8s/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	corev1 "k8s.io/api/core/v1"

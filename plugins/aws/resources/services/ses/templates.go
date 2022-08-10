@@ -5,7 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
-	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cloudquery/plugins/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

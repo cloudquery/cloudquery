@@ -3,8 +3,8 @@ package console
 import (
 	"strconv"
 
-	"github.com/cloudquery/cloudquery/pkg/core"
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/pkg/core"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
 )

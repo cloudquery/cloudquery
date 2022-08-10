@@ -5,13 +5,13 @@ add_generate     = true
 resource "aws" "ec2" "egress_only_internet_gateways" {
   path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.EgressOnlyInternetGateway"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["ec2"]
   }
 
@@ -24,14 +24,14 @@ resource "aws" "ec2" "egress_only_internet_gateways" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -52,8 +52,8 @@ resource "aws" "ec2" "egress_only_internet_gateways" {
   }
 
   userDefinedColumn "arn" {
-    type        = "string"
-    description = "The Amazon Resource Name (ARN) for the egress-only internet gateway."
+    type              = "string"
+    description       = "The Amazon Resource Name (ARN) for the egress-only internet gateway."
     generate_resolver = false
   }
 
@@ -62,13 +62,13 @@ resource "aws" "ec2" "egress_only_internet_gateways" {
 resource "aws" "ec2" "network_interfaces" {
   path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.NetworkInterface"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["ec2"]
   }
 
@@ -80,14 +80,14 @@ resource "aws" "ec2" "network_interfaces" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -130,14 +130,14 @@ resource "aws" "ec2" "network_interfaces" {
   }
 
   userDefinedColumn "arn" {
-    type        = "string"
-    description = "The Amazon Resource Name (ARN) for the egress-only internet gateway."
+    type              = "string"
+    description       = "The Amazon Resource Name (ARN) for the egress-only internet gateway."
     generate_resolver = false
   }
 
   userDefinedColumn "tags" {
-    type        = "json"
-    description = "Any tags assigned to the network interface."
+    type              = "json"
+    description       = "Any tags assigned to the network interface."
     generate_resolver = false
   }
 
@@ -146,13 +146,13 @@ resource "aws" "ec2" "network_interfaces" {
 resource "aws" "ec2" "hosts" {
   path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.Host"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["ec2"]
   }
 
@@ -165,14 +165,14 @@ resource "aws" "ec2" "hosts" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -211,8 +211,8 @@ resource "aws" "ec2" "hosts" {
   }
 
   userDefinedColumn "arn" {
-    type        = "string"
-    description = "The Amazon Resource Name (ARN) for the dedicated host."
+    type              = "string"
+    description       = "The Amazon Resource Name (ARN) for the dedicated host."
     generate_resolver = false
   }
 }
@@ -221,13 +221,13 @@ resource "aws" "ec2" "hosts" {
 resource "aws" "ec2" "instance_types" {
   path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.InstanceTypeInfo"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["ec2"]
   }
 
@@ -239,14 +239,14 @@ resource "aws" "ec2" "instance_types" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 }

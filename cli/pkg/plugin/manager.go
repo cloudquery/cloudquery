@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"

@@ -6,7 +6,7 @@ package resources
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cloudquery/plugins/digitalocean/client"
 )
 
 func TestIntegrationFirewalls(t *testing.T) {

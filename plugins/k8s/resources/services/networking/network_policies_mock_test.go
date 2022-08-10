@@ -6,8 +6,8 @@ package networking
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
-	"github.com/cloudquery/cq-provider-k8s/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	networkingv1 "k8s.io/api/networking/v1"

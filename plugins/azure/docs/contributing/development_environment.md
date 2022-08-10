@@ -11,7 +11,7 @@
 Clone the repository:
 
 ```bash
-git clone https://github.com/cloudquery/cq-provider-azure
+git clone https://github.com/cloudquery/cloudquery/plugins/azure
 ```
 
 Build the provider:

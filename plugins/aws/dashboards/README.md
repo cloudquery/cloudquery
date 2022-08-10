@@ -16,7 +16,7 @@ Checkout those tutorials:
 
 #### Installation
 
-1. Execute [this query](https://github.com/cloudquery/cq-provider-aws/blob/main/views/resources.sql) to add the `aws_resources` view.
+1. Execute [this query](https://github.com/cloudquery/cloudquery/plugins/aws/blob/main/views/resources.sql) to add the `aws_resources` view.
 2. Add the CloudQuery postgres database as a data source to Grafana (`Configuration -> Data Sources -> Add Data Source`)
 3. Import [../dashboards/grafana/aws_asset_inventory.json](../dashboards/grafana/aws_asset_inventory.json) into Grafana (`Import -> Upload JSON File`).
 

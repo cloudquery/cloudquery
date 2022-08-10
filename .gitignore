@@ -27,3 +27,4 @@ dest/*
 outfile
 test_init_config.yml
 telemetry-random-id
+cli/cli

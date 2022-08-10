@@ -6,11 +6,11 @@ resource "cloudflare" "" "workers_scripts" {
   path = "github.com/cloudflare/cloudflare-go/.WorkerMetaData"
 
   multiplex "CFAccount" {
-    path   = "github.com/cloudquery/cq-provider-cloudflare/client.AccountMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.AccountMultiplex"
   }
 
   deleteFilter "DeleteAccountFilter" {
-    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.DeleteAccountFilter"
   }
 
   options {
@@ -23,7 +23,7 @@ resource "cloudflare" "" "workers_scripts" {
     description = "The Account ID of the resource."
     type        = "string"
     resolver "resolveCFAccount" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+      path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveAccountId"
     }
   }
 
@@ -32,7 +32,7 @@ resource "cloudflare" "" "workers_scripts" {
   }
 
   column "etag" {
-    rename = "etag"
+    rename      = "etag"
     description = "Hashed script content, can be used in a If-None-Match header when updating."
   }
 
@@ -55,7 +55,7 @@ resource "cloudflare" "" "workers_scripts" {
       description = "The Account ID of the resource."
       type        = "string"
       resolver "resolveCFAccount" {
-        path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+        path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveAccountId"
       }
     }
 
@@ -79,7 +79,7 @@ resource "cloudflare" "" "workers_scripts" {
       description = "The Account ID of the resource."
       type        = "string"
       resolver "resolveCFAccount" {
-        path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+        path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveAccountId"
       }
     }
 
@@ -92,14 +92,14 @@ resource "cloudflare" "" "workers_scripts" {
     }
   }
 
-#
-#  column "script" {
-#    description = "Raw script content, as a string."
-#  }
-#
-#  column "usage_model" {
-#    description = "Specifies the usage model for the Worker (e.g. 'bundled' or 'unbound')."
-#  }
+  #
+  #  column "script" {
+  #    description = "Raw script content, as a string."
+  #  }
+  #
+  #  column "usage_model" {
+  #    description = "Specifies the usage model for the Worker (e.g. 'bundled' or 'unbound')."
+  #  }
 }
 
 
@@ -107,11 +107,11 @@ resource "cloudflare" "" "workers_routes" {
   path = "github.com/cloudflare/cloudflare-go/.WorkerRoute"
 
   multiplex "CFZone" {
-      path   = "github.com/cloudquery/cq-provider-cloudflare/client.ZoneMultiplex"
-    }
+    path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ZoneMultiplex"
+  }
 
   deleteFilter "DeleteAccountZoneFilter" {
-    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountZoneFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.DeleteAccountZoneFilter"
   }
 
   options {
@@ -124,7 +124,7 @@ resource "cloudflare" "" "workers_routes" {
     description = "The Account ID of the resource."
     type        = "string"
     resolver "resolveCFAccount" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+      path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveAccountId"
     }
   }
 
@@ -132,7 +132,7 @@ resource "cloudflare" "" "workers_routes" {
     description = "The Zone ID of the resource."
     type        = "string"
     resolver "resolveCFZone" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveZoneId"
+      path = "github.com/cloudquery/cloudquery/plugins/cloudflare/client.ResolveZoneId"
     }
   }
 

@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-k8s
+module github.com/cloudquery/cloudquery/plugins/k8s
 
 go 1.18
 

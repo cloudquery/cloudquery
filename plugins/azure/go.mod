@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-azure
+module github.com/cloudquery/cloudquery/plugins/azure
 
 go 1.18
 

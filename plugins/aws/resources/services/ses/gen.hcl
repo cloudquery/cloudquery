@@ -3,17 +3,17 @@ output_directory = "."
 add_generate     = true
 
 resource "aws" "ses" "templates" {
-  path        = "github.com/cloudquery/cq-provider-aws/resources/services/ses.Template"
+  path        = "github.com/cloudquery/cloudquery/plugins/aws/resources/services/ses.Template"
   description = "Amazon Simple Email Service (SES) is a cost-effective, flexible, and scalable email service that enables developers to send mail from within any application."
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
     params = ["email"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -50,14 +50,14 @@ resource "aws" "ses" "templates" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 }

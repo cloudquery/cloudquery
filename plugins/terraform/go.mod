@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-terraform
+module github.com/cloudquery/cloudquery/plugins/terraform
 
 go 1.18
 

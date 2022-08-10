@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cloudquery/cq-provider-gcp/resources/provider"
+	"github.com/cloudquery/cloudquery/plugins/gcp/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 

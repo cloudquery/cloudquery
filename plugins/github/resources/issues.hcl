@@ -9,40 +9,40 @@ resource "github" "" "issues" {
   }
 
   multiplex "OrgMultiplex" {
-    path = "github.com/cloudquery/cq-provider-github/client.OrgMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/github/client.OrgMultiplex"
   }
 
   userDefinedColumn "org" {
     type        = "string"
     description = "The Github Organization of the resource."
     resolver "resolveOrg" {
-      path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
+      path = "github.com/cloudquery/cloudquery/plugins/github/client.ResolveOrg"
     }
   }
 
   column "assignee_text_matches" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
   }
 
   column "milestone_creator_text_matches" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
   }
 
   column "user_text_matches" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
   }
 
   column "closed_by_text_matches" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
   }
 
   column "repository" {
-    type = "int"
-    rename = "repository_id"
+    type              = "int"
+    rename            = "repository_id"
     generate_resolver = true
   }
 
@@ -65,7 +65,7 @@ resource "github" "" "issues" {
       resolver "parentPathResolver" {
         path          = "github.com/cloudquery/cq-provider-sdk/provider/schema.ParentResourceFieldResolver"
         path_resolver = true
-        params = ["id"]
+        params        = ["id"]
       }
     }
 

@@ -6,7 +6,7 @@ package rbac
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/k8s/client"
 )
 
 func TestIntegrationRoles(t *testing.T) {

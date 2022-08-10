@@ -1,12 +1,12 @@
 package provider
 
 import (
-	"github.com/cloudquery/cq-provider-k8s/client"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/apps"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/batch"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/core"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/networking"
-	"github.com/cloudquery/cq-provider-k8s/resources/services/rbac"
+	"github.com/cloudquery/cloudquery/plugins/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/k8s/resources/services/apps"
+	"github.com/cloudquery/cloudquery/plugins/k8s/resources/services/batch"
+	"github.com/cloudquery/cloudquery/plugins/k8s/resources/services/core"
+	"github.com/cloudquery/cloudquery/plugins/k8s/resources/services/networking"
+	"github.com/cloudquery/cloudquery/plugins/k8s/resources/services/rbac"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

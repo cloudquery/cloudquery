@@ -1,7 +1,7 @@
 package resources
 
 import (
-	"github.com/cloudquery/cq-provider-okta/client"
+	"github.com/cloudquery/cloudquery/plugins/okta/client"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

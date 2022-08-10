@@ -5,13 +5,13 @@ output_directory = "."
 resource "aws" "wafregional" "web_acls" {
   path = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.WebACL"
   multiplex "ServiceAccountRegionMultiplexer" {
-    path = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.ServiceAccountRegionMultiplexer"
   }
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -22,14 +22,14 @@ resource "aws" "wafregional" "web_acls" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     description = "The AWS Region of the resource."
     type        = "string"
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -46,13 +46,13 @@ resource "aws" "wafregional" "web_acls" {
   }
 
   userDefinedColumn "tags" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
-    description = "Web ACL tags."
+    description       = "Web ACL tags."
   }
 
   relation "aws" "wafregional" "rules" {
-    path = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.ActivatedRule"
+    path        = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.ActivatedRule"
     description = "The action for each Rule in a WebACL"
 
     column "action_type" {
@@ -60,12 +60,12 @@ resource "aws" "wafregional" "web_acls" {
     }
 
     column "override_action_type" {
-      rename = "override_action"
+      rename      = "override_action"
       description = "Describes an override action for the rule."
     }
 
     column "excluded_rules" {
-      type = "stringarray"
+      type              = "stringarray"
       generate_resolver = true
     }
   }

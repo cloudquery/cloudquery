@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
-	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cloudquery/plugins/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

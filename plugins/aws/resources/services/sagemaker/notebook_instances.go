@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	sagemakertypes "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
-	"github.com/cloudquery/cq-provider-aws/client"
+	"github.com/cloudquery/cloudquery/plugins/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
