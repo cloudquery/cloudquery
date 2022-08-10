@@ -51,6 +51,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/redshift"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
@@ -238,6 +239,7 @@ func Provider() *provider.Provider {
 			"redshift.clusters":                       redshift.RedshiftClusters(),
 			"redshift.event_subscriptions":            redshift.EventSubscriptions(),
 			"redshift.subnet_groups":                  redshift.RedshiftSubnetGroups(),
+			"resourcegroups.resource_groups":          resourcegroups.ResourceGroups(),
 			"route53.domains":                         route53.Route53Domains(),
 			"route53.health_checks":                   route53.Route53HealthChecks(),
 			"route53.hosted_zones":                    route53.Route53HostedZones(),

@@ -51,6 +51,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
+	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -795,4 +796,12 @@ type KinesisClient interface {
 	DescribeStreamSummary(ctx context.Context, params *kinesis.DescribeStreamSummaryInput, optFns ...func(*kinesis.Options)) (*kinesis.DescribeStreamSummaryOutput, error)
 	ListStreams(ctx context.Context, params *kinesis.ListStreamsInput, optFns ...func(*kinesis.Options)) (*kinesis.ListStreamsOutput, error)
 	ListTagsForStream(ctx context.Context, params *kinesis.ListTagsForStreamInput, optFns ...func(*kinesis.Options)) (*kinesis.ListTagsForStreamOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_resourcegroups.go . ResourceGroupsClient
+type ResourceGroupsClient interface {
+	GetGroup(ctx context.Context, params *resourcegroups.GetGroupInput, optFns ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupOutput, error)
+	GetGroupQuery(ctx context.Context, params *resourcegroups.GetGroupQueryInput, optFns ...func(*resourcegroups.Options)) (*resourcegroups.GetGroupQueryOutput, error)
+	GetTags(ctx context.Context, params *resourcegroups.GetTagsInput, optFns ...func(*resourcegroups.Options)) (*resourcegroups.GetTagsOutput, error)
+	ListGroups(ctx context.Context, params *resourcegroups.ListGroupsInput, optFns ...func(*resourcegroups.Options)) (*resourcegroups.ListGroupsOutput, error)
 }
