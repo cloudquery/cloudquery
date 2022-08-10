@@ -1,9 +1,8 @@
 kind: source
 spec:
-  name: gcp
-  version: development
-  path: localhost:7777
-  registry: grpc
+  name: someorg/gcp
+  version: v1.0.0
+  path: someorg/cq-source-gcp
   tables: ["*"]
   exclude_tables: ["_"]
   spec:

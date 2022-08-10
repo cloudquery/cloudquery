@@ -5,7 +5,9 @@
 package plugin
 
 import (
+	"archive/zip"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -27,53 +29,18 @@ import (
 
 const unixSocketPrefix = "/tmp/cq-plugins/"
 
-func hasAnyPrefix(s string, prefixes []string) bool {
-	for _, prefix := range prefixes {
-		if strings.HasPrefix(s, prefix) {
-			return true
-		}
-	}
-	return false
-}
-
-// get unnormalized plugin name and returns normalized/
-// aws -> cloudquery, aws, latest
-// cloudquery/aws -> cloudquery, aws, latest
-// aws@v1.0.0 -> cloudquery, aws, v1.0.0
-func parsePluginName(name string) (string, string, string, error) {
-	if len(name) == 0 {
-		return "", "", "", errors.New("plugin name is empty")
-	}
-
-	organization := "cloudquery"
-	pluginName := name
-	version := "latest"
-
-	pluginPart := strings.Split(name, "@")
-	if len(pluginPart) > 2 {
-		return "", "", "", errors.Errorf("invalid plugin name: %s. only one @ is allowed", name)
-	}
-	if len(pluginPart) == 2 {
-		version = pluginPart[1]
-	}
-
-	pluginPart = strings.Split(pluginPart[0], "/")
-	if len(pluginPart) > 2 {
-		return "", "", "", errors.Errorf("invalid plugin name: %s. only one / is allowed", name)
-	}
-
-	if len(pluginPart) == 2 {
-		organization = pluginPart[0]
-	}
-
-	return organization, pluginName, version, nil
-}
-
 type Plugin struct {
 	cmd          *exec.Cmd
 	conn         *grpc.ClientConn
 	sourceClient *clients.SourceClient
+	// logger       zerolog.Logger
 }
+
+// func (p *Plugin) Write(bytes []byte) (n int, err error) {
+// 	p.logger.
+// 	// p.sourceClient
+// 	return 0, nil
+// }
 
 type PluginManager struct {
 	// plugins      map[string]*exec.Cmd
@@ -113,35 +80,60 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	return p
 }
 
-func (p *PluginManager) Download(ctx context.Context, spec specs.SourceSpec) error {
-	if spec.Registry == "local" || spec.Registry == "grpc" {
-		p.logger.Info().Str("registry", spec.Registry).Msg("skiping plugin download")
-		return nil
+// DownloadSource downloads a plugin from the specified registry and return the path to plugin
+func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.SourceSpec) (string, error) {
+	switch spec.Registry {
+	case "local", "grpc":
+		fmt.Printf("Skipping plugin download. registry: %s, path: %s\n", spec.Registry, spec.Path)
+		p.logger.Info().Str("registry", spec.Registry).Msg("Skiping plugin download")
+		return "", nil
+	case "github":
+		return p.downloadSourceGitHub(ctx, spec)
+	default:
+		return "", errors.Errorf("unknown registry: %s", spec.Registry)
 	}
+}
 
+func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.SourceSpec) (string, error) {
 	pathSplit := strings.Split(spec.Path, "/")
 	org, repo := pathSplit[0], pathSplit[1]
-	pluginName := fmt.Sprintf("cq-provider-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
+	pluginName := fmt.Sprintf("cq-source-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
 	dirPath := filepath.Join(p.directory, "plugins", spec.Registry, org, repo, spec.Version)
 	pluginPath := filepath.Join(dirPath, pluginName)
-	if err := os.MkdirAll(dirPath, 0755); err != nil {
-		return errors.Wrapf(err, "failed to create plugin directory: %s", dirPath)
-	}
 	if _, err := os.Stat(pluginPath); err == nil {
 		fmt.Printf("Plugin already exists at %s. Skipping download.\n", pluginPath)
 		p.logger.Info().Str("path", pluginPath).Msg("Plugin already exists. Skipping download.")
-		return nil
+		return "", nil
 	}
+	fmt.Println("Downloading plugin from github. path: ", pluginPath)
 
+	if err := os.MkdirAll(dirPath, 0755); err != nil {
+		return "", errors.Wrapf(err, "failed to create plugin directory: %s", dirPath)
+	}
 	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
 	// For example:
-	// https://github.com/cloudquery/cq-provider-aws/releases/download/v1.0.1/cq-provider-aws_darwin_amd64.zip
-	pluginUrl := fmt.Sprintf("https://github.com/%s/cq-provider-%s/releases/download/%s/cq-provider-%s_%s_%s", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
-	if err := downloadFile(pluginPath, pluginUrl); err != nil {
-		return errors.Wrap(err, "failed to download plugin")
+	// https://github.com/cloudquery/cq-source-aws/releases/download/v1.0.1/cq-source-aws_darwin_amd64.zip
+	pluginUrl := fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+	if err := downloadFile(pluginPath+".zip", pluginUrl); err != nil {
+		return "", errors.Wrap(err, "failed to download plugin")
 	}
-
-	return nil
+	archive, err := zip.OpenReader(pluginPath + ".zip")
+	if err != nil {
+		return "", errors.Wrap(err, "failed to open plugin archive")
+	}
+	fileInArchive, err := archive.Open("cq-source-" + repo)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to open plugin archive: cq-source-%s", repo)
+	}
+	out, err := os.OpenFile(pluginPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0744)
+	if err != nil {
+		return "", errors.Wrapf(err, "failed to create file: %s", pluginPath)
+	}
+	_, err = io.Copy(out, fileInArchive)
+	if err != nil {
+		return "", errors.Wrap(err, "failed to copy body to file")
+	}
+	return pluginPath, nil
 }
 
 func (p *PluginManager) GetDestinationClient(ctx context.Context, spec specs.DestinationSpec, opts plugins.DestinationPluginOptions) (*clients.DestinationClient, error) {
@@ -158,37 +150,57 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 		return p.plugins[spec.Registry][spec.Path].sourceClient, nil
 	}
 	pl := Plugin{}
-	grpcTarget := spec.Path
+	var grpcTarget string
+	var pluginPath string
 	switch spec.Registry {
-	case "local":
-		grpcTarget := unixSocketPrefix + spec.Path
-		cmd := exec.Command(spec.Path, "serve", "--network", "unix", "--address", grpcTarget)
-		if err := cmd.Start(); err != nil {
-			return nil, errors.Wrap(err, "failed to start plugin")
+	case "grpc":
+		// This is a special case as we dont spawn any process
+		conn, err := grpc.Dial(grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to dial grpc target: %s", grpcTarget)
 		}
-		pl.cmd = cmd
+		pl.conn = conn
+		pl.sourceClient = clients.NewSourceClient(conn)
+		p.plugins[spec.Registry][spec.Path] = &pl
+		return p.plugins[spec.Registry][spec.Path].sourceClient, nil
+	case "local":
+		grpcTarget = unixSocketPrefix + spec.Path
+		pluginPath = spec.Path
 	case "github":
-		if err := p.Download(ctx, spec); err != nil {
+		var err error
+		pluginPath, err = p.downloadSourceGitHub(ctx, spec)
+		if err != nil {
 			return nil, errors.Wrap(err, "failed to download plugin")
 		}
-		pathSplit := strings.Split(spec.Path, "/")
-		org, repo := pathSplit[0], pathSplit[1]
-		pluginName := fmt.Sprintf("cq-provider-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
-		pluginPath := filepath.Join(p.directory, "plugins/github", org, repo, spec.Version, pluginName)
-		grpcTarget := unixSocketPrefix + spec.Path
-		cmd := exec.Command(pluginPath, "serve", "--network", "unix", "--address", grpcTarget)
-		if err := cmd.Start(); err != nil {
-			return nil, errors.Wrap(err, "failed to start plugin")
-		}
-		pl.cmd = cmd
+		grpcTarget = unixSocketPrefix + spec.Path
 	default:
 		return nil, fmt.Errorf("unknown registry: %s", spec.Registry)
 	}
-	conn, err := grpc.Dial(grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	// spawn the plugin first and then connect
+	if err := os.MkdirAll(filepath.Dir(grpcTarget), 0755); err != nil {
+		return nil, errors.Wrapf(err, "failed to create unixpath directory: %s", filepath.Dir(grpcTarget))
+	}
+	cmd := exec.Command(pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
+		"--log-level", p.logger.GetLevel().String())
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = p.logger
+	if err := cmd.Start(); err != nil {
+		return nil, errors.Wrapf(err, "failed to start plugin: %s", pluginPath)
+	}
+	go func() {
+		if err := cmd.Wait(); err != nil {
+			fmt.Printf("plugin %s exited with error: %v\n", spec.Path, err)
+			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("plugin exited")
+		}
+	}()
+	conn, err := grpc.Dial(grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		pl.cmd.Process.Kill()
+		if err := cmd.Process.Kill(); err != nil {
+			fmt.Println("failed to kill plugin", err)
+		}
 		return nil, err
 	}
+	pl.cmd = cmd
 	pl.conn = conn
 	pl.sourceClient = clients.NewSourceClient(conn)
 	p.plugins[spec.Registry][spec.Path] = &pl
@@ -198,12 +210,15 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 func (p *PluginManager) CloseAll(ctx context.Context) error {
 	for registryName, registry := range p.plugins {
 		for path, pl := range registry {
-			p.logger.Info().Str("registry", registryName).Str("plugin", path).Msg("closing plugin")
+			p.logger.Info().Str("registry", registryName).Str("plugin", path).Msg("closing connection to plugin")
 			if err := pl.conn.Close(); err != nil {
 				p.logger.Error().Str("registry", registryName).Str("plugin", path).Err(err)
 			}
-			if err := pl.cmd.Process.Kill(); err != nil {
-				p.logger.Error().Str("registry", registryName).Str("plugin", path).Err(err)
+			pl.conn = nil
+			if pl.cmd != nil && pl.cmd.Process != nil {
+				if err := pl.cmd.Process.Kill(); err != nil {
+					p.logger.Error().Str("registry", registryName).Str("plugin", path).Err(err)
+				}
 			}
 		}
 	}

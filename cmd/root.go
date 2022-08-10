@@ -47,6 +47,7 @@ func newCmdRoot() *cobra.Command {
 			// var logger zerolog.Logger
 			// if viper.Get(flags.LogFormat) == "json" {
 			log.Logger = zerolog.New(os.Stderr).Level(zerologLevel)
+			// zerolog.ConsoleWriter
 			// } else {
 			// 	logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerologLevel)
 			// }
