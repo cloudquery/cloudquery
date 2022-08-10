@@ -14,17 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        workdir: [
-          "plugins/aws",
-          "plugins/azure",
-          "plugins/cloudflare",
-          "plugins/digitalocean",
-          "plugins/fuzz",
-          "plugins/gcp",
-          "plugins/github",
-          "plugins/k8s",
-          "plugins/okta",
-          "plugins/terraform",
+        plugin: [
+          "aws",
+          "azure",
+          "cloudflare",
+          "digitalocean",
+          "fuzz",
+          "gcp",
+          "github",
+          "k8s",
+          "okta",
+          "terraform",
         ]
       fail-fast: false
     steps:
@@ -36,7 +36,7 @@ jobs:
         with:
           filters: |
             src:
-              - "./plugins/${{ matrix.workdir }}/**"
+              - "./plugins/${{ matrix.plugin }}/**"
       - name: Set up Go 1.x
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
@@ -66,16 +66,16 @@ jobs:
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           ../../scripts/check-new-files-have-check-for-changes-flag.sh
-        working-directory: ./plugins/${{ matrix.workdir }}
+        working-directory: ./plugins/${{ matrix.plugin }}
       - name: Run go generate on changed service directories
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           ../../scripts/regenerate-changed-directories.sh
-        working-directory: ./plugins/${{ matrix.workdir }}
+        working-directory: ./plugins/${{ matrix.plugin }}
       - name: Fail if any files are changed
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           echo "List of files changed after running go generate:"
           git status -s ./resources/services
           test "$(git status -s ./resources/services | wc -l)" -eq 0
-        working-directory: ./plugins/${{ matrix.workdir }}
+        working-directory: ./plugins/${{ matrix.plugin }}
