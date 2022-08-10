@@ -148,7 +148,7 @@ With this command, we’re attaching the `Perms-Policy-For-GitHub-Actions` to ou
 
 If you’re using [Terraform](https://www.terraform.io/) already, it’s quite a straightforward terraform script to create an OpenID Connect Identity provider with its required role and permissions. Luckily, the Terraform registry contains a complete [AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest) to use. The script is as follows:
 
-```tf
+```hcl
 provider "aws" {}
 
 resource "aws_iam_openid_connect_provider" "default" {
@@ -211,7 +211,7 @@ Let’s break this down, as we’re using `AWS` you will need to make sure you h
 
 The next block is actually configuring the OpenID Connect Identity provider
 
-```tf
+```hcl
 resource "aws_iam_openid_connect_provider" "default" {
   url = "https://token.actions.githubusercontent.com"
 
@@ -233,7 +233,7 @@ The individual parts of this are
 
 Once we have an OIDC we will need to grant it a role to assume within AWS, the block for this is:
 
-```tf
+```hcl
 resource "aws_iam_role" "github_action_role" {
   name = "github_actions_role"
 
@@ -262,7 +262,7 @@ resource "aws_iam_role" "github_action_role" {
 
 Here we are simply naming the role `github_actions_role` and then giving it a role policy, once we have this role policy the final block is used to grant said role permissions:
 
-```tf
+```hcl
 resource "aws_iam_role_policy" "github_actions_policy" {
   name = "github-actions-policy"
   role = aws_iam_role.github_action_role.id
@@ -290,7 +290,7 @@ Now that we have a working OpenID Connect provider within AWS, we need to add th
 
 The relevant blocks look like so:
 
-```yml
+```yaml
 permissions:
   id-token: write
   contents: read # This is required for actions/checkout@v2
@@ -300,7 +300,7 @@ Adding the `permissions` to the job allows the action that gets the credentials 
 
 The next `step` is where the credential retrieving magic actually happens
 
-```yml
+```yaml
     steps:
       […]
       - name: Configure AWS credentials
