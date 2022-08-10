@@ -40,6 +40,8 @@ jobs:
       - uses: LouisBrunner/checks-action@v1.1.1
         if: steps.changes.outputs.src == 'false'
         with:
+          name: Check Generated Code for Drift
+          token: ${{ secrets.GITHUB_TOKEN }}
           conclusion: 'neutral'
       - name: Set up Go 1.x
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
