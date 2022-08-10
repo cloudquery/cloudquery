@@ -9,23 +9,24 @@ on:
       - main
       - monorepo
 jobs:
-  resolve-modules:
-    name: Resolve Modules
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: Checkout Sources
-        uses: actions/checkout@v2
-      - id: set-matrix
-        run: ../scripts/resolve-modules.sh
-        working-directory: ./plugins
   check_generated_code_drift:
     name: Check Generated Code for Drift
     runs-on: ubuntu-latest
     needs: resolve-modules
     strategy:
-      matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
+      matrix:
+        workdir: [
+          "plugins/aws",
+          "plugins/azure",
+          "plugins/cloudflare",
+          "plugins/digitalocean",
+          "plugins/fuzz",
+          "plugins/gcp",
+          "plugins/github",
+          "plugins/k8s",
+          "plugins/okta",
+          "plugins/terraform",
+        ]
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
@@ -37,12 +38,6 @@ jobs:
           filters: |
             src:
               - "./plugins/${{ matrix.workdir }}/**"
-      - uses: LouisBrunner/checks-action@v1.1.1
-        if: steps.changes.outputs.src == 'false'
-        with:
-          name: Check Generated Code for Drift
-          token: ${{ secrets.GITHUB_TOKEN }}
-          conclusion: 'neutral'
       - name: Set up Go 1.x
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
