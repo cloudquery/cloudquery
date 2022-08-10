@@ -57,7 +57,7 @@ jobs:
         with:
           filters: |
             src:
-              - '!(scripts/**/*)'
+              - ${{ matrix.workdir }}
       - name: Set up Go 1.x
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
