@@ -16,14 +16,6 @@ import (
 
 const DevelopmentVersion = "development"
 
-var (
-	// Version variable is injected in build time
-	Version = DevelopmentVersion
-)
-
-// unit tests helper
-var getLatestRelease = doGetLatestRelease
-
 const (
 	// Timeout for http requests related to CloudQuery core version check.
 	versionCheckHTTPTimeout = time.Second * 10
@@ -35,6 +27,14 @@ const (
 	// subsequent checks for CloudQuery core update availability.
 	UpdateCheckPeriod = int64(23 * time.Hour / time.Second)
 )
+
+var (
+	// Version variable is injected in build time
+	Version = DevelopmentVersion
+)
+
+// unit tests helper
+var getLatestRelease = doGetLatestRelease
 
 func doGetLatestRelease(ctx context.Context, client *http.Client, owner, repo string) (*github.RepositoryRelease, error) {
 	gh := github.NewClient(client)

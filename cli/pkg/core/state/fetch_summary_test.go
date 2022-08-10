@@ -10,13 +10,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-
 type fetchSummaryTest struct {
 	summary     FetchSummary
 	err         error
 	skipFetchId bool
 }
+
+const testDBConnection = "postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
 
 var fetchSummaryTests = []fetchSummaryTest{
 	{

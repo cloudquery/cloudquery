@@ -15,9 +15,6 @@ import (
 	"github.com/spf13/afero"
 )
 
-// EnvVarPrefix is a prefix for environment variable names to be exported for HCL substitution.
-const EnvVarPrefix = "CQ_VAR_"
-
 // Parser is the main interface to read configuration files and other related
 // files from disk.
 //
@@ -30,6 +27,9 @@ type Parser struct {
 }
 
 type Option func(*Parser)
+
+// EnvVarPrefix is a prefix for environment variable names to be exported for HCL substitution.
+const EnvVarPrefix = "CQ_VAR_"
 
 func WithFS(aferoFs afero.Fs) Option {
 	return func(p *Parser) {

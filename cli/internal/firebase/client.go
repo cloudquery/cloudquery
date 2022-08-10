@@ -14,16 +14,16 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+type Client struct {
+	url string
+}
+
 const (
 	CloudQueryRegistryURL = "https://firestore.googleapis.com/v1/projects/hub-cloudquery/databases/(default)/documents/orgs/"
 	providersVersionsPath = "%s/providers/%s/versions"
 	policiesVersionPath   = "%s/policies/%s/versions"
 	providerVerification  = "%s/providers/%s"
 )
-
-type Client struct {
-	url string
-}
 
 func New(registryUrl string) *Client {
 	f := &Client{

@@ -19,6 +19,19 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type Account struct {
+	ID      string `yaml:"id"`
+	RoleARN string `yaml:"role_arn,omitempty"`
+}
+
+type AwsConfig struct {
+	Regions    []string  `yaml:"regions,omitempty"`
+	Accounts   []Account `yaml:"accounts"`
+	AWSDebug   bool      `yaml:"aws_debug,omitempty"`
+	MaxRetries int       `yaml:"max_retries,omitempty" default:"5"`
+	MaxBackoff int       `yaml:"max_backoff,omitempty" default:"30"`
+}
+
 const testConfig = `
 cloudquery:
   connection:
@@ -43,19 +56,6 @@ const expectedDuplicateAliasProviderError = "provider with alias same-aws for pr
 
 const bucketName = "myBucket"
 const defaultPermissions = 0644
-
-type Account struct {
-	ID      string `yaml:"id"`
-	RoleARN string `yaml:"role_arn,omitempty"`
-}
-
-type AwsConfig struct {
-	Regions    []string  `yaml:"regions,omitempty"`
-	Accounts   []Account `yaml:"accounts"`
-	AWSDebug   bool      `yaml:"aws_debug,omitempty"`
-	MaxRetries int       `yaml:"max_retries,omitempty" default:"5"`
-	MaxBackoff int       `yaml:"max_backoff,omitempty" default:"30"`
-}
 
 func TestLoader_LoadValidConfigFromFile(t *testing.T) {
 	p := NewParser()
