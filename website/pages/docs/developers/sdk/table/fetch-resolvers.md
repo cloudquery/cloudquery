@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Fetch Resolvers
 
 Fetch resolvers are functions to fetch resources from the source (a cloud provider for example).
@@ -13,9 +15,11 @@ type TableResolver func(ctx context.Context, meta ClientMeta, parent *Resource, 
 `TableResolver` allows you to access the cloud resource using the given passed `*Client` and fetch all resources of that type. Finally, you send the fetch items into the passed `res` channel argument.
 The `TableResolver` is flexible allowing you to define your own pagination logic or any other logic for that matter, and pass the results to the channel.
 
-:::tip
+<Callout type="info">
+
 The collector in the SDK is slice-aware, so if you have a slice of resources, you can just push the slice as a whole, without iterating.
-:::
+
+</Callout>
 
 Here's an example from the [provider template](https://github.com/cloudquery/cq-provider-template/blob/main/resources/services/demo/resource.go):
 
@@ -42,7 +46,7 @@ Here's an example from the AWS Provider's [SNS Topics resource](https://github.c
 ```go
 func resolveTopicAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	topic, ok := resource.Item.(types.Topic)
-	
+
 	// ...
 
 	output, err := svc.GetTopicAttributes(ctx, &params, func(o *sns.Options) {

@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Docker
 
 It is possible to use CloudQuery in an isolated container, you can pull the relevant image with the docker commands shown on [getting started](/docs/getting-started/getting-started-with-aws) guide.
@@ -15,9 +17,11 @@ docker run \
 
 As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](./commands/cloudquery_options.md) with the docker container. You will also need to make sure you load any ENV variables for providers, such as your `AWS_*` keys etc.
 
-:::tip
+<Callout type="info">
+
 If you are running Docker on an ARM Apple device and you see a segmentation fault when running the container like so `qemu: uncaught target signal 11 (Segmentation fault) - core dumped`; please make sure you are running the latest Docker for Mac release.
-:::
+
+</Callout>
 
 ## Caching
 
@@ -32,9 +36,11 @@ docker run \
     --data-dir /cache/.cq
 ```
 
-:::note
+<Callout type="info">
+
 Depending on your operating system, the built components maybe different between your local system and the container. To avoid the different please use a separate cache directory for the container than a local instance of `cloudquery`.
-:::
+
+</Callout>
 
 ## Fetching data
 
@@ -49,6 +55,8 @@ docker run \
   fetch --config /config/cloudquery.yml
 ```
 
-:::note
+<Callout type="info">
+
 The docker container is set to be verbose by default, which produces a lot of console logs. This is by design.
-:::
+
+</Callout>

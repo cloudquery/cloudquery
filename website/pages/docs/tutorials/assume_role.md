@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Fetching From Multiple AWS Accounts With AssumeRole
 
 If you need to `fetch` from multiple accounts, you can configure CloudQuery to `AssumeRole` into them.
@@ -20,7 +22,7 @@ For the example in this tutorial, we'll have 3 accounts:
 - `TargetAccountA`: The first account CloudQuery should `fetch` from.
 - `TargetAccountB`: The second account CloudQuery should `fetch` from.
 
-:::caution
+<Callout type="warning">
 
 AWS best practices [recommend](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#delegate-using-roles) using
 IAM roles to delegate permissions when possible. For the sake of simplicity, in this tutorial we assume
@@ -28,12 +30,14 @@ CloudQuery runs as `SourceAccountUser` in the source-account - but we recommend 
 [this guide](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-role.html) to learn about how to
 setup CloudQuery to use a role instead of a user.
 
-:::
+</Callout>
 
-:::info
+<Callout type="info">
+
 The example in this tutorial will work just as well if `SourceAccount` and `TargetAccountA` are the same account.
 i.e. you don't need a separate account for `SourceAccount`.
-:::
+
+</Callout>
 
 ## Create roles in the target accounts
 
@@ -74,13 +78,15 @@ aws iam create-role --role-name CloudQueryFetchRole --assume-role-policy-documen
 
 The roles in your target account will need to have permissions to read your cloud configuration.
 
-:::info
+<Callout type="info">
+
 CloudQuery requires only _read_ permissions (we will never make any changes to your cloud setup).
 Attaching the `ReadOnlyAccess` policy to the user/role CloudQuery is running as should work for the most part,
 but you can fine-tune it even more to have read-only access for the specific set of resources that you want
 CloudQuery to fetch.
 [See also this blog post](https://alestic.com/2015/10/aws-iam-readonly-too-permissive/).
-:::
+
+</Callout>
 
 ```bash title="AWS CLI commands for TargetAccountA"
 aws iam attach-role-policy --role-name CloudQueryFetchRole --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
@@ -160,14 +166,16 @@ providers:
 
 ```
 
-:::caution Warning
+<Callout type="warning">
+
+Warning
 
 `accounts` is a confusing name - the block should really be named `account`. Each `accounts` represents a **single** account
 to assume-role into, and you can have as many `accounts` blocks as you'd like.
 
-:::
+</Callout>
 
-:::info
+<Callout type="info">
 
 When you run without any `accounts` blocks in your `configuration`, CloudQuery will use the default credential
 toolchain to locate the credentials that will be used in the `fetch`.
@@ -175,7 +183,7 @@ But if there is at least one `accounts` block in your `configuration`, cloudquer
 account you are currently authenticated as - only from the accounts specified in
 your `accounts`.
 
-:::
+</Callout>
 
 ## Run `cloudquery fetch`
 

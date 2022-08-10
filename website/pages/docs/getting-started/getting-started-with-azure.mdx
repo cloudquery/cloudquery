@@ -8,6 +8,7 @@ import SpawnSection from './_getting-started-spawn-section.mdx'
 import ReadonlyTip from './_getting-started-readonly-tip.mdx'
 import ExploreSection from './_getting-started-explore-section.mdx'
 import { Tabs, Tab } from '../../../components/Tabs'
+import Callout from 'nextra-theme-docs/callout'
 
 # Getting Started with Azure
 
@@ -66,10 +67,13 @@ az login
 
 Then, create the service principal cloudquery will use to access your cloud deployment
 
-:::caution Warning
+<Callout type="warning">
+
+Warning
 The output of `az ad sp create-for-rbac` contains credentials that you must protect - Make sure to handle
 with appropriate care.
-:::
+
+</Callout>
 
 <Tabs options={[ 'Linux and OSX', 'Windows (CMD)', 'Windows (PowerShell)' ]}>
 
@@ -131,10 +135,10 @@ The output of `az ad sp create-for-rbac` should look like this:
 }
 ```
 
-:::info
+<Callout type="info">
 You can find out more about authentication with Azure on [CloudQuery Hub](https://hub.cloudquery.io/providers/cloudquery/azure/latest)
 and at [Azure's documentation for the golang sdk](https://github.com/Azure/azure-sdk-for-go).
-:::
+</Callout>
 
 #### Exporting environment variables
 

@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Primary Key
 
 Every top-level table should have a primary key, ideally consisting of the `account_id` and `id` (or `arn`) of some kind. If the provider supports multiple service regions (and multiple entities with the same `id` can exist in different regions) `region` column should also be included.
@@ -16,15 +18,17 @@ func DemoResource() *schema.Table {
 
 For each table, these columns are automatically added:
 
-| Column Name     | Description |
-|-----------------| ----------- |
+| Column Name     | Description                  |
+| --------------- | ---------------------------- |
 | `cq_id`         | The identifier for relations |
-| `cq_meta`       | Holds CQ internal metadata |
-| `cq_fetch_date` | Timestamp for the fetch |
+| `cq_meta`       | Holds CQ internal metadata   |
+| `cq_fetch_date` | Timestamp for the fetch      |
 
-:::tip
+<Callout type="info">
+
 If no PKs are defined, the `cq_id` column becomes the default Primary Key.
-:::
+
+</Callout>
 
 ## Relation Tables
 

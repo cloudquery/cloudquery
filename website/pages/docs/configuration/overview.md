@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Overview
 
 This is an overview of the configuration options of CloudQuery's main configuration file `cloudquery.yml`.
@@ -81,6 +83,8 @@ Each provider has the following blocks that can be set:
 - `resource_timeout` **(Optional)** - The number of seconds that CloudQuery will spend fetching any single resource. Value must be an integer greater than 0. Default behavior is unlimited timeout.
 - `skip_resources` **(Optional)** - A list of resources that should be explicitly skipped. This can help if you are using a `*` or dynamically generating the `resources` value.
 
-:::tip
+<Callout type="info">
+
 You can have multiple providers of the same type specified here as long as you specify an alias like the example above. This can be useful if you want to fetch data with different rate limiting parameters.
-:::
+
+</Callout>
