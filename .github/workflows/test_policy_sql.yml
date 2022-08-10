@@ -1,25 +1,31 @@
-# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
-name: test_unit
-
+name: SQL Policy Validation Test
 on:
   push:
     branches:
       - main
+      - monorepo
   pull_request:
     branches:
       - main
+      - monorepo
 
-env: 
+env:
   CGO_ENABLED: 0
   CQ_NO_TELEMETRY: 1
+  PGPASSWORD: pass
 
 jobs:
-  test_unit:
+  SQLPolicyTest:
     strategy:
       matrix:
-        dbversion: ["postgres:10"]
-        go: ["1.18"]
-        platform: [ubuntu-latest] # can not run in macOS and windowsOS
+        workdir: [
+          "plugins/aws",
+          "plugins/azure",
+          "plugins/gcp",
+        ]
+        dbversion: [ "postgres:10" ]
+        go: [ "1.18" ]
+        platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
     runs-on: ${{ matrix.platform }}
     services:
       postgres:
@@ -37,21 +43,22 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Check out code into the Go module directory
+      - name: Check out code
         uses: actions/checkout@v3
+
       - uses: dorny/paths-filter@v2
         id: changes
         with:
           filters: |
             src:
-              - '!(terraform/**/*|scripts/**/*)'
+              - "${{ matrix.workdir }}/**"
+
       - name: Set up Go 1.x
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
         with:
-          go-version: ^${{ matrix.go }}
+          go-version: ${{ matrix.go }}
+
       - uses: actions/cache@v3
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
           # In order:
           # * Module download cache
@@ -67,14 +74,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.go }}-
 
-      - name: Get dependencies
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
-        run: go get -v -t -d ./...
+      - name: Prepare for test - Create tables
+        run: |
+          go run ./test/gen-tables.go | psql -h localhost -p 5432 -U postgres -d postgres -w
+        working-directory: ${{ matrix.workdir }}
 
-      - name: Build
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
-        run: go build -v .
-
-      - name: Test
-        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
-        run: go test ./...
+      - name: Run all policies
+        run: |
+          cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+        working-directory: ${{ matrix.workdir }}

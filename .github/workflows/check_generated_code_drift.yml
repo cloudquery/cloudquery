@@ -3,17 +3,25 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'resources/services/**/*'
+      - monorepo
   pull_request:
     branches:
       - main
-    paths:
-      - 'resources/services/**/*'
+      - monorepo
 jobs:
   check_generated_code_drift:
     name: Check Generated Code for Drift
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        plugin: [
+          "aws",
+          "azure",
+          "cloudflare",
+          "gcp",
+          "github",
+        ]
+      fail-fast: false
     steps:
       - uses: actions/checkout@v3
         with:
@@ -23,7 +31,7 @@ jobs:
         with:
           filters: |
             src:
-              - 'resources/services/**/*'
+              - "./plugins/${{ matrix.plugin }}/**"
       - name: Set up Go 1.x
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
@@ -33,6 +41,7 @@ jobs:
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           make install-tools
+        working-directory: ./plugins/${{ matrix.plugin }}
       - uses: actions/cache@v3
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         with:
@@ -46,16 +55,27 @@ jobs:
             ~/.cache/go-build
             ~/Library/Caches/go-build
             ~\AppData\Local\go-build
-          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-1.18-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go }}-
+            ${{ runner.os }}-go-1.18-
+      - name: Fail if new cq-gen config file is missing //check-for-changes
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: |
+          ../../scripts/check-new-files-have-check-for-changes-flag.sh
+        working-directory: ./plugins/${{ matrix.plugin }}
       - name: Run go generate on changed service directories
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
         run: |
-          ./scripts/regenerate-changed-directories.sh
+          ../../scripts/regenerate-changed-directories.sh
+        working-directory: ./plugins/${{ matrix.plugin }}
       - name: Fail if any files are changed
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
         run: |
           echo "List of files changed after running go generate:"
           git status -s ./resources/services
           test "$(git status -s ./resources/services | wc -l)" -eq 0
+        working-directory: ./plugins/${{ matrix.plugin }}

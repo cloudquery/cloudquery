@@ -1,6 +1,6 @@
 #!/bin/bash
 # Recursively finds all directories with a go.mod file and creates
-# a GitHub Actions JSON output option. This is used by the linter action.
+# a GitHub Actions JSON output option. This is used by several actions.
 
 # Based on https://github.com/golangci/golangci-lint/issues/828#issuecomment-658207652
 echo "Resolving modules in $(pwd)"
