@@ -1,9 +1,10 @@
 package core
 
 import (
+	"testing"
+
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 // FIXME: Disabled for being flaky

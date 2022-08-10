@@ -16,10 +16,6 @@ import (
 	"github.com/spf13/cast"
 )
 
-const (
-	CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
-)
-
 type VersionInfo struct {
 	Version   string `json:"version,omitempty"`
 	BuildDate string `json:"build_date,omitempty"`
@@ -49,6 +45,10 @@ type Client struct {
 }
 
 type Option func(c *Client)
+
+const (
+	CQTeamID = "12345678-0000-0000-0000-c1a0dbeef000"
+)
 
 // Consumers must call analytics.Init before using this package
 var currentHub *Client

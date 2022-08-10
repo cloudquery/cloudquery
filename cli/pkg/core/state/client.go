@@ -17,16 +17,16 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var (
-	//go:embed migrations/*/*.sql
-	coreMigrations embed.FS
-)
-
 type Client struct {
 	dsn    string
 	db     *sdkdb.DB
 	Logger hclog.Logger
 }
+
+var (
+	//go:embed migrations/*/*.sql
+	coreMigrations embed.FS
+)
 
 // NewClient creates a client from the given DSN and migrates the metadata schema.
 // client.Close should be called to disconnect afterwards.

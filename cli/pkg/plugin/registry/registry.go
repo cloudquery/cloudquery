@@ -6,13 +6,10 @@ import (
 	"strings"
 )
 
-const LatestVersion = "latest"
-
 type ProviderBinary struct {
 	Provider
 	FilePath string
 }
-
 type Provider struct {
 	// Name of the provider
 	Name string
@@ -33,6 +30,8 @@ type Registry interface {
 }
 
 type Providers []Provider
+
+const LatestVersion = "latest"
 
 func (p Provider) String() string {
 	return fmt.Sprintf("%s@%s", p.Name, p.Version)

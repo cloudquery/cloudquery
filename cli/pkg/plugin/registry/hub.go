@@ -17,11 +17,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-const (
-	// Timeout for http requests related to CloudQuery providers version check.
-	versionCheckHTTPTimeout = time.Second * 10
-)
-
 type Hub struct {
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
 	PluginDirectory string
@@ -34,6 +29,11 @@ type Hub struct {
 }
 
 type Option func(h *Hub)
+
+const (
+	// Timeout for http requests related to CloudQuery providers version check.
+	versionCheckHTTPTimeout = time.Second * 10
+)
 
 func WithPluginDirectory(d string) Option {
 	return func(h *Hub) {

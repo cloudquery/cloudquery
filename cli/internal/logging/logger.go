@@ -13,9 +13,6 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
-// GlobalConfig is the global alterable logging config
-var GlobalConfig Config
-
 // Config for logging
 type Config struct {
 	// Enable console logging
@@ -45,6 +42,9 @@ type Config struct {
 	// console is a writer that will be used for console output. If it is not set os.Stderr will be used.
 	console io.Writer
 }
+
+// GlobalConfig is the global alterable logging config
+var GlobalConfig Config
 
 // Configure sets up the logging framework
 //
