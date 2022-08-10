@@ -76,9 +76,14 @@ jobs:
             ~/.cache/go-build
             ~/Library/Caches/go-build
             ~\AppData\Local\go-build
-          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-1.18-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-${{ matrix.go }}-
+            ${{ runner.os }}-go-1.18-
+
+      - name: Get dependencies
+        if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
+        working-directory: ${{ matrix.workdir }}
+        run: go get -v -t -d ./...
 
       - name: Build
         if: steps.changes.outputs.src == 'true' || github.event_name != 'pull_request'
