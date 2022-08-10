@@ -2,6 +2,7 @@
 title: Getting started with Azure
 description: Learn how to fetch configuration from Azure
 ---
+
 import DownloadSection from './_getting-started-download-section.mdx'
 import SpawnSection from './_getting-started-spawn-section.mdx'
 import ReadonlyTip from './_getting-started-readonly-tip.mdx'
@@ -34,28 +35,23 @@ All official and approved community providers are listed at [CloudQuery Hub](htt
 CloudQuery needs to be authenticated with your Azure account in order to `fetch` information about your cloud setup.
 
 You can either authenticate with `az login` (when running cloudquery locally), or by using a "service principal"
- and exporting environment variables (appropriate for automated deployments).
+and exporting environment variables (appropriate for automated deployments).
 
-<Tabs
-  defaultValue="az_login"
-  values={[
-    {label: 'az login', value: 'az_login'},
-    {label: 'Service Principal', value: 'service_principal'}
-  ]}>
-
-<Tab value="az_login">
+<Tabs options={['az login', 'Service Principal']}>
+<Tab>
 
 First, install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (`az`).
 Then, login with the Azure CLI:
+
 ```bash
 az login
 ```
 
 </Tab>
 
-<Tab value="service_principal">
+<Tab>
 
-You will need to create a [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) 
+You will need to create a [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals)
 for CloudQuery to use:
 
 #### Creating a service principal
@@ -71,19 +67,13 @@ az login
 Then, create the service principal cloudquery will use to access your cloud deployment
 
 :::caution Warning
-The output of `az ad sp create-for-rbac` contains credentials that you must protect - Make sure to handle 
+The output of `az ad sp create-for-rbac` contains credentials that you must protect - Make sure to handle
 with appropriate care.
-::: 
+:::
 
-<Tabs
-  defaultValue="linux_and_osx"
-  values={[
-    {label: 'Linux and OSX', value: 'linux_and_osx'},
-    {label: 'Windows (CMD)', value: 'windows_cmd'},
-    {label: 'Windows (PowerShell)', value: 'windows_powershell'}
-  ]}>
+<Tabs options={[ 'Linux and OSX', 'Windows (CMD)', 'Windows (PowerShell)' ]}>
 
-<Tab value="linux_and_osx">
+<Tab>
 
 ```
 export SUBSCRIPTION_ID=<YOUR_SUBSCRIPTION_ID>
@@ -97,7 +87,7 @@ az ad sp create-for-rbac --name cloudquery-sp --scopes /subscriptions/$SUBSCRIPT
 
 </Tab>
 
-<Tab value="windows_cmd">
+<Tab>
 
 ```powershell
 set SUBSCRIPTION_ID=<YOUR_SUBSCRIPTION_ID>
@@ -111,7 +101,7 @@ az ad sp create-for-rbac --name cloudquery-sp --scopes /subscriptions/%SUBSCRIPT
 
 </Tab>
 
-<Tab value="windows_powershell">
+<Tab>
 
 ```powershell
 $Env:SUBSCRIPTION_ID="<YOUR_SUBSCRIPTION_ID>"
@@ -127,7 +117,7 @@ az ad sp create-for-rbac --name cloudquery-sp --scopes /subscriptions/$Env:SUBSC
 
 </Tabs>
 
-(you can, of course, choose any name you'd like for your service-principal, `cloudquery-sp` is just an example. 
+(you can, of course, choose any name you'd like for your service-principal, `cloudquery-sp` is just an example.
 If the service principal doesn't exist it will create a new one, otherwise it will update an existing one)
 
 The output of `az ad sp create-for-rbac` should look like this:
@@ -155,15 +145,9 @@ Copy them from the output of `az ad sp create-for-rbac` (or, take the opportunit
 - `AZURE_CLIENT_ID` is `appId` in the json.
 - `AZURE_CLIENT_SECRET` is `password` in the json.
 
-<Tabs
-  defaultValue="linux_and_osx"
-  values={[
-    {label: 'Linux and OSX', value: 'linux_and_osx'},
-    {label: 'Windows (CMD)', value: 'windows_cmd'},
-    {label: 'Windows (PowerShell)', value: 'windows_powershell'}
-  ]}>
+<Tabs options={[ 'Linux and OSX', 'Windows (CMD)', 'Windows (PowerShell)' ]}>
 
-<Tab value="linux_and_osx">
+<Tab>
 
 ```bash
 export AZURE_TENANT_ID=<YOUR AZURE_TENANT_ID>
@@ -174,7 +158,7 @@ export AZURE_SUBSCRIPTION_ID=$SUBSCRIPTION_ID
 
 </Tab>
 
-<Tab value="windows_cmd">
+<Tab>
 
 ```cmd
 set AZURE_TENANT_ID=<YOUR AZURE_TENANT_ID>
@@ -185,7 +169,7 @@ set AZURE_SUBSCRIPTION_ID=%SUBSCRIPTION_ID%
 
 </Tab>
 
-<Tab value="windows_powershell">
+<Tab>
 
 ```cmd
 $Env:AZURE_TENANT_ID="<YOUR AZURE_TENANT_ID>"
@@ -225,13 +209,14 @@ SELECT * FROM azure_mysql_servers
 ```
 
 #### find storage accounts which allow non https traffic
+
 ```sql
 SELECT * from azure_storage_accounts where enable_https_traffic_only = false
 ```
 
 ### Policy Command
 
-CloudQuery Policies allow users to write security, governance, cost, and compliance rules, 
+CloudQuery Policies allow users to write security, governance, cost, and compliance rules,
 using SQL as the query layer and HCL as the logical layer.
 
 All official and approved community policies are listed on [Github](https://github.com/cloudquery/cq-provider-azure/tree/main/policies).

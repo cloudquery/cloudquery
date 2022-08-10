@@ -1,7 +1,7 @@
 {
   "index": "Introduction",
-  "guides": "Guides",
-  "core-concepts": "Core Concepts",
+  "getting-started": "Getting Started",
+  "tutorials": "Tutorials",
   "cli-reference": "CLI Reference",
   "changelog": {
     "title": "Changelog",

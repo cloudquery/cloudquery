@@ -2,11 +2,12 @@
 title: Getting started with AWS
 description: Learn how to fetch configuration from AWS
 ---
+
 import DownloadSection from './_getting-started-download-section.mdx'
 import SpawnSection from './_getting-started-spawn-section.mdx'
 import ReadonlyTip from './_getting-started-readonly-tip.mdx'
 import ExploreSection from './_getting-started-explore-section.mdx'
-import { Tabs, Tab } from '../../../components/Tabs'
+import { Tabs, Tab } from 'nextra-theme-docs/tabs';
 
 # Getting Started with AWS
 
@@ -34,45 +35,34 @@ All official and approved community providers are listed at [CloudQuery Hub](htt
 CloudQuery needs to be authenticated with your AWS account in order to `fetch` information about your cloud setup.
 
 :::info
-CloudQuery requires only *read* permissions (we will never make any changes to your cloud setup). 
-Attaching the `ReadOnlyAccess` policy to the user/role CloudQuery is running as should work for the most part, 
-but you can fine-tune it even more to have read-only access for the specific set of resources that you want 
-CloudQuery to fetch. 
+CloudQuery requires only _read_ permissions (we will never make any changes to your cloud setup).
+Attaching the `ReadOnlyAccess` policy to the user/role CloudQuery is running as should work for the most part,
+but you can fine-tune it even more to have read-only access for the specific set of resources that you want
+CloudQuery to fetch.
 [See also this blog post](https://alestic.com/2015/10/aws-iam-readonly-too-permissive/).
 :::
 
 There are multiple ways to authenticate with AWS, and CloudQuery respects the AWS credential provider chain.
 This means that CloudQuery will follow the following priorities when attempting to authenticate:
+
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_SESSION_TOKEN` environment variables.
 - `credentials` and `config` files in `~/.aws` folder (in this respective priority).
 - IAM roles for AWS compute resources (including EC2 instances, fargate and ECS containers).
 
-You can find more info about AWS authentication 
+You can find more info about AWS authentication
 [here](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials) and [here](https://docs.aws.amazon.com/sdkref/latest/guide/creds-config-files.html)
 
-<Tabs
-  defaultValue="environment_variables"
-  values={[
-    {label: 'Environment Variables', value: 'environment_variables'},
-    {label: 'Shared Configuration Files', value: 'shared_configuration_files'},
-    {label: 'IAM roles for AWS compute resources', value: 'iam_roles'}
-  ]}>
+<Tabs options={[ 'Environment Variables', 'Shared Configuration Files', 'IAM roles for AWS compute resources' ]}>
 
-<Tab value='environment_variables'>
+<Tab>
 
 CloudQuery can use the credentials from the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and
-`AWS_SESSION_TOKEN` environment variables (`AWS_SESSION_TOKEN` can be optional for some accounts). For information about obtaining credentials, see the 
-[AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys). 
+`AWS_SESSION_TOKEN` environment variables (`AWS_SESSION_TOKEN` can be optional for some accounts). For information about obtaining credentials, see the
+[AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys).
 
-<Tabs
-  defaultValue="linux_and_osx"
-  values={[
-    {label: 'Linux and OSX', value: 'linux_and_osx'},
-    {label: 'Windows (CMD)', value: 'windows_cmd'},
-    {label: 'Windows (PowerShell)', value: 'windows_powershell'}
-  ]}>
+<Tabs options={[ 'Linux and OSX', 'Windows (CMD)', 'Windows (PowerShell)' ]}>
 
-<Tab value='linux_and_osx'>
+<Tab>
 
 ```bash
 export AWS_ACCESS_KEY_ID={Your AWS Access Key ID}
@@ -82,7 +72,7 @@ export AWS_SESSION_TOKEN={Your AWS session token}
 
 </Tab>
 
-<Tab value='windows_cmd'>
+<Tab>
 
 ```bash
 SET AWS_ACCESS_KEY_ID={Your AWS Access Key ID}
@@ -92,7 +82,7 @@ SET AWS_SESSION_TOKEN={Your AWS session token}
 
 </Tab>
 
-<Tab value='windows_powershell'>
+<Tab>
 
 ```powershell
 $Env:AWS_ACCESS_KEY_ID={Your AWS Access Key ID}
@@ -106,13 +96,13 @@ $Env:AWS_SESSION_TOKEN={Your AWS session token}
 
 </Tab>
 
-<Tab value='shared_configuration_files'>
+<Tab>
 
-CloudQuery can use credentials from your `credentials` and `config` files in the `.aws` directory in your home folder. 
+CloudQuery can use credentials from your `credentials` and `config` files in the `.aws` directory in your home folder.
 The contents of these files are practically interchangeable, but CloudQuery will prioritize credentials in the `credentials` file.
 
-For information about obtaining credentials, see the 
-[AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys). 
+For information about obtaining credentials, see the
+[AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys).
 
 Here are example contents for a `credentials` file:
 
@@ -153,10 +143,10 @@ providers:
 
 </Tab>
 
-<Tab value='iam_roles'>
+<Tab>
 
 Cloudquery can use IAM roles for AWS compute resources (including EC2 instances, fargate and ECS containers).
-If you configured your AWS compute resources with IAM, cloudquery will use these roles automatically! You don't need to specify additional 
+If you configured your AWS compute resources with IAM, cloudquery will use these roles automatically! You don't need to specify additional
 credentials manually. For more information on configuring IAM, see the AWS docs [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) and [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html).
 
 </Tab>
@@ -164,7 +154,7 @@ credentials manually. For more information on configuring IAM, see the AWS docs 
 </Tabs>
 
 #### Multi Account/Organization Access
- 
+
 If you have multiple AWS accounts/organizations, you can follow the steps set in the [cq-provider-aws README](https://hub.cloudquery.io/providers/cloudquery/aws/latest#multi-account-configuration-aws-organizations).
 
 ### Fetch Command
@@ -184,7 +174,7 @@ Schema and tables for AWS are available in [CloudQuery Hub](https://hub.cloudque
 
 A few example queries for AWS:
 
-#### List ec2\_images:
+#### List ec2_images:
 
 ```sql
 SELECT * FROM aws_ec2_images;
@@ -198,7 +188,7 @@ SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 
 ### Policy Command
 
-CloudQuery Policies allow users to write security, governance, cost, and compliance rules, 
+CloudQuery Policies allow users to write security, governance, cost, and compliance rules,
 using SQL as the query layer and HCL as the logical layer.
 
 All official and approved community policies are listed on [Github](https://github.com/cloudquery/cq-provider-aws/tree/main/policies).

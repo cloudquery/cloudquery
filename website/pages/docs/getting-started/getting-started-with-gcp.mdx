@@ -38,15 +38,9 @@ CloudQuery needs to be authenticated with your GCP account in order to `fetch` i
 
 You need to set the GOOGLE_APPLICATION_CREDENTIALS environment variable - see [GCP documentation](https://cloud.google.com/docs/authentication/getting-started#command-line) for more details on where to get it.
 
-<Tabs
-  defaultValue="linux_and_osx"
-  values={[
-    {label: 'Linux and OSX', value: 'linux_and_osx'},
-    {label: 'Windows (CMD)', value: 'windows_cmd'},
-    {label: 'Windows (PowerShell)', value: 'windows_powershell'}
-  ]}>
+<Tabs options={[ 'Linux and OSX', 'Windows (CMD)', 'Windows (PowerShell)' ]}>
 
-<Tab value='linux_and_osx'>
+<Tab>
 
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
@@ -54,7 +48,7 @@ export GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
 
 </Tab>
 
-<Tab value='windows_cmd'>
+<Tab>
 
 ```bash
 SET GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
@@ -62,7 +56,7 @@ SET GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
 
 </Tab>
 
-<Tab value='windows_powershell'>
+<Tab>
 
 ```powershell
 $Env:GOOGLE_APPLICATION_CREDENTIALS={Path to your google credentials}
@@ -99,7 +93,7 @@ WHERE iam_configuration_uniform_bucket_level_access_enabled = FALSE;
 
 ### Policy Command
 
-CloudQuery Policies allow users to write security, governance, cost, and compliance rules, 
+CloudQuery Policies allow users to write security, governance, cost, and compliance rules,
 using SQL as the query layer and HCL as the logical layer.
 
 All official and approved community policies are listed on [Github](https://github.com/cloudquery/cq-provider-gcp/tree/main/policies).
