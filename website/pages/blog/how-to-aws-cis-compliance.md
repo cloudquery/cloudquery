@@ -1,13 +1,17 @@
 ---
 title: How to run AWS CIS Benchmark with CloudQuery
 tag: security
-date: '2021-02-15T00:00:00'
+date: 2021/02/15
 description: >-
   Learn how to run AWS CIS benchmark with CloudQuery using customizable SQL
   statements.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 
 ## Intro
@@ -28,7 +32,7 @@ CloudQuery is an open-source framework that transforms your cloud infrastructure
 
 You can download the pre-compiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
-```shell
+```powershell
 export OS=Darwin # Possible values: Linux,Windows,Darwin
 curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
 chmod a+x cloudquery
@@ -36,7 +40,7 @@ chmod a+x cloudquery
 
 For mac you can use `homebrew`:
 
-```shell
+```powershell
 brew install cloudquery/tap/cloudquery
 # After initial install you can upgrade the version via:
 brew upgrade cloudquery
@@ -72,7 +76,7 @@ Now run `cloudquery policy run aws//cis_v1.2.0` to see results!
 
 Here is a snippet of the report:
 
-```text
+```powershell
 ✓ policy "cloudquery-policies-aws" -  evaluating -                0s   Finished Queries: 85/85
 
 📋 cloudquery-policies-aws Results:

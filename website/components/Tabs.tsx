@@ -1,29 +1,25 @@
 import * as NextraTabs from "nextra-theme-docs/tabs";
-import useSWR from "swr";
+import React, { useState } from "react";
 
 export const Tab = NextraTabs.Tab;
 
-export function Tabs({ storageKey = "tab-index", items, ...props }) {
-  // Use SWR so all tabs with the same key can sync their states.
-  const { data, mutate } = useSWR(storageKey, (key) => {
-    try {
-      return JSON.parse(localStorage.getItem(key));
-    } catch (e) {
-      return null;
-    }
-  });
+interface Props {
+  options: Array<string>;
+  children: React.ReactNode;
+}
 
-  const selectedIndex = items.indexOf(data);
+export function Tabs({ options, children }: Props) {
+  const [index, changeIndex] = useState(0);
 
+  const items = options.map((value) => ({ label: value }));
   return (
     <NextraTabs.Tabs
-      onChange={(index) => {
-        localStorage.setItem(storageKey, JSON.stringify(items[index]));
-        mutate(items[index], false);
-      }}
-      selectedIndex={selectedIndex === -1 ? undefined : selectedIndex}
+      onChange={(index) => changeIndex(index)}
+      selectedIndex={index}
       items={items}
-      {...props}
-    />
+    >
+      <div className="mb-4" />
+      {children}
+    </NextraTabs.Tabs>
   );
 }

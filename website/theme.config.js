@@ -25,7 +25,13 @@ const theme = {
   },
   head: function Head({ title, meta }) {
     const router = useRouter();
+
+    const isBlog = router.asPath.startsWith("/blog/");
     const ogImageName = "/og-image.jpg";
+    const ogImage =
+      isBlog && !meta.ogImage
+        ? `https://docs.cloudquery.io/og-image/${meta.title}`
+        : `https://cloudquery.io${meta.ogImage ?? ogImageName}`;
 
     return (
       <>
@@ -61,14 +67,8 @@ const theme = {
           property="og:url"
           content={`https://cloudquery.io${router.asPath}`}
         />
-        <meta
-          property="twitter:image"
-          content={`https://cloudquery.io${meta.ogImage ?? ogImageName}`}
-        />
-        <meta
-          property="og:image"
-          content={`https://cloudquery.io${meta.ogImage ?? ogImageName}`}
-        />
+        <meta property="twitter:image" content={ogImage} />
+        <meta property="og:image" content={ogImage} />
         <meta property="og:locale" content="en_IE" />
         <meta property="og:site_name" content="CloudQuery" />
       </>

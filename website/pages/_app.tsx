@@ -5,11 +5,15 @@ import "../custom.css";
 import { SSRProvider } from "@react-aria/ssr";
 import type { AppProps } from "next/app";
 import type { ReactNode } from "react";
-import Prism from 'prism-react-renderer/prism';
+import Prism from "prism-react-renderer/prism";
 
-(typeof global !== "undefined" ? global : window).Prism = Prism
+(typeof global !== "undefined" ? global : window).Prism = Prism;
 
-require("prismjs/components/prism-powershell")
+require("prismjs/components/prism-powershell");
+require("prismjs/components/prism-hcl");
+require("prismjs/components/prism-ini");
+require("prismjs/components/prism-docker");
+require("prismjs/components/prism-toml");
 
 type NextraAppProps = AppProps & {
   Component: AppProps["Component"] & {

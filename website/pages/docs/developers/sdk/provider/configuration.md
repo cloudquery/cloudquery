@@ -20,7 +20,7 @@ type Provider struct {
 	// Classifier function may return empty slice if it cannot meaningfully convert the error into diagnostics. In this case
 	// the error will be converted by the SDK into diagnostic at ERROR level and RESOLVING type.
 	ErrorClassifier func(meta schema.ClientMeta, resource string, err error) []diag.Diagnostic
-	
+
 	// ...internal fields...
 ```
 
