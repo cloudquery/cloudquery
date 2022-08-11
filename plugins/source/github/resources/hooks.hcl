@@ -10,14 +10,14 @@ resource "github" "" "hooks" {
   ignore_columns_in_tests = ["last_response", "config"]
 
   multiplex "OrgMultiplex" {
-    path = "github.com/cloudquery/cq-provider-github/client.OrgMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/github/client.OrgMultiplex"
   }
 
   userDefinedColumn "org" {
     type        = "string"
     description = "The Github Organization of the resource."
     resolver "resolveOrg" {
-      path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
+      path = "github.com/cloudquery/cloudquery/plugins/source/github/client.ResolveOrg"
     }
   }
 
