@@ -1,3 +1,5 @@
+import { Callout } from 'nextra-theme-docs'
+
 # Telemetry and Crash Reporting
 
 CloudQuery collects anonymized usage statistics and crash reports. Crash reports help us iron out any issues.
@@ -21,9 +23,11 @@ CloudQuery collects anonymized usage statistics and crash reports. Crash reports
 
 This does not allow us to track individual users but does enable us to accurately measure user counts vs. invocation counts.
 
-:::tip
+<Callout type="info">
+
 The random ID is stored in the `.cq/telemetry-random-id` file. If you wish to anonymize your requests further but still keep sending us usage statistics, you could remove this file before every invocation (or create a directory with the same name, which also stops the file from getting created)
-:::
+
+</Callout>
 
 ### Collector
 

@@ -1,11 +1,15 @@
 ---
 title: How to setup AWS CLI with AWS SSO
 tag: security
-date: '2022-01-04T00:00:00'
+date: 2022/01/04
 description: A step-by-step guide to setup AWS CLI with AWS SSO
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 AWS SSO makes it easy to centrally manage SSO Access to multiple AWS accounts, moves the authentication to the IdP (Identity Provider) and removes the need for managing static, long-lived credentials.
 
@@ -40,7 +44,7 @@ SSO Region [None]: us-east-1
 # This step will take you to the browser and you will have to click login and allow
 ```
 
-![](/img/blog/how-to-setup-aws-cli-with-aws-sso/aws-authorize-request.png)
+![](/images/blog/how-to-setup-aws-cli-with-aws-sso/aws-authorize-request.png)
 
 ```bash
 # This will suggest to choose an account from which are available to you

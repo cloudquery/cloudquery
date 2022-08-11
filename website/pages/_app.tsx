@@ -1,21 +1,15 @@
 import "../styles.css";
 import "nextra-theme-docs/style.css";
 import "../custom.css";
+import { Prism } from "prism-react-renderer";
 
-import { SSRProvider } from "@react-aria/ssr";
-import type { AppProps } from "next/app";
-import type { ReactNode } from "react";
-import Prism from 'prism-react-renderer/prism';
+(typeof global !== "undefined" ? global : window).Prism = Prism;
 
-(typeof global !== "undefined" ? global : window).Prism = Prism
-
-require("prismjs/components/prism-powershell")
-
-type NextraAppProps = AppProps & {
-  Component: AppProps["Component"] & {
-    getLayout: (page: ReactNode) => ReactNode;
-  };
-};
+require("prismjs/components/prism-powershell");
+require("prismjs/components/prism-hcl");
+require("prismjs/components/prism-ini");
+require("prismjs/components/prism-docker");
+require("prismjs/components/prism-toml");
 
 // Shim requestIdleCallback in Safari
 if (typeof window !== "undefined" && !("requestIdleCallback" in window)) {
@@ -23,14 +17,6 @@ if (typeof window !== "undefined" && !("requestIdleCallback" in window)) {
   window.cancelIdleCallback = (e) => clearTimeout(e);
 }
 
-export default function Nextra({ Component, pageProps }: NextraAppProps) {
-  const getLayout = Component.getLayout || ((page) => page);
-
-  return getLayout(
-    <>
-      <SSRProvider>
-        <Component {...pageProps} />
-      </SSRProvider>
-    </>
-  );
+export default function Nextra({ Component, pageProps }) {
+  return <Component {...pageProps} />;
 }

@@ -1,5 +1,9 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+---
+title: Debugging a Provider
+---
+
+import { Tabs, Tab } from '../../../components/Tabs'
+import { Callout } from 'nextra-theme-docs'
 
 # Debugging a Provider
 
@@ -11,30 +15,25 @@ main CloudQuery core executable.
 
 First, we must run the provider in debug mode. To do this, set the environment variable `CQ_PROVIDER_DEBUG=1` in our IDE or terminal and execute the provider.
 
-:::info Important!
+<Callout>
 
 Your credentials need to be exported in the environment of your **provider** executable, not in the environment
-of the core `cloudquery` executable. 
+of the core `cloudquery` executable.
 
-:::
+</Callout>
 
 The following message will appear when executing the plugin binary.
 
-<Tabs
-  defaultValue="linux-macos"
-  values={[
-    {label: 'Linux/macOS', value: 'linux-macos'},
-    {label: 'Windows', value: 'windows'},
-  ]}>
-  <TabItem value="linux-macos">
+<Tabs options={[ 'Linux/macOS', 'Windows' ]}>
+  <Tab>
 
 ```bash
 Provider started, to attach CloudQuery set the CQ_REATTACH_PROVIDERS env var:
         export CQ_REATTACH_PROVIDERS=/cq-my-provider/.cq_reattach
 ```
 
-  </TabItem>
-  <TabItem value="windows">
+  </Tab>
+  <Tab>
 
 ```bash
 Provider started, to attach CloudQuery set the CQ_REATTACH_PROVIDERS env var:
@@ -42,16 +41,17 @@ Provider started, to attach CloudQuery set the CQ_REATTACH_PROVIDERS env var:
 	Command Prompt:	set CQ_REATTACH_PROVIDERS=./providers/cq-my-provider/.cq_reattach
 	PowerShell:	$env:CQ_REATTACH_PROVIDERS=./providers/cq-my-provider/.cq_reattach
 ```
-  </TabItem>
-</Tabs>  
+
+  </Tab>
+</Tabs>
 
 Once we set up `CQ_REATTACH_PROVIDERS`, we will be able to execute any command from our CQ binary and it will use the debugged plugin instead of the latest version.
 
-:::tip
+<Callout type="info">
 
 We can now execute our provider from our favorite IDE in debug mode and put in breakpoints to test and debug our provider.
 
-:::
+</Callout>
 
 ### Example
 
@@ -61,7 +61,7 @@ In the following example, we will download an existing provider, compile it, and
 git clone https://github.com/cloudquery/cq-provider-aws.git
 go build -o cq-provider-aws
 
-export CQ_PROVIDER_DEBUG=1 
+export CQ_PROVIDER_DEBUG=1
 
 // export credentials:
 export AWS_ACCESS_KEY_ID={YOUR_AWS_ACCESS_KEY_ID}
@@ -73,7 +73,7 @@ export AWS_SESSION_TOKEN={YOUR_AWS_SESSION_TOKEN}
 //        export CQ_REATTACH_PROVIDERS=/<path_to_your_provider>/.cq_reattach
 ```
 
-After executing the provider, we will get a message about how to reattach our provider when we execute the main CQ binary. 
+After executing the provider, we will get a message about how to reattach our provider when we execute the main CQ binary.
 
 ```go
 // Path where we executed our aws provider
@@ -81,8 +81,8 @@ export CQ_REATTACH_PROVIDERS=/providers/cq-provider-aws/.cq_reattach
 ./cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
 ```
 
-:::info
+<Callout type="info">
 
 The same example can be run from the IDE to add breakpoints.
 
-:::
+</Callout>

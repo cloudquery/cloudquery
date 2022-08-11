@@ -1,11 +1,15 @@
 ---
 title: 'Building Open Source CSPM with CloudQuery, PostgreSQL and Grafana'
 tag: security
-date: '2022-07-24T22:00:00.000'
+date: 2022/07/24
 description: Unbundling the cloud security stack with a data platform
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 In this blog post, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your own customizable compliance, CSPM (Cloud Security Posture Management) dashboard with PostgreSQL and Grafana.
 
@@ -52,7 +56,7 @@ psql postgres://postgres:pass@localhost:5432/postgres -f policy.sql
 
 This should run all [available](https://github.com/cloudquery/cq-provider-aws/tree/main/policies#policies-and-compliance-frameworks-available) compliance framework and store the results in [aws_policy_results](https://github.com/cloudquery/cq-provider-aws/tree/main/policies#policies-and-compliance-frameworks-available). Now you can query the table directly and export in various formats such as CSV or HTML, all with standard `psql` , and of course visualize them in your favorite BI tool. We prepared a pre-built dashboard for Grafana that you can check out [here](https://github.com/cloudquery/cq-provider-aws/tree/main/dashboards#aws-compliance-and-cspm-cloud-security-posture-management-dashboard):
 
-![](/img/blog/open-source-cspm/image0.png)
+![](/images/blog/open-source-cspm/image0.png)
 
 ## Summary
 
