@@ -1,5 +1,5 @@
 variables:
-  component: fuzz
+  component: source/fuzz
 
 project_name: plugins/source/fuzz
 
@@ -10,4 +10,4 @@ monorepo:
 includes:
   - from_file:
       # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      path: ./plugins/source/.goreleaser.yaml
+      path: ./plugins/.goreleaser.yaml
