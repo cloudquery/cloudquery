@@ -6,8 +6,8 @@ package rbac
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
-	"github.com/cloudquery/cq-provider-k8s/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	v1 "k8s.io/api/rbac/v1"
