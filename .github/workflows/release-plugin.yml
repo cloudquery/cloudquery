@@ -14,7 +14,7 @@ jobs:
       - name: Split tag
         id: split
         run: |
-          tag=plugins/source/aws/v0.0.1
+          tag=${{ github.ref_name }}
           plugin_dir=${tag%%v*}
           plugin_type=$(echo $tag | cut -d/ -f2)
           plugin_name=$(echo $tag | cut -d/ -f3)
