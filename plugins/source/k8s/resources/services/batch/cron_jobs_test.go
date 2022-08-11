@@ -6,7 +6,7 @@ package batch
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 )
 
 func TestIntegrationCronJobs(t *testing.T) {

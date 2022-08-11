@@ -6,8 +6,8 @@ package batch
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
-	"github.com/cloudquery/cq-provider-k8s/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	batchv1 "k8s.io/api/batch/v1"

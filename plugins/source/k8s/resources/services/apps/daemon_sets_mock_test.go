@@ -6,8 +6,8 @@ package apps
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-k8s/client"
-	"github.com/cloudquery/cq-provider-k8s/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/golang/mock/gomock"
 	appsv1 "k8s.io/api/apps/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
