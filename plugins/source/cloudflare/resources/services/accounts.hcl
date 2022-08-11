@@ -12,7 +12,7 @@ resource "cloudflare" "" "accounts" {
   }
 
   deleteFilter "DeleteFilter" {
-    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/cloudflare/client.DeleteFilter"
   }
 
   column "id" {
@@ -46,7 +46,7 @@ resource "cloudflare" "" "accounts" {
       description = "The Account ID of the resource."
       type        = "string"
       resolver "resolveCFAccount" {
-        path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+        path = "github.com/cloudquery/cloudquery/plugins/source/cloudflare/client.ResolveAccountId"
       }
     }
 
@@ -85,7 +85,7 @@ resource "cloudflare" "" "accounts" {
         description = "The Account ID of the resource."
         type        = "string"
         resolver "resolveCFAccount" {
-          path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+          path = "github.com/cloudquery/cloudquery/plugins/source/cloudflare/client.ResolveAccountId"
         }
       }
 

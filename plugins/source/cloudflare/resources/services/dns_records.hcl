@@ -12,14 +12,14 @@ resource "cloudflare" "" "dns_records" {
   }
 
   deleteFilter "DeleteAccountZoneFilter" {
-    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountZoneFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/cloudflare/client.DeleteAccountZoneFilter"
   }
 
   userDefinedColumn "account_id" {
     description = "The Account ID of the resource."
     type        = "string"
     resolver "resolveCFAccount" {
-      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+      path = "github.com/cloudquery/cloudquery/plugins/source/cloudflare/client.ResolveAccountId"
     }
   }
 

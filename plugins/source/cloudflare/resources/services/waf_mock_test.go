@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/cq-provider-cloudflare/client"
-	"github.com/cloudquery/cq-provider-cloudflare/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
