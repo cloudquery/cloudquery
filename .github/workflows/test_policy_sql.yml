@@ -1,4 +1,4 @@
-name: SQL Policy Validation Test
+name: SQLPolicyTest
 on:
   push:
     branches:
