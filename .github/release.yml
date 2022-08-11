@@ -1,23 +1,19 @@
-# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
 changelog:
   exclude:
     labels:
       - ignore-for-release
   categories:
-    - title: Breaking Changes
+    - title: Breaking Changes 🛠
       labels:
         - breaking
-    - title: Added
+    - title: Added 🎉
       labels:
-        - enhancement
-        - docs
         - feat
-    - title: Fixed
+    - title: Fixed 🪳
       labels:
         - fix
-    - title: Other Changes
+    - title: Other Changes 📖
       labels:
         - refactor
         - chore
-        - ci
         - test
