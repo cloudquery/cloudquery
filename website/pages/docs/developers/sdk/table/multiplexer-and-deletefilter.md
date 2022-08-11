@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Multiplexer and DeleteFilter
 
 `Multiplex` and `DeleteFilter` options are defined in the [schema.Table](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/table.go) entry, per resource type.
@@ -38,6 +40,8 @@ func DeleteAccountFilter(meta schema.ClientMeta, _ *schema.Resource) []interface
 }
 ```
 
-:::tip
+<Callout type="info">
+
 DeleteFilter is always a _mirror_ of your Multiplexer.
-:::
+
+</Callout>

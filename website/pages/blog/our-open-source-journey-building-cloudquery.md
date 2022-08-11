@@ -1,14 +1,18 @@
 ---
 title: Our Open-Source Journey Building CloudQuery
 tag: security
-date: '2022-02-14T00:00:00'
+date: 2022/02/14
 description: >-
   In this blog, we will share why we started CloudQuery as an open-source cloud
   asset inventory, as well as some of our product and technical decisions along
   the way.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 In this blog, we will share why we started CloudQuery as an open-source cloud asset inventory, as well as some of our product and technical decisions along the way.
 
@@ -30,7 +34,7 @@ is the right way to solve some of the fundamental challenges in the cloud.
 
 First, let’s look at the following simplified cloud management market landscape.
 
-![](/img/blog/landscape.jpg)
+![](/images/blog/landscape.jpg)
 
 - We’ve split the vendors to 1) cloud vendors and 2) enterprise vendors (we didn’t use logos/names to avoid law suits and so on but there are plenty)
 
@@ -44,7 +48,7 @@ Translating this to technical, product terms, it means we need an up-to-date dat
 
 This means we need a performant, up-to-date ETL (Extract, Transform, Load) engine with a wide variety of integrations - with good breadth (support for many different cloud/service providers) and depth (comprehensive coverage for every cloud provider’s features).
 
-![](/img/blog/meme.jpeg)
+![](/images/blog/meme.jpeg)
 
 And then we got our **aha** moment!
 
@@ -64,7 +68,7 @@ Different solutions might need different queries or even different databases. Mo
 
 Given these insights, we scribbled the following:
 
-![](/img/blog/cq_arch.jpg)
+![](/images/blog/cq_arch.jpg)
 
 You can observe the following components:
 

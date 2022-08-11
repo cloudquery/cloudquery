@@ -1,11 +1,15 @@
 ---
 title: How to expose CloudQuery with PostGraphile
 tag: tutorial
-date: '2022-06-16T00:00:00'
+date: 2022/06/16
 description: Search everything you have in the cloud with GraphQL.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 In this blog post, we will walk you through how to setup [CloudQuery](https://github.com/cloudquery/cloudquery) to build your cloud asset inventory in PostgreSQL and build a GraphQL API query layer with [PostGraphile](https://github.com/graphile/postgraphile) on top of it. this can be used to build different use cases on from search to security, cost and infrastructure automation.
 
@@ -60,13 +64,13 @@ PostGraphile v4.12.9 server listening on port 6060 🚀
 
 Open the browser with the `http://localhost:6060/graphiql` endpoint to see the GraphiQL UI where you can compose any query you want interactively:
 
-![](/img/blog/cloudquery-postgraphile/step3.png)
+![](/images/blog/cloudquery-postgraphile/step3.png)
 
 ### Step 4: Create New Views
 
 By default PostGraphile exposes all tables and relationships of the existing tables but let’s say you want to create a new view. All you need to do is to create a new view and PostGraphile will automatically generate the model for that. For example, check out this [blog](https://www.cloudquery.io/blog/aws-resources-view) on how to create a unified AWS resource [view](https://github.com/cloudquery/cq-provider-aws/tree/main/views) (or GCP [View](https://github.com/cloudquery/cq-provider-gcp/tree/main/views)). And just like that you can now query and search all your resources by `arn`, `tags`, `name` with GraphQL!
 
-![](/img/blog/cloudquery-postgraphile/step4.png)
+![](/images/blog/cloudquery-postgraphile/step4.png)
 
 ### Step 5: Deploying in production
 

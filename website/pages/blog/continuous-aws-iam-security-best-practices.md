@@ -1,13 +1,16 @@
 ---
 title: Continuous AWS IAM Security Best Practices
 tag: security
-date: '2021-03-15T00:00:00'
+date: 2021/03/15
 description: >-
   Walkthrough on how to automate, validate and monitor AWS IAM Security best
   practices with CloudQuery
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
 
 There are some great guides on the internet for AWS Security best practices (both official and unofficial).
 However, one of the challenges we saw with those guides is that they tell you what the end goal is,
@@ -15,7 +18,6 @@ but they usually leave it up to the user on how to implement it (at scale),
 let alone how to continuously monitor those best practices to make sure all your hard work doesn’t go through the window.
 
 In this blog post we will go through the official security IAM best practices, and we'll show how to validate and monitor them using SQL statements with CloudQuery.
-
 
 ## Account Setup
 
@@ -29,7 +31,7 @@ To be able to run the following tutorial you need to install and configure Cloud
 
 You can download the pre-compiled binary from releases, or using CLI:
 
-```shell script
+```powershell
 export OS=Darwin # Possible values: Linux,Windows,Darwin
 curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_x86_64 -o cloudquery
 chmod a+x cloudquery
@@ -37,7 +39,7 @@ chmod a+x cloudquery
 
 For mac you can use `homebrew`:
 
-```shell script
+```powershell
 brew install cloudquery/tap/cloudquery
 # After initial install you can upgrade the version via:
 brew upgrade cloudquery
@@ -45,7 +47,7 @@ brew upgrade cloudquery
 
 ### Run
 
-```shell script
+```powershell
 docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
 cloudquery init aws
 cloudquery fetch --dsn "host=localhost user=postgres password=pass DB.name=postgres port=5432"
@@ -190,7 +192,7 @@ There are two sections:
 
 You can run the policy with the following command
 
-```shell script
+```powershell
 cloudquery query --path policy.yml
 ```
 

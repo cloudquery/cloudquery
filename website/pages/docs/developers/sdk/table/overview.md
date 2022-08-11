@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Overview
 
 Table is the main building block in the SDK provider schema, these tables are passed to the Provider to define what resources the provider supports. [Tables](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/table.go) define their columns, relations (which are also tables). Each table has a resolver function that is called by the SDK with the client that was configured early by the user implementation.
@@ -69,7 +71,9 @@ func Resources() *schema.Table {
 
 Here, we define a table with its columns and metadata.
 
-:::tip
+<Callout type="info">
+
 **Resources** are wrappers around a single data that is fetched by table resolvers and passed to the SDK. Resources hold the original item and all resolved values that will be inserted into the database.
 Terminologically speaking, a single Resource represents a row in the table.
-:::
+
+</Callout>
