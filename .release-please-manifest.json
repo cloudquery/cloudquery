@@ -1,5 +1,6 @@
 {
   "cli": "0.32.1",
+
   "plugins/source/aws": "0.13.6",
   "plugins/source/azure": "0.12.4",
   "plugins/source/cloudflare": "0.0.1",
@@ -9,5 +10,16 @@
   "plugins/source/github": "0.1.2",
   "plugins/source/k8s": "0.6.3",
   "plugins/source/okta": "0.6.3",
-  "plugins/source/terraform": "0.5.3"
+  "plugins/source/terraform": "0.5.3",
+
+  "plugins/aws": "0.13.6",
+  "plugins/azure": "0.12.4",
+  "plugins/cloudflare": "0.0.1",
+  "plugins/digitalocean": "0.6.3",
+  "plugins/fuzz": "0.0.14",
+  "plugins/gcp": "0.9.4",
+  "plugins/github": "0.1.2",
+  "plugins/k8s": "0.6.3",
+  "plugins/okta": "0.6.3",
+  "plugins/terraform": "0.5.3"
 }
