@@ -10,9 +10,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/cq-provider-azure/client"
-	"github.com/cloudquery/cq-provider-azure/client/services"
-	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"

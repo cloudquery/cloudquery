@@ -6,7 +6,7 @@ import (
 	"net"
 
 	"github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search"
-	"github.com/cloudquery/cq-provider-azure/client"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

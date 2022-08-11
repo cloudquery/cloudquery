@@ -11,12 +11,13 @@
 Clone the repository:
 
 ```bash
-git clone https://github.com/cloudquery/cq-provider-azure
+git clone https://github.com/cloudquery/cloudquery/
+cd plugins/source/azure
 ```
 
 Build the provider:
 
-```
+```sh
 make build
 ```
 

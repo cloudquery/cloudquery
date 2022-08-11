@@ -3,7 +3,7 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-azure/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
