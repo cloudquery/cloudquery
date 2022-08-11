@@ -3,7 +3,7 @@ package convert
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/file"
+	"github.com/cloudquery/cloudquery/cli/internal/file"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
 	"github.com/zclconf/go-cty/cty"

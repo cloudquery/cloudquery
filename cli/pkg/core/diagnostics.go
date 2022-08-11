@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/cloudquery/cloudquery/pkg/plugin"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/spf13/viper"
 )

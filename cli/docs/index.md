@@ -1,26 +1,15 @@
 # Cloudquery
 
-This is the CLI that interacts with providers and database 
-
+This is the CLI that interacts with source plugins and target plugins
 
 ## Download
 
-You can download pre-compiled binaries from Github:
+You can download pre-compiled binaries from GitHub [releases](https://github.com/cloudquery/cloudquery/releases), or you can build from source:
 
-``` shell
-export OS=Darwin # Possible values: Linux, Windows, Darwin
-export ARCH=x86_64 # Possible values x86_64, arm64
-curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_${OS}_${ARCH} -o cloudquery
-chmod a+x cloudquery
+```sh
+git clone https://github.com/cloudquery/cloudquery/cli.git
+cd cloudquery/cli
 ```
-
-Or you can build from source:
-
-```
-git clone https://github.com/cloudquery/cloudquery.git
-cd cloudquery
-```
-
 
 ## Setup
 
@@ -28,8 +17,8 @@ cd cloudquery
 cloudquery init aws
 ```
 
-or 
+or
 
-``` shell
+```sh
 go run main.go init aws
 ```

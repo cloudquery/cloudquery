@@ -5,14 +5,14 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/file"
-	"github.com/cloudquery/cloudquery/pkg/ui"
-	"github.com/cloudquery/cloudquery/pkg/ui/console"
+	"github.com/cloudquery/cloudquery/cli/internal/file"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui/console"
 	"github.com/spf13/afero"
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
-const testFileDownloadUrl = "https://github.com/cloudquery/cloudquery/releases/download/v0.13.5/cloudquery_Linux_arm64.zip"
+const testFileDownloadUrl = "https://github.com/cloudquery/cloudquery/cli/releases/download/v0.13.5/cloudquery_Linux_arm64.zip"
 
 func TestOsFs_DownloadFile(t *testing.T) {
 	osFs := file.NewOsFs()

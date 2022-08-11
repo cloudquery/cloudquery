@@ -4,9 +4,9 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/pkg/plugin"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/cli/internal/firebase"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin/registry"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
