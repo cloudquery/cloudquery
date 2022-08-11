@@ -97,6 +97,21 @@ func (mr *MockApiMockRecorder) ListCertificatePacks(arg0, arg1 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCertificatePacks", reflect.TypeOf((*MockApi)(nil).ListCertificatePacks), arg0, arg1)
 }
 
+// ListImages mocks base method.
+func (m *MockApi) ListImages(arg0 context.Context, arg1 string, arg2 cloudflare.PaginationOptions) ([]cloudflare.Image, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListImages", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]cloudflare.Image)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListImages indicates an expected call of ListImages.
+func (mr *MockApiMockRecorder) ListImages(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListImages", reflect.TypeOf((*MockApi)(nil).ListImages), arg0, arg1, arg2)
+}
+
 // ListWAFGroups mocks base method.
 func (m *MockApi) ListWAFGroups(arg0 context.Context, arg1, arg2 string) ([]cloudflare.WAFGroup, error) {
 	m.ctrl.T.Helper()

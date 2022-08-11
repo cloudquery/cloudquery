@@ -22,6 +22,7 @@ func Provider() *provider.Provider {
 			"accounts":          services.Accounts(),
 			"certificate_packs": services.CertificatePacks(),
 			"dns_records":       services.DNSRecords(),
+			"images":            services.Images(),
 			"ips":               services.Ips(),
 			"wafs":              services.Wafs(),
 			"workers_scripts":   services.WorkersScripts(),
