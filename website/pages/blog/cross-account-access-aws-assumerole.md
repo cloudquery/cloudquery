@@ -1,17 +1,21 @@
 ---
 title: How to Setup Cross Account Access in AWS with AssumeRole
 tag: security
-date: '2022-06-14T00:00:00'
+date: 2022/06/14
 description: >-
   How to setup cross account access in AWS for variety of use-cases such as
   audit, security and compliance at scale.
-authors: benjamin
-
+author: benjamin
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 In this blog we will walk through how to create a role an external account that we want to AssumeRole into. In our example we will provide the new role in the external account with broad ReadOnly permissions (but you are free to change to whatever you want).
 
-![AWS Schema](/img/blog/cross-account-access-aws-assumerole/scheme.png)
+![AWS Schema](/images/blog/cross-account-access-aws-assumerole/scheme.png)
 
 
 ## Introduction to AWS IAM
@@ -32,25 +36,25 @@ In this tutorial we will show you how to do in the console (ClickOps) but feel f
 
 Go to `iam→roles` and [click Create Role](https://us-east-1.console.aws.amazon.com/iamv2/home?region=us-east-1#/roles/create?step=selectEntities)
 
-![](/img/blog/cross-account-access-aws-assumerole/step1.png)
+![](/images/blog/cross-account-access-aws-assumerole/step1.png)
 
 ## Step 2
 
 For **_Trusted Entity,_** Choose **_AWS account_**, click **_Another AWS account_** and fill-in the account id you want to access **from** and click next
 
-![](/img/blog/cross-account-access-aws-assumerole/step2.png)
+![](/images/blog/cross-account-access-aws-assumerole/step2.png)
 
 ### Step 3
 
 Attach the **_Permission policy_** you want this role to have. In our case we will attach `ReadOnlyAccess` - mark the checkbox and click next.
 
-![](/img/blog/cross-account-access-aws-assumerole/step3.png)
+![](/images/blog/cross-account-access-aws-assumerole/step3.png)
 
 ### Step 4
 
 Last screen should look like the following and you should name the role the same name in all accounts you want to AssumeRole into. In this case we marked it as `CrossAccountReadOnlyRole`
 
-![](/img/blog/cross-account-access-aws-assumerole/step4.png)
+![](/images/blog/cross-account-access-aws-assumerole/step4.png)
 
 ### Step 5
 
@@ -76,19 +80,19 @@ Login into your account where you want to assume role from and go to iam→polic
 
 So it should look something like the following:
 
-![](/img/blog/cross-account-access-aws-assumerole/step6.png)
+![](/images/blog/cross-account-access-aws-assumerole/step6.png)
 
 ### Step 7
 
 Click Next, give it tags and then pick a name. We will use `CloudQueryCrossAccountReadOnlyAccess`
 
-![](/img/blog/cross-account-access-aws-assumerole/step7.png)
+![](/images/blog/cross-account-access-aws-assumerole/step7.png)
 
 ### Step 8
 
 Now you can go to user or role that you use in your main account and attach the policy:
 
-![](/img/blog/cross-account-access-aws-assumerole/step8.png)
+![](/images/blog/cross-account-access-aws-assumerole/step8.png)
 
 ### Step 9
 

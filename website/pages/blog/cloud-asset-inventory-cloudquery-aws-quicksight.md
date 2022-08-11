@@ -3,13 +3,17 @@ title: >-
   How to Build Open Source Cloud Asset Inventory with CloudQuery and AWS
   QuickSight
 tag: tutorial
-date: '2022-06-01T00:00:00'
+date: 2022/06/01
 description: >-
   How to setup CloudQuery to build your cloud asset inventory in PostgreSQL and
   connect it to AWS QuickSight for visualization, monitoring and reporting.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [AWS QuickSight](https://aws.amazon.com/quicksight/) for visualization, monitoring and reporting.
 
@@ -40,17 +44,17 @@ You can connect QuickSight to a private PostgreSQL (RDS Aurora) if you are on th
 
 Click Create New Dataset and choose PostgresSQL (In this tutorial we will connect to publicly accessible RDS with authorized QuickSight IP Address) and fill-in the connection details:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-aws-quicksight/1.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-aws-quicksight/1.png)
 
 ### Step 3: Visualize the Data!
 
 Choose the table you want to visualize, in this case we will choose the`aws_resources` view which you need to [create](https://www.cloudquery.io/blog/aws-resources-view) to visualize all resources across all accounts and regions.
 
-![](/img/blog/cloud-asset-inventory-cloudquery-aws-quicksight/2.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-aws-quicksight/2.png)
 
 1. Now visualize away with QuickSight! Here is a small example of global filterable resources we created pretty quickly
 
-![](/img/blog/cloud-asset-inventory-cloudquery-aws-quicksight/3.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-aws-quicksight/3.png)
 
 You can reuse QuickSight to export/share those dashboards as well as create alerts!
 

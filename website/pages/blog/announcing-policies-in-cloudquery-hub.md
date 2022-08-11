@@ -1,11 +1,15 @@
 ---
 title: Announcing Policies in CloudQuery Hub
-tags: announcement
-date: '2021-08-09T00:00:00'
+tag: announcement
+date: 2021/08/09
 description: Adding CQ Policies to CQ Hub
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 Today, we’re excited to announce the availability of [CloudQuery Policies](https://www.cloudquery.io/blog/announcing-cloudquery-policies) in [CloudQuery Hub](https://hub.cloudquery.io/).
 
