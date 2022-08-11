@@ -1,9 +1,5 @@
 name: check_generated_code_drift
 on:
-  push:
-    branches:
-      - main
-      - monorepo
   pull_request:
     branches:
       - main
@@ -34,17 +30,17 @@ jobs:
             src:
               - "./plugins/source/${{ matrix.plugin }}/**"
       - name: Set up Go 1.x
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-go@v3
         with:
           go-version: ^1.18
       - name: Install tools
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           make install-tools
         working-directory: ./plugins/source/${{ matrix.plugin }}
       - uses: actions/cache@v3
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           # In order:
           # * Module download cache
@@ -61,21 +57,21 @@ jobs:
             ${{ runner.os }}-go-1.18-
 #            TODO: Enable again once monorepo migration is done
 #      - name: Fail if new cq-gen config file is missing //check-for-changes
-#        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+#        if: steps.changed-files.outputs.any_changed == 'true'
 #        env:
 #          BASE_BRANCH: ${{ github.base_ref }}
 #        run: |
 #          ../../scripts/check-new-files-have-check-for-changes-flag.sh
 #        working-directory: ./plugins/source/${{ matrix.plugin }}
       - name: Run go generate on changed service directories
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         env:
           BASE_BRANCH: ${{ github.base_ref }}
         run: |
           ../../scripts/regenerate-changed-directories.sh
         working-directory: ./plugins/source/${{ matrix.plugin }}
       - name: Fail if any files are changed
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           echo "List of files changed after running go generate:"
           git status -s ./resources/services
