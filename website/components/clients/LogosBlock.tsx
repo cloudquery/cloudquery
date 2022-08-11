@@ -1,5 +1,5 @@
 import React from "react";
-import { AuroralabsLogo } from "../logos/auroralabs";
+import { AuroralabsLogo } from "../logos/Auroralabs";
 import { AutodeskLogo } from "../logos/Autodesk";
 import { BloombergLogo } from "../logos/Bloomberg";
 import { FastlyLogo } from "../logos/Fastly";
@@ -11,7 +11,7 @@ import { ZendeskLogo } from "../logos/Zendesk";
 
 export function LogosBlock() {
   return (
-    < div className="flex justify-center items-center flex-wrap gap-8" >
+    <div className="flex justify-center items-center flex-wrap gap-8">
       <FastlyLogo />
       <AutodeskLogo />
       <PaloAltoNetworksLogo />
@@ -21,6 +21,6 @@ export function LogosBlock() {
       <ZendeskLogo />
       <InfosysLogo />
       <AuroralabsLogo />
-    </div >
+    </div>
   );
 }
