@@ -28,5 +28,6 @@ type Api interface {
 
 	ZoneLevelAccessGroups(ctx context.Context, zoneID string, pageOpts cloudflare.PaginationOptions) ([]cloudflare.AccessGroup, cloudflare.ResultInfo, error)
 
+	ListWAFOverrides(ctx context.Context, zoneID string) ([]cloudflare.WAFOverride, error)
 	ListImages(ctx context.Context, accountID string, pageOpts cloudflare.PaginationOptions) ([]cloudflare.Image, error)
 }

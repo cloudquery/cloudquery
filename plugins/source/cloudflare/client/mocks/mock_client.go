@@ -127,6 +127,21 @@ func (mr *MockApiMockRecorder) ListWAFGroups(arg0, arg1, arg2 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWAFGroups", reflect.TypeOf((*MockApi)(nil).ListWAFGroups), arg0, arg1, arg2)
 }
 
+// ListWAFOverrides mocks base method.
+func (m *MockApi) ListWAFOverrides(arg0 context.Context, arg1 string) ([]cloudflare.WAFOverride, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListWAFOverrides", arg0, arg1)
+	ret0, _ := ret[0].([]cloudflare.WAFOverride)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListWAFOverrides indicates an expected call of ListWAFOverrides.
+func (mr *MockApiMockRecorder) ListWAFOverrides(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListWAFOverrides", reflect.TypeOf((*MockApi)(nil).ListWAFOverrides), arg0, arg1)
+}
+
 // ListWAFPackages mocks base method.
 func (m *MockApi) ListWAFPackages(arg0 context.Context, arg1 string) ([]cloudflare.WAFPackage, error) {
 	m.ctrl.T.Helper()

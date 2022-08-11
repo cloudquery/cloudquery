@@ -25,6 +25,7 @@ func Provider() *provider.Provider {
 			"images":            services.Images(),
 			"ips":               services.Ips(),
 			"wafs":              services.Wafs(),
+			"waf_overrides":     services.WafOverrides(),
 			"workers_scripts":   services.WorkersScripts(),
 			"workers_routes":    services.WorkersRoutes(),
 			"zones":             services.Zones(),
