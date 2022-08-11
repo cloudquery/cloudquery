@@ -1,34 +1,34 @@
-service = "aws"
+service          = "aws"
 output_directory = "."
-add_generate = true
+add_generate     = true
 
 
 
 resource "aws" "apigatewayv2" "apis" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types.Api"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["apigatewayv2", 2]
   }
 
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -87,19 +87,19 @@ resource "aws" "apigatewayv2" "apis" {
 resource "aws" "apigatewayv2" "domain_names" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types.DomainName"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
 
@@ -114,7 +114,7 @@ resource "aws" "apigatewayv2" "domain_names" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 }
@@ -122,26 +122,26 @@ resource "aws" "apigatewayv2" "domain_names" {
 resource "aws" "apigatewayv2" "vpc_links" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types.VpcLink"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -165,26 +165,26 @@ resource "aws" "apigatewayv2" "vpc_links" {
 resource "aws" "apigateway" "rest_apis" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigateway/types.RestApi"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -260,26 +260,26 @@ resource "aws" "apigateway" "rest_apis" {
 resource "aws" "apigateway" "usage_plans" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigateway/types.UsagePlan"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -299,26 +299,26 @@ resource "aws" "apigateway" "usage_plans" {
 resource "aws" "apigateway" "domain_names" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigateway/types.DomainName"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -331,26 +331,26 @@ resource "aws" "apigateway" "domain_names" {
 resource "aws" "apigateway" "client_certificates" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigateway/types.ClientCertificate"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 }
@@ -359,26 +359,26 @@ resource "aws" "apigateway" "client_certificates" {
 resource "aws" "apigateway" "api_keys" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigateway/types.ApiKey"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
   column "id" {
@@ -389,26 +389,26 @@ resource "aws" "apigateway" "api_keys" {
 resource "aws" "apigateway" "vpc_links" {
   path = "github.com/aws/aws-sdk-go-v2/service/apigateway/types.VpcLink"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountRegionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountRegionMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 

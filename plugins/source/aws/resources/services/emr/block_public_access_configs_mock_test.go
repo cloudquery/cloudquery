@@ -7,8 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
-	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-aws/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/golang/mock/gomock"
 )
 

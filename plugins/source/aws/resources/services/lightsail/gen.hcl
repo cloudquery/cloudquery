@@ -9,13 +9,13 @@ description_modifier "remove_read_only" {
 resource "aws" "lightsail" "instances" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.Instance"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
 
@@ -23,14 +23,14 @@ resource "aws" "lightsail" "instances" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -41,7 +41,7 @@ resource "aws" "lightsail" "instances" {
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
 
@@ -58,7 +58,7 @@ resource "aws" "lightsail" "instances" {
     column "tags" {
       type = "json"
       resolver "resolveTags" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
       }
     }
     column "attachment_state" {
@@ -83,14 +83,14 @@ resource "aws" "lightsail" "instances" {
 resource "aws" "lightsail" "buckets" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.Bucket"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -111,14 +111,14 @@ resource "aws" "lightsail" "buckets" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -126,7 +126,7 @@ resource "aws" "lightsail" "buckets" {
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
 
@@ -144,14 +144,14 @@ resource "aws" "lightsail" "buckets" {
 resource "aws" "lightsail" "disks" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.Disk"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -166,21 +166,21 @@ resource "aws" "lightsail" "disks" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
 
@@ -194,7 +194,7 @@ resource "aws" "lightsail" "disks" {
     column "tags" {
       type = "json"
       resolver "resolveTags" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
       }
     }
   }
@@ -206,14 +206,14 @@ resource "aws" "lightsail" "alarms" {
   ignore_in_tests = true
 
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -225,14 +225,14 @@ resource "aws" "lightsail" "alarms" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -254,14 +254,14 @@ resource "aws" "lightsail" "alarms" {
 resource "aws" "lightsail" "certificates" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.Certificate"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -286,14 +286,14 @@ resource "aws" "lightsail" "certificates" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -301,7 +301,7 @@ resource "aws" "lightsail" "certificates" {
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
 
@@ -333,14 +333,14 @@ resource "aws" "lightsail" "certificates" {
 resource "aws" "lightsail" "static_ips" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.StaticIp"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   options {
     primary_keys = [
@@ -351,14 +351,14 @@ resource "aws" "lightsail" "static_ips" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -375,14 +375,14 @@ resource "aws" "lightsail" "static_ips" {
 resource "aws" "lightsail" "database_snapshots" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.RelationalDatabaseSnapshot"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -397,20 +397,20 @@ resource "aws" "lightsail" "database_snapshots" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
   column "location" {
@@ -425,14 +425,14 @@ resource "aws" "lightsail" "database_snapshots" {
 resource "aws" "lightsail" "load_balancers" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.LoadBalancer"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -444,20 +444,20 @@ resource "aws" "lightsail" "load_balancers" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
 
@@ -489,7 +489,7 @@ resource "aws" "lightsail" "load_balancers" {
     column "tags" {
       type = "json"
       resolver "resolveTags" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
       }
     }
 
@@ -512,14 +512,14 @@ resource "aws" "lightsail" "load_balancers" {
 resource "aws" "lightsail" "databases" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.RelationalDatabase"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -537,14 +537,14 @@ resource "aws" "lightsail" "databases" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -552,7 +552,7 @@ resource "aws" "lightsail" "databases" {
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
   column "pending_modified_values" {
@@ -588,7 +588,7 @@ resource "aws" "lightsail" "databases" {
   }
 
   user_relation "aws" "lightsail" "log_events" {
-    path            = "github.com/cloudquery/cq-provider-aws/resources/services/lightsail.LogEventWrapper"
+    path            = "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail.LogEventWrapper"
     ignore_in_tests = true
 
     column "log_event" {
@@ -601,14 +601,14 @@ resource "aws" "lightsail" "databases" {
 resource "aws" "lightsail" "instance_snapshots" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.InstanceSnapshot"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -623,14 +623,14 @@ resource "aws" "lightsail" "instance_snapshots" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -650,7 +650,7 @@ resource "aws" "lightsail" "instance_snapshots" {
     column "tags" {
       type = "json"
       resolver "resolveTags" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
       }
     }
   }
@@ -658,16 +658,16 @@ resource "aws" "lightsail" "instance_snapshots" {
 
 
 resource "aws" "lightsail" "distributions" {
-  path = "github.com/cloudquery/cq-provider-aws/resources/services/lightsail.DistributionWrapper"
+  path = "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail.DistributionWrapper"
 
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountMultiplex"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountFilter"
   }
 
   ignore_in_tests = true
@@ -681,14 +681,14 @@ resource "aws" "lightsail" "distributions" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -722,7 +722,7 @@ resource "aws" "lightsail" "distributions" {
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
 }
@@ -731,14 +731,14 @@ resource "aws" "lightsail" "distributions" {
 resource "aws" "lightsail" "container_services" {
   path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.ContainerService"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lightsail"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   ignore_columns_in_tests = [
@@ -756,14 +756,14 @@ resource "aws" "lightsail" "container_services" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -786,7 +786,7 @@ resource "aws" "lightsail" "container_services" {
   column "tags" {
     type = "json"
     resolver "resolveTags" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveTags"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
 
@@ -800,6 +800,6 @@ resource "aws" "lightsail" "container_services" {
 
 
   user_relation "aws" "lightsail" "images" {
-    path           = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.ContainerImage"
+    path = "github.com/aws/aws-sdk-go-v2/service/lightsail/types.ContainerImage"
   }
 }

@@ -60,8 +60,8 @@ func TestRemovePII(t *testing.T) {
 			"ResourceType name not found - Could not find example request type named 'xxxx'",
 		},
 		{
-			`qldb.ledgers: failed to resolve table "aws_qldb_ledgers": error at github.com/cloudquery/cq-provider-aws/resources/services/qldb.fetchQldbLedgers[ledgers.go:264] operation error QLDB: ListLedgers, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Get "https://qldb.ap-southeast-1.amazonaws.com/ledgers": dial tcp: lookup qldb.ap-southeast-1.amazonaws.com on 172.20.0.10:53: no such host`,
-			`qldb.ledgers: failed to resolve table "aws_qldb_ledgers": error at github.com/cloudquery/cq-provider-aws/resources/services/qldb.fetchQldbLedgers[ledgers.go:264] operation error QLDB: ListLedgers, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Get "https://xxxx": dial tcp: lookup xxxx on xxxx:xx: no such host`,
+			`qldb.ledgers: failed to resolve table "aws_qldb_ledgers": error at github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb.fetchQldbLedgers[ledgers.go:264] operation error QLDB: ListLedgers, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Get "https://qldb.ap-southeast-1.amazonaws.com/ledgers": dial tcp: lookup qldb.ap-southeast-1.amazonaws.com on 172.20.0.10:53: no such host`,
+			`qldb.ledgers: failed to resolve table "aws_qldb_ledgers": error at github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb.fetchQldbLedgers[ledgers.go:264] operation error QLDB: ListLedgers, exceeded maximum number of attempts, 10, https response error StatusCode: 0, RequestID: , request send failed, Get "https://xxxx": dial tcp: lookup xxxx on xxxx:xx: no such host`,
 		},
 		{
 			`operation error EC2: DescribeImageAttribute, https response error StatusCode: 400, RequestID: 3PQRRTJ1BAB82DWH, api error InvalidAMIID.Unavailable: The image ID 'ami-01964cde3b8020132' is no longer available`,

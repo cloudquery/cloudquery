@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
-	"github.com/cloudquery/cq-provider-aws/client"
-	apigatewayv2fix "github.com/cloudquery/cq-provider-aws/resources/forks/apigatewayv2"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	apigatewayv2fix "github.com/cloudquery/cloudquery/plugins/source/aws/resources/forks/apigatewayv2"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

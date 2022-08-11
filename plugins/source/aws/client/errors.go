@@ -168,7 +168,7 @@ func classifyError(err error, fallbackType diag.Type, accounts []string, opts ..
 					diag.WithType(diag.THROTTLE),
 					diag.WithSeverity(diag.WARNING),
 					ParseSummaryMessage(err),
-					diag.WithDetails("CloudQuery AWS provider has been throttled. This is unexpected - you can open an issue on github (https://github.com/cloudquery/cq-provider-aws/issues) or contact us on discord (https://cloudquery.io/discord)"),
+					diag.WithDetails("CloudQuery AWS provider has been throttled. This is unexpected - you can open an issue on github (https://github.com/cloudquery/cloudquery/plugins/source/aws/issues) or contact us on discord (https://cloudquery.io/discord)"),
 				)...),
 			),
 		}

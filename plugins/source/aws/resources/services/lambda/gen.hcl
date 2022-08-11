@@ -10,14 +10,14 @@ resource "aws" "lambda" "functions" {
   path        = "github.com/aws/aws-sdk-go-v2/service/lambda.GetFunctionOutput"
   description = "AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers, creating workload-aware cluster scaling logic, maintaining event integrations, or managing runtimes"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["lambda"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -29,14 +29,14 @@ resource "aws" "lambda" "functions" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -122,7 +122,7 @@ resource "aws" "lambda" "functions" {
 
 
   user_relation "aws" "lambda" "aliases" {
-    path = "github.com/cloudquery/cq-provider-aws/resources/services/lambda.AliasWrapper"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda.AliasWrapper"
 
     options {
       primary_keys = [

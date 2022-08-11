@@ -9,15 +9,15 @@ description_modifier "remove_read_only" {
 resource "aws" "organizations" "accounts" {
   path = "github.com/aws/aws-sdk-go-v2/service/organizations/types.Account"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
 
   multiplex "AccountMultiplexer" {
-    path = "github.com/cloudquery/cq-provider-aws/client.AccountMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.AccountMultiplex"
   }
 
   deleteFilter "DeleteAccountFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountFilter"
   }
 
   options {
@@ -28,7 +28,7 @@ resource "aws" "organizations" "accounts" {
     type        = "string"
     description = "The AWS Account ID of the resource."
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
 

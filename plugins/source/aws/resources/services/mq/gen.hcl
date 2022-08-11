@@ -10,28 +10,28 @@ add_generate     = true
 resource "aws" "mq" "brokers" {
   path = "github.com/aws/aws-sdk-go-v2/service/mq.DescribeBrokerOutput"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["mq"]
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     description = "The AWS Region of the resource."
     type        = "string"
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -114,14 +114,14 @@ resource "aws" "mq" "brokers" {
       description = "The AWS Account ID of the resource."
       type        = "string"
       resolver "resolveAWSAccount" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
       }
     }
     userDefinedColumn "region" {
       description = "The AWS Region of the resource."
       type        = "string"
       resolver "resolveAWSRegion" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
       }
     }
 
@@ -196,7 +196,7 @@ resource "aws" "mq" "brokers" {
       description = "The AWS Account ID of the resource."
       type        = "string"
       resolver "resolveAWSAccount" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
       }
     }
 
@@ -204,7 +204,7 @@ resource "aws" "mq" "brokers" {
       description = "The AWS Region of the resource."
       type        = "string"
       resolver "resolveAWSRegion" {
-        path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+        path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
       }
     }
 
