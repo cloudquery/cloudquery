@@ -7,7 +7,7 @@ const theme = {
   projectLink: "https://github.com/cloudquery/cloudquery",
   docsRepositoryBase:
     "https://github.com/cloudquery/cloudquery/blob/main/docs/pages",
-  titleSuffix: " | cloudquery",
+  titleSuffix: " | Cloudquery",
   search: true,
   unstable_flexsearch: true,
   unstable_staticImage: true,
@@ -25,34 +25,32 @@ const theme = {
   },
   head: function Head({ title, meta }) {
     const router = useRouter();
+    const ogImageName = "/og-image.jpg";
+
     return (
       <>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={meta.description} />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
-          href="/images/favicon/apple-touch-icon.png"
+          href="/favicon/apple-touch-icon.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/images/favicon/favicon-32x32.png"
+          href="/favicon/favicon-32x32.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/images/favicon/favicon-16x16.png"
+          href="/favicon/favicon-16x16.png"
         />
-        <link
-          rel="mask-icon"
-          href="/images/favicon/safari-pinned-tab.svg"
-          color="#000000"
-        />
-        <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
-        <meta name="msapplication-TileColor" content="#000000" />
-        <meta name="theme-color" content="#000" />
+        <link rel="shortcut icon" href="/favicon/favicon.ico" />
+        <meta name="msapplication-TileColor" content="#111111" />
+        <meta name="theme-color" content="#111111" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@cloudqueryio" />
         <meta name="twitter:creator" content="@cloudqueryio" />
@@ -65,11 +63,11 @@ const theme = {
         />
         <meta
           property="twitter:image"
-          content={`https://cloudquery.io${meta.ogImage ?? "/og-image.png"}`}
+          content={`https://cloudquery.io${meta.ogImage ?? ogImageName}`}
         />
         <meta
           property="og:image"
-          content={`https://cloudquery.io${meta.ogImage ?? "/og-image.png"}`}
+          content={`https://cloudquery.io${meta.ogImage ?? ogImageName}`}
         />
         <meta property="og:locale" content="en_IE" />
         <meta property="og:site_name" content="CloudQuery" />
