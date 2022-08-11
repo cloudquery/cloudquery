@@ -6,7 +6,7 @@ package resources
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-digitalocean/client"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 )
 
 func TestIntegrationVolumes(t *testing.T) {
