@@ -1,4 +1,4 @@
-name: SQL Policy Validation Test
+name: SQLPolicyTest
 on:
   push:
     branches:
@@ -19,9 +19,9 @@ jobs:
     strategy:
       matrix:
         workdir: [
-          "plugins/aws",
-          "plugins/azure",
-          "plugins/gcp",
+          "plugins/source/aws",
+          "plugins/source/azure",
+          "plugins/source/gcp",
         ]
         dbversion: [ "postgres:10" ]
         go: [ "1.18" ]
