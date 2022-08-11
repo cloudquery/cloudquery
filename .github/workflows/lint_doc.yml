@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        plugin: [
+        workdir: [
           "plugins/source/aws",
           "plugins/source/azure",
           "plugins/source/cloudflare",
