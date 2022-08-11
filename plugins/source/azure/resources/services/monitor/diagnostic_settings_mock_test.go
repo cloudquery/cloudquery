@@ -6,9 +6,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 	resources2 "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
-	"github.com/cloudquery/cq-provider-azure/client"
-	"github.com/cloudquery/cq-provider-azure/client/services"
-	"github.com/cloudquery/cq-provider-azure/client/services/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )

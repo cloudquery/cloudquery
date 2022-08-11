@@ -1,34 +1,34 @@
 package provider
 
 import (
-	"github.com/cloudquery/cq-provider-azure/client"
-	"github.com/cloudquery/cq-provider-azure/resources/services/account"
-	"github.com/cloudquery/cq-provider-azure/resources/services/authorization"
-	"github.com/cloudquery/cq-provider-azure/resources/services/batch"
-	"github.com/cloudquery/cq-provider-azure/resources/services/compute"
-	"github.com/cloudquery/cq-provider-azure/resources/services/container"
-	"github.com/cloudquery/cq-provider-azure/resources/services/cosmosdb"
-	"github.com/cloudquery/cq-provider-azure/resources/services/datalake"
-	"github.com/cloudquery/cq-provider-azure/resources/services/eventhub"
-	"github.com/cloudquery/cq-provider-azure/resources/services/frontdoor"
-	"github.com/cloudquery/cq-provider-azure/resources/services/iothub"
-	"github.com/cloudquery/cq-provider-azure/resources/services/keyvault"
-	"github.com/cloudquery/cq-provider-azure/resources/services/logic"
-	"github.com/cloudquery/cq-provider-azure/resources/services/mariadb"
-	"github.com/cloudquery/cq-provider-azure/resources/services/monitor"
-	"github.com/cloudquery/cq-provider-azure/resources/services/mysql"
-	"github.com/cloudquery/cq-provider-azure/resources/services/network"
-	"github.com/cloudquery/cq-provider-azure/resources/services/postgresql"
-	"github.com/cloudquery/cq-provider-azure/resources/services/redis"
-	resources2 "github.com/cloudquery/cq-provider-azure/resources/services/resources"
-	"github.com/cloudquery/cq-provider-azure/resources/services/search"
-	"github.com/cloudquery/cq-provider-azure/resources/services/security"
-	"github.com/cloudquery/cq-provider-azure/resources/services/servicebus"
-	"github.com/cloudquery/cq-provider-azure/resources/services/sql"
-	"github.com/cloudquery/cq-provider-azure/resources/services/storage"
-	"github.com/cloudquery/cq-provider-azure/resources/services/streamanalytics"
-	"github.com/cloudquery/cq-provider-azure/resources/services/subscription"
-	"github.com/cloudquery/cq-provider-azure/resources/services/web"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/account"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/container"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/cosmosdb"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/datalake"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/eventhub"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/frontdoor"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/iothub"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/keyvault"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/logic"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mariadb"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/monitor"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/mysql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/network"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/postgresql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/redis"
+	resources2 "github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/resources"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/search"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/security"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/servicebus"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/sql"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/storage"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/streamanalytics"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscription"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/web"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
@@ -62,7 +62,7 @@ func Provider() *provider.Provider {
 			"frontdoor.front_doors":              frontdoor.FrontDoors(),
 			"iothub.hubs":                        iothub.IothubHubs(),
 			// This resource is currently not working
-			// https://github.com/cloudquery/cq-provider-azure/issues/107
+			// https://github.com/cloudquery/cloudquery/plugins/source/azure/issues/107
 			"keyvault.vaults":      keyvault.KeyvaultVaults(),
 			"keyvault.managed_hsm": keyvault.KeyvaultManagedHSM(),
 			"logic.app_workflows":  logic.LogicAppWorkflows(),

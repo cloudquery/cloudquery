@@ -11,14 +11,14 @@ description_modifier "remove_field_name" {
 }
 
 resource "azure" "account" "locations" {
-  path = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.Location"
+  path        = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.Location"
   description = "Azure location information"
 
   userDefinedColumn "subscription_id" {
     type        = "string"
     description = "Azure subscription id"
     resolver "resolveAzureSubscription" {
-      path = "github.com/cloudquery/cq-provider-azure/client.ResolveAzureSubscription"
+      path = "github.com/cloudquery/cloudquery/plugins/source/azure/client.ResolveAzureSubscription"
     }
   }
   column "subscription_id" {
@@ -43,10 +43,10 @@ resource "azure" "account" "locations" {
   }
 
   multiplex "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.SubscriptionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/azure/client.SubscriptionMultiplex"
   }
 
   deleteFilter "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.DeleteSubscriptionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/azure/client.DeleteSubscriptionFilter"
   }
 }

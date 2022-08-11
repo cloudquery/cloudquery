@@ -17,15 +17,15 @@ resource "azure" "servicebus" "namespaces" {
     type        = "string"
     description = "Azure subscription id"
     resolver "resolveAzureSubscription" {
-      path = "github.com/cloudquery/cq-provider-azure/client.ResolveAzureSubscription"
+      path = "github.com/cloudquery/cloudquery/plugins/source/azure/client.ResolveAzureSubscription"
     }
   }
 
   multiplex "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.SubscriptionMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/azure/client.SubscriptionMultiplex"
   }
   deleteFilter "AzureSubscription" {
-    path = "github.com/cloudquery/cq-provider-azure/client.DeleteSubscriptionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/azure/client.DeleteSubscriptionFilter"
   }
 
   options {
