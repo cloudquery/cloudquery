@@ -1,8 +1,8 @@
 {
   "cli": "0.32.1",
-  "plugins/aws": "0.13.6",
+  "plugins/aws": "0.13.7",
   "plugins/azure": "0.12.4",
-  "plugins/cloudflare": "0.0.1",
+  "plugins/cloudflare": "0.0.2",
   "plugins/digitalocean": "0.6.3",
   "plugins/fuzz": "0.0.14",
   "plugins/gcp": "0.9.4",
