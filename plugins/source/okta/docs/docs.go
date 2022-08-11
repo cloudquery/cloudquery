@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/cloudquery/cq-provider-okta/resources"
+	"github.com/cloudquery/cloudquery/plugins/source/okta/resources"
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )
 
