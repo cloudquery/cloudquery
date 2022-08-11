@@ -782,6 +782,14 @@
             "us-west-2": {}
           }
         },
+        "backupstorage": {
+          "regions": {
+            "eu-west-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-2": {}
+          }
+        },
         "batch": {
           "regions": {
             "af-south-1": {},
