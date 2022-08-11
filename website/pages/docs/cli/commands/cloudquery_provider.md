@@ -2,7 +2,6 @@
 title: provider
 ---
 
-
 ## cloudquery provider
 
 Top-level command to interact with providers.
@@ -16,7 +15,7 @@ Top-level command to interact with providers.
 ```
 
   # Sync (Upgrade or Downgrade) all providers specified in cloudquery.yml This will also create the schema.
-  cloudquery provider sync 
+  cloudquery provider sync
   # Sync one or more providers
   cloudquery provider sync aws, gcp
   # Drop provider schema, running fetch again will recreate all tables unless --skip-build-tables is specified
@@ -56,8 +55,7 @@ Top-level command to interact with providers.
 
 ### SEE ALSO
 
-* [cloudquery](cloudquery.md)	 - CloudQuery CLI
-* [cloudquery provider drop](cloudquery_provider_drop.md)	 - Drops provider schema from database
-* [cloudquery provider purge](cloudquery_provider_purge.md)	 - Remove stale resources from one or more providers in database
-* [cloudquery provider sync](cloudquery_provider_sync.md)	 - Download the providers specified in config and re-create their database schema
-
+- [cloudquery](cloudquery.md) - CloudQuery CLI
+- [cloudquery provider drop](cloudquery_provider_drop.md) - Drops provider schema from database
+- [cloudquery provider purge](cloudquery_provider_purge.md) - Remove stale resources from one or more providers in database
+- [cloudquery provider sync](cloudquery_provider_sync.md) - Download the providers specified in config and re-create their database schema

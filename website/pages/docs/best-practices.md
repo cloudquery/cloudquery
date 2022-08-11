@@ -2,7 +2,6 @@
 title: Best Practices
 ---
 
-
 # Best Practices
 
 ## Read-Only Access to Cloud Providers

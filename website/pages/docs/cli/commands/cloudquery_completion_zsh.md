@@ -2,8 +2,6 @@
 title: completion zsh
 ---
 
-
-
 ## cloudquery completion zsh
 
 Generate the autocompletion script for zsh

@@ -2,7 +2,6 @@
 title: version
 ---
 
-
 ## cloudquery version
 
 Print full version info of cloudquery
@@ -47,5 +46,4 @@ cloudquery version
 
 ### SEE ALSO
 
-* [cloudquery](cloudquery.md)	 - CloudQuery CLI
-
+- [cloudquery](cloudquery.md) - CloudQuery CLI

@@ -1,5 +1,3 @@
-
-
 # Creating a New Provider
 
 In this tutorial, you will build a new CloudQuery Provider that will interact with GitHub API.
@@ -27,7 +25,7 @@ There are a few places where you will need to update the template stubs (you can
 
 ```ini
 module github.com/cloudquery/cq-provider-template
-# Change to 
+# Change to
 module github.com/your_org_or_user/cq-provider-github
 # we will use github.com/cloudquery/cq-provider-github in this tutorial
 ```
@@ -78,7 +76,7 @@ type Config struct {
 }
 func (c Config) Example() string {
 	return `
-  // Add this line    
+  // Add this line
 	// api_key: ${your_env_variable}
   // api_key: static_api_key
 `

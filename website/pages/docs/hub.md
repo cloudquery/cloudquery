@@ -1,5 +1,3 @@
-
-
 # CloudQuery Hub
 
 [CloudQuery Hub](https://hub.cloudquery.io) is a central place to explore all official and community (approved) providers, policies and their respective documentation.

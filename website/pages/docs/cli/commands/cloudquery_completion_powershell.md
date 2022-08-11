@@ -2,7 +2,6 @@
 title: completion powershell
 ---
 
-
 ## cloudquery completion powershell
 
 Generate the autocompletion script for powershell
@@ -13,11 +12,10 @@ Generate the autocompletion script for powershell.
 
 To load completions in your current shell session:
 
-	cloudquery completion powershell | Out-String | Invoke-Expression
+    cloudquery completion powershell | Out-String | Invoke-Expression
 
 To load completions for every new session, add the output of the above command
 to your powershell profile.
-
 
 ```
 cloudquery completion powershell [flags]
@@ -56,5 +54,4 @@ cloudquery completion powershell [flags]
 
 ### SEE ALSO
 
-* [cloudquery completion](cloudquery_completion.md)	 - Generate the autocompletion script for the specified shell
-
+- [cloudquery completion](cloudquery_completion.md) - Generate the autocompletion script for the specified shell

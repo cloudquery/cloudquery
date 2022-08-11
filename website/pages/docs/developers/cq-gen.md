@@ -1,5 +1,3 @@
-
-
 # Generating resources
 
 Adding resources to a provider can sometimes be a tedious task, some resources can have more than hundreds of fields and relations, and adding them all can
@@ -77,7 +75,7 @@ resource "aws" "cloudformation" "stacks" {
 }
 ```
 
-*Note: we will call this file stacks.hcl
+\*Note: we will call this file stacks.hcl
 
 To execute this configuration we will run our cq-gen tool with the following command:
 
@@ -134,10 +132,10 @@ As you can see above the function definition, cq-gen, added a `//go:generate` co
 
 The cq-gen command is used to generate `schema.Table` from given source (go, protobuf, openapi, graphql, etc') It supports the following flags:
 
-* `-output`: which directory to write the resulting source code.
-* `-resource`: the name of the resource to generate as defined in the hcl.
-* `-domain`: the domain of the resource to generate as defined in the hcl.
-* `-config`: the path to the configuration file of cq-gen on how to generate the resource.
+- `-output`: which directory to write the resulting source code.
+- `-resource`: the name of the resource to generate as defined in the hcl.
+- `-domain`: the domain of the resource to generate as defined in the hcl.
+- `-config`: the path to the configuration file of cq-gen on how to generate the resource.
 
 ## Configuration
 

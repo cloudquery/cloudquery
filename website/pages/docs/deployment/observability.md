@@ -1,5 +1,3 @@
-
-
 # Observability
 
 In order to understand how CloudQuery is performing we added some basic observability capabilities.

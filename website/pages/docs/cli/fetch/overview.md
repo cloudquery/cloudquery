@@ -1,5 +1,3 @@
-
-
 # Overview
 
 Fetch command is the core command for CloudQuery. It extracts the configuration of your cloud assets, transforms them and loads them into a single PostgreSQL database.

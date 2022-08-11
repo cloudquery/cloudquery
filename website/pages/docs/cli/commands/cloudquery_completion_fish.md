@@ -2,7 +2,6 @@
 title: completion fish
 ---
 
-
 ## cloudquery completion fish
 
 Generate the autocompletion script for fish
@@ -13,14 +12,13 @@ Generate the autocompletion script for the fish shell.
 
 To load completions in your current shell session:
 
-	cloudquery completion fish | source
+    cloudquery completion fish | source
 
 To load completions for every new session, execute once:
 
-	cloudquery completion fish > ~/.config/fish/completions/cloudquery.fish
+    cloudquery completion fish > ~/.config/fish/completions/cloudquery.fish
 
 You will need to start a new shell for this setup to take effect.
-
 
 ```
 cloudquery completion fish [flags]
@@ -59,5 +57,4 @@ cloudquery completion fish [flags]
 
 ### SEE ALSO
 
-* [cloudquery completion](cloudquery_completion.md)	 - Generate the autocompletion script for the specified shell
-
+- [cloudquery completion](cloudquery_completion.md) - Generate the autocompletion script for the specified shell

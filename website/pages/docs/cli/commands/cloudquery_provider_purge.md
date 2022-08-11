@@ -2,7 +2,6 @@
 title: provider purge
 ---
 
-
 ## cloudquery provider purge
 
 Remove stale resources from one or more providers in database
@@ -49,5 +48,4 @@ cloudquery provider purge [provider] [flags]
 
 ### SEE ALSO
 
-* [cloudquery provider](cloudquery_provider.md)	 - Top-level command to interact with providers.
-
+- [cloudquery provider](cloudquery_provider.md) - Top-level command to interact with providers.

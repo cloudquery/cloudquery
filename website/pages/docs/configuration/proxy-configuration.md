@@ -1,5 +1,3 @@
-
-
 import Callout from 'nextra-theme-docs/callout'
 
 # Using CloudQuery CLI with a Proxy Server

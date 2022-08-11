@@ -1,5 +1,3 @@
-
-
 # CloudQuery vs Steampipe
 
 Steampipe is using [PostgreSQL Foreign data wrappers](https://wiki.postgresql.org/wiki/Foreign_data_wrappers) to create a PostgreSQL abstraction on top of APIs.

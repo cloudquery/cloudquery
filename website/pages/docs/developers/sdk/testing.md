@@ -1,5 +1,3 @@
-
-
 # Testing
 
 Testing providers is key factor in ensuring the quality of your provider and developer experience, so future contributors can easily test their changes.

@@ -1,5 +1,3 @@
-
-
 # CloudQuery vs AWS Config
 
 AWS Config is the native AWS asset inventory provided by AWS.
@@ -17,13 +15,13 @@ AWS Config is the native AWS asset inventory provided by AWS.
 
 This will only list hard limits as soft limits can be increased (though it is not documented what is their max limit). Some limits are quite serious for large accounts (especially around number of rules/policies).
 
-| Limit       | AWS Config  | CloudQuery  |
-| ----------- | ----------- | ----------- |
-| Max Accounts| 10000       | No Limit |
-| Maximum number of conformance packs per account (CQ Policies)   | 50        | No Limit  |
-| Maximum number of AWS Config Rules per conformance pack (CQ Queries)   | 130        | No Limit  |
-| Maximum number of AWS Config Rules per account across all conformance packs (Total Queries)   | 130        | No Limit  |
-| Maximum number of conformance packs per organization (CQ Policies)   | 50        | No Limit  |
-| Maximum AWS Config Rules per organization conformance pack (CQ Queries)   | 130        | No Limit  |
-| Maximum number of AWS Config Rules per account across all organization conformance packs (CQ Queries)   | 150        | No Limit  |
-| Maximum number of organization AWS Config rules per organization (CQ Queries)   | 150        | No Limit  |
+| Limit                                                                                                 | AWS Config | CloudQuery |
+| ----------------------------------------------------------------------------------------------------- | ---------- | ---------- |
+| Max Accounts                                                                                          | 10000      | No Limit   |
+| Maximum number of conformance packs per account (CQ Policies)                                         | 50         | No Limit   |
+| Maximum number of AWS Config Rules per conformance pack (CQ Queries)                                  | 130        | No Limit   |
+| Maximum number of AWS Config Rules per account across all conformance packs (Total Queries)           | 130        | No Limit   |
+| Maximum number of conformance packs per organization (CQ Policies)                                    | 50         | No Limit   |
+| Maximum AWS Config Rules per organization conformance pack (CQ Queries)                               | 130        | No Limit   |
+| Maximum number of AWS Config Rules per account across all organization conformance packs (CQ Queries) | 150        | No Limit   |
+| Maximum number of organization AWS Config rules per organization (CQ Queries)                         | 150        | No Limit   |

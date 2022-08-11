@@ -1,5 +1,3 @@
-
-
 import Callout from 'nextra-theme-docs/callout'
 
 # Fetch Resolvers

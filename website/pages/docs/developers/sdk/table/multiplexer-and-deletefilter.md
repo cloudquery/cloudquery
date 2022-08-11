@@ -1,5 +1,3 @@
-
-
 import Callout from 'nextra-theme-docs/callout'
 
 # Multiplexer and DeleteFilter

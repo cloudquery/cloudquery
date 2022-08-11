@@ -2,8 +2,6 @@
 title: completion bash
 ---
 
-
-
 ## cloudquery completion bash
 
 Generate the autocompletion script for bash

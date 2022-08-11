@@ -1,5 +1,3 @@
-
-
 import Callout from 'nextra-theme-docs/callout'
 
 # Telemetry and Crash Reporting

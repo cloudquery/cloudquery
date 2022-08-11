@@ -1,5 +1,3 @@
-
-
 # Architecture
 
 This is an advanced section describing the inner workings and design of CloudQuery. \(It might be useful when developing new providers\).
@@ -12,13 +10,13 @@ Similarly to any application utilizing the [go-plugin](https://github.com/hashic
 
 ## CloudQuery Core Responsibilities
 
-* Main entry point and CLI for the user.
-* Reading CloudQuery configuration.
-* Downloading, verifying, and running providers.
-* Running policy packs.
+- Main entry point and CLI for the user.
+- Reading CloudQuery configuration.
+- Downloading, verifying, and running providers.
+- Running policy packs.
 
 ## CloudQuery Provider Responsibilities
 
-* Intended to be run only by cloudquery-core.
-* Communicates with cloudquery-core over gRPC to receive commands and actions.
-* Initialization, authentication, and fetching data via third-party cloud/SaaS API.
+- Intended to be run only by cloudquery-core.
+- Communicates with cloudquery-core over gRPC to receive commands and actions.
+- Initialization, authentication, and fetching data via third-party cloud/SaaS API.

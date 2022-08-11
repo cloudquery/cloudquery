@@ -1,5 +1,3 @@
-
-
 # CloudQuery vs CSPMs (Cloud Security Posture Management)
 
 CSPMs are set of closed-source enterprise products to monitor, detect and response to threats and mis-configurations in the cloud.
