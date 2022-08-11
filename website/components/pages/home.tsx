@@ -5,6 +5,7 @@ import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { Container } from "../Container";
 import Features from "../Features";
+import {Integrations} from "../Integrations";
 import { LogosBlock } from "../clients/LogosBlock";
 
 export default function Home() {
@@ -75,9 +76,10 @@ export default function Home() {
       </div>
       <div className="sm:py-20 lg:py-24">
         <div className="max-w-4xl px-4 pb-12 mx-auto lg:px-8 ">
-          <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl md:text-center dark:text-white">
+          <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl text-center dark:text-white">
             Integrations
           </h2>
+          <Integrations />
         </div>
         <Container>
           <div className="px-4 py-16 mx-auto mt-10 sm:max-w-none sm:flex sm:justify-center">
