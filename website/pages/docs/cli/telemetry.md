@@ -2,7 +2,7 @@
 title: Telemetry
 ---
 
-import Callout from 'nextra-theme-docs/callout'
+import { Callout } from 'nextra-theme-docs'
 
 # Telemetry and Crash Reporting
 

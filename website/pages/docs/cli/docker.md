@@ -2,7 +2,7 @@
 title: Docker
 ---
 
-import Callout from 'nextra-theme-docs/callout'
+import { Callout } from 'nextra-theme-docs'
 
 # Docker
 
