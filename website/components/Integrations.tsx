@@ -10,7 +10,7 @@ import YandexCloudLogo from "./logos/integrations/YandexCloudLogo";
 
 export function Integrations() {
     return (
-        <div className="flex justify-center items-center flex-wrap gap-8">
+        <div className="flex justify-center items-center flex-wrap gap-8 mt-8 sm:mt-4">
             <AWSLogo />
             <AzureLogo />
             <CloudflareLogo />
