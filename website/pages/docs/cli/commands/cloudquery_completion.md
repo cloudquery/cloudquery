@@ -1,7 +1,5 @@
 ---
-id: completion
-hide_title: true
-sidebar_label: completion
+title: completion
 ---
 
 ## cloudquery completion

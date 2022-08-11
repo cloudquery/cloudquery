@@ -1,8 +1,8 @@
 ---
-id: init
-hide_title: true
-sidebar_label: init
+title: init
 ---
+
+
 ## cloudquery init
 
 Generate initial cloudquery.yml for fetch command

@@ -1,3 +1,8 @@
+---
+title: Policies
+---
+
+
 # Policies
 
 CloudQuery uses standard SQL to create security,compliance and cost policies that you can then visualize and monitor with your current BI stack such as [Grafana](https://grafana.com/), [Apache Superset](https://superset.apache.org/), [QuickSight](https://aws.amazon.com/quicksight/), [PowerBI](https://powerbi.microsoft.com/en-au/), etc…

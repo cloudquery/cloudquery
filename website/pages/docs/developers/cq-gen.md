@@ -1,3 +1,5 @@
+
+
 # Generating resources
 
 Adding resources to a provider can sometimes be a tedious task, some resources can have more than hundreds of fields and relations, and adding them all can

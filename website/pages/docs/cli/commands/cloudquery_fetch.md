@@ -1,8 +1,8 @@
 ---
-id: fetch
-hide_title: true
-sidebar_label: fetch
+title: fetch
 ---
+
+
 ## cloudquery fetch
 
 Fetch resources from configured providers

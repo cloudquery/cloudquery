@@ -1,8 +1,8 @@
 ---
-id: options
-hide_title: true
-sidebar_label: options
+title: options
 ---
+
+
 ## cloudquery options
 
 Prints list of global CLI options (applies to all commands)

@@ -1,3 +1,8 @@
+---
+title: Security
+---
+
+
 # Security
 
 This section will list key security points regarding CloudQuery. Make sure you follow best practices if you decide to "host it yourself."

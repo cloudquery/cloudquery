@@ -1,8 +1,8 @@
 ---
-id: completion_powershell
-hide_title: true
-sidebar_label: completion powershell
+title: completion powershell
 ---
+
+
 ## cloudquery completion powershell
 
 Generate the autocompletion script for powershell

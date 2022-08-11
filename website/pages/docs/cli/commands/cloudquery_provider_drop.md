@@ -1,8 +1,8 @@
 ---
-id: provider_drop
-hide_title: true
-sidebar_label: provider drop
+title: provider drop
 ---
+
+
 ## cloudquery provider drop
 
 Drops provider schema from database

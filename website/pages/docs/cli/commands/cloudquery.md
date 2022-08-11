@@ -1,8 +1,8 @@
 ---
-id: cloudquery
-hide_title: true
-sidebar_label: cloudquery
+title: cloudquery
 ---
+
+
 ## cloudquery
 
 CloudQuery CLI

@@ -1,3 +1,5 @@
+
+
 # Environment variable substitution
 
 `cloudquery.yml` supports substitution of values from environment variables. This allows to extract security sensitive data (like passwords etc) or variable data (that you want to change without touching CloudQuery configuration) from configuration file and store in the environment variable. To use the feature, set an environment variable before running CLI, adding a `CQ_VAR` prefix to your desired name:

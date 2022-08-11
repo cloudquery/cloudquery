@@ -1,3 +1,7 @@
+---
+title: Troubleshooting
+---
+
 # Troubleshooting
 
 ## Help Channels
@@ -10,7 +14,7 @@ First things first - feel free to join our new [Discord](https://discord.gg/2mPf
 
 There are couple of ways to get help for any CloudQuery-related issues or questions.
 
-1. Check out previous issues at <https://github.com/cloudquery> and open a new one if no previous one has been opened or resolved.
+1. Check out previous issues at [https://github.com/cloudquery](https://github.com/cloudquery) and open a new one if no previous one has been opened or resolved.
 
 ### Intercom Chat
 

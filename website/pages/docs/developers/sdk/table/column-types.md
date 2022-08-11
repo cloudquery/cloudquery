@@ -1,3 +1,5 @@
+
+
 # Column Types
 
 Available types for resource columns are defined in [column.go](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/column.go).

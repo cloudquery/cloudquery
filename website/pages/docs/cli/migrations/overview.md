@@ -1,3 +1,5 @@
+
+
 # Overview
 
 CloudQuery is an open-source cloud asset inventory powered by SQL, and as such, when providers change their schema (change/remove columns) some migrations from the previous run are required. CloudQuery automatically drops and recreates those tables automatically as needed.

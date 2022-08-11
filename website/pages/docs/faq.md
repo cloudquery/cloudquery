@@ -1,3 +1,7 @@
+---
+title: FAQ
+---
+
 # FAQ
 
 ## Does CloudQuery access any application data in my cloud?
@@ -23,7 +27,7 @@ You can use the `cloudquery provider purge [provider]` to delete old resources. 
 resources that weren't updated in the last three days with `cloudquery provider purge [provider] --last-update=72h --dry-run=false`.
 You can find the full details [here](https://docs.cloudquery.io/docs/cli/commands/provider_purge).
 
-### What is "//"? How is it different from "/" and where should it go? {#what-is-double-slash}
+### What is "//"? How is it different from "/" and where should it go?
 
 The `//` indicator is used when specifying a subpolicy/subquery for `cloudquery policy run`. It is an idiosyncrasy of the way the `cloudquery` CLI works - it separates the "path to the policy" from the "path to the subpolicy (in the policy)". It must always appear **right after the root policy**.
 

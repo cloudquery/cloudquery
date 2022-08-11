@@ -1,8 +1,8 @@
 ---
-id: version
-hide_title: true
-sidebar_label: version
+title: version
 ---
+
+
 ## cloudquery version
 
 Print full version info of cloudquery

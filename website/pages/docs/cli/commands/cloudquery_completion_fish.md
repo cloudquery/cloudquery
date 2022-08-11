@@ -1,8 +1,8 @@
 ---
-id: completion_fish
-hide_title: true
-sidebar_label: completion fish
+title: completion fish
 ---
+
+
 ## cloudquery completion fish
 
 Generate the autocompletion script for fish

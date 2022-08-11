@@ -64,4 +64,4 @@ Notice how most examples return an _inline function_ built to resolve according 
 
 Discover more ready-made utility resolvers [in the repository](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/resolvers.go).
 
-</Callout
+</Callout>

@@ -1,4 +1,6 @@
-# Deployment
+
+
+# Overview
 
 CloudQuery can run locally but if you want to deploy in a remote non-ephemeral environment to fetch periodically and store the data in a managed PostgreSQL the current suggested way is to deploy on k8s (EKS or GKE) with our [helm-charts](https://github.com/cloudquery/helm-charts).
 

@@ -1,8 +1,8 @@
 ---
-id: provider
-hide_title: true
-sidebar_label: provider
+title: provider
 ---
+
+
 ## cloudquery provider
 
 Top-level command to interact with providers.

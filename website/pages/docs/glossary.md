@@ -1,3 +1,7 @@
+---
+title: Glossary
+---
+
 # Glossary
 
 ## CLI
@@ -6,34 +10,24 @@ The CloudQuery CLI (command-line interface) is the core [open-source](https://gi
 
 ## SDK
 
-The [CloudQuery SDK](https://github.com/cloudquery/cq-provider-sdk) is the open-source SDK library used by official and community providers to integrate with the CloudQuery ecosystem. The SDK makes it easy to write new providers and takes care of the TL in ETL (extract-transform-load).
+The [CloudQuery SDK](https://github.com/cloudquery/cq-provider-sdk) is the open-source SDK library used by official and community plugins to integrate with the CloudQuery ecosystem.
+The SDK makes it easy to write new plugins (both source and destination plugins) and takes care of the TL in ETL (extract-transform-load).
 
 ## Fetch
 
-Fetch is both the CLI command and the process when CloudQuery extracts all the configured resources in `cloudquery.yml`, transforms them, and loads them into the database.
+Fetch is both the CLI command and the process when CloudQuery extracts all the configured resources in a directory
+with `*.cq.yml`, transforms them, and loads them into the destination (database).
 
 ## Policy
 
-Policy compliance is a broad term and can refer to any kind of policy, from internal standards to regulatory requirements. A CloudQuery Policy is a codified form of this that is written with HCL as the logic layer and SQL as the query layer.
+Policy compliance is a broad term and can refer to any kind of policy, from internal standards to regulatory requirements.
+A CloudQuery Policy is just sets of SQL queries outputing the results back to a table that can later on be visualized and anlysed
+by any BI tools and standard set of data engineering tools.
 
-## Query
+## Plugin
 
-SQL query, usually targeting the CloudQuery database.
+CloudQuery supports two plugins: source & destination.
 
-## Provider
+`source` plugin is responsible for extracting data from remote api transforming it and sending it to CloudQuery for further handling.
 
-CloudQuery Provider is a plugin responsible for extracting information/configuration from a specific cloud infrastructure provider SaaS application or literally anything else that is accessible via API (Rest, GRPC, GraphQL).
-
-Currently, all providers are listed in <https://hub.cloudquery.io>.
-
-Developing new provider
-
-## HCL
-
-[HashiCorp Configuration Language](https://github.com/hashicorp/hcl), which is used by CloudQuery to write configuration and policies.
-
-## Resource
-
-The fetch command is working on a list of resources defined in each provider (in `cloudquery.yml`).
-
-For example, `ec2_instances` is a resource in `aws` provider.
+`destination` plugin is responsible for getting data from one the `source` plugin and save it to a database, datalake or subscription (kafka) according to configuration.

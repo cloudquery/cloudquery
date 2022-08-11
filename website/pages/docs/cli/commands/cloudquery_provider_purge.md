@@ -1,8 +1,8 @@
 ---
-id: provider_purge
-hide_title: true
-sidebar_label: provider purge
+title: provider purge
 ---
+
+
 ## cloudquery provider purge
 
 Remove stale resources from one or more providers in database
