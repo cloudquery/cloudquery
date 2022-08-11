@@ -2,7 +2,7 @@
 title: Fetching From Multiple AWS Accounts With AssumeRole
 ---
 
-import Callout from 'nextra-theme-docs/callout'
+import { Callout } from 'nextra-theme-docs'
 
 # Fetching From Multiple AWS Accounts With AssumeRole
 

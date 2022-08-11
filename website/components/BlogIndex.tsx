@@ -1,5 +1,17 @@
-import { getPagesUnderRoute, Page } from "nextra/context";
+import { getPagesUnderRoute } from "nextra/context";
 import Link from "next/link";
+
+interface Page {
+  name: string;
+  route: string;
+  children?: Page[];
+  meta: {
+    type?: string;
+    title?: string;
+    hidden?: boolean;
+  };
+  frontMatter?: any;
+}
 
 function sortByDate(a: Page, b: Page) {
   return (
