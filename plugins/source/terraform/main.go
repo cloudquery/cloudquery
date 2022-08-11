@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/terraform/resources"
 	"github.com/cloudquery/cq-provider-sdk/serve"
-	"github.com/cloudquery/cq-provider-terraform/resources"
 )
 
 func main() {
