@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-aws/resources/provider"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/migration"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )

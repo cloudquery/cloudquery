@@ -5,13 +5,13 @@ output_directory = "."
 resource "aws" "wafregional" "rate_based_rules" {
   path = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.RateBasedRule"
   multiplex "ServiceAccountRegionMultiplexer" {
-    path = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
   }
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
 
   options {
@@ -22,14 +22,14 @@ resource "aws" "wafregional" "rate_based_rules" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
   userDefinedColumn "region" {
     description = "The AWS Region of the resource."
     type        = "string"
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -38,14 +38,14 @@ resource "aws" "wafregional" "rate_based_rules" {
   }
 
   userDefinedColumn "arn" {
-    type = "string"
-    description = "ARN of the rate based rule."
+    type              = "string"
+    description       = "ARN of the rate based rule."
     generate_resolver = true
   }
 
   userDefinedColumn "tags" {
-    type = "json"
+    type              = "json"
     generate_resolver = true
-    description = "Rule tags."
+    description       = "Rule tags."
   }
 }

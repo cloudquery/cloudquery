@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	cloudtrailTypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
-	"github.com/cloudquery/cq-provider-aws/client"
-	"github.com/cloudquery/cq-provider-aws/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )

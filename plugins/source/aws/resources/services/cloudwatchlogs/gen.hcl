@@ -5,13 +5,13 @@ add_generate     = true
 resource "aws" "cloudwatchlogs" "log_groups" {
   path = "github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types.LogGroup"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["logs"]
   }
 
@@ -19,7 +19,7 @@ resource "aws" "cloudwatchlogs" "log_groups" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
 
@@ -27,7 +27,7 @@ resource "aws" "cloudwatchlogs" "log_groups" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
@@ -37,7 +37,7 @@ resource "aws" "cloudwatchlogs" "log_groups" {
     description       = "The tags for the log group."
   }
 
-  ignore_columns_in_tests = ["kms_key_id","retention_in_days"]
+  ignore_columns_in_tests = ["kms_key_id", "retention_in_days"]
 
   options {
     primary_keys = ["arn"]
