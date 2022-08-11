@@ -45,7 +45,59 @@ resource "aws" "glue" "databases" {
     path = "github.com/aws/aws-sdk-go-v2/service/glue/types.Table"
 
     column "storage_descriptor" {
+      skip_prefix = true
+    }
+
+    column "skewed_info" {
       type = "json"
+    }
+
+    column "sort_columns" {
+      type = "json"
+    }
+
+    column "schema_reference_schema_id" {
+      type = "json"
+    }
+
+    column "serde_info" {
+      type = "json"
+    }
+
+    column "parameters" {
+      skip = true
+    }
+
+    userDefinedColumn "parameters" {
+      type = "json"
+      resolver "resolverSliceToJson" {
+        path   = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
+        params = ["Parameters"]
+      }
+    }
+
+    userDefinedColumn "storage_parameters" {
+      type = "json"
+      resolver "resolverSliceToJson" {
+        path   = "github.com/cloudquery/cq-provider-sdk/provider/schema.PathResolver"
+        params = ["StorageDescriptor.Parameters"]
+      }
+    }
+
+    user_relation "aws" "glue" "indexes" {
+      path = "github.com/aws/aws-sdk-go-v2/service/glue/types.PartitionIndexDescriptor"
+
+      column "keys" {
+        type = "json"
+        resolver "resolverSliceToJson" {
+          path   = "github.com/cloudquery/cq-provider-aws/client.SliceJsonResolver"
+          params = ["Keys", "Name", "Type"]
+        }
+      }
+
+      column "backfill_errors" {
+        type = "json"
+      }
     }
   }
 
