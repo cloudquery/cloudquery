@@ -62,7 +62,7 @@ func Provider() *provider.Provider {
 			"frontdoor.front_doors":              frontdoor.FrontDoors(),
 			"iothub.hubs":                        iothub.IothubHubs(),
 			// This resource is currently not working
-			// https://github.com/cloudquery/cloudquery/plugins/source/azure/issues/107
+			// https://github.com/cloudquery/cq-provider-azure/issues/107
 			"keyvault.vaults":      keyvault.KeyvaultVaults(),
 			"keyvault.managed_hsm": keyvault.KeyvaultManagedHSM(),
 			"logic.app_workflows":  logic.LogicAppWorkflows(),
