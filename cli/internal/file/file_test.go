@@ -12,7 +12,7 @@ import (
 	"github.com/vbauerster/mpb/v6/decor"
 )
 
-const testFileDownloadUrl = "https://github.com/cloudquery/cloudquery/cli/releases/download/v0.13.5/cloudquery_Linux_arm64.zip"
+const testFileDownloadUrl = "https://github.com/cloudquery/cloudquery/releases/download/v0.13.5/cloudquery_Linux_arm64.zip"
 
 func TestOsFs_DownloadFile(t *testing.T) {
 	osFs := file.NewOsFs()
