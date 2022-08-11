@@ -3,7 +3,7 @@ package dns
 import (
 	"context"
 
-	"github.com/cloudquery/cq-provider-gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"google.golang.org/api/dns/v1"
