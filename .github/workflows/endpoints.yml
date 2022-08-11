@@ -28,7 +28,7 @@ jobs:
 
       - name: regenerate partition_service_region file
         run: |
-          go run ./plugins/aws/tools/endpoints/main.go
+          go run ./plugins/source/aws/tools/endpoints/main.go
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
