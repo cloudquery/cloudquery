@@ -5,6 +5,14 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3](https://github.com/cloudquery/cq-provider-cloudflare/compare/v0.1.2...v0.1.3) (2022-08-11)
+
+
+### Features
+
+* Added Images ([#20](https://github.com/cloudquery/cq-provider-cloudflare/issues/20)) ([0bbd716](https://github.com/cloudquery/cq-provider-cloudflare/commit/0bbd71614828d921602f9a66afa31029cd8cad58))
+* Waf overrides ([#19](https://github.com/cloudquery/cq-provider-cloudflare/issues/19)) ([a6bc446](https://github.com/cloudquery/cq-provider-cloudflare/commit/a6bc4464b6c523de13acf06418b5d5bd9f89dc23))
+
 ## [0.1.2](https://github.com/cloudquery/cq-provider-cloudflare/compare/v0.1.1...v0.1.2) (2022-08-10)
 
 
