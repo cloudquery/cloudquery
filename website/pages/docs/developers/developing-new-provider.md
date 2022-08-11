@@ -57,16 +57,16 @@ type Config struct {
 // Pass example to cloudquery when cloudquery init [provider] will be called
 func (c Config) Example() string {
     return `configuration {
-    
+
 	// Optional. create multiple blocks of accounts the provider will run
   // account {
 	// name = <Name attribute>
 	// }
-	
+
 	// Optional. Some field we decided to add
 	user = "cloudquery"
 	// Optional. Enable Provider SDK debug logging.
-   debug = false  
+   debug = false
 }
 `
 }
@@ -206,9 +206,9 @@ func customColumnResolver(ctx context.Context, meta schema.ClientMeta, resource 
 
 Essentially, for each resource that you support, you just need to define two things:
 
-* The schema - how the table will look in the database - column names and types.
-* Implement the main table resolver function that will fetch the data from the third-party SDK and pass it to the SDK.
-  * The SDK will automatically read the data and insert it into the table column using a default naming convention. The default naming convention is to CamelCase; in other words, if a column-name is `some_name`, the field name in the struct that you pass to the SDK should be: `SomeName`. If you want a different name or logic, you can implement a column resolver.
+- The schema - how the table will look in the database - column names and types.
+- Implement the main table resolver function that will fetch the data from the third-party SDK and pass it to the SDK.
+  - The SDK will automatically read the data and insert it into the table column using a default naming convention. The default naming convention is to CamelCase; in other words, if a column-name is `some_name`, the field name in the struct that you pass to the SDK should be: `SomeName`. If you want a different name or logic, you can implement a column resolver.
 
 ## Publishing a provider
 

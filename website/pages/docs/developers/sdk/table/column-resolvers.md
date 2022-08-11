@@ -1,3 +1,5 @@
+import Callout from 'nextra-theme-docs/callout'
+
 # Column Resolvers
 
 These types of resolvers are called for each row received in the `TableResolver` data fetch.
@@ -17,9 +19,9 @@ They usually go like:
 ```go
 func resolveDynamodbTableKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
-	
+
 	value := marshalKeySchema(r.KeySchema)
-	
+
 	return resource.Set(c.Name, value)
 }
 ```
@@ -38,13 +40,13 @@ Examples:
 // Few examples of look-up helper resolvers:
 
 // PathResolver resolves a field in the Resource.Item
-func PathResolver(path string) ColumnResolver 
+func PathResolver(path string) ColumnResolver
 // ParentResourceFieldResolver resolves a field from the parent's resource, the value is expected to be set, if name isn't set the field will be set to null
-func ParentResourceFieldResolver(name string) ColumnResolver 
+func ParentResourceFieldResolver(name string) ColumnResolver
 // ParentPathResolver resolves a field from the parent
 func ParentPathResolver(path string) ColumnResolver
 // ParentIdResolver resolves the cq_id from the parent
-func ParentIdResolver(_ context.Context, _ ClientMeta, r *Resource, c Column) error 
+func ParentIdResolver(_ context.Context, _ ClientMeta, r *Resource, c Column) error
 
 // Few examples of type converting resolvers
 
@@ -58,6 +60,8 @@ func IPAddressResolver(path string) ColumnResolver
 
 Notice how most examples return an _inline function_ built to resolve according to the given parameters (e.g. `PathResolver` will return a function that resolves for the given `path`) except for the `ParentIdResolver`, which is a static `ColumnResolver`.
 
-:::tip
+<Callout type="info">
+
 Discover more ready-made utility resolvers [in the repository](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/resolvers.go).
-:::
+
+</Callout>
