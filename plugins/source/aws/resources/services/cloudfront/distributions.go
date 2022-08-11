@@ -794,8 +794,6 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 	svc := cl.Services().Cloudfront
 	response, err := svc.ListTagsForResource(ctx, &cloudfront.ListTagsForResourceInput{
 		Resource: distribution.ARN,
-	}, func(options *cloudfront.Options) {
-		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

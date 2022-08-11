@@ -386,9 +386,7 @@ func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMet
 	lb := parent.Item.(types.LoadBalancer)
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv2
-	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn}, func(options *elbv2.Options) {
-		options.Region = c.Region
-	})
+	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn})
 	if err != nil {
 		return diag.WrapError(err)
 	}
