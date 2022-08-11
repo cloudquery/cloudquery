@@ -63,3 +63,19 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update version file
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v1/cli.json'
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: chore/update-cli-version
+          base: monorepo
+          title: "chore: Update CLI version to ${{steps.split.outputs.version}}"
+          commit-message: "chore: Update CLI version to ${{steps.split.outputs.version}}"
+          body: Updates the CLI latest version to ${{steps.split.outputs.version}}
+          labels: automerge
+          author: cq-bot <cq-bot@users.noreply.github.com>
