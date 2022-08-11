@@ -102,7 +102,7 @@ export default function Home() {
       </div>
       <div className="sm:py-20 lg:py-24">
         <div className="max-w-4xl px-4 pb-12 mx-auto lg:px-8 ">
-          <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl md:text-center dark:text-white">
+          <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl text-center dark:text-white">
             Integrations
           </h2>
           <Integrations />
