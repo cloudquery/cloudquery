@@ -62,7 +62,8 @@ jobs:
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # A custom token is required for publishing to Homebrew
+          GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
 
       - name: Update version file
         run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v1/cli.json'
