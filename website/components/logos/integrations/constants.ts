@@ -1,0 +1,1 @@
+export const INTEGRATION_HEIGHT = 30
