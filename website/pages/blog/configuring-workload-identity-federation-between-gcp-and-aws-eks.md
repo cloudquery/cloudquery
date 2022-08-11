@@ -1,11 +1,15 @@
 ---
 title: Configuring Workload identity federation between GCP and AWS EKS
 tag: security
-date: '2022-08-04T00:00:00'
+date: 2022/08/04
 description: Configure Workload identity federation between GCP and AWS EKS
-authors: danielspangenberg
-image: https://docs.cloudquery.io/og-image/Configuring Workload identity federation between GCP and AWS EKS
+author: danielspangenberg
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 [Workload identity federation](https://cloud.google.com/iam/docs/configuring-workload-identity-federation) is the process of impersonating an identity in one cloud provider from the other without long lived keys. In this blog post we will walk through how to setup federation between a workload running on AWS EKS (In this case CloudQuery so you can also fetch configuration from your GCP accounts) to GCP.
 
@@ -50,7 +54,7 @@ gcloud iam workload-identity-pools create cq-aws-pool \
     --location="global"
 ```
 
-![](/img/blog/configuring-workload-identity-federation-between-gcp-and-aws-eks/image0.png)
+![](/images/blog/configuring-workload-identity-federation-between-gcp-and-aws-eks/image0.png)
 
 
 ## Step 5: Create Workload Identity Provider
@@ -67,7 +71,7 @@ gcloud iam workload-identity-pools \
     --workload-identity-pool="cq-aws-pool"
 ```
 
-![](/img/blog/configuring-workload-identity-federation-between-gcp-and-aws-eks/image1.png)
+![](/images/blog/configuring-workload-identity-federation-between-gcp-and-aws-eks/image1.png)
 
 
 ## Step 6: Bind GCP Service Account Impersonation
@@ -86,7 +90,7 @@ gcloud iam service-accounts add-iam-policy-binding \
 
 The Client library config needs to be downloaded, this can be achieved by navigating to the Workload Identity Pool and selecting the `CONNECTED SERVICE ACCOUNTS` Tab on the right side. The Client library config can be obtained from there. The file does **NOT** contain sensitive information.
 
-![](/img/blog/configuring-workload-identity-federation-between-gcp-and-aws-eks/image2.png)
+![](/images/blog/configuring-workload-identity-federation-between-gcp-and-aws-eks/image2.png)
 
 
 ## Step 8: Configure CloudQuery

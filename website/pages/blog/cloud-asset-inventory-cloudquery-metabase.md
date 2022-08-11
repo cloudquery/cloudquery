@@ -1,13 +1,17 @@
 ---
 title: How to Build Open Source Cloud Asset Inventory with CloudQuery and Metabase
 tag: tutorial
-date: '2022-06-01T00:00:00'
+date: 2022/06/01
 description: >-
   How to setup CloudQuery to build your cloud asset inventory in PostgreSQL and
   connect it to Metabase for visualization, monitoring and reporting.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Metabase](https://www.metabase.com/) for visualization, monitoring and reporting.
 
@@ -45,37 +49,37 @@ By default RDS Aurora instances are not accessible from the public internet. In 
 
 Now you can connect Metabase to your PostgreSQL database by clicking **“Add a Database”,** Choosing **PostgreSQL** and filling-in the following form:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-metabase/1.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-metabase/1.png)
 
 ### Step 4: Ask Question and Visualize!
 
 If you used Metabase this step should be familiar to you. You can either use the raw SQL query editor or you can choose to use the Metabase cool query builder. In this step we will search for `aws_resources` view we [created](https://github.com/cloudquery/cq-provider-aws/blob/main/views/resources.sql).
 
-![](/img/blog/cloud-asset-inventory-cloudquery-metabase/2.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-metabase/2.png)
 
 No you should see the following table that contains all the data in the view:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-metabase/3.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-metabase/3.png)
 
 You can both save this table directly to a dashboard by clicking **Save** or click show editor and create a different query using the query editor and then visualize. For example, if we want to visualize number of resources by account by region the query builder will look something like the following:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-metabase/4.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-metabase/4.png)
 
 and by clicking visualize you should get the following neat stacked bar:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-metabase/5.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-metabase/5.png)
 
 ### Step 4: Create Dashboards
 
 Now you can stack multiple visualization into one dashboards (by clicking **Save** in the previous step) so it will look something like the following:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-metabase/6.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-metabase/6.png)
 
 ### Step 5: Send Periodic Reports!
 
 One of the Coolest features in Metabase is sending periodic reports via email, if you click on the **Sharing** button on upper right side and then **Dashboards subscriptions** you will see the following screen:
 
-![](/img/blog/cloud-asset-inventory-cloudquery-metabase/7.png)
+![](/images/blog/cloud-asset-inventory-cloudquery-metabase/7.png)
 
 In our case we will send it to slack on a daily basis!
 
