@@ -1,13 +1,13 @@
 variables:
   component: azure
 
-project_name: plugins/azure
+project_name: plugins/source/azure
 
 monorepo:
-  tag_prefix: plugins/azure/
-  dir: plugins/azure
+  tag_prefix: plugins/source/azure/
+  dir: plugins/source/azure
 
 includes:
   - from_file:
       # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      path: ./plugins/.goreleaser.yaml
+      path: ./plugins/source/.goreleaser.yaml

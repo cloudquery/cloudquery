@@ -2,7 +2,7 @@ name: release-plugin
 on:
   push:
     tags:
-      - "plugins/*/v*.*.*"
+      - "plugins/*/*/v*.*.*"
 env:
   CGO_ENABLED: 0
 
@@ -10,12 +10,12 @@ jobs:
   release-plugin-binary:
     runs-on: ubuntu-latest
     steps:
-      # Tag format is plugins/<name>/<version>
+      # Tag format is plugins/<type>/<name>/<version>
       - name: Split tag
         id: split
         run: |
           tag=${{github.ref_name}}
-          echo ::set-output name=plugin_name::${tag%%v*}
+          echo ::set-output name=plugin_dir::${tag%%v*}
           echo ::set-output name=plugin_version::${tag##*/}
       # Fail if not a valid SemVer string
       - name: Parse semver string
@@ -37,7 +37,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugin_name}}.goreleaser.yaml
+        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugin_dir}}.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -47,7 +47,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --rm-dist -f ./${{steps.split.outputs.plugin_name}}.goreleaser.yaml
+        run: goreleaser release --rm-dist -f ./${{steps.split.outputs.plugin_dir}}.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}

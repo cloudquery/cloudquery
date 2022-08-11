@@ -26,82 +26,82 @@ jobs:
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/aws--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/aws--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/aws--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/aws--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/azure--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/azure--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/azure--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/azure--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/cloudflare--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/cloudflare--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/cloudflare--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/cloudflare--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/digitalocean--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/digitalocean--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/digitalocean--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/digitalocean--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/fuzz--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/fuzz--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/fuzz--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/fuzz--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/gcp--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/gcp--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/gcp--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/gcp--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/github--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/github--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/github--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/github--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/k8s--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/k8s--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/k8s--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/k8s--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/okta--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/okta--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/okta--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/okta--tag_name'] }}
         with:
           prerelease: true
       - name: Mark as pre-release
-        if: ${{ steps.release.outputs['plugins/terraform--release_created'] }}
+        if: ${{ steps.release.outputs['plugins/source/terraform--release_created'] }}
         uses: tubone24/update_release@2146f1550a23d883b8ea0c036298ed74cd65eac6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG_NAME: ${{ steps.release.outputs['plugins/terraform--tag_name'] }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/terraform--tag_name'] }}
         with:
           prerelease: true
