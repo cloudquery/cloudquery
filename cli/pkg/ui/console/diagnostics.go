@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/rs/zerolog/log"
 )

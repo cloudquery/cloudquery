@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin/registry"
 	"github.com/cloudquery/cq-provider-sdk/provider/execution"
 	"github.com/doug-martin/goqu/v9"
 	"github.com/georgysavva/scany/pgxscan"

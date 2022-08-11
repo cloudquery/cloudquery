@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/internal/firebase"
+	"github.com/cloudquery/cloudquery/cli/internal/firebase"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery
+module github.com/cloudquery/cloudquery/cli
 
 go 1.18
 

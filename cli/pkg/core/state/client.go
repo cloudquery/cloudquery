@@ -6,7 +6,7 @@ import (
 	"embed"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/internal/logging"
+	"github.com/cloudquery/cloudquery/cli/internal/logging"
 	sdkdb "github.com/cloudquery/cq-provider-sdk/database"
 	"github.com/cloudquery/cq-provider-sdk/database/dsn"
 	"github.com/cloudquery/cq-provider-sdk/migration/migrator"

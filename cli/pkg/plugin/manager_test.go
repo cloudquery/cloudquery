@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin/registry"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 )

@@ -5,7 +5,7 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/cloudquery/cloudquery/internal/logging/keyvals"
+	"github.com/cloudquery/cloudquery/cli/internal/logging/keyvals"
 	"github.com/hashicorp/go-hclog"
 	"github.com/rs/zerolog"
 )

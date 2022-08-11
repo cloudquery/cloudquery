@@ -3,8 +3,8 @@ package cmd
 import (
 	"testing"
 
-	initCmd "github.com/cloudquery/cloudquery/cmd/init"
-	"github.com/cloudquery/cloudquery/pkg/plugin/registry"
+	initCmd "github.com/cloudquery/cloudquery/cli/cmd/init"
+	"github.com/cloudquery/cloudquery/cli/pkg/plugin/registry"
 	"github.com/stretchr/testify/assert"
 )
 

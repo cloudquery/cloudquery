@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudquery/cloudquery/internal/file"
-	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/pkg/ui"
+	"github.com/cloudquery/cloudquery/cli/internal/file"
+	"github.com/cloudquery/cloudquery/cli/internal/firebase"
+	"github.com/cloudquery/cloudquery/cli/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-version"
 	"github.com/rs/zerolog/log"
