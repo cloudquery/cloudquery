@@ -2,14 +2,14 @@ resource "github" "" "teams" {
   path = "github.com/google/go-github/v45/github.Team"
 
   multiplex "OrgMultiplex" {
-    path = "github.com/cloudquery/cq-provider-github/client.OrgMultiplex"
+    path = "github.com/cloudquery/cloudquery/plugins/source/github/client.OrgMultiplex"
   }
 
   userDefinedColumn "org" {
     type        = "string"
     description = "The Github Organization of the resource."
     resolver "resolveOrg" {
-      path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
+      path = "github.com/cloudquery/cloudquery/plugins/source/github/client.ResolveOrg"
     }
   }
 
@@ -43,7 +43,7 @@ resource "github" "" "teams" {
     }
 
     userDefinedColumn "team_id" {
-      type        = "string"
+      type = "string"
       //argument ("name")
       description = "The id of the name"
       resolver "parentPathResolver" {
@@ -56,7 +56,7 @@ resource "github" "" "teams" {
       type        = "string"
       description = "The Github Organization of the resource."
       resolver "resolveOrg" {
-        path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
+        path = "github.com/cloudquery/cloudquery/plugins/source/github/client.ResolveOrg"
       }
     }
 
@@ -76,7 +76,7 @@ resource "github" "" "teams" {
     }
 
     userDefinedColumn "team_id" {
-      type        = "string"
+      type = "string"
       //argument ("name")
       description = "The id of the team"
       resolver "parentPathResolver" {
