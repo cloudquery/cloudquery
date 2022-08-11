@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-digitalocean
+module github.com/cloudquery/cloudquery/plugins/source/digitalocean
 
 go 1.18
 

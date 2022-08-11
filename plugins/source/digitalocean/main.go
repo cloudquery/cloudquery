@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cloudquery/cq-provider-digitalocean/resources/provider"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 
