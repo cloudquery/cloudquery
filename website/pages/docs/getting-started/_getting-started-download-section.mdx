@@ -1,0 +1,94 @@
+import { Tabs, Tab } from '../../../components/Tabs'
+
+## Download and Install
+
+You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
+
+<Tabs options={['Linux', 'OSX', 'Windows']}>
+
+<Tab>
+
+<Tabs options={[ 'Precompiled Binaries (x86_64)', 'Precompiled Binaries (arm64)' ]}>
+
+<Tab>
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_linux_x86_64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+<Tab>
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_linux_arm64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+<Tab>
+<Tabs options={['Homebrew', 'Precompiled Binaries (x86_64)', 'Precompiled Binaries (arm64)']}>
+<Tab>
+
+```bash
+brew install cloudquery/tap/cloudquery
+
+# After initial install you can upgrade the version via:
+# brew upgrade cloudquery
+```
+
+</Tab>
+
+<Tab>
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_darwin_x86_64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+<Tab>
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_darwin_arm64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+<Tab>
+
+<Tabs options={['Precompiled Binaries (CMD)', 'Precompiled Binaries (PowerShell)']}>
+
+<Tab>
+
+```bash
+curl -L https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_windows_x86_64.exe -o cloudquery.exe
+```
+
+</Tab>
+
+<Tab>
+
+```powershell
+Invoke-WebRequest https://github.com/cloudquery/cloudquery/releases/latest/download/cloudquery_windows_x86_64.exe -o cloudquery.exe
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+</Tabs>
