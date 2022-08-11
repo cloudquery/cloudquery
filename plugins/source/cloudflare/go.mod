@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-provider-cloudflare
+module github.com/cloudquery/cloudquery/plugins/source/cloudflare
 
 go 1.17
 

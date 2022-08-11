@@ -1,8 +1,8 @@
 package provider
 
 import (
-	"github.com/cloudquery/cq-provider-cloudflare/client"
-	"github.com/cloudquery/cq-provider-cloudflare/resources/services"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
