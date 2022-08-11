@@ -1,5 +1,5 @@
 variables:
-  component: k8s
+  component: source/k8s
 
 project_name: plugins/source/k8s
 
@@ -10,4 +10,4 @@ monorepo:
 includes:
   - from_file:
       # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      path: ./plugins/source/.goreleaser.yaml
+      path: ./plugins/.goreleaser.yaml
