@@ -1,11 +1,15 @@
 ---
 title: Announcing CloudQuery Policies
 tag: announcement
-date: '2021-06-25T00:00:00'
+date: 2021/06/25
 description: Announcing First Release of CloudQuery Policies
-authors: michelvocks
-
+author: michelvocks
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 We are excited to announce the release of the CloudQuery Policies!
 

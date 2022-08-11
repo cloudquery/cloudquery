@@ -1,13 +1,17 @@
 ---
 title: Migrations and History Deprecation
-tags: product
-date: '2022-05-23T00:00:00'
+tag: product
+date: 2022/05/23
 description: >-
   This is a short note that v0.24.0 is deprecating migrations from cloudquery
   together with history.
-authors: yevgenypats
-
+author: yevgenypats
 ---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
+
 
 This is a short note that v0.24.0 is deprecating migrations from cloudquery together with history.
 

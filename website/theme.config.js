@@ -25,6 +25,12 @@ const theme = {
   },
   head: function Head({ title, meta }) {
     const router = useRouter();
+    const isBlog = router.asPath.startsWith("/blog/");
+    const ogImage =
+      isBlog && !meta.ogImage
+        ? `https://docs.cloudquery.io/og-image/${meta.title}`
+        : `https://cloudquery.io${meta.ogImage ?? "/og-image.png"}`;
+
     return (
       <>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -63,14 +69,8 @@ const theme = {
           property="og:url"
           content={`https://cloudquery.io${router.asPath}`}
         />
-        <meta
-          property="twitter:image"
-          content={`https://cloudquery.io${meta.ogImage ?? "/og-image.png"}`}
-        />
-        <meta
-          property="og:image"
-          content={`https://cloudquery.io${meta.ogImage ?? "/og-image.png"}`}
-        />
+        <meta property="twitter:image" content={ogImage} />
+        <meta property="og:image" content={ogImage} />
         <meta property="og:locale" content="en_IE" />
         <meta property="og:site_name" content="CloudQuery" />
       </>
