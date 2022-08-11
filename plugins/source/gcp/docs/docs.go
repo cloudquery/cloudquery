@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/cloudquery/cq-provider-gcp/resources/provider"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/resources/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )
 
