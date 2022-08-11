@@ -4,7 +4,7 @@ This is the CLI that interacts with source plugins and target plugins
 
 ## Download
 
-You can download pre-compiled binaries from GitHub [releases](https://github.com/cloudquery/cloudquery/releases), or you can build from source:
+You can download pre-compiled binaries from [GitHub releases](https://github.com/cloudquery/cloudquery/releases), or you can build from source:
 
 ```sh
 git clone https://github.com/cloudquery/cloudquery/cli.git
