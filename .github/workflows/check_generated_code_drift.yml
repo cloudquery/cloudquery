@@ -30,14 +30,9 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v25
         with:
-<<<<<<< HEAD
           filters: |
             src:
               - "./plugins/source/${{ matrix.plugin }}/**"
-=======
-          files: |
-            plugins/${{ matrix.plugin }}
->>>>>>> upstream/monorepo
       - name: Set up Go 1.x
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3
