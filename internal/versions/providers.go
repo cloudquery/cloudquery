@@ -48,9 +48,8 @@ func NewClient() *Client {
 func (c *Client) GetLatestProviderRelease(ctx context.Context, org, pluginType, pluginName string) (string, error) {
 	if org == CloudQueryOrg {
 		return c.readManifest(ctx, pluginName)
-	} else {
-		return c.readGithubLatest(ctx, org, pluginType, pluginName)
 	}
+	return c.readGithubLatest(ctx, org, pluginType, pluginName)
 }
 
 func (c *Client) readManifest(ctx context.Context, providerName string) (string, error) {

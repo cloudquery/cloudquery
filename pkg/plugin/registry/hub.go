@@ -3,7 +3,6 @@ package registry
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/internal/versions"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -12,6 +11,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
+	"github.com/cloudquery/cloudquery/internal/versions"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-version"
