@@ -39,6 +39,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2 v1.18.7
 	github.com/aws/aws-sdk-go-v2/service/elasticsearchservice v1.15.7
 	github.com/aws/aws-sdk-go-v2/service/emr v1.20.0
+	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.8
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.10
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.8
@@ -90,7 +92,6 @@ require (
 require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.8 // indirect
-	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.9 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/elliotchance/orderedmap v1.4.0 // indirect
