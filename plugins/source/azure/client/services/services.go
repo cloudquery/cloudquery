@@ -9,6 +9,7 @@ type Services struct {
 	AD                AD
 	Authorization     AuthorizationClient
 	Batch             BatchClient
+	CDN               CDNClient
 	Compute           ComputeClient
 	ContainerService  ContainerServiceClient
 	ContainerRegistry ContainerRegistryClient
@@ -51,6 +52,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer, azCred azcore
 		AD:                NewADClient(subscriptionId, auth),
 		Authorization:     NewAuthorizationClient(subscriptionId, auth),
 		Batch:             NewBatchClient(subscriptionId, auth),
+		CDN:               NewCDNClient(subscriptionId, auth),
 		Compute:           NewComputeClient(subscriptionId, auth),
 		ContainerService:  NewContainerServiceClient(subscriptionId, auth),
 		ContainerRegistry: NewContainerRegistryClient(subscriptionId, auth),
