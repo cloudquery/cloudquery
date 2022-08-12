@@ -1,1 +1,1 @@
-export const INTEGRATION_HEIGHT = 30
+export const INTEGRATION_WIDTH = 36

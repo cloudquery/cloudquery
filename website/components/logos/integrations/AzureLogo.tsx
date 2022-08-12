@@ -1,6 +1,6 @@
-import {INTEGRATION_HEIGHT} from "./constants";
+import {INTEGRATION_WIDTH} from "./constants";
 
-const AzureLogo = ({height = INTEGRATION_HEIGHT}) => (
+const AzureLogo = ({width = INTEGRATION_WIDTH}) => (
     <svg
         viewBox="0 0 162 129"
         xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ const AzureLogo = ({height = INTEGRATION_HEIGHT}) => (
             strokeMiterlimit: 2,
         }}
         className="dark:text-white text-gray-900"
-        height={height}
+        width={width}
     >
         <path
             d="M88.33 16.33 40.67 57.66 0 130.66h36.67L88.33 16.33ZM94.67 26 74.33 83.33l39 49-75.66 13h124L94.67 26Z"

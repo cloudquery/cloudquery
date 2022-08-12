@@ -1,6 +1,6 @@
-import {INTEGRATION_HEIGHT} from "./constants";
+import {INTEGRATION_WIDTH} from "./constants";
 
-const TerraformLogo = ({height = INTEGRATION_HEIGHT}) => (
+const TerraformLogo = ({width = INTEGRATION_WIDTH}) => (
     <svg
         viewBox="0 0 32 32"
         xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ const TerraformLogo = ({height = INTEGRATION_HEIGHT}) => (
             strokeMiterlimit: 2,
         }}
         className="dark:text-white text-gray-900"
-        height={height}
+        width={width}
     >
         <path
             d="m11.041 5.688 9.912 5.031v10.073l-9.912-5.037V5.688Zm11 5.031v10.073l9.917-5.037V5.688l-9.917 5.031ZM.047.068v10.068l9.912 5.036V5.104L.047.068Zm10.994 26.853 9.912 5.037V21.895l-9.912-5.036v10.062Z"
