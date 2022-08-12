@@ -3,6 +3,7 @@ package registry
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/internal/versions"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -11,7 +12,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
-	"github.com/cloudquery/cloudquery/internal/versions"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-version"
@@ -23,15 +23,9 @@ const (
 	versionCheckHTTPTimeout = time.Second * 10
 )
 
-type VersionsClient interface {
-	GetLatestProviderRelease(ctx context.Context, org, pluginType, pluginName string) (string, error)
-}
-
 type Hub struct {
 	// Optional: Where to save downloaded providers, by default current working directory, defaults to ./cq/providers
 	PluginDirectory string
-	// Optional: client to use when fetching latest versions
-	VersionsClient VersionsClient
 	// Optional: Download propagator allows the creator to get called back on download progress and completion.
 	ProgressUpdater ui.Progress
 	// Url for hub to connect to download and verify plugins
@@ -54,18 +48,11 @@ func WithProgress(u ui.Progress) Option {
 	}
 }
 
-func WithVersionsClient(vc VersionsClient) Option {
-	return func(h *Hub) {
-		h.VersionsClient = vc
-	}
-}
-
 func NewRegistryHub(url string, opts ...Option) *Hub {
 	h := &Hub{
 		PluginDirectory: filepath.Join(".", ".cq", "providers"),
 		url:             url,
 		providers:       make(map[string]ProviderBinary),
-		VersionsClient:  versions.NewClient(),
 	}
 	// apply the list of options to hub
 	for _, opt := range opts {
@@ -284,7 +271,11 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
 	// Only "source" type plugins are supported in this version of the CLI. This will be
 	// expanded to other types in the future.
-	return h.VersionsClient.GetLatestProviderRelease(ctx, organization, "source", providerName)
+	v, err := versions.NewClient().GetLatestProviderRelease(ctx, organization, "source", providerName)
+	if err != nil {
+		return "", fmt.Errorf("failed to find provider[%s] latest version", providerName)
+	}
+	return v, nil
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
