@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cq-provider-gcp/client"
 	faker "github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	iam "google.golang.org/api/iam/v1"
 	"google.golang.org/api/option"

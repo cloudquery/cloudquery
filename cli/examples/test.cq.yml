@@ -1,0 +1,12 @@
+kind: source
+spec:
+  name: gcp
+  registry: grpc
+  path: localhost:7777
+  version: development
+  # configuration:
+    # This is an example config file for the plugin.
+    # account_ids: []
+  tables: ["*"]
+  destinations:
+  - "postgresql"

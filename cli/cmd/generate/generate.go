@@ -54,7 +54,8 @@ func runGen(cmd *cobra.Command, args []string) error {
 }
 
 func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error {
-	if !strings.Contains(path, "/") {
+	registry := cmd.Flag("registry").Value.String()
+	if registry == "github" && !strings.Contains(path, "/") {
 		path = "cloudquery/" + path
 	}
 	version := "latest"
@@ -65,7 +66,7 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error 
 	sourceSpec := specs.SourceSpec{
 		Name:     path,
 		Path:     path,
-		Registry: cmd.Flag("registry").Value.String(),
+		Registry: registry,
 		Version:  version,
 	}
 	sourceClient, err := pm.GetSourcePluginClient(cmd.Context(), sourceSpec)
