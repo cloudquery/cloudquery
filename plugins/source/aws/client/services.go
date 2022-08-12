@@ -42,6 +42,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/inspector"
+	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
@@ -487,6 +489,17 @@ type IamClient interface {
 	iam.ListServerCertificatesAPIClient
 	iam.ListAccountAliasesAPIClient
 	GetAccountSummary(ctx context.Context, params *iam.GetAccountSummaryInput, optFns ...func(*iam.Options)) (*iam.GetAccountSummaryOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./moc—ks/inspector.go . InspectorClient
+type InspectorClient interface {
+	ListFindings(ctx context.Context, params *inspector.ListFindingsInput, optFns ...func(*inspector.Options)) (*inspector.ListFindingsOutput, error)
+	DescribeFindings(ctx context.Context, params *inspector.DescribeFindingsInput, optFns ...func(*inspector.Options)) (*inspector.DescribeFindingsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/inspector_v2.go . InspectorV2Client
+type InspectorV2Client interface {
+	ListFindings(ctx context.Context, params *inspector2.ListFindingsInput, optFns ...func(*inspector2.Options)) (*inspector2.ListFindingsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_iot.go . IOTClient

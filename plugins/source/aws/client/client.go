@@ -52,6 +52,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/inspector"
+	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
@@ -161,6 +163,8 @@ type Services struct {
 	Glue                   GlueClient
 	GuardDuty              GuardDutyClient
 	IAM                    IamClient
+	Inspector              InspectorClient
+	InspectorV2            InspectorV2Client
 	IOT                    IOTClient
 	Kinesis                KinesisClient
 	KMS                    KmsClient
@@ -663,6 +667,8 @@ func initServices(region string, c aws.Config) Services {
 		Glue:                   glue.NewFromConfig(awsCfg),
 		GuardDuty:              guardduty.NewFromConfig(awsCfg),
 		IAM:                    iam.NewFromConfig(awsCfg),
+		Inspector:              inspector.NewFromConfig(awsCfg),
+		InspectorV2:            inspector2.NewFromConfig(awsCfg),
 		IOT:                    iot.NewFromConfig(awsCfg),
 		Kinesis:                kinesis.NewFromConfig(awsCfg),
 		KMS:                    kms.NewFromConfig(awsCfg),

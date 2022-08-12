@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"io/ioutil"
 	"log"
 	"os"
 	"reflect"
@@ -194,7 +193,7 @@ func (m mockAssumeRole) AssumeRole(ctx context.Context, params *sts.AssumeRoleIn
 func Test_Configure(t *testing.T) {
 	ctx := context.Background()
 	logger := hclog.New(&hclog.LoggerOptions{})
-	f, err := ioutil.TempFile("", "")
+	f, err := os.CreateTemp("", "")
 	if err != nil {
 		log.Fatal(err)
 	}

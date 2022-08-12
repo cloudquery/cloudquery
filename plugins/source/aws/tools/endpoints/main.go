@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -81,7 +81,7 @@ func saveToJsonFile(data *client.SupportedServiceRegionsData, filePath string) e
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(filePath, b, 0644)
+	return os.WriteFile(filePath, b, 0644)
 }
 
 func partitionRegionServiceGenerator() error {

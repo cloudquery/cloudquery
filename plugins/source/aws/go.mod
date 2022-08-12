@@ -42,6 +42,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.24.2
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.14.1
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.8
+	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.11
+	github.com/aws/aws-sdk-go-v2/service/inspector2 v1.7.3
 	github.com/aws/aws-sdk-go-v2/service/iot v1.25.4
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/kms v1.17.4
