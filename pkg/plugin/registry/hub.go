@@ -3,8 +3,6 @@ package registry
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/internal/versions"
-	"github.com/rs/zerolog"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -13,9 +11,11 @@ import (
 
 	"github.com/cloudquery/cloudquery/internal/file"
 	"github.com/cloudquery/cloudquery/internal/firebase"
+	"github.com/cloudquery/cloudquery/internal/versions"
 	"github.com/cloudquery/cloudquery/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/hashicorp/go-version"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -97,7 +97,7 @@ func (h Hub) Get(providerName, providerVersion string) (ProviderBinary, error) {
 func (h Hub) CheckUpdate(ctx context.Context, provider Provider) (string, error) {
 	ctx, cancel := context.WithTimeout(ctx, versionCheckHTTPTimeout)
 	defer cancel()
-	latestVersion, err := h.getLatestRelease(ctx, provider.Source, provider.Name)
+	latestVersion, err := getLatestRelease(ctx, provider.Source, provider.Name)
 	if err != nil {
 		return "", err
 	}
@@ -124,7 +124,7 @@ func (h Hub) Download(ctx context.Context, provider Provider, noVerify bool) (Pr
 		err              error
 	)
 	if requestedVersion == "latest" {
-		requestedVersion, err = h.getLatestRelease(ctx, provider.Source, provider.Name)
+		requestedVersion, err = getLatestRelease(ctx, provider.Source, provider.Name)
 		if err != nil {
 			return ProviderBinary{}, err
 		}
@@ -293,7 +293,7 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	return details, nil
 }
 
-func (h Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
+func getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
 	// Only "source" type plugins are supported in this version of the CLI. This will be
 	// expanded to other types in the future.
 	v, err := versions.NewClient().GetLatestProviderRelease(ctx, organization, "source", providerName)
