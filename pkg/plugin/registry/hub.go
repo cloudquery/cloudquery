@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/internal/versions"
+	"github.com/rs/zerolog"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -164,28 +165,14 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 	}
 
 	l := log.With().Str("provider", provider.Name).Str("version", version).Logger()
-	checksumsPath := filepath.Join(h.PluginDirectory, provider.Source, provider.Name, version+".checksums.txt")
-	checksumsURL := fmt.Sprintf("https://github.com/%s/%s/releases/latest/download/checksums.txt", provider.Source, ProviderRepoName(provider.Name))
-	if version != "latest" {
-		checksumsURL = fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/checksums.txt", provider.Source, ProviderRepoName(provider.Name), version)
-	}
 	if h.ProgressUpdater != nil {
 		h.ProgressUpdater.Update(provider.Name, ui.StatusInProgress, "Verifying...", 1)
 	}
-	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums file")
-	// download checksums
-	osFs := file.NewOsFs()
-	if err := osFs.DownloadFile(ctx, checksumsPath, checksumsURL, nil); err != nil {
+	checksumsPath, err := h.downloadChecksums(ctx, l, provider, version)
+	if err != nil {
 		l.Error().Err(err).Msg("failed to download checksums file")
-		return false
 	}
-	l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums signature")
-	// download checksums signature
-	if err := osFs.DownloadFile(ctx, checksumsPath+".sig", checksumsURL+".sig", nil); err != nil {
-		l.Error().Err(err).Msg("failed to download signature file")
-		return false
-	}
-	err := validateFile(checksumsPath, checksumsPath+".sig")
+	err = validateFile(checksumsPath, checksumsPath+".sig")
 	if err != nil {
 		l.Error().Err(err).Msg("validating provider signature failed")
 		if h.ProgressUpdater != nil {
@@ -205,6 +192,35 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 		h.ProgressUpdater.Update(provider.Name, ui.StatusOK, "verified", 1)
 	}
 	return true
+}
+
+func (h Hub) downloadChecksums(ctx context.Context, l zerolog.Logger, provider Provider, version string) (string, error) {
+	checksumsPath := filepath.Join(h.PluginDirectory, provider.Source, provider.Name, version+".checksums.txt")
+	osFs := file.NewOsFs()
+	switch provider.Source {
+	case DefaultOrganization:
+		// handle CloudQuery monorepo checksums, which by necessity uses a different
+		// convention from community plugins. This version of the CLI only supports "source" type plugins,
+		// but support for more will be added in the future.
+		tag := fmt.Sprintf("plugins/source/%s/%s", provider.Name, version)
+		checksumsURL := fmt.Sprintf("https://github.com/%s/cloudquery/releases/download/%s/checksums.txt", DefaultOrganization, tag)
+		l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums file from monorepo")
+		err := osFs.DownloadFile(ctx, checksumsPath, checksumsURL, nil)
+		if err == nil {
+			return checksumsPath, nil
+		}
+		// if we failed to download checksums from the monorepo, it might be because the plugin version
+		// was released on the older provider repo. Fall through to try there before giving up
+		fallthrough
+	default:
+		checksumsURL := fmt.Sprintf("https://github.com/%s/%s/releases/latest/download/checksums.txt", provider.Source, ProviderRepoName(provider.Name))
+		if version != "latest" {
+			checksumsURL = fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/checksums.txt", provider.Source, ProviderRepoName(provider.Name), version)
+		}
+		l.Debug().Str("url", checksumsURL).Str("path", checksumsPath).Msg("downloading checksums file")
+		err := osFs.DownloadFile(ctx, checksumsPath, checksumsURL, nil)
+		return checksumsPath, err
+	}
 }
 
 func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedVersion string, noVerify bool) (ProviderBinary, error) {
