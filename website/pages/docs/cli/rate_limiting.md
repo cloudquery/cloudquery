@@ -2,7 +2,7 @@
 title: Rate Limiting
 ---
 
-import Callout from 'nextra-theme-docs/callout'
+import { Callout } from 'nextra-theme-docs'
 
 # Rate Limiting
 
