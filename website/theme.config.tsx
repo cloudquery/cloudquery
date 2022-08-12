@@ -7,7 +7,7 @@ const theme: DocsThemeConfig = {
   projectLink: "https://github.com/cloudquery/cloudquery",
   docsRepositoryBase:
     "https://github.com/cloudquery/cloudquery/blob/main/docs/pages",
-  titleSuffix: " | cloudquery",
+  titleSuffix: " | Cloudquery",
   search: true,
   floatTOC: true,
   font: false,
@@ -43,7 +43,6 @@ const theme: DocsThemeConfig = {
       />
       <link rel="shortcut icon" href="/favicon/favicon.ico" />
       <meta name="msapplication-TileColor" content="#111111" />
-      <meta name="theme-color" content="#111111" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@cloudqueryio" />
       <meta name="twitter:creator" content="@cloudqueryio" />
