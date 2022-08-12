@@ -47,6 +47,7 @@ import (
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
+	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
@@ -155,6 +156,7 @@ type Services struct {
 	ELBv1                  ElbV1Client
 	ELBv2                  ElbV2Client
 	EMR                    EmrClient
+	EventBridge            EventBridgeClient
 	FSX                    FsxClient
 	Glue                   GlueClient
 	GuardDuty              GuardDutyClient
@@ -656,6 +658,7 @@ func initServices(region string, c aws.Config) Services {
 		ELBv1:                  elbv1.NewFromConfig(awsCfg),
 		ELBv2:                  elbv2.NewFromConfig(awsCfg),
 		EMR:                    emr.NewFromConfig(awsCfg),
+		EventBridge:            eventbridge.NewFromConfig(awsCfg),
 		FSX:                    fsx.NewFromConfig(awsCfg),
 		Glue:                   glue.NewFromConfig(awsCfg),
 		GuardDuty:              guardduty.NewFromConfig(awsCfg),
