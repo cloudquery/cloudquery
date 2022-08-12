@@ -1,6 +1,6 @@
 
 # Table: aws_wafregional_rule_predicates
-This is AWS WAF Classic documentation
+Contains one Predicate element for each ByteMatchSet, IPSet, or SqlInjectionMatchSet object that you want to include in a RateBasedRule.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

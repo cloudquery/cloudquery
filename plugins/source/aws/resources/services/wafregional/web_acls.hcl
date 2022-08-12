@@ -1,14 +1,23 @@
-service = "aws"
-
+service          = "aws"
 output_directory = "."
+add_generate     = true
 
 resource "aws" "wafregional" "web_acls" {
-  path = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.WebACL"
+  path        = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.WebACL"
+  description = "Contains the Rules that identify the requests that you want to allow, block, or count."
   multiplex "ServiceAccountRegionMultiplexer" {
+<<<<<<< HEAD:plugins/source/aws/resources/services/wafregional/web_acls.hcl
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
   }
   ignoreError "IgnoreAccessDenied" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
+=======
+    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    params = ["waf-regional"]
+  }
+  ignoreError "IgnoreCommonErrors" {
+    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
+>>>>>>> d1d8e7efe (Add ‘unused resource’ example policy (#1378)):resources/services/wafregional/web_acls.hcl
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
@@ -54,6 +63,8 @@ resource "aws" "wafregional" "web_acls" {
   relation "aws" "wafregional" "rules" {
     path        = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.ActivatedRule"
     description = "The action for each Rule in a WebACL"
+
+    ignore_columns_in_tests = ["override_action_type"]
 
     column "action_type" {
       rename = "action"

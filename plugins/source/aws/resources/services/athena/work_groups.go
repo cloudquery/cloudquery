@@ -17,11 +17,9 @@ import (
 //go:generate cq-gen --resource work_groups --config gen.hcl --output .
 func WorkGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_athena_work_groups",
-		Description: "A workgroup, which contains a name, description, creation time, state, and other configuration, listed under WorkGroup$Configuration",
-		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listWorkGroups, workGroupDetail))
-		},
+		Name:         "aws_athena_work_groups",
+		Description:  "A workgroup, which contains a name, description, creation time, state, and other configuration, listed under WorkGroup$Configuration",
+		Resolver:     fetchAthenaWorkGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("athena"),
 		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
@@ -37,7 +35,7 @@ func WorkGroups() *schema.Table {
 				Name:        "arn",
 				Description: "ARN of the resource.",
 				Type:        schema.TypeString,
-				Resolver:    ResolveAthenaWorkGroupArn,
+				Resolver:    resolveAthenaWorkGroupArn,
 			},
 			{
 				Name:        "region",
@@ -46,9 +44,10 @@ func WorkGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: ResolveAthenaWorkGroupTags,
+				Name:        "tags",
+				Description: "Tags associated with the Athena work group.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveAthenaWorkGroupTags,
 			},
 			{
 				Name:        "name",
@@ -108,22 +107,22 @@ func WorkGroups() *schema.Table {
 				Name:          "encryption_configuration_kms_key",
 				Description:   "For SSE_KMS and CSE_KMS, this is the KMS key ARN or ID",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
 				Resolver:      schema.PathResolver("Configuration.ResultConfiguration.EncryptionConfiguration.KmsKey"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:          "expected_bucket_owner",
 				Description:   "The Amazon Web Services account ID that you expect to be the owner of the Amazon S3 bucket specified by ResultConfiguration$OutputLocation",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
 				Resolver:      schema.PathResolver("Configuration.ResultConfiguration.ExpectedBucketOwner"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:          "output_location",
 				Description:   "The location in Amazon S3 where your query results are stored, such as s3://path/to/query/bucket/",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
 				Resolver:      schema.PathResolver("Configuration.ResultConfiguration.OutputLocation"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:        "creation_time",
@@ -204,6 +203,11 @@ func WorkGroups() *schema.Table {
 						Description: "The engine version requested by the user",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("EngineVersion.SelectedEngineVersion"),
+					},
+					{
+						Name:        "execution_parameters",
+						Description: "A list of values for the parameters in a query",
+						Type:        schema.TypeStringArray,
 					},
 					{
 						Name:        "query",
@@ -308,7 +312,7 @@ func WorkGroups() *schema.Table {
 					{
 						Name:        "athena_error_error_category",
 						Description: "An integer value that specifies the category of a query failure error",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 						Resolver:    schema.PathResolver("Status.AthenaError.ErrorCategory"),
 					},
 					{
@@ -320,7 +324,7 @@ func WorkGroups() *schema.Table {
 					{
 						Name:        "athena_error_error_type",
 						Description: "An integer value that provides specific information about an Athena query error For the meaning of specific values, see the Error Type Reference (https://docsawsamazoncom/athena/latest/ug/error-referencehtml#error-reference-error-type-reference) in the Amazon Athena User Guide",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 						Resolver:    schema.PathResolver("Status.AthenaError.ErrorType"),
 					},
 					{
@@ -411,34 +415,15 @@ func WorkGroups() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
-	input := athena.ListWorkGroupsInput{}
-	for {
-		response, err := svc.ListWorkGroups(ctx, &input)
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		for _, item := range response.WorkGroups {
-			detailChan <- item
-		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
-	}
-
-	return nil
+func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listWorkGroups, workGroupDetail))
 }
-
-func ResolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.WorkGroup)
 	return diag.WrapError(resource.Set(c.Name, createWorkGroupArn(cl, *dc.Name)))
 }
-func ResolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
 	wg := resource.Item.(types.WorkGroup)
@@ -557,6 +542,29 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 //                                                  User Defined Helpers
 // ====================================================================================================================
 
+func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+	input := athena.ListWorkGroupsInput{}
+	for {
+		response, err := svc.ListWorkGroups(ctx, &input, func(options *athena.Options) {
+			options.Region = c.Region
+		})
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		for _, item := range response.WorkGroups {
+			detailChan <- item
+		}
+
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
+	}
+
+	return nil
+}
 func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, summary interface{}) {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
@@ -573,11 +581,9 @@ func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan ch
 	}
 	resultsChan <- *dc.WorkGroup
 }
-
 func createWorkGroupArn(cl *client.Client, groupName string) string {
 	return cl.ARN(client.Athena, "workgroup", groupName)
 }
-
 func isQueryExecutionNotFound(err error) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {

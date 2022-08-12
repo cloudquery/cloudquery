@@ -11,11 +11,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-//go:generate cq-gen -config=rules.hcl -domain=wafregional -resource=rules
+//go:generate cq-gen --resource rules --config rules.hcl --output .
 func Rules() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_rules",
-		Description:  "This is AWS WAF Classic documentation",
+		Description:  "A combination of identifiers for web requests that you want to allow, block, or count.",
 		Resolver:     fetchWafregionalRules,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
 		IgnoreError:  client.IgnoreCommonErrors,
@@ -38,13 +38,13 @@ func Rules() *schema.Table {
 				Name:        "arn",
 				Description: "ARN of the rule.",
 				Type:        schema.TypeString,
-				Resolver:    resolveRuleARN,
+				Resolver:    resolveWafregionalRuleArn,
 			},
 			{
 				Name:        "tags",
 				Description: "Rule tags.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRuleTags,
+				Resolver:    resolveWafregionalRuleTags,
 			},
 			{
 				Name:        "id",
@@ -66,7 +66,7 @@ func Rules() *schema.Table {
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_wafregional_rule_predicates",
-				Description: "This is AWS WAF Classic documentation",
+				Description: "Contains one Predicate element for each ByteMatchSet, IPSet, or SqlInjectionMatchSet object that you want to include in a RateBasedRule.",
 				Resolver:    schema.PathTableResolver("Predicates"),
 				Columns: []schema.Column{
 					{
@@ -130,7 +130,10 @@ func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func resolveRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveWafregionalRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return diag.WrapError(resource.Set(c.Name, ruleARN(meta, *resource.Item.(types.Rule).RuleId)))
+}
+func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().WafRegional
 	arn := ruleARN(meta, *resource.Item.(types.Rule).RuleId)
@@ -151,9 +154,11 @@ func resolveRuleTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
 }
-func resolveRuleARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, ruleARN(meta, *resource.Item.(types.Rule).RuleId)))
-}
+
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
 func ruleARN(meta schema.ClientMeta, id string) string {
 	cl := meta.(*client.Client)
 	return cl.ARN(client.WAFRegional, "rule", id)

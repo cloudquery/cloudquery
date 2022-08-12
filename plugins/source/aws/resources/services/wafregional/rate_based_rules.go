@@ -11,11 +11,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-//go:generate cq-gen -config=rate_based_rules.hcl -domain=wafregional -resource=rate_based_rules
+//go:generate cq-gen --resource rate_based_rules --config rate_based_rules.hcl --output .
 func RateBasedRules() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_rate_based_rules",
-		Description:  "This is AWS WAF Classic documentation",
+		Description:  "A combination of identifiers for web requests that you want to allow, block, or count, including rate limit.",
 		Resolver:     fetchWafregionalRateBasedRules,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
 		IgnoreError:  client.IgnoreCommonErrors,
@@ -38,13 +38,13 @@ func RateBasedRules() *schema.Table {
 				Name:        "arn",
 				Description: "ARN of the rate based rule.",
 				Type:        schema.TypeString,
-				Resolver:    resolveRateBasedRuleARN,
+				Resolver:    resolveWafregionalRateBasedRuleArn,
 			},
 			{
 				Name:        "tags",
 				Description: "Rule tags.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRateBasedRuleTags,
+				Resolver:    resolveWafregionalRateBasedRuleTags,
 			},
 			{
 				Name:        "rate_key",
@@ -76,7 +76,7 @@ func RateBasedRules() *schema.Table {
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_wafregional_rate_based_rule_match_predicates",
-				Description: "This is AWS WAF Classic documentation",
+				Description: "Contains one Predicate element for each ByteMatchSet, IPSet, or SqlInjectionMatchSet object that you want to include in a RateBasedRule.",
 				Resolver:    schema.PathTableResolver("MatchPredicates"),
 				Columns: []schema.Column{
 					{
@@ -140,7 +140,10 @@ func fetchWafregionalRateBasedRules(ctx context.Context, meta schema.ClientMeta,
 	}
 	return nil
 }
-func resolveRateBasedRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveWafregionalRateBasedRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return diag.WrapError(resource.Set(c.Name, rateBasedRuleARN(meta, *resource.Item.(types.RateBasedRule).RuleId)))
+}
+func resolveWafregionalRateBasedRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().WafRegional
 	arn := rateBasedRuleARN(meta, *resource.Item.(types.RateBasedRule).RuleId)
@@ -161,9 +164,11 @@ func resolveRateBasedRuleTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
 }
-func resolveRateBasedRuleARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, rateBasedRuleARN(meta, *resource.Item.(types.RateBasedRule).RuleId)))
-}
+
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
 func rateBasedRuleARN(meta schema.ClientMeta, id string) string {
 	cl := meta.(*client.Client)
 	return cl.ARN(client.WAFRegional, "ratebasedrule", id)

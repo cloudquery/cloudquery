@@ -1,6 +1,6 @@
 
 # Table: aws_wafregional_rules
-This is AWS WAF Classic documentation
+A combination of identifiers for web requests that you want to allow, block, or count.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

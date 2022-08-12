@@ -7,7 +7,7 @@ A workgroup, which contains a name, description, creation time, state, and other
 |account_id|text|The AWS Account ID of the resource.|
 |arn|text|ARN of the resource.|
 |region|text|The AWS Region of the resource.|
-|tags|jsonb||
+|tags|jsonb|Tags associated with the Athena work group.|
 |name|text|The workgroup name|
 |bytes_scanned_cutoff_per_query|bigint|The upper data usage limit (cutoff) for the amount of bytes a single query in a workgroup is allowed to scan|
 |enforce_work_group_configuration|boolean|If set to "true", the settings for the workgroup override client-side settings If set to "false", client-side settings are used|

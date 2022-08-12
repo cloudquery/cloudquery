@@ -11,11 +11,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-//go:generate cq-gen -config=web_acls.hcl -domain=wafregional -resource=web_acls
+//go:generate cq-gen --resource web_acls --config web_acls.hcl --output .
 func WebAcls() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_web_acls",
-		Description:  "This is AWS WAF Classic documentation",
+		Description:  "Contains the Rules that identify the requests that you want to allow, block, or count.",
 		Resolver:     fetchWafregionalWebAcls,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
 		IgnoreError:  client.IgnoreCommonErrors,
@@ -38,7 +38,7 @@ func WebAcls() *schema.Table {
 				Name:        "tags",
 				Description: "Web ACL tags.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveWebAclTags,
+				Resolver:    resolveWafregionalWebACLTags,
 			},
 			{
 				Name:        "default_action",
@@ -84,7 +84,7 @@ func WebAcls() *schema.Table {
 					{
 						Name:        "priority",
 						Description: "Specifies the order in which the Rules in a WebACL are evaluated",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "rule_id",
@@ -155,17 +155,7 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func resolveWebACLRulesExcludedRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(types.ActivatedRule)
-	ids := make([]string, len(rule.ExcludedRules))
-	for _, item := range rule.ExcludedRules {
-		if item.RuleId != nil {
-			ids = append(ids, *item.RuleId)
-		}
-	}
-	return diag.WrapError(resource.Set(c.Name, ids))
-}
-func resolveWebAclTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().WafRegional
 	params := wafregional.ListTagsForResourceInput{ResourceARN: resource.Item.(types.WebACL).WebACLArn}
@@ -184,4 +174,14 @@ func resolveWebAclTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 		params.NextMarker = result.NextMarker
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
+}
+func resolveWebACLRulesExcludedRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	rule := resource.Item.(types.ActivatedRule)
+	ids := make([]string, len(rule.ExcludedRules))
+	for _, item := range rule.ExcludedRules {
+		if item.RuleId != nil {
+			ids = append(ids, *item.RuleId)
+		}
+	}
+	return diag.WrapError(resource.Set(c.Name, ids))
 }
