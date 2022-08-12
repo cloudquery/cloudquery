@@ -3,6 +3,7 @@ package registry
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/internal/versions"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -222,9 +223,27 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 		progressCB = ui.CreateProgressUpdater(h.ProgressUpdater, fmt.Sprintf("%s@%s", ProviderRepoName(provider.Name), requestedVersion))
 	}
 
-	providerURL := fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/%s", provider.Source, ProviderRepoName(provider.Name), requestedVersion, getPluginBinaryName(provider.Name))
+	var err error
 	providerPath := h.getProviderPath(provider.Source, provider.Name, requestedVersion)
-	if err := osFs.DownloadFile(ctx, providerPath, providerURL, progressCB); err != nil {
+
+	switch provider.Source {
+	case DefaultOrganization:
+		// we use a special convention for the CloudQuery monorepo
+		providerURL := fmt.Sprintf("https://github.com/%s/cloudquery/releases/download/%s/%s", DefaultOrganization, getMonorepoPluginTag("source", provider.Name, requestedVersion), getPluginBinaryName(provider.Name))
+		err = osFs.DownloadFile(ctx, providerPath, providerURL, progressCB)
+		if err == nil {
+			break
+		}
+		// if the download was attempted from the monorepo but failed, it could be that
+		// the specified version isn't available there (but is on the original provider repo).
+		// In this case, we retry the download from the original provider repo before reporting
+		// a failure.
+		fallthrough
+	default:
+		providerURL := fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/%s", provider.Source, ProviderRepoName(provider.Name), requestedVersion, getPluginBinaryName(provider.Name))
+		err = osFs.DownloadFile(ctx, providerPath, providerURL, progressCB)
+	}
+	if err != nil {
 		return ProviderBinary{}, fmt.Errorf("plugin %s/%s@%s failed to download: %w", provider.Source, provider.Name, requestedVersion, err)
 	}
 
@@ -250,9 +269,11 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 }
 
 func (Hub) getLatestRelease(ctx context.Context, organization, providerName string) (string, error) {
-	client := firebase.New(firebase.CloudQueryRegistryURL)
-	latest, err := client.GetLatestProviderRelease(ctx, organization, providerName)
-	return latest, err
+	c := versions.NewClient()
+
+	// Only "source" type plugins are supported in this version of the CLI. This will be
+	// expanded to other types in the future.
+	return c.GetLatestProviderRelease(ctx, organization, "source", providerName)
 }
 
 func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
@@ -320,6 +341,11 @@ func (h Hub) loadExisting() {
 // getPluginBinaryName returns fully qualified CloudQuery plugin name based on running OS
 func getPluginBinaryName(providerName string) string {
 	return fmt.Sprintf("%s_%s", ProviderRepoName(providerName), GetBinarySuffix())
+}
+
+// getMonorepoPluginTag returns
+func getMonorepoPluginTag(pluginType, pluginName, version string) string {
+	return fmt.Sprintf("plugins/%s/%s/%s", pluginType, pluginName, version)
 }
 
 func GetBinarySuffix() string {
