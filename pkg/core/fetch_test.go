@@ -221,7 +221,8 @@ func Test_Fetch(t *testing.T) {
 		},
 	}
 
-	pManager, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL))
+	vc := mockVersionsClient{}
+	pManager, err := plugin.NewManager(registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithVersionsClient(vc)))
 	require.NoError(t, err)
 
 	for _, tc := range testCases {

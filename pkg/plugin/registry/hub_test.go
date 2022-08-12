@@ -11,6 +11,19 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type MockVersionsClient struct {
+}
+
+func (mvc MockVersionsClient) GetLatestProviderRelease(ctx context.Context, org, pluginType, pluginName string) (string, error) {
+	if org == "bad-org" {
+		return "", errors.New("failed to find provider[test] latest version")
+	}
+	if pluginName == "bad-provider" {
+		return "", errors.New("failed to find provider[bad-provider] latest version")
+	}
+	return "v1.2.3", nil
+}
+
 func TestHub_CheckUpdate(t *testing.T) {
 	testCases := []struct {
 		Name          string
@@ -53,7 +66,9 @@ func TestHub_CheckUpdate(t *testing.T) {
 			ExpectedError: errors.New("failed to find provider[test] latest version"),
 		},
 	}
-	hub := NewRegistryHub(firebase.CloudQueryRegistryURL)
+
+	vc := MockVersionsClient{}
+	hub := NewRegistryHub(firebase.CloudQueryRegistryURL, WithVersionsClient(vc))
 
 	latestVersion, err := hub.CheckUpdate(context.Background(), Provider{
 		Name:    "test",

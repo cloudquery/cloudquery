@@ -133,8 +133,16 @@ func Test_GetProviderConfig(t *testing.T) {
 	assert.NoError(t, err)
 }
 
+type mockVersionsClient struct {
+}
+
+func (mvc mockVersionsClient) GetLatestProviderRelease(ctx context.Context, org, pluginType, pluginName string) (string, error) {
+	return "v0.1.21", nil // latest version of test provider before it was archived
+}
+
 func getLatestVersion(t *testing.T, name string) string {
-	reg := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()))
+	mvc := mockVersionsClient{}
+	reg := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()), registry.WithVersionsClient(mvc))
 	latest, diags := CheckAvailableUpdates(context.Background(), reg, &CheckUpdatesOptions{Providers: []registry.Provider{
 		{Name: name, Version: "v0.0.0", Source: registry.DefaultOrganization},
 	}})
