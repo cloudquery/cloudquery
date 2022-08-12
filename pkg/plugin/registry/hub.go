@@ -94,7 +94,7 @@ func (h Hub) Get(providerName, providerVersion string) (ProviderBinary, error) {
 // Returns a new version if there is one, otherwise empty string.
 // Call will be cancelled either if ctx is cancelled or after a timeout set by versionCheckHTTPTimeout.
 // This function should not be called for a provider having Version set to "latest".
-func (h Hub) CheckUpdate(ctx context.Context, provider Provider) (string, error) {
+func (_ Hub) CheckUpdate(ctx context.Context, provider Provider) (string, error) {
 	ctx, cancel := context.WithTimeout(ctx, versionCheckHTTPTimeout)
 	defer cancel()
 	latestVersion, err := getLatestRelease(ctx, provider.Source, provider.Name)
