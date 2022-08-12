@@ -14,7 +14,7 @@ func TestClient_GetLatestProviderRelease(t *testing.T) {
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
-		fmt.Fprintf(w, `{"latest":"v1.2.3"}`)
+		fmt.Fprintf(w, `{"latest":"plugins/source/test/v1.2.3"}`)
 	}))
 	defer cloudQueryServer.Close()
 

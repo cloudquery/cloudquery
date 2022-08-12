@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 const (
@@ -63,7 +64,14 @@ func (c *Client) readManifest(ctx context.Context, providerName string) (string,
 	if err != nil {
 		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
 	}
-	return mr.Latest, nil
+	return extractVersionFromTag(mr.Latest), nil
+}
+
+// extractVersionFromTag takes a tag of the form "plugins/source/test/v0.1.21" and returns
+// the version, i.e. "v0.1.21"
+func extractVersionFromTag(tag string) string {
+	parts := strings.Split(tag, "/")
+	return parts[len(parts)-1]
 }
 
 func (c *Client) readGithubLatest(ctx context.Context, org, pluginType, providerName string) (string, error) {
