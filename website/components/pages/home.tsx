@@ -79,7 +79,7 @@ export default function Home() {
           <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl text-center dark:text-white">
             Integrations
           </h2>
-          <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
+          <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:text-xl text-center">
             Integrate with 10+ cloud providers and saas apps with more then 1,000+ tables.
           </p>
           <Integrations />
