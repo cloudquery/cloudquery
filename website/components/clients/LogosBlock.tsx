@@ -9,9 +9,10 @@ import { PaloAltoNetworksLogo } from "../logos/PaloAltoNetworks";
 import { TempusLogo } from "../logos/Tempus";
 import { ZendeskLogo } from "../logos/Zendesk";
 
-export function LogosBlock() {
+const LogosList = () => {
+  const wrapperClassnames = "flex justify-center items-center gap-8 wrapper"
   return (
-    <div className="flex justify-center items-center flex-wrap gap-8">
+    <div className={wrapperClassnames}>
       <FastlyLogo />
       <AutodeskLogo />
       <PaloAltoNetworksLogo />
@@ -21,6 +22,15 @@ export function LogosBlock() {
       <ZendeskLogo />
       <InfosysLogo />
       <AuroralabsLogo />
+    </div>
+  )
+}
+
+export function LogosBlock() {
+  return (
+    <div className="flex mx-auto 2xl:max-w-7xl overflow-hidden">
+      <LogosList />
+      <LogosList />
     </div>
   );
 }
