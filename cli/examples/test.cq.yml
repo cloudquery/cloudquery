@@ -9,4 +9,5 @@ spec:
     # account_ids: []
   tables: ["*"]
   destinations:
-  - "postgresql"
+  - name: "postgresql"
+    mode: "append-only"

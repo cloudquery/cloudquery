@@ -1,11 +1,13 @@
-package destinations
+package postgresql
 
 import (
 	"context"
 	"fmt"
 	"strings"
+	"sync"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -17,12 +19,19 @@ type PostgreSqlSpec struct {
 	ConnectionString string `json:"connection_string" yaml:"connection_string"`
 }
 
-type PostgreSqlPlugin struct {
+type Client struct {
 	conn   *pgxpool.Pool
 	logger zerolog.Logger
+	m      sync.Mutex
 }
 
-func (p *PostgreSqlPlugin) Configure(ctx context.Context, spec specs.DestinationSpec) error {
+func NewClient(logger zerolog.Logger) *Client {
+	return &Client{
+		logger: logger,
+	}
+}
+
+func (p *Client) Configure(ctx context.Context, spec specs.DestinationSpec) error {
 	var specPostgreSql PostgreSqlSpec
 	if err := spec.Spec.Decode(&specPostgreSql); err != nil {
 		return errors.Wrap(err, "failed to decode spec")
@@ -39,55 +48,65 @@ func (p *PostgreSqlPlugin) Configure(ctx context.Context, spec specs.Destination
 	return nil
 }
 
-func (p *PostgreSqlPlugin) Save(ctx context.Context, resources []*schema.Resource) error {
-	for _, resource := range resources {
-		sql, values, err := sq.Insert(resource.TableName()).Columns(resource.Columns()...).Values([]interface{}{""}).ToSql()
+const isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1"
+
+func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
+	var sb strings.Builder
+	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
+	sb.WriteString(table.Name)
+	sb.WriteString(" (")
+	totalColumns := len(table.Columns)
+	for i, c := range table.Columns {
+		pgType, err := SchemaTypeToPg(c.Type)
 		if err != nil {
-			return errors.Wrap(err, "failed to generate insert sql")
+			return errors.Wrap(err, "failed to convert schema type to postgresql type")
 		}
-		_, err = p.conn.Exec(ctx, sql, values...)
-		if err != nil {
-			return err
+		sb.WriteString(fmt.Sprintf("%s %s", c.Name, pgType))
+		if i != totalColumns-1 {
+			sb.WriteString(",")
 		}
+	}
+	sb.WriteString(")")
+	_, err := p.conn.Exec(ctx, sb.String())
+	if err != nil {
+		return err
 	}
 	return nil
 }
 
-func (p *PostgreSqlPlugin) DropTables(ctx context.Context, table []*schema.Table) error {
-	return nil
-}
-
-func (p *PostgreSqlPlugin) CreateTables(ctx context.Context, table []*schema.Table) error {
-	for _, t := range table {
-		if len(t.Columns) == 0 {
-			p.logger.Info().Str("table", t.Name).Msg("skipping table creation, no columns")
+// This is the responsability of the CLI of the client to lock before running migration
+func (p *Client) Migrate(ctx context.Context, source *plugins.SourcePlugin) error {
+	for _, table := range source.Tables {
+		if len(table.Columns) == 0 {
+			p.logger.Info().Str("table", table.Name).Msg("skipping table creation, no columns")
 			continue
 		}
-		var sb strings.Builder
-		sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-		sb.WriteString(t.Name)
-		sb.WriteString(" (")
-		totalColumns := len(t.Columns)
-		for i, c := range t.Columns {
-			pgType, err := SchemaTypeToPg(c.Type)
-			if err != nil {
-				return errors.Wrap(err, "failed to convert schema type to postgresql type")
-			}
-			sb.WriteString(fmt.Sprintf("%s %s", c.Name, pgType))
-			if i != totalColumns-1 {
-				sb.WriteString(",")
-			}
+		tableExist := 0
+		if err := p.conn.QueryRow(ctx, isTableExistSQL, table.Name).Scan(&tableExist); err != nil {
+			return errors.Wrap(err, "failed to query information_schema.tables")
 		}
-		sb.WriteString(")")
-		_, err := p.conn.Exec(ctx, sb.String())
-		if err != nil {
-			return err
+		if tableExist == 0 {
+			if err := p.createTableIfNotExist(ctx, table); err != nil {
+				return err
+			}
 		}
 	}
 	return nil
 }
 
-func (p *PostgreSqlPlugin) GetExampleConfig(ctx context.Context) string {
+func (p *Client) Write(ctx context.Context, resource *schema.Resource) error {
+	sql, values, err := sq.Insert(resource.Table.Name).Columns(resource.Columns()...).Values([]interface{}{""}).ToSql()
+	if err != nil {
+		return errors.Wrap(err, "failed to generate insert sql")
+	}
+	_, err = p.conn.Exec(ctx, sql, values...)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *Client) GetExampleConfig() string {
 	return `
 connection_string: "postgresql://user:password@localhost:5432/dbname"
 `

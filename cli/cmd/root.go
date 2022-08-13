@@ -6,8 +6,8 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cmd/enum"
-	"github.com/cloudquery/cloudquery/cmd/fetch"
 	"github.com/cloudquery/cloudquery/cmd/generate"
+	"github.com/cloudquery/cloudquery/cmd/sync"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -117,7 +117,7 @@ func newCmdRoot() *cobra.Command {
 	}
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	cmd.AddCommand(generate.NewCmdInit(), fetch.NewCmdFetch())
+	cmd.AddCommand(generate.NewCmdInit(), sync.NewCmdFetch())
 	// cmd.AddCommand(
 	// 	initCmd.NewCmdInit(), fetch.NewCmdFetch(), policy.NewCmdPolicy(), provider.NewCmdProvider(),
 	// 	options.NewCmdOptions(), newCmdVersion(), newCmdDoc())

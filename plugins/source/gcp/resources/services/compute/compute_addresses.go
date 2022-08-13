@@ -14,10 +14,8 @@ func ComputeAddresses() *schema.Table {
 		Name:        "gcp_compute_addresses",
 		Description: "Addresses for GFE-based external HTTP(S) load balancers.",
 		Resolver:    fetchComputeAddresses,
-
-		Multiplex: client.ProjectMultiplex,
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Multiplex:   client.ProjectMultiplex,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",

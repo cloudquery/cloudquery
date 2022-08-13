@@ -18,9 +18,8 @@ import (
 
 	"context"
 
-	"github.com/cloudquery/cloudquery/internal/destinations"
+	"github.com/cloudquery/cloudquery/internal/destinations/postgresql"
 	"github.com/cloudquery/plugin-sdk/clients"
-	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -29,23 +28,47 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-type Plugin struct {
-	cmd          *exec.Cmd
-	conn         *grpc.ClientConn
-	sourceClient *clients.SourceClient
-	// logger       zerolog.Logger
+type DestinationPlugin struct {
+	cmd    *exec.Cmd
+	conn   *grpc.ClientConn
+	client *clients.DestinationClient
 }
 
-// func (p *Plugin) Write(bytes []byte) (n int, err error) {
-// 	p.logger.
-// 	// p.sourceClient
-// 	return 0, nil
-// }
+func (p *DestinationPlugin) Close() error {
+	if p.conn != nil {
+		return p.conn.Close()
+	}
+	if p.cmd != nil && p.cmd.Process != nil {
+		p.cmd.Process.Kill()
+	}
+	return nil
+}
+
+func (p *DestinationPlugin) GetClient() *clients.DestinationClient {
+	return p.client
+}
+
+type SourcePlugin struct {
+	cmd    *exec.Cmd
+	conn   *grpc.ClientConn
+	client *clients.SourceClient
+}
+
+func (p *SourcePlugin) Close() error {
+	if p.conn != nil {
+		return p.conn.Close()
+	}
+	if p.cmd != nil && p.cmd.Process != nil {
+		p.cmd.Process.Kill()
+	}
+	return nil
+}
+
+func (p *SourcePlugin) GetClient() *clients.SourceClient {
+	return p.client
+}
 
 type PluginManager struct {
-	// plugins      map[string]*exec.Cmd
-	// sourceClient map[string]*clients.SourceClient
-	plugins   map[string]map[string]*Plugin
 	logger    zerolog.Logger
 	directory string
 }
@@ -68,12 +91,8 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	p := &PluginManager{
 		logger:    log.Logger,
 		directory: "./.cq",
-		plugins:   make(map[string]map[string]*Plugin),
 	}
 	// initialize all plugins registry
-	p.plugins["local"] = make(map[string]*Plugin)
-	p.plugins["github"] = make(map[string]*Plugin)
-	p.plugins["grpc"] = make(map[string]*Plugin)
 	for _, opt := range opts {
 		opt(p)
 	}
@@ -83,11 +102,11 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 // DownloadSource downloads a plugin from the specified registry and return the path to plugin
 func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.SourceSpec) (string, error) {
 	switch spec.Registry {
-	case "local", "grpc":
+	case specs.RegistryLocal, specs.RegistryGrpc:
 		fmt.Printf("Skipping plugin download. registry: %s, path: %s\n", spec.Registry, spec.Path)
-		p.logger.Info().Str("registry", spec.Registry).Msg("Skiping plugin download")
+		p.logger.Info().Str("registry", spec.Registry.String()).Msg("Skiping plugin download")
 		return "", nil
-	case "github":
+	case specs.RegistryGithub:
 		return p.downloadSourceGitHub(ctx, spec)
 	default:
 		return "", errors.Errorf("unknown registry: %s", spec.Registry)
@@ -98,7 +117,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	pathSplit := strings.Split(spec.Path, "/")
 	org, repo := pathSplit[0], pathSplit[1]
 	pluginName := fmt.Sprintf("cq-source-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
-	dirPath := filepath.Join(p.directory, "plugins", spec.Registry, org, repo, spec.Version)
+	dirPath := filepath.Join(p.directory, "plugins", spec.Registry.String(), org, repo, spec.Version)
 	pluginPath := filepath.Join(dirPath, pluginName)
 	if _, err := os.Stat(pluginPath); err == nil {
 		fmt.Printf("Plugin already exists at %s. Skipping download.\n", pluginPath)
@@ -140,36 +159,37 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	return pluginPath, nil
 }
 
-func (p *PluginManager) GetDestinationClient(ctx context.Context, spec specs.DestinationSpec, opts plugins.DestinationPluginOptions) (*clients.DestinationClient, error) {
+// NewDestination Plugin downloads the plugin, spanws the process (if needed)
+// and return a new client. The calee is responsible for closing the plugin.
+func (p *PluginManager) NewDestinationPlugin(ctx context.Context, spec specs.DestinationSpec) (*DestinationPlugin, error) {
+	pl := DestinationPlugin{}
+	// some destination plugins are compiled in for simplicity (so no need to download them and spawn grpc server)
 	switch spec.Name {
 	case "postgresql":
-		return clients.NewLocalDestinationClient(&destinations.PostgreSqlPlugin{}), nil
+		pl.client = clients.NewLocalDestinationClient(postgresql.NewClient(p.logger))
+		return &pl, nil
 	default:
-		return nil, errors.Errorf("unknown destination type: %s", spec.Name)
+		return nil, fmt.Errorf("unknown destination plugin: %s", spec.Name)
 	}
 }
 
-func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.SourceSpec) (*clients.SourceClient, error) {
-	if p.plugins[spec.Registry] != nil && p.plugins[spec.Registry][spec.Path] != nil {
-		return p.plugins[spec.Registry][spec.Path].sourceClient, nil
-	}
-	pl := Plugin{}
+func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.SourceSpec) (*SourcePlugin, error) {
+	pl := SourcePlugin{}
 	// var grpcTarget string
 	var pluginPath string
 	switch spec.Registry {
-	case "grpc":
+	case specs.RegistryGrpc:
 		// This is a special case as we dont spawn any process
 		conn, err := grpc.Dial(spec.Path, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to dial grpc target: %s", spec.Path)
 		}
 		pl.conn = conn
-		pl.sourceClient = clients.NewSourceClient(conn)
-		p.plugins[spec.Registry][spec.Path] = &pl
-		return p.plugins[spec.Registry][spec.Path].sourceClient, nil
-	case "local":
+		pl.client = clients.NewSourceClient(conn)
+		return &pl, nil
+	case specs.RegistryLocal:
 		pluginPath = spec.Path
-	case "github":
+	case specs.RegistryGithub:
 		var err error
 		pluginPath, err = p.downloadSourceGitHub(ctx, spec)
 		if err != nil {
@@ -223,25 +243,6 @@ func (p *PluginManager) GetSourcePluginClient(ctx context.Context, spec specs.So
 	}
 	pl.cmd = cmd
 	pl.conn = conn
-	pl.sourceClient = clients.NewSourceClient(conn)
-	p.plugins[spec.Registry][spec.Path] = &pl
-	return p.plugins[spec.Registry][spec.Path].sourceClient, nil
-}
-
-func (p *PluginManager) CloseAll(ctx context.Context) error {
-	for registryName, registry := range p.plugins {
-		for path, pl := range registry {
-			p.logger.Info().Str("registry", registryName).Str("plugin", path).Msg("closing connection to plugin")
-			if err := pl.conn.Close(); err != nil {
-				p.logger.Error().Str("registry", registryName).Str("plugin", path).Err(err)
-			}
-			pl.conn = nil
-			if pl.cmd != nil && pl.cmd.Process != nil {
-				if err := pl.cmd.Process.Kill(); err != nil {
-					p.logger.Error().Str("registry", registryName).Str("plugin", path).Err(err)
-				}
-			}
-		}
-	}
-	return nil
+	pl.client = clients.NewSourceClient(conn)
+	return &pl, nil
 }

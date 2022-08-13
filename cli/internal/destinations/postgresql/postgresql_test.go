@@ -1,4 +1,4 @@
-package destinations
+package postgresql
 
 import (
 	"context"

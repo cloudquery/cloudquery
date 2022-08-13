@@ -10,8 +10,7 @@ import (
 
 func BigqueryDatasetAccesses() *schema.Table {
 	return &schema.Table{
-		Name: "gcp_bigquery_dataset_accesses",
-
+		Name:     "gcp_bigquery_dataset_accesses",
 		Resolver: fetchBigqueryDatasetAccesses,
 		Columns: []schema.Column{
 			{
