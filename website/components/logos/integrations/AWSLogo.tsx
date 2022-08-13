@@ -1,11 +1,11 @@
-import {INTEGRATION_HEIGHT} from "./constants";
+import {INTEGRATION_WIDTH} from "./constants";
 
-const AWSLogo = ({height = INTEGRATION_HEIGHT}) => (
+const AWSLogo = ({width = INTEGRATION_WIDTH}) => (
     <svg
         viewBox="0 0 304 182"
         xmlns="http://www.w3.org/2000/svg"
         xmlSpace="preserve"
-        height={height}
+        width={width}
         className="dark:text-white text-gray-900"
         style={{
             fillRule: "evenodd",
