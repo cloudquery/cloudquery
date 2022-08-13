@@ -87,6 +87,11 @@ func Databases() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("TargetDatabase.DatabaseName"),
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveGlueDatabaseTags,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -464,6 +469,19 @@ func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, 
 		input.NextToken = result.NextToken
 	}
 	return nil
+}
+func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	input := glue.GetTagsInput{
+		ResourceArn: aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name))),
+	}
+
+	response, err := svc.GetTags(ctx, &input)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set(c.Name, response.Tags))
 }
 
 // ====================================================================================================================

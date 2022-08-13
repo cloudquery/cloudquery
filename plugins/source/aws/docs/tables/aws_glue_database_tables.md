@@ -6,6 +6,7 @@ Represents a collection of related data organized in columns and rows
 | ------------- | ------------- | -----  |
 |database_cq_id|uuid|Unique CloudQuery ID of aws_glue_databases table (FK)|
 |parameters|jsonb||
+|tags|jsonb||
 |storage_parameters|jsonb||
 |name|text|The table name|
 |catalog_id|text|The ID of the Data Catalog in which the table resides|
