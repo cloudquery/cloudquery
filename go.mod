@@ -4,10 +4,10 @@ go 1.18
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect
-	github.com/cloudquery/cq-provider-sdk v0.14.5
+	github.com/cloudquery/cq-provider-sdk v0.14.6
 	github.com/fatih/color v1.13.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
-	github.com/hashicorp/go-hclog v1.2.1
+	github.com/hashicorp/go-hclog v1.2.2
 	github.com/hashicorp/go-plugin v1.4.4
 	github.com/hashicorp/go-version v1.6.0
 	github.com/hashicorp/hcl/v2 v2.13.0
@@ -28,7 +28,7 @@ require (
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
-	github.com/ProtonMail/go-crypto v0.0.0-20220714114130-e85cedf506cd
+	github.com/ProtonMail/go-crypto v0.0.0-20220730123233-d6ffb7692adf
 	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/driftprogramming/pgxpoolmock v1.1.0
 	github.com/georgysavva/scany v1.0.0
@@ -36,7 +36,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v35 v35.3.0
 	github.com/google/uuid v1.3.0
-	github.com/hairyhenderson/go-fsimpl v0.0.0-20220716131823-152ecd217a2e
+	github.com/hairyhenderson/go-fsimpl v0.0.0-20220730140024-5cfe3b43365b
 	github.com/hashicorp/go-getter v1.6.2
 	github.com/jackc/pgconn v1.12.1
 	github.com/johannesboyne/gofakes3 v0.0.0-20220627085814-c3ac35da23b2
@@ -74,7 +74,7 @@ require (
 	github.com/acarl005/stripansi v0.0.0-20180116102854-5a71ef0e047d // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
-	github.com/aws/aws-sdk-go v1.44.56 // indirect
+	github.com/aws/aws-sdk-go v1.44.66 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.16.7 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.1 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.15.14 // indirect
@@ -94,6 +94,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.9 // indirect
 	github.com/aws/smithy-go v1.12.0 // indirect
 	github.com/bgentry/go-netrc v0.0.0-20140422174119-9fd32a8b3d3d // indirect
+	github.com/cloudflare/circl v1.1.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/creasty/defaults v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
