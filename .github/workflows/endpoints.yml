@@ -1,4 +1,4 @@
-name: endpoints-generation
+name: Sync AWS Source Plugin Endpoints
 on:
   schedule:
     - cron:  "30 * * * *"

@@ -1,9 +1,8 @@
-name: check_generated_code_drift
+name: Check Drift in Auto Generated Code
 on:
   pull_request:
     branches:
       - main
-      - monorepo
 jobs:
   check_generated_code_drift:
     name: Check Generated Code for Drift
