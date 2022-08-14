@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.13.8](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.7...v0.13.8) (2022-08-12)
+
+
+### Features
+
+* Add support for EventBridge ([#1407](https://github.com/cloudquery/cq-provider-aws/issues/1407)) ([2d6d138](https://github.com/cloudquery/cq-provider-aws/commit/2d6d138327995c16587800774c24bea6f0de7e98))
+* Add support for Inspector Classic & Inspector V2 findings ([#1305](https://github.com/cloudquery/cq-provider-aws/issues/1305)) ([#1412](https://github.com/cloudquery/cq-provider-aws/issues/1412)) ([1f1ae96](https://github.com/cloudquery/cq-provider-aws/commit/1f1ae9631f2087016a70d14b67216a34e0f38dfe))
+* Kinesis Firehose Support ([#1359](https://github.com/cloudquery/cq-provider-aws/issues/1359)) ([4324f6b](https://github.com/cloudquery/cq-provider-aws/commit/4324f6b2b09399cc86ebd55788730421b2e298a8))
+
+
+### Bug Fixes
+
+* Update endpoints ([#1418](https://github.com/cloudquery/cq-provider-aws/issues/1418)) ([b9f8ece](https://github.com/cloudquery/cq-provider-aws/commit/b9f8ecede9f4892b6f600f9149ca31ea16ec32e8))
+
 ## [0.13.7](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.6...v0.13.7) (2022-08-11)
 
 
