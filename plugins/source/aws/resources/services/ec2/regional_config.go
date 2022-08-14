@@ -53,17 +53,13 @@ func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *sche
 
 	svc := c.Services().EC2
 	var regionalConfig ec2RegionalConfig
-	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{}, func(options *ec2.Options) {
-		options.Region = c.Region
-	})
+	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{})
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	regionalConfig.EbsDefaultKmsKeyId = resp.KmsKeyId
 
-	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{}, func(options *ec2.Options) {
-		options.Region = c.Region
-	})
+	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{})
 	if err != nil {
 		return diag.WrapError(err)
 	}

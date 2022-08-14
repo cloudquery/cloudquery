@@ -105,7 +105,7 @@ func ApigatewayUsagePlans() *schema.Table {
 			{
 				Name:          "aws_apigateway_usage_plan_api_stages",
 				Description:   "API stage name of the associated API stage in a usage plan.",
-				Resolver:      fetchApigatewayUsagePlanApiStages,
+				Resolver:      schema.PathTableResolver("ApiStages"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -200,9 +200,7 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	for {
-		response, err := svc.GetUsagePlans(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetUsagePlans(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -214,20 +212,13 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	return nil
 }
-func fetchApigatewayUsagePlanApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.UsagePlan)
-	res <- r.ApiStages
-	return nil
-}
 func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.UsagePlan)
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	config := apigateway.GetUsagePlanKeysInput{UsagePlanId: r.Id}
 	for {
-		response, err := svc.GetUsagePlanKeys(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetUsagePlanKeys(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

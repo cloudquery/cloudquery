@@ -69,13 +69,13 @@ func Databases() *schema.Table {
 			{
 				Name:        "hardware_cpu_count",
 				Description: "The number of vCPUs for the database",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("Hardware.CpuCount"),
 			},
 			{
 				Name:        "hardware_disk_size_in_gb",
 				Description: "The size of the disk for the database",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("Hardware.DiskSizeInGb"),
 			},
 			{
@@ -109,7 +109,7 @@ func Databases() *schema.Table {
 			{
 				Name:        "master_endpoint_port",
 				Description: "Specifies the port that the database is listening on",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("MasterEndpoint.Port"),
 			},
 			{
@@ -190,7 +190,7 @@ func Databases() *schema.Table {
 			{
 				Name:        "aws_lightsail_database_pending_maintenance_actions",
 				Description: "Describes a pending database maintenance action",
-				Resolver:    fetchLightsailDatabasePendingMaintenanceActions,
+				Resolver:    schema.PathTableResolver("PendingMaintenanceActions"),
 				Columns: []schema.Column{
 					{
 						Name:        "database_cq_id",
@@ -347,9 +347,7 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabases(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabases(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -361,11 +359,6 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func fetchLightsailDatabasePendingMaintenanceActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.RelationalDatabase)
-	res <- r.PendingMaintenanceActions
-	return nil
-}
 func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RelationalDatabase)
 	input := lightsail.GetRelationalDatabaseParametersInput{
@@ -374,9 +367,7 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabaseParameters(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseParameters(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -397,9 +388,7 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabaseEvents(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseEvents(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -418,9 +407,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	}
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
-	streams, err := svc.GetRelationalDatabaseLogStreams(ctx, &input, func(options *lightsail.Options) {
-		options.Region = c.Region
-	})
+	streams, err := svc.GetRelationalDatabaseLogStreams(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -455,9 +442,7 @@ func fetchLogEvents(ctx context.Context, res chan<- interface{}, c *client.Clien
 		EndTime:                &endTime,
 	}
 	for {
-		response, err := svc.GetRelationalDatabaseLogEvents(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseLogEvents(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

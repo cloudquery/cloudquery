@@ -9,8 +9,8 @@ Describes a block storage disk
 |attached_to|text|The resources to which the disk is attached|
 |attachment_state|text|(Deprecated) The attachment state of the disk|
 |created_at|timestamp without time zone|The date when the disk was created|
-|gb_in_use|integer|(Deprecated) The number of GB in use by the disk|
-|iops|integer|The input/output operations per second (IOPS) of the disk|
+|gb_in_use|bigint|(Deprecated) The number of GB in use by the disk|
+|iops|bigint|The input/output operations per second (IOPS) of the disk|
 |is_attached|boolean|A Boolean value indicating whether the disk is attached|
 |is_system_disk|boolean|A Boolean value indicating whether this disk is a system disk (has an operating system loaded on it)|
 |location_availability_zone|text|The Availability Zone|
@@ -18,7 +18,7 @@ Describes a block storage disk
 |name|text|The unique name of the disk|
 |path|text|The disk path|
 |resource_type|text|The Lightsail resource type (eg, Disk)|
-|size_in_gb|integer|The size of the disk in GB|
+|size_in_gb|bigint|The size of the disk in GB|
 |state|text|Describes the status of the disk|
 |support_code|text|The support code|
 |tags|jsonb|The tag keys and optional values for the resource|

@@ -126,9 +126,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 	svc := c.Services().IOT
 	for {
-		response, err := svc.ListStreams(ctx, &input, func(options *iot.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListStreams(ctx, &input)
 		if err != nil {
 			return diags.Add(diag.FromError(diag.WrapError(err), diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
 		}

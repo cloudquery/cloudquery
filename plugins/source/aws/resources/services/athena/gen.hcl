@@ -9,8 +9,8 @@ description_modifier "remove_read_only" {
 resource "aws" "athena" "data_catalogs" {
   path = "github.com/aws/aws-sdk-go-v2/service/athena/types.DataCatalog"
 
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
+  ignoreError "IgnoreCommonErrors" {
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
@@ -25,6 +25,9 @@ resource "aws" "athena" "data_catalogs" {
       "arn",
     ]
   }
+
+  ignore_columns_in_tests = ["description", "parameters"]
+
   userDefinedColumn "account_id" {
     type        = "string"
     description = "The AWS Account ID of the resource."
@@ -47,14 +50,28 @@ resource "aws" "athena" "data_catalogs" {
   }
 
   user_relation "aws" "athena" "databases" {
-    path = "github.com/aws/aws-sdk-go-v2/service/athena/types.Database"
+    path                    = "github.com/aws/aws-sdk-go-v2/service/athena/types.Database"
+    ignore_columns_in_tests = ["description", "parameters"]
+
     user_relation "aws" "athena" "tables" {
-      path = "github.com/aws/aws-sdk-go-v2/service/athena/types.TableMetadata"
+      path                    = "github.com/aws/aws-sdk-go-v2/service/athena/types.TableMetadata"
+      ignore_columns_in_tests = ["last_access_time", "table_type"]
+
+      relation "aws" "athena_data_catalog_database_table" "columns" {
+        path            = "github.com/aws/aws-sdk-go-v2/service/athena/types.Column"
+        ignore_in_tests = true
+      }
+
+      relation "aws" "athena_data_catalog_database_table" "partition_keys" {
+        path            = "github.com/aws/aws-sdk-go-v2/service/athena/types.Column"
+        ignore_in_tests = true
+      }
     }
   }
 
   userDefinedColumn "tags" {
     type              = "json"
+    description       = "Tags associated with the Athena data catalog."
     generate_resolver = true
   }
 }
@@ -63,8 +80,8 @@ resource "aws" "athena" "data_catalogs" {
 resource "aws" "athena" "work_groups" {
   path = "github.com/aws/aws-sdk-go-v2/service/athena/types.WorkGroup"
 
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
+  ignoreError "IgnoreCommonErrors" {
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
@@ -79,6 +96,13 @@ resource "aws" "athena" "work_groups" {
       "arn"
     ]
   }
+
+  ignore_columns_in_tests = [
+    "bytes_scanned_cutoff_per_query",
+    "encryption_configuration_kms_key",
+    "expected_bucket_owner",
+    "output_location"
+  ]
   userDefinedColumn "account_id" {
     type        = "string"
     description = "The AWS Account ID of the resource."
@@ -115,6 +139,7 @@ resource "aws" "athena" "work_groups" {
 
   userDefinedColumn "tags" {
     type              = "json"
+    description       = "Tags associated with the Athena work group."
     generate_resolver = true
   }
   column "effective_engine_version" {
@@ -122,10 +147,13 @@ resource "aws" "athena" "work_groups" {
   }
 
   user_relation "aws" "athena" "prepared_statements" {
-    path = "github.com/aws/aws-sdk-go-v2/service/athena/types.PreparedStatement"
+    path            = "github.com/aws/aws-sdk-go-v2/service/athena/types.PreparedStatement"
+    ignore_in_tests = true
   }
   user_relation "aws" "athena" "query_executions" {
-    path = "github.com/aws/aws-sdk-go-v2/service/athena/types.QueryExecution"
+    path            = "github.com/aws/aws-sdk-go-v2/service/athena/types.QueryExecution"
+    ignore_in_tests = true
+
     column "engine_version" {
       skip_prefix = true
     }

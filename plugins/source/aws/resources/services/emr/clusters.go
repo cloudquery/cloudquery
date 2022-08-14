@@ -328,9 +328,7 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	c := meta.(*client.Client)
 	svc := c.Services().EMR
 	for {
-		response, err := svc.ListClusters(ctx, &config, func(options *emr.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListClusters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

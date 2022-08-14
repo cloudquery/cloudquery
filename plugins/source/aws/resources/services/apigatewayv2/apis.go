@@ -891,9 +891,7 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetApis(ctx, &config, func(o *apigatewayv2.Options) {
-			// o.Region = c.Region
-		})
+		response, err := svc.GetApis(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -914,9 +912,7 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetAuthorizers(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetAuthorizers(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -937,9 +933,7 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetDeployments(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetDeployments(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -960,9 +954,7 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetIntegrations(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetIntegrations(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -985,9 +977,7 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetIntegrationResponses(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetIntegrationResponses(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -1008,9 +998,7 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetModels(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetModels(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -1033,9 +1021,7 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
-	response, err := svc.GetModelTemplate(ctx, &config, func(o *apigatewayv2.Options) {
-		o.Region = cl.Region
-	})
+	response, err := svc.GetModelTemplate(ctx, &config)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -1049,9 +1035,7 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetRoutes(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetRoutes(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -1074,9 +1058,7 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetRouteResponses(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetRouteResponses(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)
@@ -1097,9 +1079,7 @@ func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetStages(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetStages(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)

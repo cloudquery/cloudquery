@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
@@ -30,15 +31,20 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/efs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eks"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticsearch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/emr"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eventbridge"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/firehose"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kinesis"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/kms"
@@ -49,6 +55,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/redshift"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sagemaker"
@@ -95,6 +102,7 @@ func Provider() *provider.Provider {
 			"apigatewayv2.domain_names":               apigatewayv2.Apigatewayv2DomainNames(),
 			"apigatewayv2.vpc_links":                  apigatewayv2.Apigatewayv2VpcLinks(),
 			"applicationautoscaling.policies":         applicationautoscaling.ApplicationautoscalingPolicies(),
+			"appsync.graphql_apis":                    appsync.GraphqlApis(),
 			"athena.data_catalogs":                    athena.DataCatalogs(),
 			"athena.work_groups":                      athena.WorkGroups(),
 			"autoscaling.groups":                      autoscaling.AutoscalingGroups(),
@@ -159,6 +167,7 @@ func Provider() *provider.Provider {
 			"ecs.task_definitions":                    ecs.EcsTaskDefinitions(),
 			"efs.filesystems":                         efs.EfsFilesystems(),
 			"eks.clusters":                            eks.EksClusters(),
+			"elasticache.clusters":                    elasticache.Clusters(),
 			"elasticbeanstalk.application_versions":   elasticbeanstalk.ApplicationVersions(),
 			"elasticbeanstalk.applications":           elasticbeanstalk.ElasticbeanstalkApplications(),
 			"elasticbeanstalk.environments":           elasticbeanstalk.ElasticbeanstalkEnvironments(),
@@ -168,6 +177,7 @@ func Provider() *provider.Provider {
 			"elbv2.target_groups":                     elbv2.Elbv2TargetGroups(),
 			"emr.block_public_access_configs":         emr.EmrBlockPublicAccessConfigs(),
 			"emr.clusters":                            emr.EmrClusters(),
+			"eventbridge.event_buses":                 eventbridge.EventBuses(),
 			"fsx.backups":                             fsx.FsxBackups(),
 			"glue.classifiers":                        glue.Classifiers(),
 			"glue.connections":                        glue.Connections(),
@@ -192,6 +202,8 @@ func Provider() *provider.Provider {
 			"iam.server_certificates":                 iam.IamServerCertificates(),
 			"iam.users":                               iam.IamUsers(),
 			"iam.virtual_mfa_devices":                 iam.IamVirtualMfaDevices(),
+			"inspector.findings":                      inspector.Findings(),
+			"inspector2.findings":                     inspector2.Findings(),
 			"iot.billing_groups":                      iot.IotBillingGroups(),
 			"iot.ca_certificates":                     iot.IotCaCertificates(),
 			"iot.certificates":                        iot.IotCertificates(),
@@ -202,6 +214,7 @@ func Provider() *provider.Provider {
 			"iot.things":                              iot.IotThings(),
 			"iot.topic_rules":                         iot.IotTopicRules(),
 			"kinesis.data_streams":                    kinesis.Streams(),
+			"firehose.delivery_streams":               firehose.DeliveryStreams(),
 			"kms.keys":                                kms.Keys(),
 			"lambda.functions":                        lambda.Functions(),
 			"lambda.layers":                           lambda.LambdaLayers(),
@@ -234,6 +247,7 @@ func Provider() *provider.Provider {
 			"redshift.clusters":                       redshift.RedshiftClusters(),
 			"redshift.event_subscriptions":            redshift.EventSubscriptions(),
 			"redshift.subnet_groups":                  redshift.RedshiftSubnetGroups(),
+			"resourcegroups.resource_groups":          resourcegroups.ResourceGroups(),
 			"route53.domains":                         route53.Route53Domains(),
 			"route53.health_checks":                   route53.Route53HealthChecks(),
 			"route53.hosted_zones":                    route53.Route53HostedZones(),

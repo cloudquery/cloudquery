@@ -303,7 +303,7 @@ func DynamodbTables() *schema.Table {
 			{
 				Name:        "aws_dynamodb_table_local_secondary_indexes",
 				Description: "Represents the properties of a local secondary index.",
-				Resolver:    fetchDynamodbTableLocalSecondaryIndexes,
+				Resolver:    schema.PathTableResolver("LocalSecondaryIndexes"),
 				Columns: []schema.Column{
 					{
 						Name:        "table_cq_id",
@@ -511,17 +511,13 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	config := dynamodb.ListTablesInput{}
 	for {
-		output, err := svc.ListTables(ctx, &config, func(o *dynamodb.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.ListTables(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 
 		for i := range output.TableNames {
-			response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &output.TableNames[i]}, func(o *dynamodb.Options) {
-				o.Region = c.Region
-			})
+			response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &output.TableNames[i]})
 			if err != nil {
 				if c.IsNotFoundError(err) {
 					continue
@@ -546,8 +542,6 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 	svc := cl.Services().DynamoDB
 	response, err := svc.ListTagsOfResource(ctx, &dynamodb.ListTagsOfResourceInput{
 		ResourceArn: table.TableArn,
-	}, func(options *dynamodb.Options) {
-		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
@@ -626,13 +620,6 @@ func resolveDynamodbTableGlobalSecondaryIndexKeySchema(ctx context.Context, meta
 	r := resource.Item.(types.GlobalSecondaryIndexDescription)
 	return diag.WrapError(resource.Set(c.Name, marshalKeySchema(r.KeySchema)))
 }
-func fetchDynamodbTableLocalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(*types.TableDescription)
-	for i := range p.LocalSecondaryIndexes {
-		res <- p.LocalSecondaryIndexes[i]
-	}
-	return nil
-}
 func resolveDynamodbTableLocalSecondaryIndexKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.LocalSecondaryIndexDescription)
 	return diag.WrapError(resource.Set(c.Name, marshalKeySchema(r.KeySchema)))
@@ -672,8 +659,6 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 
 	output, err := svc.DescribeTableReplicaAutoScaling(ctx, &dynamodb.DescribeTableReplicaAutoScalingInput{
 		TableName: par.TableName,
-	}, func(o *dynamodb.Options) {
-		o.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {
@@ -728,8 +713,6 @@ func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.Client
 
 	output, err := svc.DescribeContinuousBackups(ctx, &dynamodb.DescribeContinuousBackupsInput{
 		TableName: par.TableName,
-	}, func(o *dynamodb.Options) {
-		o.Region = c.Region
 	})
 	if err != nil {
 		if c.IsNotFoundError(err) {

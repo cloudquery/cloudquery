@@ -93,9 +93,7 @@ func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, paren
 	svc := cl.Services().RDS
 	var input rds.DescribeDBSecurityGroupsInput
 	for {
-		output, err := svc.DescribeDBSecurityGroups(ctx, &input, func(o *rds.Options) {
-			o.Region = cl.Region
-		})
+		output, err := svc.DescribeDBSecurityGroups(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -123,9 +121,7 @@ func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, 
 	g := resource.Item.(types.DBSecurityGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBSecurityGroupArn}, func(o *rds.Options) {
-		o.Region = cl.Region
-	})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBSecurityGroupArn})
 	if err != nil {
 		return diag.WrapError(err)
 	}

@@ -17,7 +17,7 @@ Describes a database snapshot
 |availability_zone|text|The Availability Zone|
 |name|text|The name of the database snapshot|
 |resource_type|text|The Lightsail resource type|
-|size_in_gb|integer|The size of the disk in GB (for example, 32) for the database snapshot|
+|size_in_gb|bigint|The size of the disk in GB (for example, 32) for the database snapshot|
 |state|text|The state of the database snapshot|
 |support_code|text|The support code for the database snapshot|
 |tags|jsonb|The tag keys and optional values for the resource|

@@ -141,9 +141,7 @@ func fetchXraySamplingRules(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := c.Services().Xray
 	input := xray.GetSamplingRulesInput{}
 	for {
-		output, err := svc.GetSamplingRules(ctx, &input, func(o *xray.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.GetSamplingRules(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -162,9 +160,7 @@ func ResolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, re
 	svc := cl.Services().Xray
 	params := xray.ListTagsForResourceInput{ResourceARN: sr.SamplingRule.RuleARN}
 
-	output, err := svc.ListTagsForResource(ctx, &params, func(o *xray.Options) {
-		o.Region = cl.Region
-	})
+	output, err := svc.ListTagsForResource(ctx, &params)
 	if err != nil {
 		if cl.IsNotFoundError(err) {
 			return nil

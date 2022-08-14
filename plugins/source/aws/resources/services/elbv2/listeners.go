@@ -107,7 +107,7 @@ func Elbv2Listeners() *schema.Table {
 			{
 				Name:          "aws_elbv2_listener_default_actions",
 				Description:   "Information about an action",
-				Resolver:      fetchElbv2ListenerDefaultActions,
+				Resolver:      schema.PathTableResolver("DefaultActions"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -322,7 +322,7 @@ func Elbv2Listeners() *schema.Table {
 					{
 						Name:          "aws_elbv2_listener_default_action_forward_config_target_groups",
 						Description:   "Information about how traffic will be distributed between multiple target groups in a forward rule.",
-						Resolver:      fetchElbv2ListenerDefaultActionForwardConfigTargetGroups,
+						Resolver:      schema.PathTableResolver("ForwardConfig.TargetGroups"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -360,9 +360,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv2
 	for {
-		response, err := svc.DescribeListeners(ctx, &config, func(options *elbv2.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeListeners(ctx, &config)
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
@@ -426,22 +424,5 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 		}
 		config.Marker = response.NextMarker
 	}
-	return nil
-}
-
-func fetchElbv2ListenerDefaultActions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	listener := parent.Item.(types.Listener)
-	res <- listener.DefaultActions
-	return nil
-}
-func fetchElbv2ListenerDefaultActionForwardConfigTargetGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	action := parent.Item.(types.Action)
-	if action.ForwardConfig == nil {
-		return nil
-	}
-	if action.ForwardConfig.TargetGroups == nil {
-		return nil
-	}
-	res <- action.ForwardConfig.TargetGroups
 	return nil
 }

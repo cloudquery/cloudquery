@@ -168,9 +168,7 @@ func fetchEc2Subnets(ctx context.Context, meta schema.ClientMeta, parent *schema
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeSubnets(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeSubnets(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

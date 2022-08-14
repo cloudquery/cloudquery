@@ -9,7 +9,7 @@ description_modifier "remove_read_only" {
 resource "aws" "access_analyzer" "analyzers" {
   path = "github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types.AnalyzerSummary"
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccount" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
@@ -43,11 +43,6 @@ resource "aws" "access_analyzer" "analyzers" {
   }
 
   user_relation "aws" "access_analyzer" "findings" {
-    options {
-      primary_keys = [
-        "analyzer_cq_id", "id"
-      ]
-    }
     path = "github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types.FindingSummary"
   }
 

@@ -1,6 +1,6 @@
 
 # Table: aws_wafregional_web_acls
-This is AWS WAF Classic documentation
+Contains the Rules that identify the requests that you want to allow, block, or count.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

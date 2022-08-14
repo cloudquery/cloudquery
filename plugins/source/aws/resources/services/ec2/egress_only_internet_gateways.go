@@ -73,9 +73,7 @@ func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientM
 	svc := c.Services().EC2
 	input := ec2.DescribeEgressOnlyInternetGatewaysInput{}
 	for {
-		output, err := svc.DescribeEgressOnlyInternetGateways(ctx, &input, func(o *ec2.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeEgressOnlyInternetGateways(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

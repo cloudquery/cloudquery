@@ -175,7 +175,7 @@ func Stacks() *schema.Table {
 				Name:        "tags",
 				Description: "A list of Tags that specify information about the stack.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveStacksTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "timeout_in_minutes",
@@ -187,7 +187,7 @@ func Stacks() *schema.Table {
 			{
 				Name:          "aws_cloudformation_stack_outputs",
 				Description:   "The Output data type.",
-				Resolver:      fetchCloudformationStackOutputs,
+				Resolver:      schema.PathTableResolver("Outputs"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -302,9 +302,7 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
 	for {
-		output, err := svc.DescribeStacks(ctx, &config, func(options *cloudformation.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeStacks(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -316,19 +314,6 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	}
 	return nil
 }
-func resolveStacksTags(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r := resource.Item.(types.Stack)
-	tags := map[string]*string{}
-	for _, t := range r.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
-}
-func fetchCloudformationStackOutputs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(types.Stack)
-	res <- r.Outputs
-	return nil
-}
 func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	stack := parent.Item.(types.Stack)
 	config := cloudformation.ListStackResourcesInput{
@@ -337,9 +322,7 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudformation
 	for {
-		output, err := svc.ListStackResources(ctx, &config, func(options *cloudformation.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.ListStackResources(ctx, &config)
 		if err != nil {
 			if client.IsErrorRegex(err, "ValidationError", validStackNotFoundRegex) {
 				meta.Logger().Debug("received ValidationError on ListStackResources, stack does not exist", "region", c.Region, "err", err)

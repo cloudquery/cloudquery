@@ -90,9 +90,7 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 
 	config := wafv2.ListAvailableManagedRuleGroupsInput{Scope: c.WAFScope}
 	for {
-		output, err := service.ListAvailableManagedRuleGroups(ctx, &config, func(options *wafv2.Options) {
-			options.Region = c.Region
-		})
+		output, err := service.ListAvailableManagedRuleGroups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

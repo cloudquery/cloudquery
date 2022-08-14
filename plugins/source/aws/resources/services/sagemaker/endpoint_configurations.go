@@ -136,9 +136,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 	svc := c.Services().SageMaker
 	config := sagemaker.ListEndpointConfigsInput{}
 	for {
-		response, err := svc.ListEndpointConfigs(ctx, &config, func(options *sagemaker.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListEndpointConfigs(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -177,9 +175,7 @@ func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.
 	config := sagemaker.ListTagsInput{
 		ResourceArn: r.EndpointConfigArn,
 	}
-	response, err := svc.ListTags(ctx, &config, func(options *sagemaker.Options) {
-		options.Region = c.Region
-	})
+	response, err := svc.ListTags(ctx, &config)
 	if err != nil {
 		return diag.WrapError(err)
 	}

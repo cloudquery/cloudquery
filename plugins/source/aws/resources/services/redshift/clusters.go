@@ -791,9 +791,7 @@ func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
 	for {
-		response, err := svc.DescribeClusters(ctx, &config, func(o *redshift.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeClusters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -814,9 +812,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 	cfg := redshift.DescribeLoggingStatusInput{
 		ClusterIdentifier: r.ClusterIdentifier,
 	}
-	response, err := svc.DescribeLoggingStatus(ctx, &cfg, func(o *redshift.Options) {
-		o.Region = cl.Region
-	})
+	response, err := svc.DescribeLoggingStatus(ctx, &cfg)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -832,9 +828,7 @@ func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, 
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
 	for {
-		response, err := svc.DescribeClusterParameters(ctx, &config, func(o *redshift.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeClusterParameters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

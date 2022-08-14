@@ -149,9 +149,7 @@ func fetchEc2VpcEndpointServiceConfigurations(ctx context.Context, meta schema.C
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
 	for {
-		output, err := svc.DescribeVpcEndpointServiceConfigurations(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeVpcEndpointServiceConfigurations(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

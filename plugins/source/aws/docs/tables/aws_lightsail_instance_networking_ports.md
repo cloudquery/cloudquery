@@ -11,7 +11,7 @@ Describes information about ports for an Amazon Lightsail instance
 |cidr_list_aliases|text[]|An alias that defines access for a preconfigured range of IP addresses|
 |cidrs|text[]|The IPv4 address, or range of IPv4 addresses (in CIDR notation) that are allowed to connect to an instance through the ports, and the protocol|
 |common_name|text|The common name of the port information|
-|from_port|integer|The first port in a range of open ports on an instance|
+|from_port|bigint|The first port in a range of open ports on an instance|
 |ipv6_cidrs|text[]|The IPv6 address, or range of IPv6 addresses (in CIDR notation) that are allowed to connect to an instance through the ports, and the protocol|
 |protocol|text|The IP protocol name|
-|to_port|integer|The last port in a range of open ports on an instance|
+|to_port|bigint|The last port in a range of open ports on an instance|

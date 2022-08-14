@@ -269,9 +269,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 
 	for {
-		response, err := svc.ListJobs(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListJobs(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -305,9 +303,7 @@ func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 	tags := make(map[string]string)
 
 	for {
-		response, err := svc.ListTagsForResource(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
 			return diag.WrapError(err)

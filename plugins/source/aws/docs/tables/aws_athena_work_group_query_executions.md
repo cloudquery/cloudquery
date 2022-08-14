@@ -7,6 +7,7 @@ Information about a single instance of a query execution
 |work_group_cq_id|uuid|Unique CloudQuery ID of aws_athena_work_groups table (FK)|
 |effective_engine_version|text|The engine version on which the query runs If the user requests a valid engine version other than Auto, the effective engine version is the same as the engine version that the user requested|
 |selected_engine_version|text|The engine version requested by the user|
+|execution_parameters|text[]|A list of values for the parameters in a query|
 |query|text|The SQL query statements which the query execution ran|
 |catalog|text|The name of the data catalog used in the query execution|
 |database|text|The name of the database used in the query execution|
@@ -24,9 +25,9 @@ Information about a single instance of a query execution
 |query_queue_time_in_millis|bigint|The number of milliseconds that the query was in your query queue waiting for resources|
 |service_processing_time_in_millis|bigint|The number of milliseconds that Athena took to finalize and publish the query results after the query engine finished running the query|
 |total_execution_time_in_millis|bigint|The number of milliseconds that Athena took to run the query|
-|athena_error_error_category|integer|An integer value that specifies the category of a query failure error|
+|athena_error_error_category|bigint|An integer value that specifies the category of a query failure error|
 |athena_error_error_message|text|Contains a short description of the error that occurred|
-|athena_error_error_type|integer|An integer value that provides specific information about an Athena query error For the meaning of specific values, see the Error Type Reference (https://docsawsamazoncom/athena/latest/ug/error-referencehtml#error-reference-error-type-reference) in the Amazon Athena User Guide|
+|athena_error_error_type|bigint|An integer value that provides specific information about an Athena query error For the meaning of specific values, see the Error Type Reference (https://docsawsamazoncom/athena/latest/ug/error-referencehtml#error-reference-error-type-reference) in the Amazon Athena User Guide|
 |athena_error_retryable|boolean|True if the query might succeed if resubmitted|
 |completion_date_time|timestamp without time zone|The date and time that the query completed|
 |state|text|The state of query execution|

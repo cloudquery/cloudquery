@@ -183,9 +183,7 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 	svc := c.Services().SageMaker
 	config := sagemaker.ListModelsInput{}
 	for {
-		response, err := svc.ListModels(ctx, &config, func(options *sagemaker.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListModels(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -226,9 +224,7 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 	config := sagemaker.ListTagsInput{
 		ResourceArn: r.ModelArn,
 	}
-	response, err := svc.ListTags(ctx, &config, func(options *sagemaker.Options) {
-		options.Region = c.Region
-	})
+	response, err := svc.ListTags(ctx, &config)
 	if err != nil {
 		return diag.WrapError(err)
 	}

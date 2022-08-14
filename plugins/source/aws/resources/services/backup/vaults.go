@@ -250,9 +250,7 @@ func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *sche
 	svc := cl.Services().Backup
 	params := backup.ListBackupVaultsInput{MaxResults: aws.Int32(1000)} // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
 	for {
-		result, err := svc.ListBackupVaults(ctx, &params, func(o *backup.Options) {
-			o.Region = cl.Region
-		})
+		result, err := svc.ListBackupVaults(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -340,9 +338,7 @@ func fetchVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, paren
 	vault := parent.Item.(types.BackupVaultListMember)
 	params := backup.ListRecoveryPointsByBackupVaultInput{BackupVaultName: vault.BackupVaultName, MaxResults: aws.Int32(100)}
 	for {
-		result, err := svc.ListRecoveryPointsByBackupVault(ctx, &params, func(o *backup.Options) {
-			o.Region = cl.Region
-		})
+		result, err := svc.ListRecoveryPointsByBackupVault(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}

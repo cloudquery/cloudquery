@@ -1,6 +1,6 @@
 
 # Table: aws_wafregional_rule_groups
-This is AWS WAF Classic documentation
+A collection of predefined rules that you can add to a web ACL.
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

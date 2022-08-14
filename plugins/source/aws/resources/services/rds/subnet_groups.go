@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
-	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -67,7 +66,7 @@ func RdsSubnetGroups() *schema.Table {
 			{
 				Name:        "aws_rds_subnet_group_subnets",
 				Description: "This data type is used as a response element for the DescribeDBSubnetGroups operation. ",
-				Resolver:    fetchRdsSubnetGroupSubnets,
+				Resolver:    schema.PathTableResolver("Subnets"),
 				Columns: []schema.Column{
 					{
 						Name:        "subnet_group_cq_id",
@@ -112,9 +111,7 @@ func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	for {
-		response, err := svc.DescribeDBSubnetGroups(ctx, &config, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeDBSubnetGroups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -124,10 +121,5 @@ func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		config.Marker = response.Marker
 	}
-	return nil
-}
-func fetchRdsSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	subnetGroup := parent.Item.(types.DBSubnetGroup)
-	res <- subnetGroup.Subnets
 	return nil
 }

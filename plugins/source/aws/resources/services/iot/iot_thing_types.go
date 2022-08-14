@@ -100,9 +100,7 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 	svc := c.Services().IOT
 	for {
-		response, err := svc.ListThingTypes(ctx, &input, func(options *iot.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListThingTypes(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -126,9 +124,7 @@ func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resour
 	tags := make(map[string]string)
 
 	for {
-		response, err := svc.ListTagsForResource(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
 			return diag.WrapError(err)

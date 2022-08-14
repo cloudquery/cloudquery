@@ -364,7 +364,7 @@ func RdsClusters() *schema.Table {
 			{
 				Name:        "aws_rds_cluster_associated_roles",
 				Description: "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB cluster. ",
-				Resolver:    fetchRdsClusterAssociatedRoles,
+				Resolver:    schema.PathTableResolver("AssociatedRoles"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -392,7 +392,7 @@ func RdsClusters() *schema.Table {
 			{
 				Name:        "aws_rds_cluster_db_cluster_members",
 				Description: "Contains information about an instance that is part of a DB cluster. ",
-				Resolver:    fetchRdsClusterDbClusterMembers,
+				Resolver:    schema.PathTableResolver("DBClusterMembers"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -427,7 +427,7 @@ func RdsClusters() *schema.Table {
 			{
 				Name:        "aws_rds_cluster_domain_memberships",
 				Description: "An Active Directory Domain membership record associated with the DB instance or cluster. ",
-				Resolver:    fetchRdsClusterDomainMemberships,
+				Resolver:    schema.PathTableResolver("DomainMemberships"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -462,7 +462,7 @@ func RdsClusters() *schema.Table {
 			{
 				Name:        "aws_rds_cluster_vpc_security_groups",
 				Description: "This data type is used as a response element for queries on VPC security group membership. ",
-				Resolver:    fetchRdsClusterVpcSecurityGroups,
+				Resolver:    schema.PathTableResolver("VpcSecurityGroups"),
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_cq_id",
@@ -494,9 +494,7 @@ func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	for {
-		response, err := svc.DescribeDBClusters(ctx, &config, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeDBClusters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -516,16 +514,6 @@ func resolveRdsClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 	}
 	return diag.WrapError(resource.Set("tags", tags))
 }
-func fetchRdsClusterAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.DBCluster)
-	res <- cluster.AssociatedRoles
-	return nil
-}
-func fetchRdsClusterDbClusterMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.DBCluster)
-	res <- cluster.DBClusterMembers
-	return nil
-}
 func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cluster := resource.Item.(types.DBCluster)
 	if cluster.DBClusterOptionGroupMemberships == nil {
@@ -536,15 +524,4 @@ func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta 
 		memberships[*m.DBClusterOptionGroupName] = m.Status
 	}
 	return diag.WrapError(resource.Set(c.Name, memberships))
-}
-
-func fetchRdsClusterDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.DBCluster)
-	res <- cluster.DomainMemberships
-	return nil
-}
-func fetchRdsClusterVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.DBCluster)
-	res <- cluster.VpcSecurityGroups
-	return nil
 }

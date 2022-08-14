@@ -138,9 +138,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	config := wafv2.ListRuleGroupsInput{Scope: c.WAFScope}
 	for {
-		output, err := service.ListRuleGroups(ctx, &config, func(options *wafv2.Options) {
-			options.Region = c.Region
-		})
+		output, err := service.ListRuleGroups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -175,9 +173,7 @@ func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, reso
 	outputTags := make(map[string]*string)
 	tagsConfig := wafv2.ListTagsForResourceInput{ResourceARN: ruleGroup.ARN}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(options *wafv2.Options) {
-			options.Region = cl.Region
-		})
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -120,9 +120,7 @@ func fetchElasticbeanstalkApplicationVersions(ctx context.Context, meta schema.C
 	svc := c.Services().ElasticBeanstalk
 
 	for {
-		output, err := svc.DescribeApplicationVersions(ctx, &config, func(options *elasticbeanstalk.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeApplicationVersions(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

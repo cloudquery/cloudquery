@@ -18,7 +18,7 @@ max_backoff: 60
 	// For example:
 	//
 	// accounts:
-	//   - id: cq-provider-aws
+	//   - id: cloudquery/cloudquery/plugins/source/aws
 	//     role_arn: "arn:aws:iam::70xxxxxxxxxx:role/CqProviderxxxxxxxxxxxxxxxxx"
 	//   - id: cq-dev
 	//     role_arn: "arn:aws:iam::70xxxxxxxxxx:role/CqProviderxxxxxxxxxxxxxxxxx"

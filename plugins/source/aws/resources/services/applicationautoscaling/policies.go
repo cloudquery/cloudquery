@@ -110,9 +110,7 @@ func fetchApplicationautoscalingPolicies(ctx context.Context, meta schema.Client
 		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
 	}
 	for {
-		output, err := svc.DescribeScalingPolicies(ctx, &config, func(o *applicationautoscaling.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeScalingPolicies(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -9,8 +9,8 @@ variable "prefix" {
 
 
 variable "tags" {
-  type = map
+  type = map(any)
   default = {
-    Environment = "cq-provider-aws"
+    Environment = "cloudquery/cloudquery/plugins/source/aws"
   }
 }

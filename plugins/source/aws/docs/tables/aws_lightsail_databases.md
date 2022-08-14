@@ -12,14 +12,14 @@ Describes a database
 |created_at|timestamp without time zone|The timestamp when the database was created|
 |engine|text|The database software (for example, MySQL)|
 |engine_version|text|The database engine version (for example, 5723)|
-|hardware_cpu_count|integer|The number of vCPUs for the database|
-|hardware_disk_size_in_gb|integer|The size of the disk for the database|
+|hardware_cpu_count|bigint|The number of vCPUs for the database|
+|hardware_disk_size_in_gb|bigint|The size of the disk for the database|
 |hardware_ram_size_in_gb|float|The amount of RAM in GB for the database|
 |latest_restorable_time|timestamp without time zone|The latest point in time to which the database can be restored|
 |availability_zone|text|The Availability Zone|
 |master_database_name|text|The name of the master database created when the Lightsail database resource is created|
 |master_endpoint_address|text|Specifies the DNS address of the database|
-|master_endpoint_port|integer|Specifies the port that the database is listening on|
+|master_endpoint_port|bigint|Specifies the port that the database is listening on|
 |master_username|text|The master user name of the database|
 |name|text|The unique name of the database resource in Lightsail|
 |parameter_apply_status|text|The status of parameter updates for the database|

@@ -97,9 +97,7 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 		Limit: aws.Int32(100), // maximum value: https://docs.aws.amazon.com/waf/latest/APIReference/API_ListIPSets.html
 	}
 	for {
-		result, err := svc.ListIPSets(ctx, &params, func(options *wafv2.Options) {
-			options.Region = cl.Region
-		})
+		result, err := svc.ListIPSets(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}

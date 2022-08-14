@@ -231,9 +231,7 @@ func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.Client
 	var config directconnect.DescribeVirtualInterfacesInput
 	c := meta.(*client.Client)
 	svc := c.Services().Directconnect
-	output, err := svc.DescribeVirtualInterfaces(ctx, &config, func(options *directconnect.Options) {
-		options.Region = c.Region
-	})
+	output, err := svc.DescribeVirtualInterfaces(ctx, &config)
 	if err != nil {
 		return diag.WrapError(err)
 	}

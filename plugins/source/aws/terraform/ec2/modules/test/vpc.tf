@@ -3,7 +3,7 @@ module "deny_all_sg" {
   version = "~> 4.8"
 
   name        = "${var.prefix}-ec2-deny-all-sg"
-  description = "cq-provider-aws deny all sg"
+  description = "cq-plugins-source-aws deny all sg"
   vpc_id      = module.vpc.vpc_id
 
 }

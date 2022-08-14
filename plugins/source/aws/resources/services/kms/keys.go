@@ -202,9 +202,7 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	c := meta.(*client.Client)
 	svc := c.Services().KMS
 	for {
-		response, err := svc.ListKeys(ctx, &input, func(options *kms.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListKeys(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -250,9 +248,7 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	params := kms.ListResourceTagsInput{KeyId: key.KeyId}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListResourceTags(ctx, &params, func(options *kms.Options) {
-			options.Region = cl.Region
-		})
+		result, err := svc.ListResourceTags(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -273,9 +269,7 @@ func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, res
 	if key.Origin == "EXTERNAL" || key.KeyManager == "AWS" {
 		return nil
 	}
-	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId}, func(options *kms.Options) {
-		options.Region = cl.Region
-	})
+	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId})
 	if err != nil {
 		return diag.WrapError(err)
 	}

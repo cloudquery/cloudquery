@@ -5,6 +5,42 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.13.8](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.7...v0.13.8) (2022-08-12)
+
+
+### Features
+
+* Add support for EventBridge ([#1407](https://github.com/cloudquery/cq-provider-aws/issues/1407)) ([2d6d138](https://github.com/cloudquery/cq-provider-aws/commit/2d6d138327995c16587800774c24bea6f0de7e98))
+* Add support for Inspector Classic & Inspector V2 findings ([#1305](https://github.com/cloudquery/cq-provider-aws/issues/1305)) ([#1412](https://github.com/cloudquery/cq-provider-aws/issues/1412)) ([1f1ae96](https://github.com/cloudquery/cq-provider-aws/commit/1f1ae9631f2087016a70d14b67216a34e0f38dfe))
+* Kinesis Firehose Support ([#1359](https://github.com/cloudquery/cq-provider-aws/issues/1359)) ([4324f6b](https://github.com/cloudquery/cq-provider-aws/commit/4324f6b2b09399cc86ebd55788730421b2e298a8))
+
+
+### Bug Fixes
+
+* Update endpoints ([#1418](https://github.com/cloudquery/cq-provider-aws/issues/1418)) ([b9f8ece](https://github.com/cloudquery/cq-provider-aws/commit/b9f8ecede9f4892b6f600f9149ca31ea16ec32e8))
+
+## [0.13.7](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.6...v0.13.7) (2022-08-11)
+
+
+### Features
+
+* Add 'elasticache.clusters' resource ([#1400](https://github.com/cloudquery/cq-provider-aws/issues/1400)) ([d27b0d9](https://github.com/cloudquery/cq-provider-aws/commit/d27b0d93b59dad9bac18b72d1123450fb84e5a75))
+* Add support for appsync apis ([#1393](https://github.com/cloudquery/cq-provider-aws/issues/1393)) ([2197701](https://github.com/cloudquery/cq-provider-aws/commit/21977016f62cb43cbc158e7d08d4afe6ee222c10))
+* Add support for resource groups ([#1396](https://github.com/cloudquery/cq-provider-aws/issues/1396)) ([dc6aeab](https://github.com/cloudquery/cq-provider-aws/commit/dc6aeab7ce42c8ec699075a6d1d2a221a6590733))
+* Added glue table indexes ([#1377](https://github.com/cloudquery/cq-provider-aws/issues/1377)) ([b008f1b](https://github.com/cloudquery/cq-provider-aws/commit/b008f1ba8324e921e05095d130dfd24b8dc3042e))
+* Implement Glue registries resource ([#1334](https://github.com/cloudquery/cq-provider-aws/issues/1334)) ([5e20e88](https://github.com/cloudquery/cq-provider-aws/commit/5e20e88f30ffe4597c00e1a219f1239b8a8cdb13))
+* More Resource Simplification ([#1399](https://github.com/cloudquery/cq-provider-aws/issues/1399)) ([902c8e0](https://github.com/cloudquery/cq-provider-aws/commit/902c8e082be63678e46b8dcd5b3ed3e090f1e847))
+* Remove regional override ([#1276](https://github.com/cloudquery/cq-provider-aws/issues/1276)) ([7f8025a](https://github.com/cloudquery/cq-provider-aws/commit/7f8025a1b355bbc3f554fe8e098286cd8b568324))
+* Simplify Resources ([#1385](https://github.com/cloudquery/cq-provider-aws/issues/1385)) ([1f7eab8](https://github.com/cloudquery/cq-provider-aws/commit/1f7eab8804692b9f69df3ac3ff776e89dc5f08a0))
+
+
+### Bug Fixes
+
+* **build:** Don't filter paths and enforce //check-for-changes on new cq-gen config files ([#1401](https://github.com/cloudquery/cq-provider-aws/issues/1401)) ([17e40a3](https://github.com/cloudquery/cq-provider-aws/commit/17e40a3a7abce210a89c8abf28493d7c9b8e9471))
+* **build:** Fix name of script in Github workflow ([#1405](https://github.com/cloudquery/cq-provider-aws/issues/1405)) ([b4ed653](https://github.com/cloudquery/cq-provider-aws/commit/b4ed6531f4d2936d025c291d617e95fe636f3398))
+* Update endpoints ([#1402](https://github.com/cloudquery/cq-provider-aws/issues/1402)) ([bb81947](https://github.com/cloudquery/cq-provider-aws/commit/bb819477a1c81c0b351e06544ff2b892b782c0c0))
+
 ## [0.13.6](https://github.com/cloudquery/cq-provider-aws/compare/v0.13.5...v0.13.6) (2022-08-07)
 
 

@@ -94,9 +94,7 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	service := c.Services().Waf
 	config := waf.ListRulesInput{}
 	for {
-		output, err := service.ListRules(ctx, &config, func(options *waf.Options) {
-			options.Region = c.Region
-		})
+		output, err := service.ListRules(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

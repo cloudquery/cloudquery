@@ -107,9 +107,7 @@ func fetchAutoscalingScheduledActions(ctx context.Context, meta schema.ClientMet
 		MaxRecords: aws.Int32(100),
 	}
 	for {
-		output, err := svc.DescribeScheduledActions(ctx, params, func(options *autoscaling.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeScheduledActions(ctx, params)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -17,7 +17,7 @@ Describes an instance snapshot
 |name|text|The name of the snapshot|
 |progress|text|The progress of the snapshot|
 |resource_type|text|The type of resource (usually InstanceSnapshot)|
-|size_in_gb|integer|The size in GB of the SSD|
+|size_in_gb|bigint|The size in GB of the SSD|
 |state|text|The state the snapshot is in|
 |support_code|text|The support code|
 |tags|jsonb|The tag keys and optional values for the resource|

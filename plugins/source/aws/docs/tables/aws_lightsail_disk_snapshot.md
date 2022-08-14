@@ -17,7 +17,7 @@ Describes a block storage disk snapshot
 |name|text|The name of the disk snapshot (eg, my-disk-snapshot)|
 |progress|text|The progress of the snapshot|
 |resource_type|text|The Lightsail resource type (eg, DiskSnapshot)|
-|size_in_gb|integer|The size of the disk in GB|
+|size_in_gb|bigint|The size of the disk in GB|
 |state|text|The status of the disk snapshot operation|
 |support_code|text|The support code|
 |tags|jsonb|The tag keys and optional values for the resource|

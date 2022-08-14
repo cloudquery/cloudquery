@@ -290,9 +290,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	g, ctx := errgroup.WithContext(ctx)
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account
-		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"self"}}, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"self"}})
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -302,9 +300,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 	g.Go(func() error {
 		// fetch ec2.Images that are shared with this account
-		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{ExecutableUsers: []string{"self"}}, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{ExecutableUsers: []string{"self"}})
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -764,9 +764,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudfront
 	for {
-		response, err := svc.ListDistributions(ctx, &config, func(options *cloudfront.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListDistributions(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -796,8 +794,6 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 	svc := cl.Services().Cloudfront
 	response, err := svc.ListTagsForResource(ctx, &cloudfront.ListTagsForResourceInput{
 		Resource: distribution.ARN,
-	}, func(options *cloudfront.Options) {
-		options.Region = cl.Region
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

@@ -108,9 +108,7 @@ func fetchFsxBackups(ctx context.Context, meta schema.ClientMeta, parent *schema
 	c := meta.(*client.Client)
 	svc := c.Services().FSX
 	for {
-		response, err := svc.DescribeBackups(ctx, &config, func(options *fsx.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeBackups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

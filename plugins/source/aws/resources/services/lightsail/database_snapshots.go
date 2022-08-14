@@ -93,7 +93,7 @@ func DatabaseSnapshots() *schema.Table {
 			{
 				Name:        "size_in_gb",
 				Description: "The size of the disk in GB (for example, 32) for the database snapshot",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 			},
 			{
 				Name:        "state",
@@ -124,9 +124,7 @@ func fetchLightsailDatabaseSnapshots(ctx context.Context, meta schema.ClientMeta
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetRelationalDatabaseSnapshots(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetRelationalDatabaseSnapshots(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

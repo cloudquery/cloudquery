@@ -9,7 +9,7 @@ As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-
 
 ## Setting up the service
 
-If the service to which the resource belongs has not been used before in cq-provider-aws, there are a few steps that need to be done to configure it.
+If the service to which the resource belongs has not been used before in the AWS source plugin, there are a few steps that need to be done to configure it.
 
 1. Create the service interface in [client/services.go](../../client/services.go)
    * Don't forget to add the new service interface name to the go:generate comment.

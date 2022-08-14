@@ -240,9 +240,7 @@ func fetchWorkspacesDirectories(ctx context.Context, meta schema.ClientMeta, _ *
 	svc := c.Services().Workspaces
 	input := workspaces.DescribeWorkspaceDirectoriesInput{}
 	for {
-		output, err := svc.DescribeWorkspaceDirectories(ctx, &input, func(o *workspaces.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeWorkspaceDirectories(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

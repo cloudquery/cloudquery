@@ -3,7 +3,6 @@
   "release-type": "go",
   "packages": {
     "cli": { "component": "cli" },
-
     "plugins/source/aws": { "component": "plugins/source/aws" },
     "plugins/source/azure": { "component": "plugins/source/azure" },
     "plugins/source/cloudflare": { "component": "plugins/source/cloudflare" },
@@ -15,20 +14,7 @@
     "plugins/source/github": { "component": "plugins/source/github" },
     "plugins/source/k8s": { "component": "plugins/source/k8s" },
     "plugins/source/okta": { "component": "plugins/source/okta" },
-    "plugins/source/terraform": { "component": "plugins/source/terraform" },
-
-    "plugins/aws": { "component": "plugins/source/aws" },
-    "plugins/azure": { "component": "plugins/source/azure" },
-    "plugins/cloudflare": { "component": "plugins/source/cloudflare" },
-    "plugins/digitalocean": {
-      "component": "plugins/source/digitalocean"
-    },
-    "plugins/fuzz": { "component": "plugins/source/fuzz" },
-    "plugins/gcp": { "component": "plugins/source/gcp" },
-    "plugins/github": { "component": "plugins/source/github" },
-    "plugins/k8s": { "component": "plugins/source/k8s" },
-    "plugins/okta": { "component": "plugins/source/okta" },
-    "plugins/terraform": { "component": "plugins/source/terraform" }
+    "plugins/source/terraform": { "component": "plugins/source/terraform" }
   },
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,

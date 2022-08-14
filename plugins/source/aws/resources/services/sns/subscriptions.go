@@ -71,9 +71,7 @@ func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *
 	svc := c.Services().SNS
 	config := sns.ListSubscriptionsInput{}
 	for {
-		output, err := svc.ListSubscriptions(ctx, &config, func(o *sns.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.ListSubscriptions(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

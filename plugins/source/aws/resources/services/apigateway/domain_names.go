@@ -202,9 +202,7 @@ func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().Apigateway
 	for {
-		response, err := svc.GetDomainNames(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetDomainNames(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -222,9 +220,7 @@ func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.
 	svc := c.Services().Apigateway
 	config := apigateway.GetBasePathMappingsInput{DomainName: r.DomainName}
 	for {
-		response, err := svc.GetBasePathMappings(ctx, &config, func(options *apigateway.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetBasePathMappings(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

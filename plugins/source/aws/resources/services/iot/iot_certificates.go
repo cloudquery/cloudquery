@@ -168,9 +168,7 @@ func fetchIotCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 
 	for {
-		response, err := svc.ListCertificates(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListCertificates(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -205,9 +203,7 @@ func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, 
 
 	var policies []string
 	for {
-		response, err := svc.ListAttachedPolicies(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListAttachedPolicies(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
