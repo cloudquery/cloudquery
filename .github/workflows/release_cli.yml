@@ -54,6 +54,8 @@ jobs:
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+          # A custom token is required for publishing to Homebrew
+          GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
 
       # Publish only to GitHub
       - name: Run GoReleaser PreRelease
