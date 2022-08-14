@@ -8,8 +8,8 @@ variable "prefix" {
 }
 
 variable "tags" {
-  type = map
+  type = map(any)
   default = {
-    Environment = "cq-provider-azure"
+    Environment = "cq-plugins-source-azure"
   }
 }

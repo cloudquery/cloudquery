@@ -1,6 +1,6 @@
 resource "random_password" "sql" {
-  length           = 16
-  special          = true
+  length  = 16
+  special = true
 }
 
 // Those rules are necessary to provision the cluster successfully
@@ -134,7 +134,7 @@ resource "azurerm_subnet" "sql-managed" {
   name                 = "${var.prefix}-sql-subnet-managed"
   resource_group_name  = azurerm_resource_group.sql.name
   virtual_network_name = azurerm_virtual_network.sql-managed.name
-  address_prefixes       = ["10.0.0.0/24"]
+  address_prefixes     = ["10.0.0.0/24"]
   // enforce_private_link_endpoint_network_policies = true
 
   delegation {
@@ -186,7 +186,7 @@ resource "azurerm_sql_managed_instance" "example" {
 }
 
 // resource "azurerm_sql_managed_database" "azurerm_sql_managed_database" {
-//   name                    = "cq-provider-azure-sql-db"
+//   name                    = "cq-plugins-source-azure-sql-db"
 //   sql_managed_instance_id = azurerm_sql_managed_instance.test.id
 //   location                = azurerm_resource_group.test.location
 // }

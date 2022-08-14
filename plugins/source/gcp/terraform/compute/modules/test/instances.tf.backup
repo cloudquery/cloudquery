@@ -79,7 +79,7 @@ module "compute_instance_group" {
 
   project_id        = var.project
   region            = var.region
-  hostname          = "cq-provider-gcp"
+  hostname          = "cq-plugins-source-gcp"
   instance_template = module.vm_instance_template.self_link
   target_size       = 1
 

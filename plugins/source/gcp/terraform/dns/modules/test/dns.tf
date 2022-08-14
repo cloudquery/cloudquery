@@ -49,7 +49,7 @@ module "dns-private-zone" {
   project_id = var.project_id
   type       = "private"
   name       = "${var.prefix}-dns-private-zone"
-  domain     = "${var.prefix}.cq-provider-gcp.cloudquery.io."
+  domain     = "${var.prefix}.cq-plugins-source-gcp.cloudquery.io."
 
   private_visibility_config_networks = [
     module.vpc.network_self_link
@@ -57,17 +57,17 @@ module "dns-private-zone" {
 
   recordsets = [
     {
-      name    = ""
-      type    = "NS"
-      ttl     = 300
+      name = ""
+      type = "NS"
+      ttl  = 300
       records = [
-        "ns.${var.prefix}.cq-provider-gcp.cloudquery.io.",
+        "ns.${var.prefix}.cq-plugins-source-gcp.cloudquery.io.",
       ]
     },
     {
-      name    = "localhost"
-      type    = "A"
-      ttl     = 300
+      name = "localhost"
+      type = "A"
+      ttl  = 300
       records = [
         "10.10.10.31",
       ]
