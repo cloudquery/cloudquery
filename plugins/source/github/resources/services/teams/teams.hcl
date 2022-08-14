@@ -7,7 +7,7 @@ resource "github" "" "teams" {
   path = "github.com/google/go-github/v45/github.Team"
 
   multiplex "OrgMultiplex" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/github/client.OrgMultiplex"
+    path = "github.com/cloudquery/cq-provider-github/client.OrgMultiplex"
   }
   ignoreError "IgnoreError" {
     path = "github.com/cloudquery/cq-provider-github/client.IgnoreError"
@@ -17,7 +17,7 @@ resource "github" "" "teams" {
     type        = "string"
     description = "The Github Organization of the resource."
     resolver "resolveOrg" {
-      path = "github.com/cloudquery/cloudquery/plugins/source/github/client.ResolveOrg"
+      path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
     }
   }
 
@@ -51,23 +51,19 @@ resource "github" "" "teams" {
     }
 
     userDefinedColumn "team_id" {
-<<<<<<<< HEAD:plugins/source/github/resources/teams.hcl
-      type = "string"
-========
-      type        = "int"
->>>>>>>> 7c2a2f51a (chore(build): Add support for drift detection of generated code (#22)):resources/services/teams/teams.hcl
+      type = "int"
       //argument ("name")
       description = "The id of the team"
       resolver "parentPathResolver" {
-        path          = "github.com/cloudquery/cq-provider-sdk/provider/schema.ParentResourceFieldResolver"
-        params        = ["id"]
+        path   = "github.com/cloudquery/cq-provider-sdk/provider/schema.ParentResourceFieldResolver"
+        params = ["id"]
       }
     }
     userDefinedColumn "org" {
       type        = "string"
       description = "The Github Organization of the resource."
       resolver "resolveOrg" {
-        path = "github.com/cloudquery/cloudquery/plugins/source/github/client.ResolveOrg"
+        path = "github.com/cloudquery/cq-provider-github/client.ResolveOrg"
       }
     }
 
@@ -87,16 +83,12 @@ resource "github" "" "teams" {
     }
 
     userDefinedColumn "team_id" {
-<<<<<<<< HEAD:plugins/source/github/resources/teams.hcl
-      type = "string"
-========
-      type        = "int"
->>>>>>>> 7c2a2f51a (chore(build): Add support for drift detection of generated code (#22)):resources/services/teams/teams.hcl
+      type = "int"
       //argument ("name")
       description = "The id of the team"
       resolver "parentPathResolver" {
-        path          = "github.com/cloudquery/cq-provider-sdk/provider/schema.ParentResourceFieldResolver"
-        params        = ["id"]
+        path   = "github.com/cloudquery/cq-provider-sdk/provider/schema.ParentResourceFieldResolver"
+        params = ["id"]
       }
     }
     column "team_id" {
