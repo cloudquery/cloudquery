@@ -5,6 +5,20 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4](https://github.com/cloudquery/cloudquery/compare/plugins/source/cloudflare-v0.1.3...plugins/source/cloudflare/v0.1.4) (2022-08-14)
+
+
+### Features
+
+* Implement Glue registries resource ([#1334](https://github.com/cloudquery/cloudquery/issues/1334)) ([7e8bb48](https://github.com/cloudquery/cloudquery/commit/7e8bb48fee609247957e05b110f4338d8609d4e5))
+* Simplify Resources ([#1385](https://github.com/cloudquery/cloudquery/issues/1385)) ([bf272bd](https://github.com/cloudquery/cloudquery/commit/bf272bd9a50fdc5aebe77546135e8907d9cff1df))
+
+
+### Bug Fixes
+
+* **build:** Don't filter paths and enforce //check-for-changes on new cq-gen config files ([#1401](https://github.com/cloudquery/cloudquery/issues/1401)) ([9ddb029](https://github.com/cloudquery/cloudquery/commit/9ddb0291fe4ad564c639e7a5a052a28d1ff9b215))
+* **build:** Fix name of script in Github workflow ([#1405](https://github.com/cloudquery/cloudquery/issues/1405)) ([02ceb33](https://github.com/cloudquery/cloudquery/commit/02ceb333bfbfcf5d45ffb89202377b6eda4266fb))
+
 ## [0.1.1](https://github.com/cloudquery/cq-provider-cloudflare/compare/v0.1.0...v0.1.1) (2022-08-09)
 
 
