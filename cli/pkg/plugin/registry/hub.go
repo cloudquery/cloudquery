@@ -254,7 +254,7 @@ func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedV
 	switch provider.Source {
 	case DefaultOrganization:
 		// we use a special convention for the CloudQuery monorepo
-		providerURL := fmt.Sprintf("https://github.com/%s/cloudquery/releases/download/%s/%s", DefaultOrganization, getMonorepoPluginTag("source", provider.Name, requestedVersion), getPluginBinaryName(provider.Name))
+		providerURL := fmt.Sprintf("https://github.com/%s/cloudquery/releases/download/%s/%s", DefaultOrganization, getMonorepoPluginTag("source", provider.Name, requestedVersion), fmt.Sprintf("%s_%s", provider.Name, GetBinarySuffix()))
 		err = osFs.DownloadFile(ctx, providerPath, providerURL, progressCB)
 		if err == nil {
 			break
