@@ -1,13 +1,11 @@
-name: lint-monorepo
+name: Lint Go
 on:
   push:
     branches:
       - main
-      - monorepo
   pull_request:
     branches:
       - main
-      - monorepo
 jobs:
   resolve-modules:
     name: Resolve Modules

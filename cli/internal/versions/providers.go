@@ -9,12 +9,6 @@ import (
 	"strings"
 )
 
-const (
-	CloudQueryOrg     = "cloudquery"
-	GithubBaseURL     = "https://github.com"
-	CloudQueryBaseURL = "https://versions.cloudquery.io"
-)
-
 type manifestResponse struct {
 	Latest string `json:"latest"`
 }
@@ -33,6 +27,12 @@ type Client struct {
 	githubBaseURL     string
 	httpClient        *http.Client
 }
+
+const (
+	CloudQueryOrg     = "cloudquery"
+	GithubBaseURL     = "https://github.com"
+	CloudQueryBaseURL = "https://versions.cloudquery.io"
+)
 
 // NewClient returns a new client for fetching plugin versions.
 func NewClient() *Client {
@@ -96,6 +96,7 @@ func (c *Client) doRequest(ctx context.Context, url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("status code %v (%v)", resp.StatusCode, resp.Status)
 	}

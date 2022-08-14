@@ -1,14 +1,11 @@
-name: SQLPolicyTest
+name: SQL Policy Tests
 on:
   push:
     branches:
       - main
-      - monorepo
   pull_request:
     branches:
       - main
-      - monorepo
-
 env:
   CGO_ENABLED: 0
   CQ_NO_TELEMETRY: 1
