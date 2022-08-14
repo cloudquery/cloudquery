@@ -1,0 +1,44 @@
+name: Sync AWS Source Plugin Endpoints
+on:
+  schedule:
+    - cron:  "30 * * * *"
+
+
+jobs:
+  endpoints:
+    name: aws endpoints verification
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.18
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: regenerate partition_service_region file
+        run: |
+          go run ./plugins/source/aws/tools/endpoints/main.go
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: fix/update_endpoints
+          base: main
+          title: "fix: Update endpoints"
+          commit-message: "fix: Update endpoints"
+          body: This PR was created by a scheduled workflow to sync endpoint changes
+          labels: automerge
+          author: cq-bot <cq-bot@users.noreply.github.com>

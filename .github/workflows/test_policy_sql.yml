@@ -1,0 +1,87 @@
+name: SQL Policy Tests
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+env:
+  CGO_ENABLED: 0
+  CQ_NO_TELEMETRY: 1
+  PGPASSWORD: pass
+
+jobs:
+  SQLPolicyTest:
+    strategy:
+      matrix:
+        workdir: [
+          "plugins/source/aws",
+          "plugins/source/azure",
+          "plugins/source/gcp",
+        ]
+        dbversion: [ "postgres:10" ]
+        go: [ "1.18" ]
+        platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
+    runs-on: ${{ matrix.platform }}
+    services:
+      postgres:
+        image: ${{ matrix.dbversion }}
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v25
+        with:
+          files: |
+            ${{ matrix.workdir }}
+
+      - name: Set up Go 1.x
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go }}
+
+      - uses: actions/cache@v3
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go }}-
+
+      - name: Prepare for test - Create tables
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        run: |
+          go run ./test/gen-tables.go | psql -h localhost -p 5432 -U postgres -d postgres -w
+        working-directory: ${{ matrix.workdir }}
+
+      - name: Run all policies
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        run: |
+          cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
+        working-directory: ${{ matrix.workdir }}

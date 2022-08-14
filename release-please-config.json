@@ -1,0 +1,24 @@
+{
+  "bootstrap-sha": "cf9a8560c47d93422cecb9aa4e414bd4e6484186",
+  "release-type": "go",
+  "packages": {
+    "cli": { "component": "cli" },
+    "plugins/source/aws": { "component": "plugins/source/aws" },
+    "plugins/source/azure": { "component": "plugins/source/azure" },
+    "plugins/source/cloudflare": { "component": "plugins/source/cloudflare" },
+    "plugins/source/digitalocean": {
+      "component": "plugins/source/digitalocean"
+    },
+    "plugins/source/fuzz": { "component": "plugins/source/fuzz" },
+    "plugins/source/gcp": { "component": "plugins/source/gcp" },
+    "plugins/source/github": { "component": "plugins/source/github" },
+    "plugins/source/k8s": { "component": "plugins/source/k8s" },
+    "plugins/source/okta": { "component": "plugins/source/okta" },
+    "plugins/source/terraform": { "component": "plugins/source/terraform" }
+  },
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "tag-separator": "/",
+  "separate-pull-requests": true,
+  "pull-request-title-pattern": "chore${scope}: Release${component} v${version}"
+}

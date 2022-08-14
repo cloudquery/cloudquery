@@ -1,0 +1,13 @@
+variables:
+  component: source/cloudflare
+
+project_name: plugins/source/cloudflare
+
+monorepo:
+  tag_prefix: plugins/source/cloudflare/
+  dir: plugins/source/cloudflare
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

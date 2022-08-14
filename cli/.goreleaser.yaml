@@ -1,0 +1,43 @@
+project_name: cli
+
+monorepo:
+  tag_prefix: cli/
+  dir: cli
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      # Include everything from pre-release (build & publish to GitHub), plus publish to docker and Homebrew
+      path: ./cli/.goreleaser.prerelease.yaml
+
+# dockers:
+#   -
+#     goos: linux
+#     goarch: amd64
+#     dockerfile: Dockerfile.goreleaser
+#     image_templates:
+#       - "ghcr.io/cloudquery/cloudquery:latest"
+#       - "ghcr.io/cloudquery/cloudquery:{{.Version}}"
+#       - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}"
+#     build_flag_templates:
+#       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+
+# brews:
+#   -
+#     ids:
+#       - homebrew
+#     name: cloudquery
+#     tap:
+#       owner: cloudquery
+#       name: homebrew-tap
+#     url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+#     homepage: "https://cloudquery.io"
+#     description: "Easily monitor and ask questions about your infrastructure."
+#     install: |-
+#       bin.install "cloudquery"
+#       output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "bash")
+#       (bash_completion/"cloudquery").write output
+#       output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "zsh")
+#       (zsh_completion/"_cloudquery").write output
+#       output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "fish")
+#       (fish_completion/"cloudquery.fish").write output

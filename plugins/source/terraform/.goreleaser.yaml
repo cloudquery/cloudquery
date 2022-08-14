@@ -1,0 +1,13 @@
+variables:
+  component: source/terraform
+
+project_name: plugins/source/terraform
+
+monorepo:
+  tag_prefix: plugins/source/terraform/
+  dir: plugins/source/terraform
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
