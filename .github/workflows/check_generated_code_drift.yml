@@ -28,7 +28,7 @@ jobs:
         with:
           filters: |
             src:
-              - "./plugins/source/${{ matrix.plugin }}/**"
+              - "plugins/source/${{ matrix.plugin }}"
       - name: Set up Go 1.x
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-go@v3

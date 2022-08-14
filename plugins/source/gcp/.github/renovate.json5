@@ -1,6 +1,0 @@
-{
-  extends: [
-    "github>cloudquery/.github//.github/renovate-go-default.json5",
-    "github>cloudquery/.github//.github/renovate-node-default.json5",
-  ],
-}
