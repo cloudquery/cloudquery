@@ -53,6 +53,7 @@ func TestHub_CheckUpdate(t *testing.T) {
 			ExpectedError: errors.New("failed to find provider[test] latest version"),
 		},
 	}
+
 	hub := NewRegistryHub(firebase.CloudQueryRegistryURL)
 
 	latestVersion, err := hub.CheckUpdate(context.Background(), Provider{

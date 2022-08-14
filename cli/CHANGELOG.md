@@ -4,6 +4,26 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.32.3](https://github.com/cloudquery/cloudquery/compare/v0.32.2...v0.32.3) (2022-08-14)
+
+
+### Features
+
+* Update CLI to work with monorepo release conventions ([#1224](https://github.com/cloudquery/cloudquery/issues/1224)) ([9cf254d](https://github.com/cloudquery/cloudquery/commit/9cf254d37131abfb110415a83b61b323f116d0e5))
+
+## [0.32.2](https://github.com/cloudquery/cloudquery/compare/v0.32.1...v0.32.2) (2022-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/hairyhenderson/go-fsimpl digest to 5cfe3b4 ([#1140](https://github.com/cloudquery/cloudquery/issues/1140)) ([a991dfc](https://github.com/cloudquery/cloudquery/commit/a991dfc0ee0ceb6f590fbd7e5ad30f9acea6d13a))
+* **deps:** Update github.com/ProtonMail/go-crypto digest to d6ffb76 ([#1151](https://github.com/cloudquery/cloudquery/issues/1151)) ([2c8b814](https://github.com/cloudquery/cloudquery/commit/2c8b814cd8e7796955d867f63816871a4c72914e))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.5 ([#1138](https://github.com/cloudquery/cloudquery/issues/1138)) ([c9ed3ae](https://github.com/cloudquery/cloudquery/commit/c9ed3ae4927d39a7bb3479f54d6e495f62b01f11))
+* **deps:** Update module github.com/cloudquery/cq-provider-sdk to v0.14.6 ([#1149](https://github.com/cloudquery/cloudquery/issues/1149)) ([c06ab38](https://github.com/cloudquery/cloudquery/commit/c06ab38a145d0b18dc4debd7d999d35fe05f7c07))
+* **deps:** Update module github.com/hashicorp/go-hclog to v1.2.2 ([#1152](https://github.com/cloudquery/cloudquery/issues/1152)) ([3801568](https://github.com/cloudquery/cloudquery/commit/380156800c66c8bc93b77460bf1c1ae46d4118c1))
+* **deps:** Update module go to 1.18 ([#1153](https://github.com/cloudquery/cloudquery/issues/1153)) ([ccebe70](https://github.com/cloudquery/cloudquery/commit/ccebe70b5a1f82a1bfa8bff3a962369e08d0fc76))
+* **deps:** Update tubone24/update_release digest to 2146f15 ([#1142](https://github.com/cloudquery/cloudquery/issues/1142)) ([7a75bbc](https://github.com/cloudquery/cloudquery/commit/7a75bbc9a7bde3917d754b4d573538a219168cc0))
+
 ## [0.32.1](https://github.com/cloudquery/cloudquery/compare/v0.32.0...v0.32.1) (2022-07-27)
 
 
