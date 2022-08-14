@@ -10,6 +10,6 @@ variable "prefix" {
 variable "tags" {
   type = map(any)
   default = {
-    Environment = "cq-provider-aws"
+    Environment = "cq-plugins-source-aws"
   }
 }

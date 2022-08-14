@@ -90,7 +90,7 @@ resource "aws" "glue" "databases" {
       column "keys" {
         type = "json"
         resolver "resolverSliceToJson" {
-          path   = "github.com/cloudquery/cq-provider-aws/client.SliceJsonResolver"
+          path   = "github.com/cloudquery/cloudquery/cloudquery/plugins/source/aws/client.SliceJsonResolver"
           params = ["Keys", "Name", "Type"]
         }
       }

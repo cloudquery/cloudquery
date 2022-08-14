@@ -6,18 +6,11 @@ resource "aws" "wafregional" "rule_groups" {
   path        = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.RuleGroup"
   description = "A collection of predefined rules that you can add to a web ACL."
   multiplex "ServiceAccountRegionMultiplexer" {
-<<<<<<< HEAD:plugins/source/aws/resources/services/wafregional/rule_groups.hcl
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
-  }
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
-=======
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["waf-regional"]
   }
   ignoreError "IgnoreCommonErrors" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
->>>>>>> d1d8e7efe (Add ‘unused resource’ example policy (#1378)):resources/services/wafregional/rule_groups.hcl
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"

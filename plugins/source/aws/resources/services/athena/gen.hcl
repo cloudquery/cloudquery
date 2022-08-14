@@ -9,13 +9,8 @@ description_modifier "remove_read_only" {
 resource "aws" "athena" "data_catalogs" {
   path = "github.com/aws/aws-sdk-go-v2/service/athena/types.DataCatalog"
 
-<<<<<<< HEAD:plugins/source/aws/resources/services/athena/gen.hcl
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
-=======
   ignoreError "IgnoreCommonErrors" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
->>>>>>> d1d8e7efe (Add ‘unused resource’ example policy (#1378)):resources/services/athena/gen.hcl
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
@@ -85,13 +80,8 @@ resource "aws" "athena" "data_catalogs" {
 resource "aws" "athena" "work_groups" {
   path = "github.com/aws/aws-sdk-go-v2/service/athena/types.WorkGroup"
 
-<<<<<<< HEAD:plugins/source/aws/resources/services/athena/gen.hcl
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
-=======
   ignoreError "IgnoreCommonErrors" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreCommonErrors"
->>>>>>> d1d8e7efe (Add ‘unused resource’ example policy (#1378)):resources/services/athena/gen.hcl
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
