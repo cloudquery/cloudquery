@@ -18,6 +18,9 @@ func IgnoreError(err error) bool {
 		if er.Message == EnterpriseOnly {
 			return true
 		}
+		if er.Response.StatusCode == http.StatusForbidden {
+			return true
+		}
 	}
 	return false
 }

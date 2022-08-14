@@ -5,7 +5,7 @@ User represents a GitHub user.
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |team_cq_id|uuid|Unique CloudQuery ID of github_teams table (FK)|
-|team_id|bigint|The id of the name|
+|team_id|bigint|The id of the team|
 |org|text|The Github Organization of the resource.|
 |login|text||
 |id|bigint||
