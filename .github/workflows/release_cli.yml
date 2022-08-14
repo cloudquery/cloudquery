@@ -63,7 +63,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
+          GITHUB_TOKEN: ${{ secrets.GORELEASER_GITHUB_TOKEN }}
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
