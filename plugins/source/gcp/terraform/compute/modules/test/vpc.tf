@@ -5,7 +5,7 @@ module "vpc" {
   project_id   = var.project_id
   network_name = "${var.prefix}-compute-vpc"
   routing_mode = "GLOBAL"
-  description  = "Private network for cq-provider-gcp/compute"
+  description  = "Private network for cq-plugins-source-gcp/compute"
 
   subnets = [
     {

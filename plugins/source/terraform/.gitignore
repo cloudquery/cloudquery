@@ -42,5 +42,5 @@ terraform/downloaded*
 config.hcl
 cloudquery.yml
 terraform/tfplan.binary
-cq-provider*
+terraform
 !examples/terraform.tfstate

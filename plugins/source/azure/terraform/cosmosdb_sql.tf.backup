@@ -1,5 +1,5 @@
 resource "azurerm_cosmosdb_account" "sql" {
-  name                = "cq-provider-azure-cosmo-sql2"
+  name                = "cq-plugins-source-azure-cosmo-sql2"
   location            = azurerm_resource_group.test.location
   resource_group_name = azurerm_resource_group.test.name
   offer_type          = "Standard"
@@ -25,7 +25,7 @@ resource "azurerm_cosmosdb_account" "sql" {
 }
 
 resource "azurerm_cosmosdb_sql_database" "example" {
-  name                = "cq-provider-azure-cosmo-sql"
+  name                = "cq-plugins-source-azure-cosmo-sql"
   resource_group_name = azurerm_cosmosdb_account.sql.resource_group_name
   account_name        = azurerm_cosmosdb_account.sql.name
   throughput          = 400

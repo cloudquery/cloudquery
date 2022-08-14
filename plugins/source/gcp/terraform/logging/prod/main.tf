@@ -1,5 +1,5 @@
 module "test" {
   source     = "../modules/test"
   prefix     = "cq"
-  project_id = "cq-provider-gcp"
+  project_id = "cq-plugins-source-gcp"
 }

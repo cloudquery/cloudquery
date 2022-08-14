@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "cq-provider-gcp-tf-state"
+    bucket = "cq-plugins-source-gcp-tf-state"
     prefix = "kubernetes"
   }
 }
