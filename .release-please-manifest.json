@@ -1,6 +1,5 @@
 {
   "cli": "0.32.1",
-
   "plugins/source/aws": "0.13.7",
   "plugins/source/azure": "0.12.4",
   "plugins/source/cloudflare": "0.1.3",
@@ -11,8 +10,7 @@
   "plugins/source/k8s": "0.6.3",
   "plugins/source/okta": "0.6.3",
   "plugins/source/terraform": "0.5.3",
-
-  "plugins/aws": "0.13.7",
+  "plugins/aws": "0.13.8",
   "plugins/azure": "0.12.4",
   "plugins/cloudflare": "0.1.3",
   "plugins/digitalocean": "0.6.3",
