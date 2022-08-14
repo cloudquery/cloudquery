@@ -1,6 +1,6 @@
-# Github Provider
+# GitHub Provider
 
-The CloudQuery Github provider extracts and transforms your GitHub infromation into PostgreSQL.
+The CloudQuery GitHub provider extracts and transforms your GitHub infromation into PostgreSQL.
 
 ## Install
 
@@ -21,13 +21,14 @@ so, following the principle of least privilege, it's recommended to grant it rea
 
 Add the following Block your your providers list in your `cloudquery.yml` configuration. Cloudquery will
 fetch information about all the organizations you specify in `orgs`.
+
 ```yaml
-  - name: github
-    configuration:
-      access_token: "<YOUR ACCESS TOKEN HERE>"
-      orgs: ["<YOUR ORG NAME>"]
-    resources:
-      - "*"
+- name: github
+  configuration:
+    access_token: "<YOUR ACCESS TOKEN HERE>"
+    orgs: ["<YOUR ORG NAME>"]
+  resources:
+    - "*"
 ```
 
 More information can be found in the [CloudQuery documentation](https://docs.cloudquery.io/docs/intro)
