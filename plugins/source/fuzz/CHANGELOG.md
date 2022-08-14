@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.15](https://github.com/cloudquery/cloudquery/compare/plugins/source/fuzz-v0.0.14...plugins/source/fuzz/v0.0.15) (2022-08-14)
+
+
+### Features
+
+* **plugin-source-docs:** Add docs ([#1257](https://github.com/cloudquery/cloudquery/issues/1257)) ([06a8671](https://github.com/cloudquery/cloudquery/commit/06a86719f5bb8699c4926175a731412e43737d51))
+
 ## [0.0.14](https://github.com/cloudquery/cq-provider-fuzz/compare/v0.0.13...v0.0.14) (2022-08-07)
 
 
