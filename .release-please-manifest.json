@@ -8,6 +8,6 @@
   "plugins/source/gcp": "0.9.4",
   "plugins/source/github": "0.1.4",
   "plugins/source/k8s": "0.6.3",
-  "plugins/source/okta": "0.6.3",
+  "plugins/source/okta": "0.6.4",
   "plugins/source/terraform": "0.5.3"
 }
