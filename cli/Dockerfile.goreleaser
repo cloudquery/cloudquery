@@ -1,5 +1,5 @@
 FROM alpine:latest
 RUN apk --no-cache add git
-ENTRYPOINT ["/app/cli"]
+ENTRYPOINT ["/app/cloudquery"]
 WORKDIR /app
-COPY cli .
+COPY cli ./cloudquery
