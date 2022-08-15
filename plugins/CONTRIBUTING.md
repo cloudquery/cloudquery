@@ -22,8 +22,8 @@ The following is a set of guidelines for contributing to this repository.
 
 Unsure where to begin contributing to CloudQuery? There are few key labels that you can take a look in the issue
 
-* `bug` - Can be a small issue of missing column, incorrect primary key which are good for begineers. Or more involved one.
-* `documentation` - Those are great for begineers as it gives the opportunity to both learn and put it in writing for everyone else.
+* `bug` - Can be a small issue of missing column, incorrect primary key which are good for beginners. Or more involved one.
+* `documentation` - Those are great for beginners as it gives the opportunity to both learn and put it in writing for everyone else.
 * `resource` - This is usually support for a new resource that was requested.
 
 
