@@ -28,6 +28,7 @@ builds:
     ignore:
       - goos: windows
         goarch: arm64
+    binary: cloudquery
 archives:
   -
     name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
@@ -57,4 +58,4 @@ changelog:
       - '^docs:'
       - '^test:'
 release:
-  prerelease: true
+  prerelease: auto
