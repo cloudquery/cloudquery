@@ -3,4 +3,28 @@
     "github>cloudquery/.github//.github/renovate-go-default.json5",
     "github>cloudquery/.github//.github/renovate-node-default.json5",
   ],
+  regexManagers: [
+    {
+      fileMatch: ["^.github/workflows/lint_golang.yml$"],
+      matchStrings: [
+        "golangci\\-lint\\-action[\\s\\S]+?version\\: (?<currentValue>.*)",
+      ],
+      depNameTemplate: "golangci/golangci-lint",
+      datasourceTemplate: "github-releases",
+    },
+    {
+      fileMatch: ["^.github/workflows/.+.ya?ml$"],
+      matchStrings: [
+        "setup\\-go[\\s\\S]+?go-version\\: \\^?(?<currentValue>[^$].*)",
+        'matrix[\\s\\S]+?go\\: \\[\\s*"(?<currentValue>[^$].*)"\\s*\\]',
+      ],
+      depNameTemplate: "go",
+      datasourceTemplate: "golang-version",
+      versioningTemplate: "loose",
+    },
+  ],
+  packageRules: [
+    { matchManagers: ["regex"], addLabels: ["no automerge"] },
+    { matchManagers: ["github-actions"], groupName: "github-actions" },
+  ],
 }
