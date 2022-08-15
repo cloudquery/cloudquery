@@ -13,3 +13,12 @@ jobs:
       - uses: bcoe/conventional-release-labels@v1
         with:
           type_labels: '{ "feat": "feat", "fix": "fix", "chore": "chore", "refactor": "refactor", "test": "test", "breaking": "breaking" }'
+  triage:
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/labeler@v4
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
