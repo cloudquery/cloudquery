@@ -134,3 +134,23 @@ func (mr *MockFsxClientMockRecorder) DescribeSnapshots(arg0, arg1 interface{}, a
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeSnapshots", reflect.TypeOf((*MockFsxClient)(nil).DescribeSnapshots), varargs...)
 }
+
+// DescribeStorageVirtualMachines mocks base method.
+func (m *MockFsxClient) DescribeStorageVirtualMachines(arg0 context.Context, arg1 *fsx.DescribeStorageVirtualMachinesInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeStorageVirtualMachines", varargs...)
+	ret0, _ := ret[0].(*fsx.DescribeStorageVirtualMachinesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeStorageVirtualMachines indicates an expected call of DescribeStorageVirtualMachines.
+func (mr *MockFsxClientMockRecorder) DescribeStorageVirtualMachines(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeStorageVirtualMachines", reflect.TypeOf((*MockFsxClient)(nil).DescribeStorageVirtualMachines), varargs...)
+}

@@ -431,6 +431,7 @@ type FsxClient interface {
 	DescribeDataRepositoryTasks(ctx context.Context, params *fsx.DescribeDataRepositoryTasksInput, optFns ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryTasksOutput, error)
 	DescribeFileSystems(ctx context.Context, params *fsx.DescribeFileSystemsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeFileSystemsOutput, error)
 	DescribeSnapshots(ctx context.Context, params *fsx.DescribeSnapshotsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error)
+	DescribeStorageVirtualMachines(ctx context.Context, params *fsx.DescribeStorageVirtualMachinesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
