@@ -2,7 +2,7 @@
   "cli": "0.32.7",
   "plugins/source/aws": "0.13.8",
   "plugins/source/azure": "0.12.4",
-  "plugins/source/cloudflare": "0.1.3",
+  "plugins/source/cloudflare": "0.1.4",
   "plugins/source/digitalocean": "0.6.3",
   "plugins/source/fuzz": "0.0.15",
   "plugins/source/gcp": "0.9.4",
