@@ -5,7 +5,7 @@ import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { Container } from "../Container";
 import Features from "../Features";
-import {Integrations} from "../Integrations";
+import { Integrations } from "../Integrations";
 import { LogosBlock } from "../clients/LogosBlock";
 
 export default function Home() {
@@ -32,13 +32,14 @@ export default function Home() {
           </span>{" "}
         </h1>
         <p className="max-w-lg mx-auto mt-6 text-xl font-medium leading-tight text-center text-gray-400 sm:max-w-4xl sm:text-2xl md:text-3xl lg:text-4xl">
-          CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams.
+          CloudQuery is an open source high performance data integration
+          platform designed for security and infrastructure teams.
         </p>
         <div className="max-w-xl mx-auto mt-5 sm:flex sm:justify-center md:mt-8">
           <div className="rounded-md ">
-            <Link href="/docs/getting-started">
+            <Link href="/docs/intro">
               <a className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
-                Start ingesting →
+                Get Started →
               </a>
             </Link>
           </div>
@@ -69,7 +70,8 @@ export default function Home() {
             Data analysis, security, auditing, and compliance
           </h2>
           <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
-            Leverage SQL to get visibility into your cloud infrastructure and SaaS applications.
+            Leverage SQL to get visibility into your cloud infrastructure and
+            SaaS applications.
           </p>
           <Features />
         </div>
