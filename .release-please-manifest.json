@@ -5,7 +5,7 @@
   "plugins/source/cloudflare": "0.1.4",
   "plugins/source/digitalocean": "0.6.3",
   "plugins/source/fuzz": "0.0.15",
-  "plugins/source/gcp": "0.9.4",
+  "plugins/source/gcp": "0.9.5",
   "plugins/source/github": "0.1.4",
   "plugins/source/k8s": "0.6.3",
   "plugins/source/okta": "0.6.3",
