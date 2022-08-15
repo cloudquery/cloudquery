@@ -90,5 +90,3 @@ terraform apply -var="prefix=AB"
 go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
 # Don't forget to run destroy if you are in a playground account
 ```
-
-Test
