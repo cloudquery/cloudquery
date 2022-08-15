@@ -32,13 +32,13 @@ const FEATURES: Features = [
   },
   {
     name: "Database agnostic",
-    description: `CloudQuery can store your configuration in any supported destination such as database,datalake,streaming for further analysis.`,
+    description: `CloudQuery can store your configuration in any supported destination such as database, datalake, streaming for further analysis.`,
     Icon: DatabaseIcon,
     page: "all",
   },
   {
     name: "Raw access to data",
-    description: `Decouple data ingestion and having raw access to your data you can built your own security stack and re-use best-of-breed tools for querying (SQL,...), transformation (dbt,...) and visualization (Grafana,Preset,Metabase,PowerBI,...).`,
+    description: `Decouple data ingestion and having raw access to your data you can built your own security stack and re-use best-of-breed tools for querying (SQL, ...), transformation (dbt, ...) and visualization (Grafana, Preset, Metabase, PowerBI, ...).`,
     Icon: ArrowsExpandIcon,
     page: "all",
   },
