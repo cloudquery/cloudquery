@@ -1,7 +1,7 @@
 import * as React from "react"
-import {INTEGRATION_WIDTH} from "./constants";
+import { INTEGRATION_WIDTH } from "./constants";
 
-const YandexCloudLogo = ({width = INTEGRATION_WIDTH}) => (
+const YandexCloudLogo = ({ width = INTEGRATION_WIDTH, className }: { width?: number, className?: string }) => (
     <svg
         viewBox="0 0 120 120"
         xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +12,7 @@ const YandexCloudLogo = ({width = INTEGRATION_WIDTH}) => (
             strokeLinejoin: "round",
             strokeMiterlimit: 2,
         }}
-        className="dark:text-white text-gray-900"
+        className={className || "dark:text-white text-gray-900"}
         width={width}
     >
         <path

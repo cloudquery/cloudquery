@@ -1,12 +1,12 @@
-import {INTEGRATION_WIDTH} from "./constants";
+import { INTEGRATION_WIDTH } from "./constants";
 
-const AWSLogo = ({width = INTEGRATION_WIDTH}) => (
+const AWSLogo = ({ width = INTEGRATION_WIDTH, className }: { width?: number, className?: string }) => (
     <svg
         viewBox="0 0 304 182"
         xmlns="http://www.w3.org/2000/svg"
         xmlSpace="preserve"
         width={width}
-        className="dark:text-white text-gray-900"
+        className={className || "dark:text-white text-gray-900"}
         style={{
             fillRule: "evenodd",
             clipRule: "evenodd",
