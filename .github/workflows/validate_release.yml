@@ -1,0 +1,41 @@
+name: validate-release
+on:
+  pull_request:
+    branches:
+      - main
+env:
+  CGO_ENABLED: 0
+
+jobs:
+  release-dry-run:
+    runs-on: ubuntu-latest
+    steps:
+      # Expected branch format for release PRs is 'release-please--branches--main--components--<name>'
+      - name: Get component name
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        id: component
+        run: |
+          source_branch=${{github.head_ref}}
+          echo ::set-output name=name::${source_branch##*-}
+      - name: Checkout
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Go
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - name: Install GoReleaser
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        uses: goreleaser/goreleaser-action@v3
+        with:
+          distribution: goreleaser-pro
+          version: latest
+          install-only: true
+      - name: Run GoReleaser Dry-Run
+        if: startsWith(github.head_ref, 'release-please--branches--main--components')
+        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.component.outputs.name}}/.goreleaser.yaml
+        env:
+          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
