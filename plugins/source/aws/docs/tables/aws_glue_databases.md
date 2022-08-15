@@ -16,3 +16,4 @@ The Database object represents a logical grouping of tables that might reside in
 |parameters|jsonb|These key-value pairs define parameters and properties of the database|
 |target_database_catalog_id|text|The ID of the Data Catalog in which the database resides|
 |target_database_name|text|The name of the catalog database|
+|tags|jsonb||
