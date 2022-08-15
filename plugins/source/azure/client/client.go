@@ -69,11 +69,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		}
 	}
 
-	// chained credentials with ordering:
-	//  1. EnvironmentCredential
-	//  2. ManagedIdentityCredential
-	//  3. AzureCLICredential
-	azCred, err := azidentity.NewDefaultAzureCredential(nil)
+	azCred, err := getChainedCredentials()
 	if err != nil {
 		return nil, diag.FromError(err, diag.USER)
 	}
