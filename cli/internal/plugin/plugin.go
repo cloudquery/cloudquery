@@ -193,7 +193,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.SourceSp
 		var err error
 		pluginPath, err = p.downloadSourceGitHub(ctx, spec)
 		if err != nil {
-			return nil, errors.Wrap(err, "failed to download plugin")
+			return nil, err
 		}
 		// grpcTarget = unixSocketPrefix + spec.Path
 	default:

@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/cmd/enum"
 	"github.com/cloudquery/cloudquery/internal/plugin"
-	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -15,17 +14,17 @@ import (
 )
 
 const (
-	initShort   = "Generate initial *.cq.yml file for sources,destionations,connections"
+	initShort   = "Generate initial *.cq.yml file for sources and destionations plugins"
 	initExample = `
 # Downloads aws provider and generates aws.cq.yml for aws provider
-cloudquery generate aws
+cloudquery generate source aws
 
 # Downloads aws provider and generates aws.cq.yml for aws provider
-cloudquery generate gcp
+cloudquery generate source --registry grpc "localhost:7777"
 `
 )
 
-func NewCmdInit() *cobra.Command {
+func NewCmdGenerate() *cobra.Command {
 	registry := enum.NewEnum([]string{"github", "local", "grpc"}, "github")
 	cmd := &cobra.Command{
 		Use:     "generate <source/destination/connection> <path>",
@@ -34,28 +33,30 @@ func NewCmdInit() *cobra.Command {
 		Long:    initShort,
 		Example: initExample,
 		Args:    cobra.ExactArgs(2),
-		RunE:    runGen,
+		RunE:    runGenerate,
 	}
 	cmd.Flags().Var(registry, "registry", "where to download the plugin")
 	return cmd
 }
 
-func runGen(cmd *cobra.Command, args []string) error {
-
+func runGenerate(cmd *cobra.Command, args []string) error {
 	pluginManager := plugin.NewPluginManager(plugin.WithLogger(log.Logger))
+	registry, err := specs.RegistryFromString(cmd.Flag("registry").Value.String())
+	if err != nil {
+		return fmt.Errorf("runGen: invalid registry %w", err)
+	}
 	switch args[0] {
 	case "source":
-		return genSource(cmd, args[1], pluginManager)
+		return genSource(cmd, args[1], pluginManager, registry)
 	case "destination":
-		return genDestination(cmd, args[1], pluginManager)
+		return genDestination(cmd, args[1], pluginManager, registry)
 	default:
 		return errors.Errorf("unknown type: %s", args[0])
 	}
 }
 
-func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error {
-	registry := cmd.Flag("registry").Value.String()
-	if registry == "github" && !strings.Contains(path, "/") {
+func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry) error {
+	if registry == specs.RegistryGithub && !strings.Contains(path, "/") {
 		path = "cloudquery/" + path
 	}
 	version := "latest"
@@ -69,11 +70,12 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error 
 		Registry: registry,
 		Version:  version,
 	}
-	sourceClient, err := pm.GetSourcePluginClient(cmd.Context(), sourceSpec)
+	plugin, err := pm.NewSourcePlugin(cmd.Context(), sourceSpec)
 	if err != nil {
-		return errors.Wrap(err, "failed to get plugin client")
+		return fmt.Errorf("failed to create source plugin: %w", err)
 	}
-	res, err := sourceClient.GetExampleConfig(cmd.Context())
+	defer plugin.Close()
+	res, err := plugin.GetClient().GetExampleConfig(cmd.Context())
 	if err != nil {
 		return errors.Wrap(err, "failed to get example config")
 	}
@@ -81,17 +83,18 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager) error 
 	return nil
 }
 
-func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager) error {
+func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry) error {
 	destSpec := specs.DestinationSpec{
 		Name:     path,
 		Path:     path,
-		Registry: cmd.Flag("registry").Value.String(),
+		Registry: registry,
 	}
-	destClient, err := pm.GetDestinationClient(cmd.Context(), destSpec, plugins.DestinationPluginOptions{})
+	destPlugin, err := pm.NewDestinationPlugin(cmd.Context(), destSpec)
 	if err != nil {
 		return errors.Wrap(err, "failed to get plugin client")
 	}
-	res, err := destClient.GetExampleConfig(cmd.Context())
+	defer destPlugin.Close()
+	res, err := destPlugin.GetClient().GetExampleConfig(cmd.Context())
 	if err != nil {
 		return errors.Wrap(err, "failed to get example config")
 	}

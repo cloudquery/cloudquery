@@ -33,19 +33,18 @@ var createTablesTests = []*schema.Table{
 func TestPostgreSqlCreateTables(t *testing.T) {
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
 	ctx := context.Background()
-	p := PostgreSqlPlugin{
-		logger: l,
-	}
-	if err := p.Configure(ctx, specs.DestinationSpec{
-		Name:    "postgresql",
-		Version: "test",
-		Spec: PostgreSqlSpec{
-			ConnectionString: "postgres://postgres:pass@localhost:5432/postgres",
+	c := NewClient(l)
+	if err := c.Configure(ctx,
+		specs.DestinationSpec{
+			Spec: &PostgreSqlSpec{
+				ConnectionString: "postgres://postgres:pass@localhost:5432/postgres",
+			},
 		},
-	}); err != nil {
-		t.Fatal("failed to configure postgresql plugin:", err)
+	); err != nil {
+		t.Fatal(err)
 	}
-	if err := p.CreateTables(ctx, createTablesTests); err != nil {
-		t.Fatal("failed to create tables:", err)
+	if err := c.Migrate(ctx, "test", "v1.0.0", createTablesTests); err != nil {
+		t.Fatal(err)
 	}
+
 }

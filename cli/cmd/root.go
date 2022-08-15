@@ -24,7 +24,7 @@ var (
 	rootShort = "CloudQuery CLI"
 	rootLong  = `CloudQuery CLI
 
-Open source data integration platform for infrastructure teams.
+Open source data integration that works.
 
 Find more information at:
 	https://cloudquery.io`
@@ -117,7 +117,7 @@ func newCmdRoot() *cobra.Command {
 	}
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	cmd.AddCommand(generate.NewCmdInit(), sync.NewCmdFetch())
+	cmd.AddCommand(generate.NewCmdGenerate(), sync.NewCmdFetch())
 	// cmd.AddCommand(
 	// 	initCmd.NewCmdInit(), fetch.NewCmdFetch(), policy.NewCmdPolicy(), provider.NewCmdProvider(),
 	// 	options.NewCmdOptions(), newCmdVersion(), newCmdDoc())

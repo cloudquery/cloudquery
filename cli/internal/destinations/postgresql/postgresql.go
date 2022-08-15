@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -75,8 +74,8 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 }
 
 // This is the responsability of the CLI of the client to lock before running migration
-func (p *Client) Migrate(ctx context.Context, source *plugins.SourcePlugin) error {
-	for _, table := range source.Tables {
+func (p *Client) Migrate(ctx context.Context, name string, version string, tables schema.Tables) error {
+	for _, table := range tables {
 		if len(table.Columns) == 0 {
 			p.logger.Info().Str("table", table.Name).Msg("skipping table creation, no columns")
 			continue

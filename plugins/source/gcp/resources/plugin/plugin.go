@@ -50,12 +50,10 @@ const exampleConfig = `
 `
 
 func Plugin() *plugins.SourcePlugin {
-	return &plugins.SourcePlugin{
-		Name:          "gcp",
-		Version:       Version,
-		Configure:     client.Configure,
-		ClassifyError: client.ClassifyError,
-		Tables: []*schema.Table{
+	return plugins.NewSourcePlugin(
+		"gcp",
+		Version,
+		[]*schema.Table{
 			bigquery.BigqueryDatasets(),
 			cloudbilling.Accounts(),
 			cloudbilling.Services(),
@@ -100,6 +98,8 @@ func Plugin() *plugins.SourcePlugin {
 			storage.StorageBuckets(),
 			storage.Metrics(),
 		},
-		ExampleConfig: exampleConfig,
-	}
+		client.Configure,
+		plugins.WithSourceExampleConfig(exampleConfig),
+		plugins.WithClassifyError(client.ClassifyError),
+	)
 }
