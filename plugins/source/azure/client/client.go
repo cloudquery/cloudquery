@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	// Import all autorest modules
@@ -59,6 +58,9 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
 
+	// Old-SDK auth with ordering:
+	//  1. Environment
+	//  2. AzureCLI
 	logger.Info("Trying to authenticate via environment variables")
 	azureAuth, err := auth.NewAuthorizerFromEnvironment()
 	if err != nil {
@@ -69,7 +71,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		}
 	}
 
-	azCred, err := getChainedCredentials()
+	// New-SDK auth; chained credentials with ordering:
+	//  1. Environment
+	//  2. ManagedIdentity
+	//  3. AzureCLI
+	azCred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		return nil, diag.FromError(err, diag.USER)
 	}
@@ -119,33 +125,4 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 
 	// Return the initialized client and it will be passed to your resources
 	return client, nil
-}
-
-// chained credentials with ordering:
-//  1. ManagedIdentityCredential
-//  2. EnvironmentCredential
-//  3. AzureCLICredential
-func getChainedCredentials() (azcore.TokenCredential, error) {
-	cliCred, err := azidentity.NewAzureCLICredential(nil)
-	if err != nil {
-		return nil, err
-	}
-	envCred, err := azidentity.NewEnvironmentCredential(nil)
-	if err != nil {
-		return nil, err
-	}
-	managedCred, err := azidentity.NewManagedIdentityCredential(nil)
-	if err != nil {
-		return nil, err
-	}
-	return azidentity.NewChainedTokenCredential(
-		[]azcore.TokenCredential{
-			cliCred,
-			envCred,
-			managedCred,
-		},
-		&azidentity.ChainedTokenCredentialOptions{
-			RetrySources: false,
-		},
-	)
 }
