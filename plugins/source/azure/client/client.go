@@ -3,6 +3,8 @@ package client
 import (
 	"context"
 	"errors"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	// Import all autorest modules
@@ -57,26 +59,27 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
 
-	logger.Info("Trying to authenticate via CLI")
-	azureAuth, err := auth.NewAuthorizerFromCLI()
+	logger.Info("Trying to authenticate via environment variables")
+	azureAuth, err := auth.NewAuthorizerFromEnvironment()
 	if err != nil {
-		logger.Info("Trying to authenticate via environment variables")
-		azureAuth, err = auth.NewAuthorizerFromEnvironment()
+		logger.Info("Trying to authenticate via CLI")
+		azureAuth, err = auth.NewAuthorizerFromCLI()
 		if err != nil {
 			return nil, diag.FromError(err, diag.USER)
 		}
 	}
 
-	// DefaultAzureCredential uses a chained credential with the following order:
-	// - EnvironmentCredential
-	// - ManagedIdentityCredential
-	// - AzureCLICredential
+	// chained credentials with ordering:
+	//  1. EnvironmentCredential
+	//  2. ManagedIdentityCredential
+	//  3. AzureCLICredential
 	azCred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		return nil, diag.FromError(err, diag.USER)
 	}
 
 	client := NewAzureClient(logger, providerConfig.Subscriptions)
+
 	if len(providerConfig.Subscriptions) == 0 {
 		ctx := context.Background()
 		svc := subscription.NewSubscriptionsClient()
@@ -120,4 +123,33 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 
 	// Return the initialized client and it will be passed to your resources
 	return client, nil
+}
+
+// chained credentials with ordering:
+//  1. ManagedIdentityCredential
+//  2. EnvironmentCredential
+//  3. AzureCLICredential
+func getChainedCredentials() (azcore.TokenCredential, error) {
+	cliCred, err := azidentity.NewAzureCLICredential(nil)
+	if err != nil {
+		return nil, err
+	}
+	envCred, err := azidentity.NewEnvironmentCredential(nil)
+	if err != nil {
+		return nil, err
+	}
+	managedCred, err := azidentity.NewManagedIdentityCredential(nil)
+	if err != nil {
+		return nil, err
+	}
+	return azidentity.NewChainedTokenCredential(
+		[]azcore.TokenCredential{
+			cliCred,
+			envCred,
+			managedCred,
+		},
+		&azidentity.ChainedTokenCredentialOptions{
+			RetrySources: false,
+		},
+	)
 }
