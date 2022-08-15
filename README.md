@@ -28,9 +28,9 @@ CloudQuery key use-cases and features:
 
 Check out https://hub.cloudquery.io.
 
-If you want us to add a new provider or resource please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
+If you want us to add a new provider or resource, please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
-See [docs](https://docs.cloudquery.io/docs/developers/developing-new-provider) for developing new provider.
+See [docs](https://docs.cloudquery.io/docs/developers/developing-new-provider) for developing a new provider.
 
 ## Getting Started
 
@@ -40,22 +40,22 @@ Please check out our 'Getting Started' guides:
 - [Getting Started with GCP](https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp)
 - [Getting Started with Azure](https://docs.cloudquery.io/docs/getting-started/getting-started-with-azure)
 
-For other providers, you can follow their specific guide on [Cloudquery Hub](https://hub.cloudquery.io/providers), as well reference the [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
+For other providers, you can follow their specific guide on [Cloudquery Hub](https://hub.cloudquery.io/providers), as well as reference the [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
 
-## Compile and run
+## Compile and run CLI
 
 ```
-go build .
-./cloudquery # --help to see all options
+make build-cli
+./bin/cloudquery # --help to see all options
 ```
 
-## Deployment
+## Deployment via Helm
 
-Checkout [cloudquery/helm-charts](https://github.com/cloudquery/helm-charts)
+Check out [cloudquery/helm-charts](https://github.com/cloudquery/helm-charts)
 
 ## License
 
-By contributing to cloudquery you agree that your contributions will be licensed as defined on the LICENSE file.
+By contributing to CloudQuery you agree that your contributions will be licensed as defined on the LICENSE file.
 
 ## Hiring
 
@@ -63,4 +63,4 @@ If you are into Go, Backend, Cloud, GCP, AWS - ping us at jobs [at] our domain
 
 ## Contribution
 
-Feel free to open Pull-Request for small fixes and changes. For bigger changes and new providers please open an issue first to prevent double work and discuss relevant stuff.
+Feel free to open a pull request for small fixes and changes. For bigger changes and new providers, please open an issue first to prevent double work and have relevant discussions.
