@@ -4,7 +4,7 @@
 # https://nathandavison.com/blog/github-actions-and-the-threat-of-malicious-pull-requests
 on:
   pull_request_target:
-    types: [opened, edited]
+    types: [opened, edited, synchronize, reopened]
 name: Add Tags to PRs
 jobs:
   label:
