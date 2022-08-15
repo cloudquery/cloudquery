@@ -75,7 +75,7 @@ require (
 	github.com/aws/smithy-go v1.12.1
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
-	github.com/cloudquery/cq-gen v0.0.8
+	github.com/cloudquery/cq-gen v0.0.9
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/gocarina/gocsv v0.0.0-20220712153207-8b2118da4570

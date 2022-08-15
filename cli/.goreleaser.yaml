@@ -30,7 +30,7 @@ brews:
     tap:
       owner: cloudquery
       name: homebrew-tap
-    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
     homepage: "https://cloudquery.io"
     description: "Easily monitor and ask questions about your infrastructure."
     install: |-
