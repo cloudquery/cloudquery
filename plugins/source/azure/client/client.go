@@ -3,8 +3,6 @@ package client
 import (
 	"context"
 	"errors"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	// Import all autorest modules
@@ -69,19 +67,16 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		}
 	}
 
-	logger.Info("Trying to authenticate via CLI (azidentity)")
-	var azCred azcore.TokenCredential
-	azCred, err = azidentity.NewAzureCLICredential(nil)
+	// DefaultAzureCredential uses a chained credential with the following order:
+	// - EnvironmentCredential
+	// - ManagedIdentityCredential
+	// - AzureCLICredential
+	azCred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		logger.Info("Trying to authenticate via environment variables (azidentity)")
-		azCred, err = azidentity.NewEnvironmentCredential(nil)
-		if err != nil {
-			return nil, diag.FromError(err, diag.USER)
-		}
+		return nil, diag.FromError(err, diag.USER)
 	}
 
 	client := NewAzureClient(logger, providerConfig.Subscriptions)
-
 	if len(providerConfig.Subscriptions) == 0 {
 		ctx := context.Background()
 		svc := subscription.NewSubscriptionsClient()
