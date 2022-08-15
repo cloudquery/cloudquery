@@ -54,9 +54,3 @@ for f in $GO_MOD_DIRS; do
         cd -
     fi
 done
-
-# Rename "cli" to "cloudquery" if it exists
-if test -f "bin/cli"; then
-    echo "Renaming cli -> cloudquery"
-    mv bin/cli bin/cloudquery
-fi
