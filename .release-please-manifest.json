@@ -1,7 +1,7 @@
 {
   "cli": "0.32.7",
   "plugins/source/aws": "0.13.9",
-  "plugins/source/azure": "0.12.4",
+  "plugins/source/azure": "0.12.5",
   "plugins/source/cloudflare": "0.1.4",
   "plugins/source/digitalocean": "0.6.3",
   "plugins/source/fuzz": "0.0.15",
