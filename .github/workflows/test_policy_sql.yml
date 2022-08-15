@@ -20,13 +20,11 @@ jobs:
           "plugins/source/azure",
           "plugins/source/gcp",
         ]
-        dbversion: [ "postgres:10" ]
         go: [ "1.18" ]
-        platform: [ ubuntu-latest ] # can not run in macOS and widnowsOS
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest # can not run in macOS and widnowsOS
     services:
       postgres:
-        image: ${{ matrix.dbversion }}
+        image: postgres:11
         env:
           POSTGRES_PASSWORD: pass
           POSTGRES_USER: postgres

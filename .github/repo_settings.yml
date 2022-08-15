@@ -15,13 +15,13 @@ branchProtectionRules:
     - Linter (cli)
     - Unit Tests (cli)
 
-    - SQLPolicyTest (plugins/source/aws, postgres:10, 1.18, ubuntu-latest)
+    - SQLPolicyTest (plugins/source/aws, 1.18)
     - Check Generated Code for Drift (aws)
     - Linter (plugins/source/aws)
     - Unit Tests (plugins/source/aws)
     - Lint Provider Doc (plugins/source/aws)
 
-    - SQLPolicyTest (plugins/source/azure, postgres:10, 1.18, ubuntu-latest)
+    - SQLPolicyTest (plugins/source/azure, 1.18)
     - Check Generated Code for Drift (azure)
     - Linter (plugins/source/azure)
     - Unit Tests (plugins/source/azure)
@@ -39,7 +39,7 @@ branchProtectionRules:
     - Linter (plugins/source/fuzz)
     - Unit Tests (plugins/source/fuzz)
 
-    - SQLPolicyTest (plugins/source/gcp, postgres:10, 1.18, ubuntu-latest)
+    - SQLPolicyTest (plugins/source/gcp, 1.18)
     - Check Generated Code for Drift (gcp)
     - Linter (plugins/source/gcp)
     - Unit Tests (plugins/source/gcp)
