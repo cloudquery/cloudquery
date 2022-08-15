@@ -27,7 +27,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: regenerate partition_service_region file
-        working-directory: plugins/source/aws/tools
+        working-directory: plugins/source/aws
         run: |
           go run ./tools/endpoints/main.go
 
