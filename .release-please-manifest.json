@@ -1,5 +1,5 @@
 {
-  "cli": "0.32.5",
+  "cli": "0.32.6",
   "plugins/source/aws": "0.13.8",
   "plugins/source/azure": "0.12.4",
   "plugins/source/cloudflare": "0.1.3",
