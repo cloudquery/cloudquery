@@ -55,6 +55,26 @@ func (mr *MockFsxClientMockRecorder) DescribeBackups(arg0, arg1 interface{}, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeBackups", reflect.TypeOf((*MockFsxClient)(nil).DescribeBackups), varargs...)
 }
 
+// DescribeDataRepositoryAssociations mocks base method.
+func (m *MockFsxClient) DescribeDataRepositoryAssociations(arg0 context.Context, arg1 *fsx.DescribeDataRepositoryAssociationsInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryAssociationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDataRepositoryAssociations", varargs...)
+	ret0, _ := ret[0].(*fsx.DescribeDataRepositoryAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDataRepositoryAssociations indicates an expected call of DescribeDataRepositoryAssociations.
+func (mr *MockFsxClientMockRecorder) DescribeDataRepositoryAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDataRepositoryAssociations", reflect.TypeOf((*MockFsxClient)(nil).DescribeDataRepositoryAssociations), varargs...)
+}
+
 // DescribeDataRepositoryTasks mocks base method.
 func (m *MockFsxClient) DescribeDataRepositoryTasks(arg0 context.Context, arg1 *fsx.DescribeDataRepositoryTasksInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryTasksOutput, error) {
 	m.ctrl.T.Helper()

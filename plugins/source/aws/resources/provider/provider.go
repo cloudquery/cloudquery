@@ -179,6 +179,7 @@ func Provider() *provider.Provider {
 			"emr.clusters":                            emr.EmrClusters(),
 			"eventbridge.event_buses":                 eventbridge.EventBuses(),
 			"fsx.backups":                             fsx.Backups(),
+			"fsx.data_repo_associations":              fsx.DataRepoAssociations(),
 			"fsx.data_repo_tasks":                     fsx.DataRepoTasks(),
 			"fsx.filesystems":                         fsx.Filesystems(),
 			"fsx.snapshots":                           fsx.Snapshots(),
