@@ -36,6 +36,6 @@ jobs:
           install-only: true
       - name: Run GoReleaser Dry-Run
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
-        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.component.outputs.name}}/.goreleaser.yaml
+        run: goreleaser release --snapshot --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.component.outputs.name}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
