@@ -40,4 +40,4 @@ signs:
       - "--detach-sign"
       - "${artifact}"
 release:
-  prerelease: true
+  prerelease: auto
