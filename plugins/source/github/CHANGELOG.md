@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/github-v0.1.4...plugins/source/github/v0.1.5) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.9 ([#1286](https://github.com/cloudquery/cloudquery/issues/1286)) ([67ac422](https://github.com/cloudquery/cloudquery/commit/67ac422f392387e674cb70386e612befa5b455f0))
+
 ## [0.1.4](https://github.com/cloudquery/cq-provider-github/compare/v0.1.3...v0.1.4) (2022-08-10)
 
 
