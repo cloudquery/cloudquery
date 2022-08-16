@@ -3,7 +3,7 @@
 build:
 	./scripts/build.sh
 
-.PHONY: build
+.PHONY: build-changed
 build-changed:
 	./scripts/build.sh -c
 
