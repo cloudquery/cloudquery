@@ -2,11 +2,10 @@ package elasticache
 
 import (
 	"context"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -95,24 +94,13 @@ func Users() *schema.Table {
 // ====================================================================================================================
 
 func fetchElasticacheUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	awsProviderClient := meta.(*client.Client)
-	svc := awsProviderClient.Services().ElastiCache
-
-	var input elasticache.DescribeUsersInput
-
-	for {
-		output, err := svc.DescribeUsers(ctx, &input)
-
+	paginator := elasticache.NewDescribeUsersPaginator(meta.(*client.Client).Services().ElastiCache, nil)
+	for paginator.HasMorePages() {
+		v, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-
-		res <- output.Users
-
-		if aws.ToString(output.Marker) == "" {
-			return nil
-		}
-
-		input.Marker = output.Marker
+		res <- v.Users
 	}
+	return nil
 }

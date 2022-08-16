@@ -2,8 +2,6 @@ package elasticache
 
 import (
 	"context"
-
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -265,24 +263,13 @@ func Snapshots() *schema.Table {
 // ====================================================================================================================
 
 func fetchElasticacheSnapshots(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	awsProviderClient := meta.(*client.Client)
-	svc := awsProviderClient.Services().ElastiCache
-
-	var input elasticache.DescribeSnapshotsInput
-
-	for {
-		output, err := svc.DescribeSnapshots(ctx, &input)
-
+	paginator := elasticache.NewDescribeSnapshotsPaginator(meta.(*client.Client).Services().ElastiCache, nil)
+	for paginator.HasMorePages() {
+		v, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-
-		res <- output.Snapshots
-
-		if aws.ToString(output.Marker) == "" {
-			return nil
-		}
-
-		input.Marker = output.Marker
+		res <- v.Snapshots
 	}
+	return nil
 }

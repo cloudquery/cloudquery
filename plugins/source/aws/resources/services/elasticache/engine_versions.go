@@ -2,11 +2,10 @@ package elasticache
 
 import (
 	"context"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
@@ -67,24 +66,13 @@ func EngineVersions() *schema.Table {
 // ====================================================================================================================
 
 func fetchElasticacheEngineVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	awsProviderClient := meta.(*client.Client)
-	svc := awsProviderClient.Services().ElastiCache
-
-	var describeCacheEngineVersionsInput elasticache.DescribeCacheEngineVersionsInput
-
-	for {
-		describeCacheEngineVersionOutput, err := svc.DescribeCacheEngineVersions(ctx, &describeCacheEngineVersionsInput)
-
+	paginator := elasticache.NewDescribeCacheEngineVersionsPaginator(meta.(*client.Client).Services().ElastiCache, nil)
+	for paginator.HasMorePages() {
+		v, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-
-		res <- describeCacheEngineVersionOutput.CacheEngineVersions
-
-		if aws.ToString(describeCacheEngineVersionOutput.Marker) == "" {
-			return nil
-		}
-
-		describeCacheEngineVersionsInput.Marker = describeCacheEngineVersionOutput.Marker
+		res <- v.CacheEngineVersions
 	}
+	return nil
 }
