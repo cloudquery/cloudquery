@@ -2,10 +2,10 @@ package elasticache
 
 import (
 	"context"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
