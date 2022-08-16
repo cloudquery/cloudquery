@@ -6,6 +6,8 @@ package apps
 import (
 	"testing"
 
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -32,8 +34,8 @@ func fakeAppsDeployment(t *testing.T) appsv1.Deployment {
 	if err := faker.FakeDataSkipFields(&deployment.Spec, []string{"Template"}); err != nil {
 		t.Fatal(err)
 	}
-	deployment.Spec.Template = testing.FakePodTemplateSpec(t)
-	deployment.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	deployment.Spec.Template = k8sTesting.FakePodTemplateSpec(t)
+	deployment.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	return deployment
 }
 

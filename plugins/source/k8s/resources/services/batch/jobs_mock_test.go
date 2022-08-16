@@ -6,6 +6,8 @@ package batch
 import (
 	"testing"
 
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -26,9 +28,9 @@ func createBatchJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	j.Spec.Template = testing.FakePodTemplateSpec(t)
-	j.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
-	j.Spec.Template.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	j.Spec.Template = k8sTesting.FakePodTemplateSpec(t)
+	j.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
+	j.Spec.Template.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	jobs.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
 		&batchv1.JobList{Items: []batchv1.Job{j}}, nil,
 	)

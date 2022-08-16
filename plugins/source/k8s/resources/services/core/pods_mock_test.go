@@ -6,6 +6,8 @@ package core
 import (
 	"testing"
 
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/golang/mock/gomock"
@@ -16,7 +18,7 @@ import (
 func createCorePods(t *testing.T, ctrl *gomock.Controller) client.Services {
 	pods := mocks.NewMockPodsClient(ctrl)
 	pods.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
-		&corev1.PodList{Items: []corev1.Pod{testing.FakePod(t)}}, nil,
+		&corev1.PodList{Items: []corev1.Pod{k8sTesting.FakePod(t)}}, nil,
 	)
 	return client.Services{
 		Pods: pods,

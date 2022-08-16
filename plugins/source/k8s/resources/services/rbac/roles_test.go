@@ -6,6 +6,8 @@ package rbac
 import (
 	"testing"
 
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -29,7 +31,7 @@ func fakeRole(t *testing.T) *v1.Role {
 	if err := faker.FakeData(&r); err != nil {
 		t.Fatal(err)
 	}
-	r.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	r.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	return &r
 }
 

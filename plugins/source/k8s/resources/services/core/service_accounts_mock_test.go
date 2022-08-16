@@ -6,6 +6,8 @@ package core
 import (
 	"testing"
 
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -20,7 +22,7 @@ func createCoreServiceAccounts(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeData(&e); err != nil {
 		t.Fatal(err)
 	}
-	e.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	e.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	serviceAccounts.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
 		&corev1.ServiceAccountList{Items: []corev1.ServiceAccount{e}}, nil,
 	)

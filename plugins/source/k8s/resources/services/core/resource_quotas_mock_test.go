@@ -6,6 +6,8 @@ package core
 import (
 	"testing"
 
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -25,17 +27,17 @@ func createCoreResourceQuotas(t *testing.T, ctrl *gomock.Controller) client.Serv
 		t.Fatal(err)
 	}
 	rqsp := corev1.ResourceQuotaSpec{
-		Hard:          *testing.FakeResourceList(t),
+		Hard:          *k8sTesting.FakeResourceList(t),
 		Scopes:        []corev1.ResourceQuotaScope{corev1.ResourceQuotaScopeBestEffort},
 		ScopeSelector: &ss,
 	}
 	rqst := corev1.ResourceQuotaStatus{
-		Hard: *testing.FakeResourceList(t),
-		Used: *testing.FakeResourceList(t),
+		Hard: *k8sTesting.FakeResourceList(t),
+		Used: *k8sTesting.FakeResourceList(t),
 	}
 	e.Spec = rqsp
 	e.Status = rqst
-	e.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	e.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	resourceQuotas.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
 		&corev1.ResourceQuotaList{Items: []corev1.ResourceQuota{e}}, nil,
 	)
