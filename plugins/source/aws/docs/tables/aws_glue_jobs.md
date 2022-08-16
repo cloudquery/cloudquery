@@ -6,7 +6,7 @@ Specifies a job definition
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
-|arn|text|The Amazon Resource Name (ARN) of the glue resource.|
+|arn|text|The Amazon Resource Name (ARN) of the workflow.|
 |tags|jsonb|Resource tags.|
 |allocated_capacity|bigint|This field is deprecated|
 |code_gen_configuration_nodes|jsonb|The representation of a directed acyclic graph on which both the Glue Studio visual component and Glue Studio code generation is based|
