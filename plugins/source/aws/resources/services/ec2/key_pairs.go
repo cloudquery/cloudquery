@@ -65,11 +65,6 @@ func KeyPairs() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "public_key",
-				Description: "The public key material.",
-				Type:        schema.TypeString,
-			},
-			{
 				Name:        "tags",
 				Description: "Any tags assigned to the key pair.",
 				Type:        schema.TypeJSON,

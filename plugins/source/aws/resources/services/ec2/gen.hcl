@@ -307,4 +307,8 @@ resource "aws" "ec2" "key_pairs" {
       path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
     }
   }
+
+  column "public_key" {
+    skip = true
+  }
 }

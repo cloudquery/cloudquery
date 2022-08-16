@@ -12,5 +12,4 @@ Describes an EC2 Key Pair.
 |key_name|text|The name of the key pair.|
 |key_pair_id|text|The ID of the key pair.|
 |key_type|text|The type of key pair.|
-|public_key|text|The public key material.|
 |tags|jsonb|Any tags assigned to the key pair.|
