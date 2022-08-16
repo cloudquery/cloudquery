@@ -30,8 +30,3 @@ body {
   white-space: nowrap;
   animation: slidein 60s linear infinite;
 }
-
-button[type="submit"].bg-black:not(:hover) {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0/var(--tw-bg-opacity));
-}
