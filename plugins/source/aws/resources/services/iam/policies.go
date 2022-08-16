@@ -175,7 +175,7 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 }
 
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Policy)
+	r := resource.Item.(types.ManagedPolicyDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().IAM
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})

@@ -41,6 +41,10 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 				tag,
 			},
 		}, nil)
+		
+	return client.Services{
+		IAM: m,
+	}
 }
 
 func TestIamPolicies(t *testing.T) {
