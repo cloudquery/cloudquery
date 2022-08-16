@@ -54,5 +54,5 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestSnsTopics(t *testing.T) {
-	client.AwsMockTestHelper(t, SnsTopics(), buildSnsTopics, client.TestOptions{})
+	client.AwsMockTestHelper(t, Topics(), buildSnsTopics, client.TestOptions{})
 }

@@ -19,15 +19,36 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListSubscriptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().ListSubscriptions(
+		gomock.Any(),
+		&sns.ListSubscriptionsInput{},
+	).Return(
 		&sns.ListSubscriptionsOutput{
 			Subscriptions: []types.Subscription{sub},
 		}, nil)
+
+	m.EXPECT().GetSubscriptionAttributes(
+		gomock.Any(),
+		&sns.GetSubscriptionAttributesInput{SubscriptionArn: sub.SubscriptionArn},
+	).Return(
+		&sns.GetSubscriptionAttributesOutput{Attributes: map[string]string{
+			"ConfirmationWasAuthenticated": "true",
+			"DeliveryPolicy":               "{}",
+			"EffectiveDeliveryPolicy":      "{}",
+			"FilterPolicy":                 "{}",
+			"PendingConfirmation":          "true",
+			"RawMessageDelivery":           "true",
+			"RedrivePolicy":                "some",
+			"SubscriptionRoleArn":          "some",
+		}},
+		nil,
+	)
+
 	return client.Services{
 		SNS: m,
 	}
 }
 
 func TestSnsSubscriptions(t *testing.T) {
-	client.AwsMockTestHelper(t, SnsSubscriptions(), buildSnsSubscriptions, client.TestOptions{})
+	client.AwsMockTestHelper(t, Subscriptions(), buildSnsSubscriptions, client.TestOptions{})
 }
