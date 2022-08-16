@@ -17,7 +17,7 @@ func Filesystems() *schema.Table {
 		Name:         "aws_fsx_filesystems",
 		Description:  "A description of a specific Amazon FSx file system.",
 		Resolver:     fetchFsxFilesystems,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
