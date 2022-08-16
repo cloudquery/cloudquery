@@ -1,0 +1,8 @@
+{
+  "fetch": "Fetch",
+  "migrations": "Migrations",
+  "commands": "Commands",
+  "docker": "Docker",
+  "telemetry": "Telemetry",
+  "rate_limiting": "Rate Limiting"
+}
