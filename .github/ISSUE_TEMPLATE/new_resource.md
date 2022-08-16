@@ -1,7 +1,7 @@
 ---
 name: 💡 Request New Resource or Plugin
-about: 
-labels: enhancement
+about: Suggest a new resource or plugin that should be added to CloudQuery
+labels: resource
 ---
 
 ### Why do you need this resource or plugin? Please describe.
