@@ -28,6 +28,24 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&iam.GetAccountAuthorizationDetailsOutput{
 			Policies: []iamTypes.ManagedPolicyDetail{g},
 		}, nil)
+
+	//get tags
+	tag := iamTypes.Tag{}
+	err = faker.FakeData(&tag)
+	if err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().ListPolicyTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListRoleTagsOutput{
+			Tags: []iamTypes.Tag{
+				tag,
+			},
+		}, nil)
+
+	return client.Services{
+		IAM: m,
+	}
+
 	return client.Services{
 		IAM: m,
 	}
