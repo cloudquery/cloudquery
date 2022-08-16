@@ -36,15 +36,11 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListPolicyTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&iam.ListRoleTagsOutput{
+		&iam.ListPolicyTagsOutput{
 			Tags: []iamTypes.Tag{
 				tag,
 			},
 		}, nil)
-
-	return client.Services{
-		IAM: m,
-	}
 }
 
 func TestIamPolicies(t *testing.T) {
