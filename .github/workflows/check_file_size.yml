@@ -1,0 +1,28 @@
+name: Check image sizes
+
+on:
+  pull_request:
+    paths:
+      - "**.jpg"
+      - "**.jpeg"
+      - "**.png"
+      - "**.webp"
+
+jobs:
+  check-broken-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check file sizes
+        id: should-run
+        shell: bash
+        run: |
+          set -o pipefail
+
+          echo Files with size over limit:
+          (find **/*.(png|jpg|jpeg|webp) -size +100k | xargs du -sh) && echo 'No large files found'
