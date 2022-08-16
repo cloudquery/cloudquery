@@ -507,6 +507,7 @@ type IamClient interface {
 	ListUsers(ctx context.Context, params *iam.ListUsersInput, optFns ...func(*iam.Options)) (*iam.ListUsersOutput, error)
 	ListUserTags(ctx context.Context, params *iam.ListUserTagsInput, optFns ...func(*iam.Options)) (*iam.ListUserTagsOutput, error)
 	ListVirtualMFADevices(ctx context.Context, params *iam.ListVirtualMFADevicesInput, optFns ...func(*iam.Options)) (*iam.ListVirtualMFADevicesOutput, error)
+	ListPolicyTags(ctx context.Context,params *iam.ListPolicyTagsInput,optFns ...func(*iam.Options)) (*iam.ListPolicyTagsOutput, error)
 
 	iam.ListServerCertificatesAPIClient
 	iam.ListAccountAliasesAPIClient
