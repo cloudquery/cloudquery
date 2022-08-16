@@ -120,5 +120,9 @@ resource "aws" "fsx" "filesystems" {
     column "aliases" {
       type = "json"
     }
+
+    column "audit_log_configuration" {
+      skip_prefix = true
+    }
   }
 }
