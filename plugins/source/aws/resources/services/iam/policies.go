@@ -181,14 +181,10 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
-			meta.Logger().Debug("ListPolicyTags: role does not exist", "err", err)
+			meta.Logger().Debug("ListPolicyTags: Policy does not exist", "err", err)
 			return nil
 		}
 		return diag.WrapError(err)
 	}
-	tags := map[string]*string{}
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
+	return diag.WrapError(resource.Set("tags", client.TagsToMap(response.Tags)))
 }
