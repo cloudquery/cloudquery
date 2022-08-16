@@ -417,19 +417,19 @@ func Filesystems() *schema.Table {
 						Type:        schema.TypeJSON,
 					},
 					{
-						Name:        "audit_log_configuration_file_access_audit_log_level",
+						Name:        "file_access_audit_log_level",
 						Description: "Sets which attempt type is logged by Amazon FSx for file and folder accesses.  * SUCCESS_ONLY - only successful attempts to access files or folders are logged.  * FAILURE_ONLY - only failed attempts to access files or folders are logged.  * SUCCESS_AND_FAILURE - both successful attempts and failed attempts to access files or folders are logged.  * DISABLED - access auditing of files and folders is turned off.  This member is required.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuditLogConfiguration.FileAccessAuditLogLevel"),
 					},
 					{
-						Name:        "audit_log_configuration_file_share_access_audit_log_level",
+						Name:        "file_share_access_audit_log_level",
 						Description: "Sets which attempt type is logged by Amazon FSx for file share accesses.  * SUCCESS_ONLY - only successful attempts to access file shares are logged.  * FAILURE_ONLY - only failed attempts to access file shares are logged.  * SUCCESS_AND_FAILURE - both successful attempts and failed attempts to access file shares are logged.  * DISABLED - access auditing of file shares is turned off.  This member is required.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuditLogConfiguration.FileShareAccessAuditLogLevel"),
 					},
 					{
-						Name:        "audit_log_configuration_audit_log_destination",
+						Name:        "audit_log_destination",
 						Description: "The Amazon Resource Name (ARN) for the destination of the audit logs",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuditLogConfiguration.AuditLogDestination"),
