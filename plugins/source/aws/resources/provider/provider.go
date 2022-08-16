@@ -283,6 +283,7 @@ func Provider() *provider.Provider {
 			"sqs.queues":                                 sqs.SQSQueues(),
 			"ssm.documents":                              ssm.SsmDocuments(),
 			"ssm.instances":                              ssm.SsmInstances(),
+			"ssm.parameters":                             ssm.Parameters(),
 			"waf.rule_groups":                            waf.WafRuleGroups(),
 			"waf.rules":                                  waf.WafRules(),
 			"waf.subscribed_rule_groups":                 waf.WafSubscribedRuleGroups(),
