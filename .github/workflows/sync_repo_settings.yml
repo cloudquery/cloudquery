@@ -4,6 +4,9 @@ on:
     branches:
       - main
       - chore/repo_settings_sync
+    paths:
+      - '.github/repo_settings.yml'
+      - '.github/workflows/sync_repo_settings.yml'
   schedule:
     # once a day at 8am
     - cron:  "0 8 * * *"
