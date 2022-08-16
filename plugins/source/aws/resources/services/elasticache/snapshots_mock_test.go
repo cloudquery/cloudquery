@@ -10,22 +10,22 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildElasticacheClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticacheSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mockElasticache := mocks.NewMockElastiCache(ctrl)
-	output := elasticache.DescribeCacheClustersOutput{}
+	output := elasticache.DescribeSnapshotsOutput{}
 	err := faker.FakeData(&output)
 	output.Marker = nil
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	mockElasticache.EXPECT().DescribeCacheClusters(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
+	mockElasticache.EXPECT().DescribeSnapshots(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
 
 	return client.Services{
 		ElastiCache: mockElasticache,
 	}
 }
 
-func TestElasticacheClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, Clusters(), buildElasticacheClusters, client.TestOptions{})
+func TestElasticacheSnapshots(t *testing.T) {
+	client.AwsMockTestHelper(t, Snapshots(), buildElasticacheSnapshots, client.TestOptions{})
 }
