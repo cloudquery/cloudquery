@@ -1,6 +1,6 @@
-import {INTEGRATION_WIDTH} from "./constants";
+import { INTEGRATION_WIDTH } from "./constants";
 
-const AzureLogo = ({width = INTEGRATION_WIDTH}) => (
+const AzureLogo = ({ width = INTEGRATION_WIDTH, className }: { width?: number, className?: string }) => (
     <svg
         viewBox="0 0 162 129"
         xmlns="http://www.w3.org/2000/svg"
@@ -11,7 +11,7 @@ const AzureLogo = ({width = INTEGRATION_WIDTH}) => (
             strokeLinejoin: "round",
             strokeMiterlimit: 2,
         }}
-        className="dark:text-white text-gray-900"
+        className={className || "dark:text-white text-gray-900"}
         width={width}
     >
         <path
