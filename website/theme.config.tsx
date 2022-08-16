@@ -53,11 +53,11 @@ const theme: DocsThemeConfig = {
           property="og:url"
           content={`https://cloudquery.io${router.asPath}`}
         /> */}
-      <meta
+      {/* <meta
         property="twitter:image"
-        content="https://cloudquery.io/og-image.png"
+        content="https://cloudquery.io/og-image.jpg"
       />
-      <meta property="og:image" content="https://cloudquery.io/og-image.png" />
+      <meta property="og:image" content="https://cloudquery.io/og-image.jpg" /> */}
       <meta property="og:locale" content="en_IE" />
       <meta property="og:site_name" content="CloudQuery" />
     </>

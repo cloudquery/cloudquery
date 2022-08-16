@@ -1,5 +1,6 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import type { DocumentInitialProps, DocumentContext } from "next/document";
+import { HeaderOgImage } from "../components/HeaderOgImage";
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -24,6 +25,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=optional"
             rel="stylesheet"
           />
+          <HeaderOgImage />
         </Head>
         <body>
           <Main />
