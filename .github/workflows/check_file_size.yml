@@ -40,4 +40,4 @@ jobs:
           fi;
 
         env:
-          LIMIT: 100
+          LIMIT: 250
