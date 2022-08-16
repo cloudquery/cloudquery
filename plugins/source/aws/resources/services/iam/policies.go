@@ -186,9 +186,5 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 		}
 		return diag.WrapError(err)
 	}
-	tags := map[string]*string{}
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
+	return diag.WrapError(resource.Set("tags", client.TagsToMap(response.Tags)))
 }
