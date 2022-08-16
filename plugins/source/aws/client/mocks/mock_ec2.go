@@ -275,6 +275,26 @@ func (mr *MockEc2ClientMockRecorder) DescribeInternetGateways(arg0, arg1 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInternetGateways", reflect.TypeOf((*MockEc2Client)(nil).DescribeInternetGateways), varargs...)
 }
 
+// DescribeKeyPairs mocks base method.
+func (m *MockEc2Client) DescribeKeyPairs(arg0 context.Context, arg1 *ec2.DescribeKeyPairsInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeKeyPairsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeKeyPairs", varargs...)
+	ret0, _ := ret[0].(*ec2.DescribeKeyPairsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeKeyPairs indicates an expected call of DescribeKeyPairs.
+func (mr *MockEc2ClientMockRecorder) DescribeKeyPairs(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeKeyPairs", reflect.TypeOf((*MockEc2Client)(nil).DescribeKeyPairs), varargs...)
+}
+
 // DescribeNatGateways mocks base method.
 func (m *MockEc2Client) DescribeNatGateways(arg0 context.Context, arg1 *ec2.DescribeNatGatewaysInput, arg2 ...func(*ec2.Options)) (*ec2.DescribeNatGatewaysOutput, error) {
 	m.ctrl.T.Helper()
