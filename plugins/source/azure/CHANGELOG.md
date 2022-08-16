@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
-## [0.13.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.12.5...plugins/source/azure/v0.13.0) (2022-08-15)
+## [0.13.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.12.5...plugins/source/azure/v0.13.0) (2022-08-16)
 
 
 ### ⚠ BREAKING CHANGES
