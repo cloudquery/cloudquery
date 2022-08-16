@@ -9,7 +9,7 @@ on:
       - "**.webp"
 
 jobs:
-  check-broken-links:
+  check-files-size:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     concurrency:
@@ -24,5 +24,12 @@ jobs:
         run: |
           set -o pipefail
 
-          echo Files with size over limit:
-          (find **/*.(png|jpg|jpeg|webp) -size +100k | xargs du -sh) && echo 'No large files found'
+          echo Checking files with size over ${LIMIT}kB: \\n
+
+          find . \
+          -iname '*.png' -size +${LIMIT}k -o \
+          -iname '*.jpg' -size +${LIMIT}k -o \
+          -iname '*.jpeg' -size +${LIMIT}k \
+          | xargs du -sh
+        env:
+          LIMIT: 250
