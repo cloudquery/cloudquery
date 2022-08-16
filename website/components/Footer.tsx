@@ -165,7 +165,11 @@ function SubmitForm() {
   };
 
   return (
-    <form className="mt-4 sm:flex sm:max-w-md" onSubmit={subscribe}>
+    <form
+      className="mt-4 sm:flex sm:max-w-md"
+      autoComplete="off"
+      onSubmit={subscribe}
+    >
       <label htmlFor="email-address" className="sr-only">
         Email address
       </label>
@@ -174,7 +178,7 @@ function SubmitForm() {
           type="email"
           name="email-address"
           id="email-address"
-          autoComplete="email"
+          autoComplete="off"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
