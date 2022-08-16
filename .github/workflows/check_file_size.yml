@@ -26,10 +26,17 @@ jobs:
 
           echo Checking files with size over ${LIMIT}kB: \\n
 
-          find . \
+          IMAGES=$(find . \
           -iname '*.png' -size +${LIMIT}k -o \
           -iname '*.jpg' -size +${LIMIT}k -o \
-          -iname '*.jpeg' -size +${LIMIT}k \
-          | xargs du -sh
+          -iname '*.jpeg' -size +${LIMIT}k)
+
+          if [ -z "$IMAGES" ]; then
+              echo 'No large files found'
+          else
+              du -sh $IMAGES
+              exit 1;
+          fi;
+
         env:
           LIMIT: 250
