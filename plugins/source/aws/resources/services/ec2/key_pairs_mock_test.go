@@ -28,5 +28,5 @@ func buildEc2KeyPairs(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestEc2KeyPairs(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2KeyPairs(), buildEc2KeyPairs, client.TestOptions{})
+	client.AwsMockTestHelper(t, KeyPairs(), buildEc2KeyPairs, client.TestOptions{})
 }

@@ -252,27 +252,35 @@ resource "aws" "ec2" "instance_types" {
 }
 
 resource "aws" "ec2" "key_pairs" {
-  path = "github.com/aws/aws-sdk-go-v2/service/ec2/types.KeyPairInfo"
+  path        = "github.com/aws/aws-sdk-go-v2/service/ec2/types.KeyPairInfo"
+  description = "Describes an EC2 Key Pair."
+
   ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cq-provider-aws/client.IgnoreAccessDeniedServiceDisabled"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
   deleteFilter "AccountRegionFilter" {
-    path = "github.com/cloudquery/cq-provider-aws/client.DeleteAccountRegionFilter"
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
-    path   = "github.com/cloudquery/cq-provider-aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
     params = ["ec2"]
   }
 
   options {
-    primary_keys = ["key_pair_id"]
+    primary_keys = ["arn"]
+  }
+
+  userDefinedColumn "arn" {
+    type              = "string"
+    description       = "The Amazon Resource Name (ARN) of the Key Pair"
+    generate_resolver = true
   }
 
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
     type        = "string"
     resolver "resolveAWSAccount" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSAccount"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
     }
   }
 
@@ -280,13 +288,23 @@ resource "aws" "ec2" "key_pairs" {
     type        = "string"
     description = "The AWS Region of the resource."
     resolver "resolveAWSRegion" {
-      path = "github.com/cloudquery/cq-provider-aws/client.ResolveAWSRegion"
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
   }
 
+  column "create_time" {
+    description = "The date and time when the key was created in ISO 8601 date-time format."
+  }
+
+  column "key_fingerprint" {
+    description = "The fingerprint of the private key digest."
+  }
+
   column "tags" {
-    type              = "json"
-    generate_resolver = false
-    description       = "The tags assigned to the key pair."
+    type        = "json"
+    description = "Any tags assigned to the key pair."
+    resolver "resolveTags" {
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
+    }
   }
 }
