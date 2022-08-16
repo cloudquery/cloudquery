@@ -24,7 +24,7 @@ jobs:
         run: |
           set -o pipefail
 
-          echo Checking files with size over ${LIMIT}kB: \\n
+          echo Checking files with size over ${LIMIT}kB:
 
           IMAGES=$(find . \
           -iname '*.png' -size +${LIMIT}k -o \
@@ -39,4 +39,4 @@ jobs:
           fi;
 
         env:
-          LIMIT: 250
+          LIMIT: 100
