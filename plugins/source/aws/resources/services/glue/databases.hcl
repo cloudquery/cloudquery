@@ -1,3 +1,4 @@
+//check-for-changes
 service          = "aws"
 output_directory = "."
 add_generate     = true
@@ -38,6 +39,10 @@ resource "aws" "glue" "databases" {
   userDefinedColumn "arn" {
     type              = "string"
     description       = "The Amazon Resource Name (ARN) of the workflow."
+    generate_resolver = true
+  }
+  userDefinedColumn "tags" {
+    type              = "json"
     generate_resolver = true
   }
 
@@ -90,7 +95,7 @@ resource "aws" "glue" "databases" {
       column "keys" {
         type = "json"
         resolver "resolverSliceToJson" {
-          path   = "github.com/cloudquery/cloudquery/cloudquery/plugins/source/aws/client.SliceJsonResolver"
+          path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.SliceJsonResolver"
           params = ["Keys", "Name", "Type"]
         }
       }

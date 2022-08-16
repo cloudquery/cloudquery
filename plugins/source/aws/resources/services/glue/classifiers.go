@@ -234,8 +234,6 @@ func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-
-// nolint:gocritic
 func resolveGlueClassifierName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Classifier)
 	if r.CsvClassifier != nil {

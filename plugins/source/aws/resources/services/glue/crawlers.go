@@ -424,6 +424,10 @@ func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resourc
 	return diag.WrapError(resource.Set(c.Name, response.Tags))
 }
 
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
 func crawlerARN(cl *client.Client, name string) string {
 	return cl.ARN(client.GlueService, "crawler", name)
 }
