@@ -86,8 +86,3 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         run: go build .
         working-directory: ${{ matrix.workdir }}
-
-      - name: Test
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
-        run: go test -v ./...
-        working-directory: ${{ matrix.workdir }}
