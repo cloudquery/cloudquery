@@ -17,7 +17,7 @@ const SecurityQuery = () => (
 
 const ComplianceQuery = () => (
     <>
-        <div>
+        <div className="whitespace-pre-line">
             <span style={{ color: "var(--shiki-token-keyword)" }}>SELECT</span> account_id, require_uppercase_characters
         </div>
         <div>
@@ -37,9 +37,9 @@ const QueryAcrossApps = () => (
             <span style={{ color: "var(--shiki-token-keyword)" }}> FROM</span> aws_iam_users
         </div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>JOIN</span> aws_iam_user_tags</div>
-        <div><span style={{ color: "var(--shiki-token-keyword)" }}>ON</span> aws_iam_users.id = aws_iam_user_tags.user_id</div>
+        <div className="whitespace-pre-line"><span style={{ color: "var(--shiki-token-keyword)" }}>ON</span> aws_iam_users.id = aws_iam_user_tags.user_id</div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>JOIN</span> okta_users</div>
-        <div><span style={{ color: "var(--shiki-token-keyword)" }}>ON</span> aws_iam_users.tags.value = okta_users.profile_email</div>
+        <div className="whitespace-pre-line"><span style={{ color: "var(--shiki-token-keyword)" }}>ON</span> aws_iam_users.tags.value = okta_users.profile_email</div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>WHERE</span> aws_iam_users.tags_key = <span style={{ color: "var(--shiki-token-string-expression)" }}>&quot;email&quot;</span></div>
     </>
 )
@@ -87,17 +87,19 @@ const QueryItem = ({ children, onClick, description, title }) => {
 
     return (
         <div className='flex flex-col'>
-            <pre className="h-[260px] bg-transparent dark:bg-transparent m-0 p-0 relative whitespace-pre-wrap border border-transparent border-gray-200 rounded-md dark:border-gray-700">
-                <code className={codeClasses}>
-                    {children}
-                </code>
+            <div className="relative">
+                <pre className="h-[260px] bg-transparent dark:bg-transparent m-0 p-0 relative whitespace-pre border border-transparent border-gray-200 rounded-md dark:border-gray-700">
+                    <code className={codeClasses}>
+                        {children}
+                    </code>
+                </pre>
                 <button
                     onClick={onClick}
-                    className="absolute bottom-2 right-2 px-2 py-2 text-gray-600 bg-black rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
+                    className="absolute bottom-6 right-6 px-2 py-2 text-gray-600 bg-black rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
                 >
                     <DuplicateIcon className="w-6 h-6 text-gray-400" />
                 </button>
-            </pre>
+            </div>
             <div className='mt-6'>
                 <div className='text-lg font-medium dark:text-white text-center'>{title}</div>
                 <div className='mt-2 text-center text-base font-medium text-gray-500 dark:text-gray-400'>{description}</div>
