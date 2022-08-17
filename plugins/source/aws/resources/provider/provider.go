@@ -91,7 +91,7 @@ func Provider() *provider.Provider {
 		ModuleInfoReader: module.EmbeddedReader(moduleData, "moduledata"),
 		ResourceMap: map[string]*schema.Table{
 			"accessanalyzer.analyzers":                   accessanalyzer.Analyzers(),
-			"acm.certificates":                           acm.AcmCertificates(),
+			"acm.certificates":                           acm.Certificates(),
 			"apigateway.api_keys":                        apigateway.ApigatewayAPIKeys(),
 			"apigateway.client_certificates":             apigateway.ApigatewayClientCertificates(),
 			"apigateway.domain_names":                    apigateway.ApigatewayDomainNames(),
