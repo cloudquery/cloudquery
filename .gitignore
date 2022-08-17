@@ -29,3 +29,4 @@ test_init_config.yml
 telemetry-random-id
 go.work
 go.work.sum
+*/.cq/*
