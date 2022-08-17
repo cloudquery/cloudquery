@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: bcoe/conventional-release-labels@v1
         with:
-          type_labels: '{ "feat": "feat", "fix": "fix", "chore": "chore", "refactor": "refactor", "test": "test", "breaking": "breaking" }'
+          type_labels: '{ "feat": "feat", "fix": "fix", "chore": "chore", "refactor": "refactor", "test": "test", "breaking": "breaking", "doc":"doc" }'
   triage:
     permissions:
       contents: read

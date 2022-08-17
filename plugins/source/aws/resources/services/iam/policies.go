@@ -87,6 +87,12 @@ func IamPolicies() *schema.Table {
 				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the policy was last updated. When a policy has only one version, this field contains the date and time when the policy was created. When a policy has more than one version, this field contains the date and time when the most recent policy version was created. ",
 				Type:        schema.TypeTimestamp,
 			},
+			{
+				Name:        "tags",
+				Description: "A list of tags that are attached to the role. For more information about tagging, see Tagging IAM resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html) in the IAM User Guide. ",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveIamPolicyTags,
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -166,4 +172,19 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 		return diag.WrapError(resource.Set("document", data))
 	}
 	return nil
+}
+
+func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(types.ManagedPolicyDetail)
+	cl := meta.(*client.Client)
+	svc := cl.Services().IAM
+	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			meta.Logger().Debug("ListPolicyTags: Policy does not exist", "err", err)
+			return nil
+		}
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set("tags", client.TagsToMap(response.Tags)))
 }

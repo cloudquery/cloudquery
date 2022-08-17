@@ -151,27 +151,17 @@ func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta
 	}
 }
 func fetchElasticacheParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	parentParameterGroup := parent.Item.(types.CacheParameterGroup)
-
-	awsProviderClient := meta.(*client.Client)
-	svc := awsProviderClient.Services().ElastiCache
-
 	var input elasticache.DescribeCacheParametersInput
+	parentParameterGroup := parent.Item.(types.CacheParameterGroup)
 	input.CacheParameterGroupName = parentParameterGroup.CacheParameterGroupName
 
-	for {
-		output, err := svc.DescribeCacheParameters(ctx, &input)
-
+	paginator := elasticache.NewDescribeCacheParametersPaginator(meta.(*client.Client).Services().ElastiCache, &input)
+	for paginator.HasMorePages() {
+		v, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-
-		res <- output.Parameters
-
-		if aws.ToString(output.Marker) == "" {
-			return nil
-		}
-
-		input.Marker = output.Marker
+		res <- v.Parameters
 	}
+	return nil
 }
