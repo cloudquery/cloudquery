@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	r := iamTypes.Role{}
 	err := faker.FakeData(&r)
@@ -78,5 +78,5 @@ func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIamRoles(t *testing.T) {
-	client.AwsMockTestHelper(t, IamRoles(), buildIamRoles, client.TestOptions{})
+	client.AwsMockTestHelper(t, Roles(), buildRoles, client.TestOptions{})
 }
