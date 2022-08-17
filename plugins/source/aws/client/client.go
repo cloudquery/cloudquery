@@ -78,6 +78,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
+	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
@@ -190,6 +191,7 @@ type Services struct {
 	SNS                    SnsClient
 	SQS                    SQSClient
 	SSM                    SSMClient
+	Transfer               TransferClient
 	Waf                    WafClient
 	WafRegional            WafRegionalClient
 	WafV2                  WafV2Client
@@ -695,6 +697,7 @@ func initServices(region string, c aws.Config) Services {
 		SNS:                    sns.NewFromConfig(awsCfg),
 		SQS:                    sqs.NewFromConfig(awsCfg),
 		SSM:                    ssm.NewFromConfig(awsCfg),
+		Transfer:               transfer.NewFromConfig(awsCfg),
 		Waf:                    waf.NewFromConfig(awsCfg),
 		WafRegional:            wafregional.NewFromConfig(awsCfg),
 		WafV2:                  wafv2.NewFromConfig(awsCfg),

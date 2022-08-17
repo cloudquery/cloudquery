@@ -95,6 +95,26 @@ func (mr *MockSSMClientMockRecorder) DescribeInstanceInformation(arg0, arg1 inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstanceInformation", reflect.TypeOf((*MockSSMClient)(nil).DescribeInstanceInformation), varargs...)
 }
 
+// DescribeParameters mocks base method.
+func (m *MockSSMClient) DescribeParameters(arg0 context.Context, arg1 *ssm.DescribeParametersInput, arg2 ...func(*ssm.Options)) (*ssm.DescribeParametersOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeParameters", varargs...)
+	ret0, _ := ret[0].(*ssm.DescribeParametersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeParameters indicates an expected call of DescribeParameters.
+func (mr *MockSSMClientMockRecorder) DescribeParameters(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeParameters", reflect.TypeOf((*MockSSMClient)(nil).DescribeParameters), varargs...)
+}
+
 // ListComplianceItems mocks base method.
 func (m *MockSSMClient) ListComplianceItems(arg0 context.Context, arg1 *ssm.ListComplianceItemsInput, arg2 ...func(*ssm.Options)) (*ssm.ListComplianceItemsOutput, error) {
 	m.ctrl.T.Helper()
