@@ -1,5 +1,5 @@
 /** @type {import('next-sitemap').IConfig} */
-const config = {
+module.exports = {
   siteUrl: "https://www.cloudquery.io",
   generateRobotsTxt: true,
   robotsTxtOptions: {
@@ -9,5 +9,3 @@ const config = {
     ],
   },
 };
-
-export default config;
