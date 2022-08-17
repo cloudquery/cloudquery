@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/github/v0.1.5...plugins/source/github/v0.1.6) (2022-08-17)
+
+
+### Bug Fixes
+
+* Validate github config ([#1438](https://github.com/cloudquery/cloudquery/issues/1438)) ([8d37fc4](https://github.com/cloudquery/cloudquery/commit/8d37fc4a95a327bc9b83fa627a67ac5167e2d513))
+
 ## [0.1.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/github-v0.1.4...plugins/source/github/v0.1.5) (2022-08-15)
 
 

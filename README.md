@@ -46,7 +46,7 @@ For other providers, you can follow their specific guide on [Cloudquery Hub](htt
 
 ```
 make build-cli
-./bin/cloudquery # --help to see all options
+./bin/cli/cloudquery # --help to see all options
 ```
 
 ## Deployment via Helm
