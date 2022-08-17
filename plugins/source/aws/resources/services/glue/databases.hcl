@@ -43,6 +43,7 @@ resource "aws" "glue" "databases" {
   }
   userDefinedColumn "tags" {
     type              = "json"
+    description       = "The collection of tags associated with the database"
     generate_resolver = true
   }
 

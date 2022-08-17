@@ -41,9 +41,10 @@ func Databases() *schema.Table {
 				Resolver:    resolveGlueDatabaseArn,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveGlueDatabaseTags,
+				Name:        "tags",
+				Description: "The collection of tags associated with the database",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveGlueDatabaseTags,
 			},
 			{
 				Name:        "name",
