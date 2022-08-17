@@ -22,8 +22,8 @@ variable "zones" {
 }
 
 variable "labels" {
-  type = map
+  type = map(any)
   default = {
-    "environment" = "cq-provider-gcp"
+    "environment" = "cq-plugins-source-gcp"
   }
 }

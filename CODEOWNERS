@@ -1,1 +1,2 @@
-*       @yevgenypats
+cli/*       @yevgenypats
+plugins/source/* @cloudquery/cloudquery-opensource

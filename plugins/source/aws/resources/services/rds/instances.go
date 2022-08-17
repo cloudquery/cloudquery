@@ -2,7 +2,6 @@ package rds
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -484,14 +483,14 @@ func RdsInstances() *schema.Table {
 				Name:        "status_infos",
 				Description: "The status of a read replica. If the instance isn't a read replica, this is  blank.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRdsInstanceStatusInfos,
+				Resolver:    schema.PathResolver("StatusInfos"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:          "aws_rds_instance_associated_roles",
 				Description:   "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB instance. ",
-				Resolver:      fetchRdsInstanceAssociatedRoles,
+				Resolver:      schema.PathTableResolver("AssociatedRoles"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -526,7 +525,7 @@ func RdsInstances() *schema.Table {
 			{
 				Name:        "aws_rds_instance_db_instance_automated_backups_replications",
 				Description: "Automated backups of a DB instance replicated to another AWS Region",
-				Resolver:    fetchRdsInstanceDbInstanceAutomatedBackupsReplications,
+				Resolver:    schema.PathTableResolver("DBInstanceAutomatedBackupsReplications"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -551,7 +550,7 @@ func RdsInstances() *schema.Table {
 			{
 				Name:        "aws_rds_instance_db_parameter_groups",
 				Description: "The status of the DB parameter group",
-				Resolver:    fetchRdsInstanceDbParameterGroups,
+				Resolver:    schema.PathTableResolver("DBParameterGroups"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -581,7 +580,7 @@ func RdsInstances() *schema.Table {
 			{
 				Name:        "aws_rds_instance_db_security_groups",
 				Description: "This data type is used as a response element in the following actions:  * ModifyDBInstance  * RebootDBInstance  * RestoreDBInstanceFromDBSnapshot  * RestoreDBInstanceToPointInTime ",
-				Resolver:    fetchRdsInstanceDbSecurityGroups,
+				Resolver:    schema.PathTableResolver("DBSecurityGroups"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -611,7 +610,7 @@ func RdsInstances() *schema.Table {
 			{
 				Name:        "aws_rds_instance_db_subnet_group_subnets",
 				Description: "This data type is used as a response element for the DescribeDBSubnetGroups operation. ",
-				Resolver:    fetchRdsInstanceDbSubnetGroupSubnets,
+				Resolver:    schema.PathTableResolver("DBSubnetGroup.Subnets"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -652,7 +651,7 @@ func RdsInstances() *schema.Table {
 			{
 				Name:        "aws_rds_instance_domain_memberships",
 				Description: "An Active Directory Domain membership record associated with the DB instance or cluster. ",
-				Resolver:    fetchRdsInstanceDomainMemberships,
+				Resolver:    schema.PathTableResolver("DomainMemberships"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -693,7 +692,7 @@ func RdsInstances() *schema.Table {
 			{
 				Name:        "aws_rds_instance_option_group_memberships",
 				Description: "Provides information on the option groups the DB instance is a member of. ",
-				Resolver:    fetchRdsInstanceOptionGroupMemberships,
+				Resolver:    schema.PathTableResolver("OptionGroupMemberships"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -716,7 +715,7 @@ func RdsInstances() *schema.Table {
 			{
 				Name:        "aws_rds_instance_vpc_security_groups",
 				Description: "This data type is used as a response element for queries on VPC security group membership. ",
-				Resolver:    fetchRdsInstanceVpcSecurityGroups,
+				Resolver:    schema.PathTableResolver("VpcSecurityGroups"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -754,9 +753,7 @@ func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	svc := c.Services().RDS
 	for {
-		response, err := svc.DescribeDBInstances(ctx, &config, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeDBInstances(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -791,54 +788,4 @@ func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resourc
 		tags[*t.Key] = t.Value
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-func fetchRdsInstanceAssociatedRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	res <- instance.AssociatedRoles
-	return nil
-}
-func fetchRdsInstanceDbInstanceAutomatedBackupsReplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	res <- instance.DBInstanceAutomatedBackupsReplications
-	return nil
-}
-func fetchRdsInstanceDbParameterGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	res <- instance.DBParameterGroups
-	return nil
-}
-func fetchRdsInstanceDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	res <- instance.DBSecurityGroups
-	return nil
-}
-func fetchRdsInstanceDbSubnetGroupSubnets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	if instance.DBSubnetGroup != nil {
-		res <- instance.DBSubnetGroup.Subnets
-	}
-	return nil
-}
-func fetchRdsInstanceDomainMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	res <- instance.DomainMemberships
-	return nil
-}
-func fetchRdsInstanceOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	res <- instance.OptionGroupMemberships
-	return nil
-}
-func resolveRdsInstanceStatusInfos(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	instance := resource.Item.(types.DBInstance)
-	data, err := json.Marshal(instance.StatusInfos)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func fetchRdsInstanceVpcSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.DBInstance)
-	res <- instance.VpcSecurityGroups
-	return nil
 }

@@ -141,10 +141,9 @@ func Analyzers() *schema.Table {
 						Type:        schema.TypeStringArray,
 					},
 					{
-						Name:          "error",
-						Description:   "The error that resulted in an Error finding",
-						Type:          schema.TypeString,
-						IgnoreInTests: true,
+						Name:        "error",
+						Description: "The error that resulted in an Error finding",
+						Type:        schema.TypeString,
 					},
 					{
 						Name:        "is_public",
@@ -164,10 +163,9 @@ func Analyzers() *schema.Table {
 				},
 				Relations: []*schema.Table{
 					{
-						Name:          "aws_access_analyzer_analyzer_finding_sources",
-						Description:   "The source of the finding",
-						Resolver:      fetchAccessAnalyzerAnalyzerFindingSources,
-						IgnoreInTests: true,
+						Name:        "aws_access_analyzer_analyzer_finding_sources",
+						Description: "The source of the finding",
+						Resolver:    schema.PathTableResolver("Sources"),
 						Columns: []schema.Column{
 							{
 								Name:        "analyzer_finding_cq_id",
@@ -191,10 +189,9 @@ func Analyzers() *schema.Table {
 				},
 			},
 			{
-				Name:          "aws_access_analyzer_analyzer_archive_rules",
-				Description:   "Contains information about an archive rule",
-				Resolver:      fetchAccessAnalyzerAnalyzerArchiveRules,
-				IgnoreInTests: true,
+				Name:        "aws_access_analyzer_analyzer_archive_rules",
+				Description: "Contains information about an archive rule",
+				Resolver:    fetchAccessAnalyzerAnalyzerArchiveRules,
 				Columns: []schema.Column{
 					{
 						Name:        "analyzer_cq_id",
@@ -270,9 +267,7 @@ func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 		AnalyzerArn: analyzer.Arn,
 	}
 	for {
-		response, err := svc.ListFindings(ctx, &config, func(options *accessanalyzer.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListFindings(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -285,11 +280,6 @@ func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	}
 	return nil
 }
-func fetchAccessAnalyzerAnalyzerFindingSources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	finding := parent.Item.(types.FindingSummary)
-	res <- finding.Sources
-	return nil
-}
 func fetchAccessAnalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	c := meta.(*client.Client)
@@ -298,9 +288,7 @@ func fetchAccessAnalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.Cl
 		AnalyzerName: analyzer.Name,
 	}
 	for {
-		response, err := svc.ListArchiveRules(ctx, &config, func(options *accessanalyzer.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListArchiveRules(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

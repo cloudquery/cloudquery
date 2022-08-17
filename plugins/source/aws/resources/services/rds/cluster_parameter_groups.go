@@ -146,9 +146,7 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 	svc := cl.Services().RDS
 	var input rds.DescribeDBClusterParameterGroupsInput
 	for {
-		output, err := svc.DescribeDBClusterParameterGroups(ctx, &input, func(o *rds.Options) {
-			o.Region = cl.Region
-		})
+		output, err := svc.DescribeDBClusterParameterGroups(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -167,9 +165,7 @@ func fetchRdsClusterParameterGroupDbParameters(ctx context.Context, meta schema.
 	g := parent.Item.(types.DBClusterParameterGroup)
 	input := rds.DescribeDBClusterParametersInput{DBClusterParameterGroupName: g.DBClusterParameterGroupName}
 	for {
-		output, err := svc.DescribeDBClusterParameters(ctx, &input, func(o *rds.Options) {
-			o.Region = cl.Region
-		})
+		output, err := svc.DescribeDBClusterParameters(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -186,9 +182,7 @@ func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.Client
 	g := resource.Item.(types.DBClusterParameterGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn}, func(o *rds.Options) {
-		o.Region = cl.Region
-	})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn})
 	if err != nil {
 		return diag.WrapError(err)
 	}

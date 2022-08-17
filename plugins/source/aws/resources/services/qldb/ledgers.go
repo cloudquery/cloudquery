@@ -257,9 +257,7 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	svc := c.Services().QLDB
 	config := qldb.ListLedgersInput{}
 	for {
-		response, err := svc.ListLedgers(ctx, &config, func(options *qldb.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListLedgers(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -291,8 +289,6 @@ func ResolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	svc := cl.Services().QLDB
 	response, err := svc.ListTagsForResource(ctx, &qldb.ListTagsForResourceInput{
 		ResourceArn: ledger.Arn,
-	}, func(options *qldb.Options) {
-		options.Region = cl.Region
 	})
 	if err != nil {
 		return diag.WrapError(err)
@@ -307,9 +303,7 @@ func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.Clien
 		MaxResults: aws.Int32(100),
 	}
 	for {
-		response, err := cl.Services().QLDB.ListJournalKinesisStreamsForLedger(ctx, config, func(options *qldb.Options) {
-			options.Region = cl.Region
-		})
+		response, err := cl.Services().QLDB.ListJournalKinesisStreamsForLedger(ctx, config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -331,9 +325,7 @@ func fetchQldbLedgerJournalS3Exports(ctx context.Context, meta schema.ClientMeta
 		MaxResults: aws.Int32(100),
 	}
 	for {
-		response, err := cl.Services().QLDB.ListJournalS3ExportsForLedger(ctx, config, func(options *qldb.Options) {
-			options.Region = cl.Region
-		})
+		response, err := cl.Services().QLDB.ListJournalS3ExportsForLedger(ctx, config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

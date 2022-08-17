@@ -103,9 +103,7 @@ func fetchRdsEventSubscriptions(ctx context.Context, meta schema.ClientMeta, par
 	svc := cl.Services().RDS
 	var input rds.DescribeEventSubscriptionsInput
 	for {
-		out, err := svc.DescribeEventSubscriptions(ctx, &input, func(o *rds.Options) {
-			o.Region = cl.Region
-		})
+		out, err := svc.DescribeEventSubscriptions(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -122,9 +120,7 @@ func resolveRDSEventSubscriptionTags(ctx context.Context, meta schema.ClientMeta
 	s := resource.Item.(types.EventSubscription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn}, func(o *rds.Options) {
-		o.Region = cl.Region
-	})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn})
 	if err != nil {
 		return diag.WrapError(err)
 	}

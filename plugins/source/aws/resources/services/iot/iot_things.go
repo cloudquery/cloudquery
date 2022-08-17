@@ -84,9 +84,7 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 	svc := c.Services().IOT
 	for {
-		response, err := svc.ListThings(ctx, &input, func(options *iot.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListThings(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -109,9 +107,7 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 	var principals []string
 
 	for {
-		response, err := svc.ListThingPrincipals(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListThingPrincipals(ctx, &input)
 
 		if err != nil {
 			return diag.WrapError(err)

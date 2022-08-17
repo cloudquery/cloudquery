@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func FsxBackups() *schema.Table {
+func Backups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_backups",
 		Description:  "A backup of an Amazon FSx file system.",
@@ -101,16 +101,16 @@ func FsxBackups() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchFsxBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config fsx.DescribeBackupsInput
 	c := meta.(*client.Client)
 	svc := c.Services().FSX
 	for {
-		response, err := svc.DescribeBackups(ctx, &config, func(options *fsx.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeBackups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

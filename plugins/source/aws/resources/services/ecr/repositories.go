@@ -207,9 +207,7 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().ECR
 	for {
-		output, err := svc.DescribeRepositories(ctx, &config, func(options *ecr.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeRepositories(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -246,9 +244,7 @@ func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, paren
 	c := meta.(*client.Client)
 	svc := c.Services().ECR
 	for {
-		output, err := svc.DescribeImages(ctx, &config, func(options *ecr.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeImages(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

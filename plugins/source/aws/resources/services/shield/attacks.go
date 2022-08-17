@@ -2,7 +2,6 @@ package shield
 
 import (
 	"context"
-	"encoding/json"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -35,7 +34,7 @@ func Attacks() *schema.Table {
 				Name:        "attack_counters",
 				Description: "List of counters that describe the attack for the specified time period",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveAttacksAttackCounters,
+				Resolver:    schema.PathResolver("AttackCounters"),
 			},
 			{
 				Name:        "id",
@@ -69,7 +68,7 @@ func Attacks() *schema.Table {
 			{
 				Name:        "aws_shield_attack_properties",
 				Description: "Details of a Shield event",
-				Resolver:    fetchShieldAttackProperties,
+				Resolver:    schema.PathTableResolver("AttackProperties"),
 				Columns: []schema.Column{
 					{
 						Name:        "attack_cq_id",
@@ -108,7 +107,7 @@ func Attacks() *schema.Table {
 			{
 				Name:        "aws_shield_attack_sub_resources",
 				Description: "The attack information for the specified SubResource",
-				Resolver:    fetchShieldAttackSubResources,
+				Resolver:    schema.PathTableResolver("SubResources"),
 				Columns: []schema.Column{
 					{
 						Name:        "attack_cq_id",
@@ -120,13 +119,13 @@ func Attacks() *schema.Table {
 						Name:        "attack_vectors",
 						Description: "The list of attack types and associated counters",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveAttackSubResourcesAttackVectors,
+						Resolver:    schema.PathResolver("AttackVectors"),
 					},
 					{
 						Name:        "counters",
 						Description: "The counters that describe the details of the attack",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveAttackSubResourcesCounters,
+						Resolver:    schema.PathResolver("Counters"),
 					},
 					{
 						Name:        "id",
@@ -158,9 +157,7 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 		StartTime: &types.TimeRange{FromInclusive: &start},
 	}
 	for {
-		output, err := svc.ListAttacks(ctx, &config, func(o *shield.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.ListAttacks(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -182,14 +179,6 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
-func resolveAttacksAttackCounters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(*types.AttackDetail)
-	marshalledJson, err := json.Marshal(r.AttackCounters)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, marshalledJson))
-}
 func resolveAttacksMitigations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.AttackDetail)
 	mitigations := make([]string, 0, len(r.Mitigations))
@@ -198,38 +187,12 @@ func resolveAttacksMitigations(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return diag.WrapError(resource.Set(c.Name, mitigations))
 }
-func fetchShieldAttackProperties(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(*types.AttackDetail)
-	res <- r.AttackProperties
-	return nil
-}
+
 func resolveAttackPropertiesTopContributors(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.AttackProperty)
 	marshalledJson := make(map[string]interface{})
 	for _, c := range r.TopContributors {
 		marshalledJson[*c.Name] = c.Value
-	}
-	return diag.WrapError(resource.Set(c.Name, marshalledJson))
-}
-func fetchShieldAttackSubResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(*types.AttackDetail)
-	res <- r.SubResources
-	return nil
-}
-func resolveAttackSubResourcesAttackVectors(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.SubResourceSummary)
-	marshalledJson, err := json.Marshal(r.AttackVectors)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, marshalledJson))
-}
-
-func resolveAttackSubResourcesCounters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.SubResourceSummary)
-	marshalledJson, err := json.Marshal(r.Counters)
-	if err != nil {
-		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set(c.Name, marshalledJson))
 }

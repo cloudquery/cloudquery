@@ -3,9 +3,13 @@
 build:
 	./scripts/build.sh
 
-.PHONY: build
+.PHONY: build-changed
 build-changed:
 	./scripts/build.sh -c
+
+.PHONY: build-cli
+build-cli:
+	(cd cli && go build -o ../bin/cli/cloudquery .)
 
 # Test unit
 .PHONY: test-unit
@@ -20,7 +24,7 @@ test-unit-changed:
 .PHONY: install-tools
 install-tools:
 	@echo Installing tools from tools/tool.go
-	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs -tI % go install %
+	@cat tools/tool.go | grep _ | awk -F'"' '{print $$2}' | xargs sh -c 'for arg do echo "Installing $$arg"; go get "$$arg"; go install "$$arg"; done' _
 
 # Install pre-commit hooks. This requires pre-commit to be installed (https://pre-commit.com/)
 .PHONY: install-hooks

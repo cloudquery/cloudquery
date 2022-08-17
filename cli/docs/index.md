@@ -1,6 +1,6 @@
-# Cloudquery
+# CloudQuery
 
-This is the CLI that interacts with source plugins and target plugins
+A CLI that interacts with source and target plugins
 
 ## Download
 

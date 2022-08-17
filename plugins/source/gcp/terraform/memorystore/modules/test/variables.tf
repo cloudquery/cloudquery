@@ -17,8 +17,8 @@ variable "region" {
 }
 
 variable "labels" {
-  type    = map(string)
+  type = map(string)
   default = {
-    "environment" = "cq-provider-gcp"
+    "environment" = "cq-plugins-source-gcp"
   }
 }

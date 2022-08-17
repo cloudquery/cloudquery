@@ -11,11 +11,11 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-//go:generate cq-gen -config=rule_groups.hcl -domain=wafregional -resource=rule_groups
+//go:generate cq-gen --resource rule_groups --config rule_groups.hcl --output .
 func RuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_rule_groups",
-		Description:  "This is AWS WAF Classic documentation",
+		Description:  "A collection of predefined rules that you can add to a web ACL.",
 		Resolver:     fetchWafregionalRuleGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
 		IgnoreError:  client.IgnoreCommonErrors,
@@ -38,13 +38,13 @@ func RuleGroups() *schema.Table {
 				Name:        "arn",
 				Description: "ARN of the rule group.",
 				Type:        schema.TypeString,
-				Resolver:    resolveRuleGroupARN,
+				Resolver:    resolveWafregionalRuleGroupArn,
 			},
 			{
 				Name:        "tags",
 				Description: "Rule group tags.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRuleGroupTags,
+				Resolver:    resolveWafregionalRuleGroupTags,
 			},
 			{
 				Name:        "id",
@@ -100,7 +100,10 @@ func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, par
 	}
 	return nil
 }
-func resolveRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveWafregionalRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return diag.WrapError(resource.Set(c.Name, ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId)))
+}
+func resolveWafregionalRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().WafRegional
 	arn := ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId)
@@ -121,9 +124,11 @@ func resolveRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
 }
-func resolveRuleGroupARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId)))
-}
+
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
 func ruleGroupARN(meta schema.ClientMeta, id string) string {
 	cl := meta.(*client.Client)
 	return cl.ARN(client.WAFRegional, "rulegroup", id)

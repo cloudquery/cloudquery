@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package core
 
 import (
@@ -8,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	corev1 "k8s.io/api/core/v1"
@@ -20,7 +18,7 @@ func createCoreServiceAccounts(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeData(&e); err != nil {
 		t.Fatal(err)
 	}
-	e.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	e.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	serviceAccounts.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
 		&corev1.ServiceAccountList{Items: []corev1.ServiceAccount{e}}, nil,
 	)
@@ -31,5 +29,4 @@ func createCoreServiceAccounts(t *testing.T, ctrl *gomock.Controller) client.Ser
 
 func TestCoreServiceAccounts(t *testing.T) {
 	client.K8sMockTestHelper(t, ServiceAccounts(), createCoreServiceAccounts, client.TestOptions{})
-
 }

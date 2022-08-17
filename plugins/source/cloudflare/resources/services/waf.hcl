@@ -161,3 +161,69 @@ resource "cloudflare" "" "waf" {
     }
   }
 }
+
+resource "cloudflare" "" "waf_overrides" {
+  path = "github.com/cloudflare/cloudflare-go/.WAFOverride"
+
+  multiplex "CFZone" {
+    path   = "github.com/cloudquery/cq-provider-cloudflare/client.ZoneMultiplex"
+  }
+
+  options {
+    primary_keys = [
+      "id"
+    ]
+  }
+
+  deleteFilter "DeleteAccountZoneFilter" {
+    path = "github.com/cloudquery/cq-provider-cloudflare/client.DeleteAccountZoneFilter"
+  }
+
+  userDefinedColumn "account_id" {
+    description = "The Account ID of the resource."
+    type        = "string"
+    resolver "resolveCFAccount" {
+      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveAccountId"
+    }
+  }
+
+  userDefinedColumn "zone_id" {
+    description = "The Zone ID of the resource."
+    type        = "string"
+    resolver "resolveCFZone" {
+      path = "github.com/cloudquery/cq-provider-cloudflare/client.ResolveZoneId"
+    }
+  }
+
+  column "id" {
+    description = "The unique identifier of the WAF override."
+  }
+
+  column "paused" {
+    description = "When true, indicates that the WAF package is currently paused."
+  }
+
+  column "description" {
+    description = "An informative summary of the current URI-based WAF override."
+  }
+
+  column "urls" {
+    description = "The URLs to include in the current WAF override. You can use wildcards. Each entered URL will be escaped before use, which means you can only use simple wildcard patterns."
+  }
+
+  column "priority" {
+    description = "The relative priority of the current URI-based WAF override when multiple overrides match a single URL. A lower number indicates higher priority. Higher priority overrides may overwrite values set by lower priority overrides."
+  }
+
+  column "groups" {
+    description = "An object that allows you to enable or disable WAF rule groups for the current WAF override. Each key of this object must be the ID of a WAF rule group, and each value must be a valid WAF action (usually default or disable). When creating a new URI-based WAF override, you must provide a groups object or a rules object."
+  }
+
+  column "rules" {
+    description = "The default action performed by the rules in the WAF package."
+  }
+
+  column "rewrite_action" {
+    description = "Specifies that, when a WAF rule matches, its configured action will be replaced by the action configured in this object."
+  }
+}

@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package core
 
 import (
@@ -8,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	corev1 "k8s.io/api/core/v1"
@@ -24,14 +22,14 @@ func createCoreLimitRanges(t *testing.T, ctrl *gomock.Controller) client.Service
 	lr.Spec.Limits = []corev1.LimitRangeItem{
 		{
 			Type:                 corev1.LimitTypePod,
-			Max:                  *testing.FakeResourceList(t),
-			Min:                  *testing.FakeResourceList(t),
-			Default:              *testing.FakeResourceList(t),
-			DefaultRequest:       *testing.FakeResourceList(t),
-			MaxLimitRequestRatio: *testing.FakeResourceList(t),
+			Max:                  *k8sTesting.FakeResourceList(t),
+			Min:                  *k8sTesting.FakeResourceList(t),
+			Default:              *k8sTesting.FakeResourceList(t),
+			DefaultRequest:       *k8sTesting.FakeResourceList(t),
+			MaxLimitRequestRatio: *k8sTesting.FakeResourceList(t),
 		},
 	}
-	lr.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	lr.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	limitRanges.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
 		&corev1.LimitRangeList{Items: []corev1.LimitRange{lr}}, nil,
 	)
@@ -42,5 +40,4 @@ func createCoreLimitRanges(t *testing.T, ctrl *gomock.Controller) client.Service
 
 func TestCoreLimitRanges(t *testing.T) {
 	client.K8sMockTestHelper(t, LimitRanges(), createCoreLimitRanges, client.TestOptions{})
-
 }

@@ -117,9 +117,7 @@ func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
 	for {
-		response, err := svc.DescribeClusterSubnetGroups(ctx, &config, func(o *redshift.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.DescribeClusterSubnetGroups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -272,7 +272,7 @@ func FakePersistentVolumeClaim(t *testing.T) *corev1.PersistentVolumeClaim {
 	if err := faker.FakeDataSkipFields(&claim, []string{"Spec", "Status"}); err != nil {
 		t.Fatal(err)
 	}
-	if err := faker.FakeDataSkipFields(&claim.Status, []string{"Capacity", "Phase"}); err != nil {
+	if err := faker.FakeDataSkipFields(&claim.Status, []string{"Capacity", "Phase", "AllocatedResources"}); err != nil {
 		t.Fatal(err)
 	}
 

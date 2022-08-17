@@ -1,0 +1,72 @@
+name: Lint Docs
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint_doc:
+    name: Lint Provider Doc
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        workdir: [
+          "plugins/source/aws",
+          "plugins/source/azure",
+          "plugins/source/cloudflare",
+          "plugins/source/digitalocean",
+          "plugins/source/gcp",
+          "plugins/source/github",
+          "plugins/source/k8s",
+          "plugins/source/okta",
+          "plugins/source/terraform",
+        ]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v26
+        with:
+          files: |
+            ${{ matrix.workdir }}
+      - uses: actions/setup-go@v3
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        with:
+          go-version: 1.18
+      - uses: actions/cache@v3
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-1.18-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.18-
+      - name: remove all docs
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        run: |
+          rm -f ./docs/tables/*.md
+        working-directory: ${{ matrix.workdir }}
+      - name: build-docs
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        run: |
+          go run ./docs/docs.go
+        working-directory: ${{ matrix.workdir }}
+      - name: Fail if docs are changed
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        run: |
+          test "$(git status -s ./docs/tables | wc -l)" -eq 0
+        working-directory: ${{ matrix.workdir }}

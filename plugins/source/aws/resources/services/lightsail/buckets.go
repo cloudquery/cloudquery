@@ -221,9 +221,7 @@ func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 	svc := c.Services().Lightsail
 	for {
-		response, err := svc.GetBuckets(ctx, &input, func(options *lightsail.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.GetBuckets(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -242,9 +240,7 @@ func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta,
 	input := lightsail.GetBucketAccessKeysInput{
 		BucketName: r.Name,
 	}
-	response, err := svc.GetBucketAccessKeys(ctx, &input, func(options *lightsail.Options) {
-		options.Region = cl.Region
-	})
+	response, err := svc.GetBucketAccessKeys(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}

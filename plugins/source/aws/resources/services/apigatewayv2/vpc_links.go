@@ -99,9 +99,7 @@ func fetchApigatewayv2VpcLinks(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	svc := c.Services().Apigatewayv2
 	for {
-		response, err := svc.GetVpcLinks(ctx, &config, func(o *apigatewayv2.Options) {
-			o.Region = c.Region
-		})
+		response, err := svc.GetVpcLinks(ctx, &config)
 
 		if err != nil {
 			return diag.WrapError(err)

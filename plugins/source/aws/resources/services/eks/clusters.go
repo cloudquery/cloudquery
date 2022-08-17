@@ -206,9 +206,7 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	c := meta.(*client.Client)
 	svc := c.Services().Eks
 	for {
-		listClustersOutput, err := svc.ListClusters(ctx, &config, func(options *eks.Options) {
-			options.Region = c.Region
-		})
+		listClustersOutput, err := svc.ListClusters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

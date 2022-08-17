@@ -68,9 +68,7 @@ func fetchS3AccountConfig(ctx context.Context, meta schema.ClientMeta, _ *schema
 	svc := c.Services().S3Control
 	var accountConfig s3control.GetPublicAccessBlockInput
 	accountConfig.AccountId = aws.String(c.AccountID)
-	resp, err := svc.GetPublicAccessBlock(ctx, &accountConfig, func(options *s3control.Options) {
-		options.Region = c.Region
-	})
+	resp, err := svc.GetPublicAccessBlock(ctx, &accountConfig)
 
 	if err != nil {
 		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error

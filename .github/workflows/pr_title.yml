@@ -1,5 +1,4 @@
-# DONT EDIT. This file is synced from https://github.com/cloudquery/.github/.github
-name: "Validate PR title"
+name: Validate PR title
 
 on:
   pull_request_target:
@@ -27,6 +26,7 @@ jobs:
             chore
             refactor
             test
+            doc
           # Configure that a scope must always be provided.
           requireScope: false
           # Configure additional validation for the subject based on a regex.

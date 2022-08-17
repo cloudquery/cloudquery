@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"reflect"
 	"time"
 
@@ -80,5 +81,49 @@ func ResolveTimestampField(path string, rfcs ...string) func(_ context.Context, 
 		default:
 			return diag.WrapError(r.Set(c.Name, nil))
 		}
+	}
+}
+
+/*
+SliceJsonResolver resolves slice of objects into a map[string]interface{}.
+For example object: SliceJsonStruct{Nested: &SliceJsonStruct{
+				Nested: &SliceJsonStruct{
+					Value: []types1.Tag{{
+						Key:   "k1",
+						Value: "v1",
+					}, {
+						Key:   "k2",
+						Value: "v2",
+					}},
+				},
+			}}
+can be converted to map[string]interface{}{"k1":"v1","k2":"v2"} by setting a resolver with next params:
+SliceJsonResolver("Nested.Nested.Value", "Key", "Value")
+*/
+func SliceJsonResolver(path, keyPath, valuePath string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		var j map[string]interface{}
+		field := funk.Get(r.Item, path, funk.WithAllowZero())
+		s := reflect.ValueOf(field)
+		if s.IsNil() {
+			return r.Set(c.Name, j)
+		}
+		j = make(map[string]interface{})
+		if reflect.TypeOf(field).Kind() != reflect.Slice {
+			return diag.WrapError(fmt.Errorf("field: %s is not a slice", path))
+		}
+		for i := 0; i < s.Len(); i++ {
+			key := funk.Get(s.Index(i).Interface(), keyPath, funk.WithAllowZero())
+			value := funk.Get(s.Index(i).Interface(), valuePath, funk.WithAllowZero())
+			k := reflect.ValueOf(key)
+			if k.Kind() == reflect.Ptr {
+				k = k.Elem()
+			}
+			if k.Kind() != reflect.String {
+				return diag.WrapError(fmt.Errorf("key field: %s is not a string", path))
+			}
+			j[k.String()] = value
+		}
+		return r.Set(c.Name, j)
 	}
 }

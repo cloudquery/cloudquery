@@ -90,9 +90,7 @@ func fetchWafv2RegexPatternSets(ctx context.Context, meta schema.ClientMeta, par
 		Limit: aws.Int32(100), // maximum value: https://docs.aws.amazon.com/waf/latest/APIReference/API_ListRegexPatternSets.html
 	}
 	for {
-		result, err := svc.ListRegexPatternSets(ctx, &params, func(options *wafv2.Options) {
-			options.Region = cl.Region
-		})
+		result, err := svc.ListRegexPatternSets(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}

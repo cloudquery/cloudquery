@@ -1,9 +1,8 @@
-name: check_generated_code_drift
+name: Check Drift in Auto Generated Code
 on:
   pull_request:
     branches:
       - main
-      - monorepo
 jobs:
   check_generated_code_drift:
     name: Check Generated Code for Drift
@@ -24,11 +23,11 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v25
+        uses: tj-actions/changed-files@v26
         with:
           filters: |
             src:
-              - "./plugins/source/${{ matrix.plugin }}/**"
+              - "plugins/source/${{ matrix.plugin }}"
       - name: Set up Go 1.x
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-go@v3

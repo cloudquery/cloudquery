@@ -5,7 +5,7 @@ The action for each Rule in a WebACL
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
 |web_acl_cq_id|uuid|Unique CloudQuery ID of aws_wafregional_web_acls table (FK)|
-|priority|integer|Specifies the order in which the Rules in a WebACL are evaluated|
+|priority|bigint|Specifies the order in which the Rules in a WebACL are evaluated|
 |rule_id|text|The RuleId for a Rule|
 |action|text|Specifies how you want AWS WAF to respond to requests that match the settings in a Rule|
 |excluded_rules|text[]|An array of rules to exclude from a rule group|

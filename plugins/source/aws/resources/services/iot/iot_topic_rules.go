@@ -1310,9 +1310,7 @@ func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 
 	for {
-		response, err := svc.ListTopicRules(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTopicRules(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -1346,9 +1344,7 @@ func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resour
 	tags := make(map[string]string)
 
 	for {
-		response, err := svc.ListTagsForResource(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
 			return diag.WrapError(err)

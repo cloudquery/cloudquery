@@ -7,7 +7,7 @@
 #   project_id   = var.project_id
 #   network_name = "${var.prefix}-sql"
 #   routing_mode = "GLOBAL"
-#   description  = "Private network for cq-provider-gcp/sql"
+#   description  = "Private network for cq-plugins-source-gcp/sql"
 
 #   subnets = [
 #     {
@@ -19,8 +19,8 @@
 # }
 
 module "postgresql-db" {
-  source  = "GoogleCloudPlatform/sql-db/google//modules/postgresql"
-  version = "10.0.0"
+  source               = "GoogleCloudPlatform/sql-db/google//modules/postgresql"
+  version              = "10.0.0"
   name                 = "${var.prefix}-sql-pgsql"
   random_instance_name = true
   database_version     = "POSTGRES_9_6"
@@ -30,7 +30,7 @@ module "postgresql-db" {
   tier                 = "db-f1-micro"
 
   deletion_protection = false
-  create_timeout = "25m"
+  create_timeout      = "25m"
   ip_configuration = {
     ipv4_enabled        = true
     private_network     = null

@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package batch
 
 import (
@@ -8,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	batchv1 "k8s.io/api/batch/v1"
@@ -39,13 +37,12 @@ func fakeCronJob(t *testing.T) batchv1.CronJob {
 	if err := faker.FakeData(&job.Spec.JobTemplate.ObjectMeta); err != nil {
 		t.Fatal(err)
 	}
-	job.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
-	job.Spec.JobTemplate.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
-	job.Spec.JobTemplate.Spec.Template = testing.FakePodTemplateSpec(t)
+	job.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
+	job.Spec.JobTemplate.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
+	job.Spec.JobTemplate.Spec.Template = k8sTesting.FakePodTemplateSpec(t)
 	return job
 }
 
 func TestBatchCronJobs(t *testing.T) {
 	client.K8sMockTestHelper(t, CronJobs(), createBatchCronJobs, client.TestOptions{})
-
 }

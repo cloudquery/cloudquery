@@ -392,9 +392,7 @@ func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	svc := c.Services().Glue
 	input := glue.GetCrawlersInput{}
 	for {
-		output, err := svc.GetCrawlers(ctx, &input, func(o *glue.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.GetCrawlers(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -419,14 +417,16 @@ func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resourc
 		ResourceArn: aws.String(crawlerARN(cl, aws.ToString(resource.Item.(types.Crawler).Name))),
 	}
 
-	response, err := svc.GetTags(ctx, &input, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
+	response, err := svc.GetTags(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set(c.Name, response.Tags))
 }
+
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
 
 func crawlerARN(cl *client.Client, name string) string {
 	return cl.ARN(client.GlueService, "crawler", name)

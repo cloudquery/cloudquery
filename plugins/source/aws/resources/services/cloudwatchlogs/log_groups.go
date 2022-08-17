@@ -90,9 +90,7 @@ func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	svc := c.Services().CloudwatchLogs
 	for {
-		response, err := svc.DescribeLogGroups(ctx, &config, func(options *cloudwatchlogs.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeLogGroups(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

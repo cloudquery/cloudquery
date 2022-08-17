@@ -161,9 +161,7 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 	service := c.Services().Waf
 	config := waf.ListWebACLsInput{}
 	for {
-		output, err := service.ListWebACLs(ctx, &config, func(options *waf.Options) {
-			options.Region = c.Region
-		})
+		output, err := service.ListWebACLs(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -217,9 +215,7 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 	outputTags := make(map[string]*string)
 	tagsConfig := waf.ListTagsForResourceInput{ResourceARN: webACL.WebACLArn}
 	for {
-		tags, err := service.ListTagsForResource(ctx, &tagsConfig, func(options *waf.Options) {
-			options.Region = awsClient.Region
-		})
+		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
 		if err != nil {
 			return diag.WrapError(err)
 		}

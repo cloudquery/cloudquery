@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-//go:generate cq-gen --resource instances --config gen.hcl --output .
 func Instances() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_instances",
@@ -38,7 +37,7 @@ func Instances() *schema.Table {
 			{
 				Name:     "access_details",
 				Type:     schema.TypeJSON,
-				Resolver: ResolveLightsailInstanceAccessDetails,
+				Resolver: resolveLightsailInstanceAccessDetails,
 			},
 			{
 				Name:        "arn",
@@ -68,7 +67,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "hardware_cpu_count",
 				Description: "The number of vCPUs the instance has",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("Hardware.CpuCount"),
 			},
 			{
@@ -112,7 +111,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "networking_monthly_transfer_gb_per_month_allocated",
 				Description: "The amount allocated per month (in GB)",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("Networking.MonthlyTransfer.GbPerMonthAllocated"),
 			},
 			{
@@ -138,7 +137,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "state_code",
 				Description: "The status code for the instance",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("State.Code"),
 			},
 			{
@@ -168,7 +167,7 @@ func Instances() *schema.Table {
 			{
 				Name:          "aws_lightsail_instance_add_ons",
 				Description:   "Describes an add-on that is enabled for an Amazon Lightsail resource",
-				Resolver:      fetchLightsailInstanceAddOns,
+				Resolver:      schema.PathTableResolver("AddOns"),
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -202,7 +201,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "aws_lightsail_instance_hardware_disks",
 				Description: "Describes a block storage disk",
-				Resolver:    fetchLightsailInstanceHardwareDisks,
+				Resolver:    schema.PathTableResolver("Hardware.Disks"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -228,13 +227,13 @@ func Instances() *schema.Table {
 					{
 						Name:          "gb_in_use",
 						Description:   "(Deprecated) The number of GB in use by the disk",
-						Type:          schema.TypeInt,
+						Type:          schema.TypeBigInt,
 						IgnoreInTests: true,
 					},
 					{
 						Name:        "iops",
 						Description: "The input/output operations per second (IOPS) of the disk",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "is_attached",
@@ -276,7 +275,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "size_in_gb",
 						Description: "The size of the disk in GB",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "state",
@@ -299,7 +298,7 @@ func Instances() *schema.Table {
 					{
 						Name:          "aws_lightsail_instance_hardware_disk_add_ons",
 						Description:   "Describes an add-on that is enabled for an Amazon Lightsail resource",
-						Resolver:      fetchLightsailInstanceHardwareDiskAddOns,
+						Resolver:      schema.PathTableResolver("AddOns"),
 						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
@@ -335,7 +334,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "aws_lightsail_instance_networking_ports",
 				Description: "Describes information about ports for an Amazon Lightsail instance",
-				Resolver:    fetchLightsailInstanceNetworkingPorts,
+				Resolver:    schema.PathTableResolver("Networking.Ports"),
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -376,7 +375,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "from_port",
 						Description: "The first port in a range of open ports on an instance",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "ipv6_cidrs",
@@ -391,7 +390,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "to_port",
 						Description: "The last port in a range of open ports on an instance",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 				},
 			},
@@ -419,7 +418,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "from_port",
 						Description: "The first port in a range of open ports on an instance",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 					{
 						Name:        "ipv6_cidrs",
@@ -439,7 +438,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "to_port",
 						Description: "The last port in a range of open ports on an instance",
-						Type:        schema.TypeInt,
+						Type:        schema.TypeBigInt,
 					},
 				},
 			},
@@ -456,9 +455,7 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 	svc := c.Services().Lightsail
 	input := lightsail.GetInstancesInput{}
 	for {
-		output, err := svc.GetInstances(ctx, &input, func(o *lightsail.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.GetInstances(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -471,14 +468,12 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-func ResolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Instance)
 	cli := meta.(*client.Client)
 	svc := cli.Services().Lightsail
 	input := lightsail.GetInstanceAccessDetailsInput{InstanceName: r.Name}
-	output, err := svc.GetInstanceAccessDetails(ctx, &input, func(o *lightsail.Options) {
-		o.Region = cli.Region
-	})
+	output, err := svc.GetInstanceAccessDetails(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -488,40 +483,12 @@ func ResolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
-func fetchLightsailInstanceAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.Instance)
-	res <- instance.AddOns
-	return nil
-}
-func fetchLightsailInstanceHardwareDisks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.Instance)
-	if instance.Hardware == nil {
-		return nil
-	}
-	res <- instance.Hardware.Disks
-	return nil
-}
-func fetchLightsailInstanceHardwareDiskAddOns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	disk := parent.Item.(types.Disk)
-	res <- disk.AddOns
-	return nil
-}
-func fetchLightsailInstanceNetworkingPorts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	instance := parent.Item.(types.Instance)
-	if instance.Networking == nil {
-		return nil
-	}
-	res <- instance.Networking.Ports
-	return nil
-}
 func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Instance)
 	cli := meta.(*client.Client)
 	svc := cli.Services().Lightsail
 	input := lightsail.GetInstancePortStatesInput{InstanceName: r.Name}
-	output, err := svc.GetInstancePortStates(ctx, &input, func(o *lightsail.Options) {
-		o.Region = cli.Region
-	})
+	output, err := svc.GetInstancePortStates(ctx, &input)
 	if err != nil {
 		return diag.WrapError(err)
 	}

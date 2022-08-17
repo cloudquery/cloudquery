@@ -146,9 +146,7 @@ func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, pare
 	svc := cl.Services().RDS
 	var input rds.DescribeDBParameterGroupsInput
 	for {
-		output, err := svc.DescribeDBParameterGroups(ctx, &input, func(o *rds.Options) {
-			o.Region = cl.Region
-		})
+		output, err := svc.DescribeDBParameterGroups(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -167,9 +165,7 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 	g := parent.Item.(types.DBParameterGroup)
 	input := rds.DescribeDBParametersInput{DBParameterGroupName: g.DBParameterGroupName}
 	for {
-		output, err := svc.DescribeDBParameters(ctx, &input, func(o *rds.Options) {
-			o.Region = cl.Region
-		})
+		output, err := svc.DescribeDBParameters(ctx, &input)
 		if err != nil {
 			if client.IsAWSError(err, "DBParameterGroupNotFound") {
 				cl.Logger().Debug("received DBParameterGroupNotFound on DescribeDBParameters", "region", cl.Region, "err", err)
@@ -190,9 +186,7 @@ func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta,
 	g := resource.Item.(types.DBParameterGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().RDS
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn}, func(o *rds.Options) {
-		o.Region = cl.Region
-	})
+	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn})
 	if err != nil {
 		return diag.WrapError(err)
 	}

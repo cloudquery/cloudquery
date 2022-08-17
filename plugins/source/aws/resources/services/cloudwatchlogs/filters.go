@@ -103,9 +103,7 @@ func fetchCloudwatchlogsFilters(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	svc := c.Services().CloudwatchLogs
 	for {
-		response, err := svc.DescribeMetricFilters(ctx, &config, func(options *cloudwatchlogs.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeMetricFilters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

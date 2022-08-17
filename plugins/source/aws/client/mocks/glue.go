@@ -235,6 +235,26 @@ func (mr *MockGlueClientMockRecorder) GetMLTransforms(arg0, arg1 interface{}, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMLTransforms", reflect.TypeOf((*MockGlueClient)(nil).GetMLTransforms), varargs...)
 }
 
+// GetPartitionIndexes mocks base method.
+func (m *MockGlueClient) GetPartitionIndexes(arg0 context.Context, arg1 *glue.GetPartitionIndexesInput, arg2 ...func(*glue.Options)) (*glue.GetPartitionIndexesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetPartitionIndexes", varargs...)
+	ret0, _ := ret[0].(*glue.GetPartitionIndexesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPartitionIndexes indicates an expected call of GetPartitionIndexes.
+func (mr *MockGlueClientMockRecorder) GetPartitionIndexes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPartitionIndexes", reflect.TypeOf((*MockGlueClient)(nil).GetPartitionIndexes), varargs...)
+}
+
 // GetSchema mocks base method.
 func (m *MockGlueClient) GetSchema(arg0 context.Context, arg1 *glue.GetSchemaInput, arg2 ...func(*glue.Options)) (*glue.GetSchemaOutput, error) {
 	m.ctrl.T.Helper()

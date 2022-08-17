@@ -1,14 +1,16 @@
-service = "aws"
-
+service          = "aws"
 output_directory = "."
+add_generate     = true
 
 resource "aws" "wafregional" "rule_groups" {
-  path = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.RuleGroup"
+  path        = "github.com/aws/aws-sdk-go-v2/service/wafregional/types.RuleGroup"
+  description = "A collection of predefined rules that you can add to a web ACL."
   multiplex "ServiceAccountRegionMultiplexer" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
+    path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
+    params = ["waf-regional"]
   }
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
+  ignoreError "IgnoreCommonErrors" {
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"

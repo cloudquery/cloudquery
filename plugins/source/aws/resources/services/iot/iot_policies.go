@@ -92,9 +92,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 
 	for {
-		response, err := svc.ListPolicies(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListPolicies(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -128,9 +126,7 @@ func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	tags := make(map[string]string)
 
 	for {
-		response, err := svc.ListTagsForResource(ctx, &input, func(options *iot.Options) {
-			options.Region = cl.Region
-		})
+		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
 			return diag.WrapError(err)

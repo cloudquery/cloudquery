@@ -75,9 +75,7 @@ func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	svc := c.Services().EC2
 	for {
-		response, err := svc.DescribeByoipCidrs(ctx, &config, func(options *ec2.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.DescribeByoipCidrs(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}

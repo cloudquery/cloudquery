@@ -4,15 +4,6 @@ about: If something isn't working as expected 🤔.
 labels: bug
 ---
 
-<!--
-    If the feature request is related to a specific provider (aws,gcp,...)
-    and not to a general CloudQuery functionality, Please open the bug in the relevant repository.
-    Example:
-        * https://github.com/cloudquery/cq-provider-aws
-        * https://github.com/cloudquery/cq-provider-gcp
-        * All other providers/repositories can be found via https://hub.cloudquery.io
- -->
-
 ### Describe the Bug
 <!-- try to elaborate as much as you can on the bug and the behaviour -->
 

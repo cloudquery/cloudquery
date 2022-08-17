@@ -268,9 +268,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	svc := c.Services().DMS
 
 	var describeReplicationInstancesInput *databasemigrationservice.DescribeReplicationInstancesInput
-	describeReplicationInstancesOutput, err := svc.DescribeReplicationInstances(ctx, describeReplicationInstancesInput, func(options *databasemigrationservice.Options) {
-		options.Region = c.Region
-	})
+	describeReplicationInstancesOutput, err := svc.DescribeReplicationInstances(ctx, describeReplicationInstancesInput)
 	if err != nil {
 		return diag.WrapError(err)
 	}
@@ -283,9 +281,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 		listTagsForResourceInput.ResourceArnList = append(listTagsForResourceInput.ResourceArnList, *replicationInstance.ReplicationInstanceArn)
 	}
 	var listTagsForResourceOutput *databasemigrationservice.ListTagsForResourceOutput
-	listTagsForResourceOutput, err = svc.ListTagsForResource(ctx, &listTagsForResourceInput, func(options *databasemigrationservice.Options) {
-		options.Region = c.Region
-	})
+	listTagsForResourceOutput, err = svc.ListTagsForResource(ctx, &listTagsForResourceInput)
 	if err != nil {
 		return diag.WrapError(err)
 	}

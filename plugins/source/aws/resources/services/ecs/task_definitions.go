@@ -618,8 +618,6 @@ func ecsTaskDefinitionDetail(ctx context.Context, meta schema.ClientMeta, result
 	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
 		TaskDefinition: aws.String(taskArn),
 		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
-	}, func(o *ecs.Options) {
-		o.Region = c.Region
 	})
 	if err != nil {
 		errorChan <- diag.WrapError(err)

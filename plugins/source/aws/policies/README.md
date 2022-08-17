@@ -8,6 +8,7 @@ CloudQuery SQL Policies for AWS
 - [AWS Foundational Security Best Practices](./foundational_security/policy.sql)
 - [AWS Public Egress](./public_egress/policy.sql)
 - [AWS Publicly Available](./publicly_available/policy.sql)
+- [AWS Unused Resources](./unused_resources/policy.sql)
 
 ## Running
 

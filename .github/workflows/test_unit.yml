@@ -1,15 +1,12 @@
-name: test_unit
+name: Unit Tests
 
 on:
   push:
     branches:
       - main
-      - monorepo
   pull_request:
     branches:
       - main
-      - monorepo
-
 env: 
   CGO_ENABLED: 0
   CQ_NO_TELEMETRY: 1
@@ -22,7 +19,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Checkout Sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - id: set-matrix
         run: ./scripts/resolve-modules.sh
   test_unit:
@@ -34,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:10
+        image: postgres:11
         env:
           POSTGRES_PASSWORD: pass
           POSTGRES_USER: postgres
@@ -54,7 +51,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v25
+        uses: tj-actions/changed-files@v26
         with:
           files: |
             ${{ matrix.workdir }}
@@ -84,11 +81,6 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
-
-      - name: Build
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
-        run: go build .
-        working-directory: ${{ matrix.workdir }}
 
       - name: Test
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'

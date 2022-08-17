@@ -371,9 +371,7 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	c := meta.(*client.Client)
 	svc := c.Services().MQ
 	for {
-		response, err := svc.ListBrokers(ctx, &config, func(options *mq.Options) {
-			options.Region = c.Region
-		})
+		response, err := svc.ListBrokers(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -463,9 +461,7 @@ func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, pa
 		dupes[*cfg.Id] = struct{}{}
 
 		input := mq.DescribeConfigurationInput{ConfigurationId: cfg.Id}
-		output, err := svc.DescribeConfiguration(ctx, &input, func(options *mq.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeConfiguration(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -481,9 +477,7 @@ func fetchMqBrokerConfigurationRevisions(ctx context.Context, meta schema.Client
 
 	input := mq.ListConfigurationRevisionsInput{ConfigurationId: cfg.Id}
 	for {
-		output, err := svc.ListConfigurationRevisions(ctx, &input, func(options *mq.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.ListConfigurationRevisions(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -529,9 +523,7 @@ func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *sch
 			BrokerId: broker.BrokerId,
 			Username: us.Username,
 		}
-		output, err := svc.DescribeUser(ctx, &input, func(options *mq.Options) {
-			options.Region = c.Region
-		})
+		output, err := svc.DescribeUser(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

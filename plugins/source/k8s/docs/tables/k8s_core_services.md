@@ -17,7 +17,7 @@ Service is a named abstraction of software service (for example, mysql) consisti
 |annotations|jsonb|Annotations is an unstructured key value map stored with a resource that may be set by external tools.|
 |owner_references|jsonb|List of objects depended by this object.|
 |finalizers|text[]|List of finalizers|
-|cluster_name|text|The name of the cluster which the object belongs to.|
+|zzz_cluster_name|text|Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.|
 |selector|jsonb|Route service traffic to pods with label keys and values matching this selector|
 |cluster_ip|inet|clusterIP is the IP address of the service and is usually assigned randomly|
 |cluster_ips|inet[]|ClusterIPs is a list of IP addresses assigned to this service, and are usually assigned randomly|

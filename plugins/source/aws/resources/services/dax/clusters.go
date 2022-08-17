@@ -232,9 +232,7 @@ func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 	config := dax.DescribeClustersInput{}
 	for {
-		output, err := svc.DescribeClusters(ctx, &config, func(o *dax.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeClusters(ctx, &config)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -256,8 +254,6 @@ func resolveDaxClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 	svc := cl.Services().DAX
 	response, err := svc.ListTags(ctx, &dax.ListTagsInput{
 		ResourceName: cluster.ClusterArn,
-	}, func(options *dax.Options) {
-		options.Region = cl.Region
 	})
 	if err != nil {
 		return diag.WrapError(err)

@@ -227,12 +227,10 @@ func SsmInstances() *schema.Table {
 func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().SSM
-	optsFn := func(o *ssm.Options) {
-		o.Region = cl.Region
-	}
+
 	var input ssm.DescribeInstanceInformationInput
 	for {
-		output, err := svc.DescribeInstanceInformation(ctx, &input, optsFn)
+		output, err := svc.DescribeInstanceInformation(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -249,14 +247,12 @@ func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta
 	instance := parent.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
 	svc := cl.Services().SSM
-	optsFn := func(o *ssm.Options) {
-		o.Region = cl.Region
-	}
+
 	input := ssm.ListComplianceItemsInput{
 		ResourceIds: []string{*instance.InstanceId},
 	}
 	for {
-		output, err := svc.ListComplianceItems(ctx, &input, optsFn)
+		output, err := svc.ListComplianceItems(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

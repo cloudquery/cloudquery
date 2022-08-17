@@ -134,7 +134,7 @@ func RdsDbSnapshots() *schema.Table {
 				Name:        "processor_features",
 				Description: "The number of CPU cores and the number of threads per core for the DB instance class of the DB instance when the DB snapshot was created.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRDSDBSnapshotProcessorFeatures,
+				Resolver:    schema.PathResolver("ProcessorFeatures"),
 			},
 			{
 				Name:        "snapshot_create_time",
@@ -210,9 +210,7 @@ func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().RDS
 	var input rds.DescribeDBSnapshotsInput
 	for {
-		output, err := svc.DescribeDBSnapshots(ctx, &input, func(o *rds.Options) {
-			o.Region = c.Region
-		})
+		output, err := svc.DescribeDBSnapshots(ctx, &input)
 		if err != nil {
 			return nil
 		}
@@ -256,16 +254,6 @@ func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta,
 	}
 
 	b, err := json.Marshal(out.DBSnapshotAttributesResult.DBSnapshotAttributes)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(column.Name, b))
-}
-
-func resolveRDSDBSnapshotProcessorFeatures(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	s := resource.Item.(types.DBSnapshot)
-
-	b, err := json.Marshal(s.ProcessorFeatures)
 	if err != nil {
 		return diag.WrapError(err)
 	}

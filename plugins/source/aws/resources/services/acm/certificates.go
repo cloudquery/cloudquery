@@ -204,17 +204,14 @@ func AcmCertificates() *schema.Table {
 func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
-	optsFn := func(o *acm.Options) {
-		o.Region = cl.Region
-	}
 	var input acm.ListCertificatesInput
 	for {
-		output, err := svc.ListCertificates(ctx, &input, optsFn)
+		output, err := svc.ListCertificates(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		for _, item := range output.CertificateSummaryList {
-			do, err := svc.DescribeCertificate(ctx, &acm.DescribeCertificateInput{CertificateArn: item.CertificateArn}, optsFn)
+			do, err := svc.DescribeCertificate(ctx, &acm.DescribeCertificateInput{CertificateArn: item.CertificateArn})
 			if err != nil {
 				return diag.WrapError(err)
 			}

@@ -13,17 +13,17 @@ variable "project_id" {
 
 variable "region" {
   description = "Region where test resources will be deployed."
-  default    = "us-east1"
+  default     = "us-east1"
 }
 
 variable "labels" {
-  type = map
+  type = map(any)
   default = {
-    "environment" = "cq-provider-gcp"
+    "environment" = "cq-plugins-source-gcp"
   }
 }
 
 variable "domain" {
   description = "Domain name."
-  default    = "cloudquery.dev"
+  default     = "cloudquery.dev"
 }

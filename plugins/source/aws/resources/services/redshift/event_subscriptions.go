@@ -111,9 +111,7 @@ func fetchRedshiftEventSubscriptions(ctx context.Context, meta schema.ClientMeta
 	var params redshift.DescribeEventSubscriptionsInput
 	params.MaxRecords = aws.Int32(100)
 	for {
-		result, err := svc.DescribeEventSubscriptions(ctx, &params, func(o *redshift.Options) {
-			o.Region = cl.Region
-		})
+		result, err := svc.DescribeEventSubscriptions(ctx, &params)
 		if err != nil {
 			return diag.WrapError(err)
 		}

@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket         = "cq-provider-cf-tf"
-    key            = "account"
-    region         = "us-east-1"
+    bucket = "cq-plugins-source-cloudflare"
+    key    = "account"
+    region = "us-east-1"
   }
 }
