@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Build
 
 on:
   push:
@@ -22,8 +22,8 @@ jobs:
         uses: actions/checkout@v3
       - id: set-matrix
         run: ./scripts/resolve-modules.sh
-  test_unit:
-    name: Unit Tests
+  test_build:
+    name: Build
     needs: resolve-modules
     strategy:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
@@ -82,7 +82,7 @@ jobs:
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
 
-      - name: Test
+      - name: Build
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
-        run: go test -v ./...
+        run: go build .
         working-directory: ${{ matrix.workdir }}
