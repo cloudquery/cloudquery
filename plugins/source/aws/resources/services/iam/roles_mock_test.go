@@ -29,6 +29,11 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	document := `{"stuff": 3}`
 	r.AssumeRolePolicyDocument = &document
 
+	m.EXPECT().GetRole(gomock.Any(), gomock.Any()).Return(
+		&iam.GetRoleOutput{
+			Role: &r,
+		}, nil)
+
 	m.EXPECT().ListRoles(gomock.Any(), gomock.Any()).Return(
 		&iam.ListRolesOutput{
 			Roles: []iamTypes.Role{r},
