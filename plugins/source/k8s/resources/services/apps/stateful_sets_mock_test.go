@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package apps
 
 import (
@@ -8,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	appsv1 "k8s.io/api/apps/v1"
@@ -35,10 +33,10 @@ func fakeStatefulSet(t *testing.T) appsv1.StatefulSet {
 		t.Fatal(err)
 	}
 	rs.Spec.PodManagementPolicy = "test"
-	rs.Spec.VolumeClaimTemplates = []corev1.PersistentVolumeClaim{*testing.FakePersistentVolumeClaim(t)}
-	rs.Spec.Selector = testing.FakeSelector(t)
-	rs.Spec.Template = testing.FakePodTemplateSpec(t)
-	rs.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	rs.Spec.VolumeClaimTemplates = []corev1.PersistentVolumeClaim{*k8sTesting.FakePersistentVolumeClaim(t)}
+	rs.Spec.Selector = k8sTesting.FakeSelector(t)
+	rs.Spec.Template = k8sTesting.FakePodTemplateSpec(t)
+	rs.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	return rs
 }
 

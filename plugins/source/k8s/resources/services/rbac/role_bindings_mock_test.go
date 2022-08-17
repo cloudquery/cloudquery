@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package rbac
 
 import (
@@ -8,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	v1 "k8s.io/api/rbac/v1"
@@ -29,11 +27,10 @@ func fakeRoleBinding(t *testing.T) *v1.RoleBinding {
 	if err := faker.FakeData(&r); err != nil {
 		t.Fatal(err)
 	}
-	r.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	r.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 	return &r
 }
 
 func TestRbacRoleBindings(t *testing.T) {
 	client.K8sMockTestHelper(t, RoleBindings(), createRbacRoleBindings, client.TestOptions{})
-
 }
