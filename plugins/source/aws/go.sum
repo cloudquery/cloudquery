@@ -236,6 +236,8 @@ github.com/aws/aws-sdk-go-v2/service/sso v1.11.12 h1:760bUnTX/+d693FT6T6Oa7PZHfE
 github.com/aws/aws-sdk-go-v2/service/sso v1.11.12/go.mod h1:MO4qguFjs3wPGcCSpQ7kOFTwRvb+eu+fn+1vKleGHUk=
 github.com/aws/aws-sdk-go-v2/service/sts v1.16.9 h1:yOfILxyjmtr2ubRkRJldlHDFBhf5vw4CzhbwWIBmimQ=
 github.com/aws/aws-sdk-go-v2/service/sts v1.16.9/go.mod h1:O1IvkYxr+39hRf960Us6j0x1P8pDqhTX+oXM5kQNl/Y=
+github.com/aws/aws-sdk-go-v2/service/transfer v1.21.4 h1:TJvBFIo2maBRHnyVhd1x+2XyTFgJeHzH2WHThbBPN8E=
+github.com/aws/aws-sdk-go-v2/service/transfer v1.21.4/go.mod h1:/v7FvwtZJmPQfIQfv1mnjuj1vNRsBKIKgK41gdoUzNM=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.7 h1:Hg4o1j5DumR91B/GrvbUg2NxuLRewp0uBel0CFN5eBI=
 github.com/aws/aws-sdk-go-v2/service/waf v1.11.7/go.mod h1:Goy0jitMyqpo7yGfeySAcDH4blxnxh69uUk+BgMQce8=
 github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.8 h1:rzATeAkJzOPuu6cTaH1V8RoK4sy9CCylOqpxBI4vpGk=

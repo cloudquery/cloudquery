@@ -122,6 +122,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.12 // indirect
+	github.com/aws/aws-sdk-go-v2/service/transfer v1.21.4
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.8
 	github.com/creasty/defaults v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
