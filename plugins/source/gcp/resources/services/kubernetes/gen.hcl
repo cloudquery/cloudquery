@@ -15,20 +15,20 @@ description_modifier "remove_field_name" {
 resource "gcp" "kubernetes" "clusters" {
   path = "google.golang.org/api/container/v1.Cluster"
   ignoreError "IgnoreError" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
+    path = "github.com/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
   }
   multiplex "ProjectMultiplex" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
+    path = "github.com/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
   }
   deleteFilter "ProjectDeleteFilter" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
+    path = "github.com/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
   }
 
   userDefinedColumn "project_id" {
     type        = "string"
     description = "GCP Project Id of the resource"
     resolver "resolveResourceProject" {
-      path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ResolveProject"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ResolveProject"
     }
   }
 

@@ -1,5 +1,5 @@
 variables:
-  component: source/gcp
+  component: gcp
 
 project_name: plugins/source/gcp
 
@@ -10,4 +10,4 @@ monorepo:
 includes:
   - from_file:
       # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      path: ./plugins/.goreleaser.yaml
+      path: ./plugins/source/.goreleaser.yaml

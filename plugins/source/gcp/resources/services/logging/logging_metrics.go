@@ -4,21 +4,20 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/logging/v2"
 )
 
 func LoggingMetrics() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_logging_metrics",
-		Description:  "Describes a logs-based metric The value of the metric is the number of log entries that match a logs filter in a given time intervalLogs-based metrics can also be used to extract values from logs and create a distribution of the values The distribution records the statistics of the extracted values along with an optional histogram of the values as specified by the bucket options",
-		Resolver:     fetchLoggingMetrics,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+		Name:        "gcp_logging_metrics",
+		Description: "Describes a logs-based metric The value of the metric is the number of log entries that match a logs filter in a given time intervalLogs-based metrics can also be used to extract values from logs and create a distribution of the values The distribution records the statistics of the extracted values along with an optional histogram of the values as specified by the bucket options",
+		Resolver:    fetchLoggingMetrics,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -210,14 +209,12 @@ func fetchLoggingMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Logging.Projects.Metrics.
+		output, err := c.Services.Logging.Projects.Metrics.
 			List(fmt.Sprintf("projects/%s", c.ProjectId)).
-			PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+			PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*logging.ListLogMetricsResponse)
 
 		res <- output.Metrics
 		if output.NextPageToken == "" {

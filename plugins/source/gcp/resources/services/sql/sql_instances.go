@@ -3,21 +3,20 @@ package sql
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )
 
 func SQLInstances() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_sql_instances",
-		Description:  "A Cloud SQL instance resource",
-		Resolver:     fetchSqlInstances,
-		Multiplex:    client.ProjectMultiplex,
-		DeleteFilter: client.DeleteProjectFilter,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+		Name:        "gcp_sql_instances",
+		Description: "A Cloud SQL instance resource",
+		Resolver:    fetchSqlInstances,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -746,14 +745,12 @@ func fetchSqlInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Sql.Instances.
+		output, err := c.Services.Sql.Instances.
 			List(c.ProjectId).
-			PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+			PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*sql.InstancesListResponse)
 
 		res <- output.Items
 		if output.NextPageToken == "" {
@@ -769,7 +766,7 @@ func resolveSQLInstanceSettingsDatabaseFlags(ctx context.Context, meta schema.Cl
 	for _, f := range db.Settings.DatabaseFlags {
 		flags[f.Name] = f.Value
 	}
-	return diag.WrapError(resource.Set("settings_database_flags", flags))
+	return errors.WithStack(resource.Set("settings_database_flags", flags))
 }
 func fetchSqlInstanceIpAddresses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	db := parent.Item.(*sql.DatabaseInstance)

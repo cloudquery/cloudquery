@@ -10,7 +10,6 @@ import (
 	"testing"
 
 	"github.com/cloudquery/faker/v3"
-	"github.com/hashicorp/go-hclog"
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/api/cloudresourcemanager/v3"
@@ -79,7 +78,7 @@ func TestListFolders(t *testing.T) {
 	}
 
 	for i, tc := range cases {
-		ret, err := listFolders(context.Background(), hclog.NewNullLogger(), svc, tc.BaseFolder, tc.MaxDepth)
+		ret, err := listFolders(context.Background(), svc, tc.BaseFolder, tc.MaxDepth)
 		assert.NoError(t, err)
 		assert.Equalf(t, tc.Expected, ret, "Test #%d", i+1)
 	}

@@ -19,26 +19,26 @@ resource "gcp" "cloudrun" "services" {
   path = "google.golang.org/api/run/v1.Service"
 
   multiplex "ProjectMultiplex" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
+    path = "github.com/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
   }
   deleteFilter "DeleteFilter" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
+    path = "github.com/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
   }
   ignoreError "IgnoreError" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
+    path = "github.com/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
   }
 
   userDefinedColumn "project_id" {
     type = "string"
     resolver "resolveResourceProject" {
-      path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ResolveProject"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ResolveProject"
     }
   }
 
   column "create_time" {
     type = "timestamp"
     resolver "ISODateResolver" {
-      path          = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ISODateResolver"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ISODateResolver"
       path_resolver = true
     }
   }
@@ -46,7 +46,7 @@ resource "gcp" "cloudrun" "services" {
   column "delete_time" {
     type = "timestamp"
     resolver "ISODateResolver" {
-      path          = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ISODateResolver"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ISODateResolver"
       path_resolver = true
     }
   }
@@ -54,7 +54,7 @@ resource "gcp" "cloudrun" "services" {
   column "update_time" {
     type = "timestamp"
     resolver "ISODateResolver" {
-      path          = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ISODateResolver"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ISODateResolver"
       path_resolver = true
     }
   }
@@ -105,9 +105,9 @@ resource "gcp" "cloudrun" "services" {
   }
 
   relation "gcp" "cloudrun" "spec_template_spec_volumes" {
-    path        = "google.golang.org/api/run/v1.Volume"
+    path = "google.golang.org/api/run/v1.Volume"
     description = "Volume represents a named volume in a container"
-    rename      = "spec_template_volumes"
+    rename = "spec_template_volumes"
 
     relation "gcp" "cloudrun" "config_map_items" {
       ignore_in_tests = true
@@ -115,9 +115,9 @@ resource "gcp" "cloudrun" "services" {
   }
 
   relation "gcp" "cloudrun" "spec_template_spec_containers" {
-    path        = "google.golang.org/api/run/v1.Container"
+    path = "google.golang.org/api/run/v1.Container"
     description = "A single application container"
-    rename      = "spec_template_containers"
+    rename = "spec_template_containers"
 
     ignore_columns_in_tests = [
       "readiness_probe_http_get_http_headers",
@@ -129,12 +129,12 @@ resource "gcp" "cloudrun" "services" {
     ]
 
     column "ports" {
-      type              = "json"
+      type = "json"
       generate_resolver = false
     }
 
     column "readiness_probe_http_get_http_headers" {
-      type              = "json"
+      type = "json"
       generate_resolver = false
     }
 

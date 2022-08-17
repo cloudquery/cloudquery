@@ -3,21 +3,20 @@ package compute
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/compute/v1"
 )
 
 func ComputeProjects() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_compute_projects",
-		Description:  "Represents a Project resource which is used to organize resources in a Google Cloud Platform environment",
-		Resolver:     fetchComputeProjects,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id"}},
+		Name:        "gcp_compute_projects",
+		Description: "Represents a Project resource which is used to organize resources in a Google Cloud Platform environment",
+		Resolver:    fetchComputeProjects,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -157,12 +156,10 @@ func ComputeProjects() *schema.Table {
 // ====================================================================================================================
 func fetchComputeProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	call := c.Services.Compute.Projects.Get(c.ProjectId)
-	item, err := c.RetryingDo(ctx, call)
+	output, err := c.Services.Compute.Projects.Get(c.ProjectId).Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	output := item.(*compute.Project)
 
 	res <- output
 	return nil
@@ -173,7 +170,7 @@ func resolveComputeProjectCommonInstanceMetadataItems(ctx context.Context, meta 
 	for _, i := range p.CommonInstanceMetadata.Items {
 		m[i.Key] = i.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, m))
+	return errors.WithStack(resource.Set(c.Name, m))
 }
 func fetchComputeProjectQuotas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*compute.Project)

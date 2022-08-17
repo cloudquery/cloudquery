@@ -4,21 +4,21 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/monitoring/v3"
 )
 
 func MonitoringAlertPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_monitoring_alert_policies",
-		Description:  "A description of the conditions under which some aspect of your system is considered to be \"unhealthy\" and the ways to notify people or services about this state For an overview of alert policies, see Introduction to Alerting (https://cloudgooglecom/monitoring/alerts/)",
-		Resolver:     fetchMonitoringAlertPolicies,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
-		DeleteFilter: client.DeleteProjectFilter,
+		Name:        "gcp_monitoring_alert_policies",
+		Description: "A description of the conditions under which some aspect of your system is considered to be \"unhealthy\" and the ways to notify people or services about this state For an overview of alert policies, see Introduction to Alerting (https://cloudgooglecom/monitoring/alerts/)",
+		Resolver:    fetchMonitoringAlertPolicies,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -332,14 +332,12 @@ func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Monitoring.Projects.AlertPolicies.
+		output, err := c.Services.Monitoring.Projects.AlertPolicies.
 			List(fmt.Sprintf("projects/%s", c.ProjectId)).
-			PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+			PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*monitoring.ListAlertPoliciesResponse)
 
 		res <- output.AlertPolicies
 

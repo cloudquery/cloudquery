@@ -3,21 +3,20 @@ package compute
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/compute/v1"
 )
 
 func ComputeSubnetworks() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_compute_subnetworks",
-		Description:  "Represents a Subnetwork resource  A subnetwork (also known as a subnet) is a logical partition of a Virtual Private Cloud network with one primary IP range and zero or more secondary IP ranges",
-		Resolver:     fetchComputeSubnetworks,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_compute_subnetworks",
+		Description: "Represents a Subnetwork resource  A subnetwork (also known as a subnet) is a logical partition of a Virtual Private Cloud network with one primary IP range and zero or more secondary IP ranges",
+		Resolver:    fetchComputeSubnetworks,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -194,12 +193,10 @@ func fetchComputeSubnetworks(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.Subnetworks.AggregatedList(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.Subnetworks.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.SubnetworkAggregatedList)
 
 		var subnetworks []*compute.Subnetwork
 		for _, scopedNetworkList := range output.Items {

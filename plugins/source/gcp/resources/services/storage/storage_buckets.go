@@ -4,21 +4,20 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	storage "google.golang.org/api/storage/v1"
 )
 
 func StorageBuckets() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_storage_buckets",
-		Description:  "The Buckets resource represents a bucket in Cloud Storage",
-		Resolver:     fetchStorageBuckets,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_storage_buckets",
+		Description: "The Buckets resource represents a bucket in Cloud Storage",
+		Resolver:    fetchStorageBuckets,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -228,7 +227,6 @@ func StorageBuckets() *schema.Table {
 				Name:          "gcp_storage_bucket_acls",
 				Description:   "Access controls on the bucket.",
 				Resolver:      fetchStorageBucketAcls,
-				IgnoreError:   client.IgnoreErrorHandler,
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -539,12 +537,10 @@ func fetchStorageBuckets(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Storage.Buckets.List(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Storage.Buckets.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*storage.Buckets)
 
 		res <- output.Items
 		if output.NextPageToken == "" {
@@ -579,28 +575,26 @@ func fetchStorageBucketLifecycleRules(ctx context.Context, meta schema.ClientMet
 func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*storage.Bucket)
 	cl := meta.(*client.Client)
-	call := cl.Services.Storage.Buckets.GetIamPolicy(p.Name).OptionsRequestedPolicyVersion(3)
-	list, err := cl.RetryingDo(ctx, call)
+	output, err := cl.Services.Storage.Buckets.GetIamPolicy(p.Name).OptionsRequestedPolicyVersion(3).Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
-	output := list.(*storage.Policy)
 
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 
-	return diag.WrapError(resource.Set(c.Name, policy))
+	return errors.WithStack(resource.Set(c.Name, policy))
 }
 func resolveBucketEncryptionType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*storage.Bucket)
 	if p.Encryption == nil {
-		return diag.WrapError(resource.Set(c.Name, "GMKE"))
+		return errors.WithStack(resource.Set(c.Name, "GMKE"))
 	}
-	return diag.WrapError(resource.Set(c.Name, "CMKE"))
+	return errors.WithStack(resource.Set(c.Name, "CMKE"))
 }

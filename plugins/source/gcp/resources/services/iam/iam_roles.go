@@ -3,21 +3,19 @@ package iam
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"google.golang.org/api/iam/v1"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 )
 
 func IamRoles() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_iam_roles",
-		Description:  "A role in the Identity and Access Management API",
-		Resolver:     fetchIamRoles,
-		Multiplex:    client.ProjectMultiplex,
-		DeleteFilter: client.DeleteProjectFilter,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+		Name:        "gcp_iam_roles",
+		Description: "A role in the Identity and Access Management API",
+		Resolver:    fetchIamRoles,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -72,12 +70,10 @@ func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Iam.Projects.Roles.List("projects/" + c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Iam.Projects.Roles.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*iam.ListRolesResponse)
 
 		res <- output.Roles
 		if output.NextPageToken == "" {

@@ -1,4 +1,4 @@
-service          = "gcp"
+service = "gcp"
 output_directory = "."
 add_generate     = true
 
@@ -10,42 +10,42 @@ resource "gcp" "security" "secrets" {
       "resource_name"
     ]
   }
-
+  
   multiplex "ProjectMultiplex" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
+    path = "github.com/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
   }
-
+  
   deleteFilter "ProjectDeleteFilter" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
+    path = "github.com/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
   }
 
   ignoreError "IgnoreError" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
+    path = "github.com/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
   }
 
   userDefinedColumn "project_id" {
-    type        = "string"
+    type = "string"
     description = "GCP Project Id of the resource"
     resolver "resolveResourceProject" {
-      path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ResolveProject"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ResolveProject"
     }
   }
 
   userDefinedColumn "id" {
-    type              = "string"
-    description       = "The id of the secret"
+    type = "string"
+    description = "The id of the secret"
     generate_resolver = true
   }
 
   userDefinedColumn "topics" {
-    type              = "stringArray"
-    description       = "A list of up to 10 Pub/Sub topics to which messages are published when control plane operations are called on the secret or its versions. In the format `projects/*/topics/*`"
+    type = "stringArray"
+    description = "A list of up to 10 Pub/Sub topics to which messages are published when control plane operations are called on the secret or its versions. In the format `projects/*/topics/*`"
     generate_resolver = true
   }
 
   column "name" {
-    rename      = "resource_name"
-    type        = "string"
+    rename = "resource_name"
+    type = "string"
     description = "The resource name of the Secret in the format `projects/*/secrets/*`"
   }
 
@@ -62,8 +62,8 @@ resource "gcp" "security" "secrets" {
   }
 
   column "rotation_next_rotation_time" {
-    rename      = "next_rotation_time"
-    description = "Timestamp in UTC at which the Secret is scheduled to rotate"
+    rename = "next_rotation_time"
+    description = "Timestamp in UTC at which the Secret is scheduled to rotate" 
   }
 
   column "rotation_period" {
@@ -71,14 +71,14 @@ resource "gcp" "security" "secrets" {
   }
 
   userDefinedColumn "is_automatically_replicated" {
-    description       = "If true, the secret is automatically replicated by GCP. Otherwise, replications are user-managed."
-    type              = "bool"
+    description = "If true, the secret is automatically replicated by GCP. Otherwise, replications are user-managed."
+    type = "bool"
     generate_resolver = true
   }
 
   column "replication_automatic_customer_managed_encryption_kms_key_name" {
-    rename            = "automatic_replication_customer_managed_encryption_kms_key_name"
-    description       = "If the secret is automatically replicated, contains the customer-managed-encryption kms-key-name. Only valid if 'is_automatically_replicated' is true. If null, then the secret is encrypted with a google-managed key."
+    rename = "automatic_replication_customer_managed_encryption_kms_key_name"
+    description = "If the secret is automatically replicated, contains the customer-managed-encryption kms-key-name. Only valid if 'is_automatically_replicated' is true. If null, then the secret is encrypted with a google-managed key."
     generate_resolver = true
   }
 
@@ -91,7 +91,7 @@ resource "gcp" "security" "secrets" {
   }
 
   relation "gcp" "security" "replication_user_managed_replicas" {
-    rename      = "user_managed_replicas"
+    rename = "user_managed_replicas"
     description = "Describes user-managed replicas of this secret. Empty for automatically replicated secrets"
 
     column "customer_managed_encryption_kms_key_name" {

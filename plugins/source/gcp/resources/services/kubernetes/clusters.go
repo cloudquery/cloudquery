@@ -3,22 +3,21 @@ package kubernetes
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/container/v1"
 )
 
 //go:generate cq-gen --resource clusters --config gen.hcl --output .
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_kubernetes_clusters",
-		Description:  "A Google Kubernetes Engine cluster",
-		Resolver:     fetchKubernetesClusters,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:        "gcp_kubernetes_clusters",
+		Description: "A Google Kubernetes Engine cluster",
+		Resolver:    fetchKubernetesClusters,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -1004,12 +1003,10 @@ func Clusters() *schema.Table {
 
 func fetchKubernetesClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	call := c.Services.Container.Projects.Locations.Clusters.List("projects/" + c.ProjectId + "/locations/-")
-	list, err := c.RetryingDo(ctx, call)
+	output, err := c.Services.Container.Projects.Locations.Clusters.List("projects/" + c.ProjectId + "/locations/-").Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	output := list.(*container.ListClustersResponse)
 
 	res <- output.Clusters
 	return nil

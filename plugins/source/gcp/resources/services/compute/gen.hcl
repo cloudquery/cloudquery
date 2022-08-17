@@ -15,15 +15,15 @@ description_modifier "remove_field_name" {
 resource "gcp" "compute" "instance_groups" {
   path = "google.golang.org/api/compute/v1.InstanceGroup"
   multiplex "ProjectMultiplex" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
+    path = "github.com/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
   }
 
   multiplex "DeleteFilter" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.DeleteFilter"
+    path = "github.com/cloudquery/plugins/source/gcp/client.DeleteFilter"
   }
 
   multiplex "IgnoreError" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.IgnoreError"
+    path = "github.com/cloudquery/plugins/source/gcp/client.IgnoreError"
   }
 
 
@@ -37,7 +37,7 @@ resource "gcp" "compute" "instance_groups" {
   column "creation_timestamp" {
     type = "timestamp"
     resolver "dateResolver" {
-      path          = "github.com/cloudquery/cq-provider-sdk/provider/schema.DateResolver"
+      path          = "github.com/cloudquery/plugin-sdk/schema.DateResolver"
       path_resolver = true
     }
   }
@@ -46,7 +46,7 @@ resource "gcp" "compute" "instance_groups" {
     type        = "string"
     description = "GCP Project Id of the resource"
     resolver "resolveResourceProject" {
-      path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ResolveProject"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ResolveProject"
     }
   }
 

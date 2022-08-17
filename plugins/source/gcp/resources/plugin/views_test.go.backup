@@ -1,0 +1,16 @@
+package plugin
+
+import (
+	_ "embed"
+	"testing"
+
+	"github.com/cloudquery/plugins/source/gcp/views"
+	"github.com/cloudquery/plugin-sdk/plugins"
+)
+
+func TestViews(t *testing.T) {
+	plugins.HelperTestView(t, providertest.ViewTestCase{
+		Provider: Plugin(),
+		SQLView:  views.ResourceView,
+	})
+}

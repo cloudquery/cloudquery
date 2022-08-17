@@ -3,21 +3,20 @@ package iam
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/iam/v1"
 )
 
 func IamServiceAccounts() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_iam_service_accounts",
-		Description:  "An IAM service account A service account is an account for an application or a virtual machine (VM) instance, not a person You can use a service account to call Google APIs To learn more, read the overview of service accounts (https://cloudgooglecom/iam/help/service-accounts/overview) When you create a service account, you specify the project ID that owns the service account, as well as a name that must be unique within the project IAM uses these values to create an email address that identifies the service account",
-		Resolver:     fetchIamServiceAccounts,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_iam_service_accounts",
+		Description: "An IAM service account A service account is an account for an application or a virtual machine (VM) instance, not a person You can use a service account to call Google APIs To learn more, read the overview of service accounts (https://cloudgooglecom/iam/help/service-accounts/overview) When you create a service account, you specify the project ID that owns the service account, as well as a name that must be unique within the project IAM uses these values to create an email address that identifies the service account",
+		Resolver:    fetchIamServiceAccounts,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "description",
@@ -118,12 +117,10 @@ func fetchIamServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Iam.Projects.ServiceAccounts.List("projects/" + c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Iam.Projects.ServiceAccounts.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*iam.ListServiceAccountsResponse)
 
 		res <- output.Accounts
 		if output.NextPageToken == "" {
@@ -136,12 +133,10 @@ func fetchIamServiceAccounts(ctx context.Context, meta schema.ClientMeta, parent
 func fetchIamServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	p := parent.Item.(*iam.ServiceAccount)
-	call := c.Services.Iam.Projects.ServiceAccounts.Keys.List(p.Name)
-	list, err := c.RetryingDo(ctx, call)
+	output, err := c.Services.Iam.Projects.ServiceAccounts.Keys.List(p.Name).Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	output := list.(*iam.ListServiceAccountKeysResponse)
 
 	res <- output.Keys
 	return nil

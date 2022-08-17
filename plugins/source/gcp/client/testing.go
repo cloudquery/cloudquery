@@ -3,12 +3,7 @@ package client
 import (
 	"testing"
 
-	"github.com/cloudquery/cq-provider-sdk/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type TestOptions struct {
@@ -19,28 +14,38 @@ func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (
 	t.Helper()
 
 	table.IgnoreInTests = false
+	// 	cfg := `
+	// tables: ["*"]
+	// `
+	// plugins.TestResource(t, plugins.ResourceTestCase{
+	// 	Plugin: &plugins.SourcePlugin{
+	// 		Name:    "gcp_mock_test_provider",
+	// 		Version: "development",
+	// 		Configure: func(ctx context.Context, p *plugins.SourcePlugin, s specs.SourceSpec) (schema.ClientMeta, error) {
+	// 			svc, err := createService()
+	// 			if err != nil {
+	// 				return nil, err
+	// 			}
+	// 			var gcpSpec Spec
+	// 			if err := s.Spec.Decode(&gcpSpec); err != nil {
+	// 				return nil, fmt.Errorf("failed to decode gcp spec: %w", err)
+	// 			}
+	// 			c := &Client{
+	// 				plugin:   p,
+	// 				logger:   p.Logger,
+	// 				Services: svc,
+	// 				projects: []string{"testProject"},
+	// 			}
 
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:    "gcp_mock_test_provider",
-			Version: "development",
-			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
-				svc, err := createService()
-				if err != nil {
-					return nil, diag.FromError(err, diag.INTERNAL)
-				}
-				c := NewGcpClient(logging.New(&hclog.LoggerOptions{
-					Level: hclog.Warn,
-				}), BackoffSettings{}, []string{"testProject"}, svc)
-				return c, nil
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-			Config: func() provider.Config {
-				return &Config{}
-			},
-		},
-		Config: "",
-	})
+	// 			return c, nil
+	// 		},
+	// 		Tables: []*schema.Table{
+	// 			table,
+	// 		},
+	// 		// Config: func() provider.Config {
+	// 		// 	return &Config{}
+	// 		// },
+	// 	},
+	// 	Config: cfg,
+	// })
 }

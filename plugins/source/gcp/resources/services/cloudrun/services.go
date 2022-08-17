@@ -3,21 +3,20 @@ package cloudrun
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	run "google.golang.org/api/run/v1"
 )
 
 //go:generate cq-gen --resource services --config gen.hcl --output .
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_cloudrun_services",
-		Description:  "Service acts as a top-level container that manages a set of Routes and Configurations which implement a network service",
-		Resolver:     fetchCloudrunServices,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
+		Name:        "gcp_cloudrun_services",
+		Description: "Service acts as a top-level container that manages a set of Routes and Configurations which implement a network service",
+		Resolver:    fetchCloudrunServices,
+		Multiplex:   client.ProjectMultiplex,
+
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -928,12 +927,10 @@ func fetchCloudrunServices(ctx context.Context, meta schema.ClientMeta, parent *
 			return nil
 		}
 		call := c.Services.CloudRun.Projects.Locations.Services.List("projects/" + c.ProjectId + "/locations/-").Continue(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := call.Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*run.ListServicesResponse)
-
 		if output.Items == nil {
 			return nil
 		}

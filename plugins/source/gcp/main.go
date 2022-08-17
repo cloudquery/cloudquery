@@ -1,13 +1,12 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/resources/provider"
-	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/cloudquery/plugin-sdk/serve"
+	"github.com/cloudquery/plugins/source/gcp/resources/plugin"
 )
 
 func main() {
-	serve.Serve(&serve.Options{
-		Name:     "gcp",
-		Provider: provider.Provider(),
+	serve.Serve(serve.Options{
+		SourcePlugin: plugin.Plugin(),
 	})
 }

@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 	"google.golang.org/api/monitoring/v3"
 )
@@ -47,13 +47,12 @@ const (
 
 func Metrics() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_storage_metrics",
-		Description:  "storage metrics collecting by cloud monitoring service",
-		Resolver:     fetchStorageMetrics,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "bucket_name"}},
+		Name:        "gcp_storage_metrics",
+		Description: "storage metrics collecting by cloud monitoring service",
+		Resolver:    fetchStorageMetrics,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "bucket_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -92,18 +91,18 @@ func fetchStorageMetrics(ctx context.Context, meta schema.ClientMeta, parent *sc
 	if err := doTimeSeriesCall(ctx, cl, queryACLCount, func(metric *storageMetric, value *monitoring.TypedValue) {
 		metric.AclOperationCount = cast.ToInt64(value.Int64Value)
 	}, metrics); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	if err := doTimeSeriesCall(ctx, cl, queryTotalObjects, func(metric *storageMetric, value *monitoring.TypedValue) {
 		metric.ObjectCount = cast.ToInt64(value.DoubleValue)
 	}, metrics); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 
 	if err := doTimeSeriesCall(ctx, cl, queryTotalBucketSize, func(metric *storageMetric, value *monitoring.TypedValue) {
 		metric.TotalSize = cast.ToInt64(value.DoubleValue)
 	}, metrics); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 
 	totalMetrics := make([]*storageMetric, 0, len(metrics))
@@ -118,18 +117,17 @@ func doTimeSeriesCall(ctx context.Context, cl *client.Client, query string, sett
 	call := cl.Services.Monitoring.Projects.TimeSeries.Query(fmt.Sprintf("projects/%s", cl.ProjectId), &monitoring.QueryTimeSeriesRequest{
 		Query: query,
 	})
-	list, err := cl.RetryingDo(ctx, call)
+	response, err := call.Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	response := list.(*monitoring.QueryTimeSeriesResponse)
 
 	if response.TimeSeriesData == nil {
 		return nil
 	}
 	bucketIndex := getDescriptorIndex(response.TimeSeriesDescriptor.LabelDescriptors, "resource.bucket_name")
 	if bucketIndex == -1 {
-		return diag.WrapError(fmt.Errorf("failed to get bucket index for timeseries call"))
+		return errors.WithStack(fmt.Errorf("failed to get bucket index for timeseries call"))
 	}
 
 	for _, data := range response.TimeSeriesData {

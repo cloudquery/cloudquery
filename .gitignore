@@ -26,3 +26,4 @@ telemetry-random-id
 go.work
 go.work.sum
 cli/cli
+plugins/source/gcp/gcp

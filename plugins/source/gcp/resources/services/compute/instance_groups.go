@@ -4,22 +4,22 @@ import (
 	"context"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	compute "google.golang.org/api/compute/v1"
 )
 
 //go:generate cq-gen --resource instance_groups --config gen.hcl --output .
 func InstanceGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_compute_instance_groups",
-		Description:  "Represents an Instance Group resource",
-		Resolver:     fetchComputeInstanceGroups,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Multiplex:    client.ProjectMultiplex,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_compute_instance_groups",
+		Description: "Represents an Instance Group resource",
+		Resolver:    fetchComputeInstanceGroups,
+
+		Multiplex: client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -138,12 +138,10 @@ func fetchComputeInstanceGroups(ctx context.Context, meta schema.ClientMeta, par
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.InstanceGroups.AggregatedList(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.InstanceGroups.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.InstanceGroupAggregatedList)
 
 		var instanceGroups []*compute.InstanceGroup
 		for _, items := range output.Items {
@@ -164,7 +162,7 @@ func resolveInstanceGroupsNamedPorts(ctx context.Context, meta schema.ClientMeta
 	for _, v := range r.NamedPorts {
 		j[v.Name] = v.Port
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }
 func fetchComputeInstanceGroupInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*compute.InstanceGroup)
@@ -177,12 +175,10 @@ func fetchComputeInstanceGroupInstances(ctx context.Context, meta schema.ClientM
 		zoneParts := strings.Split(r.Zone, "/")
 		zone := zoneParts[len(zoneParts)-1]
 
-		call := c.Services.Compute.InstanceGroups.ListInstances(c.ProjectId, zone, r.Name, &compute.InstanceGroupsListInstancesRequest{}).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.InstanceGroups.ListInstances(c.ProjectId, zone, r.Name, &compute.InstanceGroupsListInstancesRequest{}).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.InstanceGroupsListInstances)
 
 		res <- output.Items
 
@@ -199,5 +195,5 @@ func resolveInstanceGroupInstancesNamedPorts(ctx context.Context, meta schema.Cl
 	for _, v := range r.NamedPorts {
 		j[v.Name] = v.Port
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }

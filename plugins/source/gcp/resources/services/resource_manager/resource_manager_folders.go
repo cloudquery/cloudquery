@@ -4,21 +4,21 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/cloudresourcemanager/v3"
 )
 
 func ResourceManagerFolders() *schema.Table {
 	return &schema.Table{
-		Name:          "gcp_resource_manager_folders",
-		Description:   "A folder in an organization's resource hierarchy, used to organize that organization's resources",
-		Resolver:      fetchResourceManagerFolders,
-		Multiplex:     client.ProjectMultiplex,
-		IgnoreError:   client.IgnoreErrorHandler,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
-		DeleteFilter:  client.DeleteProjectFilter,
+		Name:        "gcp_resource_manager_folders",
+		Description: "A folder in an organization's resource hierarchy, used to organize that organization's resources",
+		Resolver:    fetchResourceManagerFolders,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -86,12 +86,10 @@ func ResourceManagerFolders() *schema.Table {
 func fetchResourceManagerFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	//Todo service account needs specific permissions to list folders https://cloud.google.com/resource-manager/docs/creating-managing-folders#folder-permissions
-	call := c.Services.ResourceManager.Folders.List()
-	list, err := c.RetryingDo(ctx, call)
+	output, err := c.Services.ResourceManager.Folders.List().Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	output := list.(*cloudresourcemanager.ListFoldersResponse)
 
 	res <- output.Folders
 	return nil
@@ -99,22 +97,20 @@ func fetchResourceManagerFolders(ctx context.Context, meta schema.ClientMeta, pa
 func resolveResourceManagerFolderPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	p := resource.Item.(*cloudresourcemanager.Folder)
-	call := cl.Services.ResourceManager.Projects.
-		GetIamPolicy("folders/"+p.Name, &cloudresourcemanager.GetIamPolicyRequest{})
-	list, err := cl.RetryingDo(ctx, call)
+	output, err := cl.Services.ResourceManager.Projects.
+		GetIamPolicy("folders/"+p.Name, &cloudresourcemanager.GetIamPolicyRequest{}).Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	output := list.(*cloudresourcemanager.Policy)
 
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 
-	return diag.WrapError(resource.Set(c.Name, policy))
+	return errors.WithStack(resource.Set(c.Name, policy))
 }

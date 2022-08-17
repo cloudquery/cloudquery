@@ -4,21 +4,20 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/logging/v2"
 )
 
 func LoggingSinks() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_logging_sinks",
-		Description:  "Describes a sink used to export log entries to one of the following destinations in any project: a Cloud Storage bucket, a BigQuery dataset, a Cloud Pub/Sub topic or a Cloud Logging Bucket A logs filter controls which log entries are exported The sink must be created within a project, organization, billing account, or folder",
-		Resolver:     fetchLoggingSinks,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+		Name:        "gcp_logging_sinks",
+		Description: "Describes a sink used to export log entries to one of the following destinations in any project: a Cloud Storage bucket, a BigQuery dataset, a Cloud Pub/Sub topic or a Cloud Logging Bucket A logs filter controls which log entries are exported The sink must be created within a project, organization, billing account, or folder",
+		Resolver:    fetchLoggingSinks,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -144,14 +143,12 @@ func fetchLoggingSinks(ctx context.Context, meta schema.ClientMeta, parent *sche
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Logging.Sinks.
+		output, err := c.Services.Logging.Sinks.
 			List(fmt.Sprintf("projects/%s", c.ProjectId)).
-			PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+			PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*logging.ListSinksResponse)
 
 		res <- output.Sinks
 		if output.NextPageToken == "" {

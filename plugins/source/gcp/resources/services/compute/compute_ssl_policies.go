@@ -3,21 +3,20 @@ package compute
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/compute/v1"
 )
 
 func ComputeSslPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_compute_ssl_policies",
-		Description:  "Represents an SSL Policy resource",
-		Resolver:     fetchComputeSslPolicies,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_compute_ssl_policies",
+		Description: "Represents an SSL Policy resource",
+		Resolver:    fetchComputeSslPolicies,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -131,12 +130,10 @@ func fetchComputeSslPolicies(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.SslPolicies.List(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.SslPolicies.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.SslPoliciesList)
 
 		res <- output.Items
 
@@ -159,5 +156,5 @@ func resolveComputeSslPolicyWarningData(ctx context.Context, meta schema.ClientM
 	for _, v := range p.Data {
 		data[v.Key] = v.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return errors.WithStack(resource.Set(c.Name, data))
 }

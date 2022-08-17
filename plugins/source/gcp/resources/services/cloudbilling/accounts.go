@@ -3,9 +3,9 @@ package cloudbilling
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/cloudbilling/v1"
 )
@@ -20,11 +20,10 @@ const maxGoroutines = 10
 //go:generate cq-gen --resource accounts --config gen.hcl --output .
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:          "gcp_cloudbilling_accounts",
-		Resolver:      fetchBillingAccounts,
-		Multiplex:     client.ProjectMultiplex,
-		IgnoreError:   client.IgnoreErrorHandler,
-		DeleteFilter:  client.DeleteProjectFilter,
+		Name:      "gcp_cloudbilling_accounts",
+		Resolver:  fetchBillingAccounts,
+		Multiplex: client.ProjectMultiplex,
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -82,12 +81,10 @@ func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.CloudBilling.BillingAccounts.List().PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.CloudBilling.BillingAccounts.List().PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*cloudbilling.ListBillingAccountsResponse)
 		errs, ctx := errgroup.WithContext(ctx)
 		errs.SetLimit(maxGoroutines)
 		for _, b := range output.BillingAccounts {
@@ -99,7 +96,7 @@ func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		err = errs.Wait()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		if output.NextPageToken == "" {
 			break
@@ -116,12 +113,10 @@ func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, parent *s
 func fetchProjectBillingInfo(ctx context.Context, res chan<- interface{}, c *client.Client, b cloudbilling.BillingAccount) error {
 	nextPageToken := ""
 	for {
-		projectsCall := c.Services.CloudBilling.BillingAccounts.Projects.List(b.Name).PageToken(nextPageToken)
-		projectsList, err := c.RetryingDo(ctx, projectsCall)
+		output, err := c.Services.CloudBilling.BillingAccounts.Projects.List(b.Name).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := projectsList.(*cloudbilling.ListProjectBillingInfoResponse)
 		for _, p := range output.ProjectBillingInfo {
 			if p.ProjectId == c.ProjectId {
 				res <- BillingAccountWrapper{

@@ -3,21 +3,20 @@ package compute
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/compute/v1"
 )
 
 func ComputeVpnGateways() *schema.Table {
 	return &schema.Table{
-		Name:          "gcp_compute_vpn_gateways",
-		Description:   "Represents a HA VPN gateway  HA VPN is a high-availability (HA) Cloud VPN solution that lets you securely connect your on-premises network to your Google Cloud Virtual Private Cloud network through an IPsec VPN connection in a single region.",
-		Resolver:      fetchComputeVpnGateways,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
-		Multiplex:     client.ProjectMultiplex,
-		IgnoreError:   client.IgnoreErrorHandler,
-		DeleteFilter:  client.DeleteProjectFilter,
+		Name:        "gcp_compute_vpn_gateways",
+		Description: "Represents a HA VPN gateway  HA VPN is a high-availability (HA) Cloud VPN solution that lets you securely connect your on-premises network to your Google Cloud Virtual Private Cloud network through an IPsec VPN connection in a single region.",
+		Resolver:    fetchComputeVpnGateways,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Multiplex:   client.ProjectMultiplex,
+
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -124,12 +123,10 @@ func fetchComputeVpnGateways(ctx context.Context, meta schema.ClientMeta, parent
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.VpnGateways.AggregatedList(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.VpnGateways.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.VpnGatewayAggregatedList)
 
 		var vpnGateways []*compute.VpnGateway
 		for _, items := range output.Items {

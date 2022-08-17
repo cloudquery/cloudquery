@@ -5,22 +5,21 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"github.com/spf13/cast"
 	"google.golang.org/api/compute/v1"
 )
 
 func ComputeDiskTypes() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_compute_disk_types",
-		Description:  "Represents a Disk Type resource.",
-		Resolver:     fetchComputeDiskTypes,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Multiplex:    client.ProjectMultiplex,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_compute_disk_types",
+		Description: "Represents a Disk Type resource.",
+		Resolver:    fetchComputeDiskTypes,
+
+		Multiplex: client.ProjectMultiplex,
+		Options:   schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -119,12 +118,10 @@ func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.DiskTypes.AggregatedList(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.DiskTypes.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.DiskTypeAggregatedList)
 
 		var diskTypes []*compute.DiskType
 		for _, items := range output.Items {
@@ -143,8 +140,8 @@ func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, parent *
 func ResolveDiskTypeId(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	disk := resource.Item.(*compute.DiskType)
 	if disk.Id != 0 {
-		return diag.WrapError(resource.Set(c.Name, cast.ToString(disk.Id)))
+		return errors.WithStack(resource.Set(c.Name, cast.ToString(disk.Id)))
 	}
 	linkParts := strings.Split(disk.SelfLink, "/")
-	return diag.WrapError(resource.Set(c.Name, fmt.Sprintf("%s/%s", linkParts[len(linkParts)-3], disk.Name)))
+	return errors.WithStack(resource.Set(c.Name, fmt.Sprintf("%s/%s", linkParts[len(linkParts)-3], disk.Name)))
 }
