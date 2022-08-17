@@ -2,6 +2,7 @@ package cdn
 
 import (
 	"encoding/json"
+
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )

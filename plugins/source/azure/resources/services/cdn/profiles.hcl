@@ -195,7 +195,6 @@ resource "azure" "cdn" "profiles" {
       skip_prefix = true
     }
 
-    //todo check type
     column "parameters" {
       #      skip = true
       type = "json"
