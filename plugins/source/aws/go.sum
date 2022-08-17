@@ -226,6 +226,8 @@ github.com/aws/aws-sdk-go-v2/service/shield v1.16.7 h1:bfyTNq3U7GXyFAr2fSJ1OaV5Z
 github.com/aws/aws-sdk-go-v2/service/shield v1.16.7/go.mod h1:T7HfO9ktODwkrs+RlBFSgvOiVhLjn2eEBN8n2266rLY=
 github.com/aws/aws-sdk-go-v2/service/sns v1.17.8 h1:Z0LBaDH89pfyBOCZzLCi8tmie3hJyLDV2NDjBWVvPzw=
 github.com/aws/aws-sdk-go-v2/service/sns v1.17.8/go.mod h1:Em/qKcKnYe5Y2+xcJ+XI/01K/JtOy7andGwQByLYFXc=
+github.com/aws/aws-sdk-go-v2/service/sns v1.17.13 h1:sa8NDFztt68pihEfE31LhX+nJ1wDBJHcFh3T6crluDo=
+github.com/aws/aws-sdk-go-v2/service/sns v1.17.13/go.mod h1:yE3hE9v3YRRI9Rsl38kYJ4fyZ6vKSljaZ+28W5xzqgM=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.18.7 h1:4inF55jYDETXLUr29ZlAq6Pipq9NTUTxQC5bLQJtjf4=
 github.com/aws/aws-sdk-go-v2/service/sqs v1.18.7/go.mod h1:E2OxTDUWA7s1TCdvBm+RDEjyssunta3SuSeqHUdFrCM=
 github.com/aws/aws-sdk-go-v2/service/ssm v1.27.3 h1:rujlES62T0e+YDecfhoANcIXCdpLC/+lNNZSlcagf/g=
@@ -261,8 +263,8 @@ github.com/chzyer/logex v1.1.10/go.mod h1:+Ywpsq7O8HXn0nuIou7OrIPyXbp3wmkHB+jjWR
 github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e/go.mod h1:nSuG5e5PlCu98SY8svDHJxuZscDgtXS6KTTbou5AhLI=
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/cq-gen v0.0.8 h1:mZWeoJaRnyyDNTFVJIlVTpS3ruczJwQm/LmSNIEglOs=
-github.com/cloudquery/cq-gen v0.0.8/go.mod h1:qZBvNPx/X4yVQVCOe1TnIi7eJkiF+96xclFTMkxuQMg=
+github.com/cloudquery/cq-gen v0.0.9 h1:G+ks11dpYsYbOz4Lm1hZKY1UGOE9bM6WHTCq1dddfqE=
+github.com/cloudquery/cq-gen v0.0.9/go.mod h1:qZBvNPx/X4yVQVCOe1TnIi7eJkiF+96xclFTMkxuQMg=
 github.com/cloudquery/cq-provider-sdk v0.14.7 h1:95yw0qc1IebxRAJyGdJjNM8gXJOHjMZuItbMvorZGpE=
 github.com/cloudquery/cq-provider-sdk v0.14.7/go.mod h1:fJNnqlYU+yKV7uH5luznZr6IA4XLllauGau1uRAsqmE=
 github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=

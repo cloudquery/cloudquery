@@ -42,6 +42,7 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 				"Policy":                    `{"stuff": 3}`,
 				"DeliveryPolicy":            `{"stuff": 3}`,
 				"EffectiveDeliveryPolicy":   `{"stuff": 3}`,
+				"WeirdAndUnexpectedField":   "needs updating",
 			},
 		}, nil)
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
@@ -54,5 +55,5 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestSnsTopics(t *testing.T) {
-	client.AwsMockTestHelper(t, SnsTopics(), buildSnsTopics, client.TestOptions{})
+	client.AwsMockTestHelper(t, Topics(), buildSnsTopics, client.TestOptions{})
 }

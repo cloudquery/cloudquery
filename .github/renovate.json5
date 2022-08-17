@@ -17,6 +17,7 @@
       matchStrings: [
         "setup\\-go[\\s\\S]+?go-version\\: \\^?(?<currentValue>[^$].*)",
         'matrix[\\s\\S]+?go\\: \\[\\s*"(?<currentValue>[^$].*)"\\s*\\]',
+        "go-(?<currentValue>.*?)-",
       ],
       depNameTemplate: "go",
       datasourceTemplate: "golang-version",
@@ -26,5 +27,10 @@
   packageRules: [
     { matchManagers: ["regex"], addLabels: ["no automerge"] },
     { matchManagers: ["github-actions"], groupName: "github-actions" },
+    {
+      matchManagers: ["github-actions"],
+      matchPackageNames: ["postgres"],
+      allowedVersions: ["11"],
+    },
   ],
 }

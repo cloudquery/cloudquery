@@ -1,3 +1,4 @@
+//check-for-changes
 service          = "aws"
 output_directory = "."
 add_generate     = true
@@ -66,4 +67,19 @@ resource "aws" "glue" "workflows" {
   column "blueprint_details_run_id" {
     rename = "blueprint_run_id"
   }
+
+  ignore_columns_in_tests = [
+    "blueprint_details_blueprint_name",
+    "blueprint_details_run_id",
+    "default_run_properties",
+    "last_run_completed_on",
+    "last_run_error_message",
+    "last_run_name",
+    "last_run_previous_run_id",
+    "last_run_started_on",
+    "last_run_starting_event_batch_condition_batch_size",
+    "last_run_starting_event_batch_condition_batch_window",
+    "last_run_workflow_run_id",
+    "last_run_workflow_run_properties",
+  ]
 }

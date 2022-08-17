@@ -64,7 +64,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.34.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.15.12
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.13.8
-	github.com/aws/aws-sdk-go-v2/service/sns v1.17.8
+	github.com/aws/aws-sdk-go-v2/service/sns v1.17.13
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.18.7
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.27.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.9
@@ -75,7 +75,7 @@ require (
 	github.com/aws/smithy-go v1.12.1
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
-	github.com/cloudquery/cq-gen v0.0.8
+	github.com/cloudquery/cq-gen v0.0.9
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/gocarina/gocsv v0.0.0-20220712153207-8b2118da4570

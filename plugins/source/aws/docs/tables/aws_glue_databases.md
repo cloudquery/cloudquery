@@ -7,6 +7,7 @@ The Database object represents a logical grouping of tables that might reside in
 |account_id|text|The AWS Account ID of the resource.|
 |region|text|The AWS Region of the resource.|
 |arn|text|The Amazon Resource Name (ARN) of the workflow.|
+|tags|jsonb|The collection of tags associated with the database|
 |name|text|The name of the database|
 |catalog_id|text|The ID of the Data Catalog in which the database resides|
 |create_table_default_permissions|jsonb|Creates a set of default permissions on the table for principals|

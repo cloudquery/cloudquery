@@ -9,7 +9,7 @@ print_usage() {
     echo
     echo "Syntax: ./build.sh [-c]"
     echo "options:"
-    echo "c     Run only on changed modules."
+    echo "c     Build only on changed modules."
     echo "h     Print this Help."
     echo
 }
@@ -41,8 +41,16 @@ for f in $GO_MOD_DIRS; do
                 continue
             fi
         fi
-        echo "Running go build on $f"
-        go build -v -o $BASEDIR/bin/ .
+
+        # rename cli -> cloudquery
+        bin_name=$(basename $f)
+        if [ "$bin_name" = "cli" ]; then
+          bin_name="cloudquery"
+        fi
+
+        echo "Running go build -o bin/$bin_name on $f"
+
+        go build -v -o $BASEDIR/bin/$bin_name .
         cd -
     fi
 done
