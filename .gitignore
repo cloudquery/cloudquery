@@ -13,12 +13,8 @@ bin/
 .release-env
 *.tfstate*
 .terraform*
-cloud_sql_proxy
 *.log
-.cq_reattach
-config.hcl
 /.cq/
-config_old.hcl
 /pkg/policy/tests/output/
 /pkg/policy/cq/*
 /pkg/ui/console/.cq/*
@@ -29,3 +25,4 @@ test_init_config.yml
 telemetry-random-id
 go.work
 go.work.sum
+cli/cli
