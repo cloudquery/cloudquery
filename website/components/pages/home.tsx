@@ -82,7 +82,7 @@ export default function Home() {
             Integrations
           </h2>
           <p className="mx-auto mt-4 font-medium text-gray-400 lg:max-w-3xl lg:text-xl text-center">
-            Integrate with 10+ cloud providers and saas apps with more then 1,000+ tables.
+            Integrate with 10+ cloud providers and SaaS apps with more than 1,000 unique tables.
           </p>
           <Integrations />
         </div>
