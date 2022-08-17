@@ -1,10 +1,10 @@
 import { Avatar } from "./Avatar";
 import CLOUDQUERY_TEAM from "../content/team";
-import { getAllPages } from "nextra/context";
 import type { Author } from "../content/team";
 import Head from "next/head";
+import { useConfig } from "nextra-theme-docs";
 
-type BlogPosFrontMatter = {
+type BlogPostMeta = {
   title: string;
   /** security */
   tag: string;
@@ -18,7 +18,7 @@ type BlogPosFrontMatter = {
   ogImage?: string;
 };
 
-function Authors({ data }: { data: BlogPosFrontMatter }) {
+function Authors({ data }: { data: BlogPostMeta }) {
   const authorName = data?.author as Author;
 
   if (!authorName) {
@@ -36,7 +36,7 @@ function Authors({ data }: { data: BlogPosFrontMatter }) {
   );
 }
 
-function BlogTitle({ data }: { data: BlogPosFrontMatter }) {
+function BlogTitle({ data }: { data: BlogPostMeta }) {
   const title = data.title;
 
   if (!title) {
@@ -47,24 +47,14 @@ function BlogTitle({ data }: { data: BlogPosFrontMatter }) {
 }
 
 export function BlogHeader() {
-  const routes = getAllPages();
-  const currentRoute = globalThis.__nextra_internal__.route;
+  const config = useConfig();
+  const meta = config.meta as BlogPostMeta;
 
-  const blogPage = routes.find(
-    ({ name, children }) => name === "blog" && Boolean(children)
-  );
-
-  const currentPage = blogPage.children?.find(
-    ({ route }) => route === currentRoute
-  );
-
-  const frontMatter = currentPage?.frontMatter as BlogPosFrontMatter;
-
-  if (!frontMatter) {
+  if (!meta) {
     return null;
   }
 
-  const image = `https://docs.cloudquery.io/og-image/${frontMatter.title}`;
+  const image = `https://docs.cloudquery.io/og-image/${meta.title}`;
 
   return (
     <>
@@ -72,8 +62,8 @@ export function BlogHeader() {
         <meta property="twitter:image" content={image} />
         <meta property="og:image" content={image} />
       </Head>
-      <BlogTitle data={frontMatter} />
-      <Authors data={frontMatter} />
+      <BlogTitle data={meta} />
+      <Authors data={meta} />
     </>
   );
 }
