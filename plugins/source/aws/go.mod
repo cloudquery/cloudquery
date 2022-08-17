@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/aws
 go 1.18
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.16.10
+	github.com/aws/aws-sdk-go-v2 v1.16.11
 	github.com/aws/aws-sdk-go-v2/config v1.15.14
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.9
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.20
@@ -65,7 +65,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.15.12
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.13.8
 	github.com/aws/aws-sdk-go-v2/service/sns v1.17.8
-	github.com/aws/aws-sdk-go-v2/service/sqs v1.18.7
+	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.4
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.27.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.9
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.7
@@ -110,8 +110,8 @@ require (
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.3 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.8 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.17 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.11 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.18 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.12 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.15 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.16.3
