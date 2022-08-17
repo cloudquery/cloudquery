@@ -1,14 +1,37 @@
-//go:build integration
-// +build integration
-
 package rbac
 
 import (
 	"testing"
 
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	"github.com/cloudquery/faker/v3"
+	"github.com/golang/mock/gomock"
+	v1 "k8s.io/api/rbac/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func TestIntegrationRoles(t *testing.T) {
-	client.K8sTestHelper(t, Roles(), "./snapshots")
+func createRbacRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
+	roles := mocks.NewMockRolesClient(ctrl)
+	roles.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
+		&v1.RoleList{Items: []v1.Role{*fakeRole(t)}}, nil,
+	)
+	return client.Services{
+		Roles: roles,
+	}
+}
+
+func fakeRole(t *testing.T) *v1.Role {
+	r := v1.Role{}
+	if err := faker.FakeData(&r); err != nil {
+		t.Fatal(err)
+	}
+	r.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
+	return &r
+}
+
+func TestRbacRoles(t *testing.T) {
+	client.K8sMockTestHelper(t, Roles(), createRbacRoles, client.TestOptions{})
 }

@@ -17,7 +17,7 @@ Pod is a collection of containers that can run on a host
 |annotations|jsonb|Annotations is an unstructured key value map stored with a resource that may be set by external tools.|
 |owner_references|jsonb|List of objects depended by this object.|
 |finalizers|text[]|List of finalizers|
-|cluster_name|text|The name of the cluster which the object belongs to.|
+|zzz_cluster_name|text|Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.|
 |restart_policy|text|Restart policy for all containers within the pod.|
 |termination_grace_period_seconds|bigint|Optional duration in seconds the pod needs to terminate gracefully|
 |active_deadline_seconds|bigint|Optional duration in seconds the pod may be active on the node relative to StartTime before the system will actively try to mark it failed and kill associated containers.|
