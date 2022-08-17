@@ -27,7 +27,7 @@ function FooterHeader({ children }: { children: ReactNode }) {
 const navigation = {
   general: [
     { name: "Documentation", href: "/docs" },
-    { name: "CLI reference", href: "/docs/cli-reference" },
+    { name: "CLI reference", href: "/docs/cli/commands/cloudquery" },
     { name: "Blog", href: "/blog" },
     {
       name: "Releases",
@@ -42,7 +42,7 @@ const navigation = {
     },
     {
       name: "Discord",
-      href: "https://cloudquery.io/cloudquery",
+      href: "https://cloudquery.io/discord",
     },
   ],
   company: [
