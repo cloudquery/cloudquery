@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -38,24 +39,31 @@ func (c Client) WithOrg(org string) schema.ClientMeta {
 
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
-	_ = providerConfig
+	// validate provider config
+	if providerConfig.AccessToken == "" {
+		return nil, diag.FromError(errors.New("missing personal access token in configuration"), diag.ACCESS)
+	}
+	if len(providerConfig.Orgs) == 0 {
+		return nil, diag.FromError(errors.New("no organizations defined in configuration "), diag.ACCESS)
+	}
+
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: providerConfig.AccessToken},
 	)
 	tc := oauth2.NewClient(context.Background(), ts)
 
-	client := github.NewClient(tc)
+	c := github.NewClient(tc)
 
 	// Init your client and 3rd party clients using the user's configuration
 	// passed by the SDK providerConfig
 	return &Client{
 		logger: logger,
 		Github: GithubServices{
-			Teams:         client.Teams,
-			Billing:       client.Billing,
-			Repositories:  client.Repositories,
-			Organizations: client.Organizations,
-			Issues:        client.Issues,
+			Teams:         c.Teams,
+			Billing:       c.Billing,
+			Repositories:  c.Repositories,
+			Organizations: c.Organizations,
+			Issues:        c.Issues,
 		},
 		Orgs: providerConfig.Orgs,
 	}, nil
