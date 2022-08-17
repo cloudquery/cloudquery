@@ -3,10 +3,9 @@ package core
 import (
 	"testing"
 
-	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	corev1 "k8s.io/api/core/v1"
@@ -41,5 +40,4 @@ func createCoreLimitRanges(t *testing.T, ctrl *gomock.Controller) client.Service
 
 func TestCoreLimitRanges(t *testing.T) {
 	client.K8sMockTestHelper(t, LimitRanges(), createCoreLimitRanges, client.TestOptions{})
-
 }

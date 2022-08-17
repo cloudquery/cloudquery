@@ -3,10 +3,9 @@ package batch
 import (
 	"testing"
 
-	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	batchv1 "k8s.io/api/batch/v1"
@@ -46,5 +45,4 @@ func fakeCronJob(t *testing.T) batchv1.CronJob {
 
 func TestBatchCronJobs(t *testing.T) {
 	client.K8sMockTestHelper(t, CronJobs(), createBatchCronJobs, client.TestOptions{})
-
 }

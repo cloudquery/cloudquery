@@ -3,10 +3,9 @@ package batch
 import (
 	"testing"
 
-	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	batchv1 "k8s.io/api/batch/v1"
@@ -38,5 +37,4 @@ func createBatchJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 func TestBatchJobs(t *testing.T) {
 	client.K8sMockTestHelper(t, Jobs(), createBatchJobs, client.TestOptions{})
-
 }
