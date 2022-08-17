@@ -7,6 +7,10 @@ build:
 build-changed:
 	./scripts/build.sh -c
 
+.PHONY: build-cli
+build-cli:
+	(cd cli && go build -o ../bin/cli/cloudquery .)
+
 # Test unit
 .PHONY: test-unit
 test-unit:

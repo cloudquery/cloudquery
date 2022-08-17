@@ -17,7 +17,7 @@ func Snapshots() *schema.Table {
 		Name:         "aws_fsx_snapshots",
 		Description:  "A snapshot of an Amazon FSx for OpenZFS volume",
 		Resolver:     fetchFsxSnapshots,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

@@ -16,7 +16,7 @@ jobs:
     if: github.event_name == 'issues' && (github.event.action == 'opened' || github.event.action == 'reopened')  && github.event.issue.user.login != 'cq-bot'
     steps:
       - name: Move issue to ${{ env.todo }}
-        uses: leonsteinhaeuser/project-beta-automations@v1.2.1
+        uses: leonsteinhaeuser/project-beta-automations@v1.3.0
         with:
           gh_token: ${{ secrets.GH_CQ_BOT }}
           organization: cloudquery

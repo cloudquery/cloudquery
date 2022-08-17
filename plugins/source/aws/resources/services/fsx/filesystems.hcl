@@ -17,7 +17,7 @@ resource "aws" "fsx" "filesystems" {
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
-    params = ["glue"]
+    params = ["fsx"]
   }
   options {
     primary_keys = ["arn"]
@@ -119,6 +119,10 @@ resource "aws" "fsx" "filesystems" {
 
     column "aliases" {
       type = "json"
+    }
+
+    column "audit_log_configuration" {
+      skip_prefix = true
     }
   }
 }
