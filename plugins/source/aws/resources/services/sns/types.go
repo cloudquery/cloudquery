@@ -23,6 +23,8 @@ type Subscription struct {
 	RedrivePolicy *string
 	// The ARN of the IAM role that has permission to write to the Kinesis Data Firehose delivery stream and has Amazon SNS listed as a trusted entity.
 	SubscriptionRoleArn *string
+	// Other subscription attributes.
+	UnknownFields map[string]interface{} `mapstructure:",remain"`
 }
 
 // Amazon SNS topic.
@@ -51,4 +53,6 @@ type Topic struct {
 	FifoTopic *bool
 	// Enables content-based deduplication for FIFO topics.
 	ContentBasedDeduplication *bool
+	// Other subscription attributes.
+	UnknownFields map[string]interface{} `mapstructure:",remain"`
 }

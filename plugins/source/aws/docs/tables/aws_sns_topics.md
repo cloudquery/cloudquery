@@ -19,3 +19,4 @@ Amazon SNS topic
 |kms_master_key_id|text|The ID of an Amazon Web Services managed customer master key (CMK) for Amazon SNS or a custom CMK|
 |fifo_topic|boolean|When this is set to true, a FIFO topic is created|
 |content_based_deduplication|boolean|Enables content-based deduplication for FIFO topics|
+|unknown_fields|jsonb|Other subscription attributes|

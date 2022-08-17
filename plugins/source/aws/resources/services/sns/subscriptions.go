@@ -104,6 +104,11 @@ func Subscriptions() *schema.Table {
 				Description: "The ARN of the IAM role that has permission to write to the Kinesis Data Firehose delivery stream and has Amazon SNS listed as a trusted entity",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "unknown_fields",
+				Description: "Other subscription attributes",
+				Type:        schema.TypeJSON,
+			},
 		},
 	}
 }

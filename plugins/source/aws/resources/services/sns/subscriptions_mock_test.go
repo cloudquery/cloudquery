@@ -40,6 +40,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 			"RawMessageDelivery":           "true",
 			"RedrivePolicy":                "some",
 			"SubscriptionRoleArn":          "some",
+			"WeirdAndUnexpectedField":      "needs updating",
 		}},
 		nil,
 	)

@@ -99,6 +99,11 @@ func Topics() *schema.Table {
 				Description: "Enables content-based deduplication for FIFO topics",
 				Type:        schema.TypeBool,
 			},
+			{
+				Name:        "unknown_fields",
+				Description: "Other subscription attributes",
+				Type:        schema.TypeJSON,
+			},
 		},
 	}
 }

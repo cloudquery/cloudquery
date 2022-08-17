@@ -19,3 +19,4 @@ Amazon SNS subscription
 |raw_message_delivery|boolean|True if raw message delivery is enabled for the subscription|
 |redrive_policy|text|When specified, sends undeliverable messages to the specified Amazon SQS dead-letter queue|
 |subscription_role_arn|text|The ARN of the IAM role that has permission to write to the Kinesis Data Firehose delivery stream and has Amazon SNS listed as a trusted entity|
+|unknown_fields|jsonb|Other subscription attributes|
