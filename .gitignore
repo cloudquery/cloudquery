@@ -30,3 +30,4 @@ telemetry-random-id
 go.work
 go.work.sum
 **/.cq/*
+*cloudquery.yml
