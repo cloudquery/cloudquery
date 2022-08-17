@@ -9,6 +9,7 @@ const theme: DocsThemeConfig = {
     "https://github.com/cloudquery/cloudquery/blob/main/docs/pages",
   titleSuffix: " | Cloudquery",
   search: true,
+  defaultMenuCollapsed: true,
   floatTOC: true,
   font: false,
   projectChatLink: "https://cloudquery.io/discord",
