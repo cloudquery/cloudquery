@@ -23,7 +23,7 @@ jobs:
       - id: set-matrix
         run: ./scripts/resolve-modules.sh
   test_build:
-    name: Unit Tests
+    name: Build
     needs: resolve-modules
     strategy:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
