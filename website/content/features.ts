@@ -6,6 +6,8 @@ import {
   DatabaseIcon,
   LightningBoltIcon,
   CodeIcon,
+  ChartBarIcon,
+  KeyIcon,
 } from "@heroicons/react/outline";
 
 export type Feature = {
@@ -18,6 +20,18 @@ export type Feature = {
 export type Features = Array<Feature>;
 
 const FEATURES: Features = [
+  {
+    name: "Cloud asset inventory",
+    description: `Build your own multi-cloud asset inventory with standard SQL and BI tools.`,
+    Icon: ChartBarIcon,
+    page: "all",
+  },
+  {
+    name: "CSPM",
+    description: `Customize pre-built open source SQL policies and visualize them with your any of your favorite BI tools.`,
+    Icon: KeyIcon,
+    page: "all",
+  },
   {
     name: "Open source",
     description: `Easily extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.`,
@@ -38,14 +52,8 @@ const FEATURES: Features = [
   },
   {
     name: "Raw access to data",
-    description: `Decouple data ingestion and having raw access to your data you can built your own security stack and re-use best-of-breed tools for querying (SQL, ...), transformation (dbt, ...) and visualization (Grafana, Preset, Metabase, PowerBI, ...).`,
+    description: `Decouple data ingestion and get raw access to your data in structured and unstructured formats.`,
     Icon: ArrowsExpandIcon,
-    page: "all",
-  },
-  {
-    name: "Bre-built queries",
-    description: `CloudQuery maintains rich set of SQL queries and Grafana dashboards for asset inventory, CSPMs, Security & Compliance, Cost, use-cases.`,
-    Icon: BeakerIcon,
     page: "all",
   },
 ];

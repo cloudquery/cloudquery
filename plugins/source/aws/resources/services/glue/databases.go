@@ -41,6 +41,12 @@ func Databases() *schema.Table {
 				Resolver:    resolveGlueDatabaseArn,
 			},
 			{
+				Name:        "tags",
+				Description: "The collection of tags associated with the database",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveGlueDatabaseTags,
+			},
+			{
 				Name:        "name",
 				Description: "The name of the database",
 				Type:        schema.TypeString,
@@ -425,6 +431,19 @@ func resolveGlueDatabaseArn(ctx context.Context, meta schema.ClientMeta, resourc
 	cl := meta.(*client.Client)
 	arn := aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name)))
 	return diag.WrapError(resource.Set(c.Name, arn))
+}
+func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	input := glue.GetTagsInput{
+		ResourceArn: aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name))),
+	}
+
+	response, err := svc.GetTags(ctx, &input)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set(c.Name, response.Tags))
 }
 func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Database)

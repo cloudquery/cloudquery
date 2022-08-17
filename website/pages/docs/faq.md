@@ -26,25 +26,3 @@ The only caveat is that in the case of configuration changes, subsequent fetches
 You can use the `cloudquery provider purge [provider]` to delete old resources. For example, you can remove
 resources that weren't updated in the last three days with `cloudquery provider purge [provider] --last-update=72h --dry-run=false`.
 You can find the full details [here](https://docs.cloudquery.io/docs/cli/commands/provider_purge).
-
-### What is "//"? How is it different from "/" and where should it go?
-
-The `//` indicator is used when specifying a subpolicy/subquery for `cloudquery policy run`. It is an idiosyncrasy of the way the `cloudquery` CLI works - it separates the "path to the policy" from the "path to the subpolicy (in the policy)". It must always appear **right after the root policy**.
-
-So, if the policy I'd like to run is `./my_policy`, and I would like
-to run the `old-stopped-ec2-instances` query in the `ec2` subpolicy, I would use:
-
-```bash
-cloudquery policy run ./my_policy//ec2/old-stopped-ec2-instances
-```
-
-It is worth mentioning here that the `cloudquery` CLI also supports running policies from
-our official github. The `//` separator serves the same function
-described above - separating the "path to the policy" from the "path inside the policy". In case of running
-policies from github, it helps the `cloudquery` CLI to know which repository to clone.
-
-So, to run the `foundational_security` **subpolicy** in the `aws` **policy**, we run.
-
-```bash
-cloudquery policy run aws//foundational_security
-```

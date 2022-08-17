@@ -17,7 +17,7 @@
       matchStrings: [
         "setup\\-go[\\s\\S]+?go-version\\: \\^?(?<currentValue>[^$].*)",
         'matrix[\\s\\S]+?go\\: \\[\\s*"(?<currentValue>[^$].*)"\\s*\\]',
-        "cache[\\s\\S]+?go-(?<currentValue>.*?)-",
+        "go-(?<currentValue>.*?)-",
       ],
       depNameTemplate: "go",
       datasourceTemplate: "golang-version",

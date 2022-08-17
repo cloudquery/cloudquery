@@ -18,5 +18,5 @@ okta:
   - plugins/source/okta/**/*
 terraform:
   - plugins/source/terraform/**/*
- website:
+website:
   - website/**/*

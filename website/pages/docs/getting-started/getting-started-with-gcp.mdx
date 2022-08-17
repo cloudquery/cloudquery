@@ -90,18 +90,10 @@ FROM gcp_storage_buckets
 WHERE iam_configuration_uniform_bucket_level_access_enabled = FALSE;
 ```
 
-### Policy Command
+### Cloudquery Policies
 
-CloudQuery Policies allow users to write security, governance, cost, and compliance rules,
-using SQL as the query layer and HCL as the logical layer.
-
-All official and approved community policies are listed on [Github](https://github.com/cloudquery/cq-provider-gcp/tree/main/policies).
-
-#### Execute a policy
-
-```bash
-cloudquery policy run gcp//cis_v1.2.0
-```
+CloudQuery Policies allow users to write security, governance, cost, and compliance rules with SQL, and run them with `psql`. 
+You can read more about policies [here](https://docs.clouqduery.io/docs/policies).
 
 ## Next Steps
 

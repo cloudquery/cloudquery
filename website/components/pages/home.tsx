@@ -37,7 +37,7 @@ export default function Home() {
         </p>
         <div className="max-w-xl mx-auto mt-5 sm:flex sm:justify-center md:mt-8">
           <div className="rounded-md ">
-            <Link href="/docs/intro">
+            <Link href="/docs">
               <a className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
                 Get Started →
               </a>
@@ -67,11 +67,11 @@ export default function Home() {
       <div className="relative from-gray-50 to-gray-100">
         <div className="px-4 py-16 mx-auto sm:pt-20 sm:pb-24 lg:max-w-7xl lg:pt-24">
           <h2 className="text-4xl font-extrabold tracking-tight lg:text-5xl xl:text-6xl lg:text-center dark:text-white">
-            Data analysis, security, auditing, and compliance
+            Regain access to your data
           </h2>
           <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
-            Leverage SQL to get visibility into your cloud infrastructure and
-            SaaS applications.
+            Apply the best practices in data engineering to solve infrastructure security, compliance, cost and search
+            use cases.
           </p>
           <Features />
         </div>
@@ -89,7 +89,7 @@ export default function Home() {
         <Container>
           <div className="px-4 py-16 mx-auto mt-10 sm:max-w-none sm:flex sm:justify-center">
             <div className="space-y-4 sm:space-y-0 sm:mx-auto ">
-              <Link href="/docs/getting-started">
+              <Link href="/docs">
                 <a className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
                   Start Building →
                 </a>

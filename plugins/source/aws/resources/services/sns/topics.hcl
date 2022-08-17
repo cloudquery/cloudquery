@@ -7,20 +7,20 @@ description_modifier "remove_read_only" {
   words = ["  This member is required."]
 }
 
-resource "aws" "glue" "datacatalog_encryption_settings" {
-  path = "github.com/aws/aws-sdk-go-v2/service/glue/types.DataCatalogEncryptionSettings"
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
+resource "aws" "sns" "topics" {
+  path = "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns.Topic"
+  ignoreError "IgnoreCommonErrors" {
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
-    params = ["glue"]
+    params = ["sns"]
   }
   options {
-    primary_keys = ["account_id"]
+    primary_keys = ["arn"]
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
@@ -37,7 +37,20 @@ resource "aws" "glue" "datacatalog_encryption_settings" {
     }
   }
 
-  column "connection_password_encryption" {
-    skip_prefix = true
+  userDefinedColumn "tags" {
+    type = "json"
+    generate_resolver = true
+  }
+
+  column "policy" {
+    type = "json"
+  }
+
+  column "delivery_policy" {
+    type = "json"
+  }
+
+  column "effective_delivery_policy" {
+    type = "json"
   }
 }

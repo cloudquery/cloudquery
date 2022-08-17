@@ -186,18 +186,11 @@ SELECT * FROM aws_ec2_images;
 SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ```
 
-### Policy Command
+### Cloudquery Policies
 
-CloudQuery Policies allow users to write security, governance, cost, and compliance rules,
-using SQL as the query layer and HCL as the logical layer.
+CloudQuery Policies allow users to write security, governance, cost, and compliance rules with SQL, and run them with `psql`. 
+You can read more about policies [here](https://docs.clouqduery.io/docs/policies).
 
-All official and approved community policies are listed on [Github](https://github.com/cloudquery/cq-provider-aws/tree/main/policies).
-
-#### Execute a policy
-
-```bash
-cloudquery policy run aws//cis_v1.2.0
-```
 
 ## Next Steps
 

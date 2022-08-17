@@ -7,8 +7,8 @@ description_modifier "remove_read_only" {
   words = ["  This member is required."]
 }
 
-resource "aws" "glue" "datacatalog_encryption_settings" {
-  path = "github.com/aws/aws-sdk-go-v2/service/glue/types.DataCatalogEncryptionSettings"
+resource "aws" "fsx" "snapshots" {
+  path = "github.com/aws/aws-sdk-go-v2/service/fsx/types.Snapshot"
   ignoreError "IgnoreAccessDenied" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
@@ -17,10 +17,10 @@ resource "aws" "glue" "datacatalog_encryption_settings" {
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
-    params = ["glue"]
+    params = ["fsx"]
   }
   options {
-    primary_keys = ["account_id"]
+    primary_keys = ["arn"]
   }
   userDefinedColumn "account_id" {
     description = "The AWS Account ID of the resource."
@@ -37,7 +37,16 @@ resource "aws" "glue" "datacatalog_encryption_settings" {
     }
   }
 
-  column "connection_password_encryption" {
-    skip_prefix = true
+  column "resource_arn" {
+    rename = "arn"
+  }
+
+  column "administrative_actions" {
+    skip = true
+  }
+
+  column "tags" {
+    type = "json"
+    generate_resolver = true
   }
 }
