@@ -1314,25 +1314,3 @@ func fetchCdnProfileSecurityPolicies(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-func resolveCdnProfileSecurityPolicyWebApplicationFirewallParameters(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(cdn.SecurityPolicy)
-	waf, ok := r.Parameters.AsSecurityPolicyParameters()
-	if !ok {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, waf))
-}
-func resolveCdnProfileSecurityPolicyParametersType(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(cdn.SecurityPolicy)
-	params, ok := r.Parameters.AsSecurityPolicyParameters()
-	if !ok {
-		return nil
-	}
-
-	return diag.WrapError(resource.Set(c.Name, params))
-}

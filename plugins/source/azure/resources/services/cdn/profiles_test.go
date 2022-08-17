@@ -2,6 +2,8 @@ package cdn
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -9,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
-	"testing"
 )
 
 func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

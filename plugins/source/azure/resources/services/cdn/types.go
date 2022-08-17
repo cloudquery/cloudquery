@@ -3,6 +3,7 @@ package cdn
 import (
 	"encoding/json"
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
+	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 )
 
 func marshalConditions(conditions []cdn.BasicDeliveryRuleCondition) ([]byte, error) {
@@ -58,7 +59,7 @@ func marshalConditions(conditions []cdn.BasicDeliveryRuleCondition) ([]byte, err
 	}
 	j, err := json.Marshal(data)
 	if err != nil {
-		return nil, err
+		return nil, diag.WrapError(err)
 	}
 	return j, nil
 }
@@ -98,7 +99,7 @@ func marshalActions(actions []cdn.BasicDeliveryRuleAction) ([]byte, error) {
 	}
 	j, err := json.Marshal(data)
 	if err != nil {
-		return nil, err
+		return nil, diag.WrapError(err)
 	}
 	return j, nil
 }
