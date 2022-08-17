@@ -17,7 +17,7 @@ func DataRepoTasks() *schema.Table {
 		Name:         "aws_fsx_data_repo_tasks",
 		Description:  "A description of the data repository task",
 		Resolver:     fetchFsxDataRepoTasks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},

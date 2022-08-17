@@ -17,7 +17,7 @@ resource "aws" "fsx" "data_repo_tasks" {
   }
   multiplex "AwsAccountRegion" {
     path   = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ServiceAccountRegionMultiplexer"
-    params = ["glue"]
+    params = ["fsx"]
   }
   options {
     primary_keys = ["arn"]
