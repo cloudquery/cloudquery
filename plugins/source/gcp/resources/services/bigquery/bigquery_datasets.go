@@ -2,26 +2,24 @@ package bigquery
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"google.golang.org/api/bigquery/v2"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/googleapi"
 )
 
 func BigqueryDatasets() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_bigquery_datasets",
-		Description:  "dataset resources in the project",
-		Resolver:     fetchBigqueryDatasets,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Multiplex:    client.ProjectMultiplex,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_bigquery_datasets",
+		Description: "dataset resources in the project",
+		Resolver:    fetchBigqueryDatasets,
+
+		Multiplex: client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -118,27 +116,20 @@ func fetchBigqueryDatasets(ctx context.Context, meta schema.ClientMeta, parent *
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.BigQuery.Datasets.
+		output, err := c.Services.BigQuery.Datasets.
 			List(c.ProjectId).
-			PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+			PageToken(nextPageToken).Do()
 		if err != nil {
-			if isAccessErrorToIgnore(err, c.ProjectId) {
-				return diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.IGNORE),
-					diag.WithDetails("Please verify the BigQuery API is enabled in current project."))
-			}
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*bigquery.DatasetList)
 
 		for _, d := range output.Datasets {
-			call := c.Services.BigQuery.Datasets.
-				Get(c.ProjectId, d.DatasetReference.DatasetId)
-			dataset, err := c.RetryingDo(ctx, call)
+			dataset, err := c.Services.BigQuery.Datasets.
+				Get(c.ProjectId, d.DatasetReference.DatasetId).Do()
 			if err != nil {
-				return diag.WrapError(err)
+				return errors.WithStack(err)
 			}
-			res <- dataset.(*bigquery.Dataset)
+			res <- dataset
 		}
 
 		if output.NextPageToken == "" {

@@ -5,22 +5,21 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/redis/v1"
 )
 
 //go:generate cq-gen --resource redis_instances --config gen.hcl --output .
 func RedisInstances() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_memorystore_redis_instances",
-		Description:  "A Memorystore for Redis instance.",
-		Resolver:     fetchMemorystoreRedisInstances,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_memorystore_redis_instances",
+		Description: "A Memorystore for Redis instance.",
+		Resolver:    fetchMemorystoreRedisInstances,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -251,12 +250,10 @@ func fetchMemorystoreRedisInstances(ctx context.Context, meta schema.ClientMeta,
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Redis.Projects.Locations.Instances.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Redis.Projects.Locations.Instances.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*redis.ListInstancesResponse)
 
 		res <- output.Instances
 		if output.NextPageToken == "" {
@@ -270,14 +267,14 @@ func ResolveMemorystoreRedisInstanceID(ctx context.Context, meta schema.ClientMe
 	// name is in the form projects/{project_id}/locations/{location_id}/instances/{instance_id}
 	parts := strings.Split(resource.Item.(*redis.Instance).Name, "/")
 	if len(parts) != 6 {
-		return diag.WrapError(
+		return errors.WithStack(
 			fmt.Errorf(
 				"name of Redis instance (%q) not in the form `projects/{project_id}/locations/{location_id}/instances/{instance_id}`",
 				resource.Item.(*redis.Instance).Name,
 			),
 		)
 	}
-	return diag.WrapError(resource.Set("id", parts[5]))
+	return errors.WithStack(resource.Set("id", parts[5]))
 }
 func fetchMemorystoreRedisInstanceRedisInstanceServerCaCerts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	instance := parent.Item.(*redis.Instance)

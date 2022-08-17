@@ -4,21 +4,21 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/cloudresourcemanager/v3"
 )
 
 func ResourceManagerProjects() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_resource_manager_projects",
-		Description:  "A project is a high-level Google Cloud entity It is a container for ACLs, APIs, App Engine Apps, VMs, and other Google Cloud Platform resources",
-		Resolver:     fetchResourceManagerProjects,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
-		DeleteFilter: client.DeleteProjectFilter,
+		Name:        "gcp_resource_manager_projects",
+		Description: "A project is a high-level Google Cloud entity It is a container for ACLs, APIs, App Engine Apps, VMs, and other Google Cloud Platform resources",
+		Resolver:    fetchResourceManagerProjects,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+
 		Columns: []schema.Column{
 			{
 				Name:        "policy",
@@ -89,13 +89,11 @@ func ResourceManagerProjects() *schema.Table {
 // ====================================================================================================================
 func fetchResourceManagerProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	call := c.Services.ResourceManager.Projects.
-		Get("projects/" + c.ProjectId)
-	list, err := c.RetryingDo(ctx, call)
+	output, err := c.Services.ResourceManager.Projects.
+		Get("projects/" + c.ProjectId).Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	output := list.(*cloudresourcemanager.Project)
 
 	res <- output
 	return nil
@@ -103,22 +101,20 @@ func fetchResourceManagerProjects(ctx context.Context, meta schema.ClientMeta, p
 func resolveResourceManagerProjectPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	p := resource.Item.(*cloudresourcemanager.Project)
-	call := cl.Services.ResourceManager.Projects.
-		GetIamPolicy("projects/"+p.ProjectId, &cloudresourcemanager.GetIamPolicyRequest{})
-	list, err := cl.RetryingDo(ctx, call)
+	output, err := cl.Services.ResourceManager.Projects.
+		GetIamPolicy("projects/"+p.ProjectId, &cloudresourcemanager.GetIamPolicyRequest{}).Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	output := list.(*cloudresourcemanager.Policy)
 
 	var policy map[string]interface{}
 	data, err := json.Marshal(output)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	if err := json.Unmarshal(data, &policy); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 
-	return diag.WrapError(resource.Set(c.Name, policy))
+	return errors.WithStack(resource.Set(c.Name, policy))
 }

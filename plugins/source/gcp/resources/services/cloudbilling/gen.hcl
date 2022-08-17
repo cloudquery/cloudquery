@@ -13,9 +13,9 @@ description_modifier "remove_field_name" {
 
 
 resource "gcp" "cloudbilling" "accounts" {
-  path = "github.com/cloudquery/cloudquery/plugins/source/gcp/resources/services/cloudbilling.BillingAccountWrapper"
+  path = "github.com/cloudquery/plugins/source/gcp/resources/services/cloudbilling.BillingAccountWrapper"
   ignoreError "IgnoreError" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
+    path = "github.com/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
   }
 
   options {
@@ -24,13 +24,13 @@ resource "gcp" "cloudbilling" "accounts" {
       "name"
     ]
   }
-
+  
   multiplex "ProjectMultiplex" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
+    path = "github.com/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
   }
 
   deleteFilter "ProjectDeleteFilter" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
+    path = "github.com/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
   }
 
   column "billing_account" {
@@ -66,7 +66,7 @@ resource "gcp" "cloudbilling" "accounts" {
 resource "gcp" "cloudbilling" "services" {
   path = "google.golang.org/api/cloudbilling/v1.Service"
   ignoreError "IgnoreError" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
+    path = "github.com/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
   }
 
   user_relation "gcp" "cloudbilling" "skus" {

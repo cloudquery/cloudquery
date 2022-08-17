@@ -4,22 +4,21 @@ import (
 	"context"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	secretmanager "google.golang.org/api/secretmanager/v1"
 )
 
 //go:generate cq-gen --resource secrets --config ./gen.hcl --output .
 func Secrets() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_security_secrets",
-		Description:  "Secret: A Secret is a logical secret whose value and versions can be accessed",
-		Resolver:     fetchSecuritySecrets,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"resource_name"}},
+		Name:        "gcp_security_secrets",
+		Description: "Secret: A Secret is a logical secret whose value and versions can be accessed",
+		Resolver:    fetchSecuritySecrets,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"resource_name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -125,18 +124,16 @@ func fetchSecuritySecrets(ctx context.Context, meta schema.ClientMeta, parent *s
 	nextPageToken := ""
 
 	for {
-		call := gcpClient.Services.SecretManager.Projects.Secrets.List("projects/" + gcpClient.ProjectId).PageToken(nextPageToken)
-		listSecretsResponseInterface, err := gcpClient.RetryingDo(ctx, call)
+		output, err := gcpClient.Services.SecretManager.Projects.Secrets.List("projects/" + gcpClient.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		listSecretsResponse := listSecretsResponseInterface.(*secretmanager.ListSecretsResponse)
 
-		res <- listSecretsResponse.Secrets
-		if listSecretsResponse.NextPageToken == "" {
+		res <- output.Secrets
+		if output.NextPageToken == "" {
 			break
 		}
-		nextPageToken = listSecretsResponse.NextPageToken
+		nextPageToken = output.NextPageToken
 	}
 
 	return nil
@@ -148,7 +145,7 @@ func ResolveSecuritySecretID(ctx context.Context, meta schema.ClientMeta, resour
 
 	split_resource_name := strings.Split(secret.Name, "/")
 
-	return diag.WrapError(resource.Set(c.Name, split_resource_name[len(split_resource_name)-1]))
+	return errors.WithStack(resource.Set(c.Name, split_resource_name[len(split_resource_name)-1]))
 }
 func ResolveSecuritySecretTopics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	secret := resource.Item.(*secretmanager.Secret)
@@ -163,7 +160,7 @@ func ResolveSecuritySecretTopics(ctx context.Context, meta schema.ClientMeta, re
 		topicNames = append(topicNames, topic.Name)
 	}
 
-	return diag.WrapError(resource.Set(c.Name, topicNames))
+	return errors.WithStack(resource.Set(c.Name, topicNames))
 }
 func ResolveSecuritySecretIsAutomaticallyReplicated(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	secret := resource.Item.(*secretmanager.Secret)
@@ -173,10 +170,10 @@ func ResolveSecuritySecretIsAutomaticallyReplicated(ctx context.Context, meta sc
 	}
 
 	if secret.Replication.Automatic != nil {
-		return diag.WrapError(resource.Set(c.Name, true))
+		return errors.WithStack(resource.Set(c.Name, true))
 	}
 
-	return diag.WrapError(resource.Set(c.Name, false))
+	return errors.WithStack(resource.Set(c.Name, false))
 }
 func resolveSecretsAutomaticReplicationCustomerManagedEncryptionKmsKeyName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	secret := resource.Item.(*secretmanager.Secret)
@@ -186,7 +183,7 @@ func resolveSecretsAutomaticReplicationCustomerManagedEncryptionKmsKeyName(ctx c
 		return nil
 	}
 
-	return diag.WrapError(resource.Set(c.Name, secret.Replication.Automatic.CustomerManagedEncryption.KmsKeyName))
+	return errors.WithStack(resource.Set(c.Name, secret.Replication.Automatic.CustomerManagedEncryption.KmsKeyName))
 }
 func fetchSecuritySecretUserManagedReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	secret := parent.Item.(*secretmanager.Secret)

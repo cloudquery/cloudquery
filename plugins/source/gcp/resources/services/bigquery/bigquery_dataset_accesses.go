@@ -3,17 +3,15 @@ package bigquery
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 	"google.golang.org/api/bigquery/v2"
 )
 
 func BigqueryDatasetAccesses() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_bigquery_dataset_accesses",
-		IgnoreError: client.IgnoreErrorHandler,
-		Resolver:    fetchBigqueryDatasetAccesses,
+		Name:     "gcp_bigquery_dataset_accesses",
+		Resolver: fetchBigqueryDatasetAccesses,
 		Columns: []schema.Column{
 			{
 				Name:     "dataset_cq_id",
@@ -115,5 +113,5 @@ func resolveBigqueryDatasetAccessTargetTypes(ctx context.Context, meta schema.Cl
 	if p.Dataset == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, p.Dataset.TargetTypes))
+	return errors.WithStack(resource.Set(c.Name, p.Dataset.TargetTypes))
 }

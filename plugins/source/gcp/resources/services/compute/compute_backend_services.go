@@ -4,21 +4,21 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/compute/v1"
 )
 
 func ComputeBackendServices() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_compute_backend_services",
-		Description:  "Represents a Backend Service resource  A backend service defines how Google Cloud load balancers distribute traffic The backend service configuration contains a set of values, such as the protocol used to connect to backends, various distribution and session settings, health checks, and timeouts These settings provide fine-grained control over how your load balancer behaves.",
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
-		IgnoreError:  client.IgnoreErrorHandler,
-		Resolver:     fetchComputeBackendServices,
-		Multiplex:    client.ProjectMultiplex,
-		DeleteFilter: client.DeleteProjectFilter,
+		Name:        "gcp_compute_backend_services",
+		Description: "Represents a Backend Service resource  A backend service defines how Google Cloud load balancers distribute traffic The backend service configuration contains a set of values, such as the protocol used to connect to backends, various distribution and session settings, health checks, and timeouts These settings provide fine-grained control over how your load balancer behaves.",
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+
+		Resolver:  fetchComputeBackendServices,
+		Multiplex: client.ProjectMultiplex,
+
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -560,12 +560,10 @@ func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, pa
 	nextPageToken := ""
 	c := meta.(*client.Client)
 	for {
-		call := c.Services.Compute.BackendServices.AggregatedList(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.BackendServices.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.BackendServiceAggregatedList)
 
 		var backendServices []*compute.BackendService
 		for _, backendServicesScopedList := range output.Items {
@@ -588,7 +586,7 @@ func resolveComputeBackendServiceCdnPolicyBypassCacheOnRequestHeaders(ctx contex
 	for i, v := range r.CdnPolicy.BypassCacheOnRequestHeaders {
 		headers[i] = v.HeaderName
 	}
-	return diag.WrapError(resource.Set("cdn_policy_bypass_cache_on_request_headers", headers))
+	return errors.WithStack(resource.Set("cdn_policy_bypass_cache_on_request_headers", headers))
 }
 func resolveComputeBackendServiceCdnPolicyNegativeCachingPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*compute.BackendService)
@@ -598,9 +596,9 @@ func resolveComputeBackendServiceCdnPolicyNegativeCachingPolicy(ctx context.Cont
 
 	data, err := json.Marshal(r.CdnPolicy.NegativeCachingPolicy)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return errors.WithStack(resource.Set(c.Name, data))
 }
 
 func fetchComputeBackendServiceBackends(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

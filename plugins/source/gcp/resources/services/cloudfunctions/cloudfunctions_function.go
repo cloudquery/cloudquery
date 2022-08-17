@@ -3,21 +3,19 @@ package cloudfunctions
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"google.golang.org/api/cloudfunctions/v1"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 )
 
 func CloudfunctionsFunction() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_cloudfunctions_functions",
-		Description:  "Describes a Cloud Function that contains user computation executed in response to an event It encapsulate function and triggers configurations",
-		Resolver:     fetchCloudfunctionsFunctions,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
+		Name:        "gcp_cloudfunctions_functions",
+		Description: "Describes a Cloud Function that contains user computation executed in response to an event It encapsulate function and triggers configurations",
+		Resolver:    fetchCloudfunctionsFunctions,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -193,12 +191,10 @@ func fetchCloudfunctionsFunctions(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.CloudFunctions.Projects.Locations.Functions.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.CloudFunctions.Projects.Locations.Functions.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*cloudfunctions.ListFunctionsResponse)
 
 		res <- output.Functions
 		if output.NextPageToken == "" {

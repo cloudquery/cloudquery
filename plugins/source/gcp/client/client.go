@@ -8,23 +8,25 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/rs/zerolog"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/cloudresourcemanager/v3"
 	"google.golang.org/api/option"
 )
 
 type Client struct {
+	plugin   *plugins.SourcePlugin
 	projects []string
-	logger   hclog.Logger
 	backoff  BackoffSettings
-
 	// All gcp services initialized by client
 	Services *Services
 	// this is set by table client multiplexer
 	ProjectId string
+	// Logger
+	logger zerolog.Logger
 }
 
 const (
@@ -32,28 +34,11 @@ const (
 	serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
 )
 
-func NewGcpClient(log hclog.Logger, bo BackoffSettings, projects []string, services *Services) *Client {
-	c := &Client{
-		projects: projects,
-		logger:   log,
-		backoff:  bo,
-		Services: services,
-	}
-	if len(projects) == 1 {
-		c.ProjectId = projects[0]
-	}
-	return c
-}
-
-func (c Client) Logger() hclog.Logger {
-	return c.logger
-}
-
 //revive:disable:modifies-value-receiver
 
 // withProject allows multiplexer to create a new client with given subscriptionId
 func (c Client) withProject(project string) *Client {
-	c.logger = c.logger.With("project_id", project)
+	c.logger = c.logger.With().Str("project_id", project).Logger()
 	c.ProjectId = project
 	return &c
 }
@@ -71,100 +56,93 @@ func isValidJson(content []byte) error {
 	return nil
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
-	var diags diag.Diagnostics
-	providerConfig := config.(*Config)
-	projects := providerConfig.ProjectIDs
-	if providerConfig.FolderMaxDepth == 0 {
-		providerConfig.FolderMaxDepth = 5
+func (c *Client) Logger() *zerolog.Logger {
+	return &c.logger
+}
+
+func Configure(ctx context.Context, p *plugins.SourcePlugin, s specs.Source) (schema.ClientMeta, error) {
+	c := Client{
+		plugin: p,
+	}
+	// providerConfig := config.(*Config)
+	var gcpSpec Spec
+	if err := s.UnmarshalSpec(&gcpSpec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 	}
 
-	serviceAccountKeyJSON := []byte(providerConfig.ServiceAccountKeyJSON)
+	projects := gcpSpec.ProjectIDs
+	if gcpSpec.FolderMaxDepth == 0 {
+		gcpSpec.FolderMaxDepth = 5
+	}
+
+	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
 	if len(serviceAccountKeyJSON) == 0 {
 		serviceAccountKeyJSON = []byte(os.Getenv(serviceAccountEnvKey))
 	}
 
 	// Add a fake request reason because it is not possible to pass nil options
-	options := append([]option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}, providerConfig.ClientOptions()...)
+	options := append([]option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}, gcpSpec.ClientOptions()...)
 	if len(serviceAccountKeyJSON) != 0 {
 		if err := isValidJson(serviceAccountKeyJSON); err != nil {
-			return nil, diag.FromError(err, diag.USER)
+			return nil, fmt.Errorf("invalid service account key JSON: %w", err)
 		}
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	if providerConfig.ProjectFilter != "" && len(providerConfig.FolderIDs) > 0 {
-		logger.Warn("ProjectFilter config option is deprecated and will not work with the folder_ids feature")
+	if len(gcpSpec.FolderIDs) > 0 {
+		c.logger.Warn().Msg("ProjectFilter config option is deprecated and will not work with the folder_ids feature")
 	}
 
-	services, err := initServices(context.Background(), options)
+	var err error
+	c.Services, err = initServices(context.Background(), options)
 	if err != nil {
-		return nil, diags.Add(classifyError(err, diag.INTERNAL, projects))
+		return nil, err
 	}
 
-	if len(providerConfig.FolderIDs) > 0 {
-		logger.Debug("Listing folders", "folder_ids", providerConfig.FolderIDs)
-
-		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-		defer cancel()
+	if len(gcpSpec.FolderIDs) > 0 {
+		c.logger.Debug().Strs("folder_ids", gcpSpec.FolderIDs).Msg("Listing folders")
 
 		var folderList []string
-		for _, f := range providerConfig.FolderIDs {
-			folderAndChildren, err := listFolders(ctx, logger, services.ResourceManager.Folders, f, int(providerConfig.FolderMaxDepth)-1)
+		for _, f := range gcpSpec.FolderIDs {
+			folderAndChildren, err := listFolders(ctx, c.Services.ResourceManager.Folders, f, int(gcpSpec.FolderMaxDepth)-1)
 			if err != nil {
-				return nil, diags.Add(classifyError(fmt.Errorf("folder listing failed: %w", err), diag.INTERNAL, projects))
+				return nil, fmt.Errorf("failed to list folders: %w", err)
 			}
 			folderList = append(folderList, folderAndChildren...)
 		}
-		logger.Debug("Found folders", "folder_ids", folderList)
+		c.logger.Debug().Strs("folder_ids", folderList).Msg("Found folders")
 
-		proj, err := getProjects(logger, services.ResourceManager, folderList)
+		proj, err := getProjects(ctx, c.Services.ResourceManager, folderList)
 		if err != nil {
-			return nil, diags.Add(classifyError(fmt.Errorf("get projects failed: %w", err), diag.INTERNAL, projects))
+			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
 		appendWithoutDupes(&projects, proj)
 	}
 	if len(projects) == 0 {
-		logger.Info("No project_ids specified, assuming all active projects")
+		c.logger.Info().Msg("No project_ids specified, assuming all active projects")
 		var err error
-		projects, err = getProjectsV1(logger, providerConfig.ProjectFilter, options...)
+		projects, err = getProjectsV1(options...)
 		if err != nil {
-			return nil, diags.Add(classifyError(fmt.Errorf("get projects(v1) failed: %w", err), diag.INTERNAL, projects))
+			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
 	}
 
-	logger.Debug("Found projects", "projects", projects)
+	c.logger.Debug().Strs("projects", projects).Msg("Found projects")
 
-	diags = diags.Add(validateProjects(projects))
-	if diags.HasErrors() {
-		return nil, diags
+	c.projects = projects
+	c.backoff = gcpSpec.Backoff()
+	if len(projects) == 1 {
+		c.ProjectId = projects[0]
 	}
 
-	client := NewGcpClient(logger, providerConfig.Backoff(), projects, services)
-
-	return client, diags
-}
-
-func validateProjects(projects []string) diag.Diagnostics {
-	for _, project := range projects {
-		if project == defaultProjectIdName {
-			return diag.FromError(errors.New("please specify a valid project_id in config.yml instead of <CHANGE_THIS_TO_YOUR_PROJECT_ID>"), diag.USER)
-		}
-		if project == "" {
-			return diag.FromError(errors.New("please specify a valid project_id in config.yml instead of empty string"), diag.USER)
-		}
-	}
-	return nil
+	return &c, nil
 }
 
 // getProjects requires the `resourcemanager.projects.list` permission, and at least one folder
-func getProjects(logger hclog.Logger, service *cloudresourcemanager.Service, folders []string) ([]string, error) {
+func getProjects(ctx context.Context, service *cloudresourcemanager.Service, folders []string) ([]string, error) {
 	if len(folders) == 0 {
 		return nil, fmt.Errorf("no folders specified")
 	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
 
 	var (
 		projects []string
@@ -177,13 +155,12 @@ func getProjects(logger hclog.Logger, service *cloudresourcemanager.Service, fol
 		for {
 			output, err := call.Do()
 			if err != nil {
-				return nil, diag.WrapError(err)
+				return nil, fmt.Errorf("failed to list projects in folder %s: %w", folder, err)
 			}
 			for _, project := range output.Projects {
 				if project.State == "ACTIVE" {
 					projects = append(projects, project.ProjectId)
 				} else {
-					logger.Info("Project state is not active. Project will be ignored", "project_id", project.ProjectId, "project_state", project.State)
 					inactive++
 				}
 			}
@@ -205,7 +182,7 @@ func getProjects(logger hclog.Logger, service *cloudresourcemanager.Service, fol
 }
 
 // getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
-func getProjectsV1(logger hclog.Logger, filter string, options ...option.ClientOption) ([]string, error) {
+func getProjectsV1(options ...option.ClientOption) ([]string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
@@ -219,9 +196,6 @@ func getProjectsV1(logger hclog.Logger, filter string, options ...option.ClientO
 	)
 
 	call := service.Projects.List().Context(ctx)
-	if filter != "" {
-		call.Filter(filter)
-	}
 
 	for {
 		output, err := call.Do()
@@ -232,7 +206,6 @@ func getProjectsV1(logger hclog.Logger, filter string, options ...option.ClientO
 			if project.LifecycleState == "ACTIVE" {
 				projects = append(projects, project.ProjectId)
 			} else {
-				logger.Info("Project state is not active. Project will be ignored", "project_id", project.ProjectId, "project_state", project.LifecycleState)
 				inactive++
 			}
 		}
@@ -252,7 +225,7 @@ func getProjectsV1(logger hclog.Logger, filter string, options ...option.ClientO
 	return projects, nil
 }
 
-func listFolders(ctx context.Context, logger hclog.Logger, service *cloudresourcemanager.FoldersService, parent string, maxDepth int) ([]string, error) {
+func listFolders(ctx context.Context, service *cloudresourcemanager.FoldersService, parent string, maxDepth int) ([]string, error) {
 	folders := []string{
 		parent,
 	}
@@ -264,16 +237,15 @@ func listFolders(ctx context.Context, logger hclog.Logger, service *cloudresourc
 	for {
 		output, err := call.Do()
 		if err != nil {
-			return nil, diag.WrapError(err)
+			return nil, fmt.Errorf("failed to list folders: %w", err)
 		}
 		for _, folder := range output.Folders {
 			if folder.State != "ACTIVE" {
-				logger.Info("Folder state is not active. Folder will be ignored", "folder_id", folder.Name, "folder_name", folder.DisplayName, "folder_state", folder.State)
 				continue
 			}
-			fList, err := listFolders(ctx, logger, service, folder.Name, maxDepth-1)
+			fList, err := listFolders(ctx, service, folder.Name, maxDepth-1)
 			if err != nil {
-				return nil, diag.WrapError(err)
+				return nil, fmt.Errorf("failed to list folders: %w", err)
 			}
 			folders = append(folders, fList...)
 		}

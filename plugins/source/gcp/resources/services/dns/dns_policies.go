@@ -3,21 +3,19 @@ package dns
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/dns/v1"
 )
 
 func DNSPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_dns_policies",
-		Description:  "A policy is a collection of DNS rules applied to one or more Virtual Private Cloud resources",
-		Resolver:     fetchDnsPolicies,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
-		DeleteFilter: client.DeleteProjectFilter,
+		Name:        "gcp_dns_policies",
+		Description: "A policy is a collection of DNS rules applied to one or more Virtual Private Cloud resources",
+		Resolver:    fetchDnsPolicies,
+		Multiplex:   client.ProjectMultiplex,
+		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -134,12 +132,10 @@ func fetchDnsPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Dns.Policies.List(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Dns.Policies.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*dns.PoliciesListResponse)
 
 		res <- output.Policies
 

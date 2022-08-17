@@ -3,21 +3,21 @@ package dns
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/dns/v1"
 )
 
 func DNSManagedZones() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_dns_managed_zones",
-		Description:  "A zone is a subtree of the DNS namespace under one administrative responsibility A ManagedZone is a resource that represents a DNS zone hosted by the Cloud DNS service",
-		Resolver:     fetchDnsManagedZones,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
-		DeleteFilter: client.DeleteProjectFilter,
+		Name:        "gcp_dns_managed_zones",
+		Description: "A zone is a subtree of the DNS namespace under one administrative responsibility A ManagedZone is a resource that represents a DNS zone hosted by the Cloud DNS service",
+		Resolver:    fetchDnsManagedZones,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -257,14 +257,12 @@ func fetchDnsManagedZones(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Dns.ManagedZones.
+		output, err := c.Services.Dns.ManagedZones.
 			List(c.ProjectId).
-			PageToken(nextPageToken)
-		ret, err := c.RetryingDo(ctx, call)
+			PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := ret.(*dns.ManagedZonesListResponse)
 
 		res <- output.ManagedZones
 		if output.NextPageToken == "" {

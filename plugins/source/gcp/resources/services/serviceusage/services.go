@@ -5,22 +5,21 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	serviceusage "google.golang.org/api/serviceusage/v1"
 )
 
 //go:generate cq-gen --resource services --config gen.hcl --output .
 func Services() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_serviceusage_services",
-		Description:  "A service that is available for use by the consumer",
-		Resolver:     fetchServiceusageServices,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"name"}},
+		Name:        "gcp_serviceusage_services",
+		Description: "A service that is available for use by the consumer",
+		Resolver:    fetchServiceusageServices,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -379,12 +378,10 @@ func fetchServiceusageServices(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.ServiceUsage.Services.List(fmt.Sprintf("projects/%s", c.ProjectId)).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.ServiceUsage.Services.List(fmt.Sprintf("projects/%s", c.ProjectId)).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*serviceusage.ListServicesResponse)
 
 		res <- output.Services
 
@@ -395,6 +392,7 @@ func fetchServiceusageServices(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	return nil
 }
+
 func resolveServicesAuthentication(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.GoogleApiServiceusageV1Service)
 	if p.Config == nil {
@@ -402,9 +400,9 @@ func resolveServicesAuthentication(ctx context.Context, meta schema.ClientMeta, 
 	}
 	j, err := json.Marshal(p.Config.Authentication)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }
 func resolveServicesDocumentation(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -413,9 +411,9 @@ func resolveServicesDocumentation(ctx context.Context, meta schema.ClientMeta, r
 	}
 	j, err := json.Marshal(p.Config.Documentation)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }
 func fetchServiceusageServiceApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -429,25 +427,25 @@ func resolveServiceApisMethods(ctx context.Context, meta schema.ClientMeta, reso
 	p := resource.Item.(*serviceusage.Api)
 	j, err := json.Marshal(p.Methods)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }
 func resolveServiceApisMixins(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.Api)
 	j, err := json.Marshal(p.Mixins)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }
 func resolveServiceApisOptions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.Api)
 	j, err := json.Marshal(p.Options)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }
 func fetchServiceusageServiceEndpoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -469,9 +467,9 @@ func resolveServiceMonitoredResourcesLabels(ctx context.Context, meta schema.Cli
 	p := resource.Item.(*serviceusage.MonitoredResourceDescriptor)
 	j, err := json.Marshal(p.Labels)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return errors.WithStack(resource.Set(c.Name, j))
 }
 func fetchServiceusageServiceMonitoringConsumerDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)
@@ -499,7 +497,7 @@ func fetchServiceusageServiceQuotaLimits(ctx context.Context, meta schema.Client
 }
 func resolveServiceQuotaLimitsDefaultLimit(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*serviceusage.QuotaLimit)
-	return diag.WrapError(resource.Set(c.Name, int32(p.DefaultLimit)))
+	return errors.WithStack(resource.Set(c.Name, int32(p.DefaultLimit)))
 }
 func fetchServiceusageServiceQuotaMetricRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*serviceusage.GoogleApiServiceusageV1Service)

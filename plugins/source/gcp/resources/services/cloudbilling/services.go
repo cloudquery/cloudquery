@@ -3,9 +3,9 @@ package cloudbilling
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"google.golang.org/api/cloudbilling/v1"
 )
 
@@ -15,7 +15,6 @@ func Services() *schema.Table {
 		Name:          "gcp_cloudbilling_services",
 		Description:   "Encapsulates a single service in Google Cloud Platform",
 		Resolver:      fetchCloudbillingServices,
-		IgnoreError:   client.IgnoreErrorHandler,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -44,7 +43,7 @@ func Services() *schema.Table {
 				Name:        "gcp_cloudbilling_service_skus",
 				Description: "Encapsulates a single SKU in Google Cloud Platform",
 				Resolver:    fetchCloudbillingServiceSkus,
-				IgnoreError: client.IgnoreErrorHandler,
+
 				Columns: []schema.Column{
 					{
 						Name:        "service_cq_id",
@@ -249,12 +248,10 @@ func fetchCloudbillingServices(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.CloudBilling.Services.List().PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.CloudBilling.Services.List().PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*cloudbilling.ListServicesResponse)
 
 		res <- output.Services
 
@@ -270,12 +267,10 @@ func fetchCloudbillingServiceSkus(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.CloudBilling.Services.Skus.List(r.Name).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.CloudBilling.Services.Skus.List(r.Name).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*cloudbilling.ListSkusResponse)
 
 		res <- output.Skus
 

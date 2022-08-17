@@ -6,15 +6,15 @@ resource "gcp" "memorystore" "redis_instances" {
   path        = "google.golang.org/api/redis/v1.Instance"
   description = "A Memorystore for Redis instance"
   ignoreError "IgnoreError" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
+    path = "github.com/cloudquery/plugins/source/gcp/client.IgnoreErrorHandler"
   }
 
   multiplex "ProjectMultiplex" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
+    path = "github.com/cloudquery/plugins/source/gcp/client.ProjectMultiplex"
   }
 
   deleteFilter "ProjectDeleteFilter" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
+    path = "github.com/cloudquery/plugins/source/gcp/client.DeleteProjectFilter"
   }
 
   options {
@@ -35,7 +35,7 @@ resource "gcp" "memorystore" "redis_instances" {
     type        = "string"
     description = "GCP Project ID of the resource"
     resolver "resolveResourceProject" {
-      path = "github.com/cloudquery/cloudquery/plugins/source/gcp/client.ResolveProject"
+      path = "github.com/cloudquery/plugins/source/gcp/client.ResolveProject"
     }
   }
 

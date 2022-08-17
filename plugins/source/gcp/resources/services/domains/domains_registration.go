@@ -5,20 +5,19 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	domains "google.golang.org/api/domains/v1beta1"
 )
 
 func DomainsRegistration() *schema.Table {
 	return &schema.Table{
-		Name:          "gcp_domains_registrations",
-		Description:   "The `Registration` resource facilitates managing and configuring domain name registrations To create a new `Registration` resource, find a suitable domain name by calling the `SearchDomains` method with a query to see available domain name options After choosing a name, call `RetrieveRegisterParameters` to ensure availability and obtain information like pricing, which is needed to build a call to `RegisterDomain`",
-		Resolver:      fetchDomainsRegistrations,
-		Multiplex:     client.ProjectMultiplex,
-		IgnoreError:   client.IgnoreErrorHandler,
-		DeleteFilter:  client.DeleteProjectFilter,
+		Name:        "gcp_domains_registrations",
+		Description: "The `Registration` resource facilitates managing and configuring domain name registrations To create a new `Registration` resource, find a suitable domain name by calling the `SearchDomains` method with a query to see available domain name options After choosing a name, call `RetrieveRegisterParameters` to ensure availability and obtain information like pricing, which is needed to build a call to `RegisterDomain`",
+		Resolver:    fetchDomainsRegistrations,
+		Multiplex:   client.ProjectMultiplex,
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -414,12 +413,10 @@ func fetchDomainsRegistrations(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Domain.Projects.Locations.Registrations.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Domain.Projects.Locations.Registrations.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*domains.ListRegistrationsResponse)
 
 		res <- output.Registrations
 		if output.NextPageToken == "" {
@@ -436,9 +433,9 @@ func resolveDomainsRegistrationCustomDNSDsRecords(ctx context.Context, meta sche
 	}
 	data, err := json.Marshal(reg.DnsSettings.CustomDns.DsRecords)
 	if err != nil {
-		return diag.WrapError(fmt.Errorf("failed to marshal custom_dns_ds_records. %w", err))
+		return errors.WithStack(fmt.Errorf("failed to marshal custom_dns_ds_records. %w", err))
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return errors.WithStack(resource.Set(c.Name, data))
 }
 func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	reg := resource.Item.(*domains.Registration)
@@ -447,9 +444,9 @@ func resolveDomainsRegistrationGoogleDomainsDNSDsRecords(ctx context.Context, me
 	}
 	data, err := json.Marshal(reg.DnsSettings.GoogleDomainsDns.DsRecords)
 	if err != nil {
-		return diag.WrapError(fmt.Errorf("failed to marshal google_domains_dns_ds_records. %w", err))
+		return errors.WithStack(fmt.Errorf("failed to marshal google_domains_dns_ds_records. %w", err))
 	}
-	return diag.WrapError(resource.Set("google_domains_dns_ds_records", data))
+	return errors.WithStack(resource.Set("google_domains_dns_ds_records", data))
 }
 func fetchDomainsRegistrationGlueRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	reg := parent.Item.(*domains.Registration)

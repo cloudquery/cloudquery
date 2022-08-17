@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	faker "github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	logging "google.golang.org/api/logging/v2"
 	"google.golang.org/api/option"

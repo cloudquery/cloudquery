@@ -3,9 +3,9 @@ package bigquery
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/api/bigquery/v2"
 )
@@ -16,8 +16,8 @@ func BigqueryDatasetTables() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_bigquery_dataset_tables",
 		Description: "Model options used for the first training run These options are immutable for subsequent training runs Default values are used for any options not specified in the input query",
-		IgnoreError: client.IgnoreErrorHandler,
-		Resolver:    listBigqueryDatasetTables,
+
+		Resolver: listBigqueryDatasetTables,
 		Columns: []schema.Column{
 			{
 				Name:     "dataset_cq_id",
@@ -416,12 +416,10 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.BigQuery.Tables.List(c.ProjectId, p.DatasetReference.DatasetId).Context(ctx).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.BigQuery.Tables.List(c.ProjectId, p.DatasetReference.DatasetId).Context(ctx).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*bigquery.TableList)
 		errs, ctx := errgroup.WithContext(ctx)
 		errs.SetLimit(maxGoroutines)
 		for _, t := range output.Tables {
@@ -433,7 +431,7 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 		}
 		err = errs.Wait()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		if output.NextPageToken == "" {
@@ -445,12 +443,11 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func fetchBigqueryDatasetTables(ctx context.Context, c *client.Client, p *bigquery.Dataset, t *bigquery.TableListTables, res chan<- interface{}) error {
-	call := c.Services.BigQuery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId)
-	item, err := c.RetryingDo(ctx, call)
+	item, err := c.Services.BigQuery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId).Do()
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	res <- item.(*bigquery.Table)
+	res <- item
 	return nil
 }
 
@@ -464,7 +461,7 @@ func resolveBigqueryDatasetTableExternalDataConfigurationSchema(ctx context.Cont
 	for _, f := range p.ExternalDataConfiguration.Schema.Fields {
 		s[f.Name] = f.Type
 	}
-	return diag.WrapError(resource.Set(c.Name, s))
+	return errors.WithStack(resource.Set(c.Name, s))
 }
 func resolveBigqueryDatasetTableSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(*bigquery.Table)
@@ -476,7 +473,7 @@ func resolveBigqueryDatasetTableSchema(ctx context.Context, meta schema.ClientMe
 	for _, f := range p.Schema.Fields {
 		s[f.Name] = f.Type
 	}
-	return diag.WrapError(resource.Set(c.Name, s))
+	return errors.WithStack(resource.Set(c.Name, s))
 }
 func fetchBigqueryDatasetTableDatasetModelTrainingRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*bigquery.Table)

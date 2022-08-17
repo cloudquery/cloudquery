@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func ProjectMultiplex(meta schema.ClientMeta) []schema.ClientMeta {

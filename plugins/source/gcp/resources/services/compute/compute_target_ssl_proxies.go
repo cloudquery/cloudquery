@@ -3,21 +3,19 @@ package compute
 import (
 	"context"
 
-	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"google.golang.org/api/compute/v1"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
 )
 
 func ComputeTargetSslProxies() *schema.Table {
 	return &schema.Table{
-		Name:         "gcp_compute_target_ssl_proxies",
-		Description:  "Represents a Target SSL Proxy resource",
-		Resolver:     fetchComputeTargetSslProxies,
-		Multiplex:    client.ProjectMultiplex,
-		IgnoreError:  client.IgnoreErrorHandler,
-		DeleteFilter: client.DeleteProjectFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
+		Name:        "gcp_compute_target_ssl_proxies",
+		Description: "Represents a Target SSL Proxy resource",
+		Resolver:    fetchComputeTargetSslProxies,
+		Multiplex:   client.ProjectMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "project_id",
@@ -88,13 +86,10 @@ func fetchComputeTargetSslProxies(ctx context.Context, meta schema.ClientMeta, p
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		call := c.Services.Compute.TargetSslProxies.List(c.ProjectId).PageToken(nextPageToken)
-		list, err := c.RetryingDo(ctx, call)
+		output, err := c.Services.Compute.TargetSslProxies.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		output := list.(*compute.TargetSslProxyList)
-
 		res <- output.Items
 
 		if output.NextPageToken == "" {

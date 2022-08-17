@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/spf13/cast"
 	"github.com/thoas/go-funk"
 )
@@ -47,7 +47,7 @@ func resolveLocation(_ context.Context, c schema.ClientMeta, r *schema.Resource)
 	}
 	name := r.Get("name")
 	if name == nil {
-		c.Logger().Warn("missing name for resource", "resource", fmt.Sprintf("%T", r.Item))
+		c.Logger().Warn().Str("resource", fmt.Sprintf("%T", r.Item)).Msg("missing name for resource")
 		return nil
 	}
 	nameStr, err := cast.ToStringE(name)
