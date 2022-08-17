@@ -9,7 +9,7 @@ description_modifier "remove_read_only" {
 
 resource "aws" "sns" "topics" {
   path = "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns.Topic"
-  ignoreError "IgnoreAccessDenied" {
+  ignoreError "IgnoreCommonErrors" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
