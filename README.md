@@ -6,9 +6,6 @@
 
 The open-source cloud asset inventory powered by SQL.
 
-![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cloudquery/Build?style=flat-square)
-![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
-
 CloudQuery extracts, transforms, and loads your cloud assets into [normalized](https://hub.cloudquery.io) PostgreSQL tables. CloudQuery enables you to assess, audit, and monitor the configurations of your cloud assets.
 
 CloudQuery key use-cases and features:
