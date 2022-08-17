@@ -73,6 +73,7 @@ export const QueriesExamples = ({ onClick }) => {
                     onClick={() => onClick(code)}
                     title={title}
                     description={description}
+                    key={title}
                 >
                     <div className="pb-10">{html}</div>
                 </QueryItem>
