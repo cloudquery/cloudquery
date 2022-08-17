@@ -217,18 +217,10 @@ SELECT * FROM azure_mysql_servers
 SELECT * from azure_storage_accounts where enable_https_traffic_only = false
 ```
 
-### Policy Command
+### Cloudquery Policies
 
-CloudQuery Policies allow users to write security, governance, cost, and compliance rules,
-using SQL as the query layer and HCL as the logical layer.
-
-All official and approved community policies are listed on [Github](https://github.com/cloudquery/cq-provider-azure/tree/main/policies).
-
-#### Execute a policy
-
-```bash
-cloudquery policy run azure//cis_v1.3.0
-```
+CloudQuery Policies allow users to write security, governance, cost, and compliance rules with SQL, and run them with `psql`. 
+You can read more about policies [here](https://docs.clouqduery.io/docs/policies).
 
 ## Next Steps
 
