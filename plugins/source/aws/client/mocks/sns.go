@@ -35,6 +35,26 @@ func (m *MockSnsClient) EXPECT() *MockSnsClientMockRecorder {
 	return m.recorder
 }
 
+// GetSubscriptionAttributes mocks base method.
+func (m *MockSnsClient) GetSubscriptionAttributes(arg0 context.Context, arg1 *sns.GetSubscriptionAttributesInput, arg2 ...func(*sns.Options)) (*sns.GetSubscriptionAttributesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetSubscriptionAttributes", varargs...)
+	ret0, _ := ret[0].(*sns.GetSubscriptionAttributesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSubscriptionAttributes indicates an expected call of GetSubscriptionAttributes.
+func (mr *MockSnsClientMockRecorder) GetSubscriptionAttributes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubscriptionAttributes", reflect.TypeOf((*MockSnsClient)(nil).GetSubscriptionAttributes), varargs...)
+}
+
 // GetTopicAttributes mocks base method.
 func (m *MockSnsClient) GetTopicAttributes(arg0 context.Context, arg1 *sns.GetTopicAttributesInput, arg2 ...func(*sns.Options)) (*sns.GetTopicAttributesOutput, error) {
 	m.ctrl.T.Helper()

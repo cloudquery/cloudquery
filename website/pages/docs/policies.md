@@ -12,7 +12,7 @@ We provide out of the box SQL policies and dashboards for asset inventories and 
 
 Examples on how to run can be found in the provider repositories:
 
-- [AWS](https://github.com/cloudquery/cq-provider-aws/tree/main/policies)
-- [GCP](https://github.com/cloudquery/cq-provider-gcp/tree/main/policies)
-- [Azure](https://github.com/cloudquery/cq-provider-azure/tree/main/policies)
-- [k8s](https://github.com/cloudquery/cq-provider-k8s/tree/main/policies)
+- [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies)
+- [GCP](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp/policies)
+- [Azure](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/azure/policies)
+- [k8s](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/k8s/policies)
