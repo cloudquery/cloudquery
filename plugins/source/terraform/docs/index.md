@@ -1,10 +1,10 @@
-## Terraform Provider
+## Terraform Plugin
 
 The CloudQuery Terraform provider pulls terraform state, normalizes it and stores it in PostgreSQL database.
 
 ### Install
 
-```shell
+```bash
 cloudquery init terraform
 ```
 

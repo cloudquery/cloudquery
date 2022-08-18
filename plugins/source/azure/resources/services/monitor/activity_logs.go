@@ -180,7 +180,7 @@ func MonitorActivityLogs() *schema.Table {
 			},
 			{
 				Name:        "properties",
-				Description: "the set of <Key, Value> pairs (usually a Dictionary<String, String>) that includes details about the event",
+				Description: "the set of `<Key, Value>` pairs (usually a `Dictionary<String, String>`) that includes details about the event",
 				Type:        schema.TypeJSON,
 			},
 			{

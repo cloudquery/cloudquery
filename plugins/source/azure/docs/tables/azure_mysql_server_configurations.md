@@ -11,6 +11,6 @@ Azure mysql server configuration
 |data_type|text|Data type of the configuration|
 |allowed_values|text|Allowed values of the configuration|
 |source|text|Source of the configuration|
-|id|text|Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}|
+|id|text|Fully qualified resource ID for the resource Ex - `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`|
 |name|text|The name of the resource|
 |type|text|The type of the resource Eg "MicrosoftCompute/virtualMachines" or "MicrosoftStorage/storageAccounts"|

@@ -82,7 +82,7 @@ func WebApps() *schema.Table {
 			},
 			{
 				Name:        "server_farm_id",
-				Description: "Resource ID of the associated App Service plan, formatted as: \"/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/MicrosoftWeb/serverfarms/{appServicePlanName}\"",
+				Description: "Resource ID of the associated App Service plan, formatted as: `/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/MicrosoftWeb/serverfarms/{appServicePlanName}`",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("SiteProperties.ServerFarmID"),
 			},
@@ -259,7 +259,7 @@ func WebApps() *schema.Table {
 			},
 			{
 				Name:          "cloning_info_source_web_app_id",
-				Description:   "ARM resource ID of the source app App resource ID is of the form /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName} for production slots and /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName}/slots/{slotName} for other slots",
+				Description:   "ARM resource ID of the source app App resource ID is of the form `/subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName}` for production slots and `/subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName}/slots/{slotName}` for other slots",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("SiteProperties.CloningInfo.SourceWebAppID"),
 				IgnoreInTests: true,
@@ -294,7 +294,7 @@ func WebApps() *schema.Table {
 			},
 			{
 				Name:          "cloning_info_traffic_manager_profile_id",
-				Description:   "ARM resource ID of the Traffic Manager profile to use, if it exists Traffic Manager resource ID is of the form /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftNetwork/trafficManagerProfiles/{profileName}",
+				Description:   "ARM resource ID of the Traffic Manager profile to use, if it exists Traffic Manager resource ID is of the form `/subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftNetwork/trafficManagerProfiles/{profileName}`",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("SiteProperties.CloningInfo.TrafficManagerProfileID"),
 				IgnoreInTests: true,
@@ -395,7 +395,7 @@ func WebApps() *schema.Table {
 			},
 			{
 				Name:          "identity_user_assigned_identities",
-				Description:   "The list of user assigned identities associated with the resource The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MicrosoftManagedIdentity/userAssignedIdentities/{identityName}",
+				Description:   "The list of user assigned identities associated with the resource The user identity dictionary key references will be ARM resource ids in the form: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MicrosoftManagedIdentity/userAssignedIdentities/{identityName}`",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("Identity.UserAssignedIdentities"),
 				IgnoreInTests: true,

@@ -8,6 +8,6 @@ Specifies a set of log entries that are not to be stored in Logging If your GCP 
 |create_time|text|The creation timestamp of the exclusionThis field may not be present for older exclusions|
 |description|text|A description of this exclusion|
 |disabled|boolean|If set to True, then this exclusion is disabled and it does not exclude any log entries You can update an exclusion to change the value of this field|
-|filter|text|An advanced logs filter (https://cloudgooglecom/logging/docs/view/advanced-queries) that matches the log entries to be excluded By using the sample function (https://cloudgooglecom/logging/docs/view/advanced-queries#sample), you can exclude less than 100% of the matching log entries For example, the following query matches 99% of low-severity log entries from Google Cloud Storage buckets:"resourcetype=gcs_bucket severity<ERROR sample(insertId, 0|
+|filter|text|An advanced logs filter (https://cloudgooglecom/logging/docs/view/advanced-queries) that matches the log entries to be excluded By using the sample function (https://cloudgooglecom/logging/docs/view/advanced-queries#sample)|
 |name|text|A client-assigned identifier, such as "load-balancer-exclusion" Identifiers are limited to 100 characters and can include only letters, digits, underscores, hyphens, and periods First character has to be alphanumeric|
 |update_time|text|The last update timestamp of the exclusionThis field may not be present for older exclusions|

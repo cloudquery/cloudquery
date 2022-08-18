@@ -19,6 +19,7 @@
       "typesetting": "article"
     }
   },
+  "hub": "Hub",
   "confirm": {
     "title": "Confirm",
     "hidden": true

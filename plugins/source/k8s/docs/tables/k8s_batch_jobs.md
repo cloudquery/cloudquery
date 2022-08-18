@@ -23,7 +23,7 @@ Job represents the configuration of a single job.
 |completions|integer|Specifies the desired number of successfully finished pods the job should be run with|
 |active_deadline_seconds|bigint|Specifies the duration in seconds relative to the startTime that the job may be continuously active before the system tries to terminate it; value must be positive integer|
 |backoff_limit|integer|Specifies the number of retries before marking this job failed. Defaults to 6|
-|selector_match_labels|jsonb|matchLabels is a map of {key,value} pairs|
+|selector_match_labels|jsonb|matchLabels is a map of `{key,value}` pairs|
 |manual_selector|boolean|manualSelector controls generation of pod labels and pod selectors. Leave `manualSelector` unset unless you are certain what you are doing. When false or unset, the system pick labels unique to this job and appends those labels to the pod template|
 |template|jsonb|Describes the pod that will be created when executing a job. More info: https://kubernetes.io/docs/concepts/workloads/controllers/jobs-run-to-completion/|
 |ttl_seconds_after_finished|integer|ttlSecondsAfterFinished limits the lifetime of a Job that has finished execution (either Complete or Failed)|

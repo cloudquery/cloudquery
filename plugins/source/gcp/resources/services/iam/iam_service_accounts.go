@@ -41,7 +41,7 @@ func IamServiceAccounts() *schema.Table {
 			},
 			{
 				Name:        "name",
-				Description: "The resource name of the service account In one of the following formats: * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}` OR `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}` OR `projects/-/serviceAccounts/{UNIQUE_ID}",
+				Description: "The resource name of the service account In one of the following formats: * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}` OR `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}` OR `projects/-/serviceAccounts/{UNIQUE_ID}`",
 				Type:        schema.TypeString,
 			},
 			{

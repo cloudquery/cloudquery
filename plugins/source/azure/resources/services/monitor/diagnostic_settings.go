@@ -79,7 +79,7 @@ func MonitorDiagnosticSettings() *schema.Table {
 			},
 			{
 				Name:          "log_analytics_destination_type",
-				Description:   "A string indicating whether the export to Log Analytics should use the default destination type, ie AzureDiagnostics, or use a destination type constructed as follows: <normalized service identity>_<normalized category name> Possible values are: Dedicated and null (null is default)",
+				Description:   "A string indicating whether the export to Log Analytics should use the default destination type, ie AzureDiagnostics, or use a destination type constructed as follows: `<normalized service identity>_<normalized category name>` Possible values are: Dedicated and null (null is default)",
 				Type:          schema.TypeString,
 				Resolver:      schema.PathResolver("DiagnosticSettings.LogAnalyticsDestinationType"),
 				IgnoreInTests: true,

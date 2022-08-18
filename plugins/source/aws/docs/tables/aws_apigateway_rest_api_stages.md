@@ -22,9 +22,9 @@ Represents a unique identifier for a version of a deployed RestApi that is calla
 |description|text|The stage's description.|
 |documentation_version|text|The version of the associated API documentation.|
 |last_updated_date|timestamp without time zone|The timestamp when the stage last updated.|
-|method_settings|jsonb|A map that defines the method settings for a Stage resource. Keys (designated as /{method_setting_key below) are method paths defined as {resource_path}/{http_method} for an individual method override, or /\*/\* for overriding all methods in the stage.|
+|method_settings|jsonb|A map that defines the method settings for a Stage resource. Keys (designated as `/{method_setting_key below)` are method paths defined as `{resource_path}/{http_method}` for an individual method override, or `/\*/\*` for overriding all methods in the stage.|
 |stage_name|text|The name of the stage is the first path segment in the Uniform Resource Identifier (URI) of a call to API Gateway. Stage names can only contain alphanumeric characters, hyphens, and underscores. Maximum length is 128 characters.|
 |tags|jsonb|The collection of tags. Each tag element is associated with a given resource.|
 |tracing_enabled|boolean|Specifies whether active tracing with X-ray is enabled for the Stage.|
-|variables|jsonb|A map that defines the stage variables for a Stage resource. Variable names can have alphanumeric and underscore characters, and the values must match [A-Za-z0-9-._~:/?#&=,]+.|
+|variables|jsonb|A map that defines the stage variables for a Stage resource. Variable names can have alphanumeric and underscore characters, and the values must match `[A-Za-z0-9-._~:/?#&=,]+.`|
 |web_acl_arn|text|The ARN of the WebAcl associated with the Stage.|

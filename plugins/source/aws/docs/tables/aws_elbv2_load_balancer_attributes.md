@@ -12,7 +12,7 @@ Load balancer attributes
 |idle_timeout|integer|The idle timeout value, in seconds.|
 |routing_http_desync_mitigation_mode|text|Determines how the load balancer handles requests that might pose a security risk to your application.|
 |routing_http_drop_invalid_header_fields|boolean|Indicates whether HTTP headers with header fields that are not valid are removed by the load balancer.|
-|routing_http_xamzntls_enabled|boolean|Indicates whether the two headers (x-amzn-tls-{version,cipher-suite}) are added to the client request before sending it to the target.|
+|routing_http_xamzntls_enabled|boolean|Indicates whether the two headers `(x-amzn-tls-{version,cipher-suite})` are added to the client request before sending it to the target.|
 |routing_http_xff_client_port|boolean|Indicates whether the X-Forwarded-For header should preserve the source port that the client used to connect to the load balancer.|
 |routing_http2|boolean|Indicates whether HTTP/2 is enabled.|
 |waf_fail_open|boolean|Indicates whether to allow a AWS WAF-enabled load balancer to route requests to targets if it is unable to forward the request to AWS WAF.|

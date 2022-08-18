@@ -118,7 +118,7 @@ func LoggingSinks() *schema.Table {
 					},
 					{
 						Name:        "filter",
-						Description: "An advanced logs filter (https://cloudgooglecom/logging/docs/view/advanced-queries) that matches the log entries to be excluded By using the sample function (https://cloudgooglecom/logging/docs/view/advanced-queries#sample), you can exclude less than 100% of the matching log entries For example, the following query matches 99% of low-severity log entries from Google Cloud Storage buckets:\"resourcetype=gcs_bucket severity<ERROR sample(insertId, 0",
+						Description: "An advanced logs filter (https://cloudgooglecom/logging/docs/view/advanced-queries) that matches the log entries to be excluded By using the sample function (https://cloudgooglecom/logging/docs/view/advanced-queries#sample)",
 						Type:        schema.TypeString,
 					},
 					{

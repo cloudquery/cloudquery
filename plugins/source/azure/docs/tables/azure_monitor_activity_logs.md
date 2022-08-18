@@ -31,7 +31,7 @@ Azure network watcher
 |operation_id|text|It is usually a GUID shared among the events corresponding to single operation This value should not be confused with EventName|
 |operation_name_value|text|the invariant value|
 |operation_name_localized_value|text|the locale specific value|
-|properties|jsonb|the set of <Key, Value> pairs (usually a Dictionary<String, String>) that includes details about the event|
+|properties|jsonb|the set of `<Key, Value>` pairs (usually a `Dictionary<String, String>`) that includes details about the event|
 |status_value|text|the invariant value|
 |status_localized_value|text|the locale specific value|
 |sub_status_value|text|the invariant value|

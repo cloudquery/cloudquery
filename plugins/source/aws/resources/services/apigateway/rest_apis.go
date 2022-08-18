@@ -66,7 +66,7 @@ func ApigatewayRestApis() *schema.Table {
 			},
 			{
 				Name:        "disable_execute_api_endpoint",
-				Description: "Specifies whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke your API with the default https://{api_id}.execute-api.{region}.amazonaws.com endpoint. To require that clients use a custom domain name to invoke your API, disable the default endpoint.",
+				Description: "Specifies whether clients can invoke your API by using the default execute-api endpoint. By default, clients can invoke your API with the default `https://{api_id}.execute-api.{region}.amazonaws.com` endpoint. To require that clients use a custom domain name to invoke your API, disable the default endpoint.",
 				Type:        schema.TypeBool,
 			},
 			{
@@ -164,7 +164,7 @@ func ApigatewayRestApis() *schema.Table {
 					},
 					{
 						Name:        "authorizer_uri",
-						Description: "Specifies the authorizer's Uniform Resource Identifier (URI). For TOKEN or REQUEST authorizers, this must be a well-formed Lambda function URI, for example, arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:{account_id}:function:{lambda_function_name}/invocations. In general, the URI has this form arn:aws:apigateway:{region}:lambda:path/{service_api}, where {region} is the same as the region hosting the Lambda function, path indicates that the remaining substring in the URI should be treated as the path to the resource, including the initial /. For Lambda functions, this is usually of the form /2015-03-31/functions/[FunctionARN]/invocations.",
+						Description: "Specifies the authorizer's Uniform Resource Identifier (URI). For TOKEN or REQUEST authorizers, this must be a well-formed Lambda function URI, for example, `arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:{account_id}:function:{lambda_function_name}/invocations`. In general, the URI has this form `arn:aws:apigateway:{region}:lambda:path/{service_api}`, where `{region}` is the same as the region hosting the Lambda function, path indicates that the remaining substring in the URI should be treated as the path to the resource, including the initial /. For Lambda functions, this is usually of the form `/2015-03-31/functions/[FunctionARN]/invocations`.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -190,7 +190,7 @@ func ApigatewayRestApis() *schema.Table {
 					},
 					{
 						Name:        "provider_arns",
-						Description: "A list of the Amazon Cognito user pool ARNs for the COGNITO_USER_POOLS authorizer. Each element is of this format: arn:aws:cognito-idp:{region}:{account_id}:userpool/{user_pool_id}. For a TOKEN or REQUEST authorizer, this is not defined.",
+						Description: "A list of the Amazon Cognito user pool ARNs for the COGNITO_USER_POOLS authorizer. Each element is of this format: `arn:aws:cognito-idp:{region}:{account_id}:userpool/{user_pool_id}`. For a TOKEN or REQUEST authorizer, this is not defined.",
 						Type:        schema.TypeStringArray,
 						Resolver:    schema.PathResolver("ProviderARNs"),
 					},
@@ -318,7 +318,7 @@ func ApigatewayRestApis() *schema.Table {
 					},
 					{
 						Name:        "properties",
-						Description: "A content map of API-specific key-value pairs describing the targeted API entity. The map must be encoded as a JSON string, e.g., \"{ \\\"description\\\": \\\"The API does ...\\\" }\". Only OpenAPI-compliant documentation-related fields from the properties map are exported and, hence, published as part of the API entity definitions, while the original documentation parts are exported in a OpenAPI extension of x-amazon-apigateway-documentation.",
+						Description: "A content map of API-specific key-value pairs describing the targeted API entity. The map must be encoded as a JSON string, e.g., `\"{ \\\"description\\\": \\\"The API does ...\\\" }\"`. Only OpenAPI-compliant documentation-related fields from the properties map are exported and, hence, published as part of the API entity definitions, while the original documentation parts are exported in a OpenAPI extension of x-amazon-apigateway-documentation.",
 						Type:        schema.TypeString,
 					},
 				},
@@ -586,7 +586,7 @@ func ApigatewayRestApis() *schema.Table {
 					},
 					{
 						Name:        "resource_methods",
-						Description: "Gets an API resource's method of a given HTTP verb. The resource methods are a map of methods indexed by methods' HTTP verbs enabled on the resource. This method map is included in the 200 OK response of the GET /restapis/{restapi_id}/resources/{resource_id} or GET /restapis/{restapi_id}/resources/{resource_id}?embed=methods request. Example: Get the GET method of an API resource",
+						Description: "Gets an API resource's method of a given HTTP verb. The resource methods are a map of methods indexed by methods' HTTP verbs enabled on the resource. This method map is included in the 200 OK response of the GET `/restapis/{restapi_id}/resources/{resource_id}` or GET `/restapis/{restapi_id}/resources/{resource_id}?embed=methods` request. Example: Get the GET method of an API resource",
 						Type:        schema.TypeJSON,
 					},
 				},
@@ -702,7 +702,7 @@ func ApigatewayRestApis() *schema.Table {
 					},
 					{
 						Name:        "method_settings",
-						Description: "A map that defines the method settings for a Stage resource. Keys (designated as /{method_setting_key below) are method paths defined as {resource_path}/{http_method} for an individual method override, or /\\*/\\* for overriding all methods in the stage.",
+						Description: "A map that defines the method settings for a Stage resource. Keys (designated as `/{method_setting_key below)` are method paths defined as `{resource_path}/{http_method}` for an individual method override, or `/\\*/\\*` for overriding all methods in the stage.",
 						Type:        schema.TypeJSON,
 					},
 					{
@@ -722,7 +722,7 @@ func ApigatewayRestApis() *schema.Table {
 					},
 					{
 						Name:        "variables",
-						Description: "A map that defines the stage variables for a Stage resource. Variable names can have alphanumeric and underscore characters, and the values must match [A-Za-z0-9-._~:/?#&=,]+.",
+						Description: "A map that defines the stage variables for a Stage resource. Variable names can have alphanumeric and underscore characters, and the values must match `[A-Za-z0-9-._~:/?#&=,]+.`",
 						Type:        schema.TypeJSON,
 					},
 					{

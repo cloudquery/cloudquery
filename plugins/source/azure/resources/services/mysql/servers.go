@@ -190,7 +190,7 @@ func MySQLServers() *schema.Table {
 			},
 			{
 				Name:        "id",
-				Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
+				Description: "Fully qualified resource ID for the resource Ex - `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
 			},
@@ -304,7 +304,7 @@ func MySQLServers() *schema.Table {
 					},
 					{
 						Name:        "id",
-						Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
+						Description: "Fully qualified resource ID for the resource Ex - `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
 					},

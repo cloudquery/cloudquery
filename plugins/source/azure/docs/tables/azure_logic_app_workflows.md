@@ -28,7 +28,7 @@ Azure Logic App Workflow
 |identity_type|text|Type of managed service identity. The type 'SystemAssigned' includes an implicitly created identity. The type 'None' will remove any identities from the resource. Possible values include: 'ManagedServiceIdentityTypeSystemAssigned', 'ManagedServiceIdentityTypeUserAssigned', 'ManagedServiceIdentityTypeNone'|
 |identity_tenant_id|uuid|Tenant of managed service identity.|
 |identity_principal_id|uuid|Principal Id of managed service identity.|
-|identity_user_assigned_identities|jsonb|The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}|
+|identity_user_assigned_identities|jsonb|The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}`|
 |id|text|Fully qualified resource ID for the resource|
 |name|text|The name of the resource.|
 |type|text|The type of the resource.|

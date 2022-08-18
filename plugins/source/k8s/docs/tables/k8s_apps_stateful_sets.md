@@ -20,7 +20,7 @@ StatefulSet represents a set of pods with consistent identities. Identities are 
 |zzz_cluster_name|text|Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.|
 |managed_fields|jsonb|ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow|
 |replicas|integer|replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1. TODO: Consider a rename of this field.|
-|selector_match_labels|jsonb|matchLabels is a map of {key,value} pairs|
+|selector_match_labels|jsonb|matchLabels is a map of `{key,value}` pairs|
 |template|jsonb|template is the object that describes the pod that will be created if insufficient replicas are detected|
 |volume_claim_templates|jsonb|volumeClaimTemplates is a list of claims that pods are allowed to reference. The StatefulSet controller is responsible for mapping network identities to claims in a way that maintains the identity of a pod|
 |service_name|text|serviceName is the name of the service that governs this StatefulSet. This service must exist before the StatefulSet, and is responsible for the network identity of the set|

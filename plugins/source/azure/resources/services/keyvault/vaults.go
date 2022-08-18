@@ -102,7 +102,7 @@ func KeyvaultVaults() *schema.Table {
 			},
 			{
 				Name:        "soft_delete_retention_in_days",
-				Description: "softDelete data retention days It accepts >=7 and <=90",
+				Description: "softDelete data retention days It accepts `>=7` and `<=90`",
 				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Properties.SoftDeleteRetentionInDays"),
 			},
@@ -272,7 +272,7 @@ func KeyvaultVaults() *schema.Table {
 					},
 					{
 						Name:        "recoverable_days",
-						Description: "softDelete data retention days Value should be >=7 and <=90 when softDelete enabled, otherwise 0",
+						Description: "softDelete data retention days Value should be `>=7` and `<=90` when softDelete enabled, otherwise 0",
 						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Attributes.RecoverableDays"),
 					},
@@ -344,7 +344,7 @@ func KeyvaultVaults() *schema.Table {
 					},
 					{
 						Name:        "recoverable_days",
-						Description: "softDelete data retention days Value should be >=7 and <=90 when softDelete enabled, otherwise 0",
+						Description: "softDelete data retention days Value should be `>=7` and `<=90` when softDelete enabled, otherwise 0",
 						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Attributes.RecoverableDays"),
 					},

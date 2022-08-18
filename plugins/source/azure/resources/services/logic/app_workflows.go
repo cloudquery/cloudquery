@@ -177,7 +177,7 @@ func LogicAppWorkflows() *schema.Table {
 			},
 			{
 				Name:          "identity_user_assigned_identities",
-				Description:   "The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}",
+				Description:   "The list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}`",
 				Type:          schema.TypeJSON,
 				Resolver:      identityUserAssignedIdentitiesResolver,
 				IgnoreInTests: true,

@@ -269,7 +269,7 @@ func Elbv2LoadBalancers() *schema.Table {
 					},
 					{
 						Name:        "routing_http_xamzntls_enabled",
-						Description: "Indicates whether the two headers (x-amzn-tls-{version,cipher-suite}) are added to the client request before sending it to the target.",
+						Description: "Indicates whether the two headers `(x-amzn-tls-{version,cipher-suite})` are added to the client request before sending it to the target.",
 						Type:        schema.TypeBool,
 						Resolver:    schema.PathResolver("RoutingHTTPXAmznTLSVersionCipherSuite"),
 					},

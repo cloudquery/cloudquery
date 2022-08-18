@@ -6,7 +6,7 @@ KeyItem the key item containing key metadata
 | ------------- | ------------- | -----  |
 |vault_cq_id|uuid|Unique CloudQuery ID of azure_keyvault_vaults table (FK)|
 |kid|text|Key identifier|
-|recoverable_days|integer|softDelete data retention days Value should be >=7 and <=90 when softDelete enabled, otherwise 0|
+|recoverable_days|integer|softDelete data retention days Value should be `>=7` and `<=90` when softDelete enabled, otherwise 0|
 |recovery_level|text|Reflects the deletion recovery level currently in effect for keys in the current vault If it contains 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the retention interval Possible values include: 'Purgeable', 'RecoverablePurgeable', 'Recoverable', 'RecoverableProtectedSubscription', 'CustomizedRecoverablePurgeable', 'CustomizedRecoverable', 'CustomizedRecoverableProtectedSubscription'|
 |enabled|boolean|Determines whether the object is enabled|
 |not_before|timestamp without time zone|Not before date in UTC|

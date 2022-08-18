@@ -1576,7 +1576,7 @@ func Pods() *schema.Table {
 					},
 					{
 						Name:        "container_id",
-						Description: "Container's ID in the format 'docker://<container_id>'.",
+						Description: "Container's ID in the format `'docker://<container_id>'`.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ContainerID"),
 					},
@@ -1638,7 +1638,7 @@ func Pods() *schema.Table {
 					},
 					{
 						Name:        "container_id",
-						Description: "Container's ID in the format 'docker://<container_id>'.",
+						Description: "Container's ID in the format `'docker://<container_id>'`.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ContainerID"),
 					},
@@ -1701,7 +1701,7 @@ func Pods() *schema.Table {
 					},
 					{
 						Name:        "container_id",
-						Description: "Container's ID in the format 'docker://<container_id>'.",
+						Description: "Container's ID in the format `'docker://<container_id>'`.",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ContainerID"),
 					},

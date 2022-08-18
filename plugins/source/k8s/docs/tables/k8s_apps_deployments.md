@@ -22,7 +22,7 @@ Deployment enables declarative updates for Pods and ReplicaSets.
 |zzz_cluster_name|text|Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.|
 |managed_fields|jsonb|ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow|
 |replicas|integer|Number of desired pods|
-|selector_match_labels|jsonb|matchLabels is a map of {key,value} pairs|
+|selector_match_labels|jsonb|matchLabels is a map of `{key,value}` pairs|
 |template|jsonb|Template describes the pods that will be created.|
 |strategy_type|text|Type of deployment|
 |strategy_rolling_update_max_unavailable_type|bigint||

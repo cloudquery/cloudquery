@@ -125,7 +125,7 @@ func NetworkPolicies() *schema.Table {
 			},
 			{
 				Name:          "pod_selector_match_labels",
-				Description:   "matchLabels is a map of {key,value} pairs",
+				Description:   "matchLabels is a map of `{key,value}` pairs",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("Spec.PodSelector.MatchLabels"),
 				IgnoreInTests: true,
@@ -237,7 +237,7 @@ func NetworkPolicies() *schema.Table {
 							},
 							{
 								Name:          "pod_selector_match_labels",
-								Description:   "matchLabels is a map of {key,value} pairs",
+								Description:   "matchLabels is a map of `{key,value}` pairs",
 								Type:          schema.TypeJSON,
 								Resolver:      schema.PathResolver("PodSelector.MatchLabels"),
 								IgnoreInTests: true,
@@ -251,7 +251,7 @@ func NetworkPolicies() *schema.Table {
 							},
 							{
 								Name:        "namespace_selector_match_labels",
-								Description: "matchLabels is a map of {key,value} pairs",
+								Description: "matchLabels is a map of `{key,value}` pairs",
 								Type:        schema.TypeJSON,
 								Resolver:    schema.PathResolver("NamespaceSelector.MatchLabels"),
 							},
@@ -350,7 +350,7 @@ func NetworkPolicies() *schema.Table {
 							},
 							{
 								Name:        "pod_selector_match_labels",
-								Description: "matchLabels is a map of {key,value} pairs",
+								Description: "matchLabels is a map of `{key,value}` pairs",
 								Type:        schema.TypeJSON,
 								Resolver:    schema.PathResolver("PodSelector.MatchLabels"),
 							},
@@ -362,7 +362,7 @@ func NetworkPolicies() *schema.Table {
 							},
 							{
 								Name:        "namespace_selector_match_labels",
-								Description: "matchLabels is a map of {key,value} pairs",
+								Description: "matchLabels is a map of `{key,value}` pairs",
 								Type:        schema.TypeJSON,
 								Resolver:    schema.PathResolver("NamespaceSelector.MatchLabels"),
 							},

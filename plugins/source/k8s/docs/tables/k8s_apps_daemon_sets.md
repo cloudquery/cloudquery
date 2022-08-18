@@ -19,7 +19,7 @@ DaemonSet represents the configuration of a daemon set.
 |finalizers|text[]|Must be empty before the object is deleted from the registry|
 |zzz_cluster_name|text|Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.|
 |managed_fields|jsonb|ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow|
-|selector_match_labels|jsonb|matchLabels is a map of {key,value} pairs|
+|selector_match_labels|jsonb|matchLabels is a map of `{key,value}` pairs|
 |template|jsonb|An object that describes the pod that will be created. The DaemonSet will create exactly one copy of this pod on every node that matches the template's node selector (or on every node if no node selector is specified). More info: https://kubernetes.io/docs/concepts/workloads/controllers/replicationcontroller#pod-template|
 |update_strategy_type|text|Type of daemon set update|
 |update_strategy_rolling_update_max_unavailable_type|bigint||

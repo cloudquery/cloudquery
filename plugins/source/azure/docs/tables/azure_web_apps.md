@@ -12,7 +12,7 @@ Site a web app, a mobile app backend, or an API app
 |enabled|boolean|otherwise, <code>false</code> Setting this value to false disables the app (takes the app offline)|
 |enabled_host_names|text[]|Enabled hostnames for the appHostnames need to be assigned (see HostNames) AND enabled Otherwise, the app is not served on those hostnames|
 |availability_state|text|Management information availability state for the app Possible values include: 'Normal', 'Limited', 'DisasterRecoveryMode'|
-|server_farm_id|text|Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/MicrosoftWeb/serverfarms/{appServicePlanName}"|
+|server_farm_id|text|Resource ID of the associated App Service plan, formatted as: `/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/MicrosoftWeb/serverfarms/{appServicePlanName}`|
 |reserved|boolean|otherwise, <code>false</code>|
 |is_xenon|boolean|Obsolete: Hyper-V sandbox|
 |hyper_v|boolean|Hyper-V sandbox|
@@ -40,12 +40,12 @@ Site a web app, a mobile app backend, or an API app
 |cloning_info_overwrite|boolean|otherwise, <code>false</code>|
 |cloning_info_clone_custom_host_names|boolean|otherwise, <code>false</code>|
 |cloning_info_clone_source_control|boolean|otherwise, <code>false</code>|
-|cloning_info_source_web_app_id|text|ARM resource ID of the source app App resource ID is of the form /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName} for production slots and /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName}/slots/{slotName} for other slots|
+|cloning_info_source_web_app_id|text|ARM resource ID of the source app App resource ID is of the form `/subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName}` for production slots and `/subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftWeb/sites/{siteName}/slots/{slotName}` for other slots|
 |cloning_info_source_web_app_location|text|Location of source app ex: West US or North Europe|
 |cloning_info_hosting_environment|text|App Service Environment|
 |cloning_info_app_settings_overrides|jsonb|Application setting overrides for cloned app If specified, these settings override the settings cloned from source app Otherwise, application settings from source app are retained|
 |cloning_info_configure_load_balancing|boolean|<code>true</code> to configure load balancing for source and destination app|
-|cloning_info_traffic_manager_profile_id|text|ARM resource ID of the Traffic Manager profile to use, if it exists Traffic Manager resource ID is of the form /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftNetwork/trafficManagerProfiles/{profileName}|
+|cloning_info_traffic_manager_profile_id|text|ARM resource ID of the Traffic Manager profile to use, if it exists Traffic Manager resource ID is of the form `/subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/MicrosoftNetwork/trafficManagerProfiles/{profileName}`|
 |cloning_info_traffic_manager_profile_name|text|Name of Traffic Manager profile to create This is only needed if Traffic Manager profile does not already exist|
 |resource_group|text|Name of the resource group the app belongs to Read-only|
 |is_default_container|boolean|<code>true</code> if the app is a default container; otherwise, <code>false</code>|
@@ -61,7 +61,7 @@ Site a web app, a mobile app backend, or an API app
 |identity_type|text|Type of managed service identity Possible values include: 'ManagedServiceIdentityTypeSystemAssigned', 'ManagedServiceIdentityTypeUserAssigned', 'ManagedServiceIdentityTypeSystemAssignedUserAssigned', 'ManagedServiceIdentityTypeNone'|
 |identity_tenant_id|text|Tenant of managed service identity|
 |identity_principal_id|text|Principal Id of managed service identity|
-|identity_user_assigned_identities|jsonb|The list of user assigned identities associated with the resource The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MicrosoftManagedIdentity/userAssignedIdentities/{identityName}|
+|identity_user_assigned_identities|jsonb|The list of user assigned identities associated with the resource The user identity dictionary key references will be ARM resource ids in the form: `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/MicrosoftManagedIdentity/userAssignedIdentities/{identityName}`|
 |vnet_connection|jsonb|Describes the virtual network connection for the web app.|
 |id|text|Resource Id|
 |name|text|Resource Name|

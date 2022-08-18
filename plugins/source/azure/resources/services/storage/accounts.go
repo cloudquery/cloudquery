@@ -648,7 +648,7 @@ func StorageAccounts() *schema.Table {
 			},
 			{
 				Name:        "id",
-				Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
+				Description: "Fully qualified resource ID for the resource Ex - `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ID"),
 			},
@@ -690,7 +690,7 @@ func StorageAccounts() *schema.Table {
 					},
 					{
 						Name:        "virtual_network_resource_id",
-						Description: "Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/MicrosoftNetwork/virtualNetworks/{vnetName}/subnets/{subnetName}",
+						Description: "Resource ID of a subnet, for example: `/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/MicrosoftNetwork/virtualNetworks/{vnetName}/subnets/{subnetName}`",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("VirtualNetworkResourceID"),
 					},
@@ -775,7 +775,7 @@ func StorageAccounts() *schema.Table {
 					},
 					{
 						Name:        "id",
-						Description: "Fully qualified resource ID for the resource Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}",
+						Description: "Fully qualified resource ID for the resource Ex - `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}`",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("ID"),
 					},

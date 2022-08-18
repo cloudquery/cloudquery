@@ -120,7 +120,7 @@ func ReplicaSets() *schema.Table {
 			},
 			{
 				Name:        "selector_match_labels",
-				Description: "matchLabels is a map of {key,value} pairs",
+				Description: "matchLabels is a map of `{key,value}` pairs",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("Spec.Selector.MatchLabels"),
 			},
