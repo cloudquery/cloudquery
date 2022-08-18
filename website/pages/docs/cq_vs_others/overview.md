@@ -8,5 +8,5 @@ We created comparison pages to help you understand the differences and the use-c
 
 - [CloudQuery vs AWS Config](/docs/cq_vs_others/aws_config)
 - [CloudQuery vs Google Cloud Asset Inventory](/docs/cq_vs_others/google_cloud_asset_inventory)
-- [CloudQuery vs CSPMs](/docs/cq_vs_others/cspms.md)
-- [CloudQuery vs Steampipe](/docs/cq_vs_others/steampipe.md)
+- [CloudQuery vs CSPMs](/docs/cq_vs_others/cspms)
+- [CloudQuery vs Steampipe](/docs/cq_vs_others/steampipe)
