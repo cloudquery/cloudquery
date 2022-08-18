@@ -197,6 +197,6 @@ cloudquery query --path policy.yml
 ```
 
 It’s also possible to output the results in JSON format via --output flag, and to ingest it into a centralized logging system.
-You can view our past guest blog on how to deploy CloudQuery on AWS lambda to periodically fetch and query data [here](https://www.cloudquery.io/docs/deployment).
+You can view our past guest blog on how to deploy CloudQuery on AWS lambda to periodically fetch and query data [here](https://www.cloudquery.io/docs/deployment/overview).
 
 **Stay tuned for more blogs on cloud security, compliance and other cool stuff!**

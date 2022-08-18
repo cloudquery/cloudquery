@@ -10,7 +10,7 @@ It is possible to use CloudQuery in an isolated container, you can pull the rele
 
 ## Configuration
 
-CloudQuery uses a YAML file as the primary means of configuration, you can execute the [`cloudquery init`](./commands/cloudquery_init.md) to generate a file if you do not already have one. For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
+CloudQuery uses a YAML file as the primary means of configuration, you can execute the [`cloudquery init`](/docs/cli/commands/cloudquery_init) to generate a file if you do not already have one. For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
 
 ```docker
 docker run \
@@ -19,7 +19,7 @@ docker run \
   fetch --config /config/cloudquery.yml
 ```
 
-As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](./commands/cloudquery_options.md) with the docker container. You will also need to make sure you load any ENV variables for providers, such as your `AWS_*` keys etc.
+As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](/docs/cli/commands/cloudquery_options) with the docker container. You will also need to make sure you load any ENV variables for providers, such as your `AWS_*` keys etc.
 
 <Callout type="info">
 
@@ -29,7 +29,7 @@ If you are running Docker on an ARM Apple device and you see a segmentation faul
 
 ## Caching
 
-Due to the way `cloudquery` is [architected](../developers/architecture) it downloads all the components to interact with providers and policies. This means that with a docker container it runs the download step each state as the local cache is lost between executions. To avoid this we recommend mounting a volume to cache the data and configuring `cloudquery` to use this via the `--data-dir` optional flag. An example of this would be:
+Due to the way `cloudquery` is [architected](/docs/developers/architecture) it downloads all the components to interact with providers and policies. This means that with a docker container it runs the download step each state as the local cache is lost between executions. To avoid this we recommend mounting a volume to cache the data and configuring `cloudquery` to use this via the `--data-dir` optional flag. An example of this would be:
 
 ```docker
 docker run \
@@ -48,7 +48,7 @@ Depending on your operating system, the built components maybe different between
 
 ## Fetching data
 
-For the specifics of how `cloudquery fetch` works, and what additional flags it uses please consult the [command page](./commands/cloudquery_fetch.md). The command will check the `cloudquery.yml` provided and proceed to download any providers defined, uploading the schema to the database, and retrieving the service data from the provider. An example of this command using it with AWS would be:
+For the specifics of how `cloudquery fetch` works, and what additional flags it uses please consult the [command page](/docs/cli/commands/cloudquery_fetch). The command will check the `cloudquery.yml` provided and proceed to download any providers defined, uploading the schema to the database, and retrieving the service data from the provider. An example of this command using it with AWS would be:
 
 ```docker
 docker run \

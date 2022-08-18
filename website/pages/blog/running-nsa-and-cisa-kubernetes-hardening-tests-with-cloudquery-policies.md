@@ -80,7 +80,7 @@ Following is a quick start to run the policy. Otherwise, checkout full details o
 
 ### Prerequisite
 
-Please follow the [Getting Started](https://www.cloudquery.io/docs/getting-started/) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](https://hub.cloudquery.io/providers/cloudquery/k8s/latest).
+Please follow the [Getting Started](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](https://hub.cloudquery.io/providers/cloudquery/k8s/latest).
 
 ### Running
 

@@ -40,7 +40,7 @@ History is currently in alpha version, so we welcome any feedback as it's not ye
 
 Setting up History is fairly simple, you are required to either install the TimescaleDB extension on your existing PostgreSQL instance or setup a self hosted TimescaleDB instance. See [here](https://docs.timescale.com/timescaledb/latest/how-to-guides/install-timescaledb/self-hosted/) for more details.
 
-See CloudQuery [getting started guide](https://www.cloudquery.io/docs/getting-started) and [history configuration](https://www.cloudquery.io/docs/configuration/overview) for more details on how to configure your cloudquery to run with History enabled.
+See CloudQuery [getting started guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) and [history configuration](https://www.cloudquery.io/docs/configuration/overview) for more details on how to configure your cloudquery to run with History enabled.
 
 ## What next?
 
