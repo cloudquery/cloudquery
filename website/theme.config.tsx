@@ -6,8 +6,8 @@ const theme: DocsThemeConfig = {
   github: "https://github.com/cloudquery/cloudquery",
   projectLink: "https://github.com/cloudquery/cloudquery",
   docsRepositoryBase:
-    "https://github.com/cloudquery/cloudquery/blob/main/docs/pages",
-  titleSuffix: " | Cloudquery",
+    "https://github.com/cloudquery/cloudquery/blob/main/website/pages",
+  titleSuffix: " | CloudQuery",
   search: true,
   defaultMenuCollapsed: true,
   floatTOC: true,
