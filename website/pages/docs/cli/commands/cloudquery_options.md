@@ -1,7 +1,6 @@
 ---
-title: options
+title: "options"
 ---
-
 ## cloudquery options
 
 Prints list of global CLI options (applies to all commands)
@@ -42,4 +41,5 @@ cloudquery options [flags]
 
 ### SEE ALSO
 
-- [cloudquery](cloudquery.md) - CloudQuery CLI
+* [cloudquery](/docs/cli/commands/cloudquery)	 - CloudQuery CLI
+

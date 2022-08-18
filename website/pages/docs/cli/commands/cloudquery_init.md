@@ -1,7 +1,6 @@
 ---
-title: init
+title: "init"
 ---
-
 ## cloudquery init
 
 Generate initial cloudquery.yml for fetch command
@@ -57,4 +56,5 @@ cloudquery init [choose one or more providers (aws gcp azure okta ...)] [flags]
 
 ### SEE ALSO
 
-- [cloudquery](cloudquery.md) - CloudQuery CLI
+* [cloudquery](/docs/cli/commands/cloudquery)	 - CloudQuery CLI
+
