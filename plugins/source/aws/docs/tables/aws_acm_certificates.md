@@ -22,7 +22,7 @@ Contains metadata about an ACM certificate
 |key_usages|text[]|A list of Key Usage X509 v3 extension objects|
 |not_after|timestamp without time zone|The time after which the certificate is not valid|
 |not_before|timestamp without time zone|The time before which the certificate is not valid|
-|options_certificate_transparency_logging_preference|text|You can opt out of certificate transparency logging by specifying the DISABLED option|
+|certificate_transparency_logging_preference|text|You can opt out of certificate transparency logging by specifying the DISABLED option|
 |renewal_eligibility|text|Specifies whether the certificate is eligible for renewal|
 |renewal_summary_domain_validation_options|jsonb|Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal (https://docsawsamazoncom/acm/latest/userguide/acm-renewalhtml)|
 |renewal_summary_status|text|The status of ACM's managed renewal (https://docsawsamazoncom/acm/latest/userguide/acm-renewalhtml) of the certificate|
