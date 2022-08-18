@@ -47,7 +47,7 @@ export default function Home() {
           content="CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams"
         />
       </Head>
-      {/* H E R O */}
+
       <div className="flex flex-col md:flex-row justify-between px-4 pt-16 pb-8 mx-auto sm:pt-24 lg:px-8 w-auto lg:max-w-7xl">
         <div className="flex flex-col justify-between md:mr-4">
           <div>
@@ -100,7 +100,6 @@ export default function Home() {
           }
         </div>
       </div>
-      {/* END H E R O */}
 
       <div className="py-16">
         <div className="mx-auto">
