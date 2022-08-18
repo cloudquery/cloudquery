@@ -66,9 +66,9 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	m.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Return(
-		&iam.ListUsersOutput{
-			Users: []iamTypes.User{u},
+	m.EXPECT().GetUser(gomock.Any(), gomock.Any()).Return(
+		&iam.GetUserOutput{
+			User: &u,
 		}, nil)
 	m.EXPECT().ListGroupsForUser(gomock.Any(), gomock.Any()).Return(
 		&iam.ListGroupsForUserOutput{

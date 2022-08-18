@@ -3,12 +3,10 @@ package iam
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
-	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	smithy "github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
@@ -302,68 +300,20 @@ func Users() *schema.Table {
 // ====================================================================================================================
 
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config iam.ListUsersInput
-
-	cl := meta.(*client.Client)
-	svc := cl.Services().IAM
-	report, err := getCredentialReport(ctx, meta)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-
-	root := report.GetUser(fmt.Sprintf("arn:%s:iam::%s:root", cl.Partition, cl.AccountID))
-	if root != nil {
-		res <- WrappedUser{
-			User: types.User{
-				Arn:        aws.String(root.ARN),
-				CreateDate: aws.Time(root.userCreationTime),
-				UserId:     aws.String("root"),
-				UserName:   aws.String(root.user),
-			},
-			ReportUser: root,
-			isRoot:     true,
-		}
-	}
-
-	for {
-		output, err := svc.ListUsers(ctx, &config)
-		if err != nil {
-			return diag.WrapError(err)
-		}
-
-		wUsers := make([]WrappedUser, len(output.Users))
-		for i, u := range output.Users {
-			ru := report.GetUser(aws.ToString(u.Arn))
-			if ru == nil {
-				meta.Logger().Warn("failed to find user in credential report", "arn", u.Arn)
-				ru = &ReportUser{}
-			}
-			wUsers[i] = WrappedUser{
-				User:       u,
-				ReportUser: ru,
-				isRoot:     false,
-			}
-		}
-
-		res <- wUsers
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		config.Marker = output.Marker
-	}
-	return nil
+	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listUsers, userDetail))
 }
 func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(WrappedUser)
-	svc := meta.(*client.Client).Services().IAM
-	if aws.ToString(p.UserName) == rootName {
-		return nil
-	}
+	cl := meta.(*client.Client)
+	svc := cl.Services().IAM
 	config.UserName = p.UserName
 	for {
 		output, err := svc.ListAccessKeys(ctx, &config)
 		if err != nil {
+			if cl.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
 
@@ -385,7 +335,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(WrappedUser)
-	if aws.ToString(p.UserName) == rootName {
+	if aws.ToString(p.UserName) == "<root_account>" {
 		return nil
 	}
 	svc := meta.(*client.Client).Services().IAM
@@ -406,7 +356,7 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(WrappedUser)
-	if aws.ToString(p.UserName) == rootName {
+	if aws.ToString(p.UserName) == "<root_account>" {
 		return nil
 	}
 	svc := meta.(*client.Client).Services().IAM
@@ -428,7 +378,7 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().IAM
 	user := parent.Item.(WrappedUser)
-	if aws.ToString(user.UserName) == rootName {
+	if aws.ToString(user.UserName) == "<root_account>" {
 		return nil
 	}
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
@@ -460,35 +410,33 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 //                                                  User Defined Helpers
 // ====================================================================================================================
 
-type wrappedKey struct {
-	types.AccessKeyMetadata
-	types.AccessKeyLastUsed
-}
-type WrappedUser struct {
-	types.User
-	*ReportUser
-	isRoot bool
-}
-type ReportUser struct {
-	user                  string    `csv:"user"`
-	ARN                   string    `csv:"arn"`
-	userCreationTime      time.Time `csv:"user_creation_time"`
-	PasswordStatus        string    `csv:"password_enabled"`
-	PasswordLastChanged   string    `csv:"password_last_changed"`
-	PasswordNextRotation  string    `csv:"password_next_rotation"`
-	MfaActive             bool      `csv:"mfa_active"`
-	AccessKey1Active      bool      `csv:"access_key_1_active"`
-	AccessKey2Active      bool      `csv:"access_key_2_active"`
-	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
-	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
-	Cert1Active           bool      `csv:"cert_1_active"`
-	Cert2Active           bool      `csv:"cert_2_active"`
-	Cert1LastRotated      string    `csv:"cert_1_last_rotated"`
-	Cert2LastRotated      string    `csv:"cert_2_last_rotated"`
-}
-type ReportUsers []*ReportUser
+func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
+	report, err := getCredentialReport(ctx, meta)
+	if err != nil {
+		return diag.WrapError(err)
+	}
 
-const rootName = "<root_account>"
+	for _, user := range report {
+		detailChan <- user
+	}
+	return nil
+}
+func userDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+	c := meta.(*client.Client)
+	reportUser := listInfo.(*ReportUser)
+	svc := meta.(*client.Client).Services().IAM
+	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
+		UserName: aws.String(reportUser.User),
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return
+		}
+		errorChan <- diag.WrapError(err)
+		return
+	}
+	resultsChan <- WrappedUser{*userDetail.User, reportUser}
+}
 
 func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schema.Resource) error {
 	r := resource.Item.(WrappedUser)
