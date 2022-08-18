@@ -14,8 +14,8 @@
       "destination": "https://discord.gg/QwnWfrcfHg"
     },
     {
-      "source": "/og-image/*",
-      "destination": "https://img.abyssale.com/3b183707-abf0-46ec-9edd-16b712a08b65?text_title=$1"
+      "source": "/og-image/:title",
+      "destination": "https://img.abyssale.com/3b183707-abf0-46ec-9edd-16b712a08b65?text_title=:title"
     }
   ]
 }
