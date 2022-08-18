@@ -2,7 +2,7 @@
 title: Announcing CloudQuery Terraform Drift Detection
 tag: announcement
 date: 2021/11/16
-description: Use CloudQuery to detect IaC drift locally and in Continuos Integration (CI)
+description: Use CloudQuery to detect IaC drift locally and in Continuous Integration (CI)
 author: yevgenypats
 ---
 

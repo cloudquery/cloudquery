@@ -1,6 +1,6 @@
 # GitHub Provider
 
-The CloudQuery GitHub provider extracts and transforms your GitHub infromation into PostgreSQL.
+The CloudQuery GitHub provider extracts and transforms your GitHub information into PostgreSQL.
 
 ## Install
 
