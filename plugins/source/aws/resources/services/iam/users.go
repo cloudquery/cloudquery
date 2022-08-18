@@ -36,12 +36,6 @@ func Users() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) that identifies the user",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("User.Arn"),
-			},
-			{
 				Name:        "create_date",
 				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the user was created.  This member is required.",
 				Type:        schema.TypeTimestamp,
@@ -96,17 +90,17 @@ func Users() *schema.Table {
 			},
 			{
 				Name:     "password_enabled",
-				Type:     schema.TypeString,
+				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("ReportUser.PasswordStatus"),
 			},
 			{
 				Name:     "password_last_changed",
-				Type:     schema.TypeString,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ReportUser.PasswordLastChanged"),
 			},
 			{
 				Name:     "password_next_rotation",
-				Type:     schema.TypeString,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ReportUser.PasswordNextRotation"),
 			},
 			{
@@ -126,12 +120,12 @@ func Users() *schema.Table {
 			},
 			{
 				Name:     "access_key1_last_rotated",
-				Type:     schema.TypeString,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ReportUser.AccessKey1LastRotated"),
 			},
 			{
 				Name:     "access_key2_last_rotated",
-				Type:     schema.TypeString,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ReportUser.AccessKey2LastRotated"),
 			},
 			{
@@ -146,21 +140,19 @@ func Users() *schema.Table {
 			},
 			{
 				Name:     "cert1_last_rotated",
-				Type:     schema.TypeString,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ReportUser.Cert1LastRotated"),
 			},
 			{
 				Name:     "cert2_last_rotated",
-				Type:     schema.TypeString,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ReportUser.Cert2LastRotated"),
 			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:                 "aws_iam_user_access_keys",
-				Description:          "Contains information about an Amazon Web Services access key, without its secret key",
-				Resolver:             fetchIamUserAccessKeys,
-				PostResourceResolver: postIamUserAccessKeyResolver,
+				Name:     "aws_iam_user_access_keys",
+				Resolver: fetchIamUserAccessKeys,
 				Columns: []schema.Column{
 					{
 						Name:        "user_cq_id",
@@ -172,21 +164,43 @@ func Users() *schema.Table {
 						Name:        "access_key_id",
 						Description: "The ID for this access key.",
 						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("AccessKeyMetadata.AccessKeyId"),
 					},
 					{
 						Name:        "create_date",
 						Description: "The date when the access key was created.",
 						Type:        schema.TypeTimestamp,
+						Resolver:    schema.PathResolver("AccessKeyMetadata.CreateDate"),
 					},
 					{
 						Name:        "status",
 						Description: "The status of the access key",
 						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("AccessKeyMetadata.Status"),
 					},
 					{
 						Name:        "user_name",
 						Description: "The name of the IAM user that the key is associated with.",
 						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("AccessKeyMetadata.UserName"),
+					},
+					{
+						Name:        "last_used_date",
+						Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the access key was most recently used. This field is null in the following situations:  * The user does not have an access key.  * An access key exists but has not been used since IAM began tracking this information.  * There is no sign-in data associated with the user.  This member is required.",
+						Type:        schema.TypeTimestamp,
+						Resolver:    schema.PathResolver("AccessKeyLastUsed.LastUsedDate"),
+					},
+					{
+						Name:        "last_used_region",
+						Description: "The Amazon Web Services Region where this access key was most recently used",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("AccessKeyLastUsed.Region"),
+					},
+					{
+						Name:        "last_used_service_name",
+						Description: "The name of the Amazon Web Services service with which this access key was most recently used",
+						Type:        schema.TypeString,
+						Resolver:    schema.PathResolver("AccessKeyLastUsed.ServiceName"),
 					},
 				},
 			},
@@ -247,6 +261,34 @@ func Users() *schema.Table {
 					{
 						Name:        "policy_name",
 						Description: "The friendly name of the attached policy.",
+						Type:        schema.TypeString,
+					},
+				},
+			},
+			{
+				Name:        "aws_iam_user_policies",
+				Description: "Contains the response to a successful GetUserPolicy request.",
+				Resolver:    fetchIamUserPolicies,
+				Columns: []schema.Column{
+					{
+						Name:        "user_cq_id",
+						Description: "Unique CloudQuery ID of aws_iam_users table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "policy_document",
+						Description: "The policy document",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "policy_name",
+						Description: "The name of the policy.  This member is required.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "user_name",
+						Description: "The user the policy is associated with.  This member is required.",
 						Type:        schema.TypeString,
 					},
 				},
@@ -325,28 +367,14 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 			return diag.WrapError(err)
 		}
 
-		keys := make([]wrappedKey, len(output.AccessKeyMetadata))
-		for i, key := range output.AccessKeyMetadata {
-			switch i {
-			case 0:
-				rotated := parent.Get("access_key_1_last_rotated")
-				if rotated != nil {
-					keys[i] = wrappedKey{key, rotated.(time.Time)}
-				} else {
-					keys[i] = wrappedKey{key, *key.CreateDate}
-				}
-			case 1:
-				rotated := parent.Get("access_key2_last_rotated")
-				if rotated != nil {
-					keys[i] = wrappedKey{key, rotated.(time.Time)}
-				} else {
-					keys[i] = wrappedKey{key, *key.CreateDate}
-				}
-			default:
-				keys[i] = wrappedKey{key, time.Time{}}
+		for _, key := range output.AccessKeyMetadata {
+			output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: key.AccessKeyId})
+			if err != nil {
+				return diag.WrapError(err)
 			}
+			res <- wrappedKey{key, *output.AccessKeyLastUsed}
 		}
-		res <- keys
+
 		if output.Marker == nil {
 			break
 		}
@@ -396,6 +424,37 @@ func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
+func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
+	user := parent.Item.(WrappedUser)
+	if aws.ToString(user.UserName) == rootName {
+		return nil
+	}
+	config := iam.ListUserPoliciesInput{UserName: user.UserName}
+	for {
+		output, err := svc.ListUserPolicies(ctx, &config)
+		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
+			return diag.WrapError(err)
+		}
+		for _, p := range output.PolicyNames {
+			policyCfg := &iam.GetUserPolicyInput{PolicyName: &p, UserName: user.UserName}
+			policyResult, err := svc.GetUserPolicy(ctx, policyCfg)
+			if err != nil {
+				return diag.WrapError(err)
+			}
+			res <- policyResult
+		}
+		if aws.ToString(output.Marker) == "" {
+			break
+		}
+		config.Marker = output.Marker
+	}
+	return nil
+}
 
 // ====================================================================================================================
 //                                                  User Defined Helpers
@@ -403,7 +462,7 @@ func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, p
 
 type wrappedKey struct {
 	types.AccessKeyMetadata
-	LastRotated time.Time
+	types.AccessKeyLastUsed
 }
 type WrappedUser struct {
 	types.User
@@ -533,26 +592,6 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	return nil
-}
-func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	r := resource.Item.(wrappedKey)
-	if r.AccessKeyId == nil {
-		return nil
-	}
-	svc := meta.(*client.Client).Services().IAM
-	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	if output.AccessKeyLastUsed != nil {
-		if err := resource.Set("last_used", output.AccessKeyLastUsed.LastUsedDate); err != nil {
-			return diag.WrapError(err)
-		}
-		if err := resource.Set("last_used_service_name", output.AccessKeyLastUsed.ServiceName); err != nil {
-			return diag.WrapError(err)
-		}
-	}
 	return nil
 }
 func (r ReportUsers) GetUser(arn string) *ReportUser {

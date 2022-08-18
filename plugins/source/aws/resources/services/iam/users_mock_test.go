@@ -90,11 +90,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Content: content,
 		}, nil)
 
-	m.EXPECT().ListUserTags(gomock.Any(), gomock.Any()).Return(
-		&iam.ListUserTagsOutput{
-			Tags: tags,
-		}, nil)
-
 	//list user inline policies
 	var l []string
 	err = faker.FakeData(&l)
