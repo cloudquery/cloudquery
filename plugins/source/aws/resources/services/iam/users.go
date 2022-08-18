@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	"github.com/aws/smithy-go"
+	smithy "github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -18,40 +18,8 @@ import (
 	"github.com/spf13/cast"
 )
 
-type wrappedKey struct {
-	types.AccessKeyMetadata
-	LastRotated time.Time
-}
-
-type wrappedUser struct {
-	types.User
-	*reportUser
-	isRoot bool
-}
-
-type reportUser struct {
-	User                  string    `csv:"user"`
-	ARN                   string    `csv:"arn"`
-	UserCreationTime      time.Time `csv:"user_creation_time"`
-	PasswordStatus        string    `csv:"password_enabled"`
-	PasswordLastChanged   string    `csv:"password_last_changed"`
-	PasswordNextRotation  string    `csv:"password_next_rotation"`
-	MfaActive             bool      `csv:"mfa_active"`
-	AccessKey1Active      bool      `csv:"access_key_1_active"`
-	AccessKey2Active      bool      `csv:"access_key_2_active"`
-	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
-	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
-	Cert1Active           bool      `csv:"cert_1_active"`
-	Cert2Active           bool      `csv:"cert_2_active"`
-	Cert1LastRotated      string    `csv:"cert_1_last_rotated"`
-	Cert2LastRotated      string    `csv:"cert_2_last_rotated"`
-}
-
-type reportUsers []*reportUser
-
-const rootName = "<root_account>"
-
-func IamUsers() *schema.Table {
+//go:generate cq-gen --resource users --config gen.hcl --output .
+func Users() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_iam_users",
 		Resolver:             fetchIamUsers,
@@ -63,7 +31,7 @@ func IamUsers() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource",
+				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
@@ -71,113 +39,111 @@ func IamUsers() *schema.Table {
 				Name:        "id",
 				Description: "The stable and unique string identifying the user",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("UserId"),
+				Resolver:    schema.PathResolver("User.UserId"),
 			},
 			{
-				Name:          "password_last_used",
-				Description:   "The date and time when the AWS account root user or IAM user's password was last used to sign in to an AWS website",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
+				Name:        "password_last_used",
+				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the user's password was last used to sign in to an Amazon Web Services website",
+				Type:        schema.TypeTimestamp,
+				Resolver:    schema.PathResolver("User.PasswordLastUsed"),
 			},
 			{
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) that identifies the user",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("User.Arn"),
 			},
 			{
-				Name:        "access_key_1_active",
-				Description: "When the user has an access key and the access key's status is Active, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
+				Name:     "access_key_1_active",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ReportUser.AccessKey1Active"),
 			},
 			{
-				Name:        "access_key_1_last_rotated",
-				Description: "The date and time, in ISO 8601 date-time format, when the user's access key was created or last changed",
-				Type:        schema.TypeTimestamp,
+				Name:     "access_key_1_last_rotated",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.AccessKey1LastRotated"),
 			},
 			{
-				Name:        "access_key_2_active",
-				Description: "When the user has an access key and the access key's status is Active, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
+				Name:     "access_key_2_active",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ReportUser.AccessKey2Active"),
 			},
 			{
-				Name:          "access_key_2_last_rotated",
-				Description:   "The date and time, in ISO 8601 date-time format, when the user's access key was created or last changed",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
-			},
-
-			{
-				Name:        "cert_1_active",
-				Description: "When the user has an X.509 signing certificate and that certificate's status is Active, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
+				Name:     "access_key_2_last_rotated",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.AccessKey2LastRotated"),
 			},
 			{
-				Name:          "cert_1_last_rotated",
-				Description:   "The date and time, in ISO 8601 date-time format, when the user's signing certificate was created or last changed",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
+				Name:     "cert_1_active",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ReportUser.Cert1Active"),
 			},
 			{
-				Name:        "cert_2_active",
-				Description: "When the user has an X.509 signing certificate and that certificate's status is Active, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
+				Name:     "cert_1_last_rotated",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.Cert1LastRotated"),
 			},
 			{
-				Name:          "cert_2_last_rotated",
-				Description:   "The date and time, in ISO 8601 date-time format, when the user's signing certificate was created or last changed",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
+				Name:     "cert_2_active",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ReportUser.Cert2Active"),
+			},
+			{
+				Name:     "cert_2_last_rotated",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.Cert2LastRotated"),
 			},
 			{
 				Name:        "create_date",
-				Description: "The date and time, in ISO 8601 date-time format (https://www.iso.org/iso/iso8601), when the user was created",
+				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the user was created.  This member is required.",
 				Type:        schema.TypeTimestamp,
+				Resolver:    schema.PathResolver("User.CreateDate"),
 			},
 			{
-				Name:        "mfa_active",
-				Description: "When a multi-factor authentication (MFA) device has been enabled for the user, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
+				Name:     "mfa_active",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ReportUser.MfaActive"),
 			},
 			{
-				Name:        "password_enabled",
-				Description: "When the user has a password, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
+				Name:     "password_enabled",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.PasswordStatus"),
+			},
+			{
+				Name:     "password_last_changed",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.PasswordLastChanged"),
+			},
+			{
+				Name:     "password_next_rotation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.PasswordNextRotation"),
 			},
 
-			{
-				Name:          "password_last_changed",
-				Description:   "The date and time when the user's password was last set, in ISO 8601 date-time format. If the user does not have a password, the value in this field is N/A (not applicable). The value for the AWS account (root) is always NULL",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "password_next_rotation",
-				Description:   "When the account has a password policy that requires password rotation, this field contains the date and time, in ISO 8601 date-time format, when the user is required to set a new password. The value for the AWS account (root) is always NULL",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "password_status",
-				Description: "When the user has a password, this value is TRUE. Otherwise it is FALSE.The value for the AWS account root user is always not_supported",
-				Type:        schema.TypeString,
-			},
 			{
 				Name:        "path",
 				Description: "The path to the user",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("User.Path"),
 			},
+
 			{
-				Name:          "permissions_boundary_arn",
-				Description:   "The ARN of the policy used to set the permissions boundary for the user or role",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
-				IgnoreInTests: true,
+				Name:        "permissions_boundary_arn",
+				Description: "The ARN of the policy used to set the permissions boundary for the user or role.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("User.PermissionsBoundary.PermissionsBoundaryArn"),
 			},
 			{
 				Name:        "permissions_boundary_type",
 				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryType"),
+				Resolver:    schema.PathResolver("User.PermissionsBoundary.PermissionsBoundaryType"),
+			},
+			{
+				Name:        "user_name",
+				Description: "The friendly name identifying the user.  This member is required.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("User.UserName"),
 			},
 			{
 				Name:        "tags",
@@ -185,22 +151,12 @@ func IamUsers() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveUserTags,
 			},
-			{
-				Name:        "user_id",
-				Description: "The stable and unique string identifying the user",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "user_name",
-				Description: "The friendly name of the user",
-				Type:        schema.TypeString,
-			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:                 "aws_iam_user_access_keys",
-				Resolver:             fetchIamUserAccessKeys,
-				PostResourceResolver: postIamUserAccessKeyResolver,
+				Name:        "aws_iam_user_tags",
+				Description: "A structure that represents user-provided metadata that can be associated with an IAM resource",
+				Resolver:    schema.PathTableResolver("User.Tags"),
 				Columns: []schema.Column{
 					{
 						Name:        "user_cq_id",
@@ -209,122 +165,26 @@ func IamUsers() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "user_id",
-						Description: "The stable and unique string identifying the user",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("user_id"),
-					},
-					{
-						Name:        "access_key_id",
-						Description: "The ID for this access key",
+						Name:        "key",
+						Description: "The key name that can be used to look up or retrieve the associated value",
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "create_date",
-						Description: "The date when the access key was created",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the access key. Active means that the key is valid for API calls; Inactive means it is not",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "last_used",
-						Description: "The date and time, in ISO 8601 date-time format, when the user's second access key was most recently used to sign an AWS API request",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "last_rotated",
-						Description: "The date and time, in ISO 8601 date-time format, when the user's access key was created or last changed",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "last_used_service_name",
-						Description: "The AWS service that was most recently accessed with the user's second access key",
+						Name:        "value",
+						Description: "The value associated with this tag",
 						Type:        schema.TypeString,
 					},
 				},
 			},
-			{
-				Name:          "aws_iam_user_groups",
-				Resolver:      fetchIamUserGroups,
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "user_cq_id",
-						Description: "Unique CloudQuery ID of aws_iam_users table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "user_id",
-						Description: "The stable and unique string identifying the user",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("user_id"),
-					},
-					{
-						Name:        "group_arn",
-						Description: "The Amazon Resource Name (ARN) specifying the group",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Arn"),
-					},
-					{
-						Name:        "create_date",
-						Description: "The date and time, in ISO 8601 date-time format, when the group was created",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "group_id",
-						Description: "The stable and unique string identifying the group",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "group_name",
-						Description: "The friendly name that identifies the group",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "path",
-						Description: "The path to the group",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:     "aws_iam_user_attached_policies",
-				Resolver: fetchIamUserAttachedPolicies,
-				Columns: []schema.Column{
-					{
-						Name:        "user_cq_id",
-						Description: "Unique CloudQuery ID of aws_iam_users table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "user_id",
-						Description: "The stable and unique string identifying the user",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("user_id"),
-					},
-					{
-						Name:        "policy_arn",
-						Description: "The Amazon Resource Name (ARN) of the policy",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "policy_name",
-						Description: "The friendly name of the attached policy",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			IamUserPolicies(),
 		},
 	}
 }
 
-func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+// ====================================================================================================================
+//                                               Table Resolver Functions
+// ====================================================================================================================
+
+func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListUsersInput
 
 	cl := meta.(*client.Client)
@@ -336,14 +196,14 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 
 	root := report.GetUser(fmt.Sprintf("arn:%s:iam::%s:root", cl.Partition, cl.AccountID))
 	if root != nil {
-		res <- wrappedUser{
+		res <- WrappedUser{
 			User: types.User{
-				Arn:        aws.String(root.ARN),
-				CreateDate: aws.Time(root.UserCreationTime),
+				Arn:        aws.String(root.arn),
+				CreateDate: aws.Time(root.userCreationTime),
 				UserId:     aws.String("root"),
-				UserName:   aws.String(root.User),
+				UserName:   aws.String(root.user),
 			},
-			reportUser: root,
+			ReportUser: root,
 			isRoot:     true,
 		}
 	}
@@ -354,16 +214,16 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 			return diag.WrapError(err)
 		}
 
-		wUsers := make([]wrappedUser, len(output.Users))
+		wUsers := make([]WrappedUser, len(output.Users))
 		for i, u := range output.Users {
 			ru := report.GetUser(aws.ToString(u.Arn))
 			if ru == nil {
 				meta.Logger().Warn("failed to find user in credential report", "arn", u.Arn)
-				ru = &reportUser{}
+				ru = &ReportUser{}
 			}
-			wUsers[i] = wrappedUser{
+			wUsers[i] = WrappedUser{
 				User:       u,
-				reportUser: ru,
+				ReportUser: ru,
 				isRoot:     false,
 			}
 		}
@@ -377,9 +237,53 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	return nil
 }
 
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
+func resolveIamUserPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	panic("not implemented")
+}
+func fetchIamUserRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	panic("not implemented")
+}
+func resolveUserRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	panic("not implemented")
+}
+
+type wrappedKey struct {
+	types.AccessKeyMetadata
+	LastRotated time.Time
+}
+type WrappedUser struct {
+	types.User
+	*ReportUser
+	isRoot bool
+}
+type ReportUser struct {
+	user                  string    `csv:"user"`
+	arn                   string    `csv:"arn"`
+	userCreationTime      time.Time `csv:"user_creation_time"`
+	PasswordStatus        string    `csv:"password_enabled"`
+	PasswordLastChanged   string    `csv:"password_last_changed"`
+	PasswordNextRotation  string    `csv:"password_next_rotation"`
+	MfaActive             bool      `csv:"mfa_active"`
+	AccessKey1Active      bool      `csv:"access_key_1_active"`
+	AccessKey2Active      bool      `csv:"access_key_2_active"`
+	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
+	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
+	Cert1Active           bool      `csv:"cert_1_active"`
+	Cert2Active           bool      `csv:"cert_2_active"`
+	Cert1LastRotated      string    `csv:"cert_1_last_rotated"`
+	Cert2LastRotated      string    `csv:"cert_2_last_rotated"`
+}
+type ReportUsers []*ReportUser
+
+const rootName = "<root_account>"
+
 func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schema.Resource) error {
-	r := resource.Item.(wrappedUser)
-	if r.reportUser == nil {
+	r := resource.Item.(WrappedUser)
+	if r.ReportUser == nil {
 		return nil
 	}
 
@@ -395,7 +299,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		}
 	}
 
-	if r.reportUser.ARN == "" {
+	if r.ReportUser.arn == "" {
 		if err := resource.Set("password_next_rotation", nil); err != nil {
 			return diag.WrapError(err)
 		}
@@ -501,10 +405,9 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 
 	return nil
 }
-
 func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListGroupsForUserInput
-	p := parent.Item.(wrappedUser)
+	p := parent.Item.(WrappedUser)
 	if aws.ToString(p.UserName) == rootName {
 		return nil
 	}
@@ -523,10 +426,9 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
-
 func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAccessKeysInput
-	p := parent.Item.(wrappedUser)
+	p := parent.Item.(WrappedUser)
 	svc := meta.(*client.Client).Services().IAM
 	if aws.ToString(p.UserName) == rootName {
 		return nil
@@ -567,7 +469,6 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
-
 func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	r := resource.Item.(wrappedKey)
 	if r.AccessKeyId == nil {
@@ -588,10 +489,9 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	}
 	return nil
 }
-
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAttachedUserPoliciesInput
-	p := parent.Item.(wrappedUser)
+	p := parent.Item.(WrappedUser)
 	if aws.ToString(p.UserName) == rootName {
 		return nil
 	}
@@ -610,10 +510,9 @@ func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
-
 func resolveUserTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	svc := meta.(*client.Client).Services().IAM
-	r := resource.Item.(wrappedUser)
+	r := resource.Item.(WrappedUser)
 	tags := map[string]*string{}
 
 	if !r.isRoot {
@@ -627,17 +526,15 @@ func resolveUserTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	}
 	return diag.WrapError(resource.Set("tags", tags))
 }
-
-func (r reportUsers) GetUser(arn string) *reportUser {
+func (r ReportUsers) GetUser(arn string) *ReportUser {
 	for _, u := range r {
-		if u.ARN == arn {
+		if u.arn == arn {
 			return u
 		}
 	}
 	return nil
 }
-
-func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUsers, error) {
+func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (ReportUsers, error) {
 	var err error
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
@@ -645,7 +542,7 @@ func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUse
 	for {
 		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{})
 		if err == nil && reportOutput != nil {
-			var users reportUsers
+			var users ReportUsers
 			err = gocsv.UnmarshalBytes(reportOutput.Content, &users)
 			if err != nil {
 				return nil, diag.WrapError(err)
