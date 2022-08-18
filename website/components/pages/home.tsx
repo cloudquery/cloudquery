@@ -7,10 +7,11 @@ import { Container } from "../Container";
 import Features from "../Features";
 import { Integrations } from "../Integrations";
 import { LogosBlock } from "../clients/LogosBlock";
+import { QueriesExamples } from "../QueriesExamples";
 
 export default function Home() {
-  const onClick = () => {
-    copy("brew install cloudquery");
+  const onClick = (code: string) => {
+    copy(code);
     toast.success("Copied to clipboard");
   };
 
@@ -45,7 +46,7 @@ export default function Home() {
           </div>
           <div className="relative mt-3 rounded-md sm:mt-0 sm:ml-3">
             <button
-              onClick={onClick}
+              onClick={() => onClick('brew install cloudquery')}
               className="flex items-center justify-center w-full px-8 py-3 font-mono text-sm font-medium text-gray-600 bg-black border border-transparent border-gray-200 rounded-md bg-opacity-5 dark:bg-white dark:text-gray-300 dark:border-gray-700 dark:bg-opacity-5 betterhover:hover:bg-gray-50 betterhover:dark:hover:bg-gray-900 md:py-3 md:text-base md:leading-6 md:px-10"
             >
               brew install cloudquery
@@ -76,6 +77,19 @@ export default function Home() {
           <Features />
         </div>
       </div>
+
+      <div className="relative from-gray-50 to-gray-100">
+        <div className="px-4 py-16 mx-auto sm:pt-20 sm:pb-24 lg:max-w-7xl lg:pt-24">
+          <h2 className="text-4xl font-extrabold tracking-tight lg:text-5xl xl:text-6xl lg:text-center dark:text-white">
+            Data analysis, security, auditing, and compliance
+          </h2>
+          <p className="mx-auto mt-4 text-lg font-medium text-gray-400 lg:max-w-3xl lg:text-xl lg:text-center">
+            Leverage SQL to get visibility into your cloud infrastructure and SaaS applications.
+          </p>
+          <QueriesExamples onClick={onClick} />
+        </div>
+      </div >
+
       <div className="sm:py-20 lg:py-24">
         <div className="max-w-4xl px-4 pb-12 mx-auto lg:px-8 ">
           <h2 className="text-4xl font-extrabold leading-tight tracking-tight lg:text-5xl xl:text-6xl text-center dark:text-white">
