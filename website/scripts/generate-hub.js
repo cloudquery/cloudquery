@@ -45,8 +45,8 @@ const TABLES_TEMPLATE = `---
 title: ${NAME_PLACEHOLDER} Plugin Tables
 ---
 
-# ${NAME_PLACEHOLDER} Plugin Tables
-
+|${NAME_PLACEHOLDER} Plugin Tables|
+|---|
 ${CONTENT_PLACEHOLDER}
 `;
 
@@ -126,15 +126,23 @@ const generatePluginsIndexPage = async (plugins) => {
 };
 
 const generatePluginTablePages = async (plugin) => {
+  const tablesSource = `${PLUGINS_SOURCE}/${plugin.id}/docs/tables`;
+  const tablesList = (await fs.readdir(tablesSource, { withFileTypes: true }))
+    .filter((dirent) => dirent.isFile() && dirent.name.endsWith(".md"))
+    .map((dirent) => path.basename(dirent.name, path.extname(dirent.name)));
+
   const tablesPath = `${PLUGINS_PATH}/${plugin.id}/tables.mdx`;
-  await fs.mkdir(path.dirname(tablesPath), { recursive: true });
+  const tablesLinks = tablesList
+    .map(
+      (table) =>
+        `|[${table}](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/${plugin.id}/docs/tables/${table}.md)|`
+    )
+    .join("\n");
   const content = TABLES_TEMPLATE.replaceAll(
     NAME_PLACEHOLDER,
     plugin.name
-  ).replace(
-    CONTENT_PLACEHOLDER,
-    `For the full list of tables [visit our GitHub repository](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/${plugin.id}/docs/tables)`
-  );
+  ).replace(CONTENT_PLACEHOLDER, tablesLinks);
+  await fs.mkdir(path.dirname(tablesPath), { recursive: true });
   await fs.writeFile(tablesPath, content, { encoding: "utf8" });
 };
 
