@@ -2,8 +2,8 @@ name: Check for broken links
 
 on:
   pull_request:
-    # paths:
-    #   - "website/**"
+    paths:
+      - "website/**"
 
 jobs:
   check-broken-links:
