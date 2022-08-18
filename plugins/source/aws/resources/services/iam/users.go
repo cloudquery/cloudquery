@@ -85,72 +85,6 @@ func IamUsers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "password_enabled",
-				Description: "When the user has a password, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
-			},
-			{
-				Name:        "password_status",
-				Description: "When the user has a password, this value is TRUE. Otherwise it is FALSE.The value for the AWS account root user is always not_supported",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:          "password_last_changed",
-				Description:   "The date and time when the user's password was last set, in ISO 8601 date-time format. If the user does not have a password, the value in this field is N/A (not applicable). The value for the AWS account (root) is always NULL",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "password_next_rotation",
-				Description:   "When the account has a password policy that requires password rotation, this field contains the date and time, in ISO 8601 date-time format, when the user is required to set a new password. The value for the AWS account (root) is always NULL",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "mfa_active",
-				Description: "When a multi-factor authentication (MFA) device has been enabled for the user, this value is TRUE. Otherwise it is FALSE",
-				Type:        schema.TypeBool,
-			},
-			{
-				Name:        "create_date",
-				Description: "The date and time, in ISO 8601 date-time format (https://www.iso.org/iso/iso8601), when the user was created",
-				Type:        schema.TypeTimestamp,
-			},
-			{
-				Name:        "path",
-				Description: "The path to the user",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:          "permissions_boundary_arn",
-				Description:   "The ARN of the policy used to set the permissions boundary for the user or role",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "permissions_boundary_type",
-				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryType"),
-			},
-			{
-				Name:        "tags",
-				Description: "A list of tags that are associated with the user",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveUserTags,
-			},
-			{
-				Name:        "user_id",
-				Description: "The stable and unique string identifying the user",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "user_name",
-				Description: "The friendly name of the user",
-				Type:        schema.TypeString,
-			},
-			{
 				Name:        "access_key_1_active",
 				Description: "When the user has an access key and the access key's status is Active, this value is TRUE. Otherwise it is FALSE",
 				Type:        schema.TypeBool,
@@ -193,6 +127,73 @@ func IamUsers() *schema.Table {
 				Description:   "The date and time, in ISO 8601 date-time format, when the user's signing certificate was created or last changed",
 				Type:          schema.TypeTimestamp,
 				IgnoreInTests: true,
+			},
+			{
+				Name:        "create_date",
+				Description: "The date and time, in ISO 8601 date-time format (https://www.iso.org/iso/iso8601), when the user was created",
+				Type:        schema.TypeTimestamp,
+			},
+			{
+				Name:        "mfa_active",
+				Description: "When a multi-factor authentication (MFA) device has been enabled for the user, this value is TRUE. Otherwise it is FALSE",
+				Type:        schema.TypeBool,
+			},
+			{
+				Name:        "password_enabled",
+				Description: "When the user has a password, this value is TRUE. Otherwise it is FALSE",
+				Type:        schema.TypeBool,
+			},
+
+			{
+				Name:          "password_last_changed",
+				Description:   "The date and time when the user's password was last set, in ISO 8601 date-time format. If the user does not have a password, the value in this field is N/A (not applicable). The value for the AWS account (root) is always NULL",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
+			},
+			{
+				Name:          "password_next_rotation",
+				Description:   "When the account has a password policy that requires password rotation, this field contains the date and time, in ISO 8601 date-time format, when the user is required to set a new password. The value for the AWS account (root) is always NULL",
+				Type:          schema.TypeTimestamp,
+				IgnoreInTests: true,
+			},
+			{
+				Name:        "password_status",
+				Description: "When the user has a password, this value is TRUE. Otherwise it is FALSE.The value for the AWS account root user is always not_supported",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "path",
+				Description: "The path to the user",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:          "permissions_boundary_arn",
+				Description:   "The ARN of the policy used to set the permissions boundary for the user or role",
+				Type:          schema.TypeString,
+				Resolver:      schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
+				IgnoreInTests: true,
+			},
+			{
+				Name:        "permissions_boundary_type",
+				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryType"),
+			},
+			{
+				Name:        "tags",
+				Description: "A list of tags that are associated with the user",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveUserTags,
+			},
+			{
+				Name:        "user_id",
+				Description: "The stable and unique string identifying the user",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "user_name",
+				Description: "The friendly name of the user",
+				Type:        schema.TypeString,
 			},
 		},
 		Relations: []*schema.Table{
