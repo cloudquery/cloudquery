@@ -10,11 +10,9 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 In this blog post, we will walk you through how to set up [CloudQuery](https://github.com/cloudquery/cloudquery) to build your own customizable compliance, CSPM (Cloud Security Posture Management) dashboard with PostgreSQL and Grafana.
 
 CSPMs are probably the biggest offenders of yet another dashboard and here in CloudQuery we believe it’s time to unbundle those and apply the best practices in data engineering and the modern data stack to cloud security.
-
 
 ## General Architecture
 
@@ -31,7 +29,7 @@ CSPMs are probably the biggest offenders of yet another dashboard and here in Cl
 
 ### Step 1: **Install or Deploy CloudQuery**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool. Take a look at our [Getting Started with AWS Guide](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) or [GCP](https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp), [Azure](https://docs.cloudquery.io/docs/getting-started/getting-started-with-azure).
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool. Take a look at our [Getting Started with AWS Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) or [GCP](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp), [Azure](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to AWS on RDS Aurora and EKS at [github.com/cludquery/terraform-aws-cloudquery](https://github.com/cloudquery/terraform-aws-cloudquery) , or GCP and Cloud SQL at [https://github.com/cloudquery/terraform-gcp-cloudquery](https://github.com/cloudquery/terraform-gcp-cloudquery)
 

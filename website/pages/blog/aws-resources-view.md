@@ -19,7 +19,7 @@ So here at CloudQuery we built a simple `aws_resources` view, to demonstrate the
 
 ## Getting Started
 
-As always, before we create this view, you should check out our [getting-started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) guide, and make sure you executed a fetch.
+As always, before we create this view, you should check out our [getting-started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) guide, and make sure you executed a fetch.
 
 After our AWS provider is set up and we executed our fetch, run the following SQL in your database. This statement creates a view that extracts and transform each row in our `aws` tables with an `arn` column into a `aws_resource` form, and unites all of them rows into our singular view.
 

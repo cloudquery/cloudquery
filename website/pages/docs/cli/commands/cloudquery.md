@@ -13,7 +13,7 @@ CloudQuery CLI
 Query your cloud assets & configuration with SQL for monitoring security, compliance & cost purposes.
 
 Find more information at:
-https://docs.cloudquery.io
+https://www.cloudquery.io
 
 ### Options
 

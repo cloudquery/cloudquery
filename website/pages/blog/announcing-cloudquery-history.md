@@ -10,7 +10,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 **This feature was deprecated, [see blog post](https://www.cloudquery.io/blog/migration-and-history-deprecation).**
 
 ---
@@ -18,7 +17,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 Today we are excited to announce the release of CloudQuery History in alpha! CloudQuery History adds [TimescaleDB](https://github.com/timescale/timescaledb) support to give users the ability to track their complete cloud asset inventory snapshots over time!
 
 Achieving better visibility into your cloud infrastructure is key in maintaining security, compliance, cost and operational efficiency, and this is why we started CloudQuery in the [first](https://www.cloudquery.io/blog/announcing-cloudquery-seed-funding) place. Maintaining a historical record of your cloud infrastructure configuration is an integral part of your cloud environment lifecycle.
-
 
 ## Why TimescaleDB?
 
@@ -42,8 +40,8 @@ History is currently in alpha version, so we welcome any feedback as it's not ye
 
 Setting up History is fairly simple, you are required to either install the TimescaleDB extension on your existing PostgreSQL instance or setup a self hosted TimescaleDB instance. See [here](https://docs.timescale.com/timescaledb/latest/how-to-guides/install-timescaledb/self-hosted/) for more details.
 
-See CloudQuery [getting started guide](https://docs.cloudquery.io/docs/getting-started) and [history configuration](https://docs.cloudquery.io/docs/configuration/overview) for more details on how to configure your cloudquery to run with History enabled.
+See CloudQuery [getting started guide](https://www.cloudquery.io/docs/getting-started) and [history configuration](https://www.cloudquery.io/docs/configuration/overview) for more details on how to configure your cloudquery to run with History enabled.
 
 ## What next?
 
-CloudQuery history opens up endless possibilities for managing compliance, security, visualization and much more! We would love to hear your feedback, either on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord).
+CloudQuery history opens up endless possibilities for managing compliance, security, visualization and much more! We would love to hear your feedback, either on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://www.cloudquery.io/discord).

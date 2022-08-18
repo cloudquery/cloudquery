@@ -192,6 +192,6 @@ Each table defines list of columns and their type. CloudQuery SDK by default rea
 
 The third piece of this Tutorial is at [cloudquery/cq-provider-github/tree/tutorial-step-3](https://github.com/cloudquery/cq-provider-github/tree/tutorial-step-3).
 
-To run this in debug mode while you develop, checkout [debugging a provider](https://docs.cloudquery.io/docs/developers/debugging)
+To run this in debug mode while you develop, checkout [debugging a provider](https://www.cloudquery.io/docs/developers/debugging)
 
 Congratulations! This is it, you have your first custom provider!

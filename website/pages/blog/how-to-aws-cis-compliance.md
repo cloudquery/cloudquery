@@ -12,8 +12,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
-
 ## Intro
 
 **[The AWS CIS benchmarks](https://www.cisecurity.org/benchmark/amazon_web_services/)** are a set of well-known configuration best-practices that helps companies improve their AWS security posture and comply with various compliance framework like (SOC2, etc.).
@@ -48,7 +46,7 @@ brew upgrade cloudquery
 
 ### Choosing database
 
-CloudQuery currently supports two types of databases: PostgreSQL & TimescaleDB (for historical snapshots). In this post we will use the default SQLite which is great for local development and testing (see [here](https://docs.cloudquery.io/docs/configuration/overview) on how to use others).
+CloudQuery currently supports two types of databases: PostgreSQL & TimescaleDB (for historical snapshots). In this post we will use the default SQLite which is great for local development and testing (see [here](https://www.cloudquery.io/docs/configuration/overview) on how to use others).
 
 ### Authenticating with AWS
 
