@@ -15,7 +15,7 @@ import (
 func Snapshots() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_snapshots",
-		Description:  "A snapshot of an Amazon FSx for OpenZFS volume",
+		Description:  "A snapshot of an Amazon FSx for OpenZFS volume.",
 		Resolver:     fetchFsxSnapshots,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
@@ -36,23 +36,23 @@ func Snapshots() *schema.Table {
 			},
 			{
 				Name:        "creation_time",
-				Description: "The time that the resource was created, in seconds (since 1970-01-01T00:00:00Z), also known as Unix time",
+				Description: "The time that the resource was created, in seconds (since 1970-01-01T00:00:00Z), also known as Unix time.",
 				Type:        schema.TypeTimestamp,
 			},
 			{
 				Name:        "lifecycle",
-				Description: "The lifecycle status of the snapshot  * PENDING - Amazon FSx hasn't started creating the snapshot  * CREATING - Amazon FSx is creating the snapshot  * DELETING - Amazon FSx is deleting the snapshot  * AVAILABLE - The snapshot is fully available",
+				Description: "The lifecycle status of the snapshot.  * PENDING - Amazon FSx hasn't started creating the snapshot.  * CREATING - Amazon FSx is creating the snapshot.  * DELETING - Amazon FSx is deleting the snapshot.  * AVAILABLE - The snapshot is fully available.",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "lifecycle_transition_reason_message",
-				Description: "A detailed error message",
+				Description: "A detailed error message.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("LifecycleTransitionReason.Message"),
 			},
 			{
 				Name:        "name",
-				Description: "The name of the snapshot",
+				Description: "The name of the snapshot.",
 				Type:        schema.TypeString,
 			},
 			{
@@ -63,18 +63,18 @@ func Snapshots() *schema.Table {
 			},
 			{
 				Name:        "snapshot_id",
-				Description: "The ID of the snapshot",
+				Description: "The ID of the snapshot.",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "tags",
-				Description: "A list of Tag values, with a maximum of 50 elements",
+				Description: "A list of Tag values, with a maximum of 50 elements.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveSnapshotsTags,
 			},
 			{
 				Name:        "volume_id",
-				Description: "The ID of the volume that the snapshot is of",
+				Description: "The ID of the volume that the snapshot is of.",
 				Type:        schema.TypeString,
 			},
 		},
