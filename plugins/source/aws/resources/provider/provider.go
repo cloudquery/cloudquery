@@ -215,7 +215,7 @@ func Provider() *provider.Provider {
 			"iam.roles":                                  iam.Roles(),
 			"iam.saml_identity_providers":                iam.IamSamlIdentityProviders(),
 			"iam.server_certificates":                    iam.IamServerCertificates(),
-			"iam.users":                                  iam.IamUsers(),
+			"iam.users":                                  iam.Users(),
 			"iam.virtual_mfa_devices":                    iam.IamVirtualMfaDevices(),
 			"inspector.findings":                         inspector.Findings(),
 			"inspector2.findings":                        inspector2.Findings(),

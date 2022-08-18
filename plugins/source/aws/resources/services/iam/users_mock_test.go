@@ -48,7 +48,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	ru := reportUser{}
+	ru := ReportUser{}
 	err = faker.FakeData(&ru)
 	if err != nil {
 		t.Fatal(err)
@@ -61,7 +61,7 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	ru.AccessKey2LastRotated = time.Now().Format(time.RFC3339)
 	ru.Cert1LastRotated = time.Now().Format(time.RFC3339)
 	ru.Cert2LastRotated = time.Now().Format(time.RFC3339)
-	content, err := gocsv.MarshalBytes([]reportUser{ru})
+	content, err := gocsv.MarshalBytes([]ReportUser{ru})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -123,5 +123,5 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIamUsers(t *testing.T) {
-	client.AwsMockTestHelper(t, IamUsers(), buildIamUsers, client.TestOptions{})
+	client.AwsMockTestHelper(t, Users(), buildIamUsers, client.TestOptions{})
 }
