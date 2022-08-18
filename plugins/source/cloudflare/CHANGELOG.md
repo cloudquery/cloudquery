@@ -5,6 +5,16 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.7](https://github.com/cloudquery/cloudquery/compare/plugins/source/cloudflare-v0.1.6...plugins/source/cloudflare/v0.1.7) (2022-08-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.10 ([#1474](https://github.com/cloudquery/cloudquery/issues/1474)) ([b142e13](https://github.com/cloudquery/cloudquery/commit/b142e135172b1eed1abb2cbec85054ea7f66199d))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.11 ([#1491](https://github.com/cloudquery/cloudquery/issues/1491)) ([5140bef](https://github.com/cloudquery/cloudquery/commit/5140bef4aa7c50a97a604db1e92df75ead2893fc))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.9 ([#1286](https://github.com/cloudquery/cloudquery/issues/1286)) ([67ac422](https://github.com/cloudquery/cloudquery/commit/67ac422f392387e674cb70386e612befa5b455f0))
+* **deps:** Update to Go 1.18 ([#1292](https://github.com/cloudquery/cloudquery/issues/1292)) ([9b96c8f](https://github.com/cloudquery/cloudquery/commit/9b96c8f0fa897c50303760afb9d6731c2409676d))
+
 ## [0.1.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/cloudflare/v0.1.5...plugins/source/cloudflare/v0.1.6) (2022-08-18)
 
 
