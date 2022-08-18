@@ -8,7 +8,7 @@
     "prebuild": "node scripts/generate-hub.js",
     "dev": "next",
     "start": "next start",
-    "build": "NODE_OPTIONS=--max_old_space_size=9192 next build",
+    "build": "NODE_OPTIONS=--max_old_space_size=7192 next build",
     "postbuild": "next-sitemap",
     "lint": "next lint",
     "schema": "ts-json-schema-generator -f tsconfig.json -p ./schema.d.ts -o ./public/schema.json -t Schema --minify"
