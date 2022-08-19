@@ -34,9 +34,10 @@ func Certificates() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveAcmCertificateTags,
+				Name:        "tags",
+				Description: "The tags that have been applied to the ACM certificate.",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveAcmCertificateTags,
 			},
 			{
 				Name:        "arn",
