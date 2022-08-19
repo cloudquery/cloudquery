@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -18,7 +17,7 @@ func Filesystems() *schema.Table {
 		Description:  "A description of a specific Amazon FSx file system",
 		Resolver:     fetchFsxFilesystems,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -114,7 +113,7 @@ func Filesystems() *schema.Table {
 				Name:        "tags",
 				Description: "The tags to associate with the file system",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveFilesystemsTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "vpc_id",
@@ -528,19 +527,13 @@ func fetchFsxFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	cl := meta.(*client.Client)
 	svc := cl.Services().FSX
 	input := fsx.DescribeFileSystemsInput{MaxResults: aws.Int32(1000)}
-	for {
-		result, err := svc.DescribeFileSystems(ctx, &input)
+	paginator := fsx.NewDescribeFileSystemsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		res <- result.FileSystems
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
-}
-func resolveFilesystemsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(resource.Item.(types.FileSystem).Tags)))
 }

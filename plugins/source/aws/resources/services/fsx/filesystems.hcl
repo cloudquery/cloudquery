@@ -9,8 +9,8 @@ add_generate     = true
 
 resource "aws" "fsx" "filesystems" {
   path = "github.com/aws/aws-sdk-go-v2/service/fsx/types.FileSystem"
-  ignoreError "IgnoreAccessDenied" {
-    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
+  ignoreError "IgnoreCommonErrors" {
+    path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   deleteFilter "AccountRegionFilter" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.DeleteAccountRegionFilter"
@@ -59,7 +59,9 @@ resource "aws" "fsx" "filesystems" {
 
   column "tags" {
     type = "json"
-    generate_resolver = true
+    resolver "resolveTags" {
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
+    }
   }
 
   column "lustre_configuration" {

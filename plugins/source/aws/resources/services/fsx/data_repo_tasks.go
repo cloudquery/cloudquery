@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -18,7 +17,7 @@ func DataRepoTasks() *schema.Table {
 		Description:  "A description of the data repository task",
 		Resolver:     fetchFsxDataRepoTasks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -138,7 +137,7 @@ func DataRepoTasks() *schema.Table {
 				Name:        "tags",
 				Description: "A list of Tag values, with a maximum of 50 elements",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDataRepoTasksTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 	}
@@ -152,19 +151,13 @@ func fetchFsxDataRepoTasks(ctx context.Context, meta schema.ClientMeta, parent *
 	cl := meta.(*client.Client)
 	svc := cl.Services().FSX
 	input := fsx.DescribeDataRepositoryTasksInput{MaxResults: aws.Int32(1000)}
-	for {
-		result, err := svc.DescribeDataRepositoryTasks(ctx, &input)
+	paginator := fsx.NewDescribeDataRepositoryTasksPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		res <- result.DataRepositoryTasks
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
-}
-func resolveDataRepoTasksTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(resource.Item.(types.DataRepositoryTask).Tags)))
 }
