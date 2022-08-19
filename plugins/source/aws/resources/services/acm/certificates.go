@@ -3,7 +3,6 @@ package acm
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -24,13 +23,13 @@ func Certificates() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:        "region",
-				Description: "The AWS Region of the resource.",
+				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
@@ -57,7 +56,7 @@ func Certificates() *schema.Table {
 			},
 			{
 				Name:        "domain_name",
-				Description: "The fully qualified domain name for the certificate, such as wwwexamplecom or examplecom",
+				Description: "The fully qualified domain name for the certificate, such as www.example.com or example.com",
 				Type:        schema.TypeString,
 			},
 			{
@@ -67,7 +66,7 @@ func Certificates() *schema.Table {
 			},
 			{
 				Name:        "extended_key_usages",
-				Description: "Contains a list of Extended Key Usage X509 v3 extension objects",
+				Description: "Contains a list of Extended Key Usage X.509 v3 extension objects",
 				Type:        schema.TypeJSON,
 			},
 			{
@@ -102,7 +101,7 @@ func Certificates() *schema.Table {
 			},
 			{
 				Name:        "key_usages",
-				Description: "A list of Key Usage X509 v3 extension objects",
+				Description: "A list of Key Usage X.509 v3 extension objects",
 				Type:        schema.TypeStringArray,
 				Resolver:    schema.PathResolver("KeyUsages.Name"),
 			},
@@ -129,13 +128,13 @@ func Certificates() *schema.Table {
 			},
 			{
 				Name:        "renewal_summary_domain_validation_options",
-				Description: "Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal (https://docsawsamazoncom/acm/latest/userguide/acm-renewalhtml)",
+				Description: "Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html)",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("RenewalSummary.DomainValidationOptions"),
 			},
 			{
 				Name:        "renewal_summary_status",
-				Description: "The status of ACM's managed renewal (https://docsawsamazoncom/acm/latest/userguide/acm-renewalhtml) of the certificate",
+				Description: "The status of ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html) of the certificate",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RenewalSummary.RenewalStatus"),
 			},
@@ -203,8 +202,9 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
 	var input acm.ListCertificatesInput
-	for {
-		output, err := svc.ListCertificates(ctx, &input)
+	paginator := acm.NewListCertificatesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -215,10 +215,6 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 			}
 			res <- do.Certificate
 		}
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
 	}
 	return nil
 }
