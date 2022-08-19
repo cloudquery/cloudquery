@@ -54,16 +54,16 @@ export default function Home() {
             <h1 className="max-w-5xl mx-auto text-6xl font-extrabold tracking-tighter leading-[1.1] sm:text-7xl lg:text-8xl xl:text-8xl">
               Data integration
               <br className="hidden lg:block" />
-              <span className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
+              <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
                 that works.
-              </span>{" "}
+              </span>
             </h1>
             <p className="max-w-2xl mt-6 text-xl font-medium leading-tight text-gray-400 sm:text-2xl md:text-3xl lg:text-4xl">
               CloudQuery is an open source high performance data integration
               platform designed for security and infrastructure teams.
             </p>
           </div>
-          <div className="flex fix-flex-col h-32 mt-4 md:mt-0 mb-6 md:mb-0 items-center gap-3 md:flex-col xl:flex-row">
+          <div className="flex fix-flex-col h-32 mt-4 md:mt-0 mb-6 md:mb-0 items-center gap-3 md:flex-row xl:flex-row">
             <div className="rounded-md fix-width-auto xl:w-auto">
               <Link href="/docs">
                 <a className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-white dark:text-black betterhover:dark:hover:bg-gray-300 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
@@ -82,22 +82,20 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-full md:max-w-[520px] max-w-full flex flex-col gap-1.5">
-          {
-            HERO_IMAGE_DATA.map(({ title, src, className, description }) => (
-              <div key={title} className={`hero-image-bg h-[128px] overflow-hidden flex items-center justify-between ${className ? className : ''}`}>
-                <div className="text-white font-bold text-2xl ml-8 leading-none">
-                  {title}
-                  {description &&
-                    <div className="mt-1 font-normal text-sm leading-none">
-                      {description}
-                    </div>
-                  }
-                </div>
-                <img src={src} height='inherit' alt={title} />
+        <div className="w-full max-w-[420px] flex flex-col gap-1.5 m-auto md:justify-start">
+          {HERO_IMAGE_DATA.map(({ title, src, className, description }) => (
+            <div key={title} className={`hero-image-bg h-[80px] md:h-[106px] overflow-hidden flex items-center justify-between ${className ? className : ''}`}>
+              <div className="text-white font-semibold text-base md:text-lg ml-4 leading-tight">
+                {title}
+                {description &&
+                  <div className="mt-1 font-normal text-xs leading-none">
+                    {description}
+                  </div>
+                }
               </div>
-            ))
-          }
+              <img src={src} height='inherit' alt={title} className="h-[inherit]" />
+            </div>
+          ))}
         </div>
       </div>
 

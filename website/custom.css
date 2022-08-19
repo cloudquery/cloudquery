@@ -15,8 +15,20 @@ code {
 
 .fix-flex-col {
   flex-direction: column;
+  justify-content: center;
 }
-@media (min-width: 1280px) {
+@media (min-width: 640px) {
+  .fix-flex-col {
+    flex-direction: row;
+  }
+}
+@media (min-width: 768px) {
+  .fix-flex-col {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+}
+@media (min-width: 1024px) {
   .fix-flex-col {
     flex-direction: row;
   }
@@ -24,7 +36,17 @@ code {
 .fix-width-auto {
   width: 100%;
 }
-@media (min-width: 1280px) {
+@media (min-width: 640px) {
+  .fix-width-auto {
+    width: auto;
+  }
+}
+@media (min-width: 768px) {
+  .fix-width-auto {
+    width: 100%;
+  }
+}
+@media (min-width: 1024px) {
   .fix-width-auto {
     width: auto;
   }
