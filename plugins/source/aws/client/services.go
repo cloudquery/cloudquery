@@ -519,7 +519,7 @@ type IamClient interface {
 	GetAccountSummary(ctx context.Context, params *iam.GetAccountSummaryInput, optFns ...func(*iam.Options)) (*iam.GetAccountSummaryOutput, error)
 }
 
-//go:generate mockgen -package=mocks -destination=./moc—ks/inspector.go . InspectorClient
+//go:generate mockgen -package=mocks -destination=./mocks/inspector.go . InspectorClient
 type InspectorClient interface {
 	ListFindings(ctx context.Context, params *inspector.ListFindingsInput, optFns ...func(*inspector.Options)) (*inspector.ListFindingsOutput, error)
 	DescribeFindings(ctx context.Context, params *inspector.DescribeFindingsInput, optFns ...func(*inspector.Options)) (*inspector.DescribeFindingsOutput, error)

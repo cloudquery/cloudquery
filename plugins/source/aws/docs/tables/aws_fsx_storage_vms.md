@@ -4,8 +4,8 @@ Describes the Amazon FSx for NetApp ONTAP storage virtual machine (SVM) configur
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
+|account_id|text|The AWS Account ID of the resource|
+|region|text|The AWS Region of the resource|
 |ad_cfg_net_bios_name|text|The NetBIOS name of the Active Directory computer object that is joined to your SVM|
 |ad_cfg_dns_ips|text[]|A list of up to three IP addresses of DNS servers or domain controllers in the self-managed AD directory|
 |ad_cfg_domain_name|text|The fully qualified domain name of the self-managed AD directory|
@@ -22,7 +22,7 @@ Describes the Amazon FSx for NetApp ONTAP storage virtual machine (SVM) configur
 |endpoints_smb_dns_name|text|The Domain Name Service (DNS) name for the file system|
 |endpoints_smb_ip_addresses|text[]|The SVM endpoint's IP addresses|
 |file_system_id|text|The globally unique ID of the file system, assigned by Amazon FSx|
-|lifecycle|text|Describes the SVM's lifecycle status  * CREATED - The SVM is fully available for use  * CREATING - Amazon FSx is creating the new SVM  * DELETING - Amazon FSx is deleting an existing SVM  * FAILED - Amazon FSx was unable to create the SVM  * MISCONFIGURED - The SVM is in a failed but recoverable state  * PENDING - Amazon FSx has not started creating the SVM|
+|lifecycle|text|Describes the SVM's lifecycle status|
 |lifecycle_transition_reason_message|text|A detailed error message|
 |name|text|The name of the SVM, if provisioned|
 |arn|text|The Amazon Resource Name (ARN) for a given resource|
