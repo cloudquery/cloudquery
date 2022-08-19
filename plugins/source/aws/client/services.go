@@ -441,6 +441,7 @@ type FirehoseClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/fsx.go . FsxClient
 type FsxClient interface {
 	DescribeBackups(ctx context.Context, params *fsx.DescribeBackupsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeBackupsOutput, error)
+	DescribeDataRepositoryAssociations(ctx context.Context, params *fsx.DescribeDataRepositoryAssociationsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryAssociationsOutput, error)
 	DescribeDataRepositoryTasks(ctx context.Context, params *fsx.DescribeDataRepositoryTasksInput, optFns ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryTasksOutput, error)
 	DescribeFileSystems(ctx context.Context, params *fsx.DescribeFileSystemsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeFileSystemsOutput, error)
 	DescribeSnapshots(ctx context.Context, params *fsx.DescribeSnapshotsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error)
