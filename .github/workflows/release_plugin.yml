@@ -75,6 +75,6 @@ jobs:
           base: main
           title: "chore: Update plugin `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` version to ${{steps.split.outputs.plugin_version}}"
           commit-message: "chore: Update plugin `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` version to ${{steps.split.outputs.plugin_version}}"
-          body: Updates the `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` plugin latest version to ${{steps.split.outputs.version}}
+          body: Updates the `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` plugin latest version to ${{steps.split.outputs.plugin_version}}
           labels: automerge
           author: cq-bot <cq-bot@users.noreply.github.com>

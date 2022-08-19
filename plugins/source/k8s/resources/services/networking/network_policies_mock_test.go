@@ -1,6 +1,3 @@
-//go:build mock
-// +build mock
-
 package networking
 
 import (
@@ -8,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
+	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	networkingv1 "k8s.io/api/networking/v1"
@@ -20,7 +18,7 @@ func createNetworkingNetworkPolicies(t *testing.T, ctrl *gomock.Controller) clie
 	if err := faker.FakeData(&networkPolicy); err != nil {
 		t.Fatal(err)
 	}
-	networkPolicy.ManagedFields = []metav1.ManagedFieldsEntry{testing.FakeManagedFields(t)}
+	networkPolicy.ManagedFields = []metav1.ManagedFieldsEntry{k8sTesting.FakeManagedFields(t)}
 
 	s.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
 		&networkingv1.NetworkPolicyList{Items: []networkingv1.NetworkPolicy{networkPolicy}}, nil,

@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/gcp
 go 1.18
 
 require (
-	github.com/cloudquery/cq-gen v0.0.9
+	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/golang/mock v1.6.0

@@ -9,7 +9,7 @@ build-changed:
 
 .PHONY: build-cli
 build-cli:
-	(cd cli && go build -o ../bin/cli/cloudquery .)
+	(cd cli && go build -o ../bin/cloudquery .)
 
 # Test unit
 .PHONY: test-unit
