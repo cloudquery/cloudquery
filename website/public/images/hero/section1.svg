@@ -6,7 +6,7 @@
    fill="none"
    version="1.1"
    id="svg5346"
-   sodipodi:docname="section1 (1).svg"
+   sodipodi:docname="section1_new.svg"
    inkscape:version="1.2.1 (9c6d41e, 2022-07-14)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -22,13 +22,13 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      showgrid="false"
-     inkscape:zoom="1.84375"
-     inkscape:cx="156.47458"
-     inkscape:cy="65.627119"
+     inkscape:zoom="1.7036682"
+     inkscape:cx="91.273639"
+     inkscape:cy="55.175062"
      inkscape:window-width="1309"
      inkscape:window-height="864"
      inkscape:window-x="90"
-     inkscape:window-y="190"
+     inkscape:window-y="90"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg5346" />
   <g
@@ -168,7 +168,7 @@
     </clipPath>
   </defs>
   <path
-     d="m 157.4331,180.71374 -52.424,-28.178 c -5.5668,-2.99299 -5.5668,-7.84499 0,-10.83799 l 52.424,-28.176 c 5.567,-2.993 14.595,-2.993 20.162,0 l 52.424,28.176 c 5.567,2.993 5.567,7.845 0,10.83799 l -52.424,28.178 c -5.567,2.993 -14.595,2.993 -20.162,0 z"
+     d="m 156.88378,175.47454 -52.424,-28.178 c -5.566803,-2.99299 -5.566803,-7.84499 0,-10.83799 l 52.424,-28.176 c 5.567,-2.993 14.595,-2.993 20.162,0 l 52.424,28.176 c 5.567,2.993 5.567,7.845 0,10.83799 l -52.424,28.178 c -5.567,2.993 -14.595,2.993 -20.162,0 z"
      fill="#ffffff"
      id="path615-7" />
 </svg>
