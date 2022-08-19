@@ -19,7 +19,7 @@ resource "aws" "sqs" "queues" {
     primary_keys = ["arn"]
   }
   userDefinedColumn "account_id" {
-    description = "The AWS Account ID of the resource."
+    description = "The AWS Account ID of the resource"
     type        = "string"
     resolver "resolveAWSAccount" {
       path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
@@ -27,7 +27,7 @@ resource "aws" "sqs" "queues" {
   }
   userDefinedColumn "region" {
     type        = "string"
-    description = "The AWS Region of the resource."
+    description = "The AWS Region of the resource"
     resolver "resolveAWSRegion" {
       path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
