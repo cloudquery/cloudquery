@@ -30,7 +30,7 @@ resources:
 `
 
 func Test_CheckAvailableUpdates(t *testing.T) {
-	latestVersion := getLatestVersion(t, "test")
+	latestVersion := mockGetLatestVersion(t, "test")
 
 	testCases := []struct {
 		Name    string
@@ -133,7 +133,7 @@ func Test_GetProviderConfig(t *testing.T) {
 	assert.NoError(t, err)
 }
 
-func getLatestVersion(t *testing.T, name string) string {
+func mockGetLatestVersion(t *testing.T, name string) string {
 	reg := registry.NewRegistryHub(firebase.CloudQueryRegistryURL, registry.WithPluginDirectory(t.TempDir()))
 	latest, diags := CheckAvailableUpdates(context.Background(), reg, &CheckUpdatesOptions{Providers: []registry.Provider{
 		{Name: name, Version: "v0.0.0", Source: registry.DefaultOrganization},

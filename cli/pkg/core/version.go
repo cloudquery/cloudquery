@@ -3,13 +3,13 @@ package core
 import (
 	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/cli/internal/versions"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/persistentdata"
-	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
 )
@@ -34,12 +34,11 @@ var (
 )
 
 // unit tests helper
-var getLatestRelease = doGetLatestRelease
+var getLatestVersion = doGetLatestVersion
 
-func doGetLatestRelease(ctx context.Context, client *http.Client, owner, repo string) (*github.RepositoryRelease, error) {
-	gh := github.NewClient(client)
-	r, _, err := gh.Repositories.GetLatestRelease(ctx, owner, repo)
-	return r, err
+func doGetLatestVersion(ctx context.Context, client *http.Client, owner, repo string) (string, error) {
+	c := versions.NewClient()
+	return c.GetLatestCLIRelease(ctx)
 }
 
 // CheckCoreUpdate checks if an update to CloudQuery core is available and returns its (new) version.
@@ -90,11 +89,11 @@ func CheckCoreUpdate(ctx context.Context, fs afero.Afero, nowUnix, period int64)
 		return lastVersion, nil
 	}
 	if nowUnix-lastTime > period {
-		release, err := getLatestRelease(ctx, &http.Client{Timeout: versionCheckHTTPTimeout}, cloudQueryGithubOrg, cloudQueryRepoName)
+		vn, err := getLatestVersion(ctx, &http.Client{Timeout: versionCheckHTTPTimeout}, cloudQueryGithubOrg, cloudQueryRepoName)
 		if err != nil {
 			return nil, err
 		}
-		newVersion, err := version.NewSemver(release.GetTagName())
+		newVersion, err := version.NewSemver(vn)
 		if err != nil {
 			// not really expected
 			return nil, err
