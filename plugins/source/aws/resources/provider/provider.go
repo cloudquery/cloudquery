@@ -196,6 +196,7 @@ func Provider() *provider.Provider {
 			"fsx.data_repo_tasks":                        fsx.DataRepoTasks(),
 			"fsx.filesystems":                            fsx.Filesystems(),
 			"fsx.snapshots":                              fsx.Snapshots(),
+			"fsx.storage_vms":                            fsx.StorageVms(),
 			"glue.classifiers":                           glue.Classifiers(),
 			"glue.connections":                           glue.Connections(),
 			"glue.crawlers":                              glue.Crawlers(),

@@ -445,6 +445,7 @@ type FsxClient interface {
 	DescribeDataRepositoryTasks(ctx context.Context, params *fsx.DescribeDataRepositoryTasksInput, optFns ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryTasksOutput, error)
 	DescribeFileSystems(ctx context.Context, params *fsx.DescribeFileSystemsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeFileSystemsOutput, error)
 	DescribeSnapshots(ctx context.Context, params *fsx.DescribeSnapshotsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error)
+	DescribeStorageVirtualMachines(ctx context.Context, params *fsx.DescribeStorageVirtualMachinesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
@@ -518,7 +519,7 @@ type IamClient interface {
 	GetAccountSummary(ctx context.Context, params *iam.GetAccountSummaryInput, optFns ...func(*iam.Options)) (*iam.GetAccountSummaryOutput, error)
 }
 
-//go:generate mockgen -package=mocks -destination=./moc—ks/inspector.go . InspectorClient
+//go:generate mockgen -package=mocks -destination=./mocks/inspector.go . InspectorClient
 type InspectorClient interface {
 	ListFindings(ctx context.Context, params *inspector.ListFindingsInput, optFns ...func(*inspector.Options)) (*inspector.ListFindingsOutput, error)
 	DescribeFindings(ctx context.Context, params *inspector.DescribeFindingsInput, optFns ...func(*inspector.Options)) (*inspector.DescribeFindingsOutput, error)
