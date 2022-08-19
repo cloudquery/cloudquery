@@ -12,12 +12,12 @@ import { QueriesExamples } from "../QueriesExamples";
 const HERO_IMAGE_DATA = [
   {
     src: '/images/hero/section1.svg',
-    title: 'Extract from integrations',
+    title: 'Extract from sources',
     className: 'rounded-t-2xl ',
   },
   {
     src: '/images/hero/section2.svg',
-    title: 'Load to your Postgres DB',
+    title: 'Load to destination',
   },
   {
     src: '/images/hero/section3.svg',
