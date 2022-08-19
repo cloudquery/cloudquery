@@ -35,7 +35,7 @@ func Certificates() *schema.Table {
 			},
 			{
 				Name:        "tags",
-				Description: "The tags that have been applied to the ACM certificate.",
+				Description: "The tags that have been applied to the ACM certificate",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveAcmCertificateTags,
 			},

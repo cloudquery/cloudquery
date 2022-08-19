@@ -74,7 +74,7 @@ resource "aws" "acm" "certificates" {
   }
 
   userDefinedColumn "tags" {
-    description = "The tags that have been applied to the ACM certificate."
+    description = "The tags that have been applied to the ACM certificate"
     type = "json"
     generate_resolver = true
   }

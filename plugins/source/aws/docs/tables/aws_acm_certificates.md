@@ -6,7 +6,7 @@ Contains metadata about an ACM certificate
 | ------------- | ------------- | -----  |
 |account_id|text|The AWS Account ID of the resource|
 |region|text|The AWS Region of the resource|
-|tags|jsonb|The tags that have been applied to the ACM certificate.|
+|tags|jsonb|The tags that have been applied to the ACM certificate|
 |arn|text|The Amazon Resource Name (ARN) of the certificate|
 |certificate_authority_arn|text|The Amazon Resource Name (ARN) of the ACM PCA private certificate authority (CA) that issued the certificate|
 |created_at|timestamp without time zone|The time at which the certificate was requested|
