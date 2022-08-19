@@ -3,13 +3,13 @@ package core
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/cli/internal/versions"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/persistentdata"
+	"github.com/cloudquery/cloudquery/cli/internal/versions"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
 )
