@@ -16,7 +16,7 @@ func DataRepoAssociations() *schema.Table {
 		Name:         "aws_fsx_data_repo_associations",
 		Description:  "The configuration of a data repository association that links an Amazon FSx for Lustre file system to an Amazon S3 bucket",
 		Resolver:     fetchFsxDataRepoAssociations,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
 		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
