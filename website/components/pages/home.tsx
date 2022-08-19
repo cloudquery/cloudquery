@@ -82,10 +82,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-full max-w-[420px] flex flex-col gap-1.5 m-auto md:justify-start">
+        <div className="w-full max-w-[436px] flex flex-col gap-1.5 m-auto md:justify-start">
           {HERO_IMAGE_DATA.map(({ title, src, className, description }) => (
             <div key={title} className={`hero-image-bg h-[80px] md:h-[106px] overflow-hidden flex items-center justify-between ${className ? className : ''}`}>
-              <div className="text-white font-semibold text-base md:text-lg ml-4 leading-tight">
+              <div className="pr-1 text-white font-semibold text-base md:text-lg ml-6 leading-tight">
                 {title}
                 {description &&
                   <div className="mt-1 font-normal text-xs leading-none">
