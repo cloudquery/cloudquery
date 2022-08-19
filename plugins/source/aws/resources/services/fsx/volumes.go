@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -17,20 +16,20 @@ func Volumes() *schema.Table {
 		Name:         "aws_fsx_volumes",
 		Description:  "Describes an Amazon FSx for NetApp ONTAP or Amazon FSx for OpenZFS volume",
 		Resolver:     fetchFsxVolumes,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:        "region",
-				Description: "The AWS Region of the resource.",
+				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
@@ -46,7 +45,7 @@ func Volumes() *schema.Table {
 			},
 			{
 				Name:        "lifecycle",
-				Description: "The lifecycle status of the volume  * AVAILABLE - The volume is fully available for use  * CREATED - The volume has been created  * CREATING - Amazon FSx is creating the new volume  * DELETING - Amazon FSx is deleting an existing volume  * FAILED - Amazon FSx was unable to create the volume  * MISCONFIGURED - The volume is in a failed but recoverable state  * PENDING - Amazon FSx hasn't started creating the volume",
+				Description: "The lifecycle status of the volume",
 				Type:        schema.TypeString,
 			},
 			{
@@ -70,7 +69,7 @@ func Volumes() *schema.Table {
 				Name:        "tags",
 				Description: "A list of Tag values, with a maximum of 50 elements",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveVolumesTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "id",
@@ -185,7 +184,7 @@ func Volumes() *schema.Table {
 					},
 					{
 						Name:        "origin_snapshot_copy_strategy",
-						Description: "The strategy used when copying data from the snapshot to the new volume  * CLONE - The new volume references the data in the origin snapshot",
+						Description: "The strategy used when copying data from the snapshot to the new volume",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("OriginSnapshot.CopyStrategy"),
 					},
@@ -247,19 +246,13 @@ func fetchFsxVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema
 	cl := meta.(*client.Client)
 	svc := cl.Services().FSX
 	input := fsx.DescribeVolumesInput{MaxResults: aws.Int32(1000)}
-	for {
-		result, err := svc.DescribeVolumes(ctx, &input)
+	paginator := fsx.NewDescribeVolumesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		res <- result.Volumes
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
-}
-func resolveVolumesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(resource.Item.(types.Volume).Tags)))
 }
