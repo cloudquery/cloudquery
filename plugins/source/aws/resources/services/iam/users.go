@@ -37,7 +37,7 @@ func Users() *schema.Table {
 			},
 			{
 				Name:        "create_date",
-				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the user was created.  This member is required.",
+				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the user was created.",
 				Type:        schema.TypeTimestamp,
 				Resolver:    schema.PathResolver("User.CreateDate"),
 			},
@@ -55,7 +55,7 @@ func Users() *schema.Table {
 			},
 			{
 				Name:        "user_name",
-				Description: "The friendly name identifying the user.  This member is required.",
+				Description: "The friendly name identifying the user.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("User.UserName"),
 			},
@@ -191,7 +191,7 @@ func Users() *schema.Table {
 					},
 					{
 						Name:        "last_used_date",
-						Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the access key was most recently used. This field is null in the following situations:  * The user does not have an access key.  * An access key exists but has not been used since IAM began tracking this information.  * There is no sign-in data associated with the user.  This member is required.",
+						Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the access key was most recently used. This field is null in the following situations:  * The user does not have an access key.  * An access key exists but has not been used since IAM began tracking this information.  * There is no sign-in data associated with the user.",
 						Type:        schema.TypeTimestamp,
 						Resolver:    schema.PathResolver("AccessKeyLastUsed.LastUsedDate"),
 					},
@@ -227,7 +227,7 @@ func Users() *schema.Table {
 					},
 					{
 						Name:        "create_date",
-						Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the group was created.  This member is required.",
+						Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the group was created.",
 						Type:        schema.TypeTimestamp,
 					},
 					{
@@ -237,7 +237,7 @@ func Users() *schema.Table {
 					},
 					{
 						Name:        "group_name",
-						Description: "The friendly name that identifies the group.  This member is required.",
+						Description: "The friendly name that identifies the group.",
 						Type:        schema.TypeString,
 					},
 					{
@@ -289,12 +289,12 @@ func Users() *schema.Table {
 					},
 					{
 						Name:        "policy_name",
-						Description: "The name of the policy.  This member is required.",
+						Description: "The name of the policy.",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "user_name",
-						Description: "The user the policy is associated with.  This member is required.",
+						Description: "The user the policy is associated with.",
 						Type:        schema.TypeString,
 					},
 				},

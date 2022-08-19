@@ -2,6 +2,11 @@
 service          = "aws"
 output_directory = "."
 add_generate     = true
+
+description_modifier "remove_read_only" {
+  words = ["  This member is required."]
+}
+
 resource "aws" "iam" "roles" {
   path        = "github.com/aws/aws-sdk-go-v2/service/iam/types.Role"
   description = "An IAM role is an IAM identity that you can create in your account that has specific permissions."
