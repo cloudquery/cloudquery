@@ -15,7 +15,7 @@ import (
 func Filesystems() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_filesystems",
-		Description:  "A description of a specific Amazon FSx file system.",
+		Description:  "A description of a specific Amazon FSx file system",
 		Resolver:     fetchFsxFilesystems,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
 		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
@@ -24,48 +24,48 @@ func Filesystems() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:        "region",
-				Description: "The AWS Region of the resource.",
+				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
 				Name:        "creation_time",
-				Description: "The time that the file system was created, in seconds (since 1970-01-01T00:00:00Z), also known as Unix time.",
+				Description: "The time that the file system was created, in seconds (since 1970-01-01T00:00:00Z), also known as Unix time",
 				Type:        schema.TypeTimestamp,
 			},
 			{
 				Name:        "dns_name",
-				Description: "The Domain Name System (DNS) name for the file system.",
+				Description: "The Domain Name System (DNS) name for the file system",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DNSName"),
 			},
 			{
 				Name:        "failure_details_message",
-				Description: "A message describing any failures that occurred during file system creation.",
+				Description: "A message describing any failures that occurred during file system creation",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("FailureDetails.Message"),
 			},
 			{
 				Name:        "id",
-				Description: "The system-generated, unique 17-digit ID of the file system.",
+				Description: "The system-generated, unique 17-digit ID of the file system",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("FileSystemId"),
 			},
 			{
 				Name:        "type",
-				Description: "The type of Amazon FSx file system, which can be LUSTRE, WINDOWS, ONTAP, or OPENZFS.",
+				Description: "The type of Amazon FSx file system, which can be LUSTRE, WINDOWS, ONTAP, or OPENZFS",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("FileSystemType"),
 			},
 			{
 				Name:        "version",
-				Description: "The Lustre version of the Amazon FSx for Lustre file system, either 2.10 or 2.12.",
+				Description: "The Lustre version of the Amazon FSx for Lustre file system, either 2.10 or 2.12",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("FileSystemTypeVersion"),
 			},
@@ -91,13 +91,13 @@ func Filesystems() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the file system resource.",
+				Description: "The Amazon Resource Name (ARN) of the file system resource",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ResourceARN"),
 			},
 			{
 				Name:        "storage_capacity",
-				Description: "The storage capacity of the file system in gibibytes (GiB).",
+				Description: "The storage capacity of the file system in gibibytes (GiB)",
 				Type:        schema.TypeBigInt,
 			},
 			{
@@ -118,14 +118,14 @@ func Filesystems() *schema.Table {
 			},
 			{
 				Name:        "vpc_id",
-				Description: "The ID of the primary virtual private cloud (VPC) for the file system.",
+				Description: "The ID of the primary virtual private cloud (VPC) for the file system",
 				Type:        schema.TypeString,
 			},
 		},
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_fsx_filesystem_lustre_configuration",
-				Description: "The configuration for the Amazon FSx for Lustre file system.",
+				Description: "The configuration for the Amazon FSx for Lustre file system",
 				Resolver:    schema.PathTableResolver("LustreConfiguration"),
 				Columns: []schema.Column{
 					{
@@ -141,7 +141,7 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "copy_tags_to_backups",
-						Description: "A boolean flag indicating whether tags on the file system are copied to backups. If it's set to true, all tags on the file system are copied to all automatic backups and any user-initiated backups where the user doesn't specify any tags. If this value is true, and you specify one or more tags, only the specified tags are copied to backups",
+						Description: "A boolean flag indicating whether tags on the file system are copied to backups",
 						Type:        schema.TypeBool,
 					},
 					{
@@ -162,13 +162,13 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "data_repo_cfg_export_path",
-						Description: "The export path to the Amazon S3 bucket (and prefix) that you are using to store new and changed Lustre file system files in S3.",
+						Description: "The export path to the Amazon S3 bucket (and prefix) that you are using to store new and changed Lustre file system files in S3",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("DataRepositoryConfiguration.ExportPath"),
 					},
 					{
 						Name:        "data_repo_cfg_failure_details_message",
-						Description: "A detailed error message.",
+						Description: "A detailed error message",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("DataRepositoryConfiguration.FailureDetails.Message"),
 					},
@@ -202,7 +202,7 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "log_configuration_level",
-						Description: "The data repository events that are logged by Amazon FSx.  * WARN_ONLY - only warning events are logged.  * ERROR_ONLY - only error events are logged.  * WARN_ERROR - both warning events and error events are logged.  * DISABLED - logging of data repository events is turned off.  This member is required.",
+						Description: "The data repository events that are logged by Amazon FSx",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("LogConfiguration.Level"),
 					},
@@ -243,7 +243,7 @@ func Filesystems() *schema.Table {
 			},
 			{
 				Name:        "aws_fsx_filesystem_ontap_configuration",
-				Description: "Configuration for the FSx for NetApp ONTAP file system.",
+				Description: "Configuration for the FSx for NetApp ONTAP file system",
 				Resolver:    schema.PathTableResolver("OntapConfiguration"),
 				Columns: []schema.Column{
 					{
@@ -264,18 +264,18 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "deployment_type",
-						Description: "Specifies the FSx for ONTAP file system deployment type in use in the file system.  * MULTI_AZ_1 - (Default) A high availability file system configured for Multi-AZ redundancy to tolerate temporary Availability Zone (AZ) unavailability.  * SINGLE_AZ_1 - A file system configured for Single-AZ redundancy.  For information about the use cases for Multi-AZ and Single-AZ deployments, refer to Choosing Multi-AZ or Single-AZ file system deployment (https://docs.aws.amazon.com/fsx/latest/ONTAPGuide/high-availability-multiAZ.html).",
+						Description: "Specifies the FSx for ONTAP file system deployment type in use in the file system",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "disk_iops_configuration_iops",
-						Description: "The total number of SSD IOPS provisioned for the file system.",
+						Description: "The total number of SSD IOPS provisioned for the file system",
 						Type:        schema.TypeBigInt,
 						Resolver:    schema.PathResolver("DiskIopsConfiguration.Iops"),
 					},
 					{
 						Name:        "disk_iops_configuration_mode",
-						Description: "Specifies whether the number of IOPS for the file system is using the system default (AUTOMATIC) or was provisioned by the customer (USER_PROVISIONED).",
+						Description: "Specifies whether the number of IOPS for the file system is using the system default (AUTOMATIC) or was provisioned by the customer (USER_PROVISIONED)",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("DiskIopsConfiguration.Mode"),
 					},
@@ -292,7 +292,7 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "endpoints_intercluster_ip_addresses",
-						Description: "IP addresses of the file system endpoint.",
+						Description: "IP addresses of the file system endpoint",
 						Type:        schema.TypeStringArray,
 						Resolver:    schema.PathResolver("Endpoints.Intercluster.IpAddresses"),
 					},
@@ -304,7 +304,7 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "endpoints_management_ip_addresses",
-						Description: "IP addresses of the file system endpoint.",
+						Description: "IP addresses of the file system endpoint",
 						Type:        schema.TypeStringArray,
 						Resolver:    schema.PathResolver("Endpoints.Management.IpAddresses"),
 					},
@@ -315,12 +315,12 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "route_table_ids",
-						Description: "(Multi-AZ only) The VPC route tables in which your file system's endpoints are created.",
+						Description: "(Multi-AZ only) The VPC route tables in which your file system's endpoints are created",
 						Type:        schema.TypeStringArray,
 					},
 					{
 						Name:        "throughput_capacity",
-						Description: "The sustained throughput of an Amazon FSx file system in Megabytes per second (MBps).",
+						Description: "The sustained throughput of an Amazon FSx file system in Megabytes per second (MBps)",
 						Type:        schema.TypeBigInt,
 					},
 					{
@@ -332,7 +332,7 @@ func Filesystems() *schema.Table {
 			},
 			{
 				Name:        "aws_fsx_filesystem_open_zfs_configuration",
-				Description: "The configuration for the Amazon FSx for OpenZFS file system.",
+				Description: "The configuration for the Amazon FSx for OpenZFS file system",
 				Resolver:    schema.PathTableResolver("OpenZFSConfiguration"),
 				Columns: []schema.Column{
 					{
@@ -368,19 +368,19 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "disk_iops_configuration_iops",
-						Description: "The total number of SSD IOPS provisioned for the file system.",
+						Description: "The total number of SSD IOPS provisioned for the file system",
 						Type:        schema.TypeBigInt,
 						Resolver:    schema.PathResolver("DiskIopsConfiguration.Iops"),
 					},
 					{
 						Name:        "disk_iops_configuration_mode",
-						Description: "Specifies whether the number of IOPS for the file system is using the system default (AUTOMATIC) or was provisioned by the customer (USER_PROVISIONED).",
+						Description: "Specifies whether the number of IOPS for the file system is using the system default (AUTOMATIC) or was provisioned by the customer (USER_PROVISIONED)",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("DiskIopsConfiguration.Mode"),
 					},
 					{
 						Name:        "root_volume_id",
-						Description: "The ID of the root volume of the OpenZFS file system.",
+						Description: "The ID of the root volume of the OpenZFS file system",
 						Type:        schema.TypeString,
 					},
 					{
@@ -397,7 +397,7 @@ func Filesystems() *schema.Table {
 			},
 			{
 				Name:        "aws_fsx_filesystem_windows_configuration",
-				Description: "The configuration for this Microsoft Windows file system.",
+				Description: "The configuration for this Microsoft Windows file system",
 				Resolver:    schema.PathTableResolver("WindowsConfiguration"),
 				Columns: []schema.Column{
 					{
@@ -408,7 +408,7 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "active_directory_id",
-						Description: "The ID for an existing Amazon Web Services Managed Microsoft Active Directory instance that the file system is joined to.",
+						Description: "The ID for an existing Amazon Web Services Managed Microsoft Active Directory instance that the file system is joined to",
 						Type:        schema.TypeString,
 					},
 					{
@@ -418,13 +418,13 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "file_access_audit_log_level",
-						Description: "Sets which attempt type is logged by Amazon FSx for file and folder accesses.  * SUCCESS_ONLY - only successful attempts to access files or folders are logged.  * FAILURE_ONLY - only failed attempts to access files or folders are logged.  * SUCCESS_AND_FAILURE - both successful attempts and failed attempts to access files or folders are logged.  * DISABLED - access auditing of files and folders is turned off.  This member is required.",
+						Description: "Sets which attempt type is logged by Amazon FSx for file and folder accesses",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuditLogConfiguration.FileAccessAuditLogLevel"),
 					},
 					{
 						Name:        "file_share_access_audit_log_level",
-						Description: "Sets which attempt type is logged by Amazon FSx for file share accesses.  * SUCCESS_ONLY - only successful attempts to access file shares are logged.  * FAILURE_ONLY - only failed attempts to access file shares are logged.  * SUCCESS_AND_FAILURE - both successful attempts and failed attempts to access file shares are logged.  * DISABLED - access auditing of file shares is turned off.  This member is required.",
+						Description: "Sets which attempt type is logged by Amazon FSx for file share accesses",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("AuditLogConfiguration.FileShareAccessAuditLogLevel"),
 					},
@@ -446,17 +446,17 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "daily_automatic_backup_start_time",
-						Description: "The preferred time to take daily automatic backups, in the UTC time zone.",
+						Description: "The preferred time to take daily automatic backups, in the UTC time zone",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "deployment_type",
-						Description: "Specifies the file system deployment type, valid values are the following:  * MULTI_AZ_1 - Specifies a high availability file system that is configured for Multi-AZ redundancy to tolerate temporary Availability Zone (AZ) unavailability, and supports SSD and HDD storage.  * SINGLE_AZ_1 - (Default) Specifies a file system that is configured for single AZ redundancy, only supports SSD storage.  * SINGLE_AZ_2 - Latest generation Single AZ file system",
+						Description: "Specifies the file system deployment type, valid values are the following:  * MULTI_AZ_1 - Specifies a high availability file system that is configured for Multi-AZ redundancy to tolerate temporary Availability Zone (AZ) unavailability, and supports SSD and HDD storage",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "maintenance_operations_in_progress",
-						Description: "The list of maintenance operations in progress for this file system.",
+						Description: "The list of maintenance operations in progress for this file system",
 						Type:        schema.TypeStringArray,
 					},
 					{
@@ -476,37 +476,37 @@ func Filesystems() *schema.Table {
 					},
 					{
 						Name:        "self_managed_ad_config_dns_ips",
-						Description: "A list of up to three IP addresses of DNS servers or domain controllers in the self-managed AD directory.",
+						Description: "A list of up to three IP addresses of DNS servers or domain controllers in the self-managed AD directory",
 						Type:        schema.TypeStringArray,
 						Resolver:    schema.PathResolver("SelfManagedActiveDirectoryConfiguration.DnsIps"),
 					},
 					{
 						Name:        "self_managed_ad_config_domain_name",
-						Description: "The fully qualified domain name of the self-managed AD directory.",
+						Description: "The fully qualified domain name of the self-managed AD directory",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("SelfManagedActiveDirectoryConfiguration.DomainName"),
 					},
 					{
 						Name:        "self_managed_ad_config_file_system_administrators_group",
-						Description: "The name of the domain group whose members have administrative privileges for the FSx file system.",
+						Description: "The name of the domain group whose members have administrative privileges for the FSx file system",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("SelfManagedActiveDirectoryConfiguration.FileSystemAdministratorsGroup"),
 					},
 					{
 						Name:        "self_managed_ad_config_organizational_unit_distinguished_name",
-						Description: "The fully qualified distinguished name of the organizational unit within the self-managed AD directory to which the Windows File Server or ONTAP storage virtual machine (SVM) instance is joined.",
+						Description: "The fully qualified distinguished name of the organizational unit within the self-managed AD directory to which the Windows File Server or ONTAP storage virtual machine (SVM) instance is joined",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("SelfManagedActiveDirectoryConfiguration.OrganizationalUnitDistinguishedName"),
 					},
 					{
 						Name:        "self_managed_ad_config_user_name",
-						Description: "The user name for the service account on your self-managed AD domain that FSx uses to join to your AD domain.",
+						Description: "The user name for the service account on your self-managed AD domain that FSx uses to join to your AD domain",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("SelfManagedActiveDirectoryConfiguration.UserName"),
 					},
 					{
 						Name:        "throughput_capacity",
-						Description: "The throughput of the Amazon FSx file system, measured in megabytes per second.",
+						Description: "The throughput of the Amazon FSx file system, measured in megabytes per second",
 						Type:        schema.TypeBigInt,
 					},
 					{
