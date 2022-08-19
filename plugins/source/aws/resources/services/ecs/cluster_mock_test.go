@@ -60,8 +60,6 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	}
 	m.EXPECT().DescribeContainerInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(&instances, nil)
 
-	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
-
 	listTasks := ecs.ListTasksOutput{}
 	err = faker.FakeData(&listTasks)
 	if err != nil {
