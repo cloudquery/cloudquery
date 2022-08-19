@@ -43,8 +43,11 @@ resource "aws" "iam" "roles" {
   }
   column "tags" {
     // TypeJson
-    type              = "json"
-    generate_resolver = true
+    type = "json"
+    resolver "resolveTags" {
+      path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveTags"
+    }
+
   }
   user_relation "aws" "iam" "role_policies" {
     path = "github.com/aws/aws-sdk-go-v2/service/iam.GetRolePolicyOutput"
@@ -98,7 +101,7 @@ resource "aws" "iam" "users" {
     rename = "id"
   }
   column "password_status" {
-    type = "bool"
+    type   = "bool"
     rename = "password_enabled"
   }
   column "report_user_arn" {
@@ -109,23 +112,23 @@ resource "aws" "iam" "users" {
   }
 
 
-  column "password_last_changed"{
+  column "password_last_changed" {
     type = "timestamp"
   }
-  column "password_next_rotation"{
+  column "password_next_rotation" {
     type = "timestamp"
   }
 
-  column "cert1_last_rotated"{
+  column "cert1_last_rotated" {
     type = "timestamp"
   }
-  column "access_key1_last_rotated"{
+  column "access_key1_last_rotated" {
     type = "timestamp"
   }
-  column "cert2_last_rotated"{
+  column "cert2_last_rotated" {
     type = "timestamp"
   }
-  column "access_key2_last_rotated"{
+  column "access_key2_last_rotated" {
     type = "timestamp"
   }
 
@@ -147,10 +150,10 @@ resource "aws" "iam" "users" {
     column "access_key_last_used" {
       rename = "last_used"
     }
-     column "last_used_last_used_date"{
+    column "last_used_last_used_date" {
       rename = "last_used_date"
     }
-   
+
   }
   user_relation "aws" "iam" "groups" {
     path = "github.com/aws/aws-sdk-go-v2/service/iam/types.Group"
@@ -158,7 +161,7 @@ resource "aws" "iam" "users" {
   user_relation "aws" "iam" "attached_policies" {
     path = "github.com/aws/aws-sdk-go-v2/service/iam/types.AttachedPolicy"
   }
-    user_relation "aws" "iam" "user_policies" {
+  user_relation "aws" "iam" "user_policies" {
     path = "github.com/aws/aws-sdk-go-v2/service/iam.GetUserPolicyOutput"
     column "policy_document" {
       type              = "json"

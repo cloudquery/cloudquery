@@ -43,7 +43,7 @@ func Roles() *schema.Table {
 			},
 			{
 				Name:        "create_date",
-				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the role was created.  This member is required.",
+				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the role was created.",
 				Type:        schema.TypeTimestamp,
 			},
 			{
@@ -59,7 +59,7 @@ func Roles() *schema.Table {
 			},
 			{
 				Name:        "role_name",
-				Description: "The friendly name that identifies the role.  This member is required.",
+				Description: "The friendly name that identifies the role.",
 				Type:        schema.TypeString,
 			},
 			{
@@ -106,7 +106,7 @@ func Roles() *schema.Table {
 				Name:        "tags",
 				Description: "A list of tags that are attached to the role",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRolesTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -129,12 +129,12 @@ func Roles() *schema.Table {
 					},
 					{
 						Name:        "policy_name",
-						Description: "The name of the policy.  This member is required.",
+						Description: "The name of the policy.",
 						Type:        schema.TypeString,
 					},
 					{
 						Name:        "role_name",
-						Description: "The role the policy is associated with.  This member is required.",
+						Description: "The role the policy is associated with.",
 						Type:        schema.TypeString,
 					},
 				},
@@ -149,42 +149,6 @@ func Roles() *schema.Table {
 
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listRoles, roleDetail))
-}
-
-func listRoles(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
-	var config iam.ListRolesInput
-	svc := meta.(*client.Client).Services().IAM
-	for {
-		response, err := svc.ListRoles(ctx, &config)
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		for _, role := range response.Roles {
-			detailChan <- role
-		}
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
-	}
-	return nil
-}
-
-func roleDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
-	c := meta.(*client.Client)
-	role := listInfo.(types.Role)
-	svc := meta.(*client.Client).Services().IAM
-	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
-		RoleName: role.RoleName,
-	})
-	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
-		errorChan <- diag.WrapError(err)
-		return
-	}
-	resultsChan <- roleDetails.Role
 }
 func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Role)
@@ -222,24 +186,6 @@ func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.Clien
 		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set("assume_role_policy_document", decodedDocument))
-}
-func resolveRolesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(*types.Role)
-	cl := meta.(*client.Client)
-	svc := cl.Services().IAM
-	response, err := svc.ListRoleTags(ctx, &iam.ListRoleTagsInput{RoleName: r.RoleName})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			meta.Logger().Debug("ListRoleTags: role does not exist", "err", err)
-			return nil
-		}
-		return diag.WrapError(err)
-	}
-	tags := map[string]*string{}
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
-	}
-	return diag.WrapError(resource.Set("tags", tags))
 }
 func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -284,4 +230,43 @@ func resolveRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMe
 		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set(c.Name, document))
+}
+
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
+func listRoles(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
+	var config iam.ListRolesInput
+	svc := meta.(*client.Client).Services().IAM
+	for {
+		response, err := svc.ListRoles(ctx, &config)
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		for _, role := range response.Roles {
+			detailChan <- role
+		}
+		if aws.ToString(response.Marker) == "" {
+			break
+		}
+		config.Marker = response.Marker
+	}
+	return nil
+}
+func roleDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+	c := meta.(*client.Client)
+	role := listInfo.(types.Role)
+	svc := meta.(*client.Client).Services().IAM
+	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
+		RoleName: role.RoleName,
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return
+		}
+		errorChan <- diag.WrapError(err)
+		return
+	}
+	resultsChan <- roleDetails.Role
 }

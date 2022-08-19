@@ -70,12 +70,6 @@ func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListRoleTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&iam.ListRoleTagsOutput{
-			Tags: []iamTypes.Tag{
-				tag,
-			},
-		}, nil)
 
 	return client.Services{
 		IAM: m,
