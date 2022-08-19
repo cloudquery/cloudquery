@@ -1,0 +1,88 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+env: 
+  CGO_ENABLED: 0
+  CQ_NO_TELEMETRY: 1
+
+jobs:
+  resolve-modules:
+    name: Resolve Modules
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v3
+      - id: set-matrix
+        run: ./scripts/resolve-modules.sh
+  test_build:
+    name: Build
+    needs: resolve-modules
+    strategy:
+      matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
+      fail-fast: false
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v26
+        with:
+          files: |
+            ${{ matrix.workdir }}
+      - name: Set up Go 1.x
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        uses: actions/setup-go@v3
+        with:
+          go-version: ^1.18
+      - uses: actions/cache@v3
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        with:
+          # In order:
+          # * Module download cache
+          # * Build cache (Linux)
+          # * Build cache (Mac)
+          # * Build cache (Windows)
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/Library/Caches/go-build
+            ~\AppData\Local\go-build
+          key: ${{ runner.os }}-go-1.18-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.18-
+
+      - name: Get dependencies
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        working-directory: ${{ matrix.workdir }}
+        run: go get -v -t -d ./...
+
+      - name: Build
+        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        run: go build .
+        working-directory: ${{ matrix.workdir }}

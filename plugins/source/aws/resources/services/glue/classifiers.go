@@ -234,17 +234,18 @@ func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-
-// nolint:gocritic
 func resolveGlueClassifierName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Classifier)
 	if r.CsvClassifier != nil {
 		return diag.WrapError(resource.Set(c.Name, r.CsvClassifier.Name))
-	} else if r.JsonClassifier != nil {
+	}
+	if r.JsonClassifier != nil {
 		return diag.WrapError(resource.Set(c.Name, r.JsonClassifier.Name))
-	} else if r.GrokClassifier != nil {
+	}
+	if r.GrokClassifier != nil {
 		return diag.WrapError(resource.Set(c.Name, r.GrokClassifier.Name))
-	} else if r.XMLClassifier != nil {
+	}
+	if r.XMLClassifier != nil {
 		return diag.WrapError(resource.Set(c.Name, r.XMLClassifier.Name))
 	}
 	return nil

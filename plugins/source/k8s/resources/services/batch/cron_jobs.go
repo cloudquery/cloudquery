@@ -100,10 +100,10 @@ func CronJobs() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "cluster_name",
-				Description: "The name of the cluster which the object belongs to. This is used to distinguish resources with same name and namespace in different clusters. This field is not set anywhere right now and apiserver is going to ignore it if set in create or update request.",
+				Name:        "zzz_cluster_name",
+				Description: "Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ObjectMeta.ClusterName"),
+				Resolver:    schema.PathResolver("ObjectMeta.ZZZ_DeprecatedClusterName"),
 			},
 			{
 				Name:        "managed_fields",
