@@ -1,3 +1,4 @@
+//check-for-changes
 service          = "aws"
 output_directory = "."
 add_generate     = true
@@ -37,7 +38,7 @@ resource "aws" "glue" "jobs" {
   }
   userDefinedColumn "arn" {
     type              = "string"
-    description       = "The Amazon Resource Name (ARN) of the glue resource."
+    description       = "The Amazon Resource Name (ARN) of the workflow."
     generate_resolver = true
   }
 

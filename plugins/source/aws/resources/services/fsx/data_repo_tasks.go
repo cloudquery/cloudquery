@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -17,20 +16,20 @@ func DataRepoTasks() *schema.Table {
 		Name:         "aws_fsx_data_repo_tasks",
 		Description:  "A description of the data repository task",
 		Resolver:     fetchFsxDataRepoTasks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:        "region",
-				Description: "The AWS Region of the resource.",
+				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
@@ -46,7 +45,7 @@ func DataRepoTasks() *schema.Table {
 			},
 			{
 				Name:        "lifecycle",
-				Description: "The lifecycle status of the data repository task, as follows:  * PENDING - Amazon FSx has not started the task  * EXECUTING - Amazon FSx is processing the task  * FAILED - Amazon FSx was not able to complete the task",
+				Description: "The lifecycle status of the data repository task, as follows:  * PENDING - Amazon FSx has not started the task",
 				Type:        schema.TypeString,
 			},
 			{
@@ -56,7 +55,7 @@ func DataRepoTasks() *schema.Table {
 			},
 			{
 				Name:        "type",
-				Description: "The type of data repository task  * The EXPORT_TO_REPOSITORY data repository task exports from your Lustre file system from to a linked S3 bucket  * The IMPORT_METADATA_FROM_REPOSITORY data repository task imports metadata changes from a linked S3 bucket to your Lustre file system",
+				Description: "The type of data repository task",
 				Type:        schema.TypeString,
 			},
 			{
@@ -138,7 +137,7 @@ func DataRepoTasks() *schema.Table {
 				Name:        "tags",
 				Description: "A list of Tag values, with a maximum of 50 elements",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDataRepoTasksTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 	}
@@ -152,19 +151,13 @@ func fetchFsxDataRepoTasks(ctx context.Context, meta schema.ClientMeta, parent *
 	cl := meta.(*client.Client)
 	svc := cl.Services().FSX
 	input := fsx.DescribeDataRepositoryTasksInput{MaxResults: aws.Int32(1000)}
-	for {
-		result, err := svc.DescribeDataRepositoryTasks(ctx, &input)
+	paginator := fsx.NewDescribeDataRepositoryTasksPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		res <- result.DataRepositoryTasks
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
-}
-func resolveDataRepoTasksTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(resource.Item.(types.DataRepositoryTask).Tags)))
 }

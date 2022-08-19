@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/services/subscription/mgmt/2020-09-01/subscription"
 	// Import all autorest modules
@@ -59,25 +58,26 @@ func (c Client) withSubscription(subscriptionId string) *Client {
 func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
 	providerConfig := config.(*Config)
 
-	logger.Info("Trying to authenticate via CLI")
-	azureAuth, err := auth.NewAuthorizerFromCLI()
+	// Old-SDK auth with ordering:
+	//  1. Environment
+	//  2. AzureCLI
+	logger.Info("Trying to authenticate via environment variables")
+	azureAuth, err := auth.NewAuthorizerFromEnvironment()
 	if err != nil {
-		logger.Info("Trying to authenticate via environment variables")
-		azureAuth, err = auth.NewAuthorizerFromEnvironment()
+		logger.Info("Trying to authenticate via CLI")
+		azureAuth, err = auth.NewAuthorizerFromCLI()
 		if err != nil {
 			return nil, diag.FromError(err, diag.USER)
 		}
 	}
 
-	logger.Info("Trying to authenticate via CLI (azidentity)")
-	var azCred azcore.TokenCredential
-	azCred, err = azidentity.NewAzureCLICredential(nil)
+	// New-SDK auth; chained credentials with ordering:
+	//  1. Environment
+	//  2. ManagedIdentity
+	//  3. AzureCLI
+	azCred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
-		logger.Info("Trying to authenticate via environment variables (azidentity)")
-		azCred, err = azidentity.NewEnvironmentCredential(nil)
-		if err != nil {
-			return nil, diag.FromError(err, diag.USER)
-		}
+		return nil, diag.FromError(err, diag.USER)
 	}
 
 	client := NewAzureClient(logger, providerConfig.Subscriptions)

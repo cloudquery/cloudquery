@@ -390,26 +390,16 @@ func Clusters() *schema.Table {
 // ====================================================================================================================
 
 func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	awsProviderClient := meta.(*client.Client)
+	var input elasticache.DescribeCacheClustersInput
+	input.ShowCacheNodeInfo = aws.Bool(true)
 
-	svc := awsProviderClient.Services().ElastiCache
-
-	var describeCacheClustersInput elasticache.DescribeCacheClustersInput
-	describeCacheClustersInput.ShowCacheNodeInfo = aws.Bool(true)
-
-	for {
-		describeCacheClustersOutput, err := svc.DescribeCacheClusters(ctx, &describeCacheClustersInput)
-
+	paginator := elasticache.NewDescribeCacheClustersPaginator(meta.(*client.Client).Services().ElastiCache, &input)
+	for paginator.HasMorePages() {
+		v, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-
-		res <- describeCacheClustersOutput.CacheClusters
-
-		if aws.ToString(describeCacheClustersOutput.Marker) == "" {
-			return nil
-		}
-
-		describeCacheClustersInput.Marker = describeCacheClustersOutput.Marker
+		res <- v.CacheClusters
 	}
+	return nil
 }

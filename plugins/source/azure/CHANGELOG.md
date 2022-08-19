@@ -18,6 +18,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.13.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.12.5...plugins/source/azure/v0.13.0) (2022-08-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* Fix Azure credential chain (#1283)
+
+### Bug Fixes
+
+* Fix Azure credential chain ([#1283](https://github.com/cloudquery/cloudquery/issues/1283)) ([c2aadf7](https://github.com/cloudquery/cloudquery/commit/c2aadf78533a65679ef40ea32c1b899724ab6d69))
+
+## [0.12.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure-v0.12.4...plugins/source/azure/v0.12.5) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.9 ([#1286](https://github.com/cloudquery/cloudquery/issues/1286)) ([67ac422](https://github.com/cloudquery/cloudquery/commit/67ac422f392387e674cb70386e612befa5b455f0))
+
 ## [0.12.4](https://github.com/cloudquery/cq-provider-azure/compare/v0.12.3...v0.12.4) (2022-08-07)
 
 

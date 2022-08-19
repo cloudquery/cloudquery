@@ -26,6 +26,6 @@ func buildElasticacheClusters(t *testing.T, ctrl *gomock.Controller) client.Serv
 	}
 }
 
-func TestEksClusters(t *testing.T) {
+func TestElasticacheClusters(t *testing.T) {
 	client.AwsMockTestHelper(t, Clusters(), buildElasticacheClusters, client.TestOptions{})
 }
