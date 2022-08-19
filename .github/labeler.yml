@@ -20,3 +20,5 @@ terraform:
   - plugins/source/terraform/**/*
 website:
   - website/**/*
+cli:
+  - cli/**/*
