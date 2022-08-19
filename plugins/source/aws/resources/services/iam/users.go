@@ -2,7 +2,9 @@ package iam
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"net/url"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -80,6 +82,11 @@ func Users() *schema.Table {
 				Description: "A list of tags that are associated with the user",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("User.Tags"),
+			},
+			{
+				Name:     "user",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReportUser.User"),
 			},
 			{
 				Name:     "arn",
@@ -277,7 +284,8 @@ func Users() *schema.Table {
 					{
 						Name:        "policy_document",
 						Description: "The policy document",
-						Type:        schema.TypeString,
+						Type:        schema.TypeJSON,
+						Resolver:    resolveUserPoliciesPolicyDocument,
 					},
 					{
 						Name:        "policy_name",
@@ -405,6 +413,21 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
+func resolveUserPoliciesPolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*iam.GetUserPolicyOutput)
+
+	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+
+	var document map[string]interface{}
+	err = json.Unmarshal([]byte(decodedDocument), &document)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set(c.Name, document))
+}
 
 // ====================================================================================================================
 //                                                  User Defined Helpers
@@ -437,7 +460,6 @@ func userDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- 
 	}
 	resultsChan <- WrappedUser{*userDetail.User, reportUser}
 }
-
 func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schema.Resource) error {
 	r := resource.Item.(WrappedUser)
 	if r.ReportUser == nil {

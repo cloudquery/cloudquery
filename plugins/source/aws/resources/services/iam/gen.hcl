@@ -155,6 +155,10 @@ resource "aws" "iam" "users" {
   }
     user_relation "aws" "iam" "user_policies" {
     path = "github.com/aws/aws-sdk-go-v2/service/iam.GetUserPolicyOutput"
+    column "policy_document" {
+      type              = "json"
+      generate_resolver = true
+    }
   }
 
 }
