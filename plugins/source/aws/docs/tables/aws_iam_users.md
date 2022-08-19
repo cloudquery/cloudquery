@@ -13,6 +13,7 @@
 |permissions_boundary_arn|text|The ARN of the policy used to set the permissions boundary for the user or role.|
 |permissions_boundary_type|text|The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity|
 |tags|jsonb|A list of tags that are associated with the user|
+|user|text||
 |arn|text||
 |password_enabled|boolean||
 |password_last_changed|timestamp without time zone||
