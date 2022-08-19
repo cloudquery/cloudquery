@@ -10,13 +10,11 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 Today, we’re excited to announce the availability of [CloudQuery Policies](https://www.cloudquery.io/blog/announcing-cloudquery-policies) in [CloudQuery Hub](https://hub.cloudquery.io/).
 
 Less than two months ago we introduced [CloudQuery Hub](https://www.cloudquery.io/blog/announcing-cloudquery-hub) as a single place to browse, install and share CloudQuery pluggable providers and integrations.
 
 Last month we introduced [CloudQuery Policies](https://www.cloudquery.io/blog/announcing-cloudquery-policies) that brought policy-as-code to the CloudQuery ecosystem. CQ Policies enable users to codify, version and run security, governance, cost and compliance rules, using SQL as the query layer and HCL as the logical layer.
-
 
 ## What’s Inside CloudQuery Policy Hub?
 
@@ -27,6 +25,6 @@ As a natural next step we created a link between the two to enable users to brow
 
 ## What’s next
 
-As with every product/feature announcement, we are eager to hear feedback and ideas - feel free to hop into our [Discord Channel](https://cloudquery.io/discord) or open an issue on our [github](https://github.com/cloudquery/cloudquery).
+As with every product/feature announcement, we are eager to hear feedback and ideas - feel free to hop into our [Discord Channel](https://www.cloudquery.io/discord) or open an issue on our [github](https://github.com/cloudquery/cloudquery).
 
 For more updates, subscribe to our newsletter below and/or follow us on [twitter](https://twitter.com/cloudqueryio).

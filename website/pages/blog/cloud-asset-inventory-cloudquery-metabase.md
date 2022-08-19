@@ -12,9 +12,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 In this blog post, we will walk you through how to setup CloudQuery to build your cloud asset inventory in PostgreSQL and connect it to [Metabase](https://www.metabase.com/) for visualization, monitoring and reporting.
-
 
 ## General Architecture
 
@@ -32,7 +30,7 @@ In this blog post, we will walk you through how to setup CloudQuery to build you
 
 ### Step 1: **Install or Deploy CloudQuery**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [Getting Started with AWS Guide](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws).
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [Getting Started with AWS Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to AWS on Amazon Aurora and EKS [here](https://github.com/cloudquery/terraform-aws-cloudquery).
 

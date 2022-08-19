@@ -12,8 +12,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
-
 ## v0.20.0 - Improved migrations, new protocol and stability
 
 ### TL;DR 📕
@@ -46,4 +44,4 @@ This feature allows you to easily support changes across any dialect you use if 
 
 ### What's next?
 
-As always more resources, providers, policies, improved stability, and support for a new feature called Query On Demand. If you would like to influence our roadmap feel free to open an issue on our [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
+As always more resources, providers, policies, improved stability, and support for a new feature called Query On Demand. If you would like to influence our roadmap feel free to open an issue on our [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://www.cloudquery.io/discord)!

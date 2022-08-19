@@ -2,11 +2,11 @@
 
 This section will go through what is needed to develop you own provider for CloudQuery and optionally publish it in on CloudQuery Hub.
 
-Before continuing, it is recommended to get familiar with [CloudQuery architecture](architecture.md).
+Before continuing, it is recommended to get familiar with [CloudQuery architecture](https://www.cloudquery.io/docs/developers/architecture).
 
 CloudQuery providers utilize `cq-provider-sdk`, which abstracts most of the TL \(in ETL, extract-transform-load\). So, as a developer, you will only have to implement the \("E" in "ETL"\) initializing, authentication, and fetching of the data via the third-party APIs — the SDK will take care of transforming the data and loading it into the database. Also, your provider will get support out-of-the-box for new features and things like other database support as cloudquery-core progresses.
 
-Also see [full tutorial here](./tutorials/creating-new-provider.md).
+Also see [full tutorial here](https://www.cloudquery.io/docs/developers/tutorials/creating-new-provider).
 
 ## The Template
 

@@ -13,7 +13,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 The Log4shell (log4j) vulnerability (CVE-2021-44228) emphasized more than ever the importance of setting network controls & policies not only on inbound traffic but also on outbound traffic.
 
 In this blog we will go through:
@@ -21,7 +20,6 @@ In this blog we will go through:
 - What are the requirements for log4j exploitability?
 - What are the possible ways to expose different AWS resources to the internet via outbound access?.
 - How to find resources unrestricted outbound with CloudQuery open-source cloud asset inventory. This will help both to prioritize updates in the current situation as well as help apply network best practices in general.
-
 
 ## Log4j Vulnerability and Exploitability
 
@@ -123,4 +121,4 @@ This doesn’t cover all the methods but does cover pretty much the most popular
 
 EC2 instances are just one type of compute resource that can run a vulnerable application. Applications can also be run on other services including ECS, Lambda, AppRunner, Lightsail, and more.
 
-If you found this tutorial/policy useful and you would like to see more of these feel free to either open an [issue](https://github.com/cloudquery-policies/aws), hop on [discord](https://cloudquery.io/discord) or [tweet](https://twitter.com/cloudqueryio) us.
+If you found this tutorial/policy useful and you would like to see more of these feel free to either open an [issue](https://github.com/cloudquery-policies/aws), hop on [discord](https://www.cloudquery.io/discord) or [tweet](https://twitter.com/cloudqueryio) us.

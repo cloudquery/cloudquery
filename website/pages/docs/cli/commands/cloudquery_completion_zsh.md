@@ -1,7 +1,6 @@
 ---
-title: completion zsh
+title: "completion_zsh"
 ---
-
 ## cloudquery completion zsh
 
 Generate the autocompletion script for zsh
@@ -11,35 +10,36 @@ Generate the autocompletion script for zsh
 Generate the autocompletion script for the zsh shell.
 
 If shell completion is not already enabled in your environment you will need
-to enable it. You can execute the following once:
+to enable it.  You can execute the following once:
 
-```powershell
-echo "autoload -U compinit; compinit" >> ~/.zshrc
+```bash
+	echo "autoload -U compinit; compinit" >> ~/.zshrc
 ```
 
 To load completions in your current shell session:
 
-```powershell
-source <(cloudquery completion zsh); compdef _cloudquery cloudquery
+```bash
+	source <(cloudquery completion zsh); compdef _cloudquery cloudquery
 ```
 
 To load completions for every new session, execute once:
 
 #### Linux:
 
-```powershell
-cloudquery completion zsh > "${fpath[1]}/_cloudquery"
+```bash
+	cloudquery completion zsh > "${fpath[1]}/_cloudquery"
 ```
 
 #### macOS:
 
-```powershell
-cloudquery completion zsh > $(brew --prefix)/share/zsh/site-functions/_cloudquery
+```bash
+	cloudquery completion zsh > $(brew --prefix)/share/zsh/site-functions/_cloudquery
 ```
 
 You will need to start a new shell for this setup to take effect.
 
-```powershell
+
+```
 cloudquery completion zsh [flags]
 ```
 
@@ -76,4 +76,5 @@ cloudquery completion zsh [flags]
 
 ### SEE ALSO
 
-- [cloudquery completion](cloudquery_completion.md) - Generate the autocompletion script for the specified shell
+* [cloudquery completion](/docs/cli/commands/cloudquery_completion)	 - Generate the autocompletion script for the specified shell
+

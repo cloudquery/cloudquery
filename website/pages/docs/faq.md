@@ -25,4 +25,4 @@ The only caveat is that in the case of configuration changes, subsequent fetches
 
 You can use the `cloudquery provider purge [provider]` to delete old resources. For example, you can remove
 resources that weren't updated in the last three days with `cloudquery provider purge [provider] --last-update=72h --dry-run=false`.
-You can find the full details [here](https://docs.cloudquery.io/docs/cli/commands/provider_purge).
+You can find the full details [here](https://www.cloudquery.io/docs/cli/commands/cloudquery_provider_purge).
