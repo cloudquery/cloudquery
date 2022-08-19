@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -17,20 +16,20 @@ func DataRepoAssociations() *schema.Table {
 		Name:         "aws_fsx_data_repo_associations",
 		Description:  "The configuration of a data repository association that links an Amazon FSx for Lustre file system to an Amazon S3 bucket",
 		Resolver:     fetchFsxDataRepoAssociations,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:        "region",
-				Description: "The AWS Region of the resource.",
+				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
@@ -88,13 +87,13 @@ func DataRepoAssociations() *schema.Table {
 			},
 			{
 				Name:        "s3_auto_export_policy_events",
-				Description: "The AutoExportPolicy can have the following event values:  * NEW - Amazon FSx automatically exports new files and directories to the data repository as they are added to the file system  * CHANGED - Amazon FSx automatically exports changes to files and directories on the file system to the data repository  * DELETED - Files and directories are automatically deleted on the data repository when they are deleted on the file system  You can define any combination of event types for your AutoExportPolicy",
+				Description: "The AutoExportPolicy can have the following event values:  * NEW - Amazon FSx automatically exports new files and directories to the data repository as they are added to the file system",
 				Type:        schema.TypeStringArray,
 				Resolver:    schema.PathResolver("S3.AutoExportPolicy.Events"),
 			},
 			{
 				Name:        "s3_auto_import_policy_events",
-				Description: "The AutoImportPolicy can have the following event values:  * NEW - Amazon FSx automatically imports metadata of files added to the linked S3 bucket that do not currently exist in the FSx file system  * CHANGED - Amazon FSx automatically updates file metadata and invalidates existing file content on the file system as files change in the data repository  * DELETED - Amazon FSx automatically deletes files on the file system as corresponding files are deleted in the data repository  You can define any combination of event types for your AutoImportPolicy",
+				Description: "The AutoImportPolicy can have the following event values:  * NEW - Amazon FSx automatically imports metadata of files added to the linked S3 bucket that do not currently exist in the FSx file system",
 				Type:        schema.TypeStringArray,
 				Resolver:    schema.PathResolver("S3.AutoImportPolicy.Events"),
 			},
@@ -102,7 +101,7 @@ func DataRepoAssociations() *schema.Table {
 				Name:        "tags",
 				Description: "A list of Tag values, with a maximum of 50 elements",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveDataRepoAssociationsTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 	}
@@ -116,19 +115,13 @@ func fetchFsxDataRepoAssociations(ctx context.Context, meta schema.ClientMeta, p
 	cl := meta.(*client.Client)
 	svc := cl.Services().FSX
 	input := fsx.DescribeDataRepositoryAssociationsInput{MaxResults: aws.Int32(25)}
-	for {
-		result, err := svc.DescribeDataRepositoryAssociations(ctx, &input)
+	paginator := fsx.NewDescribeDataRepositoryAssociationsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		res <- result.Associations
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
-}
-func resolveDataRepoAssociationsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(resource.Item.(types.DataRepositoryAssociation).Tags)))
 }

@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -17,20 +16,20 @@ func StorageVms() *schema.Table {
 		Name:         "aws_fsx_storage_vms",
 		Description:  "Describes the Amazon FSx for NetApp ONTAP storage virtual machine (SVM) configuration",
 		Resolver:     fetchFsxStorageVms,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:        "region",
-				Description: "The AWS Region of the resource.",
+				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 			},
@@ -130,7 +129,7 @@ func StorageVms() *schema.Table {
 			},
 			{
 				Name:        "lifecycle",
-				Description: "Describes the SVM's lifecycle status  * CREATED - The SVM is fully available for use  * CREATING - Amazon FSx is creating the new SVM  * DELETING - Amazon FSx is deleting an existing SVM  * FAILED - Amazon FSx was unable to create the SVM  * MISCONFIGURED - The SVM is in a failed but recoverable state  * PENDING - Amazon FSx has not started creating the SVM",
+				Description: "Describes the SVM's lifecycle status",
 				Type:        schema.TypeString,
 			},
 			{
@@ -170,7 +169,7 @@ func StorageVms() *schema.Table {
 				Name:        "tags",
 				Description: "A list of Tag values, with a maximum of 50 elements",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveStorageVmsTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "uuid",
@@ -190,19 +189,13 @@ func fetchFsxStorageVms(ctx context.Context, meta schema.ClientMeta, parent *sch
 	cl := meta.(*client.Client)
 	svc := cl.Services().FSX
 	input := fsx.DescribeStorageVirtualMachinesInput{MaxResults: aws.Int32(1000)}
-	for {
-		result, err := svc.DescribeStorageVirtualMachines(ctx, &input)
+	paginator := fsx.NewDescribeStorageVirtualMachinesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		res <- result.StorageVirtualMachines
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
-}
-func resolveStorageVmsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(resource.Item.(types.StorageVirtualMachine).Tags)))
 }

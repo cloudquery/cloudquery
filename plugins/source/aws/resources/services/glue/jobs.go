@@ -363,6 +363,10 @@ func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
 func jobARN(cl *client.Client, name string) string {
 	return cl.ARN(client.GlueService, "job", name)
 }

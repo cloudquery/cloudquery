@@ -30,7 +30,7 @@
 \ir ../queries/iam/service_account_keys_not_rotated.sql
 \set check_id '1.8'
 \echo "Executing check 1.8"
-\ir ../queries/iam/seperation_of_duties.sql
+\ir ../queries/iam/separation_of_duties.sql
 \set check_id '1.9'
 \echo "Executing check 1.9"
 \ir ../queries/kms/publicly_accessible.sql
@@ -39,7 +39,7 @@
 \ir ../queries/kms/keys_not_rotated_within_90_days.sql
 \set check_id '1.11'
 \echo "Executiong check 1.11"
-\ir ../queries/iam/kms_seperation_of_duties.sql
+\ir ../queries/iam/kms_separation_of_duties.sql
 -- MANUAL
 \set check_id '1.12'
 \echo "Executing check 1.12"

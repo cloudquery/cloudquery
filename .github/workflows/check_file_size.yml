@@ -1,0 +1,40 @@
+name: Check image sizes
+
+on:
+  pull_request:
+    paths:
+      - "**.jpg"
+      - "**.jpeg"
+      - "**.png"
+      - "**.webp"
+
+jobs:
+  check-files-size:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check file sizes
+        id: should-run
+        shell: bash
+        run: |
+          set -o pipefail
+
+          echo Checking files with size over ${LIMIT}kB
+
+          IMAGES=$(find . \
+          -iname '*.png' -size +${LIMIT}k -o \
+          -iname '*.jpg' -size +${LIMIT}k -o \
+          -iname '*.jpeg' -size +${LIMIT}k)
+
+          if [ -z "$IMAGES" ]; then
+              echo 'No large files found'
+          else
+              echo 'Use https://tinypng.com/ to compress images:'
+              du -sh $IMAGES
+              exit 1;
+          fi;
+
+        env:
+          LIMIT: 250

@@ -1,0 +1,21 @@
+{
+  "build": {
+    "env": {
+      "ENABLE_ROOT_PATH_BUILD_CACHE": "1",
+      "FORCE_RUNTIME_TAG": "canary"
+    }
+  },
+  "github": {
+    "silent": true
+  },
+  "redirects": [
+    {
+      "source": "/discord",
+      "destination": "https://discord.gg/QwnWfrcfHg"
+    },
+    {
+      "source": "/og-image/:title",
+      "destination": "https://img.abyssale.com/3b183707-abf0-46ec-9edd-16b712a08b65?text_title=:title"
+    }
+  ]
+}

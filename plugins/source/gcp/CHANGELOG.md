@@ -14,6 +14,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.9.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.9.5...plugins/source/gcp/v0.9.6) (2022-08-18)
+
+
+### Features
+
+* Add website, docs and blog to our main repo ([#1159](https://github.com/cloudquery/cloudquery/issues/1159)) ([dd69948](https://github.com/cloudquery/cloudquery/commit/dd69948feced004497f127d284f2604de0354a1f))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.10 ([#1474](https://github.com/cloudquery/cloudquery/issues/1474)) ([b142e13](https://github.com/cloudquery/cloudquery/commit/b142e135172b1eed1abb2cbec85054ea7f66199d))
+
+## [0.9.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp-v0.9.4...plugins/source/gcp/v0.9.5) (2022-08-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.9 ([#1286](https://github.com/cloudquery/cloudquery/issues/1286)) ([67ac422](https://github.com/cloudquery/cloudquery/commit/67ac422f392387e674cb70386e612befa5b455f0))
+
 ## [0.9.4](https://github.com/cloudquery/cq-provider-gcp/compare/v0.9.3...v0.9.4) (2022-08-07)
 
 

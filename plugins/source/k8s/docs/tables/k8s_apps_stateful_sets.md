@@ -17,7 +17,7 @@ StatefulSet represents a set of pods with consistent identities. Identities are 
 |annotations|jsonb|Annotations is an unstructured key value map stored with a resource that may be set by external tools to store and retrieve arbitrary metadata|
 |owner_references|jsonb|List of objects depended by this object|
 |finalizers|text[]|Must be empty before the object is deleted from the registry|
-|cluster_name|text|The name of the cluster which the object belongs to. This is used to distinguish resources with same name and namespace in different clusters. This field is not set anywhere right now and apiserver is going to ignore it if set in create or update request.|
+|zzz_cluster_name|text|Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.|
 |managed_fields|jsonb|ManagedFields maps workflow-id and version to the set of fields that are managed by that workflow|
 |replicas|integer|replicas is the desired number of replicas of the given Template. These are replicas in the sense that they are instantiations of the same Template, but individual replicas also have a consistent identity. If unspecified, defaults to 1. TODO: Consider a rename of this field.|
 |selector_match_labels|jsonb|matchLabels is a map of {key,value} pairs|
