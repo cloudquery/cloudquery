@@ -7,8 +7,8 @@ description_modifier "remove_read_only" {
   words = ["  This member is required."]
 }
 
-resource "aws" "fsx" "snapshots" {
-  path = "github.com/aws/aws-sdk-go-v2/service/fsx/types.Snapshot"
+resource "aws" "fsx" "data_repo_tasks" {
+  path = "github.com/aws/aws-sdk-go-v2/service/fsx/types.DataRepositoryTask"
   ignoreError "IgnoreCommonErrors" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
@@ -23,7 +23,7 @@ resource "aws" "fsx" "snapshots" {
     primary_keys = ["arn"]
   }
   userDefinedColumn "account_id" {
-    description = "The AWS Account ID of the resource."
+    description = "The AWS Account ID of the resource"
     type        = "string"
     resolver "resolveAWSAccount" {
       path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSAccount"
@@ -31,7 +31,7 @@ resource "aws" "fsx" "snapshots" {
   }
   userDefinedColumn "region" {
     type        = "string"
-    description = "The AWS Region of the resource."
+    description = "The AWS Region of the resource"
     resolver "resolveAWSRegion" {
       path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.ResolveAWSRegion"
     }
@@ -39,10 +39,6 @@ resource "aws" "fsx" "snapshots" {
 
   column "resource_arn" {
     rename = "arn"
-  }
-
-  column "administrative_actions" {
-    skip = true
   }
 
   column "tags" {
