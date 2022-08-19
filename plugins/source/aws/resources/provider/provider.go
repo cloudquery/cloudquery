@@ -285,7 +285,7 @@ func Provider() *provider.Provider {
 			"shield.subscriptions":                       shield.Subscriptions(),
 			"sns.subscriptions":                          sns.Subscriptions(),
 			"sns.topics":                                 sns.Topics(),
-			"sqs.queues":                                 sqs.SQSQueues(),
+			"sqs.queues":                                 sqs.Queues(),
 			"ssm.documents":                              ssm.SsmDocuments(),
 			"ssm.instances":                              ssm.SsmInstances(),
 			"ssm.parameters":                             ssm.Parameters(),
