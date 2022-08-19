@@ -34,9 +34,10 @@ func Groups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveXrayGroupTags,
+				Name:        "tags",
+				Description: "A list of Tags that specify information about the group",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveXrayGroupTags,
 			},
 			{
 				Name:        "filter_expression",
@@ -75,6 +76,7 @@ func Groups() *schema.Table {
 // ====================================================================================================================
 
 func fetchXrayGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	// GENERATED from github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate. Do not edit.
 	paginator := xray.NewGetGroupsPaginator(meta.(*client.Client).Services().Xray, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)

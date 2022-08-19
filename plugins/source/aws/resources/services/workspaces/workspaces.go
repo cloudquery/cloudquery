@@ -3,9 +3,7 @@ package workspaces
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
-	"github.com/aws/aws-sdk-go-v2/service/workspaces/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -18,7 +16,7 @@ func Workspaces() *schema.Table {
 		Description:  "Describes a WorkSpace.",
 		Resolver:     fetchWorkspacesWorkspaces,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("workspaces"),
-		IgnoreError:  client.IgnoreCommonErrors,
+		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
@@ -38,9 +36,6 @@ func Workspaces() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the workspaces workspace",
 				Type:        schema.TypeString,
-				Resolver: client.ResolveARN(client.WorkspacesService, func(resource *schema.Resource) ([]string, error) {
-					return []string{"workspace", *resource.Item.(types.Workspace).WorkspaceId}, nil
-				}),
 			},
 			{
 				Name:        "bundle_id",
@@ -58,16 +53,14 @@ func Workspaces() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "error_code",
-				Description:   "The error code that is returned if the WorkSpace cannot be created.",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:        "error_code",
+				Description: "The error code that is returned if the WorkSpace cannot be created.",
+				Type:        schema.TypeString,
 			},
 			{
-				Name:          "error_message",
-				Description:   "The text of the error message that is returned if the WorkSpace cannot be created.",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:        "error_message",
+				Description: "The text of the error message that is returned if the WorkSpace cannot be created.",
+				Type:        schema.TypeString,
 			},
 			{
 				Name:        "ip_address",
@@ -78,13 +71,11 @@ func Workspaces() *schema.Table {
 				Name:        "modification_states",
 				Description: "The modification states of the WorkSpace.",
 				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("ModificationStates"),
 			},
 			{
-				Name:          "root_volume_encryption_enabled",
-				Description:   "Indicates whether the data stored on the root volume is encrypted.",
-				Type:          schema.TypeBool,
-				IgnoreInTests: true,
+				Name:        "root_volume_encryption_enabled",
+				Description: "Indicates whether the data stored on the root volume is encrypted.",
+				Type:        schema.TypeBool,
 			},
 			{
 				Name:        "state",
@@ -102,16 +93,14 @@ func Workspaces() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "user_volume_encryption_enabled",
-				Description:   "Indicates whether the data stored on the user volume is encrypted.",
-				Type:          schema.TypeBool,
-				IgnoreInTests: true,
+				Name:        "user_volume_encryption_enabled",
+				Description: "Indicates whether the data stored on the user volume is encrypted.",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name:          "volume_encryption_key",
-				Description:   "The symmetric KMS key used to encrypt data stored on your WorkSpace",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:        "volume_encryption_key",
+				Description: "The symmetric KMS key used to encrypt data stored on your WorkSpace",
+				Type:        schema.TypeString,
 			},
 			{
 				Name:        "id",
@@ -128,7 +117,7 @@ func Workspaces() *schema.Table {
 			{
 				Name:        "root_volume_size_gib",
 				Description: "The size of the root volume",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("WorkspaceProperties.RootVolumeSizeGib"),
 			},
 			{
@@ -140,13 +129,13 @@ func Workspaces() *schema.Table {
 			{
 				Name:        "running_mode_auto_stop_timeout_in_minutes",
 				Description: "The time after a user logs off when WorkSpaces are automatically stopped. Configured in 60-minute intervals.",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("WorkspaceProperties.RunningModeAutoStopTimeoutInMinutes"),
 			},
 			{
 				Name:        "user_volume_size_gib",
 				Description: "The size of the user storage",
-				Type:        schema.TypeInt,
+				Type:        schema.TypeBigInt,
 				Resolver:    schema.PathResolver("WorkspaceProperties.UserVolumeSizeGib"),
 			},
 		},
@@ -157,20 +146,15 @@ func Workspaces() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchWorkspacesWorkspaces(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Workspaces
-	input := workspaces.DescribeWorkspacesInput{}
-	for {
-		output, err := svc.DescribeWorkspaces(ctx, &input)
+func fetchWorkspacesWorkspaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	// GENERATED from github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate. Do not edit.
+	paginator := workspaces.NewDescribeWorkspacesPaginator(meta.(*client.Client).Services().Workspaces, nil)
+	for paginator.HasMorePages() {
+		v, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		res <- output.Workspaces
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
+		res <- v.Workspaces
 	}
 	return nil
 }

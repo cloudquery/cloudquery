@@ -42,6 +42,16 @@ resource "aws" "xray" "encryption_config" {
 
 resource "aws" "xray" "sampling_rules" {
   path = "github.com/aws/aws-sdk-go-v2/service/xray/types.SamplingRuleRecord"
+  resolver "templated" {
+    generate = true
+    body_template_path = "github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate"
+    body_template_params = {
+      "Package": "xray",
+      "ServiceName": "Xray",
+      "NewPaginator": "NewGetSamplingRulesPaginator",
+      "ReadAttribute": "SamplingRuleRecords",
+    }
+  }
   ignoreError "IgnoreCommonErrors" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
@@ -89,6 +99,15 @@ resource "aws" "xray" "sampling_rules" {
 
 resource "aws" "xray" "groups" {
   path = "github.com/aws/aws-sdk-go-v2/service/xray/types.GroupSummary"
+  resolver "templated" {
+    generate = true
+    body_template_path = "github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate"
+    body_template_params = {
+      "Package": "xray",
+      "ServiceName": "Xray",
+      "ReadAttribute": "Groups",
+    }
+  }
   ignoreError "IgnoreCommonErrors" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }

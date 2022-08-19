@@ -34,9 +34,10 @@ func SamplingRules() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveXraySamplingRuleTags,
+				Name:        "tags",
+				Description: "A list of Tags that specify information about the sampling rule",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveXraySamplingRuleTags,
 			},
 			{
 				Name:        "created_at",
@@ -135,6 +136,7 @@ func SamplingRules() *schema.Table {
 // ====================================================================================================================
 
 func fetchXraySamplingRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	// GENERATED from github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate. Do not edit.
 	paginator := xray.NewGetSamplingRulesPaginator(meta.(*client.Client).Services().Xray, nil)
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)

@@ -3,9 +3,7 @@ package workspaces
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
-	"github.com/aws/aws-sdk-go-v2/service/workspaces/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -18,7 +16,7 @@ func Directories() *schema.Table {
 		Description:  "Describes a directory that is used with Amazon WorkSpaces.",
 		Resolver:     fetchWorkspacesDirectories,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("workspaces"),
-		IgnoreError:  client.IgnoreCommonErrors,
+		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
@@ -38,9 +36,6 @@ func Directories() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the workspaces directory",
 				Type:        schema.TypeString,
-				Resolver: client.ResolveARN(client.WorkspacesService, func(resource *schema.Resource) ([]string, error) {
-					return []string{"directory", *resource.Item.(types.WorkspaceDirectory).DirectoryId}, nil
-				}),
 			},
 			{
 				Name:        "alias",
@@ -81,10 +76,9 @@ func Directories() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "ip_group_ids",
-				Description:   "The identifiers of the IP access control groups associated with the directory.",
-				Type:          schema.TypeStringArray,
-				IgnoreInTests: true,
+				Name:        "ip_group_ids",
+				Description: "The identifiers of the IP access control groups associated with the directory.",
+				Type:        schema.TypeStringArray,
 			},
 			{
 				Name:        "registration_code",
@@ -185,18 +179,16 @@ func Directories() *schema.Table {
 				Resolver:    schema.PathResolver("WorkspaceAccessProperties.DeviceTypeZeroClient"),
 			},
 			{
-				Name:          "custom_security_group_id",
-				Description:   "The identifier of the default security group to apply to WorkSpaces when they are created",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("WorkspaceCreationProperties.CustomSecurityGroupId"),
-				IgnoreInTests: true,
+				Name:        "custom_security_group_id",
+				Description: "The identifier of the default security group to apply to WorkSpaces when they are created",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("WorkspaceCreationProperties.CustomSecurityGroupId"),
 			},
 			{
-				Name:          "default_ou",
-				Description:   "The organizational unit (OU) in the directory for the WorkSpace machine accounts.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("WorkspaceCreationProperties.DefaultOu"),
-				IgnoreInTests: true,
+				Name:        "default_ou",
+				Description: "The organizational unit (OU) in the directory for the WorkSpace machine accounts.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("WorkspaceCreationProperties.DefaultOu"),
 			},
 			{
 				Name:        "enable_internet_access",
@@ -235,20 +227,15 @@ func Directories() *schema.Table {
 //                                               Table Resolver Functions
 // ====================================================================================================================
 
-func fetchWorkspacesDirectories(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Workspaces
-	input := workspaces.DescribeWorkspaceDirectoriesInput{}
-	for {
-		output, err := svc.DescribeWorkspaceDirectories(ctx, &input)
+func fetchWorkspacesDirectories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	// GENERATED from github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate. Do not edit.
+	paginator := workspaces.NewDescribeWorkspaceDirectoriesPaginator(meta.(*client.Client).Services().Workspaces, nil)
+	for paginator.HasMorePages() {
+		v, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		res <- output.Directories
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
+		res <- v.Directories
 	}
 	return nil
 }

@@ -3,6 +3,17 @@ output_directory = "."
 add_generate     = true
 
 resource "aws" "workspaces" "workspaces" {
+  resolver "templated" {
+    generate = true
+    body_template_path = "github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate"
+    body_template_params = {
+      "Package": "workspaces",
+      "ServiceName": "Workspaces",
+      "NewPaginator": "NewDescribeWorkspacesPaginator",
+      "ReadAttribute": "Workspaces",
+    }
+  }
+
   path = "github.com/aws/aws-sdk-go-v2/service/workspaces/types.Workspace"
   ignoreError "IgnoreAccessDenied" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
@@ -45,7 +56,7 @@ resource "aws" "workspaces" "workspaces" {
 
   column "modification_states" {
     type              = "JSON"
-    generate_resolver = true
+    generate_resolver = false
   }
 
   userDefinedColumn "arn" {
@@ -57,6 +68,17 @@ resource "aws" "workspaces" "workspaces" {
 
 resource "aws" "workspaces" "directories" {
   path = "github.com/aws/aws-sdk-go-v2/service/workspaces/types.WorkspaceDirectory"
+  resolver "templated" {
+    generate = true
+    body_template_path = "github.com/cloudquery/cq-gen/providers/aws.PaginatorTemplate"
+    body_template_params = {
+      "Package": "workspaces",
+      "ServiceName": "Workspaces",
+      "NewPaginator": "NewDescribeWorkspaceDirectoriesPaginator",
+      "ReadAttribute": "Directories",
+    }
+  }
+
   ignoreError "IgnoreAccessDenied" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreAccessDeniedServiceDisabled"
   }
