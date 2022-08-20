@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
+	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
@@ -43,6 +44,11 @@ func sync(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to load specs from directory %s: %w", directory, err)
 	}
 
+	if len(specReader.GetSources()) == 0 {
+		fmt.Printf("No sources found in directory: %s. Exiting...\n", directory)
+		return nil
+	}
+
 	pm := plugin.NewPluginManager()
 	for _, sourceSpec := range specReader.GetSources() {
 		if err := syncConnection(ctx, pm, specReader, sourceSpec); err != nil {
@@ -73,6 +79,9 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 		}
 		defer plugin.Close()
 		destPlugins[i] = plugin
+		if err := destPlugins[i].GetClient().Initialize(ctx, *spec); err != nil {
+			return fmt.Errorf("failed to initialize destination plugin client for %s: %w", destination, err)
+		}
 		tables, err := sourceClient.GetTables(ctx)
 		if err != nil {
 			return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
@@ -97,27 +106,30 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 		progressbar.OptionSetDescription("Fetching"),
 		progressbar.OptionShowCount(),
 		progressbar.OptionShowIts(),
+		progressbar.OptionSetItsString("resources"),
 	)
-
+	failedWrites := 0
 	g.Go(func() error {
 		for resource := range resources {
 			// fmt.Println("fetched")
 			bar.Add(1)
 			for i, destination := range sourceSpec.Destinations {
 				if err := destPlugins[i].GetClient().Write(ctx, resource); err != nil {
-					return fmt.Errorf("failed to write resource for %s->%s: %w", sourceSpec.Name, destination, err)
+					failedWrites++
+					log.Error().Err(err).Msgf("failed to write resource for %s->%s", sourceSpec.Name, destination)
 				}
 			}
 		}
+
 		return nil
 	})
 
 	if err := g.Wait(); err != nil {
 		bar.Finish()
-		return errors.Wrap(err, "failed to fetch resources")
+		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
 	bar.Finish()
-
-	fmt.Println("Fetch completed successfully")
+	fmt.Println("Fetch completed successfully.")
+	fmt.Printf("Summary: FailedWrites: %d\n", failedWrites)
 	return nil
 }

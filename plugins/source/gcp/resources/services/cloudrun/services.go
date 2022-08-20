@@ -16,7 +16,6 @@ func Services() *schema.Table {
 		Description: "Service acts as a top-level container that manages a set of Routes and Configurations which implement a network service",
 		Resolver:    fetchCloudrunServices,
 		Multiplex:   client.ProjectMultiplex,
-
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

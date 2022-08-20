@@ -1,0 +1,15 @@
+{
+		Name:         {{if .Alias}}{{.Alias | printf "%q"}}{{else}}{{print "cq_" (.Service | flat) "_" (.Resource | snake | plural) | printf "%q"}}{{end}},
+		Resolver:     fetch{{.Service}}{{.Resource | plural}},
+		Multiplex:    {{.Multiplex}},
+		IgnoreError:  client.IgnoreErrorHandler,
+		DeleteFilter: client.DeleteFolderFilter,
+		Columns: []schema.Column{
+{{range .Columns}}{{template "column.go.tmpl" .}}{{end}}
+		},
+{{with .Relations}}
+		Relations: []*schema.Table{
+{{range .}}{{template "base_relation.go.tmpl" .}}{{end}}
+		},
+{{end}}
+}

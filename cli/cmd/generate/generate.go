@@ -27,7 +27,7 @@ cloudquery generate source --registry grpc "localhost:7777"
 func NewCmdGenerate() *cobra.Command {
 	registry := enum.NewEnum([]string{"github", "local", "grpc"}, "github")
 	cmd := &cobra.Command{
-		Use:     "generate <source/destination/connection> <path>",
+		Use:     "generate <source/destination> <path>",
 		Aliases: []string{"gen"},
 		Short:   initShort,
 		Long:    initShort,

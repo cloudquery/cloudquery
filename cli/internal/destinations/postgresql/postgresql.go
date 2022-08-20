@@ -9,6 +9,8 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v4/log/zerologadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -54,7 +56,9 @@ func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to parse connection string")
 	}
-	// pgxConfig.ConnConfig.Logger = zerologadapter.NewLogger(opts.Logger)
+	l := zerologadapter.NewLogger(p.logger)
+	pgxConfig.ConnConfig.Logger = l
+	pgxConfig.ConnConfig.LogLevel = pgx.LogLevelWarn
 	p.conn, err = pgxpool.ConnectConfig(ctx, pgxConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to connect to postgresql")
@@ -75,7 +79,7 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		if err != nil {
 			return errors.Wrap(err, "failed to convert schema type to postgresql type")
 		}
-		sb.WriteString(fmt.Sprintf("%s %s", c.Name, pgType))
+		sb.WriteString(fmt.Sprintf("\"%s\" %s", c.Name, pgType))
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
@@ -104,18 +108,28 @@ func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 				return err
 			}
 		}
+		if err := p.Migrate(ctx, table.Relations); err != nil {
+			return err
+		}
 	}
 	return nil
 }
 
 func (p *Client) Write(ctx context.Context, resource *schema.Resource) error {
-	sql, values, err := sq.Insert(resource.Table.Name).Columns(resource.Columns()...).Values([]interface{}{""}).ToSql()
+	columns := make([]string, 0, len(resource.Data))
+	values := make([]interface{}, 0, len(resource.Data))
+	for c, v := range resource.Data {
+		columns = append(columns, `"`+c+`"`)
+		values = append(values, v)
+	}
+
+	sql, values, err := sq.Insert(resource.TableName).Columns(columns...).Values(values...).PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
-		return errors.Wrap(err, "failed to generate insert sql")
+		return fmt.Errorf("failed to generate insert sql '%s': %w", sql, err)
 	}
 	_, err = p.conn.Exec(ctx, sql, values...)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to insert data with sql '%s': %w", sql, err)
 	}
 	return nil
 }
@@ -131,7 +145,7 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	case schema.TypeBool:
 		return "BOOLEAN", nil
 	case schema.TypeSmallInt, schema.TypeInt, schema.TypeBigInt:
-		return "INTEGER", nil
+		return "BIGINT", nil
 	case schema.TypeFloat:
 		return "REAL", nil
 	case schema.TypeUUID:
