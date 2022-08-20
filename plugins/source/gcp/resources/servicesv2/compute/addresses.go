@@ -7,98 +7,101 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
+  
+  "google.golang.org/api/compute/v1"
+  
 )
 
 func ComputeAddresses() *schema.Table {
-	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAddresses,
-		Multiplex: client.ProjectMultiplex,
+    return &schema.Table{
+		Name:         "gcp_cloudfunctions_functions",
+    Resolver:     fetchComputeAddresses,
+    Multiplex:    client.ProjectMultiplex,
 		Columns: []schema.Column{
-			{
-				Name: "address",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "address_type",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "creation_timestamp",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "description",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "id",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "ip_version",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "kind",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "name",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "network",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "network_tier",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "prefix_length",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "purpose",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "region",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "status",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "subnetwork",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "users",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
-			},
+{
+  Name:        "address",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "address_type",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "creation_timestamp",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "description",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "id",
+  Type:        schema.TypeInt,
+},
+{
+  Name:        "ip_version",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "kind",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "name",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "network",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "network_tier",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "prefix_length",
+  Type:        schema.TypeInt,
+},
+{
+  Name:        "purpose",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "region",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "self_link",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "status",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "subnetwork",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "users",
+  Type:        schema.TypeStringArray,
+},
+{
+  Name:        "server_response",
+  Type:        schema.TypeJSON,
+},
+{
+  Name:        "force_send_fields",
+  Type:        schema.TypeStringArray,
+},
+{
+  Name:        "null_fields",
+  Type:        schema.TypeStringArray,
+},
+
 		},
-	}
+
+}
 }
 
 func fetchComputeAddresses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
@@ -110,11 +113,11 @@ func fetchComputeAddresses(ctx context.Context, meta schema.ClientMeta, _ *schem
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.Address
+    var allItems []*compute.Address
 		for _, items := range output.Items {
-			allItems = append(allItems, items.Addresses...)
+      allItems = append(allItems, items.Addresses...)
 		}
-		res <- allItems
+    res <- allItems
 
 		if output.NextPageToken == "" {
 			break

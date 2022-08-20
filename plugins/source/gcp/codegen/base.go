@@ -6,18 +6,24 @@ import (
 )
 
 type Resource struct {
-	TableFunctionName string
-	PackageName       string
-	FileName          string
-	ListFunction      string
-	Struct            interface{}
-	DefaultColumns    []codegen.ColumnDefinition
-	Table             *codegen.TableDefinition
-	Template          string
-	Service           string
-	StructField       string
-	StructName        string
-	Imports           []string
+	// PackageName name is the packgename in the source plugin this resource is located
+	PackageName string
+	// DefaultColumns columns that will be appended to the main table
+	DefaultColumns []codegen.ColumnDefinition
+	// Table is the table definition that will be used to generate the cloudquery table
+	Table *codegen.TableDefinition
+	// GCPStruct that will be used to generate the cloudquery table
+	GCPStruct interface{}
+	// GCPStructName is the name of the GCPStruct because it can't be inferred by reflection
+	GCPStructName string
+	// GCPService is the name of the gcp service the struct/api is residing
+	GCPService string
+	// GCPSubService is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
+	GCPSubService string
+	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
+	Template string
+	// imports to add for this resource
+	Imports []string
 }
 
 var ProjectIdColumn = codegen.ColumnDefinition{
