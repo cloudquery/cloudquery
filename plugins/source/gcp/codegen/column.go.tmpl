@@ -1,9 +1,0 @@
-{
-  Name:        {{.Name}},
-  Type:        {{.Type}},
-  {{with .Resolver }}Resolver: {{$.Resolver}},{{end}}
-  {{with .CreationOptions}}CreationOptions: schema.ColumnCreationOptions{
-    NotNull: !{{.Nullable}},
-    Unique: {{.Unique}}},
-  {{end}}
-},

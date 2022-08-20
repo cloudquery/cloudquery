@@ -5,14 +5,14 @@ package resources
 import (
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/yandex-cloud/cq-provider-yandex/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 )
 
 func Provider() *provider.Provider {
 	return &provider.Provider{
-		Name:      "yandex",
+		Name:      "cloudquery",
 		Configure: client.Configure,
-		ResourceMap: map[string]*schema.Table{
+		Tables: []*schema.Table{
 		{{range $key, $value := .}}{{printf "%q" $key}}:{{$key}}(),
 		{{end}}
 		},
