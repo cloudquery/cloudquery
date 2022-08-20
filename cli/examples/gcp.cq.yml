@@ -1,0 +1,10 @@
+kind: source
+spec:
+  name: gcp
+  vesion: v1.0.0
+  registry: grpc
+  path: "localhost:7777"
+  max_goroutines: 10000000
+  tables: ["*"]
+  destinations:
+    - postgresql

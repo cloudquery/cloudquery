@@ -58,7 +58,8 @@ func newCmdRoot() *cobra.Command {
 					return err
 				}
 				if logFormat.String() == "text" {
-					writers = append(writers, zerolog.ConsoleWriter{Out: logFile, NoColor: noColor})
+					// for file logging we dont need color. we can add it as an option but don't think it is useful
+					writers = append(writers, zerolog.ConsoleWriter{Out: logFile, NoColor: true})
 				} else {
 					writers = append(writers, logFile)
 				}

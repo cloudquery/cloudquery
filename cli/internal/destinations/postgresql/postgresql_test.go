@@ -34,8 +34,8 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
 	ctx := context.Background()
 	c := NewClient(l)
-	if err := c.Configure(ctx,
-		specs.DestinationSpec{
+	if err := c.Initialize(ctx,
+		specs.Destination{
 			Spec: &PostgreSqlSpec{
 				ConnectionString: "postgres://postgres:pass@localhost:5432/postgres",
 			},
@@ -43,7 +43,7 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 	); err != nil {
 		t.Fatal(err)
 	}
-	if err := c.Migrate(ctx, "test", "v1.0.0", createTablesTests); err != nil {
+	if err := c.Migrate(ctx, createTablesTests); err != nil {
 		t.Fatal(err)
 	}
 

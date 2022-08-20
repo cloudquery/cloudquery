@@ -20,10 +20,9 @@ const maxGoroutines = 10
 //go:generate cq-gen --resource accounts --config gen.hcl --output .
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudbilling_accounts",
-		Resolver:  fetchBillingAccounts,
-		Multiplex: client.ProjectMultiplex,
-
+		Name:          "gcp_cloudbilling_accounts",
+		Resolver:      fetchBillingAccounts,
+		Multiplex:     client.ProjectMultiplex,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"project_id", "name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
