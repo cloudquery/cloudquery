@@ -18,17 +18,17 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
-	var item compute.Address
+func createComputeForwardingRules() (*client.Services, error) {
+	var item compute.ForwardingRule
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/addresses", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.AddressAggregatedList{
-			Items: map[string]compute.AddressesScopedList{
+	mux.GET("/projects/testProject/aggregated/forwarding_rules", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.ForwardingRuleAggregatedList{
+			Items: map[string]compute.ForwardingRulesScopedList{
 				"": {
-					Addresses: []*compute.Address{&item},
+					ForwardingRules: []*compute.ForwardingRule{&item},
 				},
 			},
 		}
@@ -52,6 +52,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestComputeForwardingRules(t *testing.T) {
+	client.GcpMockTestHelper(t, ComputeForwardingRules(), createComputeForwardingRules, client.TestOptions{})
 }

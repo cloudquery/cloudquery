@@ -18,17 +18,17 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
-	var item compute.Address
+func createComputeTargetHttpProxies() (*client.Services, error) {
+	var item compute.TargetHttpProxy
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/addresses", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.AddressAggregatedList{
-			Items: map[string]compute.AddressesScopedList{
+	mux.GET("/projects/testProject/aggregated/target_http_proxies", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.TargetHttpProxyAggregatedList{
+			Items: map[string]compute.TargetHttpProxiesScopedList{
 				"": {
-					Addresses: []*compute.Address{&item},
+					TargetHttpProxies: []*compute.TargetHttpProxy{&item},
 				},
 			},
 		}
@@ -52,6 +52,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestComputeTargetHttpProxies(t *testing.T) {
+	client.GcpMockTestHelper(t, ComputeTargetHttpProxies(), createComputeTargetHttpProxies, client.TestOptions{})
 }

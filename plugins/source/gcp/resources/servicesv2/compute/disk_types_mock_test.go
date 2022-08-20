@@ -12,9 +12,9 @@ import (
 	faker "github.com/cloudquery/faker/v3"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-	
-  "google.golang.org/api/compute/v1"
-  
+
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -53,5 +53,5 @@ func createComputeDiskTypes() (*client.Services, error) {
 }
 
 func TestComputeDiskTypes(t *testing.T) {
-	client.GcpMockTestHelper(t,  ComputeDiskTypes(), createComputeDiskTypes, client.TestOptions{})
+	client.GcpMockTestHelper(t, ComputeDiskTypes(), createComputeDiskTypes, client.TestOptions{})
 }

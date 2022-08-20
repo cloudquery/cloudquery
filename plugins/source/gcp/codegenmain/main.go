@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"go/format"
 	"log"
 	"os"
 	"path"
@@ -68,11 +69,11 @@ func generateResource(r codegen.Resource, mock bool) {
 	} else {
 		filePath = path.Join(filePath, r.GCPSubService+".go")
 	}
-	// content, err := format.Source(buff.Bytes())
-	// if err != nil {
-	// 	log.Fatal(fmt.Errorf("failed to format code: %w", err))
-	// }
-	if err := os.WriteFile(filePath, buff.Bytes(), 0644); err != nil {
+	content, err := format.Source(buff.Bytes())
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}
 }

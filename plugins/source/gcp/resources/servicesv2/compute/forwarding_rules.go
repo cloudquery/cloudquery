@@ -11,18 +11,30 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAddresses() *schema.Table {
+func ComputeForwardingRules() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAddresses,
+		Resolver:  fetchComputeForwardingRules,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "address",
+				Name: "ip_address",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "address_type",
+				Name: "ip_protocol",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "all_ports",
+				Type: schema.TypeBool,
+			},
+			{
+				Name: "allow_global_access",
+				Type: schema.TypeBool,
+			},
+			{
+				Name: "backend_service",
 				Type: schema.TypeString,
 			},
 			{
@@ -34,6 +46,10 @@ func ComputeAddresses() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "fingerprint",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "id",
 				Type: schema.TypeInt,
 			},
@@ -42,8 +58,28 @@ func ComputeAddresses() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "is_mirroring_collector",
+				Type: schema.TypeBool,
+			},
+			{
 				Name: "kind",
 				Type: schema.TypeString,
+			},
+			{
+				Name: "label_fingerprint",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "labels",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "load_balancing_scheme",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "metadata_filters",
+				Type: schema.TypeJSON,
 			},
 			{
 				Name: "name",
@@ -58,11 +94,23 @@ func ComputeAddresses() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "prefix_length",
+				Name: "no_automate_dns_zone",
+				Type: schema.TypeBool,
+			},
+			{
+				Name: "port_range",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "ports",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "psc_connection_id",
 				Type: schema.TypeInt,
 			},
 			{
-				Name: "purpose",
+				Name: "psc_connection_status",
 				Type: schema.TypeString,
 			},
 			{
@@ -74,7 +122,15 @@ func ComputeAddresses() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
+				Name: "service_directory_registrations",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "service_label",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "service_name",
 				Type: schema.TypeString,
 			},
 			{
@@ -82,8 +138,8 @@ func ComputeAddresses() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "users",
-				Type: schema.TypeStringArray,
+				Name: "target",
+				Type: schema.TypeString,
 			},
 			{
 				Name: "server_response",
@@ -101,18 +157,18 @@ func ComputeAddresses() *schema.Table {
 	}
 }
 
-func fetchComputeAddresses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeForwardingRules(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Addresses.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.ForwardingRules.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.Address
+		var allItems []*compute.ForwardingRule
 		for _, items := range output.Items {
-			allItems = append(allItems, items.Addresses...)
+			allItems = append(allItems, items.ForwardingRules...)
 		}
 		res <- allItems
 

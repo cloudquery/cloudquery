@@ -7,18 +7,20 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeInterconnects() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeInterconnects,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "autoscaling_policy",
+				Name: "admin_enabled",
+				Type: schema.TypeBool,
+			},
+			{
+				Name: "circuit_infos",
 				Type: schema.TypeJSON,
 			},
 			{
@@ -26,7 +28,23 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "customer_name",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "description",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "expected_outages",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "google_ip_address",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "google_reference_id",
 				Type: schema.TypeString,
 			},
 			{
@@ -34,7 +52,23 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeInt,
 			},
 			{
+				Name: "interconnect_attachments",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "interconnect_type",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "kind",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "link_type",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "location",
 				Type: schema.TypeString,
 			},
 			{
@@ -42,35 +76,35 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "region",
+				Name: "noc_contact_email",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "scaling_schedule_status",
-				Type: schema.TypeJSON,
+				Name: "operational_status",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "peer_ip_address",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "provisioned_link_count",
+				Type: schema.TypeInt,
+			},
+			{
+				Name: "requested_link_count",
+				Type: schema.TypeInt,
+			},
+			{
+				Name: "satisfies_pzs",
+				Type: schema.TypeBool,
 			},
 			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "status_details",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "target",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "zone",
+				Name: "state",
 				Type: schema.TypeString,
 			},
 			{
@@ -89,20 +123,15 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeInterconnects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.Interconnects.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-
-		var allItems []*compute.Autoscaler
-		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
-		}
-		res <- allItems
+		res <- output.Items
 
 		if output.NextPageToken == "" {
 			break

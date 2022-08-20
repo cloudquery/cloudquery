@@ -13,22 +13,20 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
-	"google.golang.org/api/compute/v1"
-
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
-	var item compute.Address
+func createComputeFirewalls() (*client.Services, error) {
+	var item compute.Firewall
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/addresses", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.AddressAggregatedList{
-			Items: map[string]compute.AddressesScopedList{
+	mux.GET("/projects/testProject/aggregated/firewalls", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.FirewallAggregatedList{
+			Items: map[string]compute.FirewallsScopedList{
 				"": {
-					Addresses: []*compute.Address{&item},
+					Firewalls: []*compute.Firewall{&item},
 				},
 			},
 		}
@@ -52,6 +50,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestComputeFirewalls(t *testing.T) {
+	client.GcpMockTestHelper(t, ComputeFirewalls(), createComputeFirewalls, client.TestOptions{})
 }

@@ -11,22 +11,22 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeInstanceGroups() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeInstanceGroups,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
-			{
-				Name: "autoscaling_policy",
-				Type: schema.TypeJSON,
-			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
 			},
 			{
 				Name: "description",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "fingerprint",
 				Type: schema.TypeString,
 			},
 			{
@@ -42,31 +42,27 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
+				Name: "named_ports",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "network",
+				Type: schema.TypeString,
 			},
 			{
 				Name: "region",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "scaling_schedule_status",
-				Type: schema.TypeJSON,
-			},
-			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
+				Name: "size",
+				Type: schema.TypeInt,
 			},
 			{
-				Name: "status_details",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "target",
+				Name: "subnetwork",
 				Type: schema.TypeString,
 			},
 			{
@@ -89,18 +85,18 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeInstanceGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.InstanceGroups.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.Autoscaler
+		var allItems []*compute.InstanceGroup
 		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
+			allItems = append(allItems, items.InstanceGroups...)
 		}
 		res <- allItems
 
