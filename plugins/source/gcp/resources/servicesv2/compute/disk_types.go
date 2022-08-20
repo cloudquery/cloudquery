@@ -7,77 +7,80 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
+  
+  "google.golang.org/api/compute/v1"
+  
 )
 
-func DiskTypes() *schema.Table {
-	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchDiskTypes,
-		Multiplex: client.ProjectMultiplex,
+func ComputeDiskTypes() *schema.Table {
+    return &schema.Table{
+		Name:         "gcp_cloudfunctions_functions",
+    Resolver:     fetchComputeDiskTypes,
+    Multiplex:    client.ProjectMultiplex,
 		Columns: []schema.Column{
-			{
-				Name: "creation_timestamp",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "default_disk_size_gb",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "deprecated",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "description",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "id",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "kind",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "name",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "region",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "valid_disk_size",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "zone",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
-			},
+{
+  Name:        "creation_timestamp",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "default_disk_size_gb",
+  Type:        schema.TypeInt,
+},
+{
+  Name:        "deprecated",
+  Type:        schema.TypeJSON,
+},
+{
+  Name:        "description",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "id",
+  Type:        schema.TypeInt,
+},
+{
+  Name:        "kind",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "name",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "region",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "self_link",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "valid_disk_size",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "zone",
+  Type:        schema.TypeString,
+},
+{
+  Name:        "server_response",
+  Type:        schema.TypeJSON,
+},
+{
+  Name:        "force_send_fields",
+  Type:        schema.TypeStringArray,
+},
+{
+  Name:        "null_fields",
+  Type:        schema.TypeStringArray,
+},
+
 		},
-	}
+
+}
 }
 
-func fetchDiskTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -86,11 +89,11 @@ func fetchDiskTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.DiskType
+    var allItems []*compute.DiskType
 		for _, items := range output.Items {
-			allItems = append(allItems, items.DiskTypes...)
+      allItems = append(allItems, items.DiskTypes...)
 		}
-		res <- allItems
+    res <- allItems
 
 		if output.NextPageToken == "" {
 			break
