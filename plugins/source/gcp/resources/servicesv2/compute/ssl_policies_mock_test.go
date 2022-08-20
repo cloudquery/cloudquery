@@ -13,22 +13,20 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
-	"google.golang.org/api/compute/v1"
-
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
-	var item compute.Address
+func createComputeSslPolicies() (*client.Services, error) {
+	var item compute.SslPolicy
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/addresses", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.AddressAggregatedList{
-			Items: map[string]compute.AddressesScopedList{
+	mux.GET("/projects/testProject/aggregated/ssl_policies", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.SslPolicyAggregatedList{
+			Items: map[string]compute.SslPoliciesScopedList{
 				"": {
-					Addresses: []*compute.Address{&item},
+					SslPolicies: []*compute.SslPolicy{&item},
 				},
 			},
 		}
@@ -52,6 +50,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestComputeSslPolicies(t *testing.T) {
+	client.GcpMockTestHelper(t, ComputeSslPolicies(), createComputeSslPolicies, client.TestOptions{})
 }

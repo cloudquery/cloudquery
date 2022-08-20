@@ -7,18 +7,16 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeFirewalls() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeFirewalls,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "autoscaling_policy",
+				Name: "allowed",
 				Type: schema.TypeJSON,
 			},
 			{
@@ -26,8 +24,24 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "denied",
+				Type: schema.TypeJSON,
+			},
+			{
 				Name: "description",
 				Type: schema.TypeString,
+			},
+			{
+				Name: "destination_ranges",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "direction",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "disabled",
+				Type: schema.TypeBool,
 			},
 			{
 				Name: "id",
@@ -38,40 +52,44 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "log_config",
+				Type: schema.TypeJSON,
+			},
+			{
 				Name: "name",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "region",
+				Name: "network",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "scaling_schedule_status",
-				Type: schema.TypeJSON,
+				Name: "priority",
+				Type: schema.TypeInt,
 			},
 			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
+				Name: "source_ranges",
+				Type: schema.TypeStringArray,
 			},
 			{
-				Name: "status_details",
-				Type: schema.TypeJSON,
+				Name: "source_service_accounts",
+				Type: schema.TypeStringArray,
 			},
 			{
-				Name: "target",
-				Type: schema.TypeString,
+				Name: "source_tags",
+				Type: schema.TypeStringArray,
 			},
 			{
-				Name: "zone",
-				Type: schema.TypeString,
+				Name: "target_service_accounts",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "target_tags",
+				Type: schema.TypeStringArray,
 			},
 			{
 				Name: "server_response",
@@ -89,20 +107,15 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.Firewalls.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-
-		var allItems []*compute.Autoscaler
-		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
-		}
-		res <- allItems
+		res <- output.Items
 
 		if output.NextPageToken == "" {
 			break

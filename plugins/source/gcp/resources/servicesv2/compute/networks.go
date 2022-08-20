@@ -7,19 +7,21 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeNetworks() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeNetworks,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "autoscaling_policy",
-				Type: schema.TypeJSON,
+				Name: "i_pv_4_range",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "auto_create_subnetworks",
+				Type: schema.TypeBool,
 			},
 			{
 				Name: "creation_timestamp",
@@ -30,27 +32,47 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "enable_ula_internal_ipv_6",
+				Type: schema.TypeBool,
+			},
+			{
+				Name: "firewall_policy",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "gateway_i_pv_4",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "id",
 				Type: schema.TypeInt,
+			},
+			{
+				Name: "internal_ipv_6_range",
+				Type: schema.TypeString,
 			},
 			{
 				Name: "kind",
 				Type: schema.TypeString,
 			},
 			{
+				Name: "mtu",
+				Type: schema.TypeInt,
+			},
+			{
 				Name: "name",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "region",
+				Name: "network_firewall_policy_enforcement_order",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "scaling_schedule_status",
+				Name: "peerings",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "routing_config",
 				Type: schema.TypeJSON,
 			},
 			{
@@ -58,20 +80,12 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
+				Name: "self_link_with_id",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status_details",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "target",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "zone",
-				Type: schema.TypeString,
+				Name: "subnetworks",
+				Type: schema.TypeStringArray,
 			},
 			{
 				Name: "server_response",
@@ -89,20 +103,15 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeNetworks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.Networks.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-
-		var allItems []*compute.Autoscaler
-		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
-		}
-		res <- allItems
+		res <- output.Items
 
 		if output.NextPageToken == "" {
 			break

@@ -7,185 +7,182 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-  
-  "google.golang.org/api/compute/v1"
-  
+
+	"google.golang.org/api/compute/v1"
 )
 
 func ComputeBackendServices() *schema.Table {
-    return &schema.Table{
-		Name:         "gcp_cloudfunctions_functions",
-    Resolver:     fetchComputeBackendServices,
-    Multiplex:    client.ProjectMultiplex,
+	return &schema.Table{
+		Name:      "gcp_cloudfunctions_functions",
+		Resolver:  fetchComputeBackendServices,
+		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
-{
-  Name:        "affinity_cookie_ttl_sec",
-  Type:        schema.TypeInt,
-},
-{
-  Name:        "backends",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "cdn_policy",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "circuit_breakers",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "connection_draining",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "connection_tracking_policy",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "consistent_hash",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "creation_timestamp",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "custom_request_headers",
-  Type:        schema.TypeStringArray,
-},
-{
-  Name:        "custom_response_headers",
-  Type:        schema.TypeStringArray,
-},
-{
-  Name:        "description",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "edge_security_policy",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "enable_cdn",
-  Type:        schema.TypeBool,
-},
-{
-  Name:        "failover_policy",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "fingerprint",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "health_checks",
-  Type:        schema.TypeStringArray,
-},
-{
-  Name:        "iap",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "id",
-  Type:        schema.TypeInt,
-},
-{
-  Name:        "kind",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "load_balancing_scheme",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "locality_lb_policies",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "locality_lb_policy",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "log_config",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "max_stream_duration",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "name",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "network",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "outlier_detection",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "port",
-  Type:        schema.TypeInt,
-},
-{
-  Name:        "port_name",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "protocol",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "region",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "security_policy",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "security_settings",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "self_link",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "service_bindings",
-  Type:        schema.TypeStringArray,
-},
-{
-  Name:        "session_affinity",
-  Type:        schema.TypeString,
-},
-{
-  Name:        "subsetting",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "timeout_sec",
-  Type:        schema.TypeInt,
-},
-{
-  Name:        "server_response",
-  Type:        schema.TypeJSON,
-},
-{
-  Name:        "force_send_fields",
-  Type:        schema.TypeStringArray,
-},
-{
-  Name:        "null_fields",
-  Type:        schema.TypeStringArray,
-},
-
+			{
+				Name: "affinity_cookie_ttl_sec",
+				Type: schema.TypeInt,
+			},
+			{
+				Name: "backends",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "cdn_policy",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "circuit_breakers",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "connection_draining",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "connection_tracking_policy",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "consistent_hash",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "creation_timestamp",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "custom_request_headers",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "custom_response_headers",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "description",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "edge_security_policy",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "enable_cdn",
+				Type: schema.TypeBool,
+			},
+			{
+				Name: "failover_policy",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "fingerprint",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "health_checks",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "iap",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "id",
+				Type: schema.TypeInt,
+			},
+			{
+				Name: "kind",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "load_balancing_scheme",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "locality_lb_policies",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "locality_lb_policy",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "log_config",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "max_stream_duration",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "name",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "network",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "outlier_detection",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "port",
+				Type: schema.TypeInt,
+			},
+			{
+				Name: "port_name",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "protocol",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "region",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "security_policy",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "security_settings",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "service_bindings",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "session_affinity",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "subsetting",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "timeout_sec",
+				Type: schema.TypeInt,
+			},
+			{
+				Name: "server_response",
+				Type: schema.TypeJSON,
+			},
+			{
+				Name: "force_send_fields",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "null_fields",
+				Type: schema.TypeStringArray,
+			},
 		},
-
-}
+	}
 }
 
 func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
@@ -197,11 +194,11 @@ func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, _ 
 			return errors.WithStack(err)
 		}
 
-    var allItems []*compute.BackendService
+		var allItems []*compute.BackendService
 		for _, items := range output.Items {
-      allItems = append(allItems, items.BackendServices...)
+			allItems = append(allItems, items.BackendServices...)
 		}
-    res <- allItems
+		res <- allItems
 
 		if output.NextPageToken == "" {
 			break

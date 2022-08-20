@@ -4,23 +4,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/bigquery"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/cloudbilling"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/cloudfunctions"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/cloudrun"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/compute"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/dns"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/domains"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/iam"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/kms"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/kubernetes"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/logging"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/memorystore"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/monitoring"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/resource_manager"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/security"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/sql"
-	"github.com/cloudquery/plugins/source/gcp/resources/services/storage"
+	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/compute"
 )
 
 var (
@@ -58,49 +42,10 @@ func Plugin() *plugins.SourcePlugin {
 		"gcp",
 		Version,
 		[]*schema.Table{
-			bigquery.BigqueryDatasets(),
-			cloudbilling.Accounts(),
-			cloudbilling.Services(),
-			cloudfunctions.CloudfunctionsFunction(),
-			cloudrun.Services(),
 			compute.ComputeAddresses(),
 			compute.ComputeAutoscalers(),
 			compute.ComputeBackendServices(),
 			compute.ComputeDiskTypes(),
-			compute.ComputeDisks(),
-			compute.ComputeFirewalls(),
-			compute.ComputeForwardingRules(),
-			compute.ComputeImages(),
-			compute.InstanceGroups(),
-			compute.ComputeInstances(),
-			compute.ComputeInterconnects(),
-			compute.ComputeNetworks(),
-			compute.ComputeProjects(),
-			compute.ComputeSslCertificates(),
-			compute.ComputeSslPolicies(),
-			compute.ComputeSubnetworks(),
-			compute.ComputeTargetHTTPProxies(),
-			compute.ComputeTargetHTTPSProxies(),
-			compute.ComputeTargetSslProxies(),
-			compute.ComputeURLMaps(),
-			compute.ComputeVpnGateways(),
-			dns.DNSManagedZones(),
-			dns.DNSPolicies(),
-			domains.DomainsRegistration(),
-			iam.IamRoles(),
-			iam.IamServiceAccounts(),
-			kms.KmsKeyrings(),
-			kubernetes.Clusters(),
-			logging.LoggingMetrics(),
-			logging.LoggingSinks(),
-			memorystore.RedisInstances(),
-			monitoring.MonitoringAlertPolicies(),
-			resource_manager.ResourceManagerFolders(),
-			resource_manager.ResourceManagerProjects(),
-			sql.SQLInstances(),
-			security.Secrets(),
-			storage.StorageBuckets(),
-			storage.Metrics(),
 		},
 		client.Configure,
 		plugins.WithSourceExampleConfig(exampleConfig),

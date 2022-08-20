@@ -18,17 +18,17 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
-	var item compute.Address
+func createComputeSslCertificates() (*client.Services, error) {
+	var item compute.SslCertificate
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/addresses", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.AddressAggregatedList{
-			Items: map[string]compute.AddressesScopedList{
+	mux.GET("/projects/testProject/aggregated/ssl_certificates", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.SslCertificateAggregatedList{
+			Items: map[string]compute.SslCertificatesScopedList{
 				"": {
-					Addresses: []*compute.Address{&item},
+					SslCertificates: []*compute.SslCertificate{&item},
 				},
 			},
 		}
@@ -52,6 +52,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestComputeSslCertificates(t *testing.T) {
+	client.GcpMockTestHelper(t, ComputeSslCertificates(), createComputeSslCertificates, client.TestOptions{})
 }

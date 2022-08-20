@@ -7,31 +7,37 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
-func ComputeDiskTypes() *schema.Table {
+func ComputeProjects() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeDiskTypes,
+		Resolver:  fetchComputeProjects,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
+			{
+				Name: "common_instance_metadata",
+				Type: schema.TypeJSON,
+			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "default_disk_size_gb",
-				Type: schema.TypeInt,
+				Name: "default_network_tier",
+				Type: schema.TypeString,
 			},
 			{
-				Name: "deprecated",
-				Type: schema.TypeJSON,
+				Name: "default_service_account",
+				Type: schema.TypeString,
 			},
 			{
 				Name: "description",
 				Type: schema.TypeString,
+			},
+			{
+				Name: "enabled_features",
+				Type: schema.TypeStringArray,
 			},
 			{
 				Name: "id",
@@ -46,19 +52,19 @@ func ComputeDiskTypes() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "region",
-				Type: schema.TypeString,
+				Name: "quotas",
+				Type: schema.TypeJSON,
 			},
 			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "valid_disk_size",
-				Type: schema.TypeString,
+				Name: "usage_export_location",
+				Type: schema.TypeJSON,
 			},
 			{
-				Name: "zone",
+				Name: "xpn_project_status",
 				Type: schema.TypeString,
 			},
 			{
@@ -77,25 +83,13 @@ func ComputeDiskTypes() *schema.Table {
 	}
 }
 
-func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
-	for {
-		output, err := c.Services.Compute.DiskTypes.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-
-		var allItems []*compute.DiskType
-		for _, items := range output.Items {
-			allItems = append(allItems, items.DiskTypes...)
-		}
-		res <- allItems
-
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+	output, err := c.Services.Compute.Projects.Get(c.ProjectId).Do()
+	if err != nil {
+		return errors.WithStack(err)
 	}
+
+	res <- output
 	return nil
 }

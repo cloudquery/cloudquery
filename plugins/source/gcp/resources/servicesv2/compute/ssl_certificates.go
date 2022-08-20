@@ -11,15 +11,15 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeSslCertificates() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeSslCertificates,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "autoscaling_policy",
-				Type: schema.TypeJSON,
+				Name: "certificate",
+				Type: schema.TypeString,
 			},
 			{
 				Name: "creation_timestamp",
@@ -27,6 +27,10 @@ func ComputeAutoscalers() *schema.Table {
 			},
 			{
 				Name: "description",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "expire_time",
 				Type: schema.TypeString,
 			},
 			{
@@ -38,39 +42,35 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "managed",
+				Type: schema.TypeJSON,
+			},
+			{
 				Name: "name",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
+				Name: "private_key",
+				Type: schema.TypeString,
 			},
 			{
 				Name: "region",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "scaling_schedule_status",
-				Type: schema.TypeJSON,
-			},
-			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "status_details",
+				Name: "self_managed",
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "target",
-				Type: schema.TypeString,
+				Name: "subject_alternative_names",
+				Type: schema.TypeStringArray,
 			},
 			{
-				Name: "zone",
+				Name: "type",
 				Type: schema.TypeString,
 			},
 			{
@@ -89,18 +89,18 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeSslCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.SslCertificates.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.Autoscaler
+		var allItems []*compute.SslCertificate
 		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
+			allItems = append(allItems, items.SslCertificates...)
 		}
 		res <- allItems
 

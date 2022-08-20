@@ -7,19 +7,17 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeTargetSslProxies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeTargetSslProxies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "autoscaling_policy",
-				Type: schema.TypeJSON,
+				Name: "certificate_map",
+				Type: schema.TypeString,
 			},
 			{
 				Name: "creation_timestamp",
@@ -42,35 +40,23 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "region",
+				Name: "proxy_header",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "scaling_schedule_status",
-				Type: schema.TypeJSON,
 			},
 			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
+				Name: "service",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status_details",
-				Type: schema.TypeJSON,
+				Name: "ssl_certificates",
+				Type: schema.TypeStringArray,
 			},
 			{
-				Name: "target",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "zone",
+				Name: "ssl_policy",
 				Type: schema.TypeString,
 			},
 			{
@@ -89,20 +75,15 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeTargetSslProxies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.TargetSslProxies.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-
-		var allItems []*compute.Autoscaler
-		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
-		}
-		res <- allItems
+		res <- output.Items
 
 		if output.NextPageToken == "" {
 			break

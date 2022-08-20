@@ -18,17 +18,17 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
-	var item compute.Address
+func createComputeSubnetworks() (*client.Services, error) {
+	var item compute.Subnetwork
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/addresses", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.AddressAggregatedList{
-			Items: map[string]compute.AddressesScopedList{
+	mux.GET("/projects/testProject/aggregated/subnetworks", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.SubnetworkAggregatedList{
+			Items: map[string]compute.SubnetworksScopedList{
 				"": {
-					Addresses: []*compute.Address{&item},
+					Subnetworks: []*compute.Subnetwork{&item},
 				},
 			},
 		}
@@ -52,6 +52,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestComputeSubnetworks(t *testing.T) {
+	client.GcpMockTestHelper(t, ComputeSubnetworks(), createComputeSubnetworks, client.TestOptions{})
 }

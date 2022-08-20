@@ -11,22 +11,22 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeTargetHttpProxies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeTargetHttpProxies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
-			{
-				Name: "autoscaling_policy",
-				Type: schema.TypeJSON,
-			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
 			},
 			{
 				Name: "description",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "fingerprint",
 				Type: schema.TypeString,
 			},
 			{
@@ -42,35 +42,19 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
+				Name: "proxy_bind",
+				Type: schema.TypeBool,
 			},
 			{
 				Name: "region",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "scaling_schedule_status",
-				Type: schema.TypeJSON,
-			},
-			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "status_details",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "target",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "zone",
+				Name: "url_map",
 				Type: schema.TypeString,
 			},
 			{
@@ -89,18 +73,18 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeTargetHttpProxies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.TargetHttpProxies.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.Autoscaler
+		var allItems []*compute.TargetHttpProxy
 		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
+			allItems = append(allItems, items.TargetHttpProxies...)
 		}
 		res <- allItems
 

@@ -18,17 +18,17 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
-	var item compute.Address
+func createComputeVpnGateways() (*client.Services, error) {
+	var item compute.VpnGateway
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/addresses", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.AddressAggregatedList{
-			Items: map[string]compute.AddressesScopedList{
+	mux.GET("/projects/testProject/aggregated/vpn_gateways", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.VpnGatewayAggregatedList{
+			Items: map[string]compute.VpnGatewaysScopedList{
 				"": {
-					Addresses: []*compute.Address{&item},
+					VpnGateways: []*compute.VpnGateway{&item},
 				},
 			},
 		}
@@ -52,6 +52,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestComputeVpnGateways(t *testing.T) {
+	client.GcpMockTestHelper(t, ComputeVpnGateways(), createComputeVpnGateways, client.TestOptions{})
 }

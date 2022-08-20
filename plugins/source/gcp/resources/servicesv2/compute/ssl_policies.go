@@ -7,26 +7,32 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAutoscalers() *schema.Table {
+func ComputeSslPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_cloudfunctions_functions",
-		Resolver:  fetchComputeAutoscalers,
+		Resolver:  fetchComputeSslPolicies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
-			{
-				Name: "autoscaling_policy",
-				Type: schema.TypeJSON,
-			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
 			},
 			{
+				Name: "custom_features",
+				Type: schema.TypeStringArray,
+			},
+			{
 				Name: "description",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "enabled_features",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "fingerprint",
 				Type: schema.TypeString,
 			},
 			{
@@ -38,40 +44,24 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "min_tls_version",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "name",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "recommended_size",
-				Type: schema.TypeInt,
-			},
-			{
-				Name: "region",
+				Name: "profile",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "scaling_schedule_status",
-				Type: schema.TypeJSON,
 			},
 			{
 				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "status_details",
+				Name: "warnings",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "target",
-				Type: schema.TypeString,
-			},
-			{
-				Name: "zone",
-				Type: schema.TypeString,
 			},
 			{
 				Name: "server_response",
@@ -89,20 +79,15 @@ func ComputeAutoscalers() *schema.Table {
 	}
 }
 
-func fetchComputeAutoscalers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchComputeSslPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Compute.Autoscalers.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Compute.SslPolicies.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-
-		var allItems []*compute.Autoscaler
-		for _, items := range output.Items {
-			allItems = append(allItems, items.Autoscalers...)
-		}
-		res <- allItems
+		res <- output.Items
 
 		if output.NextPageToken == "" {
 			break
