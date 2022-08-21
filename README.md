@@ -4,9 +4,9 @@
 </a>
 </p>
 
-The open-source cloud asset inventory powered by SQL.
+The open source high performance data integration platform designed for security and infrastructure teams.
 
-CloudQuery extracts, transforms, and loads your cloud assets into [normalized](https://hub.cloudquery.io) PostgreSQL tables. CloudQuery enables you to assess, audit, and monitor the configurations of your cloud assets.
+CloudQuery extracts, transforms, and loads your cloud assets. CloudQuery enables you to assess, audit, and monitor the configurations of your cloud assets.
 
 CloudQuery key use-cases and features:
 
@@ -16,32 +16,32 @@ CloudQuery key use-cases and features:
 
 ### Links
 
-- Homepage: https://cloudquery.io
+- Homepage: https://www.cloudquery.io
 - Releases: https://github.com/cloudquery/cloudquery/releases
-- Documentation: https://docs.cloudquery.io
-- Hub (Provider and schema docs): https://hub.cloudquery.io/
+- Documentation: https://www.cloudquery.io/docs
+- Plugins: https://www.cloudquery.io/plugins
 
-### Supported providers (Actively expanding)
+### Supported plugins (Actively expanding)
 
-Check out https://hub.cloudquery.io.
+Visit https://www.cloudquery.io/plugins.
 
-If you want us to add a new provider or resource, please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
+If you want us to add a new plugin or resource, please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
-See [docs](https://docs.cloudquery.io/docs/developers/developing-new-provider) for developing a new provider.
+See [our guide for developing a new plugin](https://www.cloudquery.io/docs/developers/developing-new-provider).
 
 ## Getting Started
 
 Please check out our 'Getting Started' guides:
 
-- [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws)
-- [Getting Started with GCP](https://docs.cloudquery.io/docs/getting-started/getting-started-with-gcp)
-- [Getting Started with Azure](https://docs.cloudquery.io/docs/getting-started/getting-started-with-azure)
+- [Getting Started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws)
+- [Getting Started with GCP](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp)
+- [Getting Started with Azure](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure)
 
-For other providers, you can follow their specific guide on [Cloudquery Hub](https://hub.cloudquery.io/providers), as well as reference the [Getting Started with AWS](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
+For other plugins, you can visit our [plugins directory](https://www.cloudquery.io/plugins), as well as reference the [Getting Started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
 
 ## Compile and run CLI
 
-```
+```bash
 make build-cli
 ./bin/cloudquery # --help to see all options
 ```
