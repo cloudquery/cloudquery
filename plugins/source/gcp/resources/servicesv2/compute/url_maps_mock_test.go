@@ -25,7 +25,7 @@ func createComputeUrlMaps() (*client.Services, error) {
 	}
 	mux := httprouter.New()
 	mux.GET("/projects/testProject/aggregated/url_maps", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.UrlMapAggregatedList{
+		resp := &compute.UrlMapsAggregatedList{
 			Items: map[string]compute.UrlMapsScopedList{
 				"": {
 					UrlMaps: []*compute.UrlMap{&item},

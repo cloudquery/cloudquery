@@ -13,6 +13,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -22,13 +24,9 @@ func createComputeNetworks() (*client.Services, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/networks", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.NetworkAggregatedList{
-			Items: map[string]compute.NetworksScopedList{
-				"": {
-					Networks: []*compute.Network{&item},
-				},
-			},
+	mux.GET("/projects/testProject/global/networks", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.NetworkList{
+			Items: []*compute.Network{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {

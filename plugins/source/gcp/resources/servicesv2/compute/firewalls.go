@@ -11,7 +11,7 @@ import (
 
 func ComputeFirewalls() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_firewalls",
 		Resolver:  fetchComputeFirewalls,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -68,10 +68,6 @@ func ComputeFirewalls() *schema.Table {
 				Type: schema.TypeInt,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "source_ranges",
 				Type: schema.TypeStringArray,
 			},
@@ -94,14 +90,6 @@ func ComputeFirewalls() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

@@ -24,6 +24,13 @@ type Resource struct {
 	Template string
 	// imports to add for this resource
 	Imports []string
+	// MockImports imports to add for mock tests
+	MockImports []string
+	// MockListStruct specified the name of the returned list function. There are
+	// some inconsistencies in naming so we have to have a way of manually overriding defaults
+	MockListStruct string
+	// SkipFields fields in go struct to skip when generating the table from the go struct
+	SkipFields []string
 }
 
 var ProjectIdColumn = codegen.ColumnDefinition{

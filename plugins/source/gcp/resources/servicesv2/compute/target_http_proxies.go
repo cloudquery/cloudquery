@@ -13,7 +13,7 @@ import (
 
 func ComputeTargetHttpProxies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_target_http_proxies",
 		Resolver:  fetchComputeTargetHttpProxies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -50,24 +50,12 @@ func ComputeTargetHttpProxies() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "url_map",
 				Type: schema.TypeString,
 			},
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

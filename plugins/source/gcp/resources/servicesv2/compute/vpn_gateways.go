@@ -13,7 +13,7 @@ import (
 
 func ComputeVpnGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_vpn_gateways",
 		Resolver:  fetchComputeVpnGateways,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -54,10 +54,6 @@ func ComputeVpnGateways() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "stack_type",
 				Type: schema.TypeString,
 			},
@@ -68,14 +64,6 @@ func ComputeVpnGateways() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

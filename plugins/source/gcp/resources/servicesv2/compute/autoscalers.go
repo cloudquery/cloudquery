@@ -13,7 +13,7 @@ import (
 
 func ComputeAutoscalers() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_autoscalers",
 		Resolver:  fetchComputeAutoscalers,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -54,10 +54,6 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "status",
 				Type: schema.TypeString,
 			},
@@ -76,14 +72,6 @@ func ComputeAutoscalers() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

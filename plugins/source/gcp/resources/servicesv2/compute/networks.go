@@ -11,7 +11,7 @@ import (
 
 func ComputeNetworks() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_networks",
 		Resolver:  fetchComputeNetworks,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -76,10 +76,6 @@ func ComputeNetworks() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "self_link_with_id",
 				Type: schema.TypeString,
 			},
@@ -90,14 +86,6 @@ func ComputeNetworks() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

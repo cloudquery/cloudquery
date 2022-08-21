@@ -13,7 +13,7 @@ import (
 
 func ComputeDiskTypes() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_disk_types",
 		Resolver:  fetchComputeDiskTypes,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -50,10 +50,6 @@ func ComputeDiskTypes() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "valid_disk_size",
 				Type: schema.TypeString,
 			},
@@ -64,14 +60,6 @@ func ComputeDiskTypes() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

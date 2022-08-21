@@ -13,7 +13,7 @@ import (
 
 func ComputeUrlMaps() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_url_maps",
 		Resolver:  fetchComputeUrlMaps,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -70,24 +70,12 @@ func ComputeUrlMaps() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "tests",
 				Type: schema.TypeJSON,
 			},
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

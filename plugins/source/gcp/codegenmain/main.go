@@ -39,7 +39,10 @@ func generateResource(r codegen.Resource, mock bool) {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
-	r.Table, err = sdkgen.NewTableFromStruct("gcp_cloudfunctions_functions", r.GCPStruct)
+	r.Table, err = sdkgen.NewTableFromStruct(
+		fmt.Sprintf("gcp_%s_%s", r.GCPService, r.GCPSubService),
+		r.GCPStruct,
+		sdkgen.WithSkipFields(r.SkipFields...))
 	if err != nil {
 		log.Fatal(err)
 	}
