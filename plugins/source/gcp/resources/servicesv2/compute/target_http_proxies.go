@@ -16,7 +16,18 @@ func ComputeTargetHttpProxies() *schema.Table {
 		Name:      "gcp_compute_target_http_proxies",
 		Resolver:  fetchComputeTargetHttpProxies,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
@@ -50,12 +61,12 @@ func ComputeTargetHttpProxies() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "url_map",
+				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
+				Name: "url_map",
+				Type: schema.TypeString,
 			},
 		},
 	}

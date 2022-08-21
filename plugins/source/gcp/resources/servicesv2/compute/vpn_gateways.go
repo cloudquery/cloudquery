@@ -16,7 +16,18 @@ func ComputeVpnGateways() *schema.Table {
 		Name:      "gcp_compute_vpn_gateways",
 		Resolver:  fetchComputeVpnGateways,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
@@ -54,15 +65,15 @@ func ComputeVpnGateways() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "stack_type",
 				Type: schema.TypeString,
 			},
 			{
 				Name: "vpn_interfaces",
-				Type: schema.TypeJSON,
-			},
-			{
-				Name: "server_response",
 				Type: schema.TypeJSON,
 			},
 		},

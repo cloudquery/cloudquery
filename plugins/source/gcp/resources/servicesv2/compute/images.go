@@ -14,7 +14,18 @@ func ComputeImages() *schema.Table {
 		Name:      "gcp_compute_images",
 		Resolver:  fetchComputeImages,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "architecture",
 				Type: schema.TypeString,
@@ -88,6 +99,10 @@ func ComputeImages() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "shielded_instance_initial_state",
 				Type: schema.TypeJSON,
 			},
@@ -138,10 +153,6 @@ func ComputeImages() *schema.Table {
 			{
 				Name: "storage_locations",
 				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

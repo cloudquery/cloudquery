@@ -16,7 +16,18 @@ func ComputeAutoscalers() *schema.Table {
 		Name:      "gcp_compute_autoscalers",
 		Resolver:  fetchComputeAutoscalers,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "autoscaling_policy",
 				Type: schema.TypeJSON,
@@ -54,6 +65,10 @@ func ComputeAutoscalers() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "status",
 				Type: schema.TypeString,
 			},
@@ -68,10 +83,6 @@ func ComputeAutoscalers() *schema.Table {
 			{
 				Name: "zone",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

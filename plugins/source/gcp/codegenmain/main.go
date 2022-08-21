@@ -46,8 +46,10 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
 	r.Table.Multiplex = "client.ProjectMultiplex"
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.GCPService) + strcase.ToCamel(r.GCPSubService)
+	r.Table.Options.PrimaryKeys = r.CreateTableOptions.PrimaryKeys
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {
 		mainTemplate = r.Template + "_mock_test.go.tpl"
@@ -74,6 +76,7 @@ func generateResource(r codegen.Resource, mock bool) {
 	}
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
+		fmt.Println(buff.String())
 		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
 	}
 	if err := os.WriteFile(filePath, content, 0644); err != nil {

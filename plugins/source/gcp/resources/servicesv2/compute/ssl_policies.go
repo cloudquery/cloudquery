@@ -14,7 +14,18 @@ func ComputeSslPolicies() *schema.Table {
 		Name:      "gcp_compute_ssl_policies",
 		Resolver:  fetchComputeSslPolicies,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
@@ -56,11 +67,11 @@ func ComputeSslPolicies() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "warnings",
-				Type: schema.TypeJSON,
+				Name: "self_link",
+				Type: schema.TypeString,
 			},
 			{
-				Name: "server_response",
+				Name: "warnings",
 				Type: schema.TypeJSON,
 			},
 		},

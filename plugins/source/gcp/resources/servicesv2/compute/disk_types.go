@@ -16,7 +16,18 @@ func ComputeDiskTypes() *schema.Table {
 		Name:      "gcp_compute_disk_types",
 		Resolver:  fetchComputeDiskTypes,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
@@ -50,16 +61,16 @@ func ComputeDiskTypes() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "valid_disk_size",
 				Type: schema.TypeString,
 			},
 			{
 				Name: "zone",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

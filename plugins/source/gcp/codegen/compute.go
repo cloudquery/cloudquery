@@ -122,8 +122,11 @@ func ComputeResources() []Resource {
 		resources[i].GCPService = "compute"
 		resources[i].DefaultColumns = []codegen.ColumnDefinition{ProjectIdColumn}
 		resources[i].GCPStructName = reflect.TypeOf(resources[i].GCPStruct).Elem().Name()
-		resources[i].SkipFields = []string{"SelfLink", "NullFields", "ForceSendFields"}
+		resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
 		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
+		if resources[i].CreateTableOptions.PrimaryKeys == nil {
+			resources[i].CreateTableOptions.PrimaryKeys = []string{"project_id", "id"}
+		}
 		if resources[i].MockListStruct == "" {
 			resources[i].MockListStruct = strcase.ToCamel(resources[i].GCPStructName)
 		}

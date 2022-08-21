@@ -16,7 +16,18 @@ func ComputeForwardingRules() *schema.Table {
 		Name:      "gcp_compute_forwarding_rules",
 		Resolver:  fetchComputeForwardingRules,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "ip_address",
 				Type: schema.TypeString,
@@ -118,6 +129,10 @@ func ComputeForwardingRules() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "service_directory_registrations",
 				Type: schema.TypeJSON,
 			},
@@ -136,10 +151,6 @@ func ComputeForwardingRules() *schema.Table {
 			{
 				Name: "target",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

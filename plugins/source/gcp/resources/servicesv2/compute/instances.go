@@ -16,7 +16,18 @@ func ComputeInstances() *schema.Table {
 		Name:      "gcp_compute_instances",
 		Resolver:  fetchComputeInstances,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "advanced_machine_features",
 				Type: schema.TypeJSON,
@@ -146,6 +157,10 @@ func ComputeInstances() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "service_accounts",
 				Type: schema.TypeJSON,
 			},
@@ -184,10 +199,6 @@ func ComputeInstances() *schema.Table {
 			{
 				Name: "zone",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

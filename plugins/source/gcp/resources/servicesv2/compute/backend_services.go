@@ -16,7 +16,18 @@ func ComputeBackendServices() *schema.Table {
 		Name:      "gcp_compute_backend_services",
 		Resolver:  fetchComputeBackendServices,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "affinity_cookie_ttl_sec",
 				Type: schema.TypeInt,
@@ -150,6 +161,10 @@ func ComputeBackendServices() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "service_bindings",
 				Type: schema.TypeStringArray,
 			},
@@ -164,10 +179,6 @@ func ComputeBackendServices() *schema.Table {
 			{
 				Name: "timeout_sec",
 				Type: schema.TypeInt,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

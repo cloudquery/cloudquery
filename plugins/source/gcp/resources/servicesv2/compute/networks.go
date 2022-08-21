@@ -14,7 +14,18 @@ func ComputeNetworks() *schema.Table {
 		Name:      "gcp_compute_networks",
 		Resolver:  fetchComputeNetworks,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "i_pv_4_range",
 				Type: schema.TypeString,
@@ -76,16 +87,16 @@ func ComputeNetworks() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "self_link_with_id",
 				Type: schema.TypeString,
 			},
 			{
 				Name: "subnetworks",
 				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}
