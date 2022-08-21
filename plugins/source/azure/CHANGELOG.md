@@ -18,6 +18,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.13.3](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.13.2...plugins/source/azure/v0.13.3) (2022-08-21)
+
+
+### Features
+
+* Added azure cdn profiles ([#1460](https://github.com/cloudquery/cloudquery/issues/1460)) ([cc154c5](https://github.com/cloudquery/cloudquery/commit/cc154c5128d58474958ffd8330ebfdf281ebbe94))
+
 ## [0.13.2](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.13.1...plugins/source/azure/v0.13.2) (2022-08-21)
 
 
