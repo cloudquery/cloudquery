@@ -12,9 +12,13 @@ jobs:
   set-vercel-to-success:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ouzi-dev/commit-status-updater@v1.1.0
+      - uses: actions/github-script@v6
         with:
-          status: success
-          name: "Vercel – cloudquery-web"
-          ignoreForks: false
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: `cloudquery`,
+              repo: `cloudquery`,
+              context: 'Vercel – cloudquery-web'
+              state: 'success'
+              sha: context.pull_request.head.sha
+            })
