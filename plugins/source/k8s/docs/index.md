@@ -1,10 +1,10 @@
-## K8S Provider
+## Kubernetes Plugin
 
 The CloudQuery K8S provider pulls configuration out of Kubernetes, normalizes them and stores them in PostgreSQL database.
 
 ### Install
 
-```shell
+```bash
 cloudquery init k8s
 ```
 
@@ -22,7 +22,7 @@ export KUBECONFIG=<PATH_TO_YOUR_CONFIG_FILE>
 By default cloudquery fetches data from default context of the kubernetes config. Context to fetch can be selected by setting contexts variable of provider's `configuration` block in `config.hcl`. 
 Example of context selection:
 
-```yml title="cloudquery.yml"
+```yaml title="cloudquery.yml"
 providers:
   - name: k8s
    #  configuration:

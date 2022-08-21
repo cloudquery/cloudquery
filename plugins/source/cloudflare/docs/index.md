@@ -1,10 +1,10 @@
-## Cloudflare Provider
+## Cloudflare Plugin
 
 The CloudQuery Cloudflare provider pulls configuration out of Cloudflare resources, normalizes them and stores them in PostgreSQL database.
 
 ### Install
 
-```shell
+```bash
 cloudquery init cloudflare
 ```
 
