@@ -1,7 +1,7 @@
 name: Approve Vercel Website Build
 
 on:
-  pull_request:
+  pull_request_target:
     paths:
       - "**/*"
       - "!website/**"
@@ -17,3 +17,4 @@ jobs:
         with:
           status: success
           name: "Vercel – cloudquery-web"
+          ignoreForks: false
