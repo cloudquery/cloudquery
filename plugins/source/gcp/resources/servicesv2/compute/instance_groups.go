@@ -13,7 +13,7 @@ import (
 
 func ComputeInstanceGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_instance_groups",
 		Resolver:  fetchComputeInstanceGroups,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -54,10 +54,6 @@ func ComputeInstanceGroups() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "size",
 				Type: schema.TypeInt,
 			},
@@ -72,14 +68,6 @@ func ComputeInstanceGroups() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

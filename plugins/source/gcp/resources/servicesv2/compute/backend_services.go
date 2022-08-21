@@ -13,7 +13,7 @@ import (
 
 func ComputeBackendServices() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_backend_services",
 		Resolver:  fetchComputeBackendServices,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -150,10 +150,6 @@ func ComputeBackendServices() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "service_bindings",
 				Type: schema.TypeStringArray,
 			},
@@ -172,14 +168,6 @@ func ComputeBackendServices() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

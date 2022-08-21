@@ -11,7 +11,7 @@ import (
 
 func ComputeInterconnects() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_interconnects",
 		Resolver:  fetchComputeInterconnects,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -100,24 +100,12 @@ func ComputeInterconnects() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "state",
 				Type: schema.TypeString,
 			},
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

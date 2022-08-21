@@ -13,7 +13,7 @@ import (
 
 func ComputeSslCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_ssl_certificates",
 		Resolver:  fetchComputeSslCertificates,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -58,10 +58,6 @@ func ComputeSslCertificates() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "self_managed",
 				Type: schema.TypeJSON,
 			},
@@ -76,14 +72,6 @@ func ComputeSslCertificates() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

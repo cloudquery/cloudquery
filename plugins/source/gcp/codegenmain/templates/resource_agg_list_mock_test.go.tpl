@@ -12,7 +12,7 @@ import (
 	faker "github.com/cloudquery/faker/v3"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-	{{range .Imports}}
+	{{range .MockImports}}
   "{{.}}"
   {{end}}
 	"google.golang.org/api/option"
@@ -25,7 +25,7 @@ func create{{.GCPService | ToCamel}}{{.GCPSubService | ToCamel}}() (*client.Serv
 	}
 	mux := httprouter.New()
 	mux.GET("/projects/testProject/aggregated/{{.GCPSubService}}", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &{{.GCPService}}.{{.GCPStructName}}AggregatedList{
+		resp := &{{.GCPService}}.{{.MockListStruct}}AggregatedList{
 			Items: map[string]{{.GCPService}}.{{.GCPSubService | ToCamel}}ScopedList{
 				"": {
 					{{.GCPSubService | ToCamel}}: []*{{.GCPService}}.{{.GCPStructName}}{&item},

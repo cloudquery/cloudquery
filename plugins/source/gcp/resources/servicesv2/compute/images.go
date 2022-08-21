@@ -11,7 +11,7 @@ import (
 
 func ComputeImages() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_images",
 		Resolver:  fetchComputeImages,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -88,10 +88,6 @@ func ComputeImages() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "shielded_instance_initial_state",
 				Type: schema.TypeJSON,
 			},
@@ -146,14 +142,6 @@ func ComputeImages() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

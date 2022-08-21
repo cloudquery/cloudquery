@@ -11,7 +11,7 @@ import (
 
 func ComputeProjects() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_projects",
 		Resolver:  fetchComputeProjects,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -56,10 +56,6 @@ func ComputeProjects() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "usage_export_location",
 				Type: schema.TypeJSON,
 			},
@@ -70,14 +66,6 @@ func ComputeProjects() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

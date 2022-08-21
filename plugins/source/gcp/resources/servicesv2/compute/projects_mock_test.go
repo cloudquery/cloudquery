@@ -13,6 +13,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -22,14 +24,8 @@ func createComputeProjects() (*client.Services, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/projects", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.ProjectAggregatedList{
-			Items: map[string]compute.ProjectsScopedList{
-				"": {
-					Projects: []*compute.Project{&item},
-				},
-			},
-		}
+	mux.GET("/projects/testProject/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &item
 		b, err := json.Marshal(resp)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

@@ -13,6 +13,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -22,13 +24,9 @@ func createComputeFirewalls() (*client.Services, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/firewalls", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.FirewallAggregatedList{
-			Items: map[string]compute.FirewallsScopedList{
-				"": {
-					Firewalls: []*compute.Firewall{&item},
-				},
-			},
+	mux.GET("/projects/testProject/global/firewalls", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.FirewallList{
+			Items: []*compute.Firewall{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {

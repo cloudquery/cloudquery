@@ -13,6 +13,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -22,13 +24,9 @@ func createComputeSslPolicies() (*client.Services, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/ssl_policies", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.SslPolicyAggregatedList{
-			Items: map[string]compute.SslPoliciesScopedList{
-				"": {
-					SslPolicies: []*compute.SslPolicy{&item},
-				},
-			},
+	mux.GET("/projects/testProject/global/ssl_policies", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.SslPoliciesList{
+			Items: []*compute.SslPolicy{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {

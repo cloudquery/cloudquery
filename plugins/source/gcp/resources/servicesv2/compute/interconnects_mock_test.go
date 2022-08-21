@@ -13,6 +13,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -22,13 +24,9 @@ func createComputeInterconnects() (*client.Services, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/interconnects", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.InterconnectAggregatedList{
-			Items: map[string]compute.InterconnectsScopedList{
-				"": {
-					Interconnects: []*compute.Interconnect{&item},
-				},
-			},
+	mux.GET("/projects/testProject/global/interconnects", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.InterconnectList{
+			Items: []*compute.Interconnect{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {

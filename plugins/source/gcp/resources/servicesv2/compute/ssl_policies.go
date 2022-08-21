@@ -11,7 +11,7 @@ import (
 
 func ComputeSslPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_ssl_policies",
 		Resolver:  fetchComputeSslPolicies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -56,24 +56,12 @@ func ComputeSslPolicies() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "warnings",
 				Type: schema.TypeJSON,
 			},
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

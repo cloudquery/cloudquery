@@ -13,7 +13,7 @@ import (
 
 func ComputeInstances() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_instances",
 		Resolver:  fetchComputeInstances,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -146,10 +146,6 @@ func ComputeInstances() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "service_accounts",
 				Type: schema.TypeJSON,
 			},
@@ -192,14 +188,6 @@ func ComputeInstances() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

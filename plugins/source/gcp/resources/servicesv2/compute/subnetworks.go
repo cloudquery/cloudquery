@@ -13,7 +13,7 @@ import (
 
 func ComputeSubnetworks() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_subnetworks",
 		Resolver:  fetchComputeSubnetworks,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -102,10 +102,6 @@ func ComputeSubnetworks() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "stack_type",
 				Type: schema.TypeString,
 			},
@@ -116,14 +112,6 @@ func ComputeSubnetworks() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

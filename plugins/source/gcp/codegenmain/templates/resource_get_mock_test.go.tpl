@@ -12,7 +12,7 @@ import (
 	faker "github.com/cloudquery/faker/v3"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-	{{range .Imports}}
+	{{range .MockImports}}
   "{{.}}"
   {{end}}
 	"google.golang.org/api/option"
@@ -24,14 +24,8 @@ func create{{.GCPService | ToCamel}}{{.GCPSubService | ToCamel}}() (*client.Serv
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/{{.GCPSubService}}", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &{{.GCPService}}.{{.GCPStructName}}AggregatedList{
-			Items: map[string]{{.GCPService}}.{{.GCPSubService | ToCamel}}ScopedList{
-				"": {
-					{{.GCPSubService | ToCamel}}: []*{{.GCPService}}.{{.GCPStructName}}{&item},
-				},
-			},
-		}
+	mux.GET("/projects/testProject/", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &item
 		b, err := json.Marshal(resp)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

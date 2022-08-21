@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/iancoleman/strcase"
 	"google.golang.org/api/compute/v1"
 )
 
@@ -45,8 +46,9 @@ var computeResourcesAggList = []Resource{
 		GCPStruct:     &compute.TargetHttpProxy{},
 	},
 	{
-		GCPSubService: "url_maps",
-		GCPStruct:     &compute.UrlMap{},
+		GCPSubService:  "url_maps",
+		GCPStruct:      &compute.UrlMap{},
+		MockListStruct: "UrlMaps",
 	},
 	{
 		GCPSubService: "vpn_gateways",
@@ -72,8 +74,9 @@ var computeResourcesList = []Resource{
 		GCPStruct:     &compute.Network{},
 	},
 	{
-		GCPSubService: "ssl_policies",
-		GCPStruct:     &compute.SslPolicy{},
+		GCPSubService:  "ssl_policies",
+		GCPStruct:      &compute.SslPolicy{},
+		MockListStruct: "SslPolicies",
 	},
 	{
 		GCPSubService: "interconnects",
@@ -94,14 +97,22 @@ var computeResourcesGet = []Resource{
 
 func ComputeResources() []Resource {
 	for i := range computeResourcesList {
-		computeResourcesList[i].Template = "resource_list"
+		if computeResourcesList[i].Template == "" {
+			computeResourcesList[i].Template = "resource_list"
+		}
 	}
 	for i := range computeResourcesAggList {
-		computeResourcesAggList[i].Template = "resource_agg_list"
-		computeResourcesAggList[i].Imports = []string{"google.golang.org/api/compute/v1"}
+		if computeResourcesAggList[i].Template == "" {
+			computeResourcesAggList[i].Template = "resource_agg_list"
+		}
+		if len(computeResourcesAggList[i].Imports) == 0 {
+			computeResourcesAggList[i].Imports = []string{"google.golang.org/api/compute/v1"}
+		}
 	}
 	for i := range computeResourcesGet {
-		computeResourcesGet[i].Template = "resource_get"
+		if computeResourcesGet[i].Template == "" {
+			computeResourcesGet[i].Template = "resource_get"
+		}
 	}
 	resources := computeResourcesAggList
 	resources = append(resources, computeResourcesList...)
@@ -111,6 +122,11 @@ func ComputeResources() []Resource {
 		resources[i].GCPService = "compute"
 		resources[i].DefaultColumns = []codegen.ColumnDefinition{ProjectIdColumn}
 		resources[i].GCPStructName = reflect.TypeOf(resources[i].GCPStruct).Elem().Name()
+		resources[i].SkipFields = []string{"SelfLink", "NullFields", "ForceSendFields"}
+		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
+		if resources[i].MockListStruct == "" {
+			resources[i].MockListStruct = strcase.ToCamel(resources[i].GCPStructName)
+		}
 	}
 
 	return resources

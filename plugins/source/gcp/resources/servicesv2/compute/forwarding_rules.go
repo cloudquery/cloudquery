@@ -13,7 +13,7 @@ import (
 
 func ComputeForwardingRules() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudfunctions_functions",
+		Name:      "gcp_compute_forwarding_rules",
 		Resolver:  fetchComputeForwardingRules,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
@@ -118,10 +118,6 @@ func ComputeForwardingRules() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-			},
-			{
 				Name: "service_directory_registrations",
 				Type: schema.TypeJSON,
 			},
@@ -144,14 +140,6 @@ func ComputeForwardingRules() *schema.Table {
 			{
 				Name: "server_response",
 				Type: schema.TypeJSON,
-			},
-			{
-				Name: "force_send_fields",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "null_fields",
-				Type: schema.TypeStringArray,
 			},
 		},
 	}

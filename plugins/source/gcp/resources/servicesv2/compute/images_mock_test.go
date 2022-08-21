@@ -13,6 +13,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -22,13 +24,9 @@ func createComputeImages() (*client.Services, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/images", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.ImageAggregatedList{
-			Items: map[string]compute.ImagesScopedList{
-				"": {
-					Images: []*compute.Image{&item},
-				},
-			},
+	mux.GET("/projects/testProject/global/images", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.ImageList{
+			Items: []*compute.Image{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {

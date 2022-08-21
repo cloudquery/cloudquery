@@ -13,6 +13,8 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
+	"google.golang.org/api/compute/v1"
+
 	"google.golang.org/api/option"
 )
 
@@ -22,13 +24,9 @@ func createComputeTargetSslProxies() (*client.Services, error) {
 		return nil, err
 	}
 	mux := httprouter.New()
-	mux.GET("/projects/testProject/aggregated/target_ssl_proxies", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &compute.TargetSslProxyAggregatedList{
-			Items: map[string]compute.TargetSslProxiesScopedList{
-				"": {
-					TargetSslProxies: []*compute.TargetSslProxy{&item},
-				},
-			},
+	mux.GET("/projects/testProject/global/target_ssl_proxies", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		resp := &compute.TargetSslProxyList{
+			Items: []*compute.TargetSslProxy{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {
