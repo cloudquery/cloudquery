@@ -20,5 +20,5 @@ jobs:
               repo: `cloudquery`,
               context: 'Vercel – cloudquery-web',
               state: 'success',
-              sha: context.pull_request_target.head.sha,
+              sha: context.payload.pull_request.head.sha,
             })
