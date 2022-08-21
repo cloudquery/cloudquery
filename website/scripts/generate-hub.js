@@ -15,8 +15,7 @@ const PLUGINS_DATA = {
 };
 
 const PLUGINS_SOURCE = `${__dirname}/../../plugins/source`;
-const HUB_PATH = `${__dirname}/../pages/hub`;
-const PLUGINS_PATH = `${HUB_PATH}/plugins`;
+const PLUGINS_PATH = `${__dirname}/../pages/plugins`;
 
 const NAME_PLACEHOLDER = "NAME_PLACEHOLDER";
 const CONTENT_PLACEHOLDER = "CONTENT_PLACEHOLDER";
@@ -31,8 +30,10 @@ ${CONTENT_PLACEHOLDER}
 const PLUGINS_PLACEHOLDER = "PLUGINS_PLACEHOLDER";
 
 const PLUGINS_TEMPLATE = `---
-title: Plugins
+title: Overview
 ---
+
+Discover plugins that power CloudQuery, the open source high performance data integration platform designed for security and infrastructure teams.
 
 |Plugins|
 |---|
@@ -79,7 +80,7 @@ const generatePluginsPagesMeta = async (plugins) => {
   );
   await fs.writeFile(
     `${PLUGINS_PATH}/meta.json`,
-    JSON.stringify(pluginsMeta, null, 2)
+    JSON.stringify({ index: "Overview", ...pluginsMeta }, null, 2)
   );
 };
 
@@ -109,7 +110,7 @@ const generatePluginsIndexPage = async (plugins) => {
     .join("\n");
   const page = {
     content: PLUGINS_TEMPLATE.replace(PLUGINS_PLACEHOLDER, pluginsTable),
-    path: `${HUB_PATH}/plugins.mdx`,
+    path: `${PLUGINS_PATH}/index.mdx`,
   };
   await fs.mkdir(path.dirname(page.path), { recursive: true });
   await fs.writeFile(page.path, page.content, { encoding: "utf8" });
