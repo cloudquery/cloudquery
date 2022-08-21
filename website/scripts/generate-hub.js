@@ -34,11 +34,9 @@ const PLUGINS_TEMPLATE = `---
 title: Plugins
 ---
 
-import { Plugins } from "../../components/hub/Plugins";
-
-# Plugins
-
-<Plugins plugins={${PLUGINS_PLACEHOLDER}} />
+|Plugins|
+|---|
+${PLUGINS_PLACEHOLDER}
 `;
 
 const TABLES_TEMPLATE = `---
@@ -105,20 +103,12 @@ const generatePluginsPages = async (plugins) => {
   await generatePluginsPagesMeta(plugins);
 };
 
-const getPluginAsString = (plugin) => {
-  const asString = Object.entries(plugin)
-    .map(([key, value]) => `${key}: "${value}"`)
-    .join(", ");
-  return `{${asString}}`;
-};
-
 const generatePluginsIndexPage = async (plugins) => {
-  const pluginsArray = plugins
-    .map((plugin) => getPluginAsString(plugin))
-    .join(", ");
-
+  const pluginsTable = plugins
+    .map((plugin) => `|[${plugin.name}](plugins/${plugin.id})|`)
+    .join("\n");
   const page = {
-    content: PLUGINS_TEMPLATE.replace(PLUGINS_PLACEHOLDER, `[${pluginsArray}]`),
+    content: PLUGINS_TEMPLATE.replace(PLUGINS_PLACEHOLDER, pluginsTable),
     path: `${HUB_PATH}/plugins.mdx`,
   };
   await fs.mkdir(path.dirname(page.path), { recursive: true });
