@@ -8,7 +8,7 @@ on:
 jobs:
   check-broken-links:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -60,5 +60,6 @@ jobs:
             --exclude docs.cloudquery.io/cdn-cgi/l/email-protection \
             --exclude pcisecuritystandards.org \
             --exclude github.com/cloudquery/cloudquery/issues/new \
+            --exclude "plugins/source/*" \
             ${{ steps.vercel-deployment.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──'
