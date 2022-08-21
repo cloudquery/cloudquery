@@ -1,0 +1,16 @@
+name: Approve Vercel Website Build
+
+on:
+  pull_request:
+    paths:
+      - "!website/**"
+
+jobs:
+  set-vercel-to-success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ouzi-dev/commit-status-updater@v1.1.0
+        with:
+          status: success
+          name: "Vercel – cloudquery-web"
