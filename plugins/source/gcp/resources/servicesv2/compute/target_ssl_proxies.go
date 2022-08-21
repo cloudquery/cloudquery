@@ -14,7 +14,18 @@ func ComputeTargetSslProxies() *schema.Table {
 		Name:      "gcp_compute_target_ssl_proxies",
 		Resolver:  fetchComputeTargetSslProxies,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "certificate_map",
 				Type: schema.TypeString,
@@ -44,6 +55,10 @@ func ComputeTargetSslProxies() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "service",
 				Type: schema.TypeString,
 			},
@@ -54,10 +69,6 @@ func ComputeTargetSslProxies() *schema.Table {
 			{
 				Name: "ssl_policy",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

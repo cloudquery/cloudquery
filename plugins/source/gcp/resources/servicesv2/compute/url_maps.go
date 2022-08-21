@@ -16,7 +16,18 @@ func ComputeUrlMaps() *schema.Table {
 		Name:      "gcp_compute_url_maps",
 		Resolver:  fetchComputeUrlMaps,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "creation_timestamp",
 				Type: schema.TypeString,
@@ -70,11 +81,11 @@ func ComputeUrlMaps() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "tests",
-				Type: schema.TypeJSON,
+				Name: "self_link",
+				Type: schema.TypeString,
 			},
 			{
-				Name: "server_response",
+				Name: "tests",
 				Type: schema.TypeJSON,
 			},
 		},

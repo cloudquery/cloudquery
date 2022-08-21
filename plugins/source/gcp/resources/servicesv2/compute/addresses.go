@@ -16,7 +16,18 @@ func ComputeAddresses() *schema.Table {
 		Name:      "gcp_compute_addresses",
 		Resolver:  fetchComputeAddresses,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "address",
 				Type: schema.TypeString,
@@ -70,6 +81,10 @@ func ComputeAddresses() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "status",
 				Type: schema.TypeString,
 			},
@@ -80,10 +95,6 @@ func ComputeAddresses() *schema.Table {
 			{
 				Name: "users",
 				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}

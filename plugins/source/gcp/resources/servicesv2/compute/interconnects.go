@@ -14,7 +14,18 @@ func ComputeInterconnects() *schema.Table {
 		Name:      "gcp_compute_interconnects",
 		Resolver:  fetchComputeInterconnects,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "admin_enabled",
 				Type: schema.TypeBool,
@@ -100,12 +111,12 @@ func ComputeInterconnects() *schema.Table {
 				Type: schema.TypeBool,
 			},
 			{
-				Name: "state",
+				Name: "self_link",
 				Type: schema.TypeString,
 			},
 			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
+				Name: "state",
+				Type: schema.TypeString,
 			},
 		},
 	}

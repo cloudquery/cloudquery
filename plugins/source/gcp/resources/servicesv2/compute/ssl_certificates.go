@@ -16,7 +16,18 @@ func ComputeSslCertificates() *schema.Table {
 		Name:      "gcp_compute_ssl_certificates",
 		Resolver:  fetchComputeSslCertificates,
 		Multiplex: client.ProjectMultiplex,
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{
+				"project_id",
+				"id",
+			},
+		},
 		Columns: []schema.Column{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
 			{
 				Name: "certificate",
 				Type: schema.TypeString,
@@ -58,6 +69,10 @@ func ComputeSslCertificates() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+			},
+			{
 				Name: "self_managed",
 				Type: schema.TypeJSON,
 			},
@@ -68,10 +83,6 @@ func ComputeSslCertificates() *schema.Table {
 			{
 				Name: "type",
 				Type: schema.TypeString,
-			},
-			{
-				Name: "server_response",
-				Type: schema.TypeJSON,
 			},
 		},
 	}
