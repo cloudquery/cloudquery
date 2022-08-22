@@ -14,17 +14,14 @@ func ComputeInterconnects() *schema.Table {
 		Name:      "gcp_compute_interconnects",
 		Resolver:  fetchComputeInterconnects,
 		Multiplex: client.ProjectMultiplex,
-		Options: schema.TableCreationOptions{
-			PrimaryKeys: []string{
-				"project_id",
-				"id",
-			},
-		},
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "admin_enabled",
@@ -61,6 +58,9 @@ func ComputeInterconnects() *schema.Table {
 			{
 				Name: "id",
 				Type: schema.TypeInt,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "interconnect_attachments",

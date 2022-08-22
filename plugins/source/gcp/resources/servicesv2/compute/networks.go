@@ -14,17 +14,14 @@ func ComputeNetworks() *schema.Table {
 		Name:      "gcp_compute_networks",
 		Resolver:  fetchComputeNetworks,
 		Multiplex: client.ProjectMultiplex,
-		Options: schema.TableCreationOptions{
-			PrimaryKeys: []string{
-				"project_id",
-				"id",
-			},
-		},
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "i_pv_4_range",
@@ -57,6 +54,9 @@ func ComputeNetworks() *schema.Table {
 			{
 				Name: "id",
 				Type: schema.TypeInt,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "internal_ipv_6_range",

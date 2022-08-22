@@ -16,17 +16,14 @@ func ComputeAutoscalers() *schema.Table {
 		Name:      "gcp_compute_autoscalers",
 		Resolver:  fetchComputeAutoscalers,
 		Multiplex: client.ProjectMultiplex,
-		Options: schema.TableCreationOptions{
-			PrimaryKeys: []string{
-				"project_id",
-				"id",
-			},
-		},
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "autoscaling_policy",
@@ -43,6 +40,9 @@ func ComputeAutoscalers() *schema.Table {
 			{
 				Name: "id",
 				Type: schema.TypeInt,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "kind",
