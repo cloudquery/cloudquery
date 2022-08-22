@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/jackc/pgx/v4"
 	"github.com/rs/zerolog"
 )
 
@@ -17,10 +18,16 @@ var createTablesTests = []*schema.Table{
 	},
 	{
 		Name: "simple_table",
+		Options: schema.TableCreationOptions{
+			PrimaryKeys: []string{"id"},
+		},
 		Columns: schema.ColumnList{
 			{
 				Name: "id",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "name",
@@ -38,6 +45,7 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 		specs.Destination{
 			Spec: &PostgreSqlSpec{
 				ConnectionString: "postgres://postgres:pass@localhost:5432/postgres",
+				PgxLogLevel:      pgx.LogLevelInfo,
 			},
 		},
 	); err != nil {

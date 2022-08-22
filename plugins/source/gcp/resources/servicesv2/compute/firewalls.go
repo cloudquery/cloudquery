@@ -14,17 +14,14 @@ func ComputeFirewalls() *schema.Table {
 		Name:      "gcp_compute_firewalls",
 		Resolver:  fetchComputeFirewalls,
 		Multiplex: client.ProjectMultiplex,
-		Options: schema.TableCreationOptions{
-			PrimaryKeys: []string{
-				"project_id",
-				"id",
-			},
-		},
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "allowed",
@@ -57,6 +54,9 @@ func ComputeFirewalls() *schema.Table {
 			{
 				Name: "id",
 				Type: schema.TypeInt,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name: "kind",
