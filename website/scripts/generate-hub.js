@@ -15,7 +15,7 @@ const PLUGINS_DATA = {
   yandexcloud: { name: "Yandex Cloud" },
 };
 
-const EXTERNAL_PLIGINS = [
+const EXTERNAL_PLUGINS = [
   {
     external: true,
     id: "yandexcloud",
@@ -29,7 +29,7 @@ const PLUGINS_PATH = `${__dirname}/../pages/plugins`;
 
 const NAME_PLACEHOLDER = "NAME_PLACEHOLDER";
 const CONTENT_PLACEHOLDER = "CONTENT_PLACEHOLDER";
-const EXTERNAL_PLIGINS_LINK_PLACEHOLDER = "EXTERNAL_PLIGINS_LINK_PLACEHOLDER";
+const EXTERNAL_PLUGINS_LINK_PLACEHOLDER = "EXTERNAL_PLUGINS_LINK_PLACEHOLDER";
 
 const PLUGIN_TEMPLATE = `---
 title: ${NAME_PLACEHOLDER} Plugin
@@ -65,7 +65,7 @@ const EXTERNAL_PLUGIN_TEMPLATE = `
 
 The CloudQuery ${NAME_PLACEHOLDER} plugin pulls configuration out of ${NAME_PLACEHOLDER} resources, normalizes them and stores them in PostgreSQL database.
 
-For more detailes see [${NAME_PLACEHOLDER} Plugin repository](${EXTERNAL_PLIGINS_LINK_PLACEHOLDER})
+For more detailes see [${NAME_PLACEHOLDER} Plugin repository](${EXTERNAL_PLUGINS_LINK_PLACEHOLDER})
 `;
 
 const getPlugins = async () => {
