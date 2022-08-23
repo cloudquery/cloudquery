@@ -4,7 +4,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func CdnResources() []Resource {
+func CDNResources() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

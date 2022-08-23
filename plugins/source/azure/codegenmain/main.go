@@ -22,7 +22,8 @@ func main() {
 	var resources = []codegen.Resource{}
 	resources = append(resources, codegen.AuthorizationResources()...)
 	resources = append(resources, codegen.BatchResources()...)
-	resources = append(resources, codegen.CdnResources()...)
+	resources = append(resources, codegen.CDNResources()...)
+	resources = append(resources, codegen.ComputeResources()...)
 	resources = append(resources, codegen.NetworkResources()...)
 	for _, r := range resources {
 		generateResource(r)

@@ -21,16 +21,15 @@ func AuthorizationResources() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:          &authorization.RoleAssignment{},
-					listFunction:         "List",
-					listFunctionArgs:     []string{"\"\""},
-					mockListFunctionArgs: []string{"\"\""},
+					azureStruct:      &authorization.RoleAssignment{},
+					listFunction:     "List",
+					listFunctionArgs: []string{`""`},
 				},
 				{
 					azureStruct:          &authorization.RoleDefinition{},
 					listFunction:         "List",
-					listFunctionArgs:     []string{"client.ScopeSubscription(meta.(*client.Client).SubscriptionId)", "\"\""},
-					mockListFunctionArgs: []string{"gomock.Any()", "\"\""},
+					listFunctionArgs:     []string{"client.ScopeSubscription(meta.(*client.Client).SubscriptionId)", `""`},
+					mockListFunctionArgs: []string{"gomock.Any()", `""`},
 				},
 			},
 		},
