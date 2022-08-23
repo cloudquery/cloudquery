@@ -57,8 +57,9 @@ type resourceDefinition struct {
 }
 
 type byTemplates struct {
-	templates   []template
-	definitions []resourceDefinition
+	templates           []template
+	definitions         []resourceDefinition
+	serviceNameOverride string
 }
 
 const pluginName = "azure"
@@ -108,11 +109,15 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 			for _, definition := range definitions {
 				elementTypeParts := strings.Split(reflect.TypeOf(definition.azureStruct).Elem().String(), ".")
 				azurePackageName, azureStructName := elementTypeParts[0], elementTypeParts[1]
+				azureService := strcase.ToCamel(azurePackageName)
+				if byTemplate.serviceNameOverride != "" {
+					azureService = byTemplate.serviceNameOverride
+				}
 				resource := Resource{
 					AzurePackageName:   azurePackageName,
 					AzureStructName:    azureStructName,
 					AzureStruct:        definition.azureStruct,
-					AzureService:       strcase.ToCamel(azurePackageName),
+					AzureService:       azureService,
 					AzureSubService:    plural.Plural(azureStructName),
 					DefaultColumns:     []codegen.ColumnDefinition{SubscriptionIdColumn, IdColumn},
 					SkipFields:         []string{"ID"},
