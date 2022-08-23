@@ -21,6 +21,7 @@ var azureTemplatesFS embed.FS
 func main() {
 	var resources = []codegen.Resource{}
 	resources = append(resources, codegen.AuthorizationResources()...)
+	resources = append(resources, codegen.BatchResources()...)
 	resources = append(resources, codegen.NetworkResources()...)
 	for _, r := range resources {
 		generateResource(r)
@@ -78,5 +79,4 @@ func generateResource(r codegen.Resource) {
 	destination := path.Join(dir, "../resources/servicesv2", r.Template.Destination)
 	content := getContent(r.Template, destination, r)
 	writeContent(destination, content)
-
 }
