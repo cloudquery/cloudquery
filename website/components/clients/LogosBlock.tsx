@@ -6,7 +6,6 @@ import { FastlyLogo } from "../logos/Fastly";
 import { InfosysLogo } from "../logos/Infosys";
 import { InfrastructureLogo } from "../logos/Infrastructure";
 import { PaloAltoNetworksLogo } from "../logos/PaloAltoNetworks";
-import { TempusLogo } from "../logos/Tempus";
 import { ZendeskLogo } from "../logos/Zendesk";
 
 const LogosList = () => {
@@ -18,7 +17,6 @@ const LogosList = () => {
       <PaloAltoNetworksLogo />
       <BloombergLogo />
       <InfrastructureLogo />
-      <TempusLogo />
       <ZendeskLogo />
       <InfosysLogo />
       <AuroralabsLogo />
