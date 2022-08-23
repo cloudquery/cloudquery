@@ -1,0 +1,22 @@
+name: Lint Website Docs
+
+on:
+  pull_request:
+    paths:
+      - "website/**"
+
+jobs:
+  lint-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+      - name: Vale
+        uses: errata-ai/vale-action@v2
+        continue-on-error: true
+        with:
+          files: '["website", "README.md"]'
+          filter_mode: nofilter
+          level: warning
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
