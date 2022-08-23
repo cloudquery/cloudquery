@@ -73,8 +73,7 @@ func newCmdRoot() *cobra.Command {
 			}
 
 			mw := io.MultiWriter(writers...)
-			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Timestamp().Logger()
-			log.Logger.Info().Msg("logging initialized")
+			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
