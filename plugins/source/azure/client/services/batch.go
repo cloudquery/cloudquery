@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/batch.go -package=mocks . BatchAccountClient
+//go:generate mockgen -destination=./mocks/batch.go -package=mocks . AccountsClient
 package services
 
 import (
@@ -8,18 +8,18 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type BatchAccountClient interface {
+type AccountsClient interface {
 	List(ctx context.Context) (result batch.AccountListResultPage, err error)
 }
 
 type BatchClient struct {
-	Account BatchAccountClient
+	Accounts AccountsClient
 }
 
 func NewBatchClient(subscriptionId string, auth autorest.Authorizer) BatchClient {
 	acCl := batch.NewAccountClient(subscriptionId)
 	acCl.Authorizer = auth
 	return BatchClient{
-		Account: acCl,
+		Accounts: acCl,
 	}
 }

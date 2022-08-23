@@ -272,7 +272,7 @@ func BatchAccounts() *schema.Table {
 // ====================================================================================================================
 
 func fetchBatchAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Batch.Account
+	svc := meta.(*client.Client).Services().Batch.Accounts
 	response, err := svc.List(ctx)
 	if err != nil {
 		return diag.WrapError(err)
