@@ -10,13 +10,11 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 We are excited to announce the release of the CloudQuery Policies!
 
 CloudQuery brings the power of SQL to your cloud infrastructure, providing easy monitoring, governance and security.
 
 The new CloudQuery Policies feature brings policy-as-code to the CloudQuery ecosystem. CQ Policies enable users to codify, version and run security, governance, cost and compliance rules, using SQL as the query layer and HCL as the logical layer.
-
 
 ## What’s inside?
 
@@ -28,7 +26,7 @@ The new CloudQuery Policies feature brings policy-as-code to the CloudQuery ecos
 
 You can see all of the available policy packs, as well as their documentation and detailed specification of all checks, on [hub.cloudquery.io/policies](https://hub.cloudquery.io/policies).
 
-For detailed documentation please check-out our [docs](https://docs.cloudquery.io/docs/policies) and our [example](https://github.com/cloudquery/cq-policy-core) repository containing the AWS CIS Policy.
+For detailed documentation please check-out our [docs](https://www.cloudquery.io/docs/policies) and our [example](https://github.com/cloudquery/cq-policy-core) repository containing the AWS CIS Policy.
 
 ## Example Policies
 

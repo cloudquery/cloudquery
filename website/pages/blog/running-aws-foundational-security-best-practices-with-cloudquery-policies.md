@@ -12,7 +12,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 Back in mid-2020 AWS Security Hub released a new security standard called AWS Foundational Security Best Practices. This new standard sets security controls to detect when an AWS account or deployed resources don’t match up to the best practices set out by the AWS security experts. The complete standard can be found in the [AWS Security Hub documentation](https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp.html).
 
 As with any security guidelines, factors such as AWS environments, requirements, and capacity of your security team, will impact how you implement those guidelines.
@@ -21,10 +20,9 @@ The new AWS Foundational Security Best Practices CloudQuery policy gives you a p
 
 The CloudQuery AWS Foundational Security Policy covers 200+ checks - you can review them on [GitHub](https://github.com/cloudquery-policies/aws/tree/main/foundational_security) or review them in the [GitHub](https://github.com/cloudquery/cq-provider-aws/tree/main/policies/foundational_security).
 
-
 ## Prerequisites
 
-Please follow the [Getting Started](https://docs.cloudquery.io/docs/getting-started/getting-started-with-aws) documentation on how to install cloudquery, and `fetch` your AWS configuration into a PostgreSQL database.
+Please follow the [Getting Started](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) documentation on how to install cloudquery, and `fetch` your AWS configuration into a PostgreSQL database.
 
 ## Running
 
@@ -74,4 +72,4 @@ cloudquery policy run aws//foundational_security --output-dir=results
 
 ## Build your own and share!
 
-Do you have a policy that you want to codify, or that you’ve been running with python or bash scripts? You are welcome to try codifying it with CloudQuery Policies (See our [github](https://github.com/cloudquery-policies/aws) and [docs](https://docs.cloudquery.io/docs/policies) for how to develop one). Feel free to visit our [discord](https://cloudquery.io/discord) or [GitHub](https://github.com/cloudquery) to get help - we’ll also be happy to share your policy on [CloudQuery Hub](https://hub.cloudquery.io/).
+Do you have a policy that you want to codify, or that you’ve been running with python or bash scripts? You are welcome to try codifying it with CloudQuery Policies (See our [github](https://github.com/cloudquery-policies/aws) and [docs](https://www.cloudquery.io/docs/policies) for how to develop one). Feel free to visit our [discord](https://www.cloudquery.io/discord) or [GitHub](https://github.com/cloudquery) to get help - we’ll also be happy to share your policy on [CloudQuery Hub](https://hub.cloudquery.io/).

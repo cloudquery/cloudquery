@@ -12,9 +12,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 CloudQuery makes fetching resources from your entire organization simple as long as you have the proper IAM trust relationships and permissions setup. In this blog post we will walk through one way of setting up these permissions so that you can have access to all of your configuration data in a single queryable database.
-
 
 ## General Architecture
 
@@ -161,4 +159,4 @@ In this walkthrough we deployed a CloudFormation template that created the appro
 
 After you have this working on your local machine you can check out our [Terraform module](https://github.com/cloudquery/terraform-aws-cloudquery) for simplifying the deployment of CloudQuery into a production ready environment!
 
-If you have any questions, comments or feedback about this walkthrough feel free to reach out on [discord](https://cloudquery.io/discord) or [twitter](https://twitter.com/cloudqueryio)
+If you have any questions, comments or feedback about this walkthrough feel free to reach out on [discord](https://www.cloudquery.io/discord) or [twitter](https://twitter.com/cloudqueryio)

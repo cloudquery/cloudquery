@@ -332,6 +332,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -3067,6 +3068,7 @@
             "eu-west-2-fips": {},
             "eu-west-3": {},
             "eu-west-3-fips": {},
+            "me-central-1-fips": {},
             "me-south-1": {},
             "me-south-1-fips": {},
             "sa-east-1": {},
@@ -4381,6 +4383,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -5093,6 +5096,13 @@
         "support": {
           "regions": {
             "aws-global": {}
+          }
+        },
+        "supportapp": {
+          "regions": {
+            "eu-west-1": {},
+            "us-east-1": {},
+            "us-west-2": {}
           }
         },
         "swf": {
@@ -6290,6 +6300,7 @@
         },
         "appconfigdata": {
           "regions": {
+            "us-iso-east-1": {},
             "us-iso-west-1": {}
           }
         },
@@ -6638,6 +6649,11 @@
             "us-isob-east-1": {}
           }
         },
+        "appconfigdata": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
         "application-autoscaling": {
           "regions": {
             "us-isob-east-1": {}
@@ -6780,6 +6796,11 @@
           }
         },
         "logs": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
+        "metering.marketplace": {
           "regions": {
             "us-isob-east-1": {}
           }
@@ -7880,6 +7901,12 @@
           "regions": {
             "fips-us-gov-east-1": {},
             "fips-us-gov-west-1": {},
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "wellarchitected": {
+          "regions": {
             "us-gov-east-1": {},
             "us-gov-west-1": {}
           }

@@ -13,13 +13,11 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are happy to announce the release of the GitHub Provider for CloudQuery.
 
 GitHub is a source-control provider that helps developers store and manage their code, as well as track and control changes to their code.
 
 In this tutorial, we will install CloudQuery and use it to fetch GitHub resources. Then, we will use SQL to get visibility into security, compliance and cost-management in GitHub.
-
 
 ## Setup
 
@@ -39,15 +37,16 @@ cloudquery init github
 
 Now that we have our `config.yaml` ready we need to add our GitHub Personal Access Token.
 The required scopes:
+
 - `read:org`
 - `read:project`
 - `public_repo`
 
-To create one, refer to [this guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) by GitHub. 
+To create one, refer to [this guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) by GitHub.
 This token should be considered a secret and the config file should not be committed to source control.
 
-
 Add the token we created, and the organization(s) you want to fetch, to the configuration.
+
 ```yaml
   - name: github
     configuration:
@@ -88,7 +87,7 @@ After we finish fetching our config data we can make queries for security, compl
 
 ```sql
 -- Query all repositories in the organizations that are public
-SELECT id, org, name, description, created_at_time, pushed_at_time, 
+SELECT id, org, name, description, created_at_time, pushed_at_time,
 updated_at_time FROM github_repositories
 WHERE private = false
 ```
@@ -114,13 +113,15 @@ SELECT * FROM github_storage_billing
 ```
 
 ### Long Standing Open Issues
+
 ```sql
 -- Find all open issues that have been open for more than 7 days
-SELECT gr.org, gr.name, gi.id, gi.state, gi.user_login AS opened_by, gi.created_at, gi.updated_at 
+SELECT gr.org, gr.name, gi.id, gi.state, gi.user_login AS opened_by, gi.created_at, gi.updated_at
 FROM github_issues gi
 INNER JOIN github_repositories gr ON gr.id = gi.repository_id
-WHERE state = 'open' AND NOW() - interval '7 days' > created_at 
+WHERE state = 'open' AND NOW() - interval '7 days' > created_at
 ```
+
 ## What's next
 
-We are going to continue expanding the GitHub Provider, adding support for more resources. Interested in seeing another provider? Check out [Developing New Provider](https://docs.cloudquery.io/docs/developers/developing-new-provider) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).
+We are going to continue expanding the GitHub Provider, adding support for more resources. Interested in seeing another provider? Check out [Developing New Provider](https://www.cloudquery.io/docs/developers/developing-new-provider) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).

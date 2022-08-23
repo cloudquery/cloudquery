@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/google/go-github/v35/github"
 	"github.com/hashicorp/go-version"
 	"github.com/spf13/afero"
 	"github.com/spf13/viper"
@@ -167,10 +166,10 @@ func TestMaybeCheckForUpdate(t *testing.T) {
 			defer func() { Version = saveVersion }()
 			Version = tt.currentVersion
 
-			saveGetLatestRelease := getLatestRelease
-			defer func() { getLatestRelease = saveGetLatestRelease }()
-			getLatestRelease = func(ctx context.Context, client *http.Client, owner, repo string) (*github.RepositoryRelease, error) {
-				return &github.RepositoryRelease{TagName: &tt.githubVersion}, tt.githubError
+			saveGetLatestVersion := getLatestVersion
+			defer func() { getLatestVersion = saveGetLatestVersion }()
+			getLatestVersion = func(ctx context.Context, client *http.Client, owner, repo string) (string, error) {
+				return tt.githubVersion, tt.githubError
 			}
 
 			fs := afero.Afero{Fs: afero.NewMemMapFs()}

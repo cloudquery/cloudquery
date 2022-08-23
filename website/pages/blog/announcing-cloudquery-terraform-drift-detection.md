@@ -10,7 +10,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 **This feature was deprecated, [see blog post](https://www.cloudquery.io/blog/terraform-drift-deprecation).**
 
 ---
@@ -18,7 +17,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 We are excited to announce the first release of CloudQuery Terraform drift detection!
 
 In this blog we’ll talk a bit about what is infrastructure drift and why we decided to release this feature on top of our open-source cloud asset inventory platform.
-
 
 ## What is (infrastructure) drift?
 
@@ -82,7 +80,7 @@ CloudQuery drift detection is currently in alpha (experimental) version, so we w
 
 Currently the easiest way is actually to run the **fetch** step also in the CI and use something like postgres inside GitHub action, it is not ideal for production deployments but for testing and trying it out this is the fastest way to go.
 
-Check out our [documentation](https://docs.cloudquery.io/docs/intro) to get started on how to run it locally and in the CI.
+Check out our [documentation](https://www.cloudquery.io/docs) to get started on how to run it locally and in the CI.
 
 ## What do you think?
 

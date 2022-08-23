@@ -48,3 +48,26 @@ func TestClient_GetLatestProviderRelease(t *testing.T) {
 		t.Errorf("got community provider version = %q, want %q", version, "v4.5.6")
 	}
 }
+
+func TestClient_GetLatestCLIRelease(t *testing.T) {
+	cloudQueryServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/v1/cli.json" {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+		fmt.Fprintf(w, `{"latest":"cli/v1.2.3"}`)
+	}))
+	defer cloudQueryServer.Close()
+
+	c := NewClient()
+	c.cloudQueryBaseURL = cloudQueryServer.URL
+
+	ctx := context.Background()
+	version, err := c.GetLatestCLIRelease(ctx)
+	if err != nil {
+		t.Fatalf("error calling GetLatestCLIRelease: %v", err)
+	}
+	if version != "v1.2.3" {
+		t.Errorf("got cloudquery cli version = %q, want %q", version, "v1.2.3")
+	}
+}

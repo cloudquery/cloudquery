@@ -13,13 +13,11 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 CloudQuery is an open-source, extendable framework that gives you a single-pane-of-glass to your cloud-infrastructure using SQL. Today, we are happy to announce the release of the DigitalOcean Provider for CloudQuery.
 
 DigitalOcean is a cloud-provider that is popular both with small and larger companies. Some of DigitalOceans' advantages are its ease-of-use, flat pricing, and cheaper pricing for some services. This release brings the power of CloudQuery to DigitalOcean users, DevOps engineers and SREs, helping solve visibility, security and compliance challenges with SQL.
 
 In this short tutorial, we will install CloudQuery and use it to fetch a DigitalOcean resources. Then, we will use SQL to get visibility into security, compliance and cost-management in DigitalOcean.
-
 
 ## Setup
 
@@ -94,4 +92,4 @@ SELECT'current' AS id, 'current month balance' AS description, month_to_date_usa
 
 ## What's next
 
-We are going to continue to expand and maintain the DigitalOcean Provider, adding support for more current and future resources. Interested in seeing another provider? Check out [Developing New Provider](https://docs.cloudquery.io/docs/developers/developing-new-provider) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).
+We are going to continue to expand and maintain the DigitalOcean Provider, adding support for more current and future resources. Interested in seeing another provider? Check out [Developing New Provider](https://www.cloudquery.io/docs/developers/developing-new-provider) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).

@@ -10,7 +10,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 In this blog post you will learn how to build an open-source cloud asset inventory with CloudQuery and Grafana.
 
 General architecture:
@@ -24,7 +23,6 @@ This is what you will get:
 - Vanilla PostgreSQL
 - Reuse your current (assuming you use Grafana) visualization, monitoring and alerting workflows - send reports and alerts via email, slack.
 - 3 out-of-the-box [Grafana Dashboards](https://github.com/cloudquery/grafana-dashboards) filterable asset inventory dashboards for AWS and GCP including security & compliance dashboards.
-
 
 ## Running
 
@@ -57,14 +55,14 @@ This is why we created open-source **“basic inventory”** Grafana [dashboards
 #### Filterable AWS dashboards by accounts and regions
 
 Here is snippet from our AWS Asset Inventory Dashboard:
-![A Grafana dashboard of AWS EC2 data](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image1.png 'A Grafana dashboard of AWS EC2 data')
+![A Grafana dashboard of AWS EC2 data](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image1.png "A Grafana dashboard of AWS EC2 data")
 
 #### Filterable GCP dashboards across projects
 
 Similar challenge exists in GCP though the situation is a bit better in some sense as you have a single view for each resource/asset type per project. Though, If you want to have a single view of all types of assets across multiple projects (which is common), this would be ClickOps or bash magic again.
 
 Here is an example of GCP Compute Asset inventory dashboard:
-![A Grafana dashboard of GCP Compute Asset data](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image3.png 'A Grafana dashboard of GCP Compute Asset data')
+![A Grafana dashboard of GCP Compute Asset data](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image3.png "A Grafana dashboard of GCP Compute Asset data")
 
 Some of that can be solved with the in-house GCP Cloud Asset Inventory but has similar limitations:
 
@@ -80,8 +78,8 @@ You can create your own security views and dashboards that you can then monitor 
 #### AWS Public/Private EC2 Instances
 
 Filterable dashboards by **VPN**, **subnet**, **region** including public, private ec2 instances.
-![A Grafana dashboard of Public/Private IPs for AWS EC2 instances](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image2.png 'A Grafana dashboard of Public/Private IPs for AWS EC2 instances')
+![A Grafana dashboard of Public/Private IPs for AWS EC2 instances](/images/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana/image2.png "A Grafana dashboard of Public/Private IPs for AWS EC2 instances")
 
 ## Summary
 
-We are excited for the future of open-source cloud asset inventory and are looking for your feedback, either on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord). Also, feel free to contribute back or request additional Grafana dashboards.
+We are excited for the future of open-source cloud asset inventory and are looking for your feedback, either on [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://www.cloudquery.io/discord). Also, feel free to contribute back or request additional Grafana dashboards.

@@ -14,13 +14,11 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 On August 3rd, 2021, USA's National Security Agency (NSA) and the Cybersecurity and Infrastructure Security Agency (CISA) released, [“Kubernetes Hardening Guidance”](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF). The guide describes in great detail the challenges in the security k8s environment, base threat model and guidance on how to provide secure configuration to minimize risk.
 
 As with any security guidelines, what is missing, or up to the user/security team, is how to validate, automate, customize, and implement those guidelines. Kubernetes environments vary widely, depending on usage, version, managed version (like GKE, EKS), requirements and capacity of the security team. All those factors will impact how you would want to implement those guidelines.
 
 CloudQuery policies gives you a powerful way to automate, customize, codify, and run your cloud security & compliance continuously with HCL and SQL.
-
 
 ## Overview
 
@@ -78,11 +76,11 @@ You are also free to fork this repository and create your own policy to adopt th
 
 Running this is as simple as ensuring your database has the latest cloud asset configuration with the fetch command and then executing each of pre-made queries with the policy run command.
 
-Following is a quick start to run the policy. Otherwise, checkout full details on our [docs](https://docs.cloudquery.io/docs/policies).
+Following is a quick start to run the policy. Otherwise, checkout full details on our [docs](https://www.cloudquery.io/docs/policies).
 
 ### Prerequisite
 
-Please follow the [Getting Started](https://docs.cloudquery.io/docs/getting-started/) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](https://hub.cloudquery.io/providers/cloudquery/k8s/latest).
+Please follow the [Getting Started](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](https://hub.cloudquery.io/providers/cloudquery/k8s/latest).
 
 ### Running
 
@@ -108,4 +106,4 @@ cloudquery policy run k8s//nsa_cisa_v1 --output-dir=results
 
 ## Build your own and share!
 
-Do you have a policy that you want to codify, or you’ve been running it with python or bash scripts? You are welcome to try out codifying it with CloudQuery Policies. Feel free to drop on [discord](https://cloudquery.io/discord) or [GitHub](https://github.com/cloudquery) to get any help, and we will share your policy on [CloudQuery Hub](https://hub.cloudquery.io/).
+Do you have a policy that you want to codify, or you’ve been running it with python or bash scripts? You are welcome to try out codifying it with CloudQuery Policies. Feel free to drop on [discord](https://www.cloudquery.io/discord) or [GitHub](https://github.com/cloudquery) to get any help, and we will share your policy on [CloudQuery Hub](https://hub.cloudquery.io/).

@@ -1,7 +1,6 @@
 ---
-title: provider sync
+title: "provider_sync"
 ---
-
 ## cloudquery provider sync
 
 Download the providers specified in config and re-create their database schema
@@ -46,4 +45,5 @@ cloudquery provider sync [providers,...] [flags]
 
 ### SEE ALSO
 
-- [cloudquery provider](cloudquery_provider.md) - Top-level command to interact with providers.
+* [cloudquery provider](/docs/cli/commands/cloudquery_provider)	 - Top-level command to interact with providers.
+

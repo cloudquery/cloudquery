@@ -42,7 +42,7 @@ const navigation = {
     },
     {
       name: "Discord",
-      href: "https://cloudquery.io/discord",
+      href: "https://www.cloudquery.io/discord",
     },
   ],
   company: [
@@ -126,7 +126,7 @@ export function Footer() {
               className="text-current"
               target="_blank"
               rel="noopener noreferrer"
-              href="https://cloudquery.io"
+              href="https://www.cloudquery.io"
             >
               <CloudQueryLogo />
             </a>

@@ -42,8 +42,6 @@ func Provider() *provider.Provider {
 		Name:      "github",
 ```
 
-This completed step in this tutorial at [cq-provider-github/tree/tutorial-step-1](https://github.com/cloudquery/cq-provider-github/tree/tutorial-step-1)
-
 ### Choose Go API Client
 
 Usually, each provider will use one Go Client to interact with the service. As we need to load the data to relational database, we will go with [google/go-github](https://github.com/google/go-github) that implements all GitHub RestAPIs.
@@ -136,15 +134,13 @@ Configure is called once before starting an operation such as `fetch`. This is u
 
 In this case we first check if the token is available in `GITHUB_TOKEN` and if not we read what is available in the parsed configuration.
 
-[cq-provider-github/tree/tutorial-step-2](https://github.com/cloudquery/cq-provider-github/tree/tutorial-step-2)
-
 ### Adding a Resource
 
 Now we are set to implement our first resource which will extract, transform and load configuration from GitHub to PostgreSQL.
 
 Our first resource will be GitHub organizations which is available via [List API](https://pkg.go.dev/github.com/google/go-github/v41/github#RepositoriesService.List).
 
-For every resource you need to create a new file under `resources/` and implement a function that returns `*schema.Table`. Here is a [snippet](https://github.com/cloudquery/cq-provider-github/tree/tutorial-step-3):
+For every resource you need to create a new file under `resources/` and implement a function that returns `*schema.Table`.
 
 ```go
 func Repositories() *schema.Table {
@@ -190,8 +186,6 @@ The key things here are the table definition and the `fetchRepositories` functio
 
 Each table defines list of columns and their type. CloudQuery SDK by default reads the value from the corresponding [Repository](https://pkg.go.dev/github.com/google/go-github/v41/github#Repository) `struct` by turning CamelCase fields into `snake_case`. If a custom transformation is needed, you can use `schema.PathResolver`.
 
-The third piece of this Tutorial is at [cloudquery/cq-provider-github/tree/tutorial-step-3](https://github.com/cloudquery/cq-provider-github/tree/tutorial-step-3).
-
-To run this in debug mode while you develop, checkout [debugging a provider](https://docs.cloudquery.io/docs/developers/debugging)
+To run this in debug mode while you develop, checkout [debugging a provider](https://www.cloudquery.io/docs/developers/debugging)
 
 Congratulations! This is it, you have your first custom provider!

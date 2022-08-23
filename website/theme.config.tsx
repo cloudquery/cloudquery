@@ -12,7 +12,7 @@ const theme: DocsThemeConfig = {
   defaultMenuCollapsed: true,
   floatTOC: true,
   font: false,
-  projectChatLink: "https://cloudquery.io/discord",
+  projectChatLink: "https://www.cloudquery.io/discord",
   feedbackLink: "Question? Give us feedback →",
   logo: function LogoActual() {
     return (
@@ -48,17 +48,6 @@ const theme: DocsThemeConfig = {
       <meta name="twitter:site" content="@cloudqueryio" />
       <meta name="twitter:creator" content="@cloudqueryio" />
       <meta property="og:type" content="website" />
-      {/* <meta name="og:title" content={title} />
-        <meta name="og:description" content={meta.description} /> */}
-      {/* <meta
-          property="og:url"
-          content={`https://cloudquery.io${router.asPath}`}
-        /> */}
-      {/* <meta
-        property="twitter:image"
-        content="https://cloudquery.io/og-image.jpg"
-      />
-      <meta property="og:image" content="https://cloudquery.io/og-image.jpg" /> */}
       <meta property="og:locale" content="en_IE" />
       <meta property="og:site_name" content="CloudQuery" />
     </>

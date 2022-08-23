@@ -150,7 +150,7 @@ func Clusters() *schema.Table {
 				Name:        "tags",
 				Description: "The metadata that you apply to the cluster to help you categorize and organize them",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveClustersTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
@@ -1446,7 +1446,10 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 		if len(listClustersOutput.ClusterArns) == 0 {
 			return nil
 		}
-		describeClusterOutput, err := svc.DescribeClusters(ctx, &ecs.DescribeClustersInput{Clusters: listClustersOutput.ClusterArns}, func(o *ecs.Options) {
+		describeClusterOutput, err := svc.DescribeClusters(ctx, &ecs.DescribeClustersInput{
+			Clusters: listClustersOutput.ClusterArns,
+			Include:  []types.ClusterField{types.ClusterFieldTags},
+		}, func(o *ecs.Options) {
 			o.Region = region
 		})
 		if err != nil {
@@ -1484,27 +1487,7 @@ func resolveClustersStatistics(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return diag.WrapError(resource.Set(c.Name, stats))
 }
-func resolveClustersTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	region := meta.(*client.Client).Region
-	svc := meta.(*client.Client).Services().ECS
-	cluster, ok := resource.Item.(types.Cluster)
-	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
-	}
-	listTagsForResourceOutput, err := svc.ListTagsForResource(ctx, &ecs.ListTagsForResourceInput{
-		ResourceArn: cluster.ClusterArn,
-	}, func(o *ecs.Options) {
-		o.Region = region
-	})
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	tags := make(map[string]*string)
-	for _, s := range listTagsForResourceOutput.Tags {
-		tags[*s.Key] = s.Value
-	}
-	return diag.WrapError(resource.Set(c.Name, tags))
-}
+
 func resolveClusterAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	attachment, ok := resource.Item.(types.Attachment)
 	if !ok {
@@ -1539,6 +1522,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 		describeServicesInput := ecs.DescribeTasksInput{
 			Cluster: cluster.ClusterArn,
 			Tasks:   listTasks.TaskArns,
+			Include: []types.TaskField{types.TaskFieldTags},
 		}
 		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(o *ecs.Options) {
 			o.Region = region
@@ -1587,6 +1571,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 		describeServicesInput := ecs.DescribeServicesInput{
 			Cluster:  cluster.ClusterArn,
 			Services: listServicesOutput.ServiceArns,
+			Include:  []types.ServiceField{types.ServiceFieldTags},
 		}
 		describeServicesOutput, err := svc.DescribeServices(ctx, &describeServicesInput, func(o *ecs.Options) {
 			o.Region = region
@@ -1645,6 +1630,7 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 		describeServicesInput := ecs.DescribeContainerInstancesInput{
 			Cluster:            cluster.ClusterArn,
 			ContainerInstances: listContainerInstances.ContainerInstanceArns,
+			Include:            []types.ContainerInstanceField{types.ContainerInstanceFieldTags},
 		}
 		describeContainerInstances, err := svc.DescribeContainerInstances(ctx, &describeServicesInput, func(o *ecs.Options) {
 			o.Region = region

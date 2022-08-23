@@ -43,6 +43,11 @@ func NewClient() *Client {
 	}
 }
 
+// GetLatestCLIRelease returns the latest release version string for CloudQuery CLI
+func (c *Client) GetLatestCLIRelease(ctx context.Context) (string, error) {
+	return c.readCLIManifest(ctx)
+}
+
 // GetLatestProviderRelease returns the latest release version string for the given organization, plugin type
 // and plugin.
 func (c *Client) GetLatestProviderRelease(ctx context.Context, org, pluginType, pluginName string) (string, error) {
@@ -50,6 +55,20 @@ func (c *Client) GetLatestProviderRelease(ctx context.Context, org, pluginType, 
 		return c.readManifest(ctx, pluginName)
 	}
 	return c.readGithubLatest(ctx, org, pluginType, pluginName)
+}
+
+func (c *Client) readCLIManifest(ctx context.Context) (string, error) {
+	url := fmt.Sprintf(c.cloudQueryBaseURL + "/v1/cli.json")
+	b, err := c.doRequest(ctx, url)
+	if err != nil {
+		return "", fmt.Errorf("reading manifest for cli: %w", err)
+	}
+	mr := &manifestResponse{}
+	err = json.Unmarshal(b, mr)
+	if err != nil {
+		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
+	}
+	return extractVersionFromTag(mr.Latest), nil
 }
 
 func (c *Client) readManifest(ctx context.Context, providerName string) (string, error) {
