@@ -1,6 +1,6 @@
 // Auto generated code - DO NOT EDIT.
 
-package {{.AzureService}}
+package {{.AzurePackageName}}
 
 import (
 	"context"
@@ -12,12 +12,12 @@ import (
   {{end}}
 )
 
-func {{.AzureService | ToCamel}}{{.AzureSubService | ToCamel}}() *schema.Table {
+func {{.AzureService}}{{.AzureSubService}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 
-func fetch{{.AzureService | ToCamel}}{{.AzureSubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().{{ .AzureService | ToCamel }}.{{ .AzureSubService | ToCamel }}
+func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().{{ .AzureService }}.{{ .AzureSubService }}
 	response, err := svc.{{ .ListFunction }}(ctx)
 	if err != nil {
 		return errors.WithStack(err)
