@@ -68,10 +68,18 @@ func Account() *schema.Table {
 
 func fetchAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
-	account, _, err := svc.DoClient.Account.Get(ctx)
+	doFunc := func() error {
+		account, _, err := svc.DoClient.Account.Get(ctx)
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		res <- *account
+		return nil
+	}
+
+	err := client.ThrottleWrapper(svc, doFunc)
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	res <- *account
 	return nil
 }
