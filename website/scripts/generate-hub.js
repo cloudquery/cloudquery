@@ -63,7 +63,7 @@ ${CONTENT_PLACEHOLDER}
 const EXTERNAL_PLUGIN_TEMPLATE = `
 # ${NAME_PLACEHOLDER} Plugin
 
-The CloudQuery ${NAME_PLACEHOLDER} provider pulls configuration out of ${NAME_PLACEHOLDER} resources, normalizes them and stores them in PostgreSQL database.
+The CloudQuery ${NAME_PLACEHOLDER} plugin pulls configuration out of ${NAME_PLACEHOLDER} resources, normalizes them and stores them in PostgreSQL database.
 
 For more detailes see [${NAME_PLACEHOLDER} Plugin repository](${EXTERNAL_PLIGINS_LINK_PLACEHOLDER})
 `;
