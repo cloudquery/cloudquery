@@ -65,7 +65,7 @@ func fakeInterfaceIPConfiguration(t *testing.T) network.InterfaceIPConfiguration
 func buildNetworkInterfacesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	ic := mocks.NewMockInterfacesClient(ctrl)
 	s := services.Services{
-		Network: services.NetworksClient{
+		Network: services.NetworkClient{
 			Interfaces: ic,
 		},
 	}

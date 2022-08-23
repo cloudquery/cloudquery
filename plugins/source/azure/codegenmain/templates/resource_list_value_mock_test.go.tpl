@@ -19,7 +19,7 @@ import (
 func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	mockClient := mocks.NewMock{{ .AzureSubService }}Client(ctrl)
 	s := services.Services{
-		{{ .AzureService }}: services.NetworksClient{
+		{{ .AzureService }}: services.{{ .AzureService }}Client{
 			{{ .AzureSubService }}: mockClient,
 		},
 	}
@@ -27,8 +27,8 @@ func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gom
 	data := {{ .AzurePackageName }}.{{ .AzureStructName }}{}
 	require.Nil(t, faker.FakeData(&data))
 
-	list := {{ .AzurePackageName }}.{{ .AzureStructName }}ListResult{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}
-	mockClient.EXPECT().ListAll(gomock.Any()).Return(list, nil)
+	list := {{ .AzurePackageName }}.{{ .AzureStructName }}{{ or .MockListResult "ListResult" }}{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}
+	mockClient.EXPECT().{{ or .ListFunction "ListAll" }}(gomock.Any(){{ range .MockListFunctionArgs }}, {{.}}{{ end }}).Return(list, nil)
 	return s
 }
 

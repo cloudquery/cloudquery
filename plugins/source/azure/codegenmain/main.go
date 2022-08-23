@@ -20,6 +20,7 @@ var azureTemplatesFS embed.FS
 
 func main() {
 	var resources = []codegen.Resource{}
+	resources = append(resources, codegen.AuthorizationResources()...)
 	resources = append(resources, codegen.NetworkResources()...)
 	for _, r := range resources {
 		generateResource(r)

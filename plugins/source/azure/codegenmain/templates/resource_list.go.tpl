@@ -18,15 +18,18 @@ func {{.AzureService}}{{.AzureSubService}}() *schema.Table {
 
 func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().{{ .AzureService }}.{{ .AzureSubService }}
-	response, err := svc.{{ index .TemplateParams 0 }}(ctx)
+	response, err := svc.{{ or .ListFunction "ListAll" }}(ctx{{ range .ListFunctionArgs }}, {{.}}{{ end }})
+	{{ or .ListHandler `
 	if err != nil {
 		return errors.WithStack(err)
 	}
+	
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
 			return errors.WithStack(err)
 		}
 	}
+	`}}
 	return nil
 }

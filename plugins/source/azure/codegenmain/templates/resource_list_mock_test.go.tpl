@@ -20,7 +20,7 @@ import (
 func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	mockClient := mocks.NewMock{{ .AzureSubService }}Client(ctrl)
 	s := services.Services{
-		{{ .AzureService }}: services.NetworksClient{
+		{{ .AzureService }}: services.{{ .AzureService }}Client{
 			{{ .AzureSubService }}: mockClient,
 		},
 	}
@@ -28,11 +28,11 @@ func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gom
 	data := {{ .AzurePackageName }}.{{ .AzureStructName }}{}
 	require.Nil(t, faker.FakeData(&data))
 
-	page := {{ .AzurePackageName }}.New{{ .AzureStructName }}ListResultPage(network.{{ .AzureStructName }}ListResult{Value: &[]network.{{ .AzureStructName }}{data}}, func(ctx context.Context, result network.{{ .AzureStructName }}ListResult) (network.{{ .AzureStructName }}ListResult, error) {
-		return network.{{ .AzureStructName }}ListResult{}, nil
+	page := {{ .AzurePackageName }}.New{{ .AzureStructName }}ListResultPage({{ .AzurePackageName }}.{{ .AzureStructName }}ListResult{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}, func(ctx context.Context, result {{ .AzurePackageName }}.{{ .AzureStructName }}ListResult) ({{ .AzurePackageName }}.{{ .AzureStructName }}ListResult, error) {
+		return {{ .AzurePackageName }}.{{ .AzureStructName }}ListResult{}, nil
 	})
 
-	mockClient.EXPECT().{{ index .TemplateParams 0 }}(gomock.Any()).Return(page, nil)
+	mockClient.EXPECT().{{ or .ListFunction "ListAll" }}(gomock.Any(){{ range .MockListFunctionArgs }}, {{.}}{{ end }}).Return(page, nil)
 	return s
 }
 

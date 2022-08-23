@@ -15,7 +15,7 @@ import (
 func buildNetworkExpressRouteGatewaysMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	rgc := mocks.NewMockExpressRouteGatewaysClient(ctrl)
 	s := services.Services{
-		Network: services.NetworksClient{
+		Network: services.NetworkClient{
 			ExpressRouteGateways: rgc,
 		},
 	}

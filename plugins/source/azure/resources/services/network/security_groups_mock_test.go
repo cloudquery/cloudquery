@@ -17,7 +17,7 @@ func buildNetworkSecurityGroupsMock(t *testing.T, ctrl *gomock.Controller) servi
 	n := mocks.NewMockSecurityGroupsClient(ctrl)
 	w := mocks.NewMockWatchersClient(ctrl)
 	s := services.Services{
-		Network: services.NetworksClient{
+		Network: services.NetworkClient{
 			SecurityGroups: n,
 			Watchers:       w,
 		},
