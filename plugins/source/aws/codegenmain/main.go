@@ -15,6 +15,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/recipes"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
+	pluginschema "github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 )
 
@@ -48,9 +49,40 @@ func generateResource(r recipes.Resource, mock bool) {
 		log.Fatal(err)
 	}
 	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
+	if r.ColumnOverrides != nil {
+		for i, c := range r.Table.Columns {
+			override, ok := r.ColumnOverrides[c.Name]
+			if !ok {
+				continue
+			}
+			if override.Name != "" {
+				r.Table.Columns[i].Name = override.Name
+			}
+			if override.Resolver != "" {
+				r.Table.Columns[i].Resolver = override.Resolver
+			}
+			delete(r.ColumnOverrides, c.Name)
+		}
+		// remaining, unmatched columns are added to the end of the table. Difference from DefaultColumns? none for now
+		for k, c := range r.ColumnOverrides {
+			if c.Type == pluginschema.TypeInvalid {
+				if !mock {
+					fmt.Println("Not adding unmatched column with unspecified type", k, c)
+				}
+				continue
+			}
+			c.Name = k
+			r.Table.Columns = append(r.Table.Columns, c)
+		}
+	}
+
 	for i := range r.Table.Columns {
-		if r.Table.Columns[i].Name == "arn" {
-			r.Table.Columns[i].Options.PrimaryKey = true
+		if len(r.Table.Options.PrimaryKeys) == 0 && r.Table.Columns[i].Name == "arn" {
+			//	r.Table.Columns[i].Options.PrimaryKey = true
+			r.Table.Options.PrimaryKeys = []string{"arn"}
+		}
+		if r.Table.Columns[i].Name == "tags" {
+			r.HasTags = true
 		}
 	}
 	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + strings.ToLower(r.AWSService) + `")`
@@ -72,7 +104,7 @@ func generateResource(r recipes.Resource, mock bool) {
 		r.AWSStructName = t.Name()
 	}
 	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
-		if !r.SkipTags {
+		if r.HasTags {
 			r.Imports = append(r.Imports, sp)
 		}
 		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types"))

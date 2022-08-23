@@ -29,7 +29,7 @@ func AcmCertificates() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name: "certificate_arn",
+				Name: "arn",
 				Type: schema.TypeString,
 			},
 			{
@@ -77,8 +77,9 @@ func AcmCertificates() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name: "key_usages",
-				Type: schema.TypeJSON,
+				Name:     "key_usages",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("KeyUsages.Name"),
 			},
 			{
 				Name: "not_after",
@@ -131,6 +132,10 @@ func AcmCertificates() *schema.Table {
 			{
 				Name: "type",
 				Type: schema.TypeString,
+			},
+			{
+				Name: "tags",
+				Type: schema.TypeJSON,
 			},
 		},
 	}

@@ -22,6 +22,23 @@ var ACMResources = []Resource{
 		MockImports:        nil,
 		MockListStruct:     "",
 		SkipFields:         nil,
-		CreateTableOptions: schema.TableCreationOptions{},
+		CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		ColumnOverrides: map[string]codegen.ColumnDefinition{
+			"certificate_arn": {
+				Name: "arn",
+			},
+			"key_usages": {
+				Resolver: `schema.PathResolver("KeyUsages.Name")`,
+			},
+			"renewal_summary_renewal_status": {
+				Name: "renewal_summary_status",
+			},
+			"renewal_summary_renewal_status_reason": {
+				Name: "renewal_summary_failure_reason",
+			},
+			"tags": {
+				Type: schema.TypeJSON,
+			},
+		},
 	},
 }

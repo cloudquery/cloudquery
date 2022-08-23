@@ -51,7 +51,7 @@ func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock
 		nil,
 	)
 
-{{if not .SkipTags}}
+{{if .HasTags}}
 	mock.EXPECT().ListTagsFor{{.ItemName}}(
 		gomock.Any(),
 		&{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Input{

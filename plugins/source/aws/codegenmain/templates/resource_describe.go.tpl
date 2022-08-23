@@ -40,7 +40,7 @@ func fetch{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Cont
 	return nil
 }
 
-{{if not .SkipTags}}
+{{if .HasTags}}
 func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cert := resource.Item.(*types.{{.AWSStructName}})
 	cl := meta.(*client.Client)

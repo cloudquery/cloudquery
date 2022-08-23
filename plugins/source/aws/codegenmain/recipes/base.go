@@ -42,7 +42,9 @@ type Resource struct {
 	//CreateTableOptions options to use to create the main table
 	CreateTableOptions schema.TableCreationOptions
 
-	SkipTags bool
+	ColumnOverrides map[string]codegen.ColumnDefinition
+
+	HasTags bool // autodetected by scanning columns for `tags`
 }
 
 var (
