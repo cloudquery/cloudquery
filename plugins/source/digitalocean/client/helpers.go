@@ -1,10 +1,13 @@
 package client
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/digitalocean/godo"
 )
+
+const MAX_RETRIES = 5
 
 // ThrottleFunc is passed to throttle wrapper
 type ThrottleFunc func() error
@@ -20,8 +23,7 @@ func IsLimitReached(err error) bool {
 
 // ThrottleWrapper does API request until it is succeeded
 func ThrottleWrapper(client *Client, doFunc ThrottleFunc) error {
-	for {
-		//todo maybe add a counter for max retries
+	for i := 0; i < MAX_RETRIES; i++ {
 		err := doFunc()
 		if err != nil {
 			if IsLimitReached(err) {
@@ -34,7 +36,7 @@ func ThrottleWrapper(client *Client, doFunc ThrottleFunc) error {
 			}
 			return err
 		}
-		break
+		return nil
 	}
-	return nil
+	return fmt.Errorf("MAX_RETRIES reached for throttled reueqsts")
 }
