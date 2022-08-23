@@ -9,13 +9,10 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"strings"
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
-
-	"github.com/iancoleman/strcase"
 )
 
 //go:embed templates/*.go.tpl
@@ -37,9 +34,8 @@ func getFilename() string {
 	return filename
 }
 
-func initTemplate(name string) *template.Template {
-	templateNmae := name + ".go.tpl"
-	tpl, err := template.New(templateNmae).Funcs(template.FuncMap{"ToCamel": strcase.ToCamel}).ParseFS(azureTemplatesFS, "templates/"+templateNmae)
+func initTemplate(templateName string) *template.Template {
+	tpl, err := template.New(templateName).ParseFS(azureTemplatesFS, "templates/"+templateName)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse azure templates: %w", err))
 	}
@@ -52,19 +48,8 @@ func initTemplate(name string) *template.Template {
 	return tpl
 }
 
-func getDestination(dir string, t string, r codegen.Resource) string {
-	filePath := path.Join(dir, "../resources/servicesv2", r.AzureService)
-	if strings.HasSuffix(t, "_mock_test") {
-		filePath = path.Join(filePath, r.AzureSubService+"_mock_test.go")
-	} else {
-		filePath = path.Join(filePath, r.AzureSubService+".go")
-	}
-
-	return filePath
-}
-
-func getContent(t string, filePath string, r codegen.Resource) []byte {
-	tpl := initTemplate(t)
+func getContent(t codegen.Template, destination string, r codegen.Resource) []byte {
+	tpl := initTemplate(t.Source)
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
@@ -72,17 +57,17 @@ func getContent(t string, filePath string, r codegen.Resource) []byte {
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())
-		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
+		log.Fatal(fmt.Errorf("failed to format code for %s: %w", destination, err))
 	}
 	return content
 }
 
-func writeContent(filePath string, content []byte) {
-	if err := os.MkdirAll(path.Dir(filePath), 0755); err != nil {
-		log.Fatal(fmt.Errorf("failed to create directory for file %s: %w", filePath, err))
+func writeContent(destination string, content []byte) {
+	if err := os.MkdirAll(path.Dir(destination), 0755); err != nil {
+		log.Fatal(fmt.Errorf("failed to create directory for file %s: %w", destination, err))
 	}
-	if err := os.WriteFile(filePath, content, 0644); err != nil {
-		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+	if err := os.WriteFile(destination, content, 0644); err != nil {
+		log.Fatal(fmt.Errorf("failed to write file %s: %w", destination, err))
 	}
 }
 
@@ -90,9 +75,9 @@ func generateResource(r codegen.Resource) {
 	filename := getFilename()
 	dir := path.Dir(filename)
 	for _, t := range r.Templates {
-		filePath := getDestination(dir, t, r)
-		content := getContent(t, filePath, r)
-		writeContent(filePath, content)
+		destination := path.Join(dir, "../resources/servicesv2", t.Destination)
+		content := getContent(t, destination, r)
+		writeContent(destination, content)
 	}
 
 }
