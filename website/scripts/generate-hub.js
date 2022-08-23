@@ -80,7 +80,7 @@ const getPlugins = async () => {
       id: dirent.name,
       name: PLUGINS_DATA[dirent.name].name,
     }))
-    .concat(...EXTERNAL_PLIGINS);
+    .concat(...EXTERNAL_PLUGINS);
 
   return plugins.sort((plugin1, plugin2) =>
     plugin1.id.localeCompare(plugin2.id)
@@ -90,7 +90,7 @@ const getPlugins = async () => {
 const getPluginOverview = async (plugin) => {
   if (plugin.external) {
     return EXTERNAL_PLUGIN_TEMPLATE.replace(
-      EXTERNAL_PLIGINS_LINK_PLACEHOLDER,
+      EXTERNAL_PLUGINS_LINK_PLACEHOLDER,
       plugin.url
     ).replaceAll(NAME_PLACEHOLDER, plugin.name);
   }
