@@ -151,7 +151,7 @@ resource "aws" "iam" "users" {
       rename = "last_used"
     }
     column "last_used_last_used_date" {
-      rename = "last_used_date"
+      rename = "last_used"
     }
 
   }
