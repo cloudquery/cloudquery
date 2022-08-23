@@ -3,7 +3,6 @@
 package {{.AzurePackageName}}
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -28,11 +27,8 @@ func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gom
 	data := {{ .AzurePackageName }}.{{ .AzureStructName }}{}
 	require.Nil(t, faker.FakeData(&data))
 
-	page := {{ .AzurePackageName }}.New{{ .AzureStructName }}ListResultPage(network.{{ .AzureStructName }}ListResult{Value: &[]network.{{ .AzureStructName }}{data}}, func(ctx context.Context, result network.{{ .AzureStructName }}ListResult) (network.{{ .AzureStructName }}ListResult, error) {
-		return network.{{ .AzureStructName }}ListResult{}, nil
-	})
-
-	mockClient.EXPECT().{{ index .TemplateParams 0 }}(gomock.Any()).Return(page, nil)
+	list := {{ .AzurePackageName }}.{{ .AzureStructName }}List{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}
+	mockClient.EXPECT().ListBySubscription(gomock.Any()).Return(list, nil)
 	return s
 }
 

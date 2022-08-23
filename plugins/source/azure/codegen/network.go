@@ -1,45 +1,99 @@
 package codegen
 
 import (
-	"path"
-	"reflect"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/iancoleman/strcase"
 )
 
-var resourcesWithListFunction = []Resource{}
-
-var resourcesWithListAllFunction = []Resource{
-	{
-		AzureStruct:  &network.ExpressRouteCircuit{},
-		ListFunction: "ListAll",
-	},
-}
-
 func NetworkResources() []Resource {
-	resources := []Resource{}
-	resources = append(resources, resourcesWithListFunction...)
-	resources = append(resources, resourcesWithListAllFunction...)
-	for i := range resources {
-		elementTypeParts := strings.Split(reflect.TypeOf(resources[i].AzureStruct).Elem().String(), ".")
-		resources[i].AzurePackageName = elementTypeParts[0]
-		resources[i].AzureStructName = elementTypeParts[1]
-		resources[i].AzureService = strcase.ToCamel(resources[i].AzurePackageName)
-		resources[i].AzureSubService = resources[i].AzureStructName + "s"
-		resources[i].DefaultColumns = []codegen.ColumnDefinition{SubscriptionIdColumn, IdColumn}
-		resources[i].SkipFields = []string{"ID"}
-		resources[i].Imports = []string{}
-		resources[i].MockImports = []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"}
-		resources[i].CreateTableOptions.PrimaryKeys = []string{"subscription_id", "id"}
-		resources[i].Templates = []Template{
-			{Source: "resource_list.go.tpl", Destination: path.Join(resources[i].AzurePackageName, strcase.ToSnake(resources[i].AzureStructName)+".go")},
-			{Source: "resource_list_mock_test.go.tpl", Destination: path.Join(resources[i].AzurePackageName, strcase.ToSnake(resources[i].AzureStructName)+"_mock_test.go")},
-		}
-		initResourceTable(&resources[i])
+	var resourcesByTemplates = []byTemplates{
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{},
+				},
+				{
+					source:            "resource_list_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:    &network.ExpressRoutePort{},
+					templateParams: []string{"List"},
+				},
+				{
+					azureStruct:    &network.RouteFilter{},
+					templateParams: []string{"List"},
+				},
+				{
+					azureStruct:    &network.ExpressRouteCircuit{},
+					templateParams: []string{"ListAll"},
+				},
+				{
+					azureStruct:    &network.Interface{},
+					templateParams: []string{"ListAll"},
+				},
+				{
+					azureStruct:    &network.PublicIPAddress{},
+					templateParams: []string{"ListAll"},
+				},
+				{
+					azureStruct:    &network.RouteTable{},
+					templateParams: []string{"ListAll"},
+				},
+				{
+					azureStruct:    &network.SecurityGroup{},
+					templateParams: []string{"ListAll"},
+				},
+				{
+					azureStruct:    &network.VirtualNetwork{},
+					templateParams: []string{"ListAll"},
+				},
+			},
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list_by_subscription.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{},
+				},
+				{
+					source:            "resource_list_by_subscription_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct: &network.ExpressRouteGateway{},
+				},
+			},
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list_no_page.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{},
+				},
+				{
+					source:            "resource_list_no_page_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:    &network.Watcher{},
+					templateParams: []string{"ListAll"},
+				},
+			},
+		},
 	}
 
-	return resources
+	return generateResources(resourcesByTemplates)
 }
