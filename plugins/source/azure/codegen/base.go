@@ -3,9 +3,13 @@ package codegen
 import (
 	"fmt"
 	"log"
+	"path"
+	"reflect"
+	"strings"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/gertd/go-pluralize"
 	"github.com/iancoleman/strcase"
 )
 
@@ -25,13 +29,27 @@ type Resource struct {
 	AzurePackageName   string
 	AzureService       string
 	AzureSubService    string
-	Templates          []Template
 	Imports            []string
-	MockImports        []string
 	SkipFields         []string
 	CreateTableOptions schema.TableCreationOptions
-	// Used in the `resource_list` templates
-	ListFunction string
+	Template           Template
+	TemplateParams     []string
+}
+
+type template struct {
+	source            string
+	destinationSuffix string
+	imports           []string
+}
+
+type resourceDefinition struct {
+	azureStruct    interface{}
+	templateParams []string
+}
+
+type byTemplates struct {
+	templates   []template
+	definitions []resourceDefinition
 }
 
 const pluginName = "azure"
@@ -58,4 +76,41 @@ func initResourceTable(resource *Resource) {
 	resource.Table.Multiplex = "client.SubscriptionMultiplex"
 	resource.Table.Resolver = "fetch" + resource.AzureService + resource.AzureSubService
 	resource.Table.Options.PrimaryKeys = resource.CreateTableOptions.PrimaryKeys
+}
+
+func generateResources(resourcesByTemplates []byTemplates) []Resource {
+	plural := pluralize.NewClient()
+	allResources := []Resource{}
+
+	for _, byTemplate := range resourcesByTemplates {
+		templates := byTemplate.templates
+		definitions := byTemplate.definitions
+
+		for _, template := range templates {
+			for _, definition := range definitions {
+				elementTypeParts := strings.Split(reflect.TypeOf(definition.azureStruct).Elem().String(), ".")
+				azurePackageName, azureStructName := elementTypeParts[0], elementTypeParts[1]
+				resource := Resource{
+					AzurePackageName:   azurePackageName,
+					AzureStructName:    azureStructName,
+					AzureStruct:        definition.azureStruct,
+					AzureService:       strcase.ToCamel(azurePackageName),
+					AzureSubService:    plural.Plural(azureStructName),
+					DefaultColumns:     []codegen.ColumnDefinition{SubscriptionIdColumn, IdColumn},
+					SkipFields:         []string{"ID"},
+					Imports:            template.imports,
+					CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+					Template: Template{
+						Source:      template.source,
+						Destination: path.Join(azurePackageName, strcase.ToSnake(azureStructName)+template.destinationSuffix),
+					},
+					TemplateParams: definition.templateParams,
+				}
+				initResourceTable(&resource)
+				allResources = append(allResources, resource)
+			}
+		}
+	}
+
+	return allResources
 }

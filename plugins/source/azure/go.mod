@@ -48,6 +48,7 @@ require (
 	github.com/elliotchance/orderedmap v1.4.0 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/georgysavva/scany v1.1.0 // indirect
+	github.com/gertd/go-pluralize v0.2.1 // indirect
 	github.com/getkin/kin-openapi v0.83.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect

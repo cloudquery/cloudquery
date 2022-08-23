@@ -74,10 +74,8 @@ func writeContent(destination string, content []byte) {
 func generateResource(r codegen.Resource) {
 	filename := getFilename()
 	dir := path.Dir(filename)
-	for _, t := range r.Templates {
-		destination := path.Join(dir, "../resources/servicesv2", t.Destination)
-		content := getContent(t, destination, r)
-		writeContent(destination, content)
-	}
+	destination := path.Join(dir, "../resources/servicesv2", r.Template.Destination)
+	content := getContent(r.Template, destination, r)
+	writeContent(destination, content)
 
 }
