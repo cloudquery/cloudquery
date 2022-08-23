@@ -21,75 +21,53 @@ func NetworkResources() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:    &network.ExpressRoutePort{},
-					templateParams: []string{"List"},
+					azureStruct:  &network.ExpressRoutePort{},
+					listFunction: "List",
 				},
 				{
-					azureStruct:    &network.RouteFilter{},
-					templateParams: []string{"List"},
+					azureStruct:  &network.RouteFilter{},
+					listFunction: "List",
 				},
 				{
-					azureStruct:    &network.ExpressRouteCircuit{},
-					templateParams: []string{"ListAll"},
+					azureStruct: &network.ExpressRouteCircuit{},
 				},
 				{
-					azureStruct:    &network.Interface{},
-					templateParams: []string{"ListAll"},
+					azureStruct: &network.Interface{},
 				},
 				{
-					azureStruct:    &network.PublicIPAddress{},
-					templateParams: []string{"ListAll"},
+					azureStruct: &network.PublicIPAddress{},
 				},
 				{
-					azureStruct:    &network.RouteTable{},
-					templateParams: []string{"ListAll"},
+					azureStruct: &network.RouteTable{},
 				},
 				{
-					azureStruct:    &network.SecurityGroup{},
-					templateParams: []string{"ListAll"},
-				},
-				{
-					azureStruct:    &network.VirtualNetwork{},
-					templateParams: []string{"ListAll"},
+					azureStruct: &network.SecurityGroup{},
 				},
 			},
 		},
 		{
 			templates: []template{
 				{
-					source:            "resource_list_by_subscription.go.tpl",
+					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
 					imports:           []string{},
 				},
 				{
-					source:            "resource_list_by_subscription_mock_test.go.tpl",
+					source:            "resource_list_value_mock_test.go.tpl",
 					destinationSuffix: "_mock_test.go",
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
 				},
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct: &network.ExpressRouteGateway{},
-				},
-			},
-		},
-		{
-			templates: []template{
-				{
-					source:            "resource_list_no_page.go.tpl",
-					destinationSuffix: ".go",
-					imports:           []string{},
+					azureStruct:    &network.ExpressRouteGateway{},
+					listFunction:   "ListBySubscription",
+					listHandler:    valueHandler,
+					mockListResult: "List",
 				},
 				{
-					source:            "resource_list_no_page_mock_test.go.tpl",
-					destinationSuffix: "_mock_test.go",
-					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
-				},
-			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:    &network.Watcher{},
-					templateParams: []string{"ListAll"},
+					azureStruct: &network.Watcher{},
+					listHandler: valueHandler,
 				},
 			},
 		},

@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type NetworksClient struct {
+type NetworkClient struct {
 	ExpressRouteCircuits   ExpressRouteCircuitsClient
 	ExpressRouteGateways   ExpressRouteGatewaysClient
 	ExpressRoutePorts      ExpressRoutePortsClient
@@ -67,7 +67,7 @@ type WatchersClient interface {
 	GetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters network.FlowLogStatusParameters) (result network.WatchersGetFlowLogStatusFuture, err error)
 }
 
-func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworksClient {
+func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworkClient {
 	erc := network.NewExpressRouteCircuitsClient(subscriptionId)
 	erc.Authorizer = auth
 	erg := network.NewExpressRouteGatewaysClient(subscriptionId)
@@ -90,7 +90,7 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) Networks
 	vn.Authorizer = auth
 	wch := network.NewWatchersClient(subscriptionId)
 	wch.Authorizer = auth
-	return NetworksClient{
+	return NetworkClient{
 		ExpressRouteCircuits:   erc,
 		ExpressRouteGateways:   erg,
 		ExpressRoutePorts:      erp,

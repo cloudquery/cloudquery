@@ -23,7 +23,7 @@ type Services struct {
 	MariaDB           MariaDB
 	Monitor           MonitorClient
 	MySQL             MySQL
-	Network           NetworksClient
+	Network           NetworkClient
 	PostgreSQL        PostgreSQL
 	Redis             RedisClient
 	Resources         ResourcesClient

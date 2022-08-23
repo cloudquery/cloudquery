@@ -24,16 +24,21 @@ type Resource struct {
 	// Table is the table definition that will be used to generate the CloudQuery table
 	Table *codegen.TableDefinition
 	// AzureStruct that will be used to generate the CloudQuery table
-	AzureStruct        interface{}
-	AzureStructName    string
-	AzurePackageName   string
-	AzureService       string
-	AzureSubService    string
-	Imports            []string
-	SkipFields         []string
-	CreateTableOptions schema.TableCreationOptions
-	Template           Template
-	TemplateParams     []string
+	AzureStruct          interface{}
+	AzureStructName      string
+	AzurePackageName     string
+	AzureService         string
+	AzureSubService      string
+	Imports              []string
+	SkipFields           []string
+	CreateTableOptions   schema.TableCreationOptions
+	Template             Template
+	TemplateParams       []string
+	ListFunction         string
+	ListFunctionArgs     []string
+	ListHandler          string
+	MockListResult       string
+	MockListFunctionArgs []string
 }
 
 type template struct {
@@ -43,8 +48,12 @@ type template struct {
 }
 
 type resourceDefinition struct {
-	azureStruct    interface{}
-	templateParams []string
+	azureStruct          interface{}
+	listFunction         string
+	listFunctionArgs     []string
+	listHandler          string
+	mockListResult       string
+	mockListFunctionArgs []string
 }
 
 type byTemplates struct {
@@ -53,6 +62,15 @@ type byTemplates struct {
 }
 
 const pluginName = "azure"
+
+const valueHandler = `if err != nil {
+	return errors.WithStack(err)
+}
+if response.Value == nil {
+	return nil
+}
+res <- *response.Value
+`
 
 var SubscriptionIdColumn = codegen.ColumnDefinition{
 	Name:     "subscription_id",
@@ -104,7 +122,11 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 						Source:      template.source,
 						Destination: path.Join(azurePackageName, strcase.ToSnake(azureStructName)+template.destinationSuffix),
 					},
-					TemplateParams: definition.templateParams,
+					ListFunction:         definition.listFunction,
+					ListHandler:          definition.listHandler,
+					ListFunctionArgs:     definition.listFunctionArgs,
+					MockListResult:       definition.mockListResult,
+					MockListFunctionArgs: definition.mockListFunctionArgs,
 				}
 				initResourceTable(&resource)
 				allResources = append(allResources, resource)

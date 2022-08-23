@@ -14,7 +14,7 @@ import (
 func buildNetworkWatchersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	watcherSvc := mocks.NewMockWatchersClient(ctrl)
 	s := services.Services{
-		Network: services.NetworksClient{
+		Network: services.NetworkClient{
 			Watchers: watcherSvc,
 		},
 	}

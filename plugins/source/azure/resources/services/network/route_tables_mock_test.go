@@ -51,7 +51,7 @@ func fakeRouteTable(t *testing.T) network.RouteTable {
 func buildNetworkRouteTablesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	rtc := mocks.NewMockRouteTablesClient(ctrl)
 	s := services.Services{
-		Network: services.NetworksClient{
+		Network: services.NetworkClient{
 			RouteTables: rtc,
 		},
 	}
