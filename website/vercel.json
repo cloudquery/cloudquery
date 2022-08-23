@@ -30,7 +30,7 @@
       "destination": "/plugins"
     },
     {
-      "source": "/providers/*",
+      "source": "/providers/:path*",
       "destination": "/plugins"
     }
   ]
