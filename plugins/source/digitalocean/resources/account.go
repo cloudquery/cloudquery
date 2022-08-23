@@ -77,7 +77,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 		return nil
 	}
 
-	err := client.ThrottleWrapper(svc, doFunc)
+	err := client.ThrottleWrapper(ctx, svc, doFunc)
 	if err != nil {
 		return diag.WrapError(err)
 	}
