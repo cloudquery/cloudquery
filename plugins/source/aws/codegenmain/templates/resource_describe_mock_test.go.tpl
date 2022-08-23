@@ -18,7 +18,7 @@ import (
 func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockACMClient(ctrl)
 
-	var list types.{{.ListFieldPrefix}}
+	var list types.{{.ItemName}}Summary
 	if err := faker.FakeData(&list); err != nil {
 		t.Fatal(err)
 	}
@@ -28,7 +28,7 @@ func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock
 		gomock.Any(),
 	).Return(
 		&{{.AWSService | ToLower}}.{{.ListFunctionName}}Output{
-		  {{.ListFieldPrefix}}List: []types.{{.ListFieldPrefix}}{list},
+		  {{.ItemName}}SummaryList: []types.{{.ItemName}}Summary{list},
     },
 		nil,
 	)

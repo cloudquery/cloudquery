@@ -27,14 +27,14 @@ func fetch{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Cont
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		for _, item := range output.{{.ListFieldPrefix}}List {
+		for _, item := range output.{{.ItemName}}SummaryList {
 			do, err := svc.{{.DescribeFunctionName}}(ctx, &{{.AWSService | ToLower}}.{{.DescribeFunctionName}}Input{
 			  {{.DescribeFieldName}}: item.{{.DescribeFieldName}},
 			})
 			if err != nil {
 				return diag.WrapError(err)
 			}
-			res <- do.{{.DescribeResultName}}
+			res <- do.{{.ItemName}}
 		}
 	}
 	return nil

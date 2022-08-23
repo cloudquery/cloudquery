@@ -24,11 +24,9 @@ type Resource struct {
 	Template string
 
 	ListFunctionName     string
-	ListFieldPrefix      string // will add "List" for ListFunctionName return
 	ItemName             string
 	DescribeFunctionName string
 	DescribeFieldName    string
-	DescribeResultName   string
 
 	// imports to add for this resource
 	Imports []string
