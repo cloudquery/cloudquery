@@ -39,6 +39,6 @@ func buildApigatewayDomainNames(t *testing.T, ctrl *gomock.Controller) client.Se
 	}
 }
 
-func TestApigatewayDomainNames(t *testing.T) {
-	client.AwsMockTestHelper(t, ApigatewayDomainNames(), buildApigatewayDomainNames, client.TestOptions{})
+func TestDomainNames(t *testing.T) {
+	client.AwsMockTestHelper(t, DomainNames(), buildApigatewayDomainNames, client.TestOptions{})
 }

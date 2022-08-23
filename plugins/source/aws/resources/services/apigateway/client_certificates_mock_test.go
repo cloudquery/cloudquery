@@ -29,6 +29,6 @@ func buildApigatewayClientCertificates(t *testing.T, ctrl *gomock.Controller) cl
 	}
 }
 
-func TestApigatewayClientCertificates(t *testing.T) {
-	client.AwsMockTestHelper(t, ApigatewayClientCertificates(), buildApigatewayClientCertificates, client.TestOptions{})
+func TestClientCertificates(t *testing.T) {
+	client.AwsMockTestHelper(t, ClientCertificates(), buildApigatewayClientCertificates, client.TestOptions{})
 }

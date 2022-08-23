@@ -94,7 +94,7 @@ type ApplicationAutoscalingClient interface {
 	DescribeScalingPolicies(ctx context.Context, params *applicationautoscaling.DescribeScalingPoliciesInput, optFns ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingPoliciesOutput, error)
 }
 
-//go:generate mockgen -package=mocks -destination=./mocks/mock_apigateway.go . ApigatewayClient
+//go:generate mockgen -package=mocks -destination=./mocks/apigateway.go . ApigatewayClient
 type ApigatewayClient interface {
 	GetApiKeys(ctx context.Context, params *apigateway.GetApiKeysInput, optFns ...func(*apigateway.Options)) (*apigateway.GetApiKeysOutput, error)
 	GetAuthorizers(ctx context.Context, params *apigateway.GetAuthorizersInput, optFns ...func(*apigateway.Options)) (*apigateway.GetAuthorizersOutput, error)

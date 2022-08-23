@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildApigatewayApiKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApiKeysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	a := types.ApiKey{}
@@ -29,6 +29,6 @@ func buildApigatewayApiKeys(t *testing.T, ctrl *gomock.Controller) client.Servic
 	}
 }
 
-func TestApigatewayAPIKeys(t *testing.T) {
-	client.AwsMockTestHelper(t, ApigatewayAPIKeys(), buildApigatewayApiKeys, client.TestOptions{})
+func TestAPIKeys(t *testing.T) {
+	client.AwsMockTestHelper(t, APIKeys(), buildApiKeysMock, client.TestOptions{})
 }

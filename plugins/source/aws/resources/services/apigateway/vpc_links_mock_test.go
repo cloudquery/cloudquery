@@ -29,6 +29,6 @@ func buildApigatewayVpcLinks(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}
 }
 
-func TestApigatewayVpcLinks(t *testing.T) {
-	client.AwsMockTestHelper(t, ApigatewayVpcLinks(), buildApigatewayVpcLinks, client.TestOptions{})
+func TestVpcLinks(t *testing.T) {
+	client.AwsMockTestHelper(t, VpcLinks(), buildApigatewayVpcLinks, client.TestOptions{})
 }
