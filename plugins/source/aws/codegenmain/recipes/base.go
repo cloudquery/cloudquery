@@ -42,7 +42,8 @@ type Resource struct {
 
 	ColumnOverrides map[string]codegen.ColumnDefinition
 
-	HasTags bool // autodetected by scanning all columns for `tags`
+	HasTags         bool // autodetected by scanning all columns for `tags`
+	SkipTypesImport bool // skip "types" import (except for mock mode)
 }
 
 var (

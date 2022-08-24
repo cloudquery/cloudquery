@@ -26,6 +26,7 @@ var resources []recipes.Resource
 
 func main() {
 	resources = append(resources, recipes.ACMResources...)
+	resources = append(resources, recipes.APIGatewayv2Resources...)
 
 	for _, r := range resources {
 		generateResource(r, false)
@@ -109,10 +110,10 @@ func generateResource(r recipes.Resource, mock bool) {
 		r.AWSStructName = t.Name()
 	}
 	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
-		if r.HasTags {
+		if r.HasTags && (!r.SkipTypesImport || mock) {
 			r.Imports = append(r.Imports, sp)
 		}
-		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types"))
+		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types")) // auto-import main pkg (not "types")
 	}
 
 	mainTemplate := r.Template + ".go.tpl"

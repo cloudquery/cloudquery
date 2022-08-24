@@ -16,7 +16,7 @@ import (
 )
 
 func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockACMClient(ctrl)
+	mock := mocks.NewMock{{.AWSService}}Client(ctrl)
 
 	var list types.{{.ItemName}}Summary
 	if err := faker.FakeData(&list); err != nil {
