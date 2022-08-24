@@ -6,6 +6,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.13.16](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.15...plugins/source/aws/v0.13.16) (2022-08-21)
+
+
+### Features
+
+* Add fsx volumes ([#1322](https://github.com/cloudquery/cloudquery/issues/1322)) ([9031692](https://github.com/cloudquery/cloudquery/commit/90316928cda66a74874d9d700a1b21c8d994942b))
+
+## [0.13.15](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.14...plugins/source/aws/v0.13.15) (2022-08-21)
+
+
+### Features
+
+* Add cq-gen hcl and a new field to sqs queues ([#1453](https://github.com/cloudquery/cloudquery/issues/1453)) ([a9584fd](https://github.com/cloudquery/cloudquery/commit/a9584fd2e925a0216db749e07d3673dcf65597a2))
+* Add fsx data repo associations ([#1280](https://github.com/cloudquery/cloudquery/issues/1280)) ([8b02ce3](https://github.com/cloudquery/cloudquery/commit/8b02ce323967f13b890f757691a05bb788cdabe6))
+* Add fsx data repo tasks ([#1279](https://github.com/cloudquery/cloudquery/issues/1279)) ([e5774fa](https://github.com/cloudquery/cloudquery/commit/e5774faeefeec66997229d56753eadce4ddc6fcd))
+* Add fsx storage virtual machines ([#1296](https://github.com/cloudquery/cloudquery/issues/1296)) ([b4f335d](https://github.com/cloudquery/cloudquery/commit/b4f335d3fae84b38062d05dd98a30cfc1ed1a0bd))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.11 ([#1491](https://github.com/cloudquery/cloudquery/issues/1491)) ([5140bef](https://github.com/cloudquery/cloudquery/commit/5140bef4aa7c50a97a604db1e92df75ead2893fc))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.12 ([#1503](https://github.com/cloudquery/cloudquery/issues/1503)) ([a740719](https://github.com/cloudquery/cloudquery/commit/a7407199c9617784a1834b9d0c42788e03301de5))
+* ECS Tags ([#1515](https://github.com/cloudquery/cloudquery/issues/1515)) ([e076217](https://github.com/cloudquery/cloudquery/commit/e076217a5cdddb7dfac35e8a9b9ea94d95abb160))
+* Update endpoints ([#1514](https://github.com/cloudquery/cloudquery/issues/1514)) ([eafea83](https://github.com/cloudquery/cloudquery/commit/eafea83f31528e5244eef0eaf621d9e7b9c2b1cf))
+
+## [0.13.14](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.13...plugins/source/aws/v0.13.14) (2022-08-18)
+
+
+### Features
+
+* Add fsx snapshots ([#1278](https://github.com/cloudquery/cloudquery/issues/1278)) ([750d878](https://github.com/cloudquery/cloudquery/commit/750d87832ab910e8b461dd53677050cc36997277))
+* Add transfer servers ([#1284](https://github.com/cloudquery/cloudquery/issues/1284)) ([a3bf2bf](https://github.com/cloudquery/cloudquery/commit/a3bf2bfd0c1fc59621bd0815f11b87a2eeb05bae))
+* Extend sns subscription data ([#1424](https://github.com/cloudquery/cloudquery/issues/1424)) ([63887e7](https://github.com/cloudquery/cloudquery/commit/63887e7cdf1c3b559c9cc201ea02bb1b849ed0f9))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.10 ([#1474](https://github.com/cloudquery/cloudquery/issues/1474)) ([b142e13](https://github.com/cloudquery/cloudquery/commit/b142e135172b1eed1abb2cbec85054ea7f66199d))
+
 ## [0.13.13](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.12...plugins/source/aws/v0.13.13) (2022-08-17)
 
 

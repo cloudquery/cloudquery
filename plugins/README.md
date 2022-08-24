@@ -1,23 +1,10 @@
-<p align="center">
-<a href="https://cloudquery.io">
-<img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/docs/images/logo.png" />
-</a>
-</p>
-
-CloudQuery AWS Provider ![BuildStatus](https://img.shields.io/github/workflow/status/cloudquery/cq-provider-aws/test?style=flat-square) ![License](https://img.shields.io/github/license/cloudquery/cloudquery?style=flat-square)
+CloudQuery Plugins
 ==================================
 
-This [CloudQuery](https://github.com/cloudquery/cloudquery)
-provider transforms AWS resources to a relational database.
+This directory contains all official CloudQuery plugins that can be used to extract and load data from a source (source plugin) to a target (target plugin).
 
-## What is CloudQuery
+Plugins are not used directly, but are used by the [CloudQuery CLI](../cli). For an overview of the CLI, see [the docs](https://docs.cloudquery.io/docs/cli/fetch/overview).
 
-The [open-source](https://github.com/cloudquery/cloudquery) cloud asset inventory powered by SQL.
+## Contributing to a Plugin
 
-CloudQuery extracts, transforms, and loads your cloud assets into normalized PostgreSQL tables. CloudQuery enables you to assess, audit, and evaluate the configurations of your cloud assets.
-
-### Links
-* Homepage: https://cloudquery.io
-* Documentation: https://docs.cloudquery.io
-* CloudQuery Hub (providers & policies documentation): https://hub.cloudquery.io/
-* Discord: https://cloudquery.io/discord
+See [Contributing](CONTRIBUTING.md)

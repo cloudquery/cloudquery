@@ -1,7 +1,6 @@
 ---
-title: provider drop
+title: "provider_drop"
 ---
-
 ## cloudquery provider drop
 
 Drops provider schema from database
@@ -47,4 +46,5 @@ cloudquery provider drop [provider] [flags]
 
 ### SEE ALSO
 
-- [cloudquery provider](cloudquery_provider.md) - Top-level command to interact with providers.
+* [cloudquery provider](/docs/cli/commands/cloudquery_provider)	 - Top-level command to interact with providers.
+

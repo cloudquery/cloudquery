@@ -1,0 +1,24 @@
+name: Approve Vercel Website Build
+
+on:
+  pull_request_target:
+    paths:
+      - "**/*"
+      - "!website/**"
+    branches:
+      - main
+
+jobs:
+  set-vercel-to-success:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.repos.createCommitStatus({
+              owner: `cloudquery`,
+              repo: `cloudquery`,
+              context: 'Vercel – cloudquery-web',
+              state: 'success',
+              sha: context.payload.pull_request.head.sha,
+            })

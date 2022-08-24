@@ -1,11 +1,11 @@
-## Okta Provider
+## Okta Plugin
 
 The CloudQuery Okta provider pulls configuration out of Okta resources, normalizes them and stores them in PostgreSQL
 database.
 
 ### Install
 
-```shell
+```bash
 cloudquery init okta
 ```
 

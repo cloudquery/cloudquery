@@ -12,11 +12,9 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 Welcome to CloudQuery’s latest product news! This month we’ve been heads-down working on some new features but most
 importantly making CloudQuery easier to use no matter if you are a developer/contributor or an operator i.e -
 DevOps/SRE/Security team.
-
 
 ## 📈 High Level Metrics
 
@@ -44,7 +42,7 @@ databases! Checkout our [blog](https://www.cloudquery.io/blog/migration-and-hist
 CloudQuery supports six open-source security & compliance [policies](https://hub.cloudquery.io/policies) implemented
 in SQL so you can codify your security and compliance posture. With this release you can also store the result in
 PostgreSQL and enable more workflows downstream like monitoring security results in your favorite BI tool,
-alerting and much more! To see more checkout the [documentation](https://docs.cloudquery.io/docs/policies).
+alerting and much more! To see more checkout the [documentation](https://www.cloudquery.io/docs/policies).
 
 ## Deployments
 

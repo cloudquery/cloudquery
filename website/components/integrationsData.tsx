@@ -3,58 +3,61 @@ import AzureLogo from "./logos/integrations/AzureLogo";
 import CloudflareLogo from "./logos/integrations/CloudflareLogo";
 import DigitalOceanLogo from "./logos/integrations/DigitalOceanLogo";
 import GCPLogo from "./logos/integrations/GCPLogo";
+import GithubLogo from "./logos/integrations/GithubLogo";
 import KubernetesLogo from "./logos/integrations/KubernetesLogo";
 import OktaLogo from "./logos/integrations/OktaLogo";
 import TerraformLogo from "./logos/integrations/TerraformLogo";
 import YandexCloudLogo from "./logos/integrations/YandexCloudLogo";
 
-const logoClasses =
-  "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-50 transition-colors ease-in-out transition hover:scale-105";
-
 export const INTEGRATIONS = [
   {
     name: "Amazon Web Services",
-    logo: <AWSLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/aws/latest",
+    logo: <AWSLogo />,
+    id: "aws",
   },
   {
     name: "Microsoft Azure",
-    logo: <AzureLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/azure/latest",
+    logo: <AzureLogo />,
+    id: "azure",
   },
   {
     name: "Cloudflare",
-    logo: <CloudflareLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/cloudflare/latest",
+    logo: <CloudflareLogo />,
+    id: "cloudflare",
   },
   {
     name: "Digital Ocean",
-    logo: <DigitalOceanLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/digitalocean/latest",
+    logo: <DigitalOceanLogo />,
+    id: "digitalocean",
   },
   {
     name: "Google Cloud Platform",
-    logo: <GCPLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/gcp/latest",
+    logo: <GCPLogo />,
+    id: "gcp",
+  },
+  {
+    name: "Github",
+    logo: <GithubLogo />,
+    id: "github",
   },
   {
     name: "Kubernetes",
-    logo: <KubernetesLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/k8s/latest",
+    logo: <KubernetesLogo />,
+    id: "k8s",
   },
   {
     name: "Okta",
-    logo: <OktaLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/okta/latest",
+    logo: <OktaLogo />,
+    id: "okta",
   },
   {
     name: "Terraform",
-    logo: <TerraformLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/cloudquery/terraform/latest",
+    logo: <TerraformLogo />,
+    id: "terraform",
   },
   {
     name: "Yandex Cloud",
-    logo: <YandexCloudLogo className={logoClasses} />,
-    link: "https://hub.cloudquery.io/providers/yandex-cloud/yandex/latest",
+    logo: <YandexCloudLogo />,
+    id: "yandexcloud",
   },
 ];

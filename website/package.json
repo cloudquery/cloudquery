@@ -4,11 +4,15 @@
   "private": true,
   "description": "CloudQuery website and docs",
   "scripts": {
+    "predev": "node scripts/generate-hub.js",
+    "prebuild": "node scripts/generate-hub.js",
     "dev": "next",
     "start": "next start",
-    "build": "next build ",
+    "build": "next build",
+    "postbuild": "next-sitemap",
     "lint": "next lint",
-    "schema": "ts-json-schema-generator -f tsconfig.json -p ./schema.d.ts -o ./public/schema.json -t Schema --minify"
+    "schema": "ts-json-schema-generator -f tsconfig.json -p ./schema.d.ts -o ./public/schema.json -t Schema --minify",
+    "should-build": "git diff --quiet HEAD^ HEAD ."
   },
   "author": "CloudQuery",
   "license": "MPL-2.0",
@@ -17,6 +21,7 @@
     "copy-to-clipboard": "3.3.1",
     "isomorphic-unfetch": "^3.1.0",
     "next": "12.2.3",
+    "next-sitemap": "3.1.19",
     "nextra": "2.0.0-beta.17",
     "nextra-theme-docs": "2.0.0-beta.17",
     "prism-react-renderer": "^1.3.5",

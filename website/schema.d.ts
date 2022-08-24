@@ -1,7 +1,7 @@
 /* This file generates the `schema.json` file. */
 
 export interface Schema {
-  /** @default https://cloudquery.io/schema.json */
+  /** @default https://www.cloudquery.io/schema.json */
   $schema?: string;
 
   /**

@@ -19,6 +19,7 @@
       "typesetting": "article"
     }
   },
+  "plugins": "Plugins",
   "confirm": {
     "title": "Confirm",
     "hidden": true

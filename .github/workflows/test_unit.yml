@@ -55,6 +55,8 @@ jobs:
         with:
           files: |
             ${{ matrix.workdir }}
+          files_ignore: |
+            ${{ matrix.workdir }}/CHANGELOG.md
       - name: Set up Go 1.x
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         uses: actions/setup-go@v3

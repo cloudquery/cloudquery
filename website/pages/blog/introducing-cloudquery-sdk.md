@@ -10,7 +10,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
 Today we are pleased to announce the release of [CloudQuery SDK](https://github.com/cloudquery/cq-provider-sdk)!
 
 We released [CloudQuery](https://github.com/cloudquery/cloudquery) at the end of last year to give developers,
@@ -22,7 +21,6 @@ We made a few decisions like using SQL as a query and policy engine so developer
 CloudQuery grew over 1.3K stars in under 5 months!
 This led us to develop a better and simpler way to extend CloudQuery with new resources and customs providers.
 
-
 ## Enter CloudQuery SDK
 
 So far adding support for new cloud providers and resources to CloudQuery required developers to implement **ET** (In **ETL** - Extract, Transform, Load).
@@ -30,7 +28,7 @@ So far adding support for new cloud providers and resources to CloudQuery requir
 Now, CloudQuery SDK means you as a developer will only have to implement the **E** (in ETL), and the SDK will take care of the rest.
 Also, you will benefit from easy testable code, new features like history, policy packs and others that your providers will get out of the box as the SDK develops.
 
-Full Documentation is available [here](https://docs.cloudquery.io/docs/developers/architecture).
+Full Documentation is available [here](https://www.cloudquery.io/docs/developers/architecture).
 
 For a quick snippet continue reading!
 
@@ -108,7 +106,7 @@ Essentially you have to implement two things:
 
 More Documentation available at:
 
-- [Docs](https://docs.cloudquery.io/docs/developers/developing-new-provider)
+- [Docs](https://www.cloudquery.io/docs/developers/developing-new-provider)
 - [Template provider](https://github.com/cloudquery/cq-provider-template)
 - [AWS provider](https://github.com/cloudquery/cq-provider-aws)
 

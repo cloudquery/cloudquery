@@ -8,8 +8,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.9
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.20
 	github.com/aws/aws-sdk-go-v2/service/accessanalyzer v1.15.8
-	github.com/aws/aws-sdk-go-v2/service/acm v1.14.8
-	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.10
+	github.com/aws/aws-sdk-go-v2/service/acm v1.14.12
+	github.com/aws/aws-sdk-go-v2/service/apigateway v1.15.14
 	github.com/aws/aws-sdk-go-v2/service/apigatewayv2 v1.12.8
 	github.com/aws/aws-sdk-go-v2/service/applicationautoscaling v1.15.8
 	github.com/aws/aws-sdk-go-v2/service/appsync v1.15.1
@@ -65,7 +65,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.15.12
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.13.8
 	github.com/aws/aws-sdk-go-v2/service/sns v1.17.13
-	github.com/aws/aws-sdk-go-v2/service/sqs v1.18.7
+	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.4
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.27.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.9
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.7
@@ -75,7 +75,7 @@ require (
 	github.com/aws/smithy-go v1.12.1
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
-	github.com/cloudquery/cq-gen v0.0.9
+	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/gocarina/gocsv v0.0.0-20220712153207-8b2118da4570

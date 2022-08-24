@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/account"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/cdn"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/container"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/cosmosdb"
@@ -48,6 +49,7 @@ func Provider() *provider.Provider {
 			"authorization.role_assignments":     authorization.AuthorizationRoleAssignments(),
 			"authorization.role_definitions":     authorization.AuthorizationRoleDefinitions(),
 			"batch.accounts":                     batch.BatchAccounts(),
+			"cdn.profiles":                       cdn.Profiles(),
 			"compute.disks":                      compute.ComputeDisks(),
 			"compute.virtual_machines":           compute.ComputeVirtualMachines(),
 			"compute.virtual_machine_scale_sets": compute.VirtualMachineScaleSets(),

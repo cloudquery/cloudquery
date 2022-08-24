@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
-	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -18,7 +17,7 @@ func Snapshots() *schema.Table {
 		Description:  "A snapshot of an Amazon FSx for OpenZFS volume",
 		Resolver:     fetchFsxSnapshots,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
+		IgnoreError:  client.IgnoreCommonErrors,
 		DeleteFilter: client.DeleteAccountRegionFilter,
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -41,7 +40,7 @@ func Snapshots() *schema.Table {
 			},
 			{
 				Name:        "lifecycle",
-				Description: "The lifecycle status of the snapshot  * PENDING - Amazon FSx hasn't started creating the snapshot  * CREATING - Amazon FSx is creating the snapshot  * DELETING - Amazon FSx is deleting the snapshot  * AVAILABLE - The snapshot is fully available",
+				Description: "The lifecycle status of the snapshot",
 				Type:        schema.TypeString,
 			},
 			{
@@ -70,7 +69,7 @@ func Snapshots() *schema.Table {
 				Name:        "tags",
 				Description: "A list of Tag values, with a maximum of 50 elements",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveSnapshotsTags,
+				Resolver:    client.ResolveTags,
 			},
 			{
 				Name:        "volume_id",
@@ -89,19 +88,13 @@ func fetchFsxSnapshots(ctx context.Context, meta schema.ClientMeta, parent *sche
 	cl := meta.(*client.Client)
 	svc := cl.Services().FSX
 	input := fsx.DescribeSnapshotsInput{MaxResults: aws.Int32(1000)}
-	for {
-		result, err := svc.DescribeSnapshots(ctx, &input)
+	paginator := fsx.NewDescribeSnapshotsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		result, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		res <- result.Snapshots
-		if aws.ToString(result.NextToken) == "" {
-			break
-		}
-		input.NextToken = result.NextToken
 	}
 	return nil
-}
-func resolveSnapshotsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(resource.Item.(types.Snapshot).Tags)))
 }

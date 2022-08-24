@@ -3,7 +3,6 @@ package acm
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -11,28 +10,34 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func AcmCertificates() *schema.Table {
+//go:generate cq-gen --resource certificates --config certificates.hcl --output .
+func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_acm_certificates",
-		Description:   "Contains metadata about an ACM certificate",
-		Resolver:      fetchAcmCertificates,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("acm"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-		IgnoreInTests: true,
+		Name:         "aws_acm_certificates",
+		Description:  "Contains metadata about an ACM certificate",
+		Resolver:     fetchAcmCertificates,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("acm"),
+		IgnoreError:  client.IgnoreCommonErrors,
+		DeleteFilter: client.DeleteAccountRegionFilter,
+		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
+				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
 				Name:        "region",
-				Description: "The AWS Region of the resource.",
+				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+			},
+			{
+				Name:        "tags",
+				Description: "The tags that have been applied to the ACM certificate",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveAcmCertificateTags,
 			},
 			{
 				Name:        "arn",
@@ -47,25 +52,23 @@ func AcmCertificates() *schema.Table {
 			},
 			{
 				Name:        "created_at",
-				Description: "The time at which the certificate was requested.",
+				Description: "The time at which the certificate was requested",
 				Type:        schema.TypeTimestamp,
 			},
 			{
 				Name:        "domain_name",
-				Description: "The fully qualified domain name for the certificate, such as www.example.com or example.com.",
+				Description: "The fully qualified domain name for the certificate, such as www.example.com or example.com",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "domain_validation_options",
-				Description: "Contains information about the initial validation of each domain name that occurs as a result of the RequestCertificate request.",
+				Description: "Contains information about the initial validation of each domain name that occurs as a result of the RequestCertificate request",
 				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("DomainValidationOptions"),
 			},
 			{
 				Name:        "extended_key_usages",
-				Description: "Contains a list of Extended Key Usage X.509 v3 extension objects.",
+				Description: "Contains a list of Extended Key Usage X.509 v3 extension objects",
 				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("ExtendedKeyUsages"),
 			},
 			{
 				Name:        "failure_reason",
@@ -89,28 +92,28 @@ func AcmCertificates() *schema.Table {
 			},
 			{
 				Name:        "issuer",
-				Description: "The name of the certificate authority that issued and signed the certificate.",
+				Description: "The name of the certificate authority that issued and signed the certificate",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "key_algorithm",
-				Description: "The algorithm that was used to generate the public-private key pair.",
+				Description: "The algorithm that was used to generate the public-private key pair",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "key_usages",
-				Description: "A list of Key Usage X.509 v3 extension objects. Each object is a string value that identifies the purpose of the public key contained in the certificate.",
+				Description: "A list of Key Usage X.509 v3 extension objects",
 				Type:        schema.TypeStringArray,
 				Resolver:    schema.PathResolver("KeyUsages.Name"),
 			},
 			{
 				Name:        "not_after",
-				Description: "The time after which the certificate is not valid.",
+				Description: "The time after which the certificate is not valid",
 				Type:        schema.TypeTimestamp,
 			},
 			{
 				Name:        "not_before",
-				Description: "The time before which the certificate is not valid.",
+				Description: "The time before which the certificate is not valid",
 				Type:        schema.TypeTimestamp,
 			},
 			{
@@ -126,25 +129,25 @@ func AcmCertificates() *schema.Table {
 			},
 			{
 				Name:        "renewal_summary_domain_validation_options",
-				Description: "Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal.",
+				Description: "Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html)",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("RenewalSummary.DomainValidationOptions"),
 			},
 			{
 				Name:        "renewal_summary_status",
-				Description: "The status of ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html) of the certificate. ",
+				Description: "The status of ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html) of the certificate",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RenewalSummary.RenewalStatus"),
 			},
 			{
 				Name:        "renewal_summary_updated_at",
-				Description: "The time at which the renewal summary was last updated. ",
+				Description: "The time at which the renewal summary was last updated",
 				Type:        schema.TypeTimestamp,
 				Resolver:    schema.PathResolver("RenewalSummary.UpdatedAt"),
 			},
 			{
 				Name:        "renewal_summary_failure_reason",
-				Description: "The reason that a renewal request was unsuccessful.",
+				Description: "The reason that a renewal request was unsuccessful",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RenewalSummary.RenewalStatusReason"),
 			},
@@ -160,22 +163,22 @@ func AcmCertificates() *schema.Table {
 			},
 			{
 				Name:        "serial",
-				Description: "The serial number of the certificate.",
+				Description: "The serial number of the certificate",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "signature_algorithm",
-				Description: "The algorithm that was used to sign the certificate.",
+				Description: "The algorithm that was used to sign the certificate",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "status",
-				Description: "The status of the certificate.",
+				Description: "The status of the certificate",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "subject",
-				Description: "The name of the entity that is associated with the public key contained in the certificate.",
+				Description: "The name of the entity that is associated with the public key contained in the certificate",
 				Type:        schema.TypeString,
 			},
 			{
@@ -188,12 +191,6 @@ func AcmCertificates() *schema.Table {
 				Description: "The source of the certificate",
 				Type:        schema.TypeString,
 			},
-			{
-				Name:        "tags",
-				Description: "The tags that have been applied to the ACM certificate.",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveACMCertificateTags,
-			},
 		},
 	}
 }
@@ -201,12 +198,14 @@ func AcmCertificates() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
+
 func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
 	var input acm.ListCertificatesInput
-	for {
-		output, err := svc.ListCertificates(ctx, &input)
+	paginator := acm.NewListCertificatesPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -217,15 +216,10 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 			}
 			res <- do.Certificate
 		}
-		if aws.ToString(output.NextToken) == "" {
-			break
-		}
-		input.NextToken = output.NextToken
 	}
 	return nil
 }
-
-func resolveACMCertificateTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveAcmCertificateTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cert := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM

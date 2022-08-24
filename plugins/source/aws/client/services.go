@@ -94,7 +94,7 @@ type ApplicationAutoscalingClient interface {
 	DescribeScalingPolicies(ctx context.Context, params *applicationautoscaling.DescribeScalingPoliciesInput, optFns ...func(*applicationautoscaling.Options)) (*applicationautoscaling.DescribeScalingPoliciesOutput, error)
 }
 
-//go:generate mockgen -package=mocks -destination=./mocks/mock_apigateway.go . ApigatewayClient
+//go:generate mockgen -package=mocks -destination=./mocks/apigateway.go . ApigatewayClient
 type ApigatewayClient interface {
 	GetApiKeys(ctx context.Context, params *apigateway.GetApiKeysInput, optFns ...func(*apigateway.Options)) (*apigateway.GetApiKeysOutput, error)
 	GetAuthorizers(ctx context.Context, params *apigateway.GetAuthorizersInput, optFns ...func(*apigateway.Options)) (*apigateway.GetAuthorizersOutput, error)
@@ -341,7 +341,6 @@ type EcrClient interface {
 type EcsClient interface {
 	DescribeClusters(ctx context.Context, params *ecs.DescribeClustersInput, optFns ...func(*ecs.Options)) (*ecs.DescribeClustersOutput, error)
 	ListClusters(ctx context.Context, params *ecs.ListClustersInput, optFns ...func(*ecs.Options)) (*ecs.ListClustersOutput, error)
-	ListTagsForResource(ctx context.Context, params *ecs.ListTagsForResourceInput, optFns ...func(*ecs.Options)) (*ecs.ListTagsForResourceOutput, error)
 	DescribeServices(ctx context.Context, params *ecs.DescribeServicesInput, optFns ...func(*ecs.Options)) (*ecs.DescribeServicesOutput, error)
 	DescribeContainerInstances(ctx context.Context, params *ecs.DescribeContainerInstancesInput, optFns ...func(*ecs.Options)) (*ecs.DescribeContainerInstancesOutput, error)
 	ListServices(ctx context.Context, params *ecs.ListServicesInput, optFns ...func(*ecs.Options)) (*ecs.ListServicesOutput, error)
@@ -441,8 +440,12 @@ type FirehoseClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/fsx.go . FsxClient
 type FsxClient interface {
 	DescribeBackups(ctx context.Context, params *fsx.DescribeBackupsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeBackupsOutput, error)
+	DescribeDataRepositoryAssociations(ctx context.Context, params *fsx.DescribeDataRepositoryAssociationsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryAssociationsOutput, error)
+	DescribeDataRepositoryTasks(ctx context.Context, params *fsx.DescribeDataRepositoryTasksInput, optFns ...func(*fsx.Options)) (*fsx.DescribeDataRepositoryTasksOutput, error)
 	DescribeFileSystems(ctx context.Context, params *fsx.DescribeFileSystemsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeFileSystemsOutput, error)
 	DescribeSnapshots(ctx context.Context, params *fsx.DescribeSnapshotsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error)
+	DescribeStorageVirtualMachines(ctx context.Context, params *fsx.DescribeStorageVirtualMachinesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error)
+	DescribeVolumes(ctx context.Context, params *fsx.DescribeVolumesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeVolumesOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
@@ -514,7 +517,7 @@ type IamClient interface {
 	GetAccountSummary(ctx context.Context, params *iam.GetAccountSummaryInput, optFns ...func(*iam.Options)) (*iam.GetAccountSummaryOutput, error)
 }
 
-//go:generate mockgen -package=mocks -destination=./moc—ks/inspector.go . InspectorClient
+//go:generate mockgen -package=mocks -destination=./mocks/inspector.go . InspectorClient
 type InspectorClient interface {
 	ListFindings(ctx context.Context, params *inspector.ListFindingsInput, optFns ...func(*inspector.Options)) (*inspector.ListFindingsOutput, error)
 	DescribeFindings(ctx context.Context, params *inspector.DescribeFindingsInput, optFns ...func(*inspector.Options)) (*inspector.DescribeFindingsOutput, error)

@@ -1,7 +1,6 @@
 ---
-title: completion bash
+title: "completion_bash"
 ---
-
 ## cloudquery completion bash
 
 Generate the autocompletion script for bash
@@ -15,26 +14,26 @@ If it is not installed already, you can install it via your OS's package manager
 
 To load completions in your current shell session:
 
-```powershell
-    source <(cloudquery completion bash)
+```bash
+	source <(cloudquery completion bash)
 ```
 
 To load completions for every new session, execute once:
 
 #### Linux:
 
-```powershell
+```bash
 	cloudquery completion bash > /etc/bash_completion.d/cloudquery
 ```
 
 #### macOS:
 
-```powershell
-
+```bash
 	cloudquery completion bash > $(brew --prefix)/etc/bash_completion.d/cloudquery
 ```
 
 You will need to start a new shell for this setup to take effect.
+
 
 ```
 cloudquery completion bash
@@ -73,4 +72,5 @@ cloudquery completion bash
 
 ### SEE ALSO
 
-- [cloudquery completion](cloudquery_completion.md) - Generate the autocompletion script for the specified shell
+* [cloudquery completion](/docs/cli/commands/cloudquery_completion)	 - Generate the autocompletion script for the specified shell
+

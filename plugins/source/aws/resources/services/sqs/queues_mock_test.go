@@ -14,17 +14,17 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 	sqsMock := mocks.NewMockSQSClient(ctrl)
 
 	var queueURL = "https://url1"
-	sqsMock.EXPECT().ListQueues(gomock.Any(), &sqs.ListQueuesInput{}, gomock.Any()).Return(
-		&sqs.ListQueuesOutput{
-			QueueUrls: []string{queueURL},
-		},
+	sqsMock.EXPECT().ListQueues(
+		gomock.Any(),
+		&sqs.ListQueuesInput{},
+	).Return(
+		&sqs.ListQueuesOutput{QueueUrls: []string{queueURL}},
 		nil,
 	)
 
 	sqsMock.EXPECT().GetQueueAttributes(
 		gomock.Any(),
 		&sqs.GetQueueAttributesInput{QueueUrl: &queueURL, AttributeNames: []types.QueueAttributeName{types.QueueAttributeNameAll}},
-		gomock.Any(),
 	).Return(
 		&sqs.GetQueueAttributesOutput{
 			Attributes: map[string]string{
@@ -45,6 +45,7 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 				"ContentBasedDeduplication":             "false",
 				"KmsMasterKeyId":                        "key",
 				"KmsDataKeyReusePeriodSeconds":          "9",
+				"SqsManagedSseEnabled":                  "true",
 				"DeduplicationScope":                    "messageGroup",
 				"FifoThroughputLimit":                   "queue",
 				"RedriveAllowPolicy":                    `{"field3":3}`,
@@ -55,13 +56,16 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	sqsMock.EXPECT().ListQueueTags(gomock.Any(), &sqs.ListQueueTagsInput{QueueUrl: &queueURL}, gomock.Any()).Return(
+	sqsMock.EXPECT().ListQueueTags(
+		gomock.Any(),
+		&sqs.ListQueueTagsInput{QueueUrl: &queueURL},
+	).Return(
 		&sqs.ListQueueTagsOutput{Tags: map[string]string{"tag": "value"}},
 		nil,
 	)
 	return client.Services{SQS: sqsMock}
 }
 
-func TestSQSQueues(t *testing.T) {
-	client.AwsMockTestHelper(t, SQSQueues(), buildSQSQueues, client.TestOptions{})
+func TestQueues(t *testing.T) {
+	client.AwsMockTestHelper(t, Queues(), buildSQSQueues, client.TestOptions{})
 }

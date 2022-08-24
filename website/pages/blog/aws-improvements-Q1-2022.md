@@ -12,8 +12,6 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-
-
 ## Q1 2022
 
 We want to highlight some of the features that we have released that will improve the usability for CloudQuery users looking to catalog their AWS assets.
@@ -97,7 +95,7 @@ CloudQuery key use-cases and features:
     - S3 Bucket Ownership
     - AWS Workspaces
 
-  If we are not supporting a resource that you need please reach out to us on [GitHub](https://github.com/cloudquery/cq-provider-aws), [Discord](https://cloudquery.io/discord) or [Twitter](https://twitter.com/cloudqueryio)
+  If we are not supporting a resource that you need please reach out to us on [GitHub](https://github.com/cloudquery/cq-provider-aws), [Discord](https://www.cloudquery.io/discord) or [Twitter](https://twitter.com/cloudqueryio)
 
 What's next?
-As always more resources, providers, policies, improved stability, and support for storing policy results in your database. If you would like to influence our roadmap feel free to open an issue on our [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://cloudquery.io/discord)!
+As always more resources, providers, policies, improved stability, and support for storing policy results in your database. If you would like to influence our roadmap feel free to open an issue on our [GitHub](https://github.com/cloudquery/cloudquery) or [Discord](https://www.cloudquery.io/discord)!

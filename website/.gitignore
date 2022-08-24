@@ -1,3 +1,6 @@
 .next
 node_modules
 .env
+
+# Plugins pages are auto generated during build
+pages/plugins/**/*
