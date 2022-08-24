@@ -63,7 +63,7 @@ func NetworkResources() []Resource {
 					azureStruct:    &network.ExpressRouteGateway{},
 					listFunction:   "ListBySubscription",
 					listHandler:    valueHandler,
-					mockListResult: "List",
+					mockListResult: "ExpressRouteGatewayList",
 				},
 				{
 					azureStruct: &network.Watcher{},

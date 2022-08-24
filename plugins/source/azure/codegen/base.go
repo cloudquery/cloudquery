@@ -19,25 +19,19 @@ type Template struct {
 }
 
 type Resource struct {
-	// DefaultColumns columns that will be appended to the main table
-	DefaultColumns []codegen.ColumnDefinition
 	// Table is the table definition that will be used to generate the CloudQuery table
-	Table *codegen.TableDefinition
-	// AzureStruct that will be used to generate the CloudQuery table
-	AzureStruct              interface{}
+	Table                    *codegen.TableDefinition
 	AzureStructName          string
 	AzurePackageName         string
 	AzureService             string
 	AzureSubService          string
 	Imports                  []string
-	SkipFields               []string
-	CreateTableOptions       schema.TableCreationOptions
 	Template                 Template
-	TemplateParams           []string
 	ListFunction             string
 	ListFunctionArgs         []string
 	ListFunctionArgsInit     []string
 	ListHandler              string
+	MockHelpers              []string
 	MockListResult           string
 	MockListFunctionArgs     []string
 	MockListFunctionArgsInit []string
@@ -56,6 +50,7 @@ type resourceDefinition struct {
 	listFunctionArgsInit     []string
 	listHandler              string
 	mockListResult           string
+	mockHelpers              []string
 	mockListFunctionArgs     []string
 	mockListFunctionArgsInit []string
 	subServiceOverride       string
@@ -90,16 +85,13 @@ var IdColumn = codegen.ColumnDefinition{
 	Resolver: "schema.PathResolver(\"ID\")",
 }
 
-func initResourceTable(resource *Resource) {
-	var err error
-	resource.Table, err = codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, resource.AzurePackageName, strcase.ToSnake(resource.AzureSubService)), resource.AzureStruct, codegen.WithSkipFields(resource.SkipFields...))
-	if err != nil {
-		log.Fatal(err)
+func needsSubscriptionId(table *codegen.TableDefinition) bool {
+	for _, column := range table.Columns {
+		if column.Name == "subscription_id" {
+			return false
+		}
 	}
-	resource.Table.Columns = append(resource.DefaultColumns, resource.Table.Columns...)
-	resource.Table.Multiplex = "client.SubscriptionMultiplex"
-	resource.Table.Resolver = "fetch" + resource.AzureService + resource.AzureSubService
-	resource.Table.Options.PrimaryKeys = resource.CreateTableOptions.PrimaryKeys
+	return true
 }
 
 func generateResources(resourcesByTemplates []byTemplates) []Resource {
@@ -122,29 +114,42 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 				if definition.subServiceOverride != "" {
 					azureSubService = definition.subServiceOverride
 				}
+
+				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields("ID"))
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				defaultColumns := []codegen.ColumnDefinition{IdColumn}
+				if needsSubscriptionId(table) {
+					defaultColumns = append(defaultColumns, SubscriptionIdColumn)
+				}
+
+				table.Columns = append(defaultColumns, table.Columns...)
+				table.Multiplex = "client.SubscriptionMultiplex"
+				table.Resolver = "fetch" + azureService + azureSubService
+				table.Options.PrimaryKeys = []string{"subscription_id", "id"}
+
 				resource := Resource{
-					AzurePackageName:   azurePackageName,
-					AzureStructName:    azureStructName,
-					AzureStruct:        definition.azureStruct,
-					AzureService:       azureService,
-					AzureSubService:    azureSubService,
-					DefaultColumns:     []codegen.ColumnDefinition{SubscriptionIdColumn, IdColumn},
-					SkipFields:         []string{"ID"},
-					Imports:            template.imports,
-					CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+					Table:            table,
+					AzurePackageName: azurePackageName,
+					AzureStructName:  azureStructName,
+					AzureService:     azureService,
+					AzureSubService:  azureSubService,
+					Imports:          template.imports,
 					Template: Template{
 						Source:      template.source,
-						Destination: path.Join(azurePackageName, strcase.ToSnake(azureSubService)+template.destinationSuffix),
+						Destination: path.Join(strings.ToLower(azureService), strcase.ToSnake(azureSubService)+template.destinationSuffix),
 					},
 					ListFunction:             definition.listFunction,
 					ListHandler:              definition.listHandler,
 					ListFunctionArgs:         definition.listFunctionArgs,
 					ListFunctionArgsInit:     definition.listFunctionArgsInit,
+					MockHelpers:              definition.mockHelpers,
 					MockListResult:           definition.mockListResult,
 					MockListFunctionArgs:     definition.mockListFunctionArgs,
 					MockListFunctionArgsInit: definition.mockListFunctionArgsInit,
 				}
-				initResourceTable(&resource)
 				allResources = append(allResources, resource)
 			}
 		}

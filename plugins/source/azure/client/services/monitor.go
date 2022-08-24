@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/monitor.go -package=mocks . ActivityLogAlertsClient,LogProfilesClient,DiagnosticSettingsClient,ActivityLogClient
+//go:generate mockgen -destination=./mocks/monitor.go -package=mocks . ActivityLogAlertsClient,LogProfilesClient,DiagnosticSettingsClient,ActivityLogsClient
 package services
 
 import (
@@ -12,14 +12,14 @@ import (
 type MonitorClient struct {
 	ActivityLogAlerts  ActivityLogAlertsClient
 	LogProfiles        LogProfilesClient
-	ActivityLogs       ActivityLogClient
+	ActivityLogs       ActivityLogsClient
 	DiagnosticSettings DiagnosticSettingsClient
 }
 
 type ActivityLogAlertsClient interface {
 	ListBySubscriptionID(ctx context.Context) (result o.ActivityLogAlertList, err error)
 }
-type ActivityLogClient interface {
+type ActivityLogsClient interface {
 	List(ctx context.Context, filter string, selectParameter string) (result insights.EventDataCollectionPage, err error)
 }
 type LogProfilesClient interface {

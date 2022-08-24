@@ -28,6 +28,7 @@ func main() {
 	resources = append(resources, codegen.KeyValueResources()...)
 	resources = append(resources, codegen.LogicResources()...)
 	resources = append(resources, codegen.MariaDbResources()...)
+	resources = append(resources, codegen.MonitorResources()...)
 	for _, r := range resources {
 		generateResource(r)
 	}

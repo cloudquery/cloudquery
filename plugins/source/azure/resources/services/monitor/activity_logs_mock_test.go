@@ -31,7 +31,7 @@ func (m regexMatcher) String() string {
 }
 
 func buildActivityLogs(t *testing.T, ctrl *gomock.Controller) services.Services {
-	svc := mocks.NewMockActivityLogClient(ctrl)
+	svc := mocks.NewMockActivityLogsClient(ctrl)
 
 	ed := insights.EventData{}
 	if err := faker.FakeData(&ed); err != nil {

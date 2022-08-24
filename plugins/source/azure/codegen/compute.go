@@ -23,7 +23,7 @@ func ComputeResources() []Resource {
 				{
 					azureStruct:    &compute.Disk{},
 					listFunction:   "List",
-					mockListResult: "List",
+					mockListResult: "DiskList",
 				},
 				{
 					azureStruct: &compute.VirtualMachineScaleSet{},
