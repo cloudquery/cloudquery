@@ -13,15 +13,30 @@ import (
 {{end}}
 )
 
-func {{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}() *schema.Table {
+{{if .Parent}}
+func {{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}() *schema.Table {
+{{else}}
+	func {{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}() *schema.Table {
+{{end}}
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 
-func fetch{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+{{if .Parent}}
+func fetch{{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+{{else}}
+	func fetch{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+{{end}}
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
 
+{{if .Parent}}
+	r := parent.Item.(types.{{.Parent.ItemName}})
+	input := {{.AWSService | ToLower}}.Get{{.AWSSubService | ToCamel}}Input{
+		{{.ParentFieldName}}: r.{{.ParentFieldName}},
+	}
+{{else}}
 	var input {{.AWSService | ToLower}}.Get{{.AWSSubService | ToCamel}}Input
+{{end}}
 	for {
 		response, err := svc.Get{{.AWSSubService | ToCamel}}(ctx, &input)
 		if err != nil {

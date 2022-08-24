@@ -22,7 +22,7 @@ import (
 //go:embed templates/*.go.tpl
 var awsTemplatesFS embed.FS
 
-var resources []recipes.Resource
+var resources []*recipes.Resource
 
 func main() {
 	resources = append(resources, recipes.ACMResources...)
@@ -34,7 +34,7 @@ func main() {
 	}
 }
 
-func generateResource(r recipes.Resource, mock bool) {
+func generateResource(r *recipes.Resource, mock bool) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -92,7 +92,12 @@ func generateResource(r recipes.Resource, mock bool) {
 		}
 	}
 	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + strings.ToLower(r.AWSService) + `")`
-	r.Table.Resolver = "fetch" + toCamel(r.AWSService) + toCamel(r.AWSSubService)
+
+	if r.Parent == nil {
+		r.Table.Resolver = "fetch" + toCamel(r.AWSService) + toCamel(r.AWSSubService)
+	} else {
+		r.Table.Resolver = "fetch" + toCamel(r.AWSService) + toCamel(r.Parent.AWSSubService) + toCamel(r.AWSSubService)
+	}
 
 	if r.ListFunctionName == "" {
 		r.ListFunctionName = "List" + toCamel(r.AWSSubService)
@@ -110,7 +115,7 @@ func generateResource(r recipes.Resource, mock bool) {
 		r.AWSStructName = t.Name()
 	}
 	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
-		if r.HasTags && (!r.SkipTypesImport || mock) {
+		if (r.HasTags || r.Parent != nil) && (!r.SkipTypesImport || mock) {
 			r.Imports = append(r.Imports, sp)
 		}
 		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types")) // auto-import main pkg (not "types")
@@ -139,10 +144,12 @@ func generateResource(r recipes.Resource, mock bool) {
 	if err := os.MkdirAll(filePath, 0755); err != nil {
 		log.Fatal(fmt.Errorf("failed to create directory: %w", err))
 	}
-	if mock {
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+r.AWSSubService+"_mock_test.go")
+
+	fileSuffix := stringSwitch(mock, "_mock_test.go", ".go")
+	if r.Parent == nil {
+		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+r.AWSSubService+fileSuffix)
 	} else {
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+r.AWSSubService+".go")
+		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+r.Parent.AWSSubService+"_"+r.AWSSubService+fileSuffix)
 	}
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
@@ -156,4 +163,11 @@ func generateResource(r recipes.Resource, mock bool) {
 
 func toCamel(input string) string {
 	return strcase.ToCamel(strings.ToLower(input))
+}
+
+func stringSwitch(b bool, ifTrue, ifFalse string) string {
+	if b {
+		return ifTrue
+	}
+	return ifFalse
 }

@@ -28,6 +28,9 @@ type Resource struct {
 	DescribeFunctionName string
 	DescribeFieldName    string
 
+	Parent          *Resource
+	ParentFieldName string
+
 	// imports to add for this resource
 	Imports []string
 	// MockImports imports to add for mock tests
@@ -60,3 +63,16 @@ var (
 		Resolver:    "client.ResolveAWSRegion",
 	}
 )
+
+func parentize(parent *Resource, subs ...*Resource) []*Resource {
+	ret := make([]*Resource, len(subs)+1)
+	ret[0] = parent
+	for i := range subs {
+		subs[i].Parent = parent
+		if subs[i].AWSService == "" {
+			subs[i].AWSService = parent.AWSService
+		}
+		ret[i+1] = subs[i]
+	}
+	return ret
+}

@@ -14,7 +14,11 @@ import (
 {{end}}
 )
 
+{{if .Parent}}
+func build{{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock.Controller) client.Services {
+{{else}}
 func build{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock.Controller) client.Services {
+{{end}}
 	mock := mocks.NewMock{{.AWSService | ToCamel}}Client(ctrl)
 
 	item := types.{{.ItemName}}{}
@@ -31,6 +35,12 @@ func build{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(t *testing.T, ct
 	}
 }
 
+{{if .Parent}}
+func Test{{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}(t *testing.T) {
+	client.AwsMockTestHelper(t, {{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}(), build{{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}, client.TestOptions{})
+}
+{{else}}
 func Test{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(t *testing.T) {
 	client.AwsMockTestHelper(t, {{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(), build{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}, client.TestOptions{})
 }
+{{end}}

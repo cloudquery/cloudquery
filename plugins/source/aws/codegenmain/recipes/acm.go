@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-var ACMResources = []Resource{
+var ACMResources = []*Resource{
 	{
 		DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 		//Table:              nil, // will be "generated" at "runtime"

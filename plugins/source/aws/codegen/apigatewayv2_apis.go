@@ -13,6 +13,7 @@ import (
 )
 
 func Apigatewayv2Apis() *schema.Table {
+
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_apis",
 		Resolver:  fetchApigatewayv2Apis,
@@ -96,11 +97,13 @@ func Apigatewayv2Apis() *schema.Table {
 	}
 }
 
-func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
 	var input apigatewayv2.GetApisInput
+
 	for {
 		response, err := svc.GetApis(ctx, &input)
 		if err != nil {
