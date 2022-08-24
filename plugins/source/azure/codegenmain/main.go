@@ -29,6 +29,7 @@ func main() {
 	resources = append(resources, codegen.LogicResources()...)
 	resources = append(resources, codegen.MariaDbResources()...)
 	resources = append(resources, codegen.MonitorResources()...)
+	resources = append(resources, codegen.MySQLResources()...)
 	for _, r := range resources {
 		generateResource(r)
 	}

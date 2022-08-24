@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type MySQL struct {
+type MySQLClient struct {
 	Servers       MySQLServerClient
 	Configuration MySQLConfigurationClient
 }
@@ -21,12 +21,12 @@ type MySQLConfigurationClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ConfigurationListResult, err error)
 }
 
-func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQL {
+func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQLClient {
 	servers := mysql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
 	conf := mysql.NewConfigurationsClient(subscriptionId)
 	conf.Authorizer = auth
-	return MySQL{
+	return MySQLClient{
 		Servers:       servers,
 		Configuration: conf,
 	}

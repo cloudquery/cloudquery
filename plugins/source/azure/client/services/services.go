@@ -22,7 +22,7 @@ type Services struct {
 	Logic             LogicClient
 	MariaDB           MariaDBClient
 	Monitor           MonitorClient
-	MySQL             MySQL
+	MySQL             MySQLClient
 	Network           NetworkClient
 	PostgreSQL        PostgreSQL
 	Redis             RedisClient
