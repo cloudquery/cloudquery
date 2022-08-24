@@ -20,7 +20,7 @@ type Services struct {
 	IotHub            IotHubClient
 	KeyVault          KeyVaultClient
 	Logic             LogicClient
-	MariaDB           MariaDB
+	MariaDB           MariaDBClient
 	Monitor           MonitorClient
 	MySQL             MySQL
 	Network           NetworkClient

@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . MariaDBConfigurationsClient,MariaDBServersClient
+//go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . ConfigurationsClient,ServersClient
 package services
 
 import (
@@ -8,25 +8,25 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type MariaDB struct {
-	Configurations MariaDBConfigurationsClient
-	Servers        MariaDBServersClient
+type MariaDBClient struct {
+	Configurations ConfigurationsClient
+	Servers        ServersClient
 }
 
-type MariaDBServersClient interface {
+type ServersClient interface {
 	List(ctx context.Context) (result mariadb.ServerListResult, err error)
 }
 
-type MariaDBConfigurationsClient interface {
+type ConfigurationsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ConfigurationListResult, err error)
 }
 
-func NewMariaDBClient(subscriptionId string, auth autorest.Authorizer) MariaDB {
+func NewMariaDBClient(subscriptionId string, auth autorest.Authorizer) MariaDBClient {
 	configs := mariadb.NewConfigurationsClient(subscriptionId)
 	configs.Authorizer = auth
 	servers := mariadb.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
-	return MariaDB{
+	return MariaDBClient{
 		Configurations: configs,
 		Servers:        servers,
 	}
