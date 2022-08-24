@@ -61,6 +61,9 @@ func generateResource(r recipes.Resource, mock bool) {
 			if override.Resolver != "" {
 				r.Table.Columns[i].Resolver = override.Resolver
 			}
+			if override.Description != "" {
+				r.Table.Columns[i].Description = override.Description
+			}
 			delete(r.ColumnOverrides, c.Name)
 		}
 		// remaining, unmatched columns are added to the end of the table. Difference from DefaultColumns? none for now
@@ -71,7 +74,9 @@ func generateResource(r recipes.Resource, mock bool) {
 				}
 				continue
 			}
-			c.Name = k
+			if c.Name == "" {
+				c.Name = k
+			}
 			r.Table.Columns = append(r.Table.Columns, c)
 		}
 	}

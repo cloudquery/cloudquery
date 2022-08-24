@@ -28,14 +28,9 @@ var ACMResources = []Resource{
 			"key_usages": {
 				Resolver: `schema.PathResolver("KeyUsages.Name")`,
 			},
-			"renewal_summary_renewal_status": {
-				Name: "renewal_summary_status",
-			},
-			"renewal_summary_renewal_status_reason": {
-				Name: "renewal_summary_failure_reason",
-			},
 			"tags": {
-				Type: schema.TypeJSON,
+				Type:        schema.TypeJSON,
+				Description: "The tags that have been applied to the ACM certificate",
 			},
 		},
 	},

@@ -42,7 +42,7 @@ type Resource struct {
 
 	ColumnOverrides map[string]codegen.ColumnDefinition
 
-	HasTags bool // autodetected by scanning columns for `tags`
+	HasTags bool // autodetected by scanning all columns for `tags`
 }
 
 var (
