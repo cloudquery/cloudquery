@@ -2,8 +2,8 @@ name: Lint Website Docs
 
 on:
   pull_request:
-    paths:
-      - "website/**"
+    # paths:
+    #   - "website/**"
 
 jobs:
   lint-docs:
