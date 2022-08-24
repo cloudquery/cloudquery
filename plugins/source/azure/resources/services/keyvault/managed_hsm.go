@@ -125,7 +125,7 @@ func KeyvaultManagedHSM() *schema.Table {
 // ====================================================================================================================
 
 func fetchKeyvaultManagedHSM(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().KeyVault.ManagedHSM
+	svc := meta.(*client.Client).Services().KeyVault.ManagedHSMs
 	maxResults := int32(100)
 	response, err := svc.ListBySubscription(ctx, &maxResults)
 	if err != nil {

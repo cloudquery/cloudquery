@@ -15,6 +15,8 @@ func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gom
 		return {{ .AzurePackageName }}.{{ .AzureStructName }}{{ or .MockListResult "ListResult" }}{}, nil
 	})
 
+	{{ range .ListFunctionArgsInit }}
+	{{.}}{{ end }}
 	mockClient.EXPECT().{{ or .ListFunction "ListAll" }}(gomock.Any(){{ range or .MockListFunctionArgs .ListFunctionArgs }}, {{.}}{{ end }}).Return(page, nil)
 	return s
 }

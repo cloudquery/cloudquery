@@ -12,9 +12,7 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-  {{range .Imports}}
-  "{{.}}"
-  {{end}}
+    {{template "imports.go.tpl" .}}
 )
 
 func Test{{ .AzureService }}{{ .AzureSubService }}(t *testing.T) {

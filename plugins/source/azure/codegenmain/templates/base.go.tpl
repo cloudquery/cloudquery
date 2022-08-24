@@ -7,9 +7,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/pkg/errors"
-  {{range .Imports}}
-  "{{.}}"
-  {{end}}
+    {{template "imports.go.tpl" .}}
 )
 
 func {{.AzureService}}{{.AzureSubService}}() *schema.Table {
@@ -18,6 +16,8 @@ func {{.AzureService}}{{.AzureSubService}}() *schema.Table {
 
 func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().{{ .AzureService }}.{{ .AzureSubService }}
+	{{ range .ListFunctionArgsInit }}
+	{{.}}{{ end }}
 	response, err := svc.{{ or .ListFunction "ListAll" }}(ctx{{ range .ListFunctionArgs }}, {{.}}{{ end }})
 	{{ or .ListHandler `
 	if err != nil {

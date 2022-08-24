@@ -16,7 +16,7 @@ import (
 var fakeResourceGroup = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/cqprovidertest"
 
 func buildKeyVaultMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	v := mocks.NewMockVaultClient(ctrl)
+	v := mocks.NewMockVaultsClient(ctrl)
 	k71 := mocks.NewMockKeyVault71Client(ctrl)
 	s := services.Services{
 		KeyVault: services.KeyVaultClient{

@@ -12,6 +12,9 @@ func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gom
 	require.Nil(t, faker.FakeData(&data))
 
 	list := {{ .AzurePackageName }}.{{ .AzureStructName }}{{ or .MockListResult "ListResult" }}{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}
+
+	{{ range .ListFunctionArgsInit }}
+	{{.}}{{ end }}
 	mockClient.EXPECT().{{ or .ListFunction "ListAll" }}(gomock.Any(){{ range or .MockListFunctionArgs .ListFunctionArgs }}, {{.}}{{ end }}).Return(list, nil)
 	return s
 }

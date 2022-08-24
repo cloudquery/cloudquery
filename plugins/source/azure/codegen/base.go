@@ -24,21 +24,23 @@ type Resource struct {
 	// Table is the table definition that will be used to generate the CloudQuery table
 	Table *codegen.TableDefinition
 	// AzureStruct that will be used to generate the CloudQuery table
-	AzureStruct          interface{}
-	AzureStructName      string
-	AzurePackageName     string
-	AzureService         string
-	AzureSubService      string
-	Imports              []string
-	SkipFields           []string
-	CreateTableOptions   schema.TableCreationOptions
-	Template             Template
-	TemplateParams       []string
-	ListFunction         string
-	ListFunctionArgs     []string
-	ListHandler          string
-	MockListResult       string
-	MockListFunctionArgs []string
+	AzureStruct              interface{}
+	AzureStructName          string
+	AzurePackageName         string
+	AzureService             string
+	AzureSubService          string
+	Imports                  []string
+	SkipFields               []string
+	CreateTableOptions       schema.TableCreationOptions
+	Template                 Template
+	TemplateParams           []string
+	ListFunction             string
+	ListFunctionArgs         []string
+	ListFunctionArgsInit     []string
+	ListHandler              string
+	MockListResult           string
+	MockListFunctionArgs     []string
+	MockListFunctionArgsInit []string
 }
 
 type template struct {
@@ -48,12 +50,15 @@ type template struct {
 }
 
 type resourceDefinition struct {
-	azureStruct          interface{}
-	listFunction         string
-	listFunctionArgs     []string
-	listHandler          string
-	mockListResult       string
-	mockListFunctionArgs []string
+	azureStruct              interface{}
+	listFunction             string
+	listFunctionArgs         []string
+	listFunctionArgsInit     []string
+	listHandler              string
+	mockListResult           string
+	mockListFunctionArgs     []string
+	mockListFunctionArgsInit []string
+	subServiceOverride       string
 }
 
 type byTemplates struct {
@@ -113,25 +118,31 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 				if byTemplate.serviceNameOverride != "" {
 					azureService = byTemplate.serviceNameOverride
 				}
+				azureSubService := plural.Plural(azureStructName)
+				if definition.subServiceOverride != "" {
+					azureSubService = definition.subServiceOverride
+				}
 				resource := Resource{
 					AzurePackageName:   azurePackageName,
 					AzureStructName:    azureStructName,
 					AzureStruct:        definition.azureStruct,
 					AzureService:       azureService,
-					AzureSubService:    plural.Plural(azureStructName),
+					AzureSubService:    azureSubService,
 					DefaultColumns:     []codegen.ColumnDefinition{SubscriptionIdColumn, IdColumn},
 					SkipFields:         []string{"ID"},
 					Imports:            template.imports,
 					CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
 					Template: Template{
 						Source:      template.source,
-						Destination: path.Join(azurePackageName, strcase.ToSnake(azureStructName)+template.destinationSuffix),
+						Destination: path.Join(azurePackageName, strcase.ToSnake(azureSubService)+template.destinationSuffix),
 					},
-					ListFunction:         definition.listFunction,
-					ListHandler:          definition.listHandler,
-					ListFunctionArgs:     definition.listFunctionArgs,
-					MockListResult:       definition.mockListResult,
-					MockListFunctionArgs: definition.mockListFunctionArgs,
+					ListFunction:             definition.listFunction,
+					ListHandler:              definition.listHandler,
+					ListFunctionArgs:         definition.listFunctionArgs,
+					ListFunctionArgsInit:     definition.listFunctionArgsInit,
+					MockListResult:           definition.mockListResult,
+					MockListFunctionArgs:     definition.mockListFunctionArgs,
+					MockListFunctionArgsInit: definition.mockListFunctionArgsInit,
 				}
 				initResourceTable(&resource)
 				allResources = append(allResources, resource)

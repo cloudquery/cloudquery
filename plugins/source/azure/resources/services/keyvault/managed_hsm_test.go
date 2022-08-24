@@ -13,7 +13,7 @@ import (
 )
 
 func buildKeyVaultManagedHSMMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockKeyVaultManagedHSMClient(ctrl)
+	m := mocks.NewMockManagedHSMsClient(ctrl)
 	var vault keyvault.ManagedHsm
 	if err := faker.FakeData(&vault); err != nil {
 		t.Fatal(err)
@@ -30,7 +30,7 @@ func buildKeyVaultManagedHSMMock(t *testing.T, ctrl *gomock.Controller) services
 	)
 	return services.Services{
 		KeyVault: services.KeyVaultClient{
-			ManagedHSM: m,
+			ManagedHSMs: m,
 		},
 	}
 }

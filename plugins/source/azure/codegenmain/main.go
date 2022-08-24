@@ -25,6 +25,7 @@ func main() {
 	resources = append(resources, codegen.CDNResources()...)
 	resources = append(resources, codegen.ComputeResources()...)
 	resources = append(resources, codegen.NetworkResources()...)
+	resources = append(resources, codegen.KeyValueResources()...)
 	for _, r := range resources {
 		generateResource(r)
 	}
