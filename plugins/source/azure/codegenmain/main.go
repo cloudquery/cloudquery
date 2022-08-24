@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"go/format"
 	"log"
 	"os"
+	"os/exec"
 	"path"
 	"runtime"
 	"text/template"
@@ -39,7 +39,7 @@ func getFilename() string {
 }
 
 func initTemplate(templateName string) *template.Template {
-	tpl, err := template.New(templateName).ParseFS(azureTemplatesFS, "templates/"+templateName)
+	tpl, err := template.New(templateName).ParseFS(azureTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse azure templates: %w", err))
 	}
@@ -58,12 +58,7 @@ func getContent(t codegen.Template, destination string, r codegen.Resource) []by
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	content, err := format.Source(buff.Bytes())
-	if err != nil {
-		fmt.Println(buff.String())
-		log.Fatal(fmt.Errorf("failed to format code for %s: %w", destination, err))
-	}
-	return content
+	return buff.Bytes()
 }
 
 func writeContent(destination string, content []byte) {
@@ -81,4 +76,6 @@ func generateResource(r codegen.Resource) {
 	destination := path.Join(dir, "../resources/servicesv2", r.Template.Destination)
 	content := getContent(r.Template, destination, r)
 	writeContent(destination, content)
+
+	exec.Command("goimports", "-w", destination).Run()
 }

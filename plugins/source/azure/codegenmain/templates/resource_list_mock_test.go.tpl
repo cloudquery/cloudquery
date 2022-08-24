@@ -1,21 +1,4 @@
-// Auto generated code - DO NOT EDIT.
-
-package {{.AzurePackageName}}
-
-import (
-	"context"
-	"testing"
-
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
-	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
-  {{range .Imports}}
-  "{{.}}"
-  {{end}}
-)
+{{template "base_mock_test.go.tpl" .}}
 
 func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	mockClient := mocks.NewMock{{ .AzureSubService }}Client(ctrl)
@@ -34,8 +17,4 @@ func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gom
 
 	mockClient.EXPECT().{{ or .ListFunction "ListAll" }}(gomock.Any(){{ range or .MockListFunctionArgs .ListFunctionArgs }}, {{.}}{{ end }}).Return(page, nil)
 	return s
-}
-
-func Test{{ .AzureService }}{{ .AzureSubService }}(t *testing.T) {
-	client.AzureMockTestHelper(t, {{ .AzureService }}{{ .AzureSubService }}(), create{{ .AzureService }}{{ .AzureSubService }}Mock, client.TestOptions{})
 }
