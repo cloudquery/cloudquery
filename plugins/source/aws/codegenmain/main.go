@@ -99,6 +99,15 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.Table.Resolver = "fetch" + r.AWSService + r.Parent.AWSSubService + r.AWSSubService
 	}
 
+	t := reflect.TypeOf(r.AWSStruct).Elem()
+	if r.AWSStructName == "" {
+		r.AWSStructName = t.Name()
+	}
+
+	if r.ItemName == "" {
+		r.ItemName = r.AWSStructName
+	}
+
 	if r.ListFunctionName == "" {
 		r.ListFunctionName = "List" + r.AWSSubService
 	}
@@ -110,10 +119,6 @@ func generateResource(r *recipes.Resource, mock bool) {
 		}
 	}
 
-	t := reflect.TypeOf(r.AWSStruct).Elem()
-	if r.AWSStructName == "" {
-		r.AWSStructName = t.Name()
-	}
 	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
 		if (r.HasTags || r.Parent != nil) && (!r.SkipTypesImport || mock) {
 			r.Imports = append(r.Imports, sp)

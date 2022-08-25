@@ -4,7 +4,6 @@ package codegen
 
 import (
 	"context"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -14,27 +13,27 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2ApisIntegrationResponses() *schema.Table {
+func Apigatewayv2RoutesRouteResponses() *schema.Table {
 
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_integrationresponses",
-		Resolver:  fetchApigatewayv2ApisIntegrationResponses,
+		Name:      "aws_apigatewayv2_routeresponses",
+		Resolver:  fetchApigatewayv2RoutesRouteResponses,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
-				Name:     "integration_response_key",
+				Name:     "route_response_key",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("IntegrationResponseKey"),
+				Resolver: schema.PathResolver("RouteResponseKey"),
 			},
 			{
-				Name:     "content_handling_strategy",
+				Name:     "model_selection_expression",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ContentHandlingStrategy"),
+				Resolver: schema.PathResolver("ModelSelectionExpression"),
 			},
 			{
-				Name:     "integration_response_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("IntegrationResponseId"),
+				Name:     "response_models",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResponseModels"),
 			},
 			{
 				Name:     "response_parameters",
@@ -42,31 +41,28 @@ func Apigatewayv2ApisIntegrationResponses() *schema.Table {
 				Resolver: schema.PathResolver("ResponseParameters"),
 			},
 			{
-				Name:     "response_templates",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ResponseTemplates"),
-			},
-			{
-				Name:     "template_selection_expression",
+				Name:     "route_response_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TemplateSelectionExpression"),
+				Resolver: schema.PathResolver("RouteResponseId"),
 			},
 		},
 	}
 }
 
-func fetchApigatewayv2ApisIntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2RoutesRouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
-	r := parent.Item.(types.Api)
-	input := apigatewayv2.GetIntegrationResponsesInput{
-		IntegrationId: r.IntegrationId,
+	r := parent.Item.(types.Route)
+	rp := parent.Parent.Item.(types.Api)
+	input := apigatewayv2.GetRouteResponsesInput{
+		ApiId:   rp.ApiId,
+		RouteId: r.RouteId,
 	}
 
 	for {
-		response, err := svc.GetIntegrationResponses(ctx, &input)
+		response, err := svc.GetRouteResponses(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

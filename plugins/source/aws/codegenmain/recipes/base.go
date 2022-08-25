@@ -16,7 +16,7 @@ type Resource struct {
 	Table *codegen.TableDefinition
 	// AWSStruct that will be used to generate the cloudquery table
 	AWSStruct interface{}
-	// AWSStructName is the name of the AWSStruct, if necessary
+	// AWSStructName is the name of the AWSStruct, if necessary (automatically resolved using reflection from AWSStruct)
 	AWSStructName string
 	// AWSService is the name of the aws service the struct/api is residing. Capitalization is important as it's also used in the client's service map.
 	AWSService string
@@ -26,7 +26,7 @@ type Resource struct {
 	Template string
 
 	ListFunctionName     string
-	ItemName             string
+	ItemName             string // Override. Defaults to AWSStructName
 	DescribeFunctionName string
 	DescribeFieldName    string
 
@@ -66,19 +66,24 @@ var (
 	}
 )
 
+// parentize adds the given parent to each resource (in subs) and returns the combined list
 func parentize(parent *Resource, subs ...*Resource) []*Resource {
 	ret := make([]*Resource, len(subs)+1)
 	ret[0] = parent
 	for i := range subs {
-		subs[i].Parent = parent
+		if subs[i].Parent == nil {
+			subs[i].Parent = parent
+		}
 		if subs[i].AWSService == "" {
-			subs[i].AWSService = parent.AWSService
+			subs[i].AWSService = subs[i].Parent.AWSService
 		}
 		ret[i+1] = subs[i]
 	}
 	return ret
 }
 
+// combine the given *Resource or []*Resource into a single []*Resource
+// if the given argument is of another type, combine will panic
 func combine(list ...interface{}) []*Resource {
 	res := make([]*Resource, 0, len(list))
 	for i := range list {

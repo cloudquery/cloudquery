@@ -31,7 +31,9 @@ func fetch{{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubS
 
 {{if .Parent}}
 	r := parent.Item.(types.{{.Parent.ItemName}})
+{{if .Parent.Parent}}	rp := parent.Parent.Item.(types.{{.Parent.Parent.ItemName}}){{end}}
 	input := {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input{
+{{if .Parent.Parent}}		{{.Parent.ParentFieldName}}: rp.{{.Parent.ParentFieldName}},{{end}}
 		{{.ParentFieldName}}: r.{{.ParentFieldName}},
 	}
 {{else}}

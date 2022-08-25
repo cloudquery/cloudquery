@@ -14,24 +14,24 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func buildApigatewayv2ApisIntegrationResponses(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApigatewayv2RoutesRouteResponses(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock := mocks.NewMockApigatewayv2Client(ctrl)
 
-	item := types.IntegrationResponse{}
+	item := types.RouteResponse{}
 	err := faker.FakeData(&item)
 	if err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().GetIntegrationResponses(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&apigatewayv2.GetIntegrationResponsesOutput{
-			Items: []types.IntegrationResponse{item},
+	mock.EXPECT().GetRouteResponses(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&apigatewayv2.GetRouteResponsesOutput{
+			Items: []types.RouteResponse{item},
 		}, nil)
 	return client.Services{
 		Apigatewayv2: mock,
 	}
 }
 
-func TestApigatewayv2ApisIntegrationResponses(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2ApisIntegrationResponses(), buildApigatewayv2ApisIntegrationResponses, client.TestOptions{})
+func TestApigatewayv2RoutesRouteResponses(t *testing.T) {
+	client.AwsMockTestHelper(t, Apigatewayv2RoutesRouteResponses(), buildApigatewayv2RoutesRouteResponses, client.TestOptions{})
 }

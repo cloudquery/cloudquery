@@ -12,7 +12,6 @@ var APIGatewayv2Resources = parentize(&Resource{
 	AWSStruct:     &types.Api{},
 	AWSService:    "Apigatewayv2",
 	AWSSubService: "Apis",
-	ItemName:      "Api",
 	//DescribeFieldName:  "CertificateArn",
 	Template:       "resource_get",
 	Imports:        nil,
@@ -32,14 +31,12 @@ var APIGatewayv2Resources = parentize(&Resource{
 		&Resource{
 			AWSStruct:       &types.Authorizer{},
 			AWSSubService:   "Authorizers",
-			ItemName:        "Authorizer",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
 		},
 		&Resource{
 			AWSStruct:       &types.Deployment{},
 			AWSSubService:   "Deployments",
-			ItemName:        "Deployment",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
 		},
@@ -47,14 +44,12 @@ var APIGatewayv2Resources = parentize(&Resource{
 			&Resource{
 				AWSStruct:       &types.Integration{},
 				AWSSubService:   "Integrations",
-				ItemName:        "Integration",
 				Template:        "resource_get",
 				ParentFieldName: "ApiId",
 			},
 			&Resource{
 				AWSStruct:       &types.IntegrationResponse{},
 				AWSSubService:   "IntegrationResponses",
-				ItemName:        "IntegrationResponse",
 				Template:        "resource_get",
 				ParentFieldName: "IntegrationId",
 			},
@@ -62,7 +57,6 @@ var APIGatewayv2Resources = parentize(&Resource{
 		&Resource{
 			AWSStruct:       &types.Model{},
 			AWSSubService:   "Models",
-			ItemName:        "Model",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
 			/*
@@ -80,14 +74,12 @@ var APIGatewayv2Resources = parentize(&Resource{
 			&Resource{
 				AWSStruct:       &types.Route{},
 				AWSSubService:   "Routes",
-				ItemName:        "Route",
 				Template:        "resource_get",
 				ParentFieldName: "ApiId",
 			},
 			&Resource{
 				AWSStruct:       &types.RouteResponse{},
 				AWSSubService:   "RouteResponses",
-				ItemName:        "RouteResponse",
 				Template:        "resource_get",
 				ParentFieldName: "RouteId",
 			},
@@ -95,7 +87,6 @@ var APIGatewayv2Resources = parentize(&Resource{
 		&Resource{
 			AWSStruct:       &types.Stage{},
 			AWSSubService:   "Stages",
-			ItemName:        "Stage",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
 		},

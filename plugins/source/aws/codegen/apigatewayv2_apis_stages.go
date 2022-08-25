@@ -100,7 +100,9 @@ func fetchApigatewayv2ApisStages(ctx context.Context, meta schema.ClientMeta, pa
 	svc := cl.Services().Apigatewayv2
 
 	r := parent.Item.(types.Api)
+
 	input := apigatewayv2.GetStagesInput{
+
 		ApiId: r.ApiId,
 	}
 
