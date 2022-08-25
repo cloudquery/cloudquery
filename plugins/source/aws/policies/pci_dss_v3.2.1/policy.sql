@@ -167,7 +167,7 @@ END AS "execution_time"  \gset
 
 \set check_id 's3.4'
 \echo "Executing check s3.4"
-\ir ../queries/s3/s3_server_side_encryption_enabled.sql
+\ir ../queries/s3/deny_http_requests.sql
 
 \set check_id 's3.5'
 \echo "Executing check s3.5"
