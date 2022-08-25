@@ -19,11 +19,11 @@
 |password_last_changed|timestamp without time zone||
 |password_next_rotation|timestamp without time zone||
 |mfa_active|boolean||
-|access_key1_active|boolean||
-|access_key2_active|boolean||
-|access_key1_last_rotated|timestamp without time zone||
-|access_key2_last_rotated|timestamp without time zone||
-|cert1_active|boolean||
-|cert2_active|boolean||
-|cert1_last_rotated|timestamp without time zone||
-|cert2_last_rotated|timestamp without time zone||
+|access_key_1_active|boolean||
+|access_key_2_active|boolean||
+|access_key_1_last_rotated|timestamp without time zone||
+|access_key_2_last_rotated|timestamp without time zone||
+|cert_1_active|boolean||
+|cert_2_active|boolean||
+|cert_1_last_rotated|timestamp without time zone||
+|cert_2_last_rotated|timestamp without time zone||
