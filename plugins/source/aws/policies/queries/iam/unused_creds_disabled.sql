@@ -7,8 +7,7 @@ select
   account_id,
   arn,
   case when
-      (password_enabled and password_last_used < (now() - '90 days'::INTERVAL)
-        or (last_used < (now() - '90 days'::INTERVAL)))
+      (password_enabled and password_last_used < (now() - '90 days'::INTERVAL) or (password_last_used < (now() - '90 days'::INTERVAL)))
       then 'fail'
       else 'pass'
   end
