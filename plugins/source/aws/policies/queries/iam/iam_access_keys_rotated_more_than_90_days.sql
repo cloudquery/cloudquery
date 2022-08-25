@@ -6,10 +6,11 @@ select
     'IAM users'' access keys should be rotated every 90 days or less' AS title,
     account_id,
     aws_iam_user_access_keys.access_key_id AS resource_id,
-    case when date_part('day', now() - last_rotated) > 90 then 'fail'
+    case when (aws_iam_user_access_keys.status = 'Active') and date_part('day', now() - aws_iam_user_access_keys.create_date) > 90 then 'fail'
          else 'pass'
     end as status
 from aws_iam_users
      left join
      aws_iam_user_access_keys on
      aws_iam_users.cq_id = aws_iam_user_access_keys.user_cq_id
+where access_key_id is not null
