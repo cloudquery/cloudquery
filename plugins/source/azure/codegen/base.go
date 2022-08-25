@@ -79,12 +79,6 @@ var SubscriptionIdColumn = codegen.ColumnDefinition{
 	Resolver: "client.ResolveAzureSubscription",
 }
 
-var IdColumn = codegen.ColumnDefinition{
-	Name:     "id",
-	Type:     schema.TypeString,
-	Resolver: "schema.PathResolver(\"ID\")",
-}
-
 func needsSubscriptionId(table *codegen.TableDefinition) bool {
 	for _, column := range table.Columns {
 		if column.Name == "subscription_id" {
@@ -115,12 +109,12 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					azureSubService = definition.subServiceOverride
 				}
 
-				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields("ID"))
+				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct)
 				if err != nil {
 					log.Fatal(err)
 				}
 
-				defaultColumns := []codegen.ColumnDefinition{IdColumn}
+				defaultColumns := []codegen.ColumnDefinition{}
 				if needsSubscriptionId(table) {
 					defaultColumns = append(defaultColumns, SubscriptionIdColumn)
 				}
