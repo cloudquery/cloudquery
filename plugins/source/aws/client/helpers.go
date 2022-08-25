@@ -59,6 +59,7 @@ const (
 	SESService                  AWSService = "ses"
 	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
+	IamService                  AWSService = "iam"
 )
 
 const MAX_GOROUTINES = 10
