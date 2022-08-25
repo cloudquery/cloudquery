@@ -48,7 +48,7 @@ i.e. you don't need a separate account for `SourceAccount`.
 You will need to create roles in `TargetAccountA` account and `TargetAccountB` account that CloudQuery can `AssumeRole` into.
 These roles will need to have a "trust policy" that allows `SourceAccount` to `AssumeRole` into them.
 
-First, create a file named `trust_policy.json` (replace `<SourceAccountUserArn>` with the user-arn Cloudquery will run from):
+First, create a file named `trust_policy.json` (replace `<SourceAccountUserArn>` with the user-arn CloudQuery will run from):
 
 ```json title="trust_policy.json"
 {
@@ -182,8 +182,8 @@ to assume-role into, and you can have as many `accounts` blocks as you'd like.
 <Callout type="info">
 
 When you run without any `accounts` blocks in your `configuration`, CloudQuery will use the default credential
-toolchain to locate the credentials that will be used in the `fetch`.
-But if there is at least one `accounts` block in your `configuration`, cloudquery **will not** fetch from the
+tool-chain to locate the credentials that will be used in the `fetch`.
+However, if there is at least one `accounts` block in your `configuration`, cloudquery **will not** fetch from the
 account you are currently authenticated as - only from the accounts specified in
 your `accounts`.
 

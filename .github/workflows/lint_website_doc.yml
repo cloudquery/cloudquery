@@ -17,6 +17,7 @@ jobs:
         uses: errata-ai/vale-action@v2
         with:
           files: '["website", "README.md"]'
+          vale_flags: "--glob='!website/pages/blog/podcast-software-engineer-daily.md'"
           filter_mode: nofilter
           level: warning
         env:
