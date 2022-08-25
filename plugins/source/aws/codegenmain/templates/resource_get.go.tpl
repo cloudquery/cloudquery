@@ -47,3 +47,6 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
+
+{{range .CustomResolvers}}{{.}}
+{{end}}

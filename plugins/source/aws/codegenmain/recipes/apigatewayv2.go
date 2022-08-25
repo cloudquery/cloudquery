@@ -59,16 +59,31 @@ var APIGatewayv2Resources = parentize(&Resource{
 			AWSSubService:   "Models",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
-			/*
-				TODO this should be a resolver
-					&Resource{
-						AWSStruct:       aws.String(""),   // *string
-						AWSSubService:   "modeltemplates",
-						ItemName:        "ModelTemplate",
-						Template:        "resource_get",
-						ParentFieldName: "ModelId",
-					},
-			*/
+			ColumnOverrides: map[string]codegen.ColumnDefinition{
+				"model_template": {
+					Type:     schema.TypeString,
+					Resolver: "resolveApigatewayv2apiModelModelTemplate",
+				},
+			},
+			CustomResolvers: []string{
+				`
+func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(types.Model)
+	p := resource.Parent.Item.(types.Api)
+	config := apigatewayv2.GetModelTemplateInput{
+		ApiId:   p.ApiId,
+		ModelId: r.ModelId,
+	}
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
+
+	response, err := svc.GetModelTemplate(ctx, &config)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set(c.Name, response.Value))
+}`,
+			},
 		},
 		parentize(
 			&Resource{

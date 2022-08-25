@@ -44,6 +44,11 @@ func Apigatewayv2ApiModels() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Schema"),
 			},
+			{
+				Name:     "model_template",
+				Type:     schema.TypeString,
+				Resolver: resolveApigatewayv2apiModelModelTemplate,
+			},
 		},
 	}
 }
@@ -71,4 +76,21 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 		input.NextToken = response.NextToken
 	}
 	return nil
+}
+
+func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(types.Model)
+	p := resource.Parent.Item.(types.Api)
+	config := apigatewayv2.GetModelTemplateInput{
+		ApiId:   p.ApiId,
+		ModelId: r.ModelId,
+	}
+	cl := meta.(*client.Client)
+	svc := cl.Services().Apigatewayv2
+
+	response, err := svc.GetModelTemplate(ctx, &config)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set(c.Name, response.Value))
 }

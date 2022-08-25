@@ -53,6 +53,8 @@ type Resource struct {
 	TableFuncName string // auto calculated
 	MockFuncName  string // auto calculated
 	TestFuncName  string // auto calculated
+
+	CustomResolvers []string
 }
 
 var (

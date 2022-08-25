@@ -54,3 +54,6 @@ func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx contex
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))
 }
 {{end}}
+
+{{range .CustomResolvers}}{{.}}
+{{end}}
