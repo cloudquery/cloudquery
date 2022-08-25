@@ -90,65 +90,73 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("ReportUser.User"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ReportUser.ARN"),
+				Name:        "arn",
+				Description: "The Amazon Resource Name (ARN) that identifies the user",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("ReportUser.ARN"),
 			},
 			{
-				Name: "password_enabled",
-				Type: schema.TypeBool,
+				Name:        "password_enabled",
+				Description: "When the user has a password, this value is TRUE",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "password_last_changed",
-				Type: schema.TypeTimestamp,
+				Name:        "password_last_changed",
+				Description: "The date and time when the user's password was last set, in ISO 8601 date-time format",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "password_next_rotation",
-				Type: schema.TypeTimestamp,
+				Name:        "password_next_rotation",
+				Description: "When the account has a password policy that requires password rotation, this field contains the date and time, in ISO 8601 date-time format, when the user is required to set a new password",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:     "mfa_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ReportUser.MfaActive"),
+				Name:        "mfa_active",
+				Description: "When a multi-factor authentication (MFA) device has been enabled for the user, this value is TRUE",
+				Type:        schema.TypeBool,
+				Resolver:    schema.PathResolver("ReportUser.MfaActive"),
 			},
 			{
-				Name:     "access_key_1_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ReportUser.AccessKey1Active"),
+				Name:        "access_key_1_active",
+				Description: "When the user has an access key and the access key's status is Active, this value is TRUE",
+				Type:        schema.TypeBool,
+				Resolver:    schema.PathResolver("ReportUser.AccessKey1Active"),
 			},
 			{
-				Name:     "access_key_2_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ReportUser.AccessKey2Active"),
+				Name:        "access_key_2_active",
+				Description: "When the user has an access key and the access key's status is Active, this value is TRUE",
+				Type:        schema.TypeBool,
+				Resolver:    schema.PathResolver("ReportUser.AccessKey2Active"),
 			},
 			{
-				Name: "access_key_1_last_rotated",
-				Type: schema.TypeTimestamp,
+				Name:        "access_key1_last_rotated",
+				Description: "The date and time, in ISO 8601 date-time format, when the user's access key was created or last changed",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "access_key_2_last_rotated",
-				Type: schema.TypeTimestamp,
-				// Resolver: schema.PathResolver("ReportUser.AccessKey2LastRotated"),
+				Name:        "access_key2_last_rotated",
+				Description: "The date and time, in ISO 8601 date-time format, when the user's access key was created or last changed",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "cert_1_active",
-				Type: schema.TypeBool,
-				// Resolver: schema.PathResolver("ReportUser.Cert1Active"),
+				Name:        "cert_1_active",
+				Description: "When the user has an X.509 signing certificate and that certificate's status is Active, this value is TRUE",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "cert_2_active",
-				Type: schema.TypeBool,
-				// Resolver: schema.PathResolver("ReportUser.Cert2Active"),
+				Name:        "cert_2_active",
+				Description: "When the user has an X.509 signing certificate and that certificate's status is Active, this value is TRUE",
+				Type:        schema.TypeBool,
 			},
 			{
-				Name: "cert_1_last_rotated",
-				Type: schema.TypeTimestamp,
-				// Resolver: schema.PathResolver("ReportUser.Cert1LastRotated"),
+				Name:        "cert_1_last_rotated",
+				Description: "The date and time, in ISO 8601 date-time format, when the user's signing certificate was created or last changed",
+				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name: "cert_2_last_rotated",
-				Type: schema.TypeTimestamp,
-				// Resolver: schema.PathResolver("ReportUser.Cert2LastRotated"),
+				Name:        "cert_2_last_rotated",
+				Description: "The date and time, in ISO 8601 date-time format, when the user's signing certificate was created or last changed",
+				Type:        schema.TypeTimestamp,
 			},
 		},
 		Relations: []*schema.Table{
@@ -573,7 +581,6 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 
 	return nil
 }
-
 func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (ReportUsers, error) {
 	var err error
 	var apiErr smithy.APIError

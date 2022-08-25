@@ -14,16 +14,16 @@
 |permissions_boundary_type|text|The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity|
 |tags|jsonb|A list of tags that are associated with the user|
 |user|text||
-|arn|text||
-|password_enabled|boolean||
-|password_last_changed|timestamp without time zone||
-|password_next_rotation|timestamp without time zone||
-|mfa_active|boolean||
-|access_key_1_active|boolean||
-|access_key_2_active|boolean||
-|access_key_1_last_rotated|timestamp without time zone||
-|access_key_2_last_rotated|timestamp without time zone||
-|cert_1_active|boolean||
-|cert_2_active|boolean||
-|cert_1_last_rotated|timestamp without time zone||
-|cert_2_last_rotated|timestamp without time zone||
+|arn|text|The Amazon Resource Name (ARN) that identifies the user|
+|password_enabled|boolean|When the user has a password, this value is TRUE|
+|password_last_changed|timestamp without time zone|The date and time when the user's password was last set, in ISO 8601 date-time format|
+|password_next_rotation|timestamp without time zone|When the account has a password policy that requires password rotation, this field contains the date and time, in ISO 8601 date-time format, when the user is required to set a new password|
+|mfa_active|boolean|When a multi-factor authentication (MFA) device has been enabled for the user, this value is TRUE|
+|access_key_1_active|boolean|When the user has an access key and the access key's status is Active, this value is TRUE|
+|access_key_2_active|boolean|When the user has an access key and the access key's status is Active, this value is TRUE|
+|access_key1_last_rotated|timestamp without time zone|The date and time, in ISO 8601 date-time format, when the user's access key was created or last changed|
+|access_key2_last_rotated|timestamp without time zone|The date and time, in ISO 8601 date-time format, when the user's access key was created or last changed|
+|cert_1_active|boolean|When the user has an X.509 signing certificate and that certificate's status is Active, this value is TRUE|
+|cert_2_active|boolean|When the user has an X.509 signing certificate and that certificate's status is Active, this value is TRUE|
+|cert_1_last_rotated|timestamp without time zone|The date and time, in ISO 8601 date-time format, when the user's signing certificate was created or last changed|
+|cert_2_last_rotated|timestamp without time zone|The date and time, in ISO 8601 date-time format, when the user's signing certificate was created or last changed|
