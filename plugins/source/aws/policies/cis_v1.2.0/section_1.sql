@@ -10,7 +10,7 @@
 \ir ../queries/iam/unused_creds_disabled.sql
 \set check_id '1.4'
 \echo "Executing check 1.4"
-\ir ../queries/iam/old_access_keys.sql
+\ir ../queries/iam/iam_access_keys_unused_more_than_90_days.sql
 \set check_id '1.5'
 \echo "Executing check 1.5"
 \ir ../queries/iam/password_policy_min_uppercase.sql
