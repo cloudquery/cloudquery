@@ -55,6 +55,7 @@ jobs:
         with:
           files: |
             ${{ matrix.workdir }}
+            .github/workflows/test_build.yml
           files_ignore: |
             ${{ matrix.workdir }}/CHANGELOG.md
       - name: Set up Go 1.x

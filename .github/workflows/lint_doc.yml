@@ -35,6 +35,7 @@ jobs:
         with:
           files: |
             ${{ matrix.workdir }}
+            .github/workflows/lint_doc.yml
           files_ignore: |
             ${{ matrix.workdir }}/CHANGELOG.md
       - uses: actions/setup-go@v3
