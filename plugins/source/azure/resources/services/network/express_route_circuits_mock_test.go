@@ -14,7 +14,7 @@ import (
 )
 
 func buildNetworkExpressRouteCircuitsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	ercs := mocks.NewMockExpressRouteCircuitsClient(ctrl)
+	ercs := mocks.NewMockNetworkExpressRouteCircuitsClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			ExpressRouteCircuits: ercs,

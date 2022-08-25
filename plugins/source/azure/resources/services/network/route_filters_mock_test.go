@@ -14,7 +14,7 @@ import (
 )
 
 func buildNetworkRouteFiltersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	rfc := mocks.NewMockRouteFiltersClient(ctrl)
+	rfc := mocks.NewMockNetworkRouteFiltersClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			RouteFilters: rfc,

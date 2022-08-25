@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultsClient,ManagedHSMsClient,KeysClient
+//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,KeyVaultVaultsClient,KeyVaultManagedHSMsClient,KeyVaultKeysClient
 package services
 
 import (
@@ -13,15 +13,15 @@ import (
 
 type KeyVaultClient struct {
 	KeyVault71  KeyVault71Client
-	Vaults      VaultsClient
-	ManagedHSMs ManagedHSMsClient
+	Vaults      KeyVaultVaultsClient
+	ManagedHSMs KeyVaultManagedHSMsClient
 }
 
-type VaultsClient interface {
+type KeyVaultVaultsClient interface {
 	ListBySubscription(ctx context.Context, top *int32) (result keyvault.VaultListResultPage, err error)
 }
 
-type KeysClient interface {
+type KeyVaultKeysClient interface {
 	// List lists the keys in the specified key vault.
 	// Parameters:
 	// resourceGroupName - the name of the resource group which contains the specified key vault.
@@ -34,7 +34,7 @@ type KeyVault71Client interface {
 	GetSecrets(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.SecretListResultPage, err error)
 }
 
-type ManagedHSMsClient interface {
+type KeyVaultManagedHSMsClient interface {
 	ListBySubscription(ctx context.Context, top *int32) (result hsm.ManagedHsmListResultPage, err error)
 }
 

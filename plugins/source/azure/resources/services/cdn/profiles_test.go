@@ -14,7 +14,7 @@ import (
 )
 
 func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockProfilesClient(ctrl)
+	m := mocks.NewMockCDNProfilesClient(ctrl)
 
 	var profile cdn.Profile
 	faker.SetIgnoreInterface(true)
@@ -33,7 +33,7 @@ func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		nil,
 	)
 
-	e := mocks.NewMockEndpointsClient(ctrl)
+	e := mocks.NewMockCDNEndpointsClient(ctrl)
 	var endpoint cdn.Endpoint
 	if err := faker.FakeDataSkipFields(&endpoint, []string{"EndpointProperties"}); err != nil {
 		t.Fatal(err)
@@ -67,7 +67,7 @@ func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		nil,
 	)
 
-	rs := mocks.NewMockRuleSetsClient(ctrl)
+	rs := mocks.NewMockCDNRuleSetsClient(ctrl)
 	var ruleSet cdn.RuleSet
 	if err := faker.FakeDataSkipFields(&ruleSet, []string{"RuleSetProperties"}); err != nil {
 		t.Fatal(err)
@@ -83,7 +83,7 @@ func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		nil,
 	)
 
-	r := mocks.NewMockRulesClient(ctrl)
+	r := mocks.NewMockCDNRulesClient(ctrl)
 	var rule cdn.Rule
 	if err := faker.FakeDataSkipFields(&rule, []string{"RuleProperties"}); err != nil {
 		t.Fatal(err)
@@ -108,7 +108,7 @@ func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		nil,
 	)
 
-	s := mocks.NewMockSecurityPoliciesClient(ctrl)
+	s := mocks.NewMockCDNSecurityPoliciesClient(ctrl)
 	var securityPolicy cdn.SecurityPolicy
 	if err := faker.FakeDataSkipFields(&securityPolicy, []string{"SecurityPolicyProperties"}); err != nil {
 		t.Fatal(err)
@@ -128,7 +128,7 @@ func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		nil,
 	)
 
-	routes := mocks.NewMockRoutesClient(ctrl)
+	routes := mocks.NewMockCDNRoutesClient(ctrl)
 	var route cdn.Route
 	if err := faker.FakeData(&route); err != nil {
 		t.Fatal(err)
@@ -145,7 +145,7 @@ func buildProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 		nil,
 	)
 
-	cd := mocks.NewMockCustomDomainsClient(ctrl)
+	cd := mocks.NewMockCDNCustomDomainsClient(ctrl)
 	var customDomain cdn.CustomDomain
 	if err := faker.FakeDataSkipFields(&customDomain, []string{"CustomDomainProperties"}); err != nil {
 		t.Fatal(err)

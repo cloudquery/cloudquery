@@ -13,7 +13,7 @@ import (
 )
 
 func buildAuthorizationRoleAssignments(t *testing.T, ctrl *gomock.Controller) services.Services {
-	assignments := mocks.NewMockRoleAssignmentsClient(ctrl)
+	assignments := mocks.NewMockAuthorizationRoleAssignmentsClient(ctrl)
 	s := services.Services{
 		Authorization: services.AuthorizationClient{
 			RoleAssignments: assignments,

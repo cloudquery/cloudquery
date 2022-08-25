@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
+//go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServersClient,MySQLConfigurationsClient
 package services
 
 import (
@@ -9,15 +9,15 @@ import (
 )
 
 type MySQLClient struct {
-	Servers       MySQLServerClient
-	Configuration MySQLConfigurationClient
+	Servers       MySQLServersClient
+	Configuration MySQLConfigurationsClient
 }
 
-type MySQLServerClient interface {
+type MySQLServersClient interface {
 	List(ctx context.Context) (result mysql.ServerListResult, err error)
 }
 
-type MySQLConfigurationClient interface {
+type MySQLConfigurationsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ConfigurationListResult, err error)
 }
 

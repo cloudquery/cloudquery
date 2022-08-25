@@ -12,7 +12,7 @@ import (
 )
 
 func buildMariaDBServerMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	srv := mocks.NewMockServersClient(ctrl)
+	srv := mocks.NewMockMariaDBServersClient(ctrl)
 	var s mariadb.Server
 	if err := faker.FakeData(&s); err != nil {
 		t.Fatal(err)
@@ -24,7 +24,7 @@ func buildMariaDBServerMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 		nil,
 	)
 
-	cfg := mocks.NewMockConfigurationsClient(ctrl)
+	cfg := mocks.NewMockMariaDBConfigurationsClient(ctrl)
 	var v mariadb.Configuration
 	if err := faker.FakeData(&v); err != nil {
 		t.Fatal(err)

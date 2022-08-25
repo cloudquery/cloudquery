@@ -14,7 +14,7 @@ import (
 )
 
 func buildMonitorDiagnosticsSettings(t *testing.T, ctrl *gomock.Controller) services.Services {
-	ds := mocks.NewMockDiagnosticSettingsClient(ctrl)
+	ds := mocks.NewMockMonitorDiagnosticSettingsClient(ctrl)
 	res := mocks.NewMockResClient(ctrl)
 
 	faker.SetIgnoreInterface(true)

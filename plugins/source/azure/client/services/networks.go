@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/network.go -package=mocks . ExpressRouteCircuitsClient,ExpressRouteGatewaysClient,ExpressRoutePortsClient,InterfacesClient,PublicIPAddressesClient,RouteFiltersClient,RouteTablesClient,SecurityGroupsClient,VirtualNetworkGatewaysClient,VirtualNetworksClient,WatchersClient
+//go:generate mockgen -destination=./mocks/network.go -package=mocks . NetworkExpressRouteCircuitsClient,NetworkExpressRouteGatewaysClient,NetworkExpressRoutePortsClient,NetworkInterfacesClient,NetworkPublicIPAddressesClient,NetworkRouteFiltersClient,NetworkRouteTablesClient,NetworkSecurityGroupsClient,NetworkVirtualNetworkGatewaysClient,NetworkVirtualNetworksClient,NetworkWatchersClient
 package services
 
 import (
@@ -9,60 +9,60 @@ import (
 )
 
 type NetworkClient struct {
-	ExpressRouteCircuits   ExpressRouteCircuitsClient
-	ExpressRouteGateways   ExpressRouteGatewaysClient
-	ExpressRoutePorts      ExpressRoutePortsClient
-	Interfaces             InterfacesClient
-	PublicIPAddresses      PublicIPAddressesClient
-	RouteFilters           RouteFiltersClient
-	RouteTables            RouteTablesClient
-	SecurityGroups         SecurityGroupsClient
-	VirtualNetworkGateways VirtualNetworkGatewaysClient
-	VirtualNetworks        VirtualNetworksClient
-	Watchers               WatchersClient
+	ExpressRouteCircuits   NetworkExpressRouteCircuitsClient
+	ExpressRouteGateways   NetworkExpressRouteGatewaysClient
+	ExpressRoutePorts      NetworkExpressRoutePortsClient
+	Interfaces             NetworkInterfacesClient
+	PublicIPAddresses      NetworkPublicIPAddressesClient
+	RouteFilters           NetworkRouteFiltersClient
+	RouteTables            NetworkRouteTablesClient
+	SecurityGroups         NetworkSecurityGroupsClient
+	VirtualNetworkGateways NetworkVirtualNetworkGatewaysClient
+	VirtualNetworks        NetworkVirtualNetworksClient
+	Watchers               NetworkWatchersClient
 }
-type ExpressRouteCircuitsClient interface {
+type NetworkExpressRouteCircuitsClient interface {
 	ListAll(ctx context.Context) (result network.ExpressRouteCircuitListResultPage, err error)
 }
 
-type ExpressRouteGatewaysClient interface {
+type NetworkExpressRouteGatewaysClient interface {
 	ListBySubscription(ctx context.Context) (result network.ExpressRouteGatewayList, err error)
 }
 
-type ExpressRoutePortsClient interface {
+type NetworkExpressRoutePortsClient interface {
 	List(ctx context.Context) (result network.ExpressRoutePortListResultPage, err error)
 }
 
-type InterfacesClient interface {
+type NetworkInterfacesClient interface {
 	ListAll(ctx context.Context) (result network.InterfaceListResultPage, err error)
 }
 
-type PublicIPAddressesClient interface {
+type NetworkPublicIPAddressesClient interface {
 	ListAll(ctx context.Context) (result network.PublicIPAddressListResultPage, err error)
 }
 
-type RouteFiltersClient interface {
+type NetworkRouteFiltersClient interface {
 	List(ctx context.Context) (result network.RouteFilterListResultPage, err error)
 }
 
-type RouteTablesClient interface {
+type NetworkRouteTablesClient interface {
 	ListAll(ctx context.Context) (result network.RouteTableListResultPage, err error)
 }
 
-type SecurityGroupsClient interface {
+type NetworkSecurityGroupsClient interface {
 	ListAll(ctx context.Context) (result network.SecurityGroupListResultPage, err error)
 }
 
-type VirtualNetworkGatewaysClient interface {
+type NetworkVirtualNetworkGatewaysClient interface {
 	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayListResultPage, err error)
 	ListConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewayListConnectionsResultPage, err error)
 }
 
-type VirtualNetworksClient interface {
+type NetworkVirtualNetworksClient interface {
 	ListAll(ctx context.Context) (result network.VirtualNetworkListResultPage, err error)
 }
 
-type WatchersClient interface {
+type NetworkWatchersClient interface {
 	ListAll(ctx context.Context) (result network.WatcherListResult, err error)
 	GetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters network.FlowLogStatusParameters) (result network.WatchersGetFlowLogStatusFuture, err error)
 }

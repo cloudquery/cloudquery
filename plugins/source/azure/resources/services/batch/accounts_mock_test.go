@@ -13,7 +13,7 @@ import (
 )
 
 func buildBatchAccountsClientMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockAccountsClient(ctrl)
+	m := mocks.NewMockBatchAccountsClient(ctrl)
 	var acc batch.Account
 	if err := faker.FakeData(&acc); err != nil {
 		t.Fatal(err)

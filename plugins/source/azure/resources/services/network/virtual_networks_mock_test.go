@@ -95,8 +95,8 @@ func fakeVirtualNetworkGatewayConnection(t *testing.T) network.VirtualNetworkGat
 }
 
 func buildNetworkVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	n := mocks.NewMockVirtualNetworksClient(ctrl)
-	ngc := mocks.NewMockVirtualNetworkGatewaysClient(ctrl)
+	n := mocks.NewMockNetworkVirtualNetworksClient(ctrl)
+	ngc := mocks.NewMockNetworkVirtualNetworkGatewaysClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			VirtualNetworks:        n,

@@ -13,7 +13,7 @@ import (
 )
 
 func buildComputeVirtualMachineScaleSetsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	v := mocks.NewMockVirtualMachineScaleSetsClient(ctrl)
+	v := mocks.NewMockComputeVirtualMachineScaleSetsClient(ctrl)
 
 	s := services.Services{
 		Compute: services.ComputeClient{

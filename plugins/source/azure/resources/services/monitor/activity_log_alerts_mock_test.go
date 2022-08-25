@@ -12,7 +12,7 @@ import (
 )
 
 func buildActivityLogAlertsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	alertsSvc := mocks.NewMockActivityLogAlertsClient(ctrl)
+	alertsSvc := mocks.NewMockMonitorActivityLogAlertsClient(ctrl)
 	s := services.Services{
 		Monitor: services.MonitorClient{
 			ActivityLogAlerts: alertsSvc,

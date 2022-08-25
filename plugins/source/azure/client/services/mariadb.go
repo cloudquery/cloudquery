@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . ConfigurationsClient,ServersClient
+//go:generate mockgen -destination=./mocks/mariadb.go -package=mocks . MariaDBConfigurationsClient,MariaDBServersClient
 package services
 
 import (
@@ -9,15 +9,15 @@ import (
 )
 
 type MariaDBClient struct {
-	Configurations ConfigurationsClient
-	Servers        ServersClient
+	Configurations MariaDBConfigurationsClient
+	Servers        MariaDBServersClient
 }
 
-type ServersClient interface {
+type MariaDBServersClient interface {
 	List(ctx context.Context) (result mariadb.ServerListResult, err error)
 }
 
-type ConfigurationsClient interface {
+type MariaDBConfigurationsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ConfigurationListResult, err error)
 }
 

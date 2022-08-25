@@ -12,7 +12,7 @@ import (
 )
 
 func buildMonitorLogProfiles(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockLogProfilesClient(ctrl)
+	m := mocks.NewMockMonitorLogProfilesClient(ctrl)
 
 	var r insights.LogProfileResource
 	if err := faker.FakeData(&r); err != nil {

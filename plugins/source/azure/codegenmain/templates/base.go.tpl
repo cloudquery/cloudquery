@@ -10,7 +10,7 @@ import (
     {{template "imports.go.tpl" .}}
 )
 
-func {{.AzureService}}{{.AzureSubService}}() *schema.Table {
+func {{.AzureSubService}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 

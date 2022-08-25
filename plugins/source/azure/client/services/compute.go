@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/compute.go -package=mocks . DisksClient,VirtualMachinesClient,VirtualMachineExtensionsClient,VirtualMachineScaleSetsClient
+//go:generate mockgen -destination=./mocks/compute.go -package=mocks . ComputeDisksClient,ComputeVirtualMachinesClient,ComputeVirtualMachineExtensionsClient,ComputeVirtualMachineScaleSetsClient
 package services
 
 import (
@@ -9,26 +9,26 @@ import (
 )
 
 type ComputeClient struct {
-	Disks                    DisksClient
-	VirtualMachines          VirtualMachinesClient
-	VirtualMachineExtensions VirtualMachineExtensionsClient
-	VirtualMachineScaleSets  VirtualMachineScaleSetsClient
+	Disks                    ComputeDisksClient
+	VirtualMachines          ComputeVirtualMachinesClient
+	VirtualMachineExtensions ComputeVirtualMachineExtensionsClient
+	VirtualMachineScaleSets  ComputeVirtualMachineScaleSetsClient
 }
 
-type DisksClient interface {
+type ComputeDisksClient interface {
 	List(ctx context.Context) (result compute.DiskListPage, err error)
 }
 
-type VirtualMachinesClient interface {
+type ComputeVirtualMachinesClient interface {
 	ListAll(ctx context.Context, statusOnly string) (result compute.VirtualMachineListResultPage, err error)
 	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
 }
 
-type VirtualMachineExtensionsClient interface {
+type ComputeVirtualMachineExtensionsClient interface {
 	List(ctx context.Context, resourceGroupName string, VMName string, expand string) (result compute.VirtualMachineExtensionsListResult, err error)
 }
 
-type VirtualMachineScaleSetsClient interface {
+type ComputeVirtualMachineScaleSetsClient interface {
 	ListAll(ctx context.Context) (result compute.VirtualMachineScaleSetListWithLinkResultPage, err error)
 }
 

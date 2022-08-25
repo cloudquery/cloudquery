@@ -12,8 +12,8 @@ import (
 )
 
 func buildMySQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	serverSvc := mocks.NewMockMySQLServerClient(ctrl)
-	configSvc := mocks.NewMockMySQLConfigurationClient(ctrl)
+	serverSvc := mocks.NewMockMySQLServersClient(ctrl)
+	configSvc := mocks.NewMockMySQLConfigurationsClient(ctrl)
 	s := services.Services{
 		MySQL: services.MySQLClient{
 			Servers:       serverSvc,

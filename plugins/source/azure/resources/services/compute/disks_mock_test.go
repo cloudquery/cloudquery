@@ -13,7 +13,7 @@ import (
 )
 
 func buildComputeDiskMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockDisksClient(ctrl)
+	m := mocks.NewMockComputeDisksClient(ctrl)
 	s := services.Services{
 		Compute: services.ComputeClient{Disks: m},
 	}

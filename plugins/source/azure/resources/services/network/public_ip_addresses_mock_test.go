@@ -14,7 +14,7 @@ import (
 )
 
 func buildNetworkPublicIpAddressesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	pips := mocks.NewMockPublicIPAddressesClient(ctrl)
+	pips := mocks.NewMockNetworkPublicIPAddressesClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			PublicIPAddresses: pips,

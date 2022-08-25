@@ -1,7 +1,7 @@
 {{template "base_mock_test.go.tpl" .}}
 
 func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMock{{ .AzureSubService }}Client(ctrl)
+	mockClient := mocks.NewMock{{ .AzureService }}{{ .AzureSubService }}Client(ctrl)
 	s := services.Services{
 		{{ .AzureService }}: services.{{ .AzureService }}Client{
 			{{ .AzureSubService }}: mockClient,
@@ -9,6 +9,7 @@ func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gom
 	}
 
 	data := {{ .AzurePackageName }}.{{ .AzureStructName }}{}
+	faker.SetIgnoreInterface(true)
 	require.Nil(t, faker.FakeData(&data))
 
     {{if .MockListResult}}

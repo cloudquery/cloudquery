@@ -14,7 +14,7 @@ import (
 )
 
 func buildNetworkExpressRoutePortsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	rpc := mocks.NewMockExpressRoutePortsClient(ctrl)
+	rpc := mocks.NewMockNetworkExpressRoutePortsClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
 			ExpressRoutePorts: rpc,

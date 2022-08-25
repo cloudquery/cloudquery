@@ -13,8 +13,8 @@ import (
 )
 
 func buildComputeVirtualMachineMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	v := mocks.NewMockVirtualMachinesClient(ctrl)
-	ve := mocks.NewMockVirtualMachineExtensionsClient(ctrl)
+	v := mocks.NewMockComputeVirtualMachinesClient(ctrl)
+	ve := mocks.NewMockComputeVirtualMachineExtensionsClient(ctrl)
 	s := services.Services{
 		Compute: services.ComputeClient{
 			VirtualMachines:          v,

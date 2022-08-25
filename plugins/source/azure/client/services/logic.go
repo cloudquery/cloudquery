@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/logic.go -package=mocks . MonitorDiagnosticSettingsClient,WorkflowsClient
+//go:generate mockgen -destination=./mocks/logic.go -package=mocks . LogicMonitorDiagnosticSettingsClient,LogicWorkflowsClient
 package services
 
 import (
@@ -10,15 +10,15 @@ import (
 )
 
 type LogicClient struct {
-	DiagnosticSettings MonitorDiagnosticSettingsClient
-	Workflows          WorkflowsClient
+	DiagnosticSettings LogicMonitorDiagnosticSettingsClient
+	Workflows          LogicWorkflowsClient
 }
 
-type WorkflowsClient interface {
+type LogicWorkflowsClient interface {
 	ListBySubscription(ctx context.Context, top *int32, filter string) (result logic.WorkflowListResultPage, err error)
 }
 
-type MonitorDiagnosticSettingsClient interface {
+type LogicMonitorDiagnosticSettingsClient interface {
 	List(ctx context.Context, resourceURI string) (result insights.DiagnosticSettingsResourceCollection, err error)
 }
 
