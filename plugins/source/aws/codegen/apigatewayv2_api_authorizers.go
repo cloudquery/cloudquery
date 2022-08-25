@@ -13,10 +13,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2ApisAuthorizers() *schema.Table {
-
+func Apigatewayv2ApiAuthorizers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_authorizers",
+		Name:      "aws_apigatewayv2_api_authorizers",
 		Resolver:  fetchApigatewayv2ApiAuthorizers,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{

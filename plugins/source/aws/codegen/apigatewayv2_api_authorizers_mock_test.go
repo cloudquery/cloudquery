@@ -14,8 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func buildApigatewayv2ApisAuthorizers(t *testing.T, ctrl *gomock.Controller) client.Services {
-
+func buildApigatewayv2ApiAuthorizers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockApigatewayv2Client(ctrl)
 
 	item := types.Authorizer{}
@@ -32,6 +31,6 @@ func buildApigatewayv2ApisAuthorizers(t *testing.T, ctrl *gomock.Controller) cli
 	}
 }
 
-func TestApigatewayv2ApisAuthorizers(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2ApisAuthorizers(), buildApigatewayv2ApisAuthorizers, client.TestOptions{})
+func TestApigatewayv2ApiAuthorizers(t *testing.T) {
+	client.AwsMockTestHelper(t, Apigatewayv2ApiAuthorizers(), buildApigatewayv2ApiAuthorizers, client.TestOptions{})
 }

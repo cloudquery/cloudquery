@@ -49,6 +49,10 @@ type Resource struct {
 
 	HasTags         bool // autodetected by scanning all columns for `tags`
 	SkipTypesImport bool // skip "types" import (except for mock mode)
+
+	TableFuncName string // auto calculated
+	MockFuncName  string // auto calculated
+	TestFuncName  string // auto calculated
 }
 
 var (

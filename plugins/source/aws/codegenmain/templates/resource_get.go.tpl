@@ -13,11 +13,7 @@ import (
 {{end}}
 )
 
-{{if .Parent}}
-func {{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}() *schema.Table {
-{{else}}
-	func {{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}() *schema.Table {
-{{end}}
+func {{.TableFuncName}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 

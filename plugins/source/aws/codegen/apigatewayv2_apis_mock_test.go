@@ -15,7 +15,6 @@ import (
 )
 
 func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Services {
-
 	mock := mocks.NewMockApigatewayv2Client(ctrl)
 
 	item := types.Api{}

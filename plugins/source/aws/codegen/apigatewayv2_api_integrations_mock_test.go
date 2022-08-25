@@ -14,8 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func buildApigatewayv2ApisIntegrations(t *testing.T, ctrl *gomock.Controller) client.Services {
-
+func buildApigatewayv2ApiIntegrations(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockApigatewayv2Client(ctrl)
 
 	item := types.Integration{}
@@ -32,6 +31,6 @@ func buildApigatewayv2ApisIntegrations(t *testing.T, ctrl *gomock.Controller) cl
 	}
 }
 
-func TestApigatewayv2ApisIntegrations(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2ApisIntegrations(), buildApigatewayv2ApisIntegrations, client.TestOptions{})
+func TestApigatewayv2ApiIntegrations(t *testing.T) {
+	client.AwsMockTestHelper(t, Apigatewayv2ApiIntegrations(), buildApigatewayv2ApiIntegrations, client.TestOptions{})
 }

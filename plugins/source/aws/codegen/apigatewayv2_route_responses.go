@@ -13,10 +13,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2RoutesRouteResponses() *schema.Table {
-
+func Apigatewayv2RouteResponses() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_routeresponses",
+		Name:      "aws_apigatewayv2_api_route_responses",
 		Resolver:  fetchApigatewayv2RouteResponses,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{

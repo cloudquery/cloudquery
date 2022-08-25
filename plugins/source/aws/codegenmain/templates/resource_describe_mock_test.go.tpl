@@ -71,6 +71,6 @@ func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock
   }
 }
 
-func Test{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T) {
-	client.AwsMockTestHelper(t, {{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(), build{{.AWSService}}{{.AWSSubService | ToCamel}}, client.TestOptions{})
+func {{.TestFuncName}}(t *testing.T) {
+	client.AwsMockTestHelper(t, {{.TableFuncName}}(), {{.MockFuncName}}, client.TestOptions{})
 }

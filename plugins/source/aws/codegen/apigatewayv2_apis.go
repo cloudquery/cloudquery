@@ -13,7 +13,6 @@ import (
 )
 
 func Apigatewayv2Apis() *schema.Table {
-
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_apis",
 		Resolver:  fetchApigatewayv2Apis,

@@ -13,10 +13,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2ApisDeployments() *schema.Table {
-
+func Apigatewayv2ApiDeployments() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_deployments",
+		Name:      "aws_apigatewayv2_api_deployments",
 		Resolver:  fetchApigatewayv2ApiDeployments,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{

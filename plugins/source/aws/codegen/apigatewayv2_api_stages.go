@@ -13,10 +13,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2ApisStages() *schema.Table {
-
+func Apigatewayv2ApiStages() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_stages",
+		Name:      "aws_apigatewayv2_api_stages",
 		Resolver:  fetchApigatewayv2ApiStages,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{

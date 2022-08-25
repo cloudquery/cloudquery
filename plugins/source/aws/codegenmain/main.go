@@ -41,8 +41,17 @@ func generateResource(r *recipes.Resource, mock bool) {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
+
+	tableNameFromSubService := strcase.ToSnake(r.AWSSubService)
+	if r.Parent != nil && !strings.HasPrefix(tableNameFromSubService, strcase.ToSnake(r.Parent.ItemName)+"_") {
+		tableNameFromSubService = strcase.ToSnake(r.Parent.ItemName) + "_" + tableNameFromSubService
+	}
+	if r.Parent != nil && r.Parent.Parent != nil && !strings.HasPrefix(tableNameFromSubService, strcase.ToSnake(r.Parent.Parent.ItemName)+"_") {
+		tableNameFromSubService = strcase.ToSnake(r.Parent.Parent.ItemName) + "_" + tableNameFromSubService
+	}
+
 	r.Table, err = sdkgen.NewTableFromStruct(
-		fmt.Sprintf("aws_%s_%s", strings.ToLower(r.AWSService), strings.ToLower(r.AWSSubService)),
+		fmt.Sprintf("aws_%s_%s", strings.ToLower(r.AWSService), tableNameFromSubService),
 		r.AWSStruct,
 		sdkgen.WithSkipFields("noSmithyDocumentSerde"),
 		sdkgen.WithSkipFields(r.SkipFields...))
@@ -101,6 +110,12 @@ func generateResource(r *recipes.Resource, mock bool) {
 		} else {
 			r.Table.Resolver = "fetch" + r.AWSService + r.AWSSubService
 		}
+	}
+
+	r.TableFuncName = strings.TrimPrefix(r.Table.Resolver, "fetch")
+	if mock {
+		r.MockFuncName = "build" + r.TableFuncName
+		r.TestFuncName = "Test" + r.TableFuncName
 	}
 
 	t := reflect.TypeOf(r.AWSStruct).Elem()
