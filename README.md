@@ -11,7 +11,7 @@ CloudQuery extracts, transforms, and loads your cloud assets. CloudQuery enables
 CloudQuery key use-cases and features:
 
 - **Search**: Use standard SQL to find any asset based on any configuration or relation to other assets.
-- **Visualize**: Connect CloudQuery standard PostgreSQL database to your favorite BI/Visualization tool such as Grafana, QuickSight, etc...
+- **Visualize**: Connect CloudQuery standard PostgreSQL database to your favorite BI/Visualization tool such as Grafana, QuickSight, etc.
 - **Policy-as-Code**: Codify your security & compliance rules with SQL as the query engine.
 
 ### Links
