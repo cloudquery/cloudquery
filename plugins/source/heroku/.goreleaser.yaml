@@ -1,11 +1,11 @@
 variables:
-  component: source/github
+  component: source/heroku
 
-project_name: plugins/source/github
+project_name: plugins/source/heroku
 
 monorepo:
-  tag_prefix: plugins/source/github/
-  dir: plugins/source/github
+  tag_prefix: plugins/source/heroku/
+  dir: plugins/source/heroku
 
 includes:
   - from_file:
