@@ -16,32 +16,39 @@ func AddOns() *schema.Table {
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "actions",
-				Type: schema.TypeJSON,
+				Name:     "actions",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Actions"),
 			},
 			{
-				Name: "addon_service",
-				Type: schema.TypeJSON,
+				Name:     "addon_service",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AddonService"),
 			},
 			{
-				Name: "app",
-				Type: schema.TypeJSON,
+				Name:     "app",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("App"),
 			},
 			{
-				Name: "billed_price",
-				Type: schema.TypeJSON,
+				Name:     "billed_price",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BilledPrice"),
 			},
 			{
-				Name: "billing_entity",
-				Type: schema.TypeJSON,
+				Name:     "billing_entity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BillingEntity"),
 			},
 			{
-				Name: "config_vars",
-				Type: schema.TypeStringArray,
+				Name:     "config_vars",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("ConfigVars"),
 			},
 			{
-				Name: "created_at",
-				Type: schema.TypeTimestamp,
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
 				Name:     "id",
@@ -49,12 +56,14 @@ func AddOns() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name: "plan",
-				Type: schema.TypeJSON,
+				Name:     "plan",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Plan"),
 			},
 			{
 				Name:     "provider_id",
@@ -62,12 +71,14 @@ func AddOns() *schema.Table {
 				Resolver: schema.PathResolver("ProviderID"),
 			},
 			{
-				Name: "state",
-				Type: schema.TypeString,
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
 			},
 			{
-				Name: "updated_at",
-				Type: schema.TypeTimestamp,
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 			{
 				Name:     "web_url",

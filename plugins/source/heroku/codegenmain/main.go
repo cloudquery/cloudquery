@@ -44,11 +44,6 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for u, c := range r.Table.Columns {
-		if c.Meta.OriginalName != strcase.ToCamel(c.Name) {
-			r.Table.Columns[u].Resolver = fmt.Sprintf(`schema.PathResolver(%q)`, c.Meta.OriginalName)
-		}
-	}
 	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
 	r.Table.Multiplex = "client.NoMultiplex"
 	r.Table.Resolver = "fetch" + inflection.Plural(r.HerokuStructName)

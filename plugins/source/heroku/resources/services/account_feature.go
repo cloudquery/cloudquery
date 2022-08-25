@@ -16,16 +16,19 @@ func AccountFeatures() *schema.Table {
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
 			{
-				Name: "created_at",
-				Type: schema.TypeTimestamp,
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name: "description",
-				Type: schema.TypeString,
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name: "display_name",
-				Type: schema.TypeString,
+				Name:     "display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DisplayName"),
 			},
 			{
 				Name:     "doc_url",
@@ -33,12 +36,14 @@ func AccountFeatures() *schema.Table {
 				Resolver: schema.PathResolver("DocURL"),
 			},
 			{
-				Name: "enabled",
-				Type: schema.TypeBool,
+				Name:     "enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Enabled"),
 			},
 			{
-				Name: "feedback_email",
-				Type: schema.TypeString,
+				Name:     "feedback_email",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FeedbackEmail"),
 			},
 			{
 				Name:     "id",
@@ -46,16 +51,19 @@ func AccountFeatures() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name: "state",
-				Type: schema.TypeString,
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
 			},
 			{
-				Name: "updated_at",
-				Type: schema.TypeTimestamp,
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 		},
 	}

@@ -9,21 +9,31 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Stacks() *schema.Table {
+func Credits() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_stacks",
-		Resolver:  fetchStacks,
+		Name:      "heroku_credits",
+		Resolver:  fetchCredits,
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
+			{
+				Name:     "amount",
+				Type:     schema.TypeFloat,
+				Resolver: schema.PathResolver("Amount"),
+			},
+			{
+				Name:     "balance",
+				Type:     schema.TypeFloat,
+				Resolver: schema.PathResolver("Balance"),
+			},
 			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name:     "default",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Default"),
+				Name:     "expires_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("ExpiresAt"),
 			},
 			{
 				Name:     "id",
@@ -31,14 +41,9 @@ func Stacks() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:     "name",
+				Name:     "title",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
+				Resolver: schema.PathResolver("Title"),
 			},
 			{
 				Name:     "updated_at",
@@ -49,9 +54,9 @@ func Stacks() *schema.Table {
 	}
 }
 
-func fetchStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchCredits(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v, err := c.Heroku.StackList(ctx, nil)
+	v, err := c.Heroku.CreditList(ctx, nil)
 	if err != nil {
 		return errors.WithStack(err)
 	}

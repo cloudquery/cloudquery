@@ -9,21 +9,16 @@ import (
 	"github.com/pkg/errors"
 )
 
-func AddOnAttachments() *schema.Table {
+func Regions() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_add_on_attachments",
-		Resolver:  fetchAddOnAttachments,
+		Name:      "heroku_regions",
+		Resolver:  fetchRegions,
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "addon",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Addon"),
-			},
-			{
-				Name:     "app",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("App"),
+				Name:     "country",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Country"),
 			},
 			{
 				Name:     "created_at",
@@ -31,14 +26,19 @@ func AddOnAttachments() *schema.Table {
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:     "log_input_url",
+				Name:     "locale",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LogInputURL"),
+				Resolver: schema.PathResolver("Locale"),
 			},
 			{
 				Name:     "name",
@@ -46,27 +46,27 @@ func AddOnAttachments() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "namespace",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Namespace"),
+				Name:     "private_capable",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("PrivateCapable"),
+			},
+			{
+				Name:     "provider",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Provider"),
 			},
 			{
 				Name:     "updated_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt"),
 			},
-			{
-				Name:     "web_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WebURL"),
-			},
 		},
 	}
 }
 
-func fetchAddOnAttachments(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchRegions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v, err := c.Heroku.AddOnAttachmentList(ctx, nil)
+	v, err := c.Heroku.RegionList(ctx, nil)
 	if err != nil {
 		return errors.WithStack(err)
 	}

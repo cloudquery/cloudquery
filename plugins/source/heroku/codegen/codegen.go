@@ -53,9 +53,9 @@ var listResources = []Resource{
 	//{
 	//	HerokuStruct: &heroku.AddOnWebhookEvent{},
 	//},
-	//{
-	//	HerokuStruct: &heroku.App{},
-	//},
+	{
+		HerokuStruct: &heroku.App{},
+	},
 	//{
 	//	HerokuStruct: &heroku.AppFeature{},
 	//},
@@ -86,9 +86,9 @@ var listResources = []Resource{
 	//{
 	//	HerokuStruct: &heroku.Collaborator{},
 	//},
-	//{
-	//	HerokuStruct: &heroku.Credit{},
-	//},
+	{
+		HerokuStruct: &heroku.Credit{},
+	},
 	//{
 	//	HerokuStruct: &heroku.Domain{},
 	//},
@@ -98,9 +98,9 @@ var listResources = []Resource{
 	//{
 	//	HerokuStruct: &heroku.DynoSize{},
 	//},
-	//{
-	//	HerokuStruct: &heroku.EnterpriseAccount{},
-	//},
+	{
+		HerokuStruct: &heroku.EnterpriseAccount{},
+	},
 	//{
 	//	HerokuStruct: &heroku.EnterpriseAccountMember{},
 	//},
@@ -110,12 +110,12 @@ var listResources = []Resource{
 	//{
 	//	HerokuStruct: &heroku.InboundRuleset{},
 	//},
-	//{
-	//	HerokuStruct: &heroku.Invoice{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Key{},
-	//},
+	{
+		HerokuStruct: &heroku.Invoice{},
+	},
+	{
+		HerokuStruct: &heroku.Key{},
+	},
 	//{
 	//	HerokuStruct: &heroku.LogDrain{},
 	//},
@@ -152,9 +152,9 @@ var listResources = []Resource{
 	//{
 	//	HerokuStruct: &heroku.PipelineRelease{},
 	//},
-	//{
-	//	HerokuStruct: &heroku.Region{},
-	//},
+	{
+		HerokuStruct: &heroku.Region{},
+	},
 	//{
 	//	HerokuStruct: &heroku.Release{},
 	//},
@@ -164,9 +164,9 @@ var listResources = []Resource{
 	//{
 	//	HerokuStruct: &heroku.SniEndpoint{},
 	//},
-	//{
-	//	HerokuStruct: &heroku.Space{},
-	//},
+	{
+		HerokuStruct: &heroku.Space{},
+	},
 	//{
 	//	HerokuStruct: &heroku.SpaceAppAccess{},
 	//},

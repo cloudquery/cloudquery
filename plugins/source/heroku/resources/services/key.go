@@ -9,21 +9,31 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Stacks() *schema.Table {
+func Keys() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_stacks",
-		Resolver:  fetchStacks,
+		Name:      "heroku_keys",
+		Resolver:  fetchKeys,
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
+			{
+				Name:     "comment",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Comment"),
+			},
 			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name:     "default",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Default"),
+				Name:     "email",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Email"),
+			},
+			{
+				Name:     "fingerprint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Fingerprint"),
 			},
 			{
 				Name:     "id",
@@ -31,14 +41,9 @@ func Stacks() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:     "name",
+				Name:     "public_key",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
+				Resolver: schema.PathResolver("PublicKey"),
 			},
 			{
 				Name:     "updated_at",
@@ -49,9 +54,9 @@ func Stacks() *schema.Table {
 	}
 }
 
-func fetchStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchKeys(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v, err := c.Heroku.StackList(ctx, nil)
+	v, err := c.Heroku.KeyList(ctx, nil)
 	if err != nil {
 		return errors.WithStack(err)
 	}

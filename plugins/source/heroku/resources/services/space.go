@@ -9,21 +9,26 @@ import (
 	"github.com/pkg/errors"
 )
 
-func Stacks() *schema.Table {
+func Spaces() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_stacks",
-		Resolver:  fetchStacks,
+		Name:      "heroku_spaces",
+		Resolver:  fetchSpaces,
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
+			{
+				Name:     "cidr",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CIDR"),
+			},
 			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name:     "default",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Default"),
+				Name:     "data_cidr",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DataCIDR"),
 			},
 			{
 				Name:     "id",
@@ -36,9 +41,29 @@ func Stacks() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
+				Name:     "organization",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Organization"),
+			},
+			{
+				Name:     "region",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Region"),
+			},
+			{
+				Name:     "shield",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Shield"),
+			},
+			{
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "team",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Team"),
 			},
 			{
 				Name:     "updated_at",
@@ -49,9 +74,9 @@ func Stacks() *schema.Table {
 	}
 }
 
-func fetchStacks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchSpaces(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v, err := c.Heroku.StackList(ctx, nil)
+	v, err := c.Heroku.SpaceList(ctx, nil)
 	if err != nil {
 		return errors.WithStack(err)
 	}

@@ -9,22 +9,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-func AddOnAttachments() *schema.Table {
+func EnterpriseAccounts() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_add_on_attachments",
-		Resolver:  fetchAddOnAttachments,
+		Name:      "heroku_enterprise_accounts",
+		Resolver:  fetchEnterpriseAccounts,
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "addon",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Addon"),
-			},
-			{
-				Name:     "app",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("App"),
-			},
 			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
@@ -36,9 +26,9 @@ func AddOnAttachments() *schema.Table {
 				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:     "log_input_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LogInputURL"),
+				Name:     "identity_provider",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IdentityProvider"),
 			},
 			{
 				Name:     "name",
@@ -46,27 +36,27 @@ func AddOnAttachments() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "namespace",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Namespace"),
+				Name:     "permissions",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Permissions"),
+			},
+			{
+				Name:     "trial",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Trial"),
 			},
 			{
 				Name:     "updated_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt"),
 			},
-			{
-				Name:     "web_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WebURL"),
-			},
 		},
 	}
 }
 
-func fetchAddOnAttachments(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchEnterpriseAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v, err := c.Heroku.AddOnAttachmentList(ctx, nil)
+	v, err := c.Heroku.EnterpriseAccountList(ctx, nil)
 	if err != nil {
 		return errors.WithStack(err)
 	}
