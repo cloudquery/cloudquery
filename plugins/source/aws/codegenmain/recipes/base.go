@@ -1,6 +1,8 @@
 package recipes
 
 import (
+	"fmt"
+
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -18,7 +20,7 @@ type Resource struct {
 	AWSStructName string
 	// AWSService is the name of the aws service the struct/api is residing. Capitalization is important as it's also used in the client's service map.
 	AWSService string
-	// AWSSubService is the name of the aws subservice the struct/api is residing
+	// AWSSubService is the name of the aws subservice the struct/api is residing. Should be in CamelCase
 	AWSSubService string
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
@@ -75,4 +77,19 @@ func parentize(parent *Resource, subs ...*Resource) []*Resource {
 		ret[i+1] = subs[i]
 	}
 	return ret
+}
+
+func combine(list ...interface{}) []*Resource {
+	res := make([]*Resource, 0, len(list))
+	for i := range list {
+		switch v := list[i].(type) {
+		case *Resource:
+			res = append(res, v)
+		case []*Resource:
+			res = append(res, v...)
+		default:
+			panic(fmt.Sprintf("combine: unhandled type %T", list[i]))
+		}
+	}
+	return res
 }

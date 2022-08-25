@@ -10,8 +10,8 @@ var APIGatewayv2Resources = parentize(&Resource{
 	DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 	//Table:              nil, // will be "generated" at "runtime"
 	AWSStruct:     &types.Api{},
-	AWSService:    "apigatewayv2",
-	AWSSubService: "apis",
+	AWSService:    "Apigatewayv2",
+	AWSSubService: "Apis",
 	ItemName:      "Api",
 	//DescribeFieldName:  "CertificateArn",
 	Template:       "resource_get",
@@ -28,11 +28,76 @@ var APIGatewayv2Resources = parentize(&Resource{
 	},
 	SkipTypesImport: true,
 },
-	&Resource{
-		AWSStruct:       &types.Authorizer{},
-		AWSSubService:   "authorizers",
-		ItemName:        "Authorizer",
-		Template:        "resource_get",
-		ParentFieldName: "ApiId",
-	},
+	combine(
+		&Resource{
+			AWSStruct:       &types.Authorizer{},
+			AWSSubService:   "Authorizers",
+			ItemName:        "Authorizer",
+			Template:        "resource_get",
+			ParentFieldName: "ApiId",
+		},
+		&Resource{
+			AWSStruct:       &types.Deployment{},
+			AWSSubService:   "Deployments",
+			ItemName:        "Deployment",
+			Template:        "resource_get",
+			ParentFieldName: "ApiId",
+		},
+		parentize(
+			&Resource{
+				AWSStruct:       &types.Integration{},
+				AWSSubService:   "Integrations",
+				ItemName:        "Integration",
+				Template:        "resource_get",
+				ParentFieldName: "ApiId",
+			},
+			&Resource{
+				AWSStruct:       &types.IntegrationResponse{},
+				AWSSubService:   "IntegrationResponses",
+				ItemName:        "IntegrationResponse",
+				Template:        "resource_get",
+				ParentFieldName: "IntegrationId",
+			},
+		),
+		&Resource{
+			AWSStruct:       &types.Model{},
+			AWSSubService:   "Models",
+			ItemName:        "Model",
+			Template:        "resource_get",
+			ParentFieldName: "ApiId",
+			/*
+				TODO this should be a resolver
+					&Resource{
+						AWSStruct:       aws.String(""),   // *string
+						AWSSubService:   "modeltemplates",
+						ItemName:        "ModelTemplate",
+						Template:        "resource_get",
+						ParentFieldName: "ModelId",
+					},
+			*/
+		},
+		parentize(
+			&Resource{
+				AWSStruct:       &types.Route{},
+				AWSSubService:   "Routes",
+				ItemName:        "Route",
+				Template:        "resource_get",
+				ParentFieldName: "ApiId",
+			},
+			&Resource{
+				AWSStruct:       &types.RouteResponse{},
+				AWSSubService:   "RouteResponses",
+				ItemName:        "RouteResponse",
+				Template:        "resource_get",
+				ParentFieldName: "RouteId",
+			},
+		),
+		&Resource{
+			AWSStruct:       &types.Stage{},
+			AWSSubService:   "Stages",
+			ItemName:        "Stage",
+			Template:        "resource_get",
+			ParentFieldName: "ApiId",
+		},
+	)...,
 )

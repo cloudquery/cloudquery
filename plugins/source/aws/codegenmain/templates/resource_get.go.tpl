@@ -31,14 +31,14 @@ func fetch{{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubS
 
 {{if .Parent}}
 	r := parent.Item.(types.{{.Parent.ItemName}})
-	input := {{.AWSService | ToLower}}.Get{{.AWSSubService | ToCamel}}Input{
+	input := {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input{
 		{{.ParentFieldName}}: r.{{.ParentFieldName}},
 	}
 {{else}}
-	var input {{.AWSService | ToLower}}.Get{{.AWSSubService | ToCamel}}Input
+	var input {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input
 {{end}}
 	for {
-		response, err := svc.Get{{.AWSSubService | ToCamel}}(ctx, &input)
+		response, err := svc.Get{{.AWSSubService}}(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

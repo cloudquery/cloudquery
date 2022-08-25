@@ -94,19 +94,19 @@ func generateResource(r *recipes.Resource, mock bool) {
 	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + strings.ToLower(r.AWSService) + `")`
 
 	if r.Parent == nil {
-		r.Table.Resolver = "fetch" + toCamel(r.AWSService) + toCamel(r.AWSSubService)
+		r.Table.Resolver = "fetch" + r.AWSService + r.AWSSubService
 	} else {
-		r.Table.Resolver = "fetch" + toCamel(r.AWSService) + toCamel(r.Parent.AWSSubService) + toCamel(r.AWSSubService)
+		r.Table.Resolver = "fetch" + r.AWSService + r.Parent.AWSSubService + r.AWSSubService
 	}
 
 	if r.ListFunctionName == "" {
-		r.ListFunctionName = "List" + toCamel(r.AWSSubService)
+		r.ListFunctionName = "List" + r.AWSSubService
 	}
 	if r.DescribeFunctionName == "" {
 		if r.ItemName != "" {
 			r.DescribeFunctionName = "Describe" + r.ItemName
 		} else {
-			r.DescribeFunctionName = "Describe" + toCamel(r.AWSSubService)
+			r.DescribeFunctionName = "Describe" + r.AWSSubService
 		}
 	}
 
@@ -126,7 +126,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 		mainTemplate = r.Template + "_mock_test.go.tpl"
 	}
 	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
-		"ToCamel": toCamel,
+		"ToCamel": strcase.ToCamel,
 		"ToLower": strings.ToLower,
 	}).ParseFS(awsTemplatesFS, "templates/"+mainTemplate)
 	if err != nil {
@@ -147,9 +147,9 @@ func generateResource(r *recipes.Resource, mock bool) {
 
 	fileSuffix := stringSwitch(mock, "_mock_test.go", ".go")
 	if r.Parent == nil {
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+r.AWSSubService+fileSuffix)
+		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+strcase.ToSnake(r.AWSSubService)+fileSuffix)
 	} else {
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+r.Parent.AWSSubService+"_"+r.AWSSubService+fileSuffix)
+		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+strcase.ToSnake(r.Parent.AWSSubService)+"_"+strcase.ToSnake(r.AWSSubService)+fileSuffix)
 	}
 	content, err := format.Source(buff.Bytes())
 	if err != nil {

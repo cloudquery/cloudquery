@@ -71,5 +71,5 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 }
 
 func TestACMCertificates(t *testing.T) {
-	client.AwsMockTestHelper(t, AcmCertificates(), buildACMCertificates, client.TestOptions{})
+	client.AwsMockTestHelper(t, ACMCertificates(), buildACMCertificates, client.TestOptions{})
 }

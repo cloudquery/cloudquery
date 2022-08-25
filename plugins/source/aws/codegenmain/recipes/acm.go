@@ -12,7 +12,7 @@ var ACMResources = []*Resource{
 		//Table:              nil, // will be "generated" at "runtime"
 		AWSStruct:          &types.CertificateDetail{},
 		AWSService:         "ACM",
-		AWSSubService:      "certificates",
+		AWSSubService:      "Certificates",
 		ItemName:           "Certificate",
 		DescribeFieldName:  "CertificateArn",
 		Template:           "resource_describe",

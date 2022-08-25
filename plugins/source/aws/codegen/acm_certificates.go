@@ -12,10 +12,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 )
 
-func AcmCertificates() *schema.Table {
+func ACMCertificates() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_acm_certificates",
-		Resolver:  fetchAcmCertificates,
+		Resolver:  fetchACMCertificates,
 		Multiplex: client.ServiceAccountRegionMultiplexer("acm"),
 		Columns: []schema.Column{
 			{
@@ -29,52 +29,64 @@ func AcmCertificates() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name: "arn",
-				Type: schema.TypeString,
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CertificateArn"),
 			},
 			{
-				Name: "certificate_authority_arn",
-				Type: schema.TypeString,
+				Name:     "certificate_authority_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CertificateAuthorityArn"),
 			},
 			{
-				Name: "created_at",
-				Type: schema.TypeJSON,
+				Name:     "created_at",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name: "domain_name",
-				Type: schema.TypeString,
+				Name:     "domain_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DomainName"),
 			},
 			{
-				Name: "domain_validation_options",
-				Type: schema.TypeJSON,
+				Name:     "domain_validation_options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DomainValidationOptions"),
 			},
 			{
-				Name: "extended_key_usages",
-				Type: schema.TypeJSON,
+				Name:     "extended_key_usages",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExtendedKeyUsages"),
 			},
 			{
-				Name: "failure_reason",
-				Type: schema.TypeString,
+				Name:     "failure_reason",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FailureReason"),
 			},
 			{
-				Name: "imported_at",
-				Type: schema.TypeJSON,
+				Name:     "imported_at",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ImportedAt"),
 			},
 			{
-				Name: "in_use_by",
-				Type: schema.TypeStringArray,
+				Name:     "in_use_by",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("InUseBy"),
 			},
 			{
-				Name: "issued_at",
-				Type: schema.TypeJSON,
+				Name:     "issued_at",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IssuedAt"),
 			},
 			{
-				Name: "issuer",
-				Type: schema.TypeString,
+				Name:     "issuer",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Issuer"),
 			},
 			{
-				Name: "key_algorithm",
-				Type: schema.TypeString,
+				Name:     "key_algorithm",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("KeyAlgorithm"),
 			},
 			{
 				Name:     "key_usages",
@@ -82,56 +94,69 @@ func AcmCertificates() *schema.Table {
 				Resolver: schema.PathResolver("KeyUsages.Name"),
 			},
 			{
-				Name: "not_after",
-				Type: schema.TypeJSON,
+				Name:     "not_after",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NotAfter"),
 			},
 			{
-				Name: "not_before",
-				Type: schema.TypeJSON,
+				Name:     "not_before",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NotBefore"),
 			},
 			{
-				Name: "options",
-				Type: schema.TypeJSON,
+				Name:     "options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Options"),
 			},
 			{
-				Name: "renewal_eligibility",
-				Type: schema.TypeString,
+				Name:     "renewal_eligibility",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RenewalEligibility"),
 			},
 			{
-				Name: "renewal_summary",
-				Type: schema.TypeJSON,
+				Name:     "renewal_summary",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RenewalSummary"),
 			},
 			{
-				Name: "revocation_reason",
-				Type: schema.TypeString,
+				Name:     "revocation_reason",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RevocationReason"),
 			},
 			{
-				Name: "revoked_at",
-				Type: schema.TypeJSON,
+				Name:     "revoked_at",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RevokedAt"),
 			},
 			{
-				Name: "serial",
-				Type: schema.TypeString,
+				Name:     "serial",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Serial"),
 			},
 			{
-				Name: "signature_algorithm",
-				Type: schema.TypeString,
+				Name:     "signature_algorithm",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SignatureAlgorithm"),
 			},
 			{
-				Name: "status",
-				Type: schema.TypeString,
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Status"),
 			},
 			{
-				Name: "subject",
-				Type: schema.TypeString,
+				Name:     "subject",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Subject"),
 			},
 			{
-				Name: "subject_alternative_names",
-				Type: schema.TypeStringArray,
+				Name:     "subject_alternative_names",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("SubjectAlternativeNames"),
 			},
 			{
-				Name: "type",
-				Type: schema.TypeString,
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
 				Name: "tags",
@@ -141,7 +166,7 @@ func AcmCertificates() *schema.Table {
 	}
 }
 
-func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
 
@@ -165,7 +190,7 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema
 	return nil
 }
 
-func resolveAcmCertificatesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveACMCertificatesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cert := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
