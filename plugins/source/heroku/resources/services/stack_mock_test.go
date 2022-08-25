@@ -15,16 +15,13 @@ import (
 )
 
 func createStacks() (client.HerokuService, error) {
-	var item heroku.Stack
-	if err := faker.FakeData(&item); err != nil {
+	items := make(heroku.StackListResult, 1)
+	if err := faker.FakeData(&items); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
 	mux.GET("/*any", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := heroku.StackListResult{
-			item,
-		}
-		b, err := json.Marshal(resp)
+		b, err := json.Marshal(items)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
 			return

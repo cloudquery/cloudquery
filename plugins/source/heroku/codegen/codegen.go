@@ -17,6 +17,14 @@ type Resource struct {
 	HerokuStruct interface{}
 	// HerokuStructName is the name of the HerokuStruct because it can't be inferred by reflection
 	HerokuStructName string
+	// HerokuPrimaryStructName is the primary struct that will be listed first, then used as an ID in additional list calls
+	// (applies only to relational resources)
+	HerokuPrimaryStruct interface{}
+	// HerokuPrimaryStructName is the name of the primary struct
+	// (applies only to relational resources)
+	HerokuPrimaryStructName string
+	// SkipListParams indicates whether to skip passing nil as params argument, or not
+	SkipListParams bool
 	// Template is the template to use to generate the resource
 	Template string
 	// SkipFields fields in go struct to skip when generating the table from the go struct
@@ -35,197 +43,330 @@ var listResources = []Resource{
 	{
 		HerokuStruct: &heroku.AddOnAttachment{},
 	},
-	//{
-	//	HerokuStruct: &heroku.AddOnConfig{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AddOnRegionCapability{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AddOnService{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AddOnWebhook{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AddOnWebhookDelivery{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AddOnWebhookEvent{},
-	//},
+	{
+		HerokuStruct:        &heroku.AddOnConfig{},
+		HerokuPrimaryStruct: &heroku.AddOn{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct: &heroku.AddOnRegionCapability{},
+	},
+	{
+		HerokuStruct: &heroku.AddOnService{},
+	},
+	{
+		HerokuStruct:        &heroku.AddOnWebhook{},
+		HerokuPrimaryStruct: &heroku.AddOn{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.AddOnWebhookDelivery{},
+		HerokuPrimaryStruct: &heroku.AddOn{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.AddOnWebhookEvent{},
+		HerokuPrimaryStruct: &heroku.AddOn{},
+		Template:            "relational_resource_list",
+	},
 	{
 		HerokuStruct: &heroku.App{},
 	},
+	{
+		HerokuStruct:        &heroku.AppFeature{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct: &heroku.AppTransfer{},
+	},
+	{
+		HerokuStruct:        &heroku.AppWebhook{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.AppWebhookDelivery{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.AppWebhookEvent{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+
+	// TODO: Add support for Archive
 	//{
-	//	HerokuStruct: &heroku.AppFeature{},
+	//	HerokuStruct:        &heroku.Archive{},
+	//	HerokuPrimaryStruct: &heroku.EnterpriseAccount{},
+	//	Template:            "relational_resource_list",
 	//},
+
+	// TODO: Add support for AuditTrailEvent.
+	//       Its list call returns only a single item, which is probably
+	//       a bug in the Heroku SDK.
 	//{
-	//	HerokuStruct: &heroku.AppTransfer{},
+	//	HerokuStruct:        &heroku.AuditTrailEvent{},
+	//	HerokuPrimaryStruct: &heroku.EnterpriseAccount{},
+	//	Template:            "relational_resource_list",
 	//},
-	//{
-	//	HerokuStruct: &heroku.AppWebhook{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AppWebhookDelivery{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AppWebhookEvent{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Archive{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.AuditTrailEvent{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Build{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.BuildpackInstallation{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Collaborator{},
-	//},
+
+	{
+		HerokuStruct:        &heroku.Build{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.BuildpackInstallation{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.Collaborator{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
 	{
 		HerokuStruct: &heroku.Credit{},
 	},
-	//{
-	//	HerokuStruct: &heroku.Domain{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Dyno{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.DynoSize{},
-	//},
+	{
+		HerokuStruct:        &heroku.Domain{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.Dyno{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct: &heroku.DynoSize{},
+	},
 	{
 		HerokuStruct: &heroku.EnterpriseAccount{},
 	},
-	//{
-	//	HerokuStruct: &heroku.EnterpriseAccountMember{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Formation{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.InboundRuleset{},
-	//},
+	{
+		HerokuStruct:        &heroku.EnterpriseAccountMember{},
+		HerokuPrimaryStruct: &heroku.EnterpriseAccount{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.Formation{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.InboundRuleset{},
+		HerokuPrimaryStruct: &heroku.Space{},
+		Template:            "relational_resource_list",
+	},
 	{
 		HerokuStruct: &heroku.Invoice{},
 	},
 	{
 		HerokuStruct: &heroku.Key{},
 	},
+	{
+		HerokuStruct:        &heroku.LogDrain{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct: &heroku.OAuthAuthorization{},
+	},
+	{
+		HerokuStruct: &heroku.OAuthClient{},
+	},
+	{
+		HerokuStruct:        &heroku.OutboundRuleset{},
+		HerokuPrimaryStruct: &heroku.Space{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.Peering{},
+		HerokuPrimaryStruct: &heroku.Space{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.PermissionEntity{},
+		HerokuPrimaryStruct: &heroku.Team{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct: &heroku.Pipeline{},
+	},
+	{
+		HerokuStruct:        &heroku.PipelineBuild{},
+		HerokuPrimaryStruct: &heroku.Pipeline{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct: &heroku.PipelineCoupling{},
+	},
+	{
+		HerokuStruct:        &heroku.PipelineDeployment{},
+		HerokuPrimaryStruct: &heroku.Pipeline{},
+		Template:            "relational_resource_list",
+	},
+
+	// TODO: Add support for PipelinePromotion
+	// Note: PipelinePromotion doesn't have a corresponding List call
 	//{
-	//	HerokuStruct: &heroku.LogDrain{},
+	//	HerokuStruct:        &heroku.PipelinePromotionTarget{},
+	//	HerokuPrimaryStruct: &heroku.PipelinePromotion{},
+	//	Template:            "relational_resource_list",
 	//},
-	//{
-	//	HerokuStruct: &heroku.OAuthAuthorization{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.OAuthClient{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.OutboundRuleset{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Peering{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.PermissionEntity{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.Pipeline{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.PipelineBuild{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.PipelineCoupling{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.PipelineDeployment{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.PipelinePromotionTarget{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.PipelineRelease{},
-	//},
+
+	{
+		HerokuStruct:        &heroku.PipelineRelease{},
+		HerokuPrimaryStruct: &heroku.Pipeline{},
+		Template:            "relational_resource_list",
+	},
 	{
 		HerokuStruct: &heroku.Region{},
 	},
+	{
+		HerokuStruct:        &heroku.Release{},
+		HerokuPrimaryStruct: &heroku.App{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.ReviewApp{},
+		HerokuPrimaryStruct: &heroku.Pipeline{},
+		Template:            "relational_resource_list",
+	},
+
+	// TODO: Add support for SniEndpoint
 	//{
-	//	HerokuStruct: &heroku.Release{},
+	//	HerokuStruct:        &heroku.SniEndpoint{},
+	//	HerokuPrimaryStruct: &heroku.App{},
+	//	Template:            "relational_resource_list",
 	//},
-	//{
-	//	HerokuStruct: &heroku.ReviewApp{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.SniEndpoint{},
-	//},
+
 	{
 		HerokuStruct: &heroku.Space{},
 	},
+	{
+		HerokuStruct:        &heroku.SpaceAppAccess{},
+		HerokuPrimaryStruct: &heroku.Space{},
+		Template:            "relational_resource_list",
+	},
+
+	// TODO: Add support for SSLEndpoint
 	//{
-	//	HerokuStruct: &heroku.SpaceAppAccess{},
+	//	HerokuStruct:        &heroku.SSLEndpoint{},
+	//	HerokuPrimaryStruct: &heroku.App{},
+	//	Template:            "relational_resource_list",
 	//},
-	//{
-	//	HerokuStruct: &heroku.SSLEndpoint{},
-	//},
+
 	{
 		HerokuStruct: &heroku.Stack{},
 	},
 	{
 		HerokuStruct: &heroku.Team{},
 	},
+
+	// TODO: Add support for TeamApp
+	// NOTE: TeamApp only has TeamAppListByTeam
+	//{
+	//	HerokuStruct: &heroku.TeamApp{},
+	//},
+
+	// TODO: Add support for TeamAppCollaborator
 	//{
 	//	HerokuStruct: &heroku.TeamAppCollaborator{},
+	//	HerokuPrimaryStruct: &heroku.TeamApp{},
+	//	Template:            "relational_resource_list",
 	//},
+
+	{
+		HerokuStruct: &heroku.TeamAppPermission{},
+	},
+	{
+		HerokuStruct:        &heroku.TeamFeature{},
+		HerokuPrimaryStruct: &heroku.Team{},
+		Template:            "relational_resource_list",
+	},
+	{
+		// Note: TeamInvitationList technically uses team Name as argument, not ID.
+		//       This is either a mistake in the SDK or an inconsistency in the API.
+		//       (TODO: check this)
+		HerokuStruct:        &heroku.TeamInvitation{},
+		HerokuPrimaryStruct: &heroku.Team{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.TeamInvoice{},
+		HerokuPrimaryStruct: &heroku.Team{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.TeamMember{},
+		HerokuPrimaryStruct: &heroku.Team{},
+		Template:            "relational_resource_list",
+	},
+	// TODO: Add support for TeamPreferences
 	//{
-	//	HerokuStruct: &heroku.TeamAppPermission{},
+	//	HerokuStruct:        &heroku.TeamPreferences{},
+	//	HerokuPrimaryStruct: &heroku.Team{},
+	//	Template:            "relational_resource_list",
+	//	SkipListParams:      true,
 	//},
+	{
+		HerokuStruct:        &heroku.TeamSpace{},
+		HerokuPrimaryStruct: &heroku.Team{},
+		Template:            "relational_resource_list",
+	},
+
+	// TODO: Add support for TestCase
 	//{
-	//	HerokuStruct: &heroku.TeamFeature{},
+	//	HerokuStruct:        &heroku.TestCase{},
+	//	HerokuPrimaryStruct: &heroku.TestRun{},
+	//	Template:            "relational_resource_list",
 	//},
+
+	// TODO: Add support for TestNode
 	//{
-	//	HerokuStruct: &heroku.TeamInvitation{},
+	//	HerokuStruct:        &heroku.TestNode{},
+	//	HerokuPrimaryStruct: &heroku.TestRun{},
+	//	Template:            "relational_resource_list",
 	//},
+
+	// TODO: Add support for TestRun
 	//{
-	//	HerokuStruct: &heroku.TeamInvoice{},
+	//	HerokuStruct:        &heroku.TestRun{},
+	//	HerokuPrimaryStruct: &heroku.Pipeline{},
+	//	Template:            "relational_resource_list",
 	//},
+
+	// TODO: Add support for UserPreferences
+	// Note: no API function exists to list accounts, so preferences would
+	// only be for current user
 	//{
-	//	HerokuStruct: &heroku.TeamMember{},
+	//	HerokuStruct:        &heroku.UserPreferences{},
+	//	HerokuPrimaryStruct: &heroku.Account{},
+	//	Template:            "relational_resource_list",
 	//},
-	//{
-	//	HerokuStruct: &heroku.TeamPreferences{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.TeamSpace{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.TestCase{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.TestNode{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.TestRun{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.UserPreferences{},
-	//},
-	//{
-	//	HerokuStruct: &heroku.VPNConnection{},
-	//},
+
+	{
+		HerokuStruct:        &heroku.VPNConnection{},
+		HerokuPrimaryStruct: &heroku.Space{},
+		Template:            "relational_resource_list",
+	},
 }
 
 func All() []Resource {
 	resources := listResources
-	// add all shared properties
+	// add all shared and default properties
 	for i, r := range resources {
-		r.Template = "resource_list"
+		if r.Template == "" {
+			r.Template = "resource_list"
+		}
 		r.HerokuStructName = reflect.TypeOf(r.HerokuStruct).Elem().Name()
+		if r.HerokuPrimaryStruct != nil {
+			r.HerokuPrimaryStructName = reflect.TypeOf(r.HerokuPrimaryStruct).Elem().Name()
+		}
 		r.DefaultColumns = []codegen.ColumnDefinition{}
 		r.SkipFields = []string{}
 		if resources[i].CreateTableOptions.PrimaryKeys == nil {
