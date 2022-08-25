@@ -48,6 +48,7 @@ jobs:
         with:
           files: |
             ${{ matrix.workdir }}
+            .github/workflows/test_policy_sql.yml
           files_ignore: |
             ${{ matrix.workdir }}/CHANGELOG.md
 
