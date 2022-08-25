@@ -9,6 +9,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	smithy "github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
@@ -94,19 +95,16 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("ReportUser.ARN"),
 			},
 			{
-				Name:     "password_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ReportUser.PasswordStatus"),
+				Name: "password_enabled",
+				Type: schema.TypeBool,
 			},
 			{
-				Name:     "password_last_changed",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ReportUser.PasswordLastChanged"),
+				Name: "password_last_changed",
+				Type: schema.TypeTimestamp,
 			},
 			{
-				Name:     "password_next_rotation",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ReportUser.PasswordNextRotation"),
+				Name: "password_next_rotation",
+				Type: schema.TypeTimestamp,
 			},
 			{
 				Name:     "mfa_active",
@@ -114,44 +112,43 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("ReportUser.MfaActive"),
 			},
 			{
-				Name:     "access_key1_active",
+				Name:     "access_key_1_active",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("ReportUser.AccessKey1Active"),
 			},
 			{
-				Name:     "access_key2_active",
+				Name:     "access_key_2_active",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("ReportUser.AccessKey2Active"),
 			},
 			{
-				Name:     "access_key1_last_rotated",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ReportUser.AccessKey1LastRotated"),
+				Name: "access_key_1_last_rotated",
+				Type: schema.TypeTimestamp,
 			},
 			{
-				Name:     "access_key2_last_rotated",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ReportUser.AccessKey2LastRotated"),
+				Name: "access_key_2_last_rotated",
+				Type: schema.TypeTimestamp,
+				// Resolver: schema.PathResolver("ReportUser.AccessKey2LastRotated"),
 			},
 			{
-				Name:     "cert1_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ReportUser.Cert1Active"),
+				Name: "cert_1_active",
+				Type: schema.TypeBool,
+				// Resolver: schema.PathResolver("ReportUser.Cert1Active"),
 			},
 			{
-				Name:     "cert2_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ReportUser.Cert2Active"),
+				Name: "cert_2_active",
+				Type: schema.TypeBool,
+				// Resolver: schema.PathResolver("ReportUser.Cert2Active"),
 			},
 			{
-				Name:     "cert1_last_rotated",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ReportUser.Cert1LastRotated"),
+				Name: "cert_1_last_rotated",
+				Type: schema.TypeTimestamp,
+				// Resolver: schema.PathResolver("ReportUser.Cert1LastRotated"),
 			},
 			{
-				Name:     "cert2_last_rotated",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ReportUser.Cert2LastRotated"),
+				Name: "cert_2_last_rotated",
+				Type: schema.TypeTimestamp,
+				// Resolver: schema.PathResolver("ReportUser.Cert2LastRotated"),
 			},
 		},
 		Relations: []*schema.Table{
@@ -315,7 +312,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	p := parent.Item.(WrappedUser)
 	cl := meta.(*client.Client)
 	svc := cl.Services().IAM
-	config.UserName = p.UserName
+	config.UserName = p.User.UserName
 	for {
 		output, err := svc.ListAccessKeys(ctx, &config)
 		if err != nil {
@@ -343,11 +340,13 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(WrappedUser)
-	if aws.ToString(p.UserName) == "<root_account>" {
+	cl := meta.(*client.Client)
+	svc := cl.Services().IAM
+	if aws.ToString(p.Arn) == cl.AccountGlobalARN(client.IamService, "root") {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().IAM
-	config.UserName = p.UserName
+
+	config.UserName = p.User.UserName
 	for {
 		output, err := svc.ListGroupsForUser(ctx, &config)
 		if err != nil {
@@ -364,11 +363,12 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(WrappedUser)
-	if aws.ToString(p.UserName) == "<root_account>" {
+	cl := meta.(*client.Client)
+	if aws.ToString(p.Arn) == cl.AccountGlobalARN(client.IamService, "root") {
 		return nil
 	}
-	svc := meta.(*client.Client).Services().IAM
-	config.UserName = p.UserName
+	svc := cl.Services().IAM
+	config.UserName = p.User.UserName
 	for {
 		output, err := svc.ListAttachedUserPolicies(ctx, &config)
 		if err != nil {
@@ -386,10 +386,10 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().IAM
 	user := parent.Item.(WrappedUser)
-	if aws.ToString(user.UserName) == "<root_account>" {
+	if aws.ToString(user.Arn) == c.AccountGlobalARN(client.IamService, "root") {
 		return nil
 	}
-	config := iam.ListUserPoliciesInput{UserName: user.UserName}
+	config := iam.ListUserPoliciesInput{UserName: user.User.UserName}
 	for {
 		output, err := svc.ListUserPolicies(ctx, &config)
 		if err != nil {
@@ -446,7 +446,16 @@ func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- in
 }
 func userDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
 	c := meta.(*client.Client)
+
 	reportUser := listInfo.(*ReportUser)
+	if reportUser.ARN == c.AccountGlobalARN(client.IamService, "root") {
+		resultsChan <- WrappedUser{types.User{
+			Arn:      aws.String(reportUser.ARN),
+			UserId:   aws.String("root"),
+			UserName: aws.String("root"),
+		}, reportUser}
+		return
+	}
 	svc := meta.(*client.Client).Services().IAM
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
 		UserName: aws.String(reportUser.User),
@@ -507,7 +516,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 	}
 
 	if r.Cert1LastRotated == "N/A" || r.Cert1LastRotated == "not_supported" {
-		if err := resource.Set("cert1_last_rotated", nil); err != nil {
+		if err := resource.Set("cert_1_last_rotated", nil); err != nil {
 			return diag.WrapError(err)
 		}
 	} else {
@@ -515,13 +524,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		if err := resource.Set("cert1_last_rotated", cert1LastRotated); err != nil {
+		if err := resource.Set("cert_1_last_rotated", cert1LastRotated); err != nil {
 			return diag.WrapError(err)
 		}
 	}
 
 	if r.Cert2LastRotated == "N/A" || r.Cert2LastRotated == "not_supported" {
-		if err := resource.Set("cert2_last_rotated", nil); err != nil {
+		if err := resource.Set("cert_2_last_rotated", nil); err != nil {
 			return diag.WrapError(err)
 		}
 	} else {
@@ -529,13 +538,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		if err := resource.Set("cert2_last_rotated", cert2LastRotated); err != nil {
+		if err := resource.Set("cert_2_last_rotated", cert2LastRotated); err != nil {
 			return diag.WrapError(err)
 		}
 	}
 
 	if r.AccessKey1LastRotated == "N/A" || r.AccessKey1LastRotated == "not_supported" {
-		if err := resource.Set("access_key1_last_rotated", nil); err != nil {
+		if err := resource.Set("access_key_1_last_rotated", nil); err != nil {
 			return diag.WrapError(err)
 		}
 	} else {
@@ -543,13 +552,13 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		if err := resource.Set("access_key1_last_rotated", accessKey1LastRotated); err != nil {
+		if err := resource.Set("access_key_1_last_rotated", accessKey1LastRotated); err != nil {
 			return diag.WrapError(err)
 		}
 	}
 
 	if r.AccessKey2LastRotated == "N/A" || r.AccessKey2LastRotated == "not_supported" {
-		if err := resource.Set("access_key2_last_rotated", nil); err != nil {
+		if err := resource.Set("access_key_2_last_rotated", nil); err != nil {
 			return diag.WrapError(err)
 		}
 	} else {
@@ -557,21 +566,14 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		if err := resource.Set("access_key2_last_rotated", accessKey2LastRotated); err != nil {
+		if err := resource.Set("access_key_2_last_rotated", accessKey2LastRotated); err != nil {
 			return diag.WrapError(err)
 		}
 	}
 
 	return nil
 }
-func (r ReportUsers) GetUser(arn string) *ReportUser {
-	for _, u := range r {
-		if u.ARN == arn {
-			return u
-		}
-	}
-	return nil
-}
+
 func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (ReportUsers, error) {
 	var err error
 	var apiErr smithy.APIError
