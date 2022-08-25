@@ -2,8 +2,10 @@ name: Lint Website Docs
 
 on:
   pull_request:
-    # paths:
-    #   - "website/**"
+    paths:
+      - "website/**"
+      - "README.md"
+      - ".github/workflow/lint_website_doc.yml"
 
 jobs:
   lint-docs:
@@ -13,7 +15,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Vale
         uses: errata-ai/vale-action@v2
-        continue-on-error: true
         with:
           files: '["website", "README.md"]'
           filter_mode: nofilter
