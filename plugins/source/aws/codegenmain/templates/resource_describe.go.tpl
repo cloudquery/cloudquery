@@ -16,7 +16,7 @@ func {{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 
-func fetch{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService}}
 

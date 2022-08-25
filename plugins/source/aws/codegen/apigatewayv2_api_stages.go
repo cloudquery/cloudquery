@@ -17,7 +17,7 @@ func Apigatewayv2ApisStages() *schema.Table {
 
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_stages",
-		Resolver:  fetchApigatewayv2ApisStages,
+		Resolver:  fetchApigatewayv2ApiStages,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
@@ -94,7 +94,7 @@ func Apigatewayv2ApisStages() *schema.Table {
 	}
 }
 
-func fetchApigatewayv2ApisStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
@@ -102,7 +102,6 @@ func fetchApigatewayv2ApisStages(ctx context.Context, meta schema.ClientMeta, pa
 	r := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetStagesInput{
-
 		ApiId: r.ApiId,
 	}
 

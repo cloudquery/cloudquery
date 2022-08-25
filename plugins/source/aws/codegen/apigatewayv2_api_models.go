@@ -13,61 +13,55 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2ApisDeployments() *schema.Table {
+func Apigatewayv2ApisModels() *schema.Table {
 
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_deployments",
-		Resolver:  fetchApigatewayv2ApisDeployments,
+		Name:      "aws_apigatewayv2_models",
+		Resolver:  fetchApigatewayv2ApiModels,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
-				Name:     "auto_deployed",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("AutoDeployed"),
-			},
-			{
-				Name:     "created_date",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CreatedDate"),
-			},
-			{
-				Name:     "deployment_id",
+				Name:     "name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeploymentId"),
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "deployment_status",
+				Name:     "content_type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeploymentStatus"),
-			},
-			{
-				Name:     "deployment_status_message",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DeploymentStatusMessage"),
+				Resolver: schema.PathResolver("ContentType"),
 			},
 			{
 				Name:     "description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Description"),
 			},
+			{
+				Name:     "model_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ModelId"),
+			},
+			{
+				Name:     "schema",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Schema"),
+			},
 		},
 	}
 }
 
-func fetchApigatewayv2ApisDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
 	r := parent.Item.(types.Api)
 
-	input := apigatewayv2.GetDeploymentsInput{
-
+	input := apigatewayv2.GetModelsInput{
 		ApiId: r.ApiId,
 	}
 
 	for {
-		response, err := svc.GetDeployments(ctx, &input)
+		response, err := svc.GetModels(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}

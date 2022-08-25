@@ -17,7 +17,7 @@ func Apigatewayv2IntegrationsIntegrationResponses() *schema.Table {
 
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_integrationresponses",
-		Resolver:  fetchApigatewayv2IntegrationsIntegrationResponses,
+		Resolver:  fetchApigatewayv2IntegrationResponses,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
@@ -54,7 +54,7 @@ func Apigatewayv2IntegrationsIntegrationResponses() *schema.Table {
 	}
 }
 
-func fetchApigatewayv2IntegrationsIntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2IntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2

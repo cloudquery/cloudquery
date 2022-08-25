@@ -17,7 +17,7 @@ func Apigatewayv2ApisAuthorizers() *schema.Table {
 
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_authorizers",
-		Resolver:  fetchApigatewayv2ApisAuthorizers,
+		Resolver:  fetchApigatewayv2ApiAuthorizers,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
@@ -79,7 +79,7 @@ func Apigatewayv2ApisAuthorizers() *schema.Table {
 	}
 }
 
-func fetchApigatewayv2ApisAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
@@ -87,7 +87,6 @@ func fetchApigatewayv2ApisAuthorizers(ctx context.Context, meta schema.ClientMet
 	r := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetAuthorizersInput{
-
 		ApiId: r.ApiId,
 	}
 

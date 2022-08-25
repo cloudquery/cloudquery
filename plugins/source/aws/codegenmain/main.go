@@ -96,7 +96,11 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if r.Parent == nil {
 		r.Table.Resolver = "fetch" + r.AWSService + r.AWSSubService
 	} else {
-		r.Table.Resolver = "fetch" + r.AWSService + r.Parent.AWSSubService + r.AWSSubService
+		if !strings.HasPrefix(r.AWSSubService, r.Parent.ItemName) {
+			r.Table.Resolver = "fetch" + r.AWSService + r.Parent.ItemName + r.AWSSubService
+		} else {
+			r.Table.Resolver = "fetch" + r.AWSService + r.AWSSubService
+		}
 	}
 
 	t := reflect.TypeOf(r.AWSStruct).Elem()
@@ -154,7 +158,13 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if r.Parent == nil {
 		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+strcase.ToSnake(r.AWSSubService)+fileSuffix)
 	} else {
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+strcase.ToSnake(r.Parent.AWSSubService)+"_"+strcase.ToSnake(r.AWSSubService)+fileSuffix)
+		parentPrefix := strcase.ToSnake(r.Parent.ItemName) + "_"
+		ss := strcase.ToSnake(r.AWSSubService)
+		if !strings.HasPrefix(ss, parentPrefix) {
+			// prevent "apigatewayv2_integration_integration_responses" type names (repeated prefix)
+			ss = parentPrefix + ss
+		}
+		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+ss+fileSuffix)
 	}
 	content, err := format.Source(buff.Bytes())
 	if err != nil {

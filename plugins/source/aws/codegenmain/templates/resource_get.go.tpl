@@ -22,19 +22,18 @@ func {{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubServic
 }
 
 {{if .Parent}}
-func fetch{{.AWSService | ToCamel}}{{.Parent.AWSSubService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 {{else}}
-	func fetch{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 {{end}}
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
 
-{{if .Parent}}
-	r := parent.Item.(types.{{.Parent.ItemName}})
+{{if .Parent}}	r := parent.Item.(types.{{.Parent.ItemName}})
 {{if .Parent.Parent}}	rp := parent.Parent.Item.(types.{{.Parent.Parent.ItemName}}){{end}}
 	input := {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input{
-{{if .Parent.Parent}}		{{.Parent.ParentFieldName}}: rp.{{.Parent.ParentFieldName}},{{end}}
-		{{.ParentFieldName}}: r.{{.ParentFieldName}},
+{{if .Parent.Parent}}		{{.Parent.ParentFieldName}}: rp.{{.Parent.ParentFieldName}},
+{{end}}	{{.ParentFieldName}}: r.{{.ParentFieldName}},
 	}
 {{else}}
 	var input {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input

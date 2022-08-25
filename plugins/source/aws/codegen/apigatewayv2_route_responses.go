@@ -17,7 +17,7 @@ func Apigatewayv2RoutesRouteResponses() *schema.Table {
 
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_routeresponses",
-		Resolver:  fetchApigatewayv2RoutesRouteResponses,
+		Resolver:  fetchApigatewayv2RouteResponses,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
@@ -49,7 +49,7 @@ func Apigatewayv2RoutesRouteResponses() *schema.Table {
 	}
 }
 
-func fetchApigatewayv2RoutesRouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2RouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
