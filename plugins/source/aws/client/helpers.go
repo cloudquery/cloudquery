@@ -53,13 +53,13 @@ const (
 	ElasticLoadBalancingService AWSService = "elasticloadbalancing"
 	GlueService                 AWSService = "glue"
 	GuardDutyService            AWSService = "guardduty"
+	IamService                  AWSService = "iam"
 	RedshiftService             AWSService = "redshift"
 	Route53Service              AWSService = "route53"
 	S3Service                   AWSService = "s3"
 	SESService                  AWSService = "ses"
 	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
-	IamService                  AWSService = "iam"
 )
 
 const MAX_GOROUTINES = 10
