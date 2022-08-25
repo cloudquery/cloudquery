@@ -14,8 +14,8 @@ import (
 )
 
 func buildLogicAppWorkflowMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	diagnosticSettings := mocks.NewMockMonitorDiagnosticSettingsClient(ctrl)
-	workflows := mocks.NewMockWorkflowsClient(ctrl)
+	diagnosticSettings := mocks.NewMockLogicDiagnosticSettingsClient(ctrl)
+	workflows := mocks.NewMockLogicWorkflowsClient(ctrl)
 	var diagnosticSettingsResource insights.DiagnosticSettingsResource
 	if err := faker.FakeDataSkipFields(&diagnosticSettingsResource, []string{""}); err != nil {
 		t.Fatal(err)
