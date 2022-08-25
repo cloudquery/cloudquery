@@ -68,7 +68,7 @@ List root accounts that were accessed in the last 30 days:
 
 ```sql
 SELECT account_id, arn, password_last_used, user_name FROM aws_iam_users
-WHERE user_name = '<root_account>' AND password_last_used > (now() - '30 days'::interval)
+WHERE aws_iam_users.arn = 'arn:aws:iam::'||aws_iam_users.account_id||':root' AND password_last_used > (now() - '30 days'::interval)
 ```
 
 Also, it is strongly advised not to create any access keys for the root account.
@@ -77,7 +77,7 @@ To list root accounts with access keys:
 ```sql
 select * from aws_iam_users
    JOIN aws_iam_user_access_keys keys on aws_iam_users.id = keys.user_id
-WHERE user_name = '<root>'
+WHERE aws_iam_users.arn = 'arn:aws:iam::'||aws_iam_users.account_id||':root' 
 ```
 
 ### Use groups to assign permissions to IAM

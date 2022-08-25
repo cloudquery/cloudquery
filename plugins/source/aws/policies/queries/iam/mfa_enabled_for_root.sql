@@ -7,7 +7,7 @@ select
   account_id,
   arn as resource_id,
   case 
-    when user_name = '<root_account>' and not mfa_active then 'fail'
-    when user_name = '<root_account>' and mfa_active then 'pass'
+    when not mfa_active then 'fail'
+    when mfa_active then 'pass'
   end as status
-from aws_iam_users
+from aws_iam_users where arn = 'arn:aws:iam::'||account_id||':root' 

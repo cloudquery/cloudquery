@@ -7,11 +7,10 @@ select
   account_id,
   arn,
   case when
-    user_name = '<root>'
+    keys.count > 0 
     then 'fail'
     else 'pass'
   end
 from aws_iam_users
-inner join
-    aws_iam_user_access_keys on
-        aws_iam_users.cq_id = aws_iam_user_access_keys.user_cq_id
+left join (select count(*), user_cq_id from aws_iam_user_access_keys group by user_cq_id) keys on aws_iam_users.cq_id =  keys.user_cq_id
+where aws_iam_users.arn = 'arn:aws:iam::'||account_id||':root' 

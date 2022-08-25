@@ -7,8 +7,8 @@ select
   account_id,
   arn as resource_id,
   case when
-    user_name = '<root_account>' and password_last_used > (now() - '30 days'::INTERVAL)
+    password_last_used > (now() - '30 days'::INTERVAL)
     then 'fail'
     else 'pass'
   end as status
-from aws_iam_users
+from aws_iam_users where arn = 'arn:aws:iam::'||account_id||':root' 
