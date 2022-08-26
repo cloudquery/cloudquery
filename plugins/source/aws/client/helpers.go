@@ -53,6 +53,7 @@ const (
 	ElasticLoadBalancingService AWSService = "elasticloadbalancing"
 	GlueService                 AWSService = "glue"
 	GuardDutyService            AWSService = "guardduty"
+	IamService                  AWSService = "iam"
 	RedshiftService             AWSService = "redshift"
 	Route53Service              AWSService = "route53"
 	S3Service                   AWSService = "s3"

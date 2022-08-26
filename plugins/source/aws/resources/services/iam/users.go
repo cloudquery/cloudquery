@@ -3,7 +3,6 @@ package iam
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -323,57 +322,50 @@ func IamUsers() *schema.Table {
 	}
 }
 
-func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	var config iam.ListUsersInput
+func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listUsers, userDetail))
+}
 
-	cl := meta.(*client.Client)
-	svc := cl.Services().IAM
+func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	report, err := getCredentialReport(ctx, meta)
 	if err != nil {
 		return diag.WrapError(err)
 	}
 
-	root := report.GetUser(fmt.Sprintf("arn:%s:iam::%s:root", cl.Partition, cl.AccountID))
-	if root != nil {
-		res <- wrappedUser{
+	for _, user := range report {
+		detailChan <- user
+	}
+	return nil
+}
+
+func userDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+	c := meta.(*client.Client)
+
+	reportUser := listInfo.(*reportUser)
+	if reportUser.ARN == c.AccountGlobalARN(client.IamService, "root") {
+		resultsChan <- wrappedUser{
 			User: types.User{
-				Arn:        aws.String(root.ARN),
-				CreateDate: aws.Time(root.UserCreationTime),
+				Arn:        aws.String(reportUser.ARN),
+				CreateDate: aws.Time(reportUser.UserCreationTime),
 				UserId:     aws.String("root"),
-				UserName:   aws.String(root.User),
+				UserName:   aws.String(reportUser.User),
 			},
-			reportUser: root,
+			reportUser: reportUser,
 			isRoot:     true,
 		}
 	}
-
-	for {
-		output, err := svc.ListUsers(ctx, &config)
-		if err != nil {
-			return diag.WrapError(err)
+	svc := meta.(*client.Client).Services().IAM
+	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
+		UserName: aws.String(reportUser.User),
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return
 		}
-
-		wUsers := make([]wrappedUser, len(output.Users))
-		for i, u := range output.Users {
-			ru := report.GetUser(aws.ToString(u.Arn))
-			if ru == nil {
-				meta.Logger().Warn("failed to find user in credential report", "arn", u.Arn)
-				ru = &reportUser{}
-			}
-			wUsers[i] = wrappedUser{
-				User:       u,
-				reportUser: ru,
-				isRoot:     false,
-			}
-		}
-
-		res <- wUsers
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		config.Marker = output.Marker
+		errorChan <- diag.WrapError(err)
+		return
 	}
-	return nil
+	resultsChan <- wrappedUser{*userDetail.User, reportUser, false}
 }
 
 func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schema.Resource) error {
