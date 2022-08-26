@@ -137,7 +137,7 @@ func IamUsers() *schema.Table {
 				Name:        "tags",
 				Description: "A list of tags that are associated with the user",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveUserTags,
+				Resolver:    schema.PathResolver("User.Tags"),
 			},
 			{
 				Name:        "user_id",
@@ -600,23 +600,6 @@ func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, p
 		config.Marker = output.Marker
 	}
 	return nil
-}
-
-func resolveUserTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	svc := meta.(*client.Client).Services().IAM
-	r := resource.Item.(wrappedUser)
-	tags := map[string]*string{}
-
-	if !r.isRoot {
-		tagsOutput, err := svc.ListUserTags(ctx, &iam.ListUserTagsInput{UserName: r.UserName})
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		for _, t := range tagsOutput.Tags {
-			tags[*t.Key] = t.Value
-		}
-	}
-	return diag.WrapError(resource.Set("tags", tags))
 }
 
 func (r reportUsers) GetUser(arn string) *reportUser {

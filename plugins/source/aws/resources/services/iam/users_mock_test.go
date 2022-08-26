@@ -65,10 +65,9 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	m.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Return(
-		&iam.ListUsersOutput{
-			Users: []iamTypes.User{u},
+	m.EXPECT().GetUser(gomock.Any(), gomock.Any()).Return(
+		&iam.GetUserOutput{
+			User: &u,
 		}, nil)
 	m.EXPECT().ListGroupsForUser(gomock.Any(), gomock.Any()).Return(
 		&iam.ListGroupsForUserOutput{
@@ -88,11 +87,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
 			Content: content,
-		}, nil)
-
-	m.EXPECT().ListUserTags(gomock.Any(), gomock.Any()).Return(
-		&iam.ListUserTagsOutput{
-			Tags: tags,
 		}, nil)
 
 	//list user inline policies
