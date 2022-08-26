@@ -8,11 +8,13 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/jackc/pgtype"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/log/zerologadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
+	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
 )
 
 // this really cool query is take from https://github.com/go-gorm/postgres/blob/master/migrator.go
@@ -57,6 +59,7 @@ AND NOT a.attisdropped -- hide deleted columns
 AND b.relname = $2`
 
 const sqlAlterTableAddColumn = "alter table "
+
 const sqlAddColumn = "add column $1"
 
 const sqlAlterTableDropColumn = "alter table $1 drop column $2"
@@ -68,6 +71,8 @@ const sqlAlterTableDropUniqueConstraint = "alter table $1 drop constraint "
 const sqlAlterTableDropCQPrimaryKeyConstraint = "alter table $1 drop constraint if exists cq_pk"
 
 const sqlAlterTableAddCQPrimaryKeyConstraint = "alter table $1 add constraint cq_pk primary key ($2)"
+
+const sqlDropTable = "drop table if exists "
 
 const isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1"
 
@@ -115,6 +120,10 @@ func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to parse connection string")
 	}
+	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
+		conn.ConnInfo().RegisterDataType(pgtype.DataType{Value: &pgxUUID.UUID{}, Name: "uuid", OID: pgtype.UUIDOID})
+		return nil
+	}
 	l := zerologadapter.NewLogger(p.logger)
 	pgxConfig.ConnConfig.Logger = l
 	pgxConfig.ConnConfig.LogLevel = specPostgreSql.PgxLogLevel
@@ -152,7 +161,7 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 	}
 	if len(primaryKeys) > 0 {
-		sb.WriteString("CONSTRAINT cq_pk PRIMARY KEY (")
+		sb.WriteString(", CONSTRAINT cq_pk PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
@@ -389,15 +398,16 @@ func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (p *Client) Write(ctx context.Context, resource *schema.Resource) error {
-	columns := make([]string, 0, len(resource.Data))
-	values := make([]interface{}, 0, len(resource.Data))
-	for c, v := range resource.Data {
+func (p *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
+	p.logger.Info().Str("table", table).Msg("Writing data")
+	columns := make([]string, 0, len(data))
+	values := make([]interface{}, 0, len(data))
+	for c, v := range data {
 		columns = append(columns, `"`+c+`"`)
 		values = append(values, v)
 	}
 	sq.Insert("").Columns("").Values("")
-	sql, values, err := sq.Insert(resource.TableName).Columns(columns...).Values(values...).PlaceholderFormat(sq.Dollar).ToSql()
+	sql, values, err := sq.Insert(table).Columns(columns...).Values(values...).PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
 		return fmt.Errorf("failed to generate insert sql '%s': %w", sql, err)
 	}
@@ -414,6 +424,17 @@ connection_string: "postgresql://user:password@localhost:5432/dbname"
 `
 }
 
+func (p *Client) Drop(ctx context.Context, tables schema.Tables) error {
+	p.logger.Info().Strs("tables", tables.TableNames()).Msg("Dropping tables")
+	for _, table := range tables {
+		var tableName pgx.Identifier = []string{table.Name}
+		if _, err := p.conn.Exec(ctx, sqlDropTable+tableName.Sanitize()); err != nil {
+			return fmt.Errorf("failed to drop table %s: %w", table.Name, err)
+		}
+	}
+	return nil
+}
+
 func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	switch t {
 	case schema.TypeBool:
@@ -426,12 +447,10 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 		return "uuid", nil
 	case schema.TypeString:
 		return "text", nil
-	case schema.TypeByteArray:
-		return "bytea", nil
 	case schema.TypeStringArray:
 		return "text[]", nil
 	case schema.TypeTimestamp:
-		return "timestamp", nil
+		return "timestamp without time zone", nil
 	case schema.TypeJSON:
 		return "json", nil
 	case schema.TypeUUIDArray:
@@ -449,7 +468,7 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	case schema.TypeInet:
 		return "inet", nil
 	case schema.TypeIntArray:
-		return "inet[]", nil
+		return "bigint[]", nil
 	default:
 		return "", errors.Errorf("unsupported schema type: %s", t)
 	}
