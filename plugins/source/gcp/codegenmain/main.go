@@ -42,7 +42,8 @@ func generateResource(r codegen.Resource, mock bool) {
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.GCPService, r.GCPSubService),
 		r.GCPStruct,
-		sdkgen.WithSkipFields(r.SkipFields...))
+		sdkgen.WithSkipFields(r.SkipFields),
+		sdkgen.WithOverrideColumns(r.OverrideColumns))
 	if err != nil {
 		log.Fatal(err)
 	}
