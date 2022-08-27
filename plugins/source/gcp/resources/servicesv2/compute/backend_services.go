@@ -21,9 +21,6 @@ func ComputeBackendServices() *schema.Table {
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "affinity_cookie_ttl_sec",
@@ -191,9 +188,11 @@ func ComputeBackendServices() *schema.Table {
 				Resolver: schema.PathResolver("SecuritySettings"),
 			},
 			{
-				Name:     "self_link",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "service_bindings",

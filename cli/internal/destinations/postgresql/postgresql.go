@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	sq "github.com/Masterminds/squirrel"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgtype"
@@ -83,6 +82,8 @@ const sqlAlterTableAddCQPrimaryKeyConstraint = "alter table $1 add constraint cq
 const sqlDropTable = "drop table if exists "
 
 const isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1"
+
+var defaultColumns = []string{"_cq_raw"}
 
 type PostgreSqlSpec struct {
 	ConnectionString string `json:"connection_string,omitempty"`
@@ -179,15 +180,21 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 		// if write mode is append only we include the internal _cq_fetch_time in
 		// the primary key
-		if c.Name == "_cq_fetch_time" && p.spec.WriteMode == specs.WriteModeAppend {
-			primaryKeys = append(primaryKeys, c.Name)
-		}
+		// if c.Name == "_cq_fetch_time" && p.spec.WriteMode == specs.WriteModeAppend {
+		// 	primaryKeys = append(primaryKeys, c.Name)
+		// }
 
 	}
 	if len(primaryKeys) > 0 {
-		sb.WriteString(", PRIMARY KEY (")
+		sb.WriteString(", CONSTRAINT ")
+		sb.WriteString(table.Name)
+		sb.WriteString("_cq_pk PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
+	} else {
+		sb.WriteString(", CONSTRAINT ")
+		sb.WriteString(table.Name)
+		sb.WriteString("_cq_pk PRIMARY KEY (_cq_id)")
 	}
 	sb.WriteString(")")
 	_, err := p.conn.Exec(ctx, sb.String())
@@ -379,8 +386,9 @@ func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	return nil
 }
 
-func (p *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
-	p.logger.Info().Str("table", table).Msg("Writing data")
+func upsert(table string, data map[string]interface{}) (string, []interface{}) {
+	var sb strings.Builder
+
 	columns := make([]string, 0, len(data))
 	values := make([]interface{}, 0, len(data))
 	for c, v := range data {
@@ -388,13 +396,56 @@ func (p *Client) Write(ctx context.Context, table string, data map[string]interf
 		values = append(values, v)
 	}
 
-	sql, values, err := sq.Insert(table).Columns(columns...).Values(values...).PlaceholderFormat(sq.Dollar).ToSql()
-	if err != nil {
-		return fmt.Errorf("failed to generate insert sql '%s': %w", sql, err)
+	sb.WriteString("insert into ")
+	sb.WriteString(table)
+	sb.WriteString(" (")
+	for i, c := range columns {
+		sb.WriteString(c)
+		if i < len(columns)-1 {
+			sb.WriteString(",")
+		} else {
+			sb.WriteString(") values (")
+		}
 	}
-	_, err = p.conn.Exec(ctx, sql, values...)
+	for i, _ := range values {
+		sb.WriteString(fmt.Sprintf("$%d", i+1))
+		if i < len(values)-1 {
+			sb.WriteString(",")
+		} else {
+			sb.WriteString(")")
+		}
+	}
+	constraintName := fmt.Sprintf("%s_cq_pk", table)
+	sb.WriteString(" on conflict on constraint ")
+	sb.WriteString(constraintName)
+	sb.WriteString(" do update set ")
+	for i, c := range columns {
+		sb.WriteString(c)
+		sb.WriteString("=")
+		sb.WriteString(table)
+		sb.WriteString(".")
+		sb.WriteString(c)
+		if i < len(columns)-1 {
+			sb.WriteString(",")
+		} else {
+			sb.WriteString("")
+		}
+	}
+
+	return sb.String(), values
+}
+
+func (p *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
+	p.logger.Info().Str("table", table).Msg("Writing data")
+	// columns := make([]string, 0, len(data))
+	// values := make([]interface{}, 0, len(data))
+	// for c, v := range data {
+	// 	columns = append(columns, `"`+c+`"`)
+	// 	values = append(values, v)
+	// }
+	sql, values := upsert(table, data)
+	_, err := p.conn.Exec(ctx, sql, values...)
 	if err != nil {
-		fmt.Println(values)
 		return fmt.Errorf("failed to insert data with sql '%s': %w", sql, err)
 	}
 	return nil

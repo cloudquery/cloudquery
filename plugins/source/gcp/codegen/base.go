@@ -39,5 +39,4 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 	Name:     "project_id",
 	Type:     schema.TypeString,
 	Resolver: "client.ResolveProject",
-	Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 }

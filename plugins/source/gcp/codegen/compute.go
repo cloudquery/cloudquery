@@ -25,17 +25,15 @@ var computeResourcesAggList = []Resource{
 	{
 		GCPSubService: "disk_types",
 		GCPStruct:     &compute.DiskType{},
-		ColumnOverride: []codegen.ColumnDefinition{
-			{
-				Name: "id",
-				Type: schema.TypeString,
-			},
+		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",
 				Type:    schema.TypeString,
 				Options: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
+		// Id doesn't return anything
+		SkipFields: []string{"ServerResponse", "NullFields", "ForceSendFields", "Id"},
 	},
 	{
 		GCPSubService: "forwarding_rules",
@@ -134,24 +132,20 @@ func ComputeResources() []Resource {
 		resources[i].GCPService = "compute"
 		resources[i].DefaultColumns = []codegen.ColumnDefinition{ProjectIdColumn}
 		resources[i].GCPStructName = reflect.TypeOf(resources[i].GCPStruct).Elem().Name()
-		resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
+		if resources[i].SkipFields == nil {
+			resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
+		}
 		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
 		if resources[i].MockListStruct == "" {
 			resources[i].MockListStruct = strcase.ToCamel(resources[i].GCPStructName)
 		}
-		if resources[i].Table == nil {
-			continue
-		}
-		for j := range resources[i].Table.Columns {
-			if resources[i].Table.Columns[j].Name == "id" || resources[i].Table.Columns[j].Name == "project_id" {
-				resources[i].Table.Columns[j].Options.PrimaryKey = true
-			}
-		}
-		for _, colOverride := range resources[i].ColumnOverride {
-			for k, col := range resources[i].Table.Columns {
-				if col.Name == colOverride.Name {
-					resources[i].Table.Columns[k] = colOverride
-				}
+		if resources[i].OverrideColumns == nil {
+			resources[i].OverrideColumns = []codegen.ColumnDefinition{
+				{
+					Name:    "self_link",
+					Type:    schema.TypeString,
+					Options: schema.ColumnCreationOptions{PrimaryKey: true},
+				},
 			}
 		}
 	}
