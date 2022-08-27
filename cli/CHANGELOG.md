@@ -4,6 +4,13 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.32.9](https://github.com/cloudquery/cloudquery/compare/cli/v0.32.8...cli/v0.32.9) (2022-08-27)
+
+
+### Bug Fixes
+
+* Remove deprecated firebase ([#1568](https://github.com/cloudquery/cloudquery/issues/1568)) ([a879709](https://github.com/cloudquery/cloudquery/commit/a8797092df6c228ae519dbb5af4fb55b4ce0cb52))
+
 ## [0.32.8](https://github.com/cloudquery/cloudquery/compare/cli/v0.32.7...cli/v0.32.8) (2022-08-21)
 
 
