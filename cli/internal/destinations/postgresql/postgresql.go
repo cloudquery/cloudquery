@@ -58,6 +58,14 @@ WHERE a.attnum > 0 -- hide internal columns
 AND NOT a.attisdropped -- hide deleted columns
 AND b.relname = $2`
 
+const sqlSelectPrimaryKeys = `select tc.constraint_name, tc.table_name                
+from information_schema.table_constraints tc
+  join information_schema.key_column_usage kc 
+    on kc.table_name = tc.table_name and kc.table_schema = tc.table_schema and kc.constraint_name = tc.constraint_name
+where tc.constraint_type = 'PRIMARY KEY'
+  and kc.ordinal_position is not null and tc.table_name = 'gcp_compute_addresses'
+ group by tc.constraint_name, tc.table_name;`
+
 const sqlAlterTableAddColumn = "alter table "
 
 const sqlAddColumn = "add column $1"
@@ -77,13 +85,14 @@ const sqlDropTable = "drop table if exists "
 const isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1"
 
 type PostgreSqlSpec struct {
-	ConnectionString string       `json:"connection_string,omitempty"`
-	PgxLogLevel      pgx.LogLevel `json:"pgx_log_level,omitempty"`
+	ConnectionString string `json:"connection_string,omitempty"`
+	PgxLogLevel      string `json:"pgx_log_level,omitempty"`
 }
 
 type Client struct {
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
+	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
 }
@@ -109,12 +118,16 @@ func (p *Client) SetLogger(logger zerolog.Logger) {
 
 func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 	var specPostgreSql PostgreSqlSpec
-
+	p.spec = spec
 	if err := spec.UnmarshalSpec(&specPostgreSql); err != nil {
 		return fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 
-	p.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel.String()).Msg("Initializing postgresql destination")
+	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel)
+	if err != nil {
+		return fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
+	}
+	p.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel).Msg("Initializing postgresql destination")
 
 	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
 	if err != nil {
@@ -126,7 +139,7 @@ func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 	}
 	l := zerologadapter.NewLogger(p.logger)
 	pgxConfig.ConnConfig.Logger = l
-	pgxConfig.ConnConfig.LogLevel = specPostgreSql.PgxLogLevel
+	pgxConfig.ConnConfig.LogLevel = logLevel
 	p.conn, err = pgxpool.ConnectConfig(ctx, pgxConfig)
 	if err != nil {
 		return errors.Wrap(err, "failed to connect to postgresql")
@@ -152,23 +165,34 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		if err != nil {
 			return errors.Wrap(err, "failed to convert schema type to postgresql type")
 		}
-		sb.WriteString(fmt.Sprintf("\"%s\" %s", c.Name, pgType))
+		var columnName pgx.Identifier = []string{c.Name}
+		fieldDef := columnName.Sanitize() + " " + pgType
+		if c.CreationOptions.Unique {
+			fieldDef += " UNIQUE"
+		}
+		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
 		if c.CreationOptions.PrimaryKey {
 			primaryKeys = append(primaryKeys, c.Name)
 		}
+		// if write mode is append only we include the internal _cq_fetch_time in
+		// the primary key
+		if c.Name == "_cq_fetch_time" && p.spec.WriteMode == specs.WriteModeAppend {
+			primaryKeys = append(primaryKeys, c.Name)
+		}
+
 	}
 	if len(primaryKeys) > 0 {
-		sb.WriteString(", CONSTRAINT cq_pk PRIMARY KEY (")
+		sb.WriteString(", PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
 	sb.WriteString(")")
 	_, err := p.conn.Exec(ctx, sb.String())
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
 	}
 	return nil
 }
@@ -187,12 +211,6 @@ type pgColumn struct {
 	Type string `json:"type"`
 }
 
-type pgColumnConstraint struct {
-	Name           string `json:"name"`
-	ConstraintName string `json:"constraint_name"`
-	ConstraintType string `json:"constraint"`
-}
-
 func getPgColumnByName(columns []pgColumn, name string) *pgColumn {
 	for _, c := range columns {
 		if c.Name == name {
@@ -200,43 +218,6 @@ func getPgColumnByName(columns []pgColumn, name string) *pgColumn {
 		}
 	}
 	return nil
-}
-
-func getPgColumnConstraintByName(constraints []pgColumnConstraint, name string) []pgColumnConstraint {
-	var result []pgColumnConstraint
-	for _, c := range constraints {
-		if c.Name == name {
-			result = append(result, c)
-		}
-	}
-	return result
-}
-
-func isPgColumnConstraintUnique(name string, constraints []pgColumnConstraint) bool {
-	for _, c := range constraints {
-		if c.Name == name && c.ConstraintType == "UNIQUE" {
-			return true
-		}
-	}
-	return false
-}
-
-func isPgColumnConstraintPrimaryKey(name string, constraints []pgColumnConstraint) bool {
-	for _, c := range constraints {
-		if c.Name == name && c.ConstraintType == "PRIMARY KEY" {
-			return true
-		}
-	}
-	return false
-}
-
-func isPgColumnConstraintNotNull(name string, constraints []pgColumnConstraint) bool {
-	for _, c := range constraints {
-		if c.Name == name && c.ConstraintType == "NOT NULL" {
-			return true
-		}
-	}
-	return false
 }
 
 func (p *Client) getPgColumns(ctx context.Context, tableName string) ([]pgColumn, error) {
@@ -274,7 +255,7 @@ func (p *Client) getTableColumnsConstraints(ctx context.Context, tableName strin
 func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
 	var err error
 	var pgColumns []pgColumn
-	var pgColumnsConstraints []pgColumnConstraint
+	var pgColumnsConstraints constraints
 	if pgColumns, err = p.getPgColumns(ctx, table.Name); err != nil {
 		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
 	}
@@ -329,7 +310,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		} else {
 			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Str("type", c.Type.String()).Msg("Column exists with the same type")
 			// if column is the same check if any difference on constraints
-			if isPgColumnConstraintUnique(c.Name, pgColumnsConstraints) && !c.CreationOptions.Unique {
+			if pgColumnsConstraints.isColumnUnique(c.Name) && !c.CreationOptions.Unique {
 				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist with unique constraint, removing")
 				// we are using default pg unique constraint nameing
 				constraint_name := fmt.Sprintf("%s_%s_key", table.Name, c.Name)
@@ -338,7 +319,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 				}
 			}
 
-			if !isPgColumnConstraintUnique(c.Name, pgColumnsConstraints) && c.CreationOptions.Unique {
+			if !pgColumnsConstraints.isColumnUnique(c.Name) && c.CreationOptions.Unique {
 				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist without unique constraint, adding")
 				constraint_name := fmt.Sprintf("%s_%s_key", table.Name, c.Name)
 				if _, err := p.conn.Exec(ctx, sqlAlterTableDropUniqueConstraint+constraint_name, table.Name, c.Name); err != nil {
@@ -346,7 +327,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 				}
 			}
 
-			if isPgColumnConstraintPrimaryKey(c.Name, pgColumnsConstraints) != c.CreationOptions.PrimaryKey {
+			if pgColumnsConstraints.isColumnPrimaryKey(c.Name) != c.CreationOptions.PrimaryKey {
 				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist with different primary keys")
 				reCreatePrimaryKeys = true
 			}
@@ -378,7 +359,7 @@ func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 		}
 		tableExist := 0
 		if err := p.conn.QueryRow(ctx, isTableExistSQL, table.Name).Scan(&tableExist); err != nil {
-			return errors.Wrap(err, "failed to query information_schema.tables")
+			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 		}
 		if tableExist == 0 {
 			p.logger.Info().Str("table", table.Name).Msg("Table exists, creating")
@@ -406,13 +387,14 @@ func (p *Client) Write(ctx context.Context, table string, data map[string]interf
 		columns = append(columns, `"`+c+`"`)
 		values = append(values, v)
 	}
-	sq.Insert("").Columns("").Values("")
+
 	sql, values, err := sq.Insert(table).Columns(columns...).Values(values...).PlaceholderFormat(sq.Dollar).ToSql()
 	if err != nil {
 		return fmt.Errorf("failed to generate insert sql '%s': %w", sql, err)
 	}
 	_, err = p.conn.Exec(ctx, sql, values...)
 	if err != nil {
+		fmt.Println(values)
 		return fmt.Errorf("failed to insert data with sql '%s': %w", sql, err)
 	}
 	return nil

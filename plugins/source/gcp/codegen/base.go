@@ -31,8 +31,8 @@ type Resource struct {
 	MockListStruct string
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
-	//CreateTableOptions options to use to create the main table
-	CreateTableOptions schema.TableCreationOptions
+	// Columns override, override generated columns
+	OverrideColumns []codegen.ColumnDefinition
 }
 
 var ProjectIdColumn = codegen.ColumnDefinition{

@@ -4,6 +4,7 @@ import (
 	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/compute/v1"
 )
@@ -24,6 +25,17 @@ var computeResourcesAggList = []Resource{
 	{
 		GCPSubService: "disk_types",
 		GCPStruct:     &compute.DiskType{},
+		ColumnOverride: []codegen.ColumnDefinition{
+			{
+				Name: "id",
+				Type: schema.TypeString,
+			},
+			{
+				Name:    "self_link",
+				Type:    schema.TypeString,
+				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
 	},
 	{
 		GCPSubService: "forwarding_rules",
@@ -124,11 +136,23 @@ func ComputeResources() []Resource {
 		resources[i].GCPStructName = reflect.TypeOf(resources[i].GCPStruct).Elem().Name()
 		resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
 		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
-		if resources[i].CreateTableOptions.PrimaryKeys == nil {
-			resources[i].CreateTableOptions.PrimaryKeys = []string{"project_id", "id"}
-		}
 		if resources[i].MockListStruct == "" {
 			resources[i].MockListStruct = strcase.ToCamel(resources[i].GCPStructName)
+		}
+		if resources[i].Table == nil {
+			continue
+		}
+		for j := range resources[i].Table.Columns {
+			if resources[i].Table.Columns[j].Name == "id" || resources[i].Table.Columns[j].Name == "project_id" {
+				resources[i].Table.Columns[j].Options.PrimaryKey = true
+			}
+		}
+		for _, colOverride := range resources[i].ColumnOverride {
+			for k, col := range resources[i].Table.Columns {
+				if col.Name == colOverride.Name {
+					resources[i].Table.Columns[k] = colOverride
+				}
+			}
 		}
 	}
 

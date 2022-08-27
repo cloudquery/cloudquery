@@ -106,7 +106,7 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 		specs.Destination{
 			Spec: &PostgreSqlSpec{
 				ConnectionString: "postgres://postgres:pass@localhost:5432/postgres",
-				PgxLogLevel:      pgx.LogLevelInfo,
+				PgxLogLevel:      pgx.LogLevel(pgx.LogLevelInfo).String(),
 			},
 		},
 	); err != nil {
