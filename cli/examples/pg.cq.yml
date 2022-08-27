@@ -3,3 +3,4 @@ spec:
   name: postgresql
   spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres"
+    pgx_log_level: "debug"

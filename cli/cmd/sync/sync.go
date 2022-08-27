@@ -109,12 +109,14 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 		progressbar.OptionSetItsString("resources"),
 	)
 	failedWrites := 0
+	totalResources := 0
 	g.Go(func() error {
 		for resource := range resources {
 			// fmt.Println("fetched")
 			bar.Add(1)
+			totalResources++
 			for i, destination := range sourceSpec.Destinations {
-				if err := destPlugins[i].GetClient().Write(ctx, resource); err != nil {
+				if err := destPlugins[i].GetClient().Write(ctx, resource.TableName, resource.Data); err != nil {
 					failedWrites++
 					log.Error().Err(err).Msgf("failed to write resource for %s->%s", sourceSpec.Name, destination)
 				}
@@ -130,6 +132,6 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	}
 	bar.Finish()
 	fmt.Println("Fetch completed successfully.")
-	fmt.Printf("Summary: FailedWrites: %d\n", failedWrites)
+	fmt.Printf("Summary: Resources: %d FailedWrites: %d\n", totalResources, failedWrites)
 	return nil
 }

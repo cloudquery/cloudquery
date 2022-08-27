@@ -47,11 +47,6 @@ func generateResource(r codegen.Resource, mock bool) {
 		log.Fatal(err)
 	}
 	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
-	for i := range r.Table.Columns {
-		if r.Table.Columns[i].Name == "id" {
-			r.Table.Columns[i].Options.PrimaryKey = true
-		}
-	}
 	r.Table.Multiplex = "client.ProjectMultiplex"
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.GCPService) + strcase.ToCamel(r.GCPSubService)
 	mainTemplate := r.Template + ".go.tpl"
