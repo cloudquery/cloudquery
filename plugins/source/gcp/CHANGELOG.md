@@ -14,6 +14,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+### Added 🎉
+* feat: Added azure cdn profiles by @amanenk in https://github.com/cloudquery/cloudquery/pull/1460
+* feat: Add fsx volumes by @irmatov in https://github.com/cloudquery/cloudquery/pull/1322
+* feat: Add cq-gen config for apigateway by @irmatov in https://github.com/cloudquery/cloudquery/pull/1541
+* feat(website): Plugins layout by @dj-stormtrooper in https://github.com/cloudquery/cloudquery/pull/1548
+* feat(website): Remove Tempus logo until permission by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1550
+* feat: Added throttling for digitalocean API calls by @amanenk in https://github.com/cloudquery/cloudquery/pull/1546
+### Fixed 🪳
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1539
+* fix: Fix broken links on website by @anton-kuptsov in https://github.com/cloudquery/cloudquery/pull/1547
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1563
+* fix: Remove deprecated firebase by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1568
+* fix: Update Okta docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1572
+* fix: Update Terraform docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1573
+
+
+**Full Changelog**: https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.9.7...plugins/source/gcp/v0.9.8
+
 ## [0.9.7](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.9.6...plugins/source/gcp/v0.9.7) (2022-08-21)
 
 
