@@ -13,8 +13,8 @@ import (
 )
 
 func buildServicebusNamespaces(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockNamespacesClient(ctrl)
-	tp := mocks.NewMockTopicsClient(ctrl)
+	m := mocks.NewMockServicebusNamespacesClient(ctrl)
+	tp := mocks.NewMockServicebusTopicsClient(ctrl)
 	var n servicebus.SBNamespace
 	if err := faker.FakeData(&n); err != nil {
 		t.Fatal(err)

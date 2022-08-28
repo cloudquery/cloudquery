@@ -101,6 +101,7 @@ func AllResources() []Resource {
 	resources = append(resources, Resources()...)
 	resources = append(resources, Search()...)
 	resources = append(resources, Security()...)
+	resources = append(resources, ServiceBus()...)
 	return resources
 }
 
