@@ -16,7 +16,7 @@ import (
 )
 
 func buildStorageMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	acc := mocks.NewMockStorageAccountClient(ctrl)
+	acc := mocks.NewMockStorageAccountsClient(ctrl)
 	cont := mocks.NewMockStorageContainerClient(ctrl)
 	blob := mocks.NewMockStorageBlobServicesClient(ctrl)
 	blobProps := mocks.NewMockStorageBlobServicePropertiesClient(ctrl)
