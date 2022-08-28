@@ -10,6 +10,7 @@ import (
 	"path"
 	"reflect"
 	"runtime"
+	"strings"
 	"text/template"
 
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
@@ -42,7 +43,10 @@ func main() {
 	// resources = append(resources, codegen.CloudRunResources...)
 
 	for _, r := range resources {
-		generateResource(*r)
+		generateResource(*r, false)
+		if !r.SkipMock {
+			generateResource(*r, true)
+		}
 	}
 	generatePlugin(resources)
 }
@@ -55,6 +59,7 @@ func generatePlugin(rr []*codegen.Resource) {
 	dir := path.Dir(filename)
 	tpl, err := template.New("plugin.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
+		"ToLower": strings.ToLower,
 	}).ParseFS(gcpTemplatesFS, "templates/plugin.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse plugin.go.tpl: %w", err))
@@ -76,7 +81,7 @@ func generatePlugin(rr []*codegen.Resource) {
 	}
 }
 
-func generateResource(r codegen.Resource) {
+func generateResource(r codegen.Resource, mock bool) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -95,6 +100,13 @@ func generateResource(r codegen.Resource) {
 	if r.StructName == "" {
 		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
 	}
+	if r.MockListStruct == "" {
+		r.MockListStruct = strcase.ToCamel(r.StructName)
+	}
+
+	if r.MockImports == nil {
+		r.MockImports = []string{reflect.TypeOf(r.Struct).Elem().PkgPath()}
+	}
 
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
@@ -108,8 +120,12 @@ func generateResource(r codegen.Resource) {
 	r.Table.Multiplex = "client.ProjectMultiplex"
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	mainTemplate := r.Template + ".go.tpl"
+	if mock {
+		mainTemplate = r.Template + "_mock.go.tpl"
+	}
 	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
+		"ToLower": strings.ToLower,
 	}).ParseFS(gcpTemplatesFS, "templates/"+mainTemplate)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse gcp templates: %w", err))
@@ -126,8 +142,11 @@ func generateResource(r codegen.Resource) {
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
-
-	filePath = path.Join(filePath, r.SubService+".go")
+	if mock {
+		filePath = path.Join(filePath, r.SubService+"_mock_test.go")
+	} else {
+		filePath = path.Join(filePath, r.SubService+".go")
+	}
 
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())

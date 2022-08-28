@@ -19,9 +19,10 @@ func SqlResources() []*Resource {
 	resources = append(resources, sqlResources...)
 
 	for _, resource := range resources {
-		resource.Service = "sql"
+		resource.Service = "sqladmin"
+		resource.MockImports = []string{"google.golang.org/api/sqladmin/v1beta4"}
 		resource.Template = "resource_list"
-		resource.ListFunction = fmt.Sprintf(`c.Services.Sql.%s.List(c.ProjectId).PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
+		resource.ListFunction = fmt.Sprintf(`c.Services.Sqladmin.%s.List(c.ProjectId).PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
 	}
 
 	return resources

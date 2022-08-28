@@ -58,7 +58,7 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.BigQuery.Datasets.List(c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Bigquery.Datasets.List(c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

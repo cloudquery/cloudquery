@@ -21,7 +21,8 @@ func CloudBillingResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "cloudbilling"
 		resource.Template = "resource_list"
-		resource.ListFunction = fmt.Sprintf(`c.Services.CloudBilling.%s.List().PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
+		resource.MockImports = []string{"google.golang.org/api/cloudbilling/v1"}
+		resource.ListFunction = fmt.Sprintf(`c.Services.Cloudbilling.%s.List().PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
 		resource.OutputField = strcase.ToCamel(resource.SubService)
 	}
 

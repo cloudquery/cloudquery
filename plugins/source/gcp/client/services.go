@@ -27,23 +27,23 @@ import (
 type GcpService string
 
 type Services struct {
-	BigQuery        *bigquery.Service
-	CloudBilling    *cloudbilling.APIService
-	CloudFunctions  *cloudfunctions.Service
-	CloudRun        *run.APIService
+	Bigquery        *bigquery.Service
+	Cloudbilling    *cloudbilling.APIService
+	Cloudfunctions  *cloudfunctions.Service
+	Cloudrun        *run.APIService
 	Compute         *compute.Service
 	Container       *container.Service
 	Dns             *dns.Service
-	Domain          *domains.Service
+	Domains         *domains.Service
 	Iam             *iam.Service
 	Kms             *kms.Service
 	Logging         *logging.Service
 	Monitoring      *monitoring.Service
 	Redis           *redis.Service
-	ResourceManager *cloudresourcemanager.Service
-	ServiceUsage    *serviceusage.Service
-	SecretManager   *secretmanager.Service
-	Sql             *sql.Service
+	Resourcemanager *cloudresourcemanager.Service
+	Serviceusage    *serviceusage.Service
+	Secretmanager   *secretmanager.Service
+	Sqladmin        *sql.Service
 	Storage         *storage.Service
 }
 
@@ -141,23 +141,23 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	}
 
 	return &Services{
-		BigQuery:        bigQuerySvc,
-		CloudBilling:    cloudBillingSvc,
-		CloudFunctions:  cloudFunctionsSvc,
-		CloudRun:        cloudRunSvc,
+		Bigquery:        bigQuerySvc,
+		Cloudbilling:    cloudBillingSvc,
+		Cloudfunctions:  cloudFunctionsSvc,
+		Cloudrun:        cloudRunSvc,
 		Compute:         computeSvc,
 		Container:       containerSvc,
 		Dns:             dnsSvc,
-		Domain:          domainSvc,
+		Domains:         domainSvc,
 		Iam:             iamSvc,
 		Kms:             kmsSvc,
 		Logging:         loggingSvc,
 		Monitoring:      monitoringSvc,
 		Redis:           redisSvc,
-		ResourceManager: resourceManagerSvc,
-		SecretManager:   secretManagerSvc,
-		ServiceUsage:    serviceUsageManagerSvc,
-		Sql:             sqlSvc,
+		Resourcemanager: resourceManagerSvc,
+		Secretmanager:   secretManagerSvc,
+		Serviceusage:    serviceUsageManagerSvc,
+		Sqladmin:        sqlSvc,
 		Storage:         storageSvc,
 	}, nil
 }

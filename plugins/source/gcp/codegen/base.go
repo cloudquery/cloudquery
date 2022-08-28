@@ -28,6 +28,14 @@ type Resource struct {
 	Template string
 	// imports to add for this resource
 	Imports []string
+	// SkipMock is used to skip the mock generation for this resource
+	SkipMock bool
+	// MockPostFaker is a code snippet that runs post faker
+	MockPostFaker string
+	// MockListStruct is the name of the struct that will be used in the mock template
+	MockListStruct string
+	// MockImports imports used in mock tests
+	MockImports []string
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	// Columns override, override generated columns

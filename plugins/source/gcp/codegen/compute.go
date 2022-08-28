@@ -136,6 +136,7 @@ func ComputeResources() []*Resource {
 	resources = append(resources, computeResourcesGet...)
 	// add all shared properties
 	for i := range resources {
+		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
 		resources[i].Service = "compute"
 		if resources[i].OverrideColumns == nil {
 			resources[i].OverrideColumns = []codegen.ColumnDefinition{

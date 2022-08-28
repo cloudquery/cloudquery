@@ -24,6 +24,7 @@ func DnsResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "dns"
+		resource.MockImports = []string{"google.golang.org/api/dns/v1"}
 		resource.ListFunction = fmt.Sprintf(`c.Services.Dns.%s.List(c.ProjectId).PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
 		resource.Template = "resource_list"
 		resource.OutputField = strcase.ToCamel(resource.SubService)

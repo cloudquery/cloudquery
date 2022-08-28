@@ -193,7 +193,7 @@ func fetchFunctions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.CloudFunctions.Projects.Locations.Functions.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
+		output, err := c.Services.Cloudfunctions.Projects.Locations.Functions.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

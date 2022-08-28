@@ -19,7 +19,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/redis"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/secretmanager"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/serviceusage"
-	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/sql"
+	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/sqladmin"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/storage"
 )
 
@@ -89,7 +89,7 @@ func Plugin() *plugins.SourcePlugin {
 			monitoring.AlertPolicies(),
 			secretmanager.Secrets(),
 			serviceusage.Services(),
-			sql.Instances(),
+			sqladmin.Instances(),
 			storage.Buckets(),
 			cloudfunctions.Functions(),
 			bigquery.Datasets(),
