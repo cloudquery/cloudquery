@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta-v0.6.4...plugins/source/okta/v0.6.5) (2022-08-28)
+
+
+### Bug Fixes
+
+* Update Okta docs ([#1572](https://github.com/cloudquery/cloudquery/issues/1572)) ([ae85abe](https://github.com/cloudquery/cloudquery/commit/ae85abe90a064b4c2e381774093fe753e6661f35))
+
 ## [0.6.4](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta-v0.6.3...plugins/source/okta/v0.6.4) (2022-08-28)
 
 
