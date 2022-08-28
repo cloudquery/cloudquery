@@ -19,18 +19,7 @@ import (
 var azureTemplatesFS embed.FS
 
 func main() {
-	var resources = []codegen.Resource{}
-	resources = append(resources, codegen.AuthorizationResources()...)
-	resources = append(resources, codegen.BatchResources()...)
-	resources = append(resources, codegen.CDNResources()...)
-	resources = append(resources, codegen.ComputeResources()...)
-	resources = append(resources, codegen.NetworkResources()...)
-	resources = append(resources, codegen.KeyValueResources()...)
-	resources = append(resources, codegen.LogicResources()...)
-	resources = append(resources, codegen.MariaDbResources()...)
-	resources = append(resources, codegen.MonitorResources()...)
-	resources = append(resources, codegen.MySQLResources()...)
-	for _, r := range resources {
+	for _, r := range codegen.AllResources() {
 		generateResource(r)
 	}
 }

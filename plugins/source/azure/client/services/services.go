@@ -24,7 +24,7 @@ type Services struct {
 	Monitor           MonitorClient
 	MySQL             MySQLClient
 	Network           NetworkClient
-	PostgreSQL        PostgreSQL
+	PostgreSQL        PostgreSQLClient
 	Redis             RedisClient
 	Resources         ResourcesClient
 	Search            SearchClient

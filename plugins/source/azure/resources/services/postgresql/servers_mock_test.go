@@ -12,11 +12,11 @@ import (
 )
 
 func buildPostgresServerMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	serverSvc := mocks.NewMockPostgresqlServerClient(ctrl)
-	configSvc := mocks.NewMockPostgresqlConfigurationClient(ctrl)
-	firewallRuleSvc := mocks.NewMockPostgresqlFirewallRuleClient(ctrl)
+	serverSvc := mocks.NewMockPostgreSQLServersClient(ctrl)
+	configSvc := mocks.NewMockPostgreSQLConfigurationsClient(ctrl)
+	firewallRuleSvc := mocks.NewMockPostgreSQLFirewallRulesClient(ctrl)
 	s := services.Services{
-		PostgreSQL: services.PostgreSQL{
+		PostgreSQL: services.PostgreSQLClient{
 			Servers:       serverSvc,
 			Configuration: configSvc,
 			FirewallRule:  firewallRuleSvc,

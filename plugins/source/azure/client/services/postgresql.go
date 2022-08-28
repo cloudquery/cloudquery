@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgresqlConfigurationClient,PostgresqlServerClient,PostgresqlFirewallRuleClient
+//go:generate mockgen -destination=./mocks/postgresql.go -package=mocks . PostgreSQLConfigurationsClient,PostgreSQLServersClient,PostgreSQLFirewallRulesClient
 package services
 
 import (
@@ -8,25 +8,25 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type PostgreSQL struct {
-	Servers       PostgresqlServerClient
-	Configuration PostgresqlConfigurationClient
-	FirewallRule  PostgresqlFirewallRuleClient
+type PostgreSQLClient struct {
+	Servers       PostgreSQLServersClient
+	Configuration PostgreSQLConfigurationsClient
+	FirewallRule  PostgreSQLFirewallRulesClient
 }
 
-type PostgresqlServerClient interface {
+type PostgreSQLServersClient interface {
 	List(ctx context.Context) (result postgresql.ServerListResult, err error)
 }
 
-type PostgresqlConfigurationClient interface {
+type PostgreSQLConfigurationsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.ConfigurationListResult, err error)
 }
 
-type PostgresqlFirewallRuleClient interface {
+type PostgreSQLFirewallRulesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result postgresql.FirewallRuleListResult, err error)
 }
 
-func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreSQL {
+func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreSQLClient {
 	servers := postgresql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
 
@@ -35,7 +35,7 @@ func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreS
 
 	firewallSvc := postgresql.NewFirewallRulesClient(subscriptionId)
 	firewallSvc.Authorizer = auth
-	return PostgreSQL{
+	return PostgreSQLClient{
 		Servers:       servers,
 		Configuration: confSvc,
 		FirewallRule:  firewallSvc,

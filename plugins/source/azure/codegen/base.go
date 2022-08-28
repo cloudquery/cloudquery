@@ -62,21 +62,40 @@ type byTemplates struct {
 	serviceNameOverride string
 }
 
-const pluginName = "azure"
+const (
+	pluginName   = "azure"
+	valueHandler = `if err != nil {
+		return errors.WithStack(err)
+	}
+	if response.Value == nil {
+		return nil
+	}
+	res <- *response.Value
+	`
+)
 
-const valueHandler = `if err != nil {
-	return errors.WithStack(err)
-}
-if response.Value == nil {
-	return nil
-}
-res <- *response.Value
-`
+var (
+	SubscriptionIdColumn = codegen.ColumnDefinition{
+		Name:     "subscription_id",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAzureSubscription",
+	}
+)
 
-var SubscriptionIdColumn = codegen.ColumnDefinition{
-	Name:     "subscription_id",
-	Type:     schema.TypeString,
-	Resolver: "client.ResolveAzureSubscription",
+func AllResources() []Resource {
+	var resources = []Resource{}
+	resources = append(resources, AuthorizationResources()...)
+	resources = append(resources, BatchResources()...)
+	resources = append(resources, CDNResources()...)
+	resources = append(resources, ComputeResources()...)
+	resources = append(resources, NetworkResources()...)
+	resources = append(resources, KeyValueResources()...)
+	resources = append(resources, LogicResources()...)
+	resources = append(resources, MariaDbResources()...)
+	resources = append(resources, MonitorResources()...)
+	resources = append(resources, MySQLResources()...)
+	resources = append(resources, PostgresSQLServers()...)
+	return resources
 }
 
 func needsSubscriptionId(table *codegen.TableDefinition) bool {
