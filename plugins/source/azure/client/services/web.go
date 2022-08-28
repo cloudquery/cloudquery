@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/web.go -package=mocks . AppsClient
+//go:generate mockgen -destination=./mocks/web.go -package=mocks . WebAppsClient
 package services
 
 import (
@@ -9,10 +9,10 @@ import (
 )
 
 type WebClient struct {
-	Apps AppsClient
+	Apps WebAppsClient
 }
 
-type AppsClient interface {
+type WebAppsClient interface {
 	List(ctx context.Context) (result web.AppCollectionPage, err error)
 	ListPublishingProfileXMLWithSecrets(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions web.CsmPublishingProfileOptions) (result web.ReadCloser, err error)
 	GetAuthSettings(ctx context.Context, resourceGroupName string, name string) (result web.SiteAuthSettings, err error)

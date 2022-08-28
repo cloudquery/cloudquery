@@ -105,6 +105,7 @@ func AllResources() []Resource {
 	resources = append(resources, SQL()...)
 	resources = append(resources, Storage()...)
 	resources = append(resources, StreamAnalytics()...)
+	resources = append(resources, Web()...)
 	return resources
 }
 

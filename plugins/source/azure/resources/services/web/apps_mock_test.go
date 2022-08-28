@@ -19,7 +19,7 @@ import (
 )
 
 func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	apps := mocks.NewMockAppsClient(ctrl)
+	apps := mocks.NewMockWebAppsClient(ctrl)
 	s := services.Services{
 		Web: services.WebClient{
 			Apps: apps,
