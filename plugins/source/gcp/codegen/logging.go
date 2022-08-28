@@ -1,17 +1,15 @@
 package codegen
 
 import (
-	"reflect"
-
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/logging/v2"
 )
 
-var loggingResources = []Resource{
+var loggingResources = []*Resource{
 	{
-		SubService: "metrics",
-		Struct:     &logging.LogMetric{},
+		SubService:   "metrics",
+		Struct:       &logging.LogMetric{},
+		ListFunction: `c.Services.Logging.Projects.Metrics.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`,
 	},
 	{
 		SubService: "sinks",
@@ -19,24 +17,17 @@ var loggingResources = []Resource{
 	},
 }
 
-func LoggingResources() []Resource {
-	var resources []Resource
+func LoggingResources() []*Resource {
+	var resources []*Resource
 	resources = append(resources, loggingResources...)
 
-	for i := range resources {
-		resources[i].Service = "logging"
-		resources[i].DefaultColumns = []codegen.ColumnDefinition{ProjectIdColumn}
-		resources[i].StructName = reflect.TypeOf(resources[i].Struct).Elem().Name()
-		if resources[i].Template == "" {
-			resources[i].Template = "resource_list_projects"
+	for _, resource := range resources {
+		resource.Service = "logging"
+		resource.Template = "resource_list"
+		if resource.ListFunction == "" {
+			resource.ListFunction = `c.Services.Logging.` + strcase.ToCamel(resource.SubService) + `.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`
 		}
-		if resources[i].SkipFields == nil {
-			resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
-		}
-		resources[i].MockImports = []string{"google.golang.org/api/logging/v2"}
-		if resources[i].MockListStruct == "" {
-			resources[i].MockListStruct = strcase.ToCamel(resources[i].StructName)
-		}
+		resource.OutputField = strcase.ToCamel(resource.SubService)
 	}
 
 	return resources

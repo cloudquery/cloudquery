@@ -7,70 +7,68 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-  
 )
 
 func Roles() *schema.Table {
-    return &schema.Table{
-		Name:         "gcp_iam_roles",
-    Resolver:     fetchIamRoles,
-    Multiplex:    client.ProjectMultiplex,
+	return &schema.Table{
+		Name:      "gcp_iam_roles",
+		Resolver:  fetchRoles,
+		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
-{
-  Name:        "project_id",
-  Type:        schema.TypeString,
-  Resolver:     client.ResolveProject,  
-},
-{
-  Name:        "deleted",
-  Type:        schema.TypeBool,
-  Resolver:     schema.PathResolver("Deleted"),  
-},
-{
-  Name:        "description",
-  Type:        schema.TypeString,
-  Resolver:     schema.PathResolver("Description"),  
-},
-{
-  Name:        "etag",
-  Type:        schema.TypeString,
-  Resolver:     schema.PathResolver("Etag"),  
-},
-{
-  Name:        "included_permissions",
-  Type:        schema.TypeStringArray,
-  Resolver:     schema.PathResolver("IncludedPermissions"),  
-},
-{
-  Name:        "name",
-  Type:        schema.TypeString,
-  Resolver:     schema.PathResolver("Name"),  
-},
-{
-  Name:        "stage",
-  Type:        schema.TypeString,
-  Resolver:     schema.PathResolver("Stage"),  
-},
-{
-  Name:        "title",
-  Type:        schema.TypeString,
-  Resolver:     schema.PathResolver("Title"),  
-},
-
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+			},
+			{
+				Name:     "deleted",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Deleted"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
+			},
+			{
+				Name:     "included_permissions",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("IncludedPermissions"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "stage",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Stage"),
+			},
+			{
+				Name:     "title",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Title"),
+			},
 		},
-
-}
+	}
 }
 
 func fetchRoles(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := 
+		output, err := c.Services.Iam.Projects.Roles.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-    res <- output.Roles
+		res <- output.Roles
+
 		if output.NextPageToken == "" {
 			break
 		}

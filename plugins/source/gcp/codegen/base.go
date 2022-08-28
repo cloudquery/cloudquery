@@ -22,15 +22,12 @@ type Resource struct {
 	SubService string
 	// ListFunction function string which lists all resources
 	ListFunction string
+	// OutputField is field where the result is located in the output struct
+	OutputField string
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 	// imports to add for this resource
 	Imports []string
-	// MockImports imports to add for mock tests
-	MockImports []string
-	// MockListStruct specified the name of the returned list function. There are
-	// some inconsistencies in naming so we have to have a way of manually overriding defaults
-	MockListStruct string
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	// Columns override, override generated columns

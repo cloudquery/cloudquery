@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"text/template"
 
@@ -23,36 +24,78 @@ var resources = []*codegen.Resource{}
 
 func main() {
 	resources = append(resources, codegen.ComputeResources()...)
-	// resources = append(resources, codegen.DnsResources()...)
-	// resources = append(resources, codegen.DomainsResources()...)
-	// resources = append(resources, codegen.IamResources()...)
+	resources = append(resources, codegen.DnsResources()...)
+	resources = append(resources, codegen.DomainsResources()...)
+	resources = append(resources, codegen.IamResources()...)
 	// resources = append(resources, codegen.KmsResources()...)
-	// resources = append(resources, codegen.KubernetesResources()...)
-	// resources = append(resources, codegen.LoggingResources()...)
-	// resources = append(resources, codegen.RedisResources()...)
-	// resources = append(resources, codegen.MonitoringResources()...)
-	// resources = append(resources, codegen.SecretManagerResources()...)
-	// resources = append(resources, codegen.ServiceusageResources()...)
-	// resources = append(resources, codegen.SqlResources()...)
-	// resources = append(resources, codegen.StorageResources()...)
-	// resources = append(resources, codegen.CloudFunctionsResources()...)
+	resources = append(resources, codegen.KubernetesResources()...)
+	resources = append(resources, codegen.LoggingResources()...)
+	resources = append(resources, codegen.RedisResources()...)
+	resources = append(resources, codegen.MonitoringResources()...)
+	resources = append(resources, codegen.SecretManagerResources()...)
+	resources = append(resources, codegen.ServiceusageResources()...)
+	resources = append(resources, codegen.SqlResources()...)
+	resources = append(resources, codegen.StorageResources()...)
+	resources = append(resources, codegen.CloudFunctionsResources()...)
 	resources = append(resources, codegen.BigqueryResources()...)
-	// resources = append(resources, codegen.CloudBillingResources()...)
+	resources = append(resources, codegen.CloudBillingResources()...)
 	// resources = append(resources, codegen.CloudRunResources...)
 
 	for _, r := range resources {
-		generateResource(*r, false)
-		generateResource(*r, true)
+		generateResource(*r)
+	}
+	generatePlugin(resources)
+}
+
+func generatePlugin(rr []*codegen.Resource) {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Fatal("Failed to get caller information")
+	}
+	dir := path.Dir(filename)
+	tpl, err := template.New("plugin.go.tpl").Funcs(template.FuncMap{
+		"ToCamel": strcase.ToCamel,
+	}).ParseFS(gcpTemplatesFS, "templates/plugin.go.tpl")
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to parse plugin.go.tpl: %w", err))
+	}
+
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, rr); err != nil {
+		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
+	}
+
+	filePath := path.Join(dir, "../resources/plugin/plugin.go")
+	content, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Println(buff.String())
+		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}
 }
 
-func generateResource(r codegen.Resource, mock bool) {
+func generateResource(r codegen.Resource) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
+	if r.SkipFields == nil {
+		r.SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
+	}
+	if r.OutputField == "" {
+		r.OutputField = "Items"
+	}
+	if r.DefaultColumns == nil {
+		r.DefaultColumns = []sdkgen.ColumnDefinition{codegen.ProjectIdColumn}
+	}
+	if r.StructName == "" {
+		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
+	}
+
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
 		r.Struct,
@@ -65,9 +108,6 @@ func generateResource(r codegen.Resource, mock bool) {
 	r.Table.Multiplex = "client.ProjectMultiplex"
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	mainTemplate := r.Template + ".go.tpl"
-	if mock {
-		mainTemplate = r.Template + "_mock_test.go.tpl"
-	}
 	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
 	}).ParseFS(gcpTemplatesFS, "templates/"+mainTemplate)
@@ -76,7 +116,7 @@ func generateResource(r codegen.Resource, mock bool) {
 	}
 	tpl, err = tpl.ParseFS(sdkgen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse codegen template: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse sdk template: %w", err))
 	}
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
@@ -86,17 +126,20 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}
-	if mock {
-		filePath = path.Join(filePath, r.SubService+"_mock_test.go")
-	} else {
-		filePath = path.Join(filePath, r.SubService+".go")
-	}
 
-	content, err := format.Source(buff.Bytes())
+	filePath = path.Join(filePath, r.SubService+".go")
+
+	content := buff.Bytes()
+	formattedContent, err := format.Source(buff.Bytes())
 	if err != nil {
-		fmt.Println(buff.String())
-		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
+		log.Printf("failed to format %s\n", filePath)
+	} else {
+		content = formattedContent
 	}
+	// if err != nil {
+	// 	fmt.Println(buff.String())
+	// 	log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
+	// }
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}

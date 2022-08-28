@@ -1,38 +1,27 @@
 package codegen
 
 import (
-	"reflect"
+	"fmt"
 
-	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/storage/v1"
 )
 
-var storageResources = []Resource{
+var storageResources = []*Resource{
 	{
 		SubService: "buckets",
 		Struct:     &storage.Bucket{},
 	},
 }
 
-func StorageResources() []Resource {
-	var resources []Resource
+func StorageResources() []*Resource {
+	var resources []*Resource
 	resources = append(resources, storageResources...)
 
-	for i := range resources {
-		resources[i].Service = "storage"
-		resources[i].DefaultColumns = []codegen.ColumnDefinition{ProjectIdColumn}
-		resources[i].StructName = reflect.TypeOf(resources[i].Struct).Elem().Name()
-		if resources[i].Template == "" {
-			resources[i].Template = "resource_list"
-		}
-		if resources[i].SkipFields == nil {
-			resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
-		}
-		resources[i].MockImports = []string{"google.golang.org/api/storage/v1"}
-		if resources[i].MockListStruct == "" {
-			resources[i].MockListStruct = strcase.ToCamel(resources[i].StructName)
-		}
+	for _, resource := range resources {
+		resource.Service = "storage"
+		resource.Template = "resource_list"
+		resource.ListFunction = fmt.Sprintf("c.Services.Storage.%s.List(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
 	}
 
 	return resources

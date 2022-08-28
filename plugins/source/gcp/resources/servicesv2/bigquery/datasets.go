@@ -62,7 +62,7 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Items
+		res <- output.Datasets
 
 		if output.NextPageToken == "" {
 			break

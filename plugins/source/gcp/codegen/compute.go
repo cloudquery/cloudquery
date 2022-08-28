@@ -2,7 +2,6 @@ package codegen
 
 import (
 	"fmt"
-	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -57,9 +56,8 @@ var computeResourcesAggList = []*Resource{
 		Struct:     &compute.TargetHttpProxy{},
 	},
 	{
-		SubService:     "url_maps",
-		Struct:         &compute.UrlMap{},
-		MockListStruct: "UrlMaps",
+		SubService: "url_maps",
+		Struct:     &compute.UrlMap{},
 	},
 	{
 		SubService: "vpn_gateways",
@@ -85,9 +83,8 @@ var computeResourcesList = []*Resource{
 		Struct:     &compute.Network{},
 	},
 	{
-		SubService:     "ssl_policies",
-		Struct:         &compute.SslPolicy{},
-		MockListStruct: "SslPolicies",
+		SubService: "ssl_policies",
+		Struct:     &compute.SslPolicy{},
 	},
 	{
 		SubService: "interconnects",
@@ -140,15 +137,6 @@ func ComputeResources() []*Resource {
 	// add all shared properties
 	for i := range resources {
 		resources[i].Service = "compute"
-		resources[i].DefaultColumns = []codegen.ColumnDefinition{ProjectIdColumn}
-		resources[i].StructName = reflect.TypeOf(resources[i].Struct).Elem().Name()
-		if resources[i].SkipFields == nil {
-			resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
-		}
-		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
-		if resources[i].MockListStruct == "" {
-			resources[i].MockListStruct = strcase.ToCamel(resources[i].StructName)
-		}
 		if resources[i].OverrideColumns == nil {
 			resources[i].OverrideColumns = []codegen.ColumnDefinition{
 				{
