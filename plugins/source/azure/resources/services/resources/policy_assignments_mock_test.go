@@ -13,7 +13,7 @@ import (
 )
 
 func buildResourcesPolicyAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	a := mocks.NewMockAssignmentsClient(ctrl)
+	a := mocks.NewMockResourcesAssignmentsClient(ctrl)
 
 	faker.SetIgnoreInterface(true)
 	as := policy.Assignment{}

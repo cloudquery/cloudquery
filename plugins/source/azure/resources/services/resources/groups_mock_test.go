@@ -13,7 +13,7 @@ import (
 )
 
 func buildResourceGroupMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockGroupsClient(ctrl)
+	m := mocks.NewMockResourcesGroupsClient(ctrl)
 	s := services.Services{
 		Resources: services.ResourcesClient{Groups: m},
 	}

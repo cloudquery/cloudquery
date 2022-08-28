@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path"
 	"runtime"
+	"strings"
 	"text/template"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen"
@@ -33,7 +34,7 @@ func getFilename() string {
 }
 
 func initTemplate(templateName string) *template.Template {
-	tpl, err := template.New(templateName).ParseFS(azureTemplatesFS, "templates/*.go.tpl")
+	tpl, err := template.New(templateName).Funcs(template.FuncMap{"ToLower": strings.ToLower}).ParseFS(azureTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse azure templates: %w", err))
 	}

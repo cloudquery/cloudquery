@@ -1,6 +1,6 @@
 // Auto generated code - DO NOT EDIT.
 
-package {{.AzurePackageName}}
+package {{.AzureService | ToLower }}
 
 import (
 	"context"

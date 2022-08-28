@@ -45,6 +45,7 @@ type template struct {
 
 type resourceDefinition struct {
 	azureStruct              interface{}
+	skipFields               []string
 	listFunction             string
 	listFunctionArgs         []string
 	listFunctionArgsInit     []string
@@ -95,6 +96,7 @@ func AllResources() []Resource {
 	resources = append(resources, MonitorResources()...)
 	resources = append(resources, MySQLResources()...)
 	resources = append(resources, PostgresSQLServers()...)
+	resources = append(resources, Resources()...)
 	return resources
 }
 
@@ -128,7 +130,8 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					azureSubService = definition.subServiceOverride
 				}
 
-				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields("Response"))
+				skipFields := append(definition.skipFields, "Response")
+				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields...))
 				if err != nil {
 					log.Fatal(err)
 				}

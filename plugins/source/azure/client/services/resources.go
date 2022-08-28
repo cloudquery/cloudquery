@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResClient,GroupsClient,AssignmentsClient,LinksClient
+//go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResourcesResClient,ResourcesGroupsClient,ResourcesAssignmentsClient,ResourcesLinksClient
 package services
 
 import (
@@ -11,25 +11,25 @@ import (
 )
 
 type ResourcesClient struct {
-	Groups      GroupsClient
-	Resources   ResClient
-	Assignments AssignmentsClient
-	Links       LinksClient
+	Groups      ResourcesGroupsClient
+	Resources   ResourcesResClient
+	Assignments ResourcesAssignmentsClient
+	Links       ResourcesLinksClient
 }
 
-type GroupsClient interface {
+type ResourcesGroupsClient interface {
 	List(ctx context.Context, filter string, top *int32) (result resources.GroupListResultPage, err error)
 }
 
-type ResClient interface {
+type ResourcesResClient interface {
 	List(ctx context.Context, filter string, expand string, top *int32) (result resources.ListResultPage, err error)
 }
 
-type AssignmentsClient interface {
+type ResourcesAssignmentsClient interface {
 	List(ctx context.Context, subscriptionID string, filter string, top *int32) (result policy.AssignmentListResultPage, err error)
 }
 
-type LinksClient interface {
+type ResourcesLinksClient interface {
 	ListAtSubscription(ctx context.Context, filter string) (result links.ResourceLinkResultPage, err error)
 }
 

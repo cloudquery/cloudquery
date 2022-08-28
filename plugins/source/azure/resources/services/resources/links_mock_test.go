@@ -13,7 +13,7 @@ import (
 )
 
 func buildResourceLinksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockLinksClient(ctrl)
+	m := mocks.NewMockResourcesLinksClient(ctrl)
 	var v links.ResourceLink
 	if err := faker.FakeDataSkipFields(&v, []string{"Type"}); err != nil {
 		t.Fatal(err)
