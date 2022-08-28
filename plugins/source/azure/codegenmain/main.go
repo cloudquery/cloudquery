@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"regexp"
 	"runtime"
 	"strings"
 	"text/template"
@@ -24,8 +25,9 @@ func main() {
 	if len(os.Args) > 1 {
 		filter = os.Args[1]
 	}
+	pattern := regexp.MustCompile("(?i)" + filter)
 	for _, r := range codegen.AllResources() {
-		if strings.Contains(strings.ToLower(fmt.Sprintf("%s/%s", r.AzureService, r.AzureSubService)), strings.ToLower(filter)) {
+		if pattern.MatchString(fmt.Sprintf("%s/%s", r.AzureService, r.AzureSubService)) {
 			fmt.Printf("Generating %s\n", r.Template.Destination)
 			generateResource(r)
 		}

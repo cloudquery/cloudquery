@@ -8,44 +8,44 @@ import (
 )
 
 type SQLClient struct {
-	BackupLongTermRetentionPolicies             BackupLongTermRetentionPoliciesClient
+	BackupLongTermRetentionPolicies             SQLBackupLongTermRetentionPoliciesClient
 	DatabaseBlobAuditingPolicies                SQLDatabaseBlobAuditingPoliciesClient
-	Databases                                   SQLDatabaseClient
+	Databases                                   SQLDatabasesClient
 	DatabaseVulnerabilityAssessmentScans        SQLDatabaseVulnerabilityAssessmentScansClient
 	DatabaseThreatDetectionPolicies             SQLDatabaseThreatDetectionPoliciesClient
 	DatabaseVulnerabilityAssessments            SQLDatabaseVulnerabilityAssessmentsClient
-	Firewall                                    SQLFirewallClient
-	ServerAdmins                                SQLServerAdminClient
-	ServerBlobAuditingPolicies                  SQLServerBlobAuditingPolicies
+	Firewall                                    SQLFirewallsClient
+	ServerAdmins                                SQLServerAdminsClient
+	ServerBlobAuditingPolicies                  SQLServerBlobAuditingPoliciesClient
 	ServerDevOpsAuditSettings                   SQLServerDevOpsAuditSettingsClient
-	Servers                                     SQLServerClient
+	Servers                                     SQLServersClient
 	ServerVulnerabilityAssessments              SQLServerVulnerabilityAssessmentsClient
-	TransparentDataEncryptions                  TransparentDataEncryptionsClient
-	EncryptionProtectors                        EncryptionProtectorsClient
-	ManagedInstances                            ManagedInstancesClient
-	ManagedInstanceVulnerabilityAssessments     ManagedInstanceVulnerabilityAssessmentsClient
-	ManagedDatabases                            ManagedDatabasesClient
-	ManagedDatabaseVulnerabilityAssessments     ManagedDatabaseVulnerabilityAssessmentsClient
-	ManagedDatabaseVulnerabilityAssessmentScans ManagedDatabaseVulnerabilityAssessmentScansClient
-	ManagedInstanceEncryptionProtectors         ManagedInstanceEncryptionProtectorsClient
+	TransparentDataEncryptions                  SQLTransparentDataEncryptionsClient
+	EncryptionProtectors                        SQLEncryptionProtectorsClient
+	ManagedInstances                            SQLManagedInstancesClient
+	ManagedInstanceVulnerabilityAssessments     SQLManagedInstanceVulnerabilityAssessmentsClient
+	ManagedDatabases                            SQLManagedDatabasesClient
+	ManagedDatabaseVulnerabilityAssessments     SQLManagedDatabaseVulnerabilityAssessmentsClient
+	ManagedDatabaseVulnerabilityAssessmentScans SQLManagedDatabaseVulnerabilityAssessmentScansClient
+	ManagedInstanceEncryptionProtectors         SQLManagedInstanceEncryptionProtectorsClient
 	VirtualNetworkRules                         SQLVirtualNetworkRulesClient
 	ServerSecurityAlertPolicies                 ServerSecurityAlertPoliciesClient
 }
 
-//go:generate mockgen -destination=./mocks/sql_server.go -package=mocks . SQLServerClient,SQLFirewallClient,SQLServerAdminClient,SQLServerBlobAuditingPolicies,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,EncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient
-type SQLServerClient interface {
+//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLServersClient,SQLFirewallsClient,SQLServerAdminsClient,SQLServerBlobAuditingPoliciesClient,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,SQLEncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient,SQLDatabasesClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,SQLTransparentDataEncryptionsClient,SQLBackupLongTermRetentionPoliciesClient,SQLManagedInstancesClient,SQLManagedInstanceVulnerabilityAssessmentsClient,SQLManagedInstanceEncryptionProtectorsClient,SQLManagedDatabasesClient,SQLManagedDatabaseVulnerabilityAssessmentsClient,SQLManagedDatabaseVulnerabilityAssessmentScansClient
+type SQLServersClient interface {
 	List(ctx context.Context) (result sql.ServerListResultPage, err error)
 }
 
-type SQLFirewallClient interface {
+type SQLFirewallsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.FirewallRuleListResult, err error)
 }
 
-type SQLServerAdminClient interface {
+type SQLServerAdminsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.AdministratorListResultPage, err error)
 }
 
-type SQLServerBlobAuditingPolicies interface {
+type SQLServerBlobAuditingPoliciesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicyListResultPage, err error)
 }
 
@@ -57,7 +57,7 @@ type SQLServerVulnerabilityAssessmentsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerVulnerabilityAssessmentListResultPage, err error)
 }
 
-type EncryptionProtectorsClient interface {
+type SQLEncryptionProtectorsClient interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result sql.EncryptionProtector, err error)
 }
 
@@ -69,8 +69,7 @@ type ServerSecurityAlertPoliciesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultPage, err error)
 }
 
-//go:generate mockgen -destination=./mocks/sql_database.go -package=mocks . SQLDatabaseClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,TransparentDataEncryptionsClient,BackupLongTermRetentionPoliciesClient
-type SQLDatabaseClient interface {
+type SQLDatabasesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.DatabaseListResultPage, err error)
 }
 
@@ -90,37 +89,35 @@ type SQLDatabaseVulnerabilityAssessmentScansClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
 }
 
-type TransparentDataEncryptionsClient interface {
+type SQLTransparentDataEncryptionsClient interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.TransparentDataEncryption, err error)
 }
 
-type BackupLongTermRetentionPoliciesClient interface {
+type SQLBackupLongTermRetentionPoliciesClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, serverName string, databaseName string) (result sql.BackupLongTermRetentionPolicy, err error)
 }
 
-//go:generate mockgen -destination=./mocks/sql_managed_instance.go -package=mocks . ManagedInstancesClient,ManagedInstanceVulnerabilityAssessmentsClient,ManagedInstanceEncryptionProtectorsClient
-type ManagedInstancesClient interface {
+type SQLManagedInstancesClient interface {
 	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
 }
 
-type ManagedInstanceVulnerabilityAssessmentsClient interface {
+type SQLManagedInstanceVulnerabilityAssessmentsClient interface {
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceVulnerabilityAssessmentListResultPage, err error)
 }
 
-type ManagedInstanceEncryptionProtectorsClient interface {
+type SQLManagedInstanceEncryptionProtectorsClient interface {
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstanceEncryptionProtectorListResultPage, err error)
 }
 
-//go:generate mockgen -destination=./mocks/sql_managed_database.go -package=mocks . ManagedDatabasesClient,ManagedDatabaseVulnerabilityAssessmentsClient,ManagedDatabaseVulnerabilityAssessmentScansClient
-type ManagedDatabasesClient interface {
+type SQLManagedDatabasesClient interface {
 	ListByInstance(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedDatabaseListResultPage, err error)
 }
 
-type ManagedDatabaseVulnerabilityAssessmentsClient interface {
+type SQLManagedDatabaseVulnerabilityAssessmentsClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.DatabaseVulnerabilityAssessmentListResultPage, err error)
 }
 
-type ManagedDatabaseVulnerabilityAssessmentScansClient interface {
+type SQLManagedDatabaseVulnerabilityAssessmentScansClient interface {
 	ListByDatabase(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.VulnerabilityAssessmentScanRecordListResultPage, err error)
 }
 

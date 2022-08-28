@@ -13,22 +13,22 @@ import (
 )
 
 func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	serverSvc := mocks.NewMockSQLServerClient(ctrl)
-	databaseSvc := mocks.NewMockSQLDatabaseClient(ctrl)
-	firewallSvc := mocks.NewMockSQLFirewallClient(ctrl)
-	adminsSvc := mocks.NewMockSQLServerAdminClient(ctrl)
+	serverSvc := mocks.NewMockSQLServersClient(ctrl)
+	databaseSvc := mocks.NewMockSQLDatabasesClient(ctrl)
+	firewallSvc := mocks.NewMockSQLFirewallsClient(ctrl)
+	adminsSvc := mocks.NewMockSQLServerAdminsClient(ctrl)
 	databaseBlobSvc := mocks.NewMockSQLDatabaseBlobAuditingPoliciesClient(ctrl)
-	serverBlobSvc := mocks.NewMockSQLServerBlobAuditingPolicies(ctrl)
+	serverBlobSvc := mocks.NewMockSQLServerBlobAuditingPoliciesClient(ctrl)
 	devopsAuditSvc := mocks.NewMockSQLServerDevOpsAuditSettingsClient(ctrl)
 	databaseThreatsSvc := mocks.NewMockSQLDatabaseThreatDetectionPoliciesClient(ctrl)
 	serverVulnsSvc := mocks.NewMockSQLServerVulnerabilityAssessmentsClient(ctrl)
 	dbVulnsSvc := mocks.NewMockSQLDatabaseVulnerabilityAssessmentsClient(ctrl)
 	dbVulnsScansSvc := mocks.NewMockSQLDatabaseVulnerabilityAssessmentScansClient(ctrl)
-	encSvc := mocks.NewMockTransparentDataEncryptionsClient(ctrl)
-	epSvc := mocks.NewMockEncryptionProtectorsClient(ctrl)
+	encSvc := mocks.NewMockSQLTransparentDataEncryptionsClient(ctrl)
+	epSvc := mocks.NewMockSQLEncryptionProtectorsClient(ctrl)
 	vnrSvc := mocks.NewMockSQLVirtualNetworkRulesClient(ctrl)
 	ssapSvc := mocks.NewMockServerSecurityAlertPoliciesClient(ctrl)
-	bltrpSvc := mocks.NewMockBackupLongTermRetentionPoliciesClient(ctrl)
+	bltrpSvc := mocks.NewMockSQLBackupLongTermRetentionPoliciesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
 			BackupLongTermRetentionPolicies:      bltrpSvc,
