@@ -109,7 +109,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					azureSubService = definition.subServiceOverride
 				}
 
-				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct)
+				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields("Response"))
 				if err != nil {
 					log.Fatal(err)
 				}

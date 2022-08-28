@@ -26,7 +26,8 @@ func ComputeResources() []Resource {
 					mockListResult: "DiskList",
 				},
 				{
-					azureStruct: &compute.VirtualMachineScaleSet{},
+					azureStruct:    &compute.VirtualMachineScaleSet{},
+					mockListResult: "VirtualMachineScaleSetListWithLinkResult",
 				},
 				{
 					azureStruct:      &compute.VirtualMachine{},

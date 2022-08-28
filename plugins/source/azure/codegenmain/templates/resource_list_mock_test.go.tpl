@@ -1,29 +1,17 @@
-{{template "base_mock_test.go.tpl" .}}
+{{template "mock_test_base.go.tpl" .}}
 
-func create{{ .AzureService }}{{ .AzureSubService }}Mock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMock{{ .AzureService }}{{ .AzureSubService }}Client(ctrl)
-	s := services.Services{
-		{{ .AzureService }}: services.{{ .AzureService }}Client{
-			{{ .AzureSubService }}: mockClient,
-		},
-	}
-
-	data := {{ .AzurePackageName }}.{{ .AzureStructName }}{}
-	faker.SetIgnoreInterface(true)
-	require.Nil(t, faker.FakeData(&data))
+func create{{ .AzureSubService }}Mock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	{{template "mock_test_setup.go.tpl" .}}
 
 	{{if .MockListResult}}
-    page := {{ .AzurePackageName }}.New{{ .MockListResult }}Page({{ .AzurePackageName }}.{{ .MockListResult }}{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}, func(ctx context.Context, result {{ .AzurePackageName }}.{{ .MockListResult }}) ({{ .AzurePackageName }}.{{ .MockListResult }}, error) {
+    result := {{ .AzurePackageName }}.New{{ .MockListResult }}Page({{ .AzurePackageName }}.{{ .MockListResult }}{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}, func(ctx context.Context, result {{ .AzurePackageName }}.{{ .MockListResult }}) ({{ .AzurePackageName }}.{{ .MockListResult }}, error) {
 		return {{ .AzurePackageName }}.{{ .MockListResult }}{}, nil
 	})
 	{{else}}
-	page := {{ .AzurePackageName }}.New{{ .AzureStructName }}{{ "ListResult" }}Page({{ .AzurePackageName }}.{{ .AzureStructName }}{{ "ListResult" }}{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}, func(ctx context.Context, result {{ .AzurePackageName }}.{{ .AzureStructName }}{{ "ListResult" }}) ({{ .AzurePackageName }}.{{ .AzureStructName }}{{ "ListResult" }}, error) {
+	result := {{ .AzurePackageName }}.New{{ .AzureStructName }}{{ "ListResult" }}Page({{ .AzurePackageName }}.{{ .AzureStructName }}{{ "ListResult" }}{Value: &[]{{ .AzurePackageName }}.{{ .AzureStructName }}{data}}, func(ctx context.Context, result {{ .AzurePackageName }}.{{ .AzureStructName }}{{ "ListResult" }}) ({{ .AzurePackageName }}.{{ .AzureStructName }}{{ "ListResult" }}, error) {
 		return {{ .AzurePackageName }}.{{ .AzureStructName }}{{ "ListResult" }}{}, nil
 	})
 	{{end}}
 
-	{{ range or .MockListFunctionArgsInit .ListFunctionArgsInit }}
-	{{.}}{{ end }}
-	mockClient.EXPECT().{{ or .ListFunction "ListAll" }}(gomock.Any(){{ range or .MockListFunctionArgs .ListFunctionArgs }}, {{.}}{{ end }}).Return(page, nil)
-	return s
+	{{template "mock_test_assert.go.tpl" .}}
 }
