@@ -1,5 +1,72 @@
 # Changelog
 
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+### Breaking Changes 🛠
+* fix!: Fix Azure credential chain by @hermanschaaf in https://github.com/cloudquery/cloudquery/pull/1283
+### Added 🎉
+* feat: Implement EC2 Key Pairs (#1403) by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1325
+* feat: Add aws elasticache resources by @shimonp21 in https://github.com/cloudquery/cloudquery/pull/1327
+* feat: Add fsx filesystems by @irmatov in https://github.com/cloudquery/cloudquery/pull/1277
+* feat: Add website, docs and blog to our main repo by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1159
+* feat: Add AWS SSM Parameters resource by @spangenberg in https://github.com/cloudquery/cloudquery/pull/1222
+* feat: Add IAM policy tags by @sunil494 in https://github.com/cloudquery/cloudquery/pull/1433
+* feat: Add tags for Glue Databases by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1326
+* feat: Add fsx snapshots by @irmatov in https://github.com/cloudquery/cloudquery/pull/1278
+* feat: Extend sns subscription data by @irmatov in https://github.com/cloudquery/cloudquery/pull/1424
+* feat: Add transfer servers by @irmatov in https://github.com/cloudquery/cloudquery/pull/1284
+* feat: Website sitemap by @dj-stormtrooper in https://github.com/cloudquery/cloudquery/pull/1471
+* feat: Add queries examples section to the landing page by @anton-kuptsov in https://github.com/cloudquery/cloudquery/pull/1472
+* feat: Add fsx data repo tasks by @irmatov in https://github.com/cloudquery/cloudquery/pull/1279
+* feat: Add fsx data repo associations by @irmatov in https://github.com/cloudquery/cloudquery/pull/1280
+* feat: Add fsx storage virtual machines by @irmatov in https://github.com/cloudquery/cloudquery/pull/1296
+* feat: Add cq-gen hcl and a new field to sqs queues by @irmatov in https://github.com/cloudquery/cloudquery/pull/1453
+* feat: Added azure cdn profiles by @amanenk in https://github.com/cloudquery/cloudquery/pull/1460
+* feat: Add fsx volumes by @irmatov in https://github.com/cloudquery/cloudquery/pull/1322
+* feat: Add cq-gen config for apigateway by @irmatov in https://github.com/cloudquery/cloudquery/pull/1541
+* feat(website): Plugins layout by @dj-stormtrooper in https://github.com/cloudquery/cloudquery/pull/1548
+* feat(website): Remove Tempus logo until permission by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1550
+* feat: Added throttling for digitalocean API calls by @amanenk in https://github.com/cloudquery/cloudquery/pull/1546
+### Fixed 🪳
+* fix(cli): Don't prepend cq-provider to monorepo binary name by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1264
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1273
+* fix(deps): Update module github.com/cloudquery/cq-provider-sdk to v0.14.7 by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1272
+* fix(deps): Update module github.com/cloudquery/cq-gen to v0.0.9 by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1286
+* fix(deps): Update to Go 1.18 by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1292
+* fix(deps): Update github-actions by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1293
+* fix(cli): Keep docker old entrypoint name by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1297
+* fix(cli): Update binary name by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1304
+* fix(deps): Update github-actions (major) by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1294
+* fix(ec2): Add ARN to key pair by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1339
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1432
+* fix: Validate github config by @roneli in https://github.com/cloudquery/cloudquery/pull/1438
+* fix: Blog titles and og:image from config hook by @dj-stormtrooper in https://github.com/cloudquery/cloudquery/pull/1450
+* fix(docs): Add the missing path 'cli' for compiled bin by @hardy4yooz in https://github.com/cloudquery/cloudquery/pull/1457
+* fix: K8s Mock Testing by @bbernays in https://github.com/cloudquery/cloudquery/pull/1434
+* fix: Website fixes by @dj-stormtrooper in https://github.com/cloudquery/cloudquery/pull/1461
+* fix(deps): Update module github.com/cloudquery/cq-gen to v0.0.10 by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1474
+* fix: Website links by @dj-stormtrooper in https://github.com/cloudquery/cloudquery/pull/1477
+* fix(deps): Update module github.com/cloudquery/cq-gen to v0.0.11 by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1491
+* fix: Fix output path of build-cli make command by @hermanschaaf in https://github.com/cloudquery/cloudquery/pull/1464
+* fix(deps): Update module github.com/cloudquery/cq-gen to v0.0.12 by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1503
+* fix(website): Fix position of corner in top image by @hermanschaaf in https://github.com/cloudquery/cloudquery/pull/1508
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1514
+* fix(cli): Fix cli version checking to work with monorepo by @hermanschaaf in https://github.com/cloudquery/cloudquery/pull/1510
+* fix: ECS Tags by @bbernays in https://github.com/cloudquery/cloudquery/pull/1515
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1539
+* fix: Fix broken links on website by @anton-kuptsov in https://github.com/cloudquery/cloudquery/pull/1547
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1563
+* fix: Remove deprecated firebase by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1568
+* fix: Update Okta docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1572
+* fix: Update Terraform docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1573
+
+## New Contributors
+* @sunil494 made their first contribution in https://github.com/cloudquery/cloudquery/pull/1433
+* @hardy4yooz made their first contribution in https://github.com/cloudquery/cloudquery/pull/1457
+
+**Full Changelog**: https://github.com/cloudquery/cloudquery/compare/plugins/source/fuzz/v0.0.15...plugins/source/fuzz/v0.0.16
+
 ## [0.0.15](https://github.com/cloudquery/cloudquery/compare/plugins/source/fuzz-v0.0.14...plugins/source/fuzz/v0.0.15) (2022-08-14)
 
 
