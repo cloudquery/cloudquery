@@ -13,7 +13,7 @@ import (
 )
 
 func buildSecurityJitNetworkAccessPolicies(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockJitNetworkAccessPoliciesClient(ctrl)
+	m := mocks.NewMockSecurityJitNetworkAccessPoliciesClient(ctrl)
 
 	var policy security.JitNetworkAccessPolicy
 	if err := faker.FakeData(&policy); err != nil {

@@ -20,8 +20,15 @@ import (
 var azureTemplatesFS embed.FS
 
 func main() {
+	filter := ""
+	if len(os.Args) > 1 {
+		filter = os.Args[1]
+	}
 	for _, r := range codegen.AllResources() {
-		generateResource(r)
+		if strings.Contains(strings.ToLower(fmt.Sprintf("%s/%s", r.AzureService, r.AzureSubService)), strings.ToLower(filter)) {
+			fmt.Printf("Generating %s\n", r.Template.Destination)
+			generateResource(r)
+		}
 	}
 }
 

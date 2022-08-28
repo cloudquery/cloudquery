@@ -35,6 +35,7 @@ type Resource struct {
 	MockListResult           string
 	MockListFunctionArgs     []string
 	MockListFunctionArgsInit []string
+	MockFieldsToIgnore       []string
 }
 
 type template struct {
@@ -54,6 +55,7 @@ type resourceDefinition struct {
 	mockHelpers              []string
 	mockListFunctionArgs     []string
 	mockListFunctionArgsInit []string
+	mockFieldsToIgnore       []string
 	subServiceOverride       string
 }
 
@@ -98,6 +100,7 @@ func AllResources() []Resource {
 	resources = append(resources, PostgresSQL()...)
 	resources = append(resources, Resources()...)
 	resources = append(resources, Search()...)
+	resources = append(resources, Security()...)
 	return resources
 }
 
@@ -166,6 +169,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					MockListResult:           definition.mockListResult,
 					MockListFunctionArgs:     definition.mockListFunctionArgs,
 					MockListFunctionArgsInit: definition.mockListFunctionArgsInit,
+					MockFieldsToIgnore:       append(skipFields, definition.mockFieldsToIgnore...),
 				}
 				allResources = append(allResources, resource)
 			}

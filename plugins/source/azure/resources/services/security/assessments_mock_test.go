@@ -13,7 +13,7 @@ import (
 )
 
 func buildSecurityAssessments(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockAssessmentsClient(ctrl)
+	m := mocks.NewMockSecurityAssessmentsClient(ctrl)
 	var p security.AssessmentProperties
 	if err := faker.FakeDataSkipFields(&p, []string{"ResourceDetails"}); err != nil {
 		t.Fatal(err)

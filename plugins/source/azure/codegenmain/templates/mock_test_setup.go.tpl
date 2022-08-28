@@ -6,4 +6,5 @@
 	}
 
 	data := {{ .AzurePackageName }}.{{ .AzureStructName }}{}
-	require.Nil(t, faker.FakeData(&data, options.WithIgnoreInterface(true), options.WithFieldsToIgnore("Response"), options.WithRandomMapAndSliceMinSize(1), options.WithRandomMapAndSliceMaxSize(1)))
+	fieldsToIgnore := []string{{"{"}}{{ range .MockFieldsToIgnore }}"{{.}}",{{ end }}{{"}"}}
+	require.Nil(t, faker.FakeData(&data, options.WithIgnoreInterface(true), options.WithFieldsToIgnore(fieldsToIgnore...), options.WithRandomMapAndSliceMinSize(1), options.WithRandomMapAndSliceMaxSize(1)))
