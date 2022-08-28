@@ -1,6 +1,7 @@
 package codegen
 
 import (
+	"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy"
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links"
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
@@ -20,6 +21,7 @@ func Resources() []Resource {
 					imports: []string{
 						"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources",
 						"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2016-09-01/links",
+						"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy",
 					},
 				},
 			},
@@ -36,6 +38,12 @@ func Resources() []Resource {
 					listFunctionArgs:   []string{`""`},
 					subServiceOverride: "Links",
 					mockListResult:     "ResourceLinkResult",
+				},
+				{
+					azureStruct:          &policy.Assignment{},
+					listFunction:         "List",
+					listFunctionArgs:     []string{"meta.(*client.Client).SubscriptionId", `""`, `nil`},
+					mockListFunctionArgs: []string{"gomock.Any()", `""`, `nil`},
 				},
 			},
 			serviceNameOverride: "Resources",
