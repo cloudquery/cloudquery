@@ -1,5 +1,37 @@
 # Changelog
 
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+### Added 🎉
+* feat: Add fsx data repo tasks by @irmatov in https://github.com/cloudquery/cloudquery/pull/1279
+* feat: Add fsx data repo associations by @irmatov in https://github.com/cloudquery/cloudquery/pull/1280
+* feat: Add fsx storage virtual machines by @irmatov in https://github.com/cloudquery/cloudquery/pull/1296
+* feat: Add cq-gen hcl and a new field to sqs queues by @irmatov in https://github.com/cloudquery/cloudquery/pull/1453
+* feat: Added azure cdn profiles by @amanenk in https://github.com/cloudquery/cloudquery/pull/1460
+* feat: Add fsx volumes by @irmatov in https://github.com/cloudquery/cloudquery/pull/1322
+* feat: Add cq-gen config for apigateway by @irmatov in https://github.com/cloudquery/cloudquery/pull/1541
+* feat(website): Plugins layout by @dj-stormtrooper in https://github.com/cloudquery/cloudquery/pull/1548
+* feat(website): Remove Tempus logo until permission by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1550
+* feat: Added throttling for digitalocean API calls by @amanenk in https://github.com/cloudquery/cloudquery/pull/1546
+### Fixed 🪳
+* fix(deps): Update module github.com/cloudquery/cq-gen to v0.0.11 by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1491
+* fix: Fix output path of build-cli make command by @hermanschaaf in https://github.com/cloudquery/cloudquery/pull/1464
+* fix(deps): Update module github.com/cloudquery/cq-gen to v0.0.12 by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1503
+* fix(website): Fix position of corner in top image by @hermanschaaf in https://github.com/cloudquery/cloudquery/pull/1508
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1514
+* fix(cli): Fix cli version checking to work with monorepo by @hermanschaaf in https://github.com/cloudquery/cloudquery/pull/1510
+* fix: ECS Tags by @bbernays in https://github.com/cloudquery/cloudquery/pull/1515
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1539
+* fix: Fix broken links on website by @anton-kuptsov in https://github.com/cloudquery/cloudquery/pull/1547
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1563
+* fix: Remove deprecated firebase by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1568
+* fix: Update Okta docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1572
+* fix: Update Terraform docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1573
+
+
+**Full Changelog**: https://github.com/cloudquery/cloudquery/compare/plugins/source/k8s/v0.6.4...plugins/source/k8s/v0.6.5
+
 ## [0.6.4](https://github.com/cloudquery/cloudquery/compare/plugins/source/k8s-v0.6.3...plugins/source/k8s/v0.6.4) (2022-08-18)
 
 

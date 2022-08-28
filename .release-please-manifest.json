@@ -15,7 +15,7 @@
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "0.1.9",
   "plugins/source/github+FILLER": "0.0.0",
-  "plugins/source/k8s": "0.6.4",
+  "plugins/source/k8s": "0.6.5",
   "plugins/source/k8s+FILLER": "0.0.0",
   "plugins/source/okta": "0.6.4",
   "plugins/source/okta+FILLER": "0.0.0",
