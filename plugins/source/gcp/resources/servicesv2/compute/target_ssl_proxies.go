@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ComputeTargetSslProxies() *schema.Table {
+func TargetSslProxies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_target_ssl_proxies",
-		Resolver:  fetchComputeTargetSslProxies,
+		Resolver:  fetchTargetSslProxies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -81,7 +81,7 @@ func ComputeTargetSslProxies() *schema.Table {
 	}
 }
 
-func fetchComputeTargetSslProxies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchTargetSslProxies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeUrlMaps() (*client.Services, error) {
+func createUrlMaps() (*client.Services, error) {
 	var item compute.UrlMap
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeUrlMaps() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeUrlMaps(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeUrlMaps(), createComputeUrlMaps, client.TestOptions{})
+func TestUrlMaps(t *testing.T) {
+	client.MockTestHelper(t, UrlMaps(), createUrlMaps, client.TestOptions{})
 }

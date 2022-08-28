@@ -1,6 +1,7 @@
 package codegen
 
 import (
+	"fmt"
 	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
@@ -9,22 +10,22 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-var computeResourcesAggList = []Resource{
+var computeResourcesAggList = []*Resource{
 	{
-		GCPSubService: "addresses",
-		GCPStruct:     &compute.Address{},
+		SubService: "addresses",
+		Struct:     &compute.Address{},
 	},
 	{
-		GCPSubService: "autoscalers",
-		GCPStruct:     &compute.Autoscaler{},
+		SubService: "autoscalers",
+		Struct:     &compute.Autoscaler{},
 	},
 	{
-		GCPSubService: "backend_services",
-		GCPStruct:     &compute.BackendService{},
+		SubService: "backend_services",
+		Struct:     &compute.BackendService{},
 	},
 	{
-		GCPSubService: "disk_types",
-		GCPStruct:     &compute.DiskType{},
+		SubService: "disk_types",
+		Struct:     &compute.DiskType{},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",
@@ -36,92 +37,101 @@ var computeResourcesAggList = []Resource{
 		SkipFields: []string{"ServerResponse", "NullFields", "ForceSendFields", "Id"},
 	},
 	{
-		GCPSubService: "forwarding_rules",
-		GCPStruct:     &compute.ForwardingRule{},
+		SubService: "forwarding_rules",
+		Struct:     &compute.ForwardingRule{},
 	},
 	{
-		GCPSubService: "instances",
-		GCPStruct:     &compute.Instance{},
+		SubService: "instances",
+		Struct:     &compute.Instance{},
 	},
 	{
-		GCPSubService: "ssl_certificates",
-		GCPStruct:     &compute.SslCertificate{},
+		SubService: "ssl_certificates",
+		Struct:     &compute.SslCertificate{},
 	},
 	{
-		GCPSubService: "subnetworks",
-		GCPStruct:     &compute.Subnetwork{},
+		SubService: "subnetworks",
+		Struct:     &compute.Subnetwork{},
 	},
 	{
-		GCPSubService: "target_http_proxies",
-		GCPStruct:     &compute.TargetHttpProxy{},
+		SubService: "target_http_proxies",
+		Struct:     &compute.TargetHttpProxy{},
 	},
 	{
-		GCPSubService:  "url_maps",
-		GCPStruct:      &compute.UrlMap{},
+		SubService:     "url_maps",
+		Struct:         &compute.UrlMap{},
 		MockListStruct: "UrlMaps",
 	},
 	{
-		GCPSubService: "vpn_gateways",
-		GCPStruct:     &compute.VpnGateway{},
+		SubService: "vpn_gateways",
+		Struct:     &compute.VpnGateway{},
 	},
 	{
-		GCPSubService: "instance_groups",
-		GCPStruct:     &compute.InstanceGroup{},
+		SubService: "instance_groups",
+		Struct:     &compute.InstanceGroup{},
 	},
 }
 
-var computeResourcesList = []Resource{
+var computeResourcesList = []*Resource{
 	{
-		GCPSubService: "images",
-		GCPStruct:     &compute.Image{},
+		SubService: "images",
+		Struct:     &compute.Image{},
 	},
 	{
-		GCPSubService: "firewalls",
-		GCPStruct:     &compute.Firewall{},
+		SubService: "firewalls",
+		Struct:     &compute.Firewall{},
 	},
 	{
-		GCPSubService: "networks",
-		GCPStruct:     &compute.Network{},
+		SubService: "networks",
+		Struct:     &compute.Network{},
 	},
 	{
-		GCPSubService:  "ssl_policies",
-		GCPStruct:      &compute.SslPolicy{},
+		SubService:     "ssl_policies",
+		Struct:         &compute.SslPolicy{},
 		MockListStruct: "SslPolicies",
 	},
 	{
-		GCPSubService: "interconnects",
-		GCPStruct:     &compute.Interconnect{},
+		SubService: "interconnects",
+		Struct:     &compute.Interconnect{},
 	},
 	{
-		GCPSubService: "target_ssl_proxies",
-		GCPStruct:     &compute.TargetSslProxy{},
+		SubService: "target_ssl_proxies",
+		Struct:     &compute.TargetSslProxy{},
 	},
 }
 
-var computeResourcesGet = []Resource{
+var computeResourcesGet = []*Resource{
 	{
-		GCPSubService: "projects",
-		GCPStruct:     &compute.Project{},
+		SubService: "projects",
+		Struct:     &compute.Project{},
 	},
 }
 
-func ComputeResources() []Resource {
-	for i := range computeResourcesList {
-		if computeResourcesList[i].Template == "" {
-			computeResourcesList[i].Template = "resource_list"
+func ComputeResources() []*Resource {
+	for _, resource := range computeResourcesList {
+		if resource.Template == "" {
+			resource.Template = "resource_list"
+		}
+		if resource.ListFunction == "" {
+			resource.ListFunction = fmt.Sprintf("c.Services.Compute.%s.List(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
 		}
 	}
-	for i := range computeResourcesAggList {
-		if computeResourcesAggList[i].Template == "" {
-			computeResourcesAggList[i].Template = "resource_agg_list"
+	for _, resource := range computeResourcesAggList {
+		if resource.Template == "" {
+			resource.Template = "resource_agg_list"
 		}
-		if len(computeResourcesAggList[i].Imports) == 0 {
-			computeResourcesAggList[i].Imports = []string{"google.golang.org/api/compute/v1"}
+		if len(resource.Imports) == 0 {
+			resource.Imports = []string{"google.golang.org/api/compute/v1"}
+		}
+		if resource.ListFunction == "" {
+			resource.ListFunction = fmt.Sprintf("c.Services.Compute.%s.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
 		}
 	}
-	for i := range computeResourcesGet {
-		if computeResourcesGet[i].Template == "" {
-			computeResourcesGet[i].Template = "resource_get"
+	for _, resource := range computeResourcesGet {
+		if resource.Template == "" {
+			resource.Template = "resource_get"
+		}
+		if resource.ListFunction == "" {
+			resource.ListFunction = fmt.Sprintf("c.Services.Compute.%s.Get(c.ProjectId).Do()", strcase.ToCamel(resource.SubService))
 		}
 	}
 	resources := computeResourcesAggList
@@ -129,15 +139,15 @@ func ComputeResources() []Resource {
 	resources = append(resources, computeResourcesGet...)
 	// add all shared properties
 	for i := range resources {
-		resources[i].GCPService = "compute"
+		resources[i].Service = "compute"
 		resources[i].DefaultColumns = []codegen.ColumnDefinition{ProjectIdColumn}
-		resources[i].GCPStructName = reflect.TypeOf(resources[i].GCPStruct).Elem().Name()
+		resources[i].StructName = reflect.TypeOf(resources[i].Struct).Elem().Name()
 		if resources[i].SkipFields == nil {
 			resources[i].SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
 		}
 		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
 		if resources[i].MockListStruct == "" {
-			resources[i].MockListStruct = strcase.ToCamel(resources[i].GCPStructName)
+			resources[i].MockListStruct = strcase.ToCamel(resources[i].StructName)
 		}
 		if resources[i].OverrideColumns == nil {
 			resources[i].OverrideColumns = []codegen.ColumnDefinition{

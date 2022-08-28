@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ComputeInterconnects() *schema.Table {
+func Interconnects() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_interconnects",
-		Resolver:  fetchComputeInterconnects,
+		Resolver:  fetchInterconnects,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -141,7 +141,7 @@ func ComputeInterconnects() *schema.Table {
 	}
 }
 
-func fetchComputeInterconnects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchInterconnects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

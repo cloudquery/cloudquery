@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeSslCertificates() (*client.Services, error) {
+func createSslCertificates() (*client.Services, error) {
 	var item compute.SslCertificate
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeSslCertificates() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeSslCertificates(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeSslCertificates(), createComputeSslCertificates, client.TestOptions{})
+func TestSslCertificates(t *testing.T) {
+	client.MockTestHelper(t, SslCertificates(), createSslCertificates, client.TestOptions{})
 }

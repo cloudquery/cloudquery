@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeForwardingRules() *schema.Table {
+func ForwardingRules() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_forwarding_rules",
-		Resolver:  fetchComputeForwardingRules,
+		Resolver:  fetchForwardingRules,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -183,7 +183,7 @@ func ComputeForwardingRules() *schema.Table {
 	}
 }
 
-func fetchComputeForwardingRules(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchForwardingRules(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

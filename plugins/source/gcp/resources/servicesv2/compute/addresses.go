@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeAddresses() *schema.Table {
+func Addresses() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_addresses",
-		Resolver:  fetchComputeAddresses,
+		Resolver:  fetchAddresses,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -113,7 +113,7 @@ func ComputeAddresses() *schema.Table {
 	}
 }
 
-func fetchComputeAddresses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchAddresses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

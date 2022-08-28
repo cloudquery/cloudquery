@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeInterconnects() (*client.Services, error) {
+func createInterconnects() (*client.Services, error) {
 	var item compute.Interconnect
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -48,6 +48,6 @@ func createComputeInterconnects() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeInterconnects(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeInterconnects(), createComputeInterconnects, client.TestOptions{})
+func TestInterconnects(t *testing.T) {
+	client.MockTestHelper(t, Interconnects(), createInterconnects, client.TestOptions{})
 }

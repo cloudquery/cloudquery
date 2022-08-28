@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeNetworks() (*client.Services, error) {
+func createNetworks() (*client.Services, error) {
 	var item compute.Network
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -48,6 +48,6 @@ func createComputeNetworks() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeNetworks(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeNetworks(), createComputeNetworks, client.TestOptions{})
+func TestNetworks(t *testing.T) {
+	client.MockTestHelper(t, Networks(), createNetworks, client.TestOptions{})
 }

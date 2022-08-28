@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeSubnetworks() *schema.Table {
+func Subnetworks() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_subnetworks",
-		Resolver:  fetchComputeSubnetworks,
+		Resolver:  fetchSubnetworks,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -148,7 +148,7 @@ func ComputeSubnetworks() *schema.Table {
 	}
 }
 
-func fetchComputeSubnetworks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchSubnetworks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

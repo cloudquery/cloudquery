@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeBackendServices() (*client.Services, error) {
+func createBackendServices() (*client.Services, error) {
 	var item compute.BackendService
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeBackendServices() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeBackendServices(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeBackendServices(), createComputeBackendServices, client.TestOptions{})
+func TestBackendServices(t *testing.T) {
+	client.MockTestHelper(t, BackendServices(), createBackendServices, client.TestOptions{})
 }

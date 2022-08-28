@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ComputeNetworks() *schema.Table {
+func Networks() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_networks",
-		Resolver:  fetchComputeNetworks,
+		Resolver:  fetchNetworks,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -116,7 +116,7 @@ func ComputeNetworks() *schema.Table {
 	}
 }
 
-func fetchComputeNetworks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchNetworks(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeInstances() (*client.Services, error) {
+func createInstances() (*client.Services, error) {
 	var item compute.Instance
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeInstances() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeInstances(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeInstances(), createComputeInstances, client.TestOptions{})
+func TestInstances(t *testing.T) {
+	client.MockTestHelper(t, Instances(), createInstances, client.TestOptions{})
 }

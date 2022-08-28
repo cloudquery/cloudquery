@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeImages() (*client.Services, error) {
+func createImages() (*client.Services, error) {
 	var item compute.Image
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -48,6 +48,6 @@ func createComputeImages() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeImages(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeImages(), createComputeImages, client.TestOptions{})
+func TestImages(t *testing.T) {
+	client.MockTestHelper(t, Images(), createImages, client.TestOptions{})
 }

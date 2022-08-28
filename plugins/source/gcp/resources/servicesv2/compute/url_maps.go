@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeUrlMaps() *schema.Table {
+func UrlMaps() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_url_maps",
-		Resolver:  fetchComputeUrlMaps,
+		Resolver:  fetchUrlMaps,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -103,7 +103,7 @@ func ComputeUrlMaps() *schema.Table {
 	}
 }
 
-func fetchComputeUrlMaps(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchUrlMaps(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

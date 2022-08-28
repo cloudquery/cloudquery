@@ -19,16 +19,30 @@ import (
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-var resources = []codegen.Resource{}
+var resources = []*codegen.Resource{}
 
 func main() {
 	resources = append(resources, codegen.ComputeResources()...)
-	// resources = append(resources, codegen.CloudFunctionsResources...)
+	// resources = append(resources, codegen.DnsResources()...)
+	// resources = append(resources, codegen.DomainsResources()...)
+	// resources = append(resources, codegen.IamResources()...)
+	// resources = append(resources, codegen.KmsResources()...)
+	// resources = append(resources, codegen.KubernetesResources()...)
+	// resources = append(resources, codegen.LoggingResources()...)
+	// resources = append(resources, codegen.RedisResources()...)
+	// resources = append(resources, codegen.MonitoringResources()...)
+	// resources = append(resources, codegen.SecretManagerResources()...)
+	// resources = append(resources, codegen.ServiceusageResources()...)
+	// resources = append(resources, codegen.SqlResources()...)
+	// resources = append(resources, codegen.StorageResources()...)
+	// resources = append(resources, codegen.CloudFunctionsResources()...)
+	resources = append(resources, codegen.BigqueryResources()...)
+	// resources = append(resources, codegen.CloudBillingResources()...)
 	// resources = append(resources, codegen.CloudRunResources...)
 
 	for _, r := range resources {
-		generateResource(r, false)
-		generateResource(r, true)
+		generateResource(*r, false)
+		generateResource(*r, true)
 	}
 }
 
@@ -40,8 +54,8 @@ func generateResource(r codegen.Resource, mock bool) {
 	}
 	dir := path.Dir(filename)
 	r.Table, err = sdkgen.NewTableFromStruct(
-		fmt.Sprintf("gcp_%s_%s", r.GCPService, r.GCPSubService),
-		r.GCPStruct,
+		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
+		r.Struct,
 		sdkgen.WithSkipFields(r.SkipFields),
 		sdkgen.WithOverrideColumns(r.OverrideColumns))
 	if err != nil {
@@ -49,7 +63,7 @@ func generateResource(r codegen.Resource, mock bool) {
 	}
 	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
 	r.Table.Multiplex = "client.ProjectMultiplex"
-	r.Table.Resolver = "fetch" + strcase.ToCamel(r.GCPService) + strcase.ToCamel(r.GCPSubService)
+	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {
 		mainTemplate = r.Template + "_mock_test.go.tpl"
@@ -68,12 +82,16 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	filePath := path.Join(dir, "../resources/servicesv2", r.GCPService)
-	if mock {
-		filePath = path.Join(filePath, r.GCPSubService+"_mock_test.go")
-	} else {
-		filePath = path.Join(filePath, r.GCPSubService+".go")
+	filePath := path.Join(dir, "../resources/servicesv2", r.Service)
+	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
+		log.Fatal(err)
 	}
+	if mock {
+		filePath = path.Join(filePath, r.SubService+"_mock_test.go")
+	} else {
+		filePath = path.Join(filePath, r.SubService+".go")
+	}
+
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())

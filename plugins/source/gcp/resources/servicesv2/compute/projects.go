@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ComputeProjects() *schema.Table {
+func Projects() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_projects",
-		Resolver:  fetchComputeProjects,
+		Resolver:  fetchProjects,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -91,7 +91,7 @@ func ComputeProjects() *schema.Table {
 	}
 }
 
-func fetchComputeProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	output, err := c.Services.Compute.Projects.Get(c.ProjectId).Do()
 	if err != nil {

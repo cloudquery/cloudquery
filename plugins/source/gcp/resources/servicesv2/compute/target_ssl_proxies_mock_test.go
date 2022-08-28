@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeTargetSslProxies() (*client.Services, error) {
+func createTargetSslProxies() (*client.Services, error) {
 	var item compute.TargetSslProxy
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -48,6 +48,6 @@ func createComputeTargetSslProxies() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeTargetSslProxies(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeTargetSslProxies(), createComputeTargetSslProxies, client.TestOptions{})
+func TestTargetSslProxies(t *testing.T) {
+	client.MockTestHelper(t, TargetSslProxies(), createTargetSslProxies, client.TestOptions{})
 }
