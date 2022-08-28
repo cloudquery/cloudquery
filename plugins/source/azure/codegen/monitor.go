@@ -4,7 +4,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
 )
 
-func MonitorResources() []Resource {
+func Monitor() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

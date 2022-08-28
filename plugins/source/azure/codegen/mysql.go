@@ -4,7 +4,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
 )
 
-func MySQLResources() []Resource {
+func MySQL() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

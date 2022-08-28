@@ -4,7 +4,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func NetworkResources() []Resource {
+func Network() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

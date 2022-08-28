@@ -2,7 +2,7 @@ package codegen
 
 import "github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 
-func MariaDbResources() []Resource {
+func MariaDB() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

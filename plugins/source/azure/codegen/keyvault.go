@@ -5,7 +5,7 @@ import (
 	hsmKeyValue "github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
 )
 
-func KeyValueResources() []Resource {
+func KeyValue() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

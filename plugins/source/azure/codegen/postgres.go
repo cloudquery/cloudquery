@@ -4,7 +4,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"
 )
 
-func PostgresSQLServers() []Resource {
+func PostgresSQL() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

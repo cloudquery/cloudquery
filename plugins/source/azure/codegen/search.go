@@ -1,10 +1,10 @@
 package codegen
 
 import (
-	"github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"
+	"github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search"
 )
 
-func Batch() []Resource {
+func Search() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -16,13 +16,15 @@ func Batch() []Resource {
 				{
 					source:            "resource_list_mock_test.go.tpl",
 					destinationSuffix: "_mock_test.go",
-					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch"},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/search/mgmt/2020-08-01/search"},
 				},
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:  &batch.Account{},
-					listFunction: "List",
+					azureStruct:        &search.Service{},
+					listFunction:       "ListBySubscription",
+					subServiceOverride: "Service",
+					listFunctionArgs:   []string{"nil"},
 				},
 			},
 		},

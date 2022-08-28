@@ -4,7 +4,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 )
 
-func ComputeResources() []Resource {
+func Compute() []Resource {
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{

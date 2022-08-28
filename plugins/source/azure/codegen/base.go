@@ -85,18 +85,19 @@ var (
 
 func AllResources() []Resource {
 	var resources = []Resource{}
-	resources = append(resources, AuthorizationResources()...)
-	resources = append(resources, BatchResources()...)
-	resources = append(resources, CDNResources()...)
-	resources = append(resources, ComputeResources()...)
-	resources = append(resources, NetworkResources()...)
-	resources = append(resources, KeyValueResources()...)
-	resources = append(resources, LogicResources()...)
-	resources = append(resources, MariaDbResources()...)
-	resources = append(resources, MonitorResources()...)
-	resources = append(resources, MySQLResources()...)
-	resources = append(resources, PostgresSQLServers()...)
+	resources = append(resources, Authorization()...)
+	resources = append(resources, Batch()...)
+	resources = append(resources, CDN()...)
+	resources = append(resources, Compute()...)
+	resources = append(resources, Network()...)
+	resources = append(resources, KeyValue()...)
+	resources = append(resources, Logic()...)
+	resources = append(resources, MariaDB()...)
+	resources = append(resources, Monitor()...)
+	resources = append(resources, MySQL()...)
+	resources = append(resources, PostgresSQL()...)
 	resources = append(resources, Resources()...)
+	resources = append(resources, Search()...)
 	return resources
 }
 
