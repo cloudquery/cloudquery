@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeForwardingRules() (*client.Services, error) {
+func createForwardingRules() (*client.Services, error) {
 	var item compute.ForwardingRule
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeForwardingRules() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeForwardingRules(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeForwardingRules(), createComputeForwardingRules, client.TestOptions{})
+func TestForwardingRules(t *testing.T) {
+	client.MockTestHelper(t, ForwardingRules(), createForwardingRules, client.TestOptions{})
 }

@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeBackendServices() *schema.Table {
+func BackendServices() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_backend_services",
-		Resolver:  fetchComputeBackendServices,
+		Resolver:  fetchBackendServices,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -218,7 +218,7 @@ func ComputeBackendServices() *schema.Table {
 	}
 }
 
-func fetchComputeBackendServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchBackendServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

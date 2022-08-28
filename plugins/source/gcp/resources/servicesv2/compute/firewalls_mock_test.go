@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeFirewalls() (*client.Services, error) {
+func createFirewalls() (*client.Services, error) {
 	var item compute.Firewall
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -48,6 +48,6 @@ func createComputeFirewalls() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeFirewalls(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeFirewalls(), createComputeFirewalls, client.TestOptions{})
+func TestFirewalls(t *testing.T) {
+	client.MockTestHelper(t, Firewalls(), createFirewalls, client.TestOptions{})
 }

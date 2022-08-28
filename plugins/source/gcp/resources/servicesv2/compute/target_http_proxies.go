@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeTargetHttpProxies() *schema.Table {
+func TargetHttpProxies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_target_http_proxies",
-		Resolver:  fetchComputeTargetHttpProxies,
+		Resolver:  fetchTargetHttpProxies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -78,7 +78,7 @@ func ComputeTargetHttpProxies() *schema.Table {
 	}
 }
 
-func fetchComputeTargetHttpProxies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchTargetHttpProxies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

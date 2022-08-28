@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeDiskTypes() (*client.Services, error) {
+func createDiskTypes() (*client.Services, error) {
 	var item compute.DiskType
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeDiskTypes() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeDiskTypes(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeDiskTypes(), createComputeDiskTypes, client.TestOptions{})
+func TestDiskTypes(t *testing.T) {
+	client.MockTestHelper(t, DiskTypes(), createDiskTypes, client.TestOptions{})
 }

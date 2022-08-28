@@ -14,7 +14,7 @@ type TestOptions struct {
 	SkipEmptyJsonB bool
 }
 
-func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
+func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
 	t.Helper()
 
 	table.IgnoreInTests = false

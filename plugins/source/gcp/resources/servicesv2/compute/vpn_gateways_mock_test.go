@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeVpnGateways() (*client.Services, error) {
+func createVpnGateways() (*client.Services, error) {
 	var item compute.VpnGateway
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeVpnGateways() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeVpnGateways(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeVpnGateways(), createComputeVpnGateways, client.TestOptions{})
+func TestVpnGateways(t *testing.T) {
+	client.MockTestHelper(t, VpnGateways(), createVpnGateways, client.TestOptions{})
 }

@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeDiskTypes() *schema.Table {
+func DiskTypes() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_disk_types",
-		Resolver:  fetchComputeDiskTypes,
+		Resolver:  fetchDiskTypes,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -78,7 +78,7 @@ func ComputeDiskTypes() *schema.Table {
 	}
 }
 
-func fetchComputeDiskTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchDiskTypes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

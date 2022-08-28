@@ -12,14 +12,16 @@ type Resource struct {
 	DefaultColumns []codegen.ColumnDefinition
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
-	// GCPStruct that will be used to generate the cloudquery table
-	GCPStruct interface{}
-	// GCPStructName is the name of the GCPStruct because it can't be inferred by reflection
-	GCPStructName string
-	// GCPService is the name of the gcp service the struct/api is residing
-	GCPService string
-	// GCPSubService is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
-	GCPSubService string
+	// Struct that will be used to generate the cloudquery table
+	Struct interface{}
+	// StructName is the name of the Struct because it can't be inferred by reflection
+	StructName string
+	// Service is the name of the gcp service the struct/api is residing
+	Service string
+	// SubService is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
+	SubService string
+	// ListFunction function string which lists all resources
+	ListFunction string
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 	// imports to add for this resource

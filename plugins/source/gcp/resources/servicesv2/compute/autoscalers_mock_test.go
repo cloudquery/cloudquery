@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeAutoscalers() (*client.Services, error) {
+func createAutoscalers() (*client.Services, error) {
 	var item compute.Autoscaler
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeAutoscalers() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAutoscalers(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAutoscalers(), createComputeAutoscalers, client.TestOptions{})
+func TestAutoscalers(t *testing.T) {
+	client.MockTestHelper(t, Autoscalers(), createAutoscalers, client.TestOptions{})
 }

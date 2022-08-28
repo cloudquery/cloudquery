@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeSslCertificates() *schema.Table {
+func SslCertificates() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_ssl_certificates",
-		Resolver:  fetchComputeSslCertificates,
+		Resolver:  fetchSslCertificates,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -98,7 +98,7 @@ func ComputeSslCertificates() *schema.Table {
 	}
 }
 
-func fetchComputeSslCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchSslCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

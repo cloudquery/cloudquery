@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ComputeSslPolicies() *schema.Table {
+func SslPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_ssl_policies",
-		Resolver:  fetchComputeSslPolicies,
+		Resolver:  fetchSslPolicies,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -86,7 +86,7 @@ func ComputeSslPolicies() *schema.Table {
 	}
 }
 
-func fetchComputeSslPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchSslPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

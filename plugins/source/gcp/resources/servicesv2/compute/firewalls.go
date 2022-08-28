@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ComputeFirewalls() *schema.Table {
+func Firewalls() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_firewalls",
-		Resolver:  fetchComputeFirewalls,
+		Resolver:  fetchFirewalls,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -121,7 +121,7 @@ func ComputeFirewalls() *schema.Table {
 	}
 }
 
-func fetchComputeFirewalls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

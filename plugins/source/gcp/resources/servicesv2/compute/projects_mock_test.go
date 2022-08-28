@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeProjects() (*client.Services, error) {
+func createProjects() (*client.Services, error) {
 	var item compute.Project
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -46,6 +46,6 @@ func createComputeProjects() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeProjects(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeProjects(), createComputeProjects, client.TestOptions{})
+func TestProjects(t *testing.T) {
+	client.MockTestHelper(t, Projects(), createProjects, client.TestOptions{})
 }

@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeVpnGateways() *schema.Table {
+func VpnGateways() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_vpn_gateways",
-		Resolver:  fetchComputeVpnGateways,
+		Resolver:  fetchVpnGateways,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -88,7 +88,7 @@ func ComputeVpnGateways() *schema.Table {
 	}
 }
 
-func fetchComputeVpnGateways(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

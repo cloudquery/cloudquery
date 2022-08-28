@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ComputeImages() *schema.Table {
+func Images() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_images",
-		Resolver:  fetchComputeImages,
+		Resolver:  fetchImages,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -186,7 +186,7 @@ func ComputeImages() *schema.Table {
 	}
 }
 
-func fetchComputeImages(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchImages(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

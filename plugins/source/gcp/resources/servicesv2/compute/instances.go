@@ -11,10 +11,10 @@ import (
 	"google.golang.org/api/compute/v1"
 )
 
-func ComputeInstances() *schema.Table {
+func Instances() *schema.Table {
 	return &schema.Table{
 		Name:      "gcp_compute_instances",
-		Resolver:  fetchComputeInstances,
+		Resolver:  fetchInstances,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -243,7 +243,7 @@ func ComputeInstances() *schema.Table {
 	}
 }
 
-func fetchComputeInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {

@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeAddresses() (*client.Services, error) {
+func createAddresses() (*client.Services, error) {
 	var item compute.Address
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeAddresses() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeAddresses(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeAddresses(), createComputeAddresses, client.TestOptions{})
+func TestAddresses(t *testing.T) {
+	client.MockTestHelper(t, Addresses(), createAddresses, client.TestOptions{})
 }

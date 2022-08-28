@@ -18,7 +18,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func createComputeTargetHttpProxies() (*client.Services, error) {
+func createTargetHttpProxies() (*client.Services, error) {
 	var item compute.TargetHttpProxy
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
@@ -52,6 +52,6 @@ func createComputeTargetHttpProxies() (*client.Services, error) {
 	}, nil
 }
 
-func TestComputeTargetHttpProxies(t *testing.T) {
-	client.GcpMockTestHelper(t, ComputeTargetHttpProxies(), createComputeTargetHttpProxies, client.TestOptions{})
+func TestTargetHttpProxies(t *testing.T) {
+	client.MockTestHelper(t, TargetHttpProxies(), createTargetHttpProxies, client.TestOptions{})
 }

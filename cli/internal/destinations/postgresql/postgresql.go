@@ -437,12 +437,6 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 
 func (p *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
 	p.logger.Info().Str("table", table).Msg("Writing data")
-	// columns := make([]string, 0, len(data))
-	// values := make([]interface{}, 0, len(data))
-	// for c, v := range data {
-	// 	columns = append(columns, `"`+c+`"`)
-	// 	values = append(values, v)
-	// }
 	sql, values := upsert(table, data)
 	_, err := p.conn.Exec(ctx, sql, values...)
 	if err != nil {
