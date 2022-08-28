@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+### Added 🎉
+* feat: Added throttling for digitalocean API calls by @amanenk in https://github.com/cloudquery/cloudquery/pull/1546
+### Fixed 🪳
+* fix: Update endpoints by @cq-bot in https://github.com/cloudquery/cloudquery/pull/1563
+* fix: Remove deprecated firebase by @yevgenypats in https://github.com/cloudquery/cloudquery/pull/1568
+* fix: Update Okta docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1572
+* fix: Update Terraform docs by @erezrokah in https://github.com/cloudquery/cloudquery/pull/1573
+
+
+**Full Changelog**: https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.17...plugins/source/aws/v0.13.18
+
 ## [0.13.17](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.16...plugins/source/aws/v0.13.17) (2022-08-24)
 
 
