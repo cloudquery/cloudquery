@@ -336,6 +336,7 @@ func fetchClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 		return errors.WithStack(err)
 	}
 
-	res <- output
+	res <- output.Clusters
+
 	return nil
 }

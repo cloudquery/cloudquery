@@ -22,7 +22,7 @@ func SecretManagerResources() []*Resource {
 		resource.Service = "secretmanager"
 		resource.Template = "resource_list"
 		resource.ListFunction = fmt.Sprintf(
-			`c.Services.SecretManager.Projects.%s.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`,
+			`c.Services.Secretmanager.Projects.%s.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`,
 			strcase.ToCamel(resource.SubService),
 		)
 		resource.OutputField = strcase.ToCamel(resource.SubService)

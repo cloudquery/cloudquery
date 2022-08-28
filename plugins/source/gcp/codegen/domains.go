@@ -20,8 +20,9 @@ func DomainsResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "domains"
+		resource.MockImports = []string{"google.golang.org/api/domains/v1beta1"}
 		resource.ListFunction = fmt.Sprintf(
-			`c.Services.Domain.Projects.Locations.%s.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()`,
+			`c.Services.Domains.Projects.Locations.%s.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()`,
 			strcase.ToCamel(resource.SubService),
 		)
 		resource.Template = "resource_list"

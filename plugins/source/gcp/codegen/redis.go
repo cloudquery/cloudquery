@@ -20,6 +20,7 @@ func RedisResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "redis"
+		resource.MockImports = []string{"google.golang.org/api/redis/v1"}
 		resource.Template = "resource_list"
 		resource.ListFunction = fmt.Sprintf(`c.Services.Redis.Projects.Locations.%s.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
 		resource.OutputField = strcase.ToCamel(resource.SubService)

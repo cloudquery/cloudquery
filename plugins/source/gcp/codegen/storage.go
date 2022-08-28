@@ -20,6 +20,7 @@ func StorageResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "storage"
+		resource.MockImports = []string{"google.golang.org/api/storage/v1"}
 		resource.Template = "resource_list"
 		resource.ListFunction = fmt.Sprintf("c.Services.Storage.%s.List(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
 	}

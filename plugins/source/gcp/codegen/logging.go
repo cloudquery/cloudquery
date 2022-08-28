@@ -23,6 +23,7 @@ func LoggingResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "logging"
+		resource.MockImports = []string{"google.golang.org/api/logging/v2"}
 		resource.Template = "resource_list"
 		if resource.ListFunction == "" {
 			resource.ListFunction = `c.Services.Logging.` + strcase.ToCamel(resource.SubService) + `.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`

@@ -19,8 +19,9 @@ func CloudFunctionsResources() []*Resource {
 	resources = append(resources, cloudFunctionsResources...)
 
 	for _, resource := range resources {
+		resource.MockImports = []string{"google.golang.org/api/cloudfunctions/v1"}
 		resource.Service = "cloudfunctions"
-		resource.ListFunction = fmt.Sprintf(`c.Services.CloudFunctions.Projects.Locations.%s.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
+		resource.ListFunction = fmt.Sprintf(`c.Services.Cloudfunctions.Projects.Locations.%s.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
 		resource.Template = "resource_list"
 		resource.OutputField = strcase.ToCamel(resource.SubService)
 	}

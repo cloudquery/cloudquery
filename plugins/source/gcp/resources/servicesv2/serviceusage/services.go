@@ -21,29 +21,24 @@ func Services() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "client",
+				Name:     "config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("client"),
+				Resolver: schema.PathResolver("Config"),
 			},
 			{
-				Name:     "base_path",
+				Name:     "name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BasePath"),
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "user_agent",
+				Name:     "parent",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UserAgent"),
+				Resolver: schema.PathResolver("Parent"),
 			},
 			{
-				Name:     "operations",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Operations"),
-			},
-			{
-				Name:     "services",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Services"),
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
 			},
 		},
 	}
@@ -53,7 +48,7 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.ServiceUsage.Services.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Serviceusage.Services.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

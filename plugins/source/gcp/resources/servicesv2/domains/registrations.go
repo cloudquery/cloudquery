@@ -98,7 +98,7 @@ func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Domain.Projects.Locations.Registrations.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
+		output, err := c.Services.Domains.Projects.Locations.Registrations.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

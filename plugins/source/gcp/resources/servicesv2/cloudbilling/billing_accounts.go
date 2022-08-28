@@ -48,7 +48,7 @@ func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.CloudBilling.BillingAccounts.List().PageToken(nextPageToken).Do()
+		output, err := c.Services.Cloudbilling.BillingAccounts.List().PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

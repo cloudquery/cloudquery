@@ -22,7 +22,7 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return errors.WithStack(err)
 	}
-
 	res <- output
+	
 	return nil
 }

@@ -78,7 +78,7 @@ func fetchSecrets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resourc
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.SecretManager.Projects.Secrets.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		output, err := c.Services.Secretmanager.Projects.Secrets.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

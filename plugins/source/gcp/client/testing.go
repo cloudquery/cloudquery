@@ -3,11 +3,14 @@ package client
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/rs/zerolog"
 )
 
 type TestOptions struct {
@@ -28,8 +31,12 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Se
 		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 		}
+		l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+			zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+		).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 		c := &Client{
 			plugin: p,
+			logger: l,
 			// logger:   t.Log(),
 			Services: svc,
 			projects: []string{"testProject"},
@@ -47,6 +54,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Se
 		newTestExecutionClient)
 	plugins.TestSourcePluginSync(t, p, specs.Source{
 		Name:   "dev",
-		Tables: []string{"*"},
+		Tables: []string{table.Name},
 	})
 }

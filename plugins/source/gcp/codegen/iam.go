@@ -25,6 +25,7 @@ func IamResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "iam"
+		resource.MockImports = []string{"google.golang.org/api/iam/v1"}
 		resource.ListFunction = fmt.Sprintf(`c.Services.Iam.Projects.%s.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
 		resource.Template = "resource_list"
 		if resource.OutputField == "" {
