@@ -104,6 +104,7 @@ func AllResources() []Resource {
 	resources = append(resources, ServiceBus()...)
 	resources = append(resources, SQL()...)
 	resources = append(resources, Storage()...)
+	resources = append(resources, StreamAnalytics()...)
 	return resources
 }
 

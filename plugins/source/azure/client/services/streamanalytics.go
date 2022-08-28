@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/streamanalytics.go -package=mocks . JobsClient
+//go:generate mockgen -destination=./mocks/streamanalytics.go -package=mocks . StreamAnalyticsJobsClient
 package services
 
 import (
@@ -9,10 +9,10 @@ import (
 )
 
 type StreamAnalyticsClient struct {
-	Jobs JobsClient
+	Jobs StreamAnalyticsJobsClient
 }
 
-type JobsClient interface {
+type StreamAnalyticsJobsClient interface {
 	List(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
 }
 
