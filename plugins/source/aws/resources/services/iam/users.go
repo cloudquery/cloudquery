@@ -353,6 +353,7 @@ func userDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- 
 			reportUser: reportUser,
 			isRoot:     true,
 		}
+		return
 	}
 	svc := meta.(*client.Client).Services().IAM
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
