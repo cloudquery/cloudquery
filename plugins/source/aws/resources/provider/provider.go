@@ -216,7 +216,7 @@ func Provider() *provider.Provider {
 			"iam.openid_connect_identity_providers":      iam.IamOpenidConnectIdentityProviders(),
 			"iam.password_policies":                      iam.IamPasswordPolicies(),
 			"iam.policies":                               iam.IamPolicies(),
-			"iam.roles":                                  iam.IamRoles(),
+			"iam.roles":                                  iam.Roles(),
 			"iam.saml_identity_providers":                iam.IamSamlIdentityProviders(),
 			"iam.server_certificates":                    iam.IamServerCertificates(),
 			"iam.users":                                  iam.IamUsers(),

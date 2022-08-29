@@ -4,9 +4,7 @@ Inline policies that are embedded in the specified IAM role
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|role_cq_id|uuid|Role CloudQuery ID the policy belongs too.|
-|role_id|text|Role ID the policy belongs too.|
-|account_id|text|The AWS Account ID of the resource.|
-|policy_document|jsonb|The policy document. IAM stores policies in JSON format. However, resources that were created using AWS CloudFormation templates can be formatted in YAML. AWS CloudFormation always converts a YAML policy to JSON format before submitting it to IAM.|
+|role_cq_id|uuid|Unique CloudQuery ID of aws_iam_roles table (FK)|
+|policy_document|jsonb|The policy document|
 |policy_name|text|The name of the policy.|
 |role_name|text|The role the policy is associated with.|
