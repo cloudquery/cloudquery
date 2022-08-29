@@ -42,9 +42,15 @@ type Resource struct {
 	CustomErrorBlock     string // Only used in list_and_detail template.
 	CustomTagField       string // Only used in list_and_detail template.
 
-	Parent          *Resource
-	ParentFieldName string
-	ChildFieldName  string // Override. Defaults to ParentFieldName
+	Parent                   *Resource
+	ParentFieldName          string
+	ChildFieldName           string // Override. Defaults to ParentFieldName
+	PaginatorListName        string // Only used in list_describe template.
+	MockRawPaginatorListType string // Override. Defaults to "types." + PaginatorListName
+	MockRawListDetailType    string // Override. Defaults to "types." + ItemName + "Detail"
+
+	SkipDescribeParentInputs bool   // Only used in list_describe template.
+	RawDescribeFieldValue    string // Only used in list_describe template.
 
 	// imports to add for this resource
 	Imports []string

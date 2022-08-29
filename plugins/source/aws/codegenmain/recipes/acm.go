@@ -8,18 +8,21 @@ import (
 
 var ACMResources = []*Resource{
 	{
-		DefaultColumns:     []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
-		AWSStruct:          &types.CertificateDetail{},
-		AWSService:         "ACM",
-		AWSSubService:      "Certificates",
-		ItemName:           "Certificate",
-		ListFieldName:      "CertificateArn",
-		Template:           "resource_list_describe",
-		Imports:            nil,
-		MockImports:        nil,
-		MockListStruct:     "",
-		SkipFields:         nil,
-		CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		DefaultColumns:           []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
+		AWSStruct:                &types.CertificateDetail{},
+		AWSService:               "ACM",
+		AWSSubService:            "Certificates",
+		ItemName:                 "Certificate",
+		ListFieldName:            "CertificateArn",
+		PaginatorListName:        "CertificateSummaryList",
+		MockRawPaginatorListType: "types.CertificateSummary",
+		MockRawListDetailType:    "types.CertificateDetail",
+		Template:                 "resource_list_describe",
+		Imports:                  nil,
+		MockImports:              nil,
+		MockListStruct:           "",
+		SkipFields:               nil,
+		CreateTableOptions:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"certificate_arn": {
 				Name: "arn",

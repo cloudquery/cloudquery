@@ -24,6 +24,7 @@ var ApplicationautoscalingResources = []*Resource{
 		CustomInputs: []string{
 			"\tServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),",
 		},
+		AddTypesImport: true,
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},
 }

@@ -169,11 +169,11 @@ func ACMCertificates() *schema.Table {
 	}
 }
 
-func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
 
-	var input acm.ListCertificatesInput
+	input := acm.ListCertificatesInput{}
 	paginator := acm.NewListCertificatesPaginator(svc, &input)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
@@ -182,9 +182,13 @@ func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema
 		}
 		for _, item := range output.CertificateSummaryList {
 			do, err := svc.DescribeCertificate(ctx, &acm.DescribeCertificateInput{
+
 				CertificateArn: item.CertificateArn,
 			})
 			if err != nil {
+				if cl.IsNotFoundError(err) {
+					continue
+				}
 				return diag.WrapError(err)
 			}
 			res <- do.Certificate

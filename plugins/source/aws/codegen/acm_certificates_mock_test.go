@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -18,8 +19,9 @@ import (
 func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockACMClient(ctrl)
 
-	var list types.CertificateSummary
-	if err := faker.FakeData(&list); err != nil {
+	var item types.CertificateSummary
+
+	if err := faker.FakeData(&item); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListCertificates(
@@ -28,20 +30,25 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		gomock.Any(),
 	).Return(
 		&acm.ListCertificatesOutput{
-			CertificateSummaryList: []types.CertificateSummary{list},
+
+			CertificateSummaryList: []types.CertificateSummary{item},
 		},
 		nil,
 	)
 
 	var detail types.CertificateDetail
+
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}
-	detail.CertificateArn = list.CertificateArn
+
+	detail.CertificateArn = item.CertificateArn
+
 	mock.EXPECT().DescribeCertificate(
 		gomock.Any(),
 		&acm.DescribeCertificateInput{
-			CertificateArn: list.CertificateArn,
+
+			CertificateArn: item.CertificateArn,
 		},
 		gomock.Any(),
 	).Return(
