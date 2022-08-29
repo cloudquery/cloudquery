@@ -26,7 +26,7 @@ cloudquery init azure
 # cloudquery init --help # Show all possible auto generated configs and flags
 ```
 
-All official and approved community providers are listed at [CloudQuery Hub](https://hub.cloudquery.io) with their respective documentation.
+All official and approved community plugins are listed [here](/plugins) with their respective documentation.
 
 <SpawnSection />
 
@@ -135,7 +135,7 @@ The output of `az ad sp create-for-rbac` should look like this:
 ```
 
 <Callout type="info">
-You can find out more about authentication with Azure on [CloudQuery Hub](https://hub.cloudquery.io/providers/cloudquery/azure/latest)
+You can find out more about authentication with Azure [here](/plugins/azure)
 and at [Azure's documentation for the golang sdk](https://github.com/Azure/azure-sdk-for-go).
 </Callout>
 
@@ -201,7 +201,7 @@ cloudquery fetch
 
 <ExploreSection/>
 
-Schema and tables for Azure are available in [CloudQuery Hub](https://hub.cloudquery.io/providers/cloudquery/azure/latest/schema).
+Schema and tables for GCP are available [here](/plugins/azure/tables).
 
 A few example queries for Azure:
 
@@ -220,8 +220,8 @@ SELECT * from azure_storage_accounts where enable_https_traffic_only = false
 ### Cloudquery Policies
 
 CloudQuery Policies allow users to write security, governance, cost, and compliance rules with SQL, and run them with `psql`.
-You can read more about policies [here](https://www.cloudquery.io/docs/policies).
+You can read more about policies [here](/docs/policies).
 
 ## Next Steps
 
-At [Cloudquery Hub](https://hub.cloudquery.io/providers/cloudquery/azure/latest), you can read more about the CloudQuery Azure provider - including exploring the SQL schema, and advanced configurations.
+[Visit the Azure plugin documentation](/plugins/azure) to read more about it, explore the supported tables and learn about advanced configurations.

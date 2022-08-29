@@ -76,11 +76,11 @@ You are also free to fork this repository and create your own policy to adopt th
 
 Running this is as simple as ensuring your database has the latest cloud asset configuration with the fetch command and then executing each of pre-made queries with the policy run command.
 
-Following is a quick start to run the policy. Otherwise, checkout full details on our [docs](https://www.cloudquery.io/docs/policies).
+Following is a quick start to run the policy. Otherwise, checkout full details on our [docs](/docs/policies).
 
 ### Prerequisite
 
-Please follow the [Getting Started](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](https://hub.cloudquery.io/providers/cloudquery/k8s/latest).
+Please follow the [Getting Started](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](/plugins/k8s).
 
 ### Running
 
