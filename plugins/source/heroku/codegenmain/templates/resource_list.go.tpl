@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/pkg/errors"
+	heroku "github.com/heroku/heroku-go/v5"
 )
 
 func {{.HerokuStructName | Pluralize }}() *schema.Table {
@@ -16,10 +17,19 @@ func {{.HerokuStructName | Pluralize }}() *schema.Table {
 
 func fetch{{.HerokuStructName | Pluralize }}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v, err := c.Heroku.{{.HerokuStructName}}List(ctx, nil)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	res <- v
+	nextRange := &heroku.ListRange{
+	    Field: "id",
+        Max:   1000,
+    }
+	// Roundtripper middleware in client/pagination.go
+	// sets the nextRange value after each request
+	for nextRange.Max != 0 {
+		ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+        v, err := c.Heroku.{{.HerokuStructName}}List(ctxWithRange, nextRange)
+        if err != nil {
+            return errors.WithStack(err)
+        }
+        res <- v
+    }
 	return nil
 }

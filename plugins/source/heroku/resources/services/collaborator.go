@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )
 
@@ -56,17 +57,37 @@ func Collaborators() *schema.Table {
 
 func fetchCollaborators(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	items, err := c.Heroku.AppList(ctx, nil)
-	if err != nil {
-		return errors.WithStack(err)
+	nextRange := &heroku.ListRange{
+		Field: "id",
+		Max:   1000,
 	}
-
-	for _, it := range items {
-		v, err := c.Heroku.CollaboratorList(ctx, it.ID, nil)
+	items := make([]heroku.App, 0, 10)
+	// Roundtripper middleware in client/pagination.go
+	// sets the nextRange value after each request
+	for nextRange.Max != 0 {
+		ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+		v, err := c.Heroku.AppList(ctxWithRange, nextRange)
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- v
+		items = append(items, v...)
+	}
+
+	for _, it := range items {
+		nextRange = &heroku.ListRange{
+			Field: "id",
+			Max:   1000,
+		}
+		// Roundtripper middleware in client/pagination.go
+		// sets the nextRange value after each request
+		for nextRange.Max != 0 {
+			ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+			v, err := c.Heroku.CollaboratorList(ctxWithRange, it.ID, nextRange)
+			if err != nil {
+				return errors.WithStack(err)
+			}
+			res <- v
+		}
 	}
 	return nil
 }

@@ -6,6 +6,7 @@ import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )
 
@@ -66,10 +67,19 @@ func AddOnServices() *schema.Table {
 
 func fetchAddOnServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	v, err := c.Heroku.AddOnServiceList(ctx, nil)
-	if err != nil {
-		return errors.WithStack(err)
+	nextRange := &heroku.ListRange{
+		Field: "id",
+		Max:   1000,
 	}
-	res <- v
+	// Roundtripper middleware in client/pagination.go
+	// sets the nextRange value after each request
+	for nextRange.Max != 0 {
+		ctxWithRange := context.WithValue(ctx, "nextRange", nextRange)
+		v, err := c.Heroku.AddOnServiceList(ctxWithRange, nextRange)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		res <- v
+	}
 	return nil
 }

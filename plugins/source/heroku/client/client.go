@@ -30,9 +30,11 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 
 	// TODO: support teams filter
 	// TODO: validate provider config
-	heroku.DefaultTransport.BearerToken = providerConfig.Token
-	h := heroku.NewService(heroku.DefaultClient)
 
+	heroku.DefaultTransport.BearerToken = providerConfig.Token
+	client := heroku.DefaultClient
+	client.Transport = paginator{transport: client.Transport}
+	h := heroku.NewService(client)
 	return &Client{
 		logger: logger,
 		Heroku: h,
