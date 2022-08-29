@@ -1,6 +1,6 @@
 
 # Table: heroku_stacks
-
+https://devcenter.heroku.com/articles/platform-api-reference#stack-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

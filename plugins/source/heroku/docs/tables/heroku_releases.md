@@ -1,6 +1,6 @@
 
 # Table: heroku_releases
-
+https://devcenter.heroku.com/articles/platform-api-reference#release-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

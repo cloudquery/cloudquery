@@ -1,6 +1,6 @@
 
 # Table: heroku_formations
-
+https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

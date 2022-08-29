@@ -1,6 +1,6 @@
 
 # Table: heroku_permission_entities
-
+https://devcenter.heroku.com/articles/platform-api-reference#permission-entity-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

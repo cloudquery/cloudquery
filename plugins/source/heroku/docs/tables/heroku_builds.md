@@ -1,6 +1,6 @@
 
 # Table: heroku_builds
-
+https://devcenter.heroku.com/articles/platform-api-reference#build-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

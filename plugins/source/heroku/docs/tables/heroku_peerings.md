@@ -1,6 +1,6 @@
 
 # Table: heroku_peerings
-
+https://devcenter.heroku.com/articles/platform-api-reference#peering-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

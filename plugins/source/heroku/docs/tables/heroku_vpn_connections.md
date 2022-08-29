@@ -1,6 +1,6 @@
 
 # Table: heroku_vpn_connections
-
+https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

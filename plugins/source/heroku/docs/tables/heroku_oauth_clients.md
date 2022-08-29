@@ -1,6 +1,6 @@
 
 # Table: heroku_oauth_clients
-
+https://devcenter.heroku.com/articles/platform-api-reference#o-auth-client-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

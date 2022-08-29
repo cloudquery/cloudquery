@@ -1,6 +1,6 @@
 
 # Table: heroku_log_drains
-
+https://devcenter.heroku.com/articles/platform-api-reference#log-drain-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

@@ -1,6 +1,6 @@
 
 # Table: heroku_app_transfers
-
+https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

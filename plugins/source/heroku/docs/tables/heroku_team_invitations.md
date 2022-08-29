@@ -1,6 +1,6 @@
 
 # Table: heroku_team_invitations
-
+https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

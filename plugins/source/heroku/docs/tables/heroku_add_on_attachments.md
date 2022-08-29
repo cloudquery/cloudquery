@@ -1,6 +1,6 @@
 
 # Table: heroku_add_on_attachments
-
+https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

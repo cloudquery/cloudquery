@@ -1,6 +1,6 @@
 
 # Table: heroku_app_webhook_deliveries
-
+https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

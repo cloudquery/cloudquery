@@ -1,6 +1,6 @@
 
 # Table: heroku_keys
-
+https://devcenter.heroku.com/articles/platform-api-reference#key-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

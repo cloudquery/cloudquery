@@ -1,6 +1,6 @@
 
 # Table: heroku_review_apps
-
+https://devcenter.heroku.com/articles/platform-api-reference#review-app-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

@@ -1,6 +1,6 @@
 
 # Table: heroku_credits
-
+https://devcenter.heroku.com/articles/platform-api-reference#credit-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

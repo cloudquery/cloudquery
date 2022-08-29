@@ -1,6 +1,6 @@
 
 # Table: heroku_add_ons
-
+https://devcenter.heroku.com/articles/platform-api-reference#add-on-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

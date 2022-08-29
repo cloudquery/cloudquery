@@ -1,6 +1,6 @@
 
 # Table: heroku_pipelines
-
+https://devcenter.heroku.com/articles/platform-api-reference#pipeline-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

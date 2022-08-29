@@ -1,6 +1,6 @@
 
 # Table: heroku_enterprise_account_members
-
+https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

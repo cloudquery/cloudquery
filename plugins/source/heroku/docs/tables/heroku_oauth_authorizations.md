@@ -1,6 +1,6 @@
 
 # Table: heroku_oauth_authorizations
-
+https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

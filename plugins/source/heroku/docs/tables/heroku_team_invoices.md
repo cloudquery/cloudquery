@@ -1,6 +1,6 @@
 
 # Table: heroku_team_invoices
-
+https://devcenter.heroku.com/articles/platform-api-reference#team-invoice-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

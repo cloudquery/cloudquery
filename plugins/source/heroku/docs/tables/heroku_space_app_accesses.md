@@ -1,6 +1,6 @@
 
 # Table: heroku_space_app_accesses
-
+https://devcenter.heroku.com/articles/platform-api-reference#space-app-access-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

@@ -1,6 +1,6 @@
 
 # Table: heroku_teams
-
+https://devcenter.heroku.com/articles/platform-api-reference#team-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

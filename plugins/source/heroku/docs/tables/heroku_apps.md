@@ -1,6 +1,6 @@
 
 # Table: heroku_apps
-
+https://devcenter.heroku.com/articles/platform-api-reference#app-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |

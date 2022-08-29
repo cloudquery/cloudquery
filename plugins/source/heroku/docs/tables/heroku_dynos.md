@@ -1,6 +1,6 @@
 
 # Table: heroku_dynos
-
+https://devcenter.heroku.com/articles/platform-api-reference#dyno-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
