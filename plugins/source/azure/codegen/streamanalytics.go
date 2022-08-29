@@ -24,6 +24,7 @@ func StreamAnalytics() []Resource {
 					azureStruct:      &streamanalytics.StreamingJob{},
 					listFunction:     "List",
 					listFunctionArgs: []string{`""`},
+					skipFields:       []string{"Properties", "Datasource", "Serialization"},
 				},
 			},
 			serviceNameOverride: "StreamAnalytics",
