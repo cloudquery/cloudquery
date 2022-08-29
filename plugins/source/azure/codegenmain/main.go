@@ -27,12 +27,16 @@ func main() {
 		filter = os.Args[1]
 	}
 	pattern := regexp.MustCompile("(?i)" + filter)
+	destinationDir := path.Join(path.Dir(getFilename()), "../resources/servicesv2")
+
 	for _, r := range codegen.AllResources() {
 		if pattern.MatchString(fmt.Sprintf("%s/%s", r.AzureService, r.AzureSubService)) {
 			fmt.Printf("Generating %s\n", r.Template.Destination)
-			generateResource(r)
+			generateResource(destinationDir, r)
 		}
 	}
+
+	exec.Command("goimports", "-w", destinationDir).Run()
 }
 
 func getFilename() string {
@@ -76,12 +80,8 @@ func writeContent(destination string, content []byte) {
 	}
 }
 
-func generateResource(r codegen.Resource) {
-	filename := getFilename()
-	dir := path.Dir(filename)
-	destination := path.Join(dir, "../resources/servicesv2", r.Template.Destination)
+func generateResource(destinationDir string, r codegen.Resource) {
+	destination := path.Join(destinationDir, r.Template.Destination)
 	content := getContent(r.Template, destination, r)
 	writeContent(destination, content)
-
-	exec.Command("goimports", "-w", destination).Run()
 }
