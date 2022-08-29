@@ -106,7 +106,6 @@ func AppSyncGraphqlApis() *schema.Table {
 }
 
 func fetchAppSyncGraphqlApis(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().AppSync
 

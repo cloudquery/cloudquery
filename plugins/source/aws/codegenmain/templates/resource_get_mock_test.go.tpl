@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
+	"{{.TypesImport}}"
 {{range .Imports}}	"{{.}}"
 {{end}}
 )

@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
+	"{{.TypesImport}}"
 {{range .Imports}}	"{{.}}"
 {{end}}
 )
@@ -42,11 +43,11 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, _ *schema.
 
 {{if .HasTags}}
 func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cert := resource.Item.(*types.{{.AWSStructName}})
+	item := resource.Item.(*types.{{.AWSStructName}})
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService}}
 	out, err := svc.ListTagsFor{{.ItemName}}(ctx, &{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Input{
-	  {{.ListFieldName}}: cert.{{.ListFieldName}},
+	  {{.ListFieldName}}: item.{{.ListFieldName}},
   })
 	if err != nil {
 		return diag.WrapError(err)

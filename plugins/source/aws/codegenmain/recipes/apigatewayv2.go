@@ -23,7 +23,6 @@ var APIGatewayv2Resources = parentize(&Resource{
 			Description: "A collection of tags associated with the API.",
 		},
 	},
-	SkipTypesImport: true,
 },
 	combine(
 		&Resource{

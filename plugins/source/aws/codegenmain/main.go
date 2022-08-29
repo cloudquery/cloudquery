@@ -29,6 +29,7 @@ func main() {
 	resources = append(resources, recipes.APIGatewayv2Resources...)
 	resources = append(resources, recipes.ApplicationautoscalingResources...)
 	resources = append(resources, recipes.AppsyncResources...)
+	resources = append(resources, recipes.AthenaResources...)
 
 	for _, r := range resources {
 		generateResource(r, false)
@@ -109,6 +110,10 @@ func generateResource(r *recipes.Resource, mock bool) {
 		}
 		if r.Table.Columns[i].Name == "tags" {
 			r.HasTags = true
+
+			if r.Table.Columns[i].Resolver == recipes.ResolverAuto {
+				r.Table.Columns[i].Resolver = "resolve" + r.AWSService + r.AWSSubService + "Tags"
+			}
 		}
 	}
 	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + coalesce(r.MultiplexerServiceOverride, strings.ToLower(r.AWSService)) + `")`
@@ -138,8 +143,10 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.ItemName = r.AWSStructName
 	}
 
+	r.TypesImport = ""
 	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
-		if r.AddTypesImport || ((r.HasTags || r.Parent != nil) && (!r.SkipTypesImport || mock)) {
+		r.TypesImport = sp
+		if r.AddTypesImport {
 			r.Imports = append(r.Imports, sp)
 		}
 		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types")) // auto-import main pkg (not "types")

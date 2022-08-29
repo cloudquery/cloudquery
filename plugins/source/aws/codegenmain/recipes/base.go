@@ -7,6 +7,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
+const ResolverAuto = "auto"
+
 type Resource struct {
 	// PackageName name is the packagename in the source plugin this resource is located
 	//PackageName string
@@ -28,12 +30,17 @@ type Resource struct {
 	MultiplexerServiceOverride string
 	CQSubserviceOverride       string // used in table and file names
 
-	ListVerb      string // Override. Defaults to "List". Only used in list_describe template.
-	ListFieldName string // Only used in list_describe template.
+	ListVerb      string // Override. Defaults to "List". Only used in list_describe and list_and_detail templates.
+	ListFieldName string // Only used in list_describe and list_and_detail templates.
 
 	ItemName          string // Override. Defaults to AWSStructName
 	Verb              string // Override. Default depends on template used.
 	ResponseItemsName string // Override. Defaults to Items
+
+	DetailInputFieldName string // Only used in list_and_detail template.
+	ResponseItemsType    string // Only used in list_and_detail template.
+	CustomErrorBlock     string // Only used in list_and_detail template.
+	CustomTagField       string // Only used in list_and_detail template.
 
 	Parent          *Resource
 	ParentFieldName string
@@ -52,9 +59,9 @@ type Resource struct {
 
 	ColumnOverrides map[string]codegen.ColumnDefinition
 
-	HasTags         bool // autodetected by scanning all columns for `tags`
-	SkipTypesImport bool // skip "types" import (except for mock mode)
-	AddTypesImport  bool // always add "types" import
+	HasTags bool // autodetected by scanning all columns for `tags`
+
+	AddTypesImport bool // add types import regardless of template spec (can lead to double imports)
 
 	TrimPrefix string // trim this prefix from all column names
 
@@ -62,6 +69,7 @@ type Resource struct {
 	MockFuncName  string // auto calculated
 	TestFuncName  string // auto calculated
 	NestingLevel  int    // auto calculated
+	TypesImport   string // auto calculated
 
 	CustomResolvers []string
 	CustomInputs    []string

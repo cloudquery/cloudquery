@@ -54,7 +54,6 @@ func Apigatewayv2ApiDeployments() *schema.Table {
 }
 
 func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 

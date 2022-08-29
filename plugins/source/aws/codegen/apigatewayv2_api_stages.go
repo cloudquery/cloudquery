@@ -94,7 +94,6 @@ func Apigatewayv2ApiStages() *schema.Table {
 }
 
 func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 

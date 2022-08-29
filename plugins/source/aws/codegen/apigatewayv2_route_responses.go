@@ -49,7 +49,6 @@ func Apigatewayv2RouteResponses() *schema.Table {
 }
 
 func fetchApigatewayv2RouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 

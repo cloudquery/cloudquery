@@ -21,7 +21,6 @@ var ApplicationautoscalingResources = []*Resource{
 		MockListStruct:             "",
 		SkipFields:                 nil,
 		TrimPrefix:                 "policy_",
-		AddTypesImport:             true,
 		CustomInputs: []string{
 			"\tServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),",
 		},

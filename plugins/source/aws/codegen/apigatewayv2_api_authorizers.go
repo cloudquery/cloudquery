@@ -79,7 +79,6 @@ func Apigatewayv2ApiAuthorizers() *schema.Table {
 }
 
 func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 

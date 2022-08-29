@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
+{{if .Parent}}	"{{.TypesImport}}"{{end}}
 {{range .Imports}}	"{{.}}"
 {{end}}
 )
@@ -17,11 +18,7 @@ func {{.TableFuncName}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 
-{{if .Parent}}
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-{{else}}
-	func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-{{end}}
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
 

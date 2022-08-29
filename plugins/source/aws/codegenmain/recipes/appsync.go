@@ -18,7 +18,6 @@ var AppsyncResources = []*Resource{
 		MockImports:       nil,
 		MockListStruct:    "",
 		SkipFields:        nil,
-		SkipTypesImport:   true,
 		TrimPrefix:        "api_",
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},

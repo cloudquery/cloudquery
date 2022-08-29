@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
-	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 )
 
 func ApplicationAutoscalingpolicies() *schema.Table {
@@ -92,7 +91,6 @@ func ApplicationAutoscalingpolicies() *schema.Table {
 }
 
 func fetchApplicationAutoscalingpolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	cl := meta.(*client.Client)
 	svc := cl.Services().ApplicationAutoscaling
 

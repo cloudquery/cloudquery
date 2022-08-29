@@ -194,11 +194,11 @@ func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, _ *schema
 }
 
 func resolveACMCertificatesTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cert := resource.Item.(*types.CertificateDetail)
+	item := resource.Item.(*types.CertificateDetail)
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
 	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{
-		CertificateArn: cert.CertificateArn,
+		CertificateArn: item.CertificateArn,
 	})
 	if err != nil {
 		return diag.WrapError(err)
