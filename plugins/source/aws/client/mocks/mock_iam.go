@@ -595,46 +595,6 @@ func (mr *MockIamClientMockRecorder) ListUserPolicies(arg0, arg1 interface{}, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUserPolicies", reflect.TypeOf((*MockIamClient)(nil).ListUserPolicies), varargs...)
 }
 
-// ListUserTags mocks base method.
-func (m *MockIamClient) ListUserTags(arg0 context.Context, arg1 *iam.ListUserTagsInput, arg2 ...func(*iam.Options)) (*iam.ListUserTagsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ListUserTags", varargs...)
-	ret0, _ := ret[0].(*iam.ListUserTagsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListUserTags indicates an expected call of ListUserTags.
-func (mr *MockIamClientMockRecorder) ListUserTags(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUserTags", reflect.TypeOf((*MockIamClient)(nil).ListUserTags), varargs...)
-}
-
-// ListUsers mocks base method.
-func (m *MockIamClient) ListUsers(arg0 context.Context, arg1 *iam.ListUsersInput, arg2 ...func(*iam.Options)) (*iam.ListUsersOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ListUsers", varargs...)
-	ret0, _ := ret[0].(*iam.ListUsersOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ListUsers indicates an expected call of ListUsers.
-func (mr *MockIamClientMockRecorder) ListUsers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUsers", reflect.TypeOf((*MockIamClient)(nil).ListUsers), varargs...)
-}
-
 // ListVirtualMFADevices mocks base method.
 func (m *MockIamClient) ListVirtualMFADevices(arg0 context.Context, arg1 *iam.ListVirtualMFADevicesInput, arg2 ...func(*iam.Options)) (*iam.ListVirtualMFADevicesOutput, error) {
 	m.ctrl.T.Helper()
