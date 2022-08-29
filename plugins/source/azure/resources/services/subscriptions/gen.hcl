@@ -10,7 +10,7 @@ description_modifier "remove_field_name" {
   regex = ".+- "
 }
 
-resource "azure" "subscription" "subscriptions" {
+resource "azure" "subscriptions" "subscriptions" {
   path        = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.Subscription"
   description = "Azure subscription information"
 
@@ -58,7 +58,7 @@ resource "azure" "subscription" "subscriptions" {
   }
 }
 
-resource "azure" "subscription" "tenants" {
+resource "azure" "subscriptions" "tenants" {
   path        = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions.TenantIDDescription"
   description = "Azure tenant information"
 

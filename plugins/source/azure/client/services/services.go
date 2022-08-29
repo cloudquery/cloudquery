@@ -31,7 +31,7 @@ type Services struct {
 	SQL             SQLClient
 	Storage         StorageClient
 	StreamAnalytics StreamAnalyticsClient
-	Subscriptions   Subscriptions
+	Subscriptions   SubscriptionsClient
 	Web             WebClient
 }
 

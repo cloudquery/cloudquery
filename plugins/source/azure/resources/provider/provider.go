@@ -28,7 +28,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/sql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/storage"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/streamanalytics"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscription"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/subscriptions"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/web"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -102,8 +102,8 @@ func Provider() *provider.Provider {
 			"sql.managed_instances":                sql.SqlManagedInstances(),
 			"storage.accounts":                     storage.StorageAccounts(),
 			"streamanalytics.jobs":                 streamanalytics.StreamanalyticsJobs(),
-			"subscription.subscriptions":           subscription.Subscriptions(),
-			"subscription.tenants":                 subscription.Tenants(),
+			"subscriptions.subscriptions":          subscriptions.Subscriptions(),
+			"subscriptions.tenants":                subscriptions.Tenants(),
 			"web.apps":                             web.WebApps(),
 		},
 		Config: func() provider.Config {

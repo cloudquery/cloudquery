@@ -14,7 +14,7 @@ import (
 )
 
 func buildAccountLocationsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockSubscriptionsClient(ctrl)
+	m := mocks.NewMockSubscriptionsSubscriptionsClient(ctrl)
 
 	var subscriptionID string
 	if err := faker.FakeData(&subscriptionID); err != nil {
@@ -25,7 +25,7 @@ func buildAccountLocationsMock(t *testing.T, ctrl *gomock.Controller) services.S
 	if err := faker.FakeData(&model); err != nil {
 		t.Fatal(err)
 	}
-	pager := runtime.NewPager[armsubscriptions.ClientListLocationsResponse](runtime.PagingHandler[armsubscriptions.ClientListLocationsResponse]{
+	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.ClientListLocationsResponse]{
 		More: func(page armsubscriptions.ClientListLocationsResponse) bool {
 			return false
 		},
@@ -42,7 +42,7 @@ func buildAccountLocationsMock(t *testing.T, ctrl *gomock.Controller) services.S
 	)
 
 	return services.Services{
-		Subscriptions: services.Subscriptions{
+		Subscriptions: services.SubscriptionsClient{
 			SubscriptionID: subscriptionID,
 			Subscriptions:  m,
 		},

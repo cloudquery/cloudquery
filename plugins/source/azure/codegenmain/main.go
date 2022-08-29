@@ -15,6 +15,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/codegen"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/gertd/go-pluralize"
 )
 
 //go:embed templates/*.go.tpl
@@ -43,7 +44,8 @@ func getFilename() string {
 }
 
 func initTemplate(templateName string) *template.Template {
-	tpl, err := template.New(templateName).Funcs(template.FuncMap{"ToLower": strings.ToLower}).ParseFS(azureTemplatesFS, "templates/*.go.tpl")
+	pluralizeClient := pluralize.NewClient()
+	tpl, err := template.New(templateName).Funcs(template.FuncMap{"ToLower": strings.ToLower, "ToSingular": pluralizeClient.Singular}).ParseFS(azureTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse azure templates: %w", err))
 	}

@@ -1,4 +1,4 @@
-package subscription
+package subscriptions
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 )
 
 func buildTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockTenantsClient(ctrl)
+	m := mocks.NewMockSubscriptionsTenantsClient(ctrl)
 
 	var subscriptionID string
 	if err := faker.FakeData(&subscriptionID); err != nil {
@@ -43,7 +43,7 @@ func buildTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	)
 
 	return services.Services{
-		Subscriptions: services.Subscriptions{
+		Subscriptions: services.SubscriptionsClient{
 			SubscriptionID: subscriptionID,
 			Tenants:        m,
 		},
