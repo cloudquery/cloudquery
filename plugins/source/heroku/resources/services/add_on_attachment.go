@@ -12,9 +12,10 @@ import (
 
 func AddOnAttachments() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_add_on_attachments",
-		Resolver:  fetchAddOnAttachments,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_add_on_attachments",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-attributes",
+		Resolver:    fetchAddOnAttachments,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "addon",

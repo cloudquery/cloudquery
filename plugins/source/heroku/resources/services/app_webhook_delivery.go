@@ -12,9 +12,10 @@ import (
 
 func AppWebhookDeliveries() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_app_webhook_deliveries",
-		Resolver:  fetchAppWebhookDeliveries,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_app_webhook_deliveries",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-attributes",
+		Resolver:    fetchAppWebhookDeliveries,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

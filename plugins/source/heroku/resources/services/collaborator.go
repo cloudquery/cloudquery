@@ -12,9 +12,10 @@ import (
 
 func Collaborators() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_collaborators",
-		Resolver:  fetchCollaborators,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_collaborators",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#collaborator-attributes",
+		Resolver:    fetchCollaborators,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

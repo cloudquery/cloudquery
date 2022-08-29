@@ -12,9 +12,10 @@ import (
 
 func AddOnConfigs() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_add_on_configs",
-		Resolver:  fetchAddOnConfigs,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_add_on_configs",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-config-attributes",
+		Resolver:    fetchAddOnConfigs,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "name",

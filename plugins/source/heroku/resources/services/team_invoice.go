@@ -12,9 +12,10 @@ import (
 
 func TeamInvoices() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_team_invoices",
-		Resolver:  fetchTeamInvoices,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_team_invoices",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-invoice-attributes",
+		Resolver:    fetchTeamInvoices,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "addons_total",

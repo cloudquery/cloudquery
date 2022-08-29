@@ -12,9 +12,10 @@ import (
 
 func Spaces() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_spaces",
-		Resolver:  fetchSpaces,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_spaces",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#space-attributes",
+		Resolver:    fetchSpaces,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "cidr",

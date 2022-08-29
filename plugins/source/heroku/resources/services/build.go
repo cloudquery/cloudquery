@@ -12,9 +12,10 @@ import (
 
 func Builds() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_builds",
-		Resolver:  fetchBuilds,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_builds",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#build-attributes",
+		Resolver:    fetchBuilds,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

@@ -12,9 +12,10 @@ import (
 
 func AddOnServices() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_add_on_services",
-		Resolver:  fetchAddOnServices,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_add_on_services",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-service-attributes",
+		Resolver:    fetchAddOnServices,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "cli_plugin_name",

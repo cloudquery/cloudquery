@@ -12,9 +12,10 @@ import (
 
 func OAuthAuthorizations() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_oauth_authorizations",
-		Resolver:  fetchOAuthAuthorizations,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_oauth_authorizations",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization-attributes",
+		Resolver:    fetchOAuthAuthorizations,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "access_token",

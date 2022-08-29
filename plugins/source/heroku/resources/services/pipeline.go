@@ -12,9 +12,10 @@ import (
 
 func Pipelines() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_pipelines",
-		Resolver:  fetchPipelines,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_pipelines",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-attributes",
+		Resolver:    fetchPipelines,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

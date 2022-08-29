@@ -97,23 +97,6 @@ var listResources = []Resource{
 		HerokuPrimaryStruct: &heroku.App{},
 		Template:            "relational_resource_list",
 	},
-
-	// TODO: Add support for Archive
-	//{
-	//	HerokuStruct:        &heroku.Archive{},
-	//	HerokuPrimaryStruct: &heroku.EnterpriseAccount{},
-	//	Template:            "relational_resource_list",
-	//},
-
-	// TODO: Add support for AuditTrailEvent.
-	//       Its list call returns only a single item, which is probably
-	//       a bug in the Heroku SDK.
-	//{
-	//	HerokuStruct:        &heroku.AuditTrailEvent{},
-	//	HerokuPrimaryStruct: &heroku.EnterpriseAccount{},
-	//	Template:            "relational_resource_list",
-	//},
-
 	{
 		HerokuStruct:        &heroku.Build{},
 		HerokuPrimaryStruct: &heroku.App{},
@@ -213,15 +196,6 @@ var listResources = []Resource{
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
 	},
-
-	// TODO: Add support for PipelinePromotion
-	// Note: PipelinePromotion doesn't have a corresponding List call
-	//{
-	//	HerokuStruct:        &heroku.PipelinePromotionTarget{},
-	//	HerokuPrimaryStruct: &heroku.PipelinePromotion{},
-	//	Template:            "relational_resource_list",
-	//},
-
 	{
 		HerokuStruct:        &heroku.PipelineRelease{},
 		HerokuPrimaryStruct: &heroku.Pipeline{},
@@ -240,14 +214,6 @@ var listResources = []Resource{
 		HerokuPrimaryStruct: &heroku.Pipeline{},
 		Template:            "relational_resource_list",
 	},
-
-	// TODO: Add support for SniEndpoint
-	//{
-	//	HerokuStruct:        &heroku.SniEndpoint{},
-	//	HerokuPrimaryStruct: &heroku.App{},
-	//	Template:            "relational_resource_list",
-	//},
-
 	{
 		HerokuStruct: &heroku.Space{},
 	},
@@ -256,34 +222,12 @@ var listResources = []Resource{
 		HerokuPrimaryStruct: &heroku.Space{},
 		Template:            "relational_resource_list",
 	},
-
-	// TODO: Add support for SSLEndpoint
-	//{
-	//	HerokuStruct:        &heroku.SSLEndpoint{},
-	//	HerokuPrimaryStruct: &heroku.App{},
-	//	Template:            "relational_resource_list",
-	//},
-
 	{
 		HerokuStruct: &heroku.Stack{},
 	},
 	{
 		HerokuStruct: &heroku.Team{},
 	},
-
-	// TODO: Add support for TeamApp
-	// NOTE: TeamApp only has TeamAppListByTeam
-	//{
-	//	HerokuStruct: &heroku.TeamApp{},
-	//},
-
-	// TODO: Add support for TeamAppCollaborator
-	//{
-	//	HerokuStruct: &heroku.TeamAppCollaborator{},
-	//	HerokuPrimaryStruct: &heroku.TeamApp{},
-	//	Template:            "relational_resource_list",
-	//},
-
 	{
 		HerokuStruct: &heroku.TeamAppPermission{},
 	},
@@ -293,9 +237,6 @@ var listResources = []Resource{
 		Template:            "relational_resource_list",
 	},
 	{
-		// Note: TeamInvitationList technically uses team Name as argument, not ID.
-		//       This is either a mistake in the SDK or an inconsistency in the API.
-		//       (TODO: check this)
 		HerokuStruct:        &heroku.TeamInvitation{},
 		HerokuPrimaryStruct: &heroku.Team{},
 		Template:            "relational_resource_list",
@@ -310,6 +251,62 @@ var listResources = []Resource{
 		HerokuPrimaryStruct: &heroku.Team{},
 		Template:            "relational_resource_list",
 	},
+	{
+		HerokuStruct:        &heroku.TeamSpace{},
+		HerokuPrimaryStruct: &heroku.Team{},
+		Template:            "relational_resource_list",
+	},
+	{
+		HerokuStruct:        &heroku.VPNConnection{},
+		HerokuPrimaryStruct: &heroku.Space{},
+		Template:            "relational_resource_list",
+	},
+
+
+	// TODO: Add support for Archive
+	//{
+	//	HerokuStruct:        &heroku.Archive{},
+	//	HerokuPrimaryStruct: &heroku.EnterpriseAccount{},
+	//	Template:            "relational_resource_list",
+	//},
+	// TODO: Add support for AuditTrailEvent.
+	//       Its list call returns only a single item, which is probably
+	//       a bug in the Heroku SDK.
+	//{
+	//	HerokuStruct:        &heroku.AuditTrailEvent{},
+	//	HerokuPrimaryStruct: &heroku.EnterpriseAccount{},
+	//	Template:            "relational_resource_list",
+	//},
+	// TODO: Add support for PipelinePromotion
+	// Note: PipelinePromotion doesn't have a corresponding List call
+	//{
+	//	HerokuStruct:        &heroku.PipelinePromotionTarget{},
+	//	HerokuPrimaryStruct: &heroku.PipelinePromotion{},
+	//	Template:            "relational_resource_list",
+	//},
+	// TODO: Add support for SniEndpoint
+	//{
+	//	HerokuStruct:        &heroku.SniEndpoint{},
+	//	HerokuPrimaryStruct: &heroku.App{},
+	//	Template:            "relational_resource_list",
+	//},
+	// TODO: Add support for SSLEndpoint
+	//{
+	//	HerokuStruct:        &heroku.SSLEndpoint{},
+	//	HerokuPrimaryStruct: &heroku.App{},
+	//	Template:            "relational_resource_list",
+	//},
+	// TODO: Add support for TeamApp
+	// NOTE: TeamApp only has TeamAppListByTeam
+	//{
+	//	HerokuStruct: &heroku.TeamApp{},
+	//},
+	// TODO: Add support for TeamAppCollaborator
+	//{
+	//	HerokuStruct: &heroku.TeamAppCollaborator{},
+	//	HerokuPrimaryStruct: &heroku.TeamApp{},
+	//	Template:            "relational_resource_list",
+	//},
 	// TODO: Add support for TeamPreferences
 	//{
 	//	HerokuStruct:        &heroku.TeamPreferences{},
@@ -317,33 +314,24 @@ var listResources = []Resource{
 	//	Template:            "relational_resource_list",
 	//	SkipListParams:      true,
 	//},
-	{
-		HerokuStruct:        &heroku.TeamSpace{},
-		HerokuPrimaryStruct: &heroku.Team{},
-		Template:            "relational_resource_list",
-	},
-
 	// TODO: Add support for TestCase
 	//{
 	//	HerokuStruct:        &heroku.TestCase{},
 	//	HerokuPrimaryStruct: &heroku.TestRun{},
 	//	Template:            "relational_resource_list",
 	//},
-
 	// TODO: Add support for TestNode
 	//{
 	//	HerokuStruct:        &heroku.TestNode{},
 	//	HerokuPrimaryStruct: &heroku.TestRun{},
 	//	Template:            "relational_resource_list",
 	//},
-
 	// TODO: Add support for TestRun
 	//{
 	//	HerokuStruct:        &heroku.TestRun{},
 	//	HerokuPrimaryStruct: &heroku.Pipeline{},
 	//	Template:            "relational_resource_list",
 	//},
-
 	// TODO: Add support for UserPreferences
 	// Note: no API function exists to list accounts, so preferences would
 	// only be for current user
@@ -352,12 +340,6 @@ var listResources = []Resource{
 	//	HerokuPrimaryStruct: &heroku.Account{},
 	//	Template:            "relational_resource_list",
 	//},
-
-	{
-		HerokuStruct:        &heroku.VPNConnection{},
-		HerokuPrimaryStruct: &heroku.Space{},
-		Template:            "relational_resource_list",
-	},
 }
 
 func All() []Resource {

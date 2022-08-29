@@ -12,9 +12,10 @@ import (
 
 func Formations() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_formations",
-		Resolver:  fetchFormations,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_formations",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes",
+		Resolver:    fetchFormations,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

@@ -12,9 +12,10 @@ import (
 
 func InboundRulesets() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_inbound_rulesets",
-		Resolver:  fetchInboundRulesets,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_inbound_rulesets",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-attributes",
+		Resolver:    fetchInboundRulesets,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

@@ -12,9 +12,10 @@ import (
 
 func ReviewApps() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_review_apps",
-		Resolver:  fetchReviewApps,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_review_apps",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#review-app-attributes",
+		Resolver:    fetchReviewApps,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

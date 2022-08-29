@@ -12,9 +12,10 @@ import (
 
 func AccountFeatures() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_account_features",
-		Resolver:  fetchAccountFeatures,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_account_features",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#account-feature-attributes",
+		Resolver:    fetchAccountFeatures,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

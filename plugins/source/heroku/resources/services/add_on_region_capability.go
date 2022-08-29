@@ -12,9 +12,10 @@ import (
 
 func AddOnRegionCapabilities() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_add_on_region_capabilities",
-		Resolver:  fetchAddOnRegionCapabilities,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_add_on_region_capabilities",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-region-capability-attributes",
+		Resolver:    fetchAddOnRegionCapabilities,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "addon_service",

@@ -12,9 +12,10 @@ import (
 
 func AddOns() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_add_ons",
-		Resolver:  fetchAddOns,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_add_ons",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-attributes",
+		Resolver:    fetchAddOns,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "actions",

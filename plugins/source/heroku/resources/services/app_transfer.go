@@ -12,9 +12,10 @@ import (
 
 func AppTransfers() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_app_transfers",
-		Resolver:  fetchAppTransfers,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_app_transfers",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-attributes",
+		Resolver:    fetchAppTransfers,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

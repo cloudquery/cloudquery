@@ -12,10 +12,11 @@ import (
 
 func AppWebhooks() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_app_webhooks",
-		Resolver:  fetchAppWebhooks,
-		Multiplex: client.NoMultiplex,
-		Columns:   []schema.Column{},
+		Name:        "heroku_app_webhooks",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-attributes",
+		Resolver:    fetchAppWebhooks,
+		Multiplex:   client.NoMultiplex,
+		Columns:     []schema.Column{},
 	}
 }
 

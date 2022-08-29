@@ -12,9 +12,10 @@ import (
 
 func PermissionEntities() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_permission_entities",
-		Resolver:  fetchPermissionEntities,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_permission_entities",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#permission-entity-attributes",
+		Resolver:    fetchPermissionEntities,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

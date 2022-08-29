@@ -12,9 +12,10 @@ import (
 
 func Regions() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_regions",
-		Resolver:  fetchRegions,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_regions",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#region-attributes",
+		Resolver:    fetchRegions,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "country",

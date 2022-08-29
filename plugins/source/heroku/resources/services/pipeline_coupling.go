@@ -12,9 +12,10 @@ import (
 
 func PipelineCouplings() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_pipeline_couplings",
-		Resolver:  fetchPipelineCouplings,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_pipeline_couplings",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-attributes",
+		Resolver:    fetchPipelineCouplings,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

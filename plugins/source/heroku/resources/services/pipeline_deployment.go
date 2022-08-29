@@ -12,10 +12,11 @@ import (
 
 func PipelineDeployments() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_pipeline_deployments",
-		Resolver:  fetchPipelineDeployments,
-		Multiplex: client.NoMultiplex,
-		Columns:   []schema.Column{},
+		Name:        "heroku_pipeline_deployments",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-deployment-attributes",
+		Resolver:    fetchPipelineDeployments,
+		Multiplex:   client.NoMultiplex,
+		Columns:     []schema.Column{},
 	}
 }
 

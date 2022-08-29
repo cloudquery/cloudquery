@@ -12,9 +12,10 @@ import (
 
 func Credits() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_credits",
-		Resolver:  fetchCredits,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_credits",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#credit-attributes",
+		Resolver:    fetchCredits,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "amount",

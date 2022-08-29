@@ -12,9 +12,10 @@ import (
 
 func EnterpriseAccounts() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_enterprise_accounts",
-		Resolver:  fetchEnterpriseAccounts,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_enterprise_accounts",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-attributes",
+		Resolver:    fetchEnterpriseAccounts,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

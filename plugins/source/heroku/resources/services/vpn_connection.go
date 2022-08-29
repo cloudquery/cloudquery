@@ -12,9 +12,10 @@ import (
 
 func VPNConnections() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_vpn_connections",
-		Resolver:  fetchVPNConnections,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_vpn_connections",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection-attributes",
+		Resolver:    fetchVPNConnections,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

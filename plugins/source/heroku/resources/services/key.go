@@ -12,9 +12,10 @@ import (
 
 func Keys() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_keys",
-		Resolver:  fetchKeys,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_keys",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#key-attributes",
+		Resolver:    fetchKeys,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "comment",

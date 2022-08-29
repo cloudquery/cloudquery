@@ -12,9 +12,10 @@ import (
 
 func Peerings() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_peerings",
-		Resolver:  fetchPeerings,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_peerings",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#peering-attributes",
+		Resolver:    fetchPeerings,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "aws_account_id",

@@ -12,9 +12,10 @@ import (
 
 func Teams() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_teams",
-		Resolver:  fetchTeams,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_teams",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-attributes",
+		Resolver:    fetchTeams,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

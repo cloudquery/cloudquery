@@ -12,9 +12,10 @@ import (
 
 func Releases() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_releases",
-		Resolver:  fetchReleases,
-		Multiplex: client.NoMultiplex,
+		Name:        "heroku_releases",
+		Description: "https://devcenter.heroku.com/articles/platform-api-reference#release-attributes",
+		Resolver:    fetchReleases,
+		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "addon_plan_names",
