@@ -29,21 +29,7 @@ jobs:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
       fail-fast: false
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:11
-        env:
-          POSTGRES_PASSWORD: pass
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
