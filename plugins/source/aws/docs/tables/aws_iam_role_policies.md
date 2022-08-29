@@ -1,6 +1,6 @@
 
 # Table: aws_iam_role_policies
-Contains the response to a successful GetRolePolicy request.
+Inline policies that are embedded in the specified IAM role
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
