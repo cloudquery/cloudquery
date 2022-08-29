@@ -15,7 +15,6 @@ func Regions() *schema.Table {
 		Name:        "heroku_regions",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#region-attributes",
 		Resolver:    fetchRegions,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "country",

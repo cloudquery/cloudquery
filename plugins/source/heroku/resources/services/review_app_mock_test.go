@@ -14,7 +14,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createReviewApps() (client.HerokuService, error) {
+func createReviewApps() (*heroku.Service, error) {
 	primaryItems := make(heroku.PipelineListResult, 1)
 	if err := faker.FakeData(&primaryItems); err != nil {
 		return nil, err
@@ -46,7 +46,9 @@ func createReviewApps() (client.HerokuService, error) {
 		calls++
 	})
 	ts := httptest.NewServer(mux)
-	s := heroku.NewService(ts.Client())
+	c := heroku.DefaultClient
+	c.Transport = client.NewPaginator(ts.Client().Transport)
+	s := heroku.NewService(c)
 	s.URL = ts.URL
 	return s, nil
 }

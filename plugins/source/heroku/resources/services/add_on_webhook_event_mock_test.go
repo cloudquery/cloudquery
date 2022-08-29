@@ -14,7 +14,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createAddOnWebhookEvents() (client.HerokuService, error) {
+func createAddOnWebhookEvents() (*heroku.Service, error) {
 	primaryItems := make(heroku.AddOnListResult, 1)
 	if err := faker.FakeData(&primaryItems); err != nil {
 		return nil, err
@@ -46,7 +46,9 @@ func createAddOnWebhookEvents() (client.HerokuService, error) {
 		calls++
 	})
 	ts := httptest.NewServer(mux)
-	s := heroku.NewService(ts.Client())
+	c := heroku.DefaultClient
+	c.Transport = client.NewPaginator(ts.Client().Transport)
+	s := heroku.NewService(c)
 	s.URL = ts.URL
 	return s, nil
 }

@@ -15,7 +15,6 @@ func TeamFeatures() *schema.Table {
 		Name:        "heroku_team_features",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-feature-attributes",
 		Resolver:    fetchTeamFeatures,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

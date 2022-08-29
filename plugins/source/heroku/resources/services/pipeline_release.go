@@ -15,7 +15,6 @@ func PipelineReleases() *schema.Table {
 		Name:        "heroku_pipeline_releases",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release-attributes",
 		Resolver:    fetchPipelineReleases,
-		Multiplex:   client.NoMultiplex,
 		Columns:     []schema.Column{},
 	}
 }

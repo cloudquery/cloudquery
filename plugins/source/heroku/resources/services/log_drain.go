@@ -15,7 +15,6 @@ func LogDrains() *schema.Table {
 		Name:        "heroku_log_drains",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#log-drain-attributes",
 		Resolver:    fetchLogDrains,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "addon",

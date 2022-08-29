@@ -9,19 +9,26 @@ import (
 	"strings"
 )
 
-// paginator implements the http.RoundTripper interface to intercept
+// Paginator implements the http.RoundTripper interface to intercept
 // pagination information not supported by the official Heroku SDK. It
 // injects this information into the request context so that resolvers
 // can make additional calls, if necessary.
-type paginator struct {
+type Paginator struct {
 	transport http.RoundTripper
+}
+
+// NewPaginator returns a new paginator with the given RoundTripper
+func NewPaginator(t http.RoundTripper) Paginator {
+	return Paginator{
+		transport: t,
+	}
 }
 
 // RoundTrip is an implementation of the http.RoundTripper function
 // that checks the status code and adds pagination information to the
 // context accordingly. This is only done because the official SDK lacks
 // support for pagination (see: https://github.com/heroku/heroku-go/issues/56)
-func (p paginator) RoundTrip(req *http.Request) (*http.Response, error) {
+func (p Paginator) RoundTrip(req *http.Request) (*http.Response, error) {
 	if p.transport == nil {
 		p.transport = http.DefaultTransport
 	}

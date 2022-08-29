@@ -15,7 +15,6 @@ func Collaborators() *schema.Table {
 		Name:        "heroku_collaborators",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#collaborator-attributes",
 		Resolver:    fetchCollaborators,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

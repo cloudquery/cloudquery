@@ -15,7 +15,6 @@ func Keys() *schema.Table {
 		Name:        "heroku_keys",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#key-attributes",
 		Resolver:    fetchKeys,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "comment",

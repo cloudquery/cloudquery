@@ -14,7 +14,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createDynoSizes() (client.HerokuService, error) {
+func createDynoSizes() (*heroku.Service, error) {
 	items := make(heroku.DynoSizeListResult, 1)
 	if err := faker.FakeData(&items); err != nil {
 		return nil, err
@@ -32,7 +32,9 @@ func createDynoSizes() (client.HerokuService, error) {
 		}
 	})
 	ts := httptest.NewServer(mux)
-	s := heroku.NewService(ts.Client())
+	c := heroku.DefaultClient
+	c.Transport = client.NewPaginator(ts.Client().Transport)
+	s := heroku.NewService(c)
 	s.URL = ts.URL
 	return s, nil
 }

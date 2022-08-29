@@ -15,7 +15,6 @@ func TeamSpaces() *schema.Table {
 		Name:        "heroku_team_spaces",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-space-attributes",
 		Resolver:    fetchTeamSpaces,
-		Multiplex:   client.NoMultiplex,
 		Columns:     []schema.Column{},
 	}
 }

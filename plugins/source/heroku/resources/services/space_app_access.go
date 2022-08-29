@@ -15,7 +15,6 @@ func SpaceAppAccesses() *schema.Table {
 		Name:        "heroku_space_app_accesses",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#space-app-access-attributes",
 		Resolver:    fetchSpaceAppAccesses,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

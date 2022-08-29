@@ -15,7 +15,6 @@ func PipelineBuilds() *schema.Table {
 		Name:        "heroku_pipeline_builds",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-attributes",
 		Resolver:    fetchPipelineBuilds,
-		Multiplex:   client.NoMultiplex,
 		Columns:     []schema.Column{},
 	}
 }

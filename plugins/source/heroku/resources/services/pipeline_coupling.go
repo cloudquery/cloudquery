@@ -15,7 +15,6 @@ func PipelineCouplings() *schema.Table {
 		Name:        "heroku_pipeline_couplings",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-attributes",
 		Resolver:    fetchPipelineCouplings,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

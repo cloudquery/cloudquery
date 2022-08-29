@@ -15,7 +15,6 @@ func AddOnWebhookEvents() *schema.Table {
 		Name:        "heroku_add_on_webhook_events",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event-attributes",
 		Resolver:    fetchAddOnWebhookEvents,
-		Multiplex:   client.NoMultiplex,
 		Columns:     []schema.Column{},
 	}
 }

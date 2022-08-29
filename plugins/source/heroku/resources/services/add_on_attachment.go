@@ -15,7 +15,6 @@ func AddOnAttachments() *schema.Table {
 		Name:        "heroku_add_on_attachments",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-attributes",
 		Resolver:    fetchAddOnAttachments,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "addon",

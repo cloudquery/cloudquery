@@ -14,7 +14,7 @@ import (
 	heroku "github.com/heroku/heroku-go/v5"
 )
 
-func create{{.HerokuStructName | Pluralize }}() (client.HerokuService, error) {
+func create{{.HerokuStructName | Pluralize }}() (*heroku.Service, error) {
 	primaryItems := make(heroku.{{.HerokuPrimaryStructName}}ListResult, 1)
 	if err := faker.FakeData(&primaryItems); err != nil {
 		return nil, err
@@ -46,7 +46,9 @@ func create{{.HerokuStructName | Pluralize }}() (client.HerokuService, error) {
 		calls++
 	})
 	ts := httptest.NewServer(mux)
-	s := heroku.NewService(ts.Client())
+	c := heroku.DefaultClient
+	c.Transport = client.NewPaginator(ts.Client().Transport)
+	s := heroku.NewService(c)
 	s.URL = ts.URL
 	return s, nil
 }

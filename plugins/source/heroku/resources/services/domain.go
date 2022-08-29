@@ -15,7 +15,6 @@ func Domains() *schema.Table {
 		Name:        "heroku_domains",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#domain-attributes",
 		Resolver:    fetchDomains,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "acm_status",

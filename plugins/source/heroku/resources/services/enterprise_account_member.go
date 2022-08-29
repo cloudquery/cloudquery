@@ -15,7 +15,6 @@ func EnterpriseAccountMembers() *schema.Table {
 		Name:        "heroku_enterprise_account_members",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-attributes",
 		Resolver:    fetchEnterpriseAccountMembers,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "enterprise_account",

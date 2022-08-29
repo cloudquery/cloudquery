@@ -15,7 +15,6 @@ func Formations() *schema.Table {
 		Name:        "heroku_formations",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes",
 		Resolver:    fetchFormations,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

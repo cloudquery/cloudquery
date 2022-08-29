@@ -1,6 +1,7 @@
 package client
 
 import (
+	heroku "github.com/heroku/heroku-go/v5"
 	"testing"
 
 	"github.com/cloudquery/cq-provider-sdk/logging"
@@ -13,7 +14,7 @@ import (
 
 type TestOptions struct{}
 
-func HerokuMockTestHelper(t *testing.T, table *schema.Table, builder func() (HerokuService, error), _ TestOptions) {
+func HerokuMockTestHelper(t *testing.T, table *schema.Table, builder func() (*heroku.Service, error), _ TestOptions) {
 	table.IgnoreInTests = false
 	t.Helper()
 	cfg := ``

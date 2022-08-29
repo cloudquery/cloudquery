@@ -14,7 +14,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func createSpaces() (client.HerokuService, error) {
+func createSpaces() (*heroku.Service, error) {
 	items := make(heroku.SpaceListResult, 1)
 	if err := faker.FakeData(&items); err != nil {
 		return nil, err
@@ -32,7 +32,9 @@ func createSpaces() (client.HerokuService, error) {
 		}
 	})
 	ts := httptest.NewServer(mux)
-	s := heroku.NewService(ts.Client())
+	c := heroku.DefaultClient
+	c.Transport = client.NewPaginator(ts.Client().Transport)
+	s := heroku.NewService(c)
 	s.URL = ts.URL
 	return s, nil
 }

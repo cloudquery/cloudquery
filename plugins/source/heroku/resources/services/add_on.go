@@ -15,7 +15,6 @@ func AddOns() *schema.Table {
 		Name:        "heroku_add_ons",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-attributes",
 		Resolver:    fetchAddOns,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "actions",

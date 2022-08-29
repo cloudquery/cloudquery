@@ -15,7 +15,6 @@ func Dynos() *schema.Table {
 		Name:        "heroku_dynos",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#dyno-attributes",
 		Resolver:    fetchDynos,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

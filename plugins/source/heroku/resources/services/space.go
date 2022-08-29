@@ -15,7 +15,6 @@ func Spaces() *schema.Table {
 		Name:        "heroku_spaces",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#space-attributes",
 		Resolver:    fetchSpaces,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "cidr",

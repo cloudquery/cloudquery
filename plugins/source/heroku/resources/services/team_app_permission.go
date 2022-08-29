@@ -15,7 +15,6 @@ func TeamAppPermissions() *schema.Table {
 		Name:        "heroku_team_app_permissions",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-attributes",
 		Resolver:    fetchTeamAppPermissions,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "description",

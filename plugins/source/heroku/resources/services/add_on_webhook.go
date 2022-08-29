@@ -15,7 +15,6 @@ func AddOnWebhooks() *schema.Table {
 		Name:        "heroku_add_on_webhooks",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-attributes",
 		Resolver:    fetchAddOnWebhooks,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

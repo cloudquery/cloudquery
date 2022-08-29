@@ -15,7 +15,6 @@ func Releases() *schema.Table {
 		Name:        "heroku_releases",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#release-attributes",
 		Resolver:    fetchReleases,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "addon_plan_names",

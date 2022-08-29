@@ -15,7 +15,6 @@ func ReviewApps() *schema.Table {
 		Name:        "heroku_review_apps",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#review-app-attributes",
 		Resolver:    fetchReviewApps,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "app",

@@ -15,7 +15,6 @@ func Stacks() *schema.Table {
 		Name:        "heroku_stacks",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#stack-attributes",
 		Resolver:    fetchStacks,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

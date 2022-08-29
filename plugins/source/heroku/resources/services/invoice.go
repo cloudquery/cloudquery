@@ -15,7 +15,6 @@ func Invoices() *schema.Table {
 		Name:        "heroku_invoices",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#invoice-attributes",
 		Resolver:    fetchInvoices,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "charges_total",

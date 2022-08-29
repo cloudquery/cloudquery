@@ -15,7 +15,6 @@ func TeamInvitations() *schema.Table {
 		Name:        "heroku_team_invitations",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-attributes",
 		Resolver:    fetchTeamInvitations,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

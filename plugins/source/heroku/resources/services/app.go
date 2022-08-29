@@ -15,7 +15,6 @@ func Apps() *schema.Table {
 		Name:        "heroku_apps",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#app-attributes",
 		Resolver:    fetchApps,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "acm",

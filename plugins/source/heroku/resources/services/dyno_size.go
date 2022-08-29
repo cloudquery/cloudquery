@@ -15,7 +15,6 @@ func DynoSizes() *schema.Table {
 		Name:        "heroku_dyno_sizes",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-attributes",
 		Resolver:    fetchDynoSizes,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "compute",

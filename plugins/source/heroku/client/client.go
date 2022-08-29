@@ -12,7 +12,7 @@ type Client struct {
 	// This is a client that you need to create and initialize in Configure
 	// It will be passed for each resource fetcher.
 	logger hclog.Logger
-	Heroku HerokuService
+	Heroku *heroku.Service
 }
 
 func (c *Client) Logger() hclog.Logger {
@@ -30,7 +30,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 
 	heroku.DefaultTransport.BearerToken = providerConfig.Token
 	client := heroku.DefaultClient
-	client.Transport = paginator{transport: client.Transport}
+	client.Transport = Paginator{transport: client.Transport}
 	h := heroku.NewService(client)
 	return &Client{
 		logger: logger,

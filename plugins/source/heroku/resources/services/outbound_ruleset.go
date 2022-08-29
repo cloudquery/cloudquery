@@ -15,7 +15,6 @@ func OutboundRulesets() *schema.Table {
 		Name:        "heroku_outbound_rulesets",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-attributes",
 		Resolver:    fetchOutboundRulesets,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

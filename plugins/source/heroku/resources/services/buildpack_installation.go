@@ -15,7 +15,6 @@ func BuildpackInstallations() *schema.Table {
 		Name:        "heroku_buildpack_installations",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installation-attributes",
 		Resolver:    fetchBuildpackInstallations,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "buildpack",

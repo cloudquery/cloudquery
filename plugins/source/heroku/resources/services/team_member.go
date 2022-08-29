@@ -15,7 +15,6 @@ func TeamMembers() *schema.Table {
 		Name:        "heroku_team_members",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-member-attributes",
 		Resolver:    fetchTeamMembers,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",

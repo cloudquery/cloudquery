@@ -15,7 +15,6 @@ func OAuthClients() *schema.Table {
 		Name:        "heroku_oauth_clients",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#o-auth-client-attributes",
 		Resolver:    fetchOAuthClients,
-		Multiplex:   client.NoMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "created_at",
