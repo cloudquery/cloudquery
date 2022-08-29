@@ -68,18 +68,18 @@ func Metrics() *schema.Table {
 			{
 				Name:        "acl_operation_count",
 				Description: "Usage of ACL operations count in 24 hour period",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 
 			{
 				Name:        "object_count",
 				Description: "Total number of objects per bucket, grouped by storage class. This value is measured once per day, and there might be a delay after measuring before the value becomes available in Cloud Monitoring.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "total_size",
 				Description: "Total size of all objects in the bucket (in bytes), grouped by storage class. This value is measured once per day, and there might be a delay after measuring before the value becomes available in Cloud Monitoring.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 	}

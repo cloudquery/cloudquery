@@ -141,9 +141,11 @@ func Buckets() *schema.Table {
 				Resolver: schema.PathResolver("SatisfiesPZS"),
 			},
 			{
-				Name:     "self_link",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "storage_class",

@@ -1,4 +1,4 @@
-package cloudrun
+package run
 
 import (
 	"context"
@@ -20,22 +20,9 @@ func createServicesServer() (*client.Services, error) {
 	if err := faker.FakeData(&services[0]); err != nil {
 		return nil, err
 	}
-	gen := faker.FakeDataWithNilPointerGenerator()
-	for {
-		svc := new(run.Service)
-		done, err := gen.Next(svc)
-		if err != nil {
-			return nil, err
-		}
-		services = append(services, svc)
-
-		if done {
-			break
-		}
-	}
 
 	mux := httprouter.New()
-	mux.GET("/v1/projects/testProject/locations/-/services", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &run.ListServicesResponse{
 			Items:    services,
 			Metadata: nil,
@@ -56,10 +43,10 @@ func createServicesServer() (*client.Services, error) {
 		return nil, err
 	}
 	return &client.Services{
-		CloudRun: svc,
+		Run: svc,
 	}, nil
 }
 
 func TestServices(t *testing.T) {
-	client.GcpMockTestHelper(t, Services(), createServicesServer, client.TestOptions{})
+	client.MockTestHelper(t, Services(), createServicesServer, client.TestOptions{})
 }

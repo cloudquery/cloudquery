@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/logging"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/monitoring"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/redis"
+	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/run"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/secretmanager"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/serviceusage"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/sqladmin"
@@ -95,6 +96,7 @@ func Plugin() *plugins.SourcePlugin {
 			cloudfunctions.Functions(),
 			bigquery.Datasets(),
 			cloudbilling.BillingAccounts(),
+			run.Services(),
 		},
 		client.Configure,
 		plugins.WithSourceExampleConfig(exampleConfig),
