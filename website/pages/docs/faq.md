@@ -18,8 +18,8 @@ The only caveat is that in the case of configuration changes, subsequent fetches
 
 - If an account was removed from `cloudquery.yml`, subsequent fetches won't process that account (and won't remove that account's resources).
 - If a resource type was removed from `cloudquery.yml`, that resource type won't get fetched (and database entries for this resources also won't get removed).
-- When using [AWS Organizations](https://hub.cloudquery.io/providers/cloudquery/aws/latest#aws-organizations), if an account is deleted or removed from the org then the database entries for that account will be untouched.
-- When using [GCP Folders or Organizations](https://hub.cloudquery.io/providers/cloudquery/gcp/latest#configuration), if a project is deleted or removed from the folder, the database entries for that account will be untouched.
+- When using [AWS Organizations](/plugins/aws#aws-organizations), if an account is deleted or removed from the org then the database entries for that account will be untouched.
+- When using [GCP Folders or Organizations](/plugins/gcp#configuration), if a project is deleted or removed from the folder, the database entries for that account will be untouched.
 
 #### What if I want to remove resources from accounts/projects that I'm no longer fetching from?
 

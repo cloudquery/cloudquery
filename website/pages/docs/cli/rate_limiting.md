@@ -38,7 +38,7 @@ providers:
 
 <Callout type="info">
 
-Some providers allow for more precise rate limiting and retry and backoff mechanisms. the AWS provider for example allows such [controls](https://hub.cloudquery.io/providers/cloudquery/aws/latest). Make sure to check
-their configuration options in the [hub](https://hub.cloudquery.io/providers).
+Some providers allow for more precise rate limiting and retry and backoff mechanisms. the AWS provider for example allows such [controls](/plugins/aws). Make sure to check
+their configuration options [here](/plugins).
 
 </Callout>

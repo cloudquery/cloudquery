@@ -25,7 +25,7 @@ We want to highlight some of the features that we have released that will improv
 
 ### What is CloudQuery ?
 
-CloudQuery is the open-source cloud asset inventory powered by SQL, enabling you to [catalog, audit, and evaluate the configurations](https://hub.cloudquery.io/policies) and even [drifts](https://www.cloudquery.io/blog/announcing-cloudquery-terraform-drift-detection) of your cloud assets.
+CloudQuery is the open-source cloud asset inventory powered by SQL, enabling you to [catalog, audit, and evaluate the configurations](/docs/policies) and even [drifts](https://www.cloudquery.io/blog/announcing-cloudquery-terraform-drift-detection) of your cloud assets.
 
 CloudQuery key use-cases and features:
 
@@ -55,7 +55,7 @@ CloudQuery key use-cases and features:
   }
   ```
 
-  for more information feel free to check out the documentation [here](https://hub.cloudquery.io/providers/cloudquery/aws/latest#multi-account-configuration-aws-organizations)
+  for more information feel free to check out the documentation [here](/plugins/aws#multi-account-configuration-aws-organizations)
 
 - **Credentials**:
 
