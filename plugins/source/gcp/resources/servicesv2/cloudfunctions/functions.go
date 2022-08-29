@@ -106,9 +106,11 @@ func Functions() *schema.Table {
 				Resolver: schema.PathResolver("MinInstances"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Name: "name",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "network",
