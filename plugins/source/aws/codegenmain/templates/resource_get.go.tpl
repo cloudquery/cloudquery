@@ -25,11 +25,10 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
 
-{{if .Parent}}	r := parent.Item.(types.{{.Parent.ItemName}})
-{{if .Parent.Parent}}	rp := parent.Parent.Item.(types.{{.Parent.Parent.ItemName}}){{end}}
+{{if .Parent}}
+{{template "resolve_parent_defs.go.tpl" .}}
 	input := {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input{
-{{if .Parent.Parent}}		{{.Parent.ParentFieldName}}: rp.{{.Parent.ParentFieldName}},
-{{end}}	{{.ParentFieldName}}: r.{{.ParentFieldName}},
+{{template "resolve_parent_vars.go.tpl" .}}
 	}
 {{else}}
 	var input {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input

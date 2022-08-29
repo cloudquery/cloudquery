@@ -53,11 +53,14 @@ func fetchApigatewayv2RouteResponses(ctx context.Context, meta schema.ClientMeta
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
-	r := parent.Item.(types.Route)
-	rp := parent.Parent.Item.(types.Api)
+	r2 := parent.Item.(types.Route)
+	parent = parent.Parent
+
+	r1 := parent.Item.(types.Api)
+
 	input := apigatewayv2.GetRouteResponsesInput{
-		ApiId:   rp.ApiId,
-		RouteId: r.RouteId,
+		RouteId: r2.RouteId,
+		ApiId:   r1.ApiId,
 	}
 
 	for {

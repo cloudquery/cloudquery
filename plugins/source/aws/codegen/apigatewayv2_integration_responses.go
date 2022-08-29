@@ -58,11 +58,14 @@ func fetchApigatewayv2IntegrationResponses(ctx context.Context, meta schema.Clie
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
-	r := parent.Item.(types.Integration)
-	rp := parent.Parent.Item.(types.Api)
+	r2 := parent.Item.(types.Integration)
+	parent = parent.Parent
+
+	r1 := parent.Item.(types.Api)
+
 	input := apigatewayv2.GetIntegrationResponsesInput{
-		ApiId:         rp.ApiId,
-		IntegrationId: r.IntegrationId,
+		IntegrationId: r2.IntegrationId,
+		ApiId:         r1.ApiId,
 	}
 
 	for {

@@ -53,6 +53,7 @@ type Resource struct {
 	TableFuncName string // auto calculated
 	MockFuncName  string // auto calculated
 	TestFuncName  string // auto calculated
+	NestingLevel  int    // auto calculated
 
 	CustomResolvers []string
 }
@@ -80,6 +81,7 @@ func parentize(parent *Resource, subs ...*Resource) []*Resource {
 		if subs[i].Parent == nil {
 			subs[i].Parent = parent
 		}
+		subs[i].NestingLevel++
 		if subs[i].AWSService == "" {
 			subs[i].AWSService = subs[i].Parent.AWSService
 		}

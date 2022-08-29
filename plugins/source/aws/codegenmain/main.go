@@ -145,14 +145,11 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types")) // auto-import main pkg (not "types")
 	}
 
-	mainTemplate := r.Template + ".go.tpl"
-	if mock {
-		mainTemplate = r.Template + "_mock_test.go.tpl"
-	}
+	mainTemplate := r.Template + stringSwitch(mock, "_mock_test", "") + ".go.tpl"
 	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
 		"ToLower": strings.ToLower,
-	}).ParseFS(awsTemplatesFS, "templates/"+mainTemplate)
+	}).ParseFS(awsTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse aws templates: %w", err))
 	}
@@ -189,10 +186,6 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}
-}
-
-func toCamel(input string) string {
-	return strcase.ToCamel(strings.ToLower(input))
 }
 
 func stringSwitch(b bool, ifTrue, ifFalse string) string {
