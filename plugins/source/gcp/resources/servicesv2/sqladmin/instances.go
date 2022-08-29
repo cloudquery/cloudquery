@@ -174,6 +174,9 @@ func Instances() *schema.Table {
 				Name:     "self_link",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "server_ca_cert",

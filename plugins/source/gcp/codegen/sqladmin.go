@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	sqladmin "google.golang.org/api/sqladmin/v1beta4"
 )
@@ -11,6 +13,14 @@ var sqlResources = []*Resource{
 	{
 		SubService: "instances",
 		Struct:     &sqladmin.DatabaseInstance{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("SelfLink")`,
+			},
+		},
 	},
 }
 

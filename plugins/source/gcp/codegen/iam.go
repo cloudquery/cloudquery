@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/iam/v1"
 )
@@ -11,11 +13,32 @@ var iamResources = []*Resource{
 	{
 		SubService: "roles",
 		Struct:     &iam.Role{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: "client.ResolveProject",
+			},
+			{
+				Name:    "name",
+				Type:    schema.TypeString,
+				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
 	},
 	{
 		SubService:  "service_accounts",
 		Struct:      &iam.ServiceAccount{},
 		OutputField: "Accounts",
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "unique_id",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("UniqueId")`,
+			},
+		},
 	},
 }
 
