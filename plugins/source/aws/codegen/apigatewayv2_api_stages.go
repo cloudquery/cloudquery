@@ -46,7 +46,7 @@ func Apigatewayv2ApiStages() *schema.Table {
 			},
 			{
 				Name:     "created_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedDate"),
 			},
 			{
@@ -71,7 +71,7 @@ func Apigatewayv2ApiStages() *schema.Table {
 			},
 			{
 				Name:     "last_updated_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdatedDate"),
 			},
 			{

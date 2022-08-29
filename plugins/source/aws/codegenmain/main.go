@@ -53,8 +53,8 @@ func generateResource(r *recipes.Resource, mock bool) {
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("aws_%s_%s", strings.ToLower(r.AWSService), tableNameFromSubService),
 		r.AWSStruct,
-		sdkgen.WithSkipFields("noSmithyDocumentSerde"),
-		sdkgen.WithSkipFields(r.SkipFields...))
+		sdkgen.WithSkipFields(append(r.SkipFields, "noSmithyDocumentSerde")),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}

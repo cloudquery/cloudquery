@@ -19,14 +19,16 @@ func Apigatewayv2Apis() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
+				Description: `The AWS Account ID of the resource.`,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
+				Description: `The AWS Region of the resource.`,
 			},
 			{
 				Name:     "name",
@@ -70,7 +72,7 @@ func Apigatewayv2Apis() *schema.Table {
 			},
 			{
 				Name:     "created_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedDate"),
 			},
 			{
@@ -94,9 +96,10 @@ func Apigatewayv2Apis() *schema.Table {
 				Resolver: schema.PathResolver("ImportInfo"),
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Name:        "tags",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Tags"),
+				Description: `A collection of tags associated with the API.`,
 			},
 			{
 				Name:     "version",

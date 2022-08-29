@@ -26,7 +26,7 @@ func Apigatewayv2ApiDeployments() *schema.Table {
 			},
 			{
 				Name:     "created_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedDate"),
 			},
 			{

@@ -19,14 +19,16 @@ func ACMCertificates() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("acm"),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
+				Description: `The AWS Account ID of the resource.`,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:        "region",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
+				Description: `The AWS Region of the resource.`,
 			},
 			{
 				Name:     "arn",
@@ -40,7 +42,7 @@ func ACMCertificates() *schema.Table {
 			},
 			{
 				Name:     "created_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
@@ -65,7 +67,7 @@ func ACMCertificates() *schema.Table {
 			},
 			{
 				Name:     "imported_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ImportedAt"),
 			},
 			{
@@ -75,7 +77,7 @@ func ACMCertificates() *schema.Table {
 			},
 			{
 				Name:     "issued_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("IssuedAt"),
 			},
 			{
@@ -95,12 +97,12 @@ func ACMCertificates() *schema.Table {
 			},
 			{
 				Name:     "not_after",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("NotAfter"),
 			},
 			{
 				Name:     "not_before",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("NotBefore"),
 			},
 			{
@@ -125,7 +127,7 @@ func ACMCertificates() *schema.Table {
 			},
 			{
 				Name:     "revoked_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("RevokedAt"),
 			},
 			{
@@ -159,8 +161,9 @@ func ACMCertificates() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name: "tags",
-				Type: schema.TypeJSON,
+				Name:        "tags",
+				Type:        schema.TypeJSON,
+				Description: `The tags that have been applied to the ACM certificate`,
 			},
 		},
 	}
