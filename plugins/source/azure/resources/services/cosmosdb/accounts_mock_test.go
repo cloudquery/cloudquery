@@ -12,10 +12,10 @@ import (
 )
 
 func buildCosmosDBAccountMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	accountSvc := mocks.NewMockCosmosDBAccountClient(ctrl)
+	accountSvc := mocks.NewMockCosmosDBAccountsClient(ctrl)
 
 	s := services.Services{
-		CosmosDb: services.CosmosDbClient{
+		CosmosDB: services.CosmosDBClient{
 			Accounts: accountSvc,
 		},
 	}

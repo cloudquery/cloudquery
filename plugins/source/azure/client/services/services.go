@@ -11,7 +11,7 @@ type Services struct {
 	CDN             CDNClient
 	Compute         ComputeClient
 	Container       ContainerClient
-	CosmosDb        CosmosDbClient
+	CosmosDB        CosmosDBClient
 	DataLake        DataLakeClient
 	EventHub        EventHubClient
 	FrontDoor       FrontDoorClient
@@ -52,7 +52,7 @@ func InitServices(subscriptionId string, auth autorest.Authorizer, azCred azcore
 		CDN:             NewCDNClient(subscriptionId, auth),
 		Compute:         NewComputeClient(subscriptionId, auth),
 		Container:       NewContainerClient(subscriptionId, auth),
-		CosmosDb:        NewCosmosDbClient(subscriptionId, auth),
+		CosmosDB:        NewCosmosDbClient(subscriptionId, auth),
 		DataLake:        NewDataLakeClient(subscriptionId, auth),
 		EventHub:        NewEventHubClient(subscriptionId, auth),
 		FrontDoor:       NewFrontDoorClient(subscriptionId, auth),

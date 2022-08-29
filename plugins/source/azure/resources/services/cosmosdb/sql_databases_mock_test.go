@@ -14,11 +14,11 @@ import (
 var fakeResourceGroup = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/cqprovidertest"
 
 func buildCosmosDBSQLDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	accountSvc := mocks.NewMockCosmosDBAccountClient(ctrl)
+	accountSvc := mocks.NewMockCosmosDBAccountsClient(ctrl)
 	sqlSvc := mocks.NewMockCosmosDBSQLClient(ctrl)
 
 	s := services.Services{
-		CosmosDb: services.CosmosDbClient{
+		CosmosDB: services.CosmosDBClient{
 			Accounts: accountSvc,
 			SQL:      sqlSvc,
 		},

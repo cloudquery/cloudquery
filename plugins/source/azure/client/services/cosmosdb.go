@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/cosmosdb.go -package=mocks . CosmosDBAccountClient,CosmosDBSQLClient,CosmosDBMongoDBClient
+//go:generate mockgen -destination=./mocks/cosmosdb.go -package=mocks . CosmosDBAccountsClient,CosmosDBSQLClient,CosmosDBMongoDBClient
 package services
 
 import (
@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type CosmosDBAccountClient interface {
+type CosmosDBAccountsClient interface {
 	List(ctx context.Context) (result documentdb.DatabaseAccountsListResult, err error)
 }
 
@@ -20,13 +20,13 @@ type CosmosDBMongoDBClient interface {
 	ListMongoDBDatabases(ctx context.Context, resourceGroupName string, accountName string) (result documentdb.MongoDBDatabaseListResult, err error)
 }
 
-type CosmosDbClient struct {
-	Accounts CosmosDBAccountClient
+type CosmosDBClient struct {
+	Accounts CosmosDBAccountsClient
 	SQL      CosmosDBSQLClient
 	MongoDB  CosmosDBMongoDBClient
 }
 
-func NewCosmosDbClient(subscriptionId string, auth autorest.Authorizer) CosmosDbClient {
+func NewCosmosDbClient(subscriptionId string, auth autorest.Authorizer) CosmosDBClient {
 	accounts := documentdb.NewDatabaseAccountsClient(subscriptionId)
 	accounts.Authorizer = auth
 
@@ -36,7 +36,7 @@ func NewCosmosDbClient(subscriptionId string, auth autorest.Authorizer) CosmosDb
 	mongo := documentdb.NewMongoDBResourcesClient(subscriptionId)
 	mongo.Authorizer = auth
 
-	return CosmosDbClient{
+	return CosmosDBClient{
 		Accounts: accounts,
 		SQL:      sql,
 		MongoDB:  mongo,

@@ -108,8 +108,8 @@ func CosmosDBSqlDatabases() *schema.Table {
 
 func fetchCosmosdbSqlDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	m := meta.(*client.Client)
-	accSvc := m.Services().CosmosDb.Accounts
-	sqlSvc := m.Services().CosmosDb.SQL
+	accSvc := m.Services().CosmosDB.Accounts
+	sqlSvc := m.Services().CosmosDB.SQL
 
 	response, err := accSvc.List(ctx)
 	if err != nil {

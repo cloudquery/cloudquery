@@ -449,7 +449,7 @@ func CosmosDBAccounts() *schema.Table {
 // ====================================================================================================================
 
 func fetchCosmosdbAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().CosmosDb.Accounts
+	svc := meta.(*client.Client).Services().CosmosDB.Accounts
 	response, err := svc.List(ctx)
 	if err != nil {
 		return diag.WrapError(err)
