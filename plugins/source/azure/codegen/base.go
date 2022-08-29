@@ -91,6 +91,7 @@ func AllResources() []Resource {
 	resources = append(resources, Batch()...)
 	resources = append(resources, CDN()...)
 	resources = append(resources, Compute()...)
+	resources = append(resources, Container()...)
 	resources = append(resources, Network()...)
 	resources = append(resources, KeyValue()...)
 	resources = append(resources, Logic()...)
