@@ -6,7 +6,6 @@ import (
 )
 
 type Services struct {
-	AD              AD
 	Authorization   AuthorizationClient
 	Batch           BatchClient
 	CDN             CDNClient
@@ -48,7 +47,6 @@ func InitServices(subscriptionId string, auth autorest.Authorizer, azCred azcore
 	}
 
 	return Services{
-		AD:              NewADClient(subscriptionId, auth),
 		Authorization:   NewAuthorizationClient(subscriptionId, auth),
 		Batch:           NewBatchClient(subscriptionId, auth),
 		CDN:             NewCDNClient(subscriptionId, auth),
