@@ -94,6 +94,7 @@ func AllResources() []Resource {
 	resources = append(resources, Container()...)
 	resources = append(resources, CosmosDB()...)
 	resources = append(resources, EventHub()...)
+	resources = append(resources, FrontDoor()...)
 	resources = append(resources, Network()...)
 	resources = append(resources, KeyValue()...)
 	resources = append(resources, Logic()...)
