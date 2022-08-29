@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/cloudfunctions/v1"
 )
@@ -11,6 +13,13 @@ var cloudFunctionsResources = []*Resource{
 	{
 		SubService: "functions",
 		Struct:     &cloudfunctions.CloudFunction{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:    "name",
+				Type:    schema.TypeString,
+				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
 	},
 }
 
