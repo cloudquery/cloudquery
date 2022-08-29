@@ -86,8 +86,8 @@ func Tenants() *schema.Table {
 // ====================================================================================================================
 
 func fetchSubscriptionTenants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Subscriptions
-	pager := svc.Tenants.NewListPager(nil)
+	svc := meta.(*client.Client).Services().Subscriptions.Tenants
+	pager := svc.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

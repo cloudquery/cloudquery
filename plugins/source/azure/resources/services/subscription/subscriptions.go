@@ -91,8 +91,8 @@ func Subscriptions() *schema.Table {
 // ====================================================================================================================
 
 func fetchSubscriptionSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Subscriptions
-	pager := svc.Subscriptions.NewListPager(nil)
+	svc := meta.(*client.Client).Services().Subscriptions.Subscriptions
+	pager := svc.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {

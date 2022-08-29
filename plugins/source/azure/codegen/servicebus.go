@@ -21,8 +21,9 @@ func ServiceBus() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:  &servicebus.SBNamespace{},
-					listFunction: "List",
+					azureStruct:        &servicebus.SBNamespace{},
+					listFunction:       "List",
+					subServiceOverride: "Namespaces",
 				},
 			},
 		},

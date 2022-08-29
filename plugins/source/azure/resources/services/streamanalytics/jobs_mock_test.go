@@ -13,7 +13,7 @@ import (
 )
 
 func buildStreamAnalyticsJobsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockStreamAnalyticsJobsClient(ctrl)
+	m := mocks.NewMockStreamAnalyticsStreamingJobsClient(ctrl)
 	var p streamanalytics.StreamingJobProperties
 	if err := faker.FakeDataSkipFields(&p, []string{"Inputs", "Outputs", "Functions", "JobType", "OutputStartMode", "EventsOutOfOrderPolicy", "OutputErrorPolicy", "CompatibilityLevel", "ContentStoragePolicy"}); err != nil {
 		t.Fatal(err)

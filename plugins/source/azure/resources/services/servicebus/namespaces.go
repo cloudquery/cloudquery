@@ -445,7 +445,7 @@ func Namespaces() *schema.Table {
 // ====================================================================================================================
 
 func fetchServicebusNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Servicebus.SBNamespaces
+	svc := meta.(*client.Client).Services().Servicebus.Namespaces
 	r, err := svc.List(ctx)
 	if err != nil {
 		return diag.WrapError(err)

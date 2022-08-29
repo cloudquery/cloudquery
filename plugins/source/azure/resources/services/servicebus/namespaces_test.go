@@ -69,8 +69,8 @@ func buildServicebusNamespaces(t *testing.T, ctrl *gomock.Controller) services.S
 
 	return services.Services{
 		Servicebus: services.ServicebusClient{
-			SBNamespaces: m,
-			Topics:       tp,
+			Namespaces: m,
+			Topics:     tp,
 		},
 	}
 }

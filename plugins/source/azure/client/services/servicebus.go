@@ -9,8 +9,8 @@ import (
 )
 
 type ServicebusClient struct {
-	SBNamespaces ServicebusNamespacesClient
-	Topics       ServicebusTopicsClient
+	Namespaces ServicebusNamespacesClient
+	Topics     ServicebusTopicsClient
 }
 
 type ServicebusNamespacesClient interface {
@@ -30,7 +30,7 @@ func NewServicebusClient(subscriptionID string, auth autorest.Authorizer) Servic
 	t := servicebus.NewTopicsClient(subscriptionID)
 	t.Authorizer = auth
 	return ServicebusClient{
-		SBNamespaces: n,
-		Topics:       t,
+		Namespaces: n,
+		Topics:     t,
 	}
 }

@@ -28,10 +28,6 @@ func SQL() []Resource {
 					azureStruct:  &sql.ManagedInstance{},
 					listFunction: "List",
 				},
-				{
-					azureStruct:  &sql.ManagedDatabase{},
-					listFunction: "List",
-				},
 			},
 			serviceNameOverride: "SQL",
 		},
