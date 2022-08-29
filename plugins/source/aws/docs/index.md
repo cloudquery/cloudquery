@@ -221,7 +221,7 @@ Using AWS Organization:
 
 
 
-#### Arguments for Org block:
+#### Arguments for Org block
 
 - `organization_units`  **(Optional)** - List of Organizational Units that CloudQuery should use to source accounts from
 - `admin_account`  **(Optional)** - Configuration on how to grab credentials from an Admin account 
@@ -258,7 +258,7 @@ providers:
           role_arn: <YOUR_ROLE_ARN_2>
 ```
 
-#### Arguments for Accounts block:
+#### Arguments for Accounts block
 
 - `role_arn` **(Optional)** - The role that CloudQuery will use to perform the fetch
 - `local_profile` **(Optional)** - Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for the account
@@ -312,7 +312,7 @@ WHERE block_public_acls IS NOT TRUE
 
 ```
 
-## Building the Provider:
+## Building the Provider
 
 ``` bash
 make build
