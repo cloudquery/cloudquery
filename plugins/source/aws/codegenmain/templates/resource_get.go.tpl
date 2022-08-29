@@ -25,8 +25,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 {{template "resolve_parent_defs.go.tpl" .}}
 	input := {{.AWSService | ToLower}}.{{.Verb | Coalesce "Get"}}{{.AWSSubService}}Input{
 {{range .CustomInputs}}{{.}}
-{{end}}
-{{template "resolve_parent_vars.go.tpl" .}}
+{{end}}{{template "resolve_parent_vars.go.tpl" .}}
 	}
 
 	for {

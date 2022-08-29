@@ -60,7 +60,6 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 	r1 := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetModelsInput{
-
 		ApiId: r1.ApiId,
 	}
 

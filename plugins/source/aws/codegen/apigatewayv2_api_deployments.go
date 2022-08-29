@@ -60,7 +60,6 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 	r1 := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetDeploymentsInput{
-
 		ApiId: r1.ApiId,
 	}
 

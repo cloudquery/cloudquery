@@ -44,6 +44,7 @@ type Resource struct {
 
 	Parent          *Resource
 	ParentFieldName string
+	ChildFieldName  string // Override. Defaults to ParentFieldName
 
 	// imports to add for this resource
 	Imports []string
