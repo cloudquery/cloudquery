@@ -11,6 +11,8 @@ on:
 jobs:
   set-vercel-to-success:
     runs-on: ubuntu-latest
+    # We need to override the Vercel status only for PRs coming from forks
+    if: github.event.pull_request.head.repo.fork == true
     steps:
       - uses: actions/github-script@v6
         with:
