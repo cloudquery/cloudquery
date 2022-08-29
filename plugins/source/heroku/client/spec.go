@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/backoff"
 )
 
-// Spec defines GCP source plugin Spec
+// Spec defines Heroku source plugin Spec
 type Spec struct {
 	Token []string `yaml:"token,omitempty" json:"token"`
 

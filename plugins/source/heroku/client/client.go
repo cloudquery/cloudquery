@@ -26,8 +26,6 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		return nil, diag.FromError(errors.New("missing access token in configuration"), diag.ACCESS)
 	}
 
-	// TODO: support config filters
-
 	heroku.DefaultTransport.BearerToken = providerConfig.Token
 	client := heroku.DefaultClient
 	client.Transport = Paginator{transport: client.Transport}
