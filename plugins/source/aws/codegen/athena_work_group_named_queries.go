@@ -65,6 +65,7 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		for _, item := range output.NamedQueryIds {
@@ -73,6 +74,7 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 				NamedQueryId: &item,
 			})
 			if err != nil {
+
 				if cl.IsNotFoundError(err) {
 					continue
 				}

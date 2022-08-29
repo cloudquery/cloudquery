@@ -178,6 +178,7 @@ func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		for _, item := range output.CertificateSummaryList {
@@ -186,6 +187,7 @@ func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 				CertificateArn: item.CertificateArn,
 			})
 			if err != nil {
+
 				if cl.IsNotFoundError(err) {
 					continue
 				}
@@ -205,6 +207,7 @@ func resolveACMCertificatesTags(ctx context.Context, meta schema.ClientMeta, res
 		CertificateArn: item.CertificateArn,
 	})
 	if err != nil {
+
 		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))

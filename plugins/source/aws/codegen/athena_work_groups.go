@@ -126,6 +126,7 @@ func resolveAthenaWorkGroupsTags(ctx context.Context, meta schema.ClientMeta, re
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
+
 			if cl.IsNotFoundError(err) {
 				return nil
 			}

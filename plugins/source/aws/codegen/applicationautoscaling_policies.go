@@ -13,10 +13,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 )
 
-func ApplicationAutoscalingpolicies() *schema.Table {
+func ApplicationAutoscalingPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_applicationautoscaling_policies",
-		Resolver:  fetchApplicationAutoscalingpolicies,
+		Resolver:  fetchApplicationAutoscalingPolicies,
 		Multiplex: client.ServiceAccountRegionMultiplexer("application-autoscaling"),
 		Columns: []schema.Column{
 			{
@@ -91,7 +91,7 @@ func ApplicationAutoscalingpolicies() *schema.Table {
 	}
 }
 
-func fetchApplicationAutoscalingpolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApplicationAutoscalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().ApplicationAutoscaling
 
@@ -102,6 +102,7 @@ func fetchApplicationAutoscalingpolicies(ctx context.Context, meta schema.Client
 	for {
 		response, err := svc.DescribeScalingPolicies(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.ScalingPolicies

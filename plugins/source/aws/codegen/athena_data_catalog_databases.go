@@ -51,6 +51,7 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 	for {
 		response, err := svc.ListDatabases(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.DatabaseList

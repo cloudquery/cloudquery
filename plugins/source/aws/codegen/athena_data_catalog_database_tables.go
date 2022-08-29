@@ -13,10 +13,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 )
 
-func AthenaDatabasetables() *schema.Table {
+func AthenaDataCatalogDatabaseTables() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_athena_data_catalog_database_tables",
-		Resolver:  fetchAthenaDatabasetables,
+		Resolver:  fetchAthenaDataCatalogDatabaseTables,
 		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
@@ -58,7 +58,7 @@ func AthenaDatabasetables() *schema.Table {
 	}
 }
 
-func fetchAthenaDatabasetables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
 
@@ -75,6 +75,7 @@ func fetchAthenaDatabasetables(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		response, err := svc.ListTableMetadata(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.TableMetadataList

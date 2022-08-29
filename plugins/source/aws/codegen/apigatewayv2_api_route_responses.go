@@ -13,10 +13,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2RouteResponses() *schema.Table {
+func Apigatewayv2ApiRouteResponses() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_api_route_responses",
-		Resolver:  fetchApigatewayv2RouteResponses,
+		Resolver:  fetchApigatewayv2ApiRouteResponses,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
@@ -48,7 +48,7 @@ func Apigatewayv2RouteResponses() *schema.Table {
 	}
 }
 
-func fetchApigatewayv2RouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
@@ -65,6 +65,7 @@ func fetchApigatewayv2RouteResponses(ctx context.Context, meta schema.ClientMeta
 	for {
 		response, err := svc.GetRouteResponses(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.Items

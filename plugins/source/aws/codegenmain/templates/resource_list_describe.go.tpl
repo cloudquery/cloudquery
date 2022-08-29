@@ -13,6 +13,9 @@ import (
 {{end}}
 )
 
+{{range .CustomInit}}{{.}}
+{{end}}
+
 func {{.TableFuncName}}() *schema.Table {
 	return &schema.Table{{template "table.go.tpl" .Table}}
 }
@@ -30,6 +33,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
+			{{.CustomErrorBlock}}
 			return diag.WrapError(err)
 		}
 		for _, item := range output.{{.PaginatorListName}} {
@@ -39,6 +43,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 			  {{.ListFieldName}}: {{if .RawDescribeFieldValue}}{{.RawDescribeFieldValue}}{{else}}item.{{.ListFieldName}}{{end}},
 			})
 			if err != nil {
+				{{.CustomErrorBlock}}
 				if cl.IsNotFoundError(err) {
 					continue
 				}
@@ -59,6 +64,7 @@ func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx contex
 	  {{.ListFieldName}}: item.{{.ListFieldName}},
   })
 	if err != nil {
+		{{.CustomErrorBlock}}
 		return diag.WrapError(err)
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))

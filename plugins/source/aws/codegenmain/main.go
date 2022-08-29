@@ -30,6 +30,7 @@ func main() {
 	resources = append(resources, recipes.ApplicationautoscalingResources...)
 	resources = append(resources, recipes.AppsyncResources...)
 	resources = append(resources, recipes.AthenaResources...)
+	resources = append(resources, recipes.AutoscalingResources...)
 
 	for _, r := range resources {
 		generateResource(r, false)
@@ -48,11 +49,34 @@ func generateResource(r *recipes.Resource, mock bool) {
 	cqSubservice := coalesce(r.CQSubserviceOverride, r.AWSSubService)
 
 	tableNameFromSubService := strcase.ToSnake(cqSubservice)
-	if r.Parent != nil && !strings.HasPrefix(tableNameFromSubService, strcase.ToSnake(r.Parent.ItemName)+"_") {
-		tableNameFromSubService = strcase.ToSnake(r.Parent.ItemName) + "_" + tableNameFromSubService
-	}
-	if r.Parent != nil && r.Parent.Parent != nil && !strings.HasPrefix(tableNameFromSubService, strcase.ToSnake(r.Parent.Parent.ItemName)+"_") {
-		tableNameFromSubService = strcase.ToSnake(r.Parent.Parent.ItemName) + "_" + tableNameFromSubService
+	fetcherNameFromSubService := strcase.ToCamel(cqSubservice)
+	{
+		// Generate table and fetcher names using parent info
+
+		prev := tableNameFromSubService
+		var (
+			preTableNames   []string
+			preFetcherNames []string
+		)
+		rp := r.Parent
+		for rp != nil {
+			if rp.CQSubserviceOverride != "" {
+				preTableNames = append(preTableNames, rp.CQSubserviceOverride)
+				preFetcherNames = append(preFetcherNames, strcase.ToCamel(rp.CQSubserviceOverride))
+			} else {
+				ins := strcase.ToSnake(rp.ItemName)
+				if !strings.HasPrefix(prev, ins) {
+					preTableNames = append(preTableNames, ins)
+					preFetcherNames = append(preFetcherNames, strcase.ToCamel(rp.ItemName))
+					prev = ins
+				}
+			}
+			rp = rp.Parent
+		}
+		if len(preTableNames) > 0 {
+			tableNameFromSubService = strings.Join(reverseStringSlice(preTableNames), "_") + "_" + tableNameFromSubService
+			fetcherNameFromSubService = strings.Join(reverseStringSlice(preFetcherNames), "") + fetcherNameFromSubService
+		}
 	}
 
 	r.Table, err = sdkgen.NewTableFromStruct(
@@ -118,17 +142,9 @@ func generateResource(r *recipes.Resource, mock bool) {
 	}
 	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + coalesce(r.MultiplexerServiceOverride, strings.ToLower(r.AWSService)) + `")`
 
-	if r.Parent == nil {
-		r.Table.Resolver = "fetch" + r.AWSService + cqSubservice
-	} else {
-		if !strings.HasPrefix(cqSubservice, r.Parent.ItemName) {
-			r.Table.Resolver = "fetch" + r.AWSService + r.Parent.ItemName + cqSubservice
-		} else {
-			r.Table.Resolver = "fetch" + r.AWSService + cqSubservice
-		}
-	}
-
+	r.Table.Resolver = "fetch" + r.AWSService + fetcherNameFromSubService
 	r.TableFuncName = strings.TrimPrefix(r.Table.Resolver, "fetch")
+
 	if mock {
 		r.MockFuncName = "build" + r.TableFuncName
 		r.TestFuncName = "Test" + r.TableFuncName
@@ -175,17 +191,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 	}
 
 	fileSuffix := stringSwitch(mock, "_mock_test.go", ".go")
-	if r.Parent == nil {
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+strcase.ToSnake(cqSubservice)+fileSuffix)
-	} else {
-		parentPrefix := strcase.ToSnake(r.Parent.ItemName) + "_"
-		ss := strcase.ToSnake(cqSubservice)
-		if !strings.HasPrefix(ss, parentPrefix) {
-			// prevent "apigatewayv2_integration_integration_responses" type names (repeated prefix)
-			ss = parentPrefix + ss
-		}
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+ss+fileSuffix)
-	}
+	filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+tableNameFromSubService+fileSuffix)
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())
@@ -208,4 +214,12 @@ func coalesce(input, defValue string) string {
 		return defValue
 	}
 	return input
+}
+
+func reverseStringSlice(input []string) []string {
+	ret := make([]string, 0, len(input))
+	for i := len(input) - 1; i >= 0; i-- {
+		ret = append(ret, input[i])
+	}
+	return ret
 }

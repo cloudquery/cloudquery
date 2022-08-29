@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 )
 
-func buildAthenaDatabasetables(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAthenaDataCatalogDatabaseTables(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAthenaClient(ctrl)
 
 	item := types.TableMetadata{}
@@ -31,6 +31,6 @@ func buildAthenaDatabasetables(t *testing.T, ctrl *gomock.Controller) client.Ser
 	}
 }
 
-func TestAthenaDatabasetables(t *testing.T) {
-	client.AwsMockTestHelper(t, AthenaDatabasetables(), buildAthenaDatabasetables, client.TestOptions{})
+func TestAthenaDataCatalogDatabaseTables(t *testing.T) {
+	client.AwsMockTestHelper(t, AthenaDataCatalogDatabaseTables(), buildAthenaDataCatalogDatabaseTables, client.TestOptions{})
 }

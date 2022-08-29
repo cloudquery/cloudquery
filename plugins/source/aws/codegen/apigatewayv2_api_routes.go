@@ -101,6 +101,7 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.GetRoutes(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.Items

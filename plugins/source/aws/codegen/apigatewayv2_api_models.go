@@ -66,6 +66,7 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.GetModels(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.Items

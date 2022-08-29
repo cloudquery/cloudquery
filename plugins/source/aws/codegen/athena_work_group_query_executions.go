@@ -85,6 +85,7 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		for _, item := range output.QueryExecutionIds {
@@ -93,6 +94,7 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 				QueryExecutionId: &item,
 			})
 			if err != nil {
+
 				if cl.IsNotFoundError(err) {
 					continue
 				}

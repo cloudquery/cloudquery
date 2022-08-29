@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 )
 
-func buildApplicationAutoscalingpolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApplicationAutoscalingPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockApplicationAutoscalingClient(ctrl)
 
 	item := types.ScalingPolicy{}
@@ -31,6 +31,6 @@ func buildApplicationAutoscalingpolicies(t *testing.T, ctrl *gomock.Controller) 
 	}
 }
 
-func TestApplicationAutoscalingpolicies(t *testing.T) {
-	client.AwsMockTestHelper(t, ApplicationAutoscalingpolicies(), buildApplicationAutoscalingpolicies, client.TestOptions{})
+func TestApplicationAutoscalingPolicies(t *testing.T) {
+	client.AwsMockTestHelper(t, ApplicationAutoscalingPolicies(), buildApplicationAutoscalingPolicies, client.TestOptions{})
 }

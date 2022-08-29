@@ -14,6 +14,9 @@ import (
 {{end}}
 )
 
+{{range .CustomInit}}{{.}}
+{{end}}
+
 func {{.TableFuncName}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
@@ -31,6 +34,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		response, err := svc.{{.Verb | Coalesce "Get"}}{{.AWSSubService}}(ctx, &input)
 		if err != nil {
+			{{.CustomErrorBlock}}
 			return diag.WrapError(err)
 		}
 		res <- response.{{.ResponseItemsName | Coalesce "Items"}}

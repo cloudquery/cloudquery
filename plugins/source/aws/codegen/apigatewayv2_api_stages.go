@@ -106,6 +106,7 @@ func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.GetStages(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.Items

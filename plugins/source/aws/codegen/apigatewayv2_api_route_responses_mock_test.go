@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func buildApigatewayv2RouteResponses(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApigatewayv2ApiRouteResponses(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockApigatewayv2Client(ctrl)
 
 	item := types.RouteResponse{}
@@ -31,6 +31,6 @@ func buildApigatewayv2RouteResponses(t *testing.T, ctrl *gomock.Controller) clie
 	}
 }
 
-func TestApigatewayv2RouteResponses(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2RouteResponses(), buildApigatewayv2RouteResponses, client.TestOptions{})
+func TestApigatewayv2ApiRouteResponses(t *testing.T) {
+	client.AwsMockTestHelper(t, Apigatewayv2ApiRouteResponses(), buildApigatewayv2ApiRouteResponses, client.TestOptions{})
 }

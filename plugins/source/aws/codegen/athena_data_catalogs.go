@@ -128,6 +128,14 @@ func resolveAthenaDataCatalogsTags(ctx context.Context, meta schema.ClientMeta, 
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
+
+			// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
+			// relations can be fetched by its name
+			if *itemSummary.CatalogName == "AwsDataCatalog" {
+				resultsChan <- types.DataCatalog{Name: itemSummary.CatalogName, Type: itemSummary.Type}
+				return
+			}
+
 			if cl.IsNotFoundError(err) {
 				return nil
 			}

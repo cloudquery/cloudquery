@@ -80,6 +80,7 @@ type Resource struct {
 
 	CustomResolvers []string
 	CustomInputs    []string
+	CustomInit      []string
 }
 
 var (

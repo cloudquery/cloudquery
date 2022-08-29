@@ -13,10 +13,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
-func Apigatewayv2IntegrationResponses() *schema.Table {
+func Apigatewayv2ApiIntegrationResponses() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_api_integration_responses",
-		Resolver:  fetchApigatewayv2IntegrationResponses,
+		Resolver:  fetchApigatewayv2ApiIntegrationResponses,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
@@ -53,7 +53,7 @@ func Apigatewayv2IntegrationResponses() *schema.Table {
 	}
 }
 
-func fetchApigatewayv2IntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
@@ -70,6 +70,7 @@ func fetchApigatewayv2IntegrationResponses(ctx context.Context, meta schema.Clie
 	for {
 		response, err := svc.GetIntegrationResponses(ctx, &input)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		res <- response.Items

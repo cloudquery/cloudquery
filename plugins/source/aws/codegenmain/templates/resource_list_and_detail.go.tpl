@@ -14,6 +14,9 @@ import (
 {{end}}
 )
 
+{{range .CustomInit}}{{.}}
+{{end}}
+
 func {{.TableFuncName}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
@@ -79,6 +82,7 @@ func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta sche
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
+			{{.CustomErrorBlock}}
 			if cl.IsNotFoundError(err) {
 				return nil
 			}

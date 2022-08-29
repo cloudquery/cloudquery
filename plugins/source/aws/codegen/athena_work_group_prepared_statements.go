@@ -60,6 +60,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
+
 			return diag.WrapError(err)
 		}
 		for _, item := range output.PreparedStatements {
@@ -69,6 +70,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 				StatementName: item.StatementName,
 			})
 			if err != nil {
+
 				if cl.IsNotFoundError(err) {
 					continue
 				}
