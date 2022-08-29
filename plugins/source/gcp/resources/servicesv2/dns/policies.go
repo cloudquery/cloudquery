@@ -42,8 +42,11 @@ func Policies() *schema.Table {
 			},
 			{
 				Name:     "id",
-				Type:     schema.TypeInt,
+				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "kind",

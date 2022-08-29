@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/dns/v1"
 )
@@ -11,10 +13,26 @@ var dnsResources = []*Resource{
 	{
 		SubService: "policies",
 		Struct:     &dns.Policy{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("Id")`,
+			},
+		},
 	},
 	{
 		SubService: "managed_zones",
 		Struct:     &dns.ManagedZone{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("Id")`,
+			},
+		},
 	},
 }
 

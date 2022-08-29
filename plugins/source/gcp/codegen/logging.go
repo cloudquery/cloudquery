@@ -1,6 +1,8 @@
 package codegen
 
 import (
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/logging/v2"
 )
@@ -10,10 +12,26 @@ var loggingResources = []*Resource{
 		SubService:   "metrics",
 		Struct:       &logging.LogMetric{},
 		ListFunction: `c.Services.Logging.Projects.Metrics.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`,
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("Name")`,
+			},
+		},
 	},
 	{
 		SubService: "sinks",
 		Struct:     &logging.LogSink{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("Name")`,
+			},
+		},
 	},
 }
 

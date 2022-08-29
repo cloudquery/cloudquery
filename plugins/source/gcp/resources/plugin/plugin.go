@@ -62,6 +62,7 @@ func Plugin() *plugins.SourcePlugin {
 			compute.Autoscalers(),
 			compute.BackendServices(),
 			compute.DiskTypes(),
+			compute.Disks(),
 			compute.ForwardingRules(),
 			compute.Instances(),
 			compute.SslCertificates(),

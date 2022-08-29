@@ -36,6 +36,10 @@ var computeResourcesAggList = []*Resource{
 		SkipFields: []string{"ServerResponse", "NullFields", "ForceSendFields", "Id"},
 	},
 	{
+		SubService: "disks",
+		Struct:     &compute.Disk{},
+	},
+	{
 		SubService: "forwarding_rules",
 		Struct:     &compute.ForwardingRule{},
 	},

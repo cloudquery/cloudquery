@@ -276,9 +276,11 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("ResourceUsageExportConfig"),
 			},
 			{
-				Name:     "self_link",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "services_ipv_4_cidr",

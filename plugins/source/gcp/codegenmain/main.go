@@ -112,11 +112,11 @@ func generateResource(r codegen.Resource, mock bool) {
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
 		r.Struct,
 		sdkgen.WithSkipFields(r.SkipFields),
-		sdkgen.WithOverrideColumns(r.OverrideColumns))
+		sdkgen.WithOverrideColumns(r.OverrideColumns),
+		sdkgen.WithExtraColumns(r.DefaultColumns))
 	if err != nil {
 		log.Fatal(err)
 	}
-	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
 	r.Table.Multiplex = "client.ProjectMultiplex"
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	mainTemplate := r.Template + ".go.tpl"

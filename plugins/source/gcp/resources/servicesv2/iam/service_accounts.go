@@ -64,6 +64,9 @@ func ServiceAccounts() *schema.Table {
 				Name:     "unique_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("UniqueId"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 		},
 	}

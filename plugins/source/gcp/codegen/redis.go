@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/redis/v1"
 )
@@ -11,6 +13,14 @@ var redisResources = []*Resource{
 	{
 		SubService: "instances",
 		Struct:     &redis.Instance{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				Resolver: `schema.PathResolver("Name")`,
+			},
+		},
 	},
 }
 
