@@ -13,8 +13,6 @@ type Client struct {
 	// It will be passed for each resource fetcher.
 	logger hclog.Logger
 	Heroku HerokuService
-	Team   string
-	Teams  []string
 }
 
 func (c *Client) Logger() hclog.Logger {
@@ -28,8 +26,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 		return nil, diag.FromError(errors.New("missing access token in configuration"), diag.ACCESS)
 	}
 
-	// TODO: support teams filter
-	// TODO: validate provider config
+	// TODO: support config filters
 
 	heroku.DefaultTransport.BearerToken = providerConfig.Token
 	client := heroku.DefaultClient
@@ -38,6 +35,5 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	return &Client{
 		logger: logger,
 		Heroku: h,
-		Teams:  providerConfig.Teams,
 	}, nil
 }

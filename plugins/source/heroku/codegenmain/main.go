@@ -23,12 +23,43 @@ var templatesFS embed.FS
 var resources = []codegen.Resource{}
 
 func main() {
-	resources = append(resources, codegen.All()...)
+	clearServicesDirectory()
 
+	resources = append(resources, codegen.All()...)
 	for _, r := range resources {
 		generateResource(r, false)
 		generateResource(r, true)
 	}
+}
+
+func clearServicesDirectory() {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Fatal("Failed to get caller information")
+	}
+	dir := path.Dir(filename)
+	filePath := path.Join(dir, "../resources/services")
+	err := clearDirectory(filePath)
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to clear services directory: %w", err))
+	}
+}
+
+func clearDirectory(dir string) error {
+	entry, err := os.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+	for _, e := range entry {
+		if e.IsDir() {
+			continue
+		}
+		err = os.Remove(path.Join(dir, e.Name()))
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func generateResource(r codegen.Resource, mock bool) {

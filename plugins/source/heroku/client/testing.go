@@ -32,7 +32,6 @@ func HerokuMockTestHelper(t *testing.T, table *schema.Table, builder func() (Her
 						Level: hclog.Warn,
 					}),
 					Heroku: heroku,
-					Teams:  []string{"test_team"},
 				}
 				return &c, nil
 			},
