@@ -15,7 +15,7 @@ var domainsResources = []*Resource{
 		Struct:     &domains.Registration{},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
-				Name:    "name",
+				Name:    "self_link",
 				Type:    schema.TypeString,
 				Options: schema.ColumnCreationOptions{PrimaryKey: true},
 			},

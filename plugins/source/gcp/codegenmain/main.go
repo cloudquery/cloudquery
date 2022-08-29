@@ -40,7 +40,7 @@ func main() {
 	resources = append(resources, codegen.CloudFunctionsResources()...)
 	resources = append(resources, codegen.BigqueryResources()...)
 	resources = append(resources, codegen.CloudBillingResources()...)
-	// resources = append(resources, codegen.CloudRunResources...)
+	// resources = append(resources, codegen.RunResources()...)
 
 	for _, r := range resources {
 		generateResource(*r, false)

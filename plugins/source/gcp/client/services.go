@@ -30,7 +30,7 @@ type Services struct {
 	Bigquery        *bigquery.Service
 	Cloudbilling    *cloudbilling.APIService
 	Cloudfunctions  *cloudfunctions.Service
-	Cloudrun        *run.APIService
+	Run             *run.APIService
 	Compute         *compute.Service
 	Container       *container.Service
 	Dns             *dns.Service
@@ -144,7 +144,7 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		Bigquery:        bigQuerySvc,
 		Cloudbilling:    cloudBillingSvc,
 		Cloudfunctions:  cloudFunctionsSvc,
-		Cloudrun:        cloudRunSvc,
+		Run:             cloudRunSvc,
 		Compute:         computeSvc,
 		Container:       containerSvc,
 		Dns:             dnsSvc,

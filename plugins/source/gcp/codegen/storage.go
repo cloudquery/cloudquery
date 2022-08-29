@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/storage/v1"
 )
@@ -11,6 +13,13 @@ var storageResources = []*Resource{
 	{
 		SubService: "buckets",
 		Struct:     &storage.Bucket{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:    "self_link",
+				Type:    schema.TypeString,
+				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
 	},
 }
 

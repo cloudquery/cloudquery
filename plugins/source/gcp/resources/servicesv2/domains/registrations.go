@@ -61,11 +61,9 @@ func Registrations() *schema.Table {
 				Resolver: schema.PathResolver("ManagementSettings"),
 			},
 			{
-				Name: "name",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "pending_contact_settings",
