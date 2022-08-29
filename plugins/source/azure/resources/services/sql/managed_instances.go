@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func SqlManagedInstances() *schema.Table {
+func ManagedInstances() *schema.Table {
 	return &schema.Table{
 		Name:         "azure_sql_managed_instances",
 		Description:  "ManagedInstance an Azure SQL managed instance",
@@ -237,7 +237,7 @@ func SqlManagedInstances() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			sqlManagedDatabases(),
+			managedDatabases(),
 			{
 				Name:          "azure_sql_managed_instance_private_endpoint_connections",
 				Description:   "ManagedInstancePecProperty a private endpoint connection under a managed instance",

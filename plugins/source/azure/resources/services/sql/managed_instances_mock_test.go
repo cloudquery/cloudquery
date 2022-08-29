@@ -117,5 +117,5 @@ func buildSQLManagedInstancesMock(t *testing.T, ctrl *gomock.Controller) service
 }
 
 func TestSQLManagedInstances(t *testing.T) {
-	client.AzureMockTestHelper(t, SqlManagedInstances(), buildSQLManagedInstancesMock, client.TestOptions{})
+	client.AzureMockTestHelper(t, ManagedInstances(), buildSQLManagedInstancesMock, client.TestOptions{})
 }

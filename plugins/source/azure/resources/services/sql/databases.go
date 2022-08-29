@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func SqlDatabases() *schema.Table {
+func databases() *schema.Table {
 	return &schema.Table{
 		Name:          "azure_sql_databases",
 		Description:   "Azure sql database",

@@ -237,5 +237,5 @@ func buildSQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services
 }
 
 func TestSQLServers(t *testing.T) {
-	client.AzureMockTestHelper(t, SQLServers(), buildSQLServerMock, client.TestOptions{})
+	client.AzureMockTestHelper(t, Servers(), buildSQLServerMock, client.TestOptions{})
 }

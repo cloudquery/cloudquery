@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func SQLServers() *schema.Table {
+func Servers() *schema.Table {
 	return &schema.Table{
 		Name:         "azure_sql_servers",
 		Description:  "Azure sql server",
@@ -121,8 +121,8 @@ func SQLServers() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			SqlDatabases(),
-			SQLServerEncryptionProtectors(),
+			databases(),
+			encryptionProtectors(),
 			{
 				Name:          "azure_sql_server_private_endpoint_connections",
 				Description:   "List of private endpoint connections on a server",

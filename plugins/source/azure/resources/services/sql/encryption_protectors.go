@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func SQLServerEncryptionProtectors() *schema.Table {
+func encryptionProtectors() *schema.Table {
 	return &schema.Table{
 		Name:        "azure_sql_server_encryption_protectors",
 		Description: "EncryptionProtector the server encryption protector",
