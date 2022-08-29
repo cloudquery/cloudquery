@@ -10,7 +10,7 @@ description_modifier "remove_read_only" {
 resource "aws" "iam" "roles" {
   path        = "github.com/aws/aws-sdk-go-v2/service/iam/types.Role"
   description = "An IAM role is an IAM identity that you can create in your account that has specific permissions."
-  ignoreError "IgnoreAccessDenied" {
+  ignoreError "IgnoreCommonErrors" {
     path = "github.com/cloudquery/cloudquery/plugins/source/aws/client.IgnoreCommonErrors"
   }
   multiplex "AwsAccount" {
@@ -51,6 +51,7 @@ resource "aws" "iam" "roles" {
   }
   user_relation "aws" "iam" "role_policies" {
     path = "github.com/aws/aws-sdk-go-v2/service/iam.GetRolePolicyOutput"
+    description = "Inline policies that are embedded in the specified IAM role"
     column "policy_document" {
       type              = "json"
       generate_resolver = true

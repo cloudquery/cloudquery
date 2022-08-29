@@ -112,7 +112,7 @@ func Roles() *schema.Table {
 		Relations: []*schema.Table{
 			{
 				Name:        "aws_iam_role_policies",
-				Description: "Contains the response to a successful GetRolePolicy request.",
+				Description: "Inline policies that are embedded in the specified IAM role",
 				Resolver:    fetchIamRolePolicies,
 				Columns: []schema.Column{
 					{
