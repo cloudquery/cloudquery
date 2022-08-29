@@ -13,6 +13,8 @@ type Resource struct {
 	DefaultColumns []codegen.ColumnDefinition
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
+	// TableName can be used to override the default generated table name
+	TableName string
 	// HerokuStruct that will be used to generate the cloudquery table
 	HerokuStruct interface{}
 	// HerokuStructName is the name of the HerokuStruct because it can't be inferred by reflection
@@ -173,9 +175,11 @@ var listResources = []Resource{
 		Template:            "relational_resource_list",
 	},
 	{
+		TableName:    "heroku_oauth_authorizations",
 		HerokuStruct: &heroku.OAuthAuthorization{},
 	},
 	{
+		TableName:    "heroku_oauth_clients",
 		HerokuStruct: &heroku.OAuthClient{},
 	},
 	{

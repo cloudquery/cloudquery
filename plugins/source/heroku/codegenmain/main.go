@@ -40,6 +40,9 @@ func generateResource(r codegen.Resource, mock bool) {
 	dir := path.Dir(filename)
 
 	tableName := fmt.Sprintf("heroku_%s", strcase.ToSnake(inflection.Plural(r.HerokuStructName)))
+	if r.TableName != "" {
+		tableName = r.TableName
+	}
 	r.Table, err = sdkgen.NewTableFromStruct(tableName, r.HerokuStruct)
 	if err != nil {
 		log.Fatal(err)

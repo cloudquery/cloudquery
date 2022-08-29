@@ -12,7 +12,7 @@ import (
 
 func OAuthAuthorizations() *schema.Table {
 	return &schema.Table{
-		Name:      "heroku_o_auth_authorizations",
+		Name:      "heroku_oauth_authorizations",
 		Resolver:  fetchOAuthAuthorizations,
 		Multiplex: client.NoMultiplex,
 		Columns: []schema.Column{
