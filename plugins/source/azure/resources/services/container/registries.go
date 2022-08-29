@@ -281,7 +281,7 @@ func ContainerRegistries() *schema.Table {
 // ====================================================================================================================
 
 func fetchContainerRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ContainerRegistry.Registries
+	svc := meta.(*client.Client).Services().Container.Registries
 	result, err := svc.List(ctx)
 	if err != nil {
 		return diag.WrapError(err)
@@ -331,7 +331,7 @@ func resolveContainerRegistryNetworkRuleSetIPRulesIpAddressOrRange(ctx context.C
 }
 func fetchContainerRegistryReplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(containerregistry.Registry)
-	svc := meta.(*client.Client).Services().ContainerRegistry.Replications
+	svc := meta.(*client.Client).Services().Container.Replications
 	resource, err := client.ParseResourceID(*r.ID)
 	if err != nil {
 		return diag.WrapError(err)

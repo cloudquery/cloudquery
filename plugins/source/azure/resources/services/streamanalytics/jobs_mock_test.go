@@ -40,7 +40,7 @@ func buildStreamAnalyticsJobsMock(t *testing.T, ctrl *gomock.Controller) service
 	)
 	return services.Services{
 		StreamAnalytics: services.StreamAnalyticsClient{
-			Jobs: m,
+			StreamingJobs: m,
 		},
 	}
 }

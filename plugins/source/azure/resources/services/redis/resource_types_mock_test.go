@@ -13,7 +13,7 @@ import (
 )
 
 func buildRedisClientMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockRedisClient(ctrl)
+	m := mocks.NewMockRedisResourceTypesClient(ctrl)
 	var rt redis.ResourceType
 	if err := faker.FakeData(&rt); err != nil {
 		t.Fatal(err)
@@ -29,7 +29,7 @@ func buildRedisClientMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 		),
 		nil,
 	)
-	return services.Services{Redis: m}
+	return services.Services{Redis: services.RedisClient{ResourceTypes: m}}
 }
 
 func TestRedisServices(t *testing.T) {

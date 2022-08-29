@@ -201,7 +201,7 @@ func EventHubNamespaces() *schema.Table {
 // ====================================================================================================================
 
 func fetchEventhubNamespaces(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().EventHub
+	svc := meta.(*client.Client).Services().EventHub.Namespaces
 	response, err := svc.List(ctx)
 	if err != nil {
 		return diag.WrapError(err)
@@ -230,7 +230,7 @@ func resolveNamespaceNetworkRuleSet(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return diag.WrapError(err)
 	}
-	rs, err := svc.GetNetworkRuleSet(ctx, details.ResourceGroup, *namespace.Name)
+	rs, err := svc.Namespaces.GetNetworkRuleSet(ctx, details.ResourceGroup, *namespace.Name)
 	if err != nil {
 		return diag.WrapError(err)
 	}

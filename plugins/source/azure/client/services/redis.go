@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisClient
+//go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisResourceTypesClient
 package services
 
 import (
@@ -8,12 +8,17 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type RedisClient interface {
+type RedisClient struct {
+	ResourceTypes RedisResourceTypesClient
+}
+
+type RedisResourceTypesClient interface {
 	ListBySubscription(ctx context.Context) (result redis.ListResultPage, err error)
 }
 
 func NewRedisClient(subscriptionId string, auth autorest.Authorizer) RedisClient {
 	cl := redis.NewClient(subscriptionId)
 	cl.Authorizer = auth
-	return cl
+
+	return RedisClient{ResourceTypes: cl}
 }

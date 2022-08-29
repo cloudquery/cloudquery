@@ -256,7 +256,7 @@ func SearchServices() *schema.Table {
 // ====================================================================================================================
 
 func fetchSearchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Search.Service
+	svc := meta.(*client.Client).Services().Search.Services
 	response, err := svc.ListBySubscription(ctx, nil)
 	if err != nil {
 		return diag.WrapError(err)

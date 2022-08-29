@@ -688,7 +688,7 @@ func FrontDoors() *schema.Table {
 // ====================================================================================================================
 
 func fetchFrontDoors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().FrontDoor
+	svc := meta.(*client.Client).Services().FrontDoor.Doors
 	response, err := svc.List(ctx)
 	if err != nil {
 		return diag.WrapError(err)

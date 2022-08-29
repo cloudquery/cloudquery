@@ -25,7 +25,7 @@ func buildSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 	if err := faker.FakeData(&model); err != nil {
 		t.Fatal(err)
 	}
-	pager := runtime.NewPager[armsubscriptions.ClientListResponse](runtime.PagingHandler[armsubscriptions.ClientListResponse]{
+	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.ClientListResponse]{
 		More: func(page armsubscriptions.ClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},

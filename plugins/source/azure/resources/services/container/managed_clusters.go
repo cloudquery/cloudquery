@@ -886,7 +886,7 @@ func ContainerManagedClusters() *schema.Table {
 //
 // ====================================================================================================================
 func fetchContainerManagedClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().ContainerService.ManagedClusters
+	svc := meta.(*client.Client).Services().Container.ManagedClusters
 	result, err := svc.List(ctx)
 	if err != nil {
 		return diag.WrapError(err)

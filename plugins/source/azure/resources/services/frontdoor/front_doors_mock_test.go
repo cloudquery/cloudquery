@@ -12,7 +12,7 @@ import (
 )
 
 func buildFrontDoorsServices(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockFrontDoorClient(ctrl)
+	m := mocks.NewMockFrontDoorDoorsClient(ctrl)
 
 	m.EXPECT().List(gomock.Any()).Return(
 		frontdoor.NewListResultPage(
@@ -24,7 +24,7 @@ func buildFrontDoorsServices(t *testing.T, ctrl *gomock.Controller) services.Ser
 		nil,
 	)
 
-	return services.Services{FrontDoor: m}
+	return services.Services{FrontDoor: services.FrontDoorClient{Doors: m}}
 }
 
 func TestFrontDoors(t *testing.T) {

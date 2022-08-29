@@ -782,7 +782,7 @@ func IothubHubs() *schema.Table {
 // ====================================================================================================================
 
 func fetchIothubHubs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().IotHub
+	svc := meta.(*client.Client).Services().IotHub.Devices
 	response, err := svc.ListBySubscription(ctx)
 	if err != nil {
 		return diag.WrapError(err)

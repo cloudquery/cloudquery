@@ -25,7 +25,7 @@ func buildTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	if err := faker.FakeData(&model); err != nil {
 		t.Fatal(err)
 	}
-	pager := runtime.NewPager[armsubscriptions.TenantsClientListResponse](runtime.PagingHandler[armsubscriptions.TenantsClientListResponse]{
+	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.TenantsClientListResponse]{
 		More: func(page armsubscriptions.TenantsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},

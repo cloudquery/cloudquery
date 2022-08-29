@@ -21,10 +21,9 @@ func Search() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:        &search.Service{},
-					listFunction:       "ListBySubscription",
-					subServiceOverride: "Service",
-					listFunctionArgs:   []string{"nil"},
+					azureStruct:      &search.Service{},
+					listFunction:     "ListBySubscription",
+					listFunctionArgs: []string{"nil"},
 				},
 			},
 		},

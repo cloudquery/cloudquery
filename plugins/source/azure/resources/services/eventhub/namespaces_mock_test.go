@@ -13,7 +13,7 @@ import (
 )
 
 func buildEventHubNamespacesServices(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockEventHubClient(ctrl)
+	m := mocks.NewMockEventHubNamespacesClient(ctrl)
 	var namespace eventhub.EHNamespace
 	if err := faker.FakeData(&namespace); err != nil {
 		t.Fatal(err)
@@ -35,7 +35,7 @@ func buildEventHubNamespacesServices(t *testing.T, ctrl *gomock.Controller) serv
 		t.Fatal(err)
 	}
 	m.EXPECT().GetNetworkRuleSet(gomock.Any(), "test", *namespace.Name).Return(rs, nil)
-	return services.Services{EventHub: m}
+	return services.Services{EventHub: services.EventHubClient{Namespaces: m}}
 }
 
 func TestEventHubNamespacesServices(t *testing.T) {

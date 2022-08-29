@@ -54,7 +54,7 @@ func buildContainerRegistries(t *testing.T, ctrl *gomock.Controller) services.Se
 		), nil,
 	)
 	return services.Services{
-		ContainerRegistry: services.ContainerRegistryClient{Registries: reg, Replications: rep},
+		Container: services.ContainerClient{Registries: reg, Replications: rep},
 	}
 }
 

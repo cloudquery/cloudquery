@@ -218,7 +218,7 @@ func RedisServices() *schema.Table {
 }
 
 func fetchRedisServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Redis
+	svc := meta.(*client.Client).Services().Redis.ResourceTypes
 	response, err := svc.ListBySubscription(ctx)
 	if err != nil {
 		return diag.WrapError(err)

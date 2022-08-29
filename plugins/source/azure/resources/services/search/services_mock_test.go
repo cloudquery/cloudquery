@@ -13,7 +13,7 @@ import (
 )
 
 func buildSearchServices(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockSearchServiceClient(ctrl)
+	m := mocks.NewMockSearchServicesClient(ctrl)
 	var searchService search.Service
 	if err := faker.FakeData(&searchService); err != nil {
 		t.Fatal(err)
@@ -37,7 +37,7 @@ func buildSearchServices(t *testing.T, ctrl *gomock.Controller) services.Service
 	)
 
 	cl := services.SearchClient{
-		Service: m,
+		Services: m,
 	}
 	return services.Services{Search: cl}
 }

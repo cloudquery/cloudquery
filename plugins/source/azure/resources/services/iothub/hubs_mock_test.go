@@ -13,7 +13,7 @@ import (
 )
 
 func buildIotHubHubsClientMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockIotHubClient(ctrl)
+	m := mocks.NewMockIotHubDevicesClient(ctrl)
 	var iothub devices.IotHubDescription
 	if err := faker.FakeData(&iothub); err != nil {
 		t.Fatal(err)
@@ -29,7 +29,7 @@ func buildIotHubHubsClientMock(t *testing.T, ctrl *gomock.Controller) services.S
 		nil,
 	)
 
-	return services.Services{IotHub: m}
+	return services.Services{IotHub: services.IotHubClient{Devices: m}}
 }
 
 func TestIotHubHubsServices(t *testing.T) {

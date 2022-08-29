@@ -258,7 +258,7 @@ func StreamanalyticsJobs() *schema.Table {
 // ====================================================================================================================
 
 func fetchStreamanalyticsJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().StreamAnalytics.Jobs
+	svc := meta.(*client.Client).Services().StreamAnalytics.StreamingJobs
 	result, err := svc.List(ctx, "")
 	if err != nil {
 		return diag.WrapError(err)

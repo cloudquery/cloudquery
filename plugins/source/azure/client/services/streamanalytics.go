@@ -9,7 +9,7 @@ import (
 )
 
 type StreamAnalyticsClient struct {
-	Jobs StreamAnalyticsJobsClient
+	StreamingJobs StreamAnalyticsJobsClient
 }
 
 type StreamAnalyticsJobsClient interface {
@@ -20,6 +20,6 @@ func NewStreamAnalyticsClient(subscriptionID string, auth autorest.Authorizer) S
 	jobs := streamanalytics.NewStreamingJobsClient(subscriptionID)
 	jobs.Authorizer = auth
 	return StreamAnalyticsClient{
-		Jobs: jobs,
+		StreamingJobs: jobs,
 	}
 }

@@ -21,10 +21,9 @@ func StreamAnalytics() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:        &streamanalytics.StreamingJob{},
-					listFunction:       "List",
-					listFunctionArgs:   []string{`""`},
-					subServiceOverride: "Jobs",
+					azureStruct:      &streamanalytics.StreamingJob{},
+					listFunction:     "List",
+					listFunctionArgs: []string{`""`},
 				},
 			},
 			serviceNameOverride: "StreamAnalytics",
