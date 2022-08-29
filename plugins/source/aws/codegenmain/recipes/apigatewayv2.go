@@ -8,11 +8,9 @@ import (
 
 var APIGatewayv2Resources = parentize(&Resource{
 	DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
-	//Table:              nil, // will be "generated" at "runtime"
-	AWSStruct:     &types.Api{},
-	AWSService:    "Apigatewayv2",
-	AWSSubService: "Apis",
-	//DescribeFieldName:  "CertificateArn",
+	AWSStruct:      &types.Api{},
+	AWSService:     "Apigatewayv2",
+	AWSSubService:  "Apis",
 	Template:       "resource_get",
 	Imports:        nil,
 	MockImports:    nil,

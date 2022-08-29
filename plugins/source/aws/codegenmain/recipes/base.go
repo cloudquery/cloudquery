@@ -25,10 +25,15 @@ type Resource struct {
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 
-	ListFunctionName     string
-	ItemName             string // Override. Defaults to AWSStructName
-	DescribeFunctionName string
-	DescribeFieldName    string
+	MultiplexerServiceOverride string
+	CQSubserviceOverride       string // used in table and file names
+
+	ListVerb      string // Override. Defaults to "List". Only used in list_describe template.
+	ListFieldName string // Only used in list_describe template.
+
+	ItemName          string // Override. Defaults to AWSStructName
+	Verb              string // Override. Default depends on template used.
+	ResponseItemsName string // Override. Defaults to Items
 
 	Parent          *Resource
 	ParentFieldName string
@@ -49,6 +54,9 @@ type Resource struct {
 
 	HasTags         bool // autodetected by scanning all columns for `tags`
 	SkipTypesImport bool // skip "types" import (except for mock mode)
+	AddTypesImport  bool // always add "types" import
+
+	TrimPrefix string // trim this prefix from all column names
 
 	TableFuncName string // auto calculated
 	MockFuncName  string // auto calculated
@@ -56,6 +64,7 @@ type Resource struct {
 	NestingLevel  int    // auto calculated
 
 	CustomResolvers []string
+	CustomInputs    []string
 }
 
 var (
@@ -70,6 +79,12 @@ var (
 		Description: "The AWS Region of the resource.",
 		Type:        schema.TypeString,
 		Resolver:    "client.ResolveAWSRegion",
+	}
+	NamespaceColumn = codegen.ColumnDefinition{
+		Name:        "namespace",
+		Description: "The AWS Service Namespace of the resource.",
+		Type:        schema.TypeString,
+		Resolver:    "client.ResolveAWSNamespace",
 	}
 )
 

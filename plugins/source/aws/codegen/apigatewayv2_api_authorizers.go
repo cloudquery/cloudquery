@@ -86,6 +86,7 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 	r1 := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetAuthorizersInput{
+
 		ApiId: r1.ApiId,
 	}
 

@@ -131,6 +131,7 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 	r1 := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetIntegrationsInput{
+
 		ApiId: r1.ApiId,
 	}
 

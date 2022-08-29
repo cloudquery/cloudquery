@@ -120,7 +120,7 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 	cl := meta.(*client.Client)
 	svc := cl.Services().Apigatewayv2
 
-	var input apigatewayv2.GetApisInput
+	input := apigatewayv2.GetApisInput{}
 
 	for {
 		response, err := svc.GetApis(ctx, &input)

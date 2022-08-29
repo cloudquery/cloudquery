@@ -25,20 +25,19 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
 
-{{if .Parent}}
 {{template "resolve_parent_defs.go.tpl" .}}
-	input := {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input{
+	input := {{.AWSService | ToLower}}.{{.Verb | Coalesce "Get"}}{{.AWSSubService}}Input{
+{{range .CustomInputs}}{{.}}
+{{end}}
 {{template "resolve_parent_vars.go.tpl" .}}
 	}
-{{else}}
-	var input {{.AWSService | ToLower}}.Get{{.AWSSubService}}Input
-{{end}}
+
 	for {
-		response, err := svc.Get{{.AWSSubService}}(ctx, &input)
+		response, err := svc.{{.Verb | Coalesce "Get"}}{{.AWSSubService}}(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		res <- response.Items
+		res <- response.{{.ResponseItemsName | Coalesce "Items"}}
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

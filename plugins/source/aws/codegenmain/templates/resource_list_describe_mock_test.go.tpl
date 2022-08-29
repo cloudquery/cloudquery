@@ -22,12 +22,12 @@ func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock
 	if err := faker.FakeData(&list); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().{{.ListFunctionName}}(
+	mock.EXPECT().{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}(
 		gomock.Any(),
-		&{{.AWSService | ToLower}}.{{.ListFunctionName}}Input{},
+		&{{.AWSService | ToLower}}.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Input{},
 		gomock.Any(),
 	).Return(
-		&{{.AWSService | ToLower}}.{{.ListFunctionName}}Output{
+		&{{.AWSService | ToLower}}.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Output{
 		  {{.ItemName}}SummaryList: []types.{{.ItemName}}Summary{list},
     },
 		nil,
@@ -37,15 +37,15 @@ func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}
-	detail.{{.DescribeFieldName}} = list.{{.DescribeFieldName}}
-	mock.EXPECT().{{.DescribeFunctionName}}(
+	detail.{{.ListFieldName}} = list.{{.ListFieldName}}
+	mock.EXPECT().{{.Verb | Coalesce "Describe"}}{{.ItemName}}(
 		gomock.Any(),
-		&{{.AWSService | ToLower}}.{{.DescribeFunctionName}}Input{
-		  {{.DescribeFieldName}}: list.{{.DescribeFieldName}},
+		&{{.AWSService | ToLower}}.{{.Verb | Coalesce "Describe"}}{{.ItemName}}Input{
+		  {{.ListFieldName}}: list.{{.ListFieldName}},
 		},
 		gomock.Any(),
 	).Return(
-		&{{.AWSService | ToLower}}.{{.DescribeFunctionName}}Output{
+		&{{.AWSService | ToLower}}.{{.Verb | Coalesce "Describe"}}{{.ItemName}}Output{
 		  {{.ItemName}}: &detail,
     },
 		nil,
@@ -55,7 +55,7 @@ func build{{.AWSService}}{{.AWSSubService | ToCamel}}(t *testing.T, ctrl *gomock
 	mock.EXPECT().ListTagsFor{{.ItemName}}(
 		gomock.Any(),
 		&{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Input{
-		  {{.DescribeFieldName}}: detail.{{.DescribeFieldName}},
+		  {{.ListFieldName}}: detail.{{.ListFieldName}},
     },
 	).Return(
 		&{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Output{

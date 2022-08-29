@@ -101,6 +101,7 @@ func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, par
 	r1 := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetStagesInput{
+
 		ApiId: r1.ApiId,
 	}
 

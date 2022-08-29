@@ -8,14 +8,13 @@ import (
 
 var ACMResources = []*Resource{
 	{
-		DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
-		//Table:              nil, // will be "generated" at "runtime"
+		DefaultColumns:     []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 		AWSStruct:          &types.CertificateDetail{},
 		AWSService:         "ACM",
 		AWSSubService:      "Certificates",
 		ItemName:           "Certificate",
-		DescribeFieldName:  "CertificateArn",
-		Template:           "resource_describe",
+		ListFieldName:      "CertificateArn",
+		Template:           "resource_list_describe",
 		Imports:            nil,
 		MockImports:        nil,
 		MockListStruct:     "",

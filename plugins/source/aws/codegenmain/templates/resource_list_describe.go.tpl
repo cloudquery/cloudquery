@@ -20,16 +20,16 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, _ *schema.
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService}}
 
-	var input {{.AWSService | ToLower}}.{{.ListFunctionName}}Input
-	paginator := {{.AWSService | ToLower}}.New{{.ListFunctionName}}Paginator(svc, &input)
+	var input {{.AWSService | ToLower}}.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Input
+	paginator := {{.AWSService | ToLower}}.New{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Paginator(svc, &input)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			return diag.WrapError(err)
 		}
 		for _, item := range output.{{.ItemName}}SummaryList {
-			do, err := svc.{{.DescribeFunctionName}}(ctx, &{{.AWSService | ToLower}}.{{.DescribeFunctionName}}Input{
-			  {{.DescribeFieldName}}: item.{{.DescribeFieldName}},
+			do, err := svc.{{.Verb | Coalesce "Describe"}}{{.ItemName}}(ctx, &{{.AWSService | ToLower}}.{{.Verb | Coalesce "Describe"}}{{.ItemName}}Input{
+			  {{.ListFieldName}}: item.{{.ListFieldName}},
 			})
 			if err != nil {
 				return diag.WrapError(err)
@@ -46,7 +46,7 @@ func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx contex
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService}}
 	out, err := svc.ListTagsFor{{.ItemName}}(ctx, &{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Input{
-	  {{.DescribeFieldName}}: cert.{{.DescribeFieldName}},
+	  {{.ListFieldName}}: cert.{{.ListFieldName}},
   })
 	if err != nil {
 		return diag.WrapError(err)

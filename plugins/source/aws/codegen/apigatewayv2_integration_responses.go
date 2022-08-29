@@ -64,6 +64,7 @@ func fetchApigatewayv2IntegrationResponses(ctx context.Context, meta schema.Clie
 	r1 := parent.Item.(types.Api)
 
 	input := apigatewayv2.GetIntegrationResponsesInput{
+
 		IntegrationId: r2.IntegrationId,
 		ApiId:         r1.ApiId,
 	}

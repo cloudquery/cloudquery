@@ -27,6 +27,7 @@ var resources []*recipes.Resource
 func main() {
 	resources = append(resources, recipes.ACMResources...)
 	resources = append(resources, recipes.APIGatewayv2Resources...)
+	resources = append(resources, recipes.ApplicationautoscalingResources...)
 
 	for _, r := range resources {
 		generateResource(r, false)
@@ -42,7 +43,9 @@ func generateResource(r *recipes.Resource, mock bool) {
 	}
 	dir := path.Dir(filename)
 
-	tableNameFromSubService := strcase.ToSnake(r.AWSSubService)
+	cqSubservice := coalesce(r.CQSubserviceOverride, r.AWSSubService)
+
+	tableNameFromSubService := strcase.ToSnake(cqSubservice)
 	if r.Parent != nil && !strings.HasPrefix(tableNameFromSubService, strcase.ToSnake(r.Parent.ItemName)+"_") {
 		tableNameFromSubService = strcase.ToSnake(r.Parent.ItemName) + "_" + tableNameFromSubService
 	}
@@ -58,6 +61,13 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	if r.TrimPrefix != "" {
+		for i := range r.Table.Columns {
+			r.Table.Columns[i].Name = strings.TrimPrefix(r.Table.Columns[i].Name, r.TrimPrefix)
+		}
+	}
+
 	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
 	if r.ColumnOverrides != nil {
 		for i, c := range r.Table.Columns {
@@ -100,15 +110,15 @@ func generateResource(r *recipes.Resource, mock bool) {
 			r.HasTags = true
 		}
 	}
-	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + strings.ToLower(r.AWSService) + `")`
+	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + coalesce(r.MultiplexerServiceOverride, strings.ToLower(r.AWSService)) + `")`
 
 	if r.Parent == nil {
-		r.Table.Resolver = "fetch" + r.AWSService + r.AWSSubService
+		r.Table.Resolver = "fetch" + r.AWSService + cqSubservice
 	} else {
-		if !strings.HasPrefix(r.AWSSubService, r.Parent.ItemName) {
-			r.Table.Resolver = "fetch" + r.AWSService + r.Parent.ItemName + r.AWSSubService
+		if !strings.HasPrefix(cqSubservice, r.Parent.ItemName) {
+			r.Table.Resolver = "fetch" + r.AWSService + r.Parent.ItemName + cqSubservice
 		} else {
-			r.Table.Resolver = "fetch" + r.AWSService + r.AWSSubService
+			r.Table.Resolver = "fetch" + r.AWSService + cqSubservice
 		}
 	}
 
@@ -127,19 +137,8 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.ItemName = r.AWSStructName
 	}
 
-	if r.ListFunctionName == "" {
-		r.ListFunctionName = "List" + r.AWSSubService
-	}
-	if r.DescribeFunctionName == "" {
-		if r.ItemName != "" {
-			r.DescribeFunctionName = "Describe" + r.ItemName
-		} else {
-			r.DescribeFunctionName = "Describe" + r.AWSSubService
-		}
-	}
-
 	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
-		if (r.HasTags || r.Parent != nil) && (!r.SkipTypesImport || mock) {
+		if r.AddTypesImport || ((r.HasTags || r.Parent != nil) && (!r.SkipTypesImport || mock)) {
 			r.Imports = append(r.Imports, sp)
 		}
 		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types")) // auto-import main pkg (not "types")
@@ -147,8 +146,9 @@ func generateResource(r *recipes.Resource, mock bool) {
 
 	mainTemplate := r.Template + stringSwitch(mock, "_mock_test", "") + ".go.tpl"
 	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
-		"ToCamel": strcase.ToCamel,
-		"ToLower": strings.ToLower,
+		"ToCamel":  strcase.ToCamel,
+		"ToLower":  strings.ToLower,
+		"Coalesce": func(a1, a2 string) string { return coalesce(a2, a1) }, // go templates argument order is backwards
 	}).ParseFS(awsTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse aws templates: %w", err))
@@ -168,10 +168,10 @@ func generateResource(r *recipes.Resource, mock bool) {
 
 	fileSuffix := stringSwitch(mock, "_mock_test.go", ".go")
 	if r.Parent == nil {
-		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+strcase.ToSnake(r.AWSSubService)+fileSuffix)
+		filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+strcase.ToSnake(cqSubservice)+fileSuffix)
 	} else {
 		parentPrefix := strcase.ToSnake(r.Parent.ItemName) + "_"
-		ss := strcase.ToSnake(r.AWSSubService)
+		ss := strcase.ToSnake(cqSubservice)
 		if !strings.HasPrefix(ss, parentPrefix) {
 			// prevent "apigatewayv2_integration_integration_responses" type names (repeated prefix)
 			ss = parentPrefix + ss
@@ -193,4 +193,11 @@ func stringSwitch(b bool, ifTrue, ifFalse string) string {
 		return ifTrue
 	}
 	return ifFalse
+}
+
+func coalesce(input, defValue string) string {
+	if input == "" {
+		return defValue
+	}
+	return input
 }
