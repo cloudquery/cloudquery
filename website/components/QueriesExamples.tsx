@@ -61,7 +61,7 @@ const QUERIES_EXAMPLES = [
 
 export const QueriesExamples = ({ onClick }) => {
     return (
-        <div className="grid grid-cols-2 gap-6 my-12 sm:grid-cols-3 ">
+        <div className="grid grid-cols-1 gap-6 my-12 md:grid-cols-3 ">
             {QUERIES_EXAMPLES.map(({ code, html, title, description }) => (
                 <QueryItem
                     onClick={() => onClick(code)}
