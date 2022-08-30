@@ -53,6 +53,11 @@ branchProtectionRules:
     - Build Tests (plugins/source/github)
     - Lint Provider Doc (plugins/source/github)
 
+    - Linter (plugins/source/heroku)
+    - Unit Tests (plugins/source/heroku)
+    - Build Tests (plugins/source/heroku)
+    - Lint Provider Doc (plugins/source/heroku)
+
     - Linter (plugins/source/k8s)
     - Unit Tests (plugins/source/k8s)
     - Build Tests (plugins/source/k8s)
