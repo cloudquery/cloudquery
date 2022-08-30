@@ -45,19 +45,12 @@ jobs:
       - uses: actions/cache@v3
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         with:
-          # In order:
-          # * Module download cache
-          # * Build cache (Linux)
-          # * Build cache (Mac)
-          # * Build cache (Windows)
           path: |
-            ~/go/pkg/mod
             ~/.cache/go-build
-            ~/Library/Caches/go-build
-            ~\AppData\Local\go-build
-          key: ${{ runner.os }}-go-1.18-${{ hashFiles('**/go.sum') }}
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.18-${{ hashFiles('${{ matrix.workdir }}/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.18-
+            ${{ runner.os }}-go-1.18-${{ matrix.workdir }}
       - name: remove all docs
         if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
         run: |
