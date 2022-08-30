@@ -8,7 +8,7 @@ import (
 )
 
 const exampleConfig = `
-# This is an example config file for the plugin.
+# This is an example config file for the test plugin.
 account_ids: []
 `
 
