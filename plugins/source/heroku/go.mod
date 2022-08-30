@@ -6,7 +6,7 @@ require (
 	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.0.0
+	github.com/cloudquery/plugin-sdk v0.0.4
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.8
 	github.com/googleapis/gax-go/v2 v2.0.5
@@ -99,5 +99,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.3.3 // indirect
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
