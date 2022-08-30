@@ -23,6 +23,8 @@ builds:
 archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: binary
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    format: zip
 checksum:
   name_template: "checksums.txt"
 changelog:
