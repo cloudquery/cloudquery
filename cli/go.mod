@@ -78,4 +78,3 @@ require (
 	honnef.co/go/tools v0.3.2 // indirect
 )
 
-replace github.com/cloudquery/plugin-sdk => ../../plugin-sdk
