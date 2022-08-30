@@ -100,6 +100,7 @@ require (
 	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
 	github.com/rs/zerolog v1.27.0 // indirect
 	github.com/segmentio/stats/v4 v4.6.3 // indirect
+	golang.org/x/exp v0.0.0-20220827204233-334a2380cb91 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20220722155223-a9213eeb770e // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	honnef.co/go/tools v0.3.3 // indirect
