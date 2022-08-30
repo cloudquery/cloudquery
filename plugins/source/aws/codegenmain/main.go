@@ -224,7 +224,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	filePath := path.Join(dir, "../codegen")
+	filePath := path.Join(dir, "../codegen", strings.ToLower(r.AWSService))
 	if err := os.MkdirAll(filePath, 0755); err != nil {
 		log.Fatal(fmt.Errorf("failed to create directory: %w", err))
 	}
