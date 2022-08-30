@@ -42,7 +42,7 @@ func Policies() *schema.Table {
 			},
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Id"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,

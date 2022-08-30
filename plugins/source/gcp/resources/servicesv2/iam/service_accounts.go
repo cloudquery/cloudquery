@@ -56,17 +56,17 @@ func ServiceAccounts() *schema.Table {
 				Resolver: schema.PathResolver("Oauth2ClientId"),
 			},
 			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProjectId"),
-			},
-			{
 				Name:     "unique_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("UniqueId"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "server_response",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServerResponse"),
 			},
 		},
 	}

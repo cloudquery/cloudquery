@@ -26,6 +26,7 @@ var iamResources = []*Resource{
 				Options: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
+		SkipFields: []string{"ServerResponse", "NullFields", "ForceSendFields"},
 	},
 	{
 		SubService:  "service_accounts",
@@ -39,6 +40,7 @@ var iamResources = []*Resource{
 				Resolver: `schema.PathResolver("UniqueId")`,
 			},
 		},
+		SkipFields: []string{"ProjectId", "NullFields", "ForceSendFields"},
 	},
 }
 

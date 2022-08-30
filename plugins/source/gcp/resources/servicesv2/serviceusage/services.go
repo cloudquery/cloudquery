@@ -26,9 +26,11 @@ func Services() *schema.Table {
 				Resolver: schema.PathResolver("Config"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Name: "name",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "parent",

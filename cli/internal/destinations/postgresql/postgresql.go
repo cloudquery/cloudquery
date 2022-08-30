@@ -330,6 +330,9 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist without unique constraint, adding")
 				constraint_name := fmt.Sprintf("%s_%s_key", table.Name, c.Name)
 				if _, err := p.conn.Exec(ctx, sqlAlterTableDropUniqueConstraint+constraint_name, table.Name, c.Name); err != nil {
+					fmt.Println(c.Name)
+					fmt.Println(pgColumnsConstraints.isColumnUnique(c.Name))
+					fmt.Println(c.CreationOptions.Unique)
 					return fmt.Errorf("failed to drop unique constraint on column %s on table %s: %w", c.Name, table.Name, err)
 				}
 			}

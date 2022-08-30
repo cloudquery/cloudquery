@@ -86,6 +86,7 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 		if err != nil {
 			return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 		}
+
 		if err := destPlugins[i].GetClient().Migrate(ctx, tables); err != nil {
 			return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destination, err)
 		}

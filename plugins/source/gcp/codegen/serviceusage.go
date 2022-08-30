@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/serviceusage/v1"
 )
@@ -12,6 +14,13 @@ var serviceusageResources = []*Resource{
 		SubService: "services",
 		Struct:     &serviceusage.GoogleApiServiceusageV1Service{},
 		SkipMock:   true,
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:    "name",
+				Type:    schema.TypeString,
+				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
 	},
 }
 
