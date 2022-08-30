@@ -5,8 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/cmd/generate"
-	"github.com/cloudquery/cloudquery/cli/cmd/sync"
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -26,7 +24,10 @@ var (
 
 Open source data integration that works.
 
-Find more information at: https://cloudquery.io`
+Find more information at:
+	https://cloudquery.io`
+
+	registryTypes = []string{"github", "local", "grpc"}
 )
 
 func newCmdRoot() *cobra.Command {
@@ -116,7 +117,7 @@ func newCmdRoot() *cobra.Command {
 	}
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	cmd.AddCommand(generate.NewCmdGenerate(), sync.NewCmdFetch())
+	cmd.AddCommand(NewCmdGenerate(), NewCmdSync())
 	cmd.DisableAutoGenTag = true
 	cmd.SilenceUsage = true
 	return cmd
