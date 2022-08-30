@@ -78,8 +78,8 @@ require (
 	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/gocarina/gocsv v0.0.0-20220823132111-71f3a5cb2654
-	github.com/cloudquery/plugin-sdk v0.0.3
+	github.com/cloudquery/plugin-sdk v0.0.4
+	github.com/gocarina/gocsv v0.0.0-20220712153207-8b2118da4570
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.8
 	github.com/hashicorp/go-hclog v1.2.2
@@ -166,7 +166,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
-	github.com/pkg/errors v0.9.1
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/vektah/gqlparser/v2 v2.2.0 // indirect
@@ -187,4 +187,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
+// replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
