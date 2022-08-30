@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/heroku/resources/provider"
+	"github.com/cloudquery/cloudquery/plugins/source/heroku/provider"
 	"github.com/cloudquery/cq-provider-sdk/serve"
 )
 

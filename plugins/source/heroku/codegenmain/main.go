@@ -12,7 +12,7 @@ import (
 	"runtime"
 	"text/template"
 
-	"github.com/cloudquery/cloudquery/plugins/source/heroku/codegen"
+	"github.com/cloudquery/cloudquery/plugins/source/heroku/codegenmain/recipes"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/iancoleman/strcase"
 )
@@ -20,12 +20,10 @@ import (
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
-var resources = []codegen.Resource{}
-
 func main() {
 	clearServicesDirectory()
 
-	resources = append(resources, codegen.All()...)
+	resources := recipes.All()
 	for _, r := range resources {
 		generateResource(r, false)
 		generateResource(r, true)
@@ -38,7 +36,7 @@ func clearServicesDirectory() {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
-	filePath := path.Join(dir, "../resources/services")
+	filePath := path.Join(dir, "../codegen")
 	err := clearDirectory(filePath)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to clear services directory: %w", err))
@@ -62,7 +60,7 @@ func clearDirectory(dir string) error {
 	return nil
 }
 
-func generateResource(r codegen.Resource, mock bool) {
+func generateResource(r recipes.Resource, mock bool) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -95,13 +93,13 @@ func generateResource(r codegen.Resource, mock bool) {
 	}
 	tpl, err = tpl.ParseFS(sdkgen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse codegen template: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse recipes template: %w", err))
 	}
 	var buff bytes.Buffer
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	filePath := path.Join(dir, "../resources/services")
+	filePath := path.Join(dir, "../codegen")
 	fileName := strcase.ToSnake(r.HerokuStructName)
 	if mock {
 		filePath = path.Join(filePath, fileName+"_mock_test.go")

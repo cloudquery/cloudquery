@@ -8,14 +8,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	faker "github.com/cloudquery/faker/v3"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/julienschmidt/httprouter"
+	faker "github.com/cloudquery/faker/v3"
 	heroku "github.com/heroku/heroku-go/v5"
+	"github.com/julienschmidt/httprouter"
 )
 
-func create{{.HerokuStructName | Pluralize }}() (*heroku.Service, error) {
-    items := make(heroku.{{.HerokuStructName}}ListResult, 1)
+func createAddOnAttachments() (*heroku.Service, error) {
+	items := make(heroku.AddOnAttachmentListResult, 1)
 	if err := faker.FakeData(&items); err != nil {
 		return nil, err
 	}
@@ -39,6 +39,6 @@ func create{{.HerokuStructName | Pluralize }}() (*heroku.Service, error) {
 	return s, nil
 }
 
-func Test{{.HerokuStructName}}(t *testing.T) {
-	client.HerokuMockTestHelper(t, {{.HerokuStructName | Pluralize}}(), create{{.HerokuStructName | Pluralize }}, client.TestOptions{})
+func TestAddOnAttachment(t *testing.T) {
+	client.HerokuMockTestHelper(t, AddOnAttachments(), createAddOnAttachments, client.TestOptions{})
 }
