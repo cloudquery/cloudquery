@@ -27,18 +27,18 @@ func list{{.AWSSubService}}(ctx context.Context, meta schema.ClientMeta, detailC
 	svc := cl.Services().{{.AWSService | ToCamel}}
 
 {{template "resolve_parent_defs.go.tpl" .}}
-	input := {{.AWSService | ToLower}}.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Input{
+	input := {{.AWSService | ToLower}}.{{.ListMethod}}Input{
 {{range .CustomInputs}}{{.}}
 {{end}}
 {{template "resolve_parent_vars.go.tpl" .}}
 	}
 
 	for {
-		response, err := svc.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}(ctx, &input)
+		response, err := svc.{{.ListMethod}}(ctx, &input)
 		if err != nil {
 			return diag.WrapError(err)
 		}
-		for _, item := range response.{{.ListFieldName}} {
+		for _, item := range response.{{.PaginatorListName}} {
 			detailChan <- item
 		}
 		if aws.ToString(response.NextToken) == "" {
@@ -51,10 +51,11 @@ func list{{.AWSSubService}}(ctx context.Context, meta schema.ClientMeta, detailC
 
 func list{{.AWSSubService}}Detail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
 	cl := meta.(*client.Client)
-	itemSummary := listInfo.(types.{{.ResponseItemsType}})
+	item := listInfo.({{.PaginatorListType}})
 	svc := cl.Services().{{.AWSService | ToCamel}}
-	response, err := svc.{{.Verb | Coalesce "Get" }}{{.ItemName}}(ctx, &{{.AWSService | ToLower}}.{{.Verb | Coalesce "Get" }}{{.ItemName}}Input{
-		{{.DetailInputFieldName}}: itemSummary.{{.ResponseItemsName}},
+	response, err := svc.{{.GetMethod}}(ctx, &{{.AWSService | ToLower}}.{{.GetMethod}}Input{
+{{range $v := .GetAndListOrder}}	{{$v}}: {{index $.MatchedGetAndListFields $v}},
+{{end}}
 	})
 	if err != nil {
 		{{.CustomErrorBlock}}
@@ -71,7 +72,7 @@ func list{{.AWSSubService}}Detail(ctx context.Context, meta schema.ClientMeta, r
 func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
-	item := resource.Item.(types.{{.ResponseItemsType}})
+	item := resource.Item.({{.PaginatorListType}})
 	params := {{.AWSService | ToLower}}.ListTagsForResourceInput{
 		ResourceARN: {{.CustomTagField | Coalesce "item.ARN"}},
 	}

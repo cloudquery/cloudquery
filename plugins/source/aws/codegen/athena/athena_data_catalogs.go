@@ -53,15 +53,15 @@ func AthenaDataCatalogs() *schema.Table {
 				Resolver: schema.PathResolver("Parameters"),
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolvers.ResolveDataCatalogArn,
-			},
-			{
 				Name:        "tags",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveAthenaDataCatalogsTags,
 				Description: `Tags associated with the Athena data catalog.`,
+			},
+			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: resolvers.ResolveDataCatalogArn,
 			},
 		},
 	}
@@ -95,17 +95,17 @@ func listDataCatalogs(ctx context.Context, meta schema.ClientMeta, detailChan ch
 
 func listDataCatalogsDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
 	cl := meta.(*client.Client)
-	itemSummary := listInfo.(types.DataCatalogSummary)
+	item := listInfo.(types.DataCatalogSummary)
 	svc := cl.Services().Athena
 	response, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
-		Name: itemSummary.CatalogName,
+		Name: item.CatalogName,
 	})
 	if err != nil {
 
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
 		// relations can be fetched by its name
-		if *itemSummary.CatalogName == "AwsDataCatalog" {
-			resultsChan <- types.DataCatalog{Name: itemSummary.CatalogName, Type: itemSummary.Type}
+		if *item.CatalogName == "AwsDataCatalog" {
+			resultsChan <- types.DataCatalog{Name: item.CatalogName, Type: item.Type}
 			return
 		}
 

@@ -21,54 +21,39 @@ import (
 func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMock{{.AWSService}}Client(ctrl)
 
-{{if .MockRawPaginatorListType}}
-	var item {{.MockRawPaginatorListType}}
-{{else}}
-	var item types.{{.PaginatorListName}}
-{{end}}
+	var item {{.PaginatorListType}}
 	if err := faker.FakeData(&item); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}(
+	mock.EXPECT().{{.ListMethod}}(
 		gomock.Any(),
-		&{{.AWSService | ToLower}}.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Input{},
+		&{{.AWSService | ToLower}}.{{.ListMethod}}Input{},
 		gomock.Any(),
 	).Return(
-		&{{.AWSService | ToLower}}.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Output{
-{{if .MockRawPaginatorListType}}
-		  {{.PaginatorListName}}: []{{.MockRawPaginatorListType}}{item},
-{{else}}
-		  {{.PaginatorListName}}: []types.{{.PaginatorListName}}{item},
-{{end}}
+		&{{.AWSService | ToLower}}.{{.ListMethod}}Output{
+		  {{.PaginatorListName}}: []{{.PaginatorListType}}{item},
     },
 		nil,
 	)
 
-{{if .MockRawListDetailType}}
-  var detail {{.MockRawListDetailType}}
-{{else}}
-	var detail types.{{.ItemName}}Detail
-{{end}}
+  var detail types.{{.AWSStructName}}
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}
-{{if .RawDescribeFieldValue}}
-	detail.{{.ListFieldName}} = {{.RawDescribeFieldValue}}
-{{else}}
-	detail.{{.ListFieldName}} = item.{{.ListFieldName}}
+{{range $v := .GetAndListOrder}}
+	detail.{{$v}} = {{index $.MatchedGetAndListFields $v}}
 {{end}}
-	mock.EXPECT().{{.Verb | Coalesce "Describe"}}{{.ItemName}}(
+
+	mock.EXPECT().{{.GetMethod}}(
 		gomock.Any(),
-		&{{.AWSService | ToLower}}.{{.Verb | Coalesce "Describe"}}{{.ItemName}}Input{
-{{if .RawDescribeFieldValue}}
-		  {{.ListFieldName}}: {{.RawDescribeFieldValue}},
-{{else}}
-	{{.ListFieldName}}: item.{{.ListFieldName}},
+		&{{.AWSService | ToLower}}.{{.GetMethod}}Input{
+{{range $v := .GetAndListOrder}}
+	{{$v}}: {{index $.MatchedGetAndListFields $v}},
 {{end}}
 		},
 		gomock.Any(),
 	).Return(
-		&{{.AWSService | ToLower}}.{{.Verb | Coalesce "Describe"}}{{.ItemName}}Output{
+		&{{.AWSService | ToLower}}.{{.GetMethod}}Output{
 		  {{.ItemName}}: &detail,
     },
 		nil,
@@ -78,7 +63,9 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock.EXPECT().ListTagsFor{{.ItemName}}(
 		gomock.Any(),
 		&{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Input{
-		  {{.ListFieldName}}: detail.{{.ListFieldName}},
+{{range $v := .GetAndListOrder}}
+		{{$v}}: {{index $.MatchedGetAndListFields $v}},
+{{end}}
     },
 	).Return(
 		&{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Output{

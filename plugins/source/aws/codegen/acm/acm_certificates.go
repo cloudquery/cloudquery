@@ -204,6 +204,7 @@ func resolveACMCertificatesTags(ctx context.Context, meta schema.ClientMeta, res
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
 	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{
+
 		CertificateArn: item.CertificateArn,
 	})
 	if err != nil {

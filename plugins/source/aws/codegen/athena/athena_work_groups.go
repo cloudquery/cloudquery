@@ -100,10 +100,10 @@ func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan
 
 func listWorkGroupsDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
 	cl := meta.(*client.Client)
-	itemSummary := listInfo.(types.WorkGroupSummary)
+	item := listInfo.(types.WorkGroupSummary)
 	svc := cl.Services().Athena
 	response, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
-		WorkGroup: itemSummary.Name,
+		WorkGroup: item.Name,
 	})
 	if err != nil {
 

@@ -11,8 +11,8 @@ var APIGatewayv2Resources = parentize(&Resource{
 	DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 	AWSStruct:      &types.Api{},
 	AWSService:     "Apigatewayv2",
-	AWSSubService:  "Apis",
 	Template:       "resource_get",
+	ItemsStruct:    &apigatewayv2.GetApisOutput{},
 	//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	ColumnOverrides: map[string]codegen.ColumnDefinition{
 		"tags": {

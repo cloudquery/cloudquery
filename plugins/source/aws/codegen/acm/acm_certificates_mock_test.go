@@ -20,7 +20,6 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 	mock := mocks.NewMockACMClient(ctrl)
 
 	var item types.CertificateSummary
-
 	if err := faker.FakeData(&item); err != nil {
 		t.Fatal(err)
 	}
@@ -30,14 +29,12 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		gomock.Any(),
 	).Return(
 		&acm.ListCertificatesOutput{
-
 			CertificateSummaryList: []types.CertificateSummary{item},
 		},
 		nil,
 	)
 
 	var detail types.CertificateDetail
-
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}
@@ -61,7 +58,8 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 	mock.EXPECT().ListTagsForCertificate(
 		gomock.Any(),
 		&acm.ListTagsForCertificateInput{
-			CertificateArn: detail.CertificateArn,
+
+			CertificateArn: item.CertificateArn,
 		},
 	).Return(
 		&acm.ListTagsForCertificateOutput{

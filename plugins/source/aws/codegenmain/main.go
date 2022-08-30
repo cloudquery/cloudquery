@@ -42,44 +42,130 @@ func main() {
 }
 
 func inferFromRecipe(r *recipes.Resource) {
-	ist := reflect.TypeOf(r.ItemsStruct).Elem()
+	var (
+		res, items, pag, pget *helpers.InferResult
+	)
 
-	for _, verbCandidate := range []string{"Get", "Describe", "List"} {
-		if !strings.HasPrefix(ist.Name(), verbCandidate) {
-			continue
-		}
-		r.Verb = verbCandidate
+	if r.ItemsStruct != nil {
+		items = helpers.InferFromStruct(r.ItemsStruct, r.PaginatorStruct != nil, false)
+		r.GetMethod = items.Method
+		r.ResponseItemsName = items.ItemsName
 
-		if !strings.HasSuffix(ist.Name(), "Output") {
-			log.Fatal("Unhandled ItemsStruct type (bad suffix): ", ist.Name())
-		}
-
-		r.AWSSubService = strings.TrimSuffix(strings.TrimPrefix(ist.Name(), r.Verb), "Output")
-		if r.AWSSubService == "" {
-			log.Fatal("Failed calculating AWSSubService: empty output for", ist.Name())
-		}
-
-		break
+		res = items
 	}
 
-	//if i := strings.Index(ist.Name(), r.AWSSubService); i > 0 && r.Verb == "" {
-	//	r.Verb = ist.Name()[:i]
-	//}
+	if r.PaginatorStruct != nil {
+		pag = helpers.InferFromStruct(r.PaginatorStruct, false, false)
+		r.PaginatorListName = pag.ItemsName
+		r.PaginatorListType = pag.ItemsStruct.Elem().Name() // single type from a slice
+		if pag.ItemsStruct.Elem().Kind() == reflect.Struct {
+			r.PaginatorListType = "types." + r.PaginatorListType
+		}
 
-	var candidates []string
-	for i := 0; i < ist.NumField(); i++ {
-		f := ist.Field(i)
-		if f.Name == "noSmithyDocumentSerde" || f.Type.String() == "document.NoSerde" || f.Type.String() == "middleware.Metadata" {
-			continue
-		}
-		if f.Type.Kind() == reflect.Slice {
-			candidates = append(candidates, f.Name)
+		r.ListMethod = pag.Method
+
+		if res == nil {
+			res = pag
 		}
 	}
-	if len(candidates) != 1 {
-		log.Fatal("Could not determine ResponseItemsName for ", ist.Name(), len(candidates), "candidates")
+
+	if r.PaginatorGetStruct != nil {
+		if r.ItemsStruct == nil {
+			log.Fatal("PaginatorGetStruct requires ItemsStruct on resource ", r.AWSService)
+		}
+
+		pget = helpers.InferFromStruct(r.PaginatorGetStruct, true, true)
+		if pget.Method != items.Method {
+			log.Fatal("PaginatorGetStruct method ", pget.Method, " does not match ItemsStruct method ", items.Method)
+		}
+
+		if pag != nil {
+			// figure out which fields match to what
+
+			r.AutoCalculated.GetAndListOrder = nil
+			r.AutoCalculated.MatchedGetAndListFields = make(map[string]string)
+
+			fields := make(map[string]reflect.Type)
+			pagSingleItem := pag.ItemsStruct.Elem()
+			//log.Println("PROCESSING", pagSingleItem.Name(), pagSingleItem.Kind().String())
+			if k := pagSingleItem.Kind(); k == reflect.String {
+				// special case for string
+				fields[""] = pagSingleItem
+			} else {
+				for i := 0; i < pagSingleItem.NumField(); i++ {
+					f := pagSingleItem.Field(i)
+					if f.Name == "noSmithyDocumentSerde" || f.Type.String() == "document.NoSerde" {
+						continue
+					}
+					fields[f.Name] = f.Type
+				}
+			}
+
+			if len(fields) == 1 && fields[""] != nil {
+				// special case for string (not struct)
+				found := false
+				for _, f := range pget.FieldOrder {
+					ff := pget.Fields[f]
+					if ff.Kind() == fields[""].Kind() || (ff.Kind() == reflect.Ptr && ff.Elem().Kind() == fields[""].Kind()) {
+						found = true
+						r.AutoCalculated.GetAndListOrder = append(r.AutoCalculated.GetAndListOrder, f)
+						r.AutoCalculated.MatchedGetAndListFields[f] = "&item"
+						break
+					}
+				}
+				if !found {
+					log.Println("PaginatorGetStruct field of type", fields[""].Kind().String(), "not matched in PaginatorStruct in", pagSingleItem.Name())
+				}
+			} else {
+				for _, f := range pget.FieldOrder {
+					found := false
+					nameMatchFn := func(a, b string) bool { return strings.ToLower(a) == strings.ToLower(b) }
+
+					for attempts := 0; attempts < 2; attempts++ {
+						for n, t := range fields {
+							if nameMatchFn(n, f) && ((t == pget.Fields[f]) || (pget.Fields[f].Kind() == reflect.Ptr && t == pget.Fields[f].Elem())) {
+								found = true
+								r.AutoCalculated.GetAndListOrder = append(r.AutoCalculated.GetAndListOrder, f)
+								r.AutoCalculated.MatchedGetAndListFields[f] = "item." + n
+								break
+							}
+						}
+						if found {
+							break
+						}
+						if !found {
+							if attempts == 0 {
+								// Either suffix or single field
+								nameMatchFn = func(a, b string) bool {
+									return (len(pget.FieldOrder) == 1 && a == "Name") || strings.HasSuffix(a, b)
+								}
+
+								log.Println("PaginatorGetStruct field", f, "not matched in PaginatorStruct in", pagSingleItem.Name(), "doing heuristic match")
+							} else {
+								log.Println("PaginatorGetStruct field", f, "not matched in PaginatorStruct in", pagSingleItem.Name(), "even after heuristic match")
+							}
+						}
+					}
+				}
+			}
+
+			if len(r.AutoCalculated.GetAndListOrder) > 0 {
+				log.Println("GetAndListOrder for", pagSingleItem.Name()+":", r.AutoCalculated.GetAndListOrder)
+			}
+		}
+
 	}
-	r.ResponseItemsName = candidates[0]
+
+	if items != nil && pag != nil {
+		r.AWSSubService = pag.SubService
+	} else {
+		r.AWSSubService = res.SubService
+	}
+
+	if items != nil && pag != nil && strings.TrimSuffix(pag.SubService, "s") != strings.TrimSuffix(items.SubService, "s") { // Certificate vs Certificates
+		log.Println("Mismatching subservices between ItemsStruct and PaginatorStruct for resource ", r.AWSService, ": ", items.SubService, " vs ", pag.SubService)
+	}
+
 }
 
 func generateResource(r *recipes.Resource, mock bool) {

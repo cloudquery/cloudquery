@@ -18,7 +18,6 @@ func buildAthenaWorkGroupNamedQueries(t *testing.T, ctrl *gomock.Controller) cli
 	mock := mocks.NewMockAthenaClient(ctrl)
 
 	var item string
-
 	if err := faker.FakeData(&item); err != nil {
 		t.Fatal(err)
 	}
@@ -28,14 +27,12 @@ func buildAthenaWorkGroupNamedQueries(t *testing.T, ctrl *gomock.Controller) cli
 		gomock.Any(),
 	).Return(
 		&athena.ListNamedQueriesOutput{
-
 			NamedQueryIds: []string{item},
 		},
 		nil,
 	)
 
 	var detail types.NamedQuery
-
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}

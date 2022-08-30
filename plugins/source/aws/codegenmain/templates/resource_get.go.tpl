@@ -23,13 +23,13 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := cl.Services().{{.AWSService | ToCamel}}
 
 {{template "resolve_parent_defs.go.tpl" .}}
-	input := {{.AWSService | ToLower}}.{{.Verb | Coalesce "Get"}}{{.AWSSubService}}Input{
+	input := {{.AWSService | ToLower}}.{{.GetMethod}}Input{
 {{range .CustomInputs}}{{.}}
 {{end}}{{template "resolve_parent_vars.go.tpl" .}}
 	}
 
 	for {
-		response, err := svc.{{.Verb | Coalesce "Get"}}{{.AWSSubService}}(ctx, &input)
+		response, err := svc.{{.GetMethod}}(ctx, &input)
 		if err != nil {
 			{{.CustomErrorBlock}}
 			return diag.WrapError(err)

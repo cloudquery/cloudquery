@@ -23,8 +23,8 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().{{.Verb | Coalesce "Get"}}{{.AWSSubService | ToCamel}}(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&{{.AWSService | ToLower}}.{{.Verb | Coalesce "Get"}}{{.AWSSubService | ToCamel}}Output{
+	mock.EXPECT().{{.GetMethod}}(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&{{.AWSService | ToLower}}.{{.GetMethod}}Output{
 			{{.ResponseItemsName | Coalesce "Items"}}: []types.{{.ItemName}}{item},
 		}, nil)
 	return client.Services{

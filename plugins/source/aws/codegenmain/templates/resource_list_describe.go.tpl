@@ -22,11 +22,11 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := cl.Services().{{.AWSService}}
 
 {{template "resolve_parent_defs.go.tpl" .}}
-	input := {{.AWSService | ToLower}}.{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Input{
+	input := {{.AWSService | ToLower}}.{{.ListMethod}}Input{
 {{range .CustomInputs}}{{.}}
 {{end}}{{template "resolve_parent_vars.go.tpl" .}}
 	}
-	paginator := {{.AWSService | ToLower}}.New{{.ListVerb | Coalesce "List"}}{{.AWSSubService}}Paginator(svc, &input)
+	paginator := {{.AWSService | ToLower}}.New{{.ListMethod}}Paginator(svc, &input)
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
@@ -34,10 +34,12 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 			return diag.WrapError(err)
 		}
 		for _, item := range output.{{.PaginatorListName}} {
-			do, err := svc.{{.Verb | Coalesce "Describe"}}{{.ItemName}}(ctx, &{{.AWSService | ToLower}}.{{.Verb | Coalesce "Describe"}}{{.ItemName}}Input{
+			do, err := svc.{{.GetMethod}}(ctx, &{{.AWSService | ToLower}}.{{.GetMethod}}Input{
 {{range .CustomInputs}}{{.}}
 {{end}}{{if not .SkipDescribeParentInputs}}{{template "resolve_parent_vars.go.tpl" .}}{{end}}
-			  {{.ListFieldName}}: {{if .RawDescribeFieldValue}}{{.RawDescribeFieldValue}}{{else}}item.{{.ListFieldName}}{{end}},
+{{range $v := .GetAndListOrder}}
+	{{$v}}: {{index $.MatchedGetAndListFields $v}},
+{{end}}
 			})
 			if err != nil {
 				{{.CustomErrorBlock}}
@@ -58,7 +60,9 @@ func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx contex
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService}}
 	out, err := svc.ListTagsFor{{.ItemName}}(ctx, &{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Input{
-	  {{.ListFieldName}}: item.{{.ListFieldName}},
+{{range $v := .GetAndListOrder}}
+	{{$v}}: {{index $.MatchedGetAndListFields $v}},
+{{end}}
   })
 	if err != nil {
 		{{.CustomErrorBlock}}

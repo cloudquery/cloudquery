@@ -10,48 +10,37 @@ import (
 const ResolverAuto = "auto"
 
 type Resource struct {
-	// PackageName name is the packagename in the source plugin this resource is located
-	//PackageName string
 	// DefaultColumns columns that will be appended to the main table
 	DefaultColumns []codegen.ColumnDefinition
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// AWSStruct that will be used to generate the cloudquery table
 	AWSStruct interface{}
-	// AWSStructName is the name of the AWSStruct, if necessary (automatically resolved using reflection from AWSStruct)
-	AWSStructName string
+
 	// AWSService is the name of the aws service the struct/api is residing. Capitalization is important as it's also used in the client's service map.
 	AWSService string
 
-	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
+	// Template is the template to use to generate the resource
 	Template string
 
 	MultiplexerServiceOverride string
 	CQSubserviceOverride       string // used in table and file names
 
-	ListVerb      string // Override. Defaults to "List". Only used in list_describe and list_and_detail templates.
-	ListFieldName string // Only used in list_describe and list_and_detail templates.
+	PaginatorStruct    interface{} // Used only in resource_list_and_detail and list_describe templates.
+	PaginatorGetStruct interface{} // Used only in resource_list_and_detail and list_describe templates.
 
-	ItemName          string      // Override. Defaults to AWSStructName
-	AWSSubService     string      // Override. Name of the aws subservice the struct/api is residing. Should be in CamelCase. Inferred from ItemsStruct.
-	Verb              string      // Override. Auto calculated from ItemsStruct by default, otherwise depends on template used
-	ResponseItemsName string      // Override. Auto calculated from ItemsStruct by default, otherwise defaults to Items
-	ItemsStruct       interface{} // This should point to .Verb + .AWSSubService + "Output"
+	ItemName      string      // Override. Defaults to AWSStructName
+	AWSSubService string      // Override. Name of the aws subservice the struct/api is residing. Should be in CamelCase. Inferred from ItemsStruct.
+	ItemsStruct   interface{} // This should point to .Verb + .AWSSubService + "Output"
 
-	DetailInputFieldName string // Only used in list_and_detail template.
-	ResponseItemsType    string // Only used in list_and_detail template.
-	CustomErrorBlock     string // Only used in list_and_detail template.
-	CustomTagField       string // Only used in list_and_detail template.
+	CustomErrorBlock string // Only used in list_and_detail template.
+	CustomTagField   string // Only used in list_and_detail template.
 
-	Parent                   *Resource
-	ParentFieldName          string
-	ChildFieldName           string // Override. Defaults to ParentFieldName
-	PaginatorListName        string // Only used in list_describe template.
-	MockRawPaginatorListType string // Override. Defaults to "types." + PaginatorListName
-	MockRawListDetailType    string // Override. Defaults to "types." + ItemName + "Detail"
+	Parent          *Resource
+	ParentFieldName string
+	ChildFieldName  string // Override. Defaults to ParentFieldName
 
-	SkipDescribeParentInputs bool   // Only used in list_describe template.
-	RawDescribeFieldValue    string // Only used in list_describe template.
+	SkipDescribeParentInputs bool // Only used in list_describe template.
 
 	// imports to add for this resource
 	Imports     []string
@@ -64,19 +53,34 @@ type Resource struct {
 
 	ColumnOverrides map[string]codegen.ColumnDefinition
 
-	HasTags bool // autodetected by scanning all columns for `tags`
-
-	AddTypesImport bool // add types import regardless of template spec (can lead to double imports)
-
-	TrimPrefix string // trim this prefix from all column names
-
-	TableFuncName string // auto calculated
-	MockFuncName  string // auto calculated
-	TestFuncName  string // auto calculated
-	NestingLevel  int    // auto calculated
-	TypesImport   string // auto calculated
+	AddTypesImport bool   // add types import regardless of template spec (can lead to double imports)
+	TrimPrefix     string // trim this prefix from all column names
 
 	CustomInputs []string
+
+	AutoCalculated
+}
+
+type AutoCalculated struct {
+	AWSStructName     string // Automatically resolved using reflection from AWSStruct
+	PaginatorListName string // Auto calculated from PaginatorStruct.
+	PaginatorListType string // Auto calculated from PaginatorStruct.
+	ResponseItemsName string // Auto calculated from ItemsStruct by default, otherwise defaults to Items
+
+	ListMethod string // Auto calculated from PaginatorStruct
+	GetMethod  string // Auto calculated from ItemsStruct
+
+	// Field matchers
+	MatchedGetAndListFields map[string]string // field name -> "item." + field name (or sometimes just "&item")
+	GetAndListOrder         []string          // Order of fields for consistency
+
+	HasTags bool // autodetected by scanning all columns for `tags`
+
+	TableFuncName string
+	MockFuncName  string
+	TestFuncName  string
+	NestingLevel  int
+	TypesImport   string
 }
 
 var (

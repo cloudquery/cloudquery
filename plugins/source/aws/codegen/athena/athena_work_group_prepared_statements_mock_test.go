@@ -18,7 +18,6 @@ func buildAthenaWorkGroupPreparedStatements(t *testing.T, ctrl *gomock.Controlle
 	mock := mocks.NewMockAthenaClient(ctrl)
 
 	var item types.PreparedStatementSummary
-
 	if err := faker.FakeData(&item); err != nil {
 		t.Fatal(err)
 	}
@@ -28,14 +27,12 @@ func buildAthenaWorkGroupPreparedStatements(t *testing.T, ctrl *gomock.Controlle
 		gomock.Any(),
 	).Return(
 		&athena.ListPreparedStatementsOutput{
-
 			PreparedStatements: []types.PreparedStatementSummary{item},
 		},
 		nil,
 	)
 
 	var detail types.PreparedStatement
-
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}
