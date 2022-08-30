@@ -303,15 +303,18 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			if c.CreationOptions.PrimaryKey {
 				reCreatePrimaryKeys = true
 			}
+			var tableName pgx.Identifier = []string{table.Name}
+			var columnName pgx.Identifier = []string{c.Name}
+			sql := "alter table " + tableName.Sanitize() + " drop column " + columnName.Sanitize()
 			// right now we will drop the column and re-create. in the future we will have an option to automigrate
-			if _, err := p.conn.Exec(ctx, sqlAlterTableDropColumn, table.Name, c.Name); err != nil {
+			if _, err := p.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to drop column %s on table %s: %w", c.Name, table.Name, err)
 			}
-			sql := sqlAlterTableDropColumn
+			sql = "alter table " + tableName.Sanitize() + " add column " + columnName.Sanitize() + " " + columnType
 			if c.CreationOptions.Unique {
 				sql += " unique"
 			}
-			if _, err := p.conn.Exec(ctx, sql, table.Name, c.Name, columnType); err != nil {
+			if _, err := p.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", c.Name, table.Name, err)
 			}
 		} else {
