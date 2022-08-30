@@ -1,9 +1,10 @@
 package client
 
 import (
+	"testing"
+
 	"github.com/google/go-cmp/cmp"
 	heroku "github.com/heroku/heroku-go/v5"
-	"testing"
 )
 
 func TestParseNextRange(t *testing.T) {

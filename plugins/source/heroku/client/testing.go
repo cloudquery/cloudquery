@@ -1,7 +1,6 @@
 package client
 
 import (
-	heroku "github.com/heroku/heroku-go/v5"
 	"testing"
 
 	"github.com/cloudquery/cq-provider-sdk/logging"
@@ -10,6 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 	"github.com/hashicorp/go-hclog"
+	heroku "github.com/heroku/heroku-go/v5"
 )
 
 type TestOptions struct{}

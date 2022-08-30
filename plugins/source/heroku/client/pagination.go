@@ -2,11 +2,12 @@ package client
 
 import (
 	"fmt"
-	heroku "github.com/heroku/heroku-go/v5"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
+
+	heroku "github.com/heroku/heroku-go/v5"
 )
 
 // Paginator implements the http.RoundTripper interface to intercept

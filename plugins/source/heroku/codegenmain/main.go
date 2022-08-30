@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"github.com/jinzhu/inflection"
 	"go/format"
 	"log"
 	"os"
@@ -15,6 +14,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/codegenmain/recipes"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/iancoleman/strcase"
+	"github.com/jinzhu/inflection"
 )
 
 //go:embed templates/*.go.tpl

@@ -1,11 +1,11 @@
 package recipes
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
-	heroku "github.com/heroku/heroku-go/v5"
 	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
+	heroku "github.com/heroku/heroku-go/v5"
 )
 
 type Resource struct {
