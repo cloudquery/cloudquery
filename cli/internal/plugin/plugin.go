@@ -29,11 +29,25 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+type SourcePlugin struct {
+	cmd    *exec.Cmd
+	conn   *grpc.ClientConn
+	client *clients.SourceClient
+}
+
 type DestinationPlugin struct {
 	cmd    *exec.Cmd
 	conn   *grpc.ClientConn
 	client *clients.DestinationClient
 }
+
+type PluginManager struct {
+	logger         zerolog.Logger
+	directory      string
+	versionsClient *versions.Client
+}
+
+type PluginManagerOption func(*PluginManager)
 
 func (p *DestinationPlugin) Close() error {
 	if p.conn != nil {
@@ -49,18 +63,14 @@ func (p *DestinationPlugin) GetClient() *clients.DestinationClient {
 	return p.client
 }
 
-type SourcePlugin struct {
-	cmd    *exec.Cmd
-	conn   *grpc.ClientConn
-	client *clients.SourceClient
-}
-
 func (p *SourcePlugin) Close() error {
 	if p.conn != nil {
 		return p.conn.Close()
 	}
 	if p.cmd != nil && p.cmd.Process != nil {
-		p.cmd.Process.Kill()
+		if err := p.cmd.Process.Kill(); err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -68,14 +78,6 @@ func (p *SourcePlugin) Close() error {
 func (p *SourcePlugin) GetClient() *clients.SourceClient {
 	return p.client
 }
-
-type PluginManager struct {
-	logger         zerolog.Logger
-	directory      string
-	versionsClient *versions.Client
-}
-
-type PluginManagerOption func(*PluginManager)
 
 func WithLogger(logger zerolog.Logger) func(*PluginManager) {
 	return func(p *PluginManager) {
@@ -138,7 +140,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	}
 
 	if err := os.MkdirAll(dirPath, 0755); err != nil {
-		return "", errors.Wrapf(err, "failed to create plugin directory: %s\n", dirPath)
+		return "", fmt.Errorf("failed to create plugin directory %s: %w", dirPath, err)
 	}
 	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
 	// For example:
@@ -146,23 +148,23 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	pluginUrl := fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins%%2fsource%%2f%s%%2f%s/%s_%s_%s.zip", repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
 	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", pluginUrl, pluginPath)
 	if err := downloadFile(pluginPath+".zip", pluginUrl); err != nil {
-		return "", errors.Wrap(err, "failed to download plugin")
+		return "", fmt.Errorf("failed to download plugin: %w", err)
 	}
 	archive, err := zip.OpenReader(pluginPath + ".zip")
 	if err != nil {
-		return "", errors.Wrap(err, "failed to open plugin archive")
+		return "", fmt.Errorf("failed to open plugin archive: %w", err)
 	}
 	fileInArchive, err := archive.Open("plugins/source/" + repo)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to open plugin archive: plugins/source/%s", repo)
+		return "", fmt.Errorf("failed to open plugin archive plugins/source/%s: %w", repo, err)
 	}
 	out, err := os.OpenFile(pluginPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0744)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to create file: %s", pluginPath)
+		return "", fmt.Errorf("failed to create file %s: %w", pluginPath, err)
 	}
 	_, err = io.Copy(out, fileInArchive)
 	if err != nil {
-		return "", errors.Wrap(err, "failed to copy body to file")
+		return "", fmt.Errorf("failed to copy body to file: %w", err)
 	}
 	return pluginPath, nil
 }
@@ -190,7 +192,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 		// This is a special case as we dont spawn any process
 		conn, err := grpc.Dial(spec.Path, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to dial grpc target: %s", spec.Path)
+			return nil, fmt.Errorf("failed to dial grpc target %s: %w", spec.Path, err)
 		}
 		pl.conn = conn
 		pl.client = clients.NewSourceClient(conn)
@@ -218,7 +220,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 	cmd.Stdout = writer
 	cmd.Stderr = os.Stderr
 	if err := cmd.Start(); err != nil {
-		return nil, errors.Wrapf(err, "failed to start plugin: %s", pluginPath)
+		return nil, fmt.Errorf("failed to start plugin %s: %w", pluginPath, err)
 	}
 	go func() {
 		if err := cmd.Wait(); err != nil {

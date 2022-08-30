@@ -167,7 +167,7 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 		if err := rows.Scan(&results); err != nil {
 			t.Fatal(err)
 		}
-		totalResults += 1
+		totalResults++
 	}
 	if totalResults != 1 {
 		t.Fatal("expected 1 result, got", totalResults)

@@ -110,7 +110,7 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	g.Go(func() error {
 		for resource := range resources {
 			// fmt.Println("fetched")
-			bar.Add(1)
+			_ = bar.Add(1)
 			totalResources++
 			for i, destination := range sourceSpec.Destinations {
 				if err := destPlugins[i].GetClient().Write(ctx, resource.TableName, resource.Data); err != nil {
@@ -124,10 +124,10 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	})
 
 	if err := g.Wait(); err != nil {
-		bar.Finish()
+		_ = bar.Finish()
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
-	bar.Finish()
+	_ = bar.Finish()
 	fmt.Println("Fetch completed successfully.")
 	fmt.Printf("Summary: Resources: %d FailedWrites: %d\n", totalResources, failedWrites)
 	return nil
