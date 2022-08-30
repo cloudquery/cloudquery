@@ -26,8 +26,6 @@ Open source data integration that works.
 
 Find more information at:
 	https://cloudquery.io`
-
-	registryTypes = []string{"github", "local", "grpc"}
 )
 
 func newCmdRoot() *cobra.Command {

@@ -1,8 +1,8 @@
 kind: source
 spec:
   name: test
-  registry: grpc
-  path: "localhost:7777"
+  # registry: grpc
+  # path: "localhost:7777"
   max_goroutines: 10000000
   tables: ["*"]
   destinations:
