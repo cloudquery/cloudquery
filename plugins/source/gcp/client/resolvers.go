@@ -27,19 +27,6 @@ func ResolveResourceId(_ context.Context, _ schema.ClientMeta, r *schema.Resourc
 	return r.Set(c.Name, data)
 }
 
-func AllowEmptyStringIPNetResolver(path string) schema.ColumnResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		ipStr, err := cast.ToStringE(funk.Get(r.Item, path, funk.WithAllowZero()))
-		if err != nil {
-			return err
-		}
-		if ipStr == "" {
-			return nil
-		}
-		return schema.IPNetResolver(path)(ctx, meta, r, c)
-	}
-}
-
 func resolveLocation(_ context.Context, c schema.ClientMeta, r *schema.Resource) error {
 	loc := r.Get("location")
 	if loc != nil {
