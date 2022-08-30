@@ -19,6 +19,7 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/cli/internal/destinations/postgresql"
+	"github.com/cloudquery/cloudquery/cli/internal/versions"
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"
@@ -69,8 +70,9 @@ func (p *SourcePlugin) GetClient() *clients.SourceClient {
 }
 
 type PluginManager struct {
-	logger    zerolog.Logger
-	directory string
+	logger         zerolog.Logger
+	directory      string
+	versionsClient *versions.Client
 }
 
 type PluginManagerOption func(*PluginManager)
@@ -89,8 +91,9 @@ func WithDirectory(directory string) func(*PluginManager) {
 
 func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	p := &PluginManager{
-		logger:    log.Logger,
-		directory: "./.cq",
+		logger:         log.Logger,
+		directory:      "./.cq",
+		versionsClient: versions.NewClient(),
 	}
 	// initialize all plugins registry
 	for _, opt := range opts {
@@ -114,8 +117,17 @@ func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.Source) (
 }
 
 func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Source) (string, error) {
+	var err error
 	pathSplit := strings.Split(spec.Path, "/")
 	org, repo := pathSplit[0], pathSplit[1]
+	if spec.Version == "latest" {
+		// if version is latest, we need to get the version number from github
+		spec.Version, err = p.versionsClient.GetLatestPluginRelease(ctx, org, "source", repo)
+		if err != nil {
+			return "", err
+		}
+	}
+
 	pluginName := fmt.Sprintf("cq-source-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
 	dirPath := filepath.Join(p.directory, "plugins", spec.Registry.String(), org, repo, spec.Version)
 	pluginPath := filepath.Join(dirPath, pluginName)
@@ -130,12 +142,8 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	}
 	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
 	// For example:
-	// https://github.com/cloudquery/cq-source-aws/releases/download/v1.0.1/cq-source-aws_darwin_amd64.zip
-	pluginUrl := fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
-	if spec.Version == "latest" {
-		// https://docs.github.com/en/repositories/releasing-projects-on-github/linking-to-releases
-		pluginUrl = fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/latest/download/cq-source-%s_%s_%s.zip", org, repo, repo, runtime.GOOS, runtime.GOARCH)
-	}
+	// https://github.com/cloudquery/cloudquery/releases/download/plugins-source-test-v1.1.0/test_darwin_amd64.zip
+	pluginUrl := fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins%%2fsource%%2f%s%%2f%s/%s_%s_%s.zip", repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
 	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", pluginUrl, pluginPath)
 	if err := downloadFile(pluginPath+".zip", pluginUrl); err != nil {
 		return "", errors.Wrap(err, "failed to download plugin")
@@ -144,9 +152,9 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	if err != nil {
 		return "", errors.Wrap(err, "failed to open plugin archive")
 	}
-	fileInArchive, err := archive.Open("cq-source-" + repo)
+	fileInArchive, err := archive.Open("plugins/source/" + repo)
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to open plugin archive: cq-source-%s", repo)
+		return "", errors.Wrapf(err, "failed to open plugin archive: plugins/source/%s", repo)
 	}
 	out, err := os.OpenFile(pluginPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0744)
 	if err != nil {

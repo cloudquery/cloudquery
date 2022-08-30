@@ -48,9 +48,9 @@ func (c *Client) GetLatestCLIRelease(ctx context.Context) (string, error) {
 	return c.readCLIManifest(ctx)
 }
 
-// GetLatestProviderRelease returns the latest release version string for the given organization, plugin type
+// GetLatestPluginRelease returns the latest release version string for the given organization, plugin type
 // and plugin.
-func (c *Client) GetLatestProviderRelease(ctx context.Context, org, pluginType, pluginName string) (string, error) {
+func (c *Client) GetLatestPluginRelease(ctx context.Context, org, pluginType, pluginName string) (string, error) {
 	if org == CloudQueryOrg {
 		return c.readManifest(ctx, pluginName)
 	}
@@ -71,11 +71,11 @@ func (c *Client) readCLIManifest(ctx context.Context) (string, error) {
 	return extractVersionFromTag(mr.Latest), nil
 }
 
-func (c *Client) readManifest(ctx context.Context, providerName string) (string, error) {
-	url := fmt.Sprintf(c.cloudQueryBaseURL+"/v1/%s-%s.json", "source", providerName)
+func (c *Client) readManifest(ctx context.Context, name string) (string, error) {
+	url := fmt.Sprintf(c.cloudQueryBaseURL+"/v1/%s-%s.json", "source", name)
 	b, err := c.doRequest(ctx, url)
 	if err != nil {
-		return "", fmt.Errorf("reading manifest for %v: %w", providerName, err)
+		return "", fmt.Errorf("reading manifest for %v: %w", name, err)
 	}
 	mr := &manifestResponse{}
 	err = json.Unmarshal(b, mr)
@@ -92,8 +92,8 @@ func extractVersionFromTag(tag string) string {
 	return parts[len(parts)-1]
 }
 
-func (c *Client) readGithubLatest(ctx context.Context, org, pluginType, providerName string) (string, error) {
-	url := fmt.Sprintf(c.githubBaseURL+"/%s/cq-%s-%s/releases/latest", org, pluginType, providerName)
+func (c *Client) readGithubLatest(ctx context.Context, org, pluginType, name string) (string, error) {
+	url := fmt.Sprintf(c.githubBaseURL+"/%s/cq-%s-%s/releases/latest", org, pluginType, name)
 	b, err := c.doRequest(ctx, url)
 	if err != nil {
 		return "", fmt.Errorf("reading %v: %w", url, err)
