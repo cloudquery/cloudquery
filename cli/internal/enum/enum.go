@@ -1,9 +1,8 @@
 package enum
 
 import (
+	"fmt"
 	"strings"
-
-	"github.com/pkg/errors"
 )
 
 // https://github.com/spf13/pflag/issues/236#issuecomment-931600452
@@ -35,7 +34,7 @@ func (a *enum) Set(p string) error {
 		return false
 	}
 	if !isIncluded(a.Allowed, p) {
-		return errors.Errorf("%s is not included in %s", p, strings.Join(a.Allowed, ","))
+		return fmt.Errorf("%s is not included in %s", p, strings.Join(a.Allowed, ","))
 	}
 	a.Value = p
 	return nil
