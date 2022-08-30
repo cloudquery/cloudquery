@@ -16,7 +16,7 @@ var dnsResources = []*Resource{
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				Resolver: `schema.PathResolver("Id")`,
 			},
@@ -28,7 +28,7 @@ var dnsResources = []*Resource{
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				Resolver: `schema.PathResolver("Id")`,
 			},

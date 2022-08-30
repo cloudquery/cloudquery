@@ -3,6 +3,8 @@ package codegen
 import (
 	"fmt"
 
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/cloudbilling/v1"
 )
@@ -11,6 +13,24 @@ var cloudbillingResources = []*Resource{
 	{
 		SubService: "billing_accounts",
 		Struct:     &cloudbilling.BillingAccount{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:    "name",
+				Type:    schema.TypeString,
+				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+	},
+	{
+		SubService: "services",
+		Struct:     &cloudbilling.Service{},
+		OverrideColumns: []codegen.ColumnDefinition{
+			{
+				Name:    "name",
+				Type:    schema.TypeString,
+				Options: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
 	},
 }
 

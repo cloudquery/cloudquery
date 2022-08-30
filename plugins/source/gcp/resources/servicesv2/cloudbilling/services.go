@@ -9,10 +9,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func BillingAccounts() *schema.Table {
+func Services() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_cloudbilling_billing_accounts",
-		Resolver:  fetchBillingAccounts,
+		Name:      "gcp_cloudbilling_services",
+		Resolver:  fetchServices,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -21,14 +21,14 @@ func BillingAccounts() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name:     "business_entity_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("BusinessEntityName"),
+			},
+			{
 				Name:     "display_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DisplayName"),
-			},
-			{
-				Name:     "master_billing_account",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MasterBillingAccount"),
 			},
 			{
 				Name: "name",
@@ -38,23 +38,23 @@ func BillingAccounts() *schema.Table {
 				},
 			},
 			{
-				Name:     "open",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Open"),
+				Name:     "service_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceId"),
 			},
 		},
 	}
 }
 
-func fetchBillingAccounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchServices(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Cloudbilling.BillingAccounts.List().PageToken(nextPageToken).Do()
+		output, err := c.Services.Cloudbilling.Services.List().PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.BillingAccounts
+		res <- output.Services
 
 		if output.NextPageToken == "" {
 			break
