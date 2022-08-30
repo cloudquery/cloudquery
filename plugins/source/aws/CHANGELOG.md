@@ -6,6 +6,47 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.13.21](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.20...plugins/source/aws/v0.13.21) (2022-08-29)
+
+
+### Bug Fixes
+
+* Update endpoints ([#1607](https://github.com/cloudquery/cloudquery/issues/1607)) ([29e5910](https://github.com/cloudquery/cloudquery/commit/29e591085df5fa889905c206d11fd2f0b5d8167b))
+
+## [0.13.20](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.19...plugins/source/aws/v0.13.20) (2022-08-29)
+
+
+### Bug Fixes
+
+* Docs and trigger release ([2028f79](https://github.com/cloudquery/cloudquery/commit/2028f79f3638ba25bab94ceffd65f4cf1ce1d34e))
+
+## [0.13.19](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.18...plugins/source/aws/v0.13.19) (2022-08-29)
+
+
+### Bug Fixes
+
+* IAM roles ([#1566](https://github.com/cloudquery/cloudquery/issues/1566)) ([09ef545](https://github.com/cloudquery/cloudquery/commit/09ef545a0c9530128bd6960cb54a8dd35e8311da))
+* IAM Users ([#1567](https://github.com/cloudquery/cloudquery/issues/1567)) ([1e319da](https://github.com/cloudquery/cloudquery/commit/1e319da8c3f9660305480b36b7c69cf4fa474ba9))
+
+## [0.13.18](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.17...plugins/source/aws/v0.13.18) (2022-08-28)
+
+
+### Bug Fixes
+
+* Update endpoints ([#1563](https://github.com/cloudquery/cloudquery/issues/1563)) ([373ae23](https://github.com/cloudquery/cloudquery/commit/373ae23a3c12da0ce1a5e49c59886f0e29221db0))
+
+## [0.13.17](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.16...plugins/source/aws/v0.13.17) (2022-08-24)
+
+
+### Features
+
+* Add cq-gen config for apigateway ([#1541](https://github.com/cloudquery/cloudquery/issues/1541)) ([15bb1a6](https://github.com/cloudquery/cloudquery/commit/15bb1a6a1c0c2ec0f5362b66b1e099a92ef29a31))
+
+
+### Bug Fixes
+
+* Update endpoints ([#1539](https://github.com/cloudquery/cloudquery/issues/1539)) ([d63fc1d](https://github.com/cloudquery/cloudquery/commit/d63fc1d5c303295a7549de04a7683d104956fa76))
+
 ## [0.13.16](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.15...plugins/source/aws/v0.13.16) (2022-08-21)
 
 

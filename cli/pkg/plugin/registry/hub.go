@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/file"
-	"github.com/cloudquery/cloudquery/cli/internal/firebase"
 	"github.com/cloudquery/cloudquery/cli/internal/versions"
 	"github.com/cloudquery/cloudquery/cli/pkg/ui"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -131,11 +130,11 @@ func (h Hub) Download(ctx context.Context, provider Provider, noVerify bool) (Pr
 	}
 	p, ok := h.providers[fmt.Sprintf("%s-%s", provider.Name, requestedVersion)]
 	if !ok {
-		return h.downloadProvider(ctx, provider, requestedVersion, noVerify)
+		return h.downloadProvider(ctx, provider, requestedVersion)
 	}
 	if p.Version != requestedVersion {
 		log.Info().Str("current", p.Version).Str("requested", requestedVersion).Msg("current version is not as requested version updating provider")
-		return h.downloadProvider(ctx, provider, requestedVersion, noVerify)
+		return h.downloadProvider(ctx, provider, requestedVersion)
 	}
 
 	if h.ProgressUpdater != nil {
@@ -232,10 +231,7 @@ func (h Hub) downloadFile(ctx context.Context, l zerolog.Logger, provider Provid
 	}
 }
 
-func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedVersion string, noVerify bool) (ProviderBinary, error) {
-	if !h.verifyRegistered(provider.Source, provider.Name, requestedVersion, noVerify) {
-		return ProviderBinary{}, fmt.Errorf("provider plugin %s@%s not registered at https://hub.cloudquery.io", provider.Name, requestedVersion)
-	}
+func (h Hub) downloadProvider(ctx context.Context, provider Provider, requestedVersion string) (ProviderBinary, error) {
 	// build fully qualified plugin directory for given plugin
 	pluginDir := filepath.Join(h.PluginDirectory, provider.Source, provider.Name)
 	osFs := file.NewOsFs()
@@ -301,25 +297,6 @@ func getLatestRelease(ctx context.Context, organization, providerName string) (s
 		return "", fmt.Errorf("failed to find provider[%s] latest version", providerName)
 	}
 	return v, nil
-}
-
-func (h Hub) verifyRegistered(organization, providerName, version string, noVerify bool) bool {
-	if noVerify {
-		log.Warn().Str("provider", providerName).Msg("skipping plugin registry verification")
-		return true
-	}
-	log.Debug().Str("provider", providerName).Str("version", version).Msg("verifying provider plugin is registered")
-	if !h.isProviderRegistered(organization, providerName) {
-		return false
-	}
-
-	log.Debug().Str("provider", providerName).Str("version", version).Msg("provider plugin is registered")
-	return true
-}
-
-func (Hub) isProviderRegistered(org, provider string) bool {
-	client := firebase.New(firebase.CloudQueryRegistryURL)
-	return client.IsProviderRegistered(org, provider)
 }
 
 // GetProviderPath returns expected path of provider on file system from name and version of plugin

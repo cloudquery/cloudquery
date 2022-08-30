@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	r := iamTypes.Role{}
 	err := faker.FakeData(&r)
@@ -28,6 +28,11 @@ func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	// generate valid json
 	document := `{"stuff": 3}`
 	r.AssumeRolePolicyDocument = &document
+
+	m.EXPECT().GetRole(gomock.Any(), gomock.Any()).Return(
+		&iam.GetRoleOutput{
+			Role: &r,
+		}, nil)
 
 	m.EXPECT().ListRoles(gomock.Any(), gomock.Any()).Return(
 		&iam.ListRolesOutput{
@@ -65,12 +70,6 @@ func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListRoleTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&iam.ListRoleTagsOutput{
-			Tags: []iamTypes.Tag{
-				tag,
-			},
-		}, nil)
 
 	return client.Services{
 		IAM: m,
@@ -78,5 +77,5 @@ func buildIamRoles(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIamRoles(t *testing.T) {
-	client.AwsMockTestHelper(t, IamRoles(), buildIamRoles, client.TestOptions{})
+	client.AwsMockTestHelper(t, Roles(), buildRoles, client.TestOptions{})
 }

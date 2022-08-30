@@ -21,13 +21,13 @@ with `*.cq.yml`, transforms them, and loads them into the destination (database)
 ## Policy
 
 Policy compliance is a broad term and can refer to any kind of policy, from internal standards to regulatory requirements.
-A CloudQuery Policy is just sets of SQL queries outputing the results back to a table that can later on be visualized and anlysed
+A CloudQuery Policy is a set of SQL queries used extract and transform results to a table that can later on be visualized and analyzed
 by any BI tools and standard set of data engineering tools.
 
 ## Plugin
 
 CloudQuery supports two plugins: source & destination.
 
-`source` plugin is responsible for extracting data from remote api transforming it and sending it to CloudQuery for further handling.
+`source` plugin is responsible for extracting data from remote APIs, transforming it and sending it to CloudQuery for further handling.
 
-`destination` plugin is responsible for getting data from one the `source` plugin and save it to a database, datalake or subscription (kafka) according to configuration.
+`destination` plugin is responsible for getting data from one the `source` plugin and save it to a database, a data lake or a subscription (Kafka) according to configuration.

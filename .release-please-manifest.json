@@ -1,13 +1,13 @@
 {
-  "cli": "0.32.8",
+  "cli": "0.32.9",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "0.13.16",
+  "plugins/source/aws": "0.13.21",
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/azure": "0.13.3",
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "0.1.7",
   "plugins/source/cloudflare+FILLER": "0.0.0",
-  "plugins/source/digitalocean": "0.6.3",
+  "plugins/source/digitalocean": "0.6.4",
   "plugins/source/digitalocean+FILLER": "0.0.0",
   "plugins/source/fuzz": "0.0.15",
   "plugins/source/fuzz+FILLER": "0.0.0",
@@ -17,8 +17,8 @@
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/k8s": "0.6.4",
   "plugins/source/k8s+FILLER": "0.0.0",
-  "plugins/source/okta": "0.6.3",
+  "plugins/source/okta": "0.6.4",
   "plugins/source/okta+FILLER": "0.0.0",
-  "plugins/source/terraform": "0.5.3",
+  "plugins/source/terraform": "0.5.4",
   "plugins/source/terraform+FILLER": "0.0.0"
 }

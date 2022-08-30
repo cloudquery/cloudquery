@@ -72,4 +72,4 @@ cloudquery policy run aws//foundational_security --output-dir=results
 
 ## Build your own and share!
 
-Do you have a policy that you want to codify, or that you’ve been running with python or bash scripts? You are welcome to try codifying it with CloudQuery Policies (See our [github](https://github.com/cloudquery-policies/aws) and [docs](https://www.cloudquery.io/docs/policies) for how to develop one). Feel free to visit our [discord](https://www.cloudquery.io/discord) or [GitHub](https://github.com/cloudquery) to get help - we’ll also be happy to share your policy on [CloudQuery Hub](https://hub.cloudquery.io/).
+Do you have a policy that you want to codify, or that you’ve been running with python or bash scripts? You are welcome to try codifying it with CloudQuery Policies (See our [github](https://github.com/cloudquery-policies/aws) and [docs](/docs/policies) for how to develop one). Feel free to visit our [discord](https://www.cloudquery.io/discord) or [GitHub](https://github.com/cloudquery) to get help - we’ll also be happy to share your policy on [CloudQuery Hub](https://hub.cloudquery.io/).

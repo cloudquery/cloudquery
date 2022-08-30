@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.6.4](https://github.com/cloudquery/cloudquery/compare/plugins/source/digitalocean-v0.6.3...plugins/source/digitalocean/v0.6.4) (2022-08-25)
+
+
+### Features
+
+* Added throttling for digitalocean API calls ([#1546](https://github.com/cloudquery/cloudquery/issues/1546)) ([bb40b59](https://github.com/cloudquery/cloudquery/commit/bb40b5951978918f2b9332063ff251652df55754))
+
 ## [0.6.3](https://github.com/cloudquery/cq-provider-digitalocean/compare/v0.6.2...v0.6.3) (2022-08-07)
 
 
