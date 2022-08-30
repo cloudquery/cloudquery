@@ -7,8 +7,8 @@ select
     account_id,
     arn AS resource_id,
     case when
-            not_after < NOW() AT TIME ZONE 'UTC'
+            expiration < NOW() AT TIME ZONE 'UTC'
         then 'fail'
         else 'pass'
         end as status
-FROM aws_acm_certificates
+FROM aws_iam_server_certificates

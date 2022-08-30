@@ -15,7 +15,7 @@
 \echo "Executing check 1.6"
 \ir ../queries/iam/hardware_mfa_enabled_for_root.sql
 \set check_id '1.7'
-    -- todo credential report resource is not available
+    -- todo credential report add password_last_used, access_key_1_last_used_date, access_key_2_last_used_date
 \set check_id '1.8'
 \echo "Executing check 1.8"
 \ir ../queries/iam/password_policy_min_length.sql
@@ -26,7 +26,7 @@
 \echo "Executing check 1.10"
 \ir ../queries/iam/mfa_enabled_for_console_access.sql
 \set check_id '1.11'
-    -- todo credential report resource is not available
+    -- todo credential report  add access_key_1_last_used_date,access_key_2_last_used_date
 \set check_id '1.12'
 \echo "Executing check 1.12"
 \ir ../queries/iam/unused_creds_disabled_45_days.sql
@@ -48,7 +48,7 @@
     -- manual
 \set check_id '1.19'
 \echo "Executing check 1.19"
-\ir ../queries/acm/certificates_expired.sql
+\ir ../queries/iam/server_certificates_expired.sql
 \set check_id '1.20'
 \echo "Executing check 1.20"
 \ir ../queries/accessanalyzer/regions_with_no_accessanalyzers.sql
