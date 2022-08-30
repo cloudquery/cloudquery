@@ -5,7 +5,7 @@ import (
 
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/cmd/enum"
+	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/internal/plugin"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/pkg/errors"

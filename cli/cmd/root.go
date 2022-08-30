@@ -5,9 +5,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/cmd/enum"
 	"github.com/cloudquery/cloudquery/cli/cmd/generate"
 	"github.com/cloudquery/cloudquery/cli/cmd/sync"
+	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -117,10 +117,8 @@ func newCmdRoot() *cobra.Command {
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(generate.NewCmdGenerate(), sync.NewCmdFetch())
-	// cmd.AddCommand(
-	// 	initCmd.NewCmdInit(), fetch.NewCmdFetch(), policy.NewCmdPolicy(), provider.NewCmdProvider(),
-	// 	options.NewCmdOptions(), newCmdVersion(), newCmdDoc())
 	cmd.DisableAutoGenTag = true
+	cmd.SilenceUsage = true
 	return cmd
 }
 
