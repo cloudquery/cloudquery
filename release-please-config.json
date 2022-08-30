@@ -14,6 +14,7 @@
     "plugins/source/github": { "component": "plugins/source/github" },
     "plugins/source/k8s": { "component": "plugins/source/k8s" },
     "plugins/source/okta": { "component": "plugins/source/okta" },
+    "plugins/source/test": { "component": "plugins/source/test" },
     "plugins/source/terraform": { "component": "plugins/source/terraform" }
   },
   "bump-minor-pre-major": true,
