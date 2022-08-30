@@ -25,6 +25,7 @@ archives:
     format: binary
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: zip
+    id: zip
 checksum:
   name_template: "checksums.txt"
 changelog:
