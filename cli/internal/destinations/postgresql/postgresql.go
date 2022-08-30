@@ -16,6 +16,24 @@ import (
 	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
 )
 
+type PostgreSqlSpec struct {
+	ConnectionString string `json:"connection_string,omitempty"`
+	PgxLogLevel      string `json:"pgx_log_level,omitempty"`
+}
+
+type Client struct {
+	conn                *pgxpool.Pool
+	logger              zerolog.Logger
+	spec                specs.Destination
+	currentDatabaseName string
+	currentSchemaName   string
+}
+
+type pgColumn struct {
+	Name string `json:"name"`
+	Type string `json:"type"`
+}
+
 // this really cool query is take from https://github.com/go-gorm/postgres/blob/master/migrator.go
 // return the following:
 //table_name |  index_name   | column_name | non_unique | primary
@@ -85,30 +103,17 @@ const isTableExistSQL = "select count(*) from information_schema.tables where ta
 
 var defaultColumns = []string{"_cq_raw"}
 
-type PostgreSqlSpec struct {
-	ConnectionString string `json:"connection_string,omitempty"`
-	PgxLogLevel      string `json:"pgx_log_level,omitempty"`
-}
-
-type Client struct {
-	conn                *pgxpool.Pool
-	logger              zerolog.Logger
-	spec                specs.Destination
-	currentDatabaseName string
-	currentSchemaName   string
-}
-
 func NewClient(logger zerolog.Logger) *Client {
 	return &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
 	}
 }
 
-func (p *Client) Name() string {
+func (*Client) Name() string {
 	return "postgresql"
 }
 
-func (p *Client) Version() string {
+func (*Client) Version() string {
 	// change it with builtin-cliversion
 	return "v0.0.1"
 }
@@ -183,7 +188,6 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		// if c.Name == "_cq_fetch_time" && p.spec.WriteMode == specs.WriteModeAppend {
 		// 	primaryKeys = append(primaryKeys, c.Name)
 		// }
-
 	}
 	if len(primaryKeys) > 0 {
 		sb.WriteString(", CONSTRAINT ")
@@ -211,11 +215,6 @@ func (p *Client) currentDatabase() (string, error) {
 		return "", err
 	}
 	return db, nil
-}
-
-type pgColumn struct {
-	Name string `json:"name"`
-	Type string `json:"type"`
 }
 
 func getPgColumnByName(columns []pgColumn, name string) *pgColumn {
@@ -362,7 +361,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 	return nil
 }
 
-// This is the responsability of the CLI of the client to lock before running migration
+// This is the responsibility of the CLI of the client to lock before running migration
 func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	p.logger.Info().Strs("tables", tables.TableNames()).Msg("Migrating tables")
 	for _, table := range tables {
@@ -451,7 +450,7 @@ func (p *Client) Write(ctx context.Context, table string, data map[string]interf
 	return nil
 }
 
-func (p *Client) ExampleConfig() string {
+func (*Client) ExampleConfig() string {
 	return `
 connection_string: "postgresql://user:password@localhost:5432/dbname"
 `
