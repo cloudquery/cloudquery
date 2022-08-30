@@ -41,6 +41,47 @@ func main() {
 	}
 }
 
+func inferFromRecipe(r *recipes.Resource) {
+	ist := reflect.TypeOf(r.ItemsStruct).Elem()
+
+	for _, verbCandidate := range []string{"Get", "Describe", "List"} {
+		if !strings.HasPrefix(ist.Name(), verbCandidate) {
+			continue
+		}
+		r.Verb = verbCandidate
+
+		if !strings.HasSuffix(ist.Name(), "Output") {
+			log.Fatal("Unhandled ItemsStruct type (bad suffix): ", ist.Name())
+		}
+
+		r.AWSSubService = strings.TrimSuffix(strings.TrimPrefix(ist.Name(), r.Verb), "Output")
+		if r.AWSSubService == "" {
+			log.Fatal("Failed calculating AWSSubService: empty output for", ist.Name())
+		}
+
+		break
+	}
+
+	//if i := strings.Index(ist.Name(), r.AWSSubService); i > 0 && r.Verb == "" {
+	//	r.Verb = ist.Name()[:i]
+	//}
+
+	var candidates []string
+	for i := 0; i < ist.NumField(); i++ {
+		f := ist.Field(i)
+		if f.Name == "noSmithyDocumentSerde" || f.Type.String() == "document.NoSerde" || f.Type.String() == "middleware.Metadata" {
+			continue
+		}
+		if f.Type.Kind() == reflect.Slice {
+			candidates = append(candidates, f.Name)
+		}
+	}
+	if len(candidates) != 1 {
+		log.Fatal("Could not determine ResponseItemsName for ", ist.Name(), len(candidates), "candidates")
+	}
+	r.ResponseItemsName = candidates[0]
+}
+
 func generateResource(r *recipes.Resource, mock bool) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
@@ -48,6 +89,10 @@ func generateResource(r *recipes.Resource, mock bool) {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
+
+	if r.ItemsStruct != nil {
+		inferFromRecipe(r)
+	}
 
 	tableNameFromSubService, fetcherNameFromSubService := helpers.TableAndFetcherNames(r)
 

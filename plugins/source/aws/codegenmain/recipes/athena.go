@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -42,23 +43,19 @@ var AthenaResources = combine(
 		},
 	},
 		parentize(&Resource{
-			AWSStruct:         &types.Database{},
-			AWSSubService:     "Databases",
-			Template:          "resource_get",
-			ChildFieldName:    "CatalogName",
-			ParentFieldName:   "Name",
-			Verb:              "List",
-			ResponseItemsName: "DatabaseList",
+			AWSStruct:       &types.Database{},
+			Template:        "resource_get",
+			ChildFieldName:  "CatalogName",
+			ParentFieldName: "Name",
+			ItemsStruct:     &athena.ListDatabasesOutput{},
 		},
 			&Resource{
 				AWSStruct:            &types.TableMetadata{},
-				AWSSubService:        "TableMetadata",
 				CQSubserviceOverride: "tables",
 				Template:             "resource_get",
 				ChildFieldName:       "DatabaseName",
 				ParentFieldName:      "Name",
-				Verb:                 "List",
-				ResponseItemsName:    "TableMetadataList",
+				ItemsStruct:          &athena.ListTableMetadataOutput{},
 			},
 		)...,
 	),

@@ -22,8 +22,7 @@ type Resource struct {
 	AWSStructName string
 	// AWSService is the name of the aws service the struct/api is residing. Capitalization is important as it's also used in the client's service map.
 	AWSService string
-	// AWSSubService is the name of the aws subservice the struct/api is residing. Should be in CamelCase
-	AWSSubService string
+
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 
@@ -33,9 +32,11 @@ type Resource struct {
 	ListVerb      string // Override. Defaults to "List". Only used in list_describe and list_and_detail templates.
 	ListFieldName string // Only used in list_describe and list_and_detail templates.
 
-	ItemName          string // Override. Defaults to AWSStructName
-	Verb              string // Override. Default depends on template used.
-	ResponseItemsName string // Override. Defaults to Items
+	ItemName          string      // Override. Defaults to AWSStructName
+	AWSSubService     string      // Override. Name of the aws subservice the struct/api is residing. Should be in CamelCase. Inferred from ItemsStruct.
+	Verb              string      // Override. Auto calculated from ItemsStruct by default, otherwise depends on template used
+	ResponseItemsName string      // Override. Auto calculated from ItemsStruct by default, otherwise defaults to Items
+	ItemsStruct       interface{} // This should point to .Verb + .AWSSubService + "Output"
 
 	DetailInputFieldName string // Only used in list_and_detail template.
 	ResponseItemsType    string // Only used in list_and_detail template.

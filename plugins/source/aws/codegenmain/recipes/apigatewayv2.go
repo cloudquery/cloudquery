@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -23,35 +24,35 @@ var APIGatewayv2Resources = parentize(&Resource{
 	combine(
 		&Resource{
 			AWSStruct:       &types.Authorizer{},
-			AWSSubService:   "Authorizers",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
+			ItemsStruct:     &apigatewayv2.GetAuthorizersOutput{},
 		},
 		&Resource{
 			AWSStruct:       &types.Deployment{},
-			AWSSubService:   "Deployments",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
+			ItemsStruct:     &apigatewayv2.GetDeploymentsOutput{},
 		},
 		parentize(
 			&Resource{
 				AWSStruct:       &types.Integration{},
-				AWSSubService:   "Integrations",
 				Template:        "resource_get",
 				ParentFieldName: "ApiId",
+				ItemsStruct:     &apigatewayv2.GetIntegrationsOutput{},
 			},
 			&Resource{
 				AWSStruct:       &types.IntegrationResponse{},
-				AWSSubService:   "IntegrationResponses",
 				Template:        "resource_get",
 				ParentFieldName: "IntegrationId",
+				ItemsStruct:     &apigatewayv2.GetIntegrationResponsesOutput{},
 			},
 		),
 		&Resource{
 			AWSStruct:       &types.Model{},
-			AWSSubService:   "Models",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
+			ItemsStruct:     &apigatewayv2.GetModelsOutput{},
 			ColumnOverrides: map[string]codegen.ColumnDefinition{
 				"model_template": {
 					Type:     schema.TypeString,
@@ -62,22 +63,22 @@ var APIGatewayv2Resources = parentize(&Resource{
 		parentize(
 			&Resource{
 				AWSStruct:       &types.Route{},
-				AWSSubService:   "Routes",
 				Template:        "resource_get",
 				ParentFieldName: "ApiId",
+				ItemsStruct:     &apigatewayv2.GetRoutesOutput{},
 			},
 			&Resource{
 				AWSStruct:       &types.RouteResponse{},
-				AWSSubService:   "RouteResponses",
 				Template:        "resource_get",
 				ParentFieldName: "RouteId",
+				ItemsStruct:     &apigatewayv2.GetRouteResponsesOutput{},
 			},
 		),
 		&Resource{
 			AWSStruct:       &types.Stage{},
-			AWSSubService:   "Stages",
 			Template:        "resource_get",
 			ParentFieldName: "ApiId",
+			ItemsStruct:     &apigatewayv2.GetStagesOutput{},
 		},
 	)...,
 )
