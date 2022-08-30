@@ -10,11 +10,8 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
-	"errors"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
-	"github.com/aws/smithy-go"
-	"regexp"
 )
 
 func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Services {

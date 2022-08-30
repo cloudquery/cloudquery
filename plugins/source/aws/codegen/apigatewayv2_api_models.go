@@ -11,6 +11,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
+	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/apigatewayv2"
 )
 
 func Apigatewayv2ApiModels() *schema.Table {
@@ -47,7 +48,7 @@ func Apigatewayv2ApiModels() *schema.Table {
 			{
 				Name:     "model_template",
 				Type:     schema.TypeString,
-				Resolver: resolveApigatewayv2apiModelModelTemplate,
+				Resolver: resolvers.ResolveApiModelTemplate,
 			},
 		},
 	}
@@ -76,21 +77,4 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 		input.NextToken = response.NextToken
 	}
 	return nil
-}
-
-func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Model)
-	p := resource.Parent.Item.(types.Api)
-	config := apigatewayv2.GetModelTemplateInput{
-		ApiId:   p.ApiId,
-		ModelId: r.ModelId,
-	}
-	cl := meta.(*client.Client)
-	svc := cl.Services().Apigatewayv2
-
-	response, err := svc.GetModelTemplate(ctx, &config)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, response.Value))
 }

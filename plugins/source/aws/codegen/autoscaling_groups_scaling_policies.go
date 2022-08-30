@@ -11,6 +11,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
+	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/autoscaling"
 )
 
 func AutoscalingGroupsScalingPolicies() *schema.Table {
@@ -117,7 +118,7 @@ func fetchAutoscalingGroupsScalingPolicies(ctx context.Context, meta schema.Clie
 		response, err := svc.DescribePolicies(ctx, &input)
 		if err != nil {
 
-			if isAutoScalingGroupNotExistsError(err) {
+			if resolvers.IsGroupNotExistsError(err) {
 				return nil
 			}
 			return diag.WrapError(err)

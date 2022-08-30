@@ -53,12 +53,9 @@ type Resource struct {
 	RawDescribeFieldValue    string // Only used in list_describe template.
 
 	// imports to add for this resource
-	Imports []string
-	// MockImports imports to add for mock tests
+	Imports     []string
 	MockImports []string
-	// MockListStruct specified the name of the returned list function. There are
-	// some inconsistencies in naming, so we have to have a way of manually overriding defaults
-	MockListStruct string
+
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	//CreateTableOptions options to use to create the main table
@@ -78,9 +75,7 @@ type Resource struct {
 	NestingLevel  int    // auto calculated
 	TypesImport   string // auto calculated
 
-	CustomResolvers []string
-	CustomInputs    []string
-	CustomInit      []string
+	CustomInputs []string
 }
 
 var (

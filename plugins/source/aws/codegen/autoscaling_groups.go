@@ -9,13 +9,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
-	"errors"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
-	"github.com/aws/smithy-go"
-	"regexp"
 )
-
-var autoscalingGroupNotFoundRegex = regexp.MustCompile(`AutoScalingGroup name not found|Group .* not found`)
 
 func AutoscalingGroups() *schema.Table {
 	return &schema.Table{
@@ -223,14 +218,4 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 		input.NextToken = response.NextToken
 	}
 	return nil
-}
-
-func isAutoScalingGroupNotExistsError(err error) bool {
-	var ae smithy.APIError
-	if errors.As(err, &ae) {
-		if ae.ErrorCode() == "ValidationError" && autoscalingGroupNotFoundRegex.MatchString(ae.ErrorMessage()) {
-			return true
-		}
-	}
-	return false
 }

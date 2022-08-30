@@ -16,10 +16,6 @@ var ApplicationautoscalingResources = []*Resource{
 		Template:                   "resource_get",
 		Verb:                       "Describe",
 		ResponseItemsName:          "ScalingPolicies",
-		Imports:                    nil,
-		MockImports:                nil,
-		MockListStruct:             "",
-		SkipFields:                 nil,
 		TrimPrefix:                 "policy_",
 		CustomInputs: []string{
 			"\tServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),",

@@ -10,12 +10,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"{{.TypesImport}}"
-{{range .Imports}}	"{{.}}"
+{{range .Imports}}	{{.}}
 {{end}}
 )
-
-{{range .CustomInit}}{{.}}
-{{end}}
 
 func {{.TableFuncName}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
@@ -74,7 +71,7 @@ func list{{.AWSSubService}}Detail(ctx context.Context, meta schema.ClientMeta, r
 func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
-	item := resource.Item.(types.{{.ItemName}})
+	item := resource.Item.(types.{{.ResponseItemsType}})
 	params := {{.AWSService | ToLower}}.ListTagsForResourceInput{
 		ResourceARN: {{.CustomTagField | Coalesce "item.ARN"}},
 	}
@@ -82,7 +79,6 @@ func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta sche
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-			{{.CustomErrorBlock}}
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
@@ -96,7 +92,4 @@ func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta sche
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
 }
-{{end}}
-
-{{range .CustomResolvers}}{{.}}
 {{end}}

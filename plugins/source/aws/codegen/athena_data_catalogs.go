@@ -11,6 +11,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
+	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/athena"
 )
 
 func AthenaDataCatalogs() *schema.Table {
@@ -54,7 +55,7 @@ func AthenaDataCatalogs() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveAthenaDataCatalogArn,
+				Resolver: resolvers.ResolveDataCatalogArn,
 			},
 			{
 				Name:        "tags",
@@ -120,22 +121,14 @@ func listDataCatalogsDetail(ctx context.Context, meta schema.ClientMeta, results
 func resolveAthenaDataCatalogsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
-	item := resource.Item.(types.DataCatalog)
+	item := resource.Item.(types.DataCatalogSummary)
 	params := athena.ListTagsForResourceInput{
-		ResourceARN: aws.String(createDataCatalogArn(cl, *item.Name)),
+		ResourceARN: aws.String(resolvers.CreateDataCatalogArn(cl, *item.CatalogName)),
 	}
 	tags := make(map[string]string)
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-
-			// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
-			// relations can be fetched by its name
-			if *itemSummary.CatalogName == "AwsDataCatalog" {
-				resultsChan <- types.DataCatalog{Name: itemSummary.CatalogName, Type: itemSummary.Type}
-				return
-			}
-
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
@@ -148,14 +141,4 @@ func resolveAthenaDataCatalogsTags(ctx context.Context, meta schema.ClientMeta, 
 		params.NextToken = result.NextToken
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-
-func resolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	dc := resource.Item.(types.DataCatalog)
-	return diag.WrapError(resource.Set(c.Name, createDataCatalogArn(cl, *dc.Name)))
-}
-
-func createDataCatalogArn(cl *client.Client, catalogName string) string {
-	return cl.ARN(client.Athena, "datacatalog", catalogName)
 }

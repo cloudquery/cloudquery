@@ -28,30 +28,17 @@ var AthenaResources = combine(
 			return
 		}
 `,
-		CustomTagField: `aws.String(createDataCatalogArn(cl, *item.Name))`,
+		CustomTagField: `aws.String(resolvers.CreateDataCatalogArn(cl, *item.CatalogName))`,
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"arn": {
 				Type:     schema.TypeString,
-				Resolver: "resolveAthenaDataCatalogArn",
+				Resolver: "resolvers.ResolveDataCatalogArn",
 			},
 			"tags": {
 				Type:        schema.TypeJSON,
 				Description: "Tags associated with the Athena data catalog.",
 				Resolver:    ResolverAuto,
 			},
-		},
-		CustomResolvers: []string{
-			`
-func resolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	dc := resource.Item.(types.DataCatalog)
-	return diag.WrapError(resource.Set(c.Name, createDataCatalogArn(cl, *dc.Name)))
-}
-
-func createDataCatalogArn(cl *client.Client, catalogName string) string {
-	return cl.ARN(client.Athena, "datacatalog", catalogName)
-}
-`,
 		},
 	},
 		parentize(&Resource{
@@ -88,30 +75,17 @@ func createDataCatalogArn(cl *client.Client, catalogName string) string {
 		DetailInputFieldName: "WorkGroup",
 		ResponseItemsType:    "WorkGroupSummary",
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-		CustomTagField: `aws.String(createWorkGroupArn(cl, *item.Name))`,
+		CustomTagField: `aws.String(resolvers.CreateWorkGroupArn(cl, *item.Name))`,
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"arn": {
 				Type:     schema.TypeString,
-				Resolver: "resolveAthenaWorkGroupArn",
+				Resolver: "resolvers.ResolveWorkGroupArn",
 			},
 			"tags": {
 				Type:        schema.TypeJSON,
 				Description: "Tags associated with the Athena work group.",
 				Resolver:    ResolverAuto,
 			},
-		},
-		CustomResolvers: []string{
-			`
-func resolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	dc := resource.Item.(types.WorkGroup)
-	return diag.WrapError(resource.Set(c.Name, createWorkGroupArn(cl, *dc.Name)))
-}
-
-func createWorkGroupArn(cl *client.Client, catalogName string) string {
-	return cl.ARN(client.Athena, "workgroup", catalogName)
-}
-`,
 		},
 	},
 		&Resource{

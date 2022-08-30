@@ -10,12 +10,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 {{if .Parent}}	"{{.TypesImport}}"{{end}}
-{{range .Imports}}	"{{.}}"
+{{range .Imports}}	{{.}}
 {{end}}
 )
-
-{{range .CustomInit}}{{.}}
-{{end}}
 
 func {{.TableFuncName}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
@@ -45,6 +42,3 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-
-{{range .CustomResolvers}}{{.}}
-{{end}}

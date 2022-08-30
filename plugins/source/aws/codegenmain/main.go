@@ -10,6 +10,7 @@ import (
 	"path"
 	"reflect"
 	"runtime"
+	"strconv"
 	"strings"
 	"text/template"
 
@@ -127,6 +128,8 @@ func generateResource(r *recipes.Resource, mock bool) {
 		}
 	}
 
+	hasReferenceToResolvers := false
+
 	for i := range r.Table.Columns {
 		if len(r.Table.Options.PrimaryKeys) == 0 && r.Table.Columns[i].Name == "arn" {
 			//	r.Table.Columns[i].Options.PrimaryKey = true
@@ -138,6 +141,9 @@ func generateResource(r *recipes.Resource, mock bool) {
 			if r.Table.Columns[i].Resolver == recipes.ResolverAuto {
 				r.Table.Columns[i].Resolver = "resolve" + r.AWSService + r.AWSSubService + "Tags"
 			}
+		}
+		if strings.HasPrefix(r.Table.Columns[i].Resolver, "resolvers.") {
+			hasReferenceToResolvers = true
 		}
 	}
 	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + coalesce(r.MultiplexerServiceOverride, strings.ToLower(r.AWSService)) + `")`
@@ -159,13 +165,46 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.ItemName = r.AWSStructName
 	}
 
+	if !mock {
+		for i := range r.Imports {
+			if !strings.HasSuffix(r.Imports[i], `"`) {
+				r.Imports[i] = strconv.Quote(r.Imports[i])
+			}
+		}
+	} else {
+		for i := range r.MockImports {
+			if !strings.HasSuffix(r.MockImports[i], `"`) {
+				r.MockImports[i] = strconv.Quote(r.MockImports[i])
+			}
+		}
+	}
+
 	r.TypesImport = ""
 	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
 		r.TypesImport = sp
 		if r.AddTypesImport {
-			r.Imports = append(r.Imports, sp)
+			if !mock {
+				r.Imports = append(r.Imports, strconv.Quote(sp))
+			} else {
+				r.MockImports = append(r.MockImports, strconv.Quote(sp))
+			}
 		}
-		r.Imports = append(r.Imports, strings.TrimSuffix(sp, "/types")) // auto-import main pkg (not "types")
+		r.Imports = append(r.Imports, strconv.Quote(strings.TrimSuffix(sp, "/types")))         // auto-import main pkg (not "types")
+		r.MockImports = append(r.MockImports, strconv.Quote(strings.TrimSuffix(sp, "/types"))) // auto-import main pkg (not "types")
+	}
+
+	if hasReferenceToResolvers && !mock {
+		res := "resolvers " + strconv.Quote(`github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/`+strings.ToLower(r.AWSService))
+		found := false
+		for i := range r.Imports {
+			if r.Imports[i] == res {
+				found = true
+				break
+			}
+		}
+		if !found {
+			r.Imports = append(r.Imports, res)
+		}
 	}
 
 	mainTemplate := r.Template + stringSwitch(mock, "_mock_test", "") + ".go.tpl"

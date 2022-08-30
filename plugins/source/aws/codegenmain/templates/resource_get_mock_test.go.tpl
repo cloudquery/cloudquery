@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 
 	"{{.TypesImport}}"
-{{range .Imports}}	"{{.}}"
+{{range .MockImports}}	{{.}}
 {{end}}
 )
 

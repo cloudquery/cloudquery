@@ -11,6 +11,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
+	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/athena"
 )
 
 func AthenaWorkGroups() *schema.Table {
@@ -59,7 +60,7 @@ func AthenaWorkGroups() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveAthenaWorkGroupArn,
+				Resolver: resolvers.ResolveWorkGroupArn,
 			},
 			{
 				Name:        "tags",
@@ -118,15 +119,14 @@ func listWorkGroupsDetail(ctx context.Context, meta schema.ClientMeta, resultsCh
 func resolveAthenaWorkGroupsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
-	item := resource.Item.(types.WorkGroup)
+	item := resource.Item.(types.WorkGroupSummary)
 	params := athena.ListTagsForResourceInput{
-		ResourceARN: aws.String(createWorkGroupArn(cl, *item.Name)),
+		ResourceARN: aws.String(resolvers.CreateWorkGroupArn(cl, *item.Name)),
 	}
 	tags := make(map[string]string)
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
@@ -139,14 +139,4 @@ func resolveAthenaWorkGroupsTags(ctx context.Context, meta schema.ClientMeta, re
 		params.NextToken = result.NextToken
 	}
 	return diag.WrapError(resource.Set(c.Name, tags))
-}
-
-func resolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	dc := resource.Item.(types.WorkGroup)
-	return diag.WrapError(resource.Set(c.Name, createWorkGroupArn(cl, *dc.Name)))
-}
-
-func createWorkGroupArn(cl *client.Client, catalogName string) string {
-	return cl.ARN(client.Athena, "workgroup", catalogName)
 }

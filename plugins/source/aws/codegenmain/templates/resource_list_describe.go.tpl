@@ -9,12 +9,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"{{.TypesImport}}"
-{{range .Imports}}	"{{.}}"
+{{range .Imports}}	{{.}}
 {{end}}
 )
-
-{{range .CustomInit}}{{.}}
-{{end}}
 
 func {{.TableFuncName}}() *schema.Table {
 	return &schema.Table{{template "table.go.tpl" .Table}}
@@ -69,7 +66,4 @@ func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx contex
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))
 }
-{{end}}
-
-{{range .CustomResolvers}}{{.}}
 {{end}}

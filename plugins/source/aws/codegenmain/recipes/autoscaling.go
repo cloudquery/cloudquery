@@ -13,10 +13,6 @@ var AutoscalingResources = combine(&Resource{
 	Template:          "resource_get",
 	Verb:              "Describe",
 	ResponseItemsName: "LaunchConfigurations",
-	Imports:           nil,
-	MockImports:       nil,
-	MockListStruct:    "",
-	SkipFields:        nil,
 	TrimPrefix:        "launch_configuration_",
 	//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 },
@@ -28,10 +24,6 @@ var AutoscalingResources = combine(&Resource{
 		Template:          "resource_get",
 		Verb:              "Describe",
 		ResponseItemsName: "ScheduledUpdateGroupActions",
-		Imports:           nil,
-		MockImports:       nil,
-		MockListStruct:    "",
-		SkipFields:        nil,
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},
 	parentize(
@@ -44,26 +36,7 @@ var AutoscalingResources = combine(&Resource{
 			Template:             "resource_get",
 			Verb:                 "Describe",
 			ResponseItemsName:    "AutoScalingGroups",
-			Imports:              []string{"errors", "regexp", "github.com/aws/smithy-go"},
-			MockImports:          nil,
-			MockListStruct:       "",
-			SkipFields:           nil,
 			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-			CustomInit: []string{
-				"var autoscalingGroupNotFoundRegex = regexp.MustCompile(`AutoScalingGroup name not found|Group .* not found`)",
-			},
-			CustomResolvers: []string{`
-func isAutoScalingGroupNotExistsError(err error) bool {
-	var ae smithy.APIError
-	if errors.As(err, &ae) {
-		if ae.ErrorCode() == "ValidationError" && autoscalingGroupNotFoundRegex.MatchString(ae.ErrorMessage()) {
-			return true
-		}
-	}
-	return false
-}
-`,
-			},
 		},
 		&Resource{
 			AWSStruct:            &types.ScalingPolicy{},
@@ -73,8 +46,11 @@ func isAutoScalingGroupNotExistsError(err error) bool {
 			ParentFieldName:      "AutoScalingGroupName",
 			Verb:                 "Describe",
 			ResponseItemsName:    "ScalingPolicies",
+			Imports: []string{
+				`resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/autoscaling"`,
+			},
 			CustomErrorBlock: `
-			if isAutoScalingGroupNotExistsError(err) {
+			if resolvers.IsGroupNotExistsError(err) {
 				return nil
 			}`,
 		},
