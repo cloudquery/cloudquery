@@ -53,15 +53,15 @@ func AthenaDataCatalogs() *schema.Table {
 				Resolver: schema.PathResolver("Parameters"),
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: resolvers.ResolveDataCatalogArn,
+			},
+			{
 				Name:        "tags",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveAthenaDataCatalogsTags,
 				Description: `Tags associated with the Athena data catalog.`,
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolvers.ResolveDataCatalogArn,
 			},
 		},
 	}

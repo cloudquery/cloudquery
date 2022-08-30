@@ -58,15 +58,15 @@ func AthenaWorkGroups() *schema.Table {
 				Resolver: schema.PathResolver("State"),
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: resolvers.ResolveWorkGroupArn,
+			},
+			{
 				Name:        "tags",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveAthenaWorkGroupsTags,
 				Description: `Tags associated with the Athena work group.`,
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolvers.ResolveWorkGroupArn,
 			},
 		},
 	}

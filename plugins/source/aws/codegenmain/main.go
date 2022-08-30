@@ -10,6 +10,7 @@ import (
 	"path"
 	"reflect"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"text/template"
@@ -210,8 +211,14 @@ func generateResource(r *recipes.Resource, mock bool) {
 
 			delete(r.ColumnOverrides, c.Name)
 		}
+		coSlice := make([]string, 0, len(r.ColumnOverrides))
+		for k := range r.ColumnOverrides {
+			coSlice = append(coSlice, k)
+		}
+		sort.Strings(coSlice)
 		// remaining, unmatched columns are added to the end of the table. Difference from DefaultColumns? none for now
-		for k, c := range r.ColumnOverrides {
+		for _, k := range coSlice {
+			c := r.ColumnOverrides[k]
 			if c.Type == pluginschema.TypeInvalid {
 				if !mock {
 					fmt.Println("Not adding unmatched column with unspecified type", k, c)
