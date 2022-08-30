@@ -19,7 +19,7 @@ func HerokuMockTestHelper(t *testing.T, table *schema.Table, builder func() (*he
 	t.Helper()
 	cfg := ``
 
-	heroku, err := builder()
+	hk, err := builder()
 	if err != nil {
 		t.Fatalf("error: %v", err)
 	}
@@ -32,7 +32,7 @@ func HerokuMockTestHelper(t *testing.T, table *schema.Table, builder func() (*he
 					logger: logging.New(&hclog.LoggerOptions{
 						Level: hclog.Warn,
 					}),
-					Heroku: heroku,
+					Heroku: hk,
 				}
 				return &c, nil
 			},

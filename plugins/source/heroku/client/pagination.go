@@ -10,6 +10,8 @@ import (
 	heroku "github.com/heroku/heroku-go/v5"
 )
 
+var reNextRange = regexp.MustCompile(`(?P<field>\w+) (?P<firstID>[\w\[\]\-]*)\.\.(?P<lastID>[\w\[\]\-]*)`)
+
 // Paginator implements the http.RoundTripper interface to intercept
 // pagination information not supported by the official Heroku SDK. It
 // injects this information into the request context so that resolvers
@@ -30,10 +32,11 @@ func NewPaginator(t http.RoundTripper) Paginator {
 // context accordingly. This is only done because the official SDK lacks
 // support for pagination (see: https://github.com/heroku/heroku-go/issues/56)
 func (p Paginator) RoundTrip(req *http.Request) (*http.Response, error) {
-	if p.transport == nil {
-		p.transport = http.DefaultTransport
+	transport := p.transport
+	if transport == nil {
+		transport = http.DefaultTransport
 	}
-	resp, err := p.transport.RoundTrip(req)
+	resp, err := transport.RoundTrip(req)
 	if err != nil {
 		return resp, err
 	}
@@ -42,9 +45,9 @@ func (p Paginator) RoundTrip(req *http.Request) (*http.Response, error) {
 	nr := ctx.Value("nextRange")
 	if nr != nil {
 		v := nr.(*heroku.ListRange)
-		listRange := new(heroku.ListRange)
 		if resp.StatusCode == http.StatusPartialContent {
 			nextRange := resp.Header.Get("Next-Range")
+			var listRange *heroku.ListRange
 			listRange, err = parseNextRange(nextRange)
 			if err != nil {
 				return nil, err
@@ -63,8 +66,6 @@ func (p Paginator) RoundTrip(req *http.Request) (*http.Response, error) {
 	}
 	return resp, err
 }
-
-var reNextRange = regexp.MustCompile(`(?P<field>\w+) (?P<firstID>[\w\[\]\-]*)\.\.(?P<lastID>[\w\[\]\-]*)`)
 
 // parseNextRange implements a parser for the Heroku Next-Range format that returns
 // a *heroku.ListRange.
