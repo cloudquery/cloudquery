@@ -1,4 +1,4 @@
-package sync
+package cmd
 
 import (
 	"context"
@@ -20,13 +20,13 @@ const (
 	cloudquery sync ./directory`
 )
 
-func NewCmdFetch() *cobra.Command {
+func NewCmdSync() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "sync [directory]",
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
-		Args:    cobra.RangeArgs(0, 1),
+		Args:    cobra.ExactArgs(1),
 		RunE:    sync,
 	}
 	return cmd
@@ -34,10 +34,7 @@ func NewCmdFetch() *cobra.Command {
 
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
-	directory := "."
-	if len(args) == 1 {
-		directory = args[0]
-	}
+	directory := args[0]
 	fmt.Println("Loading specs from directory: ", directory)
 	specReader, err := specs.NewSpecReader(directory)
 	if err != nil {
@@ -45,8 +42,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	if len(specReader.GetSources()) == 0 {
-		fmt.Printf("No sources found in directory: %s. Exiting...\n", directory)
-		return nil
+		return fmt.Errorf("no sources found in directory: %s", directory)
 	}
 
 	pm := plugin.NewPluginManager()
