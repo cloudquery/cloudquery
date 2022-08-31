@@ -72,3 +72,7 @@ branchProtectionRules:
     - Unit Tests (plugins/source/terraform)
     - Build (plugins/source/terraform)
     - Lint Provider Doc (plugins/source/terraform)
+
+    - Linter (plugins/source/test)
+    - Unit Tests (plugins/source/test)
+    - Build (plugins/source/test)
