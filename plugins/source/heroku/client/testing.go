@@ -1,49 +1,54 @@
 package client
 
 import (
-	"testing"
-
-	"github.com/cloudquery/cq-provider-sdk/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
-	"github.com/hashicorp/go-hclog"
+	"context"
+	"fmt"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
 	heroku "github.com/heroku/heroku-go/v5"
+	"github.com/rs/zerolog"
+	"os"
+	"testing"
+	"time"
 )
 
 type TestOptions struct{}
 
-func HerokuMockTestHelper(t *testing.T, table *schema.Table, builder func() (*heroku.Service, error), _ TestOptions) {
-	table.IgnoreInTests = false
+func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*heroku.Service, error), options TestOptions) {
 	t.Helper()
-	cfg := ``
 
-	hk, err := builder()
-	if err != nil {
-		t.Fatalf("error: %v", err)
+	table.IgnoreInTests = false
+
+	newTestExecutionClient := func(ctx context.Context, p *plugins.SourcePlugin, spec specs.Source) (schema.ClientMeta, error) {
+		svc, err := createService()
+		if err != nil {
+			return nil, fmt.Errorf("failed to creattService %w", err)
+		}
+		var herokuSpec Spec
+		if err := spec.UnmarshalSpec(&herokuSpec); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
+		}
+		l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+			zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+		).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+		c := &Client{
+			logger: l,
+			Heroku: svc,
+		}
+
+		return c, nil
 	}
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:    "heroku_mock_test_provider",
-			Version: "development",
-			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
-				c := Client{
-					logger: logging.New(&hclog.LoggerOptions{
-						Level: hclog.Warn,
-					}),
-					Heroku: hk,
-				}
-				return &c, nil
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-			Config: func() provider.Config {
-				return &Config{}
-			},
+
+	p := plugins.NewSourcePlugin(
+		table.Name,
+		"dev",
+		[]*schema.Table{
+			table,
 		},
-		Config:           cfg,
-		SkipIgnoreInTest: true,
+		newTestExecutionClient)
+	plugins.TestSourcePluginSync(t, p, specs.Source{
+		Name:   "dev",
+		Tables: []string{table.Name},
 	})
 }
