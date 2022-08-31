@@ -113,3 +113,11 @@ jobs:
           TAG_NAME: ${{ steps.release.outputs['plugins/source/terraform--tag_name'] }}
         with:
           prerelease: true
+      - name: Mark as pre-release
+        if: ${{ steps.release.outputs['plugins/source/test--release_created'] }}
+        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG_NAME: ${{ steps.release.outputs['plugins/source/test--tag_name'] }}
+        with:
+          prerelease: true
