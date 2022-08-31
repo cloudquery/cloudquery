@@ -12,6 +12,7 @@
     "plugins/source/fuzz": { "component": "plugins/source/fuzz" },
     "plugins/source/gcp": { "component": "plugins/source/gcp" },
     "plugins/source/github": { "component": "plugins/source/github" },
+    "plugins/source/heroku": { "component": "plugins/source/heroku" },
     "plugins/source/k8s": { "component": "plugins/source/k8s" },
     "plugins/source/okta": { "component": "plugins/source/okta" },
     "plugins/source/test": { "component": "plugins/source/test" },

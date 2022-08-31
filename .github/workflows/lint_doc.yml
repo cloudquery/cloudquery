@@ -20,6 +20,7 @@ jobs:
           "plugins/source/digitalocean",
           "plugins/source/gcp",
           "plugins/source/github",
+          "plugins/source/heroku",
           "plugins/source/k8s",
           "plugins/source/okta",
           "plugins/source/terraform",
