@@ -50,8 +50,7 @@ type InferResult struct {
 	Method     string
 	SubService string
 
-	ItemsStruct reflect.Type
-	ItemsName   string // Only valid for "Output" types
+	ItemsField reflect.StructField // Struct field that contains the item or items. Only valid in Output type structs.
 
 	Fields     map[string]reflect.Type
 	FieldOrder []string
@@ -88,7 +87,6 @@ func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResu
 		break
 	}
 
-	// TODO handle parent/multiple fields, set to a map of name/type
 	var candidates []reflect.StructField
 	for i := 0; i < ist.NumField(); i++ {
 		f := ist.Field(i)
@@ -112,8 +110,7 @@ func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResu
 		if len(candidates) != 1 {
 			log.Fatal("Could not determine ItemsName for ", ist.Name(), ":", len(candidates), " candidates")
 		}
-		res.ItemsName = candidates[0].Name
-		res.ItemsStruct = candidates[0].Type
+		res.ItemsField = candidates[0]
 	}
 
 	return &res

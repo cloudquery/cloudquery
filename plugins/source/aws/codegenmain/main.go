@@ -50,16 +50,16 @@ func inferFromRecipe(r *recipes.Resource) {
 	if r.ItemsStruct != nil {
 		items = helpers.InferFromStruct(r.ItemsStruct, r.PaginatorStruct != nil, false)
 		r.GetMethod = items.Method
-		r.ResponseItemsName = items.ItemsName
+		r.ResponseItemsName = items.ItemsField.Name
 
 		res = items
 	}
 
 	if r.PaginatorStruct != nil {
 		pag = helpers.InferFromStruct(r.PaginatorStruct, false, false)
-		r.PaginatorListName = pag.ItemsName
-		r.PaginatorListType = pag.ItemsStruct.Elem().Name() // single type from a slice
-		if pag.ItemsStruct.Elem().Kind() == reflect.Struct {
+		r.PaginatorListName = pag.ItemsField.Name
+		r.PaginatorListType = pag.ItemsField.Type.Elem().Name() // single type from a slice
+		if pag.ItemsField.Type.Elem().Kind() == reflect.Struct {
 			r.PaginatorListType = "types." + r.PaginatorListType
 		}
 
@@ -87,7 +87,7 @@ func inferFromRecipe(r *recipes.Resource) {
 			r.AutoCalculated.MatchedGetAndListFields = make(map[string]string)
 
 			fields := make(map[string]reflect.Type)
-			pagSingleItem := pag.ItemsStruct.Elem()
+			pagSingleItem := pag.ItemsField.Type.Elem()
 			//log.Println("PROCESSING", pagSingleItem.Name(), pagSingleItem.Kind().String())
 			if k := pagSingleItem.Kind(); k == reflect.String {
 				// special case for string
