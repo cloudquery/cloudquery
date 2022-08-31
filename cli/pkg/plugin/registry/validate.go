@@ -76,7 +76,8 @@ func validateChecksumProvider(providerName string, providerPath string, checksum
 			return fmt.Errorf("checksum file in incorrect format")
 		}
 		nameWithOSAndArch := fmt.Sprintf("%s_%s_%s", providerName, runtime.GOOS, runtime.GOARCH)
-		if nameWithOSAndArch == split[1] {
+		oldNameWithOSAndArch := fmt.Sprintf("cq-provider-%s", nameWithOSAndArch)
+		if nameWithOSAndArch == split[1] || oldNameWithOSAndArch == split[1] {
 			if split[0] == sha256sum {
 				return nil
 			}
