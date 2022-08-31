@@ -7,24 +7,24 @@ import (
 
 // https://github.com/spf13/pflag/issues/236#issuecomment-931600452
 
-type enum struct {
+type Enum struct {
 	Allowed []string
 	Value   string
 }
 
 // newEnum give a list of allowed flag parameters, where the second argument is the default
-func NewEnum(allowed []string, d string) *enum {
-	return &enum{
+func NewEnum(allowed []string, d string) *Enum {
+	return &Enum{
 		Allowed: allowed,
 		Value:   d,
 	}
 }
 
-func (a enum) String() string {
+func (a Enum) String() string {
 	return a.Value
 }
 
-func (a *enum) Set(p string) error {
+func (a *Enum) Set(p string) error {
 	isIncluded := func(opts []string, val string) bool {
 		for _, opt := range opts {
 			if val == opt {
@@ -40,6 +40,6 @@ func (a *enum) Set(p string) error {
 	return nil
 }
 
-func (a *enum) Type() string {
+func (*Enum) Type() string {
 	return "string"
 }
