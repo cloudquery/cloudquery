@@ -65,7 +65,7 @@ func (p *DestinationPlugin) GetClient() *clients.DestinationClient {
 
 func (p *SourcePlugin) Close() error {
 	if p.conn != nil {
-		return p.conn.Close()
+		p.conn.Close()
 	}
 	if p.cmd != nil && p.cmd.Process != nil {
 		if err := p.cmd.Process.Kill(); err != nil {
@@ -122,7 +122,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	var err error
 	pathSplit := strings.Split(spec.Path, "/")
 	org, repo := pathSplit[0], pathSplit[1]
-	if spec.Version == "latest" {
+	if spec.Version == "latest" || spec.Version == "" {
 		// if version is latest, we need to get the version number from github
 		spec.Version, err = p.versionsClient.GetLatestPluginRelease(ctx, org, "source", repo)
 		if err != nil {
@@ -145,7 +145,12 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
 	// For example:
 	// https://github.com/cloudquery/cloudquery/releases/download/plugins-source-test-v1.1.0/test_darwin_amd64.zip
-	pluginUrl := fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins%%2fsource%%2f%s%%2f%s/%s_%s_%s.zip", repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+	pluginUrl := fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins/source/%s/%s/%s_%s_%s.zip", repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+	if org != "cloudquery" {
+		// https://github.com/yevgenypats/cq-source-test/releases/download/v1.0.0/cq-source-test_linux_amd64.zip
+		pluginUrl = fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+	}
+
 	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", pluginUrl, pluginPath)
 	if err := downloadFile(pluginPath+".zip", pluginUrl); err != nil {
 		return "", fmt.Errorf("failed to download plugin: %w", err)
@@ -214,10 +219,14 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 	// if err := os.MkdirAll(filepath.Dir(grpcTarget), 0755); err != nil {
 	// 	return nil, errors.Wrapf(err, "failed to create unixpath directory: %s", filepath.Dir(grpcTarget))
 	// }
-	cmd := exec.Command(pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
+	// cmdCtx := context.WithCancel()
+	cmd := exec.CommandContext(ctx, pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
 		"--log-level", p.logger.GetLevel().String(), "--log-format", "json")
-	reader, writer := io.Pipe()
-	cmd.Stdout = writer
+	// reader, writer := io.Pipe()
+	reader, err := cmd.StdoutPipe()
+	if err != nil {
+		return nil, fmt.Errorf("failed to get stdout pipe: %w", err)
+	}
 	cmd.Stderr = os.Stderr
 	if err := cmd.Start(); err != nil {
 		return nil, fmt.Errorf("failed to start plugin %s: %w", pluginPath, err)
@@ -228,6 +237,8 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("plugin exited")
 		}
 	}()
+	pl.cmd = cmd
+
 	go func() {
 		scanner := bufio.NewScanner(reader)
 		for scanner.Scan() {
@@ -244,14 +255,13 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 	}()
 	// remove the socket file if it exists
 	// os.Remove(grpcTarget)
-	conn, err := grpc.Dial("unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
 			fmt.Println("failed to kill plugin", err)
 		}
-		return nil, err
+		return &pl, err
 	}
-	pl.cmd = cmd
 	pl.conn = conn
 	pl.client = clients.NewSourceClient(conn)
 	return &pl, nil

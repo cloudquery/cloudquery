@@ -90,17 +90,17 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 
 	resources := make(chan *schema.Resource)
 	g, ctx := errgroup.WithContext(ctx)
-	fmt.Println("Starting fetch for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
+	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync(ctx, sourceSpec, resources); err != nil {
-			return errors.Wrap(err, "failed to fetch resources")
+			return errors.Wrap(err, "failed to sync resources")
 		}
 		return nil
 	})
 
 	bar := progressbar.NewOptions(-1,
-		progressbar.OptionSetDescription("Fetching"),
+		progressbar.OptionSetDescription("Syncing"),
 		progressbar.OptionShowCount(),
 		progressbar.OptionShowIts(),
 		progressbar.OptionSetItsString("resources"),
@@ -109,7 +109,6 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	totalResources := 0
 	g.Go(func() error {
 		for resource := range resources {
-			// fmt.Println("fetched")
 			_ = bar.Add(1)
 			totalResources++
 			for i, destination := range sourceSpec.Destinations {

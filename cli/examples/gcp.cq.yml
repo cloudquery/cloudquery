@@ -9,3 +9,4 @@ spec:
   skip_tables: ["gcp_compute_disk_types", "gcp_iam_service_accounts"]
   destinations:
     - postgresql
+  

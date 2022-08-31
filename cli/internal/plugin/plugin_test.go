@@ -24,7 +24,7 @@ func TestPluginManagerDownloadSource(t *testing.T) {
 		Name:     "test",
 		Registry: specs.RegistryGithub,
 		Path:     "cloudquery/test",
-		Version:  "v0.0.4",
+		Version:  "latest",
 	}); err != nil {
 		t.Fatal(err)
 	}
@@ -37,17 +37,17 @@ func TestPluginManagerGetSourceClient(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// defer os.RemoveAll(dirName)
-
+	defer os.RemoveAll(dirName)
 	pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
 	pl, err := pm.NewSourcePlugin(ctx, specs.Source{
 		Name:     "test",
 		Registry: specs.RegistryGithub,
 		Path:     "cloudquery/test",
-		Version:  "v0.0.4",
+		Version:  "latest",
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer pl.Close()
+	pl.Close()
+	// pl.Close()
 }
