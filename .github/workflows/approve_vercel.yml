@@ -5,6 +5,7 @@ on:
     paths:
       - "**/*"
       - "!website/**"
+      - "!plugins/**/docs/**"
     branches:
       - main
 
