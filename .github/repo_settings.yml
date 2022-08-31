@@ -53,6 +53,11 @@ branchProtectionRules:
     - Build (plugins/source/github)
     - Lint Provider Doc (plugins/source/github)
 
+    - Linter (plugins/source/heroku)
+    - Unit Tests (plugins/source/heroku)
+    - Build (plugins/source/heroku)
+    - Lint Provider Doc (plugins/source/heroku)
+
     - Linter (plugins/source/k8s)
     - Unit Tests (plugins/source/k8s)
     - Build (plugins/source/k8s)
@@ -67,3 +72,7 @@ branchProtectionRules:
     - Unit Tests (plugins/source/terraform)
     - Build (plugins/source/terraform)
     - Lint Provider Doc (plugins/source/terraform)
+
+    - Linter (plugins/source/test)
+    - Unit Tests (plugins/source/test)
+    - Build (plugins/source/test)
