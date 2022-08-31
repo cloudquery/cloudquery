@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 
 	"strings"
 
@@ -14,13 +16,13 @@ import (
 )
 
 const (
-	initShort   = "Generate initial *.cq.yml file for sources and destionations plugins"
+	initShort   = "Generate initial config file for source and destination plugins"
 	initExample = `
-# Downloads aws provider and generates aws.cq.yml for aws provider
+# Downloads aws provider and writes config for aws provider to stdout
 cloudquery generate source aws
 
-# Downloads aws provider and generates aws.cq.yml for aws provider
-cloudquery generate source --registry grpc "localhost:7777"
+# Downloads aws provider and generates initial config in aws.yml
+cloudquery generate source --registry grpc --output aws.yml "localhost:7777"
 `
 )
 
@@ -36,6 +38,7 @@ func NewCmdGenerate() *cobra.Command {
 		RunE:    runGenerate,
 	}
 	cmd.Flags().Var(registry, "registry", "where to download the plugin")
+	cmd.Flags().StringP("output", "O", "", "destination file to write to (defaults to <name_of_plugin>.yml)")
 	return cmd
 }
 
@@ -45,17 +48,18 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("runGen: invalid registry %w", err)
 	}
+	outputFile := cmd.Flag("output").Value.String()
 	switch args[0] {
 	case "source":
-		return genSource(cmd, args[1], pluginManager, registry)
+		return genSource(cmd, args[1], pluginManager, registry, outputFile)
 	case "destination":
-		return genDestination(cmd, args[1], pluginManager, registry)
+		return genDestination(cmd, args[1], pluginManager, registry, outputFile)
 	default:
 		return errors.Errorf("unknown type: %s", args[0])
 	}
 }
 
-func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry) error {
+func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry, outputFile string) error {
 	if registry == specs.RegistryGithub && !strings.Contains(path, "/") {
 		path = "cloudquery/" + path
 	}
@@ -75,15 +79,29 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, regist
 		return fmt.Errorf("failed to create source plugin: %w", err)
 	}
 	defer plugin.Close()
-	res, err := plugin.GetClient().ExampleConfig(cmd.Context())
+	client := plugin.GetClient()
+	name, err := client.Name(cmd.Context())
+	if err != nil {
+		return errors.Wrap(err, "failed to get plugin name")
+	}
+	cfg, err := client.ExampleConfig(cmd.Context())
 	if err != nil {
 		return errors.Wrap(err, "failed to get example config")
 	}
-	fmt.Println(res)
+
+	configPath := name + ".yml"
+	if outputFile != "" {
+		configPath = outputFile
+	}
+	err = writeFile(configPath, cfg)
+	if err != nil {
+		return errors.Wrap(err, "failed to write file")
+	}
+	fmt.Fprintln(os.Stderr, "✅ Source plugin config written to "+configPath)
 	return nil
 }
 
-func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry) error {
+func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry, outputFile string) error {
 	destSpec := specs.Destination{
 		Name:     path,
 		Path:     path,
@@ -94,10 +112,38 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 		return errors.Wrap(err, "failed to get plugin client")
 	}
 	defer destPlugin.Close()
-	res, err := destPlugin.GetClient().GetExampleConfig(cmd.Context())
+	client := destPlugin.GetClient()
+	name, err := client.Name(cmd.Context())
+	if err != nil {
+		return errors.Wrap(err, "failed to get plugin name")
+	}
+	cfg, err := client.GetExampleConfig(cmd.Context())
 	if err != nil {
 		return errors.Wrap(err, "failed to get example config")
 	}
-	fmt.Println(res)
+
+	configPath := name + ".yml"
+	if outputFile != "" {
+		configPath = outputFile
+	}
+	err = writeFile(configPath, cfg)
+	if err != nil {
+		return errors.Wrap(err, "failed to write file")
+	}
+	fmt.Fprintln(os.Stderr, "✅ Destination plugin config written to "+configPath)
 	return nil
+}
+
+func writeFile(path, content string) error {
+	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to create file: %w", err)
+	}
+	defer f.Close()
+	w := bufio.NewWriter(f)
+	_, err = w.WriteString(content)
+	if err != nil {
+		return err
+	}
+	return w.Flush()
 }
