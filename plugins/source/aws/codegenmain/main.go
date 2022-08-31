@@ -40,6 +40,21 @@ func main() {
 		generateResource(r, false)
 		generateResource(r, true)
 	}
+
+	for i, r := range resources {
+		if r.Parent != nil {
+			r.Parent.Table.Relations = append(r.Parent.Table.Relations, r.Table)
+			resources[i] = nil
+		}
+	}
+	relationalRes := make([]*recipes.Resource, 0, len(resources))
+	for _, r := range resources {
+		if r != nil {
+			relationalRes = append(relationalRes, r)
+		}
+	}
+
+	generateProvider(relationalRes)
 }
 
 func inferFromRecipe(r *recipes.Resource) {
@@ -293,6 +308,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
 		"ToCamel":  strcase.ToCamel,
 		"ToLower":  strings.ToLower,
+		"ToSnake":  strcase.ToSnake,
 		"Coalesce": func(a1, a2 string) string { return helpers.Coalesce(a2, a1) }, // go templates argument order is backwards
 	}).ParseFS(awsTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
@@ -313,6 +329,37 @@ func generateResource(r *recipes.Resource, mock bool) {
 
 	fileSuffix := helpers.StringSwitch(mock, "_mock_test.go", ".go")
 	filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+tableNameFromSubService+fileSuffix)
+	content, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Println(buff.String())
+		log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
+	}
+	if err := os.WriteFile(filePath, content, 0644); err != nil {
+		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
+	}
+}
+
+func generateProvider(rr []*recipes.Resource) {
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Fatal("Failed to get caller information")
+	}
+	dir := path.Dir(filename)
+	tpl, err := template.New("provider.go.tpl").Funcs(template.FuncMap{
+		"ToCamel": strcase.ToCamel,
+		"ToLower": strings.ToLower,
+		"ToSnake": strcase.ToSnake,
+	}).ParseFS(awsTemplatesFS, "templates/provider.go.tpl")
+	if err != nil {
+		log.Fatal(fmt.Errorf("failed to parse provider.go.tpl: %w", err))
+	}
+
+	var buff bytes.Buffer
+	if err := tpl.Execute(&buff, rr); err != nil {
+		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
+	}
+
+	filePath := path.Join(dir, "../resources/provider/provider_codegen.go")
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())
