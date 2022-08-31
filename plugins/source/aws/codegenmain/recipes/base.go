@@ -29,9 +29,10 @@ type Resource struct {
 	PaginatorStruct    interface{} // Used only in resource_list_and_detail and list_describe templates.
 	PaginatorGetStruct interface{} // Used only in resource_list_and_detail and list_describe templates.
 
-	ItemName      string      // Override. Defaults to AWSStructName
-	AWSSubService string      // Override. Name of the aws subservice the struct/api is residing. Should be in CamelCase. Inferred from ItemsStruct.
-	ItemsStruct   interface{} // This should point to .Verb + .AWSSubService + "Output"
+	ItemName                string      // Override. Defaults to AWSStructName
+	AWSSubService           string      // Override. Name of the aws subservice the struct/api is residing. Should be in CamelCase. Inferred from ItemsStruct.
+	ItemsStruct             interface{} // This should point to a verb + .AWSSubService + "Output"
+	ItemsCustomOptionsBlock string      // Only supported by resource_get template for now.
 
 	CustomErrorBlock string // Only used in list_and_detail template.
 	CustomTagField   string // Only used in list_and_detail template.

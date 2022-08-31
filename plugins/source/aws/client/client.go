@@ -127,7 +127,7 @@ type AssumeRoleAPIClient interface {
 
 type Services struct {
 	ACM                    ACMClient
-	Analyzer               AnalyzerClient
+	AccessAnalyzer         AnalyzerClient
 	Apigateway             ApigatewayClient
 	Apigatewayv2           Apigatewayv2Client
 	ApplicationAutoscaling ApplicationAutoscalingClient
@@ -638,7 +638,7 @@ func initServices(region string, c aws.Config) Services {
 	awsCfg.Region = region
 	return Services{
 		ACM:                    acm.NewFromConfig(awsCfg),
-		Analyzer:               accessanalyzer.NewFromConfig(awsCfg),
+		AccessAnalyzer:         accessanalyzer.NewFromConfig(awsCfg),
 		Apigateway:             apigateway.NewFromConfig(awsCfg),
 		Apigatewayv2:           apigatewayv2.NewFromConfig(awsCfg),
 		ApplicationAutoscaling: applicationautoscaling.NewFromConfig(awsCfg),

@@ -30,6 +30,7 @@ var resources []*recipes.Resource
 
 func main() {
 	resources = append(resources, recipes.ACMResources...)
+	resources = append(resources, recipes.AccessAnalyzerResources...)
 	resources = append(resources, recipes.APIGatewayv2Resources...)
 	resources = append(resources, recipes.ApplicationautoscalingResources...)
 	resources = append(resources, recipes.AppsyncResources...)

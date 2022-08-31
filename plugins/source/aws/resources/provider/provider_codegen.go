@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/module"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/accessanalyzer"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/acm"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/applicationautoscaling"
@@ -36,6 +37,7 @@ func Provider() *provider.Provider {
 			//"iot.security_profiles": 				 iot.IotSecurityProfiles(), //TODO disabled because of api error NotFoundException: No method found matching route security-profiles for http method GET.
 
 			"acm.certificates":                        acm.ACMCertificates(),
+			"accessanalyzer.analyzers":                accessanalyzer.AccessAnalyzerAccessanalyzers(),
 			"apigatewayv2.apis":                       apigatewayv2.Apigatewayv2Apis(),
 			"apigatewayv2.domain_names":               apigatewayv2.Apigatewayv2DomainNames(),
 			"apigatewayv2.vpc_links":                  apigatewayv2.Apigatewayv2VpcLinks(),

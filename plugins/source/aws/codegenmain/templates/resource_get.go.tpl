@@ -29,7 +29,9 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 
 	for {
-		response, err := svc.{{.GetMethod}}(ctx, &input)
+{{if .ItemsCustomOptionsBlock}}		response, err := svc.{{.GetMethod}}(ctx, &input, func(opts *{{.AWSService | ToLower}}.Options) {
+{{.ItemsCustomOptionsBlock}}
+		}){{else}}		response, err := svc.{{.GetMethod}}(ctx, &input){{end}}
 		if err != nil {
 			{{.CustomErrorBlock}}
 			return diag.WrapError(err)

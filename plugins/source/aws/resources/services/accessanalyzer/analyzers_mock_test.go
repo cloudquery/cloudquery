@@ -42,7 +42,7 @@ func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services 
 		}, nil)
 
 	return client.Services{
-		Analyzer: m,
+		AccessAnalyzer: m,
 	}
 }
 
