@@ -30,7 +30,7 @@ Find more information at:
 
 func newCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
-	logFormat := enum.NewEnum([]string{"text", "json"}, "json")
+	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
 	noColor := false
 	logConsole := false
 	noLogFile := false
