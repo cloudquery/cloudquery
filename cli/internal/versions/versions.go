@@ -101,7 +101,7 @@ func (c *Client) readGithubLatest(ctx context.Context, org, pluginType, name str
 	gr := &githubLatestResponse{}
 	err = json.Unmarshal(b, gr)
 	if err != nil {
-		return "", fmt.Errorf("unmarshaling GitHub latest response: %w", err)
+		return "", fmt.Errorf("unmarshaling GitHub latest response %s: %w", url, err)
 	}
 	return gr.TagName, nil
 }
@@ -111,6 +111,7 @@ func (c *Client) doRequest(ctx context.Context, url string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Add("Accept", "application/json")
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
