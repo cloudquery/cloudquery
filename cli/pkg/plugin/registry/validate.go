@@ -58,7 +58,7 @@ NdQkdLbveQ+US4vVAzRFJjRAvGVq14lRxiTreQ==
 
 const checksumSeparator = "  "
 
-func validateChecksumProvider(providerPath string, checksumPath string) error {
+func validateChecksumProvider(providerName string, providerPath string, checksumPath string) error {
 	sha256sum, err := sha256File(providerPath)
 	if err != nil {
 		return err
@@ -75,7 +75,9 @@ func validateChecksumProvider(providerPath string, checksumPath string) error {
 		if len(split) != 2 {
 			return fmt.Errorf("checksum file in incorrect format")
 		}
-		if strings.Contains(split[1], runtime.GOOS) && strings.Contains(split[1], runtime.GOARCH) {
+		nameWithOSAndArch := fmt.Sprintf("%s_%s_%s", providerName, runtime.GOOS, runtime.GOARCH)
+		oldNameWithOSAndArch := fmt.Sprintf("cq-provider-%s", nameWithOSAndArch)
+		if nameWithOSAndArch == split[1] || oldNameWithOSAndArch == split[1] {
 			if split[0] == sha256sum {
 				return nil
 			}
