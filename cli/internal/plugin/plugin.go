@@ -146,9 +146,11 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	// For example:
 	// https://github.com/cloudquery/cloudquery/releases/download/plugins-source-test-v1.1.0/test_darwin_amd64.zip
 	pluginUrl := fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins/source/%s/%s/%s_%s_%s.zip", repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+	archivePath := "plugins/source/" + repo
 	if org != "cloudquery" {
 		// https://github.com/yevgenypats/cq-source-test/releases/download/v1.0.0/cq-source-test_linux_amd64.zip
-		pluginUrl = fmt.Sprintf("https://github.com/%s/%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+		pluginUrl = fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
+		archivePath = "cq-source-" + repo
 	}
 
 	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", pluginUrl, pluginPath)
@@ -159,7 +161,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	if err != nil {
 		return "", fmt.Errorf("failed to open plugin archive: %w", err)
 	}
-	fileInArchive, err := archive.Open("plugins/source/" + repo)
+	fileInArchive, err := archive.Open(archivePath)
 	if err != nil {
 		return "", fmt.Errorf("failed to open plugin archive plugins/source/%s: %w", repo, err)
 	}
@@ -219,10 +221,8 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 	// if err := os.MkdirAll(filepath.Dir(grpcTarget), 0755); err != nil {
 	// 	return nil, errors.Wrapf(err, "failed to create unixpath directory: %s", filepath.Dir(grpcTarget))
 	// }
-	// cmdCtx := context.WithCancel()
 	cmd := exec.CommandContext(ctx, pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
 		"--log-level", p.logger.GetLevel().String(), "--log-format", "json")
-	// reader, writer := io.Pipe()
 	reader, err := cmd.StdoutPipe()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get stdout pipe: %w", err)
@@ -248,8 +248,6 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
 			} else {
 				jsonToLog(structuredLogLine, p.logger)
-				// p.logger.js
-				// p.logger.Output()
 			}
 		}
 	}()
