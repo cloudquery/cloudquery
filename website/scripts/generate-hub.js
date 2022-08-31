@@ -8,7 +8,7 @@ const PLUGINS_DATA = {
   digitalocean: { name: "DigitalOcean" },
   gcp: { name: "GCP" },
   github: { name: "GitHub" },
-  heroku: { name: "Heroku" },
+  // heroku: { name: "Heroku" },
   k8s: { name: "Kubernetes" },
   okta: { name: "Okta" },
   terraform: { name: "Terraform" },
