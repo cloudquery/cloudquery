@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-var APIGatewayv2Resources = parentize(&Resource{
+var APIGatewayv2Resources = combine(parentize(&Resource{
 	DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 	AWSStruct:      &types.Api{},
 	AWSService:     "Apigatewayv2",
@@ -81,4 +81,46 @@ var APIGatewayv2Resources = parentize(&Resource{
 			ItemsStruct:     &apigatewayv2.GetStagesOutput{},
 		},
 	)...,
+),
+	parentize(&Resource{
+		DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
+		AWSStruct:      &types.DomainName{},
+		AWSService:     "Apigatewayv2",
+		Template:       "resource_get",
+		ItemsStruct:    &apigatewayv2.GetDomainNamesOutput{},
+		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		ColumnOverrides: map[string]codegen.ColumnDefinition{
+			"arn": {
+				Type:     schema.TypeString,
+				Resolver: "resolvers.ResolveDomainNameArn",
+			},
+		},
+	},
+		&Resource{
+			AWSStruct:       &types.ApiMapping{},
+			Template:        "resource_get",
+			ItemsStruct:     &apigatewayv2.GetApiMappingsOutput{},
+			ParentFieldName: "DomainName",
+			ColumnOverrides: map[string]codegen.ColumnDefinition{
+				"arn": {
+					Type:     schema.TypeString,
+					Resolver: "resolvers.ResolveApiMappingArn",
+				},
+			},
+		},
+	),
+	&Resource{
+		DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
+		AWSStruct:      &types.VpcLink{},
+		AWSService:     "Apigatewayv2",
+		Template:       "resource_get",
+		ItemsStruct:    &apigatewayv2.GetVpcLinksOutput{},
+		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		ColumnOverrides: map[string]codegen.ColumnDefinition{
+			"arn": {
+				Type:     schema.TypeString,
+				Resolver: "resolvers.ResolveVPCLinkArn",
+			},
+		},
+	},
 )

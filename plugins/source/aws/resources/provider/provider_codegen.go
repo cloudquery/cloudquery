@@ -37,6 +37,8 @@ func Provider() *provider.Provider {
 
 			"acm.certificates":                        acm.ACMCertificates(),
 			"apigatewayv2.apis":                       apigatewayv2.Apigatewayv2Apis(),
+			"apigatewayv2.domain_names":               apigatewayv2.Apigatewayv2DomainNames(),
+			"apigatewayv2.vpc_links":                  apigatewayv2.Apigatewayv2VpcLinks(),
 			"applicationautoscaling.scaling_policies": applicationautoscaling.ApplicationAutoscalingPolicies(),
 			"appsync.graphql_apis":                    appsync.AppSyncGraphqlApis(),
 			"athena.data_catalogs":                    athena.AthenaDataCatalogs(),
