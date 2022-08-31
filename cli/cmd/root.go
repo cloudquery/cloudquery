@@ -117,7 +117,6 @@ func newCmdRoot() *cobra.Command {
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdGenerate(), NewCmdSync(), newCmdDoc())
 	cmd.DisableAutoGenTag = true
-	cmd.SilenceUsage = true
 	return cmd
 }
 
