@@ -55,7 +55,7 @@ branchProtectionRules:
 
     - Linter (plugins/source/heroku)
     - Unit Tests (plugins/source/heroku)
-    - Build Tests (plugins/source/heroku)
+    - Build (plugins/source/heroku)
     - Lint Provider Doc (plugins/source/heroku)
 
     - Linter (plugins/source/k8s)
