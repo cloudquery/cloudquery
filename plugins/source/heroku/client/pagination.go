@@ -10,8 +10,6 @@ import (
 	heroku "github.com/heroku/heroku-go/v5"
 )
 
-var reNextRange = regexp.MustCompile(`(?P<field>\w+) (?P<firstID>[\w\[\]\-]*)\.\.(?P<lastID>[\w\[\]\-]*)`)
-
 // Paginator implements the http.RoundTripper interface to intercept
 // pagination information not supported by the official Heroku SDK. It
 // injects this information into the request context so that resolvers
@@ -19,6 +17,8 @@ var reNextRange = regexp.MustCompile(`(?P<field>\w+) (?P<firstID>[\w\[\]\-]*)\.\
 type Paginator struct {
 	transport http.RoundTripper
 }
+
+var reNextRange = regexp.MustCompile(`(?P<field>\w+) (?P<firstID>[\w\[\]\-]*)\.\.(?P<lastID>[\w\[\]\-]*)`)
 
 // NewPaginator returns a new paginator with the given RoundTripper
 func NewPaginator(t http.RoundTripper) Paginator {
