@@ -20,6 +20,7 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v26
+        sha: ${{ github.event.pull_request.head.sha }}
         with:
           files: |
             website
