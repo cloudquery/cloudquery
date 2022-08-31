@@ -47,6 +47,9 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	pm := plugin.NewPluginManager()
 	for _, sourceSpec := range specReader.GetSources() {
+		if len(sourceSpec.Destinations) == 0 {
+			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
+		}
 		if err := syncConnection(ctx, pm, specReader, sourceSpec); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
