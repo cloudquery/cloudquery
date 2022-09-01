@@ -8,7 +8,7 @@ on:
 jobs:
   check-broken-links:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
@@ -45,7 +45,7 @@ jobs:
         run: |
           set -o pipefail
 
-          npx broken-link-checker -f -r -v -o --filter-level 3 \
+          npx broken-link-checker --requests 50 --host-requests 1 -f -r -v -o --filter-level 3 \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude cloudquery.io/assets/aws_security_group_view.sql \
