@@ -28,7 +28,7 @@ require (
 
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
-	github.com/ProtonMail/go-crypto v0.0.0-20220730123233-d6ffb7692adf
+	github.com/ProtonMail/go-crypto v0.0.0-20220824120805-4b6e5c587895
 	github.com/doug-martin/goqu/v9 v9.18.0
 	github.com/driftprogramming/pgxpoolmock v1.1.0
 	github.com/georgysavva/scany v1.1.0
