@@ -22,7 +22,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/versions"
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
@@ -114,7 +113,7 @@ func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.Source) (
 	case specs.RegistryGithub:
 		return p.downloadSourceGitHub(ctx, spec)
 	default:
-		return "", errors.Errorf("unknown registry: %s", spec.Registry)
+		return "", fmt.Errorf("unknown registry: %s", spec.Registry)
 	}
 }
 

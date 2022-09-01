@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/internal/plugin"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -55,7 +54,7 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	case "destination":
 		return genDestination(cmd, args[1], pluginManager, registry, outputFile)
 	default:
-		return errors.Errorf("unknown type: %s", args[0])
+		return fmt.Errorf("runGen: invalid type %s", args[0])
 	}
 }
 
