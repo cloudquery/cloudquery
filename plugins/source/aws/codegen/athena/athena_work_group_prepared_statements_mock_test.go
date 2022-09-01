@@ -10,8 +10,9 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
-	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
+
+	"github.com/aws/aws-sdk-go-v2/service/athena"
 )
 
 func buildAthenaWorkGroupPreparedStatements(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -47,9 +48,11 @@ func buildAthenaWorkGroupPreparedStatements(t *testing.T, ctrl *gomock.Controlle
 		},
 		gomock.Any(),
 	).Return(
+
 		&athena.GetPreparedStatementOutput{
 			PreparedStatement: &detail,
 		},
+
 		nil,
 	)
 

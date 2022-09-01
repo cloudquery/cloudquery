@@ -33,11 +33,6 @@ func BackupGlobalSettings() *schema.Table {
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdateTime"),
 			},
-			{
-				Name:     "result_metadata",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ResultMetadata"),
-			},
 		},
 	}
 }

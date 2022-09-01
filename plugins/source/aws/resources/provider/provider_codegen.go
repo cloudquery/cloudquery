@@ -50,6 +50,9 @@ func Provider() *provider.Provider {
 			"autoscaling.scheduled_actions":           autoscaling.AutoscalingScheduledActions(),
 			"autoscaling.auto_scaling_groups":         autoscaling.AutoscalingGroups(),
 			"backup.global_settings":                  backup.BackupGlobalSettings(),
+			"backup.region_settings":                  backup.BackupRegionSettings(),
+			"backup.backup_vaults":                    backup.BackupVaults(),
+			"backup.backup_plans":                     backup.BackupBackupPlans(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}

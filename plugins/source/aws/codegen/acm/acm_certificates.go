@@ -8,8 +8,9 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
-	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
+
+	"github.com/aws/aws-sdk-go-v2/service/acm"
 )
 
 func ACMCertificates() *schema.Table {

@@ -287,8 +287,8 @@ func generateResource(r *recipes.Resource, mock bool) {
 	}
 
 	t := reflect.TypeOf(r.AWSStruct).Elem()
-	r.AWSStructName = helpers.Coalesce(r.AWSStructName, t.Name())
-	r.ItemName = helpers.Coalesce(r.ItemName, r.AWSStructName)
+	r.AWSStructName = path.Base(t.PkgPath()) + "." + t.Name() // types.Something or sometimes service.Something
+	r.ItemName = helpers.Coalesce(r.ItemName, t.Name())
 
 	if !mock {
 		r.Imports = quoteImports(r.Imports)

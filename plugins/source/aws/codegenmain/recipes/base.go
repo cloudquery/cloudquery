@@ -57,7 +57,8 @@ type Resource struct {
 	AddTypesImport bool   // add types import regardless of template spec (can lead to double imports)
 	TrimPrefix     string // trim this prefix from all column names
 
-	CustomInputs []string
+	CustomInputs  []string // Custom inputs to the first call (Get or List)
+	CustomInputs2 []string // Custom inputs to the second call (Describe after a List)
 
 	AutoCalculated
 }

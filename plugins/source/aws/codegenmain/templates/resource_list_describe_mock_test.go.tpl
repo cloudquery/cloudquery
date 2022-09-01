@@ -13,7 +13,9 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
+{{if .TypesImport}}
 	"{{.TypesImport}}"
+{{end}}
 {{range .MockImports}}	{{.}}
 {{end}}
 )
@@ -36,7 +38,7 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-  var detail types.{{.AWSStructName}}
+  var detail {{.AWSStructName}}
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}
@@ -53,9 +55,14 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 		},
 		gomock.Any(),
 	).Return(
-		&{{.AWSService | ToLower}}.{{.GetMethod}}Output{
-		  {{.ItemName}}: &detail,
-    },
+{{if eq .ResponseItemsName "."}}
+	&detail,
+{{else}}
+	&{{.AWSService | ToLower}}.{{.GetMethod}}Output{
+	{{.ItemName}}: &detail,
+	},
+{{end}}
+
 		nil,
 	)
 
