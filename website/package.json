@@ -18,7 +18,7 @@
   "license": "MPL-2.0",
   "dependencies": {
     "@heroicons/react": "1.0.6",
-    "copy-to-clipboard": "3.3.1",
+    "copy-to-clipboard": "3.3.2",
     "isomorphic-unfetch": "3.1.0",
     "next": "12.2.4",
     "next-sitemap": "3.1.19",
