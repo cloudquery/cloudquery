@@ -2,11 +2,11 @@
 crash.log
 .idea
 .vscode
+cover.out
 cloudquery
 cloudquery.db
 cloudquery.zip
 /cloudquery.yml
-policy.yml
 dist/
 vendor/
 bin/
@@ -15,9 +15,6 @@ bin/
 .terraform*
 *.log
 /.cq/
-/pkg/policy/tests/output/
-/pkg/policy/cq/*
-/pkg/ui/console/.cq/*
 database-data/*
 dest/*
 outfile
