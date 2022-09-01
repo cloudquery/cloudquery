@@ -130,6 +130,10 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	}
 	_ = bar.Finish()
 	fmt.Println("Fetch completed successfully.")
-	fmt.Printf("Summary: Resources: %d FailedWrites: %d\n", totalResources, failedWrites)
+	fmt.Printf("Summary: Resources: %d Failed Writes: %d, Fetch Errors: %d, Fetch Warnings: %d\n",
+		totalResources, failedWrites, sourcePlugin.Errors(), sourcePlugin.Warnings())
+	if sourcePlugin.Errors() > 0 || sourcePlugin.Warnings() > 0 || failedWrites > 0 {
+		fmt.Println("Please check the logs for more details on errors/warnings.")
+	}
 	return nil
 }
