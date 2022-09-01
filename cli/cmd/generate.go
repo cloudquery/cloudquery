@@ -2,8 +2,10 @@ package cmd
 
 import (
 	"bufio"
+	"embed"
 	"fmt"
 	"os"
+	"text/template"
 
 	"strings"
 
@@ -13,6 +15,9 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
+
+//go:embed templates/*.go.tpl
+var templatesFS embed.FS
 
 const (
 	initShort   = "Generate initial config file for source and destination plugins"
@@ -73,25 +78,38 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, regist
 		Registry: registry,
 		Version:  version,
 	}
+	sourceSpec.SetDefaults()
+
 	plugin, err := pm.NewSourcePlugin(cmd.Context(), sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to create source plugin: %w", err)
 	}
 	defer plugin.Close()
 	client := plugin.GetClient()
+
+	name, err := client.Name(cmd.Context())
+	if err != nil {
+		return fmt.Errorf("failed to get plugin name: %w", err)
+	}
+	sourceSpec.Name = name
+
+	version, err = client.Version(cmd.Context())
+	if err != nil {
+		return fmt.Errorf("failed to get plugin name: %w", err)
+	}
+	sourceSpec.Version = version
+
 	cfg, err := client.ExampleConfig(cmd.Context())
 	if err != nil {
 		return fmt.Errorf("failed to get example config: %w", err)
 	}
+	sourceSpec.Spec = cfg
+
 	configPath := outputFile
 	if configPath == "" {
-		name, err := client.Name(cmd.Context())
-		if err != nil {
-			return fmt.Errorf("failed to get plugin name: %w", err)
-		}
 		configPath = name + ".yml"
 	}
-	err = writeFile(configPath, cfg)
+	err = writeSource(configPath, sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
@@ -105,25 +123,37 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 		Path:     path,
 		Registry: registry,
 	}
+	destSpec.SetDefaults()
+
 	destPlugin, err := pm.NewDestinationPlugin(cmd.Context(), destSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get plugin client: %w", err)
 	}
 	defer destPlugin.Close()
 	client := destPlugin.GetClient()
+	name, err := client.Name(cmd.Context())
+	if err != nil {
+		return fmt.Errorf("failed to get plugin name: %w", err)
+	}
+	destSpec.Name = name
+
+	version, err := client.Version(cmd.Context())
+	if err != nil {
+		return fmt.Errorf("failed to get plugin name: %w", err)
+	}
+	destSpec.Version = version
+
 	cfg, err := client.GetExampleConfig(cmd.Context())
 	if err != nil {
 		return fmt.Errorf("failed to get example config: %w", err)
 	}
+	destSpec.Spec = cfg
+
 	configPath := outputFile
 	if configPath == "" {
-		name, err := client.Name(cmd.Context())
-		if err != nil {
-			return fmt.Errorf("failed to get plugin name: %w", err)
-		}
 		configPath = name + ".yml"
 	}
-	err = writeFile(configPath, cfg)
+	err = writeDestination(configPath, destSpec)
 	if err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
@@ -131,16 +161,37 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 	return nil
 }
 
-func writeFile(path, content string) error {
+func writeSource(path string, sourceSpec specs.Source) error {
+	return writeConfig(path, "source.go.tpl", sourceSpec)
+}
+
+func writeDestination(path string, destinationSpec specs.Destination) error {
+	return writeConfig(path, "destination.go.tpl", destinationSpec)
+}
+
+func writeConfig(path, cfgTemplate string, spec interface{}) error {
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to create file: %w", err)
 	}
 	defer f.Close()
-	w := bufio.NewWriter(f)
-	_, err = w.WriteString(content)
+
+	tpl, err := template.New(cfgTemplate).Funcs(template.FuncMap{
+		"indent": indentSpaces,
+	}).ParseFS(templatesFS, "templates/"+cfgTemplate)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to parse template: %w", err)
+	}
+
+	w := bufio.NewWriter(f)
+	err = tpl.Execute(w, spec)
+	if err != nil {
+		return fmt.Errorf("failed to execute template: %w", err)
 	}
 	return w.Flush()
+}
+
+func indentSpaces(text string, spaces int) string {
+	s := strings.Repeat(" ", spaces)
+	return s + strings.ReplaceAll(text, "\n", "\n"+s)
 }

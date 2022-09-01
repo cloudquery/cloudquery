@@ -4,10 +4,69 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
 )
+
+const wantSourceConfig = `
+kind: source
+spec:
+  # Name of the plugin.
+  name: "test"
+
+  # Version of the plugin to use.
+  version: "development"
+
+  # Registry to use (one of "github", "local" or "grpc").
+  registry: "github"
+
+  # Path to plugin. Required format depends on the registry.
+  path: "cloudquery/test"
+
+  # List of tables to sync.
+  tables: ["*"]
+
+  ## Tables to skip during sync. Optional.
+  # skip_tables: []
+
+  # Names of destination plugins to sync to.
+  destinations: []
+
+  ## Approximate cap on number of requests to perform concurrently. Optional.
+  # max_goroutines: 5
+
+  # Plugin-specific configuration.
+  spec:
+    
+    # This is an example config file for the test plugin.
+    account_ids: []
+`
+
+const wantDestinationConfig = `
+kind: destination
+spec:
+  # Name of the plugin.
+  name: "postgresql"
+
+  # Version of the plugin to use.
+  version: "v0.0.1"
+
+  # Registry to use (one of "github", "local" or "grpc").
+  registry: "github"
+
+  # Path to plugin. Required format depends on the registry.
+  path: "cloudquery/postgresql"
+
+  # Write mode (either "overwrite" or "append").
+  write_mode: "append"
+
+  # Plugin-specific configuration.
+  spec:
+    
+    connection_string: "postgresql://user:password@localhost:5432/dbname"
+`
 
 func TestGenerate(t *testing.T) {
 	tmpdir, tmpErr := os.MkdirTemp("", "generate_test_*")
@@ -16,8 +75,8 @@ func TestGenerate(t *testing.T) {
 	}
 	defer os.RemoveAll(tmpdir)
 
-	t.Run("with output file", func(t *testing.T) {
-		output := path.Join(tmpdir, "test.yml")
+	t.Run("generate source", func(t *testing.T) {
+		output := path.Join(tmpdir, "test-source.yml")
 		cmd := newCmdRoot()
 		cmd.SetArgs([]string{"generate", "source", "test", "--output", output})
 		if err := cmd.Execute(); err != nil {
@@ -29,12 +88,35 @@ func TestGenerate(t *testing.T) {
 		if err != nil {
 			t.Fatalf("error reading config file output: %v ", err)
 		}
-		wantConfig := `
-# This is an example config file for the test plugin.
-account_ids: []
-`
-		if diff := cmp.Diff(string(cfg), wantConfig); diff != "" {
-			t.Errorf("generated config not as expected (+got, -want): %v", diff)
+		cfgStr := strings.TrimSpace(string(cfg))
+		want := strings.TrimSpace(wantSourceConfig)
+		if diff := cmp.Diff(cfgStr, want); diff != "" {
+			t.Errorf("generated source config not as expected (-got, +want): %v", diff)
+		}
+	})
+
+	t.Run("generate destination", func(t *testing.T) {
+		// TODO: Change this to use a test destination plugin when we have one.
+		//       For now, this test can be manually run against the postgresql
+		//       plugin by commenting out this skip line.
+		t.Skip()
+
+		output := path.Join(tmpdir, "test-destination.yml")
+		cmd := newCmdRoot()
+		cmd.SetArgs([]string{"generate", "destination", "postgresql", "--output", output})
+		if err := cmd.Execute(); err != nil {
+			t.Fatal(err)
+		}
+
+		// check the generated config
+		cfg, err := ioutil.ReadFile(output)
+		if err != nil {
+			t.Fatalf("error reading config file output: %v ", err)
+		}
+		cfgStr := strings.TrimSpace(string(cfg))
+		want := strings.TrimSpace(wantDestinationConfig)
+		if diff := cmp.Diff(cfgStr, want); diff != "" {
+			t.Errorf("generated source config not as expected (-got, +want): %v", diff)
 		}
 	})
 }
