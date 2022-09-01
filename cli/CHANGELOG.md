@@ -4,6 +4,16 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.32.11](https://github.com/cloudquery/cloudquery/compare/cli/v0.32.10...cli/v0.32.11) (2022-09-01)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/hairyhenderson/go-fsimpl digest to dc4ac0a ([#1650](https://github.com/cloudquery/cloudquery/issues/1650)) ([9222b5a](https://github.com/cloudquery/cloudquery/commit/9222b5aaadcf3a81fcf5d6d723755f48398a0797))
+* **deps:** Update github.com/ProtonMail/go-crypto digest to 4b6e5c5 ([#1649](https://github.com/cloudquery/cloudquery/issues/1649)) ([c71d859](https://github.com/cloudquery/cloudquery/commit/c71d85915f9a80a589d5942728ac15233b2dff49))
+* **deps:** Update module github.com/hashicorp/go-plugin to v1.4.5 ([#1665](https://github.com/cloudquery/cloudquery/issues/1665)) ([6107aef](https://github.com/cloudquery/cloudquery/commit/6107aef96677e3b44011e8865e47b64d517ae4de))
+* **deps:** Update module github.com/mattn/go-isatty to v0.0.16 ([#1666](https://github.com/cloudquery/cloudquery/issues/1666)) ([44f0998](https://github.com/cloudquery/cloudquery/commit/44f099875101c42697b4fe9bf4d4fedcc07a9d72))
+
 ## [0.32.10](https://github.com/cloudquery/cloudquery/compare/cli/v0.32.9...cli/v0.32.10) (2022-08-31)
 
 
