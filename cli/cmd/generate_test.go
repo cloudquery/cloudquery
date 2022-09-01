@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"gopkg.in/yaml.v3"
+	"github.com/google/go-cmp/cmp"
 	"io/ioutil"
 	"os"
 	"path"
@@ -23,15 +23,17 @@ func TestGenerate(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		// sanity check that valid yaml has been produced
-		var cfg interface{}
-		yamlFile, err := ioutil.ReadFile(output)
+		// check the generated config
+		cfg, err := ioutil.ReadFile(output)
 		if err != nil {
 			t.Fatalf("error reading config file output: %v ", err)
 		}
-		err = yaml.Unmarshal(yamlFile, &cfg)
-		if err != nil {
-			t.Fatalf("error unmarshaling config file: %v", err)
+		wantConfig := `
+# This is an example config file for the test plugin.
+account_ids: []
+`
+		if diff := cmp.Diff(string(cfg), wantConfig); diff != "" {
+			t.Errorf("generated config not as expected (+got, -want): %v", diff)
 		}
 	})
 }

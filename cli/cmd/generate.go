@@ -80,24 +80,23 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, regist
 	}
 	defer plugin.Close()
 	client := plugin.GetClient()
-	name, err := client.Name(cmd.Context())
-	if err != nil {
-		return errors.Wrap(err, "failed to get plugin name")
-	}
 	cfg, err := client.ExampleConfig(cmd.Context())
 	if err != nil {
-		return errors.Wrap(err, "failed to get example config")
+		return fmt.Errorf("failed to get example config: %w", err)
 	}
-
-	configPath := name + ".yml"
-	if outputFile != "" {
-		configPath = outputFile
+	configPath := outputFile
+	if outputFile == "" {
+		name, err := client.Name(cmd.Context())
+		if err != nil {
+			return fmt.Errorf("failed to get plugin name: %w", err)
+		}
+		configPath = name + ".yml"
 	}
 	err = writeFile(configPath, cfg)
 	if err != nil {
-		return errors.Wrap(err, "failed to write file")
+		return fmt.Errorf("failed to write file: %w", err)
 	}
-	fmt.Fprintln(os.Stderr, "✅ Source plugin config written to "+configPath)
+	fmt.Fprintln(os.Stderr, "Source plugin config successfully written to "+configPath)
 	return nil
 }
 
@@ -109,28 +108,27 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 	}
 	destPlugin, err := pm.NewDestinationPlugin(cmd.Context(), destSpec)
 	if err != nil {
-		return errors.Wrap(err, "failed to get plugin client")
+		return fmt.Errorf("failed to get plugin client: %w", err)
 	}
 	defer destPlugin.Close()
 	client := destPlugin.GetClient()
-	name, err := client.Name(cmd.Context())
-	if err != nil {
-		return errors.Wrap(err, "failed to get plugin name")
-	}
 	cfg, err := client.GetExampleConfig(cmd.Context())
 	if err != nil {
-		return errors.Wrap(err, "failed to get example config")
+		return fmt.Errorf("failed to get example config: %w", err)
 	}
-
-	configPath := name + ".yml"
-	if outputFile != "" {
-		configPath = outputFile
+	configPath := outputFile
+	if outputFile == "" {
+		name, err := client.Name(cmd.Context())
+		if err != nil {
+			return fmt.Errorf("failed to get plugin name: %w", err)
+		}
+		configPath = name + ".yml"
 	}
 	err = writeFile(configPath, cfg)
 	if err != nil {
-		return errors.Wrap(err, "failed to write file")
+		return fmt.Errorf("failed to write file: %w", err)
 	}
-	fmt.Fprintln(os.Stderr, "✅ Destination plugin config written to "+configPath)
+	fmt.Fprintln(os.Stderr, "Destination plugin config successfully written to "+configPath)
 	return nil
 }
 
