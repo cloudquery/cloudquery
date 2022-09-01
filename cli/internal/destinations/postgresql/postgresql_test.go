@@ -110,19 +110,19 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 			},
 		},
 	); err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to initialize client: %v", err)
 	}
 
 	// check migration logic
 	if err := c.Drop(ctx, createTablesTests); err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to drop tables: %v", err)
 	}
 	if err := c.Migrate(ctx, createTablesTests); err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to migrate tables: %v", err)
 	}
 	// test that calling migrate twice works
 	if err := c.Migrate(ctx, createTablesTests); err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to migrate tables second time: %v", err)
 	}
 	// check table migration
 	createTablesTests[1].Columns = append(createTablesTests[1].Columns, schema.Column{
@@ -130,10 +130,17 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 		Type: schema.TypeMacAddrArray,
 	})
 	if err := c.Migrate(ctx, createTablesTests); err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to migrate tables with different column: %v", err)
 	}
 	// check migration without column does nothing
 	createTablesTests[1].Columns = createTablesTests[1].Columns[:len(createTablesTests[1].Columns)-1]
+	if err := c.Migrate(ctx, createTablesTests); err != nil {
+		t.Fatalf("failed to migrate tables with missing column: %v", err)
+	}
+	createTablesTests[1].Columns[3].CreationOptions.PrimaryKey = true
+	if err := c.Migrate(ctx, createTablesTests); err != nil {
+		t.Fatalf("failed to migrate tables with different pk: %v", err)
+	}
 
 	data := map[string]interface{}{
 		"id":                    "9a6011b7-c5ee-4b55-95a6-37ce5e02a5a0",
@@ -155,7 +162,7 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 		"mac_addr_array_column": nil,
 	}
 	if err := c.Write(ctx, "simple_table", data); err != nil {
-		t.Fatal(err)
+		t.Fatalf("failed to write data: %v", err)
 	}
 	var results []map[string]interface{}
 	rows, err := c.conn.Query(ctx, "SELECT json_agg(simple_table.*) FROM simple_table")
