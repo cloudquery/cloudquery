@@ -14,7 +14,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-On August 3rd, 2021, USA's National Security Agency (NSA) and the Cybersecurity and Infrastructure Security Agency (CISA) released, [“Kubernetes Hardening Guidance”](https://media.defense.gov/2021/Aug/03/2002820425/-1/-1/1/CTR_KUBERNETES%20HARDENING%20GUIDANCE.PDF). The guide describes in great detail the challenges in the security k8s environment, base threat model and guidance on how to provide secure configuration to minimize risk.
+On August 29th, 2022, USA's National Security Agency (NSA) and the Cybersecurity and Infrastructure Security Agency (CISA) released, [“Kubernetes Hardening Guidance”](https://media.defense.gov/2022/Aug/29/2003066362/-1/-1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF). The guide describes in great detail the challenges in the security k8s environment, base threat model and guidance on how to provide secure configuration to minimize risk.
 
 As with any security guidelines, what is missing, or up to the user/security team, is how to validate, automate, customize, and implement those guidelines. Kubernetes environments vary widely, depending on usage, version, managed version (like GKE, EKS), requirements and capacity of the security team. All those factors will impact how you would want to implement those guidelines.
 

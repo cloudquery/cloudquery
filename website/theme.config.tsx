@@ -1,19 +1,30 @@
 import { DocsThemeConfig } from "nextra-theme-docs";
 import { Footer } from "./components/Footer";
+import { EditLink } from "./components/EditLink";
 import CloudQueryLogo from "./components/logos/CloudQuery";
 
 const theme: DocsThemeConfig = {
   github: "https://github.com/cloudquery/cloudquery",
-  projectLink: "https://github.com/cloudquery/cloudquery",
+  project: {
+    link: "https://github.com/cloudquery/cloudquery",
+  },
+  sidebar: {
+    defaultMenuCollapsed: true,
+  },
+  toc: {
+    float: true,
+  },
   docsRepositoryBase:
     "https://github.com/cloudquery/cloudquery/blob/main/website/pages",
   titleSuffix: " | CloudQuery",
-  search: true,
-  defaultMenuCollapsed: true,
-  floatTOC: true,
+  search: {},
   font: false,
-  projectChatLink: "https://www.cloudquery.io/discord",
-  feedbackLink: "Question? Give us feedback →",
+  projectChat: {
+    link: "https://www.cloudquery.io/discord",
+  },
+  feedback: {
+    link: "Question? Give us feedback →",
+  },
   logo: function LogoActual() {
     return (
       <>
@@ -52,9 +63,11 @@ const theme: DocsThemeConfig = {
       <meta property="og:site_name" content="CloudQuery" />
     </>
   ),
-  footerEditLink: "Edit this page on GitHub",
-  footerText: () => {
-    return <Footer />;
+  footer: {
+    text: <Footer />,
+  },
+  editLink: {
+    component: (props) => <EditLink {...props} />,
   },
   nextThemes: {
     defaultTheme: "dark",

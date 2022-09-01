@@ -32,17 +32,17 @@ export function BlogIndex({ more = "Read more" }) {
               style={{ color: "inherit", textDecoration: "none" }}
               className="block font-semibold mt-8 text-2xl"
             >
-              {page.meta?.title || page.frontMatter?.title || page.name}
+              {page.meta?.title || page.meta?.title || page.name}
             </a>
           </Link>
           <p className="opacity-80" style={{ marginTop: ".5rem" }}>
-            {page.frontMatter?.description}{" "}
+            {page.meta?.description}{" "}
             <span className="inline-block">
               <Link href={page.route}>{more + " →"}</Link>
             </span>
           </p>
-          {page.frontMatter?.date ? (
-            <p className="opacity-50 text-sm">{page.frontMatter.date}</p>
+          {page.meta?.date ? (
+            <p className="opacity-50 text-sm">{page.meta.date}</p>
           ) : null}
         </div>
       );

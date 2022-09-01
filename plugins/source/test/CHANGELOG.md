@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins/source/test/v1.1.0...plugins/source/test/v1.1.1) (2022-09-01)
+
+
+### Bug Fixes
+
+* Fix case of CLI in readme ([#1693](https://github.com/cloudquery/cloudquery/issues/1693)) ([13f1e3f](https://github.com/cloudquery/cloudquery/commit/13f1e3f44cbccc220fa7d0a74c6b6e76dc87edcf))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/test/v1.0.0...plugins/source/test/v1.1.0) (2022-08-30)
 
 
