@@ -6,8 +6,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
-var AppsyncResources = []*Resource{
-	{
+func init() {
+	add(&Resource{
 		DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn, NamespaceColumn},
 		AWSStruct:      &types.GraphqlApi{},
 		AWSService:     "AppSync",
@@ -16,4 +16,5 @@ var AppsyncResources = []*Resource{
 		TrimPrefix:     "api_",
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},
+	)
 }

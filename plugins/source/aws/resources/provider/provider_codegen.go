@@ -38,8 +38,8 @@ func Provider() *provider.Provider {
 		ResourceMap: map[string]*schema.Table{
 			//"iot.security_profiles": 				 iot.IotSecurityProfiles(), //TODO disabled because of api error NotFoundException: No method found matching route security-profiles for http method GET.
 
-			"acm.certificates":                        acm.ACMCertificates(),
 			"accessanalyzer.analyzers":                accessanalyzer.AccessAnalyzerAccessanalyzers(),
+			"acm.certificates":                        acm.ACMCertificates(),
 			"apigatewayv2.apis":                       apigatewayv2.Apigatewayv2Apis(),
 			"apigatewayv2.domain_names":               apigatewayv2.Apigatewayv2DomainNames(),
 			"apigatewayv2.vpc_links":                  apigatewayv2.Apigatewayv2VpcLinks(),

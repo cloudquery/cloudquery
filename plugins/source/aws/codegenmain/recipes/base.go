@@ -107,7 +107,13 @@ var (
 		Type:        schema.TypeString,
 		Resolver:    "client.ResolveAWSNamespace",
 	}
+
+	AllResources []*Resource
 )
+
+func add(list ...*Resource) {
+	AllResources = append(AllResources, list...)
+}
 
 // parentize adds the given parent to each resource (in subs) and returns the combined list
 func parentize(parent *Resource, subs ...*Resource) []*Resource {

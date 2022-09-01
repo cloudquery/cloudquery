@@ -6,31 +6,33 @@ import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
-var CloudformationResources = parentize(&Resource{
-	DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
-	AWSStruct:      &types.Stack{},
-	AWSService:     "Cloudformation",
-	Template:       "resource_get",
-	ItemsStruct:    &cloudformation.DescribeStacksOutput{},
-	ColumnOverrides: map[string]codegen.ColumnDefinition{
-		"stack_id": {
-			Name: "arn",
+func init() {
+	add(parentize(&Resource{
+		DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
+		AWSStruct:      &types.Stack{},
+		AWSService:     "Cloudformation",
+		Template:       "resource_get",
+		ItemsStruct:    &cloudformation.DescribeStacksOutput{},
+		ColumnOverrides: map[string]codegen.ColumnDefinition{
+			"stack_id": {
+				Name: "arn",
+			},
 		},
 	},
-},
-	&Resource{
-		AWSStruct:       &types.StackResourceSummary{},
-		Template:        "resource_get",
-		ItemsStruct:     &cloudformation.ListStackResourcesOutput{},
-		ParentFieldName: "StackName",
-		CustomErrorBlock: `
+		&Resource{
+			AWSStruct:       &types.StackResourceSummary{},
+			Template:        "resource_get",
+			ItemsStruct:     &cloudformation.ListStackResourcesOutput{},
+			ParentFieldName: "StackName",
+			CustomErrorBlock: `
 			if client.IsErrorRegex(err, "ValidationError", resolvers.ValidStackNotFoundRegex) {
 				meta.Logger().Debug("received ValidationError on ListStackResources, stack does not exist", "region", cl.Region, "err", err)
 				return nil
 			}
 `,
-		Imports: []string{
-			`resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/cloudformation"`,
+			Imports: []string{
+				`resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/cloudformation"`,
+			},
 		},
-	},
-)
+	)...)
+}

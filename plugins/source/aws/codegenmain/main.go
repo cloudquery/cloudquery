@@ -28,18 +28,8 @@ const useFullStruct = "." // special case to use full struct instead of a member
 //go:embed templates/*.go.tpl
 var awsTemplatesFS embed.FS
 
-var resources []*recipes.Resource
-
 func main() {
-	resources = append(resources, recipes.ACMResources...)
-	resources = append(resources, recipes.AccessAnalyzerResources...)
-	resources = append(resources, recipes.APIGatewayv2Resources...)
-	resources = append(resources, recipes.ApplicationautoscalingResources...)
-	resources = append(resources, recipes.AppsyncResources...)
-	resources = append(resources, recipes.AthenaResources...)
-	resources = append(resources, recipes.AutoscalingResources...)
-	resources = append(resources, recipes.BackupResources...)
-	resources = append(resources, recipes.CloudformationResources...)
+	resources := recipes.AllResources
 
 	for _, r := range resources {
 		generateResource(r, false)

@@ -7,8 +7,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-var ACMResources = []*Resource{
-	{
+func init() {
+	add(&Resource{
 		DefaultColumns:     []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 		AWSStruct:          &types.CertificateDetail{},
 		AWSService:         "ACM",
@@ -31,4 +31,5 @@ var ACMResources = []*Resource{
 			},
 		},
 	},
+	)
 }

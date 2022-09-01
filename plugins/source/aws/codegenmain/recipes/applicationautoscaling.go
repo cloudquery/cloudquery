@@ -6,8 +6,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/codegen"
 )
 
-var ApplicationautoscalingResources = []*Resource{
-	{
+func init() {
+	add(&Resource{
 		DefaultColumns:             []codegen.ColumnDefinition{AccountIdColumn, RegionColumn, NamespaceColumn},
 		AWSStruct:                  &types.ScalingPolicy{},
 		AWSService:                 "ApplicationAutoscaling",
@@ -22,4 +22,5 @@ var ApplicationautoscalingResources = []*Resource{
 		AddTypesImport: true,
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},
+	)
 }
