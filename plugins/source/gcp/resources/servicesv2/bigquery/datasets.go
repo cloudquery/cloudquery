@@ -15,7 +15,7 @@ func Datasets() *schema.Table {
 	return &schema.Table{
 		Name:                "gcp_bigquery_datasets",
 		Resolver:            fetchDatasets,
-		PreResourceResolver: preFetchDatasets,
+		PreResourceResolver: getDataset,
 		Multiplex:           client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -145,9 +145,8 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	return nil
 }
 
-func preFetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+func getDataset(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
-	
 	item, err := c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()
 	if err != nil {
 		return errors.WithStack(err)

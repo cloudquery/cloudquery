@@ -35,7 +35,7 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 }
 
 {{if .GetFunction}}
-func preFetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
 	item, err := {{.GetFunction}}
 	if err != nil {

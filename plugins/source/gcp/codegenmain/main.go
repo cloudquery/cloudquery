@@ -121,7 +121,7 @@ func generateResource(r codegen.Resource, mock bool) {
 	r.Table.Multiplex = "client.ProjectMultiplex"
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.GetFunction != "" {
-		r.Table.PreResourceResolver = "preFetch" + strcase.ToCamel(r.SubService)
+		r.Table.PreResourceResolver = "get" + strcase.ToCamel(r.StructName)
 	}
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {
