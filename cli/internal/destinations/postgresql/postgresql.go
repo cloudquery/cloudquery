@@ -173,9 +173,6 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 		var columnName pgx.Identifier = []string{c.Name}
 		fieldDef := columnName.Sanitize() + " " + pgType
-		if c.CreationOptions.Unique {
-			fieldDef += " UNIQUE"
-		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
@@ -285,9 +282,6 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			var tableName pgx.Identifier = []string{table.Name}
 			var columnName pgx.Identifier = []string{c.Name}
 			sql := "alter table " + tableName.Sanitize() + " add column " + columnName.Sanitize() + " " + columnType
-			if c.CreationOptions.Unique {
-				sql += " unique"
-			}
 			if c.CreationOptions.PrimaryKey {
 				reCreatePrimaryKeys = true
 			}
@@ -310,34 +304,11 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 				return fmt.Errorf("failed to drop column %s on table %s: %w", c.Name, table.Name, err)
 			}
 			sql = "alter table " + tableName.Sanitize() + " add column " + columnName.Sanitize() + " " + columnType
-			if c.CreationOptions.Unique {
-				sql += " unique"
-			}
 			if _, err := p.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", c.Name, table.Name, err)
 			}
 		} else {
 			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Str("type", c.Type.String()).Msg("Column exists with the same type")
-			// if column is the same check if any difference on constraints
-			if pgColumnsConstraints.isColumnUnique(c.Name) && !c.CreationOptions.Unique {
-				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist with unique constraint, removing")
-				// we are using default pg unique constraint nameing
-				constraint_name := fmt.Sprintf("%s_%s_key", table.Name, c.Name)
-				if _, err := p.conn.Exec(ctx, sqlAlterTableAddUniqueConstraint+constraint_name, table.Name, c.Name); err != nil {
-					return fmt.Errorf("failed to add unique constraint on column %s on table %s: %w", c.Name, table.Name, err)
-				}
-			}
-
-			if !pgColumnsConstraints.isColumnUnique(c.Name) && c.CreationOptions.Unique {
-				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist without unique constraint, adding")
-				constraint_name := fmt.Sprintf("%s_%s_key", table.Name, c.Name)
-				if _, err := p.conn.Exec(ctx, sqlAlterTableDropUniqueConstraint+constraint_name, table.Name, c.Name); err != nil {
-					fmt.Println(c.Name)
-					fmt.Println(pgColumnsConstraints.isColumnUnique(c.Name))
-					fmt.Println(c.CreationOptions.Unique)
-					return fmt.Errorf("failed to drop unique constraint on column %s on table %s: %w", c.Name, table.Name, err)
-				}
-			}
 
 			if pgColumnsConstraints.isColumnPrimaryKey(c.Name) != c.CreationOptions.PrimaryKey {
 				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist with different primary keys")
