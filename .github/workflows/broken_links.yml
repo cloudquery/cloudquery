@@ -1,9 +1,21 @@
 name: Check for broken links
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron:  "0 12 * * *"
   pull_request:
+    branches:
+      - main
     paths:
+      - .github/workflows/broken_links.yml
+      - plugins/**/docs/**
       - "website/**"
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
 
 jobs:
   check-broken-links:
@@ -13,25 +25,26 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v3
+      - id: check-labels
+        if: github.event_name == 'pull_request'
+        uses: mheap/github-action-required-labels@a0c3d802afdc992e48f03bc90c0a1ee51a8f6b28
         with:
-          fetch-depth: 2
+          mode: exactly
+          count: 1
+          labels: "check_broken_links"
+          exit_type: success
+
+      - uses: actions/checkout@v3
+        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
 
       - name: Setup node
         uses: actions/setup-node@v3
+        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
         with:
           node-version: "lts/*"
 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v26
-        with:
-          files: |
-            website
-            plugins/**/docs/**
-
       - name: Waiting for Vercel Preview
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
         uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
         id: vercel-deployment
         with:
@@ -41,7 +54,7 @@ jobs:
           check_interval: 10
 
       - name: Check for broken links
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
         run: |
           set -o pipefail
 
