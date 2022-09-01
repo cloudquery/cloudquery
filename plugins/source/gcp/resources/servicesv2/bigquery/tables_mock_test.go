@@ -18,20 +18,20 @@ import (
 	"google.golang.org/api/option"
 )
 
-type MockDatasetsResult struct {
-	Datasets []*bigquery.Dataset `json:"datasets,omitempty"`
+type MockTablesResult struct {
+	Tables []*bigquery.Table `json:"tables,omitempty"`
 }
 
-func createDatasets() (*client.Services, error) {
-	var item bigquery.Dataset
+func createTables() (*client.Services, error) {
+	var item bigquery.Table
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
 
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockDatasetsResult{
-			Datasets: []*bigquery.Dataset{&item},
+		resp := &MockTablesResult{
+			Tables: []*bigquery.Table{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {
@@ -53,6 +53,6 @@ func createDatasets() (*client.Services, error) {
 	}, nil
 }
 
-func TestDatasets(t *testing.T) {
-	client.MockTestHelper(t, Datasets(), createDatasets, client.TestOptions{})
+func TestTables(t *testing.T) {
+	client.MockTestHelper(t, Tables(), createTables, client.TestOptions{})
 }

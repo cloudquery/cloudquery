@@ -113,12 +113,16 @@ func generateResource(r codegen.Resource, mock bool) {
 		r.Struct,
 		sdkgen.WithSkipFields(r.SkipFields),
 		sdkgen.WithOverrideColumns(r.OverrideColumns),
-		sdkgen.WithExtraColumns(r.DefaultColumns))
+		sdkgen.WithExtraColumns(r.DefaultColumns),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 	r.Table.Multiplex = "client.ProjectMultiplex"
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
+	if r.GetFunction != "" {
+		r.Table.PreResourceResolver = "preFetch" + strcase.ToCamel(r.SubService)
+	}
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {
 		mainTemplate = r.Template + "_mock.go.tpl"

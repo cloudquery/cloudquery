@@ -14,6 +14,8 @@ type Resource struct {
 	Table *codegen.TableDefinition
 	// Struct that will be used to generate the cloudquery table
 	Struct interface{}
+	// GetFunction
+	GetFunction string
 	// StructName is the name of the Struct because it can't be inferred by reflection
 	StructName string
 	// Service is the name of the gcp service the struct/api is residing

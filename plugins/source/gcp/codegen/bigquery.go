@@ -9,9 +9,14 @@ import (
 
 var bigqueryResources = []*Resource{
 	{
-		SubService: "datasets",
-		Struct:     &bigquery.DatasetListDatasets{},
+		SubService:  "datasets",
+		Struct:      &bigquery.Dataset{},
+		GetFunction: "c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()",
 	},
+	// {
+	// 	SubService: "tables",
+	// 	Struct:     &bigquery.Table{},
+	// },
 }
 
 func BigqueryResources() []*Resource {

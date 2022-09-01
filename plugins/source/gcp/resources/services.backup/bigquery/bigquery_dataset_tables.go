@@ -443,7 +443,7 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 }
 
 func fetchBigqueryDatasetTables(ctx context.Context, c *client.Client, p *bigquery.Dataset, t *bigquery.TableListTables, res chan<- interface{}) error {
-	item, err := c.Services.BigQuery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId).Do()
+	item, err := c.Services.Bigquery.Tables.Get(c.ProjectId, p.DatasetReference.DatasetId, t.TableReference.TableId).Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}

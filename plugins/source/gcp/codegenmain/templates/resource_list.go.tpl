@@ -33,3 +33,15 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 	}
 	return nil
 }
+
+{{if .GetFunction}}
+func preFetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+	c := meta.(*client.Client)
+	item, err := {{.GetFunction}}
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	r.SetItem(item)
+	return nil
+}
+{{end}}

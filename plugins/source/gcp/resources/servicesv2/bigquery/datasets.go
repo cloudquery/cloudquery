@@ -4,16 +4,19 @@ package bigquery
 
 import (
 	"context"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
+	"google.golang.org/api/bigquery/v2"
 )
 
 func Datasets() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_bigquery_datasets",
-		Resolver:  fetchDatasets,
-		Multiplex: client.ProjectMultiplex,
+		Name:                "gcp_bigquery_datasets",
+		Resolver:            fetchDatasets,
+		PreResourceResolver: preFetchDatasets,
+		Multiplex:           client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -21,9 +24,49 @@ func Datasets() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name:     "access",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Access"),
+			},
+			{
+				Name:     "creation_time",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
 				Name:     "dataset_reference",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("DatasetReference"),
+			},
+			{
+				Name:     "default_collation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DefaultCollation"),
+			},
+			{
+				Name:     "default_encryption_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DefaultEncryptionConfiguration"),
+			},
+			{
+				Name:     "default_partition_expiration_ms",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DefaultPartitionExpirationMs"),
+			},
+			{
+				Name:     "default_table_expiration_ms",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DefaultTableExpirationMs"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
 				Name:     "friendly_name",
@@ -36,6 +79,11 @@ func Datasets() *schema.Table {
 				Resolver: schema.PathResolver("Id"),
 			},
 			{
+				Name:     "is_case_insensitive",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsCaseInsensitive"),
+			},
+			{
 				Name:     "kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kind"),
@@ -46,9 +94,34 @@ func Datasets() *schema.Table {
 				Resolver: schema.PathResolver("Labels"),
 			},
 			{
+				Name:     "last_modified_time",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("LastModifiedTime"),
+			},
+			{
 				Name:     "location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "max_time_travel_hours",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaxTimeTravelHours"),
+			},
+			{
+				Name:     "satisfies_pzs",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("SatisfiesPzs"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}
@@ -69,5 +142,16 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 		}
 		nextPageToken = output.NextPageToken
 	}
+	return nil
+}
+
+func preFetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+	c := meta.(*client.Client)
+	
+	item, err := c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	r.SetItem(item)
 	return nil
 }
