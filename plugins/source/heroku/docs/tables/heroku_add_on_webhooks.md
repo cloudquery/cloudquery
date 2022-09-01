@@ -4,6 +4,7 @@ https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-attr
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
+|addon|jsonb||
 |created_at|timestamp without time zone||
 |id|text||
 |include|text[]||
