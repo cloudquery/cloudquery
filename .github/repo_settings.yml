@@ -7,7 +7,7 @@ branchProtectionRules:
   isAdminEnforced: false
   requiredApprovingReviewCount: 1
   requiresCodeOwnerReviews: false
-  requiresStrictStatusChecks: false
+  requiresStrictStatusChecks: true
   requiredStatusCheckContexts:
     - Validate PR title
     - release-dry-run
