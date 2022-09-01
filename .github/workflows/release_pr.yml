@@ -19,7 +19,7 @@ jobs:
       # TODO: Find a way to generalize this part
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['cli--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['cli--tag_name'] }}
@@ -27,7 +27,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/aws--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/aws--tag_name'] }}
@@ -35,7 +35,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/azure--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/azure--tag_name'] }}
@@ -43,7 +43,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/cloudflare--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/cloudflare--tag_name'] }}
@@ -51,7 +51,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/digitalocean--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/digitalocean--tag_name'] }}
@@ -59,7 +59,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/fuzz--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/fuzz--tag_name'] }}
@@ -67,7 +67,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/gcp--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/gcp--tag_name'] }}
@@ -75,7 +75,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/github--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/github--tag_name'] }}
@@ -83,7 +83,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/heroku--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/heroku--tag_name'] }}
@@ -91,7 +91,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/k8s--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/k8s--tag_name'] }}
@@ -99,7 +99,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/okta--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/okta--tag_name'] }}
@@ -107,7 +107,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/terraform--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/terraform--tag_name'] }}
@@ -115,7 +115,7 @@ jobs:
           prerelease: true
       - name: Mark as pre-release
         if: ${{ steps.release.outputs['plugins/source/test--release_created'] }}
-        uses: tubone24/update_release@ab028bfd61be57b390262147eed52dd6121a1f30
+        uses: tubone24/update_release@53849a6d7757d3ee355a81c2de0ae45af13961bb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG_NAME: ${{ steps.release.outputs['plugins/source/test--tag_name'] }}

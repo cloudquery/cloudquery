@@ -19,7 +19,7 @@ jobs:
       # Fail if not a valid SemVer string
       - name: Parse semver string
         id: semver_parser
-        uses: booxmedialtd/ws-action-parse-semver@966a26512c94239a00aa10b1b0c196906f7e1909
+        uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
         with:
           input_string: ${{steps.split.outputs.version}}
       - name: Checkout
