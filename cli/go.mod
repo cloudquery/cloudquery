@@ -7,7 +7,6 @@ require (
 	github.com/google/go-cmp v0.5.8
 	github.com/jackc/pgtype v1.12.0
 	github.com/jackc/pgx/v4 v4.17.0
-	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
 	github.com/schollz/progressbar/v3 v3.9.0
 	github.com/spf13/cobra v1.5.0

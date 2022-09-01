@@ -11,7 +11,6 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/log/zerologadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
 )
@@ -97,7 +96,7 @@ func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 
 	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
 	if err != nil {
-		return errors.Wrap(err, "failed to parse connection string")
+		return fmt.Errorf("failed to parse connection string %w", err)
 	}
 	pgxConfig.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
 		conn.ConnInfo().RegisterDataType(pgtype.DataType{Value: &pgxUUID.UUID{}, Name: "uuid", OID: pgtype.UUIDOID})
@@ -108,7 +107,7 @@ func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 	pgxConfig.ConnConfig.LogLevel = logLevel
 	p.conn, err = pgxpool.ConnectConfig(ctx, pgxConfig)
 	if err != nil {
-		return errors.Wrap(err, "failed to connect to postgresql")
+		return fmt.Errorf("failed to connect to postgresql: %w", err)
 	}
 
 	p.currentDatabaseName, err = p.currentDatabase()
@@ -131,7 +130,7 @@ func (p *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	for i, c := range table.Columns {
 		pgType, err := SchemaTypeToPg(c.Type)
 		if err != nil {
-			return errors.Wrap(err, "failed to convert schema type to postgresql type")
+			return fmt.Errorf("failed to convert schema type %s to pg type: %w", c.Type, err)
 		}
 		columnName := pgx.Identifier{c.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
@@ -427,7 +426,7 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	case schema.TypeIntArray:
 		return "bigint[]", nil
 	default:
-		return "", errors.Errorf("unsupported schema type: %s", t)
+		return "", fmt.Errorf("unknown type %s", t)
 	}
 }
 
