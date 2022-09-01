@@ -84,6 +84,8 @@ type AutoCalculated struct {
 	TestFuncName  string
 	NestingLevel  int
 	TypesImport   string
+
+	TemplateFilename string // This is injected to top of every template result
 }
 
 var (

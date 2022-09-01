@@ -321,8 +321,8 @@ func generateResource(r *recipes.Resource, mock bool) {
 		}
 	}
 
-	mainTemplate := r.Template + helpers.StringSwitch(mock, "_mock_test", "") + ".go.tpl"
-	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
+	r.TemplateFilename = r.Template + helpers.StringSwitch(mock, "_mock_test", "") + ".go.tpl"
+	tpl, err := template.New(r.TemplateFilename).Funcs(template.FuncMap{
 		"ToCamel":  strcase.ToCamel,
 		"ToLower":  strings.ToLower,
 		"ToSnake":  strcase.ToSnake,
