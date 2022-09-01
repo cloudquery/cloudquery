@@ -39,6 +39,7 @@ func main() {
 	resources = append(resources, recipes.AthenaResources...)
 	resources = append(resources, recipes.AutoscalingResources...)
 	resources = append(resources, recipes.BackupResources...)
+	resources = append(resources, recipes.CloudformationResources...)
 
 	for _, r := range resources {
 		generateResource(r, false)

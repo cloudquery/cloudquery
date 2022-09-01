@@ -18,6 +18,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/backup"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudformation"
 )
 
 var (
@@ -53,6 +54,7 @@ func Provider() *provider.Provider {
 			"backup.region_settings":                  backup.BackupRegionSettings(),
 			"backup.backup_vaults":                    backup.BackupVaults(),
 			"backup.backup_plans":                     backup.BackupBackupPlans(),
+			"cloudformation.stacks":                   cloudformation.CloudformationStacks(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
