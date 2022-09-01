@@ -16,8 +16,8 @@ import (
 )
 
 type PostgreSqlSpec struct {
-	ConnectionString string `json:"connection_string,omitempty"`
-	PgxLogLevel      string `json:"pgx_log_level,omitempty"`
+	ConnectionString string   `json:"connection_string,omitempty"`
+	PgxLogLevel      LogLevel `json:"pgx_log_level,omitempty"`
 }
 
 type Client struct {
@@ -88,11 +88,13 @@ func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 		return fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 
-	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel)
+	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
 		return fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
 	}
-	p.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel).Msg("Initializing postgresql destination")
+	// logLevel := specPostgreSql.PgxLogLevel
+	fmt.Println(logLevel)
+	p.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel.String()).Msg("Initializing postgresql destination")
 
 	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)
 	if err != nil {
