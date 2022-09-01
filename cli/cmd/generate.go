@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/internal/plugin"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -51,7 +50,7 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	case "destination":
 		return genDestination(cmd, args[1], pluginManager, registry)
 	default:
-		return errors.Errorf("unknown type: %s", args[0])
+		return fmt.Errorf("runGen: invalid type %s", args[0])
 	}
 }
 
@@ -77,7 +76,7 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, regist
 	defer plugin.Close()
 	res, err := plugin.GetClient().ExampleConfig(cmd.Context())
 	if err != nil {
-		return errors.Wrap(err, "failed to get example config")
+		return fmt.Errorf("failed to get example config: %w", err)
 	}
 	fmt.Println(res)
 	return nil
@@ -91,12 +90,12 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 	}
 	destPlugin, err := pm.NewDestinationPlugin(cmd.Context(), destSpec)
 	if err != nil {
-		return errors.Wrap(err, "failed to get plugin client")
+		return fmt.Errorf("failed to create destination plugin %s: %w", path, err)
 	}
 	defer destPlugin.Close()
 	res, err := destPlugin.GetClient().GetExampleConfig(cmd.Context())
 	if err != nil {
-		return errors.Wrap(err, "failed to get example config")
+		return fmt.Errorf("failed to get example config from plugin %s: %w", path, err)
 	}
 	fmt.Println(res)
 	return nil
