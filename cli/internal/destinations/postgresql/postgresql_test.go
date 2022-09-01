@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/google/go-cmp/cmp"
-	"github.com/jackc/pgx/v4"
 	"github.com/rs/zerolog"
 )
 
@@ -106,7 +105,7 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 		specs.Destination{
 			Spec: &PostgreSqlSpec{
 				ConnectionString: "postgres://postgres:pass@localhost:5432/postgres",
-				PgxLogLevel:      pgx.LogLevel(pgx.LogLevelInfo).String(),
+				PgxLogLevel:      LogLevelInfo,
 			},
 		},
 	); err != nil {
