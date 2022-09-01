@@ -4,7 +4,6 @@ package codegen
 
 import (
 	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	heroku "github.com/heroku/heroku-go/v5"
@@ -16,7 +15,43 @@ func AppWebhooks() *schema.Table {
 		Name:        "heroku_app_webhooks",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-attributes",
 		Resolver:    fetchAppWebhooks,
-		Columns:     []schema.Column{},
+		Columns: []schema.Column{
+			{
+				Name:     "app",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("App"),
+			},
+			{
+				Name:     "created_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+			},
+			{
+				Name:     "include",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Include"),
+			},
+			{
+				Name:     "level",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Level"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("UpdatedAt"),
+			},
+			{
+				Name:     "url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("URL"),
+			},
+		},
 	}
 }
 
