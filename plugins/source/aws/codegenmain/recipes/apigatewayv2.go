@@ -88,6 +88,13 @@ var APIGatewayv2Resources = combine(parentize(&Resource{
 		AWSService:     "Apigatewayv2",
 		Template:       "resource_get",
 		ItemsStruct:    &apigatewayv2.GetDomainNamesOutput{},
+		ItemsCustomOptionsBlock: `
+			// NOTE: Swapping OperationDeserializer until this is fixed: https://github.com/aws/aws-sdk-go-v2/issues/1282
+			opts.APIOptions = append(opts.APIOptions, apigatewayv2fix.SwapGetDomainNamesOperationDeserializer)
+`,
+		Imports: []string{
+			`apigatewayv2fix "github.com/cloudquery/cloudquery/plugins/source/aws/resources/forks/apigatewayv2"`,
+		},
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"arn": {

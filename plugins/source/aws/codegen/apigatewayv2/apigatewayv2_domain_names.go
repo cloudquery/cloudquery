@@ -11,6 +11,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/apigatewayv2"
+	apigatewayv2fix "github.com/cloudquery/cloudquery/plugins/source/aws/resources/forks/apigatewayv2"
 )
 
 func Apigatewayv2DomainNames() *schema.Table {
@@ -72,7 +73,12 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, p
 	input := apigatewayv2.GetDomainNamesInput{}
 
 	for {
-		response, err := svc.GetDomainNames(ctx, &input)
+		response, err := svc.GetDomainNames(ctx, &input, func(opts *apigatewayv2.Options) {
+
+			// NOTE: Swapping OperationDeserializer until this is fixed: https://github.com/aws/aws-sdk-go-v2/issues/1282
+			opts.APIOptions = append(opts.APIOptions, apigatewayv2fix.SwapGetDomainNamesOperationDeserializer)
+
+		})
 		if err != nil {
 
 			return diag.WrapError(err)
