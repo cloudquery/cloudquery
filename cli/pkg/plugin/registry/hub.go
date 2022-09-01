@@ -189,7 +189,7 @@ func (h Hub) verifyProvider(ctx context.Context, provider Provider, version stri
 		return false
 	}
 	providerPath := h.getProviderPath(provider.Source, provider.Name, version)
-	if err = validateChecksumProvider(providerPath, checksumsPath); err != nil {
+	if err = validateChecksumProvider(provider.Name, providerPath, checksumsPath); err != nil {
 		l.Error().Err(err).Msg("validating provider checksum failed")
 		if h.ProgressUpdater != nil {
 			h.ProgressUpdater.Update(provider.Name, ui.StatusError, "Bad checksum", 0)

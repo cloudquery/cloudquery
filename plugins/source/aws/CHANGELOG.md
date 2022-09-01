@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.13.23](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.22...plugins/source/aws/v0.13.23) (2022-09-01)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/sync digest to 7fc1605 ([#1652](https://github.com/cloudquery/cloudquery/issues/1652)) ([daafae1](https://github.com/cloudquery/cloudquery/commit/daafae1c60c14c90b70c3338a8ff6dc25ba84290))
+
+## [0.13.22](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.21...plugins/source/aws/v0.13.22) (2022-08-31)
+
+
+### Bug Fixes
+
+* Update endpoints ([#1627](https://github.com/cloudquery/cloudquery/issues/1627)) ([1ec2fef](https://github.com/cloudquery/cloudquery/commit/1ec2fef2adf383f74a9d933c8b2e48d4f4fdc919))
+
 ## [0.13.21](https://github.com/cloudquery/cloudquery/compare/plugins/source/aws/v0.13.20...plugins/source/aws/v0.13.21) (2022-08-29)
 
 
