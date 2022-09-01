@@ -48,7 +48,7 @@ function BlogTitle({ data }: { data: BlogPostMeta }) {
 
 export function BlogHeader() {
   const config = useConfig();
-  const meta = config.meta as BlogPostMeta;
+  const meta = config.frontMatter as BlogPostMeta;
 
   if (!meta) {
     return null;

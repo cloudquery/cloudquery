@@ -11,8 +11,7 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "lint": "next lint",
-    "schema": "ts-json-schema-generator -f tsconfig.json -p ./schema.d.ts -o ./public/schema.json -t Schema --minify",
-    "should-build": "git diff --quiet HEAD^ HEAD ."
+    "schema": "ts-json-schema-generator -f tsconfig.json -p ./schema.d.ts -o ./public/schema.json -t Schema --minify"
   },
   "author": "CloudQuery",
   "license": "MPL-2.0",
@@ -22,8 +21,8 @@
     "isomorphic-unfetch": "3.1.0",
     "next": "12.2.5",
     "next-sitemap": "3.1.21",
-    "nextra": "2.0.0-beta.17",
-    "nextra-theme-docs": "2.0.0-beta.17",
+    "nextra": "2.0.0-beta.21",
+    "nextra-theme-docs": "2.0.0-beta.21",
     "prism-react-renderer": "1.3.5",
     "prismjs": "1.28.0",
     "react": "17.0.2",

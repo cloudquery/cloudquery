@@ -177,7 +177,7 @@
     core-js-pure "^3.20.2"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.2", "@babel/runtime@^7.10.5", "@babel/runtime@^7.18.9":
+"@babel/runtime@^7.10.2", "@babel/runtime@^7.12.5", "@babel/runtime@^7.18.9":
   version "7.18.9"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.18.9.tgz#b4fcfce55db3d2e5e080d2490f608a3b9f407f4a"
   integrity sha512-lkqXDcvlFT5rvEjiu6+QYO+1GXrEHRo2LOtS7E4GtX5ESIZOgepqsZBVIj6Pv+a6zqsya9VCgiK1KAK4BvJDAw==
@@ -1537,6 +1537,13 @@ estree-util-is-identifier-name@^2.0.0:
   resolved "https://registry.yarnpkg.com/estree-util-is-identifier-name/-/estree-util-is-identifier-name-2.0.1.tgz#cf07867f42705892718d9d89eb2d85eaa8f0fcb5"
   integrity sha512-rxZj1GkQhY4x1j/CSnybK9cGuMFQYFPLq0iNyopqf14aOVLFtMv7Esika+ObJWPWiOHuMOAHz3YkWoLYYRnzWQ==
 
+estree-util-value-to-estree@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/estree-util-value-to-estree/-/estree-util-value-to-estree-1.3.0.tgz#1d3125594b4d6680f666644491e7ac1745a3df49"
+  integrity sha512-Y+ughcF9jSUJvncXwqRageavjrNPAI+1M/L3BI3PyLp1nmgYTGUXU6t5z1Y7OWuThoDdhPME07bQU+d5LxdJqw==
+  dependencies:
+    is-plain-obj "^3.0.0"
+
 estree-util-visit@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/estree-util-visit/-/estree-util-visit-1.2.0.tgz#aa0311a9c2f2aa56e9ae5e8b9d87eac14e4ec8f8"
@@ -2054,6 +2061,11 @@ is-number@^7.0.0:
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
   integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
 
+is-plain-obj@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-3.0.0.tgz#af6f2ea14ac5a646183a5bbdb5baabbc156ad9d7"
+  integrity sha512-gwsOE28k+23GP1B6vFl1oVh/WOzmawBrKwo5Ev6wMKzPkaXaCDIQKzLnvsA42DRlbVTWorkgTKIviAKCWkfUwA==
+
 is-plain-obj@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-4.1.0.tgz#d65025edec3657ce032fd7db63c97883eaed71f0"
@@ -2272,12 +2284,12 @@ markdown-table@^3.0.0:
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-3.0.2.tgz#9b59eb2c1b22fe71954a65ff512887065a7bb57c"
   integrity sha512-y8j3a5/DkJCmS5x4dMCQL+OR0+2EAq3DOtio1COSHsmW2BGXnNCK3v12hJt1LrUz5iZH5g0LmuYOjDdI+czghA==
 
-match-sorter@^4.2.0:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-4.2.1.tgz#575b4b3737185ba9518b67612b66877ea0b37358"
-  integrity sha512-s+3h9TiZU9U1pWhIERHf8/f4LmBN6IXaRgo2CI17+XGByGS1GvG5VvXK9pcGyCjGe3WM3mSYRC3ipGrd5UEVgw==
+match-sorter@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/match-sorter/-/match-sorter-6.3.1.tgz#98cc37fda756093424ddf3cbc62bfe9c75b92bda"
+  integrity sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==
   dependencies:
-    "@babel/runtime" "^7.10.5"
+    "@babel/runtime" "^7.12.5"
     remove-accents "0.4.2"
 
 mdast-util-definitions@^5.0.0:
@@ -2919,10 +2931,10 @@ next@12.2.5:
     "@next/swc-win32-ia32-msvc" "12.2.5"
     "@next/swc-win32-x64-msvc" "12.2.5"
 
-nextra-theme-docs@2.0.0-beta.17:
-  version "2.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/nextra-theme-docs/-/nextra-theme-docs-2.0.0-beta.17.tgz#af8665425c03471420bc1ec4a120aafdf21ad8e3"
-  integrity sha512-N+b3OTpXKJ/AwwPq0RBjNLSUSAnFB1TOlMIEjQG+rxtANlBpkCe4+65d9fIIAtL6Kw2/+3GNeM6R4PijStMJag==
+nextra-theme-docs@2.0.0-beta.21:
+  version "2.0.0-beta.21"
+  resolved "https://registry.yarnpkg.com/nextra-theme-docs/-/nextra-theme-docs-2.0.0-beta.21.tgz#efa4ce1928c2eeedfe31f219da4b5fd84f1e9c22"
+  integrity sha512-5aUZyBrEV1r+S8C/0VjZrCc9QwCMEakZUoFzxGoLESfjPYSfb8IqZUHoWC4Pvu3obXBtAxxnLs/KIfU/cNhIpw==
   dependencies:
     "@headlessui/react" "^1.6.5"
     "@mdx-js/react" "^2.1.2"
@@ -2932,25 +2944,27 @@ nextra-theme-docs@2.0.0-beta.17:
     focus-visible "^5.2.0"
     github-slugger "^1.4.0"
     intersection-observer "^0.12.2"
-    match-sorter "^4.2.0"
+    match-sorter "^6.3.1"
     next-themes "^0.2.0-beta.2"
     parse-git-url "^1.0.1"
     scroll-into-view-if-needed "^2.2.29"
     title "^3.5.1"
 
-nextra@2.0.0-beta.17:
-  version "2.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/nextra/-/nextra-2.0.0-beta.17.tgz#e6d79dab12b934982305b9d8fb79264448c471f4"
-  integrity sha512-V/FIjroXeh1C9QuGJIUo5g+82GyQAjnLGX97AEJfXaf5Vy61wmZ8rWXm8D0KUTGvGp4ILUuzzFuNe/f+C/l1zw==
+nextra@2.0.0-beta.21:
+  version "2.0.0-beta.21"
+  resolved "https://registry.yarnpkg.com/nextra/-/nextra-2.0.0-beta.21.tgz#465ed51dfa6539c2bb49d13a85e43e0519945699"
+  integrity sha512-st1tIJVoyCyaKYF+SH3ZlJhDhohTbuF5LU9wzpQMFQgMI03/86nSIctTeyk6dzn/TS3JyF78L+Mmmjm8p0n5eQ==
   dependencies:
     "@mdx-js/mdx" "^2.1.2"
     "@napi-rs/simple-git" "^0.1.8"
     github-slugger "^1.4.0"
     graceful-fs "^4.2.10"
     gray-matter "^4.0.3"
+    react-children-utilities "^2.8.0"
     rehype-mdx-title "^1.0.0"
     rehype-pretty-code "0.2.4"
     remark-gfm "^3.0.1"
+    remark-reading-time "^2.0.1"
     shiki "0.10.1"
     slash "^3.0.0"
 
@@ -3305,6 +3319,11 @@ quick-lru@^5.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-5.1.1.tgz#366493e6b3e42a3a6885e2e99d18f80fb7a8c932"
   integrity sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==
 
+react-children-utilities@^2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/react-children-utilities/-/react-children-utilities-2.8.0.tgz#ab6866249bcf1729fe463128de5e15074f43caaa"
+  integrity sha512-g42oRsZLrFJgCcIdK1lad1CWujNH4gh1Cp1lsMQpHWdDjWQ8gUlaBebgy2iXofyPEpfJ4T/xt4qWrvDkgVCCNg==
+
 react-dom@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -3347,6 +3366,11 @@ readdirp@~3.6.0:
   integrity sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==
   dependencies:
     picomatch "^2.2.1"
+
+reading-time@^1.3.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/reading-time/-/reading-time-1.5.0.tgz#d2a7f1b6057cb2e169beaf87113cc3411b5bc5bb"
+  integrity sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==
 
 regenerator-runtime@^0.13.4:
   version "0.13.9"
@@ -3409,6 +3433,16 @@ remark-parse@^10.0.0:
     "@types/mdast" "^3.0.0"
     mdast-util-from-markdown "^1.0.0"
     unified "^10.0.0"
+
+remark-reading-time@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/remark-reading-time/-/remark-reading-time-2.0.1.tgz#fe8bb8e420db7678dc749385167adb4fc99318f7"
+  integrity sha512-fy4BKy9SRhtYbEHvp6AItbRTnrhiDGbqLQTSYVbQPGuRCncU1ubSsh9p/W5QZSxtYcUXv8KGL0xBgPLyNJA1xw==
+  dependencies:
+    estree-util-is-identifier-name "^2.0.0"
+    estree-util-value-to-estree "^1.3.0"
+    reading-time "^1.3.0"
+    unist-util-visit "^3.1.0"
 
 remark-rehype@^10.0.0:
   version "10.1.0"
@@ -3924,6 +3958,14 @@ unist-util-visit-parents@^3.0.0:
     "@types/unist" "^2.0.0"
     unist-util-is "^4.0.0"
 
+unist-util-visit-parents@^4.0.0:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/unist-util-visit-parents/-/unist-util-visit-parents-4.1.1.tgz#e83559a4ad7e6048a46b1bdb22614f2f3f4724f2"
+  integrity sha512-1xAFJXAKpnnJl8G7K5KgU7FY55y3GcLIXqkzUj5QF/QVP7biUm0K0O2oqVkYsdjzJKifYeWn9+o6piAK2hGSHw==
+  dependencies:
+    "@types/unist" "^2.0.0"
+    unist-util-is "^5.0.0"
+
 unist-util-visit-parents@^5.0.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/unist-util-visit-parents/-/unist-util-visit-parents-5.1.0.tgz#44bbc5d25f2411e7dfc5cecff12de43296aa8521"
@@ -3940,6 +3982,15 @@ unist-util-visit@^2.0.3:
     "@types/unist" "^2.0.0"
     unist-util-is "^4.0.0"
     unist-util-visit-parents "^3.0.0"
+
+unist-util-visit@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/unist-util-visit/-/unist-util-visit-3.1.0.tgz#9420d285e1aee938c7d9acbafc8e160186dbaf7b"
+  integrity sha512-Szoh+R/Ll68QWAyQyZZpQzZQm2UPbxibDvaY8Xc9SUtYgPsDzx5AWSk++UUt2hJuow8mvwR+rG+LQLw+KsuAKA==
+  dependencies:
+    "@types/unist" "^2.0.0"
+    unist-util-is "^5.0.0"
+    unist-util-visit-parents "^4.0.0"
 
 unist-util-visit@^4.0.0:
   version "4.1.0"
