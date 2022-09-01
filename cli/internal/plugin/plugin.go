@@ -29,9 +29,11 @@ import (
 )
 
 type SourcePlugin struct {
-	cmd    *exec.Cmd
-	conn   *grpc.ClientConn
-	client *clients.SourceClient
+	cmd      *exec.Cmd
+	conn     *grpc.ClientConn
+	client   *clients.SourceClient
+	errors   int
+	warnings int
 }
 
 type DestinationPlugin struct {
@@ -60,6 +62,14 @@ func (p *DestinationPlugin) Close() error {
 
 func (p *DestinationPlugin) GetClient() *clients.DestinationClient {
 	return p.client
+}
+
+func (p *SourcePlugin) Errors() int {
+	return p.errors
+}
+
+func (p *SourcePlugin) Warnings() int {
+	return p.warnings
 }
 
 func (p *SourcePlugin) Close() error {
@@ -246,7 +256,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 			if err := json.Unmarshal(b, &structuredLogLine); err != nil {
 				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
 			} else {
-				jsonToLog(structuredLogLine, p.logger)
+				jsonToLog(&pl, structuredLogLine, p.logger)
 			}
 		}
 	}()

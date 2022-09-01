@@ -4,7 +4,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func jsonToLog(msg map[string]interface{}, l zerolog.Logger) {
+func jsonToLog(p *SourcePlugin, msg map[string]interface{}, l zerolog.Logger) {
 	switch msg["level"] {
 	case "trace":
 		l.Trace().Fields(msg).Msg("")
@@ -13,8 +13,10 @@ func jsonToLog(msg map[string]interface{}, l zerolog.Logger) {
 	case "info":
 		l.Debug().Fields(msg).Msg("")
 	case "warn":
+		p.warnings++
 		l.Warn().Fields(msg).Msg("")
 	case "error":
+		p.errors++
 		l.Warn().Fields(msg).Msg("")
 	default:
 		l.Error().Fields(msg).Msg("unknown level")
