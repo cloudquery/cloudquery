@@ -84,7 +84,7 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, regist
 		return fmt.Errorf("failed to get example config: %w", err)
 	}
 	configPath := outputFile
-	if outputFile == "" {
+	if configPath == "" {
 		name, err := client.Name(cmd.Context())
 		if err != nil {
 			return fmt.Errorf("failed to get plugin name: %w", err)
@@ -116,7 +116,7 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 		return fmt.Errorf("failed to get example config: %w", err)
 	}
 	configPath := outputFile
-	if outputFile == "" {
+	if configPath == "" {
 		name, err := client.Name(cmd.Context())
 		if err != nil {
 			return fmt.Errorf("failed to get plugin name: %w", err)
