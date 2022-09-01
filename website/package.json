@@ -11,8 +11,7 @@
     "build": "next build",
     "postbuild": "next-sitemap",
     "lint": "next lint",
-    "schema": "ts-json-schema-generator -f tsconfig.json -p ./schema.d.ts -o ./public/schema.json -t Schema --minify",
-    "should-build": "git diff --quiet HEAD^ HEAD ."
+    "schema": "ts-json-schema-generator -f tsconfig.json -p ./schema.d.ts -o ./public/schema.json -t Schema --minify"
   },
   "author": "CloudQuery",
   "license": "MPL-2.0",
