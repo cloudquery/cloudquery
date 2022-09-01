@@ -67,6 +67,9 @@ func inferFromRecipe(r *recipes.Resource) {
 		items = helpers.InferFromStruct(r.ItemsStruct, r.PaginatorStruct != nil, false)
 		r.GetMethod = items.Method
 		r.ResponseItemsName = items.ItemsField.Name
+		if items.PaginatorTokenField != nil {
+			r.NextTokenName = items.PaginatorTokenField.Name
+		}
 
 		res = items
 	}

@@ -50,7 +50,8 @@ type InferResult struct {
 	Method     string
 	SubService string
 
-	ItemsField reflect.StructField // Struct field that contains the item or items. Only valid in Output type structs.
+	ItemsField          reflect.StructField // Struct field that contains the item or items. Only valid in Output type structs.
+	PaginatorTokenField *reflect.StructField
 
 	Fields     map[string]reflect.Type
 	FieldOrder []string
@@ -93,6 +94,10 @@ func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResu
 		if f.Name == "noSmithyDocumentSerde" || f.Type.String() == "document.NoSerde" || f.Type.String() == "middleware.Metadata" {
 			continue
 		}
+		if f.Name == "NextToken" {
+			res.PaginatorTokenField = &f
+		}
+
 		res.Fields[f.Name] = f.Type
 		res.FieldOrder = append(res.FieldOrder, f.Name)
 

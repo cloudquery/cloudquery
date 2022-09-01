@@ -32,6 +32,7 @@ var AutoscalingResources = combine(&Resource{
 			Template:             "resource_get",
 			ItemsStruct:          &autoscaling.DescribeAutoScalingGroupsOutput{},
 			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+			// TODO missing the `autoscalingGroupWrapper` for NotificationConfigurations
 		},
 		&Resource{
 			AWSStruct:            &types.ScalingPolicy{},
@@ -39,6 +40,20 @@ var AutoscalingResources = combine(&Resource{
 			Template:             "resource_get",
 			ParentFieldName:      "AutoScalingGroupName",
 			ItemsStruct:          &autoscaling.DescribePoliciesOutput{},
+			Imports: []string{
+				`resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/autoscaling"`,
+			},
+			CustomErrorBlock: `
+			if resolvers.IsGroupNotExistsError(err) {
+				return nil
+			}`,
+		},
+		&Resource{
+			AWSStruct:            &types.LifecycleHook{},
+			CQSubserviceOverride: "lifecycle_hooks",
+			Template:             "resource_get",
+			ParentFieldName:      "AutoScalingGroupName",
+			ItemsStruct:          &autoscaling.DescribeLifecycleHooksOutput{},
 			Imports: []string{
 				`resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/autoscaling"`,
 			},

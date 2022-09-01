@@ -28,8 +28,9 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 {{end}}{{template "resolve_parent_vars.go.tpl" .}}
 	}
 
-	for {
-{{if .ItemsCustomOptionsBlock}}		response, err := svc.{{.GetMethod}}(ctx, &input, func(opts *{{.AWSService | ToLower}}.Options) {
+{{if .NextTokenName}}	for {
+{{else}}	{
+{{end}}{{if .ItemsCustomOptionsBlock}}		response, err := svc.{{.GetMethod}}(ctx, &input, func(opts *{{.AWSService | ToLower}}.Options) {
 {{.ItemsCustomOptionsBlock}}
 		}){{else}}		response, err := svc.{{.GetMethod}}(ctx, &input){{end}}
 		if err != nil {
@@ -37,10 +38,10 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 			return diag.WrapError(err)
 		}
 		res <- response.{{.ResponseItemsName | Coalesce "Items"}}
-		if aws.ToString(response.NextToken) == "" {
+{{if .NextTokenName}}		if aws.ToString(response.NextToken) == "" {
 			break
 		}
-		input.NextToken = response.NextToken
+		input.NextToken = response.NextToken{{end}}
 	}
 	return nil
 }

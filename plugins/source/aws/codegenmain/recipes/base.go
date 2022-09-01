@@ -67,6 +67,7 @@ type AutoCalculated struct {
 	PaginatorListName string // Auto calculated from PaginatorStruct.
 	PaginatorListType string // Auto calculated from PaginatorStruct.
 	ResponseItemsName string // Auto calculated from ItemsStruct by default, otherwise defaults to Items
+	NextTokenName     string // Auto calculated from ItemsStruct for resource_get template.
 
 	ListMethod string // Auto calculated from PaginatorStruct
 	GetMethod  string // Auto calculated from ItemsStruct
