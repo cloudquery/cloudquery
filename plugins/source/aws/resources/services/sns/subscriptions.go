@@ -119,11 +119,10 @@ func Subscriptions() *schema.Table {
 // ====================================================================================================================
 
 func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-
 	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listSubscriptions, subscriptionDetail))
 }
-func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 
+func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	config := sns.ListSubscriptionsInput{}
