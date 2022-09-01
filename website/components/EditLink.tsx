@@ -22,7 +22,8 @@ export function EditLink({
     .replace(
       /pages\/plugins\/(.*?)\/tables.mdx/,
       "plugins/source/$1/docs/tables"
-    );
+    )
+    .replace("pages/", "website/pages/");
 
   return (
     <a href={href} className={className} target="_blank" rel="noreferrer">
