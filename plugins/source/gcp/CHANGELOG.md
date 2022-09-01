@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.9.8](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.9.7...plugins/source/gcp/v0.9.8) (2022-09-01)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/sync digest to 7fc1605 ([#1652](https://github.com/cloudquery/cloudquery/issues/1652)) ([daafae1](https://github.com/cloudquery/cloudquery/commit/daafae1c60c14c90b70c3338a8ff6dc25ba84290))
+
 ## [0.9.7](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.9.6...plugins/source/gcp/v0.9.7) (2022-08-21)
 
 
