@@ -9,9 +9,7 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
-	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
-	"github.com/aws/smithy-go/middleware"
 )
 
 func AccessAnalyzerAccessanalyzers() *schema.Table {
@@ -88,21 +86,7 @@ func fetchAccessAnalyzerAccessanalyzers(ctx context.Context, meta schema.ClientM
 	input := accessanalyzer.ListAnalyzersInput{}
 
 	for {
-		response, err := svc.ListAnalyzers(ctx, &input, func(opts *accessanalyzer.Options) {
-
-			opts.APIOptions = append(opts.APIOptions, func(stack *middleware.Stack) error {
-				if err := stack.Initialize.Add(&awsmiddleware.RegisterServiceMetadata{
-					Region:        cl.Region,
-					ServiceID:     accessanalyzer.ServiceID,
-					SigningName:   "access-analyzer",
-					OperationName: "ListAnalyzers",
-				}, middleware.Before); err != nil {
-					return nil
-				}
-				return nil
-			})
-
-		})
+		response, err := svc.ListAnalyzers(ctx, &input)
 		if err != nil {
 
 			return diag.WrapError(err)

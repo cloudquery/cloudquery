@@ -13,24 +13,7 @@ var AccessAnalyzerResources = parentize(&Resource{
 	CQSubserviceOverride: "accessanalyzers",
 	Template:             "resource_get",
 	ItemsStruct:          &accessanalyzer.ListAnalyzersOutput{},
-	ItemsCustomOptionsBlock: `
-			opts.APIOptions = append(opts.APIOptions, func(stack *middleware.Stack) error {
-				if err := stack.Initialize.Add(&awsmiddleware.RegisterServiceMetadata{
-					Region:        cl.Region,
-					ServiceID:     accessanalyzer.ServiceID,
-					SigningName:   "access-analyzer",
-					OperationName: "ListAnalyzers",
-				}, middleware.Before); err != nil {
-					return nil
-				}
-				return nil
-			})
-`,
 	//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-	Imports: []string{
-		`awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"`,
-		"github.com/aws/smithy-go/middleware",
-	},
 },
 	&Resource{
 		AWSStruct:   &types.FindingSummary{},
