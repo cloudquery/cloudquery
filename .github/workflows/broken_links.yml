@@ -1,9 +1,8 @@
 name: Check for broken links
 
 on:
-  pull_request:
-    paths:
-      - "website/**"
+  schedule:
+    - cron:  "0 12 * * *"
 
 jobs:
   check-broken-links:
