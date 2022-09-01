@@ -50,11 +50,18 @@ type InferResult struct {
 	Method     string
 	SubService string
 
-	ItemsField          reflect.StructField // Struct field that contains the item or items. Only valid in Output type structs.
-	PaginatorTokenField *reflect.StructField
+	ItemsFieldCandidates []reflect.StructField // Struct field candidates that contains the item or items. Only valid in Output type structs.
+	PaginatorTokenField  *reflect.StructField
 
 	Fields     map[string]reflect.Type
 	FieldOrder []string
+}
+
+func (ir *InferResult) ItemsField() reflect.StructField {
+	if len(ir.ItemsFieldCandidates) != 1 {
+		log.Fatal("Could not determine ItemsName for ", ir.Method, ":", len(ir.ItemsFieldCandidates), " candidates")
+	}
+	return ir.ItemsFieldCandidates[0]
 }
 
 func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResult {
@@ -62,11 +69,7 @@ func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResu
 		Fields: make(map[string]reflect.Type),
 	}
 
-	ist := reflect.TypeOf(s)
-	if ist.Kind() == reflect.Ptr {
-		ist = ist.Elem()
-	}
-
+	ist := BareType(reflect.TypeOf(s))
 	suffix := StringSwitch(expectInput, "Input", "Output")
 
 	for _, verbCandidate := range []string{"Get", "Describe", "List"} {
@@ -88,7 +91,6 @@ func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResu
 		break
 	}
 
-	var candidates []reflect.StructField
 	for i := 0; i < ist.NumField(); i++ {
 		f := ist.Field(i)
 		if f.Name == "noSmithyDocumentSerde" || f.Type.String() == "document.NoSerde" || f.Type.String() == "middleware.Metadata" {
@@ -102,20 +104,13 @@ func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResu
 		res.FieldOrder = append(res.FieldOrder, f.Name)
 
 		if expectSingular && f.Type.Kind() != reflect.Slice {
-			candidates = append(candidates, f)
+			res.ItemsFieldCandidates = append(res.ItemsFieldCandidates, f)
 			continue
 		}
 		if !expectSingular && f.Type.Kind() == reflect.Slice {
-			candidates = append(candidates, f)
+			res.ItemsFieldCandidates = append(res.ItemsFieldCandidates, f)
 			continue
 		}
-	}
-
-	if !expectInput {
-		if len(candidates) != 1 {
-			log.Fatal("Could not determine ItemsName for ", ist.Name(), ":", len(candidates), " candidates")
-		}
-		res.ItemsField = candidates[0]
 	}
 
 	return &res

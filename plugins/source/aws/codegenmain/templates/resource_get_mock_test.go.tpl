@@ -10,7 +10,9 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
+{{if .TypesImport}}
 	"{{.TypesImport}}"
+{{end}}
 {{range .MockImports}}	{{.}}
 {{end}}
 )
@@ -18,15 +20,23 @@ import (
 func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMock{{.AWSService | ToCamel}}Client(ctrl)
 
+{{if eq .ResponseItemsName "."}}
+	item := &{{.AWSService | ToLower}}.{{.GetMethod}}Output{}
+{{else}}
 	item := types.{{.ItemName}}{}
+{{end}}
 	err := faker.FakeData(&item)
 	if err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().{{.GetMethod}}(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+{{if eq .ResponseItemsName "."}}
+		item, nil)
+{{else}}
 		&{{.AWSService | ToLower}}.{{.GetMethod}}Output{
 			{{.ResponseItemsName | Coalesce "Items"}}: []types.{{.ItemName}}{item},
 		}, nil)
+{{end}}
 	return client.Services{
 		{{.AWSService | ToCamel}}: mock,
 	}

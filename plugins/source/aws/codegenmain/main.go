@@ -23,6 +23,8 @@ import (
 	"golang.org/x/exp/slices"
 )
 
+const useFullStruct = "." // special case to use full struct instead of a member
+
 //go:embed templates/*.go.tpl
 var awsTemplatesFS embed.FS
 
@@ -36,6 +38,7 @@ func main() {
 	resources = append(resources, recipes.AppsyncResources...)
 	resources = append(resources, recipes.AthenaResources...)
 	resources = append(resources, recipes.AutoscalingResources...)
+	resources = append(resources, recipes.BackupResources...)
 
 	for _, r := range resources {
 		generateResource(r, false)
@@ -66,7 +69,13 @@ func inferFromRecipe(r *recipes.Resource) {
 	if r.ItemsStruct != nil {
 		items = helpers.InferFromStruct(r.ItemsStruct, r.PaginatorStruct != nil, false)
 		r.GetMethod = items.Method
-		r.ResponseItemsName = items.ItemsField.Name
+		if helpers.BareType(reflect.TypeOf(r.AWSStruct)) == helpers.BareType(reflect.TypeOf(r.ItemsStruct)) {
+			// Same type, so we need to save the output struct completely
+			r.ResponseItemsName = useFullStruct
+		} else {
+			r.ResponseItemsName = items.ItemsField().Name
+		}
+
 		if items.PaginatorTokenField != nil {
 			r.NextTokenName = items.PaginatorTokenField.Name
 		}
@@ -76,9 +85,9 @@ func inferFromRecipe(r *recipes.Resource) {
 
 	if r.PaginatorStruct != nil {
 		pag = helpers.InferFromStruct(r.PaginatorStruct, false, false)
-		r.PaginatorListName = pag.ItemsField.Name
-		r.PaginatorListType = pag.ItemsField.Type.Elem().Name() // single type from a slice
-		if pag.ItemsField.Type.Elem().Kind() == reflect.Struct {
+		r.PaginatorListName = pag.ItemsField().Name
+		r.PaginatorListType = pag.ItemsField().Type.Elem().Name() // single type from a slice
+		if pag.ItemsField().Type.Elem().Kind() == reflect.Struct {
 			r.PaginatorListType = "types." + r.PaginatorListType
 		}
 
@@ -106,7 +115,7 @@ func inferFromRecipe(r *recipes.Resource) {
 			r.AutoCalculated.MatchedGetAndListFields = make(map[string]string)
 
 			fields := make(map[string]reflect.Type)
-			pagSingleItem := pag.ItemsField.Type.Elem()
+			pagSingleItem := pag.ItemsField().Type.Elem()
 			//log.Println("PROCESSING", pagSingleItem.Name(), pagSingleItem.Kind().String())
 			if k := pagSingleItem.Kind(); k == reflect.String {
 				// special case for string
@@ -126,7 +135,7 @@ func inferFromRecipe(r *recipes.Resource) {
 				found := false
 				for _, f := range pget.FieldOrder {
 					ff := pget.Fields[f]
-					if ff.Kind() == fields[""].Kind() || (ff.Kind() == reflect.Ptr && ff.Elem().Kind() == fields[""].Kind()) {
+					if helpers.BareType(ff).Kind() == helpers.BareType(fields[""]).Kind() {
 						found = true
 						r.AutoCalculated.GetAndListOrder = append(r.AutoCalculated.GetAndListOrder, f)
 						r.AutoCalculated.MatchedGetAndListFields[f] = "&item"
@@ -143,7 +152,7 @@ func inferFromRecipe(r *recipes.Resource) {
 
 					for attempts := 0; attempts < 2; attempts++ {
 						for n, t := range fields {
-							if nameMatchFn(n, f) && ((t == pget.Fields[f]) || (pget.Fields[f].Kind() == reflect.Ptr && t == pget.Fields[f].Elem())) {
+							if nameMatchFn(n, f) && helpers.BareType(t) == helpers.BareType(pget.Fields[f]) {
 								found = true
 								r.AutoCalculated.GetAndListOrder = append(r.AutoCalculated.GetAndListOrder, f)
 								r.AutoCalculated.MatchedGetAndListFields[f] = "item." + n
@@ -288,7 +297,8 @@ func generateResource(r *recipes.Resource, mock bool) {
 	}
 
 	r.TypesImport = ""
-	if sp := t.PkgPath(); strings.HasSuffix(sp, "/types") {
+	sp := t.PkgPath()
+	if strings.HasSuffix(sp, "/types") {
 		r.TypesImport = sp
 		if r.AddTypesImport {
 			if !mock {
@@ -299,6 +309,9 @@ func generateResource(r *recipes.Resource, mock bool) {
 		}
 		r.Imports = append(r.Imports, strconv.Quote(strings.TrimSuffix(sp, "/types")))         // auto-import main pkg (not "types")
 		r.MockImports = append(r.MockImports, strconv.Quote(strings.TrimSuffix(sp, "/types"))) // auto-import main pkg (not "types")
+	} else if strings.HasSuffix(sp, "/aws-sdk-go-v2/service/"+strings.ToLower(r.AWSService)) { // main struct lives in main pkg, auto-import that as well
+		r.Imports = append(r.Imports, strconv.Quote(sp))
+		r.MockImports = append(r.MockImports, strconv.Quote(sp))
 	}
 
 	if hasReferenceToResolvers && !mock {

@@ -4,8 +4,8 @@ package {{.AWSService | ToLower}}
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+{{if .NextTokenName}}	"github.com/aws/aws-sdk-go-v2/aws"
+{{end}}	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
@@ -37,7 +37,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 			{{.CustomErrorBlock}}
 			return diag.WrapError(err)
 		}
-		res <- response.{{.ResponseItemsName | Coalesce "Items"}}
+{{if eq .ResponseItemsName "."}}		res <- response{{else}}		res <- response.{{.ResponseItemsName | Coalesce "Items"}}{{end}}
 {{if .NextTokenName}}		if aws.ToString(response.NextToken) == "" {
 			break
 		}

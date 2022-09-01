@@ -10,22 +10,26 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
-	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
+
+	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 )
 
 func buildAutoscalingLaunchConfigurations(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAutoscalingClient(ctrl)
 
 	item := types.LaunchConfiguration{}
+
 	err := faker.FakeData(&item)
 	if err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().DescribeLaunchConfigurations(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+
 		&autoscaling.DescribeLaunchConfigurationsOutput{
 			LaunchConfigurations: []types.LaunchConfiguration{item},
 		}, nil)
+
 	return client.Services{
 		Autoscaling: mock,
 	}

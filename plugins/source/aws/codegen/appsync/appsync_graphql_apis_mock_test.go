@@ -10,22 +10,26 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
-	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/appsync/types"
+
+	"github.com/aws/aws-sdk-go-v2/service/appsync"
 )
 
 func buildAppSyncGraphqlApis(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAppSyncClient(ctrl)
 
 	item := types.GraphqlApi{}
+
 	err := faker.FakeData(&item)
 	if err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListGraphqlApis(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+
 		&appsync.ListGraphqlApisOutput{
 			GraphqlApis: []types.GraphqlApi{item},
 		}, nil)
+
 	return client.Services{
 		AppSync: mock,
 	}

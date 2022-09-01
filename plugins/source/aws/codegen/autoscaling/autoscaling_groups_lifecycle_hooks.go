@@ -4,7 +4,6 @@ package autoscaling
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"

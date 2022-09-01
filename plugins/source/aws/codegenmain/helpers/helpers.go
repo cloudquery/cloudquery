@@ -1,5 +1,7 @@
 package helpers
 
+import "reflect"
+
 func StringSwitch(b bool, ifTrue, ifFalse string) string {
 	if b {
 		return ifTrue
@@ -20,4 +22,11 @@ func ReverseStringSlice(input []string) []string {
 		ret = append(ret, input[i])
 	}
 	return ret
+}
+
+func BareType(t reflect.Type) reflect.Type {
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	return t
 }

@@ -10,22 +10,26 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
-	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
+
+	"github.com/aws/aws-sdk-go-v2/service/athena"
 )
 
 func buildAthenaDataCatalogDatabases(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockAthenaClient(ctrl)
 
 	item := types.Database{}
+
 	err := faker.FakeData(&item)
 	if err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListDatabases(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+
 		&athena.ListDatabasesOutput{
 			DatabaseList: []types.Database{item},
 		}, nil)
+
 	return client.Services{
 		Athena: mock,
 	}

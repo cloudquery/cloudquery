@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/autoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/backup"
 )
 
 var (
@@ -48,6 +49,7 @@ func Provider() *provider.Provider {
 			"autoscaling.launch_configurations":       autoscaling.AutoscalingLaunchConfigurations(),
 			"autoscaling.scheduled_actions":           autoscaling.AutoscalingScheduledActions(),
 			"autoscaling.auto_scaling_groups":         autoscaling.AutoscalingGroups(),
+			"backup.global_settings":                  backup.BackupGlobalSettings(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
