@@ -26,7 +26,7 @@ The new CloudQuery Policies feature brings policy-as-code to the CloudQuery ecos
 
 You can see all of the available policy packs, as well as their documentation and detailed specification of all checks, on [hub.cloudquery.io/policies](/docs/policies).
 
-For detailed documentation please check-out our [docs](/docs/policies) and our [example](https://github.com/cloudquery/cq-policy-core) repository containing the AWS CIS Policy.
+For detailed documentation please check-out our [docs](/docs/policies).
 
 ## Example Policies
 

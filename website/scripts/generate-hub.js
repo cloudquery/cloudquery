@@ -92,7 +92,7 @@ const generatePluginsPagesMeta = async (plugins) => {
     plugins.map((plugin) => [plugin.id, plugin.name])
   );
   await fs.writeFile(
-    `${PLUGINS_PATH}/meta.json`,
+    `${PLUGINS_PATH}/_meta.json`,
     JSON.stringify({ index: "Overview", ...pluginsMeta }, null, 2)
   );
 };

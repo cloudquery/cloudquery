@@ -4,7 +4,6 @@ package codegen
 
 import (
 	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	heroku "github.com/heroku/heroku-go/v5"
