@@ -10,7 +10,6 @@ export function EditLink({
   filePath?: string;
   children: react.ReactNode;
 }) {
-  debugger;
   if (!filePath) {
     return;
   }
