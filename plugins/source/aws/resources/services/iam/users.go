@@ -137,7 +137,7 @@ func IamUsers() *schema.Table {
 				Name:        "tags",
 				Description: "A list of tags that are associated with the user",
 				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("User.Tags"),
+				Resolver:    client.TagsToMap("User.Tags"),
 			},
 			{
 				Name:        "user_id",
