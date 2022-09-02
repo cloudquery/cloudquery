@@ -97,7 +97,8 @@ func fetchProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	if err != nil {
 		return errors.WithStack(err)
 	}
-	res <- output
+
+	res <- output.Items
 
 	return nil
 }

@@ -9,11 +9,13 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/bigquery"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/cloudbilling"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/cloudfunctions"
+	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/cloudresourcemanager"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/compute"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/container"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/dns"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/domains"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/iam"
+	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/kms"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/logging"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/monitoring"
 	"github.com/cloudquery/plugins/source/gcp/resources/servicesv2/redis"
@@ -83,6 +85,7 @@ func Plugin() *plugins.SourcePlugin {
 			domains.Registrations(),
 			iam.Roles(),
 			iam.ServiceAccounts(),
+			kms.CryptoKeys(),
 			container.Clusters(),
 			logging.Metrics(),
 			logging.Sinks(),
@@ -93,9 +96,12 @@ func Plugin() *plugins.SourcePlugin {
 			sqladmin.Instances(),
 			storage.Buckets(),
 			cloudfunctions.Functions(),
+			bigquery.Tables(),
 			bigquery.Datasets(),
 			cloudbilling.BillingAccounts(),
 			cloudbilling.Services(),
+			cloudresourcemanager.Folders(),
+			cloudresourcemanager.Projects(),
 		},
 		client.Configure,
 		plugins.WithSourceExampleConfig(exampleConfig),

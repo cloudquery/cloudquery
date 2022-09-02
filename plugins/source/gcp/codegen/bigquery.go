@@ -1,22 +1,26 @@
 package codegen
 
 import (
-	"fmt"
-
 	"github.com/iancoleman/strcase"
 	"google.golang.org/api/bigquery/v2"
 )
 
 var bigqueryResources = []*Resource{
 	{
-		SubService:  "datasets",
-		Struct:      &bigquery.Dataset{},
-		GetFunction: "c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()",
+		SubService:   "tables",
+		Struct:       &bigquery.Table{},
+		ListFunction: "c.Services.Bigquery.Tables.List(c.ProjectId, r.Parent.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).PageToken(nextPageToken).Do()",
+		GetFunction:  "c.Services.Bigquery.Tables.Get(c.ProjectId, r.Item.(*bigquery.TableListTables).TableReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()",
+		Imports:      []string{"google.golang.org/api/bigquery/v2"},
 	},
-	// {
-	// 	SubService: "tables",
-	// 	Struct:     &bigquery.Table{},
-	// },
+	{
+		SubService:   "datasets",
+		Struct:       &bigquery.Dataset{},
+		ListFunction: "c.Services.Bigquery.Datasets.List(c.ProjectId).PageToken(nextPageToken).Do()",
+		GetFunction:  "c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()",
+		Imports:      []string{"google.golang.org/api/bigquery/v2"},
+		Relations:    []string{"Tables()"},
+	},
 }
 
 func BigqueryResources() []*Resource {
@@ -26,7 +30,6 @@ func BigqueryResources() []*Resource {
 	for _, resource := range resources {
 		resource.MockImports = []string{"google.golang.org/api/bigquery/v2"}
 		resource.Service = "bigquery"
-		resource.ListFunction = fmt.Sprintf("c.Services.Bigquery.%s.List(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
 		resource.Template = "resource_list"
 		resource.OutputField = strcase.ToCamel(resource.SubService)
 	}

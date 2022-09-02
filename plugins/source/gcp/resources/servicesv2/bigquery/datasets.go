@@ -4,10 +4,10 @@ package bigquery
 
 import (
 	"context"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
+
 	"google.golang.org/api/bigquery/v2"
 )
 
@@ -124,10 +124,14 @@ func Datasets() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Tables(),
+		},
 	}
 }
 
-func fetchDatasets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
@@ -147,7 +151,7 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 
 func getDataset(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
-	item, err := c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()
+	item, err := c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}

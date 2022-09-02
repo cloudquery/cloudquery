@@ -28,7 +28,7 @@ func main() {
 	resources = append(resources, codegen.DnsResources()...)
 	resources = append(resources, codegen.DomainsResources()...)
 	resources = append(resources, codegen.IamResources()...)
-	// resources = append(resources, codegen.KmsResources()...)
+	resources = append(resources, codegen.KmsResources()...)
 	resources = append(resources, codegen.KubernetesResources()...)
 	resources = append(resources, codegen.LoggingResources()...)
 	resources = append(resources, codegen.RedisResources()...)
@@ -40,6 +40,7 @@ func main() {
 	resources = append(resources, codegen.CloudFunctionsResources()...)
 	resources = append(resources, codegen.BigqueryResources()...)
 	resources = append(resources, codegen.CloudBillingResources()...)
+	resources = append(resources, codegen.CloudResourceManagerResources()...)
 	// resources = append(resources, codegen.RunResources()...)
 
 	for _, r := range resources {
@@ -122,6 +123,9 @@ func generateResource(r codegen.Resource, mock bool) {
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.GetFunction != "" {
 		r.Table.PreResourceResolver = "get" + strcase.ToCamel(r.StructName)
+	}
+	if r.Relations != nil {
+		r.Table.Relations = r.Relations
 	}
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {

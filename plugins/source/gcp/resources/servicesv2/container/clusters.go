@@ -331,7 +331,7 @@ func Clusters() *schema.Table {
 	}
 }
 
-func fetchClusters(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchClusters(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	output, err := c.Services.Container.Projects.Locations.Clusters.List("projects/" + c.ProjectId + "/locations/-").Do()
 	if err != nil {

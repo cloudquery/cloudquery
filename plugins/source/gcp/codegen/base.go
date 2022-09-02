@@ -26,6 +26,8 @@ type Resource struct {
 	ListFunction string
 	// OutputField is field where the result is located in the output struct
 	OutputField string
+	// Relations is list of relations functions
+	Relations []string
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 	// imports to add for this resource

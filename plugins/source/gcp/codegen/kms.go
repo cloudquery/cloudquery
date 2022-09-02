@@ -6,8 +6,10 @@ import (
 
 var kmsResources = []*Resource{
 	{
-		SubService: "keyrings",
-		Struct:     &cloudkms.KeyRing{},
+		SubService:   "crypto_keys",
+		Struct:       &cloudkms.CryptoKey{},
+		ListFunction: "c.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.List(r.Parent.Item.(*kms.KeyRing).Name)",
+		Imports:      []string{"google.golang.org/api/cloudkms/v1"},
 	},
 }
 

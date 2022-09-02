@@ -416,7 +416,7 @@ func listBigqueryDatasetTables(ctx context.Context, meta schema.ClientMeta, pare
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.BigQuery.Tables.List(c.ProjectId, p.DatasetReference.DatasetId).Context(ctx).PageToken(nextPageToken).Do()
+		output, err := c.Services.Bigquery.Tables.List(c.ProjectId, p.DatasetReference.DatasetId).Context(ctx).PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

@@ -124,8 +124,7 @@ func fetchBigqueryDatasets(ctx context.Context, meta schema.ClientMeta, parent *
 		}
 
 		for _, d := range output.Datasets {
-			dataset, err := c.Services.Bigquery.Datasets.
-				Get(c.ProjectId, d.DatasetReference.DatasetId).Do()
+			dataset, err := c.Services.Bigquery.Datasets.Get(c.ProjectId, d.DatasetReference.DatasetId).Do()
 			if err != nil {
 				return errors.WithStack(err)
 			}

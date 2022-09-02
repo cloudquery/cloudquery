@@ -104,7 +104,7 @@ func Configure(ctx context.Context, p *plugins.SourcePlugin, s specs.Source) (sc
 
 		var folderList []string
 		for _, f := range gcpSpec.FolderIDs {
-			folderAndChildren, err := listFolders(ctx, c.Services.Resourcemanager.Folders, f, int(gcpSpec.FolderMaxDepth)-1)
+			folderAndChildren, err := listFolders(ctx, c.Services.Cloudresourcemanager.Folders, f, int(gcpSpec.FolderMaxDepth)-1)
 			if err != nil {
 				return nil, fmt.Errorf("failed to list folders: %w", err)
 			}
@@ -112,7 +112,7 @@ func Configure(ctx context.Context, p *plugins.SourcePlugin, s specs.Source) (sc
 		}
 		c.logger.Debug().Strs("folder_ids", folderList).Msg("Found folders")
 
-		proj, err := getProjects(ctx, c.Services.Resourcemanager, folderList)
+		proj, err := getProjects(ctx, c.Services.Cloudresourcemanager, folderList)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}

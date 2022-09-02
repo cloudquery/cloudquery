@@ -86,7 +86,7 @@ func ResourceManagerFolders() *schema.Table {
 func fetchResourceManagerFolders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	//Todo service account needs specific permissions to list folders https://cloud.google.com/resource-manager/docs/creating-managing-folders#folder-permissions
-	output, err := c.Services.ResourceManager.Folders.List().Do()
+	output, err := c.Services.Resourcemanager.Folders.List().Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}
