@@ -22,7 +22,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/versions"
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
@@ -30,9 +29,11 @@ import (
 )
 
 type SourcePlugin struct {
-	cmd    *exec.Cmd
-	conn   *grpc.ClientConn
-	client *clients.SourceClient
+	cmd      *exec.Cmd
+	conn     *grpc.ClientConn
+	client   *clients.SourceClient
+	errors   int
+	warnings int
 }
 
 type DestinationPlugin struct {
@@ -61,6 +62,14 @@ func (p *DestinationPlugin) Close() error {
 
 func (p *DestinationPlugin) GetClient() *clients.DestinationClient {
 	return p.client
+}
+
+func (p *SourcePlugin) Errors() int {
+	return p.errors
+}
+
+func (p *SourcePlugin) Warnings() int {
+	return p.warnings
 }
 
 func (p *SourcePlugin) Close() error {
@@ -114,7 +123,7 @@ func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.Source) (
 	case specs.RegistryGithub:
 		return p.downloadSourceGitHub(ctx, spec)
 	default:
-		return "", errors.Errorf("unknown registry: %s", spec.Registry)
+		return "", fmt.Errorf("unknown registry: %s", spec.Registry)
 	}
 }
 
@@ -247,7 +256,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 			if err := json.Unmarshal(b, &structuredLogLine); err != nil {
 				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
 			} else {
-				jsonToLog(structuredLogLine, p.logger)
+				jsonToLog(&pl, structuredLogLine, p.logger)
 			}
 		}
 	}()

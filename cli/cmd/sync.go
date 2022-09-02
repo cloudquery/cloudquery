@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/plugin"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
@@ -47,6 +46,9 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	pm := plugin.NewPluginManager()
 	for _, sourceSpec := range specReader.GetSources() {
+		if len(sourceSpec.Destinations) == 0 {
+			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
+		}
 		if err := syncConnection(ctx, pm, specReader, sourceSpec); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
@@ -94,7 +96,7 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync(ctx, sourceSpec, resources); err != nil {
-			return errors.Wrap(err, "failed to sync resources")
+			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 		return nil
 	})
@@ -128,6 +130,10 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	}
 	_ = bar.Finish()
 	fmt.Println("Fetch completed successfully.")
-	fmt.Printf("Summary: Resources: %d FailedWrites: %d\n", totalResources, failedWrites)
+	fmt.Printf("Summary: Resources: %d Failed Writes: %d, Fetch Errors: %d, Fetch Warnings: %d\n",
+		totalResources, failedWrites, sourcePlugin.Errors(), sourcePlugin.Warnings())
+	if sourcePlugin.Errors() > 0 || sourcePlugin.Warnings() > 0 || failedWrites > 0 {
+		fmt.Println("Please check the logs for more details on errors/warnings.")
+	}
 	return nil
 }
