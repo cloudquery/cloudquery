@@ -32,6 +32,10 @@ type Resource struct {
 	Template string
 	// imports to add for this resource
 	Imports []string
+	// Multiplex
+	Multiplex *string
+	// ChildTable
+	ChildTable bool
 	// SkipMock is used to skip the mock generation for this resource
 	SkipMock bool
 	// MockPostFaker is a code snippet that runs post faker

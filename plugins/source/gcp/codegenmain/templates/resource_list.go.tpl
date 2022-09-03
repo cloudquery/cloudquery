@@ -3,10 +3,13 @@
 package {{.Service}}
 
 import (
+	{{- if or .ListFunction .GetFunction}}
 	"context"
+	"github.com/pkg/errors"
+	{{- end}}
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
   {{range .Imports}}
   "{{.}}"
   {{end}}
@@ -16,6 +19,7 @@ func {{.SubService | ToCamel}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
 
+{{if .ListFunction}}
 func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	nextPageToken := ""
@@ -33,6 +37,7 @@ func fetch{{.SubService | ToCamel}}(ctx context.Context, meta schema.ClientMeta,
 	}
 	return nil
 }
+{{end}}
 
 {{if .GetFunction}}
 func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {

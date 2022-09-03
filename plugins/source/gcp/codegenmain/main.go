@@ -58,12 +58,12 @@ func generatePlugin(rr []*codegen.Resource) {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
-	tpl, err := template.New("plugin.go.tpl").Funcs(template.FuncMap{
+	tpl, err := template.New("autogen_tables.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
 		"ToLower": strings.ToLower,
-	}).ParseFS(gcpTemplatesFS, "templates/plugin.go.tpl")
+	}).ParseFS(gcpTemplatesFS, "templates/autogen_tables.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse plugin.go.tpl: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse autogen_tables.go.tpl: %w", err))
 	}
 
 	var buff bytes.Buffer
@@ -71,7 +71,7 @@ func generatePlugin(rr []*codegen.Resource) {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	filePath := path.Join(dir, "../resources/plugin/plugin.go")
+	filePath := path.Join(dir, "../resources/plugin/autogen_tables.go")
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())
@@ -119,7 +119,11 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	r.Table.Multiplex = "client.ProjectMultiplex"
+	if r.Multiplex == nil {
+		r.Table.Multiplex = "client.ProjectMultiplex"
+	} else {
+		r.Table.Multiplex = *r.Multiplex
+	}
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.GetFunction != "" {
 		r.Table.PreResourceResolver = "get" + strcase.ToCamel(r.StructName)
@@ -146,7 +150,7 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	filePath := path.Join(dir, "../resources/servicesv2", r.Service)
+	filePath := path.Join(dir, "../resources/services", r.Service)
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}

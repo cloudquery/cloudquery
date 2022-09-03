@@ -12,6 +12,9 @@ var bigqueryResources = []*Resource{
 		ListFunction: "c.Services.Bigquery.Tables.List(c.ProjectId, r.Parent.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).PageToken(nextPageToken).Do()",
 		GetFunction:  "c.Services.Bigquery.Tables.Get(c.ProjectId, r.Item.(*bigquery.TableListTables).TableReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()",
 		Imports:      []string{"google.golang.org/api/bigquery/v2"},
+		Multiplex:    &emptyString,
+		ChildTable:   true,
+		SkipMock:     true,
 	},
 	{
 		SubService:   "datasets",
@@ -20,6 +23,7 @@ var bigqueryResources = []*Resource{
 		GetFunction:  "c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()",
 		Imports:      []string{"google.golang.org/api/bigquery/v2"},
 		Relations:    []string{"Tables()"},
+		SkipMock:     true,
 	},
 }
 
