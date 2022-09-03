@@ -5,9 +5,9 @@ package serviceusage
 import (
 	"context"
 	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	
 )
 
 func Services() *schema.Table {
@@ -51,7 +51,8 @@ func fetchServices(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 	c := meta.(*client.Client)
 	nextPageToken := ""
 	for {
-		output, err := c.Services.Serviceusage.Services.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+
+		output, err := c.Services.Serviceusage.Services.List("projects/" + c.ProjectId).Filter("state:ENABLED").PageToken(nextPageToken).Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}

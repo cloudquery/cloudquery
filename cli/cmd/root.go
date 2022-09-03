@@ -52,7 +52,7 @@ func newCmdRoot() *cobra.Command {
 			}
 			var writers []io.Writer
 			if !noLogFile {
-				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 				if err != nil {
 					return err
 				}

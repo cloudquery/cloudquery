@@ -33,7 +33,7 @@ func ServiceusageResources() []*Resource {
 		resource.MockImports = []string{"google.golang.org/api/serviceusage/v1"}
 		resource.Template = "resource_list"
 		resource.ListFunction = fmt.Sprintf(
-			`c.Services.Serviceusage.%s.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`,
+			`c.Services.Serviceusage.%s.List("projects/" + c.ProjectId).Filter("state:ENABLED").PageToken(nextPageToken).Do()`,
 			strcase.ToCamel(resource.SubService),
 		)
 		resource.OutputField = strcase.ToCamel(resource.SubService)

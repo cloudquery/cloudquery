@@ -42,7 +42,7 @@ func Plugin() *plugins.SourcePlugin {
 		"gcp",
 		Version,
 		allTables,
-		client.Configure,
+		client.New,
 		plugins.WithSourceExampleConfig(exampleConfig),
 		plugins.WithClassifyError(client.ClassifyError),
 	)

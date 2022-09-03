@@ -8,7 +8,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -18,7 +17,7 @@ import (
 )
 
 type Client struct {
-	plugin   *plugins.SourcePlugin
+	// plugin   *plugins.SourcePlugin
 	projects []string
 	backoff  BackoffSettings
 	// All gcp services initialized by client
@@ -60,9 +59,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func Configure(ctx context.Context, p *plugins.SourcePlugin, s specs.Source) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
 	c := Client{
-		plugin: p,
+		logger: logger,
+		// plugin: p,
 	}
 	// providerConfig := config.(*Config)
 	var gcpSpec Spec
