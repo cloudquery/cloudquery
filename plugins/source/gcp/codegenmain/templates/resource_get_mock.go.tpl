@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	faker "github.com/cloudquery/faker/v3"
+	"github.com/bxcodec/faker/v4"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	{{range .MockImports}}

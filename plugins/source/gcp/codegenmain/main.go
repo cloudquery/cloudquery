@@ -28,7 +28,7 @@ func main() {
 	resources = append(resources, codegen.DnsResources()...)
 	resources = append(resources, codegen.DomainsResources()...)
 	resources = append(resources, codegen.IamResources()...)
-	// resources = append(resources, codegen.KmsResources()...)
+	resources = append(resources, codegen.KmsResources()...)
 	resources = append(resources, codegen.KubernetesResources()...)
 	resources = append(resources, codegen.LoggingResources()...)
 	resources = append(resources, codegen.RedisResources()...)
@@ -40,6 +40,7 @@ func main() {
 	resources = append(resources, codegen.CloudFunctionsResources()...)
 	resources = append(resources, codegen.BigqueryResources()...)
 	resources = append(resources, codegen.CloudBillingResources()...)
+	resources = append(resources, codegen.CloudResourceManagerResources()...)
 	// resources = append(resources, codegen.RunResources()...)
 
 	for _, r := range resources {
@@ -57,12 +58,12 @@ func generatePlugin(rr []*codegen.Resource) {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
-	tpl, err := template.New("plugin.go.tpl").Funcs(template.FuncMap{
+	tpl, err := template.New("autogen_tables.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
 		"ToLower": strings.ToLower,
-	}).ParseFS(gcpTemplatesFS, "templates/plugin.go.tpl")
+	}).ParseFS(gcpTemplatesFS, "templates/autogen_tables.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse plugin.go.tpl: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse autogen_tables.go.tpl: %w", err))
 	}
 
 	var buff bytes.Buffer
@@ -70,7 +71,7 @@ func generatePlugin(rr []*codegen.Resource) {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	filePath := path.Join(dir, "../resources/plugin/plugin.go")
+	filePath := path.Join(dir, "../resources/plugin/autogen_tables.go")
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())
@@ -113,12 +114,23 @@ func generateResource(r codegen.Resource, mock bool) {
 		r.Struct,
 		sdkgen.WithSkipFields(r.SkipFields),
 		sdkgen.WithOverrideColumns(r.OverrideColumns),
-		sdkgen.WithExtraColumns(r.DefaultColumns))
+		sdkgen.WithExtraColumns(r.DefaultColumns),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
-	r.Table.Multiplex = "client.ProjectMultiplex"
+	if r.Multiplex == nil {
+		r.Table.Multiplex = "client.ProjectMultiplex"
+	} else {
+		r.Table.Multiplex = *r.Multiplex
+	}
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
+	if r.GetFunction != "" {
+		r.Table.PreResourceResolver = "get" + strcase.ToCamel(r.StructName)
+	}
+	if r.Relations != nil {
+		r.Table.Relations = r.Relations
+	}
 	mainTemplate := r.Template + ".go.tpl"
 	if mock {
 		mainTemplate = r.Template + "_mock.go.tpl"
@@ -138,7 +150,7 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	filePath := path.Join(dir, "../resources/servicesv2", r.Service)
+	filePath := path.Join(dir, "../resources/services", r.Service)
 	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
 		log.Fatal(err)
 	}

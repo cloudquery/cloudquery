@@ -14,6 +14,8 @@ type Resource struct {
 	Table *codegen.TableDefinition
 	// Struct that will be used to generate the cloudquery table
 	Struct interface{}
+	// GetFunction
+	GetFunction string
 	// StructName is the name of the Struct because it can't be inferred by reflection
 	StructName string
 	// Service is the name of the gcp service the struct/api is residing
@@ -24,10 +26,16 @@ type Resource struct {
 	ListFunction string
 	// OutputField is field where the result is located in the output struct
 	OutputField string
+	// Relations is list of relations functions
+	Relations []string
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 	// imports to add for this resource
 	Imports []string
+	// Multiplex
+	Multiplex *string
+	// ChildTable
+	ChildTable bool
 	// SkipMock is used to skip the mock generation for this resource
 	SkipMock bool
 	// MockPostFaker is a code snippet that runs post faker

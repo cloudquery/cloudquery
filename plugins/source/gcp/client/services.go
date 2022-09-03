@@ -27,24 +27,24 @@ import (
 type GcpService string
 
 type Services struct {
-	Bigquery        *bigquery.Service
-	Cloudbilling    *cloudbilling.APIService
-	Cloudfunctions  *cloudfunctions.Service
-	Run             *run.APIService
-	Compute         *compute.Service
-	Container       *container.Service
-	Dns             *dns.Service
-	Domains         *domains.Service
-	Iam             *iam.Service
-	Kms             *kms.Service
-	Logging         *logging.Service
-	Monitoring      *monitoring.Service
-	Redis           *redis.Service
-	Resourcemanager *cloudresourcemanager.Service
-	Serviceusage    *serviceusage.Service
-	Secretmanager   *secretmanager.Service
-	Sqladmin        *sql.Service
-	Storage         *storage.Service
+	Bigquery             *bigquery.Service
+	Cloudbilling         *cloudbilling.APIService
+	Cloudfunctions       *cloudfunctions.Service
+	Run                  *run.APIService
+	Compute              *compute.Service
+	Container            *container.Service
+	Dns                  *dns.Service
+	Domains              *domains.Service
+	Iam                  *iam.Service
+	Kms                  *kms.Service
+	Logging              *logging.Service
+	Monitoring           *monitoring.Service
+	Redis                *redis.Service
+	Cloudresourcemanager *cloudresourcemanager.Service
+	Serviceusage         *serviceusage.Service
+	Secretmanager        *secretmanager.Service
+	Sqladmin             *sql.Service
+	Storage              *storage.Service
 }
 
 const (
@@ -141,23 +141,23 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	}
 
 	return &Services{
-		Bigquery:        bigQuerySvc,
-		Cloudbilling:    cloudBillingSvc,
-		Cloudfunctions:  cloudFunctionsSvc,
-		Run:             cloudRunSvc,
-		Compute:         computeSvc,
-		Container:       containerSvc,
-		Dns:             dnsSvc,
-		Domains:         domainSvc,
-		Iam:             iamSvc,
-		Kms:             kmsSvc,
-		Logging:         loggingSvc,
-		Monitoring:      monitoringSvc,
-		Redis:           redisSvc,
-		Resourcemanager: resourceManagerSvc,
-		Secretmanager:   secretManagerSvc,
-		Serviceusage:    serviceUsageManagerSvc,
-		Sqladmin:        sqlSvc,
-		Storage:         storageSvc,
+		Bigquery:             bigQuerySvc,
+		Cloudbilling:         cloudBillingSvc,
+		Cloudfunctions:       cloudFunctionsSvc,
+		Run:                  cloudRunSvc,
+		Compute:              computeSvc,
+		Container:            containerSvc,
+		Dns:                  dnsSvc,
+		Domains:              domainSvc,
+		Iam:                  iamSvc,
+		Kms:                  kmsSvc,
+		Logging:              loggingSvc,
+		Monitoring:           monitoringSvc,
+		Redis:                redisSvc,
+		Cloudresourcemanager: resourceManagerSvc,
+		Secretmanager:        secretManagerSvc,
+		Serviceusage:         serviceUsageManagerSvc,
+		Sqladmin:             sqlSvc,
+		Storage:              storageSvc,
 	}, nil
 }
