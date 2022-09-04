@@ -44,12 +44,22 @@ jobs:
           node-version: "lts/*"
 
       - name: Waiting for Vercel Preview
-        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
+        if: steps.check-labels.outputs.status == 'success' && github.event_name == 'pull_request'
         uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
         id: vercel-deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: "Preview – cloudquery-web"
+          environment: "Preview - cloudquery-web"
+          max_timeout: 360
+          check_interval: 10
+
+      - name: Waiting for Vercel Production
+        if: github.event_name != 'pull_request'
+        uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
+        id: vercel-deployment
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: "Production - cloudquery-web"
           max_timeout: 360
           check_interval: 10
 
