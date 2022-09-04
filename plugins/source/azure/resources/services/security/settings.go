@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -50,7 +51,7 @@ func SecuritySettings() *schema.Table {
 				Name:        "enabled",
 				Description: "Export setting enabled flag",
 				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("DataExportSettingProperties.Enabled"),
+				Resolver:    resolveEnabled,
 			},
 		},
 	}
@@ -82,6 +83,17 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 		if err := response.NextWithContext(ctx); err != nil {
 			return diag.WrapError(err)
 		}
+	}
+	return nil
+}
+
+func resolveEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	item := resource.Item.(security.Setting)
+	if v, ok := item.AsDataExportSettings(); ok {
+		return diag.WrapError(resource.Set(c.Name, v.Enabled))
+	}
+	if v, ok := item.AsAlertSyncSettings(); ok {
+		return diag.WrapError(resource.Set(c.Name, v.Enabled))
 	}
 	return nil
 }
