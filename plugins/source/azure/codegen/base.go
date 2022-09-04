@@ -62,6 +62,7 @@ type resourceDefinition struct {
 	mockFieldsToIgnore       []string
 	mockValueType            string
 	subServiceOverride       string
+	relations                []string
 }
 
 type byTemplates struct {
@@ -167,6 +168,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 				table.Multiplex = "client.SubscriptionMultiplex"
 				table.Resolver = "fetch" + azureService + azureSubService
 				table.Options.PrimaryKeys = []string{"subscription_id", "id"}
+				table.Relations = definition.relations
 
 				resource := Resource{
 					Table:            table,

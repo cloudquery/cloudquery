@@ -19,10 +19,12 @@ import (
 )
 
 func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	siteAuthSettings := mocks.NewMockWebSiteAuthSettingsClient(ctrl)
 	apps := mocks.NewMockWebAppsClient(ctrl)
 	s := services.Services{
 		Web: services.WebClient{
-			Apps: apps,
+			Apps:             apps,
+			SiteAuthSettings: siteAuthSettings,
 		},
 	}
 
@@ -65,7 +67,7 @@ func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	if err != nil {
 		t.Errorf("failed building mock %s", err)
 	}
-	apps.EXPECT().GetAuthSettings(gomock.Any(), gomock.Any(), gomock.Any()).Return(auth, nil)
+	siteAuthSettings.EXPECT().GetAuthSettings(gomock.Any(), gomock.Any(), gomock.Any()).Return(auth, nil)
 
 	return s
 }

@@ -1,6 +1,6 @@
 {{template "base.go.tpl" .}}
 
-func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().{{ .AzureService }}.{{ .AzureSubService }}
 	{{ range .ListFunctionArgsInit }}
 	{{.}}{{ end }}

@@ -319,7 +319,7 @@ func WebAppAuthSettings() *schema.Table {
 func fetchWebAppAuthSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(web.Site)
 
-	svc := meta.(*client.Client).Services().Web.Apps
+	svc := meta.(*client.Client).Services().Web.SiteAuthSettings
 	response, err := svc.GetAuthSettings(ctx, *p.ResourceGroup, *p.Name)
 	if err != nil {
 		return diag.WrapError(err)
