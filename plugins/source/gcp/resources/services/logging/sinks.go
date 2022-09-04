@@ -5,9 +5,12 @@ package logging
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	pb "google.golang.org/genproto/googleapis/logging/v2"
 )
 
 func Sinks() *schema.Table {
@@ -22,24 +25,27 @@ func Sinks() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "bigquery_options",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BigqueryOptions"),
-			},
-			{
-				Name:     "create_time",
+				Name:     "name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
+				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "destination",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Destination"),
+			},
+			{
+				Name:     "filter",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Filter"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
 			},
 			{
 				Name:     "disabled",
@@ -52,9 +58,14 @@ func Sinks() *schema.Table {
 				Resolver: schema.PathResolver("Exclusions"),
 			},
 			{
-				Name:     "filter",
+				Name:     "output_version_format",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("OutputVersionFormat"),
+			},
+			{
+				Name:     "writer_identity",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Filter"),
+				Resolver: schema.PathResolver("WriterIdentity"),
 			},
 			{
 				Name:     "include_children",
@@ -62,27 +73,14 @@ func Sinks() *schema.Table {
 				Resolver: schema.PathResolver("IncludeChildren"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "output_version_format",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("OutputVersionFormat"),
+				Name:     "create_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreateTime"),
 			},
 			{
 				Name:     "update_time",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("UpdateTime"),
-			},
-			{
-				Name:     "writer_identity",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("WriterIdentity"),
 			},
 		},
 	}
@@ -90,18 +88,19 @@ func Sinks() *schema.Table {
 
 func fetchSinks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListSinksRequest{}
+	it := c.Services.LoggingConfigClient.ListSinks(ctx, req)
 	for {
-		output, err := c.Services.Logging.Sinks.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Sinks
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

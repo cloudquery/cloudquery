@@ -4,11 +4,13 @@ package compute
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
 
-	"google.golang.org/api/compute/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
 func Instances() *schema.Table {
@@ -245,23 +247,19 @@ func Instances() *schema.Table {
 
 func fetchInstances(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.AggregatedListInstancesRequest{}
+	it := c.Services.ComputeInstancesClient.AggregatedList(ctx, req)
 	for {
-		output, err := c.Services.Compute.Instances.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.Instance
-		for _, items := range output.Items {
-			allItems = append(allItems, items.Instances...)
-		}
-		res <- allItems
+		res <- resp.Value.Instances
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
 	}
 	return nil
 }

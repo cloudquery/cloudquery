@@ -4,53 +4,64 @@ package logging
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
+	"net"
+	"fmt"
 	"testing"
-
-	"github.com/bxcodec/faker/v4"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
-
-	"google.golang.org/api/logging/v2"
-
+  
+  "cloud.google.com/go/logging/apiv2"
+  
+	
+  pb "google.golang.org/genproto/googleapis/logging/v2"
+  
 	"google.golang.org/api/option"
 )
 
-type MockMetricsResult struct {
-	Metrics []*logging.LogMetric `json:"metrics,omitempty"`
-}
 
 func createMetrics() (*client.Services, error) {
-	var item logging.LogMetric
-	if err := faker.FakeData(&item); err != nil {
-		return nil, err
+	fakeServer := &fakeMetricsServer{}
+	l, err := net.Listen("tcp", "localhost:0")
+	if err != nil {
+		return nil, fmt.Errorf("failed to listen: %w", err)
+	}
+	gsrv := grpc.NewServer()
+	pb.RegisterMetricsServiceV2Server(gsrv, fakeServer)
+	fakeServerAddr := l.Addr().String()
+	go func() {
+		if err := gsrv.Serve(l); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Create a client.
+	svc, err := logging.NewMetricsClient(context.Background(),
+		option.WithEndpoint(fakeServerAddr),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create grpc client: %w", err)
 	}
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockMetricsResult{
-			Metrics: []*logging.LogMetric{&item},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-	ts := httptest.NewServer(mux)
-	svc, err := logging.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
 	return &client.Services{
-		Logging: svc,
+		LoggingMetricsClient: svc,
 	}, nil
+}
+
+type fakeMetricsServer struct {
+	pb.
+}
+
+func (f *fakeMetricsServer) ListLogMetrics(context.Context, *pb.ListLogMetricsRequest) (*pb.ListLogMetricsResponse, error) {
+	resp := pb.ListLogMetricsResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	resp.NextPageToken = ""
+	return &resp, nil
 }
 
 func TestMetrics(t *testing.T) {

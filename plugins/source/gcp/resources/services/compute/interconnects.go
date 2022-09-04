@@ -5,9 +5,12 @@ package compute
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
 func Interconnects() *schema.Table {
@@ -144,18 +147,19 @@ func Interconnects() *schema.Table {
 
 func fetchInterconnects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListInterconnectsRequest{}
+	it := c.Services.ComputeInterconnectsClient.List(ctx, req)
 	for {
-		output, err := c.Services.Compute.Interconnects.List(c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Items
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

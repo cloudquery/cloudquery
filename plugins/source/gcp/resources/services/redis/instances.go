@@ -5,9 +5,12 @@ package redis
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
 )
 
 func Instances() *schema.Table {
@@ -22,49 +25,17 @@ func Instances() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "alternative_location_id",
+				Name:     "name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AlternativeLocationId"),
-			},
-			{
-				Name:     "auth_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("AuthEnabled"),
-			},
-			{
-				Name:     "authorized_network",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AuthorizedNetwork"),
-			},
-			{
-				Name:     "connect_mode",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConnectMode"),
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "current_location_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CurrentLocationId"),
-			},
-			{
-				Name:     "customer_managed_key",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CustomerManagedKey"),
+				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "display_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DisplayName"),
-			},
-			{
-				Name:     "host",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Host"),
 			},
 			{
 				Name:     "labels",
@@ -77,6 +48,101 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("LocationId"),
 			},
 			{
+				Name:     "alternative_location_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AlternativeLocationId"),
+			},
+			{
+				Name:     "redis_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RedisVersion"),
+			},
+			{
+				Name:     "reserved_ip_range",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReservedIpRange"),
+			},
+			{
+				Name:     "secondary_ip_range",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SecondaryIpRange"),
+			},
+			{
+				Name:     "host",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Host"),
+			},
+			{
+				Name:     "port",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Port"),
+			},
+			{
+				Name:     "current_location_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CurrentLocationId"),
+			},
+			{
+				Name:     "create_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreateTime"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "status_message",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StatusMessage"),
+			},
+			{
+				Name:     "redis_configs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RedisConfigs"),
+			},
+			{
+				Name:     "tier",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Tier"),
+			},
+			{
+				Name:     "memory_size_gb",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MemorySizeGb"),
+			},
+			{
+				Name:     "authorized_network",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AuthorizedNetwork"),
+			},
+			{
+				Name:     "persistence_iam_identity",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PersistenceIamIdentity"),
+			},
+			{
+				Name:     "connect_mode",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ConnectMode"),
+			},
+			{
+				Name:     "auth_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AuthEnabled"),
+			},
+			{
+				Name:     "server_ca_certs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServerCaCerts"),
+			},
+			{
+				Name:     "transit_encryption_mode",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("TransitEncryptionMode"),
+			},
+			{
 				Name:     "maintenance_policy",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("MaintenancePolicy"),
@@ -87,37 +153,14 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("MaintenanceSchedule"),
 			},
 			{
-				Name:     "memory_size_gb",
+				Name:     "replica_count",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MemorySizeGb"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.PathResolver("ReplicaCount"),
 			},
 			{
 				Name:     "nodes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Nodes"),
-			},
-			{
-				Name:     "persistence_config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PersistenceConfig"),
-			},
-			{
-				Name:     "persistence_iam_identity",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PersistenceIamIdentity"),
-			},
-			{
-				Name:     "port",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Port"),
 			},
 			{
 				Name:     "read_endpoint",
@@ -131,63 +174,8 @@ func Instances() *schema.Table {
 			},
 			{
 				Name:     "read_replicas_mode",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ReadReplicasMode"),
-			},
-			{
-				Name:     "redis_configs",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RedisConfigs"),
-			},
-			{
-				Name:     "redis_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RedisVersion"),
-			},
-			{
-				Name:     "replica_count",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ReplicaCount"),
-			},
-			{
-				Name:     "reserved_ip_range",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ReservedIpRange"),
-			},
-			{
-				Name:     "secondary_ip_range",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SecondaryIpRange"),
-			},
-			{
-				Name:     "server_ca_certs",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServerCaCerts"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "status_message",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StatusMessage"),
-			},
-			{
-				Name:     "suspension_reasons",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("SuspensionReasons"),
-			},
-			{
-				Name:     "tier",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Tier"),
-			},
-			{
-				Name:     "transit_encryption_mode",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TransitEncryptionMode"),
+				Resolver: schema.PathResolver("ReadReplicasMode"),
 			},
 		},
 	}
@@ -195,18 +183,19 @@ func Instances() *schema.Table {
 
 func fetchInstances(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListInstancesRequest{}
+	it := c.Services.RedisCloudRedisClient.ListInstances(ctx, req)
 	for {
-		output, err := c.Services.Redis.Projects.Locations.Instances.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Instances
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

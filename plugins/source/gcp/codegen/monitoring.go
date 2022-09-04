@@ -1,19 +1,22 @@
 package codegen
 
 import (
-	"fmt"
-
+	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/iancoleman/strcase"
-	"google.golang.org/api/monitoring/v3"
+	pb "google.golang.org/genproto/googleapis/monitoring/v3"
 )
 
 var monitoringResources = []*Resource{
 	{
-		SubService:    "alert_policies",
-		Struct:        &monitoring.AlertPolicy{},
-		MockPostFaker: "item.Validity.Details = nil",
+		SubService:          "alert_policies",
+		Struct:              &pb.AlertPolicy{},
+		NewFunction:         monitoring.NewAlertPolicyClient,
+		RequestStruct:       &pb.ListAlertPoliciesRequest{},
+		ResponseStruct:      &pb.ListAlertPoliciesResponse{},
+		RegisterServer:      pb.RegisterAlertPolicyServiceServer,
+		ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
+		UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "name",
@@ -21,6 +24,7 @@ var monitoringResources = []*Resource{
 				Options: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
+		FakerFieldsToIgnore: []string{"Condition"},
 	},
 }
 
@@ -30,12 +34,10 @@ func MonitoringResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "monitoring"
-		resource.MockImports = []string{"google.golang.org/api/monitoring/v3"}
-		resource.Template = "resource_list"
-		resource.ListFunction = fmt.Sprintf(
-			`c.Services.Monitoring.Projects.%s.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`,
-			strcase.ToCamel(resource.SubService))
-		resource.OutputField = strcase.ToCamel(resource.SubService)
+		resource.MockImports = []string{"cloud.google.com/go/monitoring/apiv3/v2"}
+		resource.ProtobufImport = "google.golang.org/genproto/googleapis/monitoring/v3"
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "newapi_list_grpc_mock"
 	}
 
 	return resources

@@ -25,7 +25,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Se
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		svc, err := createService()
 		if err != nil {
-			return nil, fmt.Errorf("failed to creattService %w", err)
+			return nil, fmt.Errorf("failed to createService: %w", err)
 		}
 		var gcpSpec Spec
 		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {

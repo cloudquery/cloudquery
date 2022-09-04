@@ -9,31 +9,27 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
-	"google.golang.org/api/compute/v1"
+	"cloud.google.com/go/compute/apiv1"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 
 	"google.golang.org/api/option"
 )
 
-type MockFirewallsResult struct {
-	Items []*compute.Firewall `json:"items,omitempty"`
-}
-
 func createFirewalls() (*client.Services, error) {
-	var item compute.Firewall
-	if err := faker.FakeData(&item); err != nil {
+	var item pb.FirewallList
+	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
-
+	emptyStr := ""
+	item.NextPageToken = &emptyStr
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockFirewallsResult{
-			Items: []*compute.Firewall{&item},
-		}
-		b, err := json.Marshal(resp)
+		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
 			return
@@ -44,12 +40,12 @@ func createFirewalls() (*client.Services, error) {
 		}
 	})
 	ts := httptest.NewServer(mux)
-	svc, err := compute.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
+	svc, err := compute.NewFirewallsRESTClient(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
 	if err != nil {
 		return nil, err
 	}
 	return &client.Services{
-		Compute: svc,
+		ComputeFirewallsClient: svc,
 	}, nil
 }
 

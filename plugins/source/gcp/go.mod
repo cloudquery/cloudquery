@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/cloudquery/plugin-sdk v0.0.11
 	github.com/golang/mock v1.6.0
-	github.com/googleapis/gax-go/v2 v2.4.0
+	github.com/googleapis/gax-go/v2 v2.5.1
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/pkg/errors v0.9.1
@@ -15,7 +15,7 @@ require (
 	github.com/spf13/cast v1.5.0
 	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
-	google.golang.org/api v0.92.0
+	google.golang.org/api v0.94.0
 	google.golang.org/grpc v1.49.0
 )
 
@@ -26,7 +26,23 @@ replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
 require (
 	cloud.google.com/go v0.102.1 // indirect
 	cloud.google.com/go/asset v1.4.0 // indirect
-	cloud.google.com/go/compute v1.7.0 // indirect
+	cloud.google.com/go/bigquery v1.39.0 // indirect
+	cloud.google.com/go/billing v1.2.0 // indirect
+	cloud.google.com/go/compute v1.9.0 // indirect
+	cloud.google.com/go/container v1.3.1 // indirect
+	cloud.google.com/go/domains v0.5.0 // indirect
+	cloud.google.com/go/functions v1.5.0 // indirect
+	cloud.google.com/go/iam v0.3.0 // indirect
+	cloud.google.com/go/kms v1.4.0 // indirect
+	cloud.google.com/go/logging v1.5.0 // indirect
+	cloud.google.com/go/monitoring v1.6.0 // indirect
+	cloud.google.com/go/redis v1.6.0 // indirect
+	cloud.google.com/go/resourcemanager v1.2.0 // indirect
+	cloud.google.com/go/run v0.1.1 // indirect
+	cloud.google.com/go/secretmanager v1.5.0 // indirect
+	cloud.google.com/go/serviceusage v1.2.0 // indirect
+	cloud.google.com/go/storage v1.26.0 // indirect
+	github.com/brianvoe/gofakeit/v6 v6.18.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
@@ -50,13 +66,14 @@ require (
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4 // indirect
 	golang.org/x/net v0.0.0-20220728211354-c7608f3a8462 // indirect
-	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2 // indirect
+	golang.org/x/oauth2 v0.0.0-20220822191816-0ebed06d0094 // indirect
 	golang.org/x/sync v0.0.0-20220819030929-7fc1605a5dde // indirect
 	golang.org/x/sys v0.0.0-20220731174439-a90be440212d // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.12 // indirect
+	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20220812140447-cec7f5303424 // indirect
+	google.golang.org/genproto v0.0.0-20220819153447-c7cd466b0e09 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

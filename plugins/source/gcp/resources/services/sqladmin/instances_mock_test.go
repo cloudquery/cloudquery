@@ -12,14 +12,14 @@ import (
 	"github.com/bxcodec/faker/v4"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-
-	"google.golang.org/api/sqladmin/v1beta4"
-
+	
+  "google.golang.org/api/sqladmin/v1beta4"
+  
 	"google.golang.org/api/option"
 )
 
 type MockInstancesResult struct {
-	Items []*sqladmin.DatabaseInstance `json:"items,omitempty"`
+   []*sqladmin.DatabaseInstance `json:",omitempty"`
 }
 
 func createInstances() (*client.Services, error) {
@@ -27,11 +27,11 @@ func createInstances() (*client.Services, error) {
 	if err := faker.FakeData(&item); err != nil {
 		return nil, err
 	}
-
+  
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &MockInstancesResult{
-			Items: []*sqladmin.DatabaseInstance{&item},
+			: []*sqladmin.DatabaseInstance{&item},
 		}
 		b, err := json.Marshal(resp)
 		if err != nil {

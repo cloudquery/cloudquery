@@ -3,9 +3,6 @@
 package bigquery
 
 import (
-	"context"
-	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
@@ -14,9 +11,8 @@ import (
 
 func Tables() *schema.Table {
 	return &schema.Table{
-		Name:                "gcp_bigquery_tables",
-		Resolver:            fetchTables,
-		PreResourceResolver: getTable,
+		Name:     "gcp_bigquery_tables",
+		Resolver: fetchTables,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -24,74 +20,9 @@ func Tables() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "clone_definition",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CloneDefinition"),
-			},
-			{
-				Name:     "clustering",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Clustering"),
-			},
-			{
-				Name:     "creation_time",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("CreationTime"),
-			},
-			{
-				Name:     "default_collation",
+				Name:     "name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DefaultCollation"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
-			},
-			{
-				Name:     "encryption_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EncryptionConfiguration"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
-				Name:     "expiration_time",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ExpirationTime"),
-			},
-			{
-				Name:     "external_data_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExternalDataConfiguration"),
-			},
-			{
-				Name:     "friendly_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FriendlyName"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-			},
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "labels",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Labels"),
-			},
-			{
-				Name:     "last_modified_time",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("LastModifiedTime"),
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "location",
@@ -99,79 +30,39 @@ func Tables() *schema.Table {
 				Resolver: schema.PathResolver("Location"),
 			},
 			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "schema",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Schema"),
+			},
+			{
 				Name:     "materialized_view",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("MaterializedView"),
 			},
 			{
-				Name:     "max_staleness",
+				Name:     "view_query",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MaxStaleness"),
+				Resolver: schema.PathResolver("ViewQuery"),
 			},
 			{
-				Name:     "model",
+				Name:     "use_legacy_sql",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("UseLegacySQL"),
+			},
+			{
+				Name:     "use_standard_sql",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("UseStandardSQL"),
+			},
+			{
+				Name:     "time_partitioning",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Model"),
-			},
-			{
-				Name:     "num_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumBytes"),
-			},
-			{
-				Name:     "num_long_term_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumLongTermBytes"),
-			},
-			{
-				Name:     "num_physical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumPhysicalBytes"),
-			},
-			{
-				Name:     "num_rows",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumRows"),
-			},
-			{
-				Name:     "num_active_logical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumActiveLogicalBytes"),
-			},
-			{
-				Name:     "num_active_physical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumActivePhysicalBytes"),
-			},
-			{
-				Name:     "num_long_term_logical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumLongTermLogicalBytes"),
-			},
-			{
-				Name:     "num_long_term_physical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumLongTermPhysicalBytes"),
-			},
-			{
-				Name:     "num_partitions",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumPartitions"),
-			},
-			{
-				Name:     "num_time_travel_physical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumTimeTravelPhysicalBytes"),
-			},
-			{
-				Name:     "num_total_logical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumTotalLogicalBytes"),
-			},
-			{
-				Name:     "num_total_physical_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumTotalPhysicalBytes"),
+				Resolver: schema.PathResolver("TimePartitioning"),
 			},
 			{
 				Name:     "range_partitioning",
@@ -184,34 +75,34 @@ func Tables() *schema.Table {
 				Resolver: schema.PathResolver("RequirePartitionFilter"),
 			},
 			{
-				Name:     "schema",
+				Name:     "clustering",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Schema"),
+				Resolver: schema.PathResolver("Clustering"),
 			},
 			{
-				Name:     "self_link",
+				Name:     "expiration_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("ExpirationTime"),
+			},
+			{
+				Name:     "labels",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Labels"),
+			},
+			{
+				Name:     "external_data_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExternalDataConfig"),
+			},
+			{
+				Name:     "encryption_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EncryptionConfig"),
+			},
+			{
+				Name:     "full_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
-			},
-			{
-				Name:     "snapshot_definition",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SnapshotDefinition"),
-			},
-			{
-				Name:     "streaming_buffer",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("StreamingBuffer"),
-			},
-			{
-				Name:     "table_reference",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TableReference"),
-			},
-			{
-				Name:     "time_partitioning",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TimePartitioning"),
+				Resolver: schema.PathResolver("FullID"),
 			},
 			{
 				Name:     "type",
@@ -219,38 +110,50 @@ func Tables() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "view",
+				Name:     "creation_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "last_modified_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("LastModifiedTime"),
+			},
+			{
+				Name:     "num_bytes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("NumBytes"),
+			},
+			{
+				Name:     "num_long_term_bytes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("NumLongTermBytes"),
+			},
+			{
+				Name:     "num_rows",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("NumRows"),
+			},
+			{
+				Name:     "snapshot_definition",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("View"),
+				Resolver: schema.PathResolver("SnapshotDefinition"),
+			},
+			{
+				Name:     "clone_definition",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CloneDefinition"),
+			},
+			{
+				Name:     "streaming_buffer",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StreamingBuffer"),
+			},
+			{
+				Name:     "e_tag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ETag"),
 			},
 		},
 	}
-}
-
-func fetchTables(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	nextPageToken := ""
-	for {
-		output, err := c.Services.Bigquery.Tables.List(c.ProjectId, r.Parent.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).PageToken(nextPageToken).Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		res <- output.Tables
-
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
-	}
-	return nil
-}
-
-func getTable(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
-	c := meta.(*client.Client)
-	item, err := c.Services.Bigquery.Tables.Get(c.ProjectId, r.Item.(*bigquery.TableListTables).TableReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	r.SetItem(item)
-	return nil
 }

@@ -3,8 +3,14 @@
 package kms
 
 import (
+	"context"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
 func Keyrings() *schema.Table {
@@ -23,14 +29,14 @@ func Keyrings() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "create_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreateTime"),
 			},
 		},
 
@@ -38,4 +44,23 @@ func Keyrings() *schema.Table {
 			CryptoKeys(),
 		},
 	}
+}
+
+func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
+	c := meta.(*client.Client)
+	req := &pb.ListKeyRingsRequest{}
+	it := c.Services.KmsKeyManagementClient.ListKeyRings(ctx, req)
+	for {
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		res <- resp
+
+	}
+	return nil
 }

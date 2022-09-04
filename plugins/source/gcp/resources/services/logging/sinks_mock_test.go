@@ -4,53 +4,62 @@ package logging
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
+	"fmt"
+	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"net"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
-	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
+	"cloud.google.com/go/logging/apiv2"
 
-	"google.golang.org/api/logging/v2"
+	pb "google.golang.org/genproto/googleapis/logging/v2"
 
 	"google.golang.org/api/option"
 )
 
-type MockSinksResult struct {
-	Sinks []*logging.LogSink `json:"sinks,omitempty"`
+func createSinks() (*client.Services, error) {
+	fakeServer := &fakeSinksServer{}
+	l, err := net.Listen("tcp", "localhost:0")
+	if err != nil {
+		return nil, fmt.Errorf("failed to listen: %w", err)
+	}
+	gsrv := grpc.NewServer()
+	pb.RegisterConfigServiceV2Server(gsrv, fakeServer)
+	fakeServerAddr := l.Addr().String()
+	go func() {
+		if err := gsrv.Serve(l); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Create a client.
+	svc, err := logging.NewConfigClient(context.Background(),
+		option.WithEndpoint(fakeServerAddr),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create grpc client: %w", err)
+	}
+
+	return &client.Services{
+		LoggingConfigClient: svc,
+	}, nil
 }
 
-func createSinks() (*client.Services, error) {
-	var item logging.LogSink
-	if err := faker.FakeData(&item); err != nil {
-		return nil, err
-	}
+type fakeSinksServer struct {
+	pb.UnimplementedConfigServiceV2Server
+}
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockSinksResult{
-			Sinks: []*logging.LogSink{&item},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-	ts := httptest.NewServer(mux)
-	svc, err := logging.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
+func (f *fakeSinksServer) ListSinks(context.Context, *pb.ListSinksRequest) (*pb.ListSinksResponse, error) {
+	resp := pb.ListSinksResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	return &client.Services{
-		Logging: svc,
-	}, nil
+	resp.NextPageToken = ""
+	return &resp, nil
 }
 
 func TestSinks(t *testing.T) {

@@ -6,13 +6,11 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
 	crmv1 "google.golang.org/api/cloudresourcemanager/v1"
-	"google.golang.org/api/cloudresourcemanager/v3"
 	"google.golang.org/api/option"
 )
 
@@ -71,9 +69,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 
 	projects := gcpSpec.ProjectIDs
-	if gcpSpec.FolderMaxDepth == 0 {
-		gcpSpec.FolderMaxDepth = 5
-	}
 
 	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
 	if len(serviceAccountKeyJSON) == 0 {
@@ -89,39 +84,16 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
 
-	if len(gcpSpec.FolderIDs) > 0 {
-		c.logger.Warn().Msg("ProjectFilter config option is deprecated and will not work with the folder_ids feature")
-	}
-
 	var err error
 	c.Services, err = initServices(context.Background(), options)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(gcpSpec.FolderIDs) > 0 {
-		c.logger.Debug().Strs("folder_ids", gcpSpec.FolderIDs).Msg("Listing folders")
-
-		var folderList []string
-		for _, f := range gcpSpec.FolderIDs {
-			folderAndChildren, err := listFolders(ctx, c.Services.Cloudresourcemanager.Folders, f, int(gcpSpec.FolderMaxDepth)-1)
-			if err != nil {
-				return nil, fmt.Errorf("failed to list folders: %w", err)
-			}
-			folderList = append(folderList, folderAndChildren...)
-		}
-		c.logger.Debug().Strs("folder_ids", folderList).Msg("Found folders")
-
-		proj, err := getProjects(ctx, c.Services.Cloudresourcemanager, folderList)
-		if err != nil {
-			return nil, fmt.Errorf("failed to get projects: %w", err)
-		}
-		appendWithoutDupes(&projects, proj)
-	}
 	if len(projects) == 0 {
 		c.logger.Info().Msg("No project_ids specified, assuming all active projects")
 		var err error
-		projects, err = getProjectsV1(options...)
+		projects, err = getProjectsV1(ctx, options...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
@@ -138,65 +110,18 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	return &c, nil
 }
 
-// getProjects requires the `resourcemanager.projects.list` permission, and at least one folder
-func getProjects(ctx context.Context, service *cloudresourcemanager.Service, folders []string) ([]string, error) {
-	if len(folders) == 0 {
-		return nil, fmt.Errorf("no folders specified")
-	}
-
+// getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
+func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
 	var (
 		projects []string
 		inactive int
 	)
-
-	for _, folder := range folders {
-		call := service.Projects.List().Context(ctx).Parent(folder)
-
-		for {
-			output, err := call.Do()
-			if err != nil {
-				return nil, fmt.Errorf("failed to list projects in folder %s: %w", folder, err)
-			}
-			for _, project := range output.Projects {
-				if project.State == "ACTIVE" {
-					projects = append(projects, project.ProjectId)
-				} else {
-					inactive++
-				}
-			}
-			if output.NextPageToken == "" {
-				break
-			}
-			call.PageToken(output.NextPageToken)
-		}
-	}
-
-	if len(projects) == 0 {
-		if inactive > 0 {
-			return nil, fmt.Errorf("project listing failed: no active projects")
-		}
-		return nil, fmt.Errorf("project listing failed")
-	}
-
-	return projects, nil
-}
-
-// getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
-func getProjectsV1(options ...option.ClientOption) ([]string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
-	var (
-		projects []string
-		inactive int
-	)
 
 	call := service.Projects.List().Context(ctx)
-
 	for {
 		output, err := call.Do()
 		if err != nil {
@@ -223,51 +148,4 @@ func getProjectsV1(options ...option.ClientOption) ([]string, error) {
 	}
 
 	return projects, nil
-}
-
-func listFolders(ctx context.Context, service *cloudresourcemanager.FoldersService, parent string, maxDepth int) ([]string, error) {
-	folders := []string{
-		parent,
-	}
-	if maxDepth <= 0 {
-		return folders, nil
-	}
-
-	call := service.List().Context(ctx).Parent(parent)
-	for {
-		output, err := call.Do()
-		if err != nil {
-			return nil, fmt.Errorf("failed to list folders: %w", err)
-		}
-		for _, folder := range output.Folders {
-			if folder.State != "ACTIVE" {
-				continue
-			}
-			fList, err := listFolders(ctx, service, folder.Name, maxDepth-1)
-			if err != nil {
-				return nil, fmt.Errorf("failed to list folders: %w", err)
-			}
-			folders = append(folders, fList...)
-		}
-		if output.NextPageToken == "" {
-			break
-		}
-		call.PageToken(output.NextPageToken)
-	}
-
-	return folders, nil
-}
-
-func appendWithoutDupes(dst *[]string, src []string) {
-	dstMap := make(map[string]struct{}, len(*dst))
-	for i := range *dst {
-		dstMap[(*dst)[i]] = struct{}{}
-	}
-	for i := range src {
-		if _, ok := dstMap[src[i]]; ok {
-			continue
-		}
-		dstMap[src[i]] = struct{}{}
-		*dst = append(*dst, src[i])
-	}
 }

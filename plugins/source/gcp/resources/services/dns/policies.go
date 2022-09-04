@@ -3,9 +3,6 @@
 package dns
 
 import (
-	"context"
-	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
@@ -64,24 +61,21 @@ func Policies() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Networks"),
 			},
+			{
+				Name:     "server_response",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServerResponse"),
+			},
+			{
+				Name:     "force_send_fields",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("ForceSendFields"),
+			},
+			{
+				Name:     "null_fields",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("NullFields"),
+			},
 		},
 	}
-}
-
-func fetchPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	nextPageToken := ""
-	for {
-		output, err := c.Services.Dns.Policies.List(c.ProjectId).PageToken(nextPageToken).Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		res <- output.Policies
-
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
-	}
-	return nil
 }

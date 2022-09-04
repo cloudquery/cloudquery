@@ -5,9 +5,12 @@ package domains
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	pb "google.golang.org/genproto/googleapis/cloud/domains/v1beta1"
 )
 
 func Registrations() *schema.Table {
@@ -22,19 +25,9 @@ func Registrations() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "contact_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ContactSettings"),
-			},
-			{
-				Name:     "create_time",
+				Name:     "name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "dns_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DnsSettings"),
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "domain_name",
@@ -42,13 +35,23 @@ func Registrations() *schema.Table {
 				Resolver: schema.PathResolver("DomainName"),
 			},
 			{
+				Name:     "create_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreateTime"),
+			},
+			{
 				Name:     "expire_time",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ExpireTime"),
 			},
 			{
+				Name:     "state",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
 				Name:     "issues",
-				Type:     schema.TypeStringArray,
+				Type:     schema.TypeIntArray,
 				Resolver: schema.PathResolver("Issues"),
 			},
 			{
@@ -62,9 +65,14 @@ func Registrations() *schema.Table {
 				Resolver: schema.PathResolver("ManagementSettings"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Name:     "dns_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DnsSettings"),
+			},
+			{
+				Name:     "contact_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ContactSettings"),
 			},
 			{
 				Name:     "pending_contact_settings",
@@ -72,24 +80,9 @@ func Registrations() *schema.Table {
 				Resolver: schema.PathResolver("PendingContactSettings"),
 			},
 			{
-				Name:     "register_failure_reason",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RegisterFailureReason"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
-			},
-			{
 				Name:     "supported_privacy",
-				Type:     schema.TypeStringArray,
+				Type:     schema.TypeIntArray,
 				Resolver: schema.PathResolver("SupportedPrivacy"),
-			},
-			{
-				Name:     "transfer_failure_reason",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TransferFailureReason"),
 			},
 		},
 	}
@@ -97,18 +90,19 @@ func Registrations() *schema.Table {
 
 func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListRegistrationsRequest{}
+	it := c.Services.DomainsClient.ListRegistrations(ctx, req)
 	for {
-		output, err := c.Services.Domains.Projects.Locations.Registrations.List("projects/" + c.ProjectId + "/locations/-").PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Registrations
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

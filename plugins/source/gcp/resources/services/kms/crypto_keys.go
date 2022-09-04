@@ -5,11 +5,12 @@ package kms
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 
-	"google.golang.org/api/cloudkms/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
 func CryptoKeys() *schema.Table {
@@ -23,44 +24,9 @@ func CryptoKeys() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "policy",
-				Type:     schema.TypeJSON,
-				Resolver: resolveKmsKeyringCryptoKeyPolicy,
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "crypto_key_backend",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CryptoKeyBackend"),
-			},
-			{
-				Name:     "destroy_scheduled_duration",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DestroyScheduledDuration"),
-			},
-			{
-				Name:     "import_only",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("ImportOnly"),
-			},
-			{
-				Name:     "labels",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Labels"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "next_rotation_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("NextRotationTime"),
 			},
 			{
 				Name:     "primary",
@@ -69,18 +35,43 @@ func CryptoKeys() *schema.Table {
 			},
 			{
 				Name:     "purpose",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Purpose"),
 			},
 			{
-				Name:     "rotation_period",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RotationPeriod"),
+				Name:     "create_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreateTime"),
+			},
+			{
+				Name:     "next_rotation_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NextRotationTime"),
 			},
 			{
 				Name:     "version_template",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("VersionTemplate"),
+			},
+			{
+				Name:     "labels",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Labels"),
+			},
+			{
+				Name:     "import_only",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ImportOnly"),
+			},
+			{
+				Name:     "destroy_scheduled_duration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DestroyScheduledDuration"),
+			},
+			{
+				Name:     "crypto_key_backend",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CryptoKeyBackend"),
 			},
 		},
 	}
@@ -88,18 +79,19 @@ func CryptoKeys() *schema.Table {
 
 func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListCryptoKeysRequest{}
+	it := c.Services.KmsKeyManagementClient.ListCryptoKeys(ctx, req)
 	for {
-		output, err := c.Services.Kms.Projects.Locations.KeyRings.CryptoKeys.List(r.Parent.Item.(*cloudkms.KeyRing).Name).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.CryptoKeys
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

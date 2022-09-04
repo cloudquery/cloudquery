@@ -4,9 +4,13 @@ package container
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
+
+	pb "google.golang.org/genproto/googleapis/container/v1"
 )
 
 func Clusters() *schema.Table {
@@ -21,74 +25,9 @@ func Clusters() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "addons_config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AddonsConfig"),
-			},
-			{
-				Name:     "authenticator_groups_config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AuthenticatorGroupsConfig"),
-			},
-			{
-				Name:     "autopilot",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Autopilot"),
-			},
-			{
-				Name:     "autoscaling",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Autoscaling"),
-			},
-			{
-				Name:     "binary_authorization",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BinaryAuthorization"),
-			},
-			{
-				Name:     "cluster_ipv_4_cidr",
+				Name:     "name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ClusterIpv4Cidr"),
-			},
-			{
-				Name:     "conditions",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Conditions"),
-			},
-			{
-				Name:     "confidential_nodes",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ConfidentialNodes"),
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "current_master_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CurrentMasterVersion"),
-			},
-			{
-				Name:     "current_node_count",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("CurrentNodeCount"),
-			},
-			{
-				Name:     "current_node_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CurrentNodeVersion"),
-			},
-			{
-				Name:     "database_encryption",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DatabaseEncryption"),
-			},
-			{
-				Name:     "default_max_pods_constraint",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DefaultMaxPodsConstraint"),
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
 				Name:     "description",
@@ -96,54 +35,69 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "enable_kubernetes_alpha",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableKubernetesAlpha"),
-			},
-			{
-				Name:     "enable_tpu",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableTpu"),
-			},
-			{
-				Name:     "endpoint",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Endpoint"),
-			},
-			{
-				Name:     "expire_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ExpireTime"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-			},
-			{
-				Name:     "identity_service_config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IdentityServiceConfig"),
-			},
-			{
-				Name:     "initial_cluster_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("InitialClusterVersion"),
-			},
-			{
 				Name:     "initial_node_count",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("InitialNodeCount"),
 			},
 			{
-				Name:     "instance_group_urls",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("InstanceGroupUrls"),
+				Name:     "node_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NodeConfig"),
 			},
 			{
-				Name:     "ip_allocation_policy",
+				Name:     "master_auth",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IpAllocationPolicy"),
+				Resolver: schema.PathResolver("MasterAuth"),
+			},
+			{
+				Name:     "logging_service",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LoggingService"),
+			},
+			{
+				Name:     "monitoring_service",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MonitoringService"),
+			},
+			{
+				Name:     "network",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Network"),
+			},
+			{
+				Name:     "cluster_ipv_4_cidr",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ClusterIpv4Cidr"),
+			},
+			{
+				Name:     "addons_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AddonsConfig"),
+			},
+			{
+				Name:     "subnetwork",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Subnetwork"),
+			},
+			{
+				Name:     "node_pools",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NodePools"),
+			},
+			{
+				Name:     "locations",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Locations"),
+			},
+			{
+				Name:     "enable_kubernetes_alpha",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableKubernetesAlpha"),
+			},
+			{
+				Name:     "resource_labels",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResourceLabels"),
 			},
 			{
 				Name:     "label_fingerprint",
@@ -156,34 +110,14 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("LegacyAbac"),
 			},
 			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "locations",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Locations"),
-			},
-			{
-				Name:     "logging_config",
+				Name:     "network_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LoggingConfig"),
+				Resolver: schema.PathResolver("NetworkPolicy"),
 			},
 			{
-				Name:     "logging_service",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LoggingService"),
-			},
-			{
-				Name:     "maintenance_policy",
+				Name:     "ip_allocation_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("MaintenancePolicy"),
-			},
-			{
-				Name:     "master_auth",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("MasterAuth"),
+				Resolver: schema.PathResolver("IpAllocationPolicy"),
 			},
 			{
 				Name:     "master_authorized_networks_config",
@@ -191,29 +125,19 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("MasterAuthorizedNetworksConfig"),
 			},
 			{
-				Name:     "mesh_certificates",
+				Name:     "maintenance_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("MeshCertificates"),
+				Resolver: schema.PathResolver("MaintenancePolicy"),
 			},
 			{
-				Name:     "monitoring_config",
+				Name:     "binary_authorization",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("MonitoringConfig"),
+				Resolver: schema.PathResolver("BinaryAuthorization"),
 			},
 			{
-				Name:     "monitoring_service",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("MonitoringService"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "network",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Network"),
+				Name:     "autoscaling",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Autoscaling"),
 			},
 			{
 				Name:     "network_config",
@@ -221,39 +145,19 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("NetworkConfig"),
 			},
 			{
-				Name:     "network_policy",
+				Name:     "default_max_pods_constraint",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NetworkPolicy"),
+				Resolver: schema.PathResolver("DefaultMaxPodsConstraint"),
 			},
 			{
-				Name:     "node_config",
+				Name:     "resource_usage_export_config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NodeConfig"),
+				Resolver: schema.PathResolver("ResourceUsageExportConfig"),
 			},
 			{
-				Name:     "node_ipv_4_cidr_size",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NodeIpv4CidrSize"),
-			},
-			{
-				Name:     "node_pool_auto_config",
+				Name:     "authenticator_groups_config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NodePoolAutoConfig"),
-			},
-			{
-				Name:     "node_pool_defaults",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NodePoolDefaults"),
-			},
-			{
-				Name:     "node_pools",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NodePools"),
-			},
-			{
-				Name:     "notification_config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NotificationConfig"),
+				Resolver: schema.PathResolver("AuthenticatorGroupsConfig"),
 			},
 			{
 				Name:     "private_cluster_config",
@@ -261,19 +165,49 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("PrivateClusterConfig"),
 			},
 			{
+				Name:     "database_encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DatabaseEncryption"),
+			},
+			{
+				Name:     "vertical_pod_autoscaling",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("VerticalPodAutoscaling"),
+			},
+			{
+				Name:     "shielded_nodes",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ShieldedNodes"),
+			},
+			{
 				Name:     "release_channel",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ReleaseChannel"),
 			},
 			{
-				Name:     "resource_labels",
+				Name:     "workload_identity_config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ResourceLabels"),
+				Resolver: schema.PathResolver("WorkloadIdentityConfig"),
 			},
 			{
-				Name:     "resource_usage_export_config",
+				Name:     "mesh_certificates",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ResourceUsageExportConfig"),
+				Resolver: schema.PathResolver("MeshCertificates"),
+			},
+			{
+				Name:     "notification_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NotificationConfig"),
+			},
+			{
+				Name:     "confidential_nodes",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ConfidentialNodes"),
+			},
+			{
+				Name:     "identity_service_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IdentityServiceConfig"),
 			},
 			{
 				Name: "self_link",
@@ -283,18 +217,38 @@ func Clusters() *schema.Table {
 				},
 			},
 			{
-				Name:     "services_ipv_4_cidr",
+				Name:     "zone",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ServicesIpv4Cidr"),
+				Resolver: schema.PathResolver("Zone"),
 			},
 			{
-				Name:     "shielded_nodes",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ShieldedNodes"),
+				Name:     "endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Endpoint"),
+			},
+			{
+				Name:     "initial_cluster_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("InitialClusterVersion"),
+			},
+			{
+				Name:     "current_master_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CurrentMasterVersion"),
+			},
+			{
+				Name:     "current_node_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CurrentNodeVersion"),
+			},
+			{
+				Name:     "create_time",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CreateTime"),
 			},
 			{
 				Name:     "status",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Status"),
 			},
 			{
@@ -303,9 +257,39 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("StatusMessage"),
 			},
 			{
-				Name:     "subnetwork",
+				Name:     "node_ipv_4_cidr_size",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("NodeIpv4CidrSize"),
+			},
+			{
+				Name:     "services_ipv_4_cidr",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Subnetwork"),
+				Resolver: schema.PathResolver("ServicesIpv4Cidr"),
+			},
+			{
+				Name:     "instance_group_urls",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("InstanceGroupUrls"),
+			},
+			{
+				Name:     "current_node_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("CurrentNodeCount"),
+			},
+			{
+				Name:     "expire_time",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ExpireTime"),
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "enable_tpu",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableTpu"),
 			},
 			{
 				Name:     "tpu_ipv_4_cidr_block",
@@ -313,19 +297,39 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("TpuIpv4CidrBlock"),
 			},
 			{
-				Name:     "vertical_pod_autoscaling",
+				Name:     "conditions",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VerticalPodAutoscaling"),
+				Resolver: schema.PathResolver("Conditions"),
 			},
 			{
-				Name:     "workload_identity_config",
+				Name:     "autopilot",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("WorkloadIdentityConfig"),
+				Resolver: schema.PathResolver("Autopilot"),
 			},
 			{
-				Name:     "zone",
+				Name:     "id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Zone"),
+				Resolver: schema.PathResolver("Id"),
+			},
+			{
+				Name:     "node_pool_defaults",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NodePoolDefaults"),
+			},
+			{
+				Name:     "logging_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LoggingConfig"),
+			},
+			{
+				Name:     "monitoring_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MonitoringConfig"),
+			},
+			{
+				Name:     "node_pool_auto_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NodePoolAutoConfig"),
 			},
 		},
 	}
@@ -333,12 +337,19 @@ func Clusters() *schema.Table {
 
 func fetchClusters(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	output, err := c.Services.Container.Projects.Locations.Clusters.List("projects/" + c.ProjectId + "/locations/-").Do()
-	if err != nil {
-		return errors.WithStack(err)
+	req := &pb.ListClustersRequest{}
+	it := c.Services.ContainerClusterManagerClient.ListClusters(ctx, req)
+	for {
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			return errors.WithStack(err)
+		}
+
+		res <- resp
+
 	}
-
-	res <- output.Clusters
-
 	return nil
 }
