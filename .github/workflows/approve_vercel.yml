@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 2
           # This is secure since we don't execute any code, we only want to get the changed file
           # Visit https://securitylab.github.com/research/github-actions-preventing-pwn-requests/ for more information
           ref: ${{ github.event.pull_request.head.sha }}
