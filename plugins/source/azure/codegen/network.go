@@ -41,6 +41,9 @@ func Network() []Resource {
 					azureStruct: &network.RouteTable{},
 				},
 				{
+					azureStruct: &network.VirtualNetwork{},
+				},
+				{
 					azureStruct: &network.SecurityGroup{},
 				},
 			},
