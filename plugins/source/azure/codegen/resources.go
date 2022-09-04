@@ -44,6 +44,7 @@ func Resources() []Resource {
 					listFunction:         "List",
 					listFunctionArgs:     []string{"meta.(*client.Client).SubscriptionId", `""`, `nil`},
 					mockListFunctionArgs: []string{"gomock.Any()", `""`, `nil`},
+					subServiceOverride:   "PolicyAssignments",
 				},
 			},
 			serviceNameOverride: "Resources",

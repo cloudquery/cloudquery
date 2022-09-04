@@ -138,7 +138,7 @@ func ResourcesPolicyAssignments() *schema.Table {
 //
 // ====================================================================================================================
 func fetchResourcesPolicyAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Resources.Assignments
+	svc := meta.(*client.Client).Services().Resources.PolicyAssignments
 	response, err := svc.List(ctx, meta.(*client.Client).SubscriptionId, "", nil)
 	if err != nil {
 		return diag.WrapError(err)
