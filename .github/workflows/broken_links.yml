@@ -46,22 +46,18 @@ jobs:
       - name: Waiting for Vercel Preview
         if: steps.check-labels.outputs.status == 'success' && github.event_name == 'pull_request'
         uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
-        id: vercel-deployment
+        id: preview-deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           environment: "Preview - cloudquery-web"
           max_timeout: 360
           check_interval: 10
 
-      - name: Waiting for Vercel Production
-        if: github.event_name != 'pull_request'
-        uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
-        id: vercel-deployment
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          environment: "Production - cloudquery-web"
-          max_timeout: 360
-          check_interval: 10
+      - name: Set Vercel URL output
+        id: vercel
+        run: |
+          DEPLOY_URL=${{ steps.preview-deployment.outputs.url }}
+          echo "::set-output name=url::${DEPLOY_URL:-"https://www.cloudquery.io/"}"
 
       - name: Check for broken links
         if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
@@ -81,5 +77,5 @@ jobs:
             --exclude podcasts.apple.com \
             --exclude docs.cloudquery.io/cdn-cgi/l/email-protection \
             --exclude pcisecuritystandards.org \
-            ${{ steps.vercel-deployment.outputs.url }} \
+            ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──'
