@@ -22,11 +22,19 @@ func Subscriptions() []Resource {
 			definitions: []resourceDefinition{
 				{
 					azureStruct:    &armsubscriptions.Subscription{},
-					mockListResult: " ",
+					mockListResult: "ClientListResponse",
 				},
 				{
 					azureStruct:        &armsubscriptions.TenantIDDescription{},
 					subServiceOverride: "Tenants",
+					mockListResult:     "TenantsClientListResponse",
+				},
+				{
+					azureStruct:          &armsubscriptions.Location{},
+					listFunction:         "NewListLocationsPager",
+					listFunctionArgs:     []string{"meta.(*client.Client).Services().Subscriptions.SubscriptionID"},
+					mockListFunctionArgs: []string{"gomock.Any()"},
+					mockListResult:       "ClientListLocationsResponse",
 				},
 			},
 			serviceNameOverride: "Subscriptions",

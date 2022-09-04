@@ -14,7 +14,7 @@ import (
 )
 
 func buildAccountLocationsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockSubscriptionsSubscriptionsClient(ctrl)
+	m := mocks.NewMockSubscriptionsLocationsClient(ctrl)
 
 	var subscriptionID string
 	if err := faker.FakeData(&subscriptionID); err != nil {
@@ -37,14 +37,14 @@ func buildAccountLocationsMock(t *testing.T, ctrl *gomock.Controller) services.S
 			}, nil
 		},
 	})
-	m.EXPECT().NewListLocationsPager(gomock.Any(), gomock.Any()).Return(
+	m.EXPECT().NewListLocationsPager(gomock.Any(), nil).Return(
 		pager,
 	)
 
 	return services.Services{
 		Subscriptions: services.SubscriptionsClient{
 			SubscriptionID: subscriptionID,
-			Subscriptions:  m,
+			Locations:      m,
 		},
 	}
 }

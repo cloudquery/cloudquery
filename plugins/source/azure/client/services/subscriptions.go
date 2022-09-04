@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionsSubscriptionsClient,SubscriptionsTenantsClient
+//go:generate mockgen -destination=./mocks/subscriptions.go -package=mocks . SubscriptionsSubscriptionsClient,SubscriptionsTenantsClient,SubscriptionsLocationsClient
 package services
 
 import (
@@ -13,11 +13,15 @@ import (
 type SubscriptionsClient struct {
 	SubscriptionID string
 	Subscriptions  SubscriptionsSubscriptionsClient
+	Locations      SubscriptionsLocationsClient
 	Tenants        SubscriptionsTenantsClient
 }
 
 type SubscriptionsSubscriptionsClient interface {
 	NewListPager(options *armsubscriptions.ClientListOptions) *runtime.Pager[armsubscriptions.ClientListResponse]
+}
+
+type SubscriptionsLocationsClient interface {
 	NewListLocationsPager(subscriptionId string, options *armsubscriptions.ClientListLocationsOptions) *runtime.Pager[armsubscriptions.ClientListLocationsResponse]
 }
 
@@ -40,5 +44,6 @@ func NewSubscriptionsClient(subscriptionId string, auth autorest.Authorizer, azC
 		SubscriptionID: subscriptionId,
 		Subscriptions:  s,
 		Tenants:        t,
+		Locations:      s,
 	}, nil
 }

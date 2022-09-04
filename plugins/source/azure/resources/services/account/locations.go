@@ -131,7 +131,7 @@ func Locations() *schema.Table {
 
 func fetchAccountLocations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Subscriptions
-	pager := svc.Subscriptions.NewListLocationsPager(svc.SubscriptionID, nil)
+	pager := svc.Locations.NewListLocationsPager(meta.(*client.Client).Services().Subscriptions.SubscriptionID, nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
