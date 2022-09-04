@@ -7,9 +7,9 @@ Please don't file an issue to ask a question. You'll get faster results by reach
 The following is a set of guidelines for contributing to this repository.
 
 ## Getting Started
-* [CloudQuery Architecture](https://docs.cloudquery.io/docs/developers/architecture)
-* [Provider Development Environment Setup](./docs/contributing/development_environment.md)
-* [Adding a new Resource](./docs/contributing/adding_a_new_resource.md)
+* [CloudQuery Architecture](https://www.cloudquery.io/docs/developers/architecture)
+* [Provider Development Environment Setup](../contributing/development_environment.md)
+* [Adding a new Resource](../contributing/adding_a_new_resource.md)
 
 ## Process
 * [Code of Conduct](https://github.com/cloudquery/.github/blob/main/CODE_OF_CONDUCT.md)
