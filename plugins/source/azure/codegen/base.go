@@ -146,7 +146,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 				}
 
 				skipFields := append(definition.skipFields, "Response")
-				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields...))
+				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, azurePackageName, strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields))
 				if err != nil {
 					log.Fatal(err)
 				}
