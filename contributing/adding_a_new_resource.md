@@ -1,6 +1,6 @@
 # Adding a New Resource
 
-This guide will help you add a new resource to an existing source plugin (a.k.a. "provider", such as AWS, GCP, Azure or K8s). If you wish to support a completely new cloud platform, first see [creating_a_new_plugin](./creating_a_new_plugin.md). 
+This guide will help you add a new resource to an existing source plugin (a.k.a. "provider", such as AWS, GCP, Azure or K8s). If you wish to support a completely new cloud platform, first see [creating a new plugin](./creating_a_new_plugin.md). 
 
 ## General Guidance
 
