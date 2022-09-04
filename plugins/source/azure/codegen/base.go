@@ -31,11 +31,13 @@ type Resource struct {
 	ListFunctionArgs         []string
 	ListFunctionArgsInit     []string
 	ListHandler              string
+	Helpers                  []string
 	MockHelpers              []string
 	MockListResult           string
 	MockListFunctionArgs     []string
 	MockListFunctionArgsInit []string
 	MockFieldsToIgnore       []string
+	MockValueType            string
 }
 
 type template struct {
@@ -45,8 +47,10 @@ type template struct {
 }
 
 type resourceDefinition struct {
+	customColumns            codegen.ColumnDefinitions
 	azureStruct              interface{}
 	skipFields               []string
+	helpers                  []string
 	listFunction             string
 	listFunctionArgs         []string
 	listFunctionArgsInit     []string
@@ -56,6 +60,7 @@ type resourceDefinition struct {
 	mockListFunctionArgs     []string
 	mockListFunctionArgsInit []string
 	mockFieldsToIgnore       []string
+	mockValueType            string
 	subServiceOverride       string
 }
 
@@ -158,6 +163,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 				}
 
 				table.Columns = append(defaultColumns, table.Columns...)
+				table.Columns = append(table.Columns, definition.customColumns...)
 				table.Multiplex = "client.SubscriptionMultiplex"
 				table.Resolver = "fetch" + azureService + azureSubService
 				table.Options.PrimaryKeys = []string{"subscription_id", "id"}
@@ -173,6 +179,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 						Source:      template.source,
 						Destination: path.Join(strings.ToLower(azureService), strcase.ToSnake(azureSubService)+template.destinationSuffix),
 					},
+					Helpers:                  definition.helpers,
 					ListFunction:             definition.listFunction,
 					ListHandler:              definition.listHandler,
 					ListFunctionArgs:         definition.listFunctionArgs,
@@ -182,6 +189,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					MockListFunctionArgs:     definition.mockListFunctionArgs,
 					MockListFunctionArgsInit: definition.mockListFunctionArgsInit,
 					MockFieldsToIgnore:       append(skipFields, definition.mockFieldsToIgnore...),
+					MockValueType:            definition.mockValueType,
 				}
 				allResources = append(allResources, resource)
 			}

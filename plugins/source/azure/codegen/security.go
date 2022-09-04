@@ -2,6 +2,8 @@ package codegen
 
 import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Security() []Resource {
@@ -11,7 +13,7 @@ func Security() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"},
 				},
 				{
 					source:            "resource_list_mock_test.go.tpl",
@@ -42,6 +44,47 @@ func Security() []Resource {
 					azureStruct:    &security.JitNetworkAccessPolicy{},
 					listFunction:   "List",
 					mockListResult: "JitNetworkAccessPoliciesList",
+				},
+				{
+					azureStruct:  &security.Setting{},
+					listFunction: "List",
+					listHandler: `if err != nil {
+						return errors.WithStack(err)
+					}
+					for response.NotDone() {
+						for _, item := range response.Values() {
+							if v, ok := item.AsSetting(); ok {
+								res <- v
+							} else if v, ok := item.AsDataExportSettings(); ok {
+								res <- v
+							} else if v, ok := item.AsAlertSyncSettings(); ok {
+								res <- v
+							} else {
+								return errors.WithStack(fmt.Errorf("unexpected BasicSetting: %#v", item))
+							}
+						}
+						if err := response.NextWithContext(ctx); err != nil {
+							return errors.WithStack(err)
+						}
+					}`,
+					mockListResult: "SettingsList",
+					mockValueType:  "BasicSetting",
+					customColumns: []codegen.ColumnDefinition{{
+						Name:     "enabled",
+						Type:     schema.TypeBool,
+						Resolver: "resolveEnabled",
+					}},
+					helpers: []string{`func resolveEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+						item := resource.Item.(security.BasicSetting)
+						if v, ok := item.AsDataExportSettings(); ok {
+							return errors.WithStack(resource.Set(c.Name, v.Enabled))
+						}
+						if v, ok := item.AsAlertSyncSettings(); ok {
+							return errors.WithStack(resource.Set(c.Name, v.Enabled))
+						}
+						return errors.WithStack(resource.Set(c.Name, true))
+					}
+					`},
 				},
 			},
 		},

@@ -13,3 +13,7 @@ import (
 func {{.AzureSubService}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
+
+{{range .Helpers}}
+{{.}}
+{{end}}
