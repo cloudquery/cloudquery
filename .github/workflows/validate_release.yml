@@ -20,8 +20,6 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: actions/setup-go@v3

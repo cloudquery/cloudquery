@@ -31,7 +31,7 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 2
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v26
@@ -42,12 +42,12 @@ jobs:
           files_ignore: |
             ${{ matrix.workdir }}/CHANGELOG.md
       - name: Set up Go 1.x
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-go@v3
         with:
           go-version: 1.18
       - uses: actions/cache@v3
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           path: |
             ~/.cache/go-build
@@ -57,11 +57,11 @@ jobs:
             ${{ runner.os }}-go-1.18-${{ matrix.workdir }}
 
       - name: Get dependencies
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
 
       - name: Build
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: go build .
         working-directory: ${{ matrix.workdir }}

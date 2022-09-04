@@ -5,28 +5,45 @@ on:
       - main
 
 jobs:
+  resolve-modules:
+    name: Resolve Modules
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.result }}
+    steps:
+      - name: Checkout Sources
+        uses: actions/checkout@v3
+      - id: matrix
+        run: ./scripts/resolve-modules.sh
+      - uses: actions/github-script@v6
+        id: set-matrix
+        env:
+          MODULES: '${{ steps.matrix.outputs.matrix }}'
+        with:
+          script: |
+            const { promises: fs } = require('fs');
+            const { MODULES } = process.env
+            const { include: modules } = JSON.parse(MODULES)
+            const withDocs = (await Promise.all(modules.map(async (module) => {
+              try {
+                await fs.access(`./${module.workdir}/docs/docs.go`, fs.F_OK)
+                return module
+              } catch (e) {
+                return
+              }
+            }))).filter(Boolean)
+            return { include: withDocs }
   lint_doc:
     name: Lint Provider Doc
+    needs: resolve-modules
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        workdir: [
-          "plugins/source/aws",
-          "plugins/source/azure",
-          "plugins/source/cloudflare",
-          "plugins/source/digitalocean",
-          "plugins/source/gcp",
-          "plugins/source/github",
-          "plugins/source/heroku",
-          "plugins/source/k8s",
-          "plugins/source/okta",
-          "plugins/source/terraform",
-        ]
+      matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
       fail-fast: false
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 2
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v26
@@ -37,11 +54,11 @@ jobs:
           files_ignore: |
             ${{ matrix.workdir }}/CHANGELOG.md
       - uses: actions/setup-go@v3
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           go-version: 1.18
       - uses: actions/cache@v3
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           path: |
             ~/.cache/go-build
@@ -50,17 +67,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.18-${{ matrix.workdir }}
       - name: remove all docs
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           rm -f ./docs/tables/*.md
         working-directory: ${{ matrix.workdir }}
       - name: build-docs
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           go run ./docs/docs.go
         working-directory: ${{ matrix.workdir }}
       - name: Fail if docs are changed
-        if: steps.changed-files.outputs.any_changed == 'true' || github.event_name != 'pull_request'
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           test "$(git status -s ./docs/tables | wc -l)" -eq 0
         working-directory: ${{ matrix.workdir }}
