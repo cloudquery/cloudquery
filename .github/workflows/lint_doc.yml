@@ -32,7 +32,7 @@ jobs:
                 return
               }
             }))).filter(Boolean)
-            return JSON.stringify({ include: withDocs })
+            return { include: withDocs }
   lint_doc:
     name: Lint Provider Doc
     needs: resolve-modules

@@ -36,7 +36,7 @@ jobs:
                 return
               }
             }))).filter(Boolean)
-            return JSON.stringify({ include: withPolicies })
+            return { include: withPolicies }
   SQLPolicyTest:
     needs: resolve-modules
     runs-on: ubuntu-latest
