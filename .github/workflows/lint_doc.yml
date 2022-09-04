@@ -26,7 +26,7 @@ jobs:
             const { include: modules } = JSON.parse(MODULES)
             const withDocs = (await Promise.all(modules.map(async (module) => {
               try {
-                await fs.readdir(`./${module.workdir}/docs`)
+                await fs.access(`./${module.workdir}/docs/docs.go`, fs.F_OK)
                 return module
               } catch (e) {
                 return
