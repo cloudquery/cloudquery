@@ -103,6 +103,7 @@ func AllResources() []Resource {
 	resources = append(resources, Monitor()...)
 	resources = append(resources, MySQL()...)
 	resources = append(resources, PostgresSQL()...)
+	resources = append(resources, Redis()...)
 	resources = append(resources, Resources()...)
 	resources = append(resources, Search()...)
 	resources = append(resources, Security()...)
