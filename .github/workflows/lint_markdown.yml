@@ -1,0 +1,33 @@
+name: Lint Markdown files
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflow/lint_markdown.yml"
+      - "*.md"
+
+jobs:
+  lint-grammar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+      - name: Vale
+        uses: errata-ai/vale-action@v2
+        with:
+          vale_flags: "--glob='!{website/pages/blog/podcast-software-engineer-daily.md,*CHANGELOG.md,*/docs/tables/*,.github/styles/proselint/README.md}'"
+          filter_mode: nofilter
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+  lint-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+      - name: markdownlint-cli
+        uses: nosborn/github-action-markdown-cli@v3.0.1
+        continue-on-error: true
+        with:
+          files: .
+          config_file: .markdownlint.yaml
+          ignore_files: '{website/pages/blog/podcast-software-engineer-daily.md,**/CHANGELOG.md,**/docs/tables/**,website/pages/docs/cli/commands/**}'

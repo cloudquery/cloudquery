@@ -41,13 +41,13 @@ The following environment variables can be used instead of passing in them in th
 
 ## Query Examples
 
-### Find all zones with dev mode enabled
+### Find all zones with `dev_mode` enabled
 
 ```sql
 SELECT id, account_id, host_name, name, original_ns FROM cloudflare_zones WHERE dev_mode = true;
 ```
 
-### Find all dns records
+### Find all DNS records
 
 ```sql
 SELECT id, account_id, zone_id, name, type FROM cloudflare_dns_records;

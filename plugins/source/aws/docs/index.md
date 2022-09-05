@@ -19,7 +19,7 @@ There are multiple ways to authenticate with AWS, and CloudQuery respects the AW
 - The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` environment variables.
 - The `credentials` and `config` files in `~/.aws` (the `credentials` file takes priority).
   - You can also use `aws sso` to authenticate cloudquery - [you can read more about it here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html).
-- IAM roles for AWS compute resources (including EC2 instances, fargate and ECS containers).
+- IAM roles for AWS compute resources (including EC2 instances, Fargate and ECS containers).
 
 You can read more about AWS authentication [here](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials) and [here](https://docs.aws.amazon.com/sdkref/latest/guide/creds-config-files.html).
 
@@ -83,7 +83,7 @@ providers:
 
 ### IAM Roles for AWS Compute Resources
 
-Cloudquery can use IAM roles for AWS compute resources (including EC2 instances, fargate and ECS containers).
+CloudQuery can use IAM roles for AWS compute resources (including EC2 instances, Fargate and ECS containers).
 If you configured your AWS compute resources with IAM, cloudquery will use these roles automatically! You don't need to specify additional 
 credentials manually. For more information on configuring IAM, see the AWS docs [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html) and [here](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html).
 
@@ -127,7 +127,7 @@ By default, CloudQuery will fetch all configuration from **all** supported resou
 - `regions` **(Optional)** - limit fetching to specific regions. You can specify all regions by using the `*` character as the only argument in the array
 - `max_retries` **(Optional)** - The maximum number of times that a request will be retried for failures. Defaults to 10 retry attempts.
 - `max_backoff` **(Optional)** - The maximum back off delay between attempts. The backoff delays exponentially with a jitter based on the number of attempts. Defaults to 30 seconds.
-- `aws_debug` **(Optional)** - This will print very verbose/debug output from AWS SDK. Defaults to false.
+- `aws_debug` **(Optional)** - This will print a verbose/debug output from the AWS SDK. Defaults to false.
 
 
 ## Multi Account Configuration
@@ -294,7 +294,7 @@ export AWS_SESSION_TOKEN=<YOUR_SESSION_TOKEN>
 SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ```
 
-### Find all unencrypted RDS instances
+### Find all non encrypted RDS instances
 
 ```sql
 SELECT * FROM aws_rds_clusters WHERE storage_encrypted IS FALSE;
@@ -335,7 +335,7 @@ Running Provider locally:
     ```bash
     make run
     ```
-5. Execute Cloudquery Fetch using the locally built provider
+5. Execute CloudQuery Fetch using the locally built provider
     ```bash
     make fetch
     ```
