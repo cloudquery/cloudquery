@@ -29,7 +29,7 @@ If the service to which the resource belongs has not been used before in the AWS
 1. Run `go generate client/services.go` to create a mock for your new methods. This will update [client/mocks/mock_\<service\>.go](../../client/mocks) automatically.
 1. Create a file under [resources/services/\<service\>](../../resources/services) that follows the pattern of `<resource>.go`.
 1. In that file, create a function that returns a `*schema.Table`.
-1. In [resources/provider.go](../../resources/provider/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config yml file.
+1. In [resources/provider.go](../../resources/provider/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config YML file.
 1. Add a test file at [resources/services/\<service\>/\<resource\>_mock_test.go](../../resources/services). Follow other examples to create a test for the resource.
 1. Run `go run docs/docs.go` to generate the documentation for the new resource.
 
@@ -103,7 +103,7 @@ There are a few good rules of thumb to follow when creating new terraform resour
 * If possible make all resources private.
 * Make sure to replace built-in plain text passwords with `random_password` generator
 * For every compute/db try to use the smallest size to keep the cost low
-* If autoscaling option is present, always turn it off
+* If auto-scaling option is present, always turn it off
 
 If you want to apply the Terraform locally first before pushing it to CI and applying there, use:
 

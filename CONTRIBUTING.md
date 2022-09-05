@@ -46,7 +46,7 @@ CloudQuery has a pluggable architecture and is using the go-plugin to load, run,
 - Reading CloudQuery configuration
 - Downloading, verifying, and running plugins
 
-#### CQ Provider SDK [Repo](https://github.com/cloudquery/cq-provider-sdk):
+#### CQ Provider SDK [Repository](https://github.com/cloudquery/cq-provider-sdk):
 - Interacting with CQ CLI for initialization and configuration
 - Helper functions for defining table schemas
 - Methods for testing resources

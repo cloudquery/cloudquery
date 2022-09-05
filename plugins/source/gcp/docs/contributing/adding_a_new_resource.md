@@ -2,7 +2,7 @@
 
 Some information can be found in the [docs for developing a new provider](https://docs.cloudquery.io/developers/developing-new-provider).
 
-As a prerequisite, in [google.golang.org/api](https://pkg.go.dev/google.golang.org/api) ensure API calls exist to list/describe the desired resource, and make note of:
+As a prerequisite, in [`google.golang.org/api`](https://pkg.go.dev/google.golang.org/api) ensure API calls exist to list/describe the desired resource, and make note of:
 
    - to which GCP service the resource belongs
    - the schema of the returned object(s)
@@ -21,7 +21,7 @@ If the service to which the resource belongs has not been used before in cq-prov
 
 1. Create a file under `resources/` that follows the pattern of `resources/<service>/<resource_name>`.
 2. In that file, create a function that returns a `*schema.Table`
-3. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config yml file.
+3. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config YML file.
 4. Add a test file at `resources/<service>/<resource>_test.go`. Follow other examples to create a test for the resource.
 5. Run `go run docs/docs.go` to generate the documentation for the new resource
 
@@ -36,7 +36,7 @@ Now that the skeleton has been set up, you can start to actually implement the r
 
 It is recommended that you look at a few existing resources as examples and also read through the comments on the source code for the [Table](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/table.go) and [Column](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/column.go) implementations for details.
 
-For noncomplex fields, the SDK can directly resolve them into `Column`s for you, so all you need to do is specify the `Name` and the `Type`.
+For most fields, the SDK can directly resolve them into a `Column`s for you, so all you need to do is specify the `Name` and the `Type`.
 
 For complex fields or fields that require further API calls, you can defined your own `Resolver` for the `Column`.
 
@@ -74,7 +74,7 @@ There a few good rule of thumb to follow when creating new terraform resources t
 * If possible make all resources private.
 * Make sure to replace built-in plain text passwords with `random_password` generator
 * For every compute/db try to use the smallest size to keep the cost low
-* If autoscaling option is present, always turn it off
+* If auto-scaling option is present, always turn it off
 
 If you want to apply the terraform locally first before pushing it to CI and applying there use:
 

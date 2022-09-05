@@ -37,7 +37,7 @@ make destroy
 ```
 
 ## Clean
-Clean tf files
+Clean Terraform files
 ```shell
 make clean
 ```

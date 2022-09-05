@@ -14,7 +14,7 @@ CloudQuery needs to be authenticated with your Azure account in order to fetch i
 
 You can either authenticate with `az login` (when running CloudQuery locally), or by using a "service principal" and exporting environment variables (appropriate for automated deployments).
 
-You can find out more about authentication with Azure at Azure's [documentation](https://github.com/Azure/azure-sdk-for-go) for the golang sdk.
+You can find out more about authentication with Azure at Azure's [documentation](https://github.com/Azure/azure-sdk-for-go) for the GoLang sdk.
 
 #### Authentication with `az login`
 
@@ -69,13 +69,13 @@ The output of `az ad sp create-for-rbac` should look like this:
 
 **Exporting environment variables**
 
-Next, you need to export the environment variables that cloudquery will use to `fetch` your cloud configuration. 
-Copy them from the output of `az ad sp create-for-rbac` (or, take the opportunity to show off your jq-foo). 
-The example shows how to export environment variables for linux - exporting for CMD and PowerShell is similar.
+Next, you need to export the environment variables that cloudquery will use to `fetch` your cloud configuration.
+Copy them from the output of `az ad sp create-for-rbac` (or, take the opportunity to show off your jq-foo).
+The example shows how to export environment variables for Linux - exporting for CMD and PowerShell is similar.
 
-- `AZURE_TENANT_ID` is `tenant` in the json.
-- `AZURE_CLIENT_ID` is `appId` in the json.
-- `AZURE_CLIENT_SECRET` is `password` in the json.
+- `AZURE_TENANT_ID` is `tenant` in the JSON.
+- `AZURE_CLIENT_ID` is `appId` in the JSON.
+- `AZURE_CLIENT_SECRET` is `password` in the JSON.
 
 ```bash
 export AZURE_TENANT_ID=<YOUR AZURE_TENANT_ID>
