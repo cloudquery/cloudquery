@@ -26,6 +26,7 @@ func buildBackupBackupPlansBackupSelections(t *testing.T, ctrl *gomock.Controlle
 		gomock.Any(),
 	).Return(
 		&backup.ListBackupSelectionsOutput{
+
 			BackupSelectionsList: []types.BackupSelectionsListMember{item},
 		},
 		nil,

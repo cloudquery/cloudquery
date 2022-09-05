@@ -33,7 +33,13 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(
 		&{{.AWSService | ToLower}}.{{.ListMethod}}Output{
-		  {{.PaginatorListName}}: []{{.PaginatorListType}}{item},
+{{if .PaginatorListWrapper}} // {{.PaginatorListWrapperType}}
+	{{.PaginatorListWrapper}}: {{.PaginatorListWrapperType}}{
+		{{.PaginatorListName}}: []{{.PaginatorListType}}{item},
+	},
+{{else}}
+	{{.PaginatorListName}}: []{{.PaginatorListType}}{item},
+{{end}}
     },
 		nil,
 	)

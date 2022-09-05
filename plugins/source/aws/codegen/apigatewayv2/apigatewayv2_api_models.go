@@ -70,7 +70,9 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

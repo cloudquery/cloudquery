@@ -146,7 +146,9 @@ func fetchBackupVaultsRecoveryPoints(ctx context.Context, meta schema.ClientMeta
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.RecoveryPoints
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

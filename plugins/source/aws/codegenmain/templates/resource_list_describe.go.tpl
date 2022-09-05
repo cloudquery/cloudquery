@@ -35,7 +35,11 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 			{{.CustomErrorBlock}}
 			return diag.WrapError(err)
 		}
+{{if .PaginatorListWrapper}}
+		for _, item := range output.{{.PaginatorListWrapper}}.{{.PaginatorListName}} {
+{{else}}
 		for _, item := range output.{{.PaginatorListName}} {
+{{end}}
 			do, err := svc.{{.GetMethod}}(ctx, &{{.AWSService | ToLower}}.{{.GetMethod}}Input{
 {{range .CustomInputs2}}{{.}}
 {{end}}{{if not .SkipDescribeParentInputs}}{{template "resolve_parent_vars.go.tpl" .}}{{end}}

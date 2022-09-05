@@ -54,7 +54,9 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.DatabaseList
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

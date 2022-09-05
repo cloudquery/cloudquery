@@ -85,7 +85,9 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.StackResourceSummaries
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

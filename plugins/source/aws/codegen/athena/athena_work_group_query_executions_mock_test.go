@@ -28,6 +28,7 @@ func buildAthenaWorkGroupQueryExecutions(t *testing.T, ctrl *gomock.Controller) 
 		gomock.Any(),
 	).Return(
 		&athena.ListQueryExecutionsOutput{
+
 			QueryExecutionIds: []string{item},
 		},
 		nil,

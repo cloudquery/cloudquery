@@ -109,7 +109,9 @@ func fetchAccessAnalyzerAccessanalyzersFindings(ctx context.Context, meta schema
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Findings
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

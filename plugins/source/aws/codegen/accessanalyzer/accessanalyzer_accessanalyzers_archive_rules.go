@@ -59,7 +59,9 @@ func fetchAccessAnalyzerAccessanalyzersArchiveRules(ctx context.Context, meta sc
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.ArchiveRules
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

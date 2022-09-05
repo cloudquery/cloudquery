@@ -117,7 +117,9 @@ func fetchAppSyncGraphqlApis(ctx context.Context, meta schema.ClientMeta, parent
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.GraphqlApis
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

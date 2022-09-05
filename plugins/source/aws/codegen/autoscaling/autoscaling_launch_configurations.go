@@ -146,7 +146,9 @@ func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.Clien
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.LaunchConfigurations
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

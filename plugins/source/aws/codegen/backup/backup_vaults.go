@@ -102,7 +102,9 @@ func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.BackupVaultList
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

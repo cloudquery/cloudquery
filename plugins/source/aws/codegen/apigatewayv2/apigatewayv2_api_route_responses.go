@@ -68,7 +68,9 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

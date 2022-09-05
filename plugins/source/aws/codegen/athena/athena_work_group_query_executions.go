@@ -89,7 +89,9 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 
 			return diag.WrapError(err)
 		}
+
 		for _, item := range output.QueryExecutionIds {
+
 			do, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
 
 				QueryExecutionId: &item,

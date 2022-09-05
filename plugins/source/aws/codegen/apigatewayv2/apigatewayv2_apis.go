@@ -127,7 +127,9 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

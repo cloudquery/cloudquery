@@ -156,7 +156,9 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, pare
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Stacks
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

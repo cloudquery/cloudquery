@@ -87,6 +87,7 @@ func fetchAutoscalingGroupsLifecycleHooks(ctx context.Context, meta schema.Clien
 			}
 			return diag.WrapError(err)
 		}
+
 		res <- response.LifecycleHooks
 
 	}

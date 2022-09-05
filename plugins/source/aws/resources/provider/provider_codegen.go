@@ -19,6 +19,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudformation"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudfront"
 )
 
 var (
@@ -55,6 +56,8 @@ func Provider() *provider.Provider {
 			"backup.backup_vaults":                    backup.BackupVaults(),
 			"backup.backup_plans":                     backup.BackupBackupPlans(),
 			"cloudformation.stacks":                   cloudformation.CloudformationStacks(),
+			"cloudfront.cache_policies":               cloudfront.CloudfrontCachePolicies(),
+			"cloudfront.distributions":                cloudfront.CloudfrontDistributions(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}

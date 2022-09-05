@@ -81,7 +81,9 @@ func fetchBackupBackupPlansBackupSelections(ctx context.Context, meta schema.Cli
 
 			return diag.WrapError(err)
 		}
+
 		for _, item := range output.BackupSelectionsList {
+
 			do, err := svc.GetBackupSelection(ctx, &backup.GetBackupSelectionInput{
 
 				BackupPlanId: item.BackupPlanId,

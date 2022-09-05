@@ -94,7 +94,9 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

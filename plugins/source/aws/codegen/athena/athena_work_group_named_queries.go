@@ -69,7 +69,9 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 
 			return diag.WrapError(err)
 		}
+
 		for _, item := range output.NamedQueryIds {
+
 			do, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{
 
 				NamedQueryId: &item,

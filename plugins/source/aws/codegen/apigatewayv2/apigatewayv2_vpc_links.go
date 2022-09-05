@@ -97,7 +97,9 @@ func fetchApigatewayv2VpcLinks(ctx context.Context, meta schema.ClientMeta, pare
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

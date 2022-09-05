@@ -58,13 +58,28 @@ func inferFromRecipe(r *recipes.Resource) {
 	)
 
 	if r.ItemsStruct != nil {
-		items = helpers.InferFromStruct(r.ItemsStruct, r.PaginatorStruct != nil, false)
+		items = helpers.InferFromStructOutput(r.ItemsStruct)
 		r.GetMethod = items.Method
 		if helpers.BareType(reflect.TypeOf(r.AWSStruct)) == helpers.BareType(reflect.TypeOf(r.ItemsStruct)) {
 			// Same type, so we need to save the output struct completely
 			r.ResponseItemsName = useFullStruct
 		} else {
-			r.ResponseItemsName = items.ItemsField().Name
+			needSingular := r.PaginatorStruct != nil
+			if !needSingular && len(items.ItemsFieldCandidates(false)) == 0 {
+				// we have wrapper? look for a single item
+				singleItemMaybeWrapper := items.ItemsFieldCandidates(true)
+				if len(singleItemMaybeWrapper) != 1 {
+					log.Fatal("Could not determine possible ItemsName wrapper for ", items.Method, ":", len(singleItemMaybeWrapper), " candidates")
+				}
+				r.ResponseItemsWrapper = singleItemMaybeWrapper[0].Name
+				again := helpers.InferFromType(helpers.BareType(singleItemMaybeWrapper[0].Type), "")
+				if again.PaginatorTokenField != nil {
+					r.WrappedNextTokenName = again.PaginatorTokenField.Name
+				}
+
+			} else {
+				r.ResponseItemsName = items.ItemsField(needSingular).Name
+			}
 		}
 
 		if items.PaginatorTokenField != nil {
@@ -74,11 +89,39 @@ func inferFromRecipe(r *recipes.Resource) {
 		res = items
 	}
 
+	var pagSingleItem reflect.Type // This is the single item from the paginator, which is used later to match fields.
+
 	if r.PaginatorStruct != nil {
-		pag = helpers.InferFromStruct(r.PaginatorStruct, false, false)
-		r.PaginatorListName = pag.ItemsField().Name
-		r.PaginatorListType = pag.ItemsField().Type.Elem().Name() // single type from a slice
-		if pag.ItemsField().Type.Elem().Kind() == reflect.Struct {
+		pag = helpers.InferFromStructOutput(r.PaginatorStruct)
+		var f reflect.StructField
+		// we need a slice field, but what if it's wrapped?
+		if len(pag.ItemsFieldCandidates(false)) == 0 {
+			// we have wrapper? look for a single item
+			singleItemMaybeWrapper := pag.ItemsFieldCandidates(true)
+			if len(singleItemMaybeWrapper) != 1 {
+				log.Fatal("Could not determine possible PaginatorStruct wrapper for ", pag.Method, ":", len(singleItemMaybeWrapper), " candidates")
+			}
+			r.PaginatorListWrapper = singleItemMaybeWrapper[0].Name
+
+			if singleItemMaybeWrapper[0].Type.Kind() == reflect.Ptr {
+				r.PaginatorListWrapperType = "&" + path.Base(singleItemMaybeWrapper[0].Type.Elem().PkgPath()) + "." + singleItemMaybeWrapper[0].Type.Elem().Name()
+			} else {
+				r.PaginatorListWrapperType = path.Base(singleItemMaybeWrapper[0].Type.PkgPath()) + "." + singleItemMaybeWrapper[0].Type.Name()
+			}
+			again := helpers.InferFromType(helpers.BareType(singleItemMaybeWrapper[0].Type), "")
+			if again.PaginatorTokenField != nil {
+				r.WrappedNextTokenName = again.PaginatorTokenField.Name
+			}
+			f = again.ItemsField(false)
+		} else {
+			f = pag.ItemsField(false)
+		}
+
+		pagSingleItem = f.Type.Elem() // get type of slice
+
+		r.PaginatorListName = f.Name
+		r.PaginatorListType = f.Type.Elem().Name() // single type from a slice
+		if f.Type.Elem().Kind() == reflect.Struct {
 			r.PaginatorListType = "types." + r.PaginatorListType
 		}
 
@@ -94,7 +137,7 @@ func inferFromRecipe(r *recipes.Resource) {
 			log.Fatal("PaginatorGetStruct requires ItemsStruct on resource ", r.AWSService)
 		}
 
-		pget = helpers.InferFromStruct(r.PaginatorGetStruct, true, true)
+		pget = helpers.InferFromStructInput(r.PaginatorGetStruct)
 		if pget.Method != items.Method {
 			log.Fatal("PaginatorGetStruct method ", pget.Method, " does not match ItemsStruct method ", items.Method)
 		}
@@ -106,7 +149,6 @@ func inferFromRecipe(r *recipes.Resource) {
 			r.AutoCalculated.MatchedGetAndListFields = make(map[string]string)
 
 			fields := make(map[string]reflect.Type)
-			pagSingleItem := pag.ItemsField().Type.Elem()
 			//log.Println("PROCESSING", pagSingleItem.Name(), pagSingleItem.Kind().String())
 			if k := pagSingleItem.Kind(); k == reflect.String {
 				// special case for string
@@ -125,7 +167,7 @@ func inferFromRecipe(r *recipes.Resource) {
 				// special case for string (not struct)
 				found := false
 				for _, f := range pget.FieldOrder {
-					ff := pget.Fields[f]
+					ff := pget.Fields[f].Type
 					if helpers.BareType(ff).Kind() == helpers.BareType(fields[""]).Kind() {
 						found = true
 						r.AutoCalculated.GetAndListOrder = append(r.AutoCalculated.GetAndListOrder, f)
@@ -143,7 +185,7 @@ func inferFromRecipe(r *recipes.Resource) {
 
 					for attempts := 0; attempts < 2; attempts++ {
 						for n, t := range fields {
-							if nameMatchFn(n, f) && helpers.BareType(t) == helpers.BareType(pget.Fields[f]) {
+							if nameMatchFn(n, f) && helpers.BareType(t) == helpers.BareType(pget.Fields[f].Type) {
 								found = true
 								r.AutoCalculated.GetAndListOrder = append(r.AutoCalculated.GetAndListOrder, f)
 								r.AutoCalculated.MatchedGetAndListFields[f] = "item." + n

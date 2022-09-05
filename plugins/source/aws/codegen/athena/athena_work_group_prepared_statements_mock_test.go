@@ -28,6 +28,7 @@ func buildAthenaWorkGroupPreparedStatements(t *testing.T, ctrl *gomock.Controlle
 		gomock.Any(),
 	).Return(
 		&athena.ListPreparedStatementsOutput{
+
 			PreparedStatements: []types.PreparedStatementSummary{item},
 		},
 		nil,

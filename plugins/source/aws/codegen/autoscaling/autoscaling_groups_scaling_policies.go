@@ -123,7 +123,9 @@ func fetchAutoscalingGroupsScalingPolicies(ctx context.Context, meta schema.Clie
 			}
 			return diag.WrapError(err)
 		}
+
 		res <- response.ScalingPolicies
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

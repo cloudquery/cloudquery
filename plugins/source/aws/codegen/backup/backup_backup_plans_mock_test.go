@@ -26,6 +26,7 @@ func buildBackupBackupPlans(t *testing.T, ctrl *gomock.Controller) client.Servic
 		gomock.Any(),
 	).Return(
 		&backup.ListBackupPlansOutput{
+
 			BackupPlansList: []types.BackupPlansListMember{item},
 		},
 		nil,

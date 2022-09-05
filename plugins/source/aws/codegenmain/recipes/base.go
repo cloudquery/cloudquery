@@ -60,6 +60,8 @@ type Resource struct {
 	CustomInputs  []string // Custom inputs to the first call (Get or List)
 	CustomInputs2 []string // Custom inputs to the second call (Describe after a List)
 
+	PageTokenInputField string // Defaults to the field name in the result struct
+
 	AutoCalculated
 }
 
@@ -69,6 +71,12 @@ type AutoCalculated struct {
 	PaginatorListType string // Auto calculated from PaginatorStruct.
 	ResponseItemsName string // Auto calculated from ItemsStruct by default, otherwise defaults to Items
 	NextTokenName     string // Auto calculated from ItemsStruct for resource_get template.
+
+	ResponseItemsWrapper string
+	WrappedNextTokenName string // Only set when ResponseItemsWrapper is set and contains a pagination token.
+
+	PaginatorListWrapper     string
+	PaginatorListWrapperType string
 
 	ListMethod string // Auto calculated from PaginatorStruct
 	GetMethod  string // Auto calculated from ItemsStruct

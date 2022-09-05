@@ -58,6 +58,7 @@ func fetchBackupGlobalSettings(ctx context.Context, meta schema.ClientMeta, pare
 
 			return diag.WrapError(err)
 		}
+
 		res <- response
 
 	}

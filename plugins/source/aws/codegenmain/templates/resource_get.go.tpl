@@ -4,7 +4,7 @@ package {{.AWSService | ToLower}}
 
 import (
 	"context"
-{{if .NextTokenName}}	"github.com/aws/aws-sdk-go-v2/aws"
+{{if or .NextTokenName .WrappedNextTokenName}}	"github.com/aws/aws-sdk-go-v2/aws"
 {{end}}	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
@@ -28,7 +28,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 {{end}}{{template "resolve_parent_vars.go.tpl" .}}
 	}
 
-{{if .NextTokenName}}	for {
+{{if or .NextTokenName .WrappedNextTokenName}}	for {
 {{else}}	{
 {{end}}{{if .ItemsCustomOptionsBlock}}		response, err := svc.{{.GetMethod}}(ctx, &input, func(opts *{{.AWSService | ToLower}}.Options) {
 {{.ItemsCustomOptionsBlock}}
@@ -37,11 +37,24 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 			{{.CustomErrorBlock}}
 			return diag.WrapError(err)
 		}
+{{if .ResponseItemsWrapper}}
+		if response.{{.ResponseItemsWrapper}} != nil {
+			{{if eq .ResponseItemsName "."}}		res <- response.{{.ResponseItemsWrapper}}{{else}}		res <- response.{{.ResponseItemsWrapper}}.{{.ResponseItemsName | Coalesce "Items"}}{{end}}
+		{{if .WrappedNextTokenName}}		if aws.ToString(response.{{.ResponseItemsWrapper}}.{{.WrappedNextTokenName}}) == "" {
+		break
+		}
+		input.{{.PageTokenInputField | Coalesce .WrappedNextTokenName}} = response.{{.ResponseItemsWrapper}}.{{.WrappedNextTokenName}}{{end}}
+		}
+{{if not .NextTokenName}}	if response.{{.ResponseItemsWrapper}} == nil {
+		break
+	}{{end}}
+{{else}}
 {{if eq .ResponseItemsName "."}}		res <- response{{else}}		res <- response.{{.ResponseItemsName | Coalesce "Items"}}{{end}}
-{{if .NextTokenName}}		if aws.ToString(response.NextToken) == "" {
+{{end}}
+{{if .NextTokenName}}		if aws.ToString(response.{{.NextTokenName}}) == "" {
 			break
 		}
-		input.NextToken = response.NextToken{{end}}
+		input.{{.PageTokenInputField | Coalesce .NextTokenName}} = response.{{.NextTokenName}}{{end}}
 	}
 	return nil
 }

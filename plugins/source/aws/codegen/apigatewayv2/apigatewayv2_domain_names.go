@@ -83,7 +83,9 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, p
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

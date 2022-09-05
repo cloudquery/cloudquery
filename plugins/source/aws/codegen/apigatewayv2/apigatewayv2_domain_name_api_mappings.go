@@ -65,7 +65,9 @@ func fetchApigatewayv2DomainNameApiMappings(ctx context.Context, meta schema.Cli
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

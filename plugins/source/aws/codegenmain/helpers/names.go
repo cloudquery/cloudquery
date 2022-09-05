@@ -1,8 +1,10 @@
 package helpers
 
 import (
+	"fmt"
 	"log"
 	"reflect"
+	"runtime"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/recipes"
@@ -50,34 +52,63 @@ type InferResult struct {
 	Method     string
 	SubService string
 
-	ItemsFieldCandidates []reflect.StructField // Struct field candidates that contains the item or items. Only valid in Output type structs.
-	PaginatorTokenField  *reflect.StructField
+	PaginatorTokenField *reflect.StructField
 
-	Fields     map[string]reflect.Type
+	Fields     map[string]reflect.StructField
 	FieldOrder []string
 }
 
-func (ir *InferResult) ItemsField() reflect.StructField {
-	if len(ir.ItemsFieldCandidates) != 1 {
-		log.Fatal("Could not determine ItemsName for ", ir.Method, ":", len(ir.ItemsFieldCandidates), " candidates")
+// ItemsField returns the field from the struct field candidates that contains the item or items. Only valid in Output type structs.
+func (ir *InferResult) ItemsField(singular bool) reflect.StructField {
+	cands := ir.ItemsFieldCandidates(singular)
+
+	if len(cands) != 1 {
+		var trc string
+		if _, fn, ln, ok := runtime.Caller(1); ok {
+			trc = fmt.Sprintf(" (called from %s:%d)", fn, ln)
+		}
+
+		cl := make([]string, len(cands))
+		for i, c := range cands {
+			cl[i] = c.Name
+		}
+		log.Fatal("Could not determine ItemsName for ", ir.Method, ":", len(cands), " candidates: ", strings.Join(cl, ", ")+trc)
 	}
-	return ir.ItemsFieldCandidates[0]
+	return cands[0]
 }
 
-func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResult {
-	res := InferResult{
-		Fields: make(map[string]reflect.Type),
+// ItemsFieldCandidates returns candidates for the item or items. Only valid in Output type structs.
+func (ir *InferResult) ItemsFieldCandidates(singular bool) []reflect.StructField {
+	var cands []reflect.StructField
+	for _, n := range ir.FieldOrder {
+		f := ir.Fields[n]
+		isSlice := BareType(f.Type).Kind() == reflect.Slice
+		if singular == !isSlice && f.Name != "ETag" {
+			cands = append(cands, f)
+		}
 	}
+	return cands
+}
 
-	ist := BareType(reflect.TypeOf(s))
-	suffix := StringSwitch(expectInput, "Input", "Output")
+func InferFromStructInput(s interface{}) *InferResult {
+	return InferFromType(BareType(reflect.TypeOf(s)), "Input")
+}
+
+func InferFromStructOutput(s interface{}) *InferResult {
+	return InferFromType(BareType(reflect.TypeOf(s)), "Output")
+}
+
+func InferFromType(ist reflect.Type, suffix string) *InferResult {
+	res := InferResult{
+		Fields: make(map[string]reflect.StructField),
+	}
 
 	for _, verbCandidate := range []string{"Get", "Describe", "List"} {
 		if !strings.HasPrefix(ist.Name(), verbCandidate) {
 			continue
 		}
 
-		if !strings.HasSuffix(ist.Name(), suffix) {
+		if suffix != "" && !strings.HasSuffix(ist.Name(), suffix) {
 			log.Fatal("Unhandled struct type (bad suffix): ", ist.Name())
 		}
 
@@ -96,21 +127,12 @@ func InferFromStruct(s interface{}, expectSingular, expectInput bool) *InferResu
 		if f.Name == "noSmithyDocumentSerde" || f.Type.String() == "document.NoSerde" || f.Type.String() == "middleware.Metadata" {
 			continue
 		}
-		if f.Name == "NextToken" {
+		if f.Name == "NextToken" || f.Name == "NextMarker" {
 			res.PaginatorTokenField = &f
 		}
 
-		res.Fields[f.Name] = f.Type
+		res.Fields[f.Name] = f
 		res.FieldOrder = append(res.FieldOrder, f.Name)
-
-		if expectSingular && f.Type.Kind() != reflect.Slice {
-			res.ItemsFieldCandidates = append(res.ItemsFieldCandidates, f)
-			continue
-		}
-		if !expectSingular && f.Type.Kind() == reflect.Slice {
-			res.ItemsFieldCandidates = append(res.ItemsFieldCandidates, f)
-			continue
-		}
 	}
 
 	return &res

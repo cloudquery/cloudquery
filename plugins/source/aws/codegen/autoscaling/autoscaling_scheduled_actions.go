@@ -101,7 +101,9 @@ func fetchAutoscalingScheduledActions(ctx context.Context, meta schema.ClientMet
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.ScheduledUpdateGroupActions
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

@@ -182,7 +182,9 @@ func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 
 			return diag.WrapError(err)
 		}
+
 		for _, item := range output.CertificateSummaryList {
+
 			do, err := svc.DescribeCertificate(ctx, &acm.DescribeCertificateInput{
 
 				CertificateArn: item.CertificateArn,

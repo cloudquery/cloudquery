@@ -64,7 +64,9 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 
 			return diag.WrapError(err)
 		}
+
 		for _, item := range output.PreparedStatements {
+
 			do, err := svc.GetPreparedStatement(ctx, &athena.GetPreparedStatementInput{
 				WorkGroup: r1.Name,
 

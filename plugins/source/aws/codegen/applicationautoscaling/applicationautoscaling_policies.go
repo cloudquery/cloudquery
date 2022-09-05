@@ -105,7 +105,9 @@ func fetchApplicationAutoscalingPolicies(ctx context.Context, meta schema.Client
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.ScalingPolicies
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

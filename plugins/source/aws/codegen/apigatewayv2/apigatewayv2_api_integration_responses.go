@@ -73,7 +73,9 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.Items
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

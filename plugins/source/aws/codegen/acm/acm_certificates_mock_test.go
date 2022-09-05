@@ -30,6 +30,7 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		gomock.Any(),
 	).Return(
 		&acm.ListCertificatesOutput{
+
 			CertificateSummaryList: []types.CertificateSummary{item},
 		},
 		nil,

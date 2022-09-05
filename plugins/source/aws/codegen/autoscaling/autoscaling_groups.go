@@ -211,7 +211,9 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 
 			return diag.WrapError(err)
 		}
+
 		res <- response.AutoScalingGroups
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

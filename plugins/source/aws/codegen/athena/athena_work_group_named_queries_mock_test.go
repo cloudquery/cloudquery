@@ -28,6 +28,7 @@ func buildAthenaWorkGroupNamedQueries(t *testing.T, ctrl *gomock.Controller) cli
 		gomock.Any(),
 	).Return(
 		&athena.ListNamedQueriesOutput{
+
 			NamedQueryIds: []string{item},
 		},
 		nil,
