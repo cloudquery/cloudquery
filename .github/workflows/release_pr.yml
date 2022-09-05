@@ -21,11 +21,13 @@ jobs:
         with:
           script: |
             const { RELEASES } = process.env
-            const releases = Object.entries(JSON.parse(RELEASES))
+            const parsedReleases = JSON.parse(RELEASES)
+            const releases = Object.entries(parsedReleases)
             const released = releases.filter(([key, value]) => key.includes('--release_created') && value === 'true')
             const releasedComponents = released.map(([key]) => key.split('--')[0])
             for (const component of releasedComponents) {
-              const tag = releases[`${component}--tag_name`]
+              console.log(`Released component: ${component}`)
+              const tag = parsedReleases[`${component}--tag_name`]
               const release = await github.rest.repos.getReleaseByTag({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
