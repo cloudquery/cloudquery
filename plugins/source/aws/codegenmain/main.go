@@ -78,7 +78,7 @@ func inferFromRecipe(r *recipes.Resource) {
 				}
 
 			} else {
-				r.ResponseItemsName = items.ItemsField(needSingular).Name
+				r.ResponseItemsName = items.ItemsField(needSingular, helpers.BareType(reflect.TypeOf(r.AWSStruct)).Name()).Name
 			}
 		}
 
@@ -112,9 +112,9 @@ func inferFromRecipe(r *recipes.Resource) {
 			if again.PaginatorTokenField != nil {
 				r.WrappedNextTokenName = again.PaginatorTokenField.Name
 			}
-			f = again.ItemsField(false)
+			f = again.ItemsField(false, "")
 		} else {
-			f = pag.ItemsField(false)
+			f = pag.ItemsField(false, "")
 		}
 
 		pagSingleItem = f.Type.Elem() // get type of slice

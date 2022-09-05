@@ -9,6 +9,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/recipes"
 	"github.com/iancoleman/strcase"
+	"github.com/jinzhu/inflection"
 )
 
 func TableAndFetcherNames(r *recipes.Resource) (string, string) {
@@ -59,7 +60,7 @@ type InferResult struct {
 }
 
 // ItemsField returns the field from the struct field candidates that contains the item or items. Only valid in Output type structs.
-func (ir *InferResult) ItemsField(singular bool) reflect.StructField {
+func (ir *InferResult) ItemsField(singular bool, hint string) reflect.StructField {
 	cands := ir.ItemsFieldCandidates(singular)
 
 	if len(cands) != 1 {
@@ -70,6 +71,11 @@ func (ir *InferResult) ItemsField(singular bool) reflect.StructField {
 
 		cl := make([]string, len(cands))
 		for i, c := range cands {
+			// if there is a hint, use it
+			if hint != "" && (c.Name == hint || c.Name == inflection.Plural(hint)) {
+				return cands[i]
+			}
+
 			cl[i] = c.Name
 		}
 		log.Fatal("Could not determine ItemsName for ", ir.Method, ":", len(cands), " candidates: ", strings.Join(cl, ", ")+trc)
