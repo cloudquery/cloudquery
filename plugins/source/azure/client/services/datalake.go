@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/datalake.go -package=mocks . DataLakeStorageAccountsClient,DataLakeAnalyticsAccountsClient
+//go:generate mockgen -destination=./mocks/datalake.go -package=mocks . DataLakeDataLakeStoreAccountsClient,DataLakeDataLakeAnalyticsAccountsClient
 package services
 
 import (
@@ -10,16 +10,16 @@ import (
 )
 
 type DataLakeClient struct {
-	DataLakeStorageAccounts   DataLakeStorageAccountsClient
-	DataLakeAnalyticsAccounts DataLakeAnalyticsAccountsClient
+	DataLakeStoreAccounts     DataLakeDataLakeStoreAccountsClient
+	DataLakeAnalyticsAccounts DataLakeDataLakeAnalyticsAccountsClient
 }
 
-type DataLakeStorageAccountsClient interface {
+type DataLakeDataLakeStoreAccountsClient interface {
 	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result storeAccount.DataLakeStoreAccountListResultPage, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result storeAccount.DataLakeStoreAccount, err error)
 }
 
-type DataLakeAnalyticsAccountsClient interface {
+type DataLakeDataLakeAnalyticsAccountsClient interface {
 	List(ctx context.Context, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (result account.DataLakeAnalyticsAccountListResultPage, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result account.DataLakeAnalyticsAccount, err error)
 }
@@ -30,7 +30,7 @@ func NewDataLakeClient(subscriptionId string, auth autorest.Authorizer) DataLake
 	analyticsAccounts := account.NewAccountsClient(subscriptionId)
 	analyticsAccounts.Authorizer = auth
 	return DataLakeClient{
-		DataLakeStorageAccounts:   storeAccounts,
+		DataLakeStoreAccounts:     storeAccounts,
 		DataLakeAnalyticsAccounts: analyticsAccounts,
 	}
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func buildDatalakeAnalyticsAccounts(t *testing.T, ctrl *gomock.Controller) services.Services {
-	ds := mocks.NewMockDataLakeAnalyticsAccountsClient(ctrl)
+	ds := mocks.NewMockDataLakeDataLakeAnalyticsAccountsClient(ctrl)
 
 	faker.SetIgnoreInterface(true)
 

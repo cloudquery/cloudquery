@@ -13,7 +13,7 @@ import (
 )
 
 func buildDatalakeStorageAccounts(t *testing.T, ctrl *gomock.Controller) services.Services {
-	ds := mocks.NewMockDataLakeStorageAccountsClient(ctrl)
+	ds := mocks.NewMockDataLakeDataLakeStoreAccountsClient(ctrl)
 
 	faker.SetIgnoreInterface(true)
 
@@ -45,7 +45,7 @@ func buildDatalakeStorageAccounts(t *testing.T, ctrl *gomock.Controller) service
 	ds.EXPECT().Get(gomock.Any(), gomock.Any(), gomock.Any()).Return(dataLakeStoreAccount, nil)
 
 	return services.Services{
-		DataLake: services.DataLakeClient{DataLakeStorageAccounts: ds},
+		DataLake: services.DataLakeClient{DataLakeStoreAccounts: ds},
 	}
 }
 

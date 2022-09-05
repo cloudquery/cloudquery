@@ -19,3 +19,17 @@ func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema
 	`}}
 	return nil
 }
+
+{{if .GetFunction}}
+func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+	svc := meta.(*client.Client).Services().{{ .AzureService }}.{{ .AzureSubService }}
+	{{ range .GetFunctionArgsInit }}
+	{{.}}{{ end }}
+	item, err := svc.{{.GetFunction}}(ctx{{ range .GetFunctionArgs }}, {{.}}{{ end }})
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	r.SetItem(item)
+	return nil
+}
+{{end}}

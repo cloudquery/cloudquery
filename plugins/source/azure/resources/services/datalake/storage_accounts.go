@@ -312,7 +312,7 @@ func StorageAccounts() *schema.Table {
 // ====================================================================================================================
 
 func fetchDatalakeStorageAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().DataLake.DataLakeStorageAccounts
+	svc := meta.(*client.Client).Services().DataLake.DataLakeStoreAccounts
 	result, err := svc.List(ctx, "", nil, nil, "", "", nil)
 	if err != nil {
 		return diag.WrapError(err)

@@ -31,6 +31,9 @@ type Resource struct {
 	ListFunctionArgs         []string
 	ListFunctionArgsInit     []string
 	ListHandler              string
+	GetFunction              string
+	GetFunctionArgs          []string
+	GetFunctionArgsInit      []string
 	Helpers                  []string
 	MockHelpers              []string
 	MockListResult           string
@@ -38,6 +41,7 @@ type Resource struct {
 	MockListFunctionArgsInit []string
 	MockFieldsToIgnore       []string
 	MockValueType            string
+	MockDefinitionType       string
 }
 
 type template struct {
@@ -55,12 +59,16 @@ type resourceDefinition struct {
 	listFunctionArgs         []string
 	listFunctionArgsInit     []string
 	listHandler              string
+	getFunction              string
+	getFunctionArgs          []string
+	getFunctionArgsInit      []string
 	mockListResult           string
 	mockHelpers              []string
 	mockListFunctionArgs     []string
 	mockListFunctionArgsInit []string
 	mockFieldsToIgnore       []string
 	mockValueType            string
+	mockDefinitionType       string
 	subServiceOverride       string
 	relations                []string
 }
@@ -99,6 +107,7 @@ func AllResources() []Resource {
 	resources = append(resources, Compute()...)
 	resources = append(resources, Container()...)
 	resources = append(resources, CosmosDB()...)
+	resources = append(resources, Datalake()...)
 	resources = append(resources, EventHub()...)
 	resources = append(resources, FrontDoor()...)
 	resources = append(resources, IotHub()...)
@@ -170,6 +179,10 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 				table.Options.PrimaryKeys = []string{"subscription_id", "id"}
 				table.Relations = definition.relations
 
+				if definition.getFunction != "" {
+					table.PreResourceResolver = "get" + azureStructName
+				}
+
 				resource := Resource{
 					Table:            table,
 					AzurePackageName: azurePackageName,
@@ -186,12 +199,16 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					ListHandler:              definition.listHandler,
 					ListFunctionArgs:         definition.listFunctionArgs,
 					ListFunctionArgsInit:     definition.listFunctionArgsInit,
+					GetFunction:              definition.getFunction,
+					GetFunctionArgs:          definition.getFunctionArgs,
+					GetFunctionArgsInit:      definition.getFunctionArgsInit,
 					MockHelpers:              definition.mockHelpers,
 					MockListResult:           definition.mockListResult,
 					MockListFunctionArgs:     definition.mockListFunctionArgs,
 					MockListFunctionArgsInit: definition.mockListFunctionArgsInit,
 					MockFieldsToIgnore:       append(skipFields, definition.mockFieldsToIgnore...),
 					MockValueType:            definition.mockValueType,
+					MockDefinitionType:       definition.mockDefinitionType,
 				}
 				allResources = append(allResources, resource)
 			}
