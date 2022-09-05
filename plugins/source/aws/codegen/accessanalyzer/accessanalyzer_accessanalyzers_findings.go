@@ -20,6 +20,11 @@ func AccessAnalyzerAccessanalyzersFindings() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("accessanalyzer"),
 		Columns: []schema.Column{
 			{
+				Name:     "accessanalyzer_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "analyzed_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("AnalyzedAt"),

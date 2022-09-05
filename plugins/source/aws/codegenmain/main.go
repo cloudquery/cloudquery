@@ -20,6 +20,7 @@ import (
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
 	pluginschema "github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
+	"github.com/jinzhu/inflection"
 	"golang.org/x/exp/slices"
 )
 
@@ -264,6 +265,33 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if r.TrimPrefix != "" {
 		for i := range r.Table.Columns {
 			r.Table.Columns[i].Name = strings.TrimPrefix(r.Table.Columns[i].Name, r.TrimPrefix)
+		}
+	}
+
+	// Add one level up parent key
+	if r.Parent != nil {
+		var pItemName string
+		if r.Parent.CQSubserviceOverride != "" {
+			pItemName = r.Parent.CQSubserviceOverride
+		} else {
+			pItemName = strings.TrimSuffix(r.Parent.ItemName, "Summary")
+		}
+		pItemName = inflection.Singular(pItemName)
+
+		r.Table.Columns = append([]sdkgen.ColumnDefinition{
+			{
+				Name:     strings.ToLower(pItemName + "_cq_id"),
+				Type:     pluginschema.TypeUUID,
+				Resolver: "schema.ParentIdResolver",
+			},
+		}, r.Table.Columns...)
+	}
+
+	if r.Parent != nil && len(r.DefaultColumns) > 0 {
+		for _, c := range r.DefaultColumns {
+			if c == recipes.AccountIdColumn || c == recipes.RegionColumn {
+				log.Fatal("Error: A sub-resource of ", r.Parent.AWSStructName, " should not have account_id or region columns")
+			}
 		}
 	}
 

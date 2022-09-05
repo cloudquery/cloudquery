@@ -20,6 +20,11 @@ func AthenaDataCatalogDatabaseTables() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
+				Name:     "database_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),

@@ -56,7 +56,6 @@ func init() {
 				},
 			},
 			&Resource{
-				DefaultColumns:       []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 				AWSStruct:            &types.RecoveryPointByBackupVault{},
 				Template:             "resource_get",
 				CQSubserviceOverride: "recovery_points",
@@ -98,7 +97,6 @@ func init() {
 				TrimPrefix: "backup_plan_",
 			},
 			&Resource{
-				DefaultColumns:       []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
 				AWSStruct:            &backup.GetBackupSelectionOutput{},
 				Template:             "resource_list_describe",
 				CQSubserviceOverride: "backup_selections",

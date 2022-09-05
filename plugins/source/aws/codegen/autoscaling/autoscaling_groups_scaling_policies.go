@@ -21,6 +21,11 @@ func AutoscalingGroupsScalingPolicies() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{
 			{
+				Name:     "group_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "adjustment_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AdjustmentType"),

@@ -20,16 +20,9 @@ func BackupVaultsRecoveryPoints() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
-				Description: `The AWS Account ID of the resource.`,
-			},
-			{
-				Name:        "region",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
-				Description: `The AWS Region of the resource.`,
+				Name:     "vault_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
 			},
 			{
 				Name:     "backup_size_in_bytes",

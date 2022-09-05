@@ -20,6 +20,11 @@ func AccessAnalyzerAccessanalyzersArchiveRules() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("accessanalyzer"),
 		Columns: []schema.Column{
 			{
+				Name:     "accessanalyzer_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),

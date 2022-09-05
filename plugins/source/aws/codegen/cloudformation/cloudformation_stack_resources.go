@@ -21,6 +21,11 @@ func CloudformationStackResources() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Columns: []schema.Column{
 			{
+				Name:     "stack_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "last_updated_timestamp",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdatedTimestamp"),

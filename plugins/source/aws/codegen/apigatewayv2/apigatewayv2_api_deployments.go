@@ -20,6 +20,11 @@ func Apigatewayv2ApiDeployments() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
+				Name:     "api_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "auto_deployed",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AutoDeployed"),

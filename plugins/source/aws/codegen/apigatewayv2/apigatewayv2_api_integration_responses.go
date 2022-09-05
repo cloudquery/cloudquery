@@ -20,6 +20,11 @@ func Apigatewayv2ApiIntegrationResponses() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
+				Name:     "integration_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "integration_response_key",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IntegrationResponseKey"),

@@ -20,6 +20,11 @@ func Apigatewayv2ApiRouteResponses() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
+				Name:     "route_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "route_response_key",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RouteResponseKey"),

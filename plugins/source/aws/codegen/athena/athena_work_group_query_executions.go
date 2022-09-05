@@ -20,6 +20,11 @@ func AthenaWorkGroupQueryExecutions() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
+				Name:     "workgroup_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "engine_version",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("EngineVersion"),

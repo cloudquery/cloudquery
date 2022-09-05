@@ -20,6 +20,11 @@ func Apigatewayv2ApiStages() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
+				Name:     "api_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "stage_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StageName"),

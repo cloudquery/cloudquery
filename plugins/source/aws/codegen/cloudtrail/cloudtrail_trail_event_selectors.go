@@ -19,6 +19,11 @@ func CloudtrailTrailEventSelectors() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("cloudtrail"),
 		Columns: []schema.Column{
 			{
+				Name:     "trail_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "data_resources",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("DataResources"),

@@ -20,6 +20,11 @@ func AutoscalingGroupsLifecycleHooks() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{
 			{
+				Name:     "group_cq_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "auto_scaling_group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AutoScalingGroupName"),
