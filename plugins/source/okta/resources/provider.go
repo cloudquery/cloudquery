@@ -6,9 +6,14 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
+var (
+	Version = "Development"
+)
+
 func Provider() *provider.Provider {
 	return &provider.Provider{
 		Name:      "okta",
+		Version:   Version,
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
 			"users": Users(),
