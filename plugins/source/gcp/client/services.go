@@ -75,23 +75,6 @@ type Services struct {
 	StorageClient                 *storage.Client
 }
 
-const (
-	BigQueryService             GcpService = "bigquery.googleapis.com"
-	CloudBillingService         GcpService = "cloudbilling.googleapis.com"
-	CloudFunctionsService       GcpService = "cloudfunctions.googleapis.com"
-	CloudKmsService             GcpService = "cloudkms.googleapis.com"
-	CloudResourceManagerService GcpService = "cloudresourcemanager.googleapis.com"
-	ComputeService              GcpService = "compute.googleapis.com"
-	DnsService                  GcpService = "dns.googleapis.com"
-	DomainsService              GcpService = "domains.googleapis.com"
-	IamService                  GcpService = "iam.googleapis.com"
-	LoggingService              GcpService = "logging.googleapis.com"
-	RedisService                GcpService = "redis.googleapis.com"
-	MonitoringService           GcpService = "monitoring.googleapis.com"
-	SqlAdminService             GcpService = "sqladmin.googleapis.com"
-	StorageService              GcpService = "storage-api.googleapis.com"
-)
-
 func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
 	options = append(options, option.WithTelemetryDisabled())
 	svcs := Services{}
@@ -119,39 +102,83 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 
-	svcs.ComputeAddressesClient, err = compute.NewAddressesRESTClient(ctx)
+	svcs.ComputeAddressesClient, err = compute.NewAddressesRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeAutoscalersClient, err = compute.NewAutoscalersRESTClient(ctx)
+	svcs.ComputeAutoscalersClient, err = compute.NewAutoscalersRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeBackendServicesClient, err = compute.NewBackendServicesRESTClient(ctx)
+	svcs.ComputeBackendServicesClient, err = compute.NewBackendServicesRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeDiskTypesClient, err = compute.NewDiskTypesRESTClient(ctx)
+	svcs.ComputeDiskTypesClient, err = compute.NewDiskTypesRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeDisksClient, err = compute.NewDisksRESTClient(ctx)
+	svcs.ComputeDisksClient, err = compute.NewDisksRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeFirewallsClient, err = compute.NewFirewallsRESTClient(ctx)
+	svcs.ComputeFirewallsClient, err = compute.NewFirewallsRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeForwardingRulesClient, err = compute.NewForwardingRulesRESTClient(ctx)
+	svcs.ComputeForwardingRulesClient, err = compute.NewForwardingRulesRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeImagesClient, err = compute.NewImagesRESTClient(ctx)
+	svcs.ComputeImagesClient, err = compute.NewImagesRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
-	svcs.ComputeInstancesClient, err = compute.NewInstancesRESTClient(ctx)
+	svcs.ComputeInstancesClient, err = compute.NewInstancesRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeInstanceGroupsClient, err = compute.NewInstanceGroupsRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeInterconnectsClient, err = compute.NewInterconnectsRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeNetworksClient, err = compute.NewNetworksRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeProjectsClient, err = compute.NewProjectsRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeSslCertificatesClient, err = compute.NewSslCertificatesRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeSslPoliciesClient, err = compute.NewSslPoliciesRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeSubnetworksClient, err = compute.NewSubnetworksRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeTargetHttpProxiesClient, err = compute.NewTargetHttpProxiesRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeTargetSslProxiesClient, err = compute.NewTargetSslProxiesRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeUrlMapsClient, err = compute.NewUrlMapsRESTClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.ComputeVpnGatewaysClient, err = compute.NewVpnGatewaysRESTClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
