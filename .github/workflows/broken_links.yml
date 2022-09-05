@@ -61,7 +61,7 @@ jobs:
         run: |
           set -o pipefail
 
-          npx broken-link-checker --requests 20 --host-requests 1 -f -r -v -o --filter-level 3 \
+          npx broken-link-checker --requests 10 --host-requests 1 -f -r -v -o --filter-level 3 \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude cloudquery.io/assets/aws_security_group_view.sql \
