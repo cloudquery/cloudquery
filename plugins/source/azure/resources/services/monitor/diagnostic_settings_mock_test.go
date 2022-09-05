@@ -15,7 +15,7 @@ import (
 
 func buildMonitorDiagnosticsSettings(t *testing.T, ctrl *gomock.Controller) services.Services {
 	ds := mocks.NewMockMonitorDiagnosticSettingsClient(ctrl)
-	res := mocks.NewMockResourcesResClient(ctrl)
+	res := mocks.NewMockMonitorResourcesClient(ctrl)
 
 	faker.SetIgnoreInterface(true)
 
@@ -50,8 +50,7 @@ func buildMonitorDiagnosticsSettings(t *testing.T, ctrl *gomock.Controller) serv
 	)
 
 	return services.Services{
-		Monitor:   services.MonitorClient{DiagnosticSettings: ds},
-		Resources: services.ResourcesClient{Resources: res},
+		Monitor: services.MonitorClient{DiagnosticSettings: ds, Resources: res},
 	}
 }
 

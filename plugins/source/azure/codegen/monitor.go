@@ -1,7 +1,8 @@
 package codegen
 
 import (
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
+	logAlerts "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
+	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 )
 
 func Monitor() []Resource {
@@ -21,7 +22,7 @@ func Monitor() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:        &insights.ActivityLogAlertResource{},
+					azureStruct:        &logAlerts.ActivityLogAlertResource{},
 					listFunction:       "ListBySubscriptionID",
 					listHandler:        valueHandler,
 					subServiceOverride: "ActivityLogAlerts",

@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/monitor.go -package=mocks . MonitorActivityLogAlertsClient,MonitorLogProfilesClient,MonitorDiagnosticSettingsClient,MonitorActivityLogsClient
+//go:generate mockgen -destination=./mocks/monitor.go -package=mocks . MonitorActivityLogAlertsClient,MonitorLogProfilesClient,MonitorDiagnosticSettingsClient,MonitorActivityLogsClient,MonitorResourcesClient
 package services
 
 import (
@@ -6,6 +6,7 @@ import (
 
 	o "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
+	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -14,6 +15,7 @@ type MonitorClient struct {
 	LogProfiles        MonitorLogProfilesClient
 	ActivityLogs       MonitorActivityLogsClient
 	DiagnosticSettings MonitorDiagnosticSettingsClient
+	Resources          MonitorResourcesClient
 }
 
 type MonitorActivityLogAlertsClient interface {
@@ -30,6 +32,10 @@ type MonitorDiagnosticSettingsClient interface {
 	List(ctx context.Context, resourceURI string) (result insights.DiagnosticSettingsResourceCollection, err error)
 }
 
+type MonitorResourcesClient interface {
+	List(ctx context.Context, filter string, expand string, top *int32) (result resources.ListResultPage, err error)
+}
+
 func NewMonitorClient(subscriptionId string, auth autorest.Authorizer) MonitorClient {
 	servers := o.NewActivityLogAlertsClient(subscriptionId)
 	servers.Authorizer = auth
@@ -39,10 +45,13 @@ func NewMonitorClient(subscriptionId string, auth autorest.Authorizer) MonitorCl
 	activityLogs.Authorizer = auth
 	diagnosticSettings := insights.NewDiagnosticSettingsClient(subscriptionId)
 	diagnosticSettings.Authorizer = auth
+	resourcesClient := resources.NewClient(subscriptionId)
+	resourcesClient.Authorizer = auth
 	return MonitorClient{
 		ActivityLogAlerts:  servers,
 		LogProfiles:        logProfiles,
 		ActivityLogs:       activityLogs,
 		DiagnosticSettings: diagnosticSettings,
+		Resources:          resourcesClient,
 	}
 }

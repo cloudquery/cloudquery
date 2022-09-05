@@ -206,7 +206,7 @@ func MonitorDiagnosticSettings() *schema.Table {
 // ====================================================================================================================
 func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	resSvc := cl.Services().Resources.Resources
+	resSvc := cl.Services().Monitor.Resources
 	monSvc := cl.Services().Monitor.DiagnosticSettings
 	resResponse, err := resSvc.List(ctx, "", "", nil)
 	if err != nil {

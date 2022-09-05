@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResourcesResClient,ResourcesGroupsClient,ResourcesPolicyAssignmentsClient,ResourcesLinksClient
+//go:generate mockgen -destination=./mocks/resources.go -package=mocks . ResourcesGroupsClient,ResourcesPolicyAssignmentsClient,ResourcesLinksClient
 package services
 
 import (
@@ -12,17 +12,12 @@ import (
 
 type ResourcesClient struct {
 	Groups            ResourcesGroupsClient
-	Resources         ResourcesResClient
 	PolicyAssignments ResourcesPolicyAssignmentsClient
 	Links             ResourcesLinksClient
 }
 
 type ResourcesGroupsClient interface {
 	List(ctx context.Context, filter string, top *int32) (result resources.GroupListResultPage, err error)
-}
-
-type ResourcesResClient interface {
-	List(ctx context.Context, filter string, expand string, top *int32) (result resources.ListResultPage, err error)
 }
 
 type ResourcesPolicyAssignmentsClient interface {
@@ -36,15 +31,12 @@ type ResourcesLinksClient interface {
 func NewResourcesClient(subscriptionId string, auth autorest.Authorizer) ResourcesClient {
 	groups := resources.NewGroupsClient(subscriptionId)
 	groups.Authorizer = auth
-	client := resources.NewClient(subscriptionId)
-	client.Authorizer = auth
 	assignments := policy.NewAssignmentsClient()
 	assignments.Authorizer = auth
 	ls := links.NewResourceLinksClient(subscriptionId)
 	ls.Authorizer = auth
 	return ResourcesClient{
 		Groups:            groups,
-		Resources:         client,
 		PolicyAssignments: assignments,
 		Links:             ls,
 	}
