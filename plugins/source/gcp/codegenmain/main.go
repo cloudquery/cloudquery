@@ -151,9 +151,9 @@ func generateResource(r codegen.Resource, mock bool) {
 		r.Table.Multiplex = *r.Multiplex
 	}
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
-	// if r.GetFunction != "" {
-	// r.Table.PreResourceResolver = "get" + strcase.ToCamel(r.StructName)
-	// }
+	if r.PreResourceResolver != "" {
+		r.Table.PreResourceResolver = r.PreResourceResolver
+	}
 	if r.Relations != nil {
 		r.Table.Relations = r.Relations
 	}

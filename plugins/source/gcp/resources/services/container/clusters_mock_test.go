@@ -58,7 +58,6 @@ func (f *fakeClustersServer) ListClusters(context.Context, *pb.ListClustersReque
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	resp.NextPageToken = ""
 	return &resp, nil
 }
 

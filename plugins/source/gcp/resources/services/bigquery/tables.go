@@ -5,14 +5,13 @@ package bigquery
 import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	"google.golang.org/api/bigquery/v2"
 )
 
 func Tables() *schema.Table {
 	return &schema.Table{
-		Name:     "gcp_bigquery_tables",
-		Resolver: fetchTables,
+		Name:                "gcp_bigquery_tables",
+		Resolver:            fetchTables,
+		PreResourceResolver: tableGet,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

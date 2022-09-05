@@ -7,14 +7,14 @@ import (
 	"context"
 	"google.golang.org/api/iterator"
 	"github.com/pkg/errors"
+	{{if .ProtobufImport}}
+  pb "{{.ProtobufImport}}"
+  {{end}}
 	{{end}}
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
   {{range .Imports}}
   "{{.}}"
-  {{end}}
-  {{if .ProtobufImport}}
-  pb "{{.ProtobufImport}}"
   {{end}}
 )
 

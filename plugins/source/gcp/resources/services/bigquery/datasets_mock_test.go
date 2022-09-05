@@ -138,7 +138,7 @@ func createBigqueryDatasets() (*client.Services, error) {
 		return nil, err
 	}
 	return &client.Services{
-		Bigquery: svc,
+		BigqueryService: svc,
 	}, nil
 }
 

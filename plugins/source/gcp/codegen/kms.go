@@ -2,8 +2,6 @@ package codegen
 
 import (
 	kms "cloud.google.com/go/kms/apiv1"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
@@ -22,6 +20,7 @@ var kmsResources = []*Resource{
 		Multiplex:           &emptyString,
 		ChildTable:          true,
 		SkipMock:            true,
+		SkipFetch:           true,
 	},
 	{
 		SubService:          "keyrings",
@@ -32,14 +31,9 @@ var kmsResources = []*Resource{
 		RegisterServer:      pb.RegisterKeyManagementServiceServer,
 		ListFunction:        (&pb.UnimplementedKeyManagementServiceServer{}).ListKeyRings,
 		UnimplementedServer: &pb.UnimplementedKeyManagementServiceServer{},
-		DefaultColumns: []codegen.ColumnDefinition{
-			ProjectIdColumn,
-			{
-				Name: "location",
-				Type: schema.TypeString,
-			},
-		},
-		Relations: []string{"CryptoKeys()"},
+		Relations:           []string{"CryptoKeys()"},
+		SkipFetch:           true,
+		SkipMock:            true,
 	},
 }
 

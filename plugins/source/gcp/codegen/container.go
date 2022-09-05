@@ -17,6 +17,7 @@ var containerResources = []*Resource{
 		RegisterServer:      pb.RegisterClusterManagerServer,
 		ListFunction:        (&pb.UnimplementedClusterManagerServer{}).ListClusters,
 		UnimplementedServer: &pb.UnimplementedClusterManagerServer{},
+		SkipFetch:           true,
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",

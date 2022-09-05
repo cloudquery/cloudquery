@@ -17,7 +17,8 @@ import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
 	"cloud.google.com/go/storage"
-	"google.golang.org/api/bigquery/v2"
+	bigquery "google.golang.org/api/bigquery/v2"
+	kmsold "google.golang.org/api/cloudkms/v1"
 	"google.golang.org/api/dns/v1"
 	"google.golang.org/api/iam/v1"
 	"google.golang.org/api/option"
@@ -27,7 +28,7 @@ import (
 type GcpService string
 
 type Services struct {
-	Bigquery                      *bigquery.Service
+	BigqueryService               *bigquery.Service
 	BillingCloudBillingClient     *billing.CloudBillingClient
 	BillingCloudCatalogClient     *billing.CloudCatalogClient
 	FunctionsCloudFunctionsClient *functions.CloudFunctionsClient
@@ -61,6 +62,7 @@ type Services struct {
 	DomainsClient                 *domains.Client
 	Iam                           *iam.Service
 	KmsKeyManagementClient        *kms.KeyManagementClient
+	KmsoldService                 *kmsold.Service
 	LoggingConfigClient           *logging.ConfigClient
 	LoggingMetricsClient          *logging.MetricsClient
 	MonitoringAlertPolicyClient   *monitoring.AlertPolicyClient
@@ -93,10 +95,11 @@ const (
 func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
 	svcs := Services{}
 	var err error
-	svcs.Bigquery, err = bigquery.NewService(ctx, options...)
+	svcs.BigqueryService, err = bigquery.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
+
 	svcs.BillingCloudBillingClient, err = billing.NewCloudBillingClient(ctx, options...)
 	if err != nil {
 		return nil, err
@@ -167,6 +170,10 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 	svcs.KmsKeyManagementClient, err = kms.NewKeyManagementClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.KmsoldService, err = kmsold.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}

@@ -9,9 +9,10 @@ import (
 
 func Datasets() *schema.Table {
 	return &schema.Table{
-		Name:      "gcp_bigquery_datasets",
-		Resolver:  fetchDatasets,
-		Multiplex: client.ProjectMultiplex,
+		Name:                "gcp_bigquery_datasets",
+		Resolver:            fetchDatasets,
+		PreResourceResolver: datasetGet,
+		Multiplex:           client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",

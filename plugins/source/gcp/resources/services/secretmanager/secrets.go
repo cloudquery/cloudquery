@@ -7,10 +7,10 @@ import (
 	"github.com/pkg/errors"
 	"google.golang.org/api/iterator"
 
+	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
 func Secrets() *schema.Table {

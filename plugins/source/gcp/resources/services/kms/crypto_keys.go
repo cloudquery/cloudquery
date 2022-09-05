@@ -3,14 +3,8 @@
 package kms
 
 import (
-	"context"
-	"github.com/pkg/errors"
-	"google.golang.org/api/iterator"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
 func CryptoKeys() *schema.Table {
@@ -75,23 +69,4 @@ func CryptoKeys() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	req := &pb.ListCryptoKeysRequest{}
-	it := c.Services.KmsKeyManagementClient.ListCryptoKeys(ctx, req)
-	for {
-		resp, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return errors.WithStack(err)
-		}
-
-		res <- resp
-
-	}
-	return nil
 }
