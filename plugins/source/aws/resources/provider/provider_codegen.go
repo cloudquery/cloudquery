@@ -24,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudwatchlogs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/codebuild"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/codepipeline"
 )
 
 var (
@@ -67,6 +68,8 @@ func Provider() *provider.Provider {
 			"cloudwatchlogs.log_groups":               cloudwatchlogs.CloudwatchLogsLogGroups(),
 			"cloudwatchlogs.metric_filters":           cloudwatchlogs.CloudwatchLogsMetricFilters(),
 			"codebuild.projects":                      codebuild.CodebuildProjects(),
+			"codepipeline.pipelines":                  codepipeline.CodePipelinePipelines(),
+			"codepipeline.webhooks":                   codepipeline.CodePipelineWebhooks(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
