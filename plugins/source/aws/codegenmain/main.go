@@ -352,6 +352,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 
 	r.TypesImport = ""
 	sp := t.PkgPath()
+	var mainImport string
 	if strings.HasSuffix(sp, "/types") {
 		r.TypesImport = sp
 		if r.AddTypesImport {
@@ -361,11 +362,15 @@ func generateResource(r *recipes.Resource, mock bool) {
 				r.MockImports = append(r.MockImports, strconv.Quote(sp))
 			}
 		}
-		r.Imports = append(r.Imports, strconv.Quote(strings.TrimSuffix(sp, "/types")))         // auto-import main pkg (not "types")
-		r.MockImports = append(r.MockImports, strconv.Quote(strings.TrimSuffix(sp, "/types"))) // auto-import main pkg (not "types")
-	} else if strings.HasSuffix(sp, "/aws-sdk-go-v2/service/"+strings.ToLower(r.AWSService)) { // main struct lives in main pkg, auto-import that as well
-		r.Imports = append(r.Imports, strconv.Quote(sp))
-		r.MockImports = append(r.MockImports, strconv.Quote(sp))
+		mainImport = strings.TrimSuffix(sp, "/types")
+	} else if strings.HasSuffix(sp, "/aws-sdk-go-v2/service/"+strings.ToLower(r.AWSService)) { // main struct lives in main pkg
+		mainImport = sp
+	}
+
+	if r.RawResolver == "" {
+		// auto import main pkg
+		r.Imports = append(r.Imports, strconv.Quote(mainImport))
+		r.MockImports = append(r.MockImports, strconv.Quote(mainImport))
 	}
 
 	if hasReferenceToResolvers && !mock {

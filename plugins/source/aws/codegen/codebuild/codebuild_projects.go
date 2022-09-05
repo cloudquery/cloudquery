@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
-	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/codebuild"
 )
 
