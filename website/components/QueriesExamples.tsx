@@ -19,7 +19,7 @@ const ComplianceQuery = () => (
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>FROM</span></div>
         <div><span>    aws_iam_password_policies</span></div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>WHERE</span></div>
-        <div>    require_uppercase_characters = aws_iam_password_policies<span style={{ color: "var(--shiki-token-keyword)" }}> FALSE</span></div>
+        <div>    require_uppercase_characters =<span style={{ color: "var(--shiki-token-keyword)" }}> FALSE</span></div>
     </>
 )
 
