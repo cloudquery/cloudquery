@@ -16,7 +16,7 @@ func CloudwatchAlarms() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_cloudwatch_alarms",
 		Resolver:  fetchCloudwatchAlarms,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cloudwatch"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("logs"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

@@ -8,12 +8,13 @@ import (
 
 func init() {
 	add(&Resource{
-		DefaultColumns:  []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
-		AWSStruct:       &types.MetricAlarm{},
-		AWSService:      "Cloudwatch",
-		Template:        "resource_get",
-		ItemsStruct:     &cloudwatch.DescribeAlarmsOutput{},
-		ColumnOverrides: map[string]codegen.ColumnDefinition{},
+		DefaultColumns:             []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
+		AWSStruct:                  &types.MetricAlarm{},
+		AWSService:                 "Cloudwatch",
+		MultiplexerServiceOverride: "logs",
+		Template:                   "resource_get",
+		ItemsStruct:                &cloudwatch.DescribeAlarmsOutput{},
+		ColumnOverrides:            map[string]codegen.ColumnDefinition{},
 		// TODO query and add tags
 	})
 }

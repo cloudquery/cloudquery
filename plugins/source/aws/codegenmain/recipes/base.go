@@ -23,7 +23,8 @@ type Resource struct {
 	// Template is the template to use to generate the resource
 	Template string
 
-	MultiplexerServiceOverride string
+	RawMultiplexerOverride     string // Full override for the multiplexer
+	MultiplexerServiceOverride string // Override only for the service name (ServiceAccountRegionMultiplexer is used)
 	CQSubserviceOverride       string // used in table and file names
 
 	PaginatorStruct    interface{} // Used only in resource_list_and_detail and list_describe templates.

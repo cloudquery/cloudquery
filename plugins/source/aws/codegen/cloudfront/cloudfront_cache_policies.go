@@ -17,7 +17,7 @@ func CloudfrontCachePolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_cloudfront_cache_policies",
 		Resolver:  fetchCloudfrontCachePolicies,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cloudfront"),
+		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

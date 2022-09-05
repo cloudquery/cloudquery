@@ -309,7 +309,16 @@ func generateResource(r *recipes.Resource, mock bool) {
 			hasReferenceToResolvers = true
 		}
 	}
-	r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + helpers.Coalesce(r.MultiplexerServiceOverride, strings.ToLower(r.AWSService)) + `")`
+
+	if r.RawMultiplexerOverride != "" && r.MultiplexerServiceOverride != "" {
+		log.Fatal("Cannot specify both RawMultiplexerOverride and MultiplexerServiceOverride")
+	}
+
+	if r.RawMultiplexerOverride != "" {
+		r.Table.Multiplex = r.RawMultiplexerOverride
+	} else {
+		r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + helpers.Coalesce(r.MultiplexerServiceOverride, strings.ToLower(r.AWSService)) + `")`
+	}
 
 	r.Table.Resolver = "fetch" + r.AWSService + fetcherNameFromSubService
 	r.TableFuncName = strings.TrimPrefix(r.Table.Resolver, "fetch")

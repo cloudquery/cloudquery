@@ -8,12 +8,13 @@ import (
 
 func init() {
 	add(parentize(&Resource{
-		DefaultColumns:  []codegen.ColumnDefinition{AccountIdColumn},
-		AWSStruct:       &types.Trail{},
-		AWSService:      "Cloudtrail",
-		Template:        "resource_get",
-		ItemsStruct:     &cloudtrail.DescribeTrailsOutput{},
-		ColumnOverrides: map[string]codegen.ColumnDefinition{},
+		DefaultColumns:         []codegen.ColumnDefinition{AccountIdColumn},
+		AWSStruct:              &types.Trail{},
+		AWSService:             "Cloudtrail",
+		RawMultiplexerOverride: "client.AccountMultiplex",
+		Template:               "resource_get",
+		ItemsStruct:            &cloudtrail.DescribeTrailsOutput{},
+		ColumnOverrides:        map[string]codegen.ColumnDefinition{},
 		// TODO query and add tags (one call per region)
 	},
 		&Resource{

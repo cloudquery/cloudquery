@@ -15,7 +15,7 @@ func CloudtrailTrails() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_cloudtrail_trails",
 		Resolver:  fetchCloudtrailTrails,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cloudtrail"),
+		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

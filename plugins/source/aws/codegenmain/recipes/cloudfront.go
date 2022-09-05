@@ -9,12 +9,13 @@ import (
 
 func init() {
 	add(&Resource{
-		DefaultColumns:      []codegen.ColumnDefinition{AccountIdColumn},
-		AWSStruct:           &types.CachePolicySummary{},
-		AWSService:          "Cloudfront",
-		Template:            "resource_get",
-		ItemsStruct:         &cloudfront.ListCachePoliciesOutput{},
-		PageTokenInputField: "Marker",
+		DefaultColumns:         []codegen.ColumnDefinition{AccountIdColumn},
+		AWSStruct:              &types.CachePolicySummary{},
+		AWSService:             "Cloudfront",
+		RawMultiplexerOverride: "client.AccountMultiplex",
+		Template:               "resource_get",
+		ItemsStruct:            &cloudfront.ListCachePoliciesOutput{},
+		PageTokenInputField:    "Marker",
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"arn": {
 				Type:     schema.TypeString,

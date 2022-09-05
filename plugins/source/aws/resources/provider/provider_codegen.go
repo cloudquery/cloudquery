@@ -22,6 +22,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudfront"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudwatch"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudwatchlogs"
 )
 
 var (
@@ -62,6 +63,8 @@ func Provider() *provider.Provider {
 			"cloudfront.distributions":                cloudfront.CloudfrontDistributions(),
 			"cloudtrail.trails":                       cloudtrail.CloudtrailTrails(),
 			"cloudwatch.alarms":                       cloudwatch.CloudwatchAlarms(),
+			"cloudwatchlogs.log_groups":               cloudwatchlogs.CloudwatchLogsLogGroups(),
+			"cloudwatchlogs.metric_filters":           cloudwatchlogs.CloudwatchLogsMetricFilters(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}
