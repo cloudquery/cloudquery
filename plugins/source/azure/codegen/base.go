@@ -176,7 +176,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 				table.Columns = append(table.Columns, definition.customColumns...)
 				table.Multiplex = "client.SubscriptionMultiplex"
 				table.Resolver = "fetch" + azureService + azureSubService
-				table.Options.PrimaryKeys = []string{"subscription_id", "id"}
+				table.Options.PrimaryKeys = []string{"id"}
 				table.Relations = definition.relations
 
 				if definition.getFunction != "" {
