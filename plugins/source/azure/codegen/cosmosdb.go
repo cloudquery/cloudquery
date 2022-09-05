@@ -28,6 +28,43 @@ func CosmosDB() []Resource {
 					listHandler:        valueHandler,
 					subServiceOverride: "Accounts",
 					mockListResult:     "DatabaseAccountsListResult",
+					relations:          []string{"MongoDBDatabases(),SQLDatabases()"},
+				},
+			},
+			serviceNameOverride: "CosmosDB",
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:        &documentdb.MongoDBDatabaseGetResults{},
+					listFunction:       "ListMongoDBDatabases",
+					listHandler:        valueHandler,
+					subServiceOverride: "MongoDBDatabases",
+					listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
+					resource, err := client.ParseResourceID(*account.ID)
+					if err != nil {
+						return errors.WithStack(err)
+					}`},
+					listFunctionArgs: []string{"resource.ResourceGroup", "*account.Name"},
+				},
+				{
+					azureStruct:        &documentdb.SQLDatabaseGetResults{},
+					listFunction:       "ListSQLDatabases",
+					listHandler:        valueHandler,
+					subServiceOverride: "SQLDatabases",
+					listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
+					resource, err := client.ParseResourceID(*account.ID)
+					if err != nil {
+						return errors.WithStack(err)
+					}`},
+					listFunctionArgs: []string{"resource.ResourceGroup", "*account.Name"},
 				},
 			},
 			serviceNameOverride: "CosmosDB",

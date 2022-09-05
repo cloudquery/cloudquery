@@ -15,12 +15,12 @@ var fakeResourceGroup = "/subscriptions/00000000-0000-0000-0000-000000000000/res
 
 func buildCosmosDBSQLDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	accountSvc := mocks.NewMockCosmosDBAccountsClient(ctrl)
-	sqlSvc := mocks.NewMockCosmosDBSQLClient(ctrl)
+	sqlSvc := mocks.NewMockCosmosDBSQLDatabasesClient(ctrl)
 
 	s := services.Services{
 		CosmosDB: services.CosmosDBClient{
-			Accounts: accountSvc,
-			SQL:      sqlSvc,
+			Accounts:     accountSvc,
+			SQLDatabases: sqlSvc,
 		},
 	}
 	account := documentdb.DatabaseAccountGetResults{}

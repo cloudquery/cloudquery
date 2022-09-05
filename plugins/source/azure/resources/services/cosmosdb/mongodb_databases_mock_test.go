@@ -13,12 +13,12 @@ import (
 
 func buildCosmosDBMongoDBDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	accountSvc := mocks.NewMockCosmosDBAccountsClient(ctrl)
-	mongoDBSvc := mocks.NewMockCosmosDBMongoDBClient(ctrl)
+	mongoDBSvc := mocks.NewMockCosmosDBMongoDBDatabasesClient(ctrl)
 
 	s := services.Services{
 		CosmosDB: services.CosmosDBClient{
-			Accounts: accountSvc,
-			MongoDB:  mongoDBSvc,
+			Accounts:         accountSvc,
+			MongoDBDatabases: mongoDBSvc,
 		},
 	}
 	account := documentdb.DatabaseAccountGetResults{}
