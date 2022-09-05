@@ -23,6 +23,8 @@ type Resource struct {
 	// Template is the template to use to generate the resource
 	Template string
 
+	RawResolver string // Manual resolver func name. If starts with "resolver.", package inside resolvers/ is used.
+
 	RawMultiplexerOverride     string // Full override for the multiplexer
 	MultiplexerServiceOverride string // Override only for the service name (ServiceAccountRegionMultiplexer is used)
 	CQSubserviceOverride       string // used in table and file names

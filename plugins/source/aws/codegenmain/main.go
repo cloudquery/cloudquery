@@ -29,11 +29,19 @@ const useFullStruct = "." // special case to use full struct instead of a member
 var awsTemplatesFS embed.FS
 
 func main() {
+	templatesWithMocks := map[string]bool{
+		"resource_get":           true,
+		"resource_list_describe": true,
+	}
+
 	resources := recipes.AllResources
 
 	for _, r := range resources {
 		generateResource(r, false)
-		generateResource(r, true)
+
+		if templatesWithMocks[r.Template] {
+			generateResource(r, true)
+		}
 	}
 
 	for i, r := range resources {
@@ -320,8 +328,12 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.Table.Multiplex = `client.ServiceAccountRegionMultiplexer("` + helpers.Coalesce(r.MultiplexerServiceOverride, strings.ToLower(r.AWSService)) + `")`
 	}
 
-	r.Table.Resolver = "fetch" + r.AWSService + fetcherNameFromSubService
-	r.TableFuncName = strings.TrimPrefix(r.Table.Resolver, "fetch")
+	if strings.HasPrefix(r.RawResolver, "resolvers.") {
+		hasReferenceToResolvers = true
+	}
+
+	r.Table.Resolver = helpers.Coalesce(r.RawResolver, "fetch"+r.AWSService+fetcherNameFromSubService)
+	r.TableFuncName = r.AWSService + fetcherNameFromSubService
 
 	if mock {
 		r.MockFuncName = "build" + r.TableFuncName
