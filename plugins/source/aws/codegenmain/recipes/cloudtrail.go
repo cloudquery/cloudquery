@@ -10,7 +10,7 @@ func init() {
 	add(parentize(&Resource{
 		DefaultColumns:  []codegen.ColumnDefinition{AccountIdColumn},
 		AWSStruct:       &types.Trail{},
-		AWSService:      "CloudTrail",
+		AWSService:      "Cloudtrail",
 		Template:        "resource_get",
 		ItemsStruct:     &cloudtrail.DescribeTrailsOutput{},
 		ColumnOverrides: map[string]codegen.ColumnDefinition{},
@@ -19,7 +19,6 @@ func init() {
 		&Resource{
 			// TODO missing columns
 			AWSStruct:       &types.EventSelector{},
-			AWSService:      "Cloudtrail",
 			Template:        "resource_get",
 			ItemsStruct:     &cloudtrail.GetEventSelectorsOutput{},
 			ParentFieldName: "TrailARN",

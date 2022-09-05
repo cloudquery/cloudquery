@@ -11,10 +11,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 )
 
-func CloudTrailTrails() *schema.Table {
+func CloudtrailTrails() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_cloudtrail_trails",
-		Resolver:  fetchCloudTrailTrails,
+		Resolver:  fetchCloudtrailTrails,
 		Multiplex: client.ServiceAccountRegionMultiplexer("cloudtrail"),
 		Columns: []schema.Column{
 			{
@@ -107,9 +107,9 @@ func CloudTrailTrails() *schema.Table {
 	}
 }
 
-func fetchCloudTrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().CloudTrail
+	svc := cl.Services().Cloudtrail
 
 	input := cloudtrail.DescribeTrailsInput{}
 

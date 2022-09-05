@@ -21,6 +21,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudfront"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudtrail"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/cloudwatch"
 )
 
 var (
@@ -59,7 +60,8 @@ func Provider() *provider.Provider {
 			"cloudformation.stacks":                   cloudformation.CloudformationStacks(),
 			"cloudfront.cache_policies":               cloudfront.CloudfrontCachePolicies(),
 			"cloudfront.distributions":                cloudfront.CloudfrontDistributions(),
-			"cloudtrail.trails":                       cloudtrail.CloudTrailTrails(),
+			"cloudtrail.trails":                       cloudtrail.CloudtrailTrails(),
+			"cloudwatch.alarms":                       cloudwatch.CloudwatchAlarms(),
 		},
 		Config: func() provider.Config {
 			return &client.Config{}

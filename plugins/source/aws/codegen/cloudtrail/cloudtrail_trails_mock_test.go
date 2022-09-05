@@ -15,8 +15,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 )
 
-func buildCloudTrailTrails(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMockCloudTrailClient(ctrl)
+func buildCloudtrailTrails(t *testing.T, ctrl *gomock.Controller) client.Services {
+	mock := mocks.NewMockCloudtrailClient(ctrl)
 
 	item := types.Trail{}
 
@@ -31,10 +31,10 @@ func buildCloudTrailTrails(t *testing.T, ctrl *gomock.Controller) client.Service
 		}, nil)
 
 	return client.Services{
-		CloudTrail: mock,
+		Cloudtrail: mock,
 	}
 }
 
-func TestCloudTrailTrails(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudTrailTrails(), buildCloudTrailTrails, client.TestOptions{})
+func TestCloudtrailTrails(t *testing.T) {
+	client.AwsMockTestHelper(t, CloudtrailTrails(), buildCloudtrailTrails, client.TestOptions{})
 }
