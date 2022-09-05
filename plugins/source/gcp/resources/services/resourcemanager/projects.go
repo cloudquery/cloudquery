@@ -3,12 +3,6 @@
 package resourcemanager
 
 import (
-	"context"
-	"github.com/pkg/errors"
-	"google.golang.org/api/iterator"
-
-	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
@@ -33,11 +27,6 @@ func Projects() *schema.Table {
 				Name:     "parent",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Parent"),
-			},
-			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProjectId"),
 			},
 			{
 				Name:     "state",
@@ -76,23 +65,4 @@ func Projects() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	req := &pb.ListProjectsRequest{}
-	it := c.Services.ResourcemanagerProjectsClient.ListProjects(ctx, req)
-	for {
-		resp, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
-		if err != nil {
-			return errors.WithStack(err)
-		}
-
-		res <- resp
-
-	}
-	return nil
 }

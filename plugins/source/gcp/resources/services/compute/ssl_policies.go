@@ -92,7 +92,9 @@ func SslPolicies() *schema.Table {
 
 func fetchSslPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListSslPoliciesRequest{}
+	req := &pb.ListSslPoliciesRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeSslPoliciesClient.List(ctx, req)
 	for {
 		resp, err := it.Next()

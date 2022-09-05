@@ -183,7 +183,9 @@ func Instances() *schema.Table {
 
 func fetchInstances(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListInstancesRequest{}
+	req := &pb.ListInstancesRequest{
+		Parent: "projects/" + c.ProjectId + "/locations/-",
+	}
 	it := c.Services.RedisCloudRedisClient.ListInstances(ctx, req)
 	for {
 		resp, err := it.Next()

@@ -213,6 +213,7 @@ func ComputeResources() []*Resource {
 
 	// add all shared properties
 	for _, resource := range resources {
+		resource.RequestStructFields = `Project: c.ProjectId,`
 		resource.Service = "compute"
 		if resource.NewFunction != nil {
 			newFunctionNamePath := strings.Split(runtime.FuncForPC(reflect.ValueOf(resource.NewFunction).Pointer()).Name(), ".")

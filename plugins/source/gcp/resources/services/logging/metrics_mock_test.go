@@ -4,22 +4,20 @@ package logging
 
 import (
 	"context"
-	"net"
 	"fmt"
-	"testing"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
-  
-  "cloud.google.com/go/logging/apiv2"
-  
-	
-  pb "google.golang.org/genproto/googleapis/logging/v2"
-  
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"net"
+	"testing"
+
+	"cloud.google.com/go/logging/apiv2"
+
+	pb "google.golang.org/genproto/googleapis/logging/v2"
+
 	"google.golang.org/api/option"
 )
-
 
 func createMetrics() (*client.Services, error) {
 	fakeServer := &fakeMetricsServer{}
@@ -52,7 +50,7 @@ func createMetrics() (*client.Services, error) {
 }
 
 type fakeMetricsServer struct {
-	pb.
+	pb.UnimplementedMetricsServiceV2Server
 }
 
 func (f *fakeMetricsServer) ListLogMetrics(context.Context, *pb.ListLogMetricsRequest) (*pb.ListLogMetricsResponse, error) {

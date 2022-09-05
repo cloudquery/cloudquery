@@ -76,7 +76,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	}
 
 	// Add a fake request reason because it is not possible to pass nil options
-	options := append([]option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}, gcpSpec.ClientOptions()...)
+	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
 	if len(serviceAccountKeyJSON) != 0 {
 		if err := isValidJson(serviceAccountKeyJSON); err != nil {
 			return nil, fmt.Errorf("invalid service account key JSON: %w", err)

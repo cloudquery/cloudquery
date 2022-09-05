@@ -9,13 +9,14 @@ import (
 
 var loggingResources = []*Resource{
 	{
-		SubService:     "metrics",
-		Struct:         &pb.LogMetric{},
-		NewFunction:    logging.NewMetricsClient,
-		RequestStruct:  &pb.ListLogMetricsRequest{},
-		ResponseStruct: &pb.ListLogMetricsResponse{},
-		RegisterServer: pb.RegisterMetricsServiceV2Server,
-		ListFunction:   (&pb.UnimplementedMetricsServiceV2Server{}).ListLogMetrics,
+		SubService:          "metrics",
+		Struct:              &pb.LogMetric{},
+		NewFunction:         logging.NewMetricsClient,
+		RequestStruct:       &pb.ListLogMetricsRequest{},
+		ResponseStruct:      &pb.ListLogMetricsResponse{},
+		RegisterServer:      pb.RegisterMetricsServiceV2Server,
+		ListFunction:        (&pb.UnimplementedMetricsServiceV2Server{}).ListLogMetrics,
+		UnimplementedServer: &pb.UnimplementedMetricsServiceV2Server{},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
@@ -51,6 +52,7 @@ func LoggingResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "logging"
+		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,`
 		resource.MockImports = []string{"cloud.google.com/go/logging/apiv2"}
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/logging/v2"
 		resource.Template = "newapi_list"

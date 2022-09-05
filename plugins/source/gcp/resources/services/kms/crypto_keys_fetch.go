@@ -2,7 +2,6 @@ package kms
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -14,7 +13,7 @@ import (
 func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	it := c.Services.KmsKeyManagementClient.ListCryptoKeys(ctx, &pb.ListCryptoKeysRequest{
-		Parent: fmt.Sprintf("projects/%s/locations/%s/keyRings/%s", c.ProjectId, parent.Data["location"], parent.Data["name"]),
+		Parent: parent.Data["name"].(string),
 	})
 	for {
 		resp, err := it.Next()

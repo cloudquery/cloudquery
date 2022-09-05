@@ -17,6 +17,8 @@ var domainsResources = []*Resource{
 		RegisterServer:      pb.RegisterDomainsServer,
 		ListFunction:        (&pb.UnimplementedDomainsServer{}).ListRegistrations,
 		UnimplementedServer: &pb.UnimplementedDomainsServer{},
+		RequestStructFields: `Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),`,
+		Imports:             []string{"fmt"},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",

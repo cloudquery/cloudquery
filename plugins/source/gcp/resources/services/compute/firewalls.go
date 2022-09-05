@@ -127,7 +127,9 @@ func Firewalls() *schema.Table {
 
 func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListFirewallsRequest{}
+	req := &pb.ListFirewallsRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeFirewallsClient.List(ctx, req)
 	for {
 		resp, err := it.Next()

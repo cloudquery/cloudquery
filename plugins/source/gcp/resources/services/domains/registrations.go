@@ -11,6 +11,8 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+
+	"fmt"
 )
 
 func Registrations() *schema.Table {
@@ -90,7 +92,9 @@ func Registrations() *schema.Table {
 
 func fetchRegistrations(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListRegistrationsRequest{}
+	req := &pb.ListRegistrationsRequest{
+		Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),
+	}
 	it := c.Services.DomainsClient.ListRegistrations(ctx, req)
 	for {
 		resp, err := it.Next()

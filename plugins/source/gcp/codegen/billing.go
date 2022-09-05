@@ -9,12 +9,14 @@ import (
 
 var billingResources = []*Resource{
 	{
-		SubService:     "billing_accounts",
-		Struct:         &pb.BillingAccount{},
-		NewFunction:    billing.NewCloudBillingClient,
-		RequestStruct:  &pb.ListBillingAccountsRequest{},
-		ResponseStruct: &pb.ListBillingAccountsResponse{},
-		ListFunction:   (&billing.CloudBillingClient{}).ListBillingAccounts,
+		SubService:          "billing_accounts",
+		Struct:              &pb.BillingAccount{},
+		NewFunction:         billing.NewCloudBillingClient,
+		RequestStruct:       &pb.ListBillingAccountsRequest{},
+		ResponseStruct:      &pb.ListBillingAccountsResponse{},
+		ListFunction:        (&billing.CloudBillingClient{}).ListBillingAccounts,
+		RegisterServer:      pb.RegisterCloudBillingServer,
+		UnimplementedServer: &pb.UnimplementedCloudBillingServer{},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "name",
@@ -24,12 +26,14 @@ var billingResources = []*Resource{
 		},
 	},
 	{
-		SubService:     "services",
-		Struct:         &pb.Service{},
-		NewFunction:    billing.NewCloudCatalogClient,
-		RequestStruct:  &pb.ListServicesRequest{},
-		ResponseStruct: &pb.ListServicesResponse{},
-		ListFunction:   (&billing.CloudCatalogClient{}).ListServices,
+		SubService:          "services",
+		Struct:              &pb.Service{},
+		NewFunction:         billing.NewCloudCatalogClient,
+		RequestStruct:       &pb.ListServicesRequest{},
+		ResponseStruct:      &pb.ListServicesResponse{},
+		ListFunction:        (&billing.CloudCatalogClient{}).ListServices,
+		RegisterServer:      pb.RegisterCloudCatalogServer,
+		UnimplementedServer: &pb.UnimplementedCloudCatalogServer{},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "name",
@@ -47,7 +51,7 @@ func BillingResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "billing"
 		resource.Template = "newapi_list"
-		resource.MockTemplate = "newapi_list_rest_mock"
+		resource.MockTemplate = "newapi_list_grpc_mock"
 		resource.MockImports = []string{"cloud.google.com/go/billing/apiv1"}
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/billing/v1"
 	}

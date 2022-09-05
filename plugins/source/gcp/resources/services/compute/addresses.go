@@ -117,7 +117,9 @@ func Addresses() *schema.Table {
 
 func fetchAddresses(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.AggregatedListAddressesRequest{}
+	req := &pb.AggregatedListAddressesRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeAddressesClient.AggregatedList(ctx, req)
 	for {
 		resp, err := it.Next()

@@ -96,7 +96,9 @@ func Projects() *schema.Table {
 
 func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.GetProjectRequest{}
+	req := &pb.GetProjectRequest{
+		Project: c.ProjectId,
+	}
 	resp, err := c.Services.ComputeProjectsClient.Get(ctx, req)
 	if err != nil {
 		return errors.WithStack(err)

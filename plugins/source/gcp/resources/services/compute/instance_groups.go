@@ -97,7 +97,9 @@ func InstanceGroups() *schema.Table {
 
 func fetchInstanceGroups(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.AggregatedListInstanceGroupsRequest{}
+	req := &pb.AggregatedListInstanceGroupsRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeInstanceGroupsClient.AggregatedList(ctx, req)
 	for {
 		resp, err := it.Next()

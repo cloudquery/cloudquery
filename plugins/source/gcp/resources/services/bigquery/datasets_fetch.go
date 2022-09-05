@@ -29,7 +29,8 @@ func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resour
 
 func datasetGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
-	item, err := c.Services.BigqueryService.Datasets.Get(c.ProjectId, r.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()
+	datasetListDataset := r.Item.(*bigquery.DatasetListDatasets)
+	item, err := c.Services.BigqueryService.Datasets.Get(c.ProjectId, datasetListDataset.DatasetReference.DatasetId).Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}

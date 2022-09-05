@@ -38,6 +38,7 @@ func MonitoringResources() []*Resource {
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/monitoring/v3"
 		resource.Template = "newapi_list"
 		resource.MockTemplate = "newapi_list_grpc_mock"
+		resource.RequestStructFields = `Name: "projects/" + c.ProjectId,`
 	}
 
 	return resources

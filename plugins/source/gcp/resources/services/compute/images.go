@@ -192,7 +192,9 @@ func Images() *schema.Table {
 
 func fetchImages(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListImagesRequest{}
+	req := &pb.ListImagesRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeImagesClient.List(ctx, req)
 	for {
 		resp, err := it.Next()

@@ -92,7 +92,9 @@ func VpnGateways() *schema.Table {
 
 func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.AggregatedListVpnGatewaysRequest{}
+	req := &pb.AggregatedListVpnGatewaysRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeVpnGatewaysClient.AggregatedList(ctx, req)
 	for {
 		resp, err := it.Next()

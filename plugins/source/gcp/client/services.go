@@ -93,6 +93,7 @@ const (
 )
 
 func initServices(ctx context.Context, options []option.ClientOption) (*Services, error) {
+	options = append(options, option.WithTelemetryDisabled())
 	svcs := Services{}
 	var err error
 	svcs.BigqueryService, err = bigquery.NewService(ctx, options...)
@@ -101,6 +102,10 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 	}
 
 	svcs.BillingCloudBillingClient, err = billing.NewCloudBillingClient(ctx, options...)
+	if err != nil {
+		return nil, err
+	}
+	svcs.BillingCloudCatalogClient, err = billing.NewCloudCatalogClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}

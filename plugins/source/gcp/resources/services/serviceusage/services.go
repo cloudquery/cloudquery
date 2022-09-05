@@ -52,7 +52,9 @@ func Services() *schema.Table {
 
 func fetchServices(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListServicesRequest{}
+	req := &pb.ListServicesRequest{
+		Parent: "projects/" + c.ProjectId,
+	}
 	it := c.Services.ServiceusageClient.ListServices(ctx, req)
 	for {
 		resp, err := it.Next()

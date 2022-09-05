@@ -20,9 +20,39 @@ func Datasets() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "name",
+				Name:     "access",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Access"),
+			},
+			{
+				Name:     "creation_time",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "dataset_reference",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DatasetReference"),
+			},
+			{
+				Name:     "default_collation",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Resolver: schema.PathResolver("DefaultCollation"),
+			},
+			{
+				Name:     "default_encryption_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DefaultEncryptionConfiguration"),
+			},
+			{
+				Name:     "default_partition_expiration_ms",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DefaultPartitionExpirationMs"),
+			},
+			{
+				Name:     "default_table_expiration_ms",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DefaultTableExpirationMs"),
 			},
 			{
 				Name:     "description",
@@ -30,14 +60,29 @@ func Datasets() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "location",
+				Name:     "etag",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
-				Name:     "default_table_expiration",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DefaultTableExpiration"),
+				Name:     "friendly_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FriendlyName"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Id"),
+			},
+			{
+				Name:     "is_case_insensitive",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsCaseInsensitive"),
+			},
+			{
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
 			},
 			{
 				Name:     "labels",
@@ -45,39 +90,34 @@ func Datasets() *schema.Table {
 				Resolver: schema.PathResolver("Labels"),
 			},
 			{
-				Name:     "access",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Access"),
-			},
-			{
-				Name:     "default_encryption_config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DefaultEncryptionConfig"),
-			},
-			{
-				Name:     "creation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationTime"),
-			},
-			{
 				Name:     "last_modified_time",
-				Type:     schema.TypeTimestamp,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("LastModifiedTime"),
 			},
 			{
-				Name:     "full_id",
+				Name:     "location",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FullID"),
+				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "max_time_travel_hours",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaxTimeTravelHours"),
+			},
+			{
+				Name:     "satisfies_pzs",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("SatisfiesPzs"),
+			},
+			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
 			},
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "e_tag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ETag"),
 			},
 		},
 

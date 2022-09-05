@@ -4,14 +4,13 @@ package billing
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"testing"
-
+	"fmt"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"net"
+	"testing"
 
 	"cloud.google.com/go/billing/apiv1"
 
@@ -21,32 +20,46 @@ import (
 )
 
 func createServices() (*client.Services, error) {
-	var item pb.ListServicesResponse
-	if err := faker.FakeObject(&item); err != nil {
-		return nil, err
-	}
-	emptyStr := ""
-	item.NextPageToken = &emptyStr
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		b, err := json.Marshal(&item)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-	ts := httptest.NewServer(mux)
-	svc, err := billing.NewCloudCatalogClient(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
+	fakeServer := &fakeServicesServer{}
+	l, err := net.Listen("tcp", "localhost:0")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to listen: %w", err)
 	}
+	gsrv := grpc.NewServer()
+	pb.RegisterCloudCatalogServer(gsrv, fakeServer)
+	fakeServerAddr := l.Addr().String()
+	go func() {
+		if err := gsrv.Serve(l); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Create a client.
+	svc, err := billing.NewCloudCatalogClient(context.Background(),
+		option.WithEndpoint(fakeServerAddr),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create grpc client: %w", err)
+	}
+
 	return &client.Services{
 		BillingCloudCatalogClient: svc,
 	}, nil
+}
+
+type fakeServicesServer struct {
+	pb.UnimplementedCloudCatalogServer
+}
+
+func (f *fakeServicesServer) ListServices(context.Context, *pb.ListServicesRequest) (*pb.ListServicesResponse, error) {
+	resp := pb.ListServicesResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	resp.NextPageToken = ""
+	return &resp, nil
 }
 
 func TestServices(t *testing.T) {

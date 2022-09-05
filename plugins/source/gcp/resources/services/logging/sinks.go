@@ -88,7 +88,9 @@ func Sinks() *schema.Table {
 
 func fetchSinks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListSinksRequest{}
+	req := &pb.ListSinksRequest{
+		Parent: "projects/" + c.ProjectId,
+	}
 	it := c.Services.LoggingConfigClient.ListSinks(ctx, req)
 	for {
 		resp, err := it.Next()

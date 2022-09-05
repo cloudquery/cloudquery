@@ -25,6 +25,9 @@ var resourceManagerResources = []*Resource{
 		RegisterServer:      pb.RegisterProjectsServer,
 		ListFunction:        (&pb.UnimplementedProjectsServer{}).ListProjects,
 		UnimplementedServer: &pb.UnimplementedProjectsServer{},
+		SkipFetch:           true,
+		SkipMock:            true,
+		SkipFields:          []string{"ProjectId"},
 	},
 }
 

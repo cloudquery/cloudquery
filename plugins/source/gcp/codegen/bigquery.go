@@ -1,13 +1,13 @@
 package codegen
 
 import (
-	"cloud.google.com/go/bigquery"
+	bigquery "google.golang.org/api/bigquery/v2"
 )
 
 var bigqueryResources = []*Resource{
 	{
 		SubService:          "tables",
-		Struct:              &bigquery.TableMetadata{},
+		Struct:              &bigquery.Table{},
 		SkipFetch:           true,
 		PreResourceResolver: "tableGet",
 		Multiplex:           &emptyString,
@@ -16,7 +16,7 @@ var bigqueryResources = []*Resource{
 	},
 	{
 		SubService:          "datasets",
-		Struct:              &bigquery.DatasetMetadata{},
+		Struct:              &bigquery.Dataset{},
 		SkipFetch:           true,
 		PreResourceResolver: "datasetGet",
 		Relations:           []string{"Tables()"},
@@ -31,6 +31,7 @@ func BigqueryResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "bigquery"
 		resource.Template = "newapi_list"
+		resource.SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
 	}
 
 	return resources

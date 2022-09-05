@@ -29,7 +29,7 @@ func fetchTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 func tableGet(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	c := meta.(*client.Client)
-	item, err := c.Services.BigqueryService.Tables.Get(c.ProjectId, r.Item.(*bigquery.TableListTables).TableReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()
+	item, err := c.Services.BigqueryService.Tables.Get(c.ProjectId, r.Parent.Item.(*bigquery.Dataset).DatasetReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}

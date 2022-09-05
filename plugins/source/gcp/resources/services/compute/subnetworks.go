@@ -152,7 +152,9 @@ func Subnetworks() *schema.Table {
 
 func fetchSubnetworks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.AggregatedListSubnetworksRequest{}
+	req := &pb.AggregatedListSubnetworksRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeSubnetworksClient.AggregatedList(ctx, req)
 	for {
 		resp, err := it.Next()

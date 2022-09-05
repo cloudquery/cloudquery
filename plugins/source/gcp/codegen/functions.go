@@ -14,6 +14,7 @@ var functionsResources = []*Resource{
 		ResponseStruct:      &pb.ListFunctionsResponse{},
 		RegisterServer:      pb.RegisterCloudFunctionsServiceServer,
 		ListFunction:        (&pb.UnimplementedCloudFunctionsServiceServer{}).ListFunctions,
+		RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
 		UnimplementedServer: &pb.UnimplementedCloudFunctionsServiceServer{},
 		FakerFieldsToIgnore: []string{"SourceCode", "Trigger"},
 	},

@@ -122,7 +122,9 @@ func Networks() *schema.Table {
 
 func fetchNetworks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListNetworksRequest{}
+	req := &pb.ListNetworksRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeNetworksClient.List(ctx, req)
 	for {
 		resp, err := it.Next()

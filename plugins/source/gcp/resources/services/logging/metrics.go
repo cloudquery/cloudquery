@@ -88,7 +88,9 @@ func Metrics() *schema.Table {
 
 func fetchMetrics(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListLogMetricsRequest{}
+	req := &pb.ListLogMetricsRequest{
+		Parent: "projects/" + c.ProjectId,
+	}
 	it := c.Services.LoggingMetricsClient.ListLogMetrics(ctx, req)
 	for {
 		resp, err := it.Next()

@@ -3,6 +3,7 @@ package bigquery
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -58,7 +59,6 @@ func createBigqueryDatasets() (*client.Services, error) {
 
 	mux.GET("/projects/testProject/datasets/testDataset/tables", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &bigquery.TableList{
-
 			Tables: []*bigquery.TableListTables{
 				{
 					Id: id,
@@ -80,18 +80,12 @@ func createBigqueryDatasets() (*client.Services, error) {
 	})
 
 	var table bigquery.Table
+	if err := faker.FakeData(&table); err != nil {
+		return nil, err
+	}
 	table.Id = id
 	table.TableReference = &bigquery.TableReference{
 		TableId: id,
-	}
-	if err := faker.FakeData(&table.Model); err != nil {
-		return nil, err
-	}
-	if err := faker.FakeData(&table.View); err != nil {
-		return nil, err
-	}
-	if err := faker.FakeData(&table.Type); err != nil {
-		return nil, err
 	}
 	schema := bigquery.TableSchema{
 		Fields: []*bigquery.TableFieldSchema{{
@@ -120,7 +114,9 @@ func createBigqueryDatasets() (*client.Services, error) {
 		return nil, err
 	}
 
-	mux.GET("/projects/testProject/datasets/testDataset/tables/testDataset", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	mux.GET("/projects/testProject/datasets/testDataset/tables/:table", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Println("what")
+		fmt.Println(r.URL)
 		b, err := json.Marshal(&table)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)

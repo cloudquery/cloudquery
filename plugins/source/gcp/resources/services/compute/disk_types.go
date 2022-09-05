@@ -87,7 +87,9 @@ func DiskTypes() *schema.Table {
 
 func fetchDiskTypes(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.AggregatedListDiskTypesRequest{}
+	req := &pb.AggregatedListDiskTypesRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeDiskTypesClient.AggregatedList(ctx, req)
 	for {
 		resp, err := it.Next()

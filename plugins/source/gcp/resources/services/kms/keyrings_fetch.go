@@ -12,11 +12,6 @@ import (
 	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
-type KeyRing struct {
-	*cloudkms.KeyRing
-	Location string
-}
-
 func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	locations, err := getAllKmsLocations(ctx, c)
@@ -25,7 +20,7 @@ func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	}
 	for _, l := range locations {
 		it := c.Services.KmsKeyManagementClient.ListKeyRings(ctx, &pb.ListKeyRingsRequest{
-			Parent: fmt.Sprintf("projects/%s/locations/%s", c.ProjectId, l.Name),
+			Parent: l.Name,
 		})
 		for {
 			resp, err := it.Next()
@@ -35,6 +30,7 @@ func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			if err != nil {
 				return errors.WithStack(err)
 			}
+
 			res <- resp
 		}
 	}

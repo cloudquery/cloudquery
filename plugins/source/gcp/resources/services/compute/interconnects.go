@@ -147,7 +147,9 @@ func Interconnects() *schema.Table {
 
 func fetchInterconnects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListInterconnectsRequest{}
+	req := &pb.ListInterconnectsRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeInterconnectsClient.List(ctx, req)
 	for {
 		resp, err := it.Next()

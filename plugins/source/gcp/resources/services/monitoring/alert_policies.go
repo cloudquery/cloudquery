@@ -92,7 +92,9 @@ func AlertPolicies() *schema.Table {
 
 func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListAlertPoliciesRequest{}
+	req := &pb.ListAlertPoliciesRequest{
+		Name: "projects/" + c.ProjectId,
+	}
 	it := c.Services.MonitoringAlertPolicyClient.ListAlertPolicies(ctx, req)
 	for {
 		resp, err := it.Next()

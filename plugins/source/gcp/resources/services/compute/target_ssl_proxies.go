@@ -87,7 +87,9 @@ func TargetSslProxies() *schema.Table {
 
 func fetchTargetSslProxies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	req := &pb.ListTargetSslProxiesRequest{}
+	req := &pb.ListTargetSslProxiesRequest{
+		Project: c.ProjectId,
+	}
 	it := c.Services.ComputeTargetSslProxiesClient.List(ctx, req)
 	for {
 		resp, err := it.Next()
