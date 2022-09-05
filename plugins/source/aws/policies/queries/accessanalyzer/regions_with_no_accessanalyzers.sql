@@ -9,7 +9,7 @@ select
     :'execution_time' as execution_time,
         :'framework' as framework,
         :'check_id' as check_id,
-        'certificate has less than 30 days to be renewed' as title,
+        'Ensure that IAM Access analyzer is enabled for all regions (Automated)' as title,
     account_id,
     region AS resource_id,
     case when
