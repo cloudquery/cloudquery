@@ -8,14 +8,14 @@ import (
 
 func init() {
 	add(&Resource{
-		DefaultColumns:             []codegen.ColumnDefinition{AccountIdColumn, RegionColumn, NamespaceColumn},
-		AWSStruct:                  &types.ScalingPolicy{},
-		AWSService:                 "ApplicationAutoscaling",
-		MultiplexerServiceOverride: "application-autoscaling",
-		CQSubserviceOverride:       "policies",
-		Template:                   "resource_get",
-		ItemsStruct:                &applicationautoscaling.DescribeScalingPoliciesOutput{},
-		TrimPrefix:                 "policy_",
+		DefaultColumns:         []codegen.ColumnDefinition{AccountIdColumn, RegionColumn, NamespaceColumn},
+		AWSStruct:              &types.ScalingPolicy{},
+		AWSService:             "ApplicationAutoscaling",
+		RawMultiplexerOverride: `client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling")`,
+		CQSubserviceOverride:   "policies",
+		Template:               "resource_get",
+		ItemsStruct:            &applicationautoscaling.DescribeScalingPoliciesOutput{},
+		TrimPrefix:             "policy_",
 		CustomInputs: []string{
 			"\tServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),",
 		},
