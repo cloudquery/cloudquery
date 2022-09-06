@@ -5,6 +5,7 @@ import (
 	"log"
 	"path"
 	"reflect"
+	"regexp"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
@@ -54,6 +55,7 @@ type resourceDefinition struct {
 	customColumns            codegen.ColumnDefinitions
 	azureStruct              interface{}
 	skipFields               []string
+	includeColumns           string
 	helpers                  []string
 	listFunction             string
 	listFunctionArgs         []string
@@ -174,6 +176,18 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 
 				table.Columns = append(defaultColumns, table.Columns...)
 				table.Columns = append(table.Columns, definition.customColumns...)
+
+				if definition.includeColumns != "" {
+					regex := regexp.MustCompile(definition.includeColumns)
+					newColumns := make(codegen.ColumnDefinitions, 0)
+					for _, column := range table.Columns {
+						if regex.MatchString(column.Name) {
+							newColumns = append(newColumns, column)
+						}
+					}
+					table.Columns = newColumns
+				}
+
 				table.Multiplex = "client.SubscriptionMultiplex"
 				table.Resolver = "fetch" + azureService + azureSubService
 				table.Options.PrimaryKeys = []string{"id"}

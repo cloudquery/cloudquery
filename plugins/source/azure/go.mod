@@ -10,12 +10,12 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.28
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/Azure/go-autorest/autorest/to v0.4.0
-	github.com/bxcodec/faker/v4 v4.0.0-beta
 	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/cloudquery/plugin-sdk v0.0.0-00010101000000-000000000000
 	github.com/gertd/go-pluralize v0.2.1
+	github.com/go-faker/faker/v4 v4.0.0-beta.2
 	github.com/gofrs/uuid v4.2.0+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/hashicorp/go-hclog v1.2.2

@@ -37,8 +37,8 @@ type MonitorResourcesClient interface {
 }
 
 func NewMonitorClient(subscriptionId string, auth autorest.Authorizer) MonitorClient {
-	servers := o.NewActivityLogAlertsClient(subscriptionId)
-	servers.Authorizer = auth
+	logAlerts := o.NewActivityLogAlertsClient(subscriptionId)
+	logAlerts.Authorizer = auth
 	logProfiles := insights.NewLogProfilesClient(subscriptionId)
 	logProfiles.Authorizer = auth
 	activityLogs := insights.NewActivityLogsClient(subscriptionId)
@@ -48,7 +48,7 @@ func NewMonitorClient(subscriptionId string, auth autorest.Authorizer) MonitorCl
 	resourcesClient := resources.NewClient(subscriptionId)
 	resourcesClient.Authorizer = auth
 	return MonitorClient{
-		ActivityLogAlerts:  servers,
+		ActivityLogAlerts:  logAlerts,
 		LogProfiles:        logProfiles,
 		ActivityLogs:       activityLogs,
 		DiagnosticSettings: diagnosticSettings,

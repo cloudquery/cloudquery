@@ -12,18 +12,9 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-// diagnosticSetting is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
-type diagnosticSetting struct {
-	// DiagnosticSettings - Properties of a Diagnostic Settings Resource.
-	*insights.DiagnosticSettings `json:"properties,omitempty"`
-	// ID - READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty"`
-
-	// ResourceURI is a resource URI which this diagnostic setting belongs to
+// diagnosticSettingResource is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
+type diagnosticSettingResource struct {
+	insights.DiagnosticSettingsResource
 	ResourceURI string
 }
 
@@ -235,12 +226,9 @@ func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta,
 				return nil
 			}
 			for _, v := range *response.Value {
-				res <- diagnosticSetting{
-					DiagnosticSettings: v.DiagnosticSettings,
-					ID:                 v.ID,
-					Name:               v.Name,
-					Type:               v.Type,
-					ResourceURI:        id,
+				res <- diagnosticSettingResource{
+					DiagnosticSettingsResource: v,
+					ResourceURI:                id,
 				}
 			}
 			return nil
@@ -252,23 +240,17 @@ func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta,
 	return diag.WrapError(err)
 }
 func fetchMonitorDiagnosticSettingMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(diagnosticSetting)
-	if p.DiagnosticSettings == nil ||
-		p.DiagnosticSettings.Metrics == nil {
-		return nil
-	}
-
-	res <- *p.DiagnosticSettings.Metrics
+	p := parent.Item.(diagnosticSettingResource)
+	res <- p.Metrics
 	return nil
 }
 func fetchMonitorDiagnosticSettingLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(diagnosticSetting)
+	p := parent.Item.(diagnosticSettingResource)
 	if p.DiagnosticSettings == nil ||
 		p.DiagnosticSettings.Logs == nil {
 		return nil
 	}
-
-	res <- *p.DiagnosticSettings.Logs
+	res <- p.Logs
 	return nil
 }
 

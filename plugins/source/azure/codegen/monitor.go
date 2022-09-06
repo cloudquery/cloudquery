@@ -3,6 +3,7 @@ package codegen
 import (
 	logAlerts "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
+	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
 func Monitor() []Resource {
@@ -96,6 +97,85 @@ func Monitor() []Resource {
 					mockListResult:           "EventDataCollection",
 					mockListFunctionArgs:     []string{"regexMatcher{filterRe}", `""`},
 					mockListFunctionArgsInit: []string{"filterRe := regexp.MustCompile(`eventTimestamp ge '\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d+)Z' and eventTimestamp le '\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d+)Z'`)"},
+				},
+			},
+			serviceNameOverride: "Monitor",
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"},
+				},
+				{
+					source:            "resource_list_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:      &resources.GenericResourceExpanded{},
+					skipFields:       []string{"Properties"},
+					includeColumns:   "^id$",
+					listFunction:     "List",
+					listFunctionArgs: []string{`""`, `""`, `nil`},
+					listFunctionArgsInit: []string{`// Add subscription id as the first entry
+					res <- struct {
+						ID string
+					}{ID: "/subscriptions/" + meta.(*client.Client).SubscriptionId}`},
+					subServiceOverride:       "Resources",
+					mockListResult:           "ListResult",
+					mockListFunctionArgsInit: []string{``},
+					relations:                []string{"DiagnosticSettings()"},
+				},
+			},
+			serviceNameOverride: "Monitor",
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports: []string{
+						"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights",
+						"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources",
+					},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:  &insights.DiagnosticSettings{},
+					listFunction: "List",
+					helpers: []string{`
+					func isResourceTypeNotSupported(err error) bool {
+						var azureErr *azure.RequestError
+						if errors.As(err, &azureErr) {
+							return azureErr.ServiceError != nil && azureErr.ServiceError.Code == "ResourceTypeNotSupported"
+						}
+						return false
+					}`, `// diagnosticSettingResource is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
+					type diagnosticSettingResource struct {
+						insights.DiagnosticSettingsResource
+						ResourceURI string
+					}`},
+					listFunctionArgsInit: []string{`resource := parent.Item.(resources.GenericResourceExpanded)`},
+					listFunctionArgs:     []string{"*resource.ID"},
+					listHandler: `if err != nil {
+						if isResourceTypeNotSupported(err) {
+							return nil
+						}
+						return errors.WithStack(err)
+					}
+					if response.Value == nil {
+						return nil
+					}
+					for _, v := range *response.Value {
+						res <- diagnosticSettingResource{
+							DiagnosticSettingsResource: v,
+							ResourceURI:                *resource.ID,
+						}
+					}`,
 				},
 			},
 			serviceNameOverride: "Monitor",
