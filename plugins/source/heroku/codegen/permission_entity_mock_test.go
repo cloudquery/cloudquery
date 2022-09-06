@@ -54,5 +54,5 @@ func createPermissionEntities() (*heroku.Service, error) {
 }
 
 func TestPermissionEntity(t *testing.T) {
-	client.HerokuMockTestHelper(t, PermissionEntities(), createPermissionEntities, client.TestOptions{})
+	client.MockTestHelper(t, PermissionEntities(), createPermissionEntities, client.TestOptions{})
 }

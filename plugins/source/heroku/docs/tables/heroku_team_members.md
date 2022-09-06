@@ -4,12 +4,14 @@ https://devcenter.heroku.com/articles/platform-api-reference#team-member-attribu
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|created_at|timestamp without time zone||
-|email|text||
-|federated|boolean||
-|id|text||
-|identity_provider|jsonb||
-|role|text||
-|two_factor_authentication|boolean||
-|updated_at|timestamp without time zone||
-|user|jsonb||
+|created_at|Timestamp||
+|email|String||
+|federated|Bool||
+|id|String||
+|identity_provider|JSON||
+|role|String||
+|two_factor_authentication|Bool||
+|updated_at|Timestamp||
+|user|JSON||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

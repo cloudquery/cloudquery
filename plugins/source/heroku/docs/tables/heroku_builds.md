@@ -4,15 +4,17 @@ https://devcenter.heroku.com/articles/platform-api-reference#build-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|app|jsonb||
-|buildpacks|jsonb||
-|created_at|timestamp without time zone||
-|id|text||
-|output_stream_url|text||
-|release|jsonb||
-|slug|jsonb||
-|source_blob|jsonb||
-|stack|text||
-|status|text||
-|updated_at|timestamp without time zone||
-|user|jsonb||
+|app|JSON||
+|buildpacks|JSON||
+|created_at|Timestamp||
+|id|String||
+|output_stream_url|String||
+|release|JSON||
+|slug|JSON||
+|source_blob|JSON||
+|stack|String||
+|status|String||
+|updated_at|Timestamp||
+|user|JSON||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

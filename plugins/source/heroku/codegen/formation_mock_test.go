@@ -54,5 +54,5 @@ func createFormations() (*heroku.Service, error) {
 }
 
 func TestFormation(t *testing.T) {
-	client.HerokuMockTestHelper(t, Formations(), createFormations, client.TestOptions{})
+	client.MockTestHelper(t, Formations(), createFormations, client.TestOptions{})
 }

@@ -5,7 +5,7 @@ package codegen
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )
@@ -15,53 +15,7 @@ func AddOnWebhookDeliveries() *schema.Table {
 		Name:        "heroku_add_on_webhook_deliveries",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-delivery-attributes",
 		Resolver:    fetchAddOnWebhookDeliveries,
-		Columns: []schema.Column{
-			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "event",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Event"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-			},
-			{
-				Name:     "last_attempt",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LastAttempt"),
-			},
-			{
-				Name:     "next_attempt_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("NextAttemptAt"),
-			},
-			{
-				Name:     "num_attempts",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("NumAttempts"),
-			},
-			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-			{
-				Name:     "webhook",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Webhook"),
-			},
-		},
+		Columns:     []schema.Column{},
 	}
 }
 

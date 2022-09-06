@@ -40,5 +40,5 @@ func createSpaces() (*heroku.Service, error) {
 }
 
 func TestSpace(t *testing.T) {
-	client.HerokuMockTestHelper(t, Spaces(), createSpaces, client.TestOptions{})
+	client.MockTestHelper(t, Spaces(), createSpaces, client.TestOptions{})
 }

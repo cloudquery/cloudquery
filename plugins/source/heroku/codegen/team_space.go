@@ -5,7 +5,7 @@ package codegen
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )
@@ -15,63 +15,7 @@ func TeamSpaces() *schema.Table {
 		Name:        "heroku_team_spaces",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#team-space-attributes",
 		Resolver:    fetchTeamSpaces,
-		Columns: []schema.Column{
-			{
-				Name:     "cidr",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CIDR"),
-			},
-			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "data_cidr",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DataCIDR"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "organization",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Organization"),
-			},
-			{
-				Name:     "region",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Region"),
-			},
-			{
-				Name:     "shield",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Shield"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "team",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Team"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-		},
+		Columns:     []schema.Column{},
 	}
 }
 

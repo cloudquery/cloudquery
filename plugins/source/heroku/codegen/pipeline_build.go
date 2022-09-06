@@ -5,7 +5,7 @@ package codegen
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )
@@ -15,68 +15,7 @@ func PipelineBuilds() *schema.Table {
 		Name:        "heroku_pipeline_builds",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-attributes",
 		Resolver:    fetchPipelineBuilds,
-		Columns: []schema.Column{
-			{
-				Name:     "app",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("App"),
-			},
-			{
-				Name:     "buildpacks",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Buildpacks"),
-			},
-			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-			},
-			{
-				Name:     "output_stream_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("OutputStreamURL"),
-			},
-			{
-				Name:     "release",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Release"),
-			},
-			{
-				Name:     "slug",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Slug"),
-			},
-			{
-				Name:     "source_blob",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SourceBlob"),
-			},
-			{
-				Name:     "stack",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Stack"),
-			},
-			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-			{
-				Name:     "user",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("User"),
-			},
-		},
+		Columns:     []schema.Column{},
 	}
 }
 

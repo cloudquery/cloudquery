@@ -40,5 +40,5 @@ func createAddOns() (*heroku.Service, error) {
 }
 
 func TestAddOn(t *testing.T) {
-	client.HerokuMockTestHelper(t, AddOns(), createAddOns, client.TestOptions{})
+	client.MockTestHelper(t, AddOns(), createAddOns, client.TestOptions{})
 }

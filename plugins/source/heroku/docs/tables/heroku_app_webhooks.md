@@ -4,10 +4,5 @@ https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-attribu
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|app|jsonb||
-|created_at|timestamp without time zone||
-|id|text||
-|include|text[]||
-|level|text||
-|updated_at|timestamp without time zone||
-|url|text||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

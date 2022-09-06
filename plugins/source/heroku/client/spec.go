@@ -11,7 +11,7 @@ import (
 
 // Spec defines Heroku source plugin Spec
 type Spec struct {
-	Token []string `yaml:"token,omitempty" json:"token"`
+	Token string `yaml:"token,omitempty" json:"token"`
 
 	BaseDelay         int     `yaml:"backoff_base_delay,omitempty" hcl:"backoff_base_delay,optional" default:"-1"`
 	Multiplier        float64 `yaml:"backoff_multiplier,omitempty" hcl:"backoff_multiplier,optional"`
