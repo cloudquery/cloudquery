@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta/v0.6.5...plugins/source/okta/v0.6.6) (2022-09-06)
+
+
+### Bug Fixes
+
+* Unify plugin package structure ([#1735](https://github.com/cloudquery/cloudquery/issues/1735)) ([897d8f4](https://github.com/cloudquery/cloudquery/commit/897d8f4d31d78fb078fb1e57108bd30e437ddee4))
+
 ## [0.6.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta/v0.6.4...plugins/source/okta/v0.6.5) (2022-09-05)
 
 
