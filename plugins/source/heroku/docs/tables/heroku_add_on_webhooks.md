@@ -4,9 +4,11 @@ https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-attr
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|created_at|timestamp without time zone||
-|id|text||
-|include|text[]||
-|level|text||
-|updated_at|timestamp without time zone||
-|url|text||
+|created_at|Timestamp||
+|id|String||
+|include|StringArray||
+|level|String||
+|updated_at|Timestamp||
+|url|String||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

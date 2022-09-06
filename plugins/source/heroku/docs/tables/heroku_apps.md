@@ -4,24 +4,26 @@ https://devcenter.heroku.com/articles/platform-api-reference#app-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|acm|boolean||
-|archived_at|timestamp without time zone||
-|build_stack|jsonb||
-|buildpack_provided_description|text||
-|created_at|timestamp without time zone||
-|git_url|text||
-|id|text||
-|internal_routing|boolean||
-|maintenance|boolean||
-|name|text||
-|organization|jsonb||
-|owner|jsonb||
-|region|jsonb||
-|released_at|timestamp without time zone||
-|repo_size|integer||
-|slug_size|integer||
-|space|jsonb||
-|stack|jsonb||
-|team|jsonb||
-|updated_at|timestamp without time zone||
-|web_url|text||
+|acm|Bool||
+|archived_at|Timestamp||
+|build_stack|JSON||
+|buildpack_provided_description|String||
+|created_at|Timestamp||
+|git_url|String||
+|id|String||
+|internal_routing|Bool||
+|maintenance|Bool||
+|name|String||
+|organization|JSON||
+|owner|JSON||
+|region|JSON||
+|released_at|Timestamp||
+|repo_size|Int||
+|slug_size|Int||
+|space|JSON||
+|stack|JSON||
+|team|JSON||
+|updated_at|Timestamp||
+|web_url|String||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

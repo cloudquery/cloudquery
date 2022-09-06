@@ -4,7 +4,9 @@ https://devcenter.heroku.com/articles/platform-api-reference#add-on-region-capab
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|addon_service|jsonb||
-|id|text||
-|region|jsonb||
-|supports_private_networking|boolean||
+|addon_service|JSON||
+|id|String||
+|region|JSON||
+|supports_private_networking|Bool||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

@@ -4,14 +4,16 @@ https://devcenter.heroku.com/articles/platform-api-reference#dyno-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|app|jsonb||
-|attach_url|text||
-|command|text||
-|created_at|timestamp without time zone||
-|id|text||
-|name|text||
-|release|jsonb||
-|size|text||
-|state|text||
-|type|text||
-|updated_at|timestamp without time zone||
+|app|JSON||
+|attach_url|String||
+|command|String||
+|created_at|Timestamp||
+|id|String||
+|name|String||
+|release|JSON||
+|size|String||
+|state|String||
+|type|String||
+|updated_at|Timestamp||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|
