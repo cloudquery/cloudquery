@@ -63,6 +63,10 @@ func Apigatewayv2DomainNames() *schema.Table {
 				Resolver: resolvers.ResolveDomainNameArn,
 			},
 		},
+
+		Relations: []*schema.Table{
+			Apigatewayv2DomainNameApiMappings(),
+		},
 	}
 }
 

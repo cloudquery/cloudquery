@@ -90,6 +90,10 @@ func Apigatewayv2ApiRoutes() *schema.Table {
 				Resolver: schema.PathResolver("Target"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Apigatewayv2ApiRouteResponses(),
+		},
 	}
 }
 

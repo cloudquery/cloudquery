@@ -112,6 +112,15 @@ func Apigatewayv2Apis() *schema.Table {
 				Resolver: schema.PathResolver("Warnings"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Apigatewayv2ApiAuthorizers(),
+			Apigatewayv2ApiDeployments(),
+			Apigatewayv2ApiIntegrations(),
+			Apigatewayv2ApiModels(),
+			Apigatewayv2ApiRoutes(),
+			Apigatewayv2ApiStages(),
+		},
 	}
 }
 

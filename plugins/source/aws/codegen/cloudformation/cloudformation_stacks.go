@@ -141,6 +141,10 @@ func CloudformationStacks() *schema.Table {
 				Resolver: schema.PathResolver("TimeoutInMinutes"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			CloudformationStackResources(),
+		},
 	}
 }
 

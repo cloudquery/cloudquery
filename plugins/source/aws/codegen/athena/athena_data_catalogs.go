@@ -64,6 +64,10 @@ func AthenaDataCatalogs() *schema.Table {
 				Description: `Tags associated with the Athena data catalog.`,
 			},
 		},
+
+		Relations: []*schema.Table{
+			AthenaDataCatalogDatabases(),
+		},
 	}
 }
 

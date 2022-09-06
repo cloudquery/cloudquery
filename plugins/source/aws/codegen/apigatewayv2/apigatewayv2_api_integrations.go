@@ -125,6 +125,10 @@ func Apigatewayv2ApiIntegrations() *schema.Table {
 				Resolver: schema.PathResolver("TlsConfig"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Apigatewayv2ApiIntegrationResponses(),
+		},
 	}
 }
 

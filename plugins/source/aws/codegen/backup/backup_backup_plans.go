@@ -81,6 +81,10 @@ func BackupBackupPlans() *schema.Table {
 				Resolver: schema.PathResolver("ResultMetadata"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			BackupBackupPlansBackupSelections(),
+		},
 	}
 }
 

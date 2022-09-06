@@ -35,21 +35,37 @@ func main() {
 		"resource_list_describe": true,
 	}
 
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		log.Fatal("Failed to get caller information")
+	}
+	dir := path.Dir(filename)
+
 	resources := recipes.AllResources
 
 	for _, r := range resources {
-		generateResource(r, false)
-
-		if templatesWithMocks[r.Template] {
-			generateResource(r, true)
+		initResource(r)
+		if r.Parent != nil && r.TableFuncName != "" {
+			r.Parent.Table.Relations = append(r.Parent.Table.Relations, r.TableFuncName+"(),\n")
+		}
+	}
+	for _, r := range resources {
+		if r.Parent != nil {
+			handleParentReference(r)
 		}
 
-		if r.Parent != nil {
-			r.Parent.Table.Relations = append(r.Parent.Table.Relations, r.Table.Name)
+		if l := len(r.Table.Relations); l > 0 {
+			r.Table.Relations[l-1] = strings.TrimSuffix(r.Table.Relations[l-1], ",\n")
+		}
+
+		generateResource(dir, r, false)
+
+		if templatesWithMocks[r.Template] {
+			generateResource(dir, r, true)
 		}
 	}
 
-	generateProvider(resources)
+	generatePlugin(resources)
 }
 
 func inferFromRecipe(r *recipes.Resource) {
@@ -230,20 +246,14 @@ func inferFromRecipe(r *recipes.Resource) {
 
 }
 
-func generateResource(r *recipes.Resource, mock bool) {
-	var err error
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		log.Fatal("Failed to get caller information")
-	}
-	dir := path.Dir(filename)
-
+func initResource(r *recipes.Resource) {
 	if r.ItemsStruct != nil {
 		inferFromRecipe(r)
 	}
 
 	tableNameFromSubService, fetcherNameFromSubService := helpers.TableAndFetcherNames(r)
 
+	var err error
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("aws_%s_%s", strings.ToLower(r.AWSService), tableNameFromSubService),
 		r.AWSStruct,
@@ -252,30 +262,13 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	r.Table.Resolver = helpers.Coalesce(r.RawResolver, "fetch"+r.AWSService+fetcherNameFromSubService)
+	r.TableFuncName = r.AWSService + fetcherNameFromSubService
 
 	if r.TrimPrefix != "" {
 		for i := range r.Table.Columns {
 			r.Table.Columns[i].Name = strings.TrimPrefix(r.Table.Columns[i].Name, r.TrimPrefix)
 		}
-	}
-
-	// Add one level up parent key
-	if r.Parent != nil {
-		var pItemName string
-		if r.Parent.CQSubserviceOverride != "" {
-			pItemName = r.Parent.CQSubserviceOverride
-		} else {
-			pItemName = strings.TrimSuffix(r.Parent.ItemName, "Summary")
-		}
-		pItemName = inflection.Singular(pItemName)
-
-		r.Table.Columns = append([]sdkgen.ColumnDefinition{
-			{
-				Name:     strings.ToLower(pItemName + "_cq_id"),
-				Type:     pluginschema.TypeUUID,
-				Resolver: "schema.ParentIdResolver",
-			},
-		}, r.Table.Columns...)
 	}
 
 	if r.Parent != nil && len(r.DefaultColumns) > 0 {
@@ -308,9 +301,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 		for _, k := range coSlice {
 			c := r.ColumnOverrides[k]
 			if c.Type == pluginschema.TypeInvalid {
-				if !mock {
-					fmt.Println("Not adding unmatched column with unspecified type", k, c)
-				}
+				fmt.Println("Not adding unmatched column with unspecified type", k, c)
 				continue
 			}
 			c.Name = helpers.Coalesce(c.Name, k)
@@ -351,31 +342,22 @@ func generateResource(r *recipes.Resource, mock bool) {
 		hasReferenceToResolvers = true
 	}
 
-	r.Table.Resolver = helpers.Coalesce(r.RawResolver, "fetch"+r.AWSService+fetcherNameFromSubService)
-	r.TableFuncName = r.AWSService + fetcherNameFromSubService
-
-	if mock {
-		r.MockFuncName = "build" + r.TableFuncName
-		r.TestFuncName = "Test" + r.TableFuncName
-	}
+	r.MockFuncName = "build" + r.TableFuncName
+	r.TestFuncName = "Test" + r.TableFuncName
 
 	t := reflect.TypeOf(r.AWSStruct).Elem()
 	r.AWSStructName = path.Base(t.PkgPath()) + "." + t.Name() // types.Something or sometimes service.Something
 	r.ItemName = helpers.Coalesce(r.ItemName, t.Name())
 
-	if !mock {
-		r.Imports = quoteImports(r.Imports)
-	} else {
-		r.MockImports = quoteImports(r.MockImports)
-	}
+	r.Imports = quoteImports(r.Imports)
+	r.MockImports = quoteImports(r.MockImports)
 
 	sp := t.PkgPath()
 	var (
-		mainImport  string
-		typesImport string
+		mainImport string
 	)
 	if strings.HasSuffix(sp, "/types") {
-		typesImport = strconv.Quote(sp)
+		r.TypesImport = strconv.Quote(sp)
 		mainImport = strings.TrimSuffix(sp, "/types")
 	} else if strings.HasSuffix(sp, "/aws-sdk-go-v2/service/"+strings.ToLower(r.AWSService)) { // main struct lives in main pkg
 		mainImport = sp
@@ -387,13 +369,34 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.MockImports = append(r.MockImports, strconv.Quote(mainImport))
 	}
 
-	if hasReferenceToResolvers && !mock {
+	if hasReferenceToResolvers {
 		res := "resolvers " + strconv.Quote(`github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/`+strings.ToLower(r.AWSService))
 		if !slices.Contains(r.Imports, res) {
 			r.Imports = append(r.Imports, res)
 		}
 	}
+}
 
+func handleParentReference(r *recipes.Resource) {
+	// Add one level up parent key
+	var pItemName string
+	if r.Parent.CQSubserviceOverride != "" {
+		pItemName = r.Parent.CQSubserviceOverride
+	} else {
+		pItemName = strings.TrimSuffix(r.Parent.ItemName, "Summary")
+	}
+	pItemName = inflection.Singular(pItemName)
+
+	r.Table.Columns = append([]sdkgen.ColumnDefinition{
+		{
+			Name:     strings.ToLower(pItemName + "_cq_id"),
+			Type:     pluginschema.TypeUUID,
+			Resolver: "schema.ParentIdResolver",
+		},
+	}, r.Table.Columns...)
+}
+
+func generateResource(dir string, r *recipes.Resource, mock bool) {
 	r.TemplateFilename = r.Template + helpers.StringSwitch(mock, "_mock_test", "") + ".go.tpl"
 	tpl, err := template.New(r.TemplateFilename).Funcs(template.FuncMap{
 		"ToCamel":  strcase.ToCamel,
@@ -416,14 +419,14 @@ func generateResource(r *recipes.Resource, mock bool) {
 		if err := tpl.Execute(&buff, r); err != nil {
 			log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 		}
-		if i == 1 || r.SkipTypesImport || typesImport == "" || !strings.Contains(buff.String(), "types.") {
+		if i == 1 || r.SkipTypesImport || r.TypesImport == "" || !strings.Contains(buff.String(), "types.") {
 			break
 		}
 
 		if !mock {
-			r.Imports = append(r.Imports, typesImport)
+			r.Imports = append(r.Imports, r.TypesImport)
 		} else {
-			r.MockImports = append(r.MockImports, typesImport)
+			r.MockImports = append(r.MockImports, r.TypesImport)
 		}
 		buff.Reset()
 	}
@@ -434,7 +437,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 	}
 
 	fileSuffix := helpers.StringSwitch(mock, "_mock_test.go", ".go")
-	filePath = path.Join(filePath, strings.ToLower(r.AWSService)+"_"+tableNameFromSubService+fileSuffix)
+	filePath = path.Join(filePath, strings.TrimPrefix(r.Table.Name, "aws_")+fileSuffix)
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())
@@ -445,7 +448,7 @@ func generateResource(r *recipes.Resource, mock bool) {
 	}
 }
 
-func generateProvider(rr []*recipes.Resource) {
+func generatePlugin(rr []*recipes.Resource) {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		log.Fatal("Failed to get caller information")

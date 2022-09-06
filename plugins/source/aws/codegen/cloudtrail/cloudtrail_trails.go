@@ -104,6 +104,10 @@ func CloudtrailTrails() *schema.Table {
 				Resolver: schema.PathResolver("TrailARN"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			CloudtrailTrailEventSelectors(),
+		},
 	}
 }
 

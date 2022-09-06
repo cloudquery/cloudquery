@@ -40,6 +40,10 @@ func AthenaDataCatalogDatabases() *schema.Table {
 				Resolver: schema.PathResolver("Parameters"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			AthenaDataCatalogDatabaseTables(),
+		},
 	}
 }
 

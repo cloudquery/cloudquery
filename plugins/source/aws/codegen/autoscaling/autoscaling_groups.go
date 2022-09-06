@@ -196,6 +196,11 @@ func AutoscalingGroups() *schema.Table {
 				Resolver: schema.PathResolver("WarmPoolSize"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			AutoscalingGroupsScalingPolicies(),
+			AutoscalingGroupsLifecycleHooks(),
+		},
 	}
 }
 

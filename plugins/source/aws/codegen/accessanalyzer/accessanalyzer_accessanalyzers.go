@@ -76,6 +76,11 @@ func AccessAnalyzerAccessanalyzers() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			AccessAnalyzerAccessanalyzersFindings(),
+			AccessAnalyzerAccessanalyzersArchiveRules(),
+		},
 	}
 }
 

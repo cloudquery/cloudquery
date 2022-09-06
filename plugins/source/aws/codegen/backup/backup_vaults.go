@@ -85,6 +85,10 @@ func BackupVaults() *schema.Table {
 				Type: schema.TypeJSON,
 			},
 		},
+
+		Relations: []*schema.Table{
+			BackupVaultsRecoveryPoints(),
+		},
 	}
 }
 

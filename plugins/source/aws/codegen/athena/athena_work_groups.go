@@ -69,6 +69,12 @@ func AthenaWorkGroups() *schema.Table {
 				Description: `Tags associated with the Athena work group.`,
 			},
 		},
+
+		Relations: []*schema.Table{
+			AthenaWorkGroupPreparedStatements(),
+			AthenaWorkGroupQueryExecutions(),
+			AthenaWorkGroupNamedQueries(),
+		},
 	}
 }
 

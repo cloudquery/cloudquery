@@ -96,6 +96,8 @@ type AutoCalculated struct {
 	NestingLevel  int
 
 	TemplateFilename string // This is injected to top of every template result
+
+	TypesImport string // Path to the types package, if exists
 }
 
 var (
