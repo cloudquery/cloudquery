@@ -13,6 +13,8 @@ import (
 	"github.com/spf13/viper"
 )
 
+const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
+
 var (
 	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cli/cmd.Variable=Value"
 
@@ -28,8 +30,6 @@ Open source data integration that works.
 Find more information at:
 	https://cloudquery.io`
 )
-
-const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
 
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
@@ -122,7 +122,9 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().Bool("no-telemetry", false, "disable telemetry collection")
 	// we dont need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
 	// the only exception is the telemetry as people might want to put in a bash starter script
-	viper.BindPFlag("no-telemetry", cmd.PersistentFlags().Lookup("no-telemetry"))
+	if err := viper.BindPFlag("no-telemetry", cmd.PersistentFlags().Lookup("no-telemetry")); err != nil {
+		panic(err)
+	}
 	cmd.PersistentFlags().Bool("telemetry-inspect", false, "enable telemetry inspection")
 	cmd.PersistentFlags().Bool("telemetry-debug", false, "enable telemetry debug logging")
 

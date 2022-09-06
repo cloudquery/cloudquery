@@ -2,7 +2,7 @@
 // Including: downloading, upgrading, spawning, closing
 // Currently we use github releases as our plugin store. We might change in the future
 // to our own hosted one.
-package plugin
+package plugins
 
 import (
 	"archive/zip"
