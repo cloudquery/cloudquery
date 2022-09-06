@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
@@ -73,7 +73,7 @@ func AthenaWorkGroups() *schema.Table {
 }
 
 func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listWorkGroups, listWorkGroupsDetail))
+	return errors.WithStack(client.ListAndDetailResolver(ctx, meta, res, listWorkGroups, listWorkGroupsDetail))
 }
 
 func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
@@ -85,7 +85,7 @@ func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan
 	for {
 		response, err := svc.ListWorkGroups(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		for _, item := range response.WorkGroups {
 			detailChan <- item
@@ -110,7 +110,7 @@ func listWorkGroupsDetail(ctx context.Context, meta schema.ClientMeta, resultsCh
 		if cl.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- errors.WithStack(err)
 		return
 	}
 	resultsChan <- *response.WorkGroup
@@ -130,7 +130,7 @@ func resolveAthenaWorkGroupsTags(ctx context.Context, meta schema.ClientMeta, re
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		client.TagsIntoMap(result.Tags, tags)
 		if aws.ToString(result.NextToken) == "" {
@@ -138,5 +138,5 @@ func resolveAthenaWorkGroupsTags(ctx context.Context, meta schema.ClientMeta, re
 		}
 		params.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return errors.WithStack(resource.Set(c.Name, tags))
 }

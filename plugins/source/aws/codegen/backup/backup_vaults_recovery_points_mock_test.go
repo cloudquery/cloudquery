@@ -36,5 +36,5 @@ func buildBackupVaultsRecoveryPoints(t *testing.T, ctrl *gomock.Controller) clie
 }
 
 func TestBackupVaultsRecoveryPoints(t *testing.T) {
-	client.AwsMockTestHelper(t, BackupVaultsRecoveryPoints(), buildBackupVaultsRecoveryPoints, client.TestOptions{})
+	client.MockTestHelper(t, BackupVaultsRecoveryPoints(), buildBackupVaultsRecoveryPoints, client.TestOptions{})
 }

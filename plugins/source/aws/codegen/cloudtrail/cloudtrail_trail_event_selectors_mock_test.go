@@ -36,5 +36,5 @@ func buildCloudtrailTrailEventSelectors(t *testing.T, ctrl *gomock.Controller) c
 }
 
 func TestCloudtrailTrailEventSelectors(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudtrailTrailEventSelectors(), buildCloudtrailTrailEventSelectors, client.TestOptions{})
+	client.MockTestHelper(t, CloudtrailTrailEventSelectors(), buildCloudtrailTrailEventSelectors, client.TestOptions{})
 }

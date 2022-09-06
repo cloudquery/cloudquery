@@ -4,11 +4,10 @@ package cloudfront
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 
-	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 )
@@ -89,7 +88,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		for _, item := range output.DistributionList.Items {
@@ -103,7 +102,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return errors.WithStack(err)
 			}
 			res <- do.Distribution
 		}

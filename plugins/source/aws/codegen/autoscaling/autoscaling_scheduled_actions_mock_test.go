@@ -36,5 +36,5 @@ func buildAutoscalingScheduledActions(t *testing.T, ctrl *gomock.Controller) cli
 }
 
 func TestAutoscalingScheduledActions(t *testing.T) {
-	client.AwsMockTestHelper(t, AutoscalingScheduledActions(), buildAutoscalingScheduledActions, client.TestOptions{})
+	client.MockTestHelper(t, AutoscalingScheduledActions(), buildAutoscalingScheduledActions, client.TestOptions{})
 }

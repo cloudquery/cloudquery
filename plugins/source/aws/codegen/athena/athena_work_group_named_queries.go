@@ -5,8 +5,8 @@ package athena
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 
@@ -72,7 +72,7 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		for _, item := range output.NamedQueryIds {
@@ -86,7 +86,7 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return errors.WithStack(err)
 			}
 			res <- do.NamedQuery
 		}

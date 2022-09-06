@@ -36,5 +36,5 @@ func buildApigatewayv2ApiAuthorizers(t *testing.T, ctrl *gomock.Controller) clie
 }
 
 func TestApigatewayv2ApiAuthorizers(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2ApiAuthorizers(), buildApigatewayv2ApiAuthorizers, client.TestOptions{})
+	client.MockTestHelper(t, Apigatewayv2ApiAuthorizers(), buildApigatewayv2ApiAuthorizers, client.TestOptions{})
 }

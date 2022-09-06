@@ -36,5 +36,5 @@ func buildApigatewayv2ApiDeployments(t *testing.T, ctrl *gomock.Controller) clie
 }
 
 func TestApigatewayv2ApiDeployments(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2ApiDeployments(), buildApigatewayv2ApiDeployments, client.TestOptions{})
+	client.MockTestHelper(t, Apigatewayv2ApiDeployments(), buildApigatewayv2ApiDeployments, client.TestOptions{})
 }

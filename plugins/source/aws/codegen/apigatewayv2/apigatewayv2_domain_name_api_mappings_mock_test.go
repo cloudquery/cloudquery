@@ -36,5 +36,5 @@ func buildApigatewayv2DomainNameApiMappings(t *testing.T, ctrl *gomock.Controlle
 }
 
 func TestApigatewayv2DomainNameApiMappings(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2DomainNameApiMappings(), buildApigatewayv2DomainNameApiMappings, client.TestOptions{})
+	client.MockTestHelper(t, Apigatewayv2DomainNameApiMappings(), buildApigatewayv2DomainNameApiMappings, client.TestOptions{})
 }

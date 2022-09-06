@@ -36,5 +36,5 @@ func buildCloudwatchLogsMetricFilters(t *testing.T, ctrl *gomock.Controller) cli
 }
 
 func TestCloudwatchLogsMetricFilters(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudwatchLogsMetricFilters(), buildCloudwatchLogsMetricFilters, client.TestOptions{})
+	client.MockTestHelper(t, CloudwatchLogsMetricFilters(), buildCloudwatchLogsMetricFilters, client.TestOptions{})
 }

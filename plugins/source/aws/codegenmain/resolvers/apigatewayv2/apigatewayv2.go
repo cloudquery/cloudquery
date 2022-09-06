@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 )
 
 const domainNamesIDPart = "domainnames"
@@ -24,16 +24,16 @@ func ResolveApiModelTemplate(ctx context.Context, meta schema.ClientMeta, resour
 
 	response, err := svc.GetModelTemplate(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, response.Value))
+	return errors.WithStack(resource.Set(c.Name, response.Value))
 }
 
 func ResolveDomainNameArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	if err := client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		return []string{domainNamesIDPart, *resource.Item.(types.DomainName).DomainName}, nil
 	})(ctx, meta, resource, c); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	return nil
 }
@@ -44,7 +44,7 @@ func ResolveApiMappingArn(ctx context.Context, meta schema.ClientMeta, resource 
 		p := resource.Parent.Item.(types.DomainName)
 		return []string{domainNamesIDPart, *p.DomainName, "apimappings", *r.ApiMappingId}, nil
 	})(ctx, meta, resource, c); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	return nil
 }
@@ -53,7 +53,7 @@ func ResolveVPCLinkArn(ctx context.Context, meta schema.ClientMeta, resource *sc
 	if err := client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 		return []string{"vpclinks", *resource.Item.(types.VpcLink).VpcLinkId}, nil
 	})(ctx, meta, resource, c); err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	return nil
 }

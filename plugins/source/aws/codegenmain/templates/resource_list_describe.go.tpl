@@ -5,8 +5,8 @@ package {{.AWSService | ToLower}}
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 {{if .TypesImport}}
 	"{{.TypesImport}}"
@@ -33,7 +33,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
 			{{.CustomErrorBlock}}
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 {{if .PaginatorListWrapper}}
 		for _, item := range output.{{.PaginatorListWrapper}}.{{.PaginatorListName}} {
@@ -52,7 +52,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return errors.WithStack(err)
 			}
 {{if eq .ResponseItemsName "."}}		res <- do{{else}}		res <- do.{{.ItemName}}{{end}}
 		}
@@ -72,8 +72,8 @@ func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx contex
   })
 	if err != nil {
 		{{.CustomErrorBlock}}
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))
+	return errors.WithStack(resource.Set(c.Name, client.TagsToMap(out.Tags)))
 }
 {{end}}

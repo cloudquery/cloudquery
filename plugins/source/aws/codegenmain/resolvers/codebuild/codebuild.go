@@ -6,8 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 )
 
 func FetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -17,14 +17,14 @@ func FetchProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for {
 		response, err := svc.ListProjects(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		if len(response.Projects) == 0 {
 			break
 		}
 		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: response.Projects})
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		res <- projectsOutput.Projects

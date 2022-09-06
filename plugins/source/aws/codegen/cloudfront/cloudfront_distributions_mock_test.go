@@ -65,5 +65,5 @@ func buildCloudfrontDistributions(t *testing.T, ctrl *gomock.Controller) client.
 }
 
 func TestCloudfrontDistributions(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudfrontDistributions(), buildCloudfrontDistributions, client.TestOptions{})
+	client.MockTestHelper(t, CloudfrontDistributions(), buildCloudfrontDistributions, client.TestOptions{})
 }

@@ -5,8 +5,8 @@ package backup
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -72,7 +72,7 @@ func fetchBackupBackupPlansBackupSelections(ctx context.Context, meta schema.Cli
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		for _, item := range output.BackupSelectionsList {
@@ -88,7 +88,7 @@ func fetchBackupBackupPlansBackupSelections(ctx context.Context, meta schema.Cli
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return errors.WithStack(err)
 			}
 			res <- do
 		}

@@ -6,8 +6,8 @@ import (
 	"context"
 {{if or .NextTokenName .WrappedNextTokenName}}	"github.com/aws/aws-sdk-go-v2/aws"
 {{end}}	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 {{if .Parent}}	"{{.TypesImport}}"{{end}}
 {{range .Imports}}	{{.}}
@@ -35,7 +35,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 		}){{else}}		response, err := svc.{{.GetMethod}}(ctx, &input){{end}}
 		if err != nil {
 			{{.CustomErrorBlock}}
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 {{if .ResponseItemsWrapper}}
 		if response.{{.ResponseItemsWrapper}} != nil {

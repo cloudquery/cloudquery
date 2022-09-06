@@ -63,5 +63,5 @@ func buildAthenaWorkGroupPreparedStatements(t *testing.T, ctrl *gomock.Controlle
 }
 
 func TestAthenaWorkGroupPreparedStatements(t *testing.T) {
-	client.AwsMockTestHelper(t, AthenaWorkGroupPreparedStatements(), buildAthenaWorkGroupPreparedStatements, client.TestOptions{})
+	client.MockTestHelper(t, AthenaWorkGroupPreparedStatements(), buildAthenaWorkGroupPreparedStatements, client.TestOptions{})
 }

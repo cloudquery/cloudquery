@@ -36,5 +36,5 @@ func buildApigatewayv2ApiModels(t *testing.T, ctrl *gomock.Controller) client.Se
 }
 
 func TestApigatewayv2ApiModels(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2ApiModels(), buildApigatewayv2ApiModels, client.TestOptions{})
+	client.MockTestHelper(t, Apigatewayv2ApiModels(), buildApigatewayv2ApiModels, client.TestOptions{})
 }

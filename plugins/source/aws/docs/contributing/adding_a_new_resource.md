@@ -27,7 +27,7 @@ If the service to which the resource belongs has not been used before in the AWS
 
 1. In [client/services.go](../../client/services.go), update the service interface and add the method(s) that you will be using to fetch the data from the aws sdk.
 1. Run `go generate client/services.go` to create a mock for your new methods. This will update [client/mocks/mock_\<service\>.go](../../client/mocks) automatically.
-1. Create a file under [resources/services/\<service\>](../../resources/services) that follows the pattern of `<resource>.go`.
+1. Create a file under [resources/services/\<service\>](../../resources/services.old) that follows the pattern of `<resource>.go`.
 1. In that file, create a function that returns a `*schema.Table`.
 1. In [resources/provider.go](../../resources/provider/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config YML file.
 1. Add a test file at [resources/services/\<service\>/\<resource\>_mock_test.go](../../resources/services). Follow other examples to create a test for the resource.

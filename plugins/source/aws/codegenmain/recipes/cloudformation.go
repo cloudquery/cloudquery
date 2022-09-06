@@ -26,7 +26,7 @@ func init() {
 			ParentFieldName: "StackName",
 			CustomErrorBlock: `
 			if client.IsErrorRegex(err, "ValidationError", resolvers.ValidStackNotFoundRegex) {
-				meta.Logger().Debug("received ValidationError on ListStackResources, stack does not exist", "region", cl.Region, "err", err)
+				meta.Logger().Debug().Err(err).Msg("received ValidationError on ListStackResources, stack does not exist")
 				return nil
 			}
 `,

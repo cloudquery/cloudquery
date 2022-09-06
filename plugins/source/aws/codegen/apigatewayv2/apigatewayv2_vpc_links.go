@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/apigatewayv2"
@@ -95,7 +95,7 @@ func fetchApigatewayv2VpcLinks(ctx context.Context, meta schema.ClientMeta, pare
 		response, err := svc.GetVpcLinks(ctx, &input)
 		if err != nil {
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		res <- response.Items

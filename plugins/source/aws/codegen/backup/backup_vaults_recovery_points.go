@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
@@ -137,7 +137,7 @@ func fetchBackupVaultsRecoveryPoints(ctx context.Context, meta schema.ClientMeta
 		response, err := svc.ListRecoveryPointsByBackupVault(ctx, &input)
 		if err != nil {
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		res <- response.RecoveryPoints

@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
@@ -84,11 +84,11 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 		if err != nil {
 
 			if client.IsErrorRegex(err, "ValidationError", resolvers.ValidStackNotFoundRegex) {
-				meta.Logger().Debug("received ValidationError on ListStackResources, stack does not exist", "region", cl.Region, "err", err)
+				meta.Logger().Debug().Err(err).Msg("received ValidationError on ListStackResources, stack does not exist")
 				return nil
 			}
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		res <- response.StackResourceSummaries

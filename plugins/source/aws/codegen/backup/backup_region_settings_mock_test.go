@@ -32,5 +32,5 @@ func buildBackupRegionSettings(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestBackupRegionSettings(t *testing.T) {
-	client.AwsMockTestHelper(t, BackupRegionSettings(), buildBackupRegionSettings, client.TestOptions{})
+	client.MockTestHelper(t, BackupRegionSettings(), buildBackupRegionSettings, client.TestOptions{})
 }

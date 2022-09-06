@@ -43,22 +43,13 @@ func main() {
 		if templatesWithMocks[r.Template] {
 			generateResource(r, true)
 		}
-	}
 
-	for i, r := range resources {
 		if r.Parent != nil {
-			r.Parent.Table.Relations = append(r.Parent.Table.Relations, r.Table)
-			resources[i] = nil
-		}
-	}
-	relationalRes := make([]*recipes.Resource, 0, len(resources))
-	for _, r := range resources {
-		if r != nil {
-			relationalRes = append(relationalRes, r)
+			r.Parent.Table.Relations = append(r.Parent.Table.Relations, r.Table.Name)
 		}
 	}
 
-	generateProvider(relationalRes)
+	generateProvider(resources)
 }
 
 func inferFromRecipe(r *recipes.Resource) {
@@ -449,13 +440,13 @@ func generateProvider(rr []*recipes.Resource) {
 		log.Fatal("Failed to get caller information")
 	}
 	dir := path.Dir(filename)
-	tpl, err := template.New("provider.go.tpl").Funcs(template.FuncMap{
+	tpl, err := template.New("tables.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
 		"ToLower": strings.ToLower,
 		"ToSnake": strcase.ToSnake,
-	}).ParseFS(awsTemplatesFS, "templates/provider.go.tpl")
+	}).ParseFS(awsTemplatesFS, "templates/tables.go.tpl")
 	if err != nil {
-		log.Fatal(fmt.Errorf("failed to parse provider.go.tpl: %w", err))
+		log.Fatal(fmt.Errorf("failed to parse tables.go.tpl: %w", err))
 	}
 
 	var buff bytes.Buffer
@@ -463,7 +454,7 @@ func generateProvider(rr []*recipes.Resource) {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
 
-	filePath := path.Join(dir, "../resources/provider/provider_codegen.go")
+	filePath := path.Join(dir, "../plugin/autogen_tables.go")
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())

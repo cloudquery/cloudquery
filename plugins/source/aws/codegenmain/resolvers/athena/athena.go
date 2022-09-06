@@ -5,8 +5,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 )
 
 func CreateDataCatalogArn(cl *client.Client, catalogName string) string {
@@ -16,7 +16,7 @@ func CreateDataCatalogArn(cl *client.Client, catalogName string) string {
 func ResolveDataCatalogArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.DataCatalog)
-	return diag.WrapError(resource.Set(c.Name, CreateDataCatalogArn(cl, *dc.Name)))
+	return errors.WithStack(resource.Set(c.Name, CreateDataCatalogArn(cl, *dc.Name)))
 }
 
 func CreateWorkGroupArn(cl *client.Client, catalogName string) string {
@@ -26,5 +26,5 @@ func CreateWorkGroupArn(cl *client.Client, catalogName string) string {
 func ResolveWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.WorkGroup)
-	return diag.WrapError(resource.Set(c.Name, CreateWorkGroupArn(cl, *dc.Name)))
+	return errors.WithStack(resource.Set(c.Name, CreateWorkGroupArn(cl, *dc.Name)))
 }

@@ -36,5 +36,5 @@ func buildCloudtrailTrails(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestCloudtrailTrails(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudtrailTrails(), buildCloudtrailTrails, client.TestOptions{})
+	client.MockTestHelper(t, CloudtrailTrails(), buildCloudtrailTrails, client.TestOptions{})
 }

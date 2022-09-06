@@ -5,15 +5,15 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
-	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog"
 )
 
 type retryer struct {
 	aws.Retryer
-	logger hclog.Logger
+	logger zerolog.Logger
 }
 
-func newRetryer(logger hclog.Logger, maxRetries int, maxBackoff int) func() aws.Retryer {
+func newRetryer(logger zerolog.Logger, maxRetries int, maxBackoff int) func() aws.Retryer {
 	return func() aws.Retryer {
 		return &retryer{
 			Retryer: retry.NewStandard(func(o *retry.StandardOptions) {
@@ -35,9 +35,9 @@ func (r *retryer) RetryDelay(attempt int, err error) (time.Duration, error) {
 	}
 	if retErr != nil {
 		logParams = append(logParams, "retrier_err", retErr)
-		r.logger.Debug("RetryDelay returned err", logParams...)
+		r.logger.Debug().Fields(logParams).Msg("RetryDelay returned err")
 	} else {
-		r.logger.Debug("waiting before retry...", logParams...)
+		r.logger.Debug().Fields(logParams).Msg("waiting before retry...")
 	}
 	return dur, retErr
 }

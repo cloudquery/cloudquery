@@ -36,5 +36,5 @@ func buildCodePipelineWebhooks(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestCodePipelineWebhooks(t *testing.T) {
-	client.AwsMockTestHelper(t, CodePipelineWebhooks(), buildCodePipelineWebhooks, client.TestOptions{})
+	client.MockTestHelper(t, CodePipelineWebhooks(), buildCodePipelineWebhooks, client.TestOptions{})
 }

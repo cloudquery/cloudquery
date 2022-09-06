@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/cloudfront"
@@ -54,7 +54,7 @@ func fetchCloudfrontCachePolicies(ctx context.Context, meta schema.ClientMeta, p
 		response, err := svc.ListCachePolicies(ctx, &input)
 		if err != nil {
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		if response.CachePolicyList != nil {

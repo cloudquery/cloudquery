@@ -63,5 +63,5 @@ func buildAthenaWorkGroupQueryExecutions(t *testing.T, ctrl *gomock.Controller) 
 }
 
 func TestAthenaWorkGroupQueryExecutions(t *testing.T) {
-	client.AwsMockTestHelper(t, AthenaWorkGroupQueryExecutions(), buildAthenaWorkGroupQueryExecutions, client.TestOptions{})
+	client.MockTestHelper(t, AthenaWorkGroupQueryExecutions(), buildAthenaWorkGroupQueryExecutions, client.TestOptions{})
 }

@@ -36,5 +36,5 @@ func buildCloudfrontCachePolicies(t *testing.T, ctrl *gomock.Controller) client.
 }
 
 func TestCloudfrontCachePolicies(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudfrontCachePolicies(), buildCloudfrontCachePolicies, client.TestOptions{})
+	client.MockTestHelper(t, CloudfrontCachePolicies(), buildCloudfrontCachePolicies, client.TestOptions{})
 }

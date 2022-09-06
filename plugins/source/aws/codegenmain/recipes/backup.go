@@ -17,11 +17,11 @@ func init() {
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		CustomErrorBlock: `
 		if client.IgnoreAccessDeniedServiceDisabled(err) || client.IsAWSError(err, "ERROR_9601") /* "Your account is not a member of an organization" */ {
-			meta.Logger().Debug("received access denied on DescribeGlobalSettings", "err", err)
+			meta.Logger().Debug().Err(err).Msg("received access denied on DescribeGlobalSettings")
 			return nil
 		}
 		if client.IsAWSError(err, "ERROR_2502") /* "Feature Cross Account Backup is not available in current region" */ {
-			meta.Logger().Debug("Feature Cross Account Backup is not available in current region on DescribeGlobalSettings", "err", err)
+			meta.Logger().Debug().Err(err).Msg("Feature Cross Account Backup is not available in current region on DescribeGlobalSettings")
 			return nil
 		}
 `,

@@ -36,5 +36,5 @@ func buildAccessAnalyzerAccessanalyzersArchiveRules(t *testing.T, ctrl *gomock.C
 }
 
 func TestAccessAnalyzerAccessanalyzersArchiveRules(t *testing.T) {
-	client.AwsMockTestHelper(t, AccessAnalyzerAccessanalyzersArchiveRules(), buildAccessAnalyzerAccessanalyzersArchiveRules, client.TestOptions{})
+	client.MockTestHelper(t, AccessAnalyzerAccessanalyzersArchiveRules(), buildAccessAnalyzerAccessanalyzersArchiveRules, client.TestOptions{})
 }

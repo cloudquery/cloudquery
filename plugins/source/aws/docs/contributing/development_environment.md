@@ -47,7 +47,7 @@ make test-unit # This runs go test ./...
 ```
 
 Unit tests include:
-- Specific resources tests. You can find those next to each resource, in the [`resources/services`](../../resources/services) folder.
+- Specific resources tests. You can find those next to each resource, in the [`resources/services`](../../resources/services.old) folder.
 - DB migration tests. You can find the code for these tests [here](../../resources/provider/provider_test.go).
 - Client tests. You can find those in the [`client`](../../client) folder.
 

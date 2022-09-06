@@ -32,5 +32,5 @@ func buildBackupGlobalSettings(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestBackupGlobalSettings(t *testing.T) {
-	client.AwsMockTestHelper(t, BackupGlobalSettings(), buildBackupGlobalSettings, client.TestOptions{})
+	client.MockTestHelper(t, BackupGlobalSettings(), buildBackupGlobalSettings, client.TestOptions{})
 }

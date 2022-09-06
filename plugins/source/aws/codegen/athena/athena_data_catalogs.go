@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
@@ -68,7 +68,7 @@ func AthenaDataCatalogs() *schema.Table {
 }
 
 func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listDataCatalogs, listDataCatalogsDetail))
+	return errors.WithStack(client.ListAndDetailResolver(ctx, meta, res, listDataCatalogs, listDataCatalogsDetail))
 }
 
 func listDataCatalogs(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
@@ -80,7 +80,7 @@ func listDataCatalogs(ctx context.Context, meta schema.ClientMeta, detailChan ch
 	for {
 		response, err := svc.ListDataCatalogs(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		for _, item := range response.DataCatalogsSummary {
 			detailChan <- item
@@ -112,7 +112,7 @@ func listDataCatalogsDetail(ctx context.Context, meta schema.ClientMeta, results
 		if cl.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- errors.WithStack(err)
 		return
 	}
 	resultsChan <- *response.DataCatalog
@@ -132,7 +132,7 @@ func resolveAthenaDataCatalogsTags(ctx context.Context, meta schema.ClientMeta, 
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		client.TagsIntoMap(result.Tags, tags)
 		if aws.ToString(result.NextToken) == "" {
@@ -140,5 +140,5 @@ func resolveAthenaDataCatalogsTags(ctx context.Context, meta schema.ClientMeta, 
 		}
 		params.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return errors.WithStack(resource.Set(c.Name, tags))
 }

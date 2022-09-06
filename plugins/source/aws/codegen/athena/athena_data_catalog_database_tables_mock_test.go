@@ -36,5 +36,5 @@ func buildAthenaDataCatalogDatabaseTables(t *testing.T, ctrl *gomock.Controller)
 }
 
 func TestAthenaDataCatalogDatabaseTables(t *testing.T) {
-	client.AwsMockTestHelper(t, AthenaDataCatalogDatabaseTables(), buildAthenaDataCatalogDatabaseTables, client.TestOptions{})
+	client.MockTestHelper(t, AthenaDataCatalogDatabaseTables(), buildAthenaDataCatalogDatabaseTables, client.TestOptions{})
 }

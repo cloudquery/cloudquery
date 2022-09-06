@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	stsTypes "github.com/aws/aws-sdk-go-v2/service/sts/types"
 	"github.com/google/go-cmp/cmp"
-	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -115,11 +115,6 @@ func Test_initServices_NoNilValues(t *testing.T) {
 	}
 }
 
-func Test_obfuscateAccountId(t *testing.T) {
-	assert.Equal(t, "1111xxxxxxxx", obfuscateAccountId("1111111111"))
-	assert.Equal(t, "11", obfuscateAccountId("11"))
-}
-
 func Test_isValidRegions(t *testing.T) {
 	tests := []struct {
 		regions []string
@@ -192,7 +187,6 @@ func (m mockAssumeRole) AssumeRole(ctx context.Context, params *sts.AssumeRoleIn
 
 func Test_Configure(t *testing.T) {
 	ctx := context.Background()
-	logger := hclog.New(&hclog.LoggerOptions{})
 	f, err := os.CreateTemp("", "")
 	if err != nil {
 		log.Fatal(err)
@@ -222,7 +216,7 @@ func Test_Configure(t *testing.T) {
 	tests := []struct {
 		stsclient    func(t *testing.T) AssumeRoleAPIClient
 		account      Account
-		awsConfig    *Config
+		awsConfig    *Spec
 		keyId        string
 		envVariables []struct {
 			key string
@@ -239,7 +233,7 @@ func Test_Configure(t *testing.T) {
 			account: Account{
 				LocalProfile: "test",
 			},
-			awsConfig: &Config{},
+			awsConfig: &Spec{},
 			keyId:     "<YOUR_TEMP_ACCESS_KEY_ID>",
 		}, {
 			stsclient: func(t *testing.T) AssumeRoleAPIClient {
@@ -249,7 +243,7 @@ func Test_Configure(t *testing.T) {
 				})
 			},
 			account:   Account{},
-			awsConfig: &Config{},
+			awsConfig: &Spec{},
 			keyId:     "<DEFAULT>",
 		},
 		{
@@ -271,7 +265,7 @@ func Test_Configure(t *testing.T) {
 				LocalProfile: "test",
 				RoleARN:      "arn:aws:iam::123456789012:role/demo",
 			},
-			awsConfig: &Config{},
+			awsConfig: &Spec{},
 			keyId:     "<AssumedRoleKeyId>",
 		}, {
 			stsclient: func(t *testing.T) AssumeRoleAPIClient {
@@ -293,14 +287,15 @@ func Test_Configure(t *testing.T) {
 				RoleARN:      "arn:aws:iam::123456789012:role/demo",
 				AccountID:    "asdfasdf",
 			},
-			awsConfig: &Config{},
+			awsConfig: &Spec{},
 			keyId:     "<AssumedRoleKeyId>",
 		},
 	}
 
 	for i, tt := range tests {
 		stsClient := tt.stsclient(t)
-		awsClient, err := configureAwsClient(ctx, logger, tt.awsConfig, tt.account, stsClient)
+
+		awsClient, err := configureAwsClient(ctx, zerolog.New(zerolog.NewTestWriter(t)), tt.awsConfig, tt.account, stsClient)
 		if err != nil {
 			t.Errorf("Case-%d failed: %+v", i, err)
 		}

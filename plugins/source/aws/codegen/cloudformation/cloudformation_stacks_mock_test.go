@@ -36,5 +36,5 @@ func buildCloudformationStacks(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestCloudformationStacks(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudformationStacks(), buildCloudformationStacks, client.TestOptions{})
+	client.MockTestHelper(t, CloudformationStacks(), buildCloudformationStacks, client.TestOptions{})
 }

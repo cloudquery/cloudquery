@@ -36,5 +36,5 @@ func buildAutoscalingGroupsLifecycleHooks(t *testing.T, ctrl *gomock.Controller)
 }
 
 func TestAutoscalingGroupsLifecycleHooks(t *testing.T) {
-	client.AwsMockTestHelper(t, AutoscalingGroupsLifecycleHooks(), buildAutoscalingGroupsLifecycleHooks, client.TestOptions{})
+	client.MockTestHelper(t, AutoscalingGroupsLifecycleHooks(), buildAutoscalingGroupsLifecycleHooks, client.TestOptions{})
 }

@@ -3,7 +3,7 @@
 package {{.AWSService | ToLower}}
 
 import (
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 
 {{range .Imports}}	{{.}}

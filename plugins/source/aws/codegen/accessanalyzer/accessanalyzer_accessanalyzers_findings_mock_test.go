@@ -36,5 +36,5 @@ func buildAccessAnalyzerAccessanalyzersFindings(t *testing.T, ctrl *gomock.Contr
 }
 
 func TestAccessAnalyzerAccessanalyzersFindings(t *testing.T) {
-	client.AwsMockTestHelper(t, AccessAnalyzerAccessanalyzersFindings(), buildAccessAnalyzerAccessanalyzersFindings, client.TestOptions{})
+	client.MockTestHelper(t, AccessAnalyzerAccessanalyzersFindings(), buildAccessAnalyzerAccessanalyzersFindings, client.TestOptions{})
 }

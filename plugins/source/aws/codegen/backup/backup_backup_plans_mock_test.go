@@ -63,5 +63,5 @@ func buildBackupBackupPlans(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestBackupBackupPlans(t *testing.T) {
-	client.AwsMockTestHelper(t, BackupBackupPlans(), buildBackupBackupPlans, client.TestOptions{})
+	client.MockTestHelper(t, BackupBackupPlans(), buildBackupBackupPlans, client.TestOptions{})
 }

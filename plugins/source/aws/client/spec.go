@@ -23,7 +23,7 @@ type AwsOrg struct {
 	ChildAccountRegions         []string `yaml:"member_regions,omitempty"`
 }
 
-type Config struct {
+type Spec struct {
 	Regions      []string  `yaml:"regions,omitempty"`
 	Accounts     []Account `yaml:"accounts"`
 	Organization *AwsOrg   `yaml:"org"`
@@ -33,7 +33,7 @@ type Config struct {
 	GlobalRegion string    `yaml:"global_region,omitempty" default:"us-east-1"`
 }
 
-func (Config) Example() string {
+func (Spec) Example() string {
 	return `
 Optional, Repeated. Add an accounts block for every account you want to assume-role into and fetch data from.
 accounts:

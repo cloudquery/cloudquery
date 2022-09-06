@@ -6,8 +6,9 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
+	"github.com/spf13/cast"
 	"github.com/thoas/go-funk"
 )
 
@@ -27,7 +28,7 @@ func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Re
 }
 
 func ResolveWAFScope(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	return diag.WrapError(r.Set(c.Name, meta.(*Client).WAFScope))
+	return errors.WithStack(r.Set(c.Name, meta.(*Client).WAFScope))
 }
 
 func ResolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
@@ -49,12 +50,12 @@ func ResolveTagField(fieldName string) func(context.Context, schema.ClientMeta, 
 		}
 		f := val.FieldByName(fieldName)
 		if f.IsNil() {
-			return diag.WrapError(r.Set(c.Name, map[string]string{})) // can't have nil or the integration test will make a fuss
+			return errors.WithStack(r.Set(c.Name, map[string]string{})) // can't have nil or the integration test will make a fuss
 		} else if f.IsZero() {
 			panic("no such field " + fieldName)
 		}
 		data := TagsToMap(f.Interface())
-		return diag.WrapError(r.Set(c.Name, data))
+		return errors.WithStack(r.Set(c.Name, data))
 	}
 }
 
@@ -64,7 +65,7 @@ func ResolveTimestampField(path string, rfcs ...string) func(_ context.Context, 
 
 		value := funk.Get(r.Item, path, funk.WithAllowZero())
 		if value == nil {
-			return diag.WrapError(r.Set(c.Name, nil))
+			return errors.WithStack(r.Set(c.Name, nil))
 		}
 
 		if reflect.TypeOf(value).Kind() == reflect.Ptr {
@@ -75,11 +76,11 @@ func ResolveTimestampField(path string, rfcs ...string) func(_ context.Context, 
 
 		switch val.Kind() {
 		case reflect.Int32, reflect.Int64:
-			return diag.WrapError(r.Set(c.Name, time.Unix(val.Int(), 0)))
+			return errors.WithStack(r.Set(c.Name, time.Unix(val.Int(), 0)))
 		case reflect.String:
-			return schema.DateResolver(path, rfcs...)(ctx, cl, r, c)
+			return DateResolver(path, rfcs...)(ctx, cl, r, c)
 		default:
-			return diag.WrapError(r.Set(c.Name, nil))
+			return errors.WithStack(r.Set(c.Name, nil))
 		}
 	}
 }
@@ -112,7 +113,7 @@ func SliceJsonResolver(path, keyPath, valuePath string) schema.ColumnResolver {
 		}
 		j = make(map[string]interface{})
 		if reflect.TypeOf(field).Kind() != reflect.Slice {
-			return diag.WrapError(fmt.Errorf("field: %s is not a slice", path))
+			return errors.WithStack(fmt.Errorf("field: %s is not a slice", path))
 		}
 		for i := 0; i < s.Len(); i++ {
 			key := funk.Get(s.Index(i).Interface(), keyPath, funk.WithAllowZero())
@@ -122,10 +123,51 @@ func SliceJsonResolver(path, keyPath, valuePath string) schema.ColumnResolver {
 				k = k.Elem()
 			}
 			if k.Kind() != reflect.String {
-				return diag.WrapError(fmt.Errorf("key field: %s is not a string", path))
+				return errors.WithStack(fmt.Errorf("key field: %s is not a string", path))
 			}
 			j[k.String()] = value
 		}
 		return r.Set(c.Name, j)
 	}
+}
+
+// DateResolver resolves the different date formats (ISODate - 2011-10-05T14:48:00.000Z is default) into *time.Time
+//
+// Examples:
+// DateResolver("Date") - resolves using RFC.RFC3339 as default
+// DateResolver("InnerStruct.Field", time.RFC822)  - resolves using time.RFC822
+// DateResolver("InnerStruct.Field", time.RFC822, "2011-10-05")  - resolves using a few resolvers one by one
+func DateResolver(path string, rfcs ...string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		data, err := cast.ToStringE(funk.Get(r.Item, path, funk.WithAllowZero()))
+		if err != nil {
+			return err
+		}
+		date, err := parseDate(data, rfcs...)
+		if err != nil {
+			return err
+		}
+		return r.Set(c.Name, date)
+	}
+}
+
+func parseDate(dateStr string, rfcs ...string) (date *time.Time, err error) {
+	if dateStr == "" {
+		return nil, nil
+	}
+
+	// set default rfc
+	if len(rfcs) == 0 {
+		rfcs = append(rfcs, time.RFC3339)
+	}
+
+	var d time.Time
+	for _, rfc := range rfcs {
+		d, err = time.Parse(rfc, dateStr)
+		if err == nil {
+			date = &d
+			return date, err
+		}
+	}
+	return date, err
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"embed"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"reflect"
 	"regexp"
@@ -13,8 +12,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -233,13 +232,6 @@ func IgnoreNotAvailableRegion(err error) bool {
 	return false
 }
 
-func accountObfusactor(aa []string, msg string) string {
-	for _, a := range aa {
-		msg = strings.ReplaceAll(msg, a, obfuscateAccountId(a))
-	}
-	return msg
-}
-
 // makeARN creates an ARN using supplied service name, partition, account id, region name and resource id parts.
 // Resource id parts are concatenated using forward slash (/).
 // See https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html for more information.
@@ -302,7 +294,7 @@ func ResolveARNGlobal(service AWSService, resourceID func(resource *schema.Resou
 // IsNotFoundError checks if api error should be ignored
 func (c *Client) IsNotFoundError(err error) bool {
 	if isNotFoundError(err) {
-		c.logger.Warn("API returned \"NotFound\" error ignoring it...", "error", err)
+		c.logger.Warn().Err(err).Msg(`API returned "NotFound" error, ignoring...`)
 		return true
 	}
 	return false
@@ -325,7 +317,7 @@ func isNotFoundError(err error) bool {
 // IsAccessDeniedError checks if api error should be classified as a permissions issue
 func (c *Client) IsAccessDeniedError(err error) bool {
 	if isAccessDeniedError(err) {
-		c.logger.Warn("API returned an Access Denied error, ignoring it and continuing...", "error", err)
+		c.logger.Warn().Err(err).Msg(`API returned "Access Denied" error, ignoring...`)
 		return true
 	}
 	return false
@@ -426,7 +418,7 @@ func TagsToMap(tagSlice interface{}) map[string]string {
 }
 
 func ListAndDetailResolver(ctx context.Context, meta schema.ClientMeta, res chan<- interface{}, list ListResolverFunc, details DetailResolverFunc) error {
-	var diags diag.Diagnostics
+	var errs []error
 
 	errorChan := make(chan error)
 	detailChan := make(chan interface{})
@@ -435,7 +427,7 @@ func ListAndDetailResolver(ctx context.Context, meta schema.ClientMeta, res chan
 	go func() {
 		defer close(done)
 		for detailError := range errorChan {
-			diags = diags.Add(diag.FromError(detailError, diag.RESOLVING))
+			errs = append(errs, detailError)
 		}
 	}()
 	sem := semaphore.NewWeighted(int64(MAX_GOROUTINES))
@@ -456,14 +448,17 @@ func ListAndDetailResolver(ctx context.Context, meta schema.ClientMeta, res chan
 	err := list(ctx, meta, detailChan)
 	close(detailChan)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 
 	// All items will be attempted to be fetched, and all errors will be aggregated
 	<-done
 
-	if diags.HasDiags() {
-		return diags
+	if l := len(errs); l > 1 {
+		return fmt.Errorf("%d errors: %w", l, errs[0])
+	} else if l == 1 {
+		return errs[0]
 	}
+
 	return nil
 }

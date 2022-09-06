@@ -5,8 +5,8 @@ package acm
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 
@@ -180,7 +180,7 @@ func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
 
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		for _, item := range output.CertificateSummaryList {
@@ -194,7 +194,7 @@ func fetchACMCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return errors.WithStack(err)
 			}
 			res <- do.Certificate
 		}
@@ -212,7 +212,7 @@ func resolveACMCertificatesTags(ctx context.Context, meta schema.ClientMeta, res
 	})
 	if err != nil {
 
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))
+	return errors.WithStack(resource.Set(c.Name, client.TagsToMap(out.Tags)))
 }

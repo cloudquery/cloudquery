@@ -63,5 +63,5 @@ func buildCodePipelinePipelines(t *testing.T, ctrl *gomock.Controller) client.Se
 }
 
 func TestCodePipelinePipelines(t *testing.T) {
-	client.AwsMockTestHelper(t, CodePipelinePipelines(), buildCodePipelinePipelines, client.TestOptions{})
+	client.MockTestHelper(t, CodePipelinePipelines(), buildCodePipelinePipelines, client.TestOptions{})
 }

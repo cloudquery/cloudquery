@@ -37,5 +37,5 @@ func buildApplicationAutoscalingPolicies(t *testing.T, ctrl *gomock.Controller) 
 }
 
 func TestApplicationAutoscalingPolicies(t *testing.T) {
-	client.AwsMockTestHelper(t, ApplicationAutoscalingPolicies(), buildApplicationAutoscalingPolicies, client.TestOptions{})
+	client.MockTestHelper(t, ApplicationAutoscalingPolicies(), buildApplicationAutoscalingPolicies, client.TestOptions{})
 }

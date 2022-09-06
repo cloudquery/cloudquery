@@ -36,5 +36,5 @@ func buildAppSyncGraphqlApis(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestAppSyncGraphqlApis(t *testing.T) {
-	client.AwsMockTestHelper(t, AppSyncGraphqlApis(), buildAppSyncGraphqlApis, client.TestOptions{})
+	client.MockTestHelper(t, AppSyncGraphqlApis(), buildAppSyncGraphqlApis, client.TestOptions{})
 }

@@ -5,8 +5,8 @@ package autoscaling
 import (
 	"context"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
@@ -90,7 +90,7 @@ func fetchAutoscalingGroupsLifecycleHooks(ctx context.Context, meta schema.Clien
 			if resolvers.IsGroupNotExistsError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 
 		res <- response.LifecycleHooks

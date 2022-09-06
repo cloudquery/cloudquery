@@ -6,8 +6,8 @@ import (
 	"context"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 
 	"{{.TypesImport}}"
 {{range .Imports}}	{{.}}
@@ -19,7 +19,7 @@ func {{.TableFuncName}}() *schema.Table {
 }
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-  return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, list{{.AWSSubService}}, list{{.AWSSubService}}Detail))
+  return errors.WithStack(client.ListAndDetailResolver(ctx, meta, res, list{{.AWSSubService}}, list{{.AWSSubService}}Detail))
 }
 
 func list{{.AWSSubService}}(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
@@ -36,7 +36,7 @@ func list{{.AWSSubService}}(ctx context.Context, meta schema.ClientMeta, detailC
 	for {
 		response, err := svc.{{.ListMethod}}(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		for _, item := range response.{{.PaginatorListName}} {
 			detailChan <- item
@@ -62,7 +62,7 @@ func list{{.AWSSubService}}Detail(ctx context.Context, meta schema.ClientMeta, r
 		if cl.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- errors.WithStack(err)
 		return
 	}
 	resultsChan <- *response.{{.ItemName}}
@@ -83,7 +83,7 @@ func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta sche
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		client.TagsIntoMap(result.Tags, tags)
 		if aws.ToString(result.NextToken) == "" {
@@ -91,6 +91,6 @@ func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta sche
 		}
 		params.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return errors.WithStack(resource.Set(c.Name, tags))
 }
 {{end}}

@@ -43,5 +43,5 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func {{.TestFuncName}}(t *testing.T) {
-	client.AwsMockTestHelper(t, {{.TableFuncName}}(), {{.MockFuncName}}, client.TestOptions{})
+	client.MockTestHelper(t, {{.TableFuncName}}(), {{.MockFuncName}}, client.TestOptions{})
 }

@@ -4,7 +4,7 @@ package codebuild
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 
 	resolvers "github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/resolvers/codebuild"
 )
