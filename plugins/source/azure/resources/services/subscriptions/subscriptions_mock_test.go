@@ -1,55 +1,54 @@
+// Auto generated code - DO NOT EDIT.
+
 package subscriptions
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 )
 
-func buildSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockSubscriptionsSubscriptionsClient(ctrl)
+func TestSubscriptionsSubscriptions(t *testing.T) {
+	client.AzureMockTestHelper(t, Subscriptions(), createSubscriptionsMock, client.TestOptions{})
+}
 
-	var subscriptionID string
-	if err := faker.FakeData(&subscriptionID); err != nil {
-		t.Fatal(err)
+func createSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockSubscriptionsSubscriptionsClient(ctrl)
+	s := services.Services{
+		Subscriptions: services.SubscriptionsClient{
+			Subscriptions: mockClient,
+		},
 	}
 
-	var model armsubscriptions.Subscription
-	if err := faker.FakeData(&model); err != nil {
-		t.Fatal(err)
-	}
+	data := armsubscriptions.Subscription{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.ClientListResponse]{
 		More: func(page armsubscriptions.ClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
+			return false
 		},
 		Fetcher: func(ctx context.Context, page *armsubscriptions.ClientListResponse) (armsubscriptions.ClientListResponse, error) {
 			return armsubscriptions.ClientListResponse{
 				SubscriptionListResult: armsubscriptions.SubscriptionListResult{
-					NextLink: nil,
-					Value:    []*armsubscriptions.Subscription{&model},
+					Value: []*armsubscriptions.Subscription{&data},
 				},
 			}, nil
 		},
 	})
-	m.EXPECT().NewListPager(gomock.Any()).Return(
+
+	mockClient.EXPECT().NewListPager(gomock.Any()).Return(
 		pager,
 	)
-
-	return services.Services{
-		Subscriptions: services.SubscriptionsClient{
-			SubscriptionID: subscriptionID,
-			Subscriptions:  m,
-		},
-	}
-}
-
-func TestSubscriptions(t *testing.T) {
-	client.AzureMockTestHelper(t, Subscriptions(), buildSubscriptionsMock, client.TestOptions{})
+	return s
 }

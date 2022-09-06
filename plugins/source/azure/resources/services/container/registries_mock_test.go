@@ -1,85 +1,42 @@
+// Auto generated code - DO NOT EDIT.
+
 package container
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/containerregistry/mgmt/2019-05-01/containerregistry"
 )
 
 func TestContainerRegistries(t *testing.T) {
-	client.AzureMockTestHelper(t, ContainerRegistries(), buildContainerRegistries, client.TestOptions{})
+	client.AzureMockTestHelper(t, Registries(), createRegistriesMock, client.TestOptions{})
 }
 
-func buildContainerRegistries(t *testing.T, ctrl *gomock.Controller) services.Services {
-	reg := mocks.NewMockContainerRegistriesClient(ctrl)
-	rep := mocks.NewMockContainerReplicationsClient(ctrl)
+func createRegistriesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockContainerRegistriesClient(ctrl)
+	s := services.Services{
+		Container: services.ContainerClient{
+			Registries: mockClient,
+		},
+	}
 
-	// we resort to manually creating this data because faker fails to do it (recursive member)
-	registry := containerregistry.Registry{}
-	err := faker.FakeDataSkipFields(&registry, []string{"RegistryProperties"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	id := client.FakeResourceGroup
-	registry.ID = &id
-	registry.RegistryProperties = fakeContainerRegistryProperties(t)
-	reg.EXPECT().List(gomock.Any()).Return(
-		containerregistry.NewRegistryListResultPage(
-			containerregistry.RegistryListResult{Value: &[]containerregistry.Registry{registry}},
-			func(context.Context, containerregistry.RegistryListResult) (containerregistry.RegistryListResult, error) {
-				return containerregistry.RegistryListResult{}, nil
-			},
-		), nil,
-	)
+	data := containerregistry.Registry{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
-	// we resort to manually creating this data because faker fails to do it (recursive member)
-	replication := containerregistry.Replication{}
-	err = faker.FakeDataSkipFields(&replication, []string{"ReplicationProperties"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	replication.ReplicationProperties = fakeContainerReplicationProperties(t)
-	rep.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		containerregistry.NewReplicationListResultPage(
-			containerregistry.ReplicationListResult{Value: &[]containerregistry.Replication{replication}},
-			func(context.Context, containerregistry.ReplicationListResult) (containerregistry.ReplicationListResult, error) {
-				return containerregistry.ReplicationListResult{}, nil
-			},
-		), nil,
-	)
-	return services.Services{
-		Container: services.ContainerClient{Registries: reg, Replications: rep},
-	}
-}
+	result := containerregistry.NewRegistryListResultPage(containerregistry.RegistryListResult{Value: &[]containerregistry.Registry{data}}, func(ctx context.Context, result containerregistry.RegistryListResult) (containerregistry.RegistryListResult, error) {
+		return containerregistry.RegistryListResult{}, nil
+	})
 
-func fakeContainerRegistryProperties(t *testing.T) *containerregistry.RegistryProperties {
-	var mcp containerregistry.RegistryProperties
-	err := faker.FakeDataSkipFields(&mcp, []string{"ProvisioningState"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	mcp.ProvisioningState = "test"
-	cidr := faker.IPv4() + "/24"
-	(*mcp.NetworkRuleSet.IPRules)[0].IPAddressOrRange = &cidr
-	// and test with IP address too
-	*mcp.NetworkRuleSet.IPRules = append(*mcp.NetworkRuleSet.IPRules, (*mcp.NetworkRuleSet.IPRules)[0])
-	ip := faker.IPv4()
-	(*mcp.NetworkRuleSet.IPRules)[1].IPAddressOrRange = &ip
-	return &mcp
-}
-
-func fakeContainerReplicationProperties(t *testing.T) *containerregistry.ReplicationProperties {
-	var mcp containerregistry.ReplicationProperties
-	err := faker.FakeDataSkipFields(&mcp, []string{"ProvisioningState"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	mcp.ProvisioningState = "test"
-	return &mcp
+	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
+	return s
 }

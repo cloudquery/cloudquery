@@ -1,257 +1,77 @@
+// Auto generated code - DO NOT EDIT.
+
 package monitor
 
 import (
 	"context"
-	"errors"
+
+	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
+	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"golang.org/x/sync/errgroup"
+
+	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
-// diagnosticSettingResource is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
-type diagnosticSettingResource struct {
-	insights.DiagnosticSettingsResource
-	ResourceURI string
-}
-
-const maxGoroutines = 10
-
-func MonitorDiagnosticSettings() *schema.Table {
+func DiagnosticSettings() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_monitor_diagnostic_settings",
-		Description:   "DiagnosticSettingsResource the diagnostic setting resource",
-		Resolver:      fetchMonitorDiagnosticSettings,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:     "azure_monitor_diagnostic_settings",
+		Resolver: fetchMonitorDiagnosticSettings,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "storage_account_id",
-				Description: "The resource ID of the storage account to which you would like to send Diagnostic Logs",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DiagnosticSettings.StorageAccountID"),
+				Name:     "cq_id_parent",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
 			},
 			{
-				Name:        "service_bus_rule_id",
-				Description: "The service bus rule Id of the diagnostic setting This is here to maintain backwards compatibility",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DiagnosticSettings.ServiceBusRuleID"),
+				Name:     "storage_account_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StorageAccountID"),
 			},
 			{
-				Name:          "event_hub_authorization_rule_id",
-				Description:   "The resource Id for the event hub authorization rule",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("DiagnosticSettings.EventHubAuthorizationRuleID"),
-				IgnoreInTests: true,
+				Name:     "service_bus_rule_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceBusRuleID"),
 			},
 			{
-				Name:          "event_hub_name",
-				Description:   "The name of the event hub If none is specified, the default event hub will be selected",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("DiagnosticSettings.EventHubName"),
-				IgnoreInTests: true,
+				Name:     "event_hub_authorization_rule_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EventHubAuthorizationRuleID"),
 			},
 			{
-				Name:        "workspace_id",
-				Description: "The full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/MicrosoftOperationalInsights/workspaces/viruela2",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DiagnosticSettings.WorkspaceID"),
+				Name:     "event_hub_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EventHubName"),
 			},
 			{
-				Name:          "log_analytics_destination_type",
-				Description:   "A string indicating whether the export to Log Analytics should use the default destination type, ie AzureDiagnostics, or use a destination type constructed as follows: <normalized service identity>_<normalized category name> Possible values are: Dedicated and null (null is default)",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("DiagnosticSettings.LogAnalyticsDestinationType"),
-				IgnoreInTests: true,
+				Name:     "metrics",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Metrics"),
 			},
 			{
-				Name:        "id",
-				Description: "Azure resource Id",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "logs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Logs"),
 			},
 			{
-				Name:        "name",
-				Description: "Azure resource name",
-				Type:        schema.TypeString,
+				Name:     "workspace_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("WorkspaceID"),
 			},
 			{
-				Name:        "type",
-				Description: "Azure resource type",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "resource_uri",
-				Description: "Resource URI this setting belongs to",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourceURI"),
-			},
-		},
-		Relations: []*schema.Table{
-			{
-				Name:        "azure_monitor_diagnostic_setting_metrics",
-				Description: "MetricSettings part of MultiTenantDiagnosticSettings Specifies the settings for a particular metric",
-				Resolver:    fetchMonitorDiagnosticSettingMetrics,
-				Columns: []schema.Column{
-					{
-						Name:        "diagnostic_setting_cq_id",
-						Description: "Unique ID of azure_monitor_diagnostic_settings table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "diagnostic_setting_id",
-						Description: "Unique ID of azure_monitor_diagnostic_settings table (FK)",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "time_grain",
-						Description: "the timegrain of the metric in ISO8601 format",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "category",
-						Description: "Name of a Diagnostic Metric category for a resource type this setting is applied to To obtain the list of Diagnostic metric categories for a resource, first perform a GET diagnostic settings operation",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "enabled",
-						Description: "a value indicating whether this category is enabled",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "retention_policy_enabled",
-						Description: "a value indicating whether the retention policy is enabled",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("RetentionPolicy.Enabled"),
-					},
-					{
-						Name:        "retention_policy_days",
-						Description: "the number of days for the retention in days A value of 0 will retain the events indefinitely",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("RetentionPolicy.Days"),
-					},
-				},
-			},
-			{
-				Name:        "azure_monitor_diagnostic_setting_logs",
-				Description: "LogSettings part of MultiTenantDiagnosticSettings Specifies the settings for a particular log",
-				Resolver:    fetchMonitorDiagnosticSettingLogs,
-				Columns: []schema.Column{
-					{
-						Name:        "diagnostic_setting_cq_id",
-						Description: "Unique ID of azure_monitor_diagnostic_settings table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "diagnostic_setting_id",
-						Description: "Unique ID of azure_monitor_diagnostic_settings table (FK)",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "category",
-						Description: "Name of a Diagnostic Log category for a resource type this setting is applied to To obtain the list of Diagnostic Log categories for a resource, first perform a GET diagnostic settings operation",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "enabled",
-						Description: "a value indicating whether this log is enabled",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "retention_policy_enabled",
-						Description: "a value indicating whether the retention policy is enabled",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("RetentionPolicy.Enabled"),
-					},
-					{
-						Name:        "retention_policy_days",
-						Description: "the number of days for the retention in days A value of 0 will retain the events indefinitely",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("RetentionPolicy.Days"),
-					},
-				},
+				Name:     "log_analytics_destination_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LogAnalyticsDestinationType"),
 			},
 		},
 	}
-}
-
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
-func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cl := meta.(*client.Client)
-	resSvc := cl.Services().Monitor.Resources
-	monSvc := cl.Services().Monitor.DiagnosticSettings
-	resResponse, err := resSvc.List(ctx, "", "", nil)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	rs := resResponse.Values()
-	ids := make([]string, 0, len(rs))
-	ids = append(ids, "/subscriptions/"+cl.SubscriptionId)
-	for _, r := range rs {
-		ids = append(ids, *r.ID)
-	}
-
-	g, _ := errgroup.WithContext(ctx)
-	g.SetLimit(maxGoroutines)
-	for _, i := range ids {
-		id := i
-		g.Go(func() error {
-			response, err := monSvc.List(ctx, id)
-			if err != nil {
-				if isResourceTypeNotSupported(err) {
-					return nil
-				}
-				return diag.WrapError(err)
-			}
-			if response.Value == nil {
-				return nil
-			}
-			for _, v := range *response.Value {
-				res <- diagnosticSettingResource{
-					DiagnosticSettingsResource: v,
-					ResourceURI:                id,
-				}
-			}
-			return nil
-		})
-	}
-
-	err = g.Wait()
-
-	return diag.WrapError(err)
-}
-func fetchMonitorDiagnosticSettingMetrics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(diagnosticSettingResource)
-	res <- p.Metrics
-	return nil
-}
-func fetchMonitorDiagnosticSettingLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(diagnosticSettingResource)
-	if p.DiagnosticSettings == nil ||
-		p.DiagnosticSettings.Logs == nil {
-		return nil
-	}
-	res <- p.Logs
-	return nil
 }
 
 func isResourceTypeNotSupported(err error) bool {
@@ -260,4 +80,33 @@ func isResourceTypeNotSupported(err error) bool {
 		return azureErr.ServiceError != nil && azureErr.ServiceError.Code == "ResourceTypeNotSupported"
 	}
 	return false
+}
+
+// diagnosticSettingResource is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
+type diagnosticSettingResource struct {
+	insights.DiagnosticSettingsResource
+	ResourceURI string
+}
+
+func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().Monitor.DiagnosticSettings
+
+	resource := parent.Item.(resources.GenericResourceExpanded)
+	response, err := svc.List(ctx, *resource.ID)
+	if err != nil {
+		if isResourceTypeNotSupported(err) {
+			return nil
+		}
+		return errors.WithStack(err)
+	}
+	if response.Value == nil {
+		return nil
+	}
+	for _, v := range *response.Value {
+		res <- diagnosticSettingResource{
+			DiagnosticSettingsResource: v,
+			ResourceURI:                *resource.ID,
+		}
+	}
+	return nil
 }

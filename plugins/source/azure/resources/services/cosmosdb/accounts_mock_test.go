@@ -1,37 +1,39 @@
+// Auto generated code - DO NOT EDIT.
+
 package cosmosdb
 
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 )
 
-func buildCosmosDBAccountMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	accountSvc := mocks.NewMockCosmosDBAccountsClient(ctrl)
-
-	s := services.Services{
-		CosmosDB: services.CosmosDBClient{
-			Accounts: accountSvc,
-		},
-	}
-	account := documentdb.DatabaseAccountGetResults{}
-	err := faker.FakeData(&account)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-
-	accountSvc.EXPECT().List(gomock.Any()).Return(
-		documentdb.DatabaseAccountsListResult{Value: &[]documentdb.DatabaseAccountGetResults{account}}, nil,
-	)
-
-	return s
+func TestCosmosDBAccounts(t *testing.T) {
+	client.AzureMockTestHelper(t, Accounts(), createAccountsMock, client.TestOptions{})
 }
 
-func TestCosmosDBAccount(t *testing.T) {
-	client.AzureMockTestHelper(t, CosmosDBAccounts(), buildCosmosDBAccountMock, client.TestOptions{})
+func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockCosmosDBAccountsClient(ctrl)
+	s := services.Services{
+		CosmosDB: services.CosmosDBClient{
+			Accounts: mockClient,
+		},
+	}
+
+	data := documentdb.DatabaseAccountGetResults{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := documentdb.DatabaseAccountsListResult{Value: &[]documentdb.DatabaseAccountGetResults{data}}
+
+	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
+	return s
 }

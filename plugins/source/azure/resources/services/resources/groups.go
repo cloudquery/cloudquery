@@ -1,85 +1,80 @@
+// Auto generated code - DO NOT EDIT.
+
 package resources
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 )
 
-func ResourcesGroups() *schema.Table {
+func Groups() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_resources_groups",
-		Description:  "Azure resource group",
-		Resolver:     fetchResourcesGroups,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:      "azure_resources_groups",
+		Resolver:  fetchResourcesGroups,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the resource group",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "name",
-				Description: "The name of the resource group",
-				Type:        schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "type",
-				Description: "The type of the resource group",
-				Type:        schema.TypeString,
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:        "properties_provisioning_state",
-				Description: "The provisioning state",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Properties.ProvisioningState"),
+				Name:     "properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties"),
 			},
 			{
-				Name:        "location",
-				Description: "The location of the resource group It cannot be changed after the resource group has been created It must be one of the supported Azure locations",
-				Type:        schema.TypeString,
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:        "managed_by",
-				Description: "The ID of the resource that manages this resource group",
-				Type:        schema.TypeString,
+				Name:     "managed_by",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ManagedBy"),
 			},
 			{
-				Name:        "tags",
-				Description: "The tags attached to the resource group",
-				Type:        schema.TypeJSON,
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
-func fetchResourcesGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchResourcesGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Resources.Groups
+
 	response, err := svc.List(ctx, "", nil)
+
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
+
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 	}
+
 	return nil
 }

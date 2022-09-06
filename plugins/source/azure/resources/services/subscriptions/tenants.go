@@ -1,97 +1,87 @@
+// Auto generated code - DO NOT EDIT.
+
 package subscriptions
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 )
 
-//go:generate cq-gen --resource tenants --config gen.hcl --output .
 func Tenants() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_subscription_tenants",
-		Description: "Azure tenant information",
-		Resolver:    fetchSubscriptionTenants,
-		Multiplex:   client.SubscriptionMultiplex,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:      "azure_subscriptions_tenants",
+		Resolver:  fetchSubscriptionsTenants,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:          "country",
-				Description:   "Country/region name of the address for the tenant",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:          "country_code",
-				Description:   "Country/region abbreviation for the tenant",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:     "country",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Country"),
 			},
 			{
-				Name:          "default_domain",
-				Description:   "The default domain for the tenant",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:     "country_code",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CountryCode"),
 			},
 			{
-				Name:          "display_name",
-				Description:   "The display name of the tenant",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:     "default_domain",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DefaultDomain"),
 			},
 			{
-				Name:          "domains",
-				Description:   "The list of domains for the tenant",
-				Type:          schema.TypeStringArray,
-				IgnoreInTests: true,
+				Name:     "display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DisplayName"),
 			},
 			{
-				Name:        "id",
-				Description: "The fully qualified ID of the tenant",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "domains",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Domains"),
 			},
 			{
-				Name:          "tenant_branding_logo_url",
-				Description:   "The tenant's branding logo URL",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("TenantBrandingLogoURL"),
-				IgnoreInTests: true,
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "tenant_category",
-				Description: "Category of the tenant",
-				Type:        schema.TypeString,
+				Name:     "tenant_branding_logo_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TenantBrandingLogoURL"),
 			},
 			{
-				Name:        "tenant_id",
-				Description: "The tenant ID",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TenantID"),
+				Name:     "tenant_category",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TenantCategory"),
 			},
 			{
-				Name:          "tenant_type",
-				Description:   "The tenant type",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:     "tenant_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TenantID"),
+			},
+			{
+				Name:     "tenant_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TenantType"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//                                               Table Resolver Functions
-// ====================================================================================================================
-
-func fetchSubscriptionTenants(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSubscriptionsTenants(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Subscriptions.Tenants
 	pager := svc.NewListPager(nil)
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		for _, v := range nextResult.Value {
 			res <- v

@@ -1,82 +1,65 @@
+// Auto generated code - DO NOT EDIT.
+
 package authorization
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 )
 
-func AuthorizationRoleAssignments() *schema.Table {
+func RoleAssignments() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_authorization_role_assignments",
-		Description:  "RoleAssignment role Assignments",
-		Resolver:     fetchAuthorizationRoleAssignments,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:      "azure_authorization_role_assignments",
+		Resolver:  fetchAuthorizationRoleAssignments,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "id",
-				Description: "The role assignment ID",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "name",
-				Description: "The role assignment name",
-				Type:        schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "type",
-				Description: "The role assignment type",
-				Type:        schema.TypeString,
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:        "scope",
-				Description: "The role assignment scope",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Properties.Scope"),
-			},
-			{
-				Name:        "role_definition_id",
-				Description: "The role definition ID",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Properties.RoleDefinitionID"),
-			},
-			{
-				Name:        "principal_id",
-				Description: "The principal ID",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Properties.PrincipalID"),
+				Name:     "properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Properties"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
 func fetchAuthorizationRoleAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Authorization
-	result, err := svc.RoleAssignments.List(ctx, "")
+	svc := meta.(*client.Client).Services().Authorization.RoleAssignments
+
+	response, err := svc.List(ctx, "")
+
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	for result.NotDone() {
-		res <- result.Values()
-		if err := result.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
+
+	for response.NotDone() {
+		res <- response.Values()
+		if err := response.NextWithContext(ctx); err != nil {
+			return errors.WithStack(err)
 		}
 	}
+
 	return nil
 }

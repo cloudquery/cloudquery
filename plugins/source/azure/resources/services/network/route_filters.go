@@ -1,181 +1,80 @@
+// Auto generated code - DO NOT EDIT.
+
 package network
 
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 )
 
-func NetworkRouteFilters() *schema.Table {
+func RouteFilters() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_network_route_filters",
-		Description:  "Azure Network Route Filters",
-		Resolver:     fetchNetworkRouteFilters,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:      "azure_network_route_filters",
+		Resolver:  fetchNetworkRouteFilters,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "id",
-				Description: "Resource ID.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "route_filter_properties_format",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RouteFilterPropertiesFormat"),
 			},
 			{
-				Name:        "etag",
-				Description: "A unique read-only string that changes whenever the resource is updated.",
-				Type:        schema.TypeString,
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
-				Name:          "ipv6_peerings",
-				Description:   "A collection of references to express route circuit ipv6 peerings.",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveNetworkRouteFilterIpv6Peerings,
-				IgnoreInTests: true,
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "location",
-				Description: "Resource location.",
-				Type:        schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "name",
-				Description: "Resource name.",
-				Type:        schema.TypeString,
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:          "peerings",
-				Description:   "A collection of references to express route circuit peerings.",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveNetworkRouteFilterPeerings,
-				IgnoreInTests: true,
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:        "provisioning_state",
-				Description: "The provisioning state of the route filter resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RouteFilterPropertiesFormat.ProvisioningState"),
-			},
-			{
-				Name:        "tags",
-				Description: "Resource tags.",
-				Type:        schema.TypeJSON,
-			},
-			{
-				Name:        "type",
-				Description: "Resource type.",
-				Type:        schema.TypeString,
-			},
-		},
-		Relations: []*schema.Table{
-			{
-				Name:        "azure_network_route_filter_rules",
-				Description: "Route Filter Rule Resource.",
-				Resolver:    fetchNetworkRouteFilterRules,
-				Columns: []schema.Column{
-					{
-						Name:        "route_filter_cq_id",
-						Description: "Unique CloudQuery ID of azure_network_route_filters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "id",
-						Description: "Resource ID.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ID"),
-					},
-					{
-						Name:        "access",
-						Description: "The access type of the rule.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RouteFilterRulePropertiesFormat.Access"),
-					},
-					{
-						Name:        "communities",
-						Description: "The collection for bgp community values to filter on.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("RouteFilterRulePropertiesFormat.Communities"),
-					},
-					{
-						Name:        "etag",
-						Description: "A unique read-only string that changes whenever the resource is updated.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "location",
-						Description:   "Resource location.",
-						Type:          schema.TypeString,
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "name",
-						Description: "Resource name.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "provisioning_state",
-						Description: "The provisioning state of the route filter rule resource.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RouteFilterRulePropertiesFormat.ProvisioningState"),
-					},
-					{
-						Name:        "route_filter_rule_type",
-						Description: "The rule type of the rule.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RouteFilterRulePropertiesFormat.RouteFilterRuleType"),
-					},
-				},
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//                                               Table Resolver Functions
-// ====================================================================================================================
-
-func fetchNetworkRouteFilters(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchNetworkRouteFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Network.RouteFilters
+
 	response, err := svc.List(ctx)
+
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
+
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 	}
-	return nil
-}
-func resolveNetworkRouteFilterIpv6Peerings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rf := resource.Item.(network.RouteFilter)
-	if rf.Ipv6Peerings == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, *rf.Ipv6Peerings))
-}
-func resolveNetworkRouteFilterPeerings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rf := resource.Item.(network.RouteFilter)
-	if rf.Peerings == nil {
-		return nil
-	}
-	return diag.WrapError(resource.Set(c.Name, *rf.Peerings))
-}
-func fetchNetworkRouteFilterRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	rf := parent.Item.(network.RouteFilter)
-	if rf.RouteFilterPropertiesFormat != nil && rf.RouteFilterPropertiesFormat.Rules != nil {
-		res <- *rf.RouteFilterPropertiesFormat.Rules
-	}
+
 	return nil
 }

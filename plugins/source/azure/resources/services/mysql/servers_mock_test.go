@@ -1,45 +1,39 @@
+// Auto generated code - DO NOT EDIT.
+
 package mysql
 
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"
 )
 
-func buildMySQLServerMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	serverSvc := mocks.NewMockMySQLServersClient(ctrl)
-	configSvc := mocks.NewMockMySQLConfigurationsClient(ctrl)
-	s := services.Services{
-		MySQL: services.MySQLClient{
-			Servers:       serverSvc,
-			Configuration: configSvc,
-		},
-	}
-	server := mysql.Server{}
-	err := faker.FakeData(&server)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-	name := "testServer"
-	server.Name = &name
-	fakeId := client.FakeResourceGroup + "/" + *server.ID
-	server.ID = &fakeId
-	page := mysql.ServerListResult{Value: &[]mysql.Server{server}}
-	serverSvc.EXPECT().List(gomock.Any()).Return(page, nil)
-
-	config := mysql.Configuration{}
-	if err := faker.FakeData(&config); err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-	configSvc.EXPECT().ListByServer(gomock.Any(), "test", *server.Name).Return(mysql.ConfigurationListResult{Value: &[]mysql.Configuration{config}}, nil)
-	return s
+func TestMySQLServers(t *testing.T) {
+	client.AzureMockTestHelper(t, Servers(), createServersMock, client.TestOptions{})
 }
 
-func TestMySQLServers(t *testing.T) {
-	client.AzureMockTestHelper(t, MySQLServers(), buildMySQLServerMock, client.TestOptions{})
+func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockMySQLServersClient(ctrl)
+	s := services.Services{
+		MySQL: services.MySQLClient{
+			Servers: mockClient,
+		},
+	}
+
+	data := mysql.Server{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := mysql.ServerListResult{Value: &[]mysql.Server{data}}
+
+	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
+	return s
 }

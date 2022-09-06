@@ -1,37 +1,42 @@
+// Auto generated code - DO NOT EDIT.
+
 package redis
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 )
 
-func buildRedisClientMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockRedisResourceTypesClient(ctrl)
-	var rt redis.ResourceType
-	if err := faker.FakeData(&rt); err != nil {
-		t.Fatal(err)
-	}
-	ip := "192.168.1.1"
-	rt.StaticIP = &ip
-	m.EXPECT().ListBySubscription(gomock.Any()).Return(
-		redis.NewListResultPage(
-			redis.ListResult{Value: &[]redis.ResourceType{rt}},
-			func(c context.Context, lr redis.ListResult) (redis.ListResult, error) {
-				return redis.ListResult{}, nil
-			},
-		),
-		nil,
-	)
-	return services.Services{Redis: services.RedisClient{ResourceTypes: m}}
+func TestRedisResourceTypes(t *testing.T) {
+	client.AzureMockTestHelper(t, ResourceTypes(), createResourceTypesMock, client.TestOptions{})
 }
 
-func TestRedisServices(t *testing.T) {
-	client.AzureMockTestHelper(t, RedisServices(), buildRedisClientMock, client.TestOptions{})
+func createResourceTypesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockRedisResourceTypesClient(ctrl)
+	s := services.Services{
+		Redis: services.RedisClient{
+			ResourceTypes: mockClient,
+		},
+	}
+
+	data := redis.ResourceType{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := redis.NewListResultPage(redis.ListResult{Value: &[]redis.ResourceType{data}}, func(ctx context.Context, result redis.ListResult) (redis.ListResult, error) {
+		return redis.ListResult{}, nil
+	})
+
+	mockClient.EXPECT().ListBySubscription(gomock.Any()).Return(result, nil)
+	return s
 }

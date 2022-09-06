@@ -1,50 +1,42 @@
+// Auto generated code - DO NOT EDIT.
+
 package network
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func buildNetworkExpressRoutePortsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	rpc := mocks.NewMockNetworkExpressRoutePortsClient(ctrl)
+func TestNetworkExpressRoutePorts(t *testing.T) {
+	client.AzureMockTestHelper(t, ExpressRoutePorts(), createExpressRoutePortsMock, client.TestOptions{})
+}
+
+func createExpressRoutePortsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockNetworkExpressRoutePortsClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
-			ExpressRoutePorts: rpc,
+			ExpressRoutePorts: mockClient,
 		},
 	}
 
-	tid := "test"
-	erl := network.ExpressRouteLink{ID: &tid}
-	require.Nil(t, faker.FakeData(&erl.Etag))
-	require.Nil(t, faker.FakeData(&erl.Name))
-	require.Nil(t, faker.FakeData(&erl.ExpressRouteLinkPropertiesFormat))
-	require.Nil(t, faker.FakeData(&erl.ExpressRouteLinkPropertiesFormat.MacSecConfig))
+	data := network.ExpressRoutePort{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
-	erc := network.ExpressRoutePort{ID: &tid}
-	require.Nil(t, faker.FakeData(&erc.Etag))
-	require.Nil(t, faker.FakeData(&erc.Location))
-	require.Nil(t, faker.FakeData(&erc.Name))
-	require.Nil(t, faker.FakeData(&erc.Tags))
-	require.Nil(t, faker.FakeData(&erc.Type))
-	require.Nil(t, faker.FakeData(&erc.Identity))
-	require.Nil(t, faker.FakeData(&erc.ExpressRoutePortPropertiesFormat))
-	erc.ExpressRoutePortPropertiesFormat.Links = &[]network.ExpressRouteLink{erl}
-
-	page := network.NewExpressRoutePortListResultPage(network.ExpressRoutePortListResult{Value: &[]network.ExpressRoutePort{erc}}, func(ctx context.Context, result network.ExpressRoutePortListResult) (network.ExpressRoutePortListResult, error) {
+	result := network.NewExpressRoutePortListResultPage(network.ExpressRoutePortListResult{Value: &[]network.ExpressRoutePort{data}}, func(ctx context.Context, result network.ExpressRoutePortListResult) (network.ExpressRoutePortListResult, error) {
 		return network.ExpressRoutePortListResult{}, nil
 	})
-	rpc.EXPECT().List(gomock.Any()).Return(page, nil)
-	return s
-}
 
-func TestNetworkExpressRoutePorts(t *testing.T) {
-	client.AzureMockTestHelper(t, NetworkExpressRoutePorts(), buildNetworkExpressRoutePortsMock, client.TestOptions{})
+	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
+	return s
 }

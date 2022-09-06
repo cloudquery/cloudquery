@@ -1,37 +1,42 @@
+// Auto generated code - DO NOT EDIT.
+
 package iothub
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-07-02/devices"
 )
 
-func buildIotHubHubsClientMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockIotHubDevicesClient(ctrl)
-	var iothub devices.IotHubDescription
-	if err := faker.FakeData(&iothub); err != nil {
-		t.Fatal(err)
-	}
-
-	m.EXPECT().ListBySubscription(gomock.Any()).Return(
-		devices.NewIotHubDescriptionListResultPage(
-			devices.IotHubDescriptionListResult{Value: &[]devices.IotHubDescription{iothub}},
-			func(c context.Context, lr devices.IotHubDescriptionListResult) (devices.IotHubDescriptionListResult, error) {
-				return devices.IotHubDescriptionListResult{}, nil
-			},
-		),
-		nil,
-	)
-
-	return services.Services{IotHub: services.IotHubClient{Devices: m}}
+func TestIotHubDevices(t *testing.T) {
+	client.AzureMockTestHelper(t, Devices(), createDevicesMock, client.TestOptions{})
 }
 
-func TestIotHubHubsServices(t *testing.T) {
-	client.AzureMockTestHelper(t, IothubHubs(), buildIotHubHubsClientMock, client.TestOptions{})
+func createDevicesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockIotHubDevicesClient(ctrl)
+	s := services.Services{
+		IotHub: services.IotHubClient{
+			Devices: mockClient,
+		},
+	}
+
+	data := devices.IotHubDescription{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := devices.NewIotHubDescriptionListResultPage(devices.IotHubDescriptionListResult{Value: &[]devices.IotHubDescription{data}}, func(ctx context.Context, result devices.IotHubDescriptionListResult) (devices.IotHubDescriptionListResult, error) {
+		return devices.IotHubDescriptionListResult{}, nil
+	})
+
+	mockClient.EXPECT().ListBySubscription(gomock.Any()).Return(result, nil)
+	return s
 }

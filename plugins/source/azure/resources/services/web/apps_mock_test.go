@@ -44,8 +44,8 @@ func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	require.NoError(t, faker.FakeDataSkipFields(&vi, []string{"Routes"}))
 	apps.EXPECT().GetVnetConnection(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(vi, nil)
 
-	pp := PublishData{
-		PublishData: []PublishProfile{
+	pp := publishData{
+		PublishData: []publishProfile{
 			{
 				PublishUrl: "test",
 				UserName:   "test",
@@ -53,7 +53,7 @@ func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		},
 	}
 
-	data, err := xml.Marshal([]PublishData{pp})
+	data, err := xml.Marshal([]publishData{pp})
 	if err != nil {
 		t.Errorf("failed building xml %s", err)
 	}
@@ -73,5 +73,5 @@ func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 }
 
 func TestWebApps(t *testing.T) {
-	client.AzureMockTestHelper(t, WebApps(), buildWebAppsMock, client.TestOptions{})
+	client.AzureMockTestHelper(t, Apps(), buildWebAppsMock, client.TestOptions{})
 }

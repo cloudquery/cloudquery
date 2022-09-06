@@ -1,83 +1,76 @@
+// Auto generated code - DO NOT EDIT.
+
 package network
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 )
 
-func NetworkWatchers() *schema.Table {
+func Watchers() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_network_watchers",
-		Description:   "Azure network watcher",
-		Resolver:      fetchNetworkWatchers,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		IgnoreInTests: true,
+		Name:      "azure_network_watchers",
+		Resolver:  fetchNetworkWatchers,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "etag",
-				Description: "A unique read-only string that changes whenever the resource is updated",
-				Type:        schema.TypeString,
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
 			},
 			{
-				Name:        "provisioning_state",
-				Description: "The provisioning state of the network watcher resource Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("WatcherPropertiesFormat.ProvisioningState"),
+				Name:     "watcher_properties_format",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("WatcherPropertiesFormat"),
 			},
 			{
-				Name:        "id",
-				Description: "Resource ID",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "name",
-				Description: "Resource name",
-				Type:        schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "type",
-				Description: "Resource type",
-				Type:        schema.TypeString,
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:        "location",
-				Description: "Resource location",
-				Type:        schema.TypeString,
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:        "tags",
-				Description: "Resource tags",
-				Type:        schema.TypeJSON,
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
 func fetchNetworkWatchers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Network.Watchers
-	result, err := svc.ListAll(ctx)
+
+	response, err := svc.ListAll(ctx)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	if result.Value == nil {
+	if response.Value == nil {
 		return nil
 	}
-	res <- *result.Value
+	res <- *response.Value
+
 	return nil
 }

@@ -1,76 +1,61 @@
+// Auto generated code - DO NOT EDIT.
+
 package security
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 )
 
-func SecurityPricings() *schema.Table {
+func Pricings() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_security_pricings",
-		Description:  "Pricing azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period The standard tier offers advanced security capabilities, while the free tier offers basic security features",
-		Resolver:     fetchSecurityPricings,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:      "azure_security_pricings",
+		Resolver:  fetchSecurityPricings,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "pricing_properties_tier",
-				Description: "The pricing tier value Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period The standard tier offers advanced security capabilities, while the free tier offers basic security features Possible values include: 'PricingTierFree', 'PricingTierStandard'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PricingProperties.PricingTier"),
+				Name:     "pricing_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PricingProperties"),
 			},
 			{
-				Name:        "pricing_properties_free_trial_remaining_time",
-				Description: "The duration left for the subscriptions free trial period - in ISO 8601 format (eg P3Y6M4DT12H30M5S)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PricingProperties.FreeTrialRemainingTime"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "id",
-				Description: "Resource Id",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "name",
-				Description: "Resource name",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "resource_type",
-				Description: "Resource type",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Type"),
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
 func fetchSecurityPricings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Security.Pricings
+
 	response, err := svc.List(ctx)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	if response.Value != nil {
-		for _, item := range *response.Value {
-			res <- item
-		}
+	if response.Value == nil {
+		return nil
 	}
+	res <- *response.Value
+
 	return nil
 }

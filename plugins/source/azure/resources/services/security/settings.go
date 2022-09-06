@@ -1,72 +1,75 @@
+// Auto generated code - DO NOT EDIT.
+
 package security
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 )
 
-func SecuritySettings() *schema.Table {
+func Settings() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_security_settings",
-		Description:  "Setting the kind of the security setting",
-		Resolver:     fetchSecuritySettings,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:      "azure_security_settings",
+		Resolver:  fetchSecuritySettings,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "kind",
-				Description: "Possible values include: 'KindSetting', 'KindDataExportSettings'",
-				Type:        schema.TypeString,
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
 			},
 			{
-				Name:        "id",
-				Description: "Resource Id",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "name",
-				Description: "Resource name",
-				Type:        schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "resource_type",
-				Description: "Resource type",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Type"),
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:        "enabled",
-				Description: "Export setting enabled flag",
-				Type:        schema.TypeBool,
-				Resolver:    resolveEnabled,
+				Name:     "enabled",
+				Type:     schema.TypeBool,
+				Resolver: resolveEnabled,
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
+func resolveEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	item := resource.Item.(security.BasicSetting)
+	if v, ok := item.AsDataExportSettings(); ok {
+		return errors.WithStack(resource.Set(c.Name, v.Enabled))
+	}
+	if v, ok := item.AsAlertSyncSettings(); ok {
+		return errors.WithStack(resource.Set(c.Name, v.Enabled))
+	}
+	return errors.WithStack(resource.Set(c.Name, true))
+}
+
 func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Security.Settings
+
 	response, err := svc.List(ctx)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	for response.NotDone() {
 		for _, item := range response.Values() {
@@ -74,26 +77,15 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 				res <- v
 			} else if v, ok := item.AsDataExportSettings(); ok {
 				res <- v
-			} else if v, ok := item.AsAlertSyncSettings(); ok { // nolint:revive
+			} else if v, ok := item.AsAlertSyncSettings(); ok {
 				res <- v
 			} else {
-				return diag.WrapError(fmt.Errorf("unexpected BasicSetting: %#v", item))
+				return errors.WithStack(fmt.Errorf("unexpected BasicSetting: %#v", item))
 			}
 		}
 		if err := response.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-	}
-	return nil
-}
-
-func resolveEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	item := resource.Item.(security.Setting)
-	if v, ok := item.AsDataExportSettings(); ok {
-		return diag.WrapError(resource.Set(c.Name, v.Enabled))
-	}
-	if v, ok := item.AsAlertSyncSettings(); ok {
-		return diag.WrapError(resource.Set(c.Name, v.Enabled))
 	}
 	return nil
 }

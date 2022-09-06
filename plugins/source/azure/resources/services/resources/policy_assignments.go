@@ -1,165 +1,80 @@
+// Auto generated code - DO NOT EDIT.
+
 package resources
 
 import (
 	"context"
-	"encoding/json"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/pkg/errors"
 )
 
-func ResourcesPolicyAssignments() *schema.Table {
+func PolicyAssignments() *schema.Table {
 	return &schema.Table{
-		Name:         "azure_resources_policy_assignments",
-		Description:  "Azure network watcher",
-		Resolver:     fetchResourcesPolicyAssignments,
-		Multiplex:    client.SubscriptionMultiplex,
-		DeleteFilter: client.DeleteSubscriptionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
+		Name:      "azure_resources_policy_assignments",
+		Resolver:  fetchResourcesPolicyAssignments,
+		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "display_name",
-				Description: "The display name of the policy assignment",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AssignmentProperties.DisplayName"),
+				Name:     "assignment_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AssignmentProperties"),
 			},
 			{
-				Name:        "policy_definition_id",
-				Description: "The ID of the policy definition or policy set definition being assigned",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AssignmentProperties.PolicyDefinitionID"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
 			},
 			{
-				Name:        "scope",
-				Description: "The scope for the policy assignment",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AssignmentProperties.Scope"),
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:          "not_scopes",
-				Description:   "The policy's excluded scopes",
-				Type:          schema.TypeStringArray,
-				Resolver:      schema.PathResolver("AssignmentProperties.NotScopes"),
-				IgnoreInTests: true,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "parameters",
-				Description: "The parameter values for the assigned policy rule",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("AssignmentProperties.Parameters"),
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Sku"),
 			},
 			{
-				Name:        "description",
-				Description: "This message will be part of response in case of policy violation",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AssignmentProperties.Description"),
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:        "metadata",
-				Description: "The policy assignment metadata",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveResourcesPolicyAssignmentMetadata,
-			},
-			{
-				Name:        "enforcement_mode",
-				Description: "The policy assignment enforcement mode",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AssignmentProperties.EnforcementMode"),
-			},
-			{
-				Name:        "id",
-				Description: "The ID of the policy assignment",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
-			},
-			{
-				Name:        "type",
-				Description: "The type of the policy assignment",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "name",
-				Description: "The name of the policy assignment",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "sku_name",
-				Description: "The name of the policy sku",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Sku.Name"),
-			},
-			{
-				Name:        "sku_tier",
-				Description: "The policy sku tier",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Sku.Tier"),
-			},
-			{
-				Name:          "location",
-				Description:   "The location of the policy assignment",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "identity_principal_id",
-				Description:   "The principal ID of the resource identity",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("Identity.PrincipalID"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "identity_tenant_id",
-				Description:   "The tenant ID of the resource identity",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("Identity.TenantID"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "identity_type",
-				Description: "The identity type",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.Type"),
+				Name:     "identity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Identity"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
 func fetchResourcesPolicyAssignments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Resources.PolicyAssignments
+
 	response, err := svc.List(ctx, meta.(*client.Client).SubscriptionId, "", nil)
+
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
+
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 	}
-	return nil
-}
-func resolveResourcesPolicyAssignmentMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	a := resource.Item.(policy.Assignment)
-	if a.Metadata == nil {
-		return nil
-	}
 
-	out, err := json.Marshal(a.Metadata)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, out))
+	return nil
 }

@@ -1,60 +1,42 @@
+// Auto generated code - DO NOT EDIT.
+
 package network
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func buildNetworkPublicIpAddressesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	pips := mocks.NewMockNetworkPublicIPAddressesClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			PublicIPAddresses: pips,
-		},
-	}
-
-	pip := network.PublicIPAddress{
-		PublicIPAddressPropertiesFormat: &network.PublicIPAddressPropertiesFormat{
-			IPConfiguration: &network.IPConfiguration{
-				IPConfigurationPropertiesFormat: &network.IPConfigurationPropertiesFormat{
-					Subnet:          &network.Subnet{},
-					PublicIPAddress: &network.PublicIPAddress{},
-				},
-			},
-			ServicePublicIPAddress: &network.PublicIPAddress{},
-			LinkedPublicIPAddress:  &network.PublicIPAddress{},
-		},
-	}
-	require.Nil(t, faker.FakeDataSkipFields(&pip, []string{"PublicIPAddressPropertiesFormat"}))
-	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat, []string{"PublicIPAllocationMethod", "PublicIPAddressVersion", "IPConfiguration",
-		"ServicePublicIPAddress", "ProvisioningState", "MigrationPhase", "LinkedPublicIPAddress"}))
-	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat.IPConfiguration, []string{"IPConfigurationPropertiesFormat"}))
-	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat.ServicePublicIPAddress, []string{"PublicIPAddressPropertiesFormat"}))
-	require.Nil(t, faker.FakeDataSkipFields(pip.PublicIPAddressPropertiesFormat.LinkedPublicIPAddress, []string{"PublicIPAddressPropertiesFormat"}))
-	pip.PublicIPAddressPropertiesFormat.PublicIPAllocationMethod = "test"
-	pip.PublicIPAddressPropertiesFormat.PublicIPAddressVersion = "test"
-	pip.PublicIPAddressPropertiesFormat.ProvisioningState = "test"
-	pip.PublicIPAddressPropertiesFormat.MigrationPhase = "test"
-	fakeId := client.FakeResourceGroup + "/" + *pip.ID
-	pip.ID = &fakeId
-	ip := faker.IPv4()
-	pip.IPAddress = &ip
-
-	page := network.NewPublicIPAddressListResultPage(network.PublicIPAddressListResult{Value: &[]network.PublicIPAddress{pip}}, func(ctx context.Context, result network.PublicIPAddressListResult) (network.PublicIPAddressListResult, error) {
-		return network.PublicIPAddressListResult{}, nil
-	})
-	pips.EXPECT().ListAll(gomock.Any()).Return(page, nil)
-	return s
+func TestNetworkPublicIPAddresses(t *testing.T) {
+	client.AzureMockTestHelper(t, PublicIPAddresses(), createPublicIPAddressesMock, client.TestOptions{})
 }
 
-func TestPublicIpAddresses(t *testing.T) {
-	client.AzureMockTestHelper(t, NetworkPublicIPAddresses(), buildNetworkPublicIpAddressesMock, client.TestOptions{})
+func createPublicIPAddressesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockNetworkPublicIPAddressesClient(ctrl)
+	s := services.Services{
+		Network: services.NetworkClient{
+			PublicIPAddresses: mockClient,
+		},
+	}
+
+	data := network.PublicIPAddress{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := network.NewPublicIPAddressListResultPage(network.PublicIPAddressListResult{Value: &[]network.PublicIPAddress{data}}, func(ctx context.Context, result network.PublicIPAddressListResult) (network.PublicIPAddressListResult, error) {
+		return network.PublicIPAddressListResult{}, nil
+	})
+
+	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
+	return s
 }

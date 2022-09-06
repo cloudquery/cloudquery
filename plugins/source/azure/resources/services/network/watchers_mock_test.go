@@ -1,36 +1,39 @@
+// Auto generated code - DO NOT EDIT.
+
 package network
 
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
-func buildNetworkWatchersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	watcherSvc := mocks.NewMockNetworkWatchersClient(ctrl)
-	s := services.Services{
-		Network: services.NetworkClient{
-			Watchers: watcherSvc,
-		},
-	}
-	watcher := network.Watcher{}
-	err := faker.FakeData(&watcher)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-	id := client.FakeResourceGroup + "/" + *watcher.ID
-	watcher.ID = &id
-	page := network.WatcherListResult{Value: &[]network.Watcher{watcher}}
-	watcherSvc.EXPECT().ListAll(gomock.Any()).Return(page, nil)
-
-	return s
+func TestNetworkWatchers(t *testing.T) {
+	client.AzureMockTestHelper(t, Watchers(), createWatchersMock, client.TestOptions{})
 }
 
-func TestNetworkWatchers(t *testing.T) {
-	client.AzureMockTestHelper(t, NetworkWatchers(), buildNetworkWatchersMock, client.TestOptions{})
+func createWatchersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockNetworkWatchersClient(ctrl)
+	s := services.Services{
+		Network: services.NetworkClient{
+			Watchers: mockClient,
+		},
+	}
+
+	data := network.Watcher{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := network.WatcherListResult{Value: &[]network.Watcher{data}}
+
+	mockClient.EXPECT().ListAll(gomock.Any()).Return(result, nil)
+	return s
 }

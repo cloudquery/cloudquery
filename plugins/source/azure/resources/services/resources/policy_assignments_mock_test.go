@@ -1,36 +1,42 @@
+// Auto generated code - DO NOT EDIT.
+
 package resources
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-03-01-preview/policy"
 )
 
-func buildResourcesPolicyAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	a := mocks.NewMockResourcesPolicyAssignmentsClient(ctrl)
-
-	faker.SetIgnoreInterface(true)
-	as := policy.Assignment{}
-	if err := faker.FakeData(&as); err != nil {
-		t.Fatal(err)
-	}
-	as.Metadata = make(map[string]string)
-
-	page := policy.NewAssignmentListResultPage(policy.AssignmentListResult{Value: &[]policy.Assignment{as}}, func(ctx context.Context, result policy.AssignmentListResult) (policy.AssignmentListResult, error) {
-		return policy.AssignmentListResult{}, nil
-	})
-	a.EXPECT().List(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(page, nil)
-	return services.Services{
-		Resources: services.ResourcesClient{PolicyAssignments: a},
-	}
+func TestResourcesPolicyAssignments(t *testing.T) {
+	client.AzureMockTestHelper(t, PolicyAssignments(), createPolicyAssignmentsMock, client.TestOptions{})
 }
 
-func TestResourcesPolicyAssignments(t *testing.T) {
-	client.AzureMockTestHelper(t, ResourcesPolicyAssignments(), buildResourcesPolicyAssignmentsMock, client.TestOptions{})
+func createPolicyAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockResourcesPolicyAssignmentsClient(ctrl)
+	s := services.Services{
+		Resources: services.ResourcesClient{
+			PolicyAssignments: mockClient,
+		},
+	}
+
+	data := policy.Assignment{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := policy.NewAssignmentListResultPage(policy.AssignmentListResult{Value: &[]policy.Assignment{data}}, func(ctx context.Context, result policy.AssignmentListResult) (policy.AssignmentListResult, error) {
+		return policy.AssignmentListResult{}, nil
+	})
+
+	mockClient.EXPECT().List(gomock.Any(), gomock.Any(), "", nil).Return(result, nil)
+	return s
 }

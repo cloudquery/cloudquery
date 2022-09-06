@@ -1,55 +1,54 @@
+// Auto generated code - DO NOT EDIT.
+
 package subscriptions
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/go-faker/faker/v4"
+	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
 )
 
-func buildTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockSubscriptionsTenantsClient(ctrl)
+func TestSubscriptionsTenants(t *testing.T) {
+	client.AzureMockTestHelper(t, Tenants(), createTenantsMock, client.TestOptions{})
+}
 
-	var subscriptionID string
-	if err := faker.FakeData(&subscriptionID); err != nil {
-		t.Fatal(err)
+func createTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockSubscriptionsTenantsClient(ctrl)
+	s := services.Services{
+		Subscriptions: services.SubscriptionsClient{
+			Tenants: mockClient,
+		},
 	}
 
-	var model armsubscriptions.TenantIDDescription
-	if err := faker.FakeData(&model); err != nil {
-		t.Fatal(err)
-	}
+	data := armsubscriptions.TenantIDDescription{}
+	fieldsToIgnore := []string{"Response"}
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.TenantsClientListResponse]{
-		More: func(_ armsubscriptions.TenantsClientListResponse) bool {
+		More: func(page armsubscriptions.TenantsClientListResponse) bool {
 			return false
 		},
 		Fetcher: func(ctx context.Context, page *armsubscriptions.TenantsClientListResponse) (armsubscriptions.TenantsClientListResponse, error) {
 			return armsubscriptions.TenantsClientListResponse{
 				TenantListResult: armsubscriptions.TenantListResult{
-					NextLink: nil,
-					Value:    []*armsubscriptions.TenantIDDescription{&model},
+					Value: []*armsubscriptions.TenantIDDescription{&data},
 				},
 			}, nil
 		},
 	})
-	m.EXPECT().NewListPager(gomock.Any()).Return(
+
+	mockClient.EXPECT().NewListPager(gomock.Any()).Return(
 		pager,
 	)
-
-	return services.Services{
-		Subscriptions: services.SubscriptionsClient{
-			SubscriptionID: subscriptionID,
-			Tenants:        m,
-		},
-	}
-}
-
-func TestTenants(t *testing.T) {
-	client.AzureMockTestHelper(t, Tenants(), buildTenantsMock, client.TestOptions{})
+	return s
 }
