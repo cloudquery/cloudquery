@@ -54,5 +54,5 @@ func createLogDrains() (*heroku.Service, error) {
 }
 
 func TestLogDrain(t *testing.T) {
-	client.HerokuMockTestHelper(t, LogDrains(), createLogDrains, client.TestOptions{})
+	client.MockTestHelper(t, LogDrains(), createLogDrains, client.TestOptions{})
 }

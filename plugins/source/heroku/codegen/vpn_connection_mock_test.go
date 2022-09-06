@@ -54,5 +54,5 @@ func createVPNConnections() (*heroku.Service, error) {
 }
 
 func TestVPNConnection(t *testing.T) {
-	client.HerokuMockTestHelper(t, VPNConnections(), createVPNConnections, client.TestOptions{})
+	client.MockTestHelper(t, VPNConnections(), createVPNConnections, client.TestOptions{})
 }

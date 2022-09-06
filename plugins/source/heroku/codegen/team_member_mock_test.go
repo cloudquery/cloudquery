@@ -54,5 +54,5 @@ func createTeamMembers() (*heroku.Service, error) {
 }
 
 func TestTeamMember(t *testing.T) {
-	client.HerokuMockTestHelper(t, TeamMembers(), createTeamMembers, client.TestOptions{})
+	client.MockTestHelper(t, TeamMembers(), createTeamMembers, client.TestOptions{})
 }

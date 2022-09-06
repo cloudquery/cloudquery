@@ -54,5 +54,5 @@ func createBuildpackInstallations() (*heroku.Service, error) {
 }
 
 func TestBuildpackInstallation(t *testing.T) {
-	client.HerokuMockTestHelper(t, BuildpackInstallations(), createBuildpackInstallations, client.TestOptions{})
+	client.MockTestHelper(t, BuildpackInstallations(), createBuildpackInstallations, client.TestOptions{})
 }
