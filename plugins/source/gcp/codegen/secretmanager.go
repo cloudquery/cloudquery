@@ -1,18 +1,22 @@
 package codegen
 
 import (
-	"fmt"
-
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/iancoleman/strcase"
-	"google.golang.org/api/secretmanager/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
 var secretmanagerResources = []*Resource{
 	{
-		SubService: "secrets",
-		Struct:     &secretmanager.Secret{},
+		SubService:          "secrets",
+		Struct:              &pb.Secret{},
+		NewFunction:         secretmanager.NewClient,
+		RequestStruct:       &pb.ListSecretsRequest{},
+		ResponseStruct:      &pb.ListSecretsResponse{},
+		RegisterServer:      pb.RegisterSecretManagerServiceServer,
+		ListFunction:        (&pb.UnimplementedSecretManagerServiceServer{}).ListSecrets,
+		UnimplementedServer: &pb.UnimplementedSecretManagerServiceServer{},
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
@@ -30,12 +34,11 @@ func SecretManagerResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "secretmanager"
-		resource.Template = "resource_list"
-		resource.ListFunction = fmt.Sprintf(
-			`c.Services.Secretmanager.Projects.%s.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`,
-			strcase.ToCamel(resource.SubService),
-		)
-		resource.OutputField = strcase.ToCamel(resource.SubService)
+		resource.MockImports = []string{"cloud.google.com/go/secretmanager/apiv1"}
+		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "newapi_list_grpc_mock"
+		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId,`
 	}
 
 	return resources

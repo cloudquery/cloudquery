@@ -8,12 +8,9 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
 	"google.golang.org/api/cloudkms/v1"
+	"google.golang.org/api/iterator"
+	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
-
-type KeyRing struct {
-	*cloudkms.KeyRing
-	Location string
-}
 
 func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -21,29 +18,20 @@ func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	if err != nil {
 		return errors.WithStack(fmt.Errorf("failed to get kms locations. %w", err))
 	}
-	nextPageToken := ""
 	for _, l := range locations {
-		call := c.Services.Kms.Projects.Locations.KeyRings.List(l.Name)
+		it := c.Services.KmsKeyManagementClient.ListKeyRings(ctx, &pb.ListKeyRingsRequest{
+			Parent: l.Name,
+		})
 		for {
-			call.PageToken(nextPageToken)
-			resp, err := call.Do()
+			resp, err := it.Next()
+			if err == iterator.Done {
+				break
+			}
 			if err != nil {
 				return errors.WithStack(err)
 			}
 
-			rings := make([]*KeyRing, len(resp.KeyRings))
-			for i, k := range resp.KeyRings {
-				rings[i] = &KeyRing{
-					KeyRing:  k,
-					Location: l.LocationId,
-				}
-			}
-			res <- rings
-
-			if resp.NextPageToken == "" {
-				break
-			}
-			nextPageToken = resp.NextPageToken
+			res <- resp
 		}
 	}
 	return nil
@@ -51,7 +39,7 @@ func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 
 func getAllKmsLocations(ctx context.Context, c *client.Client) ([]*cloudkms.Location, error) {
 	var locations []*cloudkms.Location
-	call := c.Services.Kms.Projects.Locations.List("projects/" + c.ProjectId)
+	call := c.Services.KmsoldService.Projects.Locations.List("projects/" + c.ProjectId)
 	nextPageToken := ""
 	for {
 		resp, err := call.PageToken(nextPageToken).Do()

@@ -4,53 +4,62 @@ package monitoring
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
+	"fmt"
+	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"net"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
-	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
+	"cloud.google.com/go/monitoring/apiv3/v2"
 
-	"google.golang.org/api/monitoring/v3"
+	pb "google.golang.org/genproto/googleapis/monitoring/v3"
 
 	"google.golang.org/api/option"
 )
 
-type MockAlertPoliciesResult struct {
-	AlertPolicies []*monitoring.AlertPolicy `json:"alertpolicies,omitempty"`
+func createAlertPolicies() (*client.Services, error) {
+	fakeServer := &fakeAlertPoliciesServer{}
+	l, err := net.Listen("tcp", "localhost:0")
+	if err != nil {
+		return nil, fmt.Errorf("failed to listen: %w", err)
+	}
+	gsrv := grpc.NewServer()
+	pb.RegisterAlertPolicyServiceServer(gsrv, fakeServer)
+	fakeServerAddr := l.Addr().String()
+	go func() {
+		if err := gsrv.Serve(l); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Create a client.
+	svc, err := monitoring.NewAlertPolicyClient(context.Background(),
+		option.WithEndpoint(fakeServerAddr),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create grpc client: %w", err)
+	}
+
+	return &client.Services{
+		MonitoringAlertPolicyClient: svc,
+	}, nil
 }
 
-func createAlertPolicies() (*client.Services, error) {
-	var item monitoring.AlertPolicy
-	if err := faker.FakeData(&item); err != nil {
-		return nil, err
+type fakeAlertPoliciesServer struct {
+	pb.UnimplementedAlertPolicyServiceServer
+}
+
+func (f *fakeAlertPoliciesServer) ListAlertPolicies(context.Context, *pb.ListAlertPoliciesRequest) (*pb.ListAlertPoliciesResponse, error) {
+	resp := pb.ListAlertPoliciesResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	item.Validity.Details = nil
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockAlertPoliciesResult{
-			AlertPolicies: []*monitoring.AlertPolicy{&item},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-	ts := httptest.NewServer(mux)
-	svc, err := monitoring.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
-	}
-	return &client.Services{
-		Monitoring: svc,
-	}, nil
+	resp.NextPageToken = ""
+	return &resp, nil
 }
 
 func TestAlertPolicies(t *testing.T) {

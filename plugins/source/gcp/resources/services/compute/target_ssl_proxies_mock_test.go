@@ -9,31 +9,27 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
-	"google.golang.org/api/compute/v1"
+	"cloud.google.com/go/compute/apiv1"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 
 	"google.golang.org/api/option"
 )
 
-type MockTargetSslProxiesResult struct {
-	Items []*compute.TargetSslProxy `json:"items,omitempty"`
-}
-
 func createTargetSslProxies() (*client.Services, error) {
-	var item compute.TargetSslProxy
-	if err := faker.FakeData(&item); err != nil {
+	var item pb.TargetSslProxyList
+	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
-
+	emptyStr := ""
+	item.NextPageToken = &emptyStr
 	mux := httprouter.New()
 	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockTargetSslProxiesResult{
-			Items: []*compute.TargetSslProxy{&item},
-		}
-		b, err := json.Marshal(resp)
+		b, err := json.Marshal(&item)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
 			return
@@ -44,12 +40,12 @@ func createTargetSslProxies() (*client.Services, error) {
 		}
 	})
 	ts := httptest.NewServer(mux)
-	svc, err := compute.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
+	svc, err := compute.NewTargetSslProxiesRESTClient(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
 	if err != nil {
 		return nil, err
 	}
 	return &client.Services{
-		Compute: svc,
+		ComputeTargetSslProxiesClient: svc,
 	}, nil
 }
 

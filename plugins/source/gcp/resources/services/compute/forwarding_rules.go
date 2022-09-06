@@ -4,11 +4,13 @@ package compute
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
 func ForwardingRules() *schema.Table {
@@ -185,23 +187,21 @@ func ForwardingRules() *schema.Table {
 
 func fetchForwardingRules(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.AggregatedListForwardingRulesRequest{
+		Project: c.ProjectId,
+	}
+	it := c.Services.ComputeForwardingRulesClient.AggregatedList(ctx, req)
 	for {
-		output, err := c.Services.Compute.ForwardingRules.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.ForwardingRule
-		for _, items := range output.Items {
-			allItems = append(allItems, items.ForwardingRules...)
-		}
-		res <- allItems
+		res <- resp.Value.ForwardingRules
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
 	}
 	return nil
 }

@@ -3,9 +3,6 @@
 package storage
 
 import (
-	"context"
-	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 )
@@ -22,29 +19,34 @@ func Buckets() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
 				Name:     "acl",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Acl"),
+				Resolver: schema.PathResolver("ACL"),
 			},
 			{
-				Name:     "autoclass",
+				Name:     "bucket_policy_only",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Autoclass"),
+				Resolver: schema.PathResolver("BucketPolicyOnly"),
 			},
 			{
-				Name:     "billing",
+				Name:     "uniform_bucket_level_access",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Billing"),
+				Resolver: schema.PathResolver("UniformBucketLevelAccess"),
 			},
 			{
-				Name:     "cors",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Cors"),
+				Name:     "public_access_prevention",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("PublicAccessPrevention"),
 			},
 			{
-				Name:     "custom_placement_config",
+				Name:     "default_object_acl",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CustomPlacementConfig"),
+				Resolver: schema.PathResolver("DefaultObjectACL"),
 			},
 			{
 				Name:     "default_event_based_hold",
@@ -52,44 +54,14 @@ func Buckets() *schema.Table {
 				Resolver: schema.PathResolver("DefaultEventBasedHold"),
 			},
 			{
-				Name:     "default_object_acl",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DefaultObjectAcl"),
-			},
-			{
-				Name:     "encryption",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Encryption"),
-			},
-			{
-				Name:     "etag",
+				Name:     "predefined_acl",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
+				Resolver: schema.PathResolver("PredefinedACL"),
 			},
 			{
-				Name:     "iam_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("IamConfiguration"),
-			},
-			{
-				Name:     "id",
+				Name:     "predefined_default_object_acl",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Id"),
-			},
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "labels",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Labels"),
-			},
-			{
-				Name:     "lifecycle",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Lifecycle"),
+				Resolver: schema.PathResolver("PredefinedDefaultObjectACL"),
 			},
 			{
 				Name:     "location",
@@ -97,56 +69,14 @@ func Buckets() *schema.Table {
 				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:     "location_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LocationType"),
-			},
-			{
-				Name:     "logging",
+				Name:     "custom_placement_config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Logging"),
+				Resolver: schema.PathResolver("CustomPlacementConfig"),
 			},
 			{
-				Name:     "metageneration",
+				Name:     "meta_generation",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Metageneration"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "owner",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Owner"),
-			},
-			{
-				Name:     "project_number",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ProjectNumber"),
-			},
-			{
-				Name:     "retention_policy",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RetentionPolicy"),
-			},
-			{
-				Name:     "rpo",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Rpo"),
-			},
-			{
-				Name:     "satisfies_pzs",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("SatisfiesPZS"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.PathResolver("MetaGeneration"),
 			},
 			{
 				Name:     "storage_class",
@@ -154,43 +84,75 @@ func Buckets() *schema.Table {
 				Resolver: schema.PathResolver("StorageClass"),
 			},
 			{
-				Name:     "time_created",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TimeCreated"),
+				Name:     "created",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("Created"),
 			},
 			{
-				Name:     "updated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Updated"),
+				Name:     "versioning_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("VersioningEnabled"),
 			},
 			{
-				Name:     "versioning",
+				Name:     "labels",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Versioning"),
+				Resolver: schema.PathResolver("Labels"),
+			},
+			{
+				Name:     "requester_pays",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("RequesterPays"),
+			},
+			{
+				Name:     "lifecycle",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Lifecycle"),
+			},
+			{
+				Name:     "retention_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RetentionPolicy"),
+			},
+			{
+				Name:     "cors",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CORS"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Encryption"),
+			},
+			{
+				Name:     "logging",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Logging"),
 			},
 			{
 				Name:     "website",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Website"),
 			},
+			{
+				Name:     "etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Etag"),
+			},
+			{
+				Name:     "location_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LocationType"),
+			},
+			{
+				Name:     "project_number",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ProjectNumber"),
+			},
+			{
+				Name:     "rpo",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("RPO"),
+			},
 		},
 	}
-}
-
-func fetchBuckets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	nextPageToken := ""
-	for {
-		output, err := c.Services.Storage.Buckets.List(c.ProjectId).PageToken(nextPageToken).Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		res <- output.Items
-
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
-	}
-	return nil
 }

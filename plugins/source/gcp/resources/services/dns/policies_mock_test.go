@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 
@@ -24,7 +24,7 @@ type MockPoliciesResult struct {
 
 func createPolicies() (*client.Services, error) {
 	var item dns.Policy
-	if err := faker.FakeData(&item); err != nil {
+	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
 

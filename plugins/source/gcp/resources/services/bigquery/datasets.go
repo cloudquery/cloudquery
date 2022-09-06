@@ -3,20 +3,15 @@
 package bigquery
 
 import (
-	"context"
-	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	"google.golang.org/api/bigquery/v2"
 )
 
 func Datasets() *schema.Table {
 	return &schema.Table{
 		Name:                "gcp_bigquery_datasets",
 		Resolver:            fetchDatasets,
-		PreResourceResolver: getDataset,
+		PreResourceResolver: datasetGet,
 		Multiplex:           client.ProjectMultiplex,
 		Columns: []schema.Column{
 			{
@@ -130,32 +125,4 @@ func Datasets() *schema.Table {
 			Tables(),
 		},
 	}
-}
-
-func fetchDatasets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	nextPageToken := ""
-	for {
-		output, err := c.Services.Bigquery.Datasets.List(c.ProjectId).PageToken(nextPageToken).Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		res <- output.Datasets
-
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
-	}
-	return nil
-}
-
-func getDataset(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
-	c := meta.(*client.Client)
-	item, err := c.Services.Bigquery.Datasets.Get(c.ProjectId, r.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).Do()
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	r.SetItem(item)
-	return nil
 }

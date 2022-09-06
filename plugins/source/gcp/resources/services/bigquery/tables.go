@@ -3,20 +3,15 @@
 package bigquery
 
 import (
-	"context"
-	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-
-	"google.golang.org/api/bigquery/v2"
 )
 
 func Tables() *schema.Table {
 	return &schema.Table{
 		Name:                "gcp_bigquery_tables",
 		Resolver:            fetchTables,
-		PreResourceResolver: getTable,
+		PreResourceResolver: tableGet,
 		Columns: []schema.Column{
 			{
 				Name:     "project_id",
@@ -225,32 +220,4 @@ func Tables() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchTables(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
-	c := meta.(*client.Client)
-	nextPageToken := ""
-	for {
-		output, err := c.Services.Bigquery.Tables.List(c.ProjectId, r.Parent.Item.(*bigquery.DatasetListDatasets).DatasetReference.DatasetId).PageToken(nextPageToken).Do()
-		if err != nil {
-			return errors.WithStack(err)
-		}
-		res <- output.Tables
-
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
-	}
-	return nil
-}
-
-func getTable(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
-	c := meta.(*client.Client)
-	item, err := c.Services.Bigquery.Tables.Get(c.ProjectId, r.Item.(*bigquery.TableListTables).TableReference.DatasetId, r.Item.(*bigquery.TableListTables).TableReference.TableId).Do()
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	r.SetItem(item)
-	return nil
 }

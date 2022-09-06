@@ -4,11 +4,13 @@ package compute
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
 func DiskTypes() *schema.Table {
@@ -41,6 +43,11 @@ func DiskTypes() *schema.Table {
 				Name:     "description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Id"),
 			},
 			{
 				Name:     "kind",
@@ -80,23 +87,21 @@ func DiskTypes() *schema.Table {
 
 func fetchDiskTypes(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.AggregatedListDiskTypesRequest{
+		Project: c.ProjectId,
+	}
+	it := c.Services.ComputeDiskTypesClient.AggregatedList(ctx, req)
 	for {
-		output, err := c.Services.Compute.DiskTypes.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.DiskType
-		for _, items := range output.Items {
-			allItems = append(allItems, items.DiskTypes...)
-		}
-		res <- allItems
+		res <- resp.Value.DiskTypes
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
 	}
 	return nil
 }

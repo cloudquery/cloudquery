@@ -4,11 +4,13 @@ package compute
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
 func UrlMaps() *schema.Table {
@@ -105,23 +107,21 @@ func UrlMaps() *schema.Table {
 
 func fetchUrlMaps(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.AggregatedListUrlMapsRequest{
+		Project: c.ProjectId,
+	}
+	it := c.Services.ComputeUrlMapsClient.AggregatedList(ctx, req)
 	for {
-		output, err := c.Services.Compute.UrlMaps.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.UrlMap
-		for _, items := range output.Items {
-			allItems = append(allItems, items.UrlMaps...)
-		}
-		res <- allItems
+		res <- resp.Value.UrlMaps
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
 	}
 	return nil
 }

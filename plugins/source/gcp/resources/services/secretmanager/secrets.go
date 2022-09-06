@@ -5,6 +5,9 @@ package secretmanager
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -22,26 +25,6 @@ func Secrets() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
-				Name:     "expire_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ExpireTime"),
-			},
-			{
-				Name:     "labels",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Labels"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -55,9 +38,14 @@ func Secrets() *schema.Table {
 				Resolver: schema.PathResolver("Replication"),
 			},
 			{
-				Name:     "rotation",
+				Name:     "create_time",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Rotation"),
+				Resolver: schema.PathResolver("CreateTime"),
+			},
+			{
+				Name:     "labels",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Labels"),
 			},
 			{
 				Name:     "topics",
@@ -65,9 +53,14 @@ func Secrets() *schema.Table {
 				Resolver: schema.PathResolver("Topics"),
 			},
 			{
-				Name:     "ttl",
+				Name:     "etag",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Ttl"),
+				Resolver: schema.PathResolver("Etag"),
+			},
+			{
+				Name:     "rotation",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Rotation"),
 			},
 			{
 				Name:     "version_aliases",
@@ -80,18 +73,21 @@ func Secrets() *schema.Table {
 
 func fetchSecrets(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListSecretsRequest{
+		Parent: "projects/" + c.ProjectId,
+	}
+	it := c.Services.SecretmanagerClient.ListSecrets(ctx, req)
 	for {
-		output, err := c.Services.Secretmanager.Projects.Secrets.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Secrets
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

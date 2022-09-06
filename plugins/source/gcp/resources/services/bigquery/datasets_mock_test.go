@@ -3,11 +3,12 @@ package bigquery
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	"google.golang.org/api/bigquery/v2"
@@ -18,7 +19,7 @@ func createBigqueryDatasets() (*client.Services, error) {
 	id := "testDataset"
 	mux := httprouter.New()
 	var dataset bigquery.Dataset
-	if err := faker.FakeData(&dataset); err != nil {
+	if err := faker.FakeObject(&dataset); err != nil {
 		return nil, err
 	}
 	dataset.Id = id
@@ -58,7 +59,6 @@ func createBigqueryDatasets() (*client.Services, error) {
 
 	mux.GET("/projects/testProject/datasets/testDataset/tables", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &bigquery.TableList{
-
 			Tables: []*bigquery.TableListTables{
 				{
 					Id: id,
@@ -80,18 +80,12 @@ func createBigqueryDatasets() (*client.Services, error) {
 	})
 
 	var table bigquery.Table
+	if err := faker.FakeObject(&table); err != nil {
+		return nil, err
+	}
 	table.Id = id
 	table.TableReference = &bigquery.TableReference{
 		TableId: id,
-	}
-	if err := faker.FakeData(&table.Model); err != nil {
-		return nil, err
-	}
-	if err := faker.FakeData(&table.View); err != nil {
-		return nil, err
-	}
-	if err := faker.FakeData(&table.Type); err != nil {
-		return nil, err
 	}
 	schema := bigquery.TableSchema{
 		Fields: []*bigquery.TableFieldSchema{{
@@ -113,14 +107,16 @@ func createBigqueryDatasets() (*client.Services, error) {
 	table.Clustering = &bigquery.Clustering{
 		Fields: []string{"test"},
 	}
-	if err := faker.FakeData(&table.Description); err != nil {
+	if err := faker.FakeObject(&table.Description); err != nil {
 		return nil, err
 	}
-	if err := faker.FakeData(&table.EncryptionConfiguration); err != nil {
+	if err := faker.FakeObject(&table.EncryptionConfiguration); err != nil {
 		return nil, err
 	}
 
-	mux.GET("/projects/testProject/datasets/testDataset/tables/testDataset", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	mux.GET("/projects/testProject/datasets/testDataset/tables/:table", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+		fmt.Println("what")
+		fmt.Println(r.URL)
 		b, err := json.Marshal(&table)
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
@@ -138,7 +134,7 @@ func createBigqueryDatasets() (*client.Services, error) {
 		return nil, err
 	}
 	return &client.Services{
-		Bigquery: svc,
+		BigqueryService: svc,
 	}, nil
 }
 
