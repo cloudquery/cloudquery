@@ -46,7 +46,6 @@ branchProtectionRules:
     - Linter (plugins/source/gcp)
     - Unit Tests (plugins/source/gcp)
     - Build (plugins/source/gcp)
-    - Lint Provider Doc (plugins/source/gcp)
 
     - Linter (plugins/source/github)
     - Unit Tests (plugins/source/github)
