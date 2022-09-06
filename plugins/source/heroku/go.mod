@@ -6,7 +6,7 @@ require (
 	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.1.0
+	github.com/cloudquery/plugin-sdk v0.1.1
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.8
 	github.com/googleapis/gax-go/v2 v2.4.0
@@ -36,6 +36,7 @@ require (
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/georgysavva/scany v1.1.0 // indirect
 	github.com/getkin/kin-openapi v0.83.0 // indirect
+	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/swag v0.19.14 // indirect
