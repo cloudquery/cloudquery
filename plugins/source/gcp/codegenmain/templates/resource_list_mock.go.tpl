@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	{{range .MockImports}}
@@ -24,7 +24,7 @@ type Mock{{.SubService | ToCamel}}Result struct {
 
 func create{{.SubService | ToCamel}}() (*client.Services, error) {
 	var item {{.Service}}.{{.StructName}}
-	if err := faker.FakeData(&item); err != nil {
+	if err := faker.FakeObject(&item); err != nil {
 		return nil, err
 	}
   {{.MockPostFaker}}

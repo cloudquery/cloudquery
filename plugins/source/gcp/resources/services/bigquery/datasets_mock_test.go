@@ -8,7 +8,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	"google.golang.org/api/bigquery/v2"
@@ -19,7 +19,7 @@ func createBigqueryDatasets() (*client.Services, error) {
 	id := "testDataset"
 	mux := httprouter.New()
 	var dataset bigquery.Dataset
-	if err := faker.FakeData(&dataset); err != nil {
+	if err := faker.FakeObject(&dataset); err != nil {
 		return nil, err
 	}
 	dataset.Id = id
@@ -80,7 +80,7 @@ func createBigqueryDatasets() (*client.Services, error) {
 	})
 
 	var table bigquery.Table
-	if err := faker.FakeData(&table); err != nil {
+	if err := faker.FakeObject(&table); err != nil {
 		return nil, err
 	}
 	table.Id = id
@@ -107,10 +107,10 @@ func createBigqueryDatasets() (*client.Services, error) {
 	table.Clustering = &bigquery.Clustering{
 		Fields: []string{"test"},
 	}
-	if err := faker.FakeData(&table.Description); err != nil {
+	if err := faker.FakeObject(&table.Description); err != nil {
 		return nil, err
 	}
-	if err := faker.FakeData(&table.EncryptionConfiguration); err != nil {
+	if err := faker.FakeObject(&table.EncryptionConfiguration); err != nil {
 		return nil, err
 	}
 
