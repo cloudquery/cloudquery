@@ -3,12 +3,13 @@ module github.com/cloudquery/cq-source-test
 go 1.18
 
 require (
-	github.com/cloudquery/plugin-sdk v0.0.10
+	github.com/cloudquery/plugin-sdk v0.1.2
 	github.com/rs/zerolog v1.28.0
 )
 
 require (
 	github.com/cloudquery/faker/v3 v3.7.7 // indirect
+	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
