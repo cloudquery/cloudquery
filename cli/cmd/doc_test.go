@@ -24,7 +24,7 @@ func TestDoc(t *testing.T) {
 		t.Fatalf("failed to create temporary directory: %v", tmpErr)
 	}
 	defer os.RemoveAll(tmpdir)
-	cmd := newCmdRoot()
+	cmd := NewCmdRoot()
 	cmd.SetArgs([]string{"doc", tmpdir})
 	if err := cmd.Execute(); err != nil {
 		t.Fatal(err)

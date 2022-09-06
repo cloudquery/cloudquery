@@ -55,7 +55,9 @@ func (p *DestinationPlugin) Close() error {
 		return p.conn.Close()
 	}
 	if p.cmd != nil && p.cmd.Process != nil {
-		p.cmd.Process.Kill()
+		if err := p.cmd.Process.Kill(); err != nil {
+			return err
+		}
 	}
 	return nil
 }

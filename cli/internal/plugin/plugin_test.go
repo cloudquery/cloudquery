@@ -11,29 +11,6 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func TestPluginManagerDownloadSource(t *testing.T) {
-	ctx := context.Background()
-	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
-	dirName, err := ioutil.TempDir(os.TempDir(), "cq-plugins")
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer os.RemoveAll(dirName)
-
-	// this test is mainly a smoke test as we test all permutations in GetSourceClientTest
-	// which calls to download anyways.
-	pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
-	if _, err := pm.DownloadSource(ctx, specs.Source{
-		Name:     "test",
-		Registry: specs.RegistryGithub,
-		Path:     "cloudquery/test",
-		Version:  "latest",
-	}); err != nil {
-		t.Fatal(fmt.Errorf("failed to download official source plugin test latest: %w", err))
-	}
-
-}
-
 var getSourceClientTestCases = []specs.Source{
 	{
 		Name:     "test",
@@ -59,6 +36,28 @@ var getSourceClientTestCases = []specs.Source{
 		Path:     "yevgenypats/test",
 		Version:  "v1.0.1",
 	},
+}
+
+func TestPluginManagerDownloadSource(t *testing.T) {
+	ctx := context.Background()
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
+	dirName, err := ioutil.TempDir(os.TempDir(), "cq-plugins")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.RemoveAll(dirName)
+
+	// this test is mainly a smoke test as we test all permutations in GetSourceClientTest
+	// which calls to download anyways.
+	pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
+	if _, err := pm.DownloadSource(ctx, specs.Source{
+		Name:     "test",
+		Registry: specs.RegistryGithub,
+		Path:     "cloudquery/test",
+		Version:  "latest",
+	}); err != nil {
+		t.Fatal(fmt.Errorf("failed to download official source plugin test latest: %w", err))
+	}
 }
 
 func TestPluginManagerGetSourceClient(t *testing.T) {
@@ -92,5 +91,4 @@ func TestPluginManagerGetSourceClient(t *testing.T) {
 			}
 		})
 	}
-
 }

@@ -11,7 +11,7 @@ func TestSync(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 	testDataDir := path.Join(currentDir, "testdata")
-	cmd := newCmdRoot()
+	cmd := NewCmdRoot()
 	cmd.SetArgs([]string{"sync", testDataDir})
 	if err := cmd.Execute(); err != nil {
 		t.Fatal(err)

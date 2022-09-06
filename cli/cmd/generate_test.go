@@ -18,7 +18,7 @@ func TestGenerate(t *testing.T) {
 
 	t.Run("with output file", func(t *testing.T) {
 		output := path.Join(tmpdir, "test.yml")
-		cmd := newCmdRoot()
+		cmd := NewCmdRoot()
 		cmd.SetArgs([]string{"generate", "source", "test", "--output", output})
 		if err := cmd.Execute(); err != nil {
 			t.Fatal(err)
