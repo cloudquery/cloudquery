@@ -10,8 +10,8 @@ import (
 )
 
 type DataLakeClient struct {
-	DataLakeStoreAccounts     DataLakeDataLakeStoreAccountsClient
-	DataLakeAnalyticsAccounts DataLakeDataLakeAnalyticsAccountsClient
+	StoreAccounts     DataLakeDataLakeStoreAccountsClient
+	AnalyticsAccounts DataLakeDataLakeAnalyticsAccountsClient
 }
 
 type DataLakeDataLakeStoreAccountsClient interface {
@@ -30,7 +30,7 @@ func NewDataLakeClient(subscriptionId string, auth autorest.Authorizer) DataLake
 	analyticsAccounts := account.NewAccountsClient(subscriptionId)
 	analyticsAccounts.Authorizer = auth
 	return DataLakeClient{
-		DataLakeStoreAccounts:     storeAccounts,
-		DataLakeAnalyticsAccounts: analyticsAccounts,
+		StoreAccounts:     storeAccounts,
+		AnalyticsAccounts: analyticsAccounts,
 	}
 }

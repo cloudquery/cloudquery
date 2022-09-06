@@ -9,14 +9,14 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/pkg/errors"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/store/mgmt/account"
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/analytics/mgmt/account"
 )
 
-func DataLakeStoreAccounts() *schema.Table {
+func AnalyticsAccounts() *schema.Table {
 	return &schema.Table{
-		Name:                "azure_datalake_data_lake_store_accounts",
-		Resolver:            fetchDataLakeDataLakeStoreAccounts,
-		PreResourceResolver: getDataLakeStoreAccount,
+		Name:                "azure_datalake_analytics_accounts",
+		Resolver:            fetchDataLakeAnalyticsAccounts,
+		PreResourceResolver: getDataLakeAnalyticsAccount,
 		Multiplex:           client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
@@ -25,14 +25,9 @@ func DataLakeStoreAccounts() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "identity",
+				Name:     "data_lake_analytics_account_properties",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Identity"),
-			},
-			{
-				Name:     "data_lake_store_account_properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DataLakeStoreAccountProperties"),
+				Resolver: schema.PathResolver("DataLakeAnalyticsAccountProperties"),
 			},
 			{
 				Name:     "id",
@@ -63,8 +58,8 @@ func DataLakeStoreAccounts() *schema.Table {
 	}
 }
 
-func fetchDataLakeDataLakeStoreAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().DataLake.DataLakeStoreAccounts
+func fetchDataLakeAnalyticsAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().DataLake.AnalyticsAccounts
 
 	response, err := svc.List(ctx, "", nil, nil, "", "", nil)
 
@@ -82,10 +77,10 @@ func fetchDataLakeDataLakeStoreAccounts(ctx context.Context, meta schema.ClientM
 	return nil
 }
 
-func getDataLakeStoreAccount(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
-	svc := meta.(*client.Client).Services().DataLake.DataLakeStoreAccounts
+func getDataLakeAnalyticsAccount(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
+	svc := meta.(*client.Client).Services().DataLake.AnalyticsAccounts
 
-	account := r.Item.(account.DataLakeStoreAccount)
+	account := r.Item.(account.DataLakeAnalyticsAccountBasic)
 	resourceDetails, err := client.ParseResourceID(*account.ID)
 	if err != nil {
 		errors.WithStack(err)

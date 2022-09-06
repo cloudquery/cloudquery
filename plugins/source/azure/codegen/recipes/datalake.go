@@ -34,6 +34,7 @@ func Datalake() []Resource {
 						errors.WithStack(err)
 					}`},
 					getFunctionArgs:    []string{"resourceDetails.ResourceGroup", "*account.Name"},
+					subServiceOverride: "AnalyticsAccounts",
 					mockValueType:      "DataLakeAnalyticsAccountBasic",
 					mockDefinitionType: `DataLakeAnalyticsAccountBasic`,
 				},
@@ -67,6 +68,7 @@ func Datalake() []Resource {
 						errors.WithStack(err)
 					}`},
 					getFunctionArgs:    []string{"resourceDetails.ResourceGroup", "*account.Name"},
+					subServiceOverride: "StoreAccounts",
 					mockValueType:      "DataLakeStoreAccountBasic",
 					mockDefinitionType: "DataLakeStoreAccountBasic",
 				},

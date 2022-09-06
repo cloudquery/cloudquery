@@ -13,26 +13,26 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/analytics/mgmt/account"
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/store/mgmt/account"
 )
 
-func TestDataLakeDataLakeAnalyticsAccounts(t *testing.T) {
-	client.AzureMockTestHelper(t, DataLakeAnalyticsAccounts(), createDataLakeAnalyticsAccountsMock, client.TestOptions{})
+func TestDataLakeStoreAccounts(t *testing.T) {
+	client.AzureMockTestHelper(t, StoreAccounts(), createStoreAccountsMock, client.TestOptions{})
 }
 
-func createDataLakeAnalyticsAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockDataLakeDataLakeAnalyticsAccountsClient(ctrl)
+func createStoreAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockDataLakeStoreAccountsClient(ctrl)
 	s := services.Services{
 		DataLake: services.DataLakeClient{
-			DataLakeAnalyticsAccounts: mockClient,
+			StoreAccounts: mockClient,
 		},
 	}
 
-	data := account.DataLakeAnalyticsAccountBasic{}
+	data := account.DataLakeStoreAccountBasic{}
 	fieldsToIgnore := []string{"Response"}
 	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
-	result := account.DataLakeAnalyticsAccountListResult{Value: &[]account.DataLakeAnalyticsAccountBasic{data}}
+	result := account.DataLakeStoreAccountListResult{Value: &[]account.DataLakeStoreAccountBasic{data}}
 
 	mockClient.EXPECT().List(gomock.Any(), "", nil, nil, "", "", nil).Return(result, nil)
 	return s
