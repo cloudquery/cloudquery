@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/terraform/v0.5.5...plugins/source/terraform/v0.5.6) (2022-09-06)
+
+
+### Bug Fixes
+
+* Unify plugin package structure ([#1735](https://github.com/cloudquery/cloudquery/issues/1735)) ([897d8f4](https://github.com/cloudquery/cloudquery/commit/897d8f4d31d78fb078fb1e57108bd30e437ddee4))
+
 ## [0.5.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/terraform/v0.5.4...plugins/source/terraform/v0.5.5) (2022-09-05)
 
 
