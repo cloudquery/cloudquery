@@ -20,10 +20,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 
 	table.IgnoreInTests = false
 
-	newTestExecutionClient := func(ctx context.Context, p *plugins.SourcePlugin, spec specs.Source) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		svc, err := createService()
 		if err != nil {
-			return nil, fmt.Errorf("failed to creattService %w", err)
+			return nil, fmt.Errorf("failed to createService %w", err)
 		}
 		var herokuSpec Spec
 		if err := spec.UnmarshalSpec(&herokuSpec); err != nil {
