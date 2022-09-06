@@ -23,10 +23,12 @@ func SQL() []Resource {
 				{
 					azureStruct:  &sql.Server{},
 					listFunction: "List",
+					relations:    []string{"databases(), encryptionProtectors()"},
 				},
 				{
 					azureStruct:  &sql.ManagedInstance{},
 					listFunction: "List",
+					relations:    []string{"managedDatabases()"},
 				},
 			},
 			serviceNameOverride: "SQL",
