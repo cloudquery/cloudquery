@@ -22,10 +22,10 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Se
 
 	table.IgnoreInTests = false
 
-	newTestExecutionClient := func(ctx context.Context, p *plugins.SourcePlugin, spec specs.Source) (schema.ClientMeta, error) {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		svc, err := createService()
 		if err != nil {
-			return nil, fmt.Errorf("failed to creattService %w", err)
+			return nil, fmt.Errorf("failed to createService: %w", err)
 		}
 		var gcpSpec Spec
 		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {
@@ -35,7 +35,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Se
 			zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 		).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 		c := &Client{
-			plugin: p,
+			// plugin: p,
 			logger: l,
 			// logger:   t.Log(),
 			Services: svc,

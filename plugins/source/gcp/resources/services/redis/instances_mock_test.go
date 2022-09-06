@@ -4,53 +4,62 @@ package redis
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
+	"fmt"
+	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"net"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
-	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
+	"cloud.google.com/go/redis/apiv1"
 
-	"google.golang.org/api/redis/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/redis/v1"
 
 	"google.golang.org/api/option"
 )
 
-type MockInstancesResult struct {
-	Instances []*redis.Instance `json:"instances,omitempty"`
+func createInstances() (*client.Services, error) {
+	fakeServer := &fakeInstancesServer{}
+	l, err := net.Listen("tcp", "localhost:0")
+	if err != nil {
+		return nil, fmt.Errorf("failed to listen: %w", err)
+	}
+	gsrv := grpc.NewServer()
+	pb.RegisterCloudRedisServer(gsrv, fakeServer)
+	fakeServerAddr := l.Addr().String()
+	go func() {
+		if err := gsrv.Serve(l); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Create a client.
+	svc, err := redis.NewCloudRedisClient(context.Background(),
+		option.WithEndpoint(fakeServerAddr),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create grpc client: %w", err)
+	}
+
+	return &client.Services{
+		RedisCloudRedisClient: svc,
+	}, nil
 }
 
-func createInstances() (*client.Services, error) {
-	var item redis.Instance
-	if err := faker.FakeData(&item); err != nil {
-		return nil, err
-	}
+type fakeInstancesServer struct {
+	pb.UnimplementedCloudRedisServer
+}
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockInstancesResult{
-			Instances: []*redis.Instance{&item},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-	ts := httptest.NewServer(mux)
-	svc, err := redis.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
+func (f *fakeInstancesServer) ListInstances(context.Context, *pb.ListInstancesRequest) (*pb.ListInstancesResponse, error) {
+	resp := pb.ListInstancesResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	return &client.Services{
-		Redis: svc,
-	}, nil
+	resp.NextPageToken = ""
+	return &resp, nil
 }
 
 func TestInstances(t *testing.T) {

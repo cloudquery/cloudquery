@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
+	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -28,13 +29,16 @@ Find more information at:
 	https://cloudquery.io`
 )
 
-func newCmdRoot() *cobra.Command {
+const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
+
+func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
 	noColor := false
 	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
+	sentryDsn := sentryDsnDefault
 
 	var logFile *os.File
 	cmd := &cobra.Command{
@@ -52,7 +56,7 @@ func newCmdRoot() *cobra.Command {
 			}
 			var writers []io.Writer
 			if !noLogFile {
-				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
 				if err != nil {
 					return err
 				}
@@ -73,6 +77,26 @@ func newCmdRoot() *cobra.Command {
 
 			mw := io.MultiWriter(writers...)
 			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
+			err = sentry.Init(sentry.ClientOptions{
+				Debug:   true,
+				Dsn:     sentryDsn,
+				Release: "cloudquery@" + Commit,
+				// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
+				Integrations: func(integrations []sentry.Integration) []sentry.Integration {
+					var filteredIntegrations []sentry.Integration
+					for _, integration := range integrations {
+						if integration.Name() == "Modules" {
+							continue
+						}
+						filteredIntegrations = append(filteredIntegrations, integration)
+					}
+					return filteredIntegrations
+				},
+			})
+			if err != nil {
+				log.Error().Err(err).Msg("error initializing sentry")
+			}
+
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
@@ -103,10 +127,9 @@ func newCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().Bool("telemetry-debug", false, "enable telemetry debug logging")
 
 	// Sentry (error reporting) flags
-	cmd.PersistentFlags().Bool("sentry-debug", false, "enable Sentry debug mode")
-	cmd.PersistentFlags().String("sentry-dsn", "https://5ff9e378a79d4ba2821f540b036286e9@o912044.ingest.sentry.io/6106324", "Sentry DSN")
+	cmd.PersistentFlags().StringVar(&sentryDsn, "sentry-dsn", sentryDsnDefault, "sentry DSN")
 
-	hiddenFlags := []string{"telemetry-inspect", "telemetry-debug", "sentry-debug", "sentry-dsn"}
+	hiddenFlags := []string{"telemetry-inspect", "telemetry-debug", "sentry-dsn"}
 	for _, f := range hiddenFlags {
 		err := cmd.PersistentFlags().MarkHidden(f)
 		if err != nil {
@@ -118,15 +141,6 @@ func newCmdRoot() *cobra.Command {
 	cmd.AddCommand(NewCmdGenerate(), NewCmdSync(), newCmdDoc())
 	cmd.DisableAutoGenTag = true
 	return cmd
-}
-
-func Execute() error {
-	defer func() {
-		if err := recover(); err != nil {
-			panic(err)
-		}
-	}()
-	return newCmdRoot().Execute()
 }
 
 func initViper() {

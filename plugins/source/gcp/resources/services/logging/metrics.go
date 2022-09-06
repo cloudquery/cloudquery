@@ -5,6 +5,9 @@ package logging
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/logging/v2"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -22,41 +25,6 @@ func Metrics() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "bucket_options",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BucketOptions"),
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
-			},
-			{
-				Name:     "disabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Disabled"),
-			},
-			{
-				Name:     "filter",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Filter"),
-			},
-			{
-				Name:     "label_extractors",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LabelExtractors"),
-			},
-			{
-				Name:     "metric_descriptor",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("MetricDescriptor"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -65,9 +33,24 @@ func Metrics() *schema.Table {
 				},
 			},
 			{
-				Name:     "update_time",
+				Name:     "description",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UpdateTime"),
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "filter",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Filter"),
+			},
+			{
+				Name:     "disabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Disabled"),
+			},
+			{
+				Name:     "metric_descriptor",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MetricDescriptor"),
 			},
 			{
 				Name:     "value_extractor",
@@ -75,8 +58,28 @@ func Metrics() *schema.Table {
 				Resolver: schema.PathResolver("ValueExtractor"),
 			},
 			{
+				Name:     "label_extractors",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LabelExtractors"),
+			},
+			{
+				Name:     "bucket_options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BucketOptions"),
+			},
+			{
+				Name:     "create_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreateTime"),
+			},
+			{
+				Name:     "update_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("UpdateTime"),
+			},
+			{
 				Name:     "version",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Version"),
 			},
 		},
@@ -85,18 +88,21 @@ func Metrics() *schema.Table {
 
 func fetchMetrics(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListLogMetricsRequest{
+		Parent: "projects/" + c.ProjectId,
+	}
+	it := c.Services.LoggingMetricsClient.ListLogMetrics(ctx, req)
 	for {
-		output, err := c.Services.Logging.Projects.Metrics.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Metrics
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

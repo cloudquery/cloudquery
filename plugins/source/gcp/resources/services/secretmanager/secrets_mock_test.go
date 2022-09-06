@@ -4,53 +4,62 @@ package secretmanager
 
 import (
 	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
+	"fmt"
+	"github.com/cloudquery/plugin-sdk/faker"
+	"github.com/cloudquery/plugins/source/gcp/client"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"net"
 	"testing"
 
-	"github.com/bxcodec/faker/v4"
-	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/julienschmidt/httprouter"
+	"cloud.google.com/go/secretmanager/apiv1"
 
-	"google.golang.org/api/secretmanager/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 
 	"google.golang.org/api/option"
 )
 
-type MockSecretsResult struct {
-	Secrets []*secretmanager.Secret `json:"secrets,omitempty"`
+func createSecrets() (*client.Services, error) {
+	fakeServer := &fakeSecretsServer{}
+	l, err := net.Listen("tcp", "localhost:0")
+	if err != nil {
+		return nil, fmt.Errorf("failed to listen: %w", err)
+	}
+	gsrv := grpc.NewServer()
+	pb.RegisterSecretManagerServiceServer(gsrv, fakeServer)
+	fakeServerAddr := l.Addr().String()
+	go func() {
+		if err := gsrv.Serve(l); err != nil {
+			panic(err)
+		}
+	}()
+
+	// Create a client.
+	svc, err := secretmanager.NewClient(context.Background(),
+		option.WithEndpoint(fakeServerAddr),
+		option.WithoutAuthentication(),
+		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create grpc client: %w", err)
+	}
+
+	return &client.Services{
+		SecretmanagerClient: svc,
+	}, nil
 }
 
-func createSecrets() (*client.Services, error) {
-	var item secretmanager.Secret
-	if err := faker.FakeData(&item); err != nil {
-		return nil, err
-	}
+type fakeSecretsServer struct {
+	pb.UnimplementedSecretManagerServiceServer
+}
 
-	mux := httprouter.New()
-	mux.GET("/*filepath", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-		resp := &MockSecretsResult{
-			Secrets: []*secretmanager.Secret{&item},
-		}
-		b, err := json.Marshal(resp)
-		if err != nil {
-			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
-			return
-		}
-		if _, err := w.Write(b); err != nil {
-			http.Error(w, "failed to write", http.StatusBadRequest)
-			return
-		}
-	})
-	ts := httptest.NewServer(mux)
-	svc, err := secretmanager.NewService(context.Background(), option.WithoutAuthentication(), option.WithEndpoint(ts.URL))
-	if err != nil {
-		return nil, err
+func (f *fakeSecretsServer) ListSecrets(context.Context, *pb.ListSecretsRequest) (*pb.ListSecretsResponse, error) {
+	resp := pb.ListSecretsResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	return &client.Services{
-		Secretmanager: svc,
-	}, nil
+	resp.NextPageToken = ""
+	return &resp, nil
 }
 
 func TestSecrets(t *testing.T) {

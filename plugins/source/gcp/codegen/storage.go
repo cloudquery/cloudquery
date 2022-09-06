@@ -1,18 +1,19 @@
 package codegen
 
 import (
-	"fmt"
-
+	"cloud.google.com/go/storage"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/iancoleman/strcase"
-	"google.golang.org/api/storage/v1"
 )
 
 var storageResources = []*Resource{
 	{
-		SubService: "buckets",
-		Struct:     &storage.Bucket{},
+		SubService:     "buckets",
+		Struct:         &storage.BucketAttrs{},
+		NewFunction:    storage.NewClient,
+		ResponseStruct: &storage.BucketAttrs{},
+		SkipFetch:      true,
+		SkipMock:       true,
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",
@@ -29,9 +30,9 @@ func StorageResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "storage"
-		resource.MockImports = []string{"google.golang.org/api/storage/v1"}
-		resource.Template = "resource_list"
-		resource.ListFunction = fmt.Sprintf("c.Services.Storage.%s.List(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
+		resource.MockImports = []string{"cloud.google.com/go/storage"}
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "newapi_list_rest_mock"
 	}
 
 	return resources

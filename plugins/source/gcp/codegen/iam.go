@@ -1,8 +1,6 @@
 package codegen
 
 import (
-	"fmt"
-
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
@@ -11,8 +9,11 @@ import (
 
 var iamResources = []*Resource{
 	{
-		SubService: "roles",
-		Struct:     &iam.Role{},
+		SubService:   "roles",
+		Struct:       &iam.Role{},
+		NewFunction:  iam.NewProjectsRolesService,
+		ListFunction: (&iam.ProjectsRolesService{}).List,
+		// ListFunction: ,
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "project_id",
@@ -29,9 +30,11 @@ var iamResources = []*Resource{
 		SkipFields: []string{"ServerResponse", "NullFields", "ForceSendFields"},
 	},
 	{
-		SubService:  "service_accounts",
-		Struct:      &iam.ServiceAccount{},
-		OutputField: "Accounts",
+		SubService:   "service_accounts",
+		Struct:       &iam.ServiceAccount{},
+		NewFunction:  iam.NewProjectsServiceAccountsService,
+		ListFunction: (&iam.ProjectsServiceAccountsService{}).List,
+		OutputField:  "Accounts",
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "unique_id",
@@ -50,9 +53,10 @@ func IamResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "iam"
+		resource.SkipFetch = true
 		resource.MockImports = []string{"google.golang.org/api/iam/v1"}
-		resource.ListFunction = fmt.Sprintf(`c.Services.Iam.Projects.%s.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
-		resource.Template = "resource_list"
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "resource_list_mock"
 		if resource.OutputField == "" {
 			resource.OutputField = strcase.ToCamel(resource.SubService)
 		}

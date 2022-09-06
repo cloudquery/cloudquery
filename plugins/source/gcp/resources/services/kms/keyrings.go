@@ -19,18 +19,14 @@ func Keyrings() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name: "location",
-				Type: schema.TypeString,
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "create_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreateTime"),
 			},
 		},
 

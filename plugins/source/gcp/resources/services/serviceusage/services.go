@@ -5,6 +5,9 @@ package serviceusage
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/api/serviceusage/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -22,11 +25,6 @@ func Services() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
-				Name:     "config",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Config"),
-			},
-			{
 				Name: "name",
 				Type: schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{
@@ -39,8 +37,13 @@ func Services() *schema.Table {
 				Resolver: schema.PathResolver("Parent"),
 			},
 			{
+				Name:     "config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Config"),
+			},
+			{
 				Name:     "state",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("State"),
 			},
 		},
@@ -49,18 +52,21 @@ func Services() *schema.Table {
 
 func fetchServices(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListServicesRequest{
+		Parent: "projects/" + c.ProjectId,
+	}
+	it := c.Services.ServiceusageClient.ListServices(ctx, req)
 	for {
-		output, err := c.Services.Serviceusage.Services.List("projects/" + c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Services
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

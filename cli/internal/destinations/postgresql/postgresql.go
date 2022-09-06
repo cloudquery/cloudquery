@@ -92,8 +92,6 @@ func (p *Client) Initialize(ctx context.Context, spec specs.Destination) error {
 	if err != nil {
 		return fmt.Errorf("failed to parse pgx log level %s: %w", specPostgreSql.PgxLogLevel, err)
 	}
-	// logLevel := specPostgreSql.PgxLogLevel
-	fmt.Println(logLevel)
 	p.logger.Info().Str("pgx_log_level", specPostgreSql.PgxLogLevel.String()).Msg("Initializing postgresql destination")
 
 	pgxConfig, err := pgxpool.ParseConfig(specPostgreSql.ConnectionString)

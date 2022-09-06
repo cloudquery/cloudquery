@@ -5,6 +5,9 @@ package compute
 import (
 	"context"
 	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
@@ -119,18 +122,21 @@ func Networks() *schema.Table {
 
 func fetchNetworks(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.ListNetworksRequest{
+		Project: c.ProjectId,
+	}
+	it := c.Services.ComputeNetworksClient.List(ctx, req)
 	for {
-		output, err := c.Services.Compute.Networks.List(c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- output.Items
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
+		res <- resp
+
 	}
 	return nil
 }

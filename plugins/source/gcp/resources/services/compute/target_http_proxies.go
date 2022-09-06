@@ -4,11 +4,13 @@ package compute
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
-
-	"google.golang.org/api/compute/v1"
 )
 
 func TargetHttpProxies() *schema.Table {
@@ -80,23 +82,21 @@ func TargetHttpProxies() *schema.Table {
 
 func fetchTargetHttpProxies(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	nextPageToken := ""
+	req := &pb.AggregatedListTargetHttpProxiesRequest{
+		Project: c.ProjectId,
+	}
+	it := c.Services.ComputeTargetHttpProxiesClient.AggregatedList(ctx, req)
 	for {
-		output, err := c.Services.Compute.TargetHttpProxies.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()
+		resp, err := it.Next()
+		if err == iterator.Done {
+			break
+		}
 		if err != nil {
 			return errors.WithStack(err)
 		}
 
-		var allItems []*compute.TargetHttpProxy
-		for _, items := range output.Items {
-			allItems = append(allItems, items.TargetHttpProxies...)
-		}
-		res <- allItems
+		res <- resp.Value.TargetHttpProxies
 
-		if output.NextPageToken == "" {
-			break
-		}
-		nextPageToken = output.NextPageToken
 	}
 	return nil
 }

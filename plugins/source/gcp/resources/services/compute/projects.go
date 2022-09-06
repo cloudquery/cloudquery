@@ -4,9 +4,12 @@ package compute
 
 import (
 	"context"
+	"github.com/pkg/errors"
+
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
-	"github.com/pkg/errors"
+
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
 func Projects() *schema.Table {
@@ -91,14 +94,15 @@ func Projects() *schema.Table {
 	}
 }
 
-func fetchProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchProjects(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	output, err := c.Services.Compute.Projects.Get(c.ProjectId).Do()
+	req := &pb.GetProjectRequest{
+		Project: c.ProjectId,
+	}
+	resp, err := c.Services.ComputeProjectsClient.Get(ctx, req)
 	if err != nil {
 		return errors.WithStack(err)
 	}
-
-	res <- output
-
+	res <- resp
 	return nil
 }

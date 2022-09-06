@@ -1,8 +1,6 @@
 package codegen
 
 import (
-	"fmt"
-
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
@@ -11,8 +9,10 @@ import (
 
 var dnsResources = []*Resource{
 	{
-		SubService: "policies",
-		Struct:     &dns.Policy{},
+		SubService:   "policies",
+		Struct:       &dns.Policy{},
+		NewFunction:  dns.NewService,
+		ListFunction: (&dns.PoliciesService{}).List,
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -23,8 +23,10 @@ var dnsResources = []*Resource{
 		},
 	},
 	{
-		SubService: "managed_zones",
-		Struct:     &dns.ManagedZone{},
+		SubService:   "managed_zones",
+		Struct:       &dns.ManagedZone{},
+		NewFunction:  dns.NewManagedZoneOperationsService,
+		ListFunction: (&dns.ManagedZonesService{}).List,
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -42,9 +44,10 @@ func DnsResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "dns"
+		resource.SkipFetch = true
 		resource.MockImports = []string{"google.golang.org/api/dns/v1"}
-		resource.ListFunction = fmt.Sprintf(`c.Services.Dns.%s.List(c.ProjectId).PageToken(nextPageToken).Do()`, strcase.ToCamel(resource.SubService))
-		resource.Template = "resource_list"
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "resource_list_mock"
 		resource.OutputField = strcase.ToCamel(resource.SubService)
 	}
 

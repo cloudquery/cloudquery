@@ -1,16 +1,20 @@
 package codegen
 
 import (
-	"fmt"
-
-	"github.com/iancoleman/strcase"
-	"google.golang.org/api/run/v1"
+	run "cloud.google.com/go/run/apiv2"
+	pb "google.golang.org/genproto/googleapis/cloud/run/v2"
 )
 
 var runResources = []*Resource{
 	{
-		SubService: "services",
-		Struct:     &run.Service{},
+		SubService:          "services",
+		Struct:              &pb.Service{},
+		NewFunction:         run.NewServicesClient,
+		RequestStruct:       &pb.ListServicesRequest{},
+		ResponseStruct:      &pb.ListServicesResponse{},
+		RegisterServer:      pb.RegisterServicesServer,
+		ListFunction:        (&pb.UnimplementedServicesServer{}).ListServices,
+		UnimplementedServer: &pb.UnimplementedServicesServer{},
 	},
 }
 
@@ -20,10 +24,11 @@ func RunResources() []*Resource {
 
 	for _, resource := range resources {
 		resource.Service = "run"
-		resource.Template = "resource_list"
-		resource.MockImports = []string{"google.golang.org/api/run/v1"}
-		resource.ListFunction = fmt.Sprintf(`c.Services.Run.Projects.Locations.%s.List("projects/" + c.ProjectId + "/locations/-").Continue(nextPageToken)`, strcase.ToCamel(resource.SubService))
-		resource.OutputField = strcase.ToCamel(resource.SubService)
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "newapi_list_grpc_mock"
+		resource.MockImports = []string{"cloud.google.com/go/run/apiv2"}
+		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/run/v2"
+		resource.RequestStructFields = `Parent: "projects/" + c.ProjectId + "locations/-",`
 	}
 
 	return resources
