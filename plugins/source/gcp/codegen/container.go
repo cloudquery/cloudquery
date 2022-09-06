@@ -1,19 +1,24 @@
 package codegen
 
 import (
-	"fmt"
-
+	container "cloud.google.com/go/container/apiv1"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/iancoleman/strcase"
-	"google.golang.org/api/container/v1"
+	pb "google.golang.org/genproto/googleapis/container/v1"
 )
 
-var kubernetesResources = []*Resource{
+var containerResources = []*Resource{
 	{
-		SubService: "clusters",
-		Struct:     &container.Cluster{},
-		SkipMock:   true,
+		SubService:          "clusters",
+		Struct:              &pb.Cluster{},
+		NewFunction:         container.NewClusterManagerClient,
+		RequestStruct:       &pb.ListClustersRequest{},
+		ResponseStruct:      &pb.ListClustersResponse{},
+		RegisterServer:      pb.RegisterClusterManagerServer,
+		ListFunction:        (&pb.UnimplementedClusterManagerServer{}).ListClusters,
+		UnimplementedServer: &pb.UnimplementedClusterManagerServer{},
+		SkipFetch:           true,
+		SkipMock:            true,
 		OverrideColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",
@@ -24,15 +29,16 @@ var kubernetesResources = []*Resource{
 	},
 }
 
-func KubernetesResources() []*Resource {
+func ContainerResources() []*Resource {
 	var resources []*Resource
-	resources = append(resources, kubernetesResources...)
+	resources = append(resources, containerResources...)
 
 	for _, resource := range resources {
 		resource.Service = "container"
-		resource.ListFunction = fmt.Sprintf(`c.Services.Container.Projects.Locations.%s.List("projects/" + c.ProjectId + "/locations/-").Do()`, strcase.ToCamel(resource.SubService))
-		resource.Template = "resource_list_one"
-		resource.OutputField = strcase.ToCamel(resource.SubService)
+		resource.MockImports = []string{"cloud.google.com/go/container/apiv1"}
+		resource.ProtobufImport = "google.golang.org/genproto/googleapis/container/v1"
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "newapi_list_grpc_mock"
 	}
 
 	return resources

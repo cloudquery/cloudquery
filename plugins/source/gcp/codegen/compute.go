@@ -1,149 +1,234 @@
 package codegen
 
 import (
-	"fmt"
+	"reflect"
+	"runtime"
+	"strings"
 
+	compute "cloud.google.com/go/compute/apiv1"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
-	"google.golang.org/api/compute/v1"
+	pb "google.golang.org/genproto/googleapis/cloud/compute/v1"
 )
 
 var computeResourcesAggList = []*Resource{
 	{
-		SubService: "addresses",
-		Struct:     &compute.Address{},
+		SubService:     "addresses",
+		Struct:         &pb.Address{},
+		NewFunction:    compute.NewAddressesRESTClient,
+		RequestStruct:  &pb.AggregatedListAddressesRequest{},
+		ResponseStruct: &pb.AddressAggregatedList{},
+		ListFunction:   (&compute.AddressesClient{}).AggregatedList,
+		OutputField:    "Value.Addresses",
 	},
 	{
-		SubService: "autoscalers",
-		Struct:     &compute.Autoscaler{},
+		SubService:     "autoscalers",
+		Struct:         &pb.Autoscaler{},
+		NewFunction:    compute.NewAutoscalersRESTClient,
+		RequestStruct:  &pb.AggregatedListAutoscalersRequest{},
+		ResponseStruct: &pb.AutoscalerAggregatedList{},
+		ListFunction:   (&compute.AutoscalersClient{}).AggregatedList,
+		OutputField:    "Value.Autoscalers",
 	},
 	{
-		SubService: "backend_services",
-		Struct:     &compute.BackendService{},
+		SubService:     "backend_services",
+		Struct:         &pb.BackendService{},
+		NewFunction:    compute.NewBackendServicesRESTClient,
+		RequestStruct:  &pb.AggregatedListBackendServicesRequest{},
+		ResponseStruct: &pb.BackendServiceAggregatedList{},
+		ListFunction:   (&compute.BackendServicesClient{}).AggregatedList,
+		OutputField:    "Value.BackendServices",
 	},
 	{
-		SubService: "disk_types",
-		Struct:     &compute.DiskType{},
-		OverrideColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "self_link",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
-		// Id doesn't return anything
-		SkipFields: []string{"ServerResponse", "NullFields", "ForceSendFields", "Id"},
+		SubService:     "disk_types",
+		Struct:         &pb.DiskType{},
+		NewFunction:    compute.NewDiskTypesRESTClient,
+		RequestStruct:  &pb.AggregatedListDiskTypesRequest{},
+		ResponseStruct: &pb.DiskTypeAggregatedList{},
+		ListFunction:   (&compute.DiskTypesClient{}).AggregatedList,
+		OutputField:    "Value.DiskTypes",
 	},
 	{
-		SubService: "disks",
-		Struct:     &compute.Disk{},
+		SubService:     "disks",
+		Struct:         &pb.Disk{},
+		NewFunction:    compute.NewDisksRESTClient,
+		RequestStruct:  &pb.AggregatedListDisksRequest{},
+		ResponseStruct: &pb.DiskAggregatedList{},
+		ListFunction:   (&compute.DisksClient{}).AggregatedList,
+		OutputField:    "Value.Disks",
 	},
 	{
-		SubService: "forwarding_rules",
-		Struct:     &compute.ForwardingRule{},
+		SubService:     "forwarding_rules",
+		Struct:         &pb.ForwardingRule{},
+		NewFunction:    compute.NewForwardingRulesRESTClient,
+		RequestStruct:  &pb.AggregatedListForwardingRulesRequest{},
+		ResponseStruct: &pb.ForwardingRuleAggregatedList{},
+		ListFunction:   (&compute.ForwardingRulesClient{}).AggregatedList,
+		OutputField:    "Value.ForwardingRules",
 	},
 	{
-		SubService: "instances",
-		Struct:     &compute.Instance{},
+		SubService:     "instances",
+		Struct:         &pb.Instance{},
+		NewFunction:    compute.NewInstancesRESTClient,
+		RequestStruct:  &pb.AggregatedListInstancesRequest{},
+		ResponseStruct: &pb.InstanceAggregatedList{},
+		ListFunction:   (&compute.InstancesClient{}).AggregatedList,
+		OutputField:    "Value.Instances",
 	},
 	{
-		SubService: "ssl_certificates",
-		Struct:     &compute.SslCertificate{},
+		SubService:     "ssl_certificates",
+		Struct:         &pb.SslCertificate{},
+		NewFunction:    compute.NewSslCertificatesRESTClient,
+		RequestStruct:  &pb.AggregatedListSslCertificatesRequest{},
+		ResponseStruct: &pb.SslCertificateAggregatedList{},
+		ListFunction:   (&compute.SslCertificatesClient{}).AggregatedList,
+		OutputField:    "Value.SslCertificates",
 	},
 	{
-		SubService: "subnetworks",
-		Struct:     &compute.Subnetwork{},
+		SubService:     "subnetworks",
+		Struct:         &pb.Subnetwork{},
+		NewFunction:    compute.NewSubnetworksRESTClient,
+		RequestStruct:  &pb.AggregatedListSubnetworksRequest{},
+		ResponseStruct: &pb.SubnetworkAggregatedList{},
+		ListFunction:   (&compute.SubnetworksClient{}).AggregatedList,
+		OutputField:    "Value.Subnetworks",
 	},
 	{
-		SubService: "target_http_proxies",
-		Struct:     &compute.TargetHttpProxy{},
+		SubService:     "target_http_proxies",
+		Struct:         &pb.TargetHttpProxy{},
+		NewFunction:    compute.NewTargetHttpProxiesRESTClient,
+		RequestStruct:  &pb.AggregatedListTargetHttpProxiesRequest{},
+		ResponseStruct: &pb.TargetHttpProxyAggregatedList{},
+		ListFunction:   (&compute.TargetHttpProxiesClient{}).AggregatedList,
+		OutputField:    "Value.TargetHttpProxies",
 	},
 	{
-		SubService: "url_maps",
-		Struct:     &compute.UrlMap{},
+		SubService:     "url_maps",
+		Struct:         &pb.UrlMap{},
+		NewFunction:    compute.NewUrlMapsRESTClient,
+		RequestStruct:  &pb.AggregatedListUrlMapsRequest{},
+		ResponseStruct: &pb.UrlMapsAggregatedList{},
+		ListFunction:   (&compute.UrlMapsClient{}).AggregatedList,
+		OutputField:    "Value.UrlMaps",
 	},
 	{
-		SubService: "vpn_gateways",
-		Struct:     &compute.VpnGateway{},
+		SubService:     "vpn_gateways",
+		Struct:         &pb.VpnGateway{},
+		NewFunction:    compute.NewVpnGatewaysRESTClient,
+		RequestStruct:  &pb.AggregatedListVpnGatewaysRequest{},
+		ResponseStruct: &pb.VpnGatewayAggregatedList{},
+		ListFunction:   (&compute.VpnGatewaysClient{}).AggregatedList,
+		OutputField:    "Value.VpnGateways",
 	},
 	{
-		SubService: "instance_groups",
-		Struct:     &compute.InstanceGroup{},
+		SubService:     "instance_groups",
+		Struct:         &pb.InstanceGroup{},
+		NewFunction:    compute.NewInstanceGroupsRESTClient,
+		RequestStruct:  &pb.AggregatedListInstanceGroupsRequest{},
+		ResponseStruct: &pb.InstanceGroupAggregatedList{},
+		ListFunction:   (&compute.InstanceGroupsClient{}).AggregatedList,
+		OutputField:    "Value.InstanceGroups",
 	},
 }
 
 var computeResourcesList = []*Resource{
 	{
-		SubService: "images",
-		Struct:     &compute.Image{},
+		SubService:     "images",
+		Struct:         &pb.Image{},
+		NewFunction:    compute.NewImagesRESTClient,
+		RequestStruct:  &pb.ListImagesRequest{},
+		ResponseStruct: &pb.ImageList{},
+		ListFunction:   (&compute.ImagesClient{}).List,
 	},
 	{
-		SubService: "firewalls",
-		Struct:     &compute.Firewall{},
+		SubService:     "firewalls",
+		Struct:         &pb.Firewall{},
+		NewFunction:    compute.NewFirewallsRESTClient,
+		RequestStruct:  &pb.ListFirewallsRequest{},
+		ResponseStruct: &pb.FirewallList{},
+		ListFunction:   (&compute.FirewallsClient{}).List,
 	},
 	{
-		SubService: "networks",
-		Struct:     &compute.Network{},
+		SubService:     "networks",
+		Struct:         &pb.Network{},
+		NewFunction:    compute.NewNetworksRESTClient,
+		RequestStruct:  &pb.ListNetworksRequest{},
+		ResponseStruct: &pb.NetworkList{},
+		ListFunction:   (&compute.NetworksClient{}).List,
 	},
 	{
-		SubService: "ssl_policies",
-		Struct:     &compute.SslPolicy{},
+		SubService:     "ssl_policies",
+		Struct:         &pb.SslPolicy{},
+		NewFunction:    compute.NewSslPoliciesRESTClient,
+		RequestStruct:  &pb.ListSslPoliciesRequest{},
+		ResponseStruct: &pb.SslPoliciesList{},
+		ListFunction:   (&compute.InterconnectsClient{}).List,
 	},
 	{
-		SubService: "interconnects",
-		Struct:     &compute.Interconnect{},
+		SubService:     "interconnects",
+		Struct:         &pb.Interconnect{},
+		NewFunction:    compute.NewInterconnectsRESTClient,
+		RequestStruct:  &pb.ListInterconnectsRequest{},
+		ResponseStruct: &pb.InterconnectList{},
+		ListFunction:   (&compute.InterconnectsClient{}).List,
 	},
 	{
-		SubService: "target_ssl_proxies",
-		Struct:     &compute.TargetSslProxy{},
+		SubService:     "target_ssl_proxies",
+		Struct:         &pb.TargetSslProxy{},
+		NewFunction:    compute.NewTargetSslProxiesRESTClient,
+		RequestStruct:  &pb.ListTargetSslProxiesRequest{},
+		ResponseStruct: &pb.TargetSslProxyList{},
+		ListFunction:   (&compute.TargetSslProxiesClient{}).List,
 	},
 }
 
 var computeResourcesGet = []*Resource{
 	{
-		SubService: "projects",
-		Struct:     &compute.Project{},
+		SubService:    "projects",
+		Struct:        &pb.Project{},
+		NewFunction:   compute.NewProjectsRESTClient,
+		RequestStruct: &pb.GetProjectRequest{},
+		ListFunction:  (&compute.ProjectsClient{}).Get,
 	},
 }
 
 func ComputeResources() []*Resource {
 	for _, resource := range computeResourcesList {
-		if resource.Template == "" {
-			resource.Template = "resource_list"
-		}
-		if resource.ListFunction == "" {
-			resource.ListFunction = fmt.Sprintf("c.Services.Compute.%s.List(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
-		}
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "newapi_list_rest_mock"
+		resource.RequestStructName = "List" + strcase.ToCamel(resource.SubService) + "Request"
 	}
 	for _, resource := range computeResourcesAggList {
-		if resource.Template == "" {
-			resource.Template = "resource_agg_list"
-		}
-		if len(resource.Imports) == 0 {
-			resource.Imports = []string{"google.golang.org/api/compute/v1"}
-		}
-		if resource.ListFunction == "" {
-			resource.ListFunction = fmt.Sprintf("c.Services.Compute.%s.AggregatedList(c.ProjectId).PageToken(nextPageToken).Do()", strcase.ToCamel(resource.SubService))
-		}
+		resource.Template = "newapi_list"
+		resource.MockTemplate = "newapi_list_rest_mock"
 	}
 	for _, resource := range computeResourcesGet {
-		if resource.Template == "" {
-			resource.Template = "resource_get"
-		}
-		if resource.ListFunction == "" {
-			resource.ListFunction = fmt.Sprintf("c.Services.Compute.%s.Get(c.ProjectId).Do()", strcase.ToCamel(resource.SubService))
-		}
+		resource.Template = "newapi_get"
+		resource.MockTemplate = "newapi_get_rest_mock"
 	}
 	resources := computeResourcesAggList
 	resources = append(resources, computeResourcesList...)
 	resources = append(resources, computeResourcesGet...)
+
 	// add all shared properties
-	for i := range resources {
-		resources[i].MockImports = []string{"google.golang.org/api/compute/v1"}
-		resources[i].Service = "compute"
-		if resources[i].OverrideColumns == nil {
-			resources[i].OverrideColumns = []codegen.ColumnDefinition{
+	for _, resource := range resources {
+		resource.RequestStructFields = `Project: c.ProjectId,`
+		resource.Service = "compute"
+		if resource.NewFunction != nil {
+			newFunctionNamePath := strings.Split(runtime.FuncForPC(reflect.ValueOf(resource.NewFunction).Pointer()).Name(), ".")
+			resource.NewFunctionName = newFunctionNamePath[len(newFunctionNamePath)-1]
+		}
+		if resource.ResponseStruct != nil {
+			resource.ResponseStructName = reflect.TypeOf(resource.ResponseStruct).Elem().Name()
+		}
+		if resource.RequestStruct != nil {
+			resource.RequestStructName = reflect.TypeOf(resource.RequestStruct).Elem().Name()
+		}
+		resource.MockImports = []string{"cloud.google.com/go/compute/apiv1"}
+		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/compute/v1"
+		if resource.OverrideColumns == nil {
+			resource.OverrideColumns = []codegen.ColumnDefinition{
 				{
 					Name:    "self_link",
 					Type:    schema.TypeString,

@@ -10,6 +10,8 @@ type Resource struct {
 	PackageName string
 	// DefaultColumns columns that will be appended to the main table
 	DefaultColumns []codegen.ColumnDefinition
+	// Sets PreResourceResolver
+	PreResourceResolver string
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// Struct that will be used to generate the cloudquery table
@@ -20,22 +22,62 @@ type Resource struct {
 	Service string
 	// SubService is the name of the gcp subservice the struct/api is residing (gcp is split into service.subservice.list)
 	SubService string
-	// ListFunction function string which lists all resources
-	ListFunction string
+	// NewFunction
+	NewFunction interface{}
+	// NewFunctionName name of the above function via Reflection
+	NewFunctionName string
+	// ClientName name of the above client via Reflection
+	ClientName string
+	// ListFunction
+	ListFunction interface{}
+	// ListFunction name of the above function via Reflection
+	ListFunctionName string
+	// RequestStruct fills the request struct for google api
+	RequestStruct interface{}
+	// RequestStructName
+	RequestStructName string
+	// RequestStructFields is the snippet that fills in in the request struct
+	RequestStructFields string
+	// ResponseStruct
+	ResponseStruct interface{}
+	// ResponseStructName is reflected name from the ResponseStruct
+	ResponseStructName string
+	// RegisterServer function to grpc register server
+	RegisterServer interface{}
+	// RegisterServerName is the name of the above function via Reflection
+	RegisterServerName string
+	// UnimplementedServer is the unimplemented server for the grpc server
+	UnimplementedServer interface{}
+	// UnimplementedServerName is the name of the above function via Reflection
+	UnimplementedServerName string
 	// OutputField is field where the result is located in the output struct
 	OutputField string
+	// Relations is list of relations functions
+	Relations []string
 	// Template is the template to use to generate the resource (some services has different template as some services were generated using different original codegen)
 	Template string
 	// imports to add for this resource
 	Imports []string
+	// Multiplex
+	Multiplex *string
+	// ChildTable
+	ChildTable bool
+	// FakerFieldsToIgnore is a list of fields to ignore when generating faker data
+	FakerFieldsToIgnore []string
 	// SkipMock is used to skip the mock generation for this resource
 	SkipMock bool
+	// Pass to MockTemplate
+	MockTemplate string
 	// MockPostFaker is a code snippet that runs post faker
 	MockPostFaker string
 	// MockListStruct is the name of the struct that will be used in the mock template
 	MockListStruct string
 	// MockImports imports used in mock tests
 	MockImports []string
+	// ProtobufImport path to protobuf struct for this resource/service
+	ProtobufImport string
+	// Dont generate fetch
+	SkipFetch bool
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	// Columns override, override generated columns
