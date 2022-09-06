@@ -369,18 +369,13 @@ func generateResource(r *recipes.Resource, mock bool) {
 		r.MockImports = quoteImports(r.MockImports)
 	}
 
-	r.TypesImport = ""
 	sp := t.PkgPath()
-	var mainImport string
+	var (
+		mainImport  string
+		typesImport string
+	)
 	if strings.HasSuffix(sp, "/types") {
-		r.TypesImport = sp
-		if r.AddTypesImport {
-			if !mock {
-				r.Imports = append(r.Imports, strconv.Quote(sp))
-			} else {
-				r.MockImports = append(r.MockImports, strconv.Quote(sp))
-			}
-		}
+		typesImport = strconv.Quote(sp)
 		mainImport = strings.TrimSuffix(sp, "/types")
 	} else if strings.HasSuffix(sp, "/aws-sdk-go-v2/service/"+strings.ToLower(r.AWSService)) { // main struct lives in main pkg
 		mainImport = sp
@@ -413,10 +408,26 @@ func generateResource(r *recipes.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse codegen template: %w", err))
 	}
+
 	var buff bytes.Buffer
-	if err := tpl.Execute(&buff, r); err != nil {
-		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
+
+	// we try two times to try and detect if we're using any `types.` references
+	for i := 0; i < 2; i++ {
+		if err := tpl.Execute(&buff, r); err != nil {
+			log.Fatal(fmt.Errorf("failed to execute template: %w", err))
+		}
+		if i == 1 || r.SkipTypesImport || typesImport == "" || !strings.Contains(buff.String(), "types.") {
+			break
+		}
+
+		if !mock {
+			r.Imports = append(r.Imports, typesImport)
+		} else {
+			r.MockImports = append(r.MockImports, typesImport)
+		}
+		buff.Reset()
 	}
+
 	filePath := path.Join(dir, "../codegen", strings.ToLower(r.AWSService))
 	if err := os.MkdirAll(filePath, 0755); err != nil {
 		log.Fatal(fmt.Errorf("failed to create directory: %w", err))

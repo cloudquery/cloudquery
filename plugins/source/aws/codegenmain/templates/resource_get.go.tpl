@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 
-{{if .Parent}}	"{{.TypesImport}}"{{end}}
 {{range .Imports}}	{{.}}
 {{end}}
 )

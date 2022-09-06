@@ -10,9 +10,8 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
-	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
-
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
+	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 )
 
 func buildApigatewayv2VpcLinks(t *testing.T, ctrl *gomock.Controller) client.Services {

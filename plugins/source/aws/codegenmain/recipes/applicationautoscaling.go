@@ -19,7 +19,9 @@ func init() {
 		CustomInputs: []string{
 			"\tServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),",
 		},
-		AddTypesImport: true,
+		Imports: []string{
+			`github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types`,
+		},
 		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},
 	)

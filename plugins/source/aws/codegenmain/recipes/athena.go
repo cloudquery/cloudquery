@@ -26,7 +26,7 @@ func init() {
 			return
 		}
 `,
-			CustomTagField: `aws.String(resolvers.CreateDataCatalogArn(cl, *item.CatalogName))`,
+			CustomTagField: `aws.String(resolvers.CreateDataCatalogArn(cl, *item.Name))`,
 			ColumnOverrides: map[string]codegen.ColumnDefinition{
 				"arn": {
 					Type:     schema.TypeString,

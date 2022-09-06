@@ -121,9 +121,9 @@ func listDataCatalogsDetail(ctx context.Context, meta schema.ClientMeta, results
 func resolveAthenaDataCatalogsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
-	item := resource.Item.(types.DataCatalogSummary)
+	item := resource.Item.(types.DataCatalog)
 	params := athena.ListTagsForResourceInput{
-		ResourceARN: aws.String(resolvers.CreateDataCatalogArn(cl, *item.CatalogName)),
+		ResourceARN: aws.String(resolvers.CreateDataCatalogArn(cl, *item.Name)),
 	}
 	tags := make(map[string]string)
 	for {

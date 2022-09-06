@@ -10,9 +10,8 @@ import (
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 
-	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
-
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
+	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 )
 
 func buildCloudwatchLogsMetricFilters(t *testing.T, ctrl *gomock.Controller) client.Services {

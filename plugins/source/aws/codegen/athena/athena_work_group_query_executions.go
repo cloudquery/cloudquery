@@ -8,9 +8,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 
-	"github.com/aws/aws-sdk-go-v2/service/athena/types"
-
 	"github.com/aws/aws-sdk-go-v2/service/athena"
+	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 )
 
 func AthenaWorkGroupQueryExecutions() *schema.Table {

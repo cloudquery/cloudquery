@@ -57,8 +57,8 @@ type Resource struct {
 
 	ColumnOverrides map[string]codegen.ColumnDefinition
 
-	AddTypesImport bool   // add types import regardless of template spec (can lead to double imports)
-	TrimPrefix     string // trim this prefix from all column names
+	SkipTypesImport bool   // always skip "types" import, regardless of autodetection
+	TrimPrefix      string // trim this prefix from all column names
 
 	CustomInputs  []string // Custom inputs to the first call (Get or List)
 	CustomInputs2 []string // Custom inputs to the second call (Describe after a List)
@@ -94,7 +94,6 @@ type AutoCalculated struct {
 	MockFuncName  string
 	TestFuncName  string
 	NestingLevel  int
-	TypesImport   string
 
 	TemplateFilename string // This is injected to top of every template result
 }

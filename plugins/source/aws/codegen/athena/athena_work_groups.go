@@ -119,7 +119,7 @@ func listWorkGroupsDetail(ctx context.Context, meta schema.ClientMeta, resultsCh
 func resolveAthenaWorkGroupsTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
-	item := resource.Item.(types.WorkGroupSummary)
+	item := resource.Item.(types.WorkGroup)
 	params := athena.ListTagsForResourceInput{
 		ResourceARN: aws.String(resolvers.CreateWorkGroupArn(cl, *item.Name)),
 	}

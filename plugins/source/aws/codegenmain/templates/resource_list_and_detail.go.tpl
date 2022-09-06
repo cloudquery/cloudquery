@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 
-	"{{.TypesImport}}"
 {{range .Imports}}	{{.}}
 {{end}}
 )
@@ -72,7 +71,7 @@ func list{{.AWSSubService}}Detail(ctx context.Context, meta schema.ClientMeta, r
 func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().{{.AWSService | ToCamel}}
-	item := resource.Item.({{.PaginatorListType}})
+	item := resource.Item.({{.AWSStructName}})
 	params := {{.AWSService | ToLower}}.ListTagsForResourceInput{
 		ResourceARN: {{.CustomTagField | Coalesce "item.ARN"}},
 	}
