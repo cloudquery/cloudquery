@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func ResolveOrg(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {

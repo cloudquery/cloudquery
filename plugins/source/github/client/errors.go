@@ -9,18 +9,18 @@ import (
 
 const EnterpriseOnly = "This organization is not part of externally managed enterprise."
 
-func IgnoreError(err error) bool {
+func IgnoreError(err error) (bool, string) {
 	var er *github.ErrorResponse
 	if errors.As(err, &er) {
 		if er.Response.StatusCode == http.StatusNotFound {
-			return true
+			return true, "not_found"
 		}
 		if er.Message == EnterpriseOnly {
-			return true
+			return true, "permission_denied"
 		}
 		if er.Response.StatusCode == http.StatusForbidden {
-			return true
+			return true, "permission_denied"
 		}
 	}
-	return false
+	return false, ""
 }
