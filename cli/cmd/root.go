@@ -78,7 +78,7 @@ func NewCmdRoot() *cobra.Command {
 			mw := io.MultiWriter(writers...)
 			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
 			err = sentry.Init(sentry.ClientOptions{
-				Debug:   true,
+				Debug:   false,
 				Dsn:     sentryDsn,
 				Release: "cloudquery@" + Commit,
 				// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations

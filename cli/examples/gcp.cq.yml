@@ -5,7 +5,7 @@ spec:
   registry: grpc
   path: "localhost:7777"
   max_goroutines: 10000000
-  tables: ["*"]
+  tables: ["gcp_logging_metrics"]
   # skip_tables: ["gcp_compute_disk_types", "gcp_iam_service_accounts"]
   destinations:
     - postgresql
