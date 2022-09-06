@@ -40,5 +40,5 @@ func create{{.HerokuStructName | Pluralize }}() (*heroku.Service, error) {
 }
 
 func Test{{.HerokuStructName}}(t *testing.T) {
-	client.HerokuMockTestHelper(t, {{.HerokuStructName | Pluralize}}(), create{{.HerokuStructName | Pluralize }}, client.TestOptions{})
+	client.MockTestHelper(t, {{.HerokuStructName | Pluralize}}(), create{{.HerokuStructName | Pluralize }}, client.TestOptions{})
 }

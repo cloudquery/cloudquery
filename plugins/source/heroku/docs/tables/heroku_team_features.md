@@ -4,13 +4,15 @@ https://devcenter.heroku.com/articles/platform-api-reference#team-feature-attrib
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|created_at|timestamp without time zone||
-|description|text||
-|display_name|text||
-|doc_url|text||
-|enabled|boolean||
-|feedback_email|text||
-|id|text||
-|name|text||
-|state|text||
-|updated_at|timestamp without time zone||
+|created_at|Timestamp||
+|description|String||
+|display_name|String||
+|doc_url|String||
+|enabled|Bool||
+|feedback_email|String||
+|id|String||
+|name|String||
+|state|String||
+|updated_at|Timestamp||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

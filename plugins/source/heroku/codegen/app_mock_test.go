@@ -40,5 +40,5 @@ func createApps() (*heroku.Service, error) {
 }
 
 func TestApp(t *testing.T) {
-	client.HerokuMockTestHelper(t, Apps(), createApps, client.TestOptions{})
+	client.MockTestHelper(t, Apps(), createApps, client.TestOptions{})
 }

@@ -4,9 +4,11 @@ https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-a
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|app|jsonb||
-|created_at|timestamp without time zone||
-|id|text||
-|pipeline|jsonb||
-|stage|text||
-|updated_at|timestamp without time zone||
+|app|JSON||
+|created_at|Timestamp||
+|id|String||
+|pipeline|JSON||
+|stage|String||
+|updated_at|Timestamp||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

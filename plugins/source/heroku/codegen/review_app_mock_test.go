@@ -54,5 +54,5 @@ func createReviewApps() (*heroku.Service, error) {
 }
 
 func TestReviewApp(t *testing.T) {
-	client.HerokuMockTestHelper(t, ReviewApps(), createReviewApps, client.TestOptions{})
+	client.MockTestHelper(t, ReviewApps(), createReviewApps, client.TestOptions{})
 }

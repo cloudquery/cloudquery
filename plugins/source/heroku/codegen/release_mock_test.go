@@ -54,5 +54,5 @@ func createReleases() (*heroku.Service, error) {
 }
 
 func TestRelease(t *testing.T) {
-	client.HerokuMockTestHelper(t, Releases(), createReleases, client.TestOptions{})
+	client.MockTestHelper(t, Releases(), createReleases, client.TestOptions{})
 }

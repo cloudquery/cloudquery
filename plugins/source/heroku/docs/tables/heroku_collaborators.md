@@ -4,10 +4,12 @@ https://devcenter.heroku.com/articles/platform-api-reference#collaborator-attrib
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|app|jsonb||
-|created_at|timestamp without time zone||
-|id|text||
-|permissions|jsonb||
-|role|text||
-|updated_at|timestamp without time zone||
-|user|jsonb||
+|app|JSON||
+|created_at|Timestamp||
+|id|String||
+|permissions|JSON||
+|role|String||
+|updated_at|Timestamp||
+|user|JSON||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

@@ -5,9 +5,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-
-	"github.com/cloudquery/cloudquery/plugins/source/heroku/resources/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/docs"
 )
 
 func main() {
@@ -24,8 +21,8 @@ func main() {
 		}
 
 	}
-
-	if err = docs.GenerateDocs(provider.Provider(), outputPath, true); err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to generate docs: %s\n", err)
-	}
+	// TODO: migrate to SDK v2
+	//if err = docs.GenerateSourcePluginDocs(plugin.Plugin(), path.Join(outputPath, "tables")); err != nil {
+	//	fmt.Fprintf(os.Stderr, "Failed to generate docs: %s\n", err)
+	//}
 }
