@@ -176,6 +176,7 @@ func Monitor() []Resource {
 							ResourceURI:                *resource.ID,
 						}
 					}`,
+					isRelation: true,
 				},
 			},
 			serviceNameOverride: "Monitor",

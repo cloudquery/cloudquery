@@ -30,6 +30,11 @@ func PublishingProfiles() *schema.Table {
 		Resolver: fetchPublishingProfiles,
 		Columns: []schema.Column{
 			{
+				Name:     "cq_id_parent",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:     "subscription_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAzureSubscription,

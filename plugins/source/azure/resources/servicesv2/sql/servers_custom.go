@@ -18,10 +18,9 @@ func databases() *schema.Table {
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "server_cq_id",
-				Description: "Azure sql server cloudquery id",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.ParentIdResolver,
+				Name:     "cq_id_parent",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
 			},
 			{
 				Name:        "transparent_data_encryption",
@@ -331,10 +330,9 @@ func databases() *schema.Table {
 				Resolver:    fetchSqlDatabaseDbBlobAuditingPolicies,
 				Columns: []schema.Column{
 					{
-						Name:        "database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Name:     "cq_id_parent",
+						Type:     schema.TypeUUID,
+						Resolver: schema.ParentIdResolver,
 					},
 					{
 						Name:        "kind",
@@ -419,10 +417,9 @@ func databases() *schema.Table {
 				Resolver:    fetchSqlDatabaseDbVulnerabilityAssessments,
 				Columns: []schema.Column{
 					{
-						Name:        "database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Name:     "cq_id_parent",
+						Type:     schema.TypeUUID,
+						Resolver: schema.ParentIdResolver,
 					},
 					{
 						Name:        "storage_container_path",
@@ -484,10 +481,9 @@ func databases() *schema.Table {
 				Resolver:    fetchSqlDatabaseDbVulnerabilityAssessmentScans,
 				Columns: []schema.Column{
 					{
-						Name:        "database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Name:     "cq_id_parent",
+						Type:     schema.TypeUUID,
+						Resolver: schema.ParentIdResolver,
 					},
 					{
 						Name:        "scan_id",
@@ -559,10 +555,9 @@ func databases() *schema.Table {
 				Resolver:    fetchSqlDatabaseDbThreatDetectionPolicies,
 				Columns: []schema.Column{
 					{
-						Name:        "database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Name:     "cq_id_parent",
+						Type:     schema.TypeUUID,
+						Resolver: schema.ParentIdResolver,
 					},
 					{
 						Name:        "location",

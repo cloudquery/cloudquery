@@ -53,6 +53,7 @@ func CosmosDB() []Resource {
 						return errors.WithStack(err)
 					}`},
 					listFunctionArgs: []string{"resource.ResourceGroup", "*account.Name"},
+					isRelation:       true,
 				},
 				{
 					azureStruct:        &documentdb.SQLDatabaseGetResults{},
@@ -65,6 +66,7 @@ func CosmosDB() []Resource {
 						return errors.WithStack(err)
 					}`},
 					listFunctionArgs: []string{"resource.ResourceGroup", "*account.Name"},
+					isRelation:       true,
 				},
 			},
 			serviceNameOverride: "CosmosDB",

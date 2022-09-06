@@ -34,6 +34,7 @@ func Web() []Resource {
 						return errors.WithStack(err)
 					}
 					res <- response`,
+					isRelation: true,
 				},
 			},
 		},

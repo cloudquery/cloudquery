@@ -57,6 +57,7 @@ type resourceDefinition struct {
 	skipFields               []string
 	includeColumns           string
 	helpers                  []string
+	isRelation               bool
 	listFunction             string
 	listFunctionArgs         []string
 	listFunctionArgsInit     []string
@@ -94,11 +95,12 @@ const (
 )
 
 var (
-	SubscriptionIdColumn = codegen.ColumnDefinition{
+	subscriptionIdColumn = codegen.ColumnDefinition{
 		Name:     "subscription_id",
 		Type:     schema.TypeString,
 		Resolver: "client.ResolveAzureSubscription",
 	}
+	defaultSkipFields = []string{"Response"}
 )
 
 func AllResources() []Resource {
@@ -142,8 +144,76 @@ func needsSubscriptionId(table *codegen.TableDefinition) bool {
 	return true
 }
 
-func generateResources(resourcesByTemplates []byTemplates) []Resource {
+func parseAzureStruct(byTemplate byTemplates, definition resourceDefinition) (string, string, string, string) {
 	plural := pluralize.NewClient()
+	elementTypeParts := strings.Split(reflect.TypeOf(definition.azureStruct).Elem().String(), ".")
+	azurePackageName, azureStructName := elementTypeParts[0], elementTypeParts[1]
+	azureService := strcase.ToCamel(azurePackageName)
+	if byTemplate.serviceNameOverride != "" {
+		azureService = byTemplate.serviceNameOverride
+	}
+	azureSubService := plural.Plural(azureStructName)
+	if definition.subServiceOverride != "" {
+		azureSubService = definition.subServiceOverride
+	}
+
+	return azurePackageName, azureStructName, azureService, azureSubService
+}
+
+func initColumns(table *codegen.TableDefinition, definition resourceDefinition) codegen.ColumnDefinitions {
+	columns := []codegen.ColumnDefinition{}
+	if needsSubscriptionId(table) {
+		columns = append(columns, subscriptionIdColumn)
+	}
+	if definition.isRelation {
+		columns = append(columns, codegen.ColumnDefinition{
+			Name:     "cq_id_parent",
+			Type:     schema.TypeUUID,
+			Resolver: "schema.ParentIdResolver",
+		})
+	}
+
+	columns = append(columns, table.Columns...)
+	columns = append(columns, definition.customColumns...)
+
+	return columns
+}
+
+func initTable(definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
+	skipFields := append(definition.skipFields, defaultSkipFields...)
+	table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields))
+	if err != nil {
+		log.Fatal(err)
+	}
+	table.Columns = initColumns(table, definition)
+
+	if !definition.isRelation {
+		table.Multiplex = "client.SubscriptionMultiplex"
+	}
+
+	if definition.includeColumns != "" {
+		regex := regexp.MustCompile(definition.includeColumns)
+		newColumns := make(codegen.ColumnDefinitions, 0)
+		for _, column := range table.Columns {
+			if regex.MatchString(column.Name) {
+				newColumns = append(newColumns, column)
+			}
+		}
+		table.Columns = newColumns
+	}
+
+	table.Resolver = "fetch" + azureService + azureSubService
+	table.Options.PrimaryKeys = []string{"id"}
+	table.Relations = definition.relations
+
+	if definition.getFunction != "" {
+		table.PreResourceResolver = "get" + azureStructName
+	}
+
+	return table
+}
+
+func generateResources(resourcesByTemplates []byTemplates) []Resource {
 	allResources := []Resource{}
 
 	for _, byTemplate := range resourcesByTemplates {
@@ -152,51 +222,8 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 
 		for _, template := range templates {
 			for _, definition := range definitions {
-				elementTypeParts := strings.Split(reflect.TypeOf(definition.azureStruct).Elem().String(), ".")
-				azurePackageName, azureStructName := elementTypeParts[0], elementTypeParts[1]
-				azureService := strcase.ToCamel(azurePackageName)
-				if byTemplate.serviceNameOverride != "" {
-					azureService = byTemplate.serviceNameOverride
-				}
-				azureSubService := plural.Plural(azureStructName)
-				if definition.subServiceOverride != "" {
-					azureSubService = definition.subServiceOverride
-				}
-
-				skipFields := append(definition.skipFields, "Response")
-				table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields))
-				if err != nil {
-					log.Fatal(err)
-				}
-
-				defaultColumns := []codegen.ColumnDefinition{}
-				if needsSubscriptionId(table) {
-					defaultColumns = append(defaultColumns, SubscriptionIdColumn)
-				}
-
-				table.Columns = append(defaultColumns, table.Columns...)
-				table.Columns = append(table.Columns, definition.customColumns...)
-
-				if definition.includeColumns != "" {
-					regex := regexp.MustCompile(definition.includeColumns)
-					newColumns := make(codegen.ColumnDefinitions, 0)
-					for _, column := range table.Columns {
-						if regex.MatchString(column.Name) {
-							newColumns = append(newColumns, column)
-						}
-					}
-					table.Columns = newColumns
-				}
-
-				table.Multiplex = "client.SubscriptionMultiplex"
-				table.Resolver = "fetch" + azureService + azureSubService
-				table.Options.PrimaryKeys = []string{"id"}
-				table.Relations = definition.relations
-
-				if definition.getFunction != "" {
-					table.PreResourceResolver = "get" + azureStructName
-				}
-
+				azurePackageName, azureStructName, azureService, azureSubService := parseAzureStruct(byTemplate, definition)
+				table := initTable(definition, azureService, azureSubService, azureStructName)
 				resource := Resource{
 					Table:            table,
 					AzurePackageName: azurePackageName,
@@ -220,7 +247,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					MockListResult:           definition.mockListResult,
 					MockListFunctionArgs:     definition.mockListFunctionArgs,
 					MockListFunctionArgsInit: definition.mockListFunctionArgsInit,
-					MockFieldsToIgnore:       append(skipFields, definition.mockFieldsToIgnore...),
+					MockFieldsToIgnore:       append(append(defaultSkipFields, definition.skipFields...), definition.mockFieldsToIgnore...),
 					MockValueType:            definition.mockValueType,
 					MockDefinitionType:       definition.mockDefinitionType,
 				}

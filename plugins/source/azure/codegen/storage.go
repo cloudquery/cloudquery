@@ -146,6 +146,7 @@ func Storage() []Resource {
 					listFunctionArgs:   []string{"resource.ResourceGroup", "*account.Name"},
 					listHandler:        valueHandler,
 					subServiceOverride: "BlobServices",
+					isRelation:         true,
 				},
 				{
 					azureStruct:  &storage.ListContainerItem{},
@@ -161,6 +162,7 @@ func Storage() []Resource {
 					}`},
 					listFunctionArgs:   []string{"resource.ResourceGroup", "*account.Name", `""`, `""`, `""`},
 					subServiceOverride: "Containers",
+					isRelation:         true,
 				},
 			},
 		},

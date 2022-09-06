@@ -17,6 +17,11 @@ func managedDatabases() *schema.Table {
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
+				Name:     "cq_id_parent",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
 				Name:        "collation",
 				Description: "Collation of the managed database.",
 				Type:        schema.TypeString,
@@ -149,10 +154,9 @@ func managedDatabases() *schema.Table {
 				Resolver:    fetchSqlManagedDatabaseVulnerabilityAssessments,
 				Columns: []schema.Column{
 					{
-						Name:        "managed_database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_managed_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Name:     "cq_id_parent",
+						Type:     schema.TypeUUID,
+						Resolver: schema.ParentIdResolver,
 					},
 					{
 						Name:        "storage_container_path",
@@ -214,10 +218,9 @@ func managedDatabases() *schema.Table {
 				Resolver:    fetchSqlManagedDatabaseVulnerabilityAssessmentScans,
 				Columns: []schema.Column{
 					{
-						Name:        "managed_database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_managed_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Name:     "cq_id_parent",
+						Type:     schema.TypeUUID,
+						Resolver: schema.ParentIdResolver,
 					},
 					{
 						Name:        "scan_id",
