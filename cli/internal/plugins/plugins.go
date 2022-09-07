@@ -184,6 +184,10 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	if err != nil {
 		return "", fmt.Errorf("failed to copy body to file: %w", err)
 	}
+	err = out.Close()
+	if err != nil {
+		return "", fmt.Errorf("failed to close file: %w", err)
+	}
 	return pluginPath, nil
 }
 
