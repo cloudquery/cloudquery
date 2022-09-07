@@ -40,5 +40,4 @@ func GithubMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 		Name:   "dev",
 		Tables: []string{table.Name},
 	})
-
 }
