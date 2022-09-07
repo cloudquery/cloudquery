@@ -22,9 +22,24 @@ func ExpressRouteGateways() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "express_route_gateway_properties",
+				Name:     "auto_scale_configuration",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExpressRouteGatewayProperties"),
+				Resolver: schema.PathResolver("AutoScaleConfiguration"),
+			},
+			{
+				Name:     "express_route_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExpressRouteConnections"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "virtual_hub",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("VirtualHub"),
 			},
 			{
 				Name:     "etag",

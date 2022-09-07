@@ -48,9 +48,134 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("ExtendedLocation"),
 			},
 			{
-				Name:     "account_properties",
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "primary_endpoints",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AccountProperties"),
+				Resolver: schema.PathResolver("PrimaryEndpoints"),
+			},
+			{
+				Name:     "primary_location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PrimaryLocation"),
+			},
+			{
+				Name:     "status_of_primary",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StatusOfPrimary"),
+			},
+			{
+				Name:     "last_geo_failover_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LastGeoFailoverTime"),
+			},
+			{
+				Name:     "secondary_location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SecondaryLocation"),
+			},
+			{
+				Name:     "status_of_secondary",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StatusOfSecondary"),
+			},
+			{
+				Name:     "creation_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "custom_domain",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CustomDomain"),
+			},
+			{
+				Name:     "secondary_endpoints",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SecondaryEndpoints"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Encryption"),
+			},
+			{
+				Name:     "access_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccessTier"),
+			},
+			{
+				Name:     "azure_files_identity_based_authentication",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AzureFilesIdentityBasedAuthentication"),
+			},
+			{
+				Name:     "enable_https_traffic_only",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableHTTPSTrafficOnly"),
+			},
+			{
+				Name:     "network_rule_set",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkRuleSet"),
+			},
+			{
+				Name:     "is_hns_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsHnsEnabled"),
+			},
+			{
+				Name:     "geo_replication_stats",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("GeoReplicationStats"),
+			},
+			{
+				Name:     "failover_in_progress",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("FailoverInProgress"),
+			},
+			{
+				Name:     "large_file_shares_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LargeFileSharesState"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+			},
+			{
+				Name:     "routing_preference",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RoutingPreference"),
+			},
+			{
+				Name:     "blob_restore_status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BlobRestoreStatus"),
+			},
+			{
+				Name:     "allow_blob_public_access",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AllowBlobPublicAccess"),
+			},
+			{
+				Name:     "minimum_tls_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MinimumTLSVersion"),
+			},
+			{
+				Name:     "allow_shared_key_access",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AllowSharedKeyAccess"),
+			},
+			{
+				Name:     "enable_nfs_v_3",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableNfsV3"),
 			},
 			{
 				Name:     "tags",

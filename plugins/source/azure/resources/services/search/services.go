@@ -22,9 +22,54 @@ func Services() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "service_properties",
+				Name:     "replica_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ReplicaCount"),
+			},
+			{
+				Name:     "partition_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("PartitionCount"),
+			},
+			{
+				Name:     "hosting_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HostingMode"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicNetworkAccess"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "status_details",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StatusDetails"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "network_rule_set",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServiceProperties"),
+				Resolver: schema.PathResolver("NetworkRuleSet"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+			},
+			{
+				Name:     "shared_private_link_resources",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SharedPrivateLinkResources"),
 			},
 			{
 				Name:     "sku",

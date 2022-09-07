@@ -22,9 +22,39 @@ func PolicyAssignments() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "assignment_properties",
+				Name:     "display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DisplayName"),
+			},
+			{
+				Name:     "policy_definition_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PolicyDefinitionID"),
+			},
+			{
+				Name:     "scope",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Scope"),
+			},
+			{
+				Name:     "not_scopes",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("NotScopes"),
+			},
+			{
+				Name:     "parameters",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AssignmentProperties"),
+				Resolver: schema.PathResolver("Parameters"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "enforcement_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EnforcementMode"),
 			},
 			{
 				Name:     "id",

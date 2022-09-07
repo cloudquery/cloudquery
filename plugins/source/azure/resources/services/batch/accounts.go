@@ -22,9 +22,79 @@ func Accounts() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "account_properties",
+				Name:     "account_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccountEndpoint"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "pool_allocation_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PoolAllocationMode"),
+			},
+			{
+				Name:     "key_vault_reference",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AccountProperties"),
+				Resolver: schema.PathResolver("KeyVaultReference"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicNetworkAccess"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+			},
+			{
+				Name:     "auto_storage",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AutoStorage"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Encryption"),
+			},
+			{
+				Name:     "dedicated_core_quota",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DedicatedCoreQuota"),
+			},
+			{
+				Name:     "low_priority_core_quota",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("LowPriorityCoreQuota"),
+			},
+			{
+				Name:     "dedicated_core_quota_per_vm_family",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DedicatedCoreQuotaPerVMFamily"),
+			},
+			{
+				Name:     "dedicated_core_quota_per_vm_family_enforced",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DedicatedCoreQuotaPerVMFamilyEnforced"),
+			},
+			{
+				Name:     "pool_quota",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("PoolQuota"),
+			},
+			{
+				Name:     "active_job_and_job_schedule_quota",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ActiveJobAndJobScheduleQuota"),
+			},
+			{
+				Name:     "allowed_authentication_modes",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("AllowedAuthenticationModes"),
 			},
 			{
 				Name:     "identity",

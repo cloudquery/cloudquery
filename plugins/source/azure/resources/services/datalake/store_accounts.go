@@ -30,9 +30,89 @@ func StoreAccounts() *schema.Table {
 				Resolver: schema.PathResolver("Identity"),
 			},
 			{
-				Name:     "data_lake_store_account_properties",
+				Name:     "default_group",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DefaultGroup"),
+			},
+			{
+				Name:     "encryption_config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DataLakeStoreAccountProperties"),
+				Resolver: schema.PathResolver("EncryptionConfig"),
+			},
+			{
+				Name:     "encryption_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EncryptionState"),
+			},
+			{
+				Name:     "encryption_provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EncryptionProvisioningState"),
+			},
+			{
+				Name:     "firewall_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FirewallRules"),
+			},
+			{
+				Name:     "virtual_network_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("VirtualNetworkRules"),
+			},
+			{
+				Name:     "firewall_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FirewallState"),
+			},
+			{
+				Name:     "firewall_allow_azure_ips",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FirewallAllowAzureIps"),
+			},
+			{
+				Name:     "trusted_id_providers",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TrustedIDProviders"),
+			},
+			{
+				Name:     "trusted_id_provider_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TrustedIDProviderState"),
+			},
+			{
+				Name:     "new_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NewTier"),
+			},
+			{
+				Name:     "current_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CurrentTier"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "creation_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "last_modified_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LastModifiedTime"),
+			},
+			{
+				Name:     "endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Endpoint"),
 			},
 			{
 				Name:     "id",

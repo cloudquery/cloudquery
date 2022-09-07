@@ -22,9 +22,104 @@ func ResourceTypes() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "properties",
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "host_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HostName"),
+			},
+			{
+				Name:     "port",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Port"),
+			},
+			{
+				Name:     "ssl_port",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("SslPort"),
+			},
+			{
+				Name:     "access_keys",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
+				Resolver: schema.PathResolver("AccessKeys"),
+			},
+			{
+				Name:     "linked_servers",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LinkedServers"),
+			},
+			{
+				Name:     "instances",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Instances"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Sku"),
+			},
+			{
+				Name:     "subnet_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SubnetID"),
+			},
+			{
+				Name:     "static_ip",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StaticIP"),
+			},
+			{
+				Name:     "redis_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RedisConfiguration"),
+			},
+			{
+				Name:     "redis_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RedisVersion"),
+			},
+			{
+				Name:     "enable_non_ssl_port",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableNonSslPort"),
+			},
+			{
+				Name:     "replicas_per_master",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ReplicasPerMaster"),
+			},
+			{
+				Name:     "replicas_per_primary",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ReplicasPerPrimary"),
+			},
+			{
+				Name:     "tenant_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TenantSettings"),
+			},
+			{
+				Name:     "shard_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ShardCount"),
+			},
+			{
+				Name:     "minimum_tls_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MinimumTLSVersion"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicNetworkAccess"),
 			},
 			{
 				Name:     "zones",

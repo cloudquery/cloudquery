@@ -22,9 +22,29 @@ func RouteTables() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "route_table_properties_format",
+				Name:     "routes",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RouteTablePropertiesFormat"),
+				Resolver: schema.PathResolver("Routes"),
+			},
+			{
+				Name:     "subnets",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Subnets"),
+			},
+			{
+				Name:     "disable_bgp_route_propagation",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DisableBgpRoutePropagation"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceGUID"),
 			},
 			{
 				Name:     "etag",

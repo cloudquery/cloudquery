@@ -32,9 +32,59 @@ func Namespaces() *schema.Table {
 				Resolver: schema.PathResolver("Identity"),
 			},
 			{
-				Name:     "eh_namespace_properties",
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "created_at",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EHNamespaceProperties"),
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("UpdatedAt"),
+			},
+			{
+				Name:     "service_bus_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceBusEndpoint"),
+			},
+			{
+				Name:     "cluster_arm_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ClusterArmID"),
+			},
+			{
+				Name:     "metric_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MetricID"),
+			},
+			{
+				Name:     "is_auto_inflate_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsAutoInflateEnabled"),
+			},
+			{
+				Name:     "maximum_throughput_units",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaximumThroughputUnits"),
+			},
+			{
+				Name:     "kafka_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("KafkaEnabled"),
+			},
+			{
+				Name:     "zone_redundant",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ZoneRedundant"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Encryption"),
 			},
 			{
 				Name:     "location",

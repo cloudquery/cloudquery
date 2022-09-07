@@ -22,9 +22,144 @@ func ManagedClusters() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "managed_cluster_properties",
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "power_state",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ManagedClusterProperties"),
+				Resolver: schema.PathResolver("PowerState"),
+			},
+			{
+				Name:     "max_agent_pools",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaxAgentPools"),
+			},
+			{
+				Name:     "kubernetes_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("KubernetesVersion"),
+			},
+			{
+				Name:     "dns_prefix",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DNSPrefix"),
+			},
+			{
+				Name:     "fqdn_subdomain",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FqdnSubdomain"),
+			},
+			{
+				Name:     "fqdn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Fqdn"),
+			},
+			{
+				Name:     "private_fqdn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PrivateFQDN"),
+			},
+			{
+				Name:     "azure_portal_fqdn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AzurePortalFQDN"),
+			},
+			{
+				Name:     "agent_pool_profiles",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AgentPoolProfiles"),
+			},
+			{
+				Name:     "linux_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LinuxProfile"),
+			},
+			{
+				Name:     "windows_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("WindowsProfile"),
+			},
+			{
+				Name:     "service_principal_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServicePrincipalProfile"),
+			},
+			{
+				Name:     "addon_profiles",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AddonProfiles"),
+			},
+			{
+				Name:     "pod_identity_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PodIdentityProfile"),
+			},
+			{
+				Name:     "node_resource_group",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NodeResourceGroup"),
+			},
+			{
+				Name:     "enable_rbac",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableRBAC"),
+			},
+			{
+				Name:     "enable_pod_security_policy",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnablePodSecurityPolicy"),
+			},
+			{
+				Name:     "network_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkProfile"),
+			},
+			{
+				Name:     "aad_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AadProfile"),
+			},
+			{
+				Name:     "auto_upgrade_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AutoUpgradeProfile"),
+			},
+			{
+				Name:     "auto_scaler_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AutoScalerProfile"),
+			},
+			{
+				Name:     "api_server_access_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("APIServerAccessProfile"),
+			},
+			{
+				Name:     "disk_encryption_set_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DiskEncryptionSetID"),
+			},
+			{
+				Name:     "identity_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IdentityProfile"),
+			},
+			{
+				Name:     "private_link_resources",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateLinkResources"),
+			},
+			{
+				Name:     "disable_local_accounts",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DisableLocalAccounts"),
+			},
+			{
+				Name:     "http_proxy_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("HTTPProxyConfig"),
 			},
 			{
 				Name:     "identity",

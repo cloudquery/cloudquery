@@ -32,9 +32,79 @@ func VirtualMachineScaleSets() *schema.Table {
 				Resolver: schema.PathResolver("Plan"),
 			},
 			{
-				Name:     "virtual_machine_scale_set_properties",
+				Name:     "upgrade_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VirtualMachineScaleSetProperties"),
+				Resolver: schema.PathResolver("UpgradePolicy"),
+			},
+			{
+				Name:     "automatic_repairs_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AutomaticRepairsPolicy"),
+			},
+			{
+				Name:     "virtual_machine_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("VirtualMachineProfile"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "overprovision",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Overprovision"),
+			},
+			{
+				Name:     "do_not_run_extensions_on_overprovisioned_v_ms",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DoNotRunExtensionsOnOverprovisionedVMs"),
+			},
+			{
+				Name:     "unique_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UniqueID"),
+			},
+			{
+				Name:     "single_placement_group",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("SinglePlacementGroup"),
+			},
+			{
+				Name:     "zone_balance",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ZoneBalance"),
+			},
+			{
+				Name:     "platform_fault_domain_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("PlatformFaultDomainCount"),
+			},
+			{
+				Name:     "proximity_placement_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ProximityPlacementGroup"),
+			},
+			{
+				Name:     "host_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("HostGroup"),
+			},
+			{
+				Name:     "additional_capabilities",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdditionalCapabilities"),
+			},
+			{
+				Name:     "scale_in_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ScaleInPolicy"),
+			},
+			{
+				Name:     "orchestration_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("OrchestrationMode"),
 			},
 			{
 				Name:     "identity",

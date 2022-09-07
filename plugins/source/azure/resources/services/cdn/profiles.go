@@ -27,9 +27,19 @@ func Profiles() *schema.Table {
 				Resolver: schema.PathResolver("Sku"),
 			},
 			{
-				Name:     "profile_properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ProfileProperties"),
+				Name:     "resource_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceState"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "frontdoor_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FrontdoorID"),
 			},
 			{
 				Name:     "location",

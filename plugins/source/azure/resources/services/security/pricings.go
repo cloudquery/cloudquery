@@ -22,9 +22,14 @@ func Pricings() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "pricing_properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PricingProperties"),
+				Name:     "pricing_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PricingTier"),
+			},
+			{
+				Name:     "free_trial_remaining_time",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FreeTrialRemainingTime"),
 			},
 			{
 				Name:     "id",

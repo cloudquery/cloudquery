@@ -27,9 +27,74 @@ func ExpressRouteCircuits() *schema.Table {
 				Resolver: schema.PathResolver("Sku"),
 			},
 			{
-				Name:     "express_route_circuit_properties_format",
+				Name:     "allow_classic_operations",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AllowClassicOperations"),
+			},
+			{
+				Name:     "circuit_provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CircuitProvisioningState"),
+			},
+			{
+				Name:     "service_provider_provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceProviderProvisioningState"),
+			},
+			{
+				Name:     "authorizations",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExpressRouteCircuitPropertiesFormat"),
+				Resolver: schema.PathResolver("Authorizations"),
+			},
+			{
+				Name:     "peerings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Peerings"),
+			},
+			{
+				Name:     "service_key",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceKey"),
+			},
+			{
+				Name:     "service_provider_notes",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceProviderNotes"),
+			},
+			{
+				Name:     "service_provider_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServiceProviderProperties"),
+			},
+			{
+				Name:     "express_route_port",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExpressRoutePort"),
+			},
+			{
+				Name:     "bandwidth_in_gbps",
+				Type:     schema.TypeFloat,
+				Resolver: schema.PathResolver("BandwidthInGbps"),
+			},
+			{
+				Name:     "stag",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Stag"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "gateway_manager_etag",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("GatewayManagerEtag"),
+			},
+			{
+				Name:     "global_reach_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("GlobalReachEnabled"),
 			},
 			{
 				Name:     "etag",

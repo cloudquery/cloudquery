@@ -50,9 +50,19 @@ func JitNetworkAccessPolicies() *schema.Table {
 				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:     "jit_network_access_policy_properties",
+				Name:     "virtual_machines",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("JitNetworkAccessPolicyProperties"),
+				Resolver: schema.PathResolver("VirtualMachines"),
+			},
+			{
+				Name:     "requests",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Requests"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
 			},
 		},
 	}

@@ -22,9 +22,24 @@ func RouteFilters() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "route_filter_properties_format",
+				Name:     "rules",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RouteFilterPropertiesFormat"),
+				Resolver: schema.PathResolver("Rules"),
+			},
+			{
+				Name:     "peerings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Peerings"),
+			},
+			{
+				Name:     "ipv_6_peerings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Ipv6Peerings"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
 			},
 			{
 				Name:     "etag",

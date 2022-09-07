@@ -22,6 +22,71 @@ func Doors() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
+				Name:     "resource_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceState"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "cname",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Cname"),
+			},
+			{
+				Name:     "frontdoor_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FrontdoorID"),
+			},
+			{
+				Name:     "rules_engines",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RulesEngines"),
+			},
+			{
+				Name:     "friendly_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FriendlyName"),
+			},
+			{
+				Name:     "routing_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RoutingRules"),
+			},
+			{
+				Name:     "load_balancing_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LoadBalancingSettings"),
+			},
+			{
+				Name:     "health_probe_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("HealthProbeSettings"),
+			},
+			{
+				Name:     "backend_pools",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BackendPools"),
+			},
+			{
+				Name:     "frontend_endpoints",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FrontendEndpoints"),
+			},
+			{
+				Name:     "backend_pools_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BackendPoolsSettings"),
+			},
+			{
+				Name:     "enabled_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EnabledState"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),

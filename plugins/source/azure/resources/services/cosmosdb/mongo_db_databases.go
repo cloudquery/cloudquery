@@ -27,9 +27,14 @@ func MongoDBDatabases() *schema.Table {
 				Resolver: schema.ParentIdResolver,
 			},
 			{
-				Name:     "mongo_db_database_get_properties",
+				Name:     "resource",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("MongoDBDatabaseGetProperties"),
+				Resolver: schema.PathResolver("Resource"),
+			},
+			{
+				Name:     "options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Options"),
 			},
 			{
 				Name:     "id",

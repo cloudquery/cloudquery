@@ -47,9 +47,129 @@ func Disks() *schema.Table {
 				Resolver: schema.PathResolver("ExtendedLocation"),
 			},
 			{
-				Name:     "disk_properties",
+				Name:     "time_created",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DiskProperties"),
+				Resolver: schema.PathResolver("TimeCreated"),
+			},
+			{
+				Name:     "os_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("OsType"),
+			},
+			{
+				Name:     "hyper_v_generation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HyperVGeneration"),
+			},
+			{
+				Name:     "purchase_plan",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PurchasePlan"),
+			},
+			{
+				Name:     "creation_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreationData"),
+			},
+			{
+				Name:     "disk_size_gb",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DiskSizeGB"),
+			},
+			{
+				Name:     "disk_size_bytes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DiskSizeBytes"),
+			},
+			{
+				Name:     "unique_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UniqueID"),
+			},
+			{
+				Name:     "encryption_settings_collection",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EncryptionSettingsCollection"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "disk_iops_read_write",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DiskIOPSReadWrite"),
+			},
+			{
+				Name:     "disk_m_bps_read_write",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DiskMBpsReadWrite"),
+			},
+			{
+				Name:     "disk_iops_read_only",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DiskIOPSReadOnly"),
+			},
+			{
+				Name:     "disk_m_bps_read_only",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DiskMBpsReadOnly"),
+			},
+			{
+				Name:     "disk_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DiskState"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Encryption"),
+			},
+			{
+				Name:     "max_shares",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaxShares"),
+			},
+			{
+				Name:     "share_info",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ShareInfo"),
+			},
+			{
+				Name:     "network_access_policy",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NetworkAccessPolicy"),
+			},
+			{
+				Name:     "disk_access_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DiskAccessID"),
+			},
+			{
+				Name:     "tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Tier"),
+			},
+			{
+				Name:     "bursting_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("BurstingEnabled"),
+			},
+			{
+				Name:     "property_updates_in_progress",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PropertyUpdatesInProgress"),
+			},
+			{
+				Name:     "supports_hibernation",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("SupportsHibernation"),
+			},
+			{
+				Name:     "security_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SecurityProfile"),
 			},
 			{
 				Name:     "id",

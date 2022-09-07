@@ -23,9 +23,34 @@ func Assessments() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "assessment_properties",
+				Name:     "display_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DisplayName"),
+			},
+			{
+				Name:     "status",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AssessmentProperties"),
+				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "additional_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdditionalData"),
+			},
+			{
+				Name:     "links",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Metadata"),
+			},
+			{
+				Name:     "partners_data",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PartnersData"),
 			},
 			{
 				Name:     "id",

@@ -27,9 +27,14 @@ func SQLDatabases() *schema.Table {
 				Resolver: schema.ParentIdResolver,
 			},
 			{
-				Name:     "sql_database_get_properties",
+				Name:     "resource",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SQLDatabaseGetProperties"),
+				Resolver: schema.PathResolver("Resource"),
+			},
+			{
+				Name:     "options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Options"),
 			},
 			{
 				Name:     "id",

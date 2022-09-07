@@ -32,9 +32,44 @@ func Servers() *schema.Table {
 				Resolver: schema.PathResolver("Kind"),
 			},
 			{
-				Name:     "server_properties",
+				Name:     "administrator_login",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AdministratorLogin"),
+			},
+			{
+				Name:     "administrator_login_password",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AdministratorLoginPassword"),
+			},
+			{
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Version"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "fully_qualified_domain_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FullyQualifiedDomainName"),
+			},
+			{
+				Name:     "private_endpoint_connections",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServerProperties"),
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+			},
+			{
+				Name:     "minimal_tls_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MinimalTLSVersion"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicNetworkAccess"),
 			},
 			{
 				Name:     "location",

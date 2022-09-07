@@ -37,9 +37,54 @@ func Namespaces() *schema.Table {
 				Resolver: schema.PathResolver("SystemData"),
 			},
 			{
-				Name:     "sb_namespace_properties",
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "created_at",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SBNamespaceProperties"),
+				Resolver: schema.PathResolver("CreatedAt"),
+			},
+			{
+				Name:     "updated_at",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("UpdatedAt"),
+			},
+			{
+				Name:     "service_bus_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceBusEndpoint"),
+			},
+			{
+				Name:     "metric_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MetricID"),
+			},
+			{
+				Name:     "zone_redundant",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ZoneRedundant"),
+			},
+			{
+				Name:     "encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Encryption"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+			},
+			{
+				Name:     "disable_local_auth",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DisableLocalAuth"),
 			},
 			{
 				Name:     "location",

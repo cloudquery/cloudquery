@@ -28,9 +28,49 @@ func BlobServices() *schema.Table {
 				Resolver: schema.ParentIdResolver,
 			},
 			{
-				Name:     "blob_service_properties_properties",
+				Name:     "cors",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BlobServicePropertiesProperties"),
+				Resolver: schema.PathResolver("Cors"),
+			},
+			{
+				Name:     "default_service_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DefaultServiceVersion"),
+			},
+			{
+				Name:     "delete_retention_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DeleteRetentionPolicy"),
+			},
+			{
+				Name:     "is_versioning_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsVersioningEnabled"),
+			},
+			{
+				Name:     "automatic_snapshot_policy_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AutomaticSnapshotPolicyEnabled"),
+			},
+			{
+				Name:     "change_feed",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ChangeFeed"),
+			},
+			{
+				Name:     "restore_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RestorePolicy"),
+			},
+			{
+				Name:     "container_delete_retention_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ContainerDeleteRetentionPolicy"),
+			},
+			{
+				Name:     "last_access_time_tracking_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LastAccessTimeTrackingPolicy"),
 			},
 			{
 				Name:     "sku",

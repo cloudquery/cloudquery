@@ -22,9 +22,29 @@ func LogProfiles() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "log_profile_properties",
+				Name:     "storage_account_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StorageAccountID"),
+			},
+			{
+				Name:     "service_bus_rule_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServiceBusRuleID"),
+			},
+			{
+				Name:     "locations",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Locations"),
+			},
+			{
+				Name:     "categories",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Categories"),
+			},
+			{
+				Name:     "retention_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LogProfileProperties"),
+				Resolver: schema.PathResolver("RetentionPolicy"),
 			},
 			{
 				Name:     "id",

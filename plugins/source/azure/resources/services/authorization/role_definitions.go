@@ -40,9 +40,29 @@ func RoleDefinitions() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "role_definition_properties",
+				Name:     "role_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RoleName"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
+			},
+			{
+				Name:     "role_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RoleType"),
+			},
+			{
+				Name:     "permissions",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RoleDefinitionProperties"),
+				Resolver: schema.PathResolver("Permissions"),
+			},
+			{
+				Name:     "assignable_scopes",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("AssignableScopes"),
 			},
 		},
 	}

@@ -27,9 +27,44 @@ func Registries() *schema.Table {
 				Resolver: schema.PathResolver("Sku"),
 			},
 			{
-				Name:     "registry_properties",
+				Name:     "login_server",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LoginServer"),
+			},
+			{
+				Name:     "creation_date",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RegistryProperties"),
+				Resolver: schema.PathResolver("CreationDate"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "admin_user_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AdminUserEnabled"),
+			},
+			{
+				Name:     "storage_account",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StorageAccount"),
+			},
+			{
+				Name:     "network_rule_set",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkRuleSet"),
+			},
+			{
+				Name:     "policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Policies"),
 			},
 			{
 				Name:     "id",

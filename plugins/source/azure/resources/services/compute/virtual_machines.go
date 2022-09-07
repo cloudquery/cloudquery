@@ -27,9 +27,119 @@ func VirtualMachines() *schema.Table {
 				Resolver: schema.PathResolver("Plan"),
 			},
 			{
-				Name:     "virtual_machine_properties",
+				Name:     "hardware_profile",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("VirtualMachineProperties"),
+				Resolver: schema.PathResolver("HardwareProfile"),
+			},
+			{
+				Name:     "storage_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StorageProfile"),
+			},
+			{
+				Name:     "additional_capabilities",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdditionalCapabilities"),
+			},
+			{
+				Name:     "os_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("OsProfile"),
+			},
+			{
+				Name:     "network_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkProfile"),
+			},
+			{
+				Name:     "security_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SecurityProfile"),
+			},
+			{
+				Name:     "diagnostics_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DiagnosticsProfile"),
+			},
+			{
+				Name:     "availability_set",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AvailabilitySet"),
+			},
+			{
+				Name:     "virtual_machine_scale_set",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("VirtualMachineScaleSet"),
+			},
+			{
+				Name:     "proximity_placement_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ProximityPlacementGroup"),
+			},
+			{
+				Name:     "priority",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Priority"),
+			},
+			{
+				Name:     "eviction_policy",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EvictionPolicy"),
+			},
+			{
+				Name:     "billing_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BillingProfile"),
+			},
+			{
+				Name:     "host",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Host"),
+			},
+			{
+				Name:     "host_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("HostGroup"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "instance_view",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("InstanceView"),
+			},
+			{
+				Name:     "license_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LicenseType"),
+			},
+			{
+				Name:     "vmid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("VMID"),
+			},
+			{
+				Name:     "extensions_time_budget",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ExtensionsTimeBudget"),
+			},
+			{
+				Name:     "platform_fault_domain",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("PlatformFaultDomain"),
+			},
+			{
+				Name:     "scheduled_events_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ScheduledEventsProfile"),
+			},
+			{
+				Name:     "user_data",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UserData"),
 			},
 			{
 				Name:     "resources",

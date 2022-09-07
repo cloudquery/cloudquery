@@ -22,9 +22,64 @@ func Workflows() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "workflow_properties",
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "created_time",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("WorkflowProperties"),
+				Resolver: schema.PathResolver("CreatedTime"),
+			},
+			{
+				Name:     "changed_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ChangedTime"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Version"),
+			},
+			{
+				Name:     "access_endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccessEndpoint"),
+			},
+			{
+				Name:     "endpoints_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EndpointsConfiguration"),
+			},
+			{
+				Name:     "access_control",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AccessControl"),
+			},
+			{
+				Name:     "sku",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Sku"),
+			},
+			{
+				Name:     "integration_account",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IntegrationAccount"),
+			},
+			{
+				Name:     "integration_service_environment",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IntegrationServiceEnvironment"),
+			},
+			{
+				Name:     "parameters",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Parameters"),
 			},
 			{
 				Name:     "identity",

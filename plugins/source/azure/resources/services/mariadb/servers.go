@@ -27,9 +27,64 @@ func Servers() *schema.Table {
 				Resolver: schema.PathResolver("Sku"),
 			},
 			{
-				Name:     "server_properties",
+				Name:     "administrator_login",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AdministratorLogin"),
+			},
+			{
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Version"),
+			},
+			{
+				Name:     "ssl_enforcement",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SslEnforcement"),
+			},
+			{
+				Name:     "user_visible_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UserVisibleState"),
+			},
+			{
+				Name:     "fully_qualified_domain_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FullyQualifiedDomainName"),
+			},
+			{
+				Name:     "earliest_restore_date",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServerProperties"),
+				Resolver: schema.PathResolver("EarliestRestoreDate"),
+			},
+			{
+				Name:     "storage_profile",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StorageProfile"),
+			},
+			{
+				Name:     "replication_role",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ReplicationRole"),
+			},
+			{
+				Name:     "master_server_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MasterServerID"),
+			},
+			{
+				Name:     "replica_capacity",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ReplicaCapacity"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicNetworkAccess"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
 			},
 			{
 				Name:     "tags",

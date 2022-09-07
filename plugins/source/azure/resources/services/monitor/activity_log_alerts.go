@@ -22,9 +22,29 @@ func ActivityLogAlerts() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "activity_log_alert",
+				Name:     "scopes",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Scopes"),
+			},
+			{
+				Name:     "enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Enabled"),
+			},
+			{
+				Name:     "condition",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ActivityLogAlert"),
+				Resolver: schema.PathResolver("Condition"),
+			},
+			{
+				Name:     "actions",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Actions"),
+			},
+			{
+				Name:     "description",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Description"),
 			},
 			{
 				Name:     "id",

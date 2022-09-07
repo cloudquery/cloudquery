@@ -22,9 +22,39 @@ func SecurityGroups() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "security_group_properties_format",
+				Name:     "security_rules",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SecurityGroupPropertiesFormat"),
+				Resolver: schema.PathResolver("SecurityRules"),
+			},
+			{
+				Name:     "default_security_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DefaultSecurityRules"),
+			},
+			{
+				Name:     "network_interfaces",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkInterfaces"),
+			},
+			{
+				Name:     "subnets",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Subnets"),
+			},
+			{
+				Name:     "flow_logs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FlowLogs"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceGUID"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
 			},
 			{
 				Name:     "etag",

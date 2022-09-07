@@ -25,9 +25,109 @@ func AnalyticsAccounts() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "data_lake_analytics_account_properties",
+				Name:     "default_data_lake_store_account",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DefaultDataLakeStoreAccount"),
+			},
+			{
+				Name:     "data_lake_store_accounts",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DataLakeAnalyticsAccountProperties"),
+				Resolver: schema.PathResolver("DataLakeStoreAccounts"),
+			},
+			{
+				Name:     "storage_accounts",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StorageAccounts"),
+			},
+			{
+				Name:     "compute_policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ComputePolicies"),
+			},
+			{
+				Name:     "firewall_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FirewallRules"),
+			},
+			{
+				Name:     "firewall_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FirewallState"),
+			},
+			{
+				Name:     "firewall_allow_azure_ips",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FirewallAllowAzureIps"),
+			},
+			{
+				Name:     "new_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NewTier"),
+			},
+			{
+				Name:     "current_tier",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CurrentTier"),
+			},
+			{
+				Name:     "max_job_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaxJobCount"),
+			},
+			{
+				Name:     "system_max_job_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("SystemMaxJobCount"),
+			},
+			{
+				Name:     "max_degree_of_parallelism",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaxDegreeOfParallelism"),
+			},
+			{
+				Name:     "system_max_degree_of_parallelism",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("SystemMaxDegreeOfParallelism"),
+			},
+			{
+				Name:     "max_degree_of_parallelism_per_job",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MaxDegreeOfParallelismPerJob"),
+			},
+			{
+				Name:     "min_priority_per_job",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("MinPriorityPerJob"),
+			},
+			{
+				Name:     "query_store_retention",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("QueryStoreRetention"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "creation_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "last_modified_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LastModifiedTime"),
+			},
+			{
+				Name:     "endpoint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Endpoint"),
 			},
 			{
 				Name:     "id",

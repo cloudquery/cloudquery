@@ -187,7 +187,7 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 
 func initTable(definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
 	skipFields := append(definition.skipFields, defaultSkipFields...)
-	table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields))
+	table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields), codegen.WithUnwrapEmbeddedStructs())
 	if err != nil {
 		log.Fatal(err)
 	}

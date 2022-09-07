@@ -22,9 +22,9 @@ func AutoProvisioningSettings() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "auto_provisioning_setting_properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AutoProvisioningSettingProperties"),
+				Name:     "auto_provision",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AutoProvision"),
 			},
 			{
 				Name:     "id",

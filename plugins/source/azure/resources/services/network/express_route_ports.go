@@ -22,9 +22,59 @@ func ExpressRoutePorts() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "express_route_port_properties_format",
+				Name:     "peering_location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PeeringLocation"),
+			},
+			{
+				Name:     "bandwidth_in_gbps",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("BandwidthInGbps"),
+			},
+			{
+				Name:     "provisioned_bandwidth_in_gbps",
+				Type:     schema.TypeFloat,
+				Resolver: schema.PathResolver("ProvisionedBandwidthInGbps"),
+			},
+			{
+				Name:     "mtu",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Mtu"),
+			},
+			{
+				Name:     "encapsulation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Encapsulation"),
+			},
+			{
+				Name:     "ether_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EtherType"),
+			},
+			{
+				Name:     "allocation_date",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AllocationDate"),
+			},
+			{
+				Name:     "links",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExpressRoutePortPropertiesFormat"),
+				Resolver: schema.PathResolver("Links"),
+			},
+			{
+				Name:     "circuits",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Circuits"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceGUID"),
 			},
 			{
 				Name:     "etag",

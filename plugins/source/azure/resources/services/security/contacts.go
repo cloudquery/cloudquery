@@ -22,9 +22,24 @@ func Contacts() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "contact_properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ContactProperties"),
+				Name:     "email",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Email"),
+			},
+			{
+				Name:     "phone",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Phone"),
+			},
+			{
+				Name:     "alert_notifications",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AlertNotifications"),
+			},
+			{
+				Name:     "alerts_to_admins",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AlertsToAdmins"),
 			},
 			{
 				Name:     "id",

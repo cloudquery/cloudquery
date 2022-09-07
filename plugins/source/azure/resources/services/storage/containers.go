@@ -28,9 +28,84 @@ func Containers() *schema.Table {
 				Resolver: schema.ParentIdResolver,
 			},
 			{
-				Name:     "container_properties",
+				Name:     "version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Version"),
+			},
+			{
+				Name:     "deleted",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Deleted"),
+			},
+			{
+				Name:     "deleted_time",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ContainerProperties"),
+				Resolver: schema.PathResolver("DeletedTime"),
+			},
+			{
+				Name:     "remaining_retention_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("RemainingRetentionDays"),
+			},
+			{
+				Name:     "default_encryption_scope",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DefaultEncryptionScope"),
+			},
+			{
+				Name:     "deny_encryption_scope_override",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DenyEncryptionScopeOverride"),
+			},
+			{
+				Name:     "public_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicAccess"),
+			},
+			{
+				Name:     "last_modified_time",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LastModifiedTime"),
+			},
+			{
+				Name:     "lease_status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LeaseStatus"),
+			},
+			{
+				Name:     "lease_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LeaseState"),
+			},
+			{
+				Name:     "lease_duration",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LeaseDuration"),
+			},
+			{
+				Name:     "metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Metadata"),
+			},
+			{
+				Name:     "immutability_policy",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ImmutabilityPolicy"),
+			},
+			{
+				Name:     "legal_hold",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LegalHold"),
+			},
+			{
+				Name:     "has_legal_hold",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("HasLegalHold"),
+			},
+			{
+				Name:     "has_immutability_policy",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("HasImmutabilityPolicy"),
 			},
 			{
 				Name:     "etag",

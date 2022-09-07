@@ -27,9 +27,89 @@ func Interfaces() *schema.Table {
 				Resolver: schema.PathResolver("ExtendedLocation"),
 			},
 			{
-				Name:     "interface_properties_format",
+				Name:     "virtual_machine",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("InterfacePropertiesFormat"),
+				Resolver: schema.PathResolver("VirtualMachine"),
+			},
+			{
+				Name:     "network_security_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkSecurityGroup"),
+			},
+			{
+				Name:     "private_endpoint",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpoint"),
+			},
+			{
+				Name:     "ip_configurations",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IPConfigurations"),
+			},
+			{
+				Name:     "tap_configurations",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TapConfigurations"),
+			},
+			{
+				Name:     "dns_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DNSSettings"),
+			},
+			{
+				Name:     "mac_address",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MacAddress"),
+			},
+			{
+				Name:     "primary",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Primary"),
+			},
+			{
+				Name:     "enable_accelerated_networking",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableAcceleratedNetworking"),
+			},
+			{
+				Name:     "enable_ip_forwarding",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableIPForwarding"),
+			},
+			{
+				Name:     "hosted_workloads",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("HostedWorkloads"),
+			},
+			{
+				Name:     "dscp_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DscpConfiguration"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceGUID"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "nic_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NicType"),
+			},
+			{
+				Name:     "private_link_service",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateLinkService"),
+			},
+			{
+				Name:     "migration_phase",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MigrationPhase"),
 			},
 			{
 				Name:     "etag",

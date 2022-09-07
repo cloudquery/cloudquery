@@ -27,9 +27,9 @@ func Watchers() *schema.Table {
 				Resolver: schema.PathResolver("Etag"),
 			},
 			{
-				Name:     "watcher_properties_format",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("WatcherPropertiesFormat"),
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
 			},
 			{
 				Name:     "id",

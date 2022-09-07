@@ -32,9 +32,79 @@ func PublicIPAddresses() *schema.Table {
 				Resolver: schema.PathResolver("Sku"),
 			},
 			{
-				Name:     "public_ip_address_properties_format",
+				Name:     "public_ip_allocation_method",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicIPAllocationMethod"),
+			},
+			{
+				Name:     "public_ip_address_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicIPAddressVersion"),
+			},
+			{
+				Name:     "ip_configuration",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("PublicIPAddressPropertiesFormat"),
+				Resolver: schema.PathResolver("IPConfiguration"),
+			},
+			{
+				Name:     "dns_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DNSSettings"),
+			},
+			{
+				Name:     "ddos_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DdosSettings"),
+			},
+			{
+				Name:     "ip_tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IPTags"),
+			},
+			{
+				Name:     "ip_address",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("IPAddress"),
+			},
+			{
+				Name:     "public_ip_prefix",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PublicIPPrefix"),
+			},
+			{
+				Name:     "idle_timeout_in_minutes",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("IdleTimeoutInMinutes"),
+			},
+			{
+				Name:     "resource_guid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ResourceGUID"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "service_public_ip_address",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServicePublicIPAddress"),
+			},
+			{
+				Name:     "nat_gateway",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NatGateway"),
+			},
+			{
+				Name:     "migration_phase",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MigrationPhase"),
+			},
+			{
+				Name:     "linked_public_ip_address",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LinkedPublicIPAddress"),
 			},
 			{
 				Name:     "etag",
