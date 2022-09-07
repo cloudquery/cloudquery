@@ -5,16 +5,16 @@ package container
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/containerregistry/mgmt/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/pkg/errors"
 )
 
-func Registries() *schema.Table {
+func replications() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_container_registries",
-		Resolver:  fetchContainerRegistries,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:     "azure_container_replications",
+		Resolver: fetchContainerReplications,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -22,19 +22,9 @@ func Registries() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "login_server",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LoginServer"),
-			},
-			{
-				Name:     "creation_date",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CreationDate"),
+				Name:     "cq_id_parent",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
 			},
 			{
 				Name:     "provisioning_state",
@@ -45,26 +35,6 @@ func Registries() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "admin_user_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("AdminUserEnabled"),
-			},
-			{
-				Name:     "storage_account",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("StorageAccount"),
-			},
-			{
-				Name:     "network_rule_set",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NetworkRuleSet"),
-			},
-			{
-				Name:     "policies",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Policies"),
 			},
 			{
 				Name:     "id",
@@ -95,17 +65,18 @@ func Registries() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 		},
-
-		Relations: []*schema.Table{
-			replications(),
-		},
 	}
 }
 
-func fetchContainerRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Container.Registries
+func fetchContainerReplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().Container.Replications
 
-	response, err := svc.List(ctx)
+	registry := parent.Item.(containerregistry.Registry)
+	resource, err := client.ParseResourceID(*registry.ID)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	response, err := svc.List(ctx, resource.ResourceGroup, *registry.Name)
 
 	if err != nil {
 		return errors.WithStack(err)
