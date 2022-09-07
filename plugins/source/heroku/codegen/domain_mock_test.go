@@ -54,5 +54,5 @@ func createDomains() (*heroku.Service, error) {
 }
 
 func TestDomain(t *testing.T) {
-	client.HerokuMockTestHelper(t, Domains(), createDomains, client.TestOptions{})
+	client.MockTestHelper(t, Domains(), createDomains, client.TestOptions{})
 }

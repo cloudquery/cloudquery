@@ -4,8 +4,5 @@ https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-even
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|created_at|timestamp without time zone||
-|id|text||
-|include|text||
-|payload|jsonb||
-|updated_at|timestamp without time zone||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"path"
-	"reflect"
 	"runtime"
 	"text/template"
 
@@ -73,12 +72,7 @@ func generateResource(r recipes.Resource, mock bool) {
 	if r.TableName != "" {
 		tableName = r.TableName
 	}
-	st := r.HerokuStruct
-	if r.HerokuListResultStruct != nil {
-		s := reflect.ValueOf(r.HerokuListResultStruct).Elem()
-		st = s.Index(0).Interface()
-	}
-	r.Table, err = sdkgen.NewTableFromStruct(tableName, st)
+	r.Table, err = sdkgen.NewTableFromStruct(tableName, r.HerokuStruct)
 	if err != nil {
 		log.Fatal(err)
 	}

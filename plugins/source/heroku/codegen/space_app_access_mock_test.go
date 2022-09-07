@@ -54,5 +54,5 @@ func createSpaceAppAccesses() (*heroku.Service, error) {
 }
 
 func TestSpaceAppAccess(t *testing.T) {
-	client.HerokuMockTestHelper(t, SpaceAppAccesses(), createSpaceAppAccesses, client.TestOptions{})
+	client.MockTestHelper(t, SpaceAppAccesses(), createSpaceAppAccesses, client.TestOptions{})
 }

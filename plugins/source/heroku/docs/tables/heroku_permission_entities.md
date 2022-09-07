@@ -4,8 +4,10 @@ https://devcenter.heroku.com/articles/platform-api-reference#permission-entity-a
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|id|text||
-|name|text||
-|team_id|text||
-|type|text||
-|users|jsonb||
+|id|String||
+|name|String||
+|team_id|String||
+|type|String||
+|users|JSON||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

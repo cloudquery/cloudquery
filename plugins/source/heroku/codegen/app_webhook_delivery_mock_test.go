@@ -54,5 +54,5 @@ func createAppWebhookDeliveries() (*heroku.Service, error) {
 }
 
 func TestAppWebhookDelivery(t *testing.T) {
-	client.HerokuMockTestHelper(t, AppWebhookDeliveries(), createAppWebhookDeliveries, client.TestOptions{})
+	client.MockTestHelper(t, AppWebhookDeliveries(), createAppWebhookDeliveries, client.TestOptions{})
 }

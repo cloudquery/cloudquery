@@ -4,17 +4,19 @@ https://devcenter.heroku.com/articles/platform-api-reference#add-on-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|actions|jsonb||
-|addon_service|jsonb||
-|app|jsonb||
-|billed_price|jsonb||
-|billing_entity|jsonb||
-|config_vars|text[]||
-|created_at|timestamp without time zone||
-|id|text||
-|name|text||
-|plan|jsonb||
-|provider_id|text||
-|state|text||
-|updated_at|timestamp without time zone||
-|web_url|text||
+|actions|JSON||
+|addon_service|JSON||
+|app|JSON||
+|billed_price|JSON||
+|billing_entity|JSON||
+|config_vars|StringArray||
+|created_at|Timestamp||
+|id|String||
+|name|String||
+|plan|JSON||
+|provider_id|String||
+|state|String||
+|updated_at|Timestamp||
+|web_url|String||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

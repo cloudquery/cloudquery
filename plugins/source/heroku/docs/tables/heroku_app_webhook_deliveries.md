@@ -4,12 +4,14 @@ https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-deliver
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|created_at|timestamp without time zone||
-|event|jsonb||
-|id|text||
-|last_attempt|jsonb||
-|next_attempt_at|timestamp without time zone||
-|num_attempts|integer||
-|status|text||
-|updated_at|timestamp without time zone||
-|webhook|jsonb||
+|created_at|Timestamp||
+|event|JSON||
+|id|String||
+|last_attempt|JSON||
+|next_attempt_at|Timestamp||
+|num_attempts|Int||
+|status|String||
+|updated_at|Timestamp||
+|webhook|JSON||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

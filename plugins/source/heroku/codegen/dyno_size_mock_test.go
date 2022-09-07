@@ -40,5 +40,5 @@ func createDynoSizes() (*heroku.Service, error) {
 }
 
 func TestDynoSize(t *testing.T) {
-	client.HerokuMockTestHelper(t, DynoSizes(), createDynoSizes, client.TestOptions{})
+	client.MockTestHelper(t, DynoSizes(), createDynoSizes, client.TestOptions{})
 }

@@ -40,5 +40,5 @@ func createOAuthClients() (*heroku.Service, error) {
 }
 
 func TestOAuthClient(t *testing.T) {
-	client.HerokuMockTestHelper(t, OAuthClients(), createOAuthClients, client.TestOptions{})
+	client.MockTestHelper(t, OAuthClients(), createOAuthClients, client.TestOptions{})
 }
