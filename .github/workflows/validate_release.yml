@@ -24,7 +24,7 @@ jobs:
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: 1.19.1
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: goreleaser/goreleaser-action@v3
