@@ -74,7 +74,7 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, specReader *
 		}
 	}()
 	for i, destination := range sourceSpec.Destinations {
-		spec := specReader.GetDestinatinoByName(destination)
+		spec := specReader.GetDestinationByName(destination)
 		if spec == nil {
 			return fmt.Errorf("failed to find destination %s in source %s", destination, sourceSpec.Name)
 		}
