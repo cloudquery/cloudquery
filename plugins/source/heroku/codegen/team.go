@@ -4,7 +4,6 @@ package codegen
 
 import (
 	"context"
-
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	heroku "github.com/heroku/heroku-go/v5"
@@ -41,6 +40,9 @@ func Teams() *schema.Table {
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "identity_provider",

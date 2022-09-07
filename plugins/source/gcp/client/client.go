@@ -27,7 +27,6 @@ type Client struct {
 }
 
 const (
-	defaultProjectIdName = "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
 	serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
 )
 

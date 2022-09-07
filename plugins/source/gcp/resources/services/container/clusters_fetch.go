@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-
 	pb "google.golang.org/genproto/googleapis/container/v1"
 )
 
