@@ -257,7 +257,7 @@ func initResource(r *recipes.Resource) {
 
 	var err error
 	r.Table, err = sdkgen.NewTableFromStruct(
-		fmt.Sprintf("aws_%s_%s", strings.ToLower(r.AWSService), tableNameFromSubService),
+		"aws"+helpers.Coalesce(strings.ToLower(r.TablePrefixOverride), "_"+strings.ToLower(r.AWSService)+"_")+tableNameFromSubService,
 		r.AWSStruct,
 		sdkgen.WithSkipFields(append(r.SkipFields, "noSmithyDocumentSerde")),
 	)
@@ -432,8 +432,13 @@ func generateResource(dir string, r *recipes.Resource, mock bool) {
 		"ToCamel":  strcase.ToCamel,
 		"ToLower":  strings.ToLower,
 		"ToSnake":  strcase.ToSnake,
-		"Coalesce": func(a1, a2 string) string { return helpers.Coalesce(a2, a1) }, // go templates argument order is backwards
+		"Coalesce": func(defValue, input string) string { return helpers.Coalesce(input, defValue) }, // go templates argument order is backwards
 		//"TrimPrefix": func(a, b string) string { return strings.TrimPrefix(b, a) },
+		//"Contains":  func(needle, haystack string) bool { return strings.Contains(haystack, needle) },
+		"HasDollar": func(haystack string) bool { return strings.Contains(haystack, "$") },
+		"ReplaceDollar": func(replacement, haystack string) string {
+			return strings.ReplaceAll(haystack, "$", replacement)
+		},
 	}).ParseFS(awsTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse aws templates: %w", err))

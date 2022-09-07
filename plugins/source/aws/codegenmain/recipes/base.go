@@ -16,8 +16,9 @@ type Resource struct {
 	AWSStruct interface{}
 
 	// AWSService is the name of the aws service the struct/api is residing. Capitalization is important as it's also used in the client's service map.
-	AWSService       string
-	AWSServiceClient string // Name of the client service to use. If empty, AWSService is used.
+	AWSService          string
+	AWSServiceClient    string // Name of the client service to use. If empty, AWSService is used.
+	TablePrefixOverride string // Override the part of the name that relates to AWSService. If empty, AWSService is used. Set to "_" to remove the service name from the table name.
 
 	// Template is the template to use to generate the resource
 	Template string
@@ -26,7 +27,7 @@ type Resource struct {
 
 	RawMultiplexerOverride     string   // Full override for the multiplexer
 	MultiplexerServiceOverride string   // Override only for the service name (ServiceAccountRegionMultiplexer is used)
-	CQSubserviceOverride       string   // used in table and file names
+	CQSubserviceOverride       string   // Used in table and file names to represent the sub-service
 	PrimaryKeys                []string // Primary keys
 
 	PaginatorStruct    interface{} // Used only in resource_list_and_detail and list_describe templates.
@@ -41,7 +42,7 @@ type Resource struct {
 	CustomTagField   string // Only used in list_and_detail template.
 
 	Parent          *Resource
-	ParentFieldName string
+	ParentFieldName string // Field name for the parent resource to match with a child resource. If it includes the "$" character, the value is used raw, and the $ is replaced with parent object var.
 	ChildFieldName  string // Override. Defaults to ParentFieldName
 
 	SkipDescribeParentInputs bool // Only used in list_describe template.
@@ -144,6 +145,10 @@ func parentize(parent *Resource, subs ...*Resource) []*Resource {
 		if subs[i].AWSServiceClient == "" {
 			subs[i].AWSServiceClient = subs[i].Parent.AWSServiceClient
 		}
+		if subs[i].TablePrefixOverride == "" {
+			subs[i].TablePrefixOverride = subs[i].Parent.TablePrefixOverride
+		}
+
 		ret[i+1] = subs[i]
 	}
 	return ret
