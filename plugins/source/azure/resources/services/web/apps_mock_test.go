@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
-	"io/ioutil"
 	"net/http"
 	"testing"
 
@@ -56,7 +55,7 @@ func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		t.Errorf("failed building xml %s", err)
 	}
 
-	value := ioutil.NopCloser(bytes.NewReader(data)) // r type is io.ReadCloser
+	value := os.NopCloser(bytes.NewReader(data)) // r type is io.ReadCloser
 	response := web.ReadCloser{Response: autorest.Response{Response: &http.Response{Body: value}}}
 	apps.EXPECT().ListPublishingProfileXMLWithSecrets(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(response, nil)
 

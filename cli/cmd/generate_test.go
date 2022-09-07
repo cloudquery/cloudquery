@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"io/ioutil"
 	"os"
 	"path"
 	"strings"
@@ -85,7 +84,7 @@ func TestGenerate(t *testing.T) {
 		}
 
 		// check the generated config
-		cfg, err := ioutil.ReadFile(output)
+		cfg, err := os.ReadFile(output)
 		if err != nil {
 			t.Fatalf("error reading config file output: %v ", err)
 		}
@@ -110,7 +109,7 @@ func TestGenerate(t *testing.T) {
 		}
 
 		// check the generated config
-		cfg, err := ioutil.ReadFile(output)
+		cfg, err := os.ReadFile(output)
 		if err != nil {
 			t.Fatalf("error reading config file output: %v ", err)
 		}

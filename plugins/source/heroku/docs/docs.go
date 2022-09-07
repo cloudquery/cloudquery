@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 )
 
 func main() {
 	outputPath := "./docs"
-	dir, err := ioutil.ReadDir(outputPath + "/tables")
+	dir, err := os.ReadDir(outputPath + "/tables")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to generate docs: %s\n", err)
 		os.Exit(1)

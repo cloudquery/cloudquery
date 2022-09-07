@@ -3,7 +3,6 @@ package plugins
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -41,7 +40,7 @@ var getSourceClientTestCases = []specs.Source{
 func TestPluginManagerDownloadSource(t *testing.T) {
 	ctx := context.Background()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
-	dirName, err := ioutil.TempDir(os.TempDir(), "cq-plugins")
+	dirName, err := os.MkdirTemp(os.TempDir(), "cq-plugins")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +64,7 @@ func TestPluginManagerGetSourceClient(t *testing.T) {
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
 	for _, tc := range getSourceClientTestCases {
 		t.Run(fmt.Sprintf("%s@%s", tc.Path, tc.Version), func(t *testing.T) {
-			dirName, err := ioutil.TempDir(os.TempDir(), "cq-plugins")
+			dirName, err := os.MkdirTemp(os.TempDir(), "cq-plugins")
 			if err != nil {
 				t.Fatal(err)
 			}
