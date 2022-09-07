@@ -4,13 +4,10 @@ import (
 	"reflect"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	heroku "github.com/heroku/heroku-go/v5"
 )
 
 type Resource struct {
-	// DefaultColumns columns that will be appended to the main table
-	DefaultColumns []codegen.ColumnDefinition
 	// Table is the table definition that will be used to generate the cloudquery table
 	Table *codegen.TableDefinition
 	// TableName can be used to override the default generated table name
@@ -31,8 +28,7 @@ type Resource struct {
 	Template string
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
-	// CreateTableOptions options to use to create the main table
-	CreateTableOptions schema.TableCreationOptions
+	PrimaryKey string
 }
 
 var listResources = []Resource{
@@ -262,7 +258,6 @@ var listResources = []Resource{
 		Template:            "relational_resource_list",
 	},
 
-
 	// TODO: Add support for Archive
 	//{
 	//	HerokuStruct:        &heroku.Archive{},
@@ -353,10 +348,9 @@ func All() []Resource {
 		if r.HerokuPrimaryStruct != nil {
 			r.HerokuPrimaryStructName = reflect.TypeOf(r.HerokuPrimaryStruct).Elem().Name()
 		}
-		r.DefaultColumns = []codegen.ColumnDefinition{}
 		r.SkipFields = []string{}
-		if resources[i].CreateTableOptions.PrimaryKeys == nil {
-			resources[i].CreateTableOptions.PrimaryKeys = []string{"id"}
+		if r.PrimaryKey == "" {
+			r.PrimaryKey = "id"
 		}
 		resources[i] = r
 	}

@@ -76,7 +76,12 @@ func generateResource(r recipes.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	r.Table.Columns = append(r.DefaultColumns, r.Table.Columns...)
+	for i := range r.Table.Columns {
+		if r.Table.Columns[i].Name == r.PrimaryKey {
+			r.Table.Columns[i].Options.PrimaryKey = true
+		}
+	}
+
 	r.Table.Resolver = "fetch" + inflection.Plural(r.HerokuStructName)
 	r.Table.Description = fmt.Sprintf("https://devcenter.heroku.com/articles/platform-api-reference#%s-attributes", strcase.ToKebab(r.HerokuStructName))
 	mainTemplate := r.Template + ".go.tpl"

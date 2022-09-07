@@ -234,7 +234,8 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		}
 		pgColumn := pgColumns.getPgColumn(c.Name)
 
-		if pgColumn == nil {
+		switch {
+		case pgColumn == nil:
 			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column doesn't exist, creating")
 
 			sql := "alter table " + tableName + " add column " + columnName + " " + columnType
@@ -244,7 +245,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			if _, err := p.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", c.Name, table.Name, err)
 			}
-		} else if pgColumn.typ != columnType {
+		case pgColumn.typ != columnType:
 			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Str("old_type", pgColumn.typ).Str("new_type", columnType).Msg("Column exist but type is different, re-creating")
 			// column exists but type is different
 
@@ -261,7 +262,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			if _, err := p.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", c.Name, table.Name, err)
 			}
-		} else {
+		default:
 			// column exists and type is the same but constraint might differ
 			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Str("type", c.Type.String()).Msg("Column exists with the same type")
 			if pgPKs.columnExist(columnName) != c.CreationOptions.PrimaryKey {
@@ -336,7 +337,7 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 			sb.WriteString(") values (")
 		}
 	}
-	for i, _ := range values {
+	for i := range values {
 		sb.WriteString(fmt.Sprintf("$%d", i+1))
 		if i < len(values)-1 {
 			sb.WriteString(",")
