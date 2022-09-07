@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
-	"github.com/cloudquery/cloudquery/cli/internal/plugin"
+	"github.com/cloudquery/cloudquery/cli/internal/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -46,7 +46,7 @@ func NewCmdGenerate() *cobra.Command {
 }
 
 func runGenerate(cmd *cobra.Command, args []string) error {
-	pluginManager := plugin.NewPluginManager(plugin.WithLogger(log.Logger))
+	pluginManager := plugins.NewPluginManager(plugins.WithLogger(log.Logger))
 	registry, err := specs.RegistryFromString(cmd.Flag("registry").Value.String())
 	if err != nil {
 		return fmt.Errorf("runGen: invalid registry %w", err)
@@ -62,7 +62,7 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	}
 }
 
-func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry, outputFile string) error {
+func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, registry specs.Registry, outputFile string) error {
 	if registry == specs.RegistryGithub && !strings.Contains(path, "/") {
 		path = "cloudquery/" + path
 	}
@@ -111,7 +111,7 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, regist
 	return nil
 }
 
-func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, registry specs.Registry, outputFile string) error {
+func genDestination(cmd *cobra.Command, path string, pm *plugins.PluginManager, registry specs.Registry, outputFile string) error {
 	destSpec := specs.Destination{
 		Name:     path,
 		Path:     path,

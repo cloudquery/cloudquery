@@ -18,6 +18,7 @@ bin/
 database-data/*
 dest/*
 outfile
+cli/examples
 test_init_config.yml
 telemetry-random-id
 go.work
