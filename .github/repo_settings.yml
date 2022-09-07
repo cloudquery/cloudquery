@@ -16,13 +16,11 @@ branchProtectionRules:
     - Unit Tests (cli)
     - Build (cli)
 
-    - SQLPolicyTest (plugins/source/aws)
     - Linter (plugins/source/aws)
     - Unit Tests (plugins/source/aws)
     - Build (plugins/source/aws)
     - Lint Provider Doc (plugins/source/aws)
 
-    - SQLPolicyTest (plugins/source/azure)
     - Linter (plugins/source/azure)
     - Unit Tests (plugins/source/azure)
     - Build (plugins/source/azure)
@@ -42,7 +40,6 @@ branchProtectionRules:
     - Unit Tests (plugins/source/fuzz)
     - Build (plugins/source/fuzz)
 
-    - SQLPolicyTest (plugins/source/gcp)
     - Linter (plugins/source/gcp)
     - Unit Tests (plugins/source/gcp)
     - Build (plugins/source/gcp)
