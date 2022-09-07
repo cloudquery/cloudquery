@@ -14,12 +14,10 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	kmsold "google.golang.org/api/cloudkms/v1"
+	"google.golang.org/api/option"
+	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
-
-	"google.golang.org/api/option"
 )
 
 func createKeyrings() (*client.Services, error) {
@@ -91,7 +89,7 @@ type fakeKeyringsServer struct {
 	pb.UnimplementedKeyManagementServiceServer
 }
 
-func (f *fakeKeyringsServer) ListKeyRings(context.Context, *pb.ListKeyRingsRequest) (*pb.ListKeyRingsResponse, error) {
+func (*fakeKeyringsServer) ListKeyRings(context.Context, *pb.ListKeyRingsRequest) (*pb.ListKeyRingsResponse, error) {
 	resp := pb.ListKeyRingsResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)

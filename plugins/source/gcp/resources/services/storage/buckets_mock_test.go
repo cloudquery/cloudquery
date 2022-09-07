@@ -8,12 +8,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"cloud.google.com/go/storage"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-
-	"cloud.google.com/go/storage"
-
 	"google.golang.org/api/option"
 	oldapi "google.golang.org/api/storage/v1"
 )

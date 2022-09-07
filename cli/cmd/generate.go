@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
