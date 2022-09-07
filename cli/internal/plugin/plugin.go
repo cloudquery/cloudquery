@@ -9,6 +9,7 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"io"
 	"os"
 	"os/exec"
@@ -187,14 +188,21 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	return pluginPath, nil
 }
 
-// NewDestination Plugin downloads the plugin, spanws the process (if needed)
-// and return a new client. The calee is responsible for closing the plugin.
+// NewDestinationPlugin downloads the plugin, spawns the process (if needed)
+// and returns a new client. The caller is responsible for closing the plugin.
 func (p *PluginManager) NewDestinationPlugin(ctx context.Context, spec specs.Destination) (*DestinationPlugin, error) {
 	pl := DestinationPlugin{}
 	// some destination plugins are compiled in for simplicity (so no need to download them and spawn grpc server)
 	switch spec.Name {
 	case "postgresql":
-		pl.client = clients.NewLocalDestinationClient(postgresql.NewClient(p.logger))
+		f := func(_ context.Context, logger zerolog.Logger, _ specs.Destination) (plugins.DestinationClient, error) {
+			return postgresql.NewClient(logger), nil
+		}
+		client := plugins.NewDestinationPlugin(spec.Name, spec.Version, f,
+			plugins.WithDestinationLogger(p.logger),
+			plugins.WithDestinationExampleConfig(postgresql.ExampleConfig(),
+			))
+		pl.client = clients.NewLocalDestinationClient(client)
 		return &pl, nil
 	default:
 		return nil, fmt.Errorf("unknown destination plugin: %s", spec.Name)
@@ -252,9 +260,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 
 	go func() {
 		scanner := bufio.NewScanner(reader)
-		fmt.Println("starting reading")
 		for scanner.Scan() {
-			fmt.Println("read line")
 			var structuredLogLine map[string]interface{}
 			b := scanner.Bytes()
 			if err := json.Unmarshal(b, &structuredLogLine); err != nil {

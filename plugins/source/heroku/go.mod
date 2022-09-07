@@ -104,3 +104,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.3.3 // indirect
 )
+
+replace github.com/cloudquery/plugin-sdk v0.1.1 => /Users/hermanschaaf/code/cloudquery/plugin-sdk

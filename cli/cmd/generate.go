@@ -4,9 +4,8 @@ import (
 	"bufio"
 	"embed"
 	"fmt"
+	"github.com/cloudquery/plugin-sdk/clients"
 	"os"
-	"text/template"
-
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
@@ -87,29 +86,24 @@ func genSource(cmd *cobra.Command, path string, pm *plugin.PluginManager, regist
 	defer plugin.Close()
 	client := plugin.GetClient()
 
+	opts := clients.SourceExampleConfigOptions{
+		Path:     path,
+		Registry: registry,
+	}
 	name, err := client.Name(cmd.Context())
 	if err != nil {
 		return fmt.Errorf("failed to get plugin name: %w", err)
 	}
-	sourceSpec.Name = name
-
-	version, err = client.Version(cmd.Context())
-	if err != nil {
-		return fmt.Errorf("failed to get plugin name: %w", err)
-	}
-	sourceSpec.Version = version
-
-	cfg, err := client.ExampleConfig(cmd.Context())
+	cfg, err := client.ExampleConfig(cmd.Context(), opts)
 	if err != nil {
 		return fmt.Errorf("failed to get example config: %w", err)
 	}
-	sourceSpec.Spec = cfg
 
 	configPath := outputFile
 	if configPath == "" {
 		configPath = name + ".yml"
 	}
-	err = writeSource(configPath, sourceSpec)
+	err = writeFile(configPath, cfg)
 	if err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
@@ -143,17 +137,20 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 	}
 	destSpec.Version = version
 
-	cfg, err := client.GetExampleConfig(cmd.Context())
+	opts := clients.DestinationExampleConfigOptions{
+		Path:     path,
+		Registry: registry,
+	}
+	cfg, err := client.GetExampleConfig(cmd.Context(), opts)
 	if err != nil {
 		return fmt.Errorf("failed to get example config: %w", err)
 	}
-	destSpec.Spec = cfg
 
 	configPath := outputFile
 	if configPath == "" {
 		configPath = name + ".yml"
 	}
-	err = writeDestination(configPath, destSpec)
+	err = writeFile(configPath, cfg)
 	if err != nil {
 		return fmt.Errorf("failed to write file: %w", err)
 	}
@@ -161,37 +158,17 @@ func genDestination(cmd *cobra.Command, path string, pm *plugin.PluginManager, r
 	return nil
 }
 
-func writeSource(path string, sourceSpec specs.Source) error {
-	return writeConfig(path, "source.go.tpl", sourceSpec)
-}
-
-func writeDestination(path string, destinationSpec specs.Destination) error {
-	return writeConfig(path, "destination.go.tpl", destinationSpec)
-}
-
-func writeConfig(path, cfgTemplate string, spec interface{}) error {
+func writeFile(path, cfg string) error {
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to create file: %w", err)
 	}
 	defer f.Close()
 
-	tpl, err := template.New(cfgTemplate).Funcs(template.FuncMap{
-		"indent": indentSpaces,
-	}).ParseFS(templatesFS, "templates/"+cfgTemplate)
-	if err != nil {
-		return fmt.Errorf("failed to parse template: %w", err)
-	}
-
 	w := bufio.NewWriter(f)
-	err = tpl.Execute(w, spec)
+	w.WriteString(cfg)
 	if err != nil {
-		return fmt.Errorf("failed to execute template: %w", err)
+		return fmt.Errorf("failed to write config: %w", err)
 	}
 	return w.Flush()
-}
-
-func indentSpaces(text string, spaces int) string {
-	s := strings.Repeat(" ", spaces)
-	return s + strings.ReplaceAll(text, "\n", "\n"+s)
 }
