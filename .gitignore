@@ -23,5 +23,6 @@ test_init_config.yml
 telemetry-random-id
 go.work
 go.work.sum
+cli/examples
 cli/cli
 plugins/source/gcp/gcp
