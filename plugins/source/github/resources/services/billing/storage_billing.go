@@ -14,14 +14,13 @@ func StorageBillings() *schema.Table {
 		Description: "StorageBilling represents a GitHub Storage billing.",
 		Resolver:    fetchStorageBillings,
 		Multiplex:   client.OrgMultiplex,
-		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org"}},
 		Columns: []schema.Column{
 			{
-				Name:        "org",
-				Description: "The Github Organization of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
+				Name:            "org",
+				Description:     "The Github Organization of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveOrg,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name: "days_left_in_billing_cycle",

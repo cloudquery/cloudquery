@@ -16,14 +16,19 @@ func Hooks() *schema.Table {
 		Description: "Hook represents a GitHub (web and service) hook for a repository.",
 		Resolver:    fetchHooks,
 		Multiplex:   client.OrgMultiplex,
-		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "org",
-				Description: "The Github Organization of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
+				Name:            "org",
+				Description:     "The Github Organization of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveOrg,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "id",
+				Type:            schema.TypeInt,
+				Resolver:        schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name: "created_at",
@@ -37,11 +42,6 @@ func Hooks() *schema.Table {
 				Name:     "url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("URL"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
 			},
 			{
 				Name: "type",
