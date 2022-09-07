@@ -78,7 +78,7 @@ require (
 	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.1.2
+	github.com/cloudquery/plugin-sdk v0.2.3
 	github.com/gocarina/gocsv v0.0.0-20220712153207-8b2118da4570
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.8

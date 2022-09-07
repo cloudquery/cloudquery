@@ -312,10 +312,6 @@ func initResource(r *recipes.Resource) {
 	hasReferenceToResolvers := false
 
 	for i := range r.Table.Columns {
-		if len(r.Table.Options.PrimaryKeys) == 0 && r.Table.Columns[i].Name == "arn" {
-			//	r.Table.Columns[i].Options.PrimaryKey = true
-			r.Table.Options.PrimaryKeys = []string{"arn"}
-		}
 		if r.Table.Columns[i].Name == "tags" {
 			r.HasTags = true
 

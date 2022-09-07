@@ -52,8 +52,6 @@ type Resource struct {
 
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
-	//CreateTableOptions options to use to create the main table
-	CreateTableOptions schema.TableCreationOptions
 
 	ColumnOverrides map[string]codegen.ColumnDefinition
 

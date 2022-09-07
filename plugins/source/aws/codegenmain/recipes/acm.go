@@ -17,7 +17,6 @@ func init() {
 		PaginatorGetStruct: &acm.DescribeCertificateInput{},
 		ItemsStruct:        &acm.DescribeCertificateOutput{},
 		Template:           "resource_list_describe",
-		CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"certificate_arn": {
 				Name: "arn",
