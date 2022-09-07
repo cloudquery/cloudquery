@@ -30,6 +30,7 @@ linters-settings:
   wrapcheck:
     ignoreSigs:
       - diag.WrapError
+      - errors.WithStack
 
   revive:
     enable-all-rules: true
