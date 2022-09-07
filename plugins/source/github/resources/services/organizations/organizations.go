@@ -2,7 +2,6 @@ package organizations
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -282,9 +281,5 @@ func resolveOrganizationMembers(ctx context.Context, meta schema.ClientMeta, res
 			break
 		}
 	}
-	data, err := json.Marshal(orgMembers)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	return errors.WithStack(resource.Set(column.Name, data))
+	return errors.WithStack(resource.Set(column.Name, orgMembers))
 }

@@ -2,7 +2,6 @@ package teams
 
 import (
 	"context"
-	"encoding/json"
 	"strconv"
 	"strings"
 
@@ -165,11 +164,7 @@ func resolveTeamMembers(ctx context.Context, meta schema.ClientMeta, resource *s
 			break
 		}
 	}
-	data, err := json.Marshal(teamMembers)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	return errors.WithStack(resource.Set(column.Name, data))
+	return errors.WithStack(resource.Set(column.Name, teamMembers))
 }
 
 func resolveTeamRepositories(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
@@ -195,9 +190,5 @@ func resolveTeamRepositories(ctx context.Context, meta schema.ClientMeta, resour
 			break
 		}
 	}
-	data, err := json.Marshal(repositories)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	return errors.WithStack(resource.Set(column.Name, data))
+	return errors.WithStack(resource.Set(column.Name, repositories))
 }
