@@ -8,13 +8,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func Profiles() *schema.Table {
+func SecurityPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cdn_profiles",
-		Resolver:  fetchCDNProfiles,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:     "azure_cdn_security_policies",
+		Resolver: fetchCDNSecurityPolicies,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -22,14 +23,9 @@ func Profiles() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
-			},
-			{
-				Name:     "resource_state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceState"),
+				Name:     "cq_id_parent",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
 			},
 			{
 				Name:     "provisioning_state",
@@ -37,19 +33,9 @@ func Profiles() *schema.Table {
 				Resolver: schema.PathResolver("ProvisioningState"),
 			},
 			{
-				Name:     "frontdoor_id",
+				Name:     "deployment_status",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FrontdoorID"),
-			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: schema.PathResolver("DeploymentStatus"),
 			},
 			{
 				Name:     "id",
@@ -75,17 +61,18 @@ func Profiles() *schema.Table {
 				Resolver: schema.PathResolver("SystemData"),
 			},
 		},
-
-		Relations: []*schema.Table{
-			Endpoints(), RuleSets(), SecurityPolicies(),
-		},
 	}
 }
 
-func fetchCDNProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().CDN.Profiles
+func fetchCDNSecurityPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().CDN.SecurityPolicies
 
-	response, err := svc.List(ctx)
+	profile := parent.Item.(cdn.Profile)
+	resource, err := client.ParseResourceID(*profile.ID)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	response, err := svc.ListByProfile(ctx, resource.ResourceGroup, *profile.Name)
 
 	if err != nil {
 		return errors.WithStack(err)

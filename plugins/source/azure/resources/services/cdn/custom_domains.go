@@ -8,13 +8,14 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func Profiles() *schema.Table {
+func CustomDomains() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_cdn_profiles",
-		Resolver:  fetchCDNProfiles,
-		Multiplex: client.SubscriptionMultiplex,
+		Name:     "azure_cdn_custom_domains",
+		Resolver: fetchCDNCustomDomains,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -22,9 +23,14 @@ func Profiles() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "sku",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Sku"),
+				Name:     "cq_id_parent",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIdResolver,
+			},
+			{
+				Name:     "host_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HostName"),
 			},
 			{
 				Name:     "resource_state",
@@ -32,24 +38,24 @@ func Profiles() *schema.Table {
 				Resolver: schema.PathResolver("ResourceState"),
 			},
 			{
+				Name:     "custom_https_provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CustomHTTPSProvisioningState"),
+			},
+			{
+				Name:     "custom_https_provisioning_substate",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CustomHTTPSProvisioningSubstate"),
+			},
+			{
+				Name:     "validation_data",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ValidationData"),
+			},
+			{
 				Name:     "provisioning_state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ProvisioningState"),
-			},
-			{
-				Name:     "frontdoor_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FrontdoorID"),
-			},
-			{
-				Name:     "location",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Location"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "id",
@@ -75,17 +81,19 @@ func Profiles() *schema.Table {
 				Resolver: schema.PathResolver("SystemData"),
 			},
 		},
-
-		Relations: []*schema.Table{
-			Endpoints(), RuleSets(), SecurityPolicies(),
-		},
 	}
 }
 
-func fetchCDNProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().CDN.Profiles
+func fetchCDNCustomDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().CDN.CustomDomains
 
-	response, err := svc.List(ctx)
+	profile := parent.Parent.Item.(cdn.Profile)
+	resource, err := client.ParseResourceID(*profile.ID)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	endpoint := parent.Item.(cdn.Endpoint)
+	response, err := svc.ListByEndpoint(ctx, resource.ResourceGroup, *profile.Name, *endpoint.Name)
 
 	if err != nil {
 		return errors.WithStack(err)
