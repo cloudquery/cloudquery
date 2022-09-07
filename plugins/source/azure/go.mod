@@ -11,7 +11,7 @@ require (
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/cq-provider-sdk v0.14.7
-	github.com/cloudquery/plugin-sdk v0.1.2
+	github.com/cloudquery/plugin-sdk v0.2.4
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/go-faker/faker/v4 v4.0.0-beta.2
 	github.com/gofrs/uuid v4.2.0+incompatible
@@ -116,3 +116,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	honnef.co/go/tools v0.3.3 // indirect
 )
+
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk/

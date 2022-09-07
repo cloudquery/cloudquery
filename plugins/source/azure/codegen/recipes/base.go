@@ -176,6 +176,12 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	columns = append(columns, table.Columns...)
 	columns = append(columns, definition.customColumns...)
 
+	for i := range columns {
+		if columns[i].Name == "id" {
+			columns[i].Options.PrimaryKey = true
+		}
+	}
+
 	return columns
 }
 
@@ -203,7 +209,6 @@ func initTable(definition resourceDefinition, azureService string, azureSubServi
 	}
 
 	table.Resolver = "fetch" + azureService + azureSubService
-	table.Options.PrimaryKeys = []string{"id"}
 	table.Relations = definition.relations
 
 	if definition.getFunction != "" {
