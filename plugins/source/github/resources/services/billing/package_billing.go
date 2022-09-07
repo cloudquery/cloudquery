@@ -15,14 +15,13 @@ func PackageBillings() *schema.Table {
 		Description: "PackageBilling represents a GitHub Package billing.",
 		Resolver:    fetchPackageBillings,
 		Multiplex:   client.OrgMultiplex,
-		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org"}},
 		Columns: []schema.Column{
 			{
-				Name:        "org",
-				Description: "The Github Organization of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
+				Name:            "org",
+				Description:     "The Github Organization of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveOrg,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name: "total_gigabytes_bandwidth_used",

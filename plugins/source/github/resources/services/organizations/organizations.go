@@ -16,17 +16,16 @@ func Organizations() *schema.Table {
 		Description: "Organization represents a GitHub organization account.",
 		Resolver:    fetchOrganizations,
 		Multiplex:   client.OrgMultiplex,
-		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
+			{
+				Name:            "id",
+				Type:            schema.TypeInt,
+				Resolver:        schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
 			{
 				Name: "login",
 				Type: schema.TypeString,
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
 			},
 			{
 				Name:     "node_id",

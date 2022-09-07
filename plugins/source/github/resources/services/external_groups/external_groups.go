@@ -15,19 +15,19 @@ func ExternalGroups() *schema.Table {
 		Description: "ExternalGroup represents an external group.",
 		Resolver:    fetchExternalGroups,
 		Multiplex:   client.OrgMultiplex,
-		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org", "group_id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "org",
-				Description: "The Github Organization of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
+				Name:            "org",
+				Description:     "The Github Organization of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveOrg,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:     "group_id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("GroupID"),
+				Name:            "group_id",
+				Type:            schema.TypeInt,
+				Resolver:        schema.PathResolver("GroupID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name: "group_name",

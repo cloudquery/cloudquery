@@ -18,19 +18,19 @@ func Teams() *schema.Table {
 		Description: "Team represents a team within a GitHub organization",
 		Resolver:    fetchTeams,
 		Multiplex:   client.OrgMultiplex,
-		IgnoreError: client.IgnoreError,
-		Options:     schema.TableCreationOptions{PrimaryKeys: []string{"org", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "org",
-				Description: "The Github Organization of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveOrg,
+				Name:            "org",
+				Description:     "The Github Organization of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveOrg,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("ID"),
+				Name:            "id",
+				Type:            schema.TypeInt,
+				Resolver:        schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "node_id",
