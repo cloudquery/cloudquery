@@ -40,5 +40,5 @@ func createStacks() (*heroku.Service, error) {
 }
 
 func TestStack(t *testing.T) {
-	client.HerokuMockTestHelper(t, Stacks(), createStacks, client.TestOptions{})
+	client.MockTestHelper(t, Stacks(), createStacks, client.TestOptions{})
 }

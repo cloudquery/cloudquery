@@ -40,5 +40,5 @@ func createTeamAppPermissions() (*heroku.Service, error) {
 }
 
 func TestTeamAppPermission(t *testing.T) {
-	client.HerokuMockTestHelper(t, TeamAppPermissions(), createTeamAppPermissions, client.TestOptions{})
+	client.MockTestHelper(t, TeamAppPermissions(), createTeamAppPermissions, client.TestOptions{})
 }

@@ -40,5 +40,5 @@ func createPipelines() (*heroku.Service, error) {
 }
 
 func TestPipeline(t *testing.T) {
-	client.HerokuMockTestHelper(t, Pipelines(), createPipelines, client.TestOptions{})
+	client.MockTestHelper(t, Pipelines(), createPipelines, client.TestOptions{})
 }

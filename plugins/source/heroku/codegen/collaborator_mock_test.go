@@ -54,5 +54,5 @@ func createCollaborators() (*heroku.Service, error) {
 }
 
 func TestCollaborator(t *testing.T) {
-	client.HerokuMockTestHelper(t, Collaborators(), createCollaborators, client.TestOptions{})
+	client.MockTestHelper(t, Collaborators(), createCollaborators, client.TestOptions{})
 }

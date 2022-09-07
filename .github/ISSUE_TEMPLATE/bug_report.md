@@ -34,7 +34,7 @@ cloudquery init
 cloudquery fetch
 ```
 
-Also please share any other necessary configuration files like config.hcl
+Also please share any other necessary configuration files
 -->
 
 ### Additional Context

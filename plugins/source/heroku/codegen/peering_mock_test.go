@@ -54,5 +54,5 @@ func createPeerings() (*heroku.Service, error) {
 }
 
 func TestPeering(t *testing.T) {
-	client.HerokuMockTestHelper(t, Peerings(), createPeerings, client.TestOptions{})
+	client.MockTestHelper(t, Peerings(), createPeerings, client.TestOptions{})
 }

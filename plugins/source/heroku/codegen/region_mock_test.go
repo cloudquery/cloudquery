@@ -40,5 +40,5 @@ func createRegions() (*heroku.Service, error) {
 }
 
 func TestRegion(t *testing.T) {
-	client.HerokuMockTestHelper(t, Regions(), createRegions, client.TestOptions{})
+	client.MockTestHelper(t, Regions(), createRegions, client.TestOptions{})
 }

@@ -54,5 +54,5 @@ func createEnterpriseAccountMembers() (*heroku.Service, error) {
 }
 
 func TestEnterpriseAccountMember(t *testing.T) {
-	client.HerokuMockTestHelper(t, EnterpriseAccountMembers(), createEnterpriseAccountMembers, client.TestOptions{})
+	client.MockTestHelper(t, EnterpriseAccountMembers(), createEnterpriseAccountMembers, client.TestOptions{})
 }

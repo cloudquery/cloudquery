@@ -4,10 +4,12 @@ https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-att
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|created_at|timestamp without time zone||
-|id|text||
-|invited_by|jsonb||
-|role|text||
-|team|jsonb||
-|updated_at|timestamp without time zone||
-|user|jsonb||
+|created_at|Timestamp||
+|id|String||
+|invited_by|JSON||
+|role|String||
+|team|JSON||
+|updated_at|Timestamp||
+|user|JSON||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

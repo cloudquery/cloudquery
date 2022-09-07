@@ -40,5 +40,5 @@ func createKeys() (*heroku.Service, error) {
 }
 
 func TestKey(t *testing.T) {
-	client.HerokuMockTestHelper(t, Keys(), createKeys, client.TestOptions{})
+	client.MockTestHelper(t, Keys(), createKeys, client.TestOptions{})
 }

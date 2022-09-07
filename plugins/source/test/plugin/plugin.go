@@ -23,7 +23,7 @@ func Plugin() *plugins.SourcePlugin {
 		[]*schema.Table{
 			tables.TestSomeTable(),
 		},
-		client.Configure,
+		client.New,
 		plugins.WithSourceExampleConfig(exampleConfig),
 	)
 }
