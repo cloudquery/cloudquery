@@ -7,6 +7,7 @@ package plugins
 import (
 	"archive/zip"
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -15,8 +16,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-
-	"context"
 
 	"github.com/cloudquery/cloudquery/cli/internal/destinations/postgresql"
 	"github.com/cloudquery/cloudquery/cli/internal/versions"

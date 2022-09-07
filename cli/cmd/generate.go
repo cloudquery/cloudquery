@@ -5,9 +5,8 @@ import (
 	"embed"
 	"fmt"
 	"os"
-	"text/template"
-
 	"strings"
+	"text/template"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/internal/plugins"
