@@ -4,12 +4,14 @@ https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection-attr
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|id|text||
-|ike_version|integer||
-|name|text||
-|public_ip|text||
-|routable_cidrs|text[]||
-|space_cidr_block|text||
-|status|text||
-|status_message|text||
-|tunnels|jsonb||
+|id|String||
+|ike_version|Int||
+|name|String||
+|public_ip|String||
+|routable_cidrs|StringArray||
+|space_cidr_block|String||
+|status|String||
+|status_message|String||
+|tunnels|JSON||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

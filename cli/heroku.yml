@@ -1,0 +1,40 @@
+kind: source
+spec:
+  # Name of the plugin.
+  name: "heroku"
+
+  # Version of the plugin to use.
+  version: "development"
+
+  # Registry to use (one of "github", "local" or "grpc").
+  registry: "grpc"
+
+  # Path to plugin. Required format depends on the registry.
+  path: "127.0.0.1:7777"
+
+  # List of tables to sync.
+  tables: ["*"]
+
+  ## Tables to skip during sync. Optional.
+  # skip_tables: []
+
+  # Names of destination plugins to sync to.
+  destinations: ["*"]
+
+  ## Approximate cap on number of requests to perform concurrently. Optional.
+  # max_goroutines: 5
+
+  # Plugin-specific configuration.
+  spec:
+    
+    # Required. OAuth token to authenticate with Heroku API
+    token: <token>
+    
+    # Optional. GRPC Retry/backoff configuration, time units in seconds. Documented in https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md
+    # backoff_base_delay: 1
+    # backoff_multiplier: 1.6
+    # backoff_max_delay: 120
+    # backoff_jitter: 0.2
+    # backoff_min_connect_timeout = 0
+    # Optional. Max amount of retries for retrier, defaults to max 3 retries.
+    # max_retries: 3

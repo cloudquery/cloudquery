@@ -4,8 +4,9 @@ package codegen
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )
@@ -16,11 +17,6 @@ func AddOnWebhooks() *schema.Table {
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-attributes",
 		Resolver:    fetchAddOnWebhooks,
 		Columns: []schema.Column{
-			{
-				Name:     "addon",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Addon"),
-			},
 			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,

@@ -4,15 +4,5 @@ https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release-at
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|addon_plan_names|text[]||
-|app|jsonb||
-|created_at|timestamp without time zone||
-|current|boolean||
-|description|text||
-|id|text||
-|output_stream_url|text||
-|slug|jsonb||
-|status|text||
-|updated_at|timestamp without time zone||
-|user|jsonb||
-|version|integer||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

@@ -54,5 +54,5 @@ func createOutboundRulesets() (*heroku.Service, error) {
 }
 
 func TestOutboundRuleset(t *testing.T) {
-	client.HerokuMockTestHelper(t, OutboundRulesets(), createOutboundRulesets, client.TestOptions{})
+	client.MockTestHelper(t, OutboundRulesets(), createOutboundRulesets, client.TestOptions{})
 }

@@ -4,13 +4,15 @@ https://devcenter.heroku.com/articles/platform-api-reference#invoice-attributes
 ## Columns
 | Name        | Type           | Description  |
 | ------------- | ------------- | -----  |
-|charges_total|float||
-|created_at|timestamp without time zone||
-|credits_total|float||
-|id|text||
-|number|integer||
-|period_end|text||
-|period_start|text||
-|state|integer||
-|total|float||
-|updated_at|timestamp without time zone||
+|charges_total|Float||
+|created_at|Timestamp||
+|credits_total|Float||
+|id|String||
+|number|Int||
+|period_end|String||
+|period_start|String||
+|state|Int||
+|total|Float||
+|updated_at|Timestamp||
+|_cq_id|UUID|Internal CQ ID of the row|
+|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|

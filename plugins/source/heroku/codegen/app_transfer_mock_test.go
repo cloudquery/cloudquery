@@ -40,5 +40,5 @@ func createAppTransfers() (*heroku.Service, error) {
 }
 
 func TestAppTransfer(t *testing.T) {
-	client.HerokuMockTestHelper(t, AppTransfers(), createAppTransfers, client.TestOptions{})
+	client.MockTestHelper(t, AppTransfers(), createAppTransfers, client.TestOptions{})
 }

@@ -4,8 +4,9 @@ package codegen
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/pkg/errors"
 )
@@ -15,68 +16,7 @@ func PipelineReleases() *schema.Table {
 		Name:        "heroku_pipeline_releases",
 		Description: "https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release-attributes",
 		Resolver:    fetchPipelineReleases,
-		Columns: []schema.Column{
-			{
-				Name:     "addon_plan_names",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("AddonPlanNames"),
-			},
-			{
-				Name:     "app",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("App"),
-			},
-			{
-				Name:     "created_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedAt"),
-			},
-			{
-				Name:     "current",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Current"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
-			},
-			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ID"),
-			},
-			{
-				Name:     "output_stream_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("OutputStreamURL"),
-			},
-			{
-				Name:     "slug",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Slug"),
-			},
-			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "updated_at",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UpdatedAt"),
-			},
-			{
-				Name:     "user",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("User"),
-			},
-			{
-				Name:     "version",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Version"),
-			},
-		},
+		Columns:     []schema.Column{},
 	}
 }
 

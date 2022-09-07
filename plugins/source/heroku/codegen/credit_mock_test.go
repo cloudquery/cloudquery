@@ -40,5 +40,5 @@ func createCredits() (*heroku.Service, error) {
 }
 
 func TestCredit(t *testing.T) {
-	client.HerokuMockTestHelper(t, Credits(), createCredits, client.TestOptions{})
+	client.MockTestHelper(t, Credits(), createCredits, client.TestOptions{})
 }

@@ -40,5 +40,5 @@ func createPipelineCouplings() (*heroku.Service, error) {
 }
 
 func TestPipelineCoupling(t *testing.T) {
-	client.HerokuMockTestHelper(t, PipelineCouplings(), createPipelineCouplings, client.TestOptions{})
+	client.MockTestHelper(t, PipelineCouplings(), createPipelineCouplings, client.TestOptions{})
 }

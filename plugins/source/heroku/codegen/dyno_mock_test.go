@@ -54,5 +54,5 @@ func createDynos() (*heroku.Service, error) {
 }
 
 func TestDyno(t *testing.T) {
-	client.HerokuMockTestHelper(t, Dynos(), createDynos, client.TestOptions{})
+	client.MockTestHelper(t, Dynos(), createDynos, client.TestOptions{})
 }

@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.18
 
 require (
-	github.com/cloudquery/plugin-sdk v0.0.10
+	github.com/cloudquery/plugin-sdk v0.1.2
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/google/go-cmp v0.5.8
 	github.com/jackc/pgtype v1.12.0
@@ -66,5 +66,3 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/cloudquery/plugin-sdk v0.0.10 => /Users/hermanschaaf/code/cloudquery/plugin-sdk

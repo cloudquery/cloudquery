@@ -40,5 +40,5 @@ func createInvoices() (*heroku.Service, error) {
 }
 
 func TestInvoice(t *testing.T) {
-	client.HerokuMockTestHelper(t, Invoices(), createInvoices, client.TestOptions{})
+	client.MockTestHelper(t, Invoices(), createInvoices, client.TestOptions{})
 }
