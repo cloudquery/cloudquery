@@ -20,13 +20,6 @@ linters-settings:
   dupl:
     # tokens count to trigger issue, 150 by default
     threshold: 500
-  decorder:
-    dec-order:
-      - type
-      - const
-      - var
-      - func
-    disable-dec-order-check: false
   wrapcheck:
     ignoreSigs:
       - diag.WrapError
@@ -80,8 +73,6 @@ linters:
   enable:
     - asciicheck
     - bodyclose
-    - deadcode
-    - decorder
     - depguard
     - dupl
     - errcheck
@@ -97,11 +88,9 @@ linters:
     - prealloc
     - revive
     - staticcheck
-    - structcheck
     - unconvert
     - unparam
     - unused
-    - varcheck
     - wrapcheck
 
 issues:
@@ -116,7 +105,6 @@ issues:
     - path: resources(\\|\/).*\.go
       linters:
         - dupl
-        - decorder
     # Exclude some linters from running on services files.
     - path: services\.go
       linters:
