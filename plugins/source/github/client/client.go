@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/google/go-github/v45/github"
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
 )
@@ -41,15 +42,15 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	var spec Spec
 	err := s.UnmarshalSpec(&spec)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal GitHub spec: %w", err)
+		return nil, errors.WithStack(fmt.Errorf("failed to unmarshal GitHub spec: %w", err))
 	}
 
 	// validate provider config
 	if spec.AccessToken == "" {
-		return nil, fmt.Errorf("missing personal access token in configuration")
+		return nil, errors.WithStack(fmt.Errorf("missing personal access token in configuration"))
 	}
 	if len(spec.Orgs) == 0 {
-		return nil, fmt.Errorf("no organizations defined in configuration ")
+		return nil, errors.WithStack(fmt.Errorf("no organizations defined in configuration"))
 	}
 
 	ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: spec.AccessToken})
