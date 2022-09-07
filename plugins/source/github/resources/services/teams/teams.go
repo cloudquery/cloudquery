@@ -103,9 +103,8 @@ func Teams() *schema.Table {
 				Resolver: schema.PathResolver("RepositoriesURL"),
 			},
 			{
-				Name:     "parent",
-				Type:     schema.TypeInt,
-				Resolver: resolveTeamsParent,
+				Name: "parent",
+				Type: schema.TypeJSON,
 			},
 			{
 				Name:        "ldapdn",
@@ -140,13 +139,7 @@ func fetchTeams(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	}
 	return nil
 }
-func resolveTeamsParent(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	u := resource.Item.(*github.Team)
-	if u.Parent == nil {
-		return nil
-	}
-	return errors.WithStack(resource.Set(c.Name, u.Parent.ID))
-}
+
 func resolveTeamMembers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	t := resource.Item.(*github.Team)
 	c := meta.(*client.Client)

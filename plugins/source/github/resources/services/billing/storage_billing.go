@@ -4,11 +4,10 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 )
 
-//go:generate cq-gen --resource storage_billing --config billing.hcl --output .
 func StorageBillings() *schema.Table {
 	return &schema.Table{
 		Name:        "github_storage_billing",
@@ -26,7 +25,7 @@ func StorageBillings() *schema.Table {
 			},
 			{
 				Name: "days_left_in_billing_cycle",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 			{
 				Name: "estimated_paid_storage_for_month",
@@ -34,7 +33,7 @@ func StorageBillings() *schema.Table {
 			},
 			{
 				Name: "estimated_storage_for_month",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 		},
 	}
@@ -48,7 +47,7 @@ func fetchStorageBillings(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	billing, _, err := c.Github.Billing.GetStorageBillingOrg(ctx, c.Org)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	res <- billing
 	return nil
