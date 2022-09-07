@@ -17,7 +17,6 @@ import (
 type Client struct {
 	// plugin   *plugins.SourcePlugin
 	projects []string
-	backoff  BackoffSettings
 	// All gcp services initialized by client
 	Services *Services
 	// this is set by table client multiplexer
@@ -101,7 +100,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	c.logger.Debug().Strs("projects", projects).Msg("Found projects")
 
 	c.projects = projects
-	c.backoff = gcpSpec.Backoff()
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
 	}
@@ -113,25 +111,20 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
 	var (
 		projects []string
-		inactive int
 	)
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
 
-	call := service.Projects.List().Context(ctx)
+	call := service.Projects.List().Filter("LifecycleState=ACTIVE").Context(ctx)
 	for {
 		output, err := call.Do()
 		if err != nil {
 			return nil, err
 		}
 		for _, project := range output.Projects {
-			if project.LifecycleState == "ACTIVE" {
-				projects = append(projects, project.ProjectId)
-			} else {
-				inactive++
-			}
+			projects = append(projects, project.ProjectId)
 		}
 		if output.NextPageToken == "" {
 			break
@@ -140,10 +133,7 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 	}
 
 	if len(projects) == 0 {
-		if inactive > 0 {
-			return nil, fmt.Errorf("project listing failed: no active projects")
-		}
-		return nil, fmt.Errorf("project listing failed")
+		return nil, fmt.Errorf("no active projects")
 	}
 
 	return projects, nil
