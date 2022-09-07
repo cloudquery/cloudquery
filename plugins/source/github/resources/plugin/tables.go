@@ -1,8 +1,6 @@
 package plugin
 
 import (
-	"github.com/cloudquery/plugin-sdk/schema"
-
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/billing"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/external_groups"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/hooks"
@@ -11,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/repositories"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/teams"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Tables() []*schema.Table {

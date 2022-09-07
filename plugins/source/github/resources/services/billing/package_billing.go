@@ -9,7 +9,6 @@ import (
 )
 
 func PackageBillings() *schema.Table {
-
 	return &schema.Table{
 		Name:        "github_package_billing",
 		Description: "PackageBilling represents a GitHub Package billing.",
