@@ -23,7 +23,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 func list{{.AWSSubService}}(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().{{.AWSService | ToCamel}}
+	svc := cl.Services().{{.AWSServiceClient | Coalesce .AWSService}}
 
 {{template "resolve_parent_defs.go.tpl" .}}
 	input := {{.AWSService | ToLower}}.{{.ListMethod}}Input{
@@ -51,7 +51,7 @@ func list{{.AWSSubService}}(ctx context.Context, meta schema.ClientMeta, detailC
 func list{{.AWSSubService}}Detail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
 	cl := meta.(*client.Client)
 	item := listInfo.({{.PaginatorListType}})
-	svc := cl.Services().{{.AWSService | ToCamel}}
+	svc := cl.Services().{{.AWSServiceClient | Coalesce .AWSService}}
 	response, err := svc.{{.GetMethod}}(ctx, &{{.AWSService | ToLower}}.{{.GetMethod}}Input{
 {{range $v := .GetAndListOrder}}	{{$v}}: {{index $.MatchedGetAndListFields $v}},
 {{end}}
@@ -70,7 +70,7 @@ func list{{.AWSSubService}}Detail(ctx context.Context, meta schema.ClientMeta, r
 {{if .HasTags}}
 func resolve{{.AWSService}}{{.AWSSubService}}Tags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().{{.AWSService | ToCamel}}
+	svc := cl.Services().{{.AWSServiceClient | Coalesce .AWSService}}
 	item := resource.Item.({{.AWSStructName}})
 	params := {{.AWSService | ToLower}}.ListTagsForResourceInput{
 		ResourceARN: {{.CustomTagField | Coalesce "item.ARN"}},

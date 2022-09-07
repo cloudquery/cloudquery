@@ -19,7 +19,7 @@ func {{.TableFuncName}}() *schema.Table {
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().{{.AWSService | ToCamel}}
+	svc := cl.Services().{{.AWSServiceClient | Coalesce .AWSService}}
 
 {{template "resolve_parent_defs.go.tpl" .}}
 	input := {{.AWSService | ToLower}}.{{.GetMethod}}Input{

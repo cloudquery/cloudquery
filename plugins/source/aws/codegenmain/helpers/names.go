@@ -143,3 +143,27 @@ func InferFromType(ist reflect.Type, suffix string) *InferResult {
 
 	return &res
 }
+
+func GetFirstByOrder(fields map[string]reflect.Type, candidates []string) string {
+	matchFunc := func(a, b string) bool { return strings.ToLower(a) == strings.ToLower(b) }
+
+	var findings []string
+	for t := range fields {
+		for _, c := range candidates {
+			if matchFunc(t, c) {
+				findings = append(findings, t)
+				break
+			}
+		}
+	}
+
+	for _, c := range candidates {
+		for _, f := range findings {
+			if matchFunc(f, c) {
+				return f // return first field based on candidate order
+			}
+		}
+	}
+
+	return ""
+}

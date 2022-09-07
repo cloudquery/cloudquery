@@ -27,7 +27,7 @@ func buildCloudfrontDistributions(t *testing.T, ctrl *gomock.Controller) client.
 		gomock.Any(),
 	).Return(
 		&cloudfront.ListDistributionsOutput{
-			// &types.DistributionList
+
 			DistributionList: &types.DistributionList{
 				Items: []types.DistributionSummary{item},
 			},

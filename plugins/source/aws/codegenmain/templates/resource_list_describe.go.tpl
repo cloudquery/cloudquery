@@ -18,7 +18,7 @@ func {{.TableFuncName}}() *schema.Table {
 
 func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services().{{.AWSService}}
+	svc := cl.Services().{{.AWSServiceClient | Coalesce .AWSService}}
 
 {{template "resolve_parent_defs.go.tpl" .}}
 	input := {{.AWSService | ToLower}}.{{.ListMethod}}Input{
@@ -61,7 +61,7 @@ func {{.Table.Resolver}}(ctx context.Context, meta schema.ClientMeta, parent *sc
 func resolve{{.AWSService | ToCamel}}{{.AWSSubService | ToCamel}}Tags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(*{{.AWSStructName}})
 	cl := meta.(*client.Client)
-	svc := cl.Services().{{.AWSService}}
+	svc := cl.Services().{{.AWSServiceClient | Coalesce .AWSService}}
 	out, err := svc.ListTagsFor{{.ItemName}}(ctx, &{{.AWSService | ToLower}}.ListTagsFor{{.ItemName}}Input{
 {{range $v := .GetAndListOrder}}
 	{{$v}}: {{index $.MatchedGetAndListFields $v}},

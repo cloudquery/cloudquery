@@ -15,7 +15,7 @@ import (
 )
 
 func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMock{{.AWSService | ToCamel}}Client(ctrl)
+	mock := mocks.NewMock{{.AWSServiceClient | Coalesce .AWSService}}Client(ctrl)
 
 {{if eq .ResponseItemsName "."}}
 	item := &{{.AWSService | ToLower}}.{{.GetMethod}}Output{}
@@ -35,7 +35,7 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 {{end}}
 	return client.Services{
-		{{.AWSService | ToCamel}}: mock,
+		{{.AWSServiceClient | Coalesce .AWSService}}: mock,
 	}
 }
 

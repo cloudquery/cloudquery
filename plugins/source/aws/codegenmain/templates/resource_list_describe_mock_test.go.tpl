@@ -18,7 +18,7 @@ import (
 )
 
 func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
-	mock := mocks.NewMock{{.AWSService}}Client(ctrl)
+	mock := mocks.NewMock{{.AWSServiceClient | Coalesce .AWSService}}Client(ctrl)
 
 	var item {{.PaginatorListType}}
 	if err := faker.FakeData(&item); err != nil {
@@ -30,7 +30,7 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(
 		&{{.AWSService | ToLower}}.{{.ListMethod}}Output{
-{{if .PaginatorListWrapper}} // {{.PaginatorListWrapperType}}
+{{if .PaginatorListWrapper}}
 	{{.PaginatorListWrapper}}: {{.PaginatorListWrapperType}}{
 		{{.PaginatorListName}}: []{{.PaginatorListType}}{item},
 	},
@@ -45,9 +45,11 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeData(&detail); err != nil {
 		t.Fatal(err)
 	}
-{{range $v := .GetAndListOrder}}
+{{if not (eq .AWSServiceClient "CognitoUserPools")}}{{range $v := .GetAndListOrder}}
 	detail.{{$v}} = {{index $.MatchedGetAndListFields $v}}
-{{end}}
+{{end}}{{else -}}
+	// Skipped MatchedGetAndListFields due to .AWSServiceClient being "{{.AWSServiceClient}}"
+{{- end}}
 
 	mock.EXPECT().{{.GetMethod}}(
 		gomock.Any(),
@@ -87,7 +89,7 @@ func {{.MockFuncName}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 {{end}}
 	return client.Services{
-	  {{.AWSService}}: mock,
+		{{.AWSServiceClient | Coalesce .AWSService}}: mock,
   }
 }
 

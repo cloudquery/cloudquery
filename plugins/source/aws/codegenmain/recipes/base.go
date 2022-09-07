@@ -16,7 +16,8 @@ type Resource struct {
 	AWSStruct interface{}
 
 	// AWSService is the name of the aws service the struct/api is residing. Capitalization is important as it's also used in the client's service map.
-	AWSService string
+	AWSService       string
+	AWSServiceClient string // Name of the client service to use. If empty, AWSService is used.
 
 	// Template is the template to use to generate the resource
 	Template string
@@ -54,6 +55,7 @@ type Resource struct {
 
 	ColumnOverrides map[string]codegen.ColumnDefinition
 
+	SkipMainImport  bool   // skip main service name import
 	SkipTypesImport bool   // always skip "types" import, regardless of autodetection
 	TrimPrefix      string // trim this prefix from all column names
 
@@ -138,6 +140,9 @@ func parentize(parent *Resource, subs ...*Resource) []*Resource {
 		subs[i].NestingLevel++
 		if subs[i].AWSService == "" {
 			subs[i].AWSService = subs[i].Parent.AWSService
+		}
+		if subs[i].AWSServiceClient == "" {
+			subs[i].AWSServiceClient = subs[i].Parent.AWSServiceClient
 		}
 		ret[i+1] = subs[i]
 	}

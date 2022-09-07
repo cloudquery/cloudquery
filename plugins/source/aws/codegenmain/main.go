@@ -195,6 +195,8 @@ func inferFromRecipe(r *recipes.Resource) {
 					log.Println("PaginatorGetStruct field of type", fields[""].Kind().String(), "not matched in PaginatorStruct in", pagSingleItem.Name())
 				}
 			} else {
+				whatToMatch := helpers.GetFirstByOrder(fields, []string{"Id", "Name"})
+
 				for _, f := range pget.FieldOrder {
 					found := false
 					nameMatchFn := func(a, b string) bool { return strings.ToLower(a) == strings.ToLower(b) }
@@ -215,10 +217,10 @@ func inferFromRecipe(r *recipes.Resource) {
 							if attempts == 0 {
 								// Either suffix or single field
 								nameMatchFn = func(a, b string) bool {
-									return (len(pget.FieldOrder) == 1 && a == "Name") || strings.HasSuffix(a, b)
+									return (len(pget.FieldOrder) == 1 && whatToMatch != "" && a == whatToMatch) || strings.HasSuffix(a, b)
 								}
 
-								log.Println("PaginatorGetStruct field", f, "not matched in PaginatorStruct in", pagSingleItem.Name(), "doing heuristic match")
+								log.Println("PaginatorGetStruct field", f, "not matched in PaginatorStruct in", pagSingleItem.Name(), "doing heuristic match: ", pget.FieldOrder, "vs.", fields)
 							} else {
 								log.Println("PaginatorGetStruct field", f, "not matched in PaginatorStruct in", pagSingleItem.Name(), "even after heuristic match")
 							}
@@ -387,10 +389,14 @@ func initResource(r *recipes.Resource) {
 		mainImport = sp
 	}
 
-	if r.RawResolver == "" {
-		// auto import main pkg
-		r.Imports = append(r.Imports, strconv.Quote(mainImport))
-		r.MockImports = append(r.MockImports, strconv.Quote(mainImport))
+	if r.RawResolver == "" && !r.SkipMainImport {
+		if mainImport == "" {
+			log.Println("Could not determine main import for", r.AWSStructName, " sp is ", sp)
+		} else {
+			// auto import main pkg
+			r.Imports = append(r.Imports, strconv.Quote(mainImport))
+			r.MockImports = append(r.MockImports, strconv.Quote(mainImport))
+		}
 	}
 
 	if hasReferenceToResolvers {
@@ -427,6 +433,7 @@ func generateResource(dir string, r *recipes.Resource, mock bool) {
 		"ToLower":  strings.ToLower,
 		"ToSnake":  strcase.ToSnake,
 		"Coalesce": func(a1, a2 string) string { return helpers.Coalesce(a2, a1) }, // go templates argument order is backwards
+		//"TrimPrefix": func(a, b string) string { return strings.TrimPrefix(b, a) },
 	}).ParseFS(awsTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse aws templates: %w", err))
