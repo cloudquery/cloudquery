@@ -44,6 +44,9 @@ func BackupBackupPlans() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("BackupPlanArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "id",

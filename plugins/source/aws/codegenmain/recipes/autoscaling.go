@@ -14,7 +14,7 @@ func init() {
 		Template:       "resource_get",
 		ItemsStruct:    &autoscaling.DescribeLaunchConfigurationsOutput{},
 		TrimPrefix:     "launch_configuration_",
-		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		PrimaryKeys:    []string{"arn"},
 	},
 		&Resource{
 			DefaultColumns: []codegen.ColumnDefinition{AccountIdColumn, RegionColumn},
@@ -22,7 +22,7 @@ func init() {
 			AWSService:     "Autoscaling",
 			Template:       "resource_get",
 			ItemsStruct:    &autoscaling.DescribeScheduledActionsOutput{},
-			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+			PrimaryKeys:    []string{"arn"},
 		},
 		parentize(
 			&Resource{
@@ -32,7 +32,7 @@ func init() {
 				CQSubserviceOverride: "groups",
 				Template:             "resource_get",
 				ItemsStruct:          &autoscaling.DescribeAutoScalingGroupsOutput{},
-				//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+				PrimaryKeys:          []string{"arn"},
 				// TODO missing the `autoscalingGroupWrapper` for NotificationConfigurations
 			},
 			&Resource{

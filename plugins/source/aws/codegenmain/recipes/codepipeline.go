@@ -15,6 +15,7 @@ func init() {
 		PaginatorStruct:    &codepipeline.ListPipelinesOutput{},
 		PaginatorGetStruct: &codepipeline.GetPipelineInput{},
 		ItemsStruct:        &codepipeline.GetPipelineOutput{},
+		PrimaryKeys:        []string{"arn"},
 		SkipFields:         []string{"ResultMetadata"},
 		// TODO get tags
 	},
@@ -24,6 +25,7 @@ func init() {
 			AWSService:     "CodePipeline",
 			Template:       "resource_get",
 			ItemsStruct:    &codepipeline.ListWebhooksOutput{},
+			PrimaryKeys:    []string{"arn"},
 		},
 	)
 }

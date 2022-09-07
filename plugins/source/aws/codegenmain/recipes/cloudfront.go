@@ -15,6 +15,7 @@ func init() {
 		RawMultiplexerOverride: "client.AccountMultiplex",
 		Template:               "resource_get",
 		ItemsStruct:            &cloudfront.ListCachePoliciesOutput{},
+		PrimaryKeys:            []string{"account_id", "id"},
 		PageTokenInputField:    "Marker",
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"arn": {
@@ -31,6 +32,7 @@ func init() {
 			PaginatorStruct:     &cloudfront.ListDistributionsOutput{},
 			PaginatorGetStruct:  &cloudfront.GetDistributionInput{},
 			ItemsStruct:         &cloudfront.GetDistributionOutput{},
+			PrimaryKeys:         []string{"arn"},
 			PageTokenInputField: "Marker",
 		},
 	)

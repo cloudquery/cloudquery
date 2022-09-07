@@ -13,8 +13,8 @@ func init() {
 		AWSService:     "AppSync",
 		Template:       "resource_get",
 		ItemsStruct:    &appsync.ListGraphqlApisOutput{},
+		PrimaryKeys:    []string{"arn"},
 		TrimPrefix:     "api_",
-		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},
 	)
 }

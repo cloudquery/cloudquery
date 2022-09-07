@@ -16,6 +16,7 @@ func init() {
 		PaginatorStruct:    &acm.ListCertificatesOutput{},
 		PaginatorGetStruct: &acm.DescribeCertificateInput{},
 		ItemsStruct:        &acm.DescribeCertificateOutput{},
+		PrimaryKeys:        []string{"arn"},
 		Template:           "resource_list_describe",
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"certificate_arn": {

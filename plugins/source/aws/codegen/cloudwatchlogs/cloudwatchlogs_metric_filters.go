@@ -23,32 +23,39 @@ func CloudwatchLogsMetricFilters() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 				Description: `The AWS Account ID of the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:        "region",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 				Description: `The AWS Region of the resource.`,
-			},
-			{
-				Name:     "creation_time",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("CreationTime"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "filter_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("FilterName"),
-			},
-			{
-				Name:     "filter_pattern",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FilterPattern"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "log_group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("LogGroupName"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "filter_pattern",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FilterPattern"),
 			},
 			{
 				Name:     "metric_transformations",

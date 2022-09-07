@@ -22,12 +22,18 @@ func BackupRegionSettings() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 				Description: `The AWS Account ID of the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:        "region",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 				Description: `The AWS Region of the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "resource_type_management_preference",

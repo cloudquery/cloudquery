@@ -56,6 +56,9 @@ func AthenaDataCatalogs() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolvers.ResolveDataCatalogArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:        "tags",

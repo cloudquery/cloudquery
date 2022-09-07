@@ -13,6 +13,7 @@ func init() {
 		AWSSubService:  "Projects",
 		Template:       "resource_manual",
 		RawResolver:    "resolvers.FetchProjects",
+		PrimaryKeys:    []string{"arn"},
 		//Template:       "resource_list_describe",
 		//PaginatorStruct:    &codebuild.ListProjectsOutput{},
 		//PaginatorGetStruct: &codebuild.BatchGetProjectsInput{},

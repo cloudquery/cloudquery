@@ -14,7 +14,7 @@ func init() {
 		CQSubserviceOverride: "accessanalyzers",
 		Template:             "resource_get",
 		ItemsStruct:          &accessanalyzer.ListAnalyzersOutput{},
-		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		PrimaryKeys:          []string{"arn"},
 	},
 		&Resource{
 			AWSStruct:   &types.FindingSummary{},

@@ -99,6 +99,9 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("LaunchConfigurationARN"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "metadata_options",

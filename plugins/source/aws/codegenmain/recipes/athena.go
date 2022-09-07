@@ -17,7 +17,7 @@ func init() {
 			PaginatorStruct:    &athena.ListDataCatalogsOutput{},
 			PaginatorGetStruct: &athena.GetDataCatalogInput{},
 			ItemsStruct:        &athena.GetDataCatalogOutput{},
-			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+			PrimaryKeys:        []string{"arn"},
 			CustomErrorBlock: `
 		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
 		// relations can be fetched by its name
@@ -65,8 +65,8 @@ func init() {
 			PaginatorGetStruct: &athena.GetWorkGroupInput{},
 			ItemsStruct:        &athena.GetWorkGroupOutput{},
 			ItemName:           "WorkGroup",
-			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-			CustomTagField: `aws.String(resolvers.CreateWorkGroupArn(cl, *item.Name))`,
+			PrimaryKeys:        []string{"arn"},
+			CustomTagField:     `aws.String(resolvers.CreateWorkGroupArn(cl, *item.Name))`,
 			ColumnOverrides: map[string]codegen.ColumnDefinition{
 				"arn": {
 					Type:     schema.TypeString,

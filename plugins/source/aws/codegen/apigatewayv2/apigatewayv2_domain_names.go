@@ -25,17 +25,26 @@ func Apigatewayv2DomainNames() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 				Description: `The AWS Account ID of the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:        "region",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
 				Description: `The AWS Region of the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "domain_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DomainName"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "api_mapping_selection_expression",

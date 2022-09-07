@@ -14,6 +14,7 @@ func init() {
 		MultiplexerServiceOverride: "logs",
 		Template:                   "resource_get",
 		ItemsStruct:                &cloudwatchlogs.DescribeLogGroupsOutput{},
+		PrimaryKeys:                []string{"arn"},
 		ColumnOverrides:            map[string]codegen.ColumnDefinition{},
 		// TODO query and add tags
 	},
@@ -24,6 +25,7 @@ func init() {
 			MultiplexerServiceOverride: "logs",
 			Template:                   "resource_get",
 			ItemsStruct:                &cloudwatchlogs.DescribeMetricFiltersOutput{},
+			PrimaryKeys:                []string{"account_id", "region", "filter_name", "log_group_name"},
 			ColumnOverrides:            map[string]codegen.ColumnDefinition{},
 		},
 	)

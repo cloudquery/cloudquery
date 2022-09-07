@@ -14,6 +14,7 @@ func init() {
 		MultiplexerServiceOverride: "logs",
 		Template:                   "resource_get",
 		ItemsStruct:                &cloudwatch.DescribeAlarmsOutput{},
+		PrimaryKeys:                []string{"arn"},
 		ColumnOverrides:            map[string]codegen.ColumnDefinition{},
 		// TODO query and add tags
 	})

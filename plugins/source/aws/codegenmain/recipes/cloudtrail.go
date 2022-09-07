@@ -14,6 +14,7 @@ func init() {
 		RawMultiplexerOverride: "client.AccountMultiplex",
 		Template:               "resource_get",
 		ItemsStruct:            &cloudtrail.DescribeTrailsOutput{},
+		PrimaryKeys:            []string{"account_id", "arn"},
 		ColumnOverrides:        map[string]codegen.ColumnDefinition{},
 		// TODO query and add tags (one call per region)
 	},

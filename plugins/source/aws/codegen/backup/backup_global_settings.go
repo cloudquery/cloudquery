@@ -22,6 +22,9 @@ func BackupGlobalSettings() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 				Description: `The AWS Account ID of the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "global_settings",

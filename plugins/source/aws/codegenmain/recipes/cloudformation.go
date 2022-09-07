@@ -13,6 +13,7 @@ func init() {
 		AWSService:     "Cloudformation",
 		Template:       "resource_get",
 		ItemsStruct:    &cloudformation.DescribeStacksOutput{},
+		PrimaryKeys:    []string{"arn"},
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"stack_id": {
 				Name: "arn",

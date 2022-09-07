@@ -61,6 +61,9 @@ func AthenaWorkGroups() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: resolvers.ResolveWorkGroupArn,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:        "tags",

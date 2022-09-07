@@ -12,8 +12,6 @@ const ResolverAuto = "auto"
 type Resource struct {
 	// DefaultColumns columns that will be appended to the main table
 	DefaultColumns []codegen.ColumnDefinition
-	// Table is the table definition that will be used to generate the cloudquery table
-	Table *codegen.TableDefinition
 	// AWSStruct that will be used to generate the cloudquery table
 	AWSStruct interface{}
 
@@ -25,9 +23,10 @@ type Resource struct {
 
 	RawResolver string // Manual resolver func name. If starts with "resolver.", package inside resolvers/ is used.
 
-	RawMultiplexerOverride     string // Full override for the multiplexer
-	MultiplexerServiceOverride string // Override only for the service name (ServiceAccountRegionMultiplexer is used)
-	CQSubserviceOverride       string // used in table and file names
+	RawMultiplexerOverride     string   // Full override for the multiplexer
+	MultiplexerServiceOverride string   // Override only for the service name (ServiceAccountRegionMultiplexer is used)
+	CQSubserviceOverride       string   // used in table and file names
+	PrimaryKeys                []string // Primary keys
 
 	PaginatorStruct    interface{} // Used only in resource_list_and_detail and list_describe templates.
 	PaginatorGetStruct interface{} // Used only in resource_list_and_detail and list_describe templates.
@@ -67,6 +66,9 @@ type Resource struct {
 }
 
 type AutoCalculated struct {
+	// Table is the table definition that will be used to generate the cloudquery table
+	Table *codegen.TableDefinition
+
 	AWSStructName     string // Automatically resolved using reflection from AWSStruct
 	PaginatorListName string // Auto calculated from PaginatorStruct.
 	PaginatorListType string // Auto calculated from PaginatorStruct.

@@ -22,6 +22,9 @@ func CloudtrailTrails() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
 				Description: `The AWS Account ID of the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "cloud_watch_logs_log_group_arn",

@@ -18,7 +18,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/helpers"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/codegenmain/recipes"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
-	pluginschema "github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 	"github.com/jinzhu/inflection"
 	"golang.org/x/exp/slices"
@@ -300,13 +300,41 @@ func initResource(r *recipes.Resource) {
 		// remaining, unmatched columns are added to the end of the table. Difference from DefaultColumns? none for now
 		for _, k := range coSlice {
 			c := r.ColumnOverrides[k]
-			if c.Type == pluginschema.TypeInvalid {
+			if c.Type == schema.TypeInvalid {
 				fmt.Println("Not adding unmatched column with unspecified type", k, c)
 				continue
 			}
 			c.Name = helpers.Coalesce(c.Name, k)
 			r.Table.Columns = append(r.Table.Columns, c)
 		}
+	}
+
+	if len(r.PrimaryKeys) > 0 {
+		// Move PKs in the specified order just after the first PK.
+		// This way we preserve DefaultColumns (account_id etc.) at the start of the table, even with arn as PK.
+		newCols := make(sdkgen.ColumnDefinitions, 0, len(r.Table.Columns))
+		firstPKIndex := -1
+		for _, k := range r.PrimaryKeys {
+			for i, c := range r.Table.Columns {
+				if c.Name == k {
+					if firstPKIndex == -1 {
+						firstPKIndex = i
+					}
+					r.Table.Columns[i].Options = schema.ColumnCreationOptions{PrimaryKey: true}
+					newCols = append(newCols, r.Table.Columns[i])
+				}
+			}
+		}
+		if firstPKIndex > -1 {
+			newCols = append(r.Table.Columns[:firstPKIndex], newCols...) // all data before the first PK can be safely copied
+		}
+		for i, c := range r.Table.Columns {
+			if c.Options.PrimaryKey || i < firstPKIndex {
+				continue
+			}
+			newCols = append(newCols, r.Table.Columns[i]) // add remaining columns
+		}
+		r.Table.Columns = newCols
 	}
 
 	hasReferenceToResolvers := false
@@ -386,7 +414,7 @@ func handleParentReference(r *recipes.Resource) {
 	r.Table.Columns = append([]sdkgen.ColumnDefinition{
 		{
 			Name:     strings.ToLower(pItemName + "_cq_id"),
-			Type:     pluginschema.TypeUUID,
+			Type:     schema.TypeUUID,
 			Resolver: "schema.ParentIdResolver",
 		},
 	}, r.Table.Columns...)

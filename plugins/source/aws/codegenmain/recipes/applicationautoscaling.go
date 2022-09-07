@@ -15,6 +15,7 @@ func init() {
 		CQSubserviceOverride:   "policies",
 		Template:               "resource_get",
 		ItemsStruct:            &applicationautoscaling.DescribeScalingPoliciesOutput{},
+		PrimaryKeys:            []string{"arn"},
 		TrimPrefix:             "policy_",
 		CustomInputs: []string{
 			"\tServiceNamespace: types.ServiceNamespace(cl.AutoscalingNamespace),",
@@ -22,7 +23,6 @@ func init() {
 		Imports: []string{
 			`github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types`,
 		},
-		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 	},
 	)
 }

@@ -14,7 +14,7 @@ func init() {
 		AWSService:     "Backup",
 		Template:       "resource_get",
 		ItemsStruct:    &backup.DescribeGlobalSettingsOutput{},
-		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		PrimaryKeys:    []string{"account_id"},
 		CustomErrorBlock: `
 		if client.IgnoreAccessDeniedServiceDisabled(err) || client.IsAWSError(err, "ERROR_9601") /* "Your account is not a member of an organization" */ {
 			meta.Logger().Debug().Err(err).Msg("received access denied on DescribeGlobalSettings")
@@ -33,8 +33,8 @@ func init() {
 			AWSService:     "Backup",
 			Template:       "resource_get",
 			ItemsStruct:    &backup.DescribeRegionSettingsOutput{},
-			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-			SkipFields: []string{"ResultMetadata"},
+			PrimaryKeys:    []string{"account_id", "region"},
+			SkipFields:     []string{"ResultMetadata"},
 		},
 		parentize(
 			&Resource{
@@ -44,10 +44,10 @@ func init() {
 				Template:             "resource_get",
 				CQSubserviceOverride: "vaults",
 				ItemsStruct:          &backup.ListBackupVaultsOutput{},
+				PrimaryKeys:          []string{"arn"},
 				CustomInputs: []string{
 					"\tMaxResults: aws.Int32(1000),", // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupVaults.html
 				},
-				//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 				ColumnOverrides: map[string]codegen.ColumnDefinition{
 					"tags": {
 						Type: schema.TypeJSON,
@@ -64,7 +64,6 @@ func init() {
 					"\tMaxResults: aws.Int32(100),",
 				},
 				ParentFieldName: "BackupVaultName",
-				//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 				ColumnOverrides: map[string]codegen.ColumnDefinition{
 					"tags": {
 						Type: schema.TypeJSON,
@@ -83,10 +82,10 @@ func init() {
 				PaginatorStruct:      &backup.ListBackupPlansOutput{},
 				PaginatorGetStruct:   &backup.GetBackupPlanInput{},
 				ItemsStruct:          &backup.GetBackupPlanOutput{},
+				PrimaryKeys:          []string{"arn"},
 				CustomInputs: []string{
 					"\tMaxResults: aws.Int32(1000),", // maximum value from https://docs.aws.amazon.com/aws-backup/latest/devguide/API_ListBackupPlans.html
 				},
-				//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 				ColumnOverrides: map[string]codegen.ColumnDefinition{
 					//"tags": { // TODO enable
 					//	Type: schema.TypeJSON,
@@ -108,8 +107,7 @@ func init() {
 				},
 				ParentFieldName:          "BackupPlanId",
 				SkipDescribeParentInputs: true,
-				//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
-				ColumnOverrides: map[string]codegen.ColumnDefinition{
+				ColumnOverrides:          map[string]codegen.ColumnDefinition{
 					//"tags": { // TODO enable
 					//	Type: schema.TypeJSON,
 					//					Resolver: ResolverAuto, // TODO enable

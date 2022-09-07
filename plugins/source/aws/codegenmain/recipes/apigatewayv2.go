@@ -14,7 +14,7 @@ func init() {
 		AWSService:     "Apigatewayv2",
 		Template:       "resource_get",
 		ItemsStruct:    &apigatewayv2.GetApisOutput{},
-		//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		PrimaryKeys:    []string{"account_id", "id"},
 		ColumnOverrides: map[string]codegen.ColumnDefinition{
 			"tags": {
 				Type:        schema.TypeJSON,
@@ -96,7 +96,7 @@ func init() {
 			Imports: []string{
 				`apigatewayv2fix "github.com/cloudquery/cloudquery/plugins/source/aws/resources/forks/apigatewayv2"`,
 			},
-			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+			PrimaryKeys: []string{"account_id", "region", "domain_name"},
 			ColumnOverrides: map[string]codegen.ColumnDefinition{
 				"arn": {
 					Type:     schema.TypeString,
@@ -123,7 +123,7 @@ func init() {
 			AWSService:     "Apigatewayv2",
 			Template:       "resource_get",
 			ItemsStruct:    &apigatewayv2.GetVpcLinksOutput{},
-			//CreateTableOptions: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+			PrimaryKeys:    []string{"account_id", "id"},
 			ColumnOverrides: map[string]codegen.ColumnDefinition{
 				"arn": {
 					Type:     schema.TypeString,
