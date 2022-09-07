@@ -10,10 +10,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
-
-	sql "google.golang.org/api/sqladmin/v1beta4"
-
 	"google.golang.org/api/option"
+	sql "google.golang.org/api/sqladmin/v1beta4"
 )
 
 func createInstances() (*client.Services, error) {
