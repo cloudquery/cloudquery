@@ -2,7 +2,6 @@ package hooks
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -131,9 +130,5 @@ func resolveHookDeliveries(ctx context.Context, meta schema.ClientMeta, resource
 		}
 		opts.Cursor = resp.Cursor
 	}
-	data, err := json.Marshal(deliveries)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	return errors.WithStack(resource.Set(column.Name, data))
+	return errors.WithStack(resource.Set(column.Name, deliveries))
 }
