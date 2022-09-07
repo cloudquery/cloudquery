@@ -4,11 +4,10 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 )
 
-//go:generate cq-gen --resource action_billing --config billing.hcl --output .
 func ActionBillings() *schema.Table {
 	return &schema.Table{
 		Name:        "github_action_billing",
@@ -26,7 +25,7 @@ func ActionBillings() *schema.Table {
 			},
 			{
 				Name: "total_minutes_used",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 			{
 				Name: "total_paid_minutes_used",
@@ -34,21 +33,21 @@ func ActionBillings() *schema.Table {
 			},
 			{
 				Name: "included_minutes",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 			{
 				Name:     "minutes_used_breakdown_ubuntu",
-				Type:     schema.TypeBigInt,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("MinutesUsedBreakdown.Ubuntu"),
 			},
 			{
 				Name:     "minutes_used_breakdown_mac_os",
-				Type:     schema.TypeBigInt,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("MinutesUsedBreakdown.MacOS"),
 			},
 			{
 				Name:     "minutes_used_breakdown_windows",
-				Type:     schema.TypeBigInt,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("MinutesUsedBreakdown.Windows"),
 			},
 		},
@@ -63,7 +62,7 @@ func fetchActionBillings(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	billing, _, err := c.Github.Billing.GetActionsBillingOrg(ctx, c.Org)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	res <- billing
 	return nil

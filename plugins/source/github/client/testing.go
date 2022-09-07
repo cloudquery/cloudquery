@@ -6,8 +6,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/logging"
 	"github.com/cloudquery/cq-provider-sdk/provider"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/golang/mock/gomock"
 	"github.com/hashicorp/go-hclog"
 )
