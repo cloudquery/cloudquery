@@ -1,7 +1,7 @@
 # Generating resources
 
 Adding resources to a provider can sometimes be a tedious task, some resources can have more than hundreds of fields and relations, and adding them all can
-take a long time. To remedy this issue, the [cq-gen](https://github.com/cloudquery/cq-gen) project was created. cq-gen allows to easily generate more of the boilerplate code for resources from common specs such as go code, openapi specs, protobuf, and graphql.
+take a long time. To remedy this issue, the [cq-gen](https://github.com/cloudquery/cq-gen) project was created. cq-gen allows to easily generate more of the boilerplate code for resources from common specs such as go code, OpenAPI specs, protobuf, and graphql.
 
 ## Set up cq-gen in your provider project
 
@@ -130,7 +130,7 @@ As you can see above the function definition, cq-gen, added a `//go:generate` co
 
 ## Flags
 
-The cq-gen command is used to generate `schema.Table` from given source (go, protobuf, openapi, graphql, etc') It supports the following flags:
+The cq-gen command is used to generate `schema.Table` from given source (go, protobuf, OpenAPI, graphql, etc') It supports the following flags:
 
 - `-output`: which directory to write the resulting source code.
 - `-resource`: the name of the resource to generate as defined in the hcl.

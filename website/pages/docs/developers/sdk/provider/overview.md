@@ -10,7 +10,8 @@ If we look at the example provider definition [in the template](https://github.c
 func Provider() *provider.Provider {
 	return &provider.Provider{
 		// CHANGEME: Change to your provider name
-		Name:      "YourProviderName",
+		Name: "YourProviderName",
+		Version: Version,
 		Configure: client.Configure,
 		ResourceMap: map[string]*schema.Table{
 			// CHANGEME: Place here all supported resources

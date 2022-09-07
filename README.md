@@ -1,8 +1,6 @@
-<p align="center">
-<a href="https://cloudquery.io">
-<img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/cli/docs/images/logo.png" />
-</a>
-</p>
+<!-- markdownlint-disable MD033 -->
+<h1 align="center"><img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/cli/docs/images/logo.png"/></h1>
+<!-- markdownlint-enable MD033 -->
 
 The open source high performance data integration platform designed for security and infrastructure teams.
 

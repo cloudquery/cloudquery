@@ -10,8 +10,7 @@ cloudquery init k8s
 
 ### Authentication
 
-Similar to how `kubectl` works, `cloudquery` depends on a kubernetes configuration file to connect to a 
-kubernetes cluster and `fetch` its information. By default, `cloudquery` uses the default kubernetes configuration
+Similar to how `kubectl` works, `cloudquery` depends on a Kubernetes configuration file to connect to a Kubernetes cluster and `fetch` its information. By default, `cloudquery` uses the default Kubernetes configuration
 file (`~/.kube/config`). You can also specify a different configuration by setting the `KUBECONFIG` environment variable before running `cloudquery fetch`.
 
 ```bash
@@ -19,7 +18,7 @@ export KUBECONFIG=<PATH_TO_YOUR_CONFIG_FILE>
 ```
 
 ### Configuration
-By default cloudquery fetches data from default context of the kubernetes config. Context to fetch can be selected by setting contexts variable of provider's `configuration` block in `config.hcl`. 
+By default cloudquery fetches data from default context of the Kubernetes config. Context to fetch can be selected by setting contexts variable of provider's `configuration` block in `config.hcl`.
 Example of context selection:
 
 ```yaml title="cloudquery.yml"

@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.6.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta/v0.6.5...plugins/source/okta/v0.6.6) (2022-09-06)
+
+
+### Bug Fixes
+
+* Unify plugin package structure ([#1735](https://github.com/cloudquery/cloudquery/issues/1735)) ([897d8f4](https://github.com/cloudquery/cloudquery/commit/897d8f4d31d78fb078fb1e57108bd30e437ddee4))
+
+## [0.6.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta/v0.6.4...plugins/source/okta/v0.6.5) (2022-09-05)
+
+
+### Bug Fixes
+
+* Provide `Version` in all providers ([#1729](https://github.com/cloudquery/cloudquery/issues/1729)) ([f82318e](https://github.com/cloudquery/cloudquery/commit/f82318e22670c46ecdfa7861bc716046969a9e14))
+
+## [0.6.4](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta-v0.6.3...plugins/source/okta/v0.6.4) (2022-08-28)
+
+
+### Bug Fixes
+
+* Update Okta docs ([#1572](https://github.com/cloudquery/cloudquery/issues/1572)) ([ae85abe](https://github.com/cloudquery/cloudquery/commit/ae85abe90a064b4c2e381774093fe753e6661f35))
+
 ## [0.6.3](https://github.com/cloudquery/cq-provider-okta/compare/v0.6.2...v0.6.3) (2022-08-07)
 
 

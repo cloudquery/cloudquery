@@ -1,46 +1,59 @@
 package client
 
 import (
+	"context"
+	"fmt"
+	"os"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/rs/zerolog"
 )
 
 type TestOptions struct {
 	SkipEmptyJsonB bool
 }
 
-func GcpMockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
+func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
 	t.Helper()
 
 	table.IgnoreInTests = false
 
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:    "gcp_mock_test_provider",
-			Version: "development",
-			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
-				svc, err := createService()
-				if err != nil {
-					return nil, diag.FromError(err, diag.INTERNAL)
-				}
-				c := NewGcpClient(logging.New(&hclog.LoggerOptions{
-					Level: hclog.Warn,
-				}), BackoffSettings{}, []string{"testProject"}, svc)
-				return c, nil
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-			Config: func() provider.Config {
-				return &Config{}
-			},
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+		svc, err := createService()
+		if err != nil {
+			return nil, fmt.Errorf("failed to createService: %w", err)
+		}
+		var gcpSpec Spec
+		if err := spec.UnmarshalSpec(&gcpSpec); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
+		}
+		l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+			zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+		).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+		c := &Client{
+			// plugin: p,
+			logger: l,
+			// logger:   t.Log(),
+			Services: svc,
+			projects: []string{"testProject"},
+		}
+
+		return c, nil
+	}
+
+	p := plugins.NewSourcePlugin(
+		table.Name,
+		"dev",
+		[]*schema.Table{
+			table,
 		},
-		Config: "",
+		newTestExecutionClient)
+	plugins.TestSourcePluginSync(t, p, specs.Source{
+		Name:   "dev",
+		Tables: []string{table.Name},
 	})
 }

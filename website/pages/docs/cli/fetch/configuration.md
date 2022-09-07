@@ -12,7 +12,7 @@ Each provider is configured by a `provider "provider_name"` that can include gen
 
 Each provider CloudQuery supports can be found on [hub.cloudquery.io](https://hub.cloudquery.io).
 
-Each provider defines a set of relational tables that can also be found on the [hub](https://hub.cloudquery.io/providers/cloudquery/aws/latest).
+Each provider defines a set of relational tables that can also be found on the [hub](/plugins/aws).
 
 Inside the cloudquery main block you need to add
 

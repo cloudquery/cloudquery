@@ -26,7 +26,7 @@ cloudquery init aws
 # cloudquery init --help # Show all possible auto generated configs and flags
 ```
 
-All official and approved community providers are listed at [CloudQuery Hub](https://hub.cloudquery.io) with their respective documentation.
+All official and approved community plugins are listed [here](/plugins) with their respective documentation.
 
 <SpawnSection />
 
@@ -155,7 +155,7 @@ credentials manually. For more information on configuring IAM, see the AWS docs 
 
 #### Multi Account/Organization Access
 
-If you have multiple AWS accounts/organizations, you can follow the steps set in the [cq-provider-aws README](https://hub.cloudquery.io/providers/cloudquery/aws/latest#multi-account-configuration-aws-organizations).
+If you have multiple AWS accounts/organizations, you can follow the steps set in the [cq-provider-aws README](/plugins/aws#multi-account-configuration-aws-organizations).
 
 ### Fetch Command
 
@@ -170,7 +170,7 @@ cloudquery fetch
 
 <ExploreSection/>
 
-Schema and tables for AWS are available in [CloudQuery Hub](https://hub.cloudquery.io/providers/cloudquery/aws/latest/schema).
+Schema and tables for AWS are available [here](/plugins/aws/tables).
 
 A few example queries for AWS:
 
@@ -189,8 +189,8 @@ SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ### Cloudquery Policies
 
 CloudQuery Policies allow users to write security, governance, cost, and compliance rules with SQL, and run them with `psql`.
-You can read more about policies [here](https://www.cloudquery.io/docs/policies).
+You can read more about policies [here](/docs/policies).
 
 ## Next Steps
 
-At [Cloudquery Hub](https://hub.cloudquery.io/providers/cloudquery/aws/latest), you can read more about the CloudQuery AWS provider - including exploring the SQL schema, and advanced configurations.
+[Visit the AWS plugin documentation](/plugins/aws) to read more about it, explore the supported tables and learn about advanced configurations.

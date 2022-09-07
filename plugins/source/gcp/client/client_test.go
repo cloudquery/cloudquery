@@ -9,8 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudquery/faker/v3"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/julienschmidt/httprouter"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/api/cloudresourcemanager/v3"
@@ -79,7 +78,7 @@ func TestListFolders(t *testing.T) {
 	}
 
 	for i, tc := range cases {
-		ret, err := listFolders(context.Background(), hclog.NewNullLogger(), svc, tc.BaseFolder, tc.MaxDepth)
+		ret, err := listFolders(context.Background(), svc, tc.BaseFolder, tc.MaxDepth)
 		assert.NoError(t, err)
 		assert.Equalf(t, tc.Expected, ret, "Test #%d", i+1)
 	}
@@ -90,7 +89,7 @@ func mockCRMFolders() (*cloudresourcemanager.FoldersService, error) {
 		folders := make([]*cloudresourcemanager.Folder, num)
 		for i := 0; i < num; i++ {
 			var folder cloudresourcemanager.Folder
-			_ = faker.FakeData(&folder)
+			_ = faker.FakeObject(&folder)
 			folder.State = "ACTIVE"
 			folder.Name = baseName + "_" + strconv.Itoa(i) // we're omitting the 'folders/' prefix here to simplify the testdata
 			folders[i] = &folder

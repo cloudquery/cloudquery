@@ -61,7 +61,7 @@ This repository provides a pre-commit hook to check your code before committing 
 
  1. [Install pre-commit](https://pre-commit.com/) (on Mac OS: `brew install pre-commit`)
  2. [Install golangci-lint](https://golangci-lint.run/usage/install/#local-installation) (on Mac OS: `brew install golangci-lint`)
- 3. In the root of this repo, run:
+ 3. In the root of this repository, run:
     ```shell
     make install-hooks
     ```

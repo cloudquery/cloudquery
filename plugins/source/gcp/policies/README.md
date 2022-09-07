@@ -14,9 +14,9 @@ You can execute policies with `psql`. For example:
 psql ${DSN} -f  ./cis_v1.2.0/policy.sql
 ```
 
-This will create all the results in `gcp_policy_results` table which you can query directly, connect to any BI system (Grafana, Preset, AWS QuickSight, PowerBI, ...).
+This will create all the results in `gcp_policy_results` table which you can query directly, connect to any BI system (Grafana, Preset, AWS QuickSight, PowerBI, …).
 
-You can also output it into CSV or HTML with the following built-in psql commands:
+You can also output it into CSV or HTML with the following built-in `psql` commands:
 
 ```bash
 # Set DSN to your PostgreSQL populated by CloudQuery

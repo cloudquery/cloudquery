@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
+	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
@@ -118,6 +119,10 @@ func Subscriptions() *schema.Table {
 // ====================================================================================================================
 
 func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listSubscriptions, subscriptionDetail))
+}
+
+func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	config := sns.ListSubscriptionsInput{}
@@ -127,22 +132,7 @@ func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *
 			return diag.WrapError(err)
 		}
 		for _, item := range output.Subscriptions {
-			attrs, err := svc.GetSubscriptionAttributes(ctx, &sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn})
-			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
-				return diag.WrapError(err)
-			}
-			s := Subscription{Subscription: item}
-			dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})
-			if err != nil {
-				return diag.WrapError(err)
-			}
-			if err := dec.Decode(attrs.Attributes); err != nil {
-				return diag.WrapError(err)
-			}
-			res <- s
+			detailChan <- item
 		}
 
 		if aws.ToString(output.NextToken) == "" {
@@ -151,4 +141,35 @@ func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *
 		config.NextToken = output.NextToken
 	}
 	return nil
+}
+
+func subscriptionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, summary interface{}) {
+	c := meta.(*client.Client)
+	svc := c.Services().SNS
+	item := summary.(types.Subscription)
+	s := Subscription{Subscription: item}
+	// Return early if SubscriptionARN is not set because it is still pending
+	if aws.ToString(item.SubscriptionArn) == "PendingConfirmation" {
+		resultsChan <- s
+		return
+	}
+
+	attrs, err := svc.GetSubscriptionAttributes(ctx, &sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return
+		}
+		errorChan <- diag.WrapError(err)
+		return
+	}
+	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})
+	if err != nil {
+		errorChan <- diag.WrapError(err)
+		return
+	}
+	if err := dec.Decode(attrs.Attributes); err != nil {
+		errorChan <- diag.WrapError(err)
+		return
+	}
+	resultsChan <- s
 }

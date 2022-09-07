@@ -1,52 +1,67 @@
 name: Check for broken links
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron:  "0 12 * * *"
   pull_request:
+    branches:
+      - main
     paths:
+      - .github/workflows/broken_links.yml
+      - plugins/**/docs/**
       - "website/**"
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
 
 jobs:
   check-broken-links:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v3
+      - id: check-labels
+        if: github.event_name == 'pull_request'
+        uses: mheap/github-action-required-labels@a0c3d802afdc992e48f03bc90c0a1ee51a8f6b28
         with:
-          fetch-depth: 2
-          ref: ${{ github.event.pull_request.head.sha }}
+          mode: exactly
+          count: 1
+          labels: "check_broken_links"
+          exit_type: success
+
+      - uses: actions/checkout@v3
+        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
 
       - name: Setup node
         uses: actions/setup-node@v3
+        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
         with:
           node-version: "lts/*"
 
-      - name: Should run
-        id: should-run
-        shell: bash
-        run: |
-          ! yarn should-build
-        working-directory: website
-        continue-on-error: true
-
       - name: Waiting for Vercel Preview
-        if: steps.should-run.outcome == 'success'
+        if: steps.check-labels.outputs.status == 'success' && github.event_name == 'pull_request'
         uses: patrickedqvist/wait-for-vercel-preview@v1.2.0
-        id: vercel-deployment
+        id: preview-deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment: "Preview – cloudquery-web"
+          environment: "Preview - cloudquery-web"
           max_timeout: 360
           check_interval: 10
 
+      - name: Set Vercel URL output
+        id: vercel
+        run: |
+          DEPLOY_URL=${{ steps.preview-deployment.outputs.url }}
+          echo "::set-output name=url::${DEPLOY_URL:-"https://www.cloudquery.io/"}"
+
       - name: Check for broken links
-        if: steps.should-run.outcome == 'success'
+        if: steps.check-labels.outputs.status == 'success' || github.event_name != 'pull_request'
         run: |
           set -o pipefail
 
-          npx broken-link-checker -f -r -v -o --filter-level 3 \
+          npx broken-link-checker --requests 10 --host-requests 1 -f -r -v -o --filter-level 3 \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude cloudquery.io/assets/aws_security_group_view.sql \
@@ -59,7 +74,5 @@ jobs:
             --exclude podcasts.apple.com \
             --exclude docs.cloudquery.io/cdn-cgi/l/email-protection \
             --exclude pcisecuritystandards.org \
-            --exclude github.com/cloudquery/cloudquery/issues/new \
-            --exclude "plugins/source/*" \
-            ${{ steps.vercel-deployment.outputs.url }} \
+            ${{ steps.vercel.outputs.url }} \
             | grep -v '───OK───' | grep -v '──SKIP──'

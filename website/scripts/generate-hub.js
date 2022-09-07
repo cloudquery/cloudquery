@@ -6,23 +6,18 @@ const PLUGINS_DATA = {
   azure: { name: "Azure" },
   cloudflare: { name: "CloudFlare" },
   digitalocean: { name: "DigitalOcean" },
-  fuzz: { name: "Fuzz", ignore: true },
   gcp: { name: "GCP" },
   github: { name: "GitHub" },
+  // heroku: { name: "Heroku" },
   k8s: { name: "Kubernetes" },
   okta: { name: "Okta" },
   terraform: { name: "Terraform" },
-  yandexcloud: { name: "Yandex Cloud" },
-};
-
-const EXTERNAL_PLUGINS = [
-  {
-    external: true,
-    id: "yandexcloud",
+  yandexcloud: {
     name: "Yandex Cloud",
+    external: true,
     url: "https://github.com/yandex-cloud/cq-provider-yandex",
   },
-];
+};
 
 const PLUGINS_SOURCE = `${__dirname}/../../plugins/source`;
 const PLUGINS_PATH = `${__dirname}/../pages/plugins`;
@@ -69,22 +64,12 @@ For more detailes see [${NAME_PLACEHOLDER} Plugin repository](${EXTERNAL_PLUGINS
 `;
 
 const getPlugins = async () => {
-  const pluginsDirent = await fs.readdir(PLUGINS_SOURCE, {
-    withFileTypes: true,
-  });
-  const plugins = pluginsDirent
-    .filter(
-      (dirent) => dirent.isDirectory() && !PLUGINS_DATA[dirent.name].ignore
-    )
-    .map((dirent) => ({
-      id: dirent.name,
-      name: PLUGINS_DATA[dirent.name].name,
+  return Object.entries(PLUGINS_DATA)
+    .map(([id, plugin]) => ({
+      id,
+      ...plugin,
     }))
-    .concat(...EXTERNAL_PLUGINS);
-
-  return plugins.sort((plugin1, plugin2) =>
-    plugin1.id.localeCompare(plugin2.id)
-  );
+    .sort((a, b) => a.name.localeCompare(b.name));
 };
 
 const getPluginOverview = async (plugin) => {
@@ -96,7 +81,7 @@ const getPluginOverview = async (plugin) => {
   }
 
   const overview = await fs.readFile(
-    `${PLUGINS_SOURCE}/${plugin.id}/docs/index.md`,
+    path.resolve(`${PLUGINS_SOURCE}/${plugin.id}/docs/index.md`),
     { encoding: "utf8" }
   );
   return overview;
@@ -107,7 +92,7 @@ const generatePluginsPagesMeta = async (plugins) => {
     plugins.map((plugin) => [plugin.id, plugin.name])
   );
   await fs.writeFile(
-    `${PLUGINS_PATH}/meta.json`,
+    `${PLUGINS_PATH}/_meta.json`,
     JSON.stringify({ index: "Overview", ...pluginsMeta }, null, 2)
   );
 };

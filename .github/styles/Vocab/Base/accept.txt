@@ -11,7 +11,7 @@ HCL
 graphql
 config
 Config
-openapi
+OpenAPI
 Docusaurus
 protobuf
 Pulumi
@@ -105,3 +105,5 @@ Ajv
 Yevgeny
 Airbyte
 Callout
+Fargate
+gists

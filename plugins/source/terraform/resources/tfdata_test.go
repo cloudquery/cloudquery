@@ -1,8 +1,9 @@
-package resources
+package resources_test
 
 import (
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/terraform/resources/provider"
 	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
 )
 
@@ -15,7 +16,7 @@ func TestTfData(t *testing.T) {
 `
 
 	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: Provider(),
+		Provider: provider.Provider(),
 		Config:   cfg,
 	})
 }

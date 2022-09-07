@@ -18,7 +18,7 @@ CSPMs are probably the biggest offenders of yet another dashboard and here in Cl
 
 - **ETL (Extract-Transform-Load) ingestion layer:** [CloudQuery](https://github.com/cloudquery/cloudquery)
 - **Datastore:** PostgreSQL
-- **Policies:** Standard SQL Policies to be executed via `psql` [https://hub.cloudquery.io/policies](https://hub.cloudquery.io/policies)
+- **Policies:** Standard SQL Policies to be executed via `psql` [/docs/policies](/docs/policies)
 - **Data Visualization and Exploration Platform:** Grafana
 
 ## What you will get
@@ -43,7 +43,7 @@ Grafana is a well-known open source observability and visualization tool. It is 
 
 ### Step 3: Run Policies (CSPM - Cloud Security Posture Management)
 
-CloudQuery policies and rules are implemented in pure SQL and they store results in a single table that you can easily query and visualize. Here is a [link](https://hub.cloudquery.io/policies) to all available policies and compliance frameworks. In this section we will go quickly through how to run multiple benchmarks for AWS.
+CloudQuery policies and rules are implemented in pure SQL and they store results in a single table that you can easily query and visualize. Here is a [link](/docs/policies) to all available policies and compliance frameworks. In this section we will go quickly through how to run multiple benchmarks for AWS.
 
 ```bash
 https://github.com/cloudquery/cq-provider-aws

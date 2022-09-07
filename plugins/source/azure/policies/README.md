@@ -1,4 +1,5 @@
 # CloudQuery Policies
+
 CloudQuery SQL Policies for Azure
 
 ## Policies and Compliance Frameworks Available
@@ -15,11 +16,11 @@ You can execute policies with `psql`. For example:
 psql -U postgres -f  ./cis_v1.3.0/policy.sql
 ```
 
-This will create all the results in `azure_policy_results` table which you can query directly, connect to any BI system (Grafana, Preset, AWS QuickSight, PowerBI, ...).
+This will create all the results in `azure_policy_results` table which you can query directly, connect to any BI system (Grafana, Preset, AWS QuickSight, PowerBI, …).
 
-You can also output it into CSV or HTML with the following built-in psql commands:
+You can also output it into CSV or HTML with the following built-in `psql` commands:
 
-```
+```bash
 # default tabular output
 psql -U postgres -c "select * from azure_policy_results"
 # CSV output

@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+	"encoding/json"
 	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -12,7 +13,8 @@ import (
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 )
 
-func IamRoles() *schema.Table {
+//go:generate cq-gen --resource roles --config gen.hcl --output .
+func Roles() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_iam_roles",
 		Description:  "An IAM role is an IAM identity that you can create in your account that has specific permissions.",
@@ -36,7 +38,7 @@ func IamRoles() *schema.Table {
 			},
 			{
 				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) specifying the role. For more information about ARNs and how to use them in policies, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide guide.",
+				Description: "The Amazon Resource Name (ARN) specifying the role",
 				Type:        schema.TypeString,
 			},
 			{
@@ -46,73 +48,97 @@ func IamRoles() *schema.Table {
 			},
 			{
 				Name:        "path",
-				Description: "The path to the role. For more information about paths, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
+				Description: "The path to the role",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "id",
-				Description: "The stable and unique string identifying the role. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
+				Description: "The stable and unique string identifying the role",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("RoleId"),
 			},
 			{
-				Name:        "name",
+				Name:        "role_name",
 				Description: "The friendly name that identifies the role.",
 				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RoleName"),
 			},
 			{
 				Name:        "assume_role_policy_document",
-				Description: "The policy that grants an entity permission to assume the role. ",
+				Description: "The policy that grants an entity permission to assume the role.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveIamRoleAssumeRolePolicyDocument,
+				Resolver:    resolveRolesAssumeRolePolicyDocument,
 			},
 			{
 				Name:        "description",
-				Description: "A description of the role that you provide. ",
+				Description: "A description of the role that you provide.",
 				Type:        schema.TypeString,
 			},
 			{
 				Name:        "max_session_duration",
-				Description: "The maximum session duration (in seconds) for the specified role. Anyone who uses the AWS CLI, or API to assume the role can specify the duration using the optional DurationSeconds API parameter or duration-seconds CLI parameter. ",
-				Type:        schema.TypeInt,
+				Description: "The maximum session duration (in seconds) for the specified role",
+				Type:        schema.TypeBigInt,
 			},
 			{
-				Name:          "permissions_boundary_arn",
-				Description:   "The ARN of the policy used to set the permissions boundary for the user or role. ",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
-				IgnoreInTests: true,
+				Name:        "permissions_boundary_arn",
+				Description: "The ARN of the policy used to set the permissions boundary for the user or role.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
 			},
 			{
 				Name:        "permissions_boundary_type",
-				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity. This data type can only have a value of Policy. ",
+				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryType"),
 			},
 			{
-				Name:          "role_last_used_last_used_date",
-				Description:   "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601) that the role was last used. This field is null if the role has not been used within the IAM tracking period. For more information about the tracking period, see Regions where data is tracked (https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor.html#access-advisor_tracking-period) in the IAM User Guide. ",
-				Type:          schema.TypeTimestamp,
-				Resolver:      schema.PathResolver("RoleLastUsed.LastUsedDate"),
-				IgnoreInTests: true,
+				Name:        "role_last_used_last_used_date",
+				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601) that the role was last used",
+				Type:        schema.TypeTimestamp,
+				Resolver:    schema.PathResolver("RoleLastUsed.LastUsedDate"),
 			},
 			{
-				Name:          "role_last_used_region",
-				Description:   "The name of the AWS Region in which the role was last used. ",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("RoleLastUsed.Region"),
-				IgnoreInTests: true,
+				Name:        "role_last_used_region",
+				Description: "The name of the Amazon Web Services Region in which the role was last used.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("RoleLastUsed.Region"),
 			},
 			{
 				Name:        "tags",
-				Description: "A list of tags that are attached to the role. For more information about tagging, see Tagging IAM resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html) in the IAM User Guide. ",
+				Description: "A list of tags that are attached to the role",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveIamRoleTags,
+				Resolver:    client.ResolveTags,
 			},
 		},
 		Relations: []*schema.Table{
-			IamRolePolicies(),
+			{
+				Name:        "aws_iam_role_policies",
+				Description: "Inline policies that are embedded in the specified IAM role",
+				Resolver:    fetchIamRolePolicies,
+				Columns: []schema.Column{
+					{
+						Name:        "role_cq_id",
+						Description: "Unique CloudQuery ID of aws_iam_roles table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "policy_document",
+						Description: "The policy document",
+						Type:        schema.TypeJSON,
+						Resolver:    resolveRolePoliciesPolicyDocument,
+					},
+					{
+						Name:        "policy_name",
+						Description: "The name of the policy.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:        "role_name",
+						Description: "The role the policy is associated with.",
+						Type:        schema.TypeString,
+					},
+				},
+			},
 		},
 	}
 }
@@ -120,26 +146,14 @@ func IamRoles() *schema.Table {
 // ====================================================================================================================
 //                                               Table Resolver Functions
 // ====================================================================================================================
+
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config iam.ListRolesInput
-	svc := meta.(*client.Client).Services().IAM
-	for {
-		response, err := svc.ListRoles(ctx, &config)
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		res <- response.Roles
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
-	}
-	return nil
+	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listRoles, roleDetail))
 }
-func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r := resource.Item.(types.Role)
-	c := meta.(*client.Client)
-	svc := c.Services().IAM
+func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*types.Role)
+	cl := meta.(*client.Client)
+	svc := cl.Services().IAM
 	input := iam.ListAttachedRolePoliciesInput{
 		RoleName: r.RoleName,
 	}
@@ -147,7 +161,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 	for {
 		response, err := svc.ListAttachedRolePolicies(ctx, &input)
 		if err != nil {
-			if c.IsNotFoundError(err) {
+			if cl.IsNotFoundError(err) {
 				return nil
 			}
 			return diag.WrapError(err)
@@ -162,33 +176,97 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	return diag.WrapError(resource.Set("policies", policies))
 }
-
-func resolveIamRoleAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Role)
-	if r.AssumeRolePolicyDocument != nil {
-		decodedDocument, err := url.QueryUnescape(*r.AssumeRolePolicyDocument)
+func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*types.Role)
+	if r.AssumeRolePolicyDocument == nil {
+		return nil
+	}
+	decodedDocument, err := url.QueryUnescape(*r.AssumeRolePolicyDocument)
+	if err != nil {
+		return diag.WrapError(err)
+	}
+	return diag.WrapError(resource.Set("assume_role_policy_document", decodedDocument))
+}
+func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
+	role := parent.Item.(*types.Role)
+	config := iam.ListRolePoliciesInput{
+		RoleName: role.RoleName,
+	}
+	for {
+		output, err := svc.ListRolePolicies(ctx, &config)
 		if err != nil {
+			if c.IsNotFoundError(err) {
+				return nil
+			}
 			return diag.WrapError(err)
 		}
-		return diag.WrapError(resource.Set("assume_role_policy_document", decodedDocument))
+		for _, p := range output.PolicyNames {
+			policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName})
+			if err != nil {
+				return diag.WrapError(err)
+			}
+			res <- policyResult
+		}
+		if aws.ToString(output.Marker) == "" {
+			break
+		}
+		config.Marker = output.Marker
 	}
 	return nil
 }
-func resolveIamRoleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.Role)
-	cl := meta.(*client.Client)
-	svc := cl.Services().IAM
-	response, err := svc.ListRoleTags(ctx, &iam.ListRoleTagsInput{RoleName: r.RoleName})
+func resolveRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(*iam.GetRolePolicyOutput)
+
+	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			meta.Logger().Debug("ListRoleTags: role does not exist", "err", err)
-			return nil
-		}
 		return diag.WrapError(err)
 	}
-	tags := map[string]*string{}
-	for _, t := range response.Tags {
-		tags[*t.Key] = t.Value
+
+	var document map[string]interface{}
+	err = json.Unmarshal([]byte(decodedDocument), &document)
+	if err != nil {
+		return diag.WrapError(err)
 	}
-	return diag.WrapError(resource.Set("tags", tags))
+	return diag.WrapError(resource.Set(c.Name, document))
+}
+
+// ====================================================================================================================
+//                                                  User Defined Helpers
+// ====================================================================================================================
+
+func listRoles(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
+	var config iam.ListRolesInput
+	svc := meta.(*client.Client).Services().IAM
+	for {
+		response, err := svc.ListRoles(ctx, &config)
+		if err != nil {
+			return diag.WrapError(err)
+		}
+		for _, role := range response.Roles {
+			detailChan <- role
+		}
+		if aws.ToString(response.Marker) == "" {
+			break
+		}
+		config.Marker = response.Marker
+	}
+	return nil
+}
+func roleDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+	c := meta.(*client.Client)
+	role := listInfo.(types.Role)
+	svc := meta.(*client.Client).Services().IAM
+	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
+		RoleName: role.RoleName,
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return
+		}
+		errorChan <- diag.WrapError(err)
+		return
+	}
+	resultsChan <- roleDetails.Role
 }

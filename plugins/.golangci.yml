@@ -5,6 +5,7 @@ run:
     - docs
     - client/mocks
     - resources/forks
+    - codegen
   timeout: 10m
   build-tags:
     - all
@@ -29,6 +30,7 @@ linters-settings:
   wrapcheck:
     ignoreSigs:
       - diag.WrapError
+      - errors.WithStack
 
   revive:
     enable-all-rules: true

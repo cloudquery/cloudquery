@@ -24,13 +24,13 @@ If the service to which the resource belongs has not been used before in cq-prov
 
 1. Create a file under `resources/` that follows the pattern of `resources/<service>/<resource_name>`.
 1. In that file, create a function that returns a `*schema.Table`
-1. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config yml file.
+1. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config YAML file.
 1. Add a test file at `resources/<service>/<resource>_test.go`. Follow other examples to create a test for the resource.
 1. Run `go run docs/docs.go` to generate the documentation for the new resource
 
 ### Implementation
 
-Now that the skeleton has been set up, you can start to actually implement the resource. This consists of two parts: 
+Now that the skeleton has been set up, you can start to actually implement the resource. This consists of two parts:
 
 1. Defining the schema
 1. Implementing resolver functions
@@ -39,7 +39,7 @@ Now that the skeleton has been set up, you can start to actually implement the r
 
 It is recommended that you look at a few existing resources as examples and also read through the comments on the source code for the [Table](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/table.go) and [Column](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/column.go) implementations for details.
 
-For noncomplex fields, the SDK can directly resolve them into `Column`s for you, so all you need to do is specify the `Name` and the `Type`.
+For most fields, the SDK can directly resolve them into a `Column`s for you, so all you need to do is specify the `Name` and the `Type`.
 
 For complex fields or fields that require further API calls, you can defined your own `Resolver` for the `Column`.
 
@@ -74,16 +74,17 @@ go test -run="TestIntegration/azure_sql_managed_instances" -tags=integration ./.
 ## Adding new Terraform File Guidelines
 
 There a few good rule of thumb to follow when creating new terraform resources that will be served as testing infrastructure:
-* For every resource create it's own resource_group.
+
+* For every resource create it's own `resource_group`.
 * Use `location = "East US"`.
 * If possible make all resources private.
 * Make sure to replace built-in plain text passwords with `random_password` generator
 * For every compute/db try to use the smallest size to keep the cost low
-* If autoscaling option is present, always turn it off
+* If auto-scaling option is present, always turn it off
 
 If you want to apply the terraform locally first before pushing it to CI and applying there use:
 
-```
+```bash
 cd terraform/YOUR_SERVICE_NAME/local
 # Use AB as your initial so you can have multiple team members working on the same account without conflicting resources
 terraform apply -var="prefix=AB"

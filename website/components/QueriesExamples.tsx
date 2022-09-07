@@ -19,7 +19,7 @@ const ComplianceQuery = () => (
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>FROM</span></div>
         <div><span>    aws_iam_password_policies</span></div>
         <div><span style={{ color: "var(--shiki-token-keyword)" }}>WHERE</span></div>
-        <div>    require_uppercase_characters = aws_iam_password_policies<span style={{ color: "var(--shiki-token-keyword)" }}> FALSE</span></div>
+        <div>    require_uppercase_characters =<span style={{ color: "var(--shiki-token-keyword)" }}> FALSE</span></div>
     </>
 )
 
@@ -61,7 +61,7 @@ const QUERIES_EXAMPLES = [
 
 export const QueriesExamples = ({ onClick }) => {
     return (
-        <div className="grid grid-cols-2 gap-6 my-12 sm:grid-cols-3 ">
+        <div className="grid grid-cols-1 gap-6 my-12 md:grid-cols-3 ">
             {QUERIES_EXAMPLES.map(({ code, html, title, description }) => (
                 <QueryItem
                     onClick={() => onClick(code)}
