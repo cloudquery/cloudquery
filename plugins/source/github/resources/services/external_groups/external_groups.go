@@ -4,12 +4,11 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
+	"github.com/pkg/errors"
 )
 
-//go:generate cq-gen --resource external_groups --config external_groups.hcl --output .
 func ExternalGroups() *schema.Table {
 	return &schema.Table{
 		Name:        "github_external_groups",
@@ -27,7 +26,7 @@ func ExternalGroups() *schema.Table {
 			},
 			{
 				Name:     "group_id",
-				Type:     schema.TypeBigInt,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("GroupID"),
 			},
 			{
@@ -39,59 +38,13 @@ func ExternalGroups() *schema.Table {
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt.Time"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "github_external_group_teams",
-				Description: "ExternalGroupTeam represents a team connected to an external group.",
-				Resolver:    schema.PathTableResolver("Teams"),
-				Columns: []schema.Column{
-					{
-						Name:        "external_group_cq_id",
-						Description: "Unique CloudQuery ID of github_external_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:     "team_id",
-						Type:     schema.TypeBigInt,
-						Resolver: schema.PathResolver("TeamID"),
-					},
-					{
-						Name: "team_name",
-						Type: schema.TypeString,
-					},
-				},
+				Name: "teams",
+				Type: schema.TypeJSON,
 			},
 			{
-				Name:        "github_external_group_members",
-				Description: "ExternalGroupMember represents a member of an external group.",
-				Resolver:    schema.PathTableResolver("Members"),
-				Columns: []schema.Column{
-					{
-						Name:        "external_group_cq_id",
-						Description: "Unique CloudQuery ID of github_external_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:     "member_id",
-						Type:     schema.TypeBigInt,
-						Resolver: schema.PathResolver("MemberID"),
-					},
-					{
-						Name: "member_login",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "member_name",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "member_email",
-						Type: schema.TypeString,
-					},
-				},
+				Name: "members",
+				Type: schema.TypeJSON,
 			},
 		},
 	}
@@ -112,7 +65,7 @@ func fetchExternalGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		groups, resp, err := c.Github.Teams.ListExternalGroups(ctx, c.Org, opts)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		res <- groups.Groups
 		opts.Page = resp.NextPage

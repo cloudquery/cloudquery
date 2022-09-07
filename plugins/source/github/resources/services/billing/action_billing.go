@@ -36,19 +36,8 @@ func ActionBillings() *schema.Table {
 				Type: schema.TypeInt,
 			},
 			{
-				Name:     "minutes_used_breakdown_ubuntu",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MinutesUsedBreakdown.Ubuntu"),
-			},
-			{
-				Name:     "minutes_used_breakdown_mac_os",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MinutesUsedBreakdown.MacOS"),
-			},
-			{
-				Name:     "minutes_used_breakdown_windows",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MinutesUsedBreakdown.Windows"),
+				Name: "minutes_used_breakdown",
+				Type: schema.TypeJSON,
 			},
 		},
 	}

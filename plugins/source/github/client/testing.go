@@ -1,15 +1,16 @@
 package client
 
 import (
+	"context"
+	"os"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
-	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog"
 )
 
 type TestOptions struct{}
@@ -18,30 +19,26 @@ func GithubMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 	table.IgnoreInTests = false
 	t.Helper()
 	ctrl := gomock.NewController(t)
-	cfg := ``
 
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:    "aws_mock_test_provider",
-			Version: "development",
-			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
-				c := Client{
-					logger: logging.New(&hclog.LoggerOptions{
-						Level: hclog.Warn,
-					}),
-					Github: builder(t, ctrl),
-					Orgs:   []string{"testorg"},
-				}
-				return &c, nil
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-			Config: func() provider.Config {
-				return &Config{}
-			},
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+		return &Client{
+			logger: zerolog.New(zerolog.NewTestWriter(t)).Output(
+				zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+			).Level(zerolog.DebugLevel).With().Timestamp().Logger(),
+			Github: builder(t, ctrl),
+			Orgs:   []string{"testorg"},
+		}, nil
+	}
+	p := plugins.NewSourcePlugin(
+		table.Name,
+		"dev",
+		[]*schema.Table{
+			table,
 		},
-		Config:           cfg,
-		SkipIgnoreInTest: true,
+		newTestExecutionClient)
+	plugins.TestSourcePluginSync(t, p, specs.Source{
+		Name:   "dev",
+		Tables: []string{table.Name},
 	})
+
 }

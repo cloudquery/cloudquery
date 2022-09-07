@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 )
 
-//go:generate cq-gen --resource package_billing --config billing.hcl --output .
 func PackageBillings() *schema.Table {
+
 	return &schema.Table{
 		Name:        "github_package_billing",
 		Description: "PackageBilling represents a GitHub Package billing.",
@@ -26,15 +26,15 @@ func PackageBillings() *schema.Table {
 			},
 			{
 				Name: "total_gigabytes_bandwidth_used",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 			{
 				Name: "total_paid_gigabytes_bandwidth_used",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 			{
 				Name: "included_gigabytes_bandwidth",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 		},
 	}
@@ -48,7 +48,7 @@ func fetchPackageBillings(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	billing, _, err := c.Github.Billing.GetPackagesBillingOrg(ctx, c.Org)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	res <- billing
 	return nil

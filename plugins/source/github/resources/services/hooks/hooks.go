@@ -2,14 +2,14 @@ package hooks
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
+	"github.com/pkg/errors"
 )
 
-//go:generate cq-gen --resource hooks --config hooks.hcl --output .
 func Hooks() *schema.Table {
 	return &schema.Table{
 		Name:        "github_hooks",
@@ -40,7 +40,7 @@ func Hooks() *schema.Table {
 			},
 			{
 				Name:     "id",
-				Type:     schema.TypeBigInt,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
 			},
 			{
@@ -80,89 +80,11 @@ func Hooks() *schema.Table {
 				Name: "active",
 				Type: schema.TypeBool,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "github_hook_deliveries",
-				Description: "HookDelivery represents the data that is received from GitHub's Webhook Delivery API  GitHub API docs: - https://docs.github.com/en/rest/webhooks/repo-deliveries#list-deliveries-for-a-repository-webhook - https://docs.github.com/en/rest/webhooks/repo-deliveries#get-a-delivery-for-a-repository-webhook",
-				Resolver:    fetchHookDeliveries,
-				Columns: []schema.Column{
-					{
-						Name:        "hook_cq_id",
-						Description: "Unique CloudQuery ID of github_hooks table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:     "id",
-						Type:     schema.TypeBigInt,
-						Resolver: schema.PathResolver("ID"),
-					},
-					{
-						Name:     "guid",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("GUID"),
-					},
-					{
-						Name:     "delivered_at_time",
-						Type:     schema.TypeTimestamp,
-						Resolver: schema.PathResolver("DeliveredAt.Time"),
-					},
-					{
-						Name: "redelivery",
-						Type: schema.TypeBool,
-					},
-					{
-						Name: "duration",
-						Type: schema.TypeFloat,
-					},
-					{
-						Name: "status",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "status_code",
-						Type: schema.TypeBigInt,
-					},
-					{
-						Name: "event",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "action",
-						Type: schema.TypeString,
-					},
-					{
-						Name:     "installation_id",
-						Type:     schema.TypeBigInt,
-						Resolver: schema.PathResolver("InstallationID"),
-					},
-					{
-						Name:     "repository_id",
-						Type:     schema.TypeBigInt,
-						Resolver: schema.PathResolver("RepositoryID"),
-					},
-					{
-						Name:     "request_headers",
-						Type:     schema.TypeJSON,
-						Resolver: schema.PathResolver("Request.Headers"),
-					},
-					{
-						Name:     "request_raw_payload",
-						Type:     schema.TypeByteArray,
-						Resolver: resolveHookDeliveriesRequestRawPayload,
-					},
-					{
-						Name:     "response_headers",
-						Type:     schema.TypeJSON,
-						Resolver: schema.PathResolver("Response.Headers"),
-					},
-					{
-						Name:     "response_raw_payload",
-						Type:     schema.TypeByteArray,
-						Resolver: resolveHookDeliveriesResponseRawPayload,
-					},
-				},
+				Name:        "deliveries",
+				Description: "Webhook deliveries",
+				Type:        schema.TypeJSON,
+				Resolver:    resolveHookDeliveries,
 			},
 		},
 	}
@@ -181,7 +103,7 @@ func fetchHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	for {
 		hooks, resp, err := c.Github.Organizations.ListHooks(ctx, c.Org, opts)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
 		res <- hooks
 		opts.Page = resp.NextPage
@@ -191,37 +113,27 @@ func fetchHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	}
 	return nil
 }
-func fetchHookDeliveries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func resolveHookDeliveries(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	c := meta.(*client.Client)
-	h := parent.Item.(*github.Hook)
+	h := resource.Item.(*github.Hook)
 	opts := &github.ListCursorOptions{
 		PerPage: 100,
 	}
+	var deliveries []*github.HookDelivery
 	for {
 		hooks, resp, err := c.Github.Organizations.ListHookDeliveries(ctx, c.Org, *h.ID, opts)
 		if err != nil {
-			return diag.WrapError(err)
+			return errors.WithStack(err)
 		}
-		res <- hooks
+		deliveries = append(deliveries, hooks...)
 		if len(hooks) == 0 || resp.Cursor == "" {
-			return nil
+			break
 		}
 		opts.Cursor = resp.Cursor
 	}
-}
-func resolveHookDeliveriesRequestRawPayload(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	hd := resource.Item.(*github.HookDelivery)
-	data, err := hd.Request.RawPayload.MarshalJSON()
+	data, err := json.Marshal(deliveries)
 	if err != nil {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
-}
-func resolveHookDeliveriesResponseRawPayload(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	hd := resource.Item.(*github.HookDelivery)
-	data, err := hd.Response.RawPayload.MarshalJSON()
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return errors.WithStack(resource.Set(column.Name, data))
 }
