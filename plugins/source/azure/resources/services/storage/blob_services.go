@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 )
 
-func BlobServices() *schema.Table {
+func blobServices() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_storage_blob_services",
 		Resolver: fetchStorageBlobServices,

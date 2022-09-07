@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 )
 
-func Containers() *schema.Table {
+func containers() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_storage_containers",
 		Resolver: fetchStorageContainers,

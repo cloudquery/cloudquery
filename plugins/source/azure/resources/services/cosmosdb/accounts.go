@@ -177,7 +177,7 @@ func Accounts() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			MongoDBDatabases(), SQLDatabases(),
+			mongoDBDatabases(), sQLDatabases(),
 		},
 	}
 }

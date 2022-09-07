@@ -267,7 +267,7 @@ func Apps() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			SiteAuthSettings(), PublishingProfiles(),
+			siteAuthSettings(), publishingProfiles(),
 		},
 	}
 }

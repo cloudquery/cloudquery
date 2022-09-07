@@ -87,7 +87,7 @@ func getFilename() string {
 
 func initTemplate(templateName string) *template.Template {
 	pluralizeClient := pluralize.NewClient()
-	tpl, err := template.New(templateName).Funcs(template.FuncMap{"ToLower": strings.ToLower, "ToSingular": pluralizeClient.Singular}).ParseFS(azureTemplatesFS, "templates/*.go.tpl")
+	tpl, err := template.New(templateName).Funcs(template.FuncMap{"ToLower": strings.ToLower, "ToSingular": pluralizeClient.Singular, "ToLowerCamel": strcase.ToLowerCamel}).ParseFS(azureTemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse azure templates: %w", err))
 	}

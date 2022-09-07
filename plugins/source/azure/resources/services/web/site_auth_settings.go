@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 )
 
-func SiteAuthSettings() *schema.Table {
+func siteAuthSettings() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_web_site_auth_settings",
 		Resolver: fetchWebSiteAuthSettings,

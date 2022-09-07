@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func RuleSets() *schema.Table {
+func ruleSets() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cdn_rule_sets",
 		Resolver: fetchCDNRuleSets,
@@ -63,7 +63,7 @@ func RuleSets() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Rules(),
+			rules(),
 		},
 	}
 }

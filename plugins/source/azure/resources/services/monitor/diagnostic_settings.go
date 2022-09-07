@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
-func DiagnosticSettings() *schema.Table {
+func diagnosticSettings() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_monitor_diagnostic_settings",
 		Resolver: fetchMonitorDiagnosticSettings,

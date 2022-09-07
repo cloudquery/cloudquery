@@ -127,7 +127,7 @@ func Monitor() []Resource {
 					subServiceOverride:       "Resources",
 					mockListResult:           "ListResult",
 					mockListFunctionArgsInit: []string{``},
-					relations:                []string{"DiagnosticSettings()"},
+					relations:                []string{"diagnosticSettings()"},
 				},
 			},
 			serviceNameOverride: "Monitor",

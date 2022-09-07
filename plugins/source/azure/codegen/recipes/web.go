@@ -22,7 +22,7 @@ func Web() []Resource {
 					listFunction:       "List",
 					subServiceOverride: "Apps",
 					mockListResult:     "AppCollection",
-					relations:          []string{"SiteAuthSettings(),PublishingProfiles()"},
+					relations:          []string{"siteAuthSettings(),publishingProfiles()"},
 					customColumns:      codegen.ColumnDefinitions{codegen.ColumnDefinition{Name: "vnet_connection", Type: schema.TypeJSON, Resolver: "fetchVnetConnections"}},
 				},
 				{

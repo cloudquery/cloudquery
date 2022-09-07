@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func MongoDBDatabases() *schema.Table {
+func mongoDBDatabases() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cosmosdb_mongo_db_databases",
 		Resolver: fetchCosmosDBMongoDBDatabases,

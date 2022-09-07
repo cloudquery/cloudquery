@@ -218,7 +218,7 @@ func Accounts() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			BlobServices(), Containers(),
+			blobServices(), containers(),
 		},
 	}
 }

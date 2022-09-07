@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func Routes() *schema.Table {
+func routes() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cdn_routes",
 		Resolver: fetchCDNRoutes,

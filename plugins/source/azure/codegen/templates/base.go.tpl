@@ -10,9 +10,15 @@ import (
     {{template "imports.go.tpl" .}}
 )
 
+{{ if .IsRelation }}
+func {{.AzureSubService | ToLowerCamel }}() *schema.Table {
+    return &schema.Table{{template "table.go.tpl" .Table}}
+}
+{{ else }}
 func {{.AzureSubService}}() *schema.Table {
     return &schema.Table{{template "table.go.tpl" .Table}}
 }
+{{ end }}
 
 {{range .Helpers}}
 {{.}}

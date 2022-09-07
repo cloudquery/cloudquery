@@ -28,7 +28,7 @@ func CosmosDB() []Resource {
 					listHandler:        valueHandler,
 					subServiceOverride: "Accounts",
 					mockListResult:     "DatabaseAccountsListResult",
-					relations:          []string{"MongoDBDatabases(),SQLDatabases()"},
+					relations:          []string{"mongoDBDatabases(),sQLDatabases()"},
 				},
 			},
 			serviceNameOverride: "CosmosDB",

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func CustomDomains() *schema.Table {
+func customDomains() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cdn_custom_domains",
 		Resolver: fetchCDNCustomDomains,

@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-func SQLDatabases() *schema.Table {
+func sQLDatabases() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cosmosdb_sql_databases",
 		Resolver: fetchCosmosDBSQLDatabases,

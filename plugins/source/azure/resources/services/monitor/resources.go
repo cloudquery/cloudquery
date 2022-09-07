@@ -27,7 +27,7 @@ func Resources() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DiagnosticSettings(),
+			diagnosticSettings(),
 		},
 	}
 }

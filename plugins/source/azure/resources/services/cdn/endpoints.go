@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"
 )
 
-func Endpoints() *schema.Table {
+func endpoints() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_cdn_endpoints",
 		Resolver: fetchCDNEndpoints,
@@ -158,7 +158,7 @@ func Endpoints() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			CustomDomains(), Routes(),
+			customDomains(), routes(),
 		},
 	}
 }
