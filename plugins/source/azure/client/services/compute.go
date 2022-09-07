@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/compute.go -package=mocks . ComputeDisksClient,ComputeVirtualMachinesClient,ComputeVirtualMachineExtensionsClient,ComputeVirtualMachineScaleSetsClient
+//go:generate mockgen -destination=./mocks/compute.go -package=mocks . ComputeDisksClient,ComputeVirtualMachinesClient,ComputeVirtualMachineExtensionsClient,ComputeVirtualMachineScaleSetsClient,ComputeInstanceViewsClient
 package services
 
 import (
@@ -13,6 +13,7 @@ type ComputeClient struct {
 	VirtualMachines          ComputeVirtualMachinesClient
 	VirtualMachineExtensions ComputeVirtualMachineExtensionsClient
 	VirtualMachineScaleSets  ComputeVirtualMachineScaleSetsClient
+	InstanceViews            ComputeInstanceViewsClient
 }
 
 type ComputeDisksClient interface {
@@ -21,6 +22,9 @@ type ComputeDisksClient interface {
 
 type ComputeVirtualMachinesClient interface {
 	ListAll(ctx context.Context, statusOnly string) (result compute.VirtualMachineListResultPage, err error)
+}
+
+type ComputeInstanceViewsClient interface {
 	InstanceView(ctx context.Context, resourceGroupName string, VMName string) (result compute.VirtualMachineInstanceView, err error)
 }
 
@@ -50,5 +54,6 @@ func NewComputeClient(subscriptionId string, auth autorest.Authorizer) ComputeCl
 		VirtualMachines:          vmsSvc,
 		VirtualMachineExtensions: vmsEx,
 		VirtualMachineScaleSets:  vmsScaleSets,
+		InstanceViews:            vmsSvc,
 	}
 }

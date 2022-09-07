@@ -190,6 +190,10 @@ func VirtualMachines() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			instanceViews(), virtualMachineExtensions(),
+		},
 	}
 }
 

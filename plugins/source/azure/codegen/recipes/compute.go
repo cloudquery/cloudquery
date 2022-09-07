@@ -32,6 +32,47 @@ func Compute() []Resource {
 				{
 					azureStruct:      &compute.VirtualMachine{},
 					listFunctionArgs: []string{`"false"`},
+					relations:        []string{"instanceViews(),virtualMachineExtensions()"},
+				},
+			},
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:  &compute.VirtualMachineInstanceView{},
+					listFunction: "InstanceView",
+					listFunctionArgsInit: []string{`virtualMachine := parent.Item.(compute.VirtualMachine)
+					resource, err := client.ParseResourceID(*virtualMachine.ID)
+					if err != nil {
+						return errors.WithStack(err)
+					}`},
+					listFunctionArgs: []string{"resource.ResourceGroup", "*virtualMachine.Name"},
+					listHandler: `if err != nil {
+						return errors.WithStack(err)
+					}
+					res <- response
+					return nil`,
+					isRelation:         true,
+					subServiceOverride: "InstanceViews",
+				},
+				{
+					azureStruct:  &compute.VirtualMachineExtension{},
+					listFunction: "List",
+					listFunctionArgsInit: []string{`virtualMachine := parent.Item.(compute.VirtualMachine)
+					resource, err := client.ParseResourceID(*virtualMachine.ID)
+					if err != nil {
+						return errors.WithStack(err)
+					}`},
+					listFunctionArgs: []string{"resource.ResourceGroup", "*virtualMachine.Name", `""`},
+					listHandler:      valueHandler,
+					isRelation:       true,
 				},
 			},
 		},
