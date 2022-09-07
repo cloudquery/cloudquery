@@ -45,16 +45,16 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-go@v3
         with:
-          go-version: 1.18
+          go-version: 1.19
       - uses: actions/cache@v3
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.18-${{ hashFiles(format('{0}/go.sum', matrix.workdir)) }}
+          key: ${{ runner.os }}-go-1.19-${{ hashFiles(format('{0}/go.sum', matrix.workdir)) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.18-${{ matrix.workdir }}
+            ${{ runner.os }}-go-1.19-${{ matrix.workdir }}
 
       - name: Get dependencies
         if: steps.changed-files.outputs.any_changed == 'true'
