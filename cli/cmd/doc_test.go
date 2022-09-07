@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"testing"
 )
@@ -31,10 +30,9 @@ func TestDoc(t *testing.T) {
 	}
 	files, err := ioutil.ReadDir(tmpdir)
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
 	}
 	if len(files) != len(docFiles) {
 		t.Errorf("expected %d files, got %d", len(docFiles), len(files))
 	}
-
 }

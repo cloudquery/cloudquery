@@ -2,7 +2,7 @@
 // Including: downloading, upgrading, spawning, closing
 // Currently we use github releases as our plugin store. We might change in the future
 // to our own hosted one.
-package plugin
+package plugins
 
 import (
 	"archive/zip"
@@ -183,6 +183,10 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	_, err = io.Copy(out, fileInArchive)
 	if err != nil {
 		return "", fmt.Errorf("failed to copy body to file: %w", err)
+	}
+	err = out.Close()
+	if err != nil {
+		return "", fmt.Errorf("failed to close file: %w", err)
 	}
 	return pluginPath, nil
 }

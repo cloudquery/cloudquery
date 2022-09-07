@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugin"
+	"github.com/cloudquery/cloudquery/cli/internal/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
@@ -44,7 +44,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("no sources found in directory: %s", directory)
 	}
 
-	pm := plugin.NewPluginManager()
+	pm := plugins.NewPluginManager()
 	for _, sourceSpec := range specReader.GetSources() {
 		if len(sourceSpec.Destinations) == 0 {
 			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
@@ -57,7 +57,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *specs.SpecReader, sourceSpec specs.Source) error {
+func syncConnection(ctx context.Context, pm *plugins.PluginManager, specReader *specs.SpecReader, sourceSpec specs.Source) error {
 	sourcePlugin, err := pm.NewSourcePlugin(ctx, sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
@@ -65,7 +65,14 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 	defer sourcePlugin.Close()
 	sourceClient := sourcePlugin.GetClient()
 
-	destPlugins := make([]*plugin.DestinationPlugin, len(sourceSpec.Destinations))
+	destPlugins := make([]*plugins.DestinationPlugin, len(sourceSpec.Destinations))
+	defer func() {
+		for _, destPlugin := range destPlugins {
+			if destPlugin != nil {
+				destPlugin.Close()
+			}
+		}
+	}()
 	for i, destination := range sourceSpec.Destinations {
 		spec := specReader.GetDestinatinoByName(destination)
 		if spec == nil {
@@ -75,7 +82,6 @@ func syncConnection(ctx context.Context, pm *plugin.PluginManager, specReader *s
 		if err != nil {
 			return fmt.Errorf("failed to create destination plugin client for %s: %w", destination, err)
 		}
-		defer plugin.Close()
 		destPlugins[i] = plugin
 		if err := destPlugins[i].GetClient().Initialize(ctx, *spec); err != nil {
 			return fmt.Errorf("failed to initialize destination plugin client for %s: %w", destination, err)
