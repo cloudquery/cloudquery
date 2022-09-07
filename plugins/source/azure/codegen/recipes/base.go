@@ -43,6 +43,7 @@ type Resource struct {
 	MockFieldsToIgnore       []string
 	MockValueType            string
 	MockDefinitionType       string
+	IsRelation               bool
 }
 
 type template struct {
@@ -255,6 +256,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					MockFieldsToIgnore:       append(append(defaultSkipFields, definition.skipFields...), definition.mockFieldsToIgnore...),
 					MockValueType:            definition.mockValueType,
 					MockDefinitionType:       definition.mockDefinitionType,
+					IsRelation:               definition.isRelation,
 				}
 				allResources = append(allResources, resource)
 			}

@@ -54,11 +54,15 @@ func main() {
 			packageName := strings.ToLower(r.AzureService)
 			serviceName := fmt.Sprintf("%s.%s", packageName, strcase.ToSnake(r.AzureSubService))
 			function := fmt.Sprintf("%s.%s", packageName, r.AzureSubService)
-			providerResources[serviceName] = providerResource{
-				ServiceName: serviceName,
-				Function:    function,
+
+			// Only add top level resources to provider.go
+			if !r.IsRelation {
+				providerResources[serviceName] = providerResource{
+					ServiceName: serviceName,
+					Function:    function,
+				}
+				providerPackages[packageName] = true
 			}
-			providerPackages[packageName] = true
 		}
 	}
 
