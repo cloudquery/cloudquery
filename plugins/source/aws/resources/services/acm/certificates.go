@@ -10,16 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_acm_certificates",
-		Description:  "Contains metadata about an ACM certificate",
-		Resolver:     fetchAcmCertificates,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("acm"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_acm_certificates",
+		Description: "Contains metadata about an ACM certificate",
+		Resolver:    fetchAcmCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("acm"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -40,10 +36,11 @@ func Certificates() *schema.Table {
 				Resolver:    resolveAcmCertificateTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the certificate",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CertificateArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the certificate",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("CertificateArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "certificate_authority_arn",
