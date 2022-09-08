@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Route53TrafficPolicies() *schema.Table {
@@ -18,8 +18,8 @@ func Route53TrafficPolicies() *schema.Table {
 		Description:   "A complex type that contains information about the latest version of one traffic policy that is associated with the current AWS account.",
 		Resolver:      fetchRoute53TrafficPolicies,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -125,7 +125,7 @@ func fetchRoute53TrafficPolicies(ctx context.Context, meta schema.ClientMeta, pa
 	for {
 		response, err := svc.ListTrafficPolicies(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.TrafficPolicySummaries
 
@@ -143,7 +143,7 @@ func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMe
 	for {
 		response, err := svc.ListTrafficPolicyVersions(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.TrafficPolicies
 		if aws.ToString(response.TrafficPolicyVersionMarker) == "" {
@@ -158,7 +158,7 @@ func resolveRoute53trafficPolicyVersionDocument(ctx context.Context, meta schema
 	var value interface{}
 	err := json.Unmarshal([]byte(*r.Document), &value)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, value))
 }

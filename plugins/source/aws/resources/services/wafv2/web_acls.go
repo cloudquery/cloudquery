@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type WebACLWrapper struct {
@@ -23,9 +23,6 @@ func Wafv2WebAcls() *schema.Table {
 		Description:  "A Web ACL defines a collection of rules to use to inspect and control web requests",
 		Resolver:     fetchWafv2WebAcls,
 		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionScopeFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -58,6 +55,7 @@ func Wafv2WebAcls() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the Web ACL that you want to associate with the resource.  ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "default_action",
@@ -97,7 +95,7 @@ func Wafv2WebAcls() *schema.Table {
 			{
 				Name:        "capacity",
 				Description: "The web ACL capacity units (WCUs) currently being used by this web ACL",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "custom_response_bodies",
@@ -125,73 +123,14 @@ func Wafv2WebAcls() *schema.Table {
 				Type:        schema.TypeStringArray,
 				Resolver:    schema.PathResolver("LoggingConfiguration.LogDestinationConfigs"),
 			},
+			{
+				Name: "rules",
+				Description: "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Rules"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_wafv2_web_acl_rules",
-				Description: "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
-				Resolver:    schema.PathTableResolver("Rules"),
-				Columns: []schema.Column{
-					{
-						Name:        "web_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the rule",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "priority",
-						Description: "If you define more than one Rule in a WebACL, AWS WAF evaluates each request against the Rules in order based on the value of Priority",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "statement",
-						Description: "The AWS WAF processing statement for the rule, for example ByteMatchStatement or SizeConstraintStatement.  ",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("Statement"),
-					},
-					{
-						Name:        "visibility_config_cloud_watch_metrics_enabled",
-						Description: "A boolean indicating whether the associated resource sends metrics to CloudWatch",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("VisibilityConfig.CloudWatchMetricsEnabled"),
-					},
-					{
-						Name:        "visibility_config_metric_name",
-						Description: "A name of the CloudWatch metric",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VisibilityConfig.MetricName"),
-					},
-					{
-						Name:        "visibility_config_sampled_requests_enabled",
-						Description: "A boolean indicating whether AWS WAF should store a sampling of the web requests that match the rules",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("VisibilityConfig.SampledRequestsEnabled"),
-					},
-					{
-						Name:        "action",
-						Description: "The action that AWS WAF should take on a web request when it matches the rule statement",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("Action"),
-					},
-					{
-						Name:        "override_action",
-						Description: "The override action to apply to the rules in a rule group",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("OverrideAction"),
-					},
-					{
-						Name:        "labels",
-						Description: "Labels to apply to web requests that match the rule match statement",
-						Type:        schema.TypeStringArray,
-						Resolver:    resolveWafv2webACLRuleLabels,
-					},
-				},
-			},
 			{
 				Name:          "aws_wafv2_web_acl_post_process_firewall_manager_rule_groups",
 				Description:   "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
@@ -358,7 +297,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		output, err := service.ListWebACLs(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, webAcl := range output.WebACLs {
 			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: c.WAFScope}
@@ -366,7 +305,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 
 			cfg := wafv2.GetLoggingConfigurationInput{
@@ -420,7 +359,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 				options.Region = cl.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			for _, item := range output.DistributionList.Items {
 				resourceArns = append(resourceArns, *item.ARN)
@@ -433,7 +372,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 	} else {
 		output, err := service.ListResourcesForWebACL(ctx, &wafv2.ListResourcesForWebACLInput{WebACLArn: webACL.ARN})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		resourceArns = output.ResourceArns
 	}
@@ -451,7 +390,7 @@ func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resourc
 	for {
 		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, t := range tags.TagInfoForResource.TagList {
 			outputTags[*t.Key] = t.Value

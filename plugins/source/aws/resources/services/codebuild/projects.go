@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CodebuildProjects() *schema.Table {
@@ -18,8 +18,8 @@ func CodebuildProjects() *schema.Table {
 		Description:   "Information about a build project.",
 		Resolver:      fetchCodebuildProjects,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("codebuild"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -693,14 +693,14 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		response, err := svc.ListProjects(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if len(response.Projects) == 0 {
 			break
 		}
 		projectsOutput, err := svc.BatchGetProjects(ctx, &codebuild.BatchGetProjectsInput{Names: response.Projects})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- projectsOutput.Projects
@@ -729,7 +729,7 @@ func resolveCodebuildProjectsWebhookFilterGroups(ctx context.Context, meta schem
 	}
 	data, err := json.Marshal(p.Webhook.FilterGroups)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, data))
 }

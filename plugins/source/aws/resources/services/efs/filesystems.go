@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EfsFilesystems() *schema.Table {
@@ -17,8 +17,8 @@ func EfsFilesystems() *schema.Table {
 		Description:   "A description of the file system.",
 		Resolver:      fetchEfsFilesystems,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -79,7 +79,7 @@ func EfsFilesystems() *schema.Table {
 			{
 				Name:        "size_in_bytes_value",
 				Description: "The latest known metered size (in bytes) of data stored in the file system. ",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("SizeInBytes.Value"),
 			},
 			{
@@ -91,13 +91,13 @@ func EfsFilesystems() *schema.Table {
 			{
 				Name:        "size_in_bytes_value_in_ia",
 				Description: "The latest known metered size (in bytes) of data stored in the Infrequent Access storage class.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("SizeInBytes.ValueInIA"),
 			},
 			{
 				Name:        "size_in_bytes_value_in_standard",
 				Description: "The latest known metered size (in bytes) of data stored in the Standard storage class.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("SizeInBytes.ValueInStandard"),
 			},
 			{
@@ -162,7 +162,7 @@ func fetchEfsFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		response, err := svc.DescribeFileSystems(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.FileSystems
 		if aws.ToString(response.Marker) == "" {
@@ -184,7 +184,7 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 		if cl.IsNotFoundError(err) {
 			return diag.WrapError(resource.Set(c.Name, types.StatusDisabled))
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	if response.BackupPolicy == nil {
 		return nil

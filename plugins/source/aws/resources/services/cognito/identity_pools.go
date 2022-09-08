@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CognitoIdentityPools() *schema.Table {
@@ -16,8 +15,8 @@ func CognitoIdentityPools() *schema.Table {
 		Description:   "An object representing an Amazon Cognito identity pool.",
 		Resolver:      fetchCognitoIdentityPools,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("cognito-identity"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -145,12 +144,12 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		out, err := svc.ListIdentityPools(ctx, &params, optsFunc)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range out.IdentityPools {
 			ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId}, optsFunc)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- ipo
 		}

@@ -7,18 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource sampling_rules --config gen.hcl --output .
+
 func SamplingRules() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_xray_sampling_rules",
 		Description:  "A SamplingRule (https://docsawsamazoncom/xray/latest/api/API_SamplingRulehtml) and its metadata",
 		Resolver:     fetchXraySamplingRules,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("xray"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -69,13 +69,13 @@ func SamplingRules() *schema.Table {
 			{
 				Name:        "priority",
 				Description: "The priority of the sampling rule",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("SamplingRule.Priority"),
 			},
 			{
 				Name:        "reservoir_size",
 				Description: "A fixed number of matching requests to instrument per second, prior to applying the fixed rate",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("SamplingRule.ReservoirSize"),
 			},
 			{
@@ -105,7 +105,7 @@ func SamplingRules() *schema.Table {
 			{
 				Name:        "version",
 				Description: "The version of the sampling rule format (1)",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("SamplingRule.Version"),
 			},
 			{
@@ -139,7 +139,7 @@ func fetchXraySamplingRules(ctx context.Context, meta schema.ClientMeta, parent 
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.SamplingRuleRecords
 	}
@@ -156,7 +156,7 @@ func resolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, re
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	tags := map[string]string{}

@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource webhooks --config gen.hcl --output .
+
 func Webhooks() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_codepipeline_webhooks",
 		Description:  "The detail returned for each webhook after listing webhooks, such as the webhook URL, the webhook name, and the webhook ARN",
 		Resolver:     fetchCodepipelineWebhooks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -140,7 +139,7 @@ func fetchCodepipelineWebhooks(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		response, err := svc.ListWebhooks(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Webhooks
 

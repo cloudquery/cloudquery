@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsDbParameterGroups() *schema.Table {
@@ -17,8 +17,8 @@ func RdsDbParameterGroups() *schema.Table {
 		Description:  "Contains the details of an Amazon RDS DB parameter group",
 		Resolver:     fetchRdsDbParameterGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -68,7 +68,7 @@ func RdsDbParameterGroups() *schema.Table {
 				Name:        "aws_rds_db_parameters",
 				Description: "Database Parameters",
 				Resolver:    fetchRdsDbParameterGroupDbParameters,
-				IgnoreError: client.IgnoreCommonErrors,
+				
 				Columns: []schema.Column{
 					{
 						Name:        "db_parameter_group_cq_id",
@@ -148,7 +148,7 @@ func fetchRdsDbParameterGroups(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		output, err := svc.DescribeDBParameterGroups(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.DBParameterGroups
 		if aws.ToString(output.Marker) == "" {
@@ -171,7 +171,7 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 				cl.Logger().Debug("received DBParameterGroupNotFound on DescribeDBParameters", "region", cl.Region, "err", err)
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Parameters
 		if aws.ToString(output.Marker) == "" {
@@ -188,7 +188,7 @@ func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta,
 	svc := cl.Services().RDS
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -18,8 +18,8 @@ func Ec2Images() *schema.Table {
 		Description:   "Describes an image.",
 		Resolver:      fetchEc2Images,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -292,7 +292,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		// fetch ec2.Images owned by this account
 		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{Owners: []string{"self"}})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Images
 		return nil
@@ -302,14 +302,14 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		// fetch ec2.Images that are shared with this account
 		response, err := svc.DescribeImages(ctx, &ec2.DescribeImagesInput{ExecutableUsers: []string{"self"}})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Images
 		return nil
 	})
 
 	if err := g.Wait(); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return nil
 }
@@ -341,14 +341,14 @@ func resolveEc2ImageLastLaunchedTime(ctx context.Context, meta schema.ClientMeta
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	if result.LastLaunchedTime == nil || result.LastLaunchedTime.Value == nil {
 		return nil
 	}
 	t, err := time.Parse(time.RFC3339, *result.LastLaunchedTime.Value)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, t))
 }

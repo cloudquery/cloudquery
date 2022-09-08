@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2InternetGateways() *schema.Table {
@@ -17,8 +16,8 @@ func Ec2InternetGateways() *schema.Table {
 		Description:  "Describes an internet gateway.",
 		Resolver:     fetchEc2InternetGateways,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -97,7 +96,7 @@ func fetchEc2InternetGateways(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		output, err := svc.DescribeInternetGateways(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.InternetGateways
 		if aws.ToString(output.NextToken) == "" {

@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2TransitGateways() *schema.Table {
@@ -16,8 +15,8 @@ func Ec2TransitGateways() *schema.Table {
 		Name:          "aws_ec2_transit_gateways",
 		Resolver:      fetchEc2TransitGateways,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -33,7 +32,7 @@ func Ec2TransitGateways() *schema.Table {
 			},
 			{
 				Name:     "amazon_side_asn",
-				Type:     schema.TypeBigInt,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Options.AmazonSideAsn"),
 			},
 			{
@@ -390,7 +389,7 @@ func fetchEc2TransitGateways(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		output, err := svc.DescribeTransitGateways(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.TransitGateways
 		if aws.ToString(output.NextToken) == "" {
@@ -417,7 +416,7 @@ func fetchEc2TransitGatewayAttachments(ctx context.Context, meta schema.ClientMe
 	for {
 		output, err := svc.DescribeTransitGatewayAttachments(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.TransitGatewayAttachments
 		if aws.ToString(output.NextToken) == "" {
@@ -444,7 +443,7 @@ func fetchEc2TransitGatewayRouteTables(ctx context.Context, meta schema.ClientMe
 	for {
 		output, err := svc.DescribeTransitGatewayRouteTables(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.TransitGatewayRouteTables
 		if aws.ToString(output.NextToken) == "" {
@@ -471,7 +470,7 @@ func fetchEc2TransitGatewayVpcAttachments(ctx context.Context, meta schema.Clien
 	for {
 		output, err := svc.DescribeTransitGatewayVpcAttachments(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.TransitGatewayVpcAttachments
 		if aws.ToString(output.NextToken) == "" {
@@ -499,7 +498,7 @@ func fetchEc2TransitGatewayPeeringAttachments(ctx context.Context, meta schema.C
 	for {
 		output, err := svc.DescribeTransitGatewayPeeringAttachments(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.TransitGatewayPeeringAttachments
 		if aws.ToString(output.NextToken) == "" {
@@ -527,7 +526,7 @@ func fetchEc2TransitGatewayMulticastDomains(ctx context.Context, meta schema.Cli
 	for {
 		output, err := svc.DescribeTransitGatewayMulticastDomains(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.TransitGatewayMulticastDomains
 		if aws.ToString(output.NextToken) == "" {

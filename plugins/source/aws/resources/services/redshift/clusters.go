@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RedshiftClusters() *schema.Table {
@@ -18,8 +18,8 @@ func RedshiftClusters() *schema.Table {
 		Description:  "Describes a cluster.",
 		Resolver:     fetchRedshiftClusters,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -109,7 +109,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "cluster_snapshot_copy_status_retention_period",
 				Description: "The number of days that automated snapshots are retained in the destination region after they are copied from a source region.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ClusterSnapshotCopyStatus.RetentionPeriod"),
 			},
 			{
@@ -150,20 +150,20 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "data_transfer_progress_data_transferred_in_mega_bytes",
 				Description: "Describes the total amount of data that has been transferred in MB's.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("DataTransferProgress.DataTransferredInMegaBytes"),
 			},
 			{
 				Name:          "data_transfer_progress_elapsed_time_in_seconds",
 				Description:   "Describes the number of seconds that have elapsed during the data transfer.",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				Resolver:      schema.PathResolver("DataTransferProgress.ElapsedTimeInSeconds"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:          "data_transfer_progress_estimated_time_to_completion_in_seconds",
 				Description:   "Describes the estimated number of seconds remaining to complete the transfer.",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				Resolver:      schema.PathResolver("DataTransferProgress.EstimatedTimeToCompletionInSeconds"),
 				IgnoreInTests: true,
 			},
@@ -177,7 +177,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "data_transfer_progress_total_data_in_mega_bytes",
 				Description: "Describes the total amount of data to be transferred in megabytes.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("DataTransferProgress.TotalDataInMegaBytes"),
 			},
 			{
@@ -412,25 +412,25 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "restore_status_elapsed_time_in_seconds",
 				Description: "The amount of time an in-progress restore has been running, or the amount of time it took a completed restore to finish.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("RestoreStatus.ElapsedTimeInSeconds"),
 			},
 			{
 				Name:        "restore_status_estimated_time_to_completion_in_seconds",
 				Description: "The estimate of the time remaining before the restore will complete.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("RestoreStatus.EstimatedTimeToCompletionInSeconds"),
 			},
 			{
 				Name:        "restore_status_progress_in_mega_bytes",
 				Description: "The number of megabytes that have been transferred from snapshot storage.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("RestoreStatus.ProgressInMegaBytes"),
 			},
 			{
 				Name:        "restore_status_snapshot_size_in_mega_bytes",
 				Description: "The size of the set of snapshot data used to restore the cluster.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("RestoreStatus.SnapshotSizeInMegaBytes"),
 			},
 			{
@@ -460,7 +460,7 @@ func RedshiftClusters() *schema.Table {
 			{
 				Name:        "total_storage_capacity_in_mega_bytes",
 				Description: "The total storage capacity of the cluster in megabytes.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "vpc_id",
@@ -793,7 +793,7 @@ func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		response, err := svc.DescribeClusters(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Clusters
 		if aws.ToString(response.Marker) == "" {
@@ -814,7 +814,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 	}
 	response, err := svc.DescribeLoggingStatus(ctx, &cfg)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	return diag.WrapError(resource.Set(c.Name, response))
@@ -830,7 +830,7 @@ func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, 
 	for {
 		response, err := svc.DescribeClusterParameters(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Parameters
 		if aws.ToString(response.Marker) == "" {

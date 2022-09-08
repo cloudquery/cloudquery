@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2Eips() *schema.Table {
@@ -17,8 +16,8 @@ func Ec2Eips() *schema.Table {
 		Description:  "Describes an Elastic IP address, or a carrier IP address.",
 		Resolver:     fetchEc2Eips,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "allocation_id"}},
 		Columns: []schema.Column{
 			{
@@ -126,7 +125,7 @@ func fetchEc2Eips(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 		Filters: []types.Filter{{Name: aws.String("domain"), Values: []string{"vpc"}}},
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.Addresses
 	return nil

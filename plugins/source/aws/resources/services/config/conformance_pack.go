@@ -9,7 +9,7 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type ConformancePackComplianceWrapper struct {
@@ -23,8 +23,8 @@ func ConfigConformancePack() *schema.Table {
 		Description:   "Returns details of a conformance pack.",
 		Resolver:      fetchConfigConformancePacks,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("config"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -89,8 +89,8 @@ func ConfigConformancePack() *schema.Table {
 				Description:  "Compliance information of one or more AWS Config rules within a conformance pack",
 				Resolver:     fetchConfigConformancePackRuleCompliances,
 				Multiplex:    client.ServiceAccountRegionMultiplexer("config"),
-				IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-				DeleteFilter: client.DeleteAccountRegionFilter,
+				
+				
 				Columns: []schema.Column{
 					{
 						Name:        "conformance_pack_cq_id",
@@ -169,7 +169,7 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 		}
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- resp.ConformancePackDetails
 		if resp.NextToken == nil {
@@ -198,7 +198,7 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 	for {
 		resp, err := cs.DescribeConformancePackCompliance(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, conformancePackRuleCompliance := range resp.ConformancePackRuleComplianceList {
 			detailParams := &configservice.GetConformancePackComplianceDetailsInput{
@@ -210,7 +210,7 @@ func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.
 			for {
 				output, err := cs.GetConformancePackComplianceDetails(ctx, detailParams)
 				if err != nil {
-					return diag.WrapError(err)
+					return err
 				}
 				for _, conformancePackComplianceDetail := range output.ConformancePackRuleEvaluationResults {
 					res <- ConformancePackComplianceWrapper{

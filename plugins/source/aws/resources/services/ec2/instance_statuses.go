@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2InstanceStatuses() *schema.Table {
@@ -17,8 +16,8 @@ func Ec2InstanceStatuses() *schema.Table {
 		Description:  "Describes the status of an instance.",
 		Resolver:     fetchEc2InstanceStatuses,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -155,7 +154,7 @@ func fetchEc2InstanceStatuses(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		output, err := svc.DescribeInstanceStatus(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.InstanceStatuses
 		if aws.ToString(output.NextToken) == "" {

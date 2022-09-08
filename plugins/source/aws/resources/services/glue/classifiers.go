@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource classifiers --config classifiers.hcl --output .
+
 func Classifiers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_classifiers",
 		Description:  "Classifiers are triggered during a crawl task",
 		Resolver:     fetchGlueClassifiers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		Columns: []schema.Column{
 			{
@@ -97,7 +97,7 @@ func Classifiers() *schema.Table {
 			{
 				Name:        "csv_classifier_version",
 				Description: "The version of this classifier",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("CsvClassifier.Version"),
 			},
 			{
@@ -139,7 +139,7 @@ func Classifiers() *schema.Table {
 			{
 				Name:        "grok_classifier_version",
 				Description: "The version of this classifier",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("GrokClassifier.Version"),
 			},
 			{
@@ -169,7 +169,7 @@ func Classifiers() *schema.Table {
 			{
 				Name:        "json_classifier_version",
 				Description: "The version of this classifier",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("JsonClassifier.Version"),
 			},
 			{
@@ -205,7 +205,7 @@ func Classifiers() *schema.Table {
 			{
 				Name:        "xml_classifier_version",
 				Description: "The version of this classifier",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("XMLClassifier.Version"),
 			},
 		},
@@ -223,7 +223,7 @@ func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.GetClassifiers(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Classifiers
 

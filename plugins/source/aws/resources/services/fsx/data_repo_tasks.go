@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource data_repo_tasks --config data_repo_tasks.hcl --output .
+
 func DataRepoTasks() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_data_repo_tasks",
 		Description:  "A description of the data repository task",
 		Resolver:     fetchFsxDataRepoTasks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -112,7 +111,7 @@ func DataRepoTasks() *schema.Table {
 			{
 				Name:        "status_failed_count",
 				Description: "A running total of the number of files that the task failed to process",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Status.FailedCount"),
 			},
 			{
@@ -124,13 +123,13 @@ func DataRepoTasks() *schema.Table {
 			{
 				Name:        "status_succeeded_count",
 				Description: "A running total of the number of files that the task has successfully processed",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Status.SucceededCount"),
 			},
 			{
 				Name:        "status_total_count",
 				Description: "The total number of files that the task will process",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Status.TotalCount"),
 			},
 			{
@@ -155,7 +154,7 @@ func fetchFsxDataRepoTasks(ctx context.Context, meta schema.ClientMeta, parent *
 	for paginator.HasMorePages() {
 		result, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.DataRepositoryTasks
 	}

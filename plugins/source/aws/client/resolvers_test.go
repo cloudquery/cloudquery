@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	types1 "github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	types2 "github.com/aws/aws-sdk-go-v2/service/redshift/types"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/stretchr/testify/assert"
 )
 

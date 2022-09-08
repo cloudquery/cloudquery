@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func SagemakerTrainingJobs() *schema.Table {
@@ -20,8 +20,8 @@ func SagemakerTrainingJobs() *schema.Table {
 			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listSagemakerTrainingJobs, sagemakerTrainingJobsDetail))
 		},
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -464,7 +464,7 @@ func SagemakerTrainingJobs() *schema.Table {
 					{
 						Name:        "shuffle_config_seed",
 						Description: "Determines the shuffling order in ShuffleConfig value. ",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("ShuffleConfig.Seed"),
 					},
 				},
@@ -573,7 +573,7 @@ func sagemakerTrainingJobsDetail(ctx context.Context, meta schema.ClientMeta, re
 	}
 	response, err := svc.DescribeTrainingJob(ctx, &config)
 	if err != nil {
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- response
@@ -587,7 +587,7 @@ func listSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, res 
 	for {
 		response, err := svc.ListTrainingJobs(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, d := range response.TrainingJobSummaries {
 			res <- d
@@ -624,7 +624,7 @@ func resolveSagemakerTrainingJobAlgorithmSpecificationsMetricDefinitions(_ conte
 	}
 	b, err := json.Marshal(metricDefinitions)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
 }
@@ -653,7 +653,7 @@ func resolveSagemakerTrainingJobDebugHookConfigsCollectionConfigurations(_ conte
 	}
 	b, err := json.Marshal(collectionConfigurations)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
 }
@@ -806,7 +806,7 @@ func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta
 	}
 	response, err := svc.ListTags(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	tags := make(map[string]*string, len(response.Tags))
@@ -834,7 +834,7 @@ func resolveSagemakerTrainingJobSecondaryStatusTransitions(_ context.Context, _ 
 	}
 	b, err := json.Marshal(secondaryStatusTransitions)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
 }
@@ -854,7 +854,7 @@ func resolveSagemakerTrainingJobFinalMetricDataList(_ context.Context, _ schema.
 	}
 	b, err := json.Marshal(finalMetricDataList)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
 }

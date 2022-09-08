@@ -7,18 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource vpc_links --config vpc_links.hcl --output .
+
 func VpcLinks() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigateway_vpc_links",
 		Description:  "An API Gateway VPC link for a RestApi to access resources in an Amazon Virtual Private Cloud (VPC)",
 		Resolver:     fetchApigatewayVpcLinks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -90,7 +90,7 @@ func fetchApigatewayVpcLinks(ctx context.Context, meta schema.ClientMeta, parent
 	for paginator.HasMorePages() {
 		response, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}

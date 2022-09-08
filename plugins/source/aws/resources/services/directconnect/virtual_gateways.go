@@ -5,8 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func DirectconnectVirtualGateways() *schema.Table {
@@ -15,8 +14,8 @@ func DirectconnectVirtualGateways() *schema.Table {
 		Description:   "Information about a virtual private gateway for a private virtual interface.",
 		Resolver:      fetchDirectconnectVirtualGateways,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -57,7 +56,7 @@ func fetchDirectconnectVirtualGateways(ctx context.Context, meta schema.ClientMe
 	svc := c.Services().Directconnect
 	output, err := svc.DescribeVirtualGateways(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.VirtualGateways
 	return nil

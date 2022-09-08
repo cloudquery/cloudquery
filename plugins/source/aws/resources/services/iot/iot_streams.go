@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotStreams() *schema.Table {
@@ -16,8 +16,8 @@ func IotStreams() *schema.Table {
 		Description:   "Information about a stream.",
 		Resolver:      fetchIotStreams,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -128,7 +128,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for {
 		response, err := svc.ListStreams(ctx, &input)
 		if err != nil {
-			return diags.Add(diag.FromError(diag.WrapError(err), diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
+			return diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
 		}
 		for _, s := range response.Streams {
 			stream, err := svc.DescribeStream(ctx, &iot.DescribeStreamInput{

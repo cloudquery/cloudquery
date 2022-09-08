@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CognitoUserPools() *schema.Table {
@@ -17,8 +16,8 @@ func CognitoUserPools() *schema.Table {
 		Description:   "A container for information about the user pool.",
 		Resolver:      fetchCognitoUserPools,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("cognito-idp"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -514,7 +513,7 @@ func CognitoUserPools() *schema.Table {
 				Name:          "aws_cognito_user_pool_identity_providers",
 				Description:   "A container for information about an identity provider.",
 				Resolver:      fetchCognitoUserPoolIdentityProviders,
-				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -596,12 +595,12 @@ func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		out, err := svc.ListUserPools(ctx, &params, optsFunc)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range out.UserPools {
 			upo, err := svc.DescribeUserPool(ctx, &cognitoidentityprovider.DescribeUserPoolInput{UserPoolId: item.Id}, optsFunc)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- upo.UserPool
 		}
@@ -622,7 +621,7 @@ func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.Clie
 	for {
 		out, err := svc.ListIdentityProviders(ctx, &params, optsFunc)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range out.Providers {
 			pd, err := svc.DescribeIdentityProvider(ctx, &cognitoidentityprovider.DescribeIdentityProviderInput{
@@ -630,7 +629,7 @@ func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.Clie
 				UserPoolId:   pool.Id,
 			}, optsFunc)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- pd.IdentityProvider
 		}

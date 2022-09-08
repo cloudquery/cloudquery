@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource alarms --config gen.hcl --output .
+
 func Alarms() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_alarms",
 		Description:   "Describes an alarm",
 		Resolver:      fetchLightsailAlarms,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -57,12 +56,12 @@ func Alarms() *schema.Table {
 			{
 				Name:        "datapoints_to_alarm",
 				Description: "The number of data points that must not within the specified threshold to trigger the alarm",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "evaluation_periods",
 				Description: "The number of periods over which data is compared to the specified threshold",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "availability_zone",
@@ -111,7 +110,7 @@ func Alarms() *schema.Table {
 			{
 				Name:        "period",
 				Description: "The period, in seconds, over which the statistic is applied",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "resource_type",
@@ -163,7 +162,7 @@ func fetchLightsailAlarms(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		response, err := svc.GetAlarms(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Alarms
 		if aws.ToString(response.NextPageToken) == "" {

@@ -8,8 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	apigatewayv2fix "github.com/cloudquery/cloudquery/plugins/source/aws/resources/forks/apigatewayv2"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 const domainNamesIDPart = "domainnames"
@@ -20,8 +19,8 @@ func Apigatewayv2DomainNames() *schema.Table {
 		Description:   "Represents a domain name.",
 		Resolver:      fetchApigatewayv2DomainNames,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "domain_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -201,7 +200,7 @@ func fetchApigatewayv2DomainNames(ctx context.Context, meta schema.ClientMeta, _
 		})
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -223,7 +222,7 @@ func fetchApigatewayv2DomainNameRestApiMappings(ctx context.Context, meta schema
 		response, err := svc.GetApiMappings(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {

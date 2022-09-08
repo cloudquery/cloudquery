@@ -8,23 +8,22 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 var (
 	validStackNotFoundRegex = regexp.MustCompile("Stack with id (.*) does not exist")
 )
 
-//go:generate cq-gen --resource stacks --config gen.hcl --output .
+
 func Stacks() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_cloudformation_stacks",
 		Description:  "The Stack data type.",
 		Resolver:     fetchCloudformationStacks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("cloudformation"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
@@ -304,7 +303,7 @@ func fetchCloudformationStacks(ctx context.Context, meta schema.ClientMeta, _ *s
 	for {
 		output, err := svc.DescribeStacks(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Stacks
 		if aws.ToString(output.NextToken) == "" {
@@ -328,7 +327,7 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 				meta.Logger().Debug("received ValidationError on ListStackResources, stack does not exist", "region", c.Region, "err", err)
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.StackResourceSummaries
 		if aws.ToString(output.NextToken) == "" {

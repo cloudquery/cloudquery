@@ -9,18 +9,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen -config=keys.hcl -domain=kms -resource=keys
+
 func Keys() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_kms_keys",
 		Description:  "Contains metadata about a KMS key",
 		Resolver:     fetchKmsKeys,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("kms"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -204,7 +204,7 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	for {
 		response, err := svc.ListKeys(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range response.Keys {
 			d, err := svc.DescribeKey(ctx, &kms.DescribeKeyInput{KeyId: item.KeyId}, func(options *kms.Options) {
@@ -214,7 +214,7 @@ func fetchKmsKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			if d.KeyMetadata != nil {
 				res <- *d.KeyMetadata
@@ -234,7 +234,7 @@ func resolveKeysReplicaKeys(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	b, err := json.Marshal(key.MultiRegionConfiguration.ReplicaKeys)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
 }
@@ -250,7 +250,7 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	for {
 		result, err := svc.ListResourceTags(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, v := range result.Tags {
 			tags[aws.ToString(v.TagKey)] = aws.ToString(v.TagValue)
@@ -271,7 +271,7 @@ func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, res
 	}
 	result, err := svc.GetKeyRotationStatus(ctx, &kms.GetKeyRotationStatusInput{KeyId: key.KeyId})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.KeyRotationEnabled))
 }

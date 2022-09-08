@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource findings --config gen.hcl --output .
+
 func Findings() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_inspector_findings",
 		Description:  "Contains information about an Amazon Inspector finding",
 		Resolver:     fetchInspectorFindings,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("inspector"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -73,7 +72,7 @@ func Findings() *schema.Table {
 			{
 				Name:        "confidence",
 				Description: "This data element is currently not used",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "description",
@@ -103,7 +102,7 @@ func Findings() *schema.Table {
 			{
 				Name:        "schema_version",
 				Description: "The schema version of this data type",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "service",
@@ -140,7 +139,7 @@ func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		response, err := svc.ListFindings(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if len(response.FindingArns) > 0 {
 			out, err := svc.DescribeFindings(ctx, &inspector.DescribeFindingsInput{FindingArns: response.FindingArns})
@@ -148,7 +147,7 @@ func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent 
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- out.Findings
 		}

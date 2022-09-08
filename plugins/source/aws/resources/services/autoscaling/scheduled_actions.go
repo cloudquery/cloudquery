@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource autoscaling_scheduled_actions --config ./resources/services/autoscaling/gen.hcl --output .
+
 func AutoscalingScheduledActions() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_autoscaling_scheduled_actions",
 		Description:  "Describes a scheduled scaling action.",
 		Resolver:     fetchAutoscalingScheduledActions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -109,7 +108,7 @@ func fetchAutoscalingScheduledActions(ctx context.Context, meta schema.ClientMet
 	for {
 		output, err := svc.DescribeScheduledActions(ctx, params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, scheduledUpdateGroupAction := range output.ScheduledUpdateGroupActions {
 			res <- scheduledUpdateGroupAction

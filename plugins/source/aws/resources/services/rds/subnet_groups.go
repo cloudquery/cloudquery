@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsSubnetGroups() *schema.Table {
@@ -16,8 +15,8 @@ func RdsSubnetGroups() *schema.Table {
 		Description:  "Contains the details of an Amazon RDS DB subnet group",
 		Resolver:     fetchRdsSubnetGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -113,7 +112,7 @@ func fetchRdsSubnetGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		response, err := svc.DescribeDBSubnetGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.DBSubnetGroups
 		if aws.ToString(response.Marker) == "" {

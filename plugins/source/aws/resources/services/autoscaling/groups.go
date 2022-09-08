@@ -11,7 +11,7 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type autoscalingGroupWrapper struct {
@@ -27,8 +27,8 @@ func AutoscalingGroups() *schema.Table {
 		Description:  "Describes an Auto Scaling group.",
 		Resolver:     fetchAutoscalingGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -556,7 +556,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 				o.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			configurations = append(configurations, output.NotificationConfigurations...)
 			if aws.ToString(output.NextToken) == "" {
@@ -578,7 +578,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		output, err := svc.DescribeAutoScalingGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		groups := output.AutoScalingGroups
 		for i := 0; i < len(groups); i += 255 {
@@ -590,7 +590,7 @@ func fetchAutoscalingGroups(ctx context.Context, meta schema.ClientMeta, parent 
 			t := groups[i:end]
 			err := processGroupsBundle(t)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 		}
 
@@ -613,7 +613,7 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 			if isAutoScalingGroupNotExistsError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		for _, lb := range output.LoadBalancers {
 			j[*lb.LoadBalancerName] = *lb.State
@@ -638,7 +638,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 			if isAutoScalingGroupNotExistsError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		for _, lb := range output.LoadBalancerTargetGroups {
 			j[*lb.LoadBalancerTargetGroupARN] = *lb.State
@@ -689,7 +689,7 @@ func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.Clien
 			if isAutoScalingGroupNotExistsError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ScalingPolicies
 
@@ -730,7 +730,7 @@ func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.Client
 		if isAutoScalingGroupNotExistsError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.LifecycleHooks
 	return nil

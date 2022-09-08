@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transfer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource servers --config servers.hcl --output .
+
 func Servers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_transfer_servers",
 		Description:  "Describes the properties of a file transfer protocol-enabled server that was specified",
 		Resolver:     fetchTransferServers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -186,7 +186,7 @@ func Servers() *schema.Table {
 			{
 				Name:        "user_count",
 				Description: "Specifies the number of users that are assigned to a server you specified with the ServerId",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 		Relations: []*schema.Table{
@@ -228,7 +228,7 @@ func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		result, err := svc.ListServers(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, server := range result.Servers {
 			desc, err := svc.DescribeServer(ctx, &transfer.DescribeServerInput{ServerId: server.ServerId})
@@ -236,7 +236,7 @@ func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *s
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			if desc.Server != nil {
 				res <- desc.Server
@@ -261,7 +261,7 @@ func resolveServersTags(ctx context.Context, meta schema.ClientMeta, resource *s
 			if cl.IsNotFoundError(err) {
 				continue
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		client.TagsIntoMap(result.Tags, tags)
 		if aws.ToString(result.NextToken) == "" {

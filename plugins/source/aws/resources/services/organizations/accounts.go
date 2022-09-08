@@ -10,18 +10,18 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource accounts --config gen.hcl --output .
+
 func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_organizations_accounts",
 		Description:   "Contains information about an AWS account that is a member of an organization",
 		Resolver:      fetchOrganizationsAccounts,
 		Multiplex:     client.AccountMultiplex,
-		DeleteFilter:  client.DeleteAccountFilter,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		
+		
 		IgnoreInTests: true,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
@@ -98,7 +98,7 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *
 			}
 		}
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Accounts
 		if aws.ToString(response.NextToken) == "" {
@@ -119,7 +119,7 @@ func ResolveOrganizationsAccountTags(ctx context.Context, meta schema.ClientMeta
 	for {
 		response, err := cl.Services().Organizations.ListTagsForResource(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, t := range response.Tags {
 			allTags[*t.Key] = t.Value

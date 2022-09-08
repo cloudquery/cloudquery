@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type Detector struct {
@@ -20,8 +19,8 @@ func GuarddutyDetectors() *schema.Table {
 		Name:          "aws_guardduty_detectors",
 		Resolver:      fetchGuarddutyDetectors,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("guardduty"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -174,14 +173,14 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		output, err := svc.ListDetectors(ctx, config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, dId := range output.DetectorIds {
 			d, err := svc.GetDetector(ctx, &guardduty.GetDetectorInput{DetectorId: aws.String(dId)}, func(o *guardduty.Options) {
 				o.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- Detector{d, dId}
 		}
@@ -200,7 +199,7 @@ func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, 
 	for {
 		output, err := svc.ListMembers(ctx, config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Members
 		if output.NextToken == nil {

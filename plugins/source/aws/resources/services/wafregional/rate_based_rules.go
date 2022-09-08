@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource rate_based_rules --config rate_based_rules.hcl --output .
+
 func RateBasedRules() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_rate_based_rules",
 		Description:  "A combination of identifiers for web requests that you want to allow, block, or count, including rate limit.",
 		Resolver:     fetchWafregionalRateBasedRules,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
@@ -54,7 +54,7 @@ func RateBasedRules() *schema.Table {
 			{
 				Name:        "rate_limit",
 				Description: "The maximum number of requests, which have an identical value in the field specified by the RateKey, allowed in a five-minute period",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "id",
@@ -117,7 +117,7 @@ func fetchWafregionalRateBasedRules(ctx context.Context, meta schema.ClientMeta,
 	for {
 		result, err := svc.ListRateBasedRules(ctx, &params, func(o *wafregional.Options) { o.Region = cl.Region })
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range result.Rules {
 			detail, err := svc.GetRateBasedRule(
@@ -126,7 +126,7 @@ func fetchWafregionalRateBasedRules(ctx context.Context, meta schema.ClientMeta,
 				func(o *wafregional.Options) { o.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if detail.Rule == nil {
 				continue
@@ -152,7 +152,7 @@ func resolveWafregionalRateBasedRuleTags(ctx context.Context, meta schema.Client
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if result.TagInfoForResource != nil {
 			client.TagsIntoMap(result.TagInfoForResource.TagList, tags)

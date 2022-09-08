@@ -7,19 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource egress_only_internet_gateways --config gen.hcl --output .
+
 func EgressOnlyInternetGateways() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_egress_only_internet_gateways",
 		Description:  "Describes an egress-only internet gateway.",
 		Resolver:     fetchEc2EgressOnlyInternetGateways,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -75,7 +74,7 @@ func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientM
 	for {
 		output, err := svc.DescribeEgressOnlyInternetGateways(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.EgressOnlyInternetGateways
 		if aws.ToString(output.NextToken) == "" {

@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type PasswordPolicy struct {
@@ -21,8 +20,8 @@ func IamPasswordPolicies() *schema.Table {
 		Description:  "Contains information about the account password policy.",
 		Resolver:     fetchIamPasswordPolicies,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		Columns: []schema.Column{
 			{
@@ -107,7 +106,7 @@ func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, paren
 			res <- PasswordPolicy{types.PasswordPolicy{}, false}
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- PasswordPolicy{*response.PasswordPolicy, true}
 	return nil

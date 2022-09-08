@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func AutoscalingLaunchConfigurations() *schema.Table {
@@ -16,8 +15,8 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 		Description:  "Describes a launch configuration.",
 		Resolver:     fetchAutoscalingLaunchConfigurations,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -233,7 +232,7 @@ func fetchAutoscalingLaunchConfigurations(ctx context.Context, meta schema.Clien
 	for {
 		output, err := svc.DescribeLaunchConfigurations(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.LaunchConfigurations
 

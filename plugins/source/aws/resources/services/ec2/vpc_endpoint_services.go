@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2VpcEndpointServices() *schema.Table {
@@ -17,8 +16,8 @@ func Ec2VpcEndpointServices() *schema.Table {
 		Description:  "Describes a VPC endpoint service.",
 		Resolver:     fetchEc2VpcEndpointServices,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -129,7 +128,7 @@ func fetchEc2VpcEndpointServices(ctx context.Context, meta schema.ClientMeta, _ 
 	for {
 		output, err := svc.DescribeVpcEndpointServices(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ServiceDetails
 		if aws.ToString(output.NextToken) == "" {

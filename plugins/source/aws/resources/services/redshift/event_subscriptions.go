@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EventSubscriptions() *schema.Table {
@@ -18,8 +18,8 @@ func EventSubscriptions() *schema.Table {
 		Description:  "Describes event subscriptions.",
 		Resolver:     fetchRedshiftEventSubscriptions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -113,7 +113,7 @@ func fetchRedshiftEventSubscriptions(ctx context.Context, meta schema.ClientMeta
 	for {
 		result, err := svc.DescribeEventSubscriptions(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.EventSubscriptionsList
 		if aws.ToString(result.Marker) == "" {

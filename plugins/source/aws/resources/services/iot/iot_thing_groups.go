@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotThingGroups() *schema.Table {
@@ -16,8 +16,8 @@ func IotThingGroups() *schema.Table {
 		Description:  "Groups allow you to manage several things at once by categorizing them into groups",
 		Resolver:     fetchIotThingGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -131,7 +131,7 @@ func IotThingGroups() *schema.Table {
 			{
 				Name:        "version",
 				Description: "The version of the thing group.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 	}
@@ -151,7 +151,7 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		response, err := svc.ListThingGroups(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, g := range response.ThingGroups {
 			group, err := svc.DescribeThingGroup(ctx, &iot.DescribeThingGroupInput{
@@ -160,7 +160,7 @@ func fetchIotThingGroups(ctx context.Context, meta schema.ClientMeta, parent *sc
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- group
 		}
@@ -185,7 +185,7 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 	for {
 		response, err := svc.ListThingsInThingGroup(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		things = append(things, response.Things...)
@@ -210,7 +210,7 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 	for {
 		response, err := svc.ListAttachedPolicies(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, p := range response.Policies {
@@ -237,7 +237,7 @@ func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resou
 		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		client.TagsIntoMap(response.Tags, tags)

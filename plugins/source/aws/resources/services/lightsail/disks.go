@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource disks --config gen.hcl --output .
+
 func Disks() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_disks",
 		Description:  "Describes a block storage disk",
 		Resolver:     fetchLightsailDisks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -56,13 +55,13 @@ func Disks() *schema.Table {
 			{
 				Name:          "gb_in_use",
 				Description:   "(Deprecated) The number of GB in use by the disk",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "iops",
 				Description: "The input/output operations per second (IOPS) of the disk",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "is_attached",
@@ -104,7 +103,7 @@ func Disks() *schema.Table {
 			{
 				Name:        "size_in_gb",
 				Description: "The size of the disk in GB",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "state",
@@ -235,7 +234,7 @@ func Disks() *schema.Table {
 					{
 						Name:        "size_in_gb",
 						Description: "The size of the disk in GB",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "state",
@@ -270,7 +269,7 @@ func fetchLightsailDisks(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		response, err := svc.GetDisks(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Disks
 		if aws.ToString(response.NextPageToken) == "" {
@@ -287,7 +286,7 @@ func fetchLightsailDiskSnapshots(ctx context.Context, meta schema.ClientMeta, pa
 	for {
 		response, err := svc.GetDiskSnapshots(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.DiskSnapshots
 		if aws.ToString(response.NextPageToken) == "" {

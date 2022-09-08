@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CloudfrontDistributions() *schema.Table {
@@ -17,8 +17,8 @@ func CloudfrontDistributions() *schema.Table {
 		Description:  "A summary of the information about a CloudFront distribution.",
 		Resolver:     fetchCloudfrontDistributions,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -90,7 +90,7 @@ func CloudfrontDistributions() *schema.Table {
 			{
 				Name:        "cache_behavior_default_ttl",
 				Description: "This field is deprecated",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.DefaultTTL"),
 			},
 			{
@@ -135,13 +135,13 @@ func CloudfrontDistributions() *schema.Table {
 			{
 				Name:        "cache_behavior_max_ttl",
 				Description: "This field is deprecated",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.MaxTTL"),
 			},
 			{
 				Name:        "cache_behavior_min_ttl",
 				Description: "This field is deprecated",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("DistributionConfig.DefaultCacheBehavior.MinTTL"),
 			},
 			{
@@ -557,7 +557,7 @@ func CloudfrontDistributions() *schema.Table {
 					{
 						Name:        "default_ttl",
 						Description: "This field is deprecated",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DefaultTTL"),
 					},
 					{
@@ -600,13 +600,13 @@ func CloudfrontDistributions() *schema.Table {
 					{
 						Name:        "max_ttl",
 						Description: "This field is deprecated",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("MaxTTL"),
 					},
 					{
 						Name:        "min_ttl",
 						Description: "This field is deprecated",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("MinTTL"),
 					},
 					{
@@ -705,7 +705,7 @@ func CloudfrontDistributions() *schema.Table {
 					{
 						Name:        "error_caching_min_ttl",
 						Description: "The minimum amount of time, in seconds, that you want CloudFront to cache the HTTP status code specified in ErrorCode",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("ErrorCachingMinTTL"),
 					},
 					{
@@ -766,7 +766,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 	for {
 		response, err := svc.ListDistributions(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, d := range response.DistributionList.Items {
 			distribution, err := svc.GetDistribution(ctx, &cloudfront.GetDistributionInput{
@@ -775,7 +775,7 @@ func fetchCloudfrontDistributions(ctx context.Context, meta schema.ClientMeta, p
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- *distribution.Distribution
 		}
@@ -799,7 +799,7 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags.Items)))
 }

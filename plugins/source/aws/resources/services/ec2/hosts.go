@@ -7,19 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource hosts --config gen.hcl --output .
+
 func Hosts() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_ec2_hosts",
 		Description:   "Describes the properties of the Dedicated Host.",
 		Resolver:      fetchEc2Hosts,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		IgnoreInTests: true,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -227,7 +226,7 @@ func fetchEc2Hosts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			o.Region = c.Region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Hosts
 		if aws.ToString(output.NextToken) == "" {

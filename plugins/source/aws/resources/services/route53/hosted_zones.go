@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type Route53HostedZoneWrapper struct {
@@ -26,8 +26,8 @@ func Route53HostedZones() *schema.Table {
 		Description:  "A complex type that contains general information about the hosted zone.",
 		Resolver:     fetchRoute53HostedZones,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -98,7 +98,7 @@ func Route53HostedZones() *schema.Table {
 			{
 				Name:        "resource_record_set_count",
 				Description: "The number of resource record sets in the hosted zone.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 		Relations: []*schema.Table{
@@ -224,7 +224,7 @@ func Route53HostedZones() *schema.Table {
 					{
 						Name:        "ttl",
 						Description: "The resource record cache time to live (TTL), in seconds.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("TTL"),
 					},
 					{
@@ -236,7 +236,7 @@ func Route53HostedZones() *schema.Table {
 					{
 						Name:          "weight",
 						Description:   "Weighted resource record sets only: Among resource record sets that have the same combination of DNS name and type, a value that determines the proportion of DNS queries that Amazon Route 53 responds to using the current resource record set.",
-						Type:          schema.TypeBigInt,
+						Type:          schema.TypeInt,
 						IgnoreInTests: true,
 					},
 				},
@@ -277,7 +277,7 @@ func Route53HostedZones() *schema.Table {
 					{
 						Name:        "ttl",
 						Description: "The TTL that Amazon Route 53 assigned to all of the resource record sets that it created in the specified hosted zone.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("TTL"),
 					},
 					{
@@ -356,12 +356,12 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, h := range hostedZones {
 			gotHostedZone, err := svc.GetHostedZone(ctx, &route53.GetHostedZoneInput{Id: h.Id})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			var delegationSetId *string
 			if gotHostedZone.DelegationSet != nil {
@@ -381,7 +381,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		response, err := svc.ListHostedZones(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for i := 0; i < len(response.HostedZones); i += 10 {
@@ -393,7 +393,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 			zones := response.HostedZones[i:end]
 			err := processHostedZonesBundle(zones)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 		}
 
@@ -411,7 +411,7 @@ func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.
 	for {
 		response, err := svc.ListQueryLoggingConfigs(ctx, &config, func(options *route53.Options) {})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.QueryLoggingConfigs
 		if aws.ToString(response.NextToken) == "" {
@@ -428,7 +428,7 @@ func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.C
 	for {
 		response, err := svc.ListResourceRecordSets(ctx, &config, func(options *route53.Options) {})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.ResourceRecordSets
@@ -458,7 +458,7 @@ func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta sche
 	for {
 		response, err := svc.ListTrafficPolicyInstancesByHostedZone(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.TrafficPolicyInstances
 		if aws.ToString(response.TrafficPolicyInstanceNameMarker) == "" {

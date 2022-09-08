@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource web_acls --config web_acls.hcl --output .
+
 func WebAcls() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_web_acls",
 		Description:  "Contains the Rules that identify the requests that you want to allow, block, or count.",
 		Resolver:     fetchWafregionalWebAcls,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
@@ -84,7 +84,7 @@ func WebAcls() *schema.Table {
 					{
 						Name:        "priority",
 						Description: "Specifies the order in which the Rules in a WebACL are evaluated",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "rule_id",
@@ -132,7 +132,7 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		result, err := svc.ListWebACLs(ctx, &params, func(o *wafregional.Options) { o.Region = cl.Region })
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range result.WebACLs {
 			detail, err := svc.GetWebACL(
@@ -141,7 +141,7 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 				func(o *wafregional.Options) { o.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if detail.WebACL == nil {
 				continue
@@ -163,7 +163,7 @@ func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, r
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if result.TagInfoForResource != nil {
 			client.TagsIntoMap(result.TagInfoForResource.TagList, tags)

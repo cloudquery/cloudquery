@@ -7,19 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource client_certificates --config client_certificates.hcl --output .
+
 func ClientCertificates() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigateway_client_certificates",
 		Description:  "Represents a client certificate used to configure client-side SSL authentication while sending requests to the integration endpoint",
 		Resolver:     fetchApigatewayClientCertificates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,6 +35,7 @@ func ClientCertificates() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the resource",
 				Type:        schema.TypeString,
 				Resolver:    resolveApigatewayClientCertificateArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",
@@ -85,7 +83,7 @@ func fetchApigatewayClientCertificates(ctx context.Context, meta schema.ClientMe
 	for p := apigateway.NewGetClientCertificatesPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}

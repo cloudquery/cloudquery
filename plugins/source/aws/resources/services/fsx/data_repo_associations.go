@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource data_repo_associations --config data_repo_associations.hcl --output .
+
 func DataRepoAssociations() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_data_repo_associations",
 		Description:  "The configuration of a data repository association that links an Amazon FSx for Lustre file system to an Amazon S3 bucket",
 		Resolver:     fetchFsxDataRepoAssociations,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -72,7 +71,7 @@ func DataRepoAssociations() *schema.Table {
 			{
 				Name:        "imported_file_chunk_size",
 				Description: "For files imported from a data repository, this value determines the stripe count and maximum amount of data per file (in MiB) stored on a single physical disk",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "lifecycle",
@@ -119,7 +118,7 @@ func fetchFsxDataRepoAssociations(ctx context.Context, meta schema.ClientMeta, p
 	for paginator.HasMorePages() {
 		result, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.Associations
 	}

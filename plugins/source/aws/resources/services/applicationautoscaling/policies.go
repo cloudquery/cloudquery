@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func ApplicationautoscalingPolicies() *schema.Table {
@@ -17,7 +16,7 @@ func ApplicationautoscalingPolicies() *schema.Table {
 		Description:   "Information about a scaling policy to use with Application Auto Scaling",
 		Resolver:      fetchApplicationautoscalingPolicies,
 		Multiplex:     client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -112,7 +111,7 @@ func fetchApplicationautoscalingPolicies(ctx context.Context, meta schema.Client
 	for {
 		output, err := svc.DescribeScalingPolicies(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- output.ScalingPolicies

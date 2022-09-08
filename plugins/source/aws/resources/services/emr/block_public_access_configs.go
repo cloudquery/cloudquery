@@ -5,8 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EmrBlockPublicAccessConfigs() *schema.Table {
@@ -14,8 +13,8 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 		Name:         "aws_emr_block_public_access_configs",
 		Resolver:     fetchEmrBlockPublicAccessConfigs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
 		Columns: []schema.Column{
 			{
@@ -110,7 +109,7 @@ func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMet
 			meta.Logger().Debug("received InvalidRequestException on GetBlockPublicAccessConfiguration, api is not available in the current Region.", "err", err)
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- out
 	return nil

@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Snapshots() *schema.Table {
@@ -17,7 +17,7 @@ func Snapshots() *schema.Table {
 		Name:          "aws_redshift_snapshots",
 		Description:   "Describes a snapshot.",
 		Resolver:      fetchRedshiftSnapshots,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -79,7 +79,7 @@ func Snapshots() *schema.Table {
 			{
 				Name:        "elapsed_time",
 				Description: "The amount of time an in-progress snapshot backup has been running, or the amount of time it took a completed backup to finish, in seconds.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ElapsedTimeInSeconds"),
 			},
 			{
@@ -106,7 +106,7 @@ func Snapshots() *schema.Table {
 			{
 				Name:        "estimated_seconds_to_completion",
 				Description: "The estimate of the time remaining before the snapshot backup will complete. Returns 0 for a completed backup.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "kms_key_id",
@@ -249,7 +249,7 @@ func fetchRedshiftSnapshots(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		result, err := svc.DescribeClusterSnapshots(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.Snapshots
 		if aws.ToString(result.Marker) == "" {

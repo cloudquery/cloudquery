@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource dev_endpoints --config dev_endpoints.hcl --output .
+
 func DevEndpoints() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_dev_endpoints",
 		Description:  "A development endpoint where a developer can remotely debug extract, transform, and load (ETL) scripts",
 		Resolver:     fetchGlueDevEndpoints,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -100,12 +100,12 @@ func DevEndpoints() *schema.Table {
 			{
 				Name:        "number_of_nodes",
 				Description: "The number of Glue Data Processing Units (DPUs) allocated to this DevEndpoint",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "number_of_workers",
 				Description: "The number of workers of a defined workerType that are allocated to the development endpoint",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "private_address",
@@ -170,7 +170,7 @@ func DevEndpoints() *schema.Table {
 			{
 				Name:        "zeppelin_remote_spark_interpreter_port",
 				Description: "The Apache Zeppelin port for the remote Apache Spark interpreter",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 	}
@@ -190,7 +190,7 @@ func fetchGlueDevEndpoints(ctx context.Context, meta schema.ClientMeta, parent *
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.DevEndpoints
 		if aws.ToString(result.NextToken) == "" {
@@ -215,7 +215,7 @@ func resolveGlueDevEndpointTags(ctx context.Context, meta schema.ClientMeta, res
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Tags))
 }

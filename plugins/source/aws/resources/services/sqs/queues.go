@@ -8,19 +8,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
-//go:generate cq-gen --resource queues --config queues.hcl --output .
+
 func Queues() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_sqs_queues",
 		Description:  "Amazon Simple Queue Service",
 		Resolver:     fetchSqsQueues,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("sqs"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -49,42 +49,42 @@ func Queues() *schema.Table {
 			{
 				Name:        "approximate_number_of_messages",
 				Description: "The approximate number of messages available for retrieval from the queue",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "approximate_number_of_messages_delayed",
 				Description: "The approximate number of messages in the queue that are delayed and not available for reading immediately",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "approximate_number_of_messages_not_visible",
 				Description: "The approximate number of messages that are in flight",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "created_timestamp",
 				Description: "The time when the queue was created in seconds (epoch time)",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "delay_seconds",
 				Description: "The default delay on the queue in seconds",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "last_modified_timestamp",
 				Description: "The time when the queue was last changed in seconds (epoch time)",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "maximum_message_size",
 				Description: "The limit of how many bytes a message can contain before Amazon SQS rejects it",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "message_retention_period",
 				Description: "The length of time, in seconds, for which Amazon SQS retains a message",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "policy",
@@ -99,7 +99,7 @@ func Queues() *schema.Table {
 			{
 				Name:        "receive_message_wait_time_seconds",
 				Description: "The length of time, in seconds, for which the ReceiveMessage action waits for a message to arrive",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "redrive_policy",
@@ -109,7 +109,7 @@ func Queues() *schema.Table {
 			{
 				Name:        "visibility_timeout",
 				Description: "The visibility timeout for the queue",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "kms_master_key_id",
@@ -119,7 +119,7 @@ func Queues() *schema.Table {
 			{
 				Name:        "kms_data_key_reuse_period_seconds",
 				Description: "The length of time, in seconds, for which Amazon SQS can reuse a data key to encrypt or decrypt messages before calling KMS again",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "sqs_managed_sse_enabled",
@@ -170,7 +170,7 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		result, err := svc.ListQueues(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, url := range result.QueueUrls {
@@ -183,16 +183,16 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 
 			var q Queue
 			d, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &q})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if err := d.Decode(out.Attributes); err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			q.URL = url
 			res <- q
@@ -210,7 +210,7 @@ func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *
 	q := resource.Item.(Queue)
 	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Tags))
 }

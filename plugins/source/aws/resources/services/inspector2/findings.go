@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource findings --config gen.hcl --output .
+
 func Findings() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_inspector2_findings",
 		Description:  "Details about an Amazon Inspector finding",
 		Resolver:     fetchInspector2Findings,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("inspector2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -188,7 +187,7 @@ func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		response, err := svc.ListFindings(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Findings
 		if aws.ToString(response.NextToken) == "" {

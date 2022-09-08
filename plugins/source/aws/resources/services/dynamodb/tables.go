@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type simplifiedGlobalSecondaryIndex struct {
@@ -25,7 +25,7 @@ func DynamodbTables() *schema.Table {
 		Description:   "Information about a DynamoDB table.",
 		Resolver:      fetchDynamodbTables,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("dynamodb"),
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -78,7 +78,7 @@ func DynamodbTables() *schema.Table {
 			{
 				Name:        "item_count",
 				Description: "The number of items in the specified table",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "key_schema",
@@ -111,19 +111,19 @@ func DynamodbTables() *schema.Table {
 			{
 				Name:        "provisioned_throughput_number_of_decreases_today",
 				Description: "The number of provisioned throughput decreases for this table during this UTC calendar day",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ProvisionedThroughput.NumberOfDecreasesToday"),
 			},
 			{
 				Name:        "provisioned_throughput_read_capacity_units",
 				Description: "The maximum number of strongly consistent reads consumed per second before DynamoDB returns a ThrottlingException",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ProvisionedThroughput.ReadCapacityUnits"),
 			},
 			{
 				Name:        "provisioned_throughput_write_capacity_units",
 				Description: "The maximum number of writes consumed per second before DynamoDB returns a ThrottlingException.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ProvisionedThroughput.WriteCapacityUnits"),
 			},
 			{
@@ -195,7 +195,7 @@ func DynamodbTables() *schema.Table {
 			{
 				Name:        "size_bytes",
 				Description: "The total size of the specified table, in bytes",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("TableSizeBytes"),
 			},
 			{
@@ -237,7 +237,7 @@ func DynamodbTables() *schema.Table {
 					{
 						Name:        "index_size_bytes",
 						Description: "The total size of the specified index, in bytes",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "status",
@@ -248,7 +248,7 @@ func DynamodbTables() *schema.Table {
 					{
 						Name:        "item_count",
 						Description: "The number of items in the specified index",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "key_schema",
@@ -283,19 +283,19 @@ func DynamodbTables() *schema.Table {
 					{
 						Name:        "provisioned_throughput_number_of_decreases_today",
 						Description: "The number of provisioned throughput decreases for this table during this UTC calendar day",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("ProvisionedThroughput.NumberOfDecreasesToday"),
 					},
 					{
 						Name:        "provisioned_throughput_read_capacity_units",
 						Description: "The maximum number of strongly consistent reads consumed per second before DynamoDB returns a ThrottlingException",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("ProvisionedThroughput.ReadCapacityUnits"),
 					},
 					{
 						Name:        "provisioned_throughput_write_capacity_units",
 						Description: "The maximum number of writes consumed per second before DynamoDB returns a ThrottlingException.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("ProvisionedThroughput.WriteCapacityUnits"),
 					},
 				},
@@ -326,12 +326,12 @@ func DynamodbTables() *schema.Table {
 					{
 						Name:        "index_size_bytes",
 						Description: "The total size of the specified index, in bytes",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "item_count",
 						Description: "The number of items in the specified index",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "key_schema",
@@ -379,7 +379,7 @@ func DynamodbTables() *schema.Table {
 					{
 						Name:        "provisioned_throughput_override_read_capacity_units",
 						Description: "Replica-specific read capacity units",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("ProvisionedThroughputOverride.ReadCapacityUnits"),
 					},
 					{
@@ -513,7 +513,7 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		output, err := svc.ListTables(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for i := range output.TableNames {
@@ -522,7 +522,7 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- response.Table
 		}
@@ -547,7 +547,7 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
 }
@@ -664,7 +664,7 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	for i := range output.TableAutoScalingDescription.Replicas {
@@ -718,7 +718,7 @@ func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.Client
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	res <- output.ContinuousBackupsDescription

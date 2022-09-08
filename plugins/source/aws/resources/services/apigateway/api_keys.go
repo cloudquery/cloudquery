@@ -8,19 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource api_keys --config api_keys.hcl --output .
+
 func APIKeys() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigateway_api_keys",
 		Description:  "A resource that can be distributed to callers for executing Method resources that require an API key",
 		Resolver:     fetchApigatewayApiKeys,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +36,7 @@ func APIKeys() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the resource",
 				Type:        schema.TypeString,
 				Resolver:    resolveApigatewayAPIKeyArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "created_date",
@@ -108,7 +106,7 @@ func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	for p.HasMorePages() {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}

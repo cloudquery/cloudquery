@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type WrappedSageMakerModel struct {
@@ -22,8 +22,8 @@ func SagemakerModels() *schema.Table {
 		Description:   "Provides summary information about a model.",
 		Resolver:      fetchSagemakerModels,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -185,7 +185,7 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 	for {
 		response, err := svc.ListModels(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		// get more details about the notebook instance
@@ -197,7 +197,7 @@ func fetchSagemakerModels(ctx context.Context, meta schema.ClientMeta, _ *schema
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 
 			model := WrappedSageMakerModel{
@@ -226,7 +226,7 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	response, err := svc.ListTags(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	tags := make(map[string]*string, len(response.Tags))

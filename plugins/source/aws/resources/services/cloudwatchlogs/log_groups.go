@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource log_groups --config gen.hcl --output .
+
 func LogGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_cloudwatchlogs_log_groups",
 		Description:  "Represents a log group.",
 		Resolver:     fetchCloudwatchlogsLogGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -48,7 +48,7 @@ func LogGroups() *schema.Table {
 			{
 				Name:        "creation_time",
 				Description: "The creation time of the log group, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:          "kms_key_id",
@@ -64,18 +64,18 @@ func LogGroups() *schema.Table {
 			{
 				Name:        "metric_filter_count",
 				Description: "The number of metric filters.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:          "retention_in_days",
 				Description:   "The number of days to retain the log events in the specified log group",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "stored_bytes",
 				Description: "The number of bytes stored.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 	}
@@ -92,7 +92,7 @@ func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, p
 	for {
 		response, err := svc.DescribeLogGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.LogGroups
 		if aws.ToString(response.NextToken) == "" {
@@ -108,7 +108,7 @@ func ResolveCloudwatchlogsLogGroupTags(ctx context.Context, meta schema.ClientMe
 	svc := cl.Services().CloudwatchLogs
 	out, err := svc.ListTagsLogGroup(ctx, &cloudwatchlogs.ListTagsLogGroupInput{LogGroupName: lg.LogGroupName})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, out.Tags))
 }

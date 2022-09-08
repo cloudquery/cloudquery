@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func DirectconnectVirtualInterfaces() *schema.Table {
@@ -16,8 +15,8 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 		Description:   "Information about a virtual interface. A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network",
 		Resolver:      fetchDirectconnectVirtualInterfaces,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -48,7 +47,7 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 			{
 				Name:        "amazon_side_asn",
 				Description: "The autonomous system number (ASN) for the Amazon side of the connection.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "asn",
@@ -233,7 +232,7 @@ func fetchDirectconnectVirtualInterfaces(ctx context.Context, meta schema.Client
 	svc := c.Services().Directconnect
 	output, err := svc.DescribeVirtualInterfaces(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.VirtualInterfaces
 	return nil

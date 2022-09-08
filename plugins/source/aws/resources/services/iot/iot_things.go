@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotThings() *schema.Table {
@@ -17,8 +17,8 @@ func IotThings() *schema.Table {
 		Description:  "The properties of the thing, including thing name, thing type name, and a list of thing attributes.",
 		Resolver:     fetchIotThings,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -66,7 +66,7 @@ func IotThings() *schema.Table {
 			{
 				Name:        "version",
 				Description: "The version of the thing record in the registry.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 	}
@@ -86,7 +86,7 @@ func fetchIotThings(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		response, err := svc.ListThings(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Things
 		if aws.ToString(response.NextToken) == "" {
@@ -110,7 +110,7 @@ func ResolveIotThingPrincipals(ctx context.Context, meta schema.ClientMeta, reso
 		response, err := svc.ListThingPrincipals(ctx, &input)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		principals = append(principals, response.Principals...)
 

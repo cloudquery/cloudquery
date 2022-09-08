@@ -7,19 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource parameter_groups --config ./gen.hcl --output .
+
 func ParameterGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_parameter_groups",
 		Description:  "Provides details about Elasticache parameter groups.",
 		Resolver:     fetchElasticacheParameterGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -138,7 +137,7 @@ func fetchElasticacheParameterGroups(ctx context.Context, meta schema.ClientMeta
 		describeCacheParameterGroupsOutput, err := svc.DescribeCacheParameterGroups(ctx, &describeCacheParameterGroupsInput)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- describeCacheParameterGroupsOutput.CacheParameterGroups
@@ -159,7 +158,7 @@ func fetchElasticacheParameterGroupParameters(ctx context.Context, meta schema.C
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.Parameters
 	}

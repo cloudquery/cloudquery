@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource database_snapshots --config gen.hcl --output .
+
 func DatabaseSnapshots() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_database_snapshots",
 		Description:   "Describes a database snapshot",
 		Resolver:      fetchLightsailDatabaseSnapshots,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -93,7 +92,7 @@ func DatabaseSnapshots() *schema.Table {
 			{
 				Name:        "size_in_gb",
 				Description: "The size of the disk in GB (for example, 32) for the database snapshot",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "state",
@@ -126,7 +125,7 @@ func fetchLightsailDatabaseSnapshots(ctx context.Context, meta schema.ClientMeta
 	for {
 		response, err := svc.GetRelationalDatabaseSnapshots(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.RelationalDatabaseSnapshots
 		if aws.ToString(response.NextPageToken) == "" {

@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotBillingGroups() *schema.Table {
@@ -16,8 +16,8 @@ func IotBillingGroups() *schema.Table {
 		Description:   "Billing groups are groups of things created for billing purposes that collect billable information for the things",
 		Resolver:      fetchIotBillingGroups,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -78,7 +78,7 @@ func IotBillingGroups() *schema.Table {
 			{
 				Name:        "version",
 				Description: "The version of the billing group.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 	}
@@ -98,7 +98,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		response, err := svc.ListBillingGroups(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, g := range response.BillingGroups {
 			group, err := svc.DescribeBillingGroup(ctx, &iot.DescribeBillingGroupInput{
@@ -107,7 +107,7 @@ func fetchIotBillingGroups(ctx context.Context, meta schema.ClientMeta, parent *
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- group
 		}
@@ -132,7 +132,7 @@ func ResolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 	for {
 		response, err := svc.ListThingsInBillingGroup(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		things = append(things, response.Things...)
@@ -157,7 +157,7 @@ func ResolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, res
 		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		client.TagsIntoMap(response.Tags, tags)

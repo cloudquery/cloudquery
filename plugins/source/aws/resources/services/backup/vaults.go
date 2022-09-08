@@ -12,7 +12,7 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Vaults() *schema.Table {
@@ -21,8 +21,8 @@ func Vaults() *schema.Table {
 		Description:          "Contains metadata about a backup vault.",
 		Resolver:             fetchBackupVaults,
 		Multiplex:            client.ServiceAccountRegionMultiplexer("backup"),
-		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:         client.DeleteAccountRegionFilter,
+		
+		
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		PostResourceResolver: resolveVaultNotifications,
 		Columns: []schema.Column{
@@ -80,19 +80,19 @@ func Vaults() *schema.Table {
 			{
 				Name:          "max_retention_days",
 				Description:   "The Backup Vault Lock setting that specifies the maximum retention period that the vault retains its recovery points.",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				IgnoreInTests: true,
 			},
 			{
 				Name:          "min_retention_days",
 				Description:   "The Backup Vault Lock setting that specifies the minimum retention period that the vault retains its recovery points.",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "number_of_recovery_points",
 				Description: "The number of recovery points that are stored in a backup vault.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:          "access_policy",
@@ -123,7 +123,7 @@ func Vaults() *schema.Table {
 				Name:          "aws_backup_vault_recovery_points",
 				Description:   "The recovery points stored in a backup vault.",
 				Resolver:      fetchVaultRecoveryPoints,
-				IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+				
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -135,7 +135,7 @@ func Vaults() *schema.Table {
 					{
 						Name:        "backup_size",
 						Description: "The size, in bytes, of a backup.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("BackupSizeInBytes"),
 					},
 					{
@@ -189,13 +189,13 @@ func Vaults() *schema.Table {
 					{
 						Name:        "delete_after",
 						Description: "Specifies the number of days after creation that a recovery point is deleted.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Lifecycle.DeleteAfterDays"),
 					},
 					{
 						Name:        "move_to_cold_storage_after",
 						Description: "Specifies the number of days after creation that a recovery point is moved to cold storage.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Lifecycle.MoveToColdStorageAfterDays"),
 					},
 					{
@@ -252,7 +252,7 @@ func fetchBackupVaults(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		result, err := svc.ListBackupVaults(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.BackupVaultList
 		if aws.ToString(result.NextToken) == "" {
@@ -275,7 +275,7 @@ func resolveVaultTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 			break
 		}
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for k, v := range result.Tags {
 			tags[k] = v
@@ -301,7 +301,7 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Policy))
 }
@@ -318,16 +318,16 @@ func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, reso
 	if err != nil {
 		var ae smithy.APIError
 		if !errors.As(err, &ae) {
-			return diag.WrapError(err)
+			return err
 		}
 		if ae.ErrorCode() == "ERROR_2106" {
 			// trying to ignore "ERROR_2106: Failed reading notifications from database for Backup vault ..."
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("notification_events", result.BackupVaultEvents); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set("notification_sns_topic_arn", result.SNSTopicArn))
 }
@@ -340,7 +340,7 @@ func fetchVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		result, err := svc.ListRecoveryPointsByBackupVault(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.RecoveryPoints
 		if aws.ToString(result.NextToken) == "" {
@@ -358,7 +358,7 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	resourceARN, err := arn.Parse(*rp.ResourceArn)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	// decide if the backed up resource supports tags
@@ -389,7 +389,7 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 				// advanced backup features are not enabled for dynamodb
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 
 		if result == nil {

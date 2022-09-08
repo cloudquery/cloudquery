@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotThingTypes() *schema.Table {
@@ -17,8 +17,8 @@ func IotThingTypes() *schema.Table {
 		Description:  "The definition of the thing type, including thing type name and description.",
 		Resolver:     fetchIotThingTypes,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -102,7 +102,7 @@ func fetchIotThingTypes(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		response, err := svc.ListThingTypes(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.ThingTypes
@@ -127,7 +127,7 @@ func ResolveIotThingTypeTags(ctx context.Context, meta schema.ClientMeta, resour
 		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		client.TagsIntoMap(response.Tags, tags)

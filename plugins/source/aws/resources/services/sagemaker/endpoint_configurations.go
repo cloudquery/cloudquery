@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func SagemakerEndpointConfigurations() *schema.Table {
@@ -16,8 +16,8 @@ func SagemakerEndpointConfigurations() *schema.Table {
 		Description:   "Provides summary information for an endpoint configuration.",
 		Resolver:      fetchSagemakerEndpointConfigurations,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -138,7 +138,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 	for {
 		response, err := svc.ListEndpointConfigs(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		// get more details about the notebook instance
@@ -150,7 +150,7 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 
 			res <- response
@@ -177,7 +177,7 @@ func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.
 	}
 	response, err := svc.ListTags(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	tags := make(map[string]*string, len(response.Tags))

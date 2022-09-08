@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func ElasticsearchDomains() *schema.Table {
@@ -16,8 +16,8 @@ func ElasticsearchDomains() *schema.Table {
 		Description:  "The current status of an Elasticsearch domain.",
 		Resolver:     fetchElasticsearchDomains,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("es"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
@@ -440,7 +440,7 @@ func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, pare
 	svc := c.Services().ElasticSearch
 	out, err := svc.ListDomainNames(ctx, &elasticsearchservice.ListDomainNamesInput{}, optsFunc)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	for _, info := range out.DomainNames {
 		domainOutput, err := svc.DescribeElasticsearchDomain(ctx, &elasticsearchservice.DescribeElasticsearchDomainInput{DomainName: info.DomainName}, optsFunc)
@@ -461,7 +461,7 @@ func resolveElasticsearchDomainTags(ctx context.Context, meta schema.ClientMeta,
 		o.Region = region
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if len(tagsOutput.TagList) == 0 {
 		return nil

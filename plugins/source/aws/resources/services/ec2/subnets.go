@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2Subnets() *schema.Table {
@@ -16,8 +15,8 @@ func Ec2Subnets() *schema.Table {
 		Description:  "Describes a subnet.",
 		Resolver:     fetchEc2Subnets,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -170,7 +169,7 @@ func fetchEc2Subnets(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for {
 		output, err := svc.DescribeSubnets(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Subnets
 		if aws.ToString(output.NextToken) == "" {

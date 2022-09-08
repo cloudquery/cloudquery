@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource filesystems --config filesystems.hcl --output .
+
 func Filesystems() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_filesystems",
 		Description:  "A description of a specific Amazon FSx file system",
 		Resolver:     fetchFsxFilesystems,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -97,7 +96,7 @@ func Filesystems() *schema.Table {
 			{
 				Name:        "storage_capacity",
 				Description: "The storage capacity of the file system in gibibytes (GiB)",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "storage_type",
@@ -136,7 +135,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "automatic_backup_retention_days",
 						Description: "The number of days to retain automatic backups",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "copy_tags_to_backups",
@@ -180,7 +179,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "data_repo_cfg_imported_file_chunk_size",
 						Description: "For files imported from a data repository, this value determines the stripe count and maximum amount of data per file (in MiB) stored on a single physical disk",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DataRepositoryConfiguration.ImportedFileChunkSize"),
 					},
 					{
@@ -219,7 +218,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "per_unit_storage_throughput",
 						Description: "Per unit storage throughput represents the megabytes per second of read or write throughput per 1 tebibyte of storage provisioned",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "root_squash_configuration_no_squash_nids",
@@ -254,7 +253,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "automatic_backup_retention_days",
 						Description: "The number of days to retain automatic backups",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "daily_automatic_backup_start_time",
@@ -269,7 +268,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "disk_iops_configuration_iops",
 						Description: "The total number of SSD IOPS provisioned for the file system",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DiskIopsConfiguration.Iops"),
 					},
 					{
@@ -320,7 +319,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "throughput_capacity",
 						Description: "The sustained throughput of an Amazon FSx file system in Megabytes per second (MBps)",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "weekly_maintenance_start_time",
@@ -343,7 +342,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "automatic_backup_retention_days",
 						Description: "The number of days to retain automatic backups",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "copy_tags_to_backups",
@@ -368,7 +367,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "disk_iops_configuration_iops",
 						Description: "The total number of SSD IOPS provisioned for the file system",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DiskIopsConfiguration.Iops"),
 					},
 					{
@@ -385,7 +384,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "throughput_capacity",
 						Description: "The throughput of an Amazon FSx file system, measured in megabytes per second (MBps)",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "weekly_maintenance_start_time",
@@ -436,7 +435,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "automatic_backup_retention_days",
 						Description: "The number of days to retain automatic backups",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "copy_tags_to_backups",
@@ -506,7 +505,7 @@ func Filesystems() *schema.Table {
 					{
 						Name:        "throughput_capacity",
 						Description: "The throughput of the Amazon FSx file system, measured in megabytes per second",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "weekly_maintenance_start_time",
@@ -531,7 +530,7 @@ func fetchFsxFilesystems(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for paginator.HasMorePages() {
 		result, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.FileSystems
 	}

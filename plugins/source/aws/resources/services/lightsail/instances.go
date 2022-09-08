@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Instances() *schema.Table {
@@ -18,8 +18,8 @@ func Instances() *schema.Table {
 		Description:  "Describes an instance (a virtual private server)",
 		Resolver:     fetchLightsailInstances,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -67,7 +67,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "hardware_cpu_count",
 				Description: "The number of vCPUs the instance has",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Hardware.CpuCount"),
 			},
 			{
@@ -111,7 +111,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "networking_monthly_transfer_gb_per_month_allocated",
 				Description: "The amount allocated per month (in GB)",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Networking.MonthlyTransfer.GbPerMonthAllocated"),
 			},
 			{
@@ -137,7 +137,7 @@ func Instances() *schema.Table {
 			{
 				Name:        "state_code",
 				Description: "The status code for the instance",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("State.Code"),
 			},
 			{
@@ -227,13 +227,13 @@ func Instances() *schema.Table {
 					{
 						Name:          "gb_in_use",
 						Description:   "(Deprecated) The number of GB in use by the disk",
-						Type:          schema.TypeBigInt,
+						Type:          schema.TypeInt,
 						IgnoreInTests: true,
 					},
 					{
 						Name:        "iops",
 						Description: "The input/output operations per second (IOPS) of the disk",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "is_attached",
@@ -275,7 +275,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "size_in_gb",
 						Description: "The size of the disk in GB",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "state",
@@ -375,7 +375,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "from_port",
 						Description: "The first port in a range of open ports on an instance",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "ipv6_cidrs",
@@ -390,7 +390,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "to_port",
 						Description: "The last port in a range of open ports on an instance",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 			},
@@ -418,7 +418,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "from_port",
 						Description: "The first port in a range of open ports on an instance",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "ipv6_cidrs",
@@ -438,7 +438,7 @@ func Instances() *schema.Table {
 					{
 						Name:        "to_port",
 						Description: "The last port in a range of open ports on an instance",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 			},
@@ -457,7 +457,7 @@ func fetchLightsailInstances(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		output, err := svc.GetInstances(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Instances
 
@@ -475,11 +475,11 @@ func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	input := lightsail.GetInstanceAccessDetailsInput{InstanceName: r.Name}
 	output, err := svc.GetInstanceAccessDetails(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	j, err := json.Marshal(output.AccessDetails)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, j))
 }
@@ -490,7 +490,7 @@ func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMet
 	input := lightsail.GetInstancePortStatesInput{InstanceName: r.Name}
 	output, err := svc.GetInstancePortStates(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	res <- output.PortStates

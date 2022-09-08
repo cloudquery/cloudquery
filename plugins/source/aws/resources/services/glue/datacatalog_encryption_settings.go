@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource datacatalog_encryption_settings --config datacatalog_encryption_settings.hcl --output .
+
 func DatacatalogEncryptionSettings() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_datacatalog_encryption_settings",
 		Description:  "Contains configuration information for maintaining Data Catalog security",
 		Resolver:     fetchGlueDatacatalogEncryptionSettings,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		Columns: []schema.Column{
 			{
@@ -72,7 +71,7 @@ func fetchGlueDatacatalogEncryptionSettings(ctx context.Context, meta schema.Cli
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- result.DataCatalogEncryptionSettings
 	return nil

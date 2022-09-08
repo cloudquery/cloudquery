@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type Route53HealthCheckWrapper struct {
@@ -22,8 +22,8 @@ func Route53HealthChecks() *schema.Table {
 		Description:   "A complex type that contains information about one health check that is associated with the current AWS account.",
 		Resolver:      fetchRoute53HealthChecks,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -160,7 +160,7 @@ func Route53HealthChecks() *schema.Table {
 			{
 				Name:        "health_check_version",
 				Description: "The version of the health check.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "id",
@@ -249,7 +249,7 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 		}
 		tagsResponse, err := svc.ListTagsForResources(ctx, tagsCfg)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, h := range healthChecks {
 			wrapper := Route53HealthCheckWrapper{
@@ -264,7 +264,7 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		response, err := svc.ListHealthChecks(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for i := 0; i < len(response.HealthChecks); i += 10 {
@@ -276,7 +276,7 @@ func fetchRoute53HealthChecks(ctx context.Context, meta schema.ClientMeta, paren
 			zones := response.HealthChecks[i:end]
 			err := processHealthChecksBundle(zones)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 		}
 

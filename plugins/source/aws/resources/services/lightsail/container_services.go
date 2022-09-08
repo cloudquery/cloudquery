@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource container_services --config gen.hcl --output .
+
 func ContainerServices() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_container_services",
 		Description:  "Describes an Amazon Lightsail container service",
 		Resolver:     fetchLightsailContainerServices,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -69,7 +68,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:        "current_deployment_public_endpoint_container_port",
 				Description: "The port of the specified container to which traffic is forwarded to",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("CurrentDeployment.PublicEndpoint.ContainerPort"),
 			},
 			{
@@ -87,7 +86,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:        "current_deployment_version",
 				Description: "The version number of the deployment",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("CurrentDeployment.Version"),
 			},
 			{
@@ -125,7 +124,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:          "next_deployment_public_endpoint_container_port",
 				Description:   "The port of the specified container to which traffic is forwarded to",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				Resolver:      schema.PathResolver("NextDeployment.PublicEndpoint.ContainerPort"),
 				IgnoreInTests: true,
 			},
@@ -145,7 +144,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:          "next_deployment_version",
 				Description:   "The version number of the deployment",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				Resolver:      schema.PathResolver("NextDeployment.Version"),
 				IgnoreInTests: true,
 			},
@@ -195,7 +194,7 @@ func ContainerServices() *schema.Table {
 			{
 				Name:        "scale",
 				Description: "The scale specification of the container service",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "state",
@@ -258,7 +257,7 @@ func ContainerServices() *schema.Table {
 					{
 						Name:        "public_endpoint_container_port",
 						Description: "The port of the specified container to which traffic is forwarded to",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("PublicEndpoint.ContainerPort"),
 					},
 					{
@@ -275,7 +274,7 @@ func ContainerServices() *schema.Table {
 					{
 						Name:        "version",
 						Description: "The version number of the deployment",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 			},
@@ -321,7 +320,7 @@ func fetchLightsailContainerServices(ctx context.Context, meta schema.ClientMeta
 	svc := c.Services().Lightsail
 	response, err := svc.GetContainerServices(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- response.ContainerServices
 	return nil
@@ -335,7 +334,7 @@ func fetchLightsailContainerServiceDeployments(ctx context.Context, meta schema.
 	svc := c.Services().Lightsail
 	deployments, err := svc.GetContainerServiceDeployments(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- deployments.Deployments
 	return nil
@@ -349,7 +348,7 @@ func fetchLightsailContainerServiceImages(ctx context.Context, meta schema.Clien
 	svc := c.Services().Lightsail
 	deployments, err := svc.GetContainerImages(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- deployments.ContainerImages
 	return nil

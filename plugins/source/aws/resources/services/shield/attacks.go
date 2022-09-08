@@ -9,18 +9,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource attacks --config gen.hcl --output .
+
 func Attacks() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_shield_attacks",
 		Description:   "The details of a DDoS attack",
 		Resolver:      fetchShieldAttacks,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -95,7 +95,7 @@ func Attacks() *schema.Table {
 					{
 						Name:        "total",
 						Description: "The total contributions made to this Shield event by all contributors",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "unit",
@@ -159,7 +159,7 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		output, err := svc.ListAttacks(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, a := range output.AttackSummaries {
 			config := shield.DescribeAttackInput{AttackId: a.AttackId}
@@ -167,7 +167,7 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 				o.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- attack.Attack
 		}

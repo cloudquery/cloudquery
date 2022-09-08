@@ -7,19 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource network_interfaces --config gen.hcl --output .
+
 func NetworkInterfaces() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_network_interfaces",
 		Description:  "Describes a network interface.",
 		Resolver:     fetchEc2NetworkInterfaces,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -350,7 +349,7 @@ func fetchEc2NetworkInterfaces(ctx context.Context, meta schema.ClientMeta, pare
 			o.Region = c.Region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.NetworkInterfaces
 		if aws.ToString(output.NextToken) == "" {

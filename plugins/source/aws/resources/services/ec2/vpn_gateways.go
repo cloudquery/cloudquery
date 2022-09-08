@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2VpnGateways() *schema.Table {
@@ -15,8 +14,8 @@ func Ec2VpnGateways() *schema.Table {
 		Name:          "aws_ec2_vpn_gateways",
 		Resolver:      fetchEc2VpnGateways,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -40,7 +39,7 @@ func Ec2VpnGateways() *schema.Table {
 			},
 			{
 				Name: "amazon_side_asn",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 			{
 				Name: "availability_zone",
@@ -99,7 +98,7 @@ func fetchEc2VpnGateways(ctx context.Context, meta schema.ClientMeta, parent *sc
 	svc := c.Services().EC2
 	output, err := svc.DescribeVpnGateways(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.VpnGateways
 	return nil

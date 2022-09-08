@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamVirtualMfaDevices() *schema.Table {
@@ -16,8 +15,8 @@ func IamVirtualMfaDevices() *schema.Table {
 		Description:   "Contains information about a virtual MFA device.",
 		Resolver:      fetchIamVirtualMfaDevices,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"serial_number"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -121,7 +120,7 @@ func fetchIamVirtualMfaDevices(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		response, err := svc.ListVirtualMFADevices(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.VirtualMFADevices
 		if aws.ToString(response.Marker) == "" {

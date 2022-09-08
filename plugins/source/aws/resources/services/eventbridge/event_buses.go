@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource event_buses --config gen.hcl --output .
+
 func EventBuses() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_eventbridge_event_buses",
 		Description:  "An event bus receives events from a source and routes them to rules associated with that event bus",
 		Resolver:     fetchEventbridgeEventBuses,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("events"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -134,7 +134,7 @@ func fetchEventbridgeEventBuses(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.ListEventBuses(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.EventBuses
 		if aws.ToString(response.NextToken) == "" {
@@ -158,7 +158,7 @@ func fetchEventbridgeEventBusRules(ctx context.Context, meta schema.ClientMeta, 
 	for {
 		response, err := svc.ListRules(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Rules
 		if aws.ToString(response.NextToken) == "" {
@@ -185,7 +185,7 @@ func resolveEventBridgeTags(ctx context.Context, meta schema.ClientMeta, resourc
 	}
 	output, err := svc.ListTagsForResource(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(output.Tags)))
 }

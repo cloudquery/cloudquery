@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource clusters --config ./gen.hcl --output .
+
 func Clusters() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_clusters",
 		Description:  "Contains all of the attributes of a specific cluster.",
 		Resolver:     fetchElasticacheClusters,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -119,7 +118,7 @@ func Clusters() *schema.Table {
 			{
 				Name:        "configuration_endpoint_port",
 				Description: "The port number that the cache engine is listening on.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ConfigurationEndpoint.Port"),
 			},
 			{
@@ -147,7 +146,7 @@ func Clusters() *schema.Table {
 			{
 				Name:        "num_cache_nodes",
 				Description: "The number of cache nodes in the cluster",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "pending_auth_token_status",
@@ -176,7 +175,7 @@ func Clusters() *schema.Table {
 			{
 				Name:        "pending_num_cache_nodes",
 				Description: "The new number of cache nodes for the cluster",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("PendingModifiedValues.NumCacheNodes"),
 			},
 			{
@@ -207,7 +206,7 @@ func Clusters() *schema.Table {
 			{
 				Name:        "snapshot_retention_limit",
 				Description: "The number of days for which ElastiCache retains automatic cluster snapshots before deleting them",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "snapshot_window",
@@ -269,7 +268,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "endpoint_port",
 						Description: "The port number that the cache engine is listening on.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Endpoint.Port"),
 					},
 					{
@@ -397,7 +396,7 @@ func fetchElasticacheClusters(ctx context.Context, meta schema.ClientMeta, paren
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.CacheClusters
 	}

@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func SsmDocuments() *schema.Table {
@@ -18,8 +18,8 @@ func SsmDocuments() *schema.Table {
 		Description:          "Describes a Amazon Web Services Systems Manager document (SSM document).",
 		Resolver:             fetchSsmDocuments,
 		Multiplex:            client.ServiceAccountRegionMultiplexer("ssm"),
-		IgnoreError:          client.IgnoreCommonErrors,
-		DeleteFilter:         client.DeleteAccountRegionFilter,
+		
+		
 		PostResourceResolver: ssmDocumentPostResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -226,13 +226,13 @@ func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		output, err := svc.ListDocuments(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, d := range output.DocumentIdentifiers {
 			dd, err := svc.DescribeDocument(ctx, &ssm.DescribeDocumentInput{Name: d.Name})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- dd.Document
 		}
@@ -249,7 +249,7 @@ func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) inter
 		d := resource.Item.(*types.DocumentDescription)
 		b, err := json.Marshal(getter(d))
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		return diag.WrapError(resource.Set(c.Name, b))
 	}
@@ -269,7 +269,7 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 	for {
 		output, err := svc.DescribeDocumentPermission(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		accountIDs = append(accountIDs, output.AccountIds...)
 		infoList = append(infoList, output.AccountSharingInfoList...)
@@ -279,11 +279,11 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 		input.NextToken = output.NextToken
 	}
 	if err := resource.Set("account_ids", accountIDs); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	b, err := json.Marshal(infoList)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set("account_sharing_info_list", b))
 }

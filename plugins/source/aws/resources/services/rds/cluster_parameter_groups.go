@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsClusterParameterGroups() *schema.Table {
@@ -17,8 +17,8 @@ func RdsClusterParameterGroups() *schema.Table {
 		Description:  "Contains the details of an Amazon RDS DB cluster parameter group",
 		Resolver:     fetchRdsClusterParameterGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -68,7 +68,7 @@ func RdsClusterParameterGroups() *schema.Table {
 				Name:        "aws_rds_cluster_parameters",
 				Description: "This data type is used as a request parameter in the ModifyDBParameterGroup and ResetDBParameterGroup actions",
 				Resolver:    fetchRdsClusterParameterGroupDbParameters,
-				IgnoreError: client.IgnoreCommonErrors,
+				
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_parameter_group_cq_id",
@@ -148,7 +148,7 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 	for {
 		output, err := svc.DescribeDBClusterParameterGroups(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.DBClusterParameterGroups
 		if aws.ToString(output.Marker) == "" {
@@ -167,7 +167,7 @@ func fetchRdsClusterParameterGroupDbParameters(ctx context.Context, meta schema.
 	for {
 		output, err := svc.DescribeDBClusterParameters(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Parameters
 		if aws.ToString(output.Marker) == "" {
@@ -184,7 +184,7 @@ func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.Client
 	svc := cl.Services().RDS
 	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
 }

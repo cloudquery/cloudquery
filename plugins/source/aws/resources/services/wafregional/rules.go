@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource rules --config rules.hcl --output .
+
 func Rules() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_rules",
 		Description:  "A combination of identifiers for web requests that you want to allow, block, or count.",
 		Resolver:     fetchWafregionalRules,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
@@ -107,7 +107,7 @@ func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		result, err := svc.ListRules(ctx, &params, func(o *wafregional.Options) { o.Region = cl.Region })
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, r := range result.Rules {
 			detail, err := svc.GetRule(
@@ -116,7 +116,7 @@ func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *
 				func(o *wafregional.Options) { o.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if detail.Rule == nil {
 				continue
@@ -142,7 +142,7 @@ func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, res
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if result.TagInfoForResource != nil {
 			client.TagsIntoMap(result.TagInfoForResource.TagList, tags)

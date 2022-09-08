@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource connections --config connections.hcl --output .
+
 func Connections() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_connections",
 		Description:  "Defines a connection to a data source",
 		Resolver:     fetchGlueConnections,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -113,7 +113,7 @@ func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.GetConnections(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ConnectionList
 

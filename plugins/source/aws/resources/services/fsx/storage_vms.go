@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource storage_vms --config storage_vms.hcl --output .
+
 func StorageVms() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_storage_vms",
 		Description:  "Describes the Amazon FSx for NetApp ONTAP storage virtual machine (SVM) configuration",
 		Resolver:     fetchFsxStorageVms,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -193,7 +192,7 @@ func fetchFsxStorageVms(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for paginator.HasMorePages() {
 		result, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.StorageVirtualMachines
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsInstances() *schema.Table {
@@ -17,8 +17,8 @@ func RdsInstances() *schema.Table {
 		Description:   "Contains the details of an Amazon RDS DB instance",
 		Resolver:      fetchRdsInstances,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -755,7 +755,7 @@ func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		response, err := svc.DescribeDBInstances(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.DBInstances
 		if aws.ToString(response.Marker) == "" {

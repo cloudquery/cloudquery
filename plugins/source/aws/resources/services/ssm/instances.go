@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func SsmInstances() *schema.Table {
@@ -17,8 +17,8 @@ func SsmInstances() *schema.Table {
 		Description:   "Describes a filter for a specific list of instances.",
 		Resolver:      fetchSsmInstances,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ssm"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -149,7 +149,7 @@ func SsmInstances() *schema.Table {
 				Name:        "aws_ssm_instance_compliance_items",
 				Description: "Information about the compliance as defined by the resource type",
 				Resolver:    fetchSsmInstanceComplianceItems,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
@@ -232,7 +232,7 @@ func fetchSsmInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		output, err := svc.DescribeInstanceInformation(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.InstanceInformationList
 		if aws.ToString(output.NextToken) == "" {
@@ -254,7 +254,7 @@ func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta
 	for {
 		output, err := svc.ListComplianceItems(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ComplianceItems
 		if aws.ToString(output.NextToken) == "" {

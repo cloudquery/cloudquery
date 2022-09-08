@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource triggers --config triggers.hcl --output .
+
 func Triggers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_triggers",
 		Description:  "Information about a specific trigger",
 		Resolver:     fetchGlueTriggers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -54,13 +54,13 @@ func Triggers() *schema.Table {
 			{
 				Name:        "event_batching_condition_size",
 				Description: "Number of events that must be received from Amazon EventBridge before EventBridge event trigger fires",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("EventBatchingCondition.BatchSize"),
 			},
 			{
 				Name:        "event_batching_condition_window",
 				Description: "Window of time in seconds after which EventBridge event trigger fires",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("EventBatchingCondition.BatchWindow"),
 			},
 			{
@@ -130,7 +130,7 @@ func Triggers() *schema.Table {
 					{
 						Name:        "notify_delay_after",
 						Description: "After a job run starts, the number of minutes to wait before sending a job run delay notification",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("NotificationProperty.NotifyDelayAfter"),
 					},
 					{
@@ -141,7 +141,7 @@ func Triggers() *schema.Table {
 					{
 						Name:        "timeout",
 						Description: "The JobRun timeout in minutes",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 			},
@@ -210,7 +210,7 @@ func resolveGlueTriggerTags(ctx context.Context, meta schema.ClientMeta, resourc
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Tags))
 }
@@ -229,7 +229,7 @@ func listTriggers(ctx context.Context, meta schema.ClientMeta, detailChan chan<-
 	for {
 		response, err := svc.ListTriggers(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range response.TriggerNames {
 			detailChan <- item
@@ -252,7 +252,7 @@ func triggerDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- *dc.Trigger

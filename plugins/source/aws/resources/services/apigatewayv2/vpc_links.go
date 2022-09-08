@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Apigatewayv2VpcLinks() *schema.Table {
@@ -17,8 +16,8 @@ func Apigatewayv2VpcLinks() *schema.Table {
 		Description:  "Represents a VPC link.",
 		Resolver:     fetchApigatewayv2VpcLinks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -102,7 +101,7 @@ func fetchApigatewayv2VpcLinks(ctx context.Context, meta schema.ClientMeta, pare
 		response, err := svc.GetVpcLinks(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {

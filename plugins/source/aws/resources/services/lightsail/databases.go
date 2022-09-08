@@ -8,20 +8,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
 
-//go:generate cq-gen --resource databases --config gen.hcl --output .
+
 func Databases() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_databases",
 		Description:  "Describes a database",
 		Resolver:     fetchLightsailDatabases,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -69,13 +68,13 @@ func Databases() *schema.Table {
 			{
 				Name:        "hardware_cpu_count",
 				Description: "The number of vCPUs for the database",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Hardware.CpuCount"),
 			},
 			{
 				Name:        "hardware_disk_size_in_gb",
 				Description: "The size of the disk for the database",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Hardware.DiskSizeInGb"),
 			},
 			{
@@ -109,7 +108,7 @@ func Databases() *schema.Table {
 			{
 				Name:        "master_endpoint_port",
 				Description: "Specifies the port that the database is listening on",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("MasterEndpoint.Port"),
 			},
 			{
@@ -349,7 +348,7 @@ func fetchLightsailDatabases(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		response, err := svc.GetRelationalDatabases(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.RelationalDatabases
 		if aws.ToString(response.NextPageToken) == "" {
@@ -369,7 +368,7 @@ func fetchLightsailDatabaseParameters(ctx context.Context, meta schema.ClientMet
 	for {
 		response, err := svc.GetRelationalDatabaseParameters(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Parameters
 		if aws.ToString(response.NextPageToken) == "" {
@@ -390,7 +389,7 @@ func fetchLightsailDatabaseEvents(ctx context.Context, meta schema.ClientMeta, p
 	for {
 		response, err := svc.GetRelationalDatabaseEvents(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.RelationalDatabaseEvents
 		if aws.ToString(response.NextPageToken) == "" {
@@ -409,7 +408,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	svc := c.Services().Lightsail
 	streams, err := svc.GetRelationalDatabaseLogStreams(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	endTime := time.Now()
 	startTime := endTime.Add(-time.Hour * 24 * 14) //two weeks
@@ -424,7 +423,7 @@ func fetchLightsailDatabaseLogEvents(ctx context.Context, meta schema.ClientMeta
 	}
 	err = errs.Wait()
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return nil
 }
@@ -444,7 +443,7 @@ func fetchLogEvents(ctx context.Context, res chan<- interface{}, c *client.Clien
 	for {
 		response, err := svc.GetRelationalDatabaseLogEvents(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.ResourceLogEvents
 		for _, e := range response.ResourceLogEvents {

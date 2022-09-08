@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kinesis/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Streams() *schema.Table {
@@ -17,8 +17,8 @@ func Streams() *schema.Table {
 		Description:  "Represents the output for DescribeStreamSummary",
 		Resolver:     fetchKinesisStreams,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("kinesis"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -46,12 +46,12 @@ func Streams() *schema.Table {
 			{
 				Name:        "open_shard_count",
 				Description: "The number of open shards in the stream",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "retention_period_hours",
 				Description: "The current retention period, in hours",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "stream_arn",
@@ -77,7 +77,7 @@ func Streams() *schema.Table {
 			{
 				Name:        "consumer_count",
 				Description: "The number of enhanced fan-out consumers registered with the stream",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "encryption_type",
@@ -137,7 +137,7 @@ func ResolveKinesisStreamTags(ctx context.Context, meta schema.ClientMeta, resou
 	for {
 		output, err := svc.ListTagsForStream(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		tags = append(tags, output.Tags...)
 		if !aws.ToBool(output.HasMoreTags) {
@@ -159,7 +159,7 @@ func listKinesisStreams(ctx context.Context, meta schema.ClientMeta, detailChan 
 	for {
 		response, err := svc.ListStreams(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range response.StreamNames {
 			detailChan <- item
@@ -182,7 +182,7 @@ func streamDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- streamSummary.StreamDescriptionSummary

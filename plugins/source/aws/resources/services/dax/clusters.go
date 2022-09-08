@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dax/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func DaxClusters() *schema.Table {
@@ -17,7 +17,7 @@ func DaxClusters() *schema.Table {
 		Description:   "Information about a DAX cluster.",
 		Resolver:      fetchDaxClusters,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("dax"),
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -234,7 +234,7 @@ func fetchDaxClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		output, err := svc.DescribeClusters(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- output.Clusters
@@ -256,7 +256,7 @@ func resolveDaxClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 		ResourceName: cluster.ClusterArn,
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
 }

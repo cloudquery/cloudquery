@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource workflows --config workflows.hcl --output .
+
 func Workflows() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_workflows",
 		Description:  "A workflow is a collection of multiple dependent Glue jobs and crawlers that are run to complete a complex ETL task",
 		Resolver:     fetchGlueWorkflows,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -119,51 +119,51 @@ func Workflows() *schema.Table {
 			{
 				Name:          "last_run_starting_event_batch_condition_size",
 				Description:   "Number of events in the batch.",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				Resolver:      schema.PathResolver("LastRun.StartingEventBatchCondition.BatchSize"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:          "last_run_starting_event_batch_condition_window",
 				Description:   "Duration of the batch window in seconds.",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				Resolver:      schema.PathResolver("LastRun.StartingEventBatchCondition.BatchWindow"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:        "last_run_statistics_failed_actions",
 				Description: "Total number of Actions that have failed.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LastRun.Statistics.FailedActions"),
 			},
 			{
 				Name:        "last_run_statistics_running_actions",
 				Description: "Total number Actions in running state.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LastRun.Statistics.RunningActions"),
 			},
 			{
 				Name:        "last_run_statistics_stopped_actions",
 				Description: "Total number of Actions that have stopped.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LastRun.Statistics.StoppedActions"),
 			},
 			{
 				Name:        "last_run_statistics_succeeded_actions",
 				Description: "Total number of Actions that have succeeded.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LastRun.Statistics.SucceededActions"),
 			},
 			{
 				Name:        "last_run_statistics_timeout_actions",
 				Description: "Total number of Actions that timed out.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LastRun.Statistics.TimeoutActions"),
 			},
 			{
 				Name:        "last_run_statistics_total_actions",
 				Description: "Total number of Actions in the workflow run.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LastRun.Statistics.TotalActions"),
 			},
 			{
@@ -189,7 +189,7 @@ func Workflows() *schema.Table {
 			{
 				Name:        "max_concurrent_runs",
 				Description: "You can use this parameter to prevent unwanted multiple updates to data, to control costs, or in some cases, to prevent exceeding the maximum number of concurrent runs of any of the component jobs",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "name",
@@ -211,7 +211,7 @@ func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		result, err := svc.ListWorkflows(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, name := range result.Workflows {
 			w, err := svc.GetWorkflow(ctx, &glue.GetWorkflowInput{Name: aws.String(name)})
@@ -219,7 +219,7 @@ func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *sch
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			if w.Workflow != nil {
 				res <- *w.Workflow
@@ -247,7 +247,7 @@ func resolveGlueWorkflowTags(ctx context.Context, meta schema.ClientMeta, resour
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Tags))
 }

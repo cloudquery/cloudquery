@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource reserved_cache_nodes --config ./gen.hcl --output .
+
 func ReservedCacheNodes() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_reserved_cache_nodes",
 		Description:  "Reserved Elasticache Cache Nodes",
 		Resolver:     fetchElasticacheReservedCacheNodes,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"reservation_arn"}},
 		Columns: []schema.Column{
 			{
@@ -35,7 +34,7 @@ func ReservedCacheNodes() *schema.Table {
 			{
 				Name:        "cache_node_count",
 				Description: "The number of cache nodes that have been reserved.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "cache_node_type",
@@ -45,7 +44,7 @@ func ReservedCacheNodes() *schema.Table {
 			{
 				Name:        "duration",
 				Description: "The duration of the reservation in seconds.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "fixed_price",
@@ -131,7 +130,7 @@ func fetchElasticacheReservedCacheNodes(ctx context.Context, meta schema.ClientM
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.ReservedCacheNodes
 	}

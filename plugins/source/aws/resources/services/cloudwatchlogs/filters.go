@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CloudwatchlogsFilters() *schema.Table {
@@ -16,8 +15,6 @@ func CloudwatchlogsFilters() *schema.Table {
 		Description:   "Metric filters express how CloudWatch Logs would extract metric observations from ingested log events and transform them into metric data in a CloudWatch metric.",
 		Resolver:      fetchCloudwatchlogsFilters,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("logs"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name", "log_group_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -36,7 +33,7 @@ func CloudwatchlogsFilters() *schema.Table {
 			{
 				Name:        "creation_time",
 				Description: "The creation time of the metric filter, expressed as the number of milliseconds after Jan 1, 1970 00:00:00 UTC.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "name",
@@ -105,7 +102,7 @@ func fetchCloudwatchlogsFilters(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.DescribeMetricFilters(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.MetricFilters
 		if aws.ToString(response.NextToken) == "" {

@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotPolicies() *schema.Table {
@@ -16,8 +16,8 @@ func IotPolicies() *schema.Table {
 		Description:  "The output from the GetPolicy operation.",
 		Resolver:     fetchIotPolicies,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -94,7 +94,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		response, err := svc.ListPolicies(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, s := range response.Policies {
@@ -104,7 +104,7 @@ func fetchIotPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 				options.Region = cl.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- profile
 		}
@@ -129,7 +129,7 @@ func ResolveIotPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		client.TagsIntoMap(response.Tags, tags)

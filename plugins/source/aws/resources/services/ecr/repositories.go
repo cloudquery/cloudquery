@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Repositories() *schema.Table {
@@ -17,8 +17,8 @@ func Repositories() *schema.Table {
 		Description:  "An object representing a repository.",
 		Resolver:     fetchEcrRepositories,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("api.ecr"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		Columns: []schema.Column{
 			{
@@ -167,7 +167,7 @@ func Repositories() *schema.Table {
 					{
 						Name:        "image_size_in_bytes",
 						Description: "The size, in bytes, of the image in the repository",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "image_tags",
@@ -209,7 +209,7 @@ func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.DescribeRepositories(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Repositories
 		if aws.ToString(output.NextToken) == "" {
@@ -229,7 +229,7 @@ func resolveEcrRepositoryTags(ctx context.Context, meta schema.ClientMeta, resou
 	}
 	output, err := svc.ListTagsForResource(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(output.Tags)))
 }
@@ -246,7 +246,7 @@ func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		output, err := svc.DescribeImages(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ImageDetails
 		if aws.ToString(output.NextToken) == "" {

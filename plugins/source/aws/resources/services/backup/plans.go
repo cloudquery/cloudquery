@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Plans() *schema.Table {
@@ -16,8 +16,8 @@ func Plans() *schema.Table {
 		Description:  "Contains metadata about a backup plan.",
 		Resolver:     fetchBackupPlans,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -91,7 +91,7 @@ func Plans() *schema.Table {
 				Name:        "aws_backup_plan_rules",
 				Description: "Specifies a scheduled task used to back up a selection of resources.",
 				Resolver:    schema.PathTableResolver("BackupPlan.Rules"),
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				
 				Columns: []schema.Column{
 					{
 						Name:        "plan_cq_id",
@@ -113,7 +113,7 @@ func Plans() *schema.Table {
 					{
 						Name:        "completion_window_minutes",
 						Description: "A value in minutes after a backup job is successfully started before it must be completed or it will be canceled by Backup.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:          "copy_actions",
@@ -130,14 +130,14 @@ func Plans() *schema.Table {
 					{
 						Name:          "delete_after_days",
 						Description:   "Specifies the number of days after creation that a recovery point is deleted.",
-						Type:          schema.TypeBigInt,
+						Type:          schema.TypeInt,
 						Resolver:      schema.PathResolver("Lifecycle.DeleteAfterDays"),
 						IgnoreInTests: true,
 					},
 					{
 						Name:          "move_to_cold_storage_after_days",
 						Description:   "Specifies the number of days after creation that a recovery point is moved to cold storage.",
-						Type:          schema.TypeBigInt,
+						Type:          schema.TypeInt,
 						Resolver:      schema.PathResolver("Lifecycle.MoveToColdStorageAfterDays"),
 						IgnoreInTests: true,
 					},
@@ -161,7 +161,7 @@ func Plans() *schema.Table {
 					{
 						Name:        "start_window_minutes",
 						Description: "A value in minutes after a backup is scheduled before a job will be canceled if it doesn't start successfully.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 			},
@@ -169,7 +169,7 @@ func Plans() *schema.Table {
 				Name:        "aws_backup_plan_selections",
 				Description: "Contains metadata about a BackupSelection object.",
 				Resolver:    fetchBackupSelections,
-				IgnoreError: client.IgnoreAccessDeniedServiceDisabled,
+				
 				Columns: []schema.Column{
 					{
 						Name:        "plan_cq_id",
@@ -246,7 +246,7 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		result, err := svc.ListBackupPlans(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, m := range result.BackupPlansList {
 			plan, err := svc.GetBackupPlan(
@@ -255,7 +255,7 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 				func(o *backup.Options) { o.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if plan != nil {
 				res <- *plan
@@ -281,7 +281,7 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 			break
 		}
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for k, v := range result.Tags {
 			tags[k] = v
@@ -305,7 +305,7 @@ func fetchBackupSelections(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		result, err := svc.ListBackupSelections(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, m := range result.BackupSelectionsList {
 			s, err := svc.GetBackupSelection(
@@ -314,7 +314,7 @@ func fetchBackupSelections(ctx context.Context, meta schema.ClientMeta, parent *
 				func(o *backup.Options) { o.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if s != nil {
 				res <- *s

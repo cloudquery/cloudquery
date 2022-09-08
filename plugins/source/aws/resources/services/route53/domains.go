@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Route53Domains() *schema.Table {
@@ -18,8 +18,8 @@ func Route53Domains() *schema.Table {
 		Description:   "The domain names registered with Amazon Route 53.",
 		Resolver:      fetchRoute53Domains,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "domain_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -415,13 +415,13 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		output, err := svc.ListDomains(ctx, &input, optsFunc)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, v := range output.Domains {
 			d, err := svc.GetDomainDetail(ctx, &route53domains.GetDomainDetailInput{DomainName: v.DomainName}, optsFunc)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- d
 		}
@@ -449,7 +449,7 @@ func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resou
 		options.Region = "us-east-1"
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(col.Name, client.TagsToMap(out.TagList)))
 }
@@ -467,7 +467,7 @@ func resolveRoute53DomainContactExtraParams(extractValue func(*route53domains.Ge
 		}
 		b, err := json.Marshal(m)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		return diag.WrapError(resource.Set(col.Name, b))
 	}

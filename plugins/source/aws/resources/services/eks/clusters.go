@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EksClusters() *schema.Table {
@@ -16,8 +16,8 @@ func EksClusters() *schema.Table {
 		Description:  "An object representing an Amazon EKS cluster.",
 		Resolver:     fetchEksClusters,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("eks"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -208,7 +208,7 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		listClustersOutput, err := svc.ListClusters(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, name := range listClustersOutput.Clusters {
 			describeClusterOutput, err := svc.DescribeCluster(ctx, &eks.DescribeClusterInput{Name: &name}, func(options *eks.Options) {
@@ -218,7 +218,7 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- describeClusterOutput.Cluster
 		}

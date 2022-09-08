@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource delivery_streams --config gen.hcl --output .
+
 func DeliveryStreams() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_firehose_delivery_streams",
 		Description:  "Contains information about a delivery stream",
 		Resolver:     fetchFirehoseDeliveryStreams,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("firehose"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -161,12 +161,12 @@ func DeliveryStreams() *schema.Table {
 					},
 					{
 						Name:     "buffering_hints_interval_in_seconds",
-						Type:     schema.TypeBigInt,
+						Type:     schema.TypeInt,
 						Resolver: schema.PathResolver("BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:     "buffering_hints_size_in_mb_s",
-						Type:     schema.TypeBigInt,
+						Type:     schema.TypeInt,
 						Resolver: schema.PathResolver("BufferingHints.SizeInMBs"),
 					},
 					{
@@ -212,7 +212,7 @@ func DeliveryStreams() *schema.Table {
 					},
 					{
 						Name:     "retry_options_duration_in_seconds",
-						Type:     schema.TypeBigInt,
+						Type:     schema.TypeInt,
 						Resolver: schema.PathResolver("RetryOptions.DurationInSeconds"),
 					},
 					{
@@ -233,13 +233,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "s3_destination_buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "s3_destination_buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.SizeInMBs"),
 					},
 					{
@@ -346,13 +346,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("BufferingHints.SizeInMBs"),
 					},
 					{
@@ -403,7 +403,7 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "retry_options_duration_in_seconds",
 						Description: "After an initial failure to deliver to Amazon ES, the total amount of time during which Kinesis Data Firehose retries delivery (including the first attempt)",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("RetryOptions.DurationInSeconds"),
 					},
 					{
@@ -426,13 +426,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "s3_destination_buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "s3_destination_buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.SizeInMBs"),
 					},
 					{
@@ -546,13 +546,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("BufferingHints.SizeInMBs"),
 					},
 					{
@@ -629,7 +629,7 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "serializer_orc_ser_de_block_size_bytes",
 						Description: "The Hadoop Distributed File System (HDFS) block size",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DataFormatConversionConfiguration.OutputFormatConfiguration.Serializer.OrcSerDe.BlockSizeBytes"),
 					},
 					{
@@ -677,19 +677,19 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "serializer_orc_ser_de_row_index_stride",
 						Description: "The number of rows between index entries",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DataFormatConversionConfiguration.OutputFormatConfiguration.Serializer.OrcSerDe.RowIndexStride"),
 					},
 					{
 						Name:        "serializer_orc_ser_de_stripe_size_bytes",
 						Description: "The number of bytes in each stripe",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DataFormatConversionConfiguration.OutputFormatConfiguration.Serializer.OrcSerDe.StripeSizeBytes"),
 					},
 					{
 						Name:        "serializer_parquet_ser_de_block_size_bytes",
 						Description: "The Hadoop Distributed File System (HDFS) block size",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DataFormatConversionConfiguration.OutputFormatConfiguration.Serializer.ParquetSerDe.BlockSizeBytes"),
 					},
 					{
@@ -707,13 +707,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "serializer_parquet_ser_de_max_padding_bytes",
 						Description: "The maximum amount of padding to apply",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DataFormatConversionConfiguration.OutputFormatConfiguration.Serializer.ParquetSerDe.MaxPaddingBytes"),
 					},
 					{
 						Name:        "serializer_parquet_ser_de_page_size_bytes",
 						Description: "The Parquet page size",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DataFormatConversionConfiguration.OutputFormatConfiguration.Serializer.ParquetSerDe.PageSizeBytes"),
 					},
 					{
@@ -767,7 +767,7 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "dynamic_partitioning_retry_options_duration_in_seconds",
 						Description: "The period of time during which Kinesis Data Firehose retries to deliver data to the specified Amazon S3 prefix",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("DynamicPartitioningConfiguration.RetryOptions.DurationInSeconds"),
 					},
 					{
@@ -795,13 +795,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "s3_backup_buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3BackupDescription.BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "s3_backup_buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3BackupDescription.BufferingHints.SizeInMBs"),
 					},
 					{
@@ -885,13 +885,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("BufferingHints.SizeInMBs"),
 					},
 					{
@@ -945,7 +945,7 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "retry_options_duration_in_seconds",
 						Description: "The total amount of time that Kinesis Data Firehose spends on retries",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("RetryOptions.DurationInSeconds"),
 					},
 					{
@@ -968,13 +968,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "s3_destination_buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "s3_destination_buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.SizeInMBs"),
 					},
 					{
@@ -1089,13 +1089,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "s3_destination_buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "s3_destination_buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.SizeInMBs"),
 					},
 					{
@@ -1184,7 +1184,7 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "retry_options_duration_in_seconds",
 						Description: "The length of time during which Kinesis Data Firehose retries delivery after a failure, starting from the initial request and including the first attempt",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("RetryOptions.DurationInSeconds"),
 					},
 					{
@@ -1196,13 +1196,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "s3_backup_buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3BackupDescription.BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "s3_backup_buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3BackupDescription.BufferingHints.SizeInMBs"),
 					},
 					{
@@ -1304,7 +1304,7 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "h_e_ca_cknowledgment_timeout_in_seconds",
 						Description: "The amount of time that Kinesis Data Firehose waits to receive an acknowledgment from Splunk after it sends it data",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("HECAcknowledgmentTimeoutInSeconds"),
 					},
 					{
@@ -1331,7 +1331,7 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "retry_options_duration_in_seconds",
 						Description: "The total amount of time that Kinesis Data Firehose spends on retries",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("RetryOptions.DurationInSeconds"),
 					},
 					{
@@ -1348,13 +1348,13 @@ func DeliveryStreams() *schema.Table {
 					{
 						Name:        "s3_destination_buffering_hints_interval_in_seconds",
 						Description: "Buffer incoming data for the specified period of time, in seconds, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.IntervalInSeconds"),
 					},
 					{
 						Name:        "s3_destination_buffering_hints_size_in_mb_s",
 						Description: "Buffer incoming data to the specified size, in MiBs, before delivering it to the destination",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("S3DestinationDescription.BufferingHints.SizeInMBs"),
 					},
 					{
@@ -1435,7 +1435,7 @@ func resolveFirehoseDeliveryStreamTags(ctx context.Context, meta schema.ClientMe
 	for {
 		output, err := svc.ListTagsForDeliveryStream(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		tags = append(tags, output.Tags...)
 		if !aws.ToBool(output.HasMoreTags) {
@@ -1457,7 +1457,7 @@ func listDeliveryStreams(ctx context.Context, meta schema.ClientMeta, detailChan
 	for {
 		response, err := svc.ListDeliveryStreams(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range response.DeliveryStreamNames {
 			detailChan <- item
@@ -1480,7 +1480,7 @@ func deliveryStreamDetail(ctx context.Context, meta schema.ClientMeta, resultsCh
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- streamSummary.DeliveryStreamDescription

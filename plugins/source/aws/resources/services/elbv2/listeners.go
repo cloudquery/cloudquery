@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 var (
@@ -21,7 +21,7 @@ func Elbv2Listeners() *schema.Table {
 		Name:          "aws_elbv2_listeners",
 		Description:   "Information about a listener.",
 		Resolver:      fetchElbv2Listeners,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
+		
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -166,7 +166,7 @@ func Elbv2Listeners() *schema.Table {
 					{
 						Name:        "auth_cognito_session_timeout",
 						Description: "The maximum duration of the authentication session, in seconds",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.SessionTimeout"),
 					},
 					{
@@ -232,7 +232,7 @@ func Elbv2Listeners() *schema.Table {
 					{
 						Name:        "auth_oidc_session_timeout",
 						Description: "The maximum duration of the authentication session, in seconds",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("AuthenticateOidcConfig.SessionTimeout"),
 					},
 					{
@@ -365,7 +365,7 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Listeners
 		if aws.ToString(response.NextMarker) == "" {
@@ -387,7 +387,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 		o.Region = region
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {
 		return nil
@@ -416,7 +416,7 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 				c.Logger().Debug("ELBv2: DescribeListenerCertificates not supported for Gateway Load Balancers")
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Certificates
 		if aws.ToString(response.NextMarker) == "" {

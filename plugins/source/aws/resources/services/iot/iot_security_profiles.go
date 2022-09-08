@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotSecurityProfiles() *schema.Table {
@@ -15,8 +15,8 @@ func IotSecurityProfiles() *schema.Table {
 		Name:         "aws_iot_security_profiles",
 		Resolver:     fetchIotSecurityProfiles,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -90,7 +90,7 @@ func IotSecurityProfiles() *schema.Table {
 			{
 				Name:        "version",
 				Description: "The version of the security profile",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 		Relations: []*schema.Table{
@@ -194,7 +194,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		response, err := svc.ListSecurityProfiles(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, s := range response.SecurityProfileIdentifiers {
@@ -204,7 +204,7 @@ func fetchIotSecurityProfiles(ctx context.Context, meta schema.ClientMeta, paren
 				options.Region = cl.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- profile
 		}
@@ -229,7 +229,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 	for {
 		response, err := svc.ListTargetsForSecurityProfile(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, t := range response.SecurityProfileTargets {
@@ -256,7 +256,7 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		client.TagsIntoMap(response.Tags, tags)

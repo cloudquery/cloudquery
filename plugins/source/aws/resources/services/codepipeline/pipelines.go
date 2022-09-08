@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource pipelines --config gen.hcl --output .
+
 func Pipelines() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_codepipeline_pipelines",
 		Description:  "Represents the output of a GetPipeline action",
 		Resolver:     fetchCodepipelinePipelines,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -103,7 +103,7 @@ func Pipelines() *schema.Table {
 			{
 				Name:        "version",
 				Description: "The version number of the pipeline",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Pipeline.Version"),
 			},
 		},
@@ -122,7 +122,7 @@ func Pipelines() *schema.Table {
 					{
 						Name:        "stage_order",
 						Description: "The stage order in the pipeline.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "name",
@@ -216,7 +216,7 @@ func Pipelines() *schema.Table {
 							{
 								Name:        "run_order",
 								Description: "The order in which actions are run",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 							},
 						},
 					},
@@ -237,7 +237,7 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.ListPipelines(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for i := range response.Pipelines {
 			response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: response.Pipelines[i].Name})
@@ -245,7 +245,7 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- response
 		}
@@ -266,7 +266,7 @@ func resolveCodepipelinePipelineTags(ctx context.Context, meta schema.ClientMeta
 		ResourceArn: pipeline.Metadata.PipelineArn,
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))

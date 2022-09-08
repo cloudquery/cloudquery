@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotJobs() *schema.Table {
@@ -17,8 +17,8 @@ func IotJobs() *schema.Table {
 		Description:  "The Job object contains details about a job.",
 		Resolver:     fetchIotJobs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -183,7 +183,7 @@ func IotJobs() *schema.Table {
 			{
 				Name:        "presigned_url_config_expires_in_sec",
 				Description: "How long (in seconds) pre-signed URLs are valid",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("PresignedUrlConfig.ExpiresInSec"),
 			},
 			{
@@ -215,7 +215,7 @@ func IotJobs() *schema.Table {
 			{
 				Name:        "timeout_config_in_progress_timeout_in_minutes",
 				Description: "Specifies the amount of time, in minutes, this device has to finish execution of this job",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("TimeoutConfig.InProgressTimeoutInMinutes"),
 			},
 		},
@@ -271,7 +271,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	for {
 		response, err := svc.ListJobs(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, s := range response.Jobs {
@@ -281,7 +281,7 @@ func fetchIotJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 				options.Region = cl.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- job.Job
 		}
@@ -306,7 +306,7 @@ func ResolveIotJobTags(ctx context.Context, meta schema.ClientMeta, resource *sc
 		response, err := svc.ListTagsForResource(ctx, &input)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		client.TagsIntoMap(response.Tags, tags)

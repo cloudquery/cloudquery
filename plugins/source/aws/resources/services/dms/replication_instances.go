@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type DmsReplicationInstanceWrapper struct {
@@ -21,8 +20,8 @@ func DmsReplicationInstances() *schema.Table {
 		Description:   "Provides information that defines a replication instance.",
 		Resolver:      fetchDmsReplicationInstances,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("dms"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -270,7 +269,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	var describeReplicationInstancesInput *databasemigrationservice.DescribeReplicationInstancesInput
 	describeReplicationInstancesOutput, err := svc.DescribeReplicationInstances(ctx, describeReplicationInstancesInput)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if len(describeReplicationInstancesOutput.ReplicationInstances) == 0 {
 		return nil
@@ -283,7 +282,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	var listTagsForResourceOutput *databasemigrationservice.ListTagsForResourceOutput
 	listTagsForResourceOutput, err = svc.ListTagsForResource(ctx, &listTagsForResourceInput)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	replicationInstanceTags := make(map[string]map[string]interface{})
 	for _, tag := range listTagsForResourceOutput.TagList {

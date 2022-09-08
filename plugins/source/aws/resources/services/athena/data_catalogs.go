@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource data_catalogs --config gen.hcl --output .
+
 func DataCatalogs() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_athena_data_catalogs",
 		Description:  "Contains information about a data catalog in an Amazon Web Services account",
 		Resolver:     fetchAthenaDataCatalogs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("athena"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -231,7 +231,7 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		client.TagsIntoMap(result.Tags, tags)
 		if aws.ToString(result.NextToken) == "" {
@@ -250,7 +250,7 @@ func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta
 	for {
 		response, err := svc.ListDatabases(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.DatabaseList
 
@@ -271,7 +271,7 @@ func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.Clien
 	for {
 		response, err := svc.ListTableMetadata(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.TableMetadataList
 
@@ -296,7 +296,7 @@ func listDataCatalogs(ctx context.Context, meta schema.ClientMeta, detailChan ch
 			options.Region = c.Region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range response.DataCatalogsSummary {
 			detailChan <- item
@@ -325,7 +325,7 @@ func dataCatalogDetail(ctx context.Context, meta schema.ClientMeta, resultsChan 
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- *dc.DataCatalog

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type ELBv1LoadBalancerWrapper struct {
@@ -23,8 +23,8 @@ func Elbv1LoadBalancers() *schema.Table {
 		Description:   "Information about a load balancer.",
 		Resolver:      fetchElbv1LoadBalancers,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -343,7 +343,7 @@ func Elbv1LoadBalancers() *schema.Table {
 					{
 						Name:        "cookie_expiration_period",
 						Description: "The time period, in seconds, after which the cookie should be considered stale.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "policy_name",
@@ -405,7 +405,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 		}
 		tagsResponse, err := svc.DescribeTags(ctx, tagsCfg)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, lb := range loadBalancers {
 			loadBalancerAttributes, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv1.DescribeLoadBalancerAttributesInput{LoadBalancerName: lb.LoadBalancerName})
@@ -413,7 +413,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 
 			wrapper := ELBv1LoadBalancerWrapper{
@@ -431,7 +431,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		response, err := svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for i := 0; i < len(response.LoadBalancerDescriptions); i += 20 {
@@ -442,7 +442,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 			}
 			loadBalancers := response.LoadBalancerDescriptions[i:end]
 			if err := processLoadBalancers(loadBalancers); err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 		}
 
@@ -474,7 +474,7 @@ func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta,
 	svc := c.Services().ELBv1
 	response, err := svc.DescribeLoadBalancerPolicies(ctx, &elbv1.DescribeLoadBalancerPoliciesInput{LoadBalancerName: r.LoadBalancerName})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- response.PolicyDescriptions
 	return nil

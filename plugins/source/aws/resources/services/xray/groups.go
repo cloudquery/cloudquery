@@ -7,19 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource groups --config gen.hcl --output .
+
 func Groups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_xray_groups",
 		Description:  "Details for a group without metadata",
 		Resolver:     fetchXrayGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("xray"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -48,6 +45,7 @@ func Groups() *schema.Table {
 				Description: "The ARN of the group generated based on the GroupName",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("GroupARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "group_name",
@@ -79,7 +77,7 @@ func fetchXrayGroups(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.Groups
 	}
@@ -96,7 +94,7 @@ func resolveXrayGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	tags := map[string]string{}

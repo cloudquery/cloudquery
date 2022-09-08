@@ -5,32 +5,30 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource encryption_config --config gen.hcl --output .
+
 func EncryptionConfigs() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_xray_encryption_config",
 		Description:  "A configuration document that specifies encryption configuration settings",
 		Resolver:     fetchXrayEncryptionConfigs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("xray"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "key_id",
@@ -61,7 +59,7 @@ func fetchXrayEncryptionConfigs(ctx context.Context, meta schema.ClientMeta, par
 	input := xray.GetEncryptionConfigInput{}
 	output, err := svc.GetEncryptionConfig(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.EncryptionConfig
 	return nil

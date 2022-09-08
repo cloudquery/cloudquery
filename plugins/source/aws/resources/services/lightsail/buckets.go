@@ -7,19 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource buckets --config gen.hcl --output .
+
 func Buckets() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_buckets",
 		Description:  "Describes an Amazon Lightsail bucket",
 		Resolver:     fetchLightsailBuckets,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -223,7 +222,7 @@ func fetchLightsailBuckets(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		response, err := svc.GetBuckets(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Buckets
 		if aws.ToString(response.NextPageToken) == "" {
@@ -242,7 +241,7 @@ func fetchLightsailBucketAccessKeys(ctx context.Context, meta schema.ClientMeta,
 	}
 	response, err := svc.GetBucketAccessKeys(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- response.AccessKeys
 	return nil

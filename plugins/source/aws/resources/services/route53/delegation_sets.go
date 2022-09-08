@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Route53ReusableDelegationSets() *schema.Table {
@@ -16,8 +15,8 @@ func Route53ReusableDelegationSets() *schema.Table {
 		Name:          "aws_route53_reusable_delegation_sets",
 		Resolver:      fetchRoute53DelegationSets,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -62,7 +61,7 @@ func fetchRoute53DelegationSets(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		response, err := svc.ListReusableDelegationSets(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.DelegationSets
 		if aws.ToString(response.Marker) == "" {

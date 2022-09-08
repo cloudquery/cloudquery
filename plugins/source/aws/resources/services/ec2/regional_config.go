@@ -5,8 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type ec2RegionalConfig struct {
@@ -20,8 +19,8 @@ func Ec2RegionalConfig() *schema.Table {
 		Description:  "Ec2 Regional Config defines common default configuration for ec2 service",
 		Resolver:     fetchEc2RegionalConfig,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
 		Columns: []schema.Column{
 			{
@@ -55,13 +54,13 @@ func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *sche
 	var regionalConfig ec2RegionalConfig
 	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	regionalConfig.EbsDefaultKmsKeyId = resp.KmsKeyId
 
 	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	if ebsResp.EbsEncryptionByDefault != nil {

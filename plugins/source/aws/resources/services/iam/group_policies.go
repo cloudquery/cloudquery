@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamGroupPolicies() *schema.Table {
@@ -18,7 +18,7 @@ func IamGroupPolicies() *schema.Table {
 		Name:          "aws_iam_group_policies",
 		Description:   "Inline policies that are embedded in the specified IAM group",
 		Resolver:      fetchIamGroupPolicies,
-		IgnoreError:   client.IgnoreCommonErrors,
+		
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -75,13 +75,13 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, p := range output.PolicyNames {
 			policyResult, err := svc.GetGroupPolicy(ctx, &iam.GetGroupPolicyInput{PolicyName: &p, GroupName: group.GroupName})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- policyResult
 		}
@@ -97,13 +97,13 @@ func resolveIamGroupPolicyPolicyDocument(ctx context.Context, meta schema.Client
 
 	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	var document map[string]interface{}
 	err = json.Unmarshal([]byte(decodedDocument), &document)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, document))
 }

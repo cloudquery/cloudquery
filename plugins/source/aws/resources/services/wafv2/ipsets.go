@@ -9,19 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen -config=ipsets.hcl -domain=wafv2 -resource=ipsets
+
 func Ipsets() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafv2_ipsets",
 		Description:  "Contains one or more IP addresses or blocks of IP addresses specified in Classless Inter-Domain Routing (CIDR) notation",
 		Resolver:     fetchWafv2Ipsets,
 		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionScopeFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -46,6 +43,7 @@ func Ipsets() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the entity.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "addresses",
@@ -99,7 +97,7 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		result, err := svc.ListIPSets(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, s := range result.IPSets {
 			info, err := svc.GetIPSet(
@@ -112,7 +110,7 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 				func(options *wafv2.Options) { options.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- info.IPSet
 		}
@@ -130,7 +128,7 @@ func resolveIpsetAddresses(ctx context.Context, meta schema.ClientMeta, resource
 	for _, a := range s.Addresses {
 		_, n, err := net.ParseCIDR(a)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		addrs = append(addrs, n)
 	}
@@ -146,7 +144,7 @@ func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) { options.Region = cl.Region })
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if result != nil || result.TagInfoForResource != nil {
 			for _, t := range result.TagInfoForResource.TagList {

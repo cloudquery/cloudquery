@@ -5,18 +5,17 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource global_settings --config gen.hcl --output .
+
 func GlobalSettings() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_backup_global_settings",
 		Resolver:     fetchBackupGlobalSettings,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		Columns: []schema.Column{
 			{
@@ -58,7 +57,7 @@ func fetchBackupGlobalSettings(ctx context.Context, meta schema.ClientMeta, pare
 			meta.Logger().Debug("Feature Cross Account Backup is not available in current region on DescribeGlobalSettings", "err", err)
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output
 	return nil

@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource crawlers --config crawlers.hcl --output .
+
 func Crawlers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_crawlers",
 		Description:  "Specifies a crawler program that examines a data source and uses classifiers to try to determine its schema",
 		Resolver:     fetchGlueCrawlers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -58,7 +58,7 @@ func Crawlers() *schema.Table {
 			{
 				Name:        "crawl_elapsed_time",
 				Description: "If the crawler is running, contains the total time elapsed since the last crawl began",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "crawler_security_configuration",
@@ -192,7 +192,7 @@ func Crawlers() *schema.Table {
 			{
 				Name:        "version",
 				Description: "The version of the crawler",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 		},
 		Relations: []*schema.Table{
@@ -375,7 +375,7 @@ func Crawlers() *schema.Table {
 					{
 						Name:        "sample_size",
 						Description: "Sets the number of files in each leaf folder to be crawled when crawling sample files in a dataset",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 			},
@@ -394,7 +394,7 @@ func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		output, err := svc.GetCrawlers(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Crawlers
 
@@ -419,7 +419,7 @@ func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resourc
 
 	response, err := svc.GetTags(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, response.Tags))
 }

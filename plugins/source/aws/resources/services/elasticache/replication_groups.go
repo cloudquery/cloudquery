@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource replication_groups --config ./gen.hcl --output .
+
 func ReplicationGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_replication_groups",
 		Description:  "Contains all of the attributes of a specific Redis replication group.",
 		Resolver:     fetchElasticacheReplicationGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -82,7 +81,7 @@ func ReplicationGroups() *schema.Table {
 			{
 				Name:        "configuration_endpoint_port",
 				Description: "The port number that the cache engine is listening on.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ConfigurationEndpoint.Port"),
 			},
 			{
@@ -177,7 +176,7 @@ func ReplicationGroups() *schema.Table {
 			{
 				Name:        "snapshot_retention_limit",
 				Description: "The number of days for which ElastiCache retains automatic cluster snapshots before deleting them",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "snapshot_window",
@@ -281,7 +280,7 @@ func ReplicationGroups() *schema.Table {
 					{
 						Name:        "primary_endpoint_port",
 						Description: "The port number that the cache engine is listening on.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("PrimaryEndpoint.Port"),
 					},
 					{
@@ -293,7 +292,7 @@ func ReplicationGroups() *schema.Table {
 					{
 						Name:        "reader_endpoint_port",
 						Description: "The port number that the cache engine is listening on.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("ReaderEndpoint.Port"),
 					},
 					{
@@ -353,7 +352,7 @@ func ReplicationGroups() *schema.Table {
 							{
 								Name:        "read_endpoint_port",
 								Description: "The port number that the cache engine is listening on.",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 								Resolver:    schema.PathResolver("ReadEndpoint.Port"),
 							},
 						},
@@ -373,7 +372,7 @@ func fetchElasticacheReplicationGroups(ctx context.Context, meta schema.ClientMe
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.ReplicationGroups
 	}

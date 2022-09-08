@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource global_replication_groups --config ./gen.hcl --output .
+
 func GlobalReplicationGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_global_replication_groups",
 		Description:  "Consists of a primary cluster that accepts writes and an associated secondary cluster that resides in a different Amazon region",
 		Resolver:     fetchElasticacheGlobalReplicationGroups,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -158,7 +157,7 @@ func fetchElasticacheGlobalReplicationGroups(ctx context.Context, meta schema.Cl
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.GlobalReplicationGroups
 	}

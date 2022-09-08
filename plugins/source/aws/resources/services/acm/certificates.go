@@ -7,18 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource certificates --config certificates.hcl --output .
+
 func Certificates() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_acm_certificates",
 		Description:  "Contains metadata about an ACM certificate",
 		Resolver:     fetchAcmCertificates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("acm"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -207,12 +207,12 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range output.CertificateSummaryList {
 			do, err := svc.DescribeCertificate(ctx, &acm.DescribeCertificateInput{CertificateArn: item.CertificateArn})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- do.Certificate
 		}
@@ -225,7 +225,7 @@ func resolveAcmCertificateTags(ctx context.Context, meta schema.ClientMeta, reso
 	svc := cl.Services().ACM
 	out, err := svc.ListTagsForCertificate(ctx, &acm.ListTagsForCertificateInput{CertificateArn: cert.CertificateArn})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))
 }

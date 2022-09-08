@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource load_balancers --config gen.hcl --output .
+
 func LoadBalancers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_load_balancers",
 		Description:  "Describes a load balancer",
 		Resolver:     fetchLightsailLoadBalancers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -67,7 +67,7 @@ func LoadBalancers() *schema.Table {
 			{
 				Name:        "instance_port",
 				Description: "The port where the load balancer will direct traffic to your Lightsail instances",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "ip_address_type",
@@ -345,7 +345,7 @@ func fetchLightsailLoadBalancers(ctx context.Context, meta schema.ClientMeta, pa
 	for {
 		response, err := svc.GetLoadBalancers(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.LoadBalancers
 		if aws.ToString(response.NextPageToken) == "" {
@@ -375,7 +375,7 @@ func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- response.TlsCertificates
 	return nil

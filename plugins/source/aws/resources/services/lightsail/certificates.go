@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource certificates --config gen.hcl --output .
+
 func Certificates() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_certificates",
 		Description:  "Describes the full details of an Amazon Lightsail SSL/TLS certificate",
 		Resolver:     fetchLightsailCertificates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -55,7 +54,7 @@ func Certificates() *schema.Table {
 			{
 				Name:        "in_use_resource_count",
 				Description: "The number of Lightsail resources that the certificate is attached to",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:          "issued_at",
@@ -247,7 +246,7 @@ func fetchLightsailCertificates(ctx context.Context, meta schema.ClientMeta, par
 	svc := c.Services().Lightsail
 	response, err := svc.GetCertificates(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	for _, cer := range response.Certificates {
 		res <- cer.CertificateDetail

@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource rule_groups --config rule_groups.hcl --output .
+
 func RuleGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafregional_rule_groups",
 		Description:  "A collection of predefined rules that you can add to a web ACL.",
 		Resolver:     fetchWafregionalRuleGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
@@ -77,7 +77,7 @@ func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		result, err := svc.ListRuleGroups(ctx, &params, func(o *wafregional.Options) { o.Region = cl.Region })
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, g := range result.RuleGroups {
 			detail, err := svc.GetRuleGroup(
@@ -86,7 +86,7 @@ func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, par
 				func(o *wafregional.Options) { o.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if detail.RuleGroup == nil {
 				continue
@@ -112,7 +112,7 @@ func resolveWafregionalRuleGroupTags(ctx context.Context, meta schema.ClientMeta
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if result.TagInfoForResource != nil {
 			client.TagsIntoMap(result.TagInfoForResource.TagList, tags)

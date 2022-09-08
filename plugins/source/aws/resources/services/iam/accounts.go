@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -47,8 +46,8 @@ func IamAccounts() *schema.Table {
 		Description:   "Information about IAM entity usage and IAM quotas in the AWS account.",
 		Resolver:      fetchAccountSummary,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -198,21 +197,21 @@ func fetchAccountSummary(ctx context.Context, meta schema.ClientMeta, _ *schema.
 
 	summary, err := svc.GetAccountSummary(ctx, &iam.GetAccountSummaryInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	var accSummary account
 	decoder, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{TagName: "json", WeaklyTypedInput: true, Result: &accSummary})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := decoder.Decode(summary.SummaryMap); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	config := iam.ListAccountAliasesInput{}
 	for {
 		response, err := svc.ListAccountAliases(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		accSummary.Aliases = append(accSummary.Aliases, response.AccountAliases...)

@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource subnet_groups --config ./gen.hcl --output .
+
 func SubnetGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_subnet_groups",
 		Description:  "Contains information about cache subnet groups",
 		Resolver:     fetchElasticacheSubnetGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -98,7 +97,7 @@ func fetchElasticacheSubnetGroups(ctx context.Context, meta schema.ClientMeta, p
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.CacheSubnetGroups
 	}

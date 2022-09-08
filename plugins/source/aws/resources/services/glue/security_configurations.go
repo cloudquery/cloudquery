@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource security_configurations --config security_configurations.hcl --output .
+
 func SecurityConfigurations() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_security_configurations",
 		Description:  "Specifies a security configuration",
 		Resolver:     fetchGlueSecurityConfigurations,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		Columns: []schema.Column{
 			{
@@ -107,7 +106,7 @@ func fetchGlueSecurityConfigurations(ctx context.Context, meta schema.ClientMeta
 	for {
 		result, err := svc.GetSecurityConfigurations(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.SecurityConfigurations
 		if aws.ToString(result.NextToken) == "" {

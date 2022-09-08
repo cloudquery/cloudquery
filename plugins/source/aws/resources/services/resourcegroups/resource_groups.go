@@ -8,17 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource resource_groups --config gen.hcl --output .
+
 func ResourceGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_resourcegroups_resource_groups",
 		Resolver:     fetchResourcegroupsResourceGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("resource-groups"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -90,7 +90,7 @@ func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.Cli
 		options.Region = cl.Region
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, output.Tags))
 }
@@ -113,7 +113,7 @@ func listResourceGroups(ctx context.Context, meta schema.ClientMeta, detailChan 
 			options.Region = c.Region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range output.GroupIdentifiers {
 			detailChan <- item.GroupArn
@@ -136,7 +136,7 @@ func resourceGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsCha
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 
@@ -145,7 +145,7 @@ func resourceGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsCha
 	}
 	output, err := svc.GetGroupQuery(ctx, &input)
 	if err != nil {
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- ResourceGroupWrapper{

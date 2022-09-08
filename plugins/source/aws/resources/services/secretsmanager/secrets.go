@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type WrappedSecret struct {
@@ -24,8 +24,8 @@ func SecretsmanagerSecrets() *schema.Table {
 		Description:   "A structure that contains the details about a secret",
 		Resolver:      fetchSecretsmanagerSecrets,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("secretsmanager"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -123,7 +123,7 @@ func SecretsmanagerSecrets() *schema.Table {
 			{
 				Name:        "rotation_rules_automatically_after_days",
 				Description: "Specifies the number of days between automatic scheduled rotations of the secret",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("RotationRules.AutomaticallyAfterDays"),
 			},
 			{
@@ -152,7 +152,7 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 	for {
 		response, err := svc.ListSecrets(ctx, &cfg)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		var secrets []WrappedSecret
@@ -166,7 +166,7 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 
 			secrets = append(secrets, WrappedSecret{
@@ -195,11 +195,11 @@ func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta
 	}
 	response, err := svc.GetResourcePolicy(ctx, &cfg)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	b, err := json.Marshal(response.ResourcePolicy)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
 }
@@ -219,7 +219,7 @@ func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.Cl
 	}
 	b, err := json.Marshal(replicationStatus)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, b))
 }

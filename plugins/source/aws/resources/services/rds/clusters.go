@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsClusters() *schema.Table {
@@ -17,8 +17,8 @@ func RdsClusters() *schema.Table {
 		Description:   "Contains the details of an Amazon Aurora DB cluster",
 		Resolver:      fetchRdsClusters,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("rds"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -67,12 +67,12 @@ func RdsClusters() *schema.Table {
 			{
 				Name:        "backtrack_consumed_change_records",
 				Description: "The number of change records stored for Backtrack.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "backtrack_window",
 				Description: "The target backtrack window, in seconds",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "backup_retention_period",
@@ -496,7 +496,7 @@ func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		response, err := svc.DescribeDBClusters(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.DBClusters
 		if aws.ToString(response.Marker) == "" {

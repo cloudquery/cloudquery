@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func WafSubscribedRuleGroups() *schema.Table {
@@ -16,8 +15,8 @@ func WafSubscribedRuleGroups() *schema.Table {
 		Description:   "This is AWS WAF Classic documentation",
 		Resolver:      fetchWafSubscribedRuleGroups,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		IgnoreInTests: true,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "rule_group_id"}},
 		Columns: []schema.Column{
@@ -59,7 +58,7 @@ func fetchWafSubscribedRuleGroups(ctx context.Context, meta schema.ClientMeta, p
 			options.Region = "us-east-1"
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.RuleGroups
 

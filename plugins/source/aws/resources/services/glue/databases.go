@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource databases --config databases.hcl --output .
+
 func Databases() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_databases",
 		Description:  "The Database object represents a logical grouping of tables that might reside in a Hive metastore or an RDBMS",
 		Resolver:     fetchGlueDatabases,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -169,7 +169,7 @@ func Databases() *schema.Table {
 					{
 						Name:        "retention",
 						Description: "The retention time for this table",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "additional_locations",
@@ -204,7 +204,7 @@ func Databases() *schema.Table {
 					{
 						Name:        "number_of_buckets",
 						Description: "Must be specified if the table contains any dimension columns",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("StorageDescriptor.NumberOfBuckets"),
 					},
 					{
@@ -228,7 +228,7 @@ func Databases() *schema.Table {
 					{
 						Name:        "schema_reference_schema_version_number",
 						Description: "The version number of the schema",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("StorageDescriptor.SchemaReference.SchemaVersionNumber"),
 					},
 					{
@@ -417,7 +417,7 @@ func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		result, err := svc.GetDatabases(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.DatabaseList
 		if aws.ToString(result.NextToken) == "" {
@@ -441,7 +441,7 @@ func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resour
 
 	response, err := svc.GetTags(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, response.Tags))
 }
@@ -455,7 +455,7 @@ func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		result, err := svc.GetTables(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.TableList
 		if aws.ToString(result.NextToken) == "" {
@@ -474,7 +474,7 @@ func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, 
 	for {
 		result, err := svc.GetPartitionIndexes(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.PartitionIndexDescriptorList
 		if aws.ToString(result.NextToken) == "" {

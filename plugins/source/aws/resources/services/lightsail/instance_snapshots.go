@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource instance_snapshots --config gen.hcl --output .
+
 func InstanceSnapshots() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_instance_snapshots",
 		Description:   "Describes an instance snapshot",
 		Resolver:      fetchLightsailInstanceSnapshots,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -93,7 +92,7 @@ func InstanceSnapshots() *schema.Table {
 			{
 				Name:        "size_in_gb",
 				Description: "The size in GB of the SSD",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "state",
@@ -147,12 +146,12 @@ func InstanceSnapshots() *schema.Table {
 					{
 						Name:        "gb_in_use",
 						Description: "(Deprecated) The number of GB in use by the disk",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "iops",
 						Description: "The input/output operations per second (IOPS) of the disk",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "is_attached",
@@ -194,7 +193,7 @@ func InstanceSnapshots() *schema.Table {
 					{
 						Name:        "size_in_gb",
 						Description: "The size of the disk in GB",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "state",
@@ -264,7 +263,7 @@ func fetchLightsailInstanceSnapshots(ctx context.Context, meta schema.ClientMeta
 	for {
 		response, err := svc.GetInstanceSnapshots(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.InstanceSnapshots
 		if aws.ToString(response.NextPageToken) == "" {

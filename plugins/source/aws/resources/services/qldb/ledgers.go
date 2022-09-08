@@ -7,17 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource ledgers --config gen.hcl --output .
+
 func Ledgers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_qldb_ledgers",
 		Resolver:     fetchQldbLedgers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("qldb"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -259,7 +259,7 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	for {
 		response, err := svc.ListLedgers(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		ledgers := make([]*qldb.DescribeLedgerOutput, 0, len(response.Ledgers))
 		for _, l := range response.Ledgers {
@@ -270,7 +270,7 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			ledgers = append(ledgers, response)
 		}
@@ -291,7 +291,7 @@ func ResolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 		ResourceArn: ledger.Arn,
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, response.Tags))
 }
@@ -305,7 +305,7 @@ func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.Clien
 	for {
 		response, err := cl.Services().QLDB.ListJournalKinesisStreamsForLedger(ctx, config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.Streams
@@ -327,7 +327,7 @@ func fetchQldbLedgerJournalS3Exports(ctx context.Context, meta schema.ClientMeta
 	for {
 		response, err := cl.Services().QLDB.ListJournalS3ExportsForLedger(ctx, config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.JournalS3Exports

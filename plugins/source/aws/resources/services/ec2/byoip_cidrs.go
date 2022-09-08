@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2ByoipCidrs() *schema.Table {
@@ -16,8 +15,8 @@ func Ec2ByoipCidrs() *schema.Table {
 		Description:   "Information about an address range that is provisioned for use with your AWS resources through bring your own IP addresses (BYOIP).",
 		Resolver:      fetchEc2ByoipCidrs,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreWithInvalidAction,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "cidr"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -77,7 +76,7 @@ func fetchEc2ByoipCidrs(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		response, err := svc.DescribeByoipCidrs(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.ByoipCidrs
 		if aws.ToString(response.NextToken) == "" {

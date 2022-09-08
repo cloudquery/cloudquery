@@ -8,19 +8,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
-//go:generate cq-gen --resource subscriptions --config subscriptions.hcl --output .
+
 func Subscriptions() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_sns_subscriptions",
 		Description:  "Amazon SNS subscription",
 		Resolver:     fetchSnsSubscriptions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -129,7 +129,7 @@ func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan c
 	for {
 		output, err := svc.ListSubscriptions(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range output.Subscriptions {
 			detailChan <- item
@@ -159,16 +159,16 @@ func subscriptionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})
 	if err != nil {
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	if err := dec.Decode(attrs.Attributes); err != nil {
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- s

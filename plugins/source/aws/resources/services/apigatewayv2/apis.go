@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 const (
@@ -23,8 +23,8 @@ func Apigatewayv2Apis() *schema.Table {
 		Description:  "Represents an API.",
 		Resolver:     fetchApigatewayv2Apis,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -894,7 +894,7 @@ func fetchApigatewayv2Apis(ctx context.Context, meta schema.ClientMeta, parent *
 		response, err := svc.GetApis(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -915,7 +915,7 @@ func fetchApigatewayv2ApiAuthorizers(ctx context.Context, meta schema.ClientMeta
 		response, err := svc.GetAuthorizers(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -936,7 +936,7 @@ func fetchApigatewayv2ApiDeployments(ctx context.Context, meta schema.ClientMeta
 		response, err := svc.GetDeployments(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -957,7 +957,7 @@ func fetchApigatewayv2ApiIntegrations(ctx context.Context, meta schema.ClientMet
 		response, err := svc.GetIntegrations(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -980,7 +980,7 @@ func fetchApigatewayv2ApiIntegrationResponses(ctx context.Context, meta schema.C
 		response, err := svc.GetIntegrationResponses(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -1001,7 +1001,7 @@ func fetchApigatewayv2ApiModels(ctx context.Context, meta schema.ClientMeta, par
 		response, err := svc.GetModels(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -1023,7 +1023,7 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 
 	response, err := svc.GetModelTemplate(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, response.Value))
 }
@@ -1038,7 +1038,7 @@ func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, par
 		response, err := svc.GetRoutes(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -1061,7 +1061,7 @@ func fetchApigatewayv2ApiRouteResponses(ctx context.Context, meta schema.ClientM
 		response, err := svc.GetRouteResponses(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {
@@ -1082,7 +1082,7 @@ func fetchApigatewayv2ApiStages(ctx context.Context, meta schema.ClientMeta, par
 		response, err := svc.GetStages(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.NextToken) == "" {

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type TaskDefinitionWrapper struct {
@@ -24,8 +24,8 @@ func EcsTaskDefinitions() *schema.Table {
 			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listEcsTaskDefinitions, ecsTaskDefinitionDetail))
 		},
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ecs"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -620,7 +620,7 @@ func ecsTaskDefinitionDetail(ctx context.Context, meta schema.ClientMeta, result
 		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
 	})
 	if err != nil {
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	if describeTaskDefinitionOutput.TaskDefinition == nil {
@@ -645,7 +645,7 @@ func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, res cha
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, taskDefinitionArn := range listClustersOutput.TaskDefinitionArns {
 			res <- taskDefinitionArn

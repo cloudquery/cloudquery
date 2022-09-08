@@ -9,20 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/aws/smithy-go/middleware"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource analyzers --config gen.hcl --output .
+
 func Analyzers() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_access_analyzer_analyzers",
 		Description:  "Contains information about the analyzer",
 		Resolver:     fetchAccessAnalyzerAnalyzers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("access-analyzer"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -40,6 +36,7 @@ func Analyzers() *schema.Table {
 				Name:        "arn",
 				Description: "The ARN of the analyzer",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "created_at",
@@ -248,7 +245,7 @@ func fetchAccessAnalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, p
 			})
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.Analyzers
@@ -269,7 +266,7 @@ func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	for {
 		response, err := svc.ListFindings(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.Findings
@@ -290,7 +287,7 @@ func fetchAccessAnalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.Cl
 	for {
 		response, err := svc.ListArchiveRules(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.ArchiveRules

@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2EbsSnapshots() *schema.Table {
@@ -18,8 +18,8 @@ func Ec2EbsSnapshots() *schema.Table {
 		Description:   "Describes a snapshot.",
 		Resolver:      fetchEc2EbsSnapshots,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "snapshot_id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -131,7 +131,7 @@ func fetchEc2EbsSnapshots(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.DescribeSnapshots(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Snapshots
 		if aws.ToString(output.NextToken) == "" {
@@ -155,7 +155,7 @@ func resolveEc2ebsSnapshotCreateVolumePermissions(ctx context.Context, meta sche
 			meta.Logger().Debug("Failed extracting snapshot volume permissions", "SnapshotId", r.SnapshotId, "error", err)
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	createVolumePermissions := make([]map[string]string, len(output.CreateVolumePermissions))
@@ -170,7 +170,7 @@ func resolveEc2ebsSnapshotCreateVolumePermissions(ctx context.Context, meta sche
 	}
 	b, err := json.Marshal(createVolumePermissions)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	return diag.WrapError(resource.Set("create_volume_permissions", b))

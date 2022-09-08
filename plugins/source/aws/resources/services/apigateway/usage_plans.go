@@ -7,18 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource usage_plans --config usage_plans.hcl --output .
+
 func UsagePlans() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigateway_usage_plans",
 		Description:  "Represents a usage plan used to specify who can assess associated API stages",
 		Resolver:     fetchApigatewayUsagePlans,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -62,13 +62,13 @@ func UsagePlans() *schema.Table {
 			{
 				Name:        "quota_limit",
 				Description: "The target maximum number of requests that can be made in a given time period",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Quota.Limit"),
 			},
 			{
 				Name:        "quota_offset",
 				Description: "The number of requests subtracted from the given limit in the initial time period",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Quota.Offset"),
 			},
 			{
@@ -85,7 +85,7 @@ func UsagePlans() *schema.Table {
 			{
 				Name:        "throttle_burst_limit",
 				Description: "The API target request burst rate limit",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Throttle.BurstLimit"),
 			},
 			{
@@ -190,7 +190,7 @@ func fetchApigatewayUsagePlans(ctx context.Context, meta schema.ClientMeta, pare
 	for p := apigateway.NewGetUsagePlansPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}
@@ -210,7 +210,7 @@ func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, p
 	for p := apigateway.NewGetUsagePlanKeysPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}

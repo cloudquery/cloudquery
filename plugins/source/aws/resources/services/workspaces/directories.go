@@ -7,20 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource directories --config gen.hcl --output .
+
 func Directories() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_workspaces_directories",
 		Description:  "Describes a directory that is used with Amazon WorkSpaces.",
 		Resolver:     fetchWorkspacesDirectories,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("workspaces"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -41,6 +37,7 @@ func Directories() *schema.Table {
 				Resolver: client.ResolveARN(client.WorkspacesService, func(resource *schema.Resource) ([]string, error) {
 					return []string{"directory", *resource.Item.(types.WorkspaceDirectory).DirectoryId}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "alias",
@@ -242,7 +239,7 @@ func fetchWorkspacesDirectories(ctx context.Context, meta schema.ClientMeta, _ *
 	for {
 		output, err := svc.DescribeWorkspaceDirectories(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Directories
 		if aws.ToString(output.NextToken) == "" {

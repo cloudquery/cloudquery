@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamGroups() *schema.Table {
@@ -17,8 +17,8 @@ func IamGroups() *schema.Table {
 		Description:   "Contains information about an IAM group entity.",
 		Resolver:      fetchIamGroups,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -77,7 +77,7 @@ func fetchIamGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		response, err := svc.ListGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Groups
 		if aws.ToString(response.Marker) == "" {
@@ -95,7 +95,7 @@ func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	response, err := svc.ListAttachedGroupPolicies(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	policyMap := map[string]*string{}
 	for _, p := range response.AttachedPolicies {

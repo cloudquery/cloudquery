@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type AliasWrapper struct {
@@ -18,15 +18,15 @@ type AliasWrapper struct {
 	UrlConfig *lambda.GetFunctionUrlConfigOutput
 }
 
-//go:generate cq-gen --resource functions --config gen.hcl --output .
+
 func Functions() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_lambda_functions",
 		Description:          "AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers, creating workload-aware cluster scaling logic, maintaining event integrations, or managing runtimes",
 		Resolver:             fetchLambdaFunctions,
 		Multiplex:            client.ServiceAccountRegionMultiplexer("lambda"),
-		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:         client.DeleteAccountRegionFilter,
+		
+		
 		PostResourceResolver: resolvePolicyCodeSigningConfig,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -136,7 +136,7 @@ func Functions() *schema.Table {
 			{
 				Name:        "code_size",
 				Description: "The size of the function's deployment package, in bytes.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Configuration.CodeSize"),
 			},
 			{
@@ -435,7 +435,7 @@ func Functions() *schema.Table {
 					{
 						Name:        "code_size",
 						Description: "The size of the layer archive in bytes.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:          "signing_job_arn",
@@ -613,7 +613,7 @@ func Functions() *schema.Table {
 					{
 						Name:        "code_size",
 						Description: "The size of the function's deployment package, in bytes.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "dead_letter_config_target_arn",
@@ -872,7 +872,7 @@ func Functions() *schema.Table {
 							{
 								Name:        "code_size",
 								Description: "The size of the layer archive in bytes.",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 							},
 							{
 								Name:          "signing_job_arn",
@@ -1096,7 +1096,7 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		response, err := svc.ListFunctions(ctx, &input)
 		if err != nil {
-			return diags.Add(diag.FromError(diag.WrapError(err), diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
+			return diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
 		}
 
 		for _, f := range response.Functions {
@@ -1115,7 +1115,7 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 					}
 					continue
 				}
-				return diags.Add(diag.FromError(diag.WrapError(err), diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
+				return diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
 			}
 			res <- funcResponse
 		}
@@ -1143,20 +1143,20 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 		if client.IsAWSError(err, "ResourceNotFoundException") {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	if response != nil {
 		if err := resource.Set("policy_revision_id", response.RevisionId); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		var policyDocument map[string]interface{}
 		err = json.Unmarshal([]byte(*response.Policy), &policyDocument)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("policy_document", policyDocument); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
@@ -1171,7 +1171,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 		FunctionName: r.Configuration.FunctionName,
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if functionSigning.CodeSigningConfigArn == nil {
 		return nil
@@ -1184,35 +1184,35 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	if signing.CodeSigningConfig == nil {
 		return nil
 	}
 
 	if err := resource.Set("code_signing_allowed_publishers_version_arns", signing.CodeSigningConfig.AllowedPublishers.SigningProfileVersionArns); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("code_signing_config_arn", signing.CodeSigningConfig.CodeSigningConfigArn); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("code_signing_config_id", signing.CodeSigningConfig.CodeSigningConfigId); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("code_signing_policies_untrusted_artifact_on_deployment", signing.CodeSigningConfig.CodeSigningPolicies.UntrustedArtifactOnDeployment); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("code_signing_description", signing.CodeSigningConfig.Description); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	location, err := time.LoadLocation("UTC")
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	codeSigningLastModified, err := time.ParseInLocation(time.RFC3339, *signing.CodeSigningConfig.LastModified, location)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set("code_signing_last_modified", codeSigningLastModified))
 }
@@ -1234,7 +1234,7 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.FunctionEventInvokeConfigs
 		if output.NextMarker == nil {
@@ -1259,13 +1259,13 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		output, err := svc.ListAliases(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err != nil {
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		aliases := make([]AliasWrapper, 0, len(output.Aliases))
 		for _, a := range output.Aliases {
@@ -1275,7 +1275,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 				Qualifier:    alias.Name,
 			})
 			if err != nil && !c.IsNotFoundError(err) {
-				return diag.WrapError(err)
+				return err
 			}
 			aliases = append(aliases, AliasWrapper{&alias, urlConfig})
 		}
@@ -1305,7 +1305,7 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 			if meta.(*client.Client).IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Versions
 		if output.NextMarker == nil {
@@ -1334,7 +1334,7 @@ func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.Clie
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ProvisionedConcurrencyConfigs
 		if output.NextMarker == nil {
@@ -1362,7 +1362,7 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.EventSourceMappings
 		if output.NextMarker == nil {

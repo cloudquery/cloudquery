@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource service_updates --config ./gen.hcl --output .
+
 func ServiceUpdates() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_service_updates",
 		Description:  "An update that you can apply to your Redis clusters.",
 		Resolver:     fetchElasticacheServiceUpdates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		Columns: []schema.Column{
 			{
@@ -112,7 +111,7 @@ func fetchElasticacheServiceUpdates(ctx context.Context, meta schema.ClientMeta,
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.ServiceUpdates
 	}

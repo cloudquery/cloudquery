@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamPolicies() *schema.Table {
@@ -19,8 +19,8 @@ func IamPolicies() *schema.Table {
 		Description:  "Contains information about a managed policy, including the policy's ARN, versions, and the number of principal entities (users, groups, and roles) that the policy is attached to.",
 		Resolver:     fetchIamPolicies,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -148,7 +148,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		response, err := svc.GetAccountAuthorizationDetails(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Policies
 		if aws.ToString(response.Marker) == "" {
@@ -163,11 +163,11 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 	if r.Document != nil {
 		decodedDocument, err := url.QueryUnescape(*r.Document)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		data := make(map[string]interface{})
 		if err := json.Unmarshal([]byte(decodedDocument), &data); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		return diag.WrapError(resource.Set("document", data))
 	}
@@ -184,7 +184,7 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 			meta.Logger().Debug("ListPolicyTags: Policy does not exist", "err", err)
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set("tags", client.TagsToMap(response.Tags)))
 }

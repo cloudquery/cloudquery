@@ -8,19 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen -config=regex_pattern_sets.hcl -domain=wafv2 -resource=regex_pattern_sets
+
 func RegexPatternSets() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_wafv2_regex_pattern_sets",
 		Description:  "Contains one or more regular expressions",
 		Resolver:     fetchWafv2RegexPatternSets,
 		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionScopeFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -45,6 +42,7 @@ func RegexPatternSets() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the entity.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "description",
@@ -92,7 +90,7 @@ func fetchWafv2RegexPatternSets(ctx context.Context, meta schema.ClientMeta, par
 	for {
 		result, err := svc.ListRegexPatternSets(ctx, &params)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, s := range result.RegexPatternSets {
 			info, err := svc.GetRegexPatternSet(
@@ -105,7 +103,7 @@ func fetchWafv2RegexPatternSets(ctx context.Context, meta schema.ClientMeta, par
 				func(options *wafv2.Options) { options.Region = cl.Region },
 			)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- info.RegexPatternSet
 		}
@@ -137,7 +135,7 @@ func resolveRegexPatternSetTags(ctx context.Context, meta schema.ClientMeta, res
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) { options.Region = cl.Region })
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if result != nil || result.TagInfoForResource != nil {
 			for _, t := range result.TagInfoForResource.TagList {

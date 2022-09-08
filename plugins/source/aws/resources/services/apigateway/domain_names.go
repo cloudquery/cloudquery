@@ -7,19 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource domain_names --config domain_names.hcl --output .
+
 func DomainNames() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigateway_domain_names",
 		Description:  "Represents a custom domain name as a user-friendly host name of an API (RestApi)",
 		Resolver:     fetchApigatewayDomainNames,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,6 +35,7 @@ func DomainNames() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the resource",
 				Type:        schema.TypeString,
 				Resolver:    resolveApigatewayDomainNameArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "certificate_arn",
@@ -201,7 +199,7 @@ func fetchApigatewayDomainNames(ctx context.Context, meta schema.ClientMeta, par
 	for p := apigateway.NewGetDomainNamesPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}
@@ -221,7 +219,7 @@ func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.
 	for p := apigateway.NewGetBasePathMappingsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}

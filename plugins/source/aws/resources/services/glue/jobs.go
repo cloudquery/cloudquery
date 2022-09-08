@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource jobs --config jobs.hcl --output .
+
 func Jobs() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_jobs",
 		Description:  "Specifies a job definition",
 		Resolver:     fetchGlueJobs,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -49,7 +49,7 @@ func Jobs() *schema.Table {
 			{
 				Name:        "allocated_capacity",
 				Description: "This field is deprecated",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "code_gen_configuration_nodes",
@@ -98,7 +98,7 @@ func Jobs() *schema.Table {
 			{
 				Name:        "execution_property_max_concurrent_runs",
 				Description: "The maximum number of concurrent runs allowed for the job",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("ExecutionProperty.MaxConcurrentRuns"),
 			},
 			{
@@ -124,7 +124,7 @@ func Jobs() *schema.Table {
 			{
 				Name:        "max_retries",
 				Description: "The maximum number of times to retry this job after a JobRun fails",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "name",
@@ -139,13 +139,13 @@ func Jobs() *schema.Table {
 			{
 				Name:        "notification_property_notify_delay_after",
 				Description: "After a job run starts, the number of minutes to wait before sending a job run delay notification",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("NotificationProperty.NotifyDelayAfter"),
 			},
 			{
 				Name:        "number_of_workers",
 				Description: "The number of workers of a defined workerType that are allocated when a job runs",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "role",
@@ -160,7 +160,7 @@ func Jobs() *schema.Table {
 			{
 				Name:        "timeout",
 				Description: "The job timeout in minutes",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "worker_type",
@@ -183,7 +183,7 @@ func Jobs() *schema.Table {
 					{
 						Name:        "allocated_capacity",
 						Description: "This field is deprecated",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "arguments",
@@ -193,7 +193,7 @@ func Jobs() *schema.Table {
 					{
 						Name:        "attempt",
 						Description: "The number of the attempt to run this job",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "completed_on",
@@ -214,7 +214,7 @@ func Jobs() *schema.Table {
 					{
 						Name:        "execution_time",
 						Description: "The amount of time (in seconds) that the job run consumed resources",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "glue_version",
@@ -254,13 +254,13 @@ func Jobs() *schema.Table {
 					{
 						Name:        "notification_property_notify_delay_after",
 						Description: "After a job run starts, the number of minutes to wait before sending a job run delay notification",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("NotificationProperty.NotifyDelayAfter"),
 					},
 					{
 						Name:        "number_of_workers",
 						Description: "The number of workers of a defined workerType that are allocated when a job runs",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "predecessor_runs",
@@ -285,7 +285,7 @@ func Jobs() *schema.Table {
 					{
 						Name:        "timeout",
 						Description: "The JobRun timeout in minutes",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "trigger_name",
@@ -314,7 +314,7 @@ func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for {
 		result, err := svc.GetJobs(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.Jobs
 		if aws.ToString(result.NextToken) == "" {
@@ -339,7 +339,7 @@ func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Tags))
 }
@@ -352,7 +352,7 @@ func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		result, err := svc.GetJobRuns(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.JobRuns
 		if aws.ToString(result.NextToken) == "" {

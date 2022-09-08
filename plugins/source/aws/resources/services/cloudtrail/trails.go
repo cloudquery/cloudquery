@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type CloudTrailWrapper struct {
@@ -28,8 +28,8 @@ func CloudtrailTrails() *schema.Table {
 		Description:          "The settings for a trail.",
 		Resolver:             fetchCloudtrailTrails,
 		Multiplex:            client.AccountMultiplex,
-		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:         client.DeleteAccountFilter,
+		
+		
 		PostResourceResolver: postCloudtrailTrailResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		IgnoreInTests:        true,
@@ -239,7 +239,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	response, err := svc.DescribeTrails(ctx, nil)
 
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	getBundledTrailsWithTags := func(trails []types.Trail, region string) ([]CloudTrailWrapper, error) {
@@ -280,7 +280,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 				options.Region = region
 			})
 			if err != nil {
-				return nil, diag.WrapError(err)
+				return nil, err
 			}
 			for i, tr := range processed {
 				client.TagsIntoMap(getCloudTrailTagsByResourceID(*tr.TrailARN, response.ResourceTagList), processed[i].Tags)
@@ -297,7 +297,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	// since api returns all the cloudtrails despite region we aggregate trails by region to get tags.
 	aggregatedTrails, err := aggregateCloudTrails(response.TrailList)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	for region, trails := range aggregatedTrails {
 		for i := 0; i < len(trails); i += 20 {
@@ -309,7 +309,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 			t := trails[i:end]
 			processed, err := getBundledTrailsWithTags(t, region)
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- processed
 		}
@@ -327,37 +327,37 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 			o.Region = *r.HomeRegion
 		})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("is_logging", response.IsLogging); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_cloud_watch_logs_delivery_error", response.LatestCloudWatchLogsDeliveryError); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_cloud_watch_logs_delivery_time", response.LatestCloudWatchLogsDeliveryTime); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_delivery_error", response.LatestDeliveryError); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_delivery_time", response.LatestDeliveryTime); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_digest_delivery_error", response.LatestDigestDeliveryError); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_digest_delivery_time", response.LatestDigestDeliveryTime); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_notification_error", response.LatestNotificationError); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("latest_notification_time", response.LatestNotificationTime); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := resource.Set("start_logging_time", response.StartLoggingTime); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set("stop_logging_time", response.StopLoggingTime))
 }
@@ -388,7 +388,7 @@ func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientM
 		options.Region = *r.HomeRegion
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- response.EventSelectors
 	return nil

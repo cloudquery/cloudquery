@@ -7,18 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource subscriptions --config gen.hcl --output .
+
 func Subscriptions() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_shield_subscriptions",
 		Description:   "Information about the Shield Advanced subscription for an account",
 		Resolver:      fetchShieldSubscriptions,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -101,7 +101,7 @@ func fetchShieldSubscriptions(ctx context.Context, meta schema.ClientMeta, paren
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.Subscription
 	return nil

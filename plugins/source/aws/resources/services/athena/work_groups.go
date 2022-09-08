@@ -11,18 +11,18 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource work_groups --config gen.hcl --output .
+
 func WorkGroups() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_athena_work_groups",
 		Description:  "A workgroup, which contains a name, description, creation time, state, and other configuration, listed under WorkGroup$Configuration",
 		Resolver:     fetchAthenaWorkGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("athena"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -57,7 +57,7 @@ func WorkGroups() *schema.Table {
 			{
 				Name:          "bytes_scanned_cutoff_per_query",
 				Description:   "The upper data usage limit (cutoff) for the amount of bytes a single query in a workgroup is allowed to scan",
-				Type:          schema.TypeBigInt,
+				Type:          schema.TypeInt,
 				Resolver:      schema.PathResolver("Configuration.BytesScannedCutoffPerQuery"),
 				IgnoreInTests: true,
 			},
@@ -276,43 +276,43 @@ func WorkGroups() *schema.Table {
 					{
 						Name:        "data_scanned_in_bytes",
 						Description: "The number of bytes in the data that was queried",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Statistics.DataScannedInBytes"),
 					},
 					{
 						Name:        "engine_execution_time_in_millis",
 						Description: "The number of milliseconds that the query took to execute",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Statistics.EngineExecutionTimeInMillis"),
 					},
 					{
 						Name:        "query_planning_time_in_millis",
 						Description: "The number of milliseconds that Athena took to plan the query processing flow This includes the time spent retrieving table partitions from the data source Note that because the query engine performs the query planning, query planning time is a subset of engine processing time",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Statistics.QueryPlanningTimeInMillis"),
 					},
 					{
 						Name:        "query_queue_time_in_millis",
 						Description: "The number of milliseconds that the query was in your query queue waiting for resources",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Statistics.QueryQueueTimeInMillis"),
 					},
 					{
 						Name:        "service_processing_time_in_millis",
 						Description: "The number of milliseconds that Athena took to finalize and publish the query results after the query engine finished running the query",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Statistics.ServiceProcessingTimeInMillis"),
 					},
 					{
 						Name:        "total_execution_time_in_millis",
 						Description: "The number of milliseconds that Athena took to run the query",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Statistics.TotalExecutionTimeInMillis"),
 					},
 					{
 						Name:        "athena_error_error_category",
 						Description: "An integer value that specifies the category of a query failure error",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Status.AthenaError.ErrorCategory"),
 					},
 					{
@@ -324,7 +324,7 @@ func WorkGroups() *schema.Table {
 					{
 						Name:        "athena_error_error_type",
 						Description: "An integer value that provides specific information about an Athena query error For the meaning of specific values, see the Error Type Reference (https://docsawsamazoncom/athena/latest/ug/error-referencehtml#error-reference-error-type-reference) in the Amazon Athena User Guide",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("Status.AthenaError.ErrorType"),
 					},
 					{
@@ -436,7 +436,7 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		client.TagsIntoMap(result.Tags, tags)
 		if aws.ToString(result.NextToken) == "" {
@@ -454,7 +454,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 	for {
 		response, err := svc.ListPreparedStatements(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, d := range response.PreparedStatements {
 			dc, err := svc.GetPreparedStatement(ctx, &athena.GetPreparedStatementInput{
@@ -465,7 +465,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- *dc.PreparedStatement
 			return nil
@@ -485,7 +485,7 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 	for {
 		response, err := svc.ListQueryExecutions(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, d := range response.QueryExecutionIds {
 			dc, err := svc.GetQueryExecution(ctx, &athena.GetQueryExecutionInput{
@@ -495,7 +495,7 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 				if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- *dc.QueryExecution
 			return nil
@@ -515,7 +515,7 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 	for {
 		response, err := svc.ListNamedQueries(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, d := range response.NamedQueryIds {
 			dc, err := svc.GetNamedQuery(ctx, &athena.GetNamedQueryInput{
@@ -525,7 +525,7 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- *dc.NamedQuery
 			return nil
@@ -551,7 +551,7 @@ func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan
 			options.Region = c.Region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range response.WorkGroups {
 			detailChan <- item
@@ -576,7 +576,7 @@ func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan ch
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- *dc.WorkGroup

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type ConfigOptions struct {
@@ -27,8 +27,8 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 		Description:   "Describes the properties of an environment.",
 		Resolver:      fetchElasticbeanstalkEnvironments,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -408,7 +408,7 @@ func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMe
 	for {
 		response, err := svc.DescribeEnvironments(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Environments
 		if aws.ToString(response.NextToken) == "" {
@@ -442,7 +442,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	if len(tagsOutput.ResourceTags) == 0 {
 		return nil
@@ -470,7 +470,7 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 			meta.Logger().Debug("Failed extracting configuration options for environment. It might be terminated", "environment", p.EnvironmentName, "application", p.ApplicationName)
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	for _, option := range output.Options {
@@ -499,7 +499,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 			meta.Logger().Debug("Failed extracting configuration settings for environment. It might be terminated", "environment", p.EnvironmentName, "application", p.ApplicationName)
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	for _, option := range output.ConfigurationSettings {

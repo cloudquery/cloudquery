@@ -5,8 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type IamOpenIdIdentityProviderWrapper struct {
@@ -20,8 +19,8 @@ func IamOpenidConnectIdentityProviders() *schema.Table {
 		Description:   "IAM OIDC identity providers are entities in IAM that describe an external identity provider (IdP) service that supports the OpenID Connect (OIDC) standard, such as Google or Salesforce.",
 		Resolver:      fetchIamOpenidConnectIdentityProviders,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -74,13 +73,13 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.ListOpenIDConnectProviders(ctx, &iam.ListOpenIDConnectProvidersInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	for _, p := range response.OpenIDConnectProviderList {
 		providerResponse, err := svc.GetOpenIDConnectProvider(ctx, &iam.GetOpenIDConnectProviderInput{OpenIDConnectProviderArn: p.Arn})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- IamOpenIdIdentityProviderWrapper{providerResponse, *p.Arn}
 	}

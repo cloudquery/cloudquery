@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gocarina/gocsv"
 	"github.com/spf13/cast"
 )
@@ -55,8 +55,8 @@ func IamUsers() *schema.Table {
 		Name:                 "aws_iam_users",
 		Resolver:             fetchIamUsers,
 		Multiplex:            client.AccountMultiplex,
-		IgnoreError:          client.IgnoreCommonErrors,
-		DeleteFilter:         client.DeleteAccountFilter,
+		
+		
 		PostResourceResolver: postIamUserResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
@@ -329,7 +329,7 @@ func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	report, err := getCredentialReport(ctx, meta)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	for _, user := range report {
@@ -363,7 +363,7 @@ func userDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- 
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- wrappedUser{*userDetail.User, reportUser, false}
@@ -377,31 +377,31 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 
 	location, err := time.LoadLocation("UTC")
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	// Only set if cast is successful
 	if enabled, err := cast.ToBoolE(r.PasswordStatus); err == nil {
 		if err := resource.Set("password_enabled", enabled); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
 	if r.reportUser.ARN == "" {
 		if err := resource.Set("password_next_rotation", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("password_last_changed", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("cert_1_last_rotated", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("cert_2_last_rotated", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("access_key_1_last_rotated", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		return diag.WrapError(resource.Set("access_key_2_last_rotated", nil))
@@ -409,85 +409,85 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 
 	if r.PasswordNextRotation == "N/A" || r.PasswordNextRotation == "not_supported" {
 		if err := resource.Set("password_next_rotation", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	} else {
 		passwordNextRotation, err := time.ParseInLocation(time.RFC3339, r.PasswordNextRotation, location)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("password_next_rotation", passwordNextRotation); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
 	if r.PasswordLastChanged == "N/A" || r.PasswordLastChanged == "not_supported" {
 		if err := resource.Set("password_last_changed", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	} else {
 		passwordLastChanged, err := time.ParseInLocation(time.RFC3339, r.PasswordLastChanged, location)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("password_last_changed", passwordLastChanged); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
 	if r.Cert1LastRotated == "N/A" || r.Cert1LastRotated == "not_supported" {
 		if err := resource.Set("cert_1_last_rotated", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	} else {
 		cert1LastRotated, err := time.ParseInLocation(time.RFC3339, r.Cert1LastRotated, location)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("cert_1_last_rotated", cert1LastRotated); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
 	if r.Cert2LastRotated == "N/A" || r.Cert2LastRotated == "not_supported" {
 		if err := resource.Set("cert_2_last_rotated", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	} else {
 		cert2LastRotated, err := time.ParseInLocation(time.RFC3339, r.Cert2LastRotated, location)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("cert_2_last_rotated", cert2LastRotated); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
 	if r.AccessKey1LastRotated == "N/A" || r.AccessKey1LastRotated == "not_supported" {
 		if err := resource.Set("access_key_1_last_rotated", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	} else {
 		accessKey1LastRotated, err := time.ParseInLocation(time.RFC3339, r.AccessKey1LastRotated, location)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("access_key_1_last_rotated", accessKey1LastRotated); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
 	if r.AccessKey2LastRotated == "N/A" || r.AccessKey2LastRotated == "not_supported" {
 		if err := resource.Set("access_key_2_last_rotated", nil); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	} else {
 		accessKey2LastRotated, err := time.ParseInLocation(time.RFC3339, r.AccessKey2LastRotated, location)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("access_key_2_last_rotated", accessKey2LastRotated); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 
@@ -505,7 +505,7 @@ func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		output, err := svc.ListGroupsForUser(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Groups
 		if output.Marker == nil {
@@ -527,7 +527,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		output, err := svc.ListAccessKeys(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		keys := make([]wrappedKey, len(output.AccessKeyMetadata))
@@ -568,14 +568,14 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 	svc := meta.(*client.Client).Services().IAM
 	output, err := svc.GetAccessKeyLastUsed(ctx, &iam.GetAccessKeyLastUsedInput{AccessKeyId: r.AccessKeyId})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if output.AccessKeyLastUsed != nil {
 		if err := resource.Set("last_used", output.AccessKeyLastUsed.LastUsedDate); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("last_used_service_name", output.AccessKeyLastUsed.ServiceName); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 	return nil
@@ -592,7 +592,7 @@ func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, p
 	for {
 		output, err := svc.ListAttachedUserPolicies(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.AttachedPolicies
 		if output.Marker == nil {
@@ -623,12 +623,12 @@ func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUse
 			var users reportUsers
 			err = gocsv.UnmarshalBytes(reportOutput.Content, &users)
 			if err != nil {
-				return nil, diag.WrapError(err)
+				return nil, err
 			}
 			return users, nil
 		}
 		if !errors.As(err, &apiErr) {
-			return nil, diag.WrapError(err)
+			return nil, err
 		}
 		switch apiErr.ErrorCode() {
 		case "ReportNotPresent", "ReportExpired":
@@ -636,25 +636,25 @@ func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUse
 			if err != nil {
 				var serviceError smithy.APIError
 				if !errors.As(err, &serviceError) {
-					return nil, diag.WrapError(err)
+					return nil, err
 				}
 				// LimitExceeded is the only specific error that should not stop processing
 				// If Limit Exceeded is returned we should try and see if there is a credential report
 				// already generated so we want to sleep for 5 seconds then continue
 				if serviceError.ErrorCode() != "LimitExceeded" {
-					return nil, diag.WrapError(err)
+					return nil, err
 				}
 				if err := helpers.Sleep(ctx, 5*time.Second); err != nil {
-					return nil, diag.WrapError(err)
+					return nil, err
 				}
 			}
 		case "ReportInProgress":
 			meta.Logger().Debug("Waiting for credential report to be generated", "resource", "iam.users")
 			if err := helpers.Sleep(ctx, 5*time.Second); err != nil {
-				return nil, diag.WrapError(err)
+				return nil, err
 			}
 		default:
-			return nil, diag.WrapError(err)
+			return nil, err
 		}
 	}
 }

@@ -5,8 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func ElasticbeanstalkApplications() *schema.Table {
@@ -15,8 +14,8 @@ func ElasticbeanstalkApplications() *schema.Table {
 		Description:   "Describes the properties of an application.",
 		Resolver:      fetchElasticbeanstalkApplications,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn", "date_created"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -124,7 +123,7 @@ func fetchElasticbeanstalkApplications(ctx context.Context, meta schema.ClientMe
 	svc := c.Services().ElasticBeanstalk
 	output, err := svc.DescribeApplications(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.Applications
 	return nil

@@ -8,8 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/spf13/cast"
 )
 
@@ -18,29 +17,29 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 		Name:                 "aws_wafv2_managed_rule_groups",
 		Description:          "High-level information about a managed rule group, returned by ListAvailableManagedRuleGroups",
 		Resolver:             fetchWafv2ManagedRuleGroups,
-		Multiplex:            client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:          client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:         client.DeleteAccountRegionScopeFilter,
+		Multiplex:            client.ServiceAccountRegionScopeMultiplexer("waf-regional"),		
 		PostResourceResolver: resolveDescribeManagedRuleGroup,
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "scope", "vendor_name", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
 				Description: "The AWS Region of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "scope",
 				Description: "The scope (Regional or Global) of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveWAFScope,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name: "available_labels",
@@ -52,7 +51,7 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 			},
 			{
 				Name: "capacity",
-				Type: schema.TypeBigInt,
+				Type: schema.TypeInt,
 			},
 			{
 				Name: "label_namespace",
@@ -71,6 +70,7 @@ func Wafv2ManagedRuleGroups() *schema.Table {
 				Name:        "name",
 				Description: "The name of the managed rule group",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "vendor_name",
@@ -92,7 +92,7 @@ func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, pa
 	for {
 		output, err := service.ListAvailableManagedRuleGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ManagedRuleGroups
 
@@ -118,7 +118,7 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 		options.Region = c.Region
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	// Available labels
@@ -127,7 +127,7 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 		labels[id] = aws.ToString(label.Name)
 	}
 	if err := resource.Set("available_labels", labels); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	// Consumed labels
 	labels = make([]string, len(descrManagedRuleGroup.ConsumedLabels))
@@ -135,24 +135,24 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 		labels[id] = aws.ToString(label.Name)
 	}
 	if err := resource.Set("consumed_labels", labels); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	// Capacity
 	if err := resource.Set("capacity", cast.ToInt(descrManagedRuleGroup.Capacity)); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	// Label namespace
 	if err := resource.Set("label_namespace", aws.ToString(descrManagedRuleGroup.LabelNamespace)); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	// Rules
 	if len(descrManagedRuleGroup.Rules) > 0 {
 		data, err := json.Marshal(descrManagedRuleGroup.Rules)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if err := resource.Set("rules", data); err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 	}
 	return nil

@@ -5,8 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type IamSamlIdentityProviderWrapper struct {
@@ -20,8 +19,8 @@ func IamSamlIdentityProviders() *schema.Table {
 		Description:  "SAML provider resource objects defined in IAM for the AWS account.",
 		Resolver:     fetchIamSamlIdentityProviders,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -68,13 +67,13 @@ func fetchIamSamlIdentityProviders(ctx context.Context, meta schema.ClientMeta, 
 	svc := meta.(*client.Client).Services().IAM
 	response, err := svc.ListSAMLProviders(ctx, &iam.ListSAMLProvidersInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	for _, p := range response.SAMLProviderList {
 		providerResponse, err := svc.GetSAMLProvider(ctx, &iam.GetSAMLProviderInput{SAMLProviderArn: p.Arn})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- IamSamlIdentityProviderWrapper{GetSAMLProviderOutput: providerResponse, Arn: *p.Arn}
 	}

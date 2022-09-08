@@ -10,18 +10,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource roles --config gen.hcl --output .
+
 func Roles() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_iam_roles",
 		Description:  "An IAM role is an IAM identity that you can create in your account that has specific permissions.",
 		Resolver:     fetchIamRoles,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -76,7 +76,7 @@ func Roles() *schema.Table {
 			{
 				Name:        "max_session_duration",
 				Description: "The maximum session duration (in seconds) for the specified role",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "permissions_boundary_arn",
@@ -164,7 +164,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		for _, p := range response.AttachedPolicies {
 			policies[*p.PolicyArn] = p.PolicyName
@@ -183,7 +183,7 @@ func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.Clien
 	}
 	decodedDocument, err := url.QueryUnescape(*r.AssumeRolePolicyDocument)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set("assume_role_policy_document", decodedDocument))
 }
@@ -200,12 +200,12 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		for _, p := range output.PolicyNames {
 			policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- policyResult
 		}
@@ -221,13 +221,13 @@ func resolveRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMe
 
 	decodedDocument, err := url.QueryUnescape(*r.PolicyDocument)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	var document map[string]interface{}
 	err = json.Unmarshal([]byte(decodedDocument), &document)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, document))
 }
@@ -242,7 +242,7 @@ func listRoles(ctx context.Context, meta schema.ClientMeta, detailChan chan<- in
 	for {
 		response, err := svc.ListRoles(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, role := range response.Roles {
 			detailChan <- role
@@ -265,7 +265,7 @@ func roleDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- 
 		if c.IsNotFoundError(err) {
 			return
 		}
-		errorChan <- diag.WrapError(err)
+		errorChan <- err
 		return
 	}
 	resultsChan <- roleDetails.Role

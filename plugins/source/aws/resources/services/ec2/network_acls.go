@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2NetworkAcls() *schema.Table {
@@ -17,8 +16,8 @@ func Ec2NetworkAcls() *schema.Table {
 		Description:  "Describes a network ACL.",
 		Resolver:     fetchEc2NetworkAcls,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -178,7 +177,7 @@ func fetchEc2NetworkAcls(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		output, err := svc.DescribeNetworkAcls(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.NetworkAcls
 		if aws.ToString(output.NextToken) == "" {

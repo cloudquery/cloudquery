@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type configurationRecorderWrapper struct {
@@ -28,8 +28,8 @@ func ConfigConfigurationRecorders() *schema.Table {
 		Description:   "An object that represents the recording of configuration changes of an AWS resource.",
 		Resolver:      fetchConfigConfigurationRecorders,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("config"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -127,7 +127,7 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 
 	resp, err := c.Services().ConfigService.DescribeConfigurationRecorders(ctx, &configservice.DescribeConfigurationRecordersInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if len(resp.ConfigurationRecorders) == 0 {
 		return nil
@@ -140,7 +140,7 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 		ConfigurationRecorderNames: names,
 	})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	for _, configurationRecorder := range resp.ConfigurationRecorders {
 		if configurationRecorder.Name == nil {

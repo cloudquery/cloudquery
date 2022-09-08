@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource users --config ./gen.hcl --output .
+
 func Users() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_users",
 		Description:  "Describes Elasticache users",
 		Resolver:     fetchElasticacheUsers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -46,7 +45,7 @@ func Users() *schema.Table {
 			{
 				Name:        "authentication_password_count",
 				Description: "The number of passwords belonging to the user",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("Authentication.PasswordCount"),
 			},
 			{
@@ -98,7 +97,7 @@ func fetchElasticacheUsers(ctx context.Context, meta schema.ClientMeta, parent *
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.Users
 	}

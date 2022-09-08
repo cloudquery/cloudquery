@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RedshiftSubnetGroups() *schema.Table {
@@ -18,8 +18,8 @@ func RedshiftSubnetGroups() *schema.Table {
 		Description:  "Describes a subnet group.",
 		Resolver:     fetchRedshiftSubnetGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -119,7 +119,7 @@ func fetchRedshiftSubnetGroups(ctx context.Context, meta schema.ClientMeta, pare
 	for {
 		response, err := svc.DescribeClusterSubnetGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.ClusterSubnetGroups
 		if aws.ToString(response.Marker) == "" {

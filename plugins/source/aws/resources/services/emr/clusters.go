@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EmrClusters() *schema.Table {
@@ -16,8 +15,8 @@ func EmrClusters() *schema.Table {
 		Description:   "The detailed description of the cluster.",
 		Resolver:      fetchEmrClusters,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -330,12 +329,12 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	for {
 		response, err := svc.ListClusters(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, c := range response.Clusters {
 			out, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: c.Id})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- out.Cluster
 		}

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func WafRules() *schema.Table {
@@ -17,8 +17,8 @@ func WafRules() *schema.Table {
 		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafRules,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -96,14 +96,14 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for {
 		output, err := service.ListRules(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, ruleSum := range output.Rules {
 			rule, err := service.GetRule(ctx, &waf.GetRuleInput{RuleId: ruleSum.RuleId}, func(options *waf.Options) {
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- rule.Rule
 		}
@@ -138,7 +138,7 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 			options.Region = "us-east-1"
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, t := range tags.TagInfoForResource.TagList {
 			outputTags[*t.Key] = t.Value

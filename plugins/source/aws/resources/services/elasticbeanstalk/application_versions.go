@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource application_versions --config gen.hcl --output .
+
 func ApplicationVersions() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticbeanstalk_application_versions",
 		Description:  "Describes the properties of an application version.",
 		Resolver:     fetchElasticbeanstalkApplicationVersions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -122,7 +121,7 @@ func fetchElasticbeanstalkApplicationVersions(ctx context.Context, meta schema.C
 	for {
 		output, err := svc.DescribeApplicationVersions(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- output.ApplicationVersions

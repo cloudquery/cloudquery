@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Clusters() *schema.Table {
@@ -18,8 +18,8 @@ func Clusters() *schema.Table {
 		Description:  "A regional grouping of one or more container instances where you can run task requests",
 		Resolver:     fetchEcsClusters,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ecs"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -375,7 +375,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "version",
 						Description: "The version counter for the task",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 				Relations: []*schema.Table{
@@ -1210,7 +1210,7 @@ func Clusters() *schema.Table {
 					{
 						Name:        "version",
 						Description: "The version counter for the container instance",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "version_info_agent_hash",
@@ -1359,7 +1359,7 @@ func Clusters() *schema.Table {
 							{
 								Name:        "long_value",
 								Description: "When the longValue type is set, the value of the resource must be an extended precision floating-point type.",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 							},
 							{
 								Name:        "name",
@@ -1403,7 +1403,7 @@ func Clusters() *schema.Table {
 							{
 								Name:        "long_value",
 								Description: "When the longValue type is set, the value of the resource must be an extended precision floating-point type.",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 							},
 							{
 								Name:        "name",
@@ -1441,7 +1441,7 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if len(listClustersOutput.ClusterArns) == 0 {
 			return nil
@@ -1453,7 +1453,7 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- describeClusterOutput.Clusters
 
@@ -1514,7 +1514,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if len(listTasks.TaskArns) == 0 {
 			return nil
@@ -1528,7 +1528,7 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- describeTasks.Tasks
@@ -1563,7 +1563,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if len(listServicesOutput.ServiceArns) == 0 {
 			return nil
@@ -1577,7 +1577,7 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- describeServicesOutput.Services
@@ -1622,7 +1622,7 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if len(listContainerInstances.ContainerInstanceArns) == 0 {
 			return nil
@@ -1636,7 +1636,7 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 			o.Region = region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- describeContainerInstances.ContainerInstances

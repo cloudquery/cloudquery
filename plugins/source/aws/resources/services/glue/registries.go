@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource registries --config registries.hcl --output .
+
 func Registries() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_glue_registries",
 		Description:  "A structure containing the details for a registry.",
 		Resolver:     fetchGlueRegistries,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -113,12 +113,12 @@ func Registries() *schema.Table {
 					{
 						Name:        "latest_schema_version",
 						Description: "The latest version of the schema associated with the returned schema definition.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "next_schema_version",
 						Description: "The next version of the schema associated with the returned schema definition.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "registry_arn",
@@ -139,7 +139,7 @@ func Registries() *schema.Table {
 					{
 						Name:        "schema_checkpoint",
 						Description: "The version number of the checkpoint (the last time the compatibility mode was changed).",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "schema_name",
@@ -208,7 +208,7 @@ func Registries() *schema.Table {
 							{
 								Name:        "version_number",
 								Description: "The version number of the schema.",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 							},
 						},
 					},
@@ -229,7 +229,7 @@ func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		result, err := svc.ListRegistries(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.Registries
 		if aws.ToString(result.NextToken) == "" {
@@ -250,7 +250,7 @@ func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resour
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Tags))
 }
@@ -265,7 +265,7 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		result, err := svc.ListSchemas(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range result.Schemas {
 			s, err := svc.GetSchema(ctx, &glue.GetSchemaInput{SchemaId: &types.SchemaId{SchemaArn: item.SchemaArn}})
@@ -273,7 +273,7 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- s
 		}
@@ -295,7 +295,7 @@ func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, 
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, result.Tags))
 }
@@ -313,7 +313,7 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 	for {
 		result, err := svc.ListSchemaVersions(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, item := range result.Schemas {
 			s, err := svc.GetSchemaVersion(ctx, &glue.GetSchemaVersionInput{
@@ -323,7 +323,7 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 				if cl.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			res <- s
 		}
@@ -348,7 +348,7 @@ func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.C
 			if cl.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 
 		for k, v := range result.MetadataInfoMap {

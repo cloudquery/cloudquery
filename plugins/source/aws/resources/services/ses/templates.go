@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource templates --config gen.hcl --output .
+
 func Templates() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ses_templates",
 		Description:  "Amazon Simple Email Service (SES) is a cost-effective, flexible, and scalable email service that enables developers to send mail from within any application.",
 		Resolver:     fetchSesTemplates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("email"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -84,14 +83,14 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		output, err := svc.ListEmailTemplates(ctx, listInput, func(o *sesv2.Options) { o.Region = c.Region })
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, templateMeta := range output.TemplatesMetadata {
 			getInput := &sesv2.GetEmailTemplateInput{TemplateName: templateMeta.TemplateName}
 			getOutput, err := svc.GetEmailTemplate(ctx, getInput, func(o *sesv2.Options) { o.Region = c.Region })
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 
 			res <- &Template{

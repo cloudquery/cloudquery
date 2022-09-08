@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func AwsRegions() *schema.Table {
@@ -17,8 +17,8 @@ func AwsRegions() *schema.Table {
 		Description:  "Describes a Region.",
 		Resolver:     fetchRegions,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -66,7 +66,7 @@ func fetchRegions(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	c := meta.(*client.Client)
 	output, err := c.Services().EC2.DescribeRegions(ctx, &ec2.DescribeRegionsInput{AllRegions: aws.Bool(true)})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.Regions
 	return nil

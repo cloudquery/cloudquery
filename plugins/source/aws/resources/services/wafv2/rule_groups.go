@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Wafv2RuleGroups() *schema.Table {
@@ -19,9 +19,6 @@ func Wafv2RuleGroups() *schema.Table {
 		Description:  "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
 		Resolver:     fetchWafv2RuleGroups,
 		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionScopeFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -57,11 +54,12 @@ func Wafv2RuleGroups() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the entity.  ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "capacity",
 				Description: "The web ACL capacity units (WCUs) required for this rule group",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "id",
@@ -140,7 +138,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := service.ListRuleGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		// Get RuleGroup object
@@ -151,7 +149,7 @@ func fetchWafv2RuleGroups(ctx context.Context, meta schema.ClientMeta, parent *s
 				Scope: c.WAFScope,
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- ruleGroup.RuleGroup
 		}
@@ -175,7 +173,7 @@ func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, reso
 	for {
 		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, t := range tags.TagInfoForResource.TagList {
 			outputTags[*t.Key] = t.Value
@@ -203,7 +201,7 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 		if errors.As(err, &e) {
 			return diag.WrapError(resource.Set(c.Name, "null"))
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	return diag.WrapError(resource.Set(c.Name, policy.Policy))
@@ -215,7 +213,7 @@ func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, res
 	}
 	data, err := json.Marshal(ruleGroup.Rules)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, data))
 }

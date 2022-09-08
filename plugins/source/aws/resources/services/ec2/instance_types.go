@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource instance_types --config gen.hcl --output .
+
 func InstanceTypes() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_ec2_instance_types",
 		Description:  "Describes the instance type.",
 		Resolver:     fetchEc2InstanceTypes,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "instance_type"}},
 		Columns: []schema.Column{
 			{
@@ -61,13 +60,13 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "ebs_info_ebs_optimized_info_baseline_bandwidth_in_mbps",
 				Description: "The baseline bandwidth performance for an EBS-optimized instance type, in Mbps.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.BaselineBandwidthInMbps"),
 			},
 			{
 				Name:        "ebs_info_ebs_optimized_info_baseline_iops",
 				Description: "The baseline input/output storage operations per seconds for an EBS-optimized instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.BaselineIops"),
 			},
 			{
@@ -79,13 +78,13 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "ebs_info_ebs_optimized_info_maximum_bandwidth_in_mbps",
 				Description: "The maximum bandwidth performance for an EBS-optimized instance type, in Mbps.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.MaximumBandwidthInMbps"),
 			},
 			{
 				Name:        "ebs_info_ebs_optimized_info_maximum_iops",
 				Description: "The maximum input/output storage operations per second for an EBS-optimized instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.MaximumIops"),
 			},
 			{
@@ -115,7 +114,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "fpga_info_total_fpga_memory_in_mi_b",
 				Description: "The total memory of all FPGA accelerators for the instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("FpgaInfo.TotalFpgaMemoryInMiB"),
 			},
 			{
@@ -126,7 +125,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "gpu_info_total_gpu_memory_in_mi_b",
 				Description: "The total size of the memory for the GPU accelerators for the instance type, in MiB.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("GpuInfo.TotalGpuMemoryInMiB"),
 			},
 			{
@@ -154,7 +153,7 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "instance_storage_info_total_size_in_gb",
 				Description: "The total size of the disks, in GB.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("InstanceStorageInfo.TotalSizeInGB"),
 			},
 			{
@@ -170,19 +169,19 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "memory_info_size_in_mi_b",
 				Description: "The size of the memory, in MiB.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("MemoryInfo.SizeInMiB"),
 			},
 			{
 				Name:        "network_info_default_network_card_index",
 				Description: "The index of the default network card, starting at 0.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("NetworkInfo.DefaultNetworkCardIndex"),
 			},
 			{
 				Name:        "network_info_efa_info_maximum_efa_interfaces",
 				Description: "The maximum number of Elastic Fabric Adapters for the instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("NetworkInfo.EfaInfo.MaximumEfaInterfaces"),
 			},
 			{
@@ -206,13 +205,13 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "network_info_ipv4_addresses_per_interface",
 				Description: "The maximum number of IPv4 addresses per network interface.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("NetworkInfo.Ipv4AddressesPerInterface"),
 			},
 			{
 				Name:        "network_info_ipv6_addresses_per_interface",
 				Description: "The maximum number of IPv6 addresses per network interface.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("NetworkInfo.Ipv6AddressesPerInterface"),
 			},
 			{
@@ -224,13 +223,13 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "network_info_maximum_network_cards",
 				Description: "The maximum number of physical network cards that can be allocated to the instance.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("NetworkInfo.MaximumNetworkCards"),
 			},
 			{
 				Name:        "network_info_maximum_network_interfaces",
 				Description: "The maximum number of network interfaces for the instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("NetworkInfo.MaximumNetworkInterfaces"),
 			},
 			{
@@ -280,19 +279,19 @@ func InstanceTypes() *schema.Table {
 			{
 				Name:        "v_cpu_info_default_cores",
 				Description: "The default number of cores for the instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("VCpuInfo.DefaultCores"),
 			},
 			{
 				Name:        "v_cpu_info_default_threads_per_core",
 				Description: "The default number of threads per core for the instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("VCpuInfo.DefaultThreadsPerCore"),
 			},
 			{
 				Name:        "v_cpu_info_default_v_cpus",
 				Description: "The default number of vCPUs for the instance type.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("VCpuInfo.DefaultVCpus"),
 			},
 			{
@@ -323,7 +322,7 @@ func InstanceTypes() *schema.Table {
 					{
 						Name:        "count",
 						Description: "The count of FPGA accelerators for the instance type.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "manufacturer",
@@ -333,7 +332,7 @@ func InstanceTypes() *schema.Table {
 					{
 						Name:        "memory_info_size_in_mi_b",
 						Description: "The size of the memory available to the FPGA accelerator, in MiB.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("MemoryInfo.SizeInMiB"),
 					},
 					{
@@ -357,7 +356,7 @@ func InstanceTypes() *schema.Table {
 					{
 						Name:        "count",
 						Description: "The number of GPUs for the instance type.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "manufacturer",
@@ -367,7 +366,7 @@ func InstanceTypes() *schema.Table {
 					{
 						Name:        "memory_info_size_in_mi_b",
 						Description: "The size of the memory available to the GPU accelerator, in MiB.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("MemoryInfo.SizeInMiB"),
 					},
 					{
@@ -391,7 +390,7 @@ func InstanceTypes() *schema.Table {
 					{
 						Name:        "count",
 						Description: "The number of Inference accelerators for the instance type.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "manufacturer",
@@ -419,12 +418,12 @@ func InstanceTypes() *schema.Table {
 					{
 						Name:        "count",
 						Description: "The number of disks with this configuration.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "size_in_gb",
 						Description: "The size of the disk in GB.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("SizeInGB"),
 					},
 					{
@@ -448,12 +447,12 @@ func InstanceTypes() *schema.Table {
 					{
 						Name:        "maximum_network_interfaces",
 						Description: "The maximum number of network interfaces for the network card.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "network_card_index",
 						Description: "The index of the network card.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "network_performance",
@@ -480,7 +479,7 @@ func fetchEc2InstanceTypes(ctx context.Context, meta schema.ClientMeta, parent *
 			options.Region = c.Region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.InstanceTypes
 		if aws.ToString(response.NextToken) == "" {

@@ -14,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -233,12 +233,6 @@ func IgnoreNotAvailableRegion(err error) bool {
 	return false
 }
 
-func accountObfusactor(aa []string, msg string) string {
-	for _, a := range aa {
-		msg = strings.ReplaceAll(msg, a, obfuscateAccountId(a))
-	}
-	return msg
-}
 
 // makeARN creates an ARN using supplied service name, partition, account id, region name and resource id parts.
 // Resource id parts are concatenated using forward slash (/).
@@ -456,7 +450,7 @@ func ListAndDetailResolver(ctx context.Context, meta schema.ClientMeta, res chan
 	err := list(ctx, meta, detailChan)
 	close(detailChan)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	// All items will be attempted to be fetched, and all errors will be aggregated

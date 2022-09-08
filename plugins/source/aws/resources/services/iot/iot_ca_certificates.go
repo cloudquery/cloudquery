@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotCaCertificates() *schema.Table {
@@ -17,8 +17,8 @@ func IotCaCertificates() *schema.Table {
 		Description:   "Describes a CA certificate.",
 		Resolver:      fetchIotCaCertificates,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
-		IgnoreError:   client.IgnoreCommonErrors,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -123,7 +123,7 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		response, err := svc.ListCACertificates(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, ca := range response.Certificates {
 			cert, err := svc.DescribeCACertificate(ctx, &iot.DescribeCACertificateInput{
@@ -132,7 +132,7 @@ func fetchIotCaCertificates(ctx context.Context, meta schema.ClientMeta, parent 
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- cert.CertificateDescription
 		}
@@ -156,7 +156,7 @@ func ResolveIotCaCertificateCertificates(ctx context.Context, meta schema.Client
 	for {
 		response, err := svc.ListCertificatesByCA(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		for _, ct := range response.Certificates {

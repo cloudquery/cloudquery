@@ -8,18 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource protection_groups --config gen.hcl --output .
+
 func ProtectionGroups() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_shield_protection_groups",
 		Description:   "A grouping of protected resources that you and Shield Advanced can monitor as a collective",
 		Resolver:      fetchShieldProtectionGroups,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -84,7 +84,7 @@ func fetchShieldProtectionGroups(ctx context.Context, meta schema.ClientMeta, pa
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.ProtectionGroups
 
@@ -108,7 +108,7 @@ func ResolveShieldProtectionGroupTags(ctx context.Context, meta schema.ClientMet
 		if cli.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 
 	tags := map[string]string{}

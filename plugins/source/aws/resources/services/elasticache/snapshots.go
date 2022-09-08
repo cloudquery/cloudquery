@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource snapshots --config ./gen.hcl --output .
+
 func Snapshots() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_snapshots",
 		Description:  "Represents a copy of an entire Redis cluster as of the time when the snapshot was taken.",
 		Resolver:     fetchElasticacheSnapshots,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -96,17 +95,17 @@ func Snapshots() *schema.Table {
 			{
 				Name:        "num_cache_nodes",
 				Description: "The number of cache nodes in the source cluster",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "num_node_groups",
 				Description: "The number of node groups (shards) in this snapshot",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "port",
 				Description: "The port number used by each cache nodes in the source cluster.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "preferred_availability_zone",
@@ -141,7 +140,7 @@ func Snapshots() *schema.Table {
 			{
 				Name:        "snapshot_retention_limit",
 				Description: "For an automatic snapshot, the number of days for which ElastiCache retains the snapshot before deleting it",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "snapshot_source",
@@ -228,7 +227,7 @@ func Snapshots() *schema.Table {
 					{
 						Name:        "node_group_configuration_replica_count",
 						Description: "The number of read replica nodes in this node group (shard).",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("NodeGroupConfiguration.ReplicaCount"),
 					},
 					{
@@ -268,7 +267,7 @@ func fetchElasticacheSnapshots(ctx context.Context, meta schema.ClientMeta, pare
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.Snapshots
 	}

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CloudwatchAlarms() *schema.Table {
@@ -17,8 +17,8 @@ func CloudwatchAlarms() *schema.Table {
 		Description:  "The details about a metric alarm.",
 		Resolver:     fetchCloudwatchAlarms,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -280,7 +280,7 @@ func fetchCloudwatchAlarms(ctx context.Context, meta schema.ClientMeta, parent *
 		response, err := svc.DescribeAlarms(ctx, &config)
 
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.MetricAlarms
 		if aws.ToString(response.NextToken) == "" {
@@ -321,7 +321,7 @@ func resolveCloudwatchAlarmTags(ctx context.Context, meta schema.ClientMeta, res
 	}
 	output, err := svc.ListTagsForResource(ctx, &input)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(output.Tags)))
 }

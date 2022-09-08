@@ -11,7 +11,7 @@ import (
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
@@ -36,8 +36,8 @@ func Elbv2LoadBalancers() *schema.Table {
 		Description:  "Information about a load balancer.",
 		Resolver:     fetchElbv2LoadBalancers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -312,7 +312,7 @@ func fetchElbv2LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		response, err := svc.DescribeLoadBalancers(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.LoadBalancers
 		if aws.ToString(response.NextMarker) == "" {
@@ -339,7 +339,7 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 			}
 		}
 
-		return diag.WrapError(err)
+		return err
 	}
 	if response.WebACL == nil {
 		return nil
@@ -363,7 +363,7 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {
 		return nil
@@ -388,7 +388,7 @@ func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMet
 	svc := c.Services().ELBv2
 	result, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv2.DescribeLoadBalancerAttributesInput{LoadBalancerArn: lb.LoadBalancerArn})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	m := make(map[string]interface{})
 	for _, a := range result.Attributes {
@@ -397,10 +397,10 @@ func fetchElbv2LoadBalancerAttributes(ctx context.Context, meta schema.ClientMet
 	var attrs lbAttributes
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &attrs})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if err := dec.Decode(m); err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- attrs
 	return nil

@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource static_ips --config gen.hcl --output .
+
 func StaticIps() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_lightsail_static_ips",
 		Description:  "Describes a static IP",
 		Resolver:     fetchLightsailStaticIps,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -94,7 +93,7 @@ func fetchLightsailStaticIps(ctx context.Context, meta schema.ClientMeta, parent
 	for {
 		response, err := svc.GetStaticIps(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.StaticIps
 		if aws.ToString(response.NextPageToken) == "" {

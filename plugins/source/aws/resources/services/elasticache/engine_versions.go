@@ -5,19 +5,18 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource engine_versions --config ./gen.hcl --output .
+
 func EngineVersions() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_elasticache_engine_versions",
 		Description:  "Provides all of the details about a particular cache engine version.",
 		Resolver:     fetchElasticacheEngineVersions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "engine", "engine_version"}},
 		Columns: []schema.Column{
 			{
@@ -70,7 +69,7 @@ func fetchElasticacheEngineVersions(ctx context.Context, meta schema.ClientMeta,
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.CacheEngineVersions
 	}

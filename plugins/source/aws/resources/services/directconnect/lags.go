@@ -6,8 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func DirectconnectLags() *schema.Table {
@@ -16,8 +15,8 @@ func DirectconnectLags() *schema.Table {
 		Description:   "Information about Direct Connect Link Aggregation Group (LAG)",
 		Resolver:      fetchDirectconnectLags,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -187,7 +186,7 @@ func fetchDirectconnectLags(ctx context.Context, meta schema.ClientMeta, parent 
 	svc := c.Services().Directconnect
 	output, err := svc.DescribeLags(ctx, &config)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output.Lags
 	return nil

@@ -25,4 +25,5 @@ go.work
 go.work.sum
 cli/examples
 cli/cli
+plugins/source/aws/aws
 plugins/source/gcp/gcp

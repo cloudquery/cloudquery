@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Elbv2TargetGroups() *schema.Table {
@@ -17,8 +17,8 @@ func Elbv2TargetGroups() *schema.Table {
 		Description:   "Information about a target group.",
 		Resolver:      fetchElbv2TargetGroups,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountRegionFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -204,7 +204,7 @@ func fetchElbv2TargetGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		response, err := svc.DescribeTargetGroups(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.TargetGroups
 		if aws.ToString(response.NextMarker) == "" {
@@ -230,7 +230,7 @@ func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, re
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {
 		return nil
@@ -253,7 +253,7 @@ func resolveElbv2TargetGroupTargetHealthDescriptions(ctx context.Context, meta s
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- response.TargetHealthDescriptions
 	return nil

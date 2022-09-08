@@ -7,20 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/workspaces"
 	"github.com/aws/aws-sdk-go-v2/service/workspaces/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource workspaces --config gen.hcl --output .
+
 func Workspaces() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_workspaces_workspaces",
 		Description:  "Describes a WorkSpace.",
 		Resolver:     fetchWorkspacesWorkspaces,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("workspaces"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -41,6 +37,7 @@ func Workspaces() *schema.Table {
 				Resolver: client.ResolveARN(client.WorkspacesService, func(resource *schema.Resource) ([]string, error) {
 					return []string{"workspace", *resource.Item.(types.Workspace).WorkspaceId}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "bundle_id",
@@ -164,7 +161,7 @@ func fetchWorkspacesWorkspaces(ctx context.Context, meta schema.ClientMeta, _ *s
 	for {
 		output, err := svc.DescribeWorkspaces(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.Workspaces
 		if aws.ToString(output.NextToken) == "" {

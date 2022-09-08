@@ -9,7 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type WebACLWrapper struct {
@@ -23,8 +23,8 @@ func WafWebAcls() *schema.Table {
 		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafWebAcls,
 		Multiplex:    client.AccountMultiplex,
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
@@ -163,7 +163,7 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 	for {
 		output, err := service.ListWebACLs(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, webAcl := range output.WebACLs {
 			webAclConfig := waf.GetWebACLInput{WebACLId: webAcl.WebACLId}
@@ -171,7 +171,7 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 				options.Region = c.Region
 			})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 
 			cfg := waf.GetLoggingConfigurationInput{
@@ -217,7 +217,7 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 	for {
 		tags, err := service.ListTagsForResource(ctx, &tagsConfig)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, t := range tags.TagInfoForResource.TagList {
 			outputTags[*t.Key] = t.Value
@@ -251,7 +251,7 @@ func resolveWafWebACLLoggingConfigurationRedactedFields(ctx context.Context, met
 	if conf := resource.Item.(*types.LoggingConfiguration); conf != nil {
 		out, err := json.Marshal(conf.RedactedFields)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		return diag.WrapError(resource.Set(c.Name, out))
 	}

@@ -8,19 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource rest_apis --config rest_apis.hcl --output .
+
 func RestApis() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_apigateway_rest_apis",
 		Description:  "Represents a REST API",
 		Resolver:     fetchApigatewayRestApis,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +36,7 @@ func RestApis() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the resource",
 				Type:        schema.TypeString,
 				Resolver:    resolveApigatewayRestAPIArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "api_key_source",
@@ -85,7 +83,7 @@ func RestApis() *schema.Table {
 			{
 				Name:        "minimum_compression_size",
 				Description: "A nullable integer that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (with a null value) on an API",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "name",
@@ -150,7 +148,7 @@ func RestApis() *schema.Table {
 					{
 						Name:        "authorizer_result_ttl_in_seconds",
 						Description: "The TTL in seconds of cached authorizer results",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "authorizer_uri",
@@ -691,7 +689,7 @@ func fetchApigatewayRestApis(ctx context.Context, meta schema.ClientMeta, parent
 	for p := apigateway.NewGetRestApisPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}
@@ -714,7 +712,7 @@ func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMe
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.Position) == "" {
@@ -742,7 +740,7 @@ func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMe
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}
@@ -766,7 +764,7 @@ func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.C
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.Position) == "" {
@@ -794,7 +792,7 @@ func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schem
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.Position) == "" {
@@ -822,7 +820,7 @@ func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.Cli
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.Position) == "" {
@@ -850,7 +848,7 @@ func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, p
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}
@@ -890,7 +888,7 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 		if cl.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, response.Value))
 }
@@ -905,7 +903,7 @@ func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.Cl
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 		if aws.ToString(response.Position) == "" {
@@ -933,7 +931,7 @@ func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta
 			if c.IsNotFoundError(err) {
 				return nil
 			}
-			return diag.WrapError(err)
+			return err
 		}
 		res <- response.Items
 	}
@@ -957,7 +955,7 @@ func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, p
 		if c.IsNotFoundError(err) {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- response.Item
 

@@ -7,19 +7,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
 
-//go:generate cq-gen --resource distributions --config gen.hcl --output .
+
 func Distributions() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_distributions",
 		Resolver:      fetchLightsailDistributions,
 		Multiplex:     client.AccountMultiplex,
-		IgnoreError:   client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter:  client.DeleteAccountFilter,
+		
+		
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -203,7 +202,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 			options.Region = "us-east-1"
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		errs, ctx := errgroup.WithContext(ctx)
@@ -217,7 +216,7 @@ func fetchLightsailDistributions(ctx context.Context, meta schema.ClientMeta, pa
 		}
 		err = errs.Wait()
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		if aws.ToString(response.NextPageToken) == "" {
 			break
@@ -241,7 +240,7 @@ func fetchCacheReset(ctx context.Context, res chan<- interface{}, c *client.Clie
 		options.Region = "us-east-1"
 	})
 	if err != nil && !c.IsNotFoundError(err) {
-		return diag.WrapError(err)
+		return err
 	}
 	res <- DistributionWrapper{&d, resetResp}
 	return nil

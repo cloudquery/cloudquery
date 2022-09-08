@@ -7,19 +7,19 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
-//go:generate cq-gen --resource topics --config topics.hcl --output .
+
 func Topics() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_sns_topics",
 		Description:  "Amazon SNS topic",
 		Resolver:     fetchSnsTopics,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -62,17 +62,17 @@ func Topics() *schema.Table {
 			{
 				Name:        "subscriptions_confirmed",
 				Description: "The number of confirmed subscriptions for the topic",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "subscriptions_deleted",
 				Description: "The number of deleted subscriptions for the topic",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "subscriptions_pending",
 				Description: "The number of subscriptions pending confirmation for the topic",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 			},
 			{
 				Name:        "arn",
@@ -119,7 +119,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	for {
 		output, err := svc.ListTopics(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		for _, topic := range output.Topics {
 			attrs, err := svc.GetTopicAttributes(ctx, &sns.GetTopicAttributesInput{TopicArn: topic.TopicArn})
@@ -127,15 +127,15 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 				if c.IsNotFoundError(err) {
 					continue
 				}
-				return diag.WrapError(err)
+				return err
 			}
 			t := Topic{Arn: topic.TopicArn}
 			dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &t})
 			if err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			if err := dec.Decode(attrs.Attributes); err != nil {
-				return diag.WrapError(err)
+				return err
 			}
 			res <- t
 		}
@@ -156,7 +156,7 @@ func resolveSnsTopicTags(ctx context.Context, meta schema.ClientMeta, resource *
 	}
 	tags, err := svc.ListTagsForResource(ctx, &tagParams)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(tags.Tags)))
 }

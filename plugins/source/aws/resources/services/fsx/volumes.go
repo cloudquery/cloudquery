@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource volumes --config volumes.hcl --output .
+
 func Volumes() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_fsx_volumes",
 		Description:  "Describes an Amazon FSx for NetApp ONTAP or Amazon FSx for OpenZFS volume",
 		Resolver:     fetchFsxVolumes,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		IgnoreError:  client.IgnoreAccessDeniedServiceDisabled,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -119,7 +118,7 @@ func Volumes() *schema.Table {
 					{
 						Name:        "size_in_megabytes",
 						Description: "The configured size of the volume, in megabytes (MBs)",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 					{
 						Name:        "storage_efficiency_enabled",
@@ -139,7 +138,7 @@ func Volumes() *schema.Table {
 					{
 						Name:        "tiering_policy_cooling_period",
 						Description: "Specifies the number of days that user data in a volume must remain inactive before it is considered \"cold\" and moved to the capacity pool",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("TieringPolicy.CoolingPeriod"),
 					},
 					{
@@ -207,19 +206,19 @@ func Volumes() *schema.Table {
 					{
 						Name:        "record_size",
 						Description: "The record size of an OpenZFS volume, in kibibytes (KiB)",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("RecordSizeKiB"),
 					},
 					{
 						Name:        "storage_capacity_quota",
 						Description: "The maximum amount of storage in gibibtyes (GiB) that the volume can use from its parent",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("StorageCapacityQuotaGiB"),
 					},
 					{
 						Name:        "storage_capacity_reservation",
 						Description: "The amount of storage in gibibytes (GiB) to reserve from the parent volume",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("StorageCapacityReservationGiB"),
 					},
 					{
@@ -250,7 +249,7 @@ func fetchFsxVolumes(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for paginator.HasMorePages() {
 		result, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- result.Volumes
 	}

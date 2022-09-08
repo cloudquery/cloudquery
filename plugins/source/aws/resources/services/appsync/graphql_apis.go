@@ -6,19 +6,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource graphql_apis --config gen.hcl --output .
+
 func GraphqlApis() *schema.Table {
 	return &schema.Table{
 		Name:         "aws_appsync_graphql_apis",
 		Description:  "Describes a GraphQL API",
 		Resolver:     fetchAppsyncGraphqlApis,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("appsync"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -58,7 +57,7 @@ func GraphqlApis() *schema.Table {
 			{
 				Name:        "lambda_authorizer_config_authorizer_result_ttl_in_seconds",
 				Description: "The number of seconds a response should be cached for",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LambdaAuthorizerConfig.AuthorizerResultTtlInSeconds"),
 			},
 			{
@@ -99,7 +98,7 @@ func GraphqlApis() *schema.Table {
 			{
 				Name:        "open_id_connect_config_auth_ttl",
 				Description: "The number of milliseconds that a token is valid after being authenticated",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("OpenIDConnectConfig.AuthTTL"),
 			},
 			{
@@ -111,7 +110,7 @@ func GraphqlApis() *schema.Table {
 			{
 				Name:        "open_id_connect_config_iat_ttl",
 				Description: "The number of milliseconds that a token is valid after it's issued to a user",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("OpenIDConnectConfig.IatTTL"),
 			},
 			{
@@ -185,7 +184,7 @@ func GraphqlApis() *schema.Table {
 					{
 						Name:        "lambda_authorizer_config_authorizer_result_ttl_in_seconds",
 						Description: "The number of seconds a response should be cached for",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("LambdaAuthorizerConfig.AuthorizerResultTtlInSeconds"),
 					},
 					{
@@ -203,7 +202,7 @@ func GraphqlApis() *schema.Table {
 					{
 						Name:        "open_id_connect_config_auth_ttl",
 						Description: "The number of milliseconds that a token is valid after being authenticated",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("OpenIDConnectConfig.AuthTTL"),
 					},
 					{
@@ -215,7 +214,7 @@ func GraphqlApis() *schema.Table {
 					{
 						Name:        "open_id_connect_config_iat_ttl",
 						Description: "The number of milliseconds that a token is valid after it's issued to a user",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 						Resolver:    schema.PathResolver("OpenIDConnectConfig.IatTTL"),
 					},
 					{
@@ -255,7 +254,7 @@ func fetchAppsyncGraphqlApis(ctx context.Context, meta schema.ClientMeta, parent
 			options.Region = c.Region
 		})
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.GraphqlApis
 		if aws.ToString(output.NextToken) == "" {

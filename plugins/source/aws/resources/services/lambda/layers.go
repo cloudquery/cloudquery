@@ -7,8 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 const (
@@ -22,8 +21,8 @@ func LambdaLayers() *schema.Table {
 		Description:  "Details about an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
 		Resolver:     fetchLambdaLayers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lambda"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
+		
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
@@ -72,7 +71,7 @@ func LambdaLayers() *schema.Table {
 			{
 				Name:        "latest_matching_version",
 				Description: "The version number.",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("LatestMatchingVersion.Version"),
 			},
 			{
@@ -130,7 +129,7 @@ func LambdaLayers() *schema.Table {
 					{
 						Name:        "version",
 						Description: "The version number.",
-						Type:        schema.TypeBigInt,
+						Type:        schema.TypeInt,
 					},
 				},
 				Relations: []*schema.Table{
@@ -148,7 +147,7 @@ func LambdaLayers() *schema.Table {
 							{
 								Name:        "layer_version",
 								Description: "The version number.",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 								Resolver:    schema.ParentResourceFieldResolver("version"),
 							},
 							{
@@ -179,7 +178,7 @@ func fetchLambdaLayers(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		response, err := svc.ListLayers(ctx, &input)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 
 		res <- response.Layers
@@ -201,7 +200,7 @@ func fetchLambdaLayerVersions(ctx context.Context, meta schema.ClientMeta, paren
 	for {
 		output, err := svc.ListLayerVersions(ctx, &config)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- output.LayerVersions
 		if output.NextMarker == nil {
@@ -228,7 +227,7 @@ func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta
 		if client.IsAWSError(err, "ResourceNotFoundException") {
 			return nil
 		}
-		return diag.WrapError(err)
+		return err
 	}
 	res <- output
 

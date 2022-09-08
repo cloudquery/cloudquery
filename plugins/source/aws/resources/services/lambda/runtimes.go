@@ -4,8 +4,7 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type RuntimeWrapper struct {
@@ -17,7 +16,7 @@ func LambdaRuntimes() *schema.Table {
 		Name:         "aws_lambda_runtimes",
 		Description:  "All known values for Runtime",
 		Resolver:     fetchLambdaRuntimes,
-		DeleteFilter: client.DeleteAllFilter,
+		
 		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"name"}},
 		Columns: []schema.Column{
 			{
