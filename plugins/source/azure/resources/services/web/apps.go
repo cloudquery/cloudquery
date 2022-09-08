@@ -259,15 +259,10 @@ func Apps() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
 			},
-			{
-				Name:     "vnet_connection",
-				Type:     schema.TypeJSON,
-				Resolver: fetchVnetConnections,
-			},
 		},
 
 		Relations: []*schema.Table{
-			siteAuthSettings(), publishingProfiles(),
+			siteAuthSettings(), publishingProfiles(), vnetConnections(), publishingProfiles(),
 		},
 	}
 }

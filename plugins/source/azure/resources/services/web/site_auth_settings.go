@@ -247,8 +247,8 @@ func siteAuthSettings() *schema.Table {
 func fetchWebSiteAuthSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Web.SiteAuthSettings
 
-	p := parent.Item.(web.Site)
-	response, err := svc.GetAuthSettings(ctx, *p.ResourceGroup, *p.Name)
+	site := parent.Item.(web.Site)
+	response, err := svc.GetAuthSettings(ctx, *site.ResourceGroup, *site.Name)
 	if err != nil {
 		return errors.WithStack(err)
 	}
