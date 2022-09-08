@@ -137,7 +137,9 @@ func CognitoIdentityPools() *schema.Table {
 func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().CognitoIdentityPools
-	optsFunc := func(options *cognitoidentity.Options) { options.Region = c.Region }
+	optsFunc := func(options *cognitoidentity.Options) {
+		options.Region = c.Region
+	}
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,

@@ -86,17 +86,19 @@ func ResolveTimestampField(path string, rfcs ...string) func(_ context.Context, 
 
 /*
 SliceJsonResolver resolves slice of objects into a map[string]interface{}.
-For example object: SliceJsonStruct{Nested: &SliceJsonStruct{
-				Nested: &SliceJsonStruct{
-					Value: []types1.Tag{{
-						Key:   "k1",
-						Value: "v1",
-					}, {
-						Key:   "k2",
-						Value: "v2",
-					}},
-				},
-			}}
+
+	For example object: SliceJsonStruct{Nested: &SliceJsonStruct{
+					Nested: &SliceJsonStruct{
+						Value: []types1.Tag{{
+							Key:   "k1",
+							Value: "v1",
+						}, {
+							Key:   "k2",
+							Value: "v2",
+						}},
+					},
+				}}
+
 can be converted to map[string]interface{}{"k1":"v1","k2":"v2"} by setting a resolver with next params:
 SliceJsonResolver("Nested.Nested.Value", "Key", "Value")
 */
