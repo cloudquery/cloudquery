@@ -115,6 +115,10 @@ func Namespaces() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			topics(),
+		},
 	}
 }
 
