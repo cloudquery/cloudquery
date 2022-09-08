@@ -115,6 +115,10 @@ func Workflows() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			diagnosticSettings(),
+		},
 	}
 }
 

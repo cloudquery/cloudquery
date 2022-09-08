@@ -1,24 +1,20 @@
 // Auto generated code - DO NOT EDIT.
 
-package monitor
+package logic
 
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/logic/mgmt/logic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/schema"
 	"github.com/pkg/errors"
-
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
-	"github.com/Azure/go-autorest/autorest/azure"
-
-	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
 func diagnosticSettings() *schema.Table {
 	return &schema.Table{
-		Name:     "azure_monitor_diagnostic_settings",
-		Resolver: fetchMonitorDiagnosticSettings,
+		Name:     "azure_logic_diagnostic_settings",
+		Resolver: fetchLogicDiagnosticSettings,
 		Columns: []schema.Column{
 			{
 				Name:     "subscription_id",
@@ -92,39 +88,18 @@ func diagnosticSettings() *schema.Table {
 	}
 }
 
-func isResourceTypeNotSupported(err error) bool {
-	var azureErr *azure.RequestError
-	if errors.As(err, &azureErr) {
-		return azureErr.ServiceError != nil && azureErr.ServiceError.Code == "ResourceTypeNotSupported"
-	}
-	return false
-}
+func fetchLogicDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().Logic.DiagnosticSettings
 
-// diagnosticSettingResource is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
-type diagnosticSettingResource struct {
-	insights.DiagnosticSettingsResource
-	ResourceURI string
-}
-
-func fetchMonitorDiagnosticSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Monitor.DiagnosticSettings
-
-	resource := parent.Item.(resources.GenericResourceExpanded)
-	response, err := svc.List(ctx, *resource.ID)
+	workflow := parent.Item.(logic.Workflow)
+	response, err := svc.List(ctx, *workflow.ID)
 	if err != nil {
-		if isResourceTypeNotSupported(err) {
-			return nil
-		}
 		return errors.WithStack(err)
 	}
 	if response.Value == nil {
 		return nil
 	}
-	for _, v := range *response.Value {
-		res <- diagnosticSettingResource{
-			DiagnosticSettingsResource: v,
-			ResourceURI:                *resource.ID,
-		}
-	}
+	res <- *response.Value
+
 	return nil
 }

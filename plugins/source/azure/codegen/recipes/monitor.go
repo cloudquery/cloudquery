@@ -145,8 +145,9 @@ func Monitor() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:  &insights.DiagnosticSettings{},
-					listFunction: "List",
+					azureStruct:        &insights.DiagnosticSettingsResource{},
+					listFunction:       "List",
+					subServiceOverride: "DiagnosticSettings",
 					helpers: []string{`
 					func isResourceTypeNotSupported(err error) bool {
 						var azureErr *azure.RequestError

@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/monitor/mgmt/insights"
 	"github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"
 )
 
@@ -25,8 +26,30 @@ func Logic() []Resource {
 					listFunction:         "ListBySubscription",
 					listFunctionArgs:     []string{"&top", "\"\""},
 					listFunctionArgsInit: []string{"var top int32 = 100"},
+					relations:            []string{"diagnosticSettings()"},
 				},
 			},
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:          &insights.DiagnosticSettingsResource{},
+					listFunction:         "List",
+					listHandler:          valueHandler,
+					listFunctionArgs:     []string{"*workflow.ID"},
+					listFunctionArgsInit: []string{"workflow := parent.Item.(logic.Workflow)"},
+					isRelation:           true,
+					subServiceOverride:   "DiagnosticSettings",
+				},
+			},
+			serviceNameOverride: "Logic",
 		},
 	}
 
