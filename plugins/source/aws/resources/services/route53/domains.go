@@ -13,12 +13,10 @@ import (
 
 func Route53Domains() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_route53_domains",
-		Description: "The domain names registered with Amazon Route 53.",
-		Resolver:    fetchRoute53Domains,
-		Multiplex:   client.AccountMultiplex,
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "domain_name"}},
+		Name:          "aws_route53_domains",
+		Description:   "The domain names registered with Amazon Route 53.",
+		Resolver:      fetchRoute53Domains,
+		Multiplex:     client.AccountMultiplex,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -26,6 +24,7 @@ func Route53Domains() *schema.Table {
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "admin_contact_address_line1",
@@ -117,6 +116,7 @@ func Route53Domains() *schema.Table {
 				Name:        "domain_name",
 				Description: "The name of a domain.",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "registrant_contact_address_line1",
@@ -376,30 +376,10 @@ func Route53Domains() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveRoute53DomainTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_route53_domain_nameservers",
-				Description: "Nameserver includes the following elements.",
-				Resolver:    fetchRoute53DomainNameservers,
-				Columns: []schema.Column{
-					{
-						Name:        "domain_cq_id",
-						Description: "Unique CloudQuery ID of aws_route53_domains table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "The fully qualified host name of the name server",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "glue_ips",
-						Description: "Glue IP address of a name server entry",
-						Type:        schema.TypeStringArray,
-					},
-				},
+				Name:        "nameservers",
+				Description: "List of nameservers",
+				Type:        schema.TypeJSON,
 			},
 		},
 	}
@@ -437,12 +417,6 @@ func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *sc
 		}
 		input.Marker = output.NextPageMarker
 	}
-	return nil
-}
-
-func fetchRoute53DomainNameservers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	d := parent.Item.(*route53domains.GetDomainDetailOutput)
-	res <- d.Nameservers
 	return nil
 }
 

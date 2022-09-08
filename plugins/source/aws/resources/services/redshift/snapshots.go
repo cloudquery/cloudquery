@@ -13,10 +13,9 @@ import (
 
 func Snapshots() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_redshift_snapshots",
-		Description: "Describes a snapshot.",
-		Resolver:    fetchRedshiftSnapshots,
-
+		Name:          "aws_redshift_snapshots",
+		Description:   "Describes a snapshot.",
+		Resolver:      fetchRedshiftSnapshots,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -30,6 +29,7 @@ func Snapshots() *schema.Table {
 				Description: "ARN of the snapshot.",
 				Type:        schema.TypeString,
 				Resolver:    resolveSnapshotARN,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "actual_incremental_backup_size",
@@ -203,30 +203,9 @@ func Snapshots() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_redshift_snapshot_accounts_with_restore_access",
-				Description: "Describes an AWS customer account authorized to restore a snapshot.",
-				Resolver:    schema.PathTableResolver("AccountsWithRestoreAccess"),
-				Columns: []schema.Column{
-					{
-						Name:        "snapshot_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_snapshots table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "account_alias",
-						Description: "The identifier of an AWS support account authorized to restore a snapshot",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "account_id",
-						Description: "The identifier of an AWS customer account authorized to restore a snapshot.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "accounts_with_restore_access",
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}

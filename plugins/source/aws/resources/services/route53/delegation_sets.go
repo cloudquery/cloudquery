@@ -15,9 +15,6 @@ func Route53ReusableDelegationSets() *schema.Table {
 		Name:          "aws_route53_reusable_delegation_sets",
 		Resolver:      fetchRoute53DelegationSets,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -32,6 +29,7 @@ func Route53ReusableDelegationSets() *schema.Table {
 				Resolver: client.ResolveARNGlobal(client.Route53Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"delegationset", *resource.Item.(types.DelegationSet).Id}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name: "name_servers",

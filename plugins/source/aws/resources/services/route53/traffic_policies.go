@@ -2,7 +2,6 @@ package route53
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
@@ -13,12 +12,10 @@ import (
 
 func Route53TrafficPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_route53_traffic_policies",
-		Description: "A complex type that contains information about the latest version of one traffic policy that is associated with the current AWS account.",
-		Resolver:    fetchRoute53TrafficPolicies,
-		Multiplex:   client.AccountMultiplex,
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_route53_traffic_policies",
+		Description:   "A complex type that contains information about the latest version of one traffic policy that is associated with the current AWS account.",
+		Resolver:      fetchRoute53TrafficPolicies,
+		Multiplex:     client.AccountMultiplex,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -60,6 +57,7 @@ func Route53TrafficPolicies() *schema.Table {
 				Resolver: client.ResolveARNGlobal(client.Route53Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"trafficpolicy", *resource.Item.(types.TrafficPolicySummary).Id}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 		Relations: []*schema.Table{
@@ -78,7 +76,6 @@ func Route53TrafficPolicies() *schema.Table {
 						Name:        "document",
 						Description: "The definition of a traffic policy in JSON format.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveRoute53trafficPolicyVersionDocument,
 					},
 					{
 						Name:        "id",
@@ -152,13 +149,4 @@ func fetchRoute53TrafficPolicyVersions(ctx context.Context, meta schema.ClientMe
 		config.TrafficPolicyVersionMarker = response.TrafficPolicyVersionMarker
 	}
 	return nil
-}
-func resolveRoute53trafficPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.TrafficPolicy)
-	var value interface{}
-	err := json.Unmarshal([]byte(*r.Document), &value)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, value)
 }

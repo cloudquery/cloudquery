@@ -21,12 +21,10 @@ type Route53HostedZoneWrapper struct {
 
 func Route53HostedZones() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_route53_hosted_zones",
-		Description: "A complex type that contains general information about the hosted zone.",
-		Resolver:    fetchRoute53HostedZones,
-		Multiplex:   client.AccountMultiplex,
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:         "aws_route53_hosted_zones",
+		Description:  "A complex type that contains general information about the hosted zone.",
+		Resolver:     fetchRoute53HostedZones,
+		Multiplex:    client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -97,6 +95,11 @@ func Route53HostedZones() *schema.Table {
 				Name:        "resource_record_set_count",
 				Description: "The number of resource record sets in the hosted zone.",
 				Type:        schema.TypeInt,
+			},
+			{
+				Name:        "vpcs",
+				Description: "VPCS associated with the hosted zone.",
+				Type:        schema.TypeJSON,
 			},
 		},
 		Relations: []*schema.Table{
@@ -301,38 +304,6 @@ func Route53HostedZones() *schema.Table {
 					},
 				},
 			},
-			{
-				Name:          "aws_route53_hosted_zone_vpc_association_authorizations",
-				Description:   "(Private hosted zones only) A complex type that contains information about an Amazon VPC.",
-				Resolver:      fetchRoute53HostedZoneVpcAssociationAuthorizations,
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "hosted_zone_cq_id",
-						Description: "Unique CloudQuery ID of aws_route53_hosted_zones table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "vpc_id",
-						Description: "(Private hosted zones only) The ID of an Amazon VPC.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VPCId"),
-					},
-					{
-						Name:        "vpc_region",
-						Description: "(Private hosted zones only) The region that an Amazon VPC was created in.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VPCRegion"),
-					},
-					{
-						Name:        "vpc_arn",
-						Description: "Amazon Resource Name (ARN) of the ec2 vpc.",
-						Type:        schema.TypeString,
-						Resolver:    resolveRoute53HostedZoneVpcArn,
-					},
-				},
-			},
 		},
 	}
 }
@@ -468,11 +439,7 @@ func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta sche
 	}
 	return nil
 }
-func fetchRoute53HostedZoneVpcAssociationAuthorizations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(Route53HostedZoneWrapper)
-	res <- r.VPCs
-	return nil
-}
+
 
 func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.Tag {
 	for _, s := range set {
@@ -496,9 +463,4 @@ func resolveRoute53HostedZoneTrafficPolicyInstancesArn(_ context.Context, meta s
 	cl := meta.(*client.Client)
 	tp := resource.Item.(types.TrafficPolicyInstance)
 	return resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "trafficpolicyinstance", *tp.Id))
-}
-func resolveRoute53HostedZoneVpcArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	vpc := resource.Item.(types.VPC)
-	return resource.Set(c.Name, cl.ARN(client.EC2Service, "vpc", *vpc.VPCId))
 }

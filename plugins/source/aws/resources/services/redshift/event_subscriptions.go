@@ -13,18 +13,17 @@ import (
 
 func EventSubscriptions() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_redshift_event_subscriptions",
-		Description: "Describes event subscriptions.",
-		Resolver:    fetchRedshiftEventSubscriptions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:         "aws_redshift_event_subscriptions",
+		Description:  "Describes event subscriptions.",
+		Resolver:     fetchRedshiftEventSubscriptions,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{
 			{
 				Name:        "arn",
 				Description: "ARN of the event subscription.",
 				Type:        schema.TypeString,
 				Resolver:    resolveEventSubscriptionARN,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "account_id",
