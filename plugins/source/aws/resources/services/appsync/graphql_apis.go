@@ -154,85 +154,11 @@ func GraphqlApis() *schema.Table {
 				Description: "A flag indicating whether to use X-Ray tracing for this GraphqlApi",
 				Type:        schema.TypeBool,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_appsync_graphql_api_additional_authentication_providers",
+				Name:        "authentication_providers",
 				Description: "Describes an additional authentication provider",
-				Resolver:    schema.PathTableResolver("AdditionalAuthenticationProviders"),
-				Columns: []schema.Column{
-					{
-						Name:        "graphql_api_cq_id",
-						Description: "Unique CloudQuery ID of aws_appsync_graphql_apis table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "authentication_type",
-						Description: "The authentication type: API key, Identity and Access Management (IAM), OpenID Connect (OIDC), Amazon Cognito user pools, or Lambda",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "lambda_authorizer_config_authorizer_uri",
-						Description: "The Amazon Resource Name (ARN) of the Lambda function to be called for authorization",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LambdaAuthorizerConfig.AuthorizerUri"),
-					},
-					{
-						Name:        "lambda_authorizer_config_authorizer_result_ttl_in_seconds",
-						Description: "The number of seconds a response should be cached for",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("LambdaAuthorizerConfig.AuthorizerResultTtlInSeconds"),
-					},
-					{
-						Name:        "lambda_authorizer_config_identity_validation_expression",
-						Description: "A regular expression for validation of tokens before the Lambda function is called",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LambdaAuthorizerConfig.IdentityValidationExpression"),
-					},
-					{
-						Name:        "open_id_connect_config_issuer",
-						Description: "The issuer for the OIDC configuration",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("OpenIDConnectConfig.Issuer"),
-					},
-					{
-						Name:        "open_id_connect_config_auth_ttl",
-						Description: "The number of milliseconds that a token is valid after being authenticated",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("OpenIDConnectConfig.AuthTTL"),
-					},
-					{
-						Name:        "open_id_connect_config_client_id",
-						Description: "The client identifier of the relying party at the OpenID identity provider",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("OpenIDConnectConfig.ClientId"),
-					},
-					{
-						Name:        "open_id_connect_config_iat_ttl",
-						Description: "The number of milliseconds that a token is valid after it's issued to a user",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("OpenIDConnectConfig.IatTTL"),
-					},
-					{
-						Name:        "user_pool_config_aws_region",
-						Description: "The Amazon Web Services Region in which the user pool was created",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("UserPoolConfig.AwsRegion"),
-					},
-					{
-						Name:        "user_pool_config_user_pool_id",
-						Description: "The user pool ID",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("UserPoolConfig.UserPoolId"),
-					},
-					{
-						Name:        "user_pool_config_app_id_client_regex",
-						Description: "A regular expression for validating the incoming Amazon Cognito user pool app client ID",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("UserPoolConfig.AppIdClientRegex"),
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("AdditionalAuthenticationProviders"),
 			},
 		},
 	}

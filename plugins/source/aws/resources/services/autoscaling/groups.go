@@ -208,123 +208,20 @@ func AutoscalingGroups() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("VPCZoneIdentifier"),
 			},
+			{
+				Name:        "instances",
+				Description: "Describes EC2 instances associated with the group.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Instances"),
+			},
+			{
+				Name:        "tags",
+				Description: "Describes tags for an Auto Scaling group.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Tags"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_autoscaling_group_instances",
-				Description: "Describes an EC2 instance.",
-				Resolver:    schema.PathTableResolver("Instances"),
-				Columns: []schema.Column{
-					{
-						Name:        "group_cq_id",
-						Description: "Unique CloudQuery ID of aws_autoscaling_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "availability_zone",
-						Description: "The Availability Zone in which the instance is running.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "health_status",
-						Description: "The last reported health status of the instance",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "id",
-						Description: "The ID of the instance.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InstanceId"),
-					},
-					{
-						Name:        "lifecycle_state",
-						Description: "A description of the current lifecycle state",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "protected_from_scale_in",
-						Description: "Indicates whether the instance is protected from termination by Amazon EC2 Auto Scaling when scaling in.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "type",
-						Description: "The instance type of the EC2 instance.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InstanceType"),
-					},
-					{
-						Name:        "launch_configuration_name",
-						Description: "The launch configuration associated with the instance.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "launch_template_id",
-						Description:   "The ID of the launch template",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateId"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "launch_template_name",
-						Description:   "The name of the launch template",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateName"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "launch_template_version",
-						Description:   "The version number, $Latest, or $Default",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("LaunchTemplate.Version"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "weighted_capacity",
-						Description:   "The number of capacity units contributed by the instance based on its instance type",
-						Type:          schema.TypeString,
-						IgnoreInTests: true,
-					},
-				},
-			},
-			{
-				Name:        "aws_autoscaling_group_tags",
-				Description: "Describes a tag for an Auto Scaling group.",
-				Resolver:    schema.PathTableResolver("Tags"),
-				Columns: []schema.Column{
-					{
-						Name:        "group_cq_id",
-						Description: "Unique CloudQuery ID of aws_autoscaling_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "key",
-						Description: "The tag key.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "propagate_at_launch",
-						Description: "Determines whether the tag is added to new instances as they are launched in the group.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "resource_id",
-						Description: "The name of the group.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "resource_type",
-						Description: "The type of resource",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "value",
-						Description: "The tag value.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:          "aws_autoscaling_group_scaling_policies",
 				Description:   "Describes a scaling policy.",

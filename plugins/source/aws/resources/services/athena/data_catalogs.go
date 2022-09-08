@@ -134,65 +134,17 @@ func DataCatalogs() *schema.Table {
 								Type:          schema.TypeString,
 								IgnoreInTests: true,
 							},
-						},
-						Relations: []*schema.Table{
 							{
-								Name:          "aws_athena_data_catalog_database_table_columns",
-								Description:   "Contains metadata for a column in a table",
-								Resolver:      schema.PathTableResolver("Columns"),
-								IgnoreInTests: true,
-								Columns: []schema.Column{
-									{
-										Name:        "data_catalog_database_table_cq_id",
-										Description: "Unique CloudQuery ID of aws_athena_data_catalog_database_tables table (FK)",
-										Type:        schema.TypeUUID,
-										Resolver:    schema.ParentIdResolver,
-									},
-									{
-										Name:        "name",
-										Description: "The name of the column",
-										Type:        schema.TypeString,
-									},
-									{
-										Name:        "comment",
-										Description: "Optional information about the column",
-										Type:        schema.TypeString,
-									},
-									{
-										Name:        "type",
-										Description: "The data type of the column",
-										Type:        schema.TypeString,
-									},
-								},
+								Name:        "columns",
+								Description: "Contains metadata for a column in a table",
+								Type:        schema.TypeJSON,
+								Resolver:    schema.PathResolver("Columns"),
 							},
 							{
-								Name:          "aws_athena_data_catalog_database_table_partition_keys",
-								Description:   "Contains metadata for a column in a table",
-								Resolver:      schema.PathTableResolver("PartitionKeys"),
-								IgnoreInTests: true,
-								Columns: []schema.Column{
-									{
-										Name:        "data_catalog_database_table_cq_id",
-										Description: "Unique CloudQuery ID of aws_athena_data_catalog_database_tables table (FK)",
-										Type:        schema.TypeUUID,
-										Resolver:    schema.ParentIdResolver,
-									},
-									{
-										Name:        "name",
-										Description: "The name of the column",
-										Type:        schema.TypeString,
-									},
-									{
-										Name:        "comment",
-										Description: "Optional information about the column",
-										Type:        schema.TypeString,
-									},
-									{
-										Name:        "type",
-										Description: "The data type of the column",
-										Type:        schema.TypeString,
-									},
-								},
+								Name:        "partition_keys",
+								Description: "Contains metadata about partition keys",
+								Type:        schema.TypeJSON,
+								Resolver:    schema.PathResolver("PartitionKeys"),
 							},
 						},
 					},
