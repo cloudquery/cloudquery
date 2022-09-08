@@ -9,8 +9,8 @@ import (
 )
 
 type MySQLClient struct {
-	Servers       MySQLServersClient
-	Configuration MySQLConfigurationsClient
+	Servers        MySQLServersClient
+	Configurations MySQLConfigurationsClient
 }
 
 type MySQLServersClient interface {
@@ -27,7 +27,7 @@ func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQLClient
 	conf := mysql.NewConfigurationsClient(subscriptionId)
 	conf.Authorizer = auth
 	return MySQLClient{
-		Servers:       servers,
-		Configuration: conf,
+		Servers:        servers,
+		Configurations: conf,
 	}
 }
