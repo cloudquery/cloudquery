@@ -8,16 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ReservedCacheNodes() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_reserved_cache_nodes",
-		Description:  "Reserved Elasticache Cache Nodes",
-		Resolver:     fetchElasticacheReservedCacheNodes,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"reservation_arn"}},
+		Name:        "aws_elasticache_reserved_cache_nodes",
+		Description: "Reserved Elasticache Cache Nodes",
+		Resolver:    fetchElasticacheReservedCacheNodes,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -62,10 +58,11 @@ func ReservedCacheNodes() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "reservation_arn",
-				Description: "The Amazon Resource Name (ARN) of the reserved cache node",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ReservationARN"),
+				Name:            "reservation_arn",
+				Description:     "The Amazon Resource Name (ARN) of the reserved cache node",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ReservationARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "reserved_cache_node_id",

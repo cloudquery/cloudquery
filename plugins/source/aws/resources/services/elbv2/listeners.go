@@ -17,10 +17,9 @@ var (
 
 func Elbv2Listeners() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_elbv2_listeners",
-		Description: "Information about a listener.",
-		Resolver:    fetchElbv2Listeners,
-
+		Name:          "aws_elbv2_listeners",
+		Description:   "Information about a listener.",
+		Resolver:      fetchElbv2Listeners,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func StorageVms() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_fsx_storage_vms",
-		Description:  "Describes the Amazon FSx for NetApp ONTAP storage virtual machine (SVM) configuration",
-		Resolver:     fetchFsxStorageVms,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_fsx_storage_vms",
+		Description: "Describes the Amazon FSx for NetApp ONTAP storage virtual machine (SVM) configuration",
+		Resolver:    fetchFsxStorageVms,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -143,10 +139,11 @@ func StorageVms() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for a given resource",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourceARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for a given resource",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ResourceARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "root_volume_security_style",

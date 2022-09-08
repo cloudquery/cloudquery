@@ -15,20 +15,20 @@ func ElasticsearchDomains() *schema.Table {
 		Description: "The current status of an Elasticsearch domain.",
 		Resolver:    fetchElasticsearchDomains,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("es"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "tags",
@@ -42,10 +42,11 @@ func ElasticsearchDomains() *schema.Table {
 				Resolver:    schema.PathResolver("ARN"),
 			},
 			{
-				Name:        "id",
-				Description: "The unique identifier for the specified Elasticsearch domain. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DomainId"),
+				Name:            "id",
+				Description:     "The unique identifier for the specified Elasticsearch domain. ",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("DomainId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

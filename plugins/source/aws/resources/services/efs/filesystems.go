@@ -12,19 +12,18 @@ import (
 
 func EfsFilesystems() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_efs_filesystems",
-		Description: "A description of the file system.",
-		Resolver:    fetchEfsFilesystems,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_efs_filesystems",
+		Description:   "A description of the file system.",
+		Resolver:      fetchEfsFilesystems,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -49,10 +48,11 @@ func EfsFilesystems() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the file system, assigned by Amazon EFS. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("FileSystemId"),
+				Name:            "id",
+				Description:     "The ID of the file system, assigned by Amazon EFS. ",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("FileSystemId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "life_cycle_state",

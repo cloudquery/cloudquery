@@ -8,16 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func UserGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_user_groups",
-		Description:  "Describes Elasticache user groups",
-		Resolver:     fetchElasticacheUserGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elasticache_user_groups",
+		Description: "Describes Elasticache user groups",
+		Resolver:    fetchElasticacheUserGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +28,11 @@ func UserGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the user group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the user group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "engine",

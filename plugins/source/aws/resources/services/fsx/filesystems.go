@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Filesystems() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_fsx_filesystems",
-		Description:  "A description of a specific Amazon FSx file system",
-		Resolver:     fetchFsxFilesystems,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_fsx_filesystems",
+		Description: "A description of a specific Amazon FSx file system",
+		Resolver:    fetchFsxFilesystems,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -88,10 +84,11 @@ func Filesystems() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the file system resource",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourceARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the file system resource",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ResourceARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "storage_capacity",

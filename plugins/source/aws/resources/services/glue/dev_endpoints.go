@@ -16,8 +16,6 @@ func DevEndpoints() *schema.Table {
 		Description: "A development endpoint where a developer can remotely debug extract, transform, and load (ETL) scripts",
 		Resolver:    fetchGlueDevEndpoints,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,11 @@ func DevEndpoints() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the workflow.",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueDevEndpointArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the workflow.",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueDevEndpointArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

@@ -16,8 +16,6 @@ func DeliveryStreams() *schema.Table {
 		Description: "Contains information about a delivery stream",
 		Resolver:    fetchFirehoseDeliveryStreams,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("firehose"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,10 +35,11 @@ func DeliveryStreams() *schema.Table {
 				Resolver: resolveFirehoseDeliveryStreamTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the delivery stream",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DeliveryStreamARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the delivery stream",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("DeliveryStreamARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "delivery_stream_arn",

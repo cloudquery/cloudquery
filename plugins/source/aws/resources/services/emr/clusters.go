@@ -15,9 +15,6 @@ func EmrClusters() *schema.Table {
 		Description:   "The detailed description of the cluster.",
 		Resolver:      fetchEmrClusters,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -49,10 +46,11 @@ func EmrClusters() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name of the cluster.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ClusterArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name of the cluster.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ClusterArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "configurations",

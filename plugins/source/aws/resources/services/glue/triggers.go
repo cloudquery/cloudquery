@@ -16,8 +16,6 @@ func Triggers() *schema.Table {
 		Description: "Information about a specific trigger",
 		Resolver:    fetchGlueTriggers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,11 @@ func Triggers() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the trigger.",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueTriggerArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the trigger.",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueTriggerArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

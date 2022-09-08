@@ -22,9 +22,7 @@ func EcsTaskDefinitions() *schema.Table {
 		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 			return client.ListAndDetailResolver(ctx, meta, res, listEcsTaskDefinitions, ecsTaskDefinitionDetail)
 		},
-		Multiplex: client.ServiceAccountRegionMultiplexer("ecs"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ecs"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -170,10 +168,11 @@ func EcsTaskDefinitions() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The full Amazon Resource Name (ARN) of the task definition.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TaskDefinitionArn"),
+				Name:            "arn",
+				Description:     "The full Amazon Resource Name (ARN) of the task definition.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("TaskDefinitionArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "task_role_arn",

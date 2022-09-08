@@ -8,16 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func SubnetGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_subnet_groups",
-		Description:  "Contains information about cache subnet groups",
-		Resolver:     fetchElasticacheSubnetGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elasticache_subnet_groups",
+		Description: "Contains information about cache subnet groups",
+		Resolver:    fetchElasticacheSubnetGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +28,11 @@ func SubnetGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) of the cache subnet group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) of the cache subnet group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "cache_subnet_group_description",

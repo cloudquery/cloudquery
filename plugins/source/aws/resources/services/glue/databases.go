@@ -16,8 +16,6 @@ func Databases() *schema.Table {
 		Description: "The Database object represents a logical grouping of tables that might reside in a Hive metastore or an RDBMS",
 		Resolver:    fetchGlueDatabases,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,11 @@ func Databases() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the workflow.",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueDatabaseArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the workflow.",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueDatabaseArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

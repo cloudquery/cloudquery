@@ -18,25 +18,25 @@ type ELBv1LoadBalancerWrapper struct {
 
 func Elbv1LoadBalancers() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_elbv1_load_balancers",
-		Description: "Information about a load balancer.",
-		Resolver:    fetchElbv1LoadBalancers,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
+		Name:          "aws_elbv1_load_balancers",
+		Description:   "Information about a load balancer.",
+		Resolver:      fetchElbv1LoadBalancers,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",
@@ -159,10 +159,11 @@ func Elbv1LoadBalancers() *schema.Table {
 				Resolver:    schema.PathResolver("Instances.InstanceId"),
 			},
 			{
-				Name:        "name",
-				Description: "The name of the load balancer.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LoadBalancerName"),
+				Name:            "name",
+				Description:     "The name of the load balancer.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("LoadBalancerName"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "other_policies",

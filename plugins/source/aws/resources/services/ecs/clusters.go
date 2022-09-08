@@ -17,8 +17,6 @@ func Clusters() *schema.Table {
 		Description: "A regional grouping of one or more container instances where you can run task requests",
 		Resolver:    fetchEcsClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -49,10 +47,11 @@ func Clusters() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) that identifies the cluster",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ClusterArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) that identifies the cluster",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ClusterArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

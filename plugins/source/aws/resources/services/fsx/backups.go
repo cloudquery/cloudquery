@@ -11,19 +11,17 @@ import (
 
 func Backups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_fsx_backups",
-		Description:  "A backup of an Amazon FSx file system.",
-		Resolver:     fetchFsxBackups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_fsx_backups",
+		Description: "A backup of an Amazon FSx file system.",
+		Resolver:    fetchFsxBackups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -32,10 +30,11 @@ func Backups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the backup.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("BackupId"),
+				Name:            "id",
+				Description:     "The ID of the backup.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("BackupId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "creation_time",

@@ -8,28 +8,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ServiceUpdates() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_service_updates",
-		Description:  "An update that you can apply to your Redis clusters.",
-		Resolver:     fetchElasticacheServiceUpdates,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
+		Name:        "aws_elasticache_service_updates",
+		Description: "An update that you can apply to your Redis clusters.",
+		Resolver:    fetchElasticacheServiceUpdates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "auto_update_after_recommended_apply_by_date",
@@ -64,10 +62,11 @@ func ServiceUpdates() *schema.Table {
 				Resolver:    schema.PathResolver("ServiceUpdateEndDate"),
 			},
 			{
-				Name:        "name",
-				Description: "The unique ID of the service update",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ServiceUpdateName"),
+				Name:            "name",
+				Description:     "The unique ID of the service update",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ServiceUpdateName"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "recommended_apply_by_date",

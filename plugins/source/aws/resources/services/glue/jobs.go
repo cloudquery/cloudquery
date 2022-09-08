@@ -16,8 +16,6 @@ func Jobs() *schema.Table {
 		Description: "Specifies a job definition",
 		Resolver:    fetchGlueJobs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,11 @@ func Jobs() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the workflow.",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueJobArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the workflow.",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueJobArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

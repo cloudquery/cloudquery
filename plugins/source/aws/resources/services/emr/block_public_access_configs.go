@@ -10,24 +10,23 @@ import (
 
 func EmrBlockPublicAccessConfigs() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_emr_block_public_access_configs",
-		Resolver:     fetchEmrBlockPublicAccessConfigs,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
+		Name:      "aws_emr_block_public_access_configs",
+		Resolver:  fetchEmrBlockPublicAccessConfigs,
+		Multiplex: client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "block_public_security_group_rules",

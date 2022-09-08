@@ -14,9 +14,6 @@ func ElasticbeanstalkApplications() *schema.Table {
 		Description:   "Describes the properties of an application.",
 		Resolver:      fetchElasticbeanstalkApplications,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn", "date_created"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -32,10 +29,11 @@ func ElasticbeanstalkApplications() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the application.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ApplicationArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the application.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ApplicationArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",
@@ -49,9 +47,10 @@ func ElasticbeanstalkApplications() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "date_created",
-				Description: "The date when the application was created.",
-				Type:        schema.TypeTimestamp,
+				Name:            "date_created",
+				Description:     "The date when the application was created.",
+				Type:            schema.TypeTimestamp,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "date_updated",

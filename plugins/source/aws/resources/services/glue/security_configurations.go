@@ -9,28 +9,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func SecurityConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_security_configurations",
-		Description:  "Specifies a security configuration",
-		Resolver:     fetchGlueSecurityConfigurations,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
+		Name:        "aws_glue_security_configurations",
+		Description: "Specifies a security configuration",
+		Resolver:    fetchGlueSecurityConfigurations,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "created_time_stamp",
@@ -62,9 +60,10 @@ func SecurityConfigurations() *schema.Table {
 				Resolver:    schema.PathResolver("EncryptionConfiguration.JobBookmarksEncryption.KmsKeyArn"),
 			},
 			{
-				Name:        "name",
-				Description: "The name of the security configuration",
-				Type:        schema.TypeString,
+				Name:            "name",
+				Description:     "The name of the security configuration",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 		Relations: []*schema.Table{

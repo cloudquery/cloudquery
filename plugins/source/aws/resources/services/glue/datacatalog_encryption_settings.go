@@ -8,22 +8,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func DatacatalogEncryptionSettings() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_datacatalog_encryption_settings",
-		Description:  "Contains configuration information for maintaining Data Catalog security",
-		Resolver:     fetchGlueDatacatalogEncryptionSettings,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
+		Name:        "aws_glue_datacatalog_encryption_settings",
+		Description: "Contains configuration information for maintaining Data Catalog security",
+		Resolver:    fetchGlueDatacatalogEncryptionSettings,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",

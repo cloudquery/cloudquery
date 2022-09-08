@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func DataRepoAssociations() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_fsx_data_repo_associations",
-		Description:  "The configuration of a data repository association that links an Amazon FSx for Lustre file system to an Amazon S3 bucket",
-		Resolver:     fetchFsxDataRepoAssociations,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_fsx_data_repo_associations",
+		Description: "The configuration of a data repository association that links an Amazon FSx for Lustre file system to an Amazon S3 bucket",
+		Resolver:    fetchFsxDataRepoAssociations,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -79,10 +75,11 @@ func DataRepoAssociations() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for a given resource",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourceARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for a given resource",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ResourceARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "s3_auto_export_policy_events",

@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ApplicationVersions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticbeanstalk_application_versions",
-		Description:  "Describes the properties of an application version.",
-		Resolver:     fetchElasticbeanstalkApplicationVersions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elasticbeanstalk_application_versions",
+		Description: "Describes the properties of an application version.",
+		Resolver:    fetchElasticbeanstalkApplicationVersions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,10 +34,11 @@ func ApplicationVersions() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the application version.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ApplicationVersionArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the application version.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ApplicationVersionArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "build_arn",

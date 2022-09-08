@@ -16,8 +16,6 @@ func MlTransforms() *schema.Table {
 		Description: "A structure for a machine learning transform",
 		Resolver:    fetchGlueMlTransforms,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,11 @@ func MlTransforms() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the workflow.",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueMlTransformArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the workflow.",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueMlTransformArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

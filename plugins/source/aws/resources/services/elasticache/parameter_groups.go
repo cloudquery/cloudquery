@@ -10,16 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ParameterGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_parameter_groups",
-		Description:  "Provides details about Elasticache parameter groups.",
-		Resolver:     fetchElasticacheParameterGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elasticache_parameter_groups",
+		Description: "Provides details about Elasticache parameter groups.",
+		Resolver:    fetchElasticacheParameterGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -34,10 +30,11 @@ func ParameterGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) of the cache parameter group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) of the cache parameter group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "cache_parameter_group_family",

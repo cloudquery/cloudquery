@@ -8,16 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ReplicationGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_replication_groups",
-		Description:  "Contains all of the attributes of a specific Redis replication group.",
-		Resolver:     fetchElasticacheReplicationGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elasticache_replication_groups",
+		Description: "Contains all of the attributes of a specific Redis replication group.",
+		Resolver:    fetchElasticacheReplicationGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +28,11 @@ func ReplicationGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) of the replication group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) of the replication group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "at_rest_encryption_enabled",

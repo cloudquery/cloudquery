@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Snapshots() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_fsx_snapshots",
-		Description:  "A snapshot of an Amazon FSx for OpenZFS volume",
-		Resolver:     fetchFsxSnapshots,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("fsx"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_fsx_snapshots",
+		Description: "A snapshot of an Amazon FSx for OpenZFS volume",
+		Resolver:    fetchFsxSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -54,10 +50,11 @@ func Snapshots() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for a given resource",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourceARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for a given resource",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ResourceARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "snapshot_id",

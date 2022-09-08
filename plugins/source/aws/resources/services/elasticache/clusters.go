@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_clusters",
-		Description:  "Contains all of the attributes of a specific cluster.",
-		Resolver:     fetchElasticacheClusters,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elasticache_clusters",
+		Description: "Contains all of the attributes of a specific cluster.",
+		Resolver:    fetchElasticacheClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -33,10 +29,11 @@ func Clusters() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) of the cache cluster.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) of the cache cluster.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "at_rest_encryption_enabled",

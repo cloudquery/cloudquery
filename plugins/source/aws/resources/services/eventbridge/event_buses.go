@@ -16,8 +16,6 @@ func EventBuses() *schema.Table {
 		Description: "An event bus receives events from a source and routes them to rules associated with that event bus",
 		Resolver:    fetchEventbridgeEventBuses,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("events"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,9 +35,10 @@ func EventBuses() *schema.Table {
 				Resolver: resolveEventbridgeEventBusTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN of the event bus",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The ARN of the event bus",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

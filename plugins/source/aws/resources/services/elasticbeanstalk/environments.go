@@ -22,19 +22,18 @@ type ConfigSettings struct {
 
 func ElasticbeanstalkEnvironments() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_elasticbeanstalk_environments",
-		Description: "Describes the properties of an environment.",
-		Resolver:    fetchElasticbeanstalkEnvironments,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_elasticbeanstalk_environments",
+		Description:   "Describes the properties of an environment.",
+		Resolver:      fetchElasticbeanstalkEnvironments,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -92,10 +91,11 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Resolver:    schema.PathResolver("EnvironmentArn"),
 			},
 			{
-				Name:        "id",
-				Description: "The ID of this environment.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EnvironmentId"),
+				Name:            "id",
+				Description:     "The ID of this environment.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("EnvironmentId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

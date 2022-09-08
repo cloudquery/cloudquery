@@ -19,22 +19,21 @@ func GuarddutyDetectors() *schema.Table {
 		Name:          "aws_guardduty_detectors",
 		Resolver:      fetchGuarddutyDetectors,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("guardduty"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",
@@ -45,9 +44,10 @@ func GuarddutyDetectors() *schema.Table {
 				}),
 			},
 			{
-				Name:        "id",
-				Description: "The Unique Identifier of the Detector.",
-				Type:        schema.TypeString,
+				Name:            "id",
+				Description:     "The Unique Identifier of the Detector.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "service_role",

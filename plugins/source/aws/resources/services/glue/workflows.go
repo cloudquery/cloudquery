@@ -16,8 +16,6 @@ func Workflows() *schema.Table {
 		Description: "A workflow is a collection of multiple dependent Glue jobs and crawlers that are run to complete a complex ETL task",
 		Resolver:    fetchGlueWorkflows,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,11 @@ func Workflows() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the workflow.",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueWorkflowArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the workflow.",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueWorkflowArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

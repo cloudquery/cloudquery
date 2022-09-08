@@ -8,28 +8,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ReservedCacheNodesOfferings() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_reserved_cache_nodes_offerings",
-		Description:  "Describes all of the attributes of a reserved cache node offering.",
-		Resolver:     fetchElasticacheReservedCacheNodesOfferings,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "reserved_cache_nodes_offering_id"}},
+		Name:        "aws_elasticache_reserved_cache_nodes_offerings",
+		Description: "Describes all of the attributes of a reserved cache node offering.",
+		Resolver:    fetchElasticacheReservedCacheNodesOfferings,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "cache_node_type",
@@ -57,9 +55,10 @@ func ReservedCacheNodesOfferings() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "reserved_cache_nodes_offering_id",
-				Description: "A unique identifier for the reserved cache node offering.",
-				Type:        schema.TypeString,
+				Name:            "reserved_cache_nodes_offering_id",
+				Description:     "A unique identifier for the reserved cache node offering.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "usage_price",

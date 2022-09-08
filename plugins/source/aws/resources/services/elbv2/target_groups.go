@@ -12,12 +12,10 @@ import (
 
 func Elbv2TargetGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_elbv2_target_groups",
-		Description: "Information about a target group.",
-		Resolver:    fetchElbv2TargetGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_elbv2_target_groups",
+		Description:   "Information about a target group.",
+		Resolver:      fetchElbv2TargetGroups,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -105,10 +103,11 @@ func Elbv2TargetGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the target group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TargetGroupArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the target group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("TargetGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

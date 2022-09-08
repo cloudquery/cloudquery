@@ -15,8 +15,6 @@ func EksClusters() *schema.Table {
 		Description: "An object representing an Amazon EKS cluster.",
 		Resolver:    fetchEksClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("eks"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,9 +29,10 @@ func EksClusters() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the cluster.",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the cluster.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "certificate_authority_data",

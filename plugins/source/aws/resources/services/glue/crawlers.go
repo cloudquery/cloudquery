@@ -16,14 +16,13 @@ func Crawlers() *schema.Table {
 		Description: "Specifies a crawler program that examines a data source and uses classifiers to try to determine its schema",
 		Resolver:    fetchGlueCrawlers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
-				Name:        "arn",
-				Description: "ARN of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueCrawlerArn,
+				Name:            "arn",
+				Description:     "ARN of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueCrawlerArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "account_id",

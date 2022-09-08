@@ -16,14 +16,13 @@ func Repositories() *schema.Table {
 		Description: "An object representing a repository.",
 		Resolver:    fetchEcrRepositories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -70,10 +69,11 @@ func Repositories() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) that identifies the repository",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RepositoryArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) that identifies the repository",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("RepositoryArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

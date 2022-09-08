@@ -16,8 +16,6 @@ func Registries() *schema.Table {
 		Description: "A structure containing the details for a registry.",
 		Resolver:    fetchGlueRegistries,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -48,10 +46,11 @@ func Registries() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the registry.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RegistryArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the registry.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("RegistryArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "registry_name",

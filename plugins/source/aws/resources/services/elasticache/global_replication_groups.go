@@ -8,16 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func GlobalReplicationGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_global_replication_groups",
-		Description:  "Consists of a primary cluster that accepts writes and an associated secondary cluster that resides in a different Amazon region",
-		Resolver:     fetchElasticacheGlobalReplicationGroups,
-		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elasticache_global_replication_groups",
+		Description: "Consists of a primary cluster that accepts writes and an associated secondary cluster that resides in a different Amazon region",
+		Resolver:    fetchElasticacheGlobalReplicationGroups,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -26,10 +22,11 @@ func GlobalReplicationGroups() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) of the global replication group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) of the global replication group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "at_rest_encryption_enabled",

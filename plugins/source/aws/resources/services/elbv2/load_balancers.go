@@ -35,8 +35,6 @@ func Elbv2LoadBalancers() *schema.Table {
 		Description: "Information about a load balancer.",
 		Resolver:    fetchElbv2LoadBalancers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -90,10 +88,11 @@ func Elbv2LoadBalancers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the load balancer.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LoadBalancerArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the load balancer.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("LoadBalancerArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

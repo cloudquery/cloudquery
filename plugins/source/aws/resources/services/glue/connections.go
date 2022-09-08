@@ -16,14 +16,13 @@ func Connections() *schema.Table {
 		Description: "Defines a connection to a data source",
 		Resolver:    fetchGlueConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
-				Name:        "arn",
-				Description: "ARN of the resource",
-				Type:        schema.TypeString,
-				Resolver:    resolveGlueConnectionArn,
+				Name:            "arn",
+				Description:     "ARN of the resource",
+				Type:            schema.TypeString,
+				Resolver:        resolveGlueConnectionArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "account_id",
