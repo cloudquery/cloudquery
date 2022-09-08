@@ -89,9 +89,8 @@ func CertificatePacks() *schema.Table {
 						Type: schema.TypeString,
 					},
 					{
-						Name:     "geo_restrictions_label",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("GeoRestrictions.Label"),
+						Name: "geo_restrictions",
+						Type: schema.TypeJSON,
 					},
 					{
 						Name:     "zone_id",

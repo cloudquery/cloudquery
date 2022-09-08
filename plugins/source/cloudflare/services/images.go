@@ -40,7 +40,7 @@ func Images() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:     "require_signed_url_s",
+				Name:     "require_signed_urls",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("RequireSignedURLs"),
 			},

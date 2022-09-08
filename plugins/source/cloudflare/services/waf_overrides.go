@@ -40,7 +40,7 @@ func WafOverrides() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:     "url_s",
+				Name:     "urls",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("URLs"),
 			},

@@ -38,10 +38,9 @@ func Accounts() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "enforce_two_factor",
-				Description: "True if the account has enforce 2fa authentication.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("Settings.EnforceTwoFactor"),
+				Name:        "settings",
+				Description: "Outlines the available options for an account.",
+				Type:        schema.TypeJSON,
 			},
 		},
 		Relations: []*schema.Table{
@@ -73,34 +72,9 @@ func Accounts() *schema.Table {
 						Type: schema.TypeString,
 					},
 					{
-						Name:        "user_id",
-						Description: "Cloudflare user id.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("User.ID"),
-					},
-					{
-						Name:        "user_first_name",
-						Description: "Cloudflare user first name.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("User.FirstName"),
-					},
-					{
-						Name:        "user_last_name",
-						Description: "Cloudflare user last name.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("User.LastName"),
-					},
-					{
-						Name:        "user_email",
-						Description: "Cloudflare user email.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("User.Email"),
-					},
-					{
-						Name:        "user_two_factor_authentication_enabled",
-						Description: "True if user has enabled 2fa authentication.",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("User.TwoFactorAuthenticationEnabled"),
+						Name:        "user",
+						Description: "All the personal information about a member.",
+						Type:        schema.TypeJSON,
 					},
 					{
 						Name:        "status",

@@ -30,7 +30,7 @@ func WorkersScripts() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:     "eta_g",
+				Name:     "etag",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ETAG"),
 			},
