@@ -438,7 +438,9 @@ func ElasticsearchDomains() *schema.Table {
 // ====================================================================================================================
 func fetchElasticsearchDomains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	optsFunc := func(options *elasticsearchservice.Options) { options.Region = c.Region }
+	optsFunc := func(options *elasticsearchservice.Options) {
+		options.Region = c.Region
+	}
 	svc := c.Services().ElasticSearch
 	out, err := svc.ListDomainNames(ctx, &elasticsearchservice.ListDomainNamesInput{}, optsFunc)
 	if err != nil {
