@@ -3,12 +3,13 @@ package client
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/cloudflare/cloudflare-go"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/rs/zerolog"
 )
 
 type AccountZones map[string]struct {
@@ -19,7 +20,7 @@ type AccountZones map[string]struct {
 type Clients map[string]Api
 
 type Client struct {
-	logger hclog.Logger
+	logger zerolog.Logger
 
 	accountsZones AccountZones
 	clients       Clients
@@ -31,7 +32,7 @@ type Client struct {
 
 const MaxItemsPerPage = 200
 
-func New(logger hclog.Logger, clients Clients, clientApi Api, accountsZones AccountZones) Client {
+func New(logger zerolog.Logger, clients Clients, clientApi Api, accountsZones AccountZones) Client {
 	return Client{
 		logger:        logger,
 		accountsZones: accountsZones,
@@ -40,13 +41,13 @@ func New(logger hclog.Logger, clients Clients, clientApi Api, accountsZones Acco
 	}
 }
 
-func (c *Client) Logger() hclog.Logger {
-	return c.logger
+func (c *Client) Logger() *zerolog.Logger {
+	return &c.logger
 }
 
 func (c *Client) withAccountId(accountId string) *Client {
 	return &Client{
-		logger:        c.logger.With("account_id", obfuscateId(accountId)),
+		logger:        c.logger.With().Str("account_id", accountId).Logger(),
 		accountsZones: c.accountsZones,
 		clients:       c.clients,
 		ClientApi:     c.clients[accountId],
@@ -56,7 +57,7 @@ func (c *Client) withAccountId(accountId string) *Client {
 
 func (c *Client) withZoneId(accountId, zoneId string) *Client {
 	return &Client{
-		logger:        c.logger.With("account_id", obfuscateId(accountId), "zone_id", obfuscateId(zoneId)),
+		logger:        c.logger.With().Str("account_id", accountId).Str("zone_id", zoneId).Logger(),
 		accountsZones: c.accountsZones,
 		clients:       c.clients,
 		ClientApi:     c.clients[accountId],
@@ -65,16 +66,15 @@ func (c *Client) withZoneId(accountId, zoneId string) *Client {
 	}
 }
 
-func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag.Diagnostics) {
-	var diags diag.Diagnostics
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+	cfSpec := &Spec{}
+	if err := s.UnmarshalSpec(cfSpec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal cloudflare spec: %w", err)
+	}
 
-	ctx := context.Background()
-	providerConfig := config.(*Config)
-
-	clientApi, err := getCloudflareClient(providerConfig)
-
+	clientApi, err := getCloudflareClient(cfSpec)
 	if err != nil {
-		return nil, diags.Add(classifyError(err, diag.INTERNAL, diag.WithSeverity(diag.ERROR))) // TODO remove diag
+		return nil, err
 	}
 
 	var accountsZones = make(AccountZones)
@@ -82,14 +82,14 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	// Get available accounts
 	accounts, _, err := clientApi.Accounts(ctx, cloudflare.AccountsListParams{})
 	if err != nil {
-		return nil, diags.Add(classifyError(err, diag.INTERNAL, diag.WithSeverity(diag.ERROR))) // TODO remove diag
+		return nil, err
 	}
 
 	for _, account := range accounts {
 		// Get available zones  for each account
 		zones, err := clientApi.ListZonesContext(ctx, cloudflare.WithZoneFilters("", account.ID, ""))
 		if err != nil {
-			// TODO log error and continue
+			logger.Warn().Err(err).Msg("ListZonesContext failed")
 			continue
 		}
 		var zoneIds []string
@@ -107,14 +107,14 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	}
 
 	if len(accountsZones) == 0 {
-		return nil, diags.Add(classifyError(errors.New("no accounts found"), diag.INTERNAL, diag.WithSeverity(diag.ERROR))) // TODO remove diag
+		return nil, errors.New("no accounts found")
 	}
 
 	clients := make(Clients)
 	for _, account := range accountsZones {
-		c, err := getCloudflareClient(providerConfig)
+		c, err := getCloudflareClient(cfSpec)
 		if err != nil {
-			return nil, diags.Add(classifyError(err, diag.INTERNAL, diag.WithSeverity(diag.ERROR))) // TODO remove diag
+			return nil, err
 		}
 		c.AccountID = account.AccountId
 		clients[account.AccountId] = c
@@ -124,7 +124,7 @@ func Configure(logger hclog.Logger, config interface{}) (schema.ClientMeta, diag
 	return &c, nil
 }
 
-func getCloudflareClient(config *Config) (*cloudflare.API, error) {
+func getCloudflareClient(config *Spec) (*cloudflare.API, error) {
 	// Try to get the API token from the environment
 	token := config.Token
 	if token == "" {
@@ -146,10 +146,6 @@ func getCloudflareClient(config *Config) (*cloudflare.API, error) {
 	}
 
 	return nil, errors.New("no API token or API key/email provided")
-}
-
-func obfuscateId(accountId string) string {
-	return accountId[:4] + "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 }
 
 func getApiTokenFromEnv() string {

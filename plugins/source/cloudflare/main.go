@@ -1,13 +1,12 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/provider"
-	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/plugin"
+	"github.com/cloudquery/plugin-sdk/serve"
 )
 
 func main() {
-	serve.Serve(&serve.Options{
-		Name:     "cloudflare",
-		Provider: provider.Provider(),
+	serve.Serve(serve.Options{
+		SourcePlugin: plugin.Plugin(),
 	})
 }
