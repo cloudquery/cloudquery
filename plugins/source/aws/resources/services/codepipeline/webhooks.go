@@ -96,30 +96,11 @@ func Webhooks() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_codepipeline_webhook_filters",
-				Description: "The event criteria that specify when a webhook notification is sent to your URL",
-				Resolver:    schema.PathTableResolver("Definition.Filters"),
-				Columns: []schema.Column{
-					{
-						Name:        "webhook_cq_id",
-						Description: "Unique CloudQuery ID of aws_codepipeline_webhooks table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "json_path",
-						Description: "A JsonPath expression that is applied to the body/payload of the webhook",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "match_equals",
-						Description: "The value selected by the JsonPath expression must match what is supplied in the MatchEquals field",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "definition",
+				Description: "The detail returned for each webhook, such as the webhook authentication type and filter rules",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Definition"),
 			},
 		},
 	}
