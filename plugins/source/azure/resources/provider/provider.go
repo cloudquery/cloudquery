@@ -59,7 +59,7 @@ func Provider() *provider.Provider {
 			"eventhub.namespaces":                  eventhub.Namespaces(),
 			"frontdoor.doors":                      frontdoor.Doors(),
 			"iothub.devices":                       iothub.Devices(),
-			"keyvault.managed_hs_ms":               keyvault.ManagedHSMs(),
+			"keyvault.managed_hsms":                keyvault.ManagedHsms(),
 			"keyvault.vaults":                      keyvault.Vaults(),
 			"logic.workflows":                      logic.Workflows(),
 			"mariadb.servers":                      mariadb.Servers(),

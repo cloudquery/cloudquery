@@ -26,7 +26,6 @@ func KeyValue() []Resource {
 					listFunction:         "ListBySubscription",
 					listFunctionArgs:     []string{"&maxResults"},
 					listFunctionArgsInit: []string{"maxResults := int32(100)"},
-					subServiceOverride:   "ManagedHSMs",
 				},
 			},
 			serviceNameOverride: "KeyVault",

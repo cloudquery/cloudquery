@@ -17,15 +17,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/preview/keyvault/mgmt/2020-04-01-preview/keyvault"
 )
 
-func TestKeyVaultManagedHSMs(t *testing.T) {
-	client.AzureMockTestHelper(t, ManagedHSMs(), createManagedHSMsMock, client.TestOptions{})
+func TestKeyVaultManagedHsms(t *testing.T) {
+	client.AzureMockTestHelper(t, ManagedHsms(), createManagedHsmsMock, client.TestOptions{})
 }
 
-func createManagedHSMsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockKeyVaultManagedHSMsClient(ctrl)
+func createManagedHsmsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockKeyVaultManagedHsmsClient(ctrl)
 	s := services.Services{
 		KeyVault: services.KeyVaultClient{
-			ManagedHSMs: mockClient,
+			ManagedHsms: mockClient,
 		},
 	}
 

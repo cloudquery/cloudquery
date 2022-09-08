@@ -10,10 +10,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ManagedHSMs() *schema.Table {
+func ManagedHsms() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_keyvault_managed_hs_ms",
-		Resolver:  fetchKeyVaultManagedHSMs,
+		Name:      "azure_keyvault_managed_hsms",
+		Resolver:  fetchKeyVaultManagedHsms,
 		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
@@ -63,8 +63,8 @@ func ManagedHSMs() *schema.Table {
 	}
 }
 
-func fetchKeyVaultManagedHSMs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().KeyVault.ManagedHSMs
+func fetchKeyVaultManagedHsms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().KeyVault.ManagedHsms
 
 	maxResults := int32(100)
 	response, err := svc.ListBySubscription(ctx, &maxResults)
