@@ -55,41 +55,11 @@ func CloudwatchlogsFilters() *schema.Table {
 				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_cloudwatchlogs_filter_metric_transformations",
-				Description:   "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
-				Resolver:      schema.PathTableResolver("MetricTransformations"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "filter_cq_id",
-						Description: "Unique CloudQuery ID of aws_cloudwatchlogs_filters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "metric_name",
-						Description: "The name of the CloudWatch metric.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "metric_namespace",
-						Description: "A custom namespace to contain your metric in CloudWatch.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "metric_value",
-						Description: "The value to publish to the CloudWatch metric when a filter pattern matches a log event.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "default_value",
-						Description: "(Optional) The value to emit when a filter pattern does not match a log event.",
-						Type:        schema.TypeFloat,
-					},
-				},
+				Name:        "metric_transformations",
+				Description: "Indicates how to transform ingested log events to metric data in a CloudWatch metric.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("MetricTransformations"),
 			},
 		},
 	}

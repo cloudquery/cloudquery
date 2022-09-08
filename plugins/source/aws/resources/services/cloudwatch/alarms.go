@@ -172,95 +172,11 @@ func CloudwatchAlarms() *schema.Table {
 				Description: "The unit of the metric associated with the alarm.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_cloudwatch_alarm_metrics",
-				Description:   "This structure is used in both GetMetricData and PutMetricAlarm.",
-				Resolver:      schema.PathTableResolver("Metrics"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "alarm_cq_id",
-						Description: "Unique CloudQuery ID of aws_cloudwatch_alarms table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "alarm_arn",
-						Description: "The Amazon Resource Name (ARN) of the alarm.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("arn"),
-					},
-					{
-						Name:        "alarm_name",
-						Description: "The name of the alarm.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("name"),
-					},
-					{
-						Name:        "id",
-						Description: "A short name used to tie this object to the results in the response.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Id"),
-					},
-					{
-						Name:        "expression",
-						Description: "The math expression to be performed on the returned data, if this object is performing a math expression.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "label",
-						Description: "A human-readable label for this metric or expression.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "metric_stat_metric_dimensions",
-						Description: "The dimensions for the metric.",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveCloudwatchAlarmMetricMetricStatMetricDimensions,
-					},
-					{
-						Name:        "metric_stat_metric_name",
-						Description: "The name of the metric.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("MetricStat.Metric.MetricName"),
-					},
-					{
-						Name:        "metric_stat_metric_namespace",
-						Description: "The namespace of the metric.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("MetricStat.Metric.Namespace"),
-					},
-					{
-						Name:        "metric_stat_period",
-						Description: "The granularity, in seconds, of the returned data points.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("MetricStat.Period"),
-					},
-					{
-						Name:        "metric_stat",
-						Description: "The statistic to return.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("MetricStat.Stat"),
-					},
-					{
-						Name:        "metric_stat_unit",
-						Description: "When you are using a Put operation, this defines what unit you want to use when storing the metric.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("MetricStat.Unit"),
-					},
-					{
-						Name:        "period",
-						Description: "The granularity, in seconds, of the returned data points.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "return_data",
-						Description: "When used in GetMetricData, this option indicates whether to return the timestamps and raw data values of this metric.",
-						Type:        schema.TypeBool,
-					},
-				},
+				Name:        "metrics",
+				Description: "This structure is used in both GetMetricData and PutMetricAlarm.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Metrics"),
 			},
 		},
 	}
@@ -296,18 +212,6 @@ func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMet
 		dimensions[*d.Name] = d.Value
 	}
 	return resource.Set("dimensions", dimensions)
-}
-
-func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	metric := resource.Item.(types.MetricDataQuery)
-	if metric.MetricStat == nil || metric.MetricStat.Metric == nil {
-		return nil
-	}
-	dimensions := make(map[string]*string)
-	for _, d := range metric.MetricStat.Metric.Dimensions {
-		dimensions[*d.Name] = d.Value
-	}
-	return resource.Set("metric_stat_metric_dimensions", dimensions)
 }
 
 func resolveCloudwatchAlarmTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
