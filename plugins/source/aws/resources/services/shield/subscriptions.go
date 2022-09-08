@@ -17,9 +17,6 @@ func Subscriptions() *schema.Table {
 		Description:   "Information about the Shield Advanced subscription for an account",
 		Resolver:      fetchShieldSubscriptions,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -77,6 +74,7 @@ func Subscriptions() *schema.Table {
 				Description: "The ARN (Amazon Resource Name) of the subscription",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("SubscriptionArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "time_commitment_in_seconds",

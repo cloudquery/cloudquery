@@ -24,9 +24,6 @@ func SecretsmanagerSecrets() *schema.Table {
 		Description:   "A structure that contains the details about a secret",
 		Resolver:      fetchSecretsmanagerSecrets,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("secretsmanager"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -58,6 +55,7 @@ func SecretsmanagerSecrets() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the secret",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "created_date",

@@ -16,9 +16,6 @@ func SagemakerEndpointConfigurations() *schema.Table {
 		Description:   "Provides summary information for an endpoint configuration.",
 		Resolver:      fetchSagemakerEndpointConfigurations,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -58,6 +55,7 @@ func SagemakerEndpointConfigurations() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the endpoint configuration.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("EndpointConfigArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

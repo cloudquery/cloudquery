@@ -16,15 +16,13 @@ func Templates() *schema.Table {
 		Description:  "Amazon Simple Email Service (SES) is a cost-effective, flexible, and scalable email service that enables developers to send mail from within any application.",
 		Resolver:     fetchSesTemplates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("email"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the resource.",
 				Type:        schema.TypeString,
 				Resolver:    ResolveSesTemplateArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "account_id",

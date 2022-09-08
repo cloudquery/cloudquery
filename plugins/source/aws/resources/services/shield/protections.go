@@ -18,9 +18,6 @@ func Protections() *schema.Table {
 		Description:   "An object that represents a resource that is under DDoS protection.",
 		Resolver:      fetchShieldProtections,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -67,6 +64,7 @@ func Protections() *schema.Table {
 				Description: "The ARN (Amazon Resource Name) of the protection",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ProtectionArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "resource_arn",

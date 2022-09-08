@@ -19,9 +19,6 @@ func Attacks() *schema.Table {
 		Description:   "The details of a DDoS attack",
 		Resolver:      fetchShieldAttacks,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -41,6 +38,7 @@ func Attacks() *schema.Table {
 				Description: "The unique identifier (ID) of the attack",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("AttackId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "end_time",
@@ -63,81 +61,15 @@ func Attacks() *schema.Table {
 				Description: "The time the attack started, in Unix time in seconds",
 				Type:        schema.TypeTimestamp,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_shield_attack_properties",
+				Name:        "attack_properties",
 				Description: "Details of a Shield event",
-				Resolver:    schema.PathTableResolver("AttackProperties"),
-				Columns: []schema.Column{
-					{
-						Name:        "attack_cq_id",
-						Description: "Unique CloudQuery ID of aws_shield_attacks table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "attack_layer",
-						Description: "The type of Shield event that was observed",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "attack_property_identifier",
-						Description: "Defines the Shield event property information that is provided",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "top_contributors",
-						Description: "Contributor objects for the top five contributors to a Shield event",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveAttackPropertiesTopContributors,
-					},
-					{
-						Name:        "total",
-						Description: "The total contributions made to this Shield event by all contributors",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "unit",
-						Description: "The unit used for the ContributorValue property",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "aws_shield_attack_sub_resources",
+				Name: "sub_resources",
 				Description: "The attack information for the specified SubResource",
-				Resolver:    schema.PathTableResolver("SubResources"),
-				Columns: []schema.Column{
-					{
-						Name:        "attack_cq_id",
-						Description: "Unique CloudQuery ID of aws_shield_attacks table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "attack_vectors",
-						Description: "The list of attack types and associated counters",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("AttackVectors"),
-					},
-					{
-						Name:        "counters",
-						Description: "The counters that describe the details of the attack",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("Counters"),
-					},
-					{
-						Name:        "id",
-						Description: "The unique identifier (ID) of the SubResource",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "type",
-						Description: "The SubResource type",
-						Type:        schema.TypeString,
-					},
-				},
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}
