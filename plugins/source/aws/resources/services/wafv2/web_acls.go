@@ -128,155 +128,17 @@ func Wafv2WebAcls() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("Rules"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_wafv2_web_acl_post_process_firewall_manager_rule_groups",
-				Description:   "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
-				Resolver:      schema.PathTableResolver("PostProcessFirewallManagerRuleGroups"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "web_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "statement",
-						Description: "The processing guidance for an AWS Firewall Manager rule",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("FirewallManagerStatement"),
-					},
-					{
-						Name:        "name",
-						Description: "The name of the rule group",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "override_action",
-						Description: "The override action to apply to the rules in a rule group",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("OverrideAction"),
-					},
-					{
-						Name:        "priority",
-						Description: "If you define more than one rule group in the first or last Firewall Manager rule groups, AWS WAF evaluates each request against the rule groups in order, starting from the lowest priority setting",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "visibility_config_cloud_watch_metrics_enabled",
-						Description: "A boolean indicating whether the associated resource sends metrics to CloudWatch",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("VisibilityConfig.CloudWatchMetricsEnabled"),
-					},
-					{
-						Name:        "visibility_config_metric_name",
-						Description: "A name of the CloudWatch metric",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VisibilityConfig.MetricName"),
-					},
-					{
-						Name:        "visibility_config_sampled_requests_enabled",
-						Description: "A boolean indicating whether AWS WAF should store a sampling of the web requests that match the rules",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("VisibilityConfig.SampledRequestsEnabled"),
-					},
-				},
+				Name:        "post_process_firewall_manager_rule_groups",
+				Type: 			schema.TypeJSON,
 			},
 			{
-				Name:          "aws_wafv2_web_acl_pre_process_firewall_manager_rule_groups",
-				Description:   "A rule group that's defined for an AWS Firewall Manager WAF policy. ",
-				Resolver:      schema.PathTableResolver("PreProcessFirewallManagerRuleGroups"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "web_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "statement",
-						Description: "The processing guidance for an AWS Firewall Manager rule",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("FirewallManagerStatement"),
-					},
-					{
-						Name:        "name",
-						Description: "The name of the rule group",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "override_action",
-						Description: "The override action to apply to the rules in a rule group",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("OverrideAction"),
-					},
-					{
-						Name:        "priority",
-						Description: "If you define more than one rule group in the first or last Firewall Manager rule groups, AWS WAF evaluates each request against the rule groups in order, starting from the lowest priority setting",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "visibility_config_cloud_watch_metrics_enabled",
-						Description: "A boolean indicating whether the associated resource sends metrics to CloudWatch",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("VisibilityConfig.CloudWatchMetricsEnabled"),
-					},
-					{
-						Name:        "visibility_config_metric_name",
-						Description: "A name of the CloudWatch metric",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VisibilityConfig.MetricName"),
-					},
-					{
-						Name:        "visibility_config_sampled_requests_enabled",
-						Description: "A boolean indicating whether AWS WAF should store a sampling of the web requests that match the rules",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("VisibilityConfig.SampledRequestsEnabled"),
-					},
-				},
+				Name:        "pre_process_firewall_manager_rule_groups",
+				Type: 			schema.TypeJSON,
 			},
 			{
-				Name:        "aws_wafv2_web_acl_logging_configuration",
-				Description: "The LoggingConfiguration for the specified web ACL.",
-				Resolver:    schema.PathTableResolver("LoggingConfiguration"),
-				Columns: []schema.Column{
-					{
-						Name:        "web_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_wafv2_web_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "log_destination_configs",
-						Description: "The Amazon Resource Names (ARNs) of the logging destinations that you want to associate with the web ACL.",
-						Type:        schema.TypeStringArray,
-					},
-					{
-						Name:        "resource_arn",
-						Description: "The Amazon Resource Name (ARN) of the web ACL that you want to associate with LogDestinationConfigs.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "logging_filter",
-						Description: "Filtering that specifies which web requests are kept in the logs and which are dropped. You can filter on the rule action and on the web request labels that were applied by matching rules during web ACL evaluation.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("LoggingFilter"),
-					},
-					{
-						Name:        "managed_by_firewall_manager",
-						Description: "Indicates whether the logging configuration was created by Firewall Manager, as part of an WAF policy configuration. If true, only Firewall Manager can modify or delete the configuration.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "redacted_fields",
-						Description: "The parts of the request that you want redacted from the logs. For example, if you redact the cookie field, the cookie field in the firehose will be xxx. You can specify only the following fields for redaction: UriPath, QueryString, SingleHeader, Method, and JsonBody.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("RedactedFields"),
-					},
-				},
+				Name:       "logging_configuration",
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}
@@ -318,9 +180,9 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 			})
 			if err != nil {
 				if client.IsAWSError(err, "WAFNonexistentItemException") {
-					c.Logger().Debug("Logging configuration not found for: %s", webAclOutput.WebACL.Name)
+					c.Logger().Debug().Err(err).Msg("Logging configuration not found for")
 				} else {
-					c.Logger().Error("GetLoggingConfiguration failed with error: %s", err.Error())
+					c.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed with error")
 				}
 			}
 
@@ -402,13 +264,4 @@ func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resourc
 		tagsConfig.NextMarker = tags.NextMarker
 	}
 	return resource.Set(c.Name, outputTags)
-}
-
-func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	rule := resource.Item.(types.Rule)
-	labels := make([]string, len(rule.RuleLabels))
-	for i := range rule.RuleLabels {
-		labels[i] = aws.ToString(rule.RuleLabels[i].Name)
-	}
-	return resource.Set(c.Name, labels)
 }

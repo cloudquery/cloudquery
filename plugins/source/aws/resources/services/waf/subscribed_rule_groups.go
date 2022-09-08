@@ -15,16 +15,14 @@ func WafSubscribedRuleGroups() *schema.Table {
 		Description:   "This is AWS WAF Classic documentation",
 		Resolver:      fetchWafSubscribedRuleGroups,
 		Multiplex:     client.AccountMultiplex,
-		
-		
 		IgnoreInTests: true,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "rule_group_id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource.",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "metric_name",
@@ -40,6 +38,7 @@ func WafSubscribedRuleGroups() *schema.Table {
 				Name:        "rule_group_id",
 				Description: "A unique identifier for a RuleGroup.",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}

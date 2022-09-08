@@ -375,79 +375,13 @@ func Functions() *schema.Table {
 				Resolver:      schema.PathResolver("Tags"),
 				IgnoreInTests: true,
 			},
+			{
+				Name:          "Configuration",
+				Description:   "The function's configuration.",
+				Type:          schema.TypeJSON,
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:          "aws_lambda_function_file_system_configs",
-				Description:   "Details about the connection between a Lambda function and an Amazon EFS file system. ",
-				Resolver:      schema.PathTableResolver("Configuration.FileSystemConfigs"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "function_cq_id",
-						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "function_arn",
-						Description: "The Amazon Resource Name (ARN) of the lambda function",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("arn"),
-					},
-					{
-						Name:        "arn",
-						Description: "The Amazon Resource Name (ARN) of the Amazon EFS access point that provides access to the file system.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "local_mount_path",
-						Description: "The path where the function can access the file system, starting with /mnt/.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:        "aws_lambda_function_layers",
-				Description: "An Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).",
-				Resolver:    schema.PathTableResolver("Configuration.Layers"),
-				Columns: []schema.Column{
-					{
-						Name:        "function_cq_id",
-						Description: "Unique CloudQuery ID of aws_lambda_functions table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "function_arn",
-						Description: "The Amazon Resource Name (ARN) of the lambda function",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("arn"),
-					},
-					{
-						Name:        "arn",
-						Description: "The Amazon Resource Name (ARN) of the function layer.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "code_size",
-						Description: "The size of the layer archive in bytes.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:          "signing_job_arn",
-						Description:   "The Amazon Resource Name (ARN) of a signing job.",
-						Type:          schema.TypeString,
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "signing_profile_version_arn",
-						Description:   "The Amazon Resource Name (ARN) for a signing profile version.",
-						Type:          schema.TypeString,
-						IgnoreInTests: true,
-					},
-				},
-			},
 			{
 				Name:          "aws_lambda_function_event_invoke_configs",
 				Description:   "A configuration object that specifies the destination of an event after Lambda processes it. ",
@@ -824,66 +758,13 @@ func Functions() *schema.Table {
 						Resolver:      schema.PathResolver("VpcConfig.VpcId"),
 						IgnoreInTests: true,
 					},
-				},
-				Relations: []*schema.Table{
 					{
-						Name:          "aws_lambda_function_version_file_system_configs",
-						Description:   "Details about the connection between a Lambda function and an Amazon EFS file system (https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem.html).",
-						Resolver:      schema.PathTableResolver("FileSystemConfigs"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "function_version_cq_id",
-								Description: "Unique CloudQuery ID of aws_lambda_function_versions table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "arn",
-								Description: "The Amazon Resource Name (ARN) of the Amazon EFS access point that provides access to the file system.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "local_mount_path",
-								Description: "The path where the function can access the file system, starting with /mnt/.",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:          "file_system_configs",
+						Type: 				schema.TypeJSON,
 					},
 					{
-						Name:        "aws_lambda_function_version_layers",
-						Description: "An Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html).",
-						Resolver:    schema.PathTableResolver("Layers"),
-						Columns: []schema.Column{
-							{
-								Name:        "function_version_cq_id",
-								Description: "Unique CloudQuery ID of aws_lambda_function_versions table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "arn",
-								Description: "The Amazon Resource Name (ARN) of the function layer.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "code_size",
-								Description: "The size of the layer archive in bytes.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:          "signing_job_arn",
-								Description:   "The Amazon Resource Name (ARN) of a signing job.",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-							{
-								Name:          "signing_profile_version_arn",
-								Description:   "The Amazon Resource Name (ARN) for a signing profile version.",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-						},
+						Name:          "layers",
+						Type: 				schema.TypeJSON,
 					},
 				},
 			},

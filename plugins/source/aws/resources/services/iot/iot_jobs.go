@@ -216,40 +216,9 @@ func IotJobs() *schema.Table {
 				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("TimeoutConfig.InProgressTimeoutInMinutes"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_iot_job_abort_config_criteria_list",
-				Description: "The criteria that determine when and how a job abort takes place.",
-				Resolver:    schema.PathTableResolver("AbortConfig.CriteriaList"),
-				Columns: []schema.Column{
-					{
-						Name:        "job_cq_id",
-						Description: "Unique CloudQuery ID of aws_iot_jobs table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "action",
-						Description: "The type of job action to take to initiate the job abort.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "failure_type",
-						Description: "The type of job execution failures that can initiate a job abort.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "min_number_of_executed_things",
-						Description: "The minimum number of things which must receive job execution notifications before the job can be aborted.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "threshold_percentage",
-						Description: "The minimum percentage of job execution failures that must occur to initiate the job abort",
-						Type:        schema.TypeFloat,
-					},
-				},
+				Name:        "abort_config",
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}

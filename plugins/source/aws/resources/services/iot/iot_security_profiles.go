@@ -90,89 +90,9 @@ func IotSecurityProfiles() *schema.Table {
 				Description: "The version of the security profile",
 				Type:        schema.TypeInt,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_iot_security_profile_behaviors",
-				Description: "A Device Defender security profile behavior.",
-				Resolver:    schema.PathTableResolver("Behaviors"),
-				Columns: []schema.Column{
-					{
-						Name:        "security_profile_cq_id",
-						Description: "Unique CloudQuery ID of aws_iot_security_profiles table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "The name you've given to the behavior. ",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "criteria_comparison_operator",
-						Description: "The operator that relates the thing measured (metric) to the criteria (containing a value or statisticalThreshold)",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Criteria.ComparisonOperator"),
-					},
-					{
-						Name:        "criteria_consecutive_datapoints_to_alarm",
-						Description: "If a device is in violation of the behavior for the specified number of consecutive datapoints, an alarm occurs",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Criteria.ConsecutiveDatapointsToAlarm"),
-					},
-					{
-						Name:        "criteria_consecutive_datapoints_to_clear",
-						Description: "If an alarm has occurred and the offending device is no longer in violation of the behavior for the specified number of consecutive datapoints, the alarm is cleared",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Criteria.ConsecutiveDatapointsToClear"),
-					},
-					{
-						Name:        "criteria_duration_seconds",
-						Description: "Use this to specify the time duration over which the behavior is evaluated, for those criteria that have a time dimension (for example, NUM_MESSAGES_SENT)",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Criteria.DurationSeconds"),
-					},
-					{
-						Name:        "criteria_ml_detection_config_confidence_level",
-						Description: "The sensitivity of anomalous behavior evaluation",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Criteria.MlDetectionConfig.ConfidenceLevel"),
-					},
-					{
-						Name:        "criteria_statistical_threshold_statistic",
-						Description: "The percentile that resolves to a threshold value by which compliance with a behavior is determined",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Criteria.StatisticalThreshold.Statistic"),
-					},
-					{
-						Name:        "criteria_value",
-						Description: "The value to be compared with the metric.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("Criteria.Value"),
-					},
-					{
-						Name:        "metric",
-						Description: "What is measured by the behavior.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "metric_dimension_dimension_name",
-						Description: "A unique identifier for the dimension. ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("MetricDimension.DimensionName"),
-					},
-					{
-						Name:        "metric_dimension_operator",
-						Description: "Defines how the dimensionValues of a dimension are interpreted",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("MetricDimension.Operator"),
-					},
-					{
-						Name:        "suppress_alerts",
-						Description: "Suppresses alerts.",
-						Type:        schema.TypeBool,
-					},
-				},
+				Name:        "behaviors",
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}

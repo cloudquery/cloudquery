@@ -648,7 +648,7 @@ func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUse
 				}
 			}
 		case "ReportInProgress":
-			meta.Logger().Debug("Waiting for credential report to be generated", "resource", "iam.users")
+			meta.Logger().Debug().Msg("Waiting for credential report to be generated")
 			if err := helpers.Sleep(ctx, 5*time.Second); err != nil {
 				return nil, err
 			}

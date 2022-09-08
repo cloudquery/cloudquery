@@ -22,14 +22,12 @@ func Accounts() *schema.Table {
 		Description:  "Account configurations for S3",
 		Resolver:     fetchS3AccountConfig,
 		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "config_exists",

@@ -2,8 +2,6 @@ package iam
 
 import (
 	"context"
-	"encoding/json"
-	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -91,47 +89,9 @@ func IamPolicies() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveIamPolicyTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_iam_policy_versions",
-				Description: "Contains information about a version of a managed policy.",
-				Resolver:    schema.PathTableResolver("PolicyVersionList"),
-				Columns: []schema.Column{
-					{
-						Name:        "policy_cq_id",
-						Description: "Policy CloudQuery ID the policy versions belongs too.",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "policy_id",
-						Description: "Policy ID the policy versions belongs too.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "create_date",
-						Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the policy version was created. ",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "document",
-						Description: "The policy document. The policy document is returned in the response to the GetPolicyVersion and GetAccountAuthorizationDetails operations. It is not returned in the response to the CreatePolicyVersion or ListPolicyVersions operations. The policy document returned in this structure is URL-encoded compliant with RFC 3986 (https://tools.ietf.org/html/rfc3986). You can use a URL decoding method to convert the policy back to plain JSON text. For example, if you use Java, you can use the decode method of the java.net.URLDecoder utility class in the Java SDK. Other languages and SDKs provide similar functionality. ",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveIamPolicyVersionDocument,
-					},
-					{
-						Name:        "is_default_version",
-						Description: "Specifies whether the policy version is set as the policy's default version. ",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "version_id",
-						Description: "The identifier for the policy version. Policy version identifiers always begin with v (always lowercase). When a policy is created, the first policy version is v1. ",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "policy_version_list",
+				Type: schema.TypeJSON,
 			},
 		},
 	}
@@ -158,21 +118,7 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.PolicyVersion)
-	if r.Document != nil {
-		decodedDocument, err := url.QueryUnescape(*r.Document)
-		if err != nil {
-			return err
-		}
-		data := make(map[string]interface{})
-		if err := json.Unmarshal([]byte(decodedDocument), &data); err != nil {
-			return err
-		}
-		return resource.Set("document", data)
-	}
-	return nil
-}
+
 
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ManagedPolicyDetail)
@@ -181,7 +127,7 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
-			meta.Logger().Debug("ListPolicyTags: Policy does not exist", "err", err)
+			meta.Logger().Debug().Err(err).Msg("ListPolicyTags: Policy does not exist")
 			return nil
 		}
 		return err

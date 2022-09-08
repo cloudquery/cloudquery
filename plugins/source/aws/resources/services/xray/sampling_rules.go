@@ -15,8 +15,6 @@ func SamplingRules() *schema.Table {
 		Description: "A SamplingRule (https://docsawsamazoncom/xray/latest/api/API_SamplingRulehtml) and its metadata",
 		Resolver:    fetchXraySamplingRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

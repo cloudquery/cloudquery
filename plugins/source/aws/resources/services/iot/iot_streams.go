@@ -69,43 +69,9 @@ func IotStreams() *schema.Table {
 				Type:        schema.TypeInt,
 				Resolver:    schema.PathResolver("StreamVersion"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_iot_stream_files",
-				Description: "Represents a file to stream.",
-				Resolver:    schema.PathTableResolver("Files"),
-				Columns: []schema.Column{
-					{
-						Name:        "stream_cq_id",
-						Description: "Unique CloudQuery ID of aws_iot_streams table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "file_id",
-						Description: "The file ID.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "s3_location_bucket",
-						Description: "The S3 bucket.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("S3Location.Bucket"),
-					},
-					{
-						Name:        "s3_location_key",
-						Description: "The S3 key.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("S3Location.Key"),
-					},
-					{
-						Name:        "s3_location_version",
-						Description: "The S3 bucket version.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("S3Location.Version"),
-					},
-				},
+				Name:        "files",
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}
