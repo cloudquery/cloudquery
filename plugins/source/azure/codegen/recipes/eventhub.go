@@ -24,6 +24,35 @@ func EventHub() []Resource {
 					azureStruct:        &eventhub.EHNamespace{},
 					listFunction:       "List",
 					subServiceOverride: "Namespaces",
+					relations:          []string{"networkRuleSets()"},
+				},
+			},
+			serviceNameOverride: "EventHub",
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:  &eventhub.NetworkRuleSet{},
+					listFunction: "GetNetworkRuleSet",
+					listFunctionArgsInit: []string{`namespace := parent.Item.(eventhub.EHNamespace)
+					resource, err := client.ParseResourceID(*namespace.ID)
+					if err != nil {
+						return errors.WithStack(err)
+					}`},
+					listFunctionArgs: []string{"resource.ResourceGroup", "*namespace.Name"},
+					listHandler: `if err != nil {
+						return errors.WithStack(err)
+					}
+					res <- response
+					return nil`,
+					isRelation: true,
 				},
 			},
 			serviceNameOverride: "EventHub",
