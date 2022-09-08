@@ -19,8 +19,6 @@ func Brokers() *schema.Table {
 		Name:      "aws_mq_brokers",
 		Resolver:  fetchMqBrokers,
 		Multiplex: client.ServiceAccountRegionMultiplexer("mq"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -49,6 +47,7 @@ func Brokers() *schema.Table {
 				Description: "The broker's Amazon Resource Name (ARN).",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("BrokerArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",

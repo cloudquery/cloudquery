@@ -16,9 +16,6 @@ func StaticIps() *schema.Table {
 		Description:  "Describes a static IP",
 		Resolver:     fetchLightsailStaticIps,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,6 +33,7 @@ func StaticIps() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the static IP (eg, arn:aws:lightsail:us-east-2:123456789101:StaticIp/9cbb4a9e-f8e3-4dfe-b57e-12345EXAMPLE)",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "attached_to",

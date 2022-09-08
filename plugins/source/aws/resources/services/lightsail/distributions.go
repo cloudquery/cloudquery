@@ -17,9 +17,6 @@ func Distributions() *schema.Table {
 		Name:          "aws_lightsail_distributions",
 		Resolver:      fetchLightsailDistributions,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -51,6 +48,7 @@ func Distributions() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the distribution",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("LightsailDistribution.Arn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "bundle_id",

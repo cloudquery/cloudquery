@@ -16,9 +16,6 @@ func ContainerServices() *schema.Table {
 		Description:  "Describes an Amazon Lightsail container service",
 		Resolver:     fetchLightsailContainerServices,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,6 +33,7 @@ func ContainerServices() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the container service",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "container_service_name",

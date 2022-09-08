@@ -18,9 +18,7 @@ func Accounts() *schema.Table {
 		Description: "Contains information about an AWS account that is a member of an organization",
 		Resolver:    fetchOrganizationsAccounts,
 		Multiplex:   client.AccountMultiplex,
-
 		IgnoreInTests: true,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,6 +36,7 @@ func Accounts() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the account",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "email",
@@ -90,7 +89,7 @@ func fetchOrganizationsAccounts(ctx context.Context, meta schema.ClientMeta, _ *
 				// This is going to happen most probably due to account not being the root organizational account
 				// so it's better to ignore it completely as it happens basically on every account
 				// otherwise it screws up with dev experience and with our tests
-				meta.Logger().Warn("account is probably not the root organization account https://docs.aws.amazon.com/organizations/latest/APIReference/API_ListAccounts.html")
+				meta.Logger().Warn().Err(err).Msg("account is probably not the root organization account https://docs.aws.amazon.com/organizations/latest/APIReference/API_ListAccounts.html")
 				return nil
 			}
 		}

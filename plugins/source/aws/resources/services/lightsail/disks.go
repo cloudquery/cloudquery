@@ -16,9 +16,6 @@ func Disks() *schema.Table {
 		Description:  "Describes a block storage disk",
 		Resolver:     fetchLightsailDisks,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,6 +33,7 @@ func Disks() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the disk",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "attached_to",
@@ -121,42 +119,12 @@ func Disks() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
+			{
+				Name:        "add_ons",
+				Type: schema.TypeJSON,
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:          "aws_lightsail_disk_add_ons",
-				Description:   "Describes an add-on that is enabled for an Amazon Lightsail resource",
-				Resolver:      schema.PathTableResolver("AddOns"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "disk_cq_id",
-						Description: "Unique CloudQuery ID of aws_lightsail_disks table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the add-on",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "next_snapshot_time_of_day",
-						Description: "The next daily time an automatic snapshot will be created",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "snapshot_time_of_day",
-						Description: "The daily time when an automatic snapshot is created",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the add-on",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:          "aws_lightsail_disk_snapshot",
 				Description:   "Describes a block storage disk snapshot",

@@ -16,8 +16,6 @@ func LoadBalancers() *schema.Table {
 		Description: "Describes a load balancer",
 		Resolver:    fetchLightsailLoadBalancers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -35,6 +33,7 @@ func LoadBalancers() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the load balancer",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "configuration_options",
@@ -119,60 +118,16 @@ func LoadBalancers() *schema.Table {
 				Description: "The name of the TLS security policy for the load balancer",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "instance_health_summary",
+				Type: 			 schema.TypeJSON,
+			},
+			{
+				Name:        "tsl_certificate_summaries",
+				Type: 			 schema.TypeJSON,
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_lightsail_load_balancer_instance_health_summary",
-				Description: "Describes information about the health of the instance",
-				Resolver:    schema.PathTableResolver("InstanceHealthSummary"),
-				Columns: []schema.Column{
-					{
-						Name:        "load_balancer_cq_id",
-						Description: "Unique CloudQuery ID of aws_lightsail_load_balancers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "instance_health",
-						Description: "Describes the overall instance health",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "instance_health_reason",
-						Description: "More information about the instance health",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "instance_name",
-						Description: "The name of the Lightsail instance for which you are requesting health check data",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:          "aws_lightsail_load_balancer_tls_certificate_summaries",
-				Description:   "Provides a summary of SSL/TLS certificate metadata",
-				Resolver:      schema.PathTableResolver("TlsCertificateSummaries"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "load_balancer_cq_id",
-						Description: "Unique CloudQuery ID of aws_lightsail_load_balancers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "is_attached",
-						Description: "When true, the SSL/TLS certificate is attached to the Lightsail load balancer",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the SSL/TLS certificate",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:          "aws_lightsail_load_balancer_tls_certificates",
 				Description:   "Describes a load balancer SSL/TLS certificate",

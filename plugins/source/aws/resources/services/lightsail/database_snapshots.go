@@ -16,9 +16,6 @@ func DatabaseSnapshots() *schema.Table {
 		Description:   "Describes a database snapshot",
 		Resolver:      fetchLightsailDatabaseSnapshots,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -37,6 +34,7 @@ func DatabaseSnapshots() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the database snapshot",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "created_at",

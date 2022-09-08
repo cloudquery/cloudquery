@@ -14,8 +14,6 @@ func Ledgers() *schema.Table {
 		Name:      "aws_qldb_ledgers",
 		Resolver:  fetchQldbLedgers,
 		Multiplex: client.ServiceAccountRegionMultiplexer("qldb"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +37,7 @@ func Ledgers() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) for the ledger.",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "creation_date_time",

@@ -16,9 +16,6 @@ func Alarms() *schema.Table {
 		Description:   "Describes an alarm",
 		Resolver:      fetchLightsailAlarms,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -37,6 +34,7 @@ func Alarms() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the alarm",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "comparison_operator",

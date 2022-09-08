@@ -15,9 +15,6 @@ func Certificates() *schema.Table {
 		Description:  "Describes the full details of an Amazon Lightsail SSL/TLS certificate",
 		Resolver:     fetchLightsailCertificates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -154,81 +151,13 @@ func Certificates() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_lightsail_certificate_domain_validation_records",
-				Description:   "Describes the domain validation records of an Amazon Lightsail SSL/TLS certificate",
-				Resolver:      schema.PathTableResolver("DomainValidationRecords"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "certificate_cq_id",
-						Description: "Unique CloudQuery ID of aws_lightsail_certificates table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "domain_name",
-						Description: "The domain name of the certificate validation record",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the record",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ResourceRecord.Name"),
-					},
-					{
-						Name:        "type",
-						Description: "The DNS record type",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ResourceRecord.Type"),
-					},
-					{
-						Name:        "value",
-						Description: "The value for the DNS record",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ResourceRecord.Value"),
-					},
-				},
+				Name:        "domain_validation_records",
+				Type: 			schema.TypeJSON,
 			},
 			{
-				Name:          "aws_lightsail_certificate_renewal_summary_domain_validation_records",
-				Description:   "Describes the domain validation records of an Amazon Lightsail SSL/TLS certificate",
-				Resolver:      schema.PathTableResolver("RenewalSummary.DomainValidationRecords"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "certificate_cq_id",
-						Description: "Unique CloudQuery ID of aws_lightsail_certificates table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "domain_name",
-						Description: "The domain name of the certificate validation record",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the record",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ResourceRecord.Name"),
-					},
-					{
-						Name:        "type",
-						Description: "The DNS record type",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ResourceRecord.Type"),
-					},
-					{
-						Name:        "value",
-						Description: "The value for the DNS record",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ResourceRecord.Value"),
-					},
-				},
+				Name:        "renewal_summary",
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}

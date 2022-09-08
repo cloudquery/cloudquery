@@ -17,9 +17,6 @@ func Buckets() *schema.Table {
 		Description:  "Describes an Amazon Lightsail bucket",
 		Resolver:     fetchLightsailBuckets,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

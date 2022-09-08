@@ -19,9 +19,6 @@ func Databases() *schema.Table {
 		Description:  "Describes a database",
 		Resolver:     fetchLightsailDatabases,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -184,37 +181,12 @@ func Databases() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
+			{
+				Name:        "pending_maintenance_actions",
+				Type: schema.TypeJSON,
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_lightsail_database_pending_maintenance_actions",
-				Description: "Describes a pending database maintenance action",
-				Resolver:    schema.PathTableResolver("PendingMaintenanceActions"),
-				Columns: []schema.Column{
-					{
-						Name:        "database_cq_id",
-						Description: "Unique CloudQuery ID of aws_lightsail_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "action",
-						Description: "The type of pending database maintenance action",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "current_apply_date",
-						Description:   "The effective date of the pending database maintenance action",
-						Type:          schema.TypeTimestamp,
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "description",
-						Description: "Additional detail about the pending database maintenance action",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:        "aws_lightsail_database_parameters",
 				Description: "Describes the parameters of a database",
