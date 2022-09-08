@@ -1,17 +1,18 @@
 const path = require("path");
 const { promises: fs } = require("fs");
+const {execSync} = require("child_process");
 
 const PLUGINS_DATA = {
-  aws: { name: "AWS" },
-  azure: { name: "Azure" },
-  cloudflare: { name: "CloudFlare" },
-  digitalocean: { name: "DigitalOcean" },
+  // aws: { name: "AWS" },
+  // azure: { name: "Azure" },
+  // cloudflare: { name: "CloudFlare" },
+  // digitalocean: { name: "DigitalOcean" },
   gcp: { name: "GCP" },
-  github: { name: "GitHub" },
-  // heroku: { name: "Heroku" },
-  k8s: { name: "Kubernetes" },
-  okta: { name: "Okta" },
-  terraform: { name: "Terraform" },
+  // github: { name: "GitHub" },
+  heroku: { name: "Heroku" },
+  // k8s: { name: "Kubernetes" },
+  // okta: { name: "Okta" },
+  // terraform: { name: "Terraform" },
   yandexcloud: {
     name: "Yandex Cloud",
     external: true,
@@ -58,9 +59,9 @@ ${CONTENT_PLACEHOLDER}
 const EXTERNAL_PLUGIN_TEMPLATE = `
 # ${NAME_PLACEHOLDER} Plugin
 
-The CloudQuery ${NAME_PLACEHOLDER} plugin pulls configuration out of ${NAME_PLACEHOLDER} resources, normalizes them and stores them in PostgreSQL database.
+The CloudQuery ${NAME_PLACEHOLDER} plugin pulls configuration out of ${NAME_PLACEHOLDER} resources, normalizes them and stores them in PostgreSQL.
 
-For more detailes see [${NAME_PLACEHOLDER} Plugin repository](${EXTERNAL_PLUGINS_LINK_PLACEHOLDER})
+For more details see [${NAME_PLACEHOLDER} Plugin repository](${EXTERNAL_PLUGINS_LINK_PLACEHOLDER})
 `;
 
 const getPlugins = async () => {
@@ -127,24 +128,42 @@ const generatePluginsIndexPage = async () => {
 };
 
 const generatePluginTablePages = async (plugin) => {
-  const tablesSource = `${PLUGINS_SOURCE}/${plugin.id}/docs/tables`;
-  const tablesList = (await fs.readdir(tablesSource, { withFileTypes: true }))
+  const sourcePlugin = `${PLUGINS_SOURCE}/${plugin.id}`;
+  const tablesPath = `${PLUGINS_PATH}/${plugin.id}/tables.mdx`;
+  const tablesDir = `${PLUGINS_PATH}/${plugin.id}/tables`;
+  await fs.mkdir(tablesDir, { recursive: true });
+  const stdout  = execSync("go run main.go doc " + tablesDir, {
+    cwd: sourcePlugin
+  }).toString();
+  console.log(stdout);
+
+  const tablesList = (await fs.readdir(tablesDir, { withFileTypes: true }))
     .filter((dirent) => dirent.isFile() && dirent.name.endsWith(".md"))
     .map((dirent) => path.basename(dirent.name, path.extname(dirent.name)));
 
-  const tablesPath = `${PLUGINS_PATH}/${plugin.id}/tables.mdx`;
+  await generatePluginTablePagesMeta(plugin.name, tablesList);
+
   const tablesLinks = tablesList
     .map(
       (table) =>
-        `|[${table}](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/${plugin.id}/docs/tables/${table}.md)|`
+        `|[${table}](tables/${table})|`
     )
     .join("\n");
   const content = TABLES_TEMPLATE.replaceAll(
     NAME_PLACEHOLDER,
     plugin.name
   ).replace(CONTENT_PLACEHOLDER, tablesLinks);
-  await fs.mkdir(path.dirname(tablesPath), { recursive: true });
   await fs.writeFile(tablesPath, content, { encoding: "utf8" });
+};
+
+const generatePluginTablePagesMeta = async (plugin, tablesList) => {
+  const tablesMeta = Object.fromEntries(
+    tablesList.map((table) => [table, table.toLowerCase()])
+  );
+  await fs.writeFile(
+    `${PLUGINS_PATH}/${plugin}/tables/_meta.json`,
+    JSON.stringify({ ...tablesMeta }, null, 2)
+  );
 };
 
 const generatePluginsTablesPages = async (plugins) => {
