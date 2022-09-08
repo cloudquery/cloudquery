@@ -15,9 +15,6 @@ func RdsCertificates() *schema.Table {
 		Description:  "A CA certificate for an AWS account.",
 		Resolver:     fetchRdsCertificates,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -35,6 +32,7 @@ func RdsCertificates() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the certificate.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("CertificateArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "certificate_identifier",

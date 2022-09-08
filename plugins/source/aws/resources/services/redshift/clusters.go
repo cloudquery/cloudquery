@@ -544,24 +544,3 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 	return resource.Set(c.Name, response)
 }
 
-func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	parameterGroup := parent.Item.(types.ClusterParameterGroupStatus)
-	config := redshift.DescribeClusterParametersInput{
-		ParameterGroupName: parameterGroup.ParameterGroupName,
-	}
-	c := meta.(*client.Client)
-	svc := c.Services().Redshift
-	for {
-		response, err := svc.DescribeClusterParameters(ctx, &config)
-		if err != nil {
-			return err
-		}
-		res <- response.Parameters
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
-	}
-
-	return nil
-}

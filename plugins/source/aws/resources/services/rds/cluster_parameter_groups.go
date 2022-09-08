@@ -16,8 +16,6 @@ func RdsClusterParameterGroups() *schema.Table {
 		Description: "Contains the details of an Amazon RDS DB cluster parameter group",
 		Resolver:    fetchRdsClusterParameterGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,6 +34,7 @@ func RdsClusterParameterGroups() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the DB cluster parameter group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBClusterParameterGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",
@@ -66,7 +65,6 @@ func RdsClusterParameterGroups() *schema.Table {
 				Name:        "aws_rds_cluster_parameters",
 				Description: "This data type is used as a request parameter in the ModifyDBParameterGroup and ResetDBParameterGroup actions",
 				Resolver:    fetchRdsClusterParameterGroupDbParameters,
-
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_parameter_group_cq_id",

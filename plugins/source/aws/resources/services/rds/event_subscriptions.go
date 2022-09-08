@@ -16,8 +16,6 @@ func RdsEventSubscriptions() *schema.Table {
 		Description: "Contains the results of a successful invocation of the DescribeEventSubscriptions action.",
 		Resolver:    fetchRdsEventSubscriptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -56,6 +54,7 @@ func RdsEventSubscriptions() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the event subscription.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("EventSubscriptionArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "sns_topic_arn",

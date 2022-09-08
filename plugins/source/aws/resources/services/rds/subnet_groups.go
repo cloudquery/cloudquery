@@ -15,9 +15,6 @@ func RdsSubnetGroups() *schema.Table {
 		Description:  "Contains the details of an Amazon RDS DB subnet group",
 		Resolver:     fetchRdsSubnetGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,6 +33,7 @@ func RdsSubnetGroups() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the DB subnet group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSubnetGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "description",
@@ -60,43 +58,10 @@ func RdsSubnetGroups() *schema.Table {
 				Description: "Provides the VpcId of the DB subnet group.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_rds_subnet_group_subnets",
-				Description: "This data type is used as a response element for the DescribeDBSubnetGroups operation. ",
-				Resolver:    schema.PathTableResolver("Subnets"),
-				Columns: []schema.Column{
-					{
-						Name:        "subnet_group_cq_id",
-						Description: "Unique CloudQuery ID of aws_rds_subnet_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "subnet_availability_zone_name",
-						Description: "The name of the Availability Zone.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SubnetAvailabilityZone.Name"),
-					},
-					{
-						Name:        "subnet_identifier",
-						Description: "The identifier of the subnet.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "subnet_outpost_arn",
-						Description:   "The Amazon Resource Name (ARN) of the Outpost.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("SubnetOutpost.Arn"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "subnet_status",
-						Description: "The status of the subnet.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "subnets",
+				Description: "Contains a list of Subnet elements",
+				Type:        schema.TypeJSON,
 			},
 		},
 	}

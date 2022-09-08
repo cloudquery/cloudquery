@@ -17,8 +17,6 @@ func RdsClusterSnapshots() *schema.Table {
 		Description: "Contains the details for an Amazon RDS DB cluster snapshot This data type is used as a response element in the DescribeDBClusterSnapshots action.",
 		Resolver:    fetchRdsClusterSnapshots,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -59,6 +57,7 @@ func RdsClusterSnapshots() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the DB cluster snapshot.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBClusterSnapshotArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "db_cluster_snapshot_identifier",

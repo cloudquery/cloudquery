@@ -2,7 +2,6 @@ package rds
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -17,8 +16,6 @@ func RdsDbSecurityGroups() *schema.Table {
 		Description: "Contains the details for an Amazon RDS DB security group",
 		Resolver:    fetchRdsDbSecurityGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -37,6 +34,7 @@ func RdsDbSecurityGroups() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the DB security group.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSecurityGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "description",
@@ -54,17 +52,7 @@ func RdsDbSecurityGroups() *schema.Table {
 				Name:        "ec2_security_groups",
 				Description: "Contains a list of EC2 Security Group elements.",
 				Type:        schema.TypeJSON,
-				Resolver: resolveRdsDbSecurityGroupJSONField(func(g types.DBSecurityGroup) interface{} {
-					return g.EC2SecurityGroups
-				}),
-			},
-			{
-				Name:        "ip_ranges",
-				Description: "Contains a list of IP range elements.",
-				Type:        schema.TypeJSON,
-				Resolver: resolveRdsDbSecurityGroupJSONField(func(g types.DBSecurityGroup) interface{} {
-					return g.IPRanges
-				}),
+				Resolver: schema.PathResolver("DBSecurityGroup"),
 			},
 			{
 				Name:        "owner_id",
@@ -110,16 +98,6 @@ func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, paren
 	return nil
 }
 
-func resolveRdsDbSecurityGroupJSONField(getter func(g types.DBSecurityGroup) interface{}) schema.ColumnResolver {
-	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		g := resource.Item.(types.DBSecurityGroup)
-		b, err := json.Marshal(getter(g))
-		if err != nil {
-			return err
-		}
-		return resource.Set(c.Name, b)
-	}
-}
 
 func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	g := resource.Item.(types.DBSecurityGroup)
