@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -19,10 +18,10 @@ type WebACLWrapper struct {
 
 func Wafv2WebAcls() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafv2_web_acls",
-		Description:  "A Web ACL defines a collection of rules to use to inspect and control web requests",
-		Resolver:     fetchWafv2WebAcls,
-		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Name:        "aws_wafv2_web_acls",
+		Description: "A Web ACL defines a collection of rules to use to inspect and control web requests",
+		Resolver:    fetchWafv2WebAcls,
+		Multiplex:   client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -51,10 +50,10 @@ func Wafv2WebAcls() *schema.Table {
 				Resolver: resolveWafv2webACLTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the Web ACL that you want to associate with the resource.  ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the Web ACL that you want to associate with the resource.  ",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -124,7 +123,7 @@ func Wafv2WebAcls() *schema.Table {
 				Resolver:    schema.PathResolver("LoggingConfiguration.LogDestinationConfigs"),
 			},
 			{
-				Name: "rules",
+				Name:        "rules",
 				Description: "A single rule, which you can use in a WebACL or RuleGroup to identify web requests that you want to allow, block, or count",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("Rules"),
@@ -378,7 +377,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 		}
 		resourceArns = output.ResourceArns
 	}
-	return diag.WrapError(resource.Set(c.Name, resourceArns))
+	return resource.Set(c.Name, resourceArns)
 }
 func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*WebACLWrapper)
@@ -402,7 +401,7 @@ func resolveWafv2webACLTags(ctx context.Context, meta schema.ClientMeta, resourc
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, outputTags))
+	return resource.Set(c.Name, outputTags)
 }
 
 func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -411,5 +410,5 @@ func resolveWafv2webACLRuleLabels(ctx context.Context, meta schema.ClientMeta, r
 	for i := range rule.RuleLabels {
 		labels[i] = aws.ToString(rule.RuleLabels[i].Name)
 	}
-	return diag.WrapError(resource.Set(c.Name, labels))
+	return resource.Set(c.Name, labels)
 }

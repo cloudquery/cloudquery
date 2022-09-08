@@ -6,18 +6,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
-
 func Topics() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_sns_topics",
-		Description:  "Amazon SNS topic",
-		Resolver:     fetchSnsTopics,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
+		Name:        "aws_sns_topics",
+		Description: "Amazon SNS topic",
+		Resolver:    fetchSnsTopics,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("sns"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -72,9 +70,9 @@ func Topics() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the topic",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the topic",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -156,5 +154,5 @@ func resolveSnsTopicTags(ctx context.Context, meta schema.ClientMeta, resource *
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(tags.Tags)))
+	return resource.Set(c.Name, client.TagsToMap(tags.Tags))
 }

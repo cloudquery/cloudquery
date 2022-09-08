@@ -9,19 +9,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iam_policies",
-		Description:  "Contains information about a managed policy, including the policy's ARN, versions, and the number of principal entities (users, groups, and roles) that the policy is attached to.",
-		Resolver:     fetchIamPolicies,
-		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_iam_policies",
+		Description: "Contains information about a managed policy, including the policy's ARN, versions, and the number of principal entities (users, groups, and roles) that the policy is attached to.",
+		Resolver:    fetchIamPolicies,
+		Multiplex:   client.AccountMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -171,7 +169,7 @@ func resolveIamPolicyVersionDocument(ctx context.Context, meta schema.ClientMeta
 		if err := json.Unmarshal([]byte(decodedDocument), &data); err != nil {
 			return err
 		}
-		return diag.WrapError(resource.Set("document", data))
+		return resource.Set("document", data)
 	}
 	return nil
 }
@@ -188,5 +186,5 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set("tags", client.TagsToMap(response.Tags)))
+	return resource.Set("tags", client.TagsToMap(response.Tags))
 }

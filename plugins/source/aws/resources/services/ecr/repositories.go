@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Repositories() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ecr_repositories",
-		Description:  "An object representing a repository.",
-		Resolver:     fetchEcrRepositories,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("api.ecr"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
+		Name:        "aws_ecr_repositories",
+		Description: "An object representing a repository.",
+		Resolver:    fetchEcrRepositories,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("api.ecr"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -231,7 +229,7 @@ func resolveEcrRepositoryTags(ctx context.Context, meta schema.ClientMeta, resou
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(output.Tags)))
+	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }
 
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

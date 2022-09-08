@@ -6,7 +6,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -224,5 +223,5 @@ func resolveAcmCertificateTags(ctx context.Context, meta schema.ClientMeta, reso
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.Tags)))
+	return resource.Set(c.Name, client.TagsToMap(out.Tags))
 }

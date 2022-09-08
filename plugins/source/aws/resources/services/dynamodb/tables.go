@@ -21,11 +21,11 @@ type simplifiedGlobalSecondaryIndex struct {
 
 func DynamodbTables() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_dynamodb_tables",
-		Description:   "Information about a DynamoDB table.",
-		Resolver:      fetchDynamodbTables,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("dynamodb"),
-		
+		Name:        "aws_dynamodb_tables",
+		Description: "Information about a DynamoDB table.",
+		Resolver:    fetchDynamodbTables,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("dynamodb"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -551,7 +551,7 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
+	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }
 func resolveDynamodbTableArchivalSummary(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
@@ -573,7 +573,7 @@ func resolveDynamodbTableAttributeDefinitions(ctx context.Context, meta schema.C
 			"name": r.AttributeDefinitions[i].AttributeName,
 		}
 	}
-	return diag.WrapError(resource.Set(c.Name, val))
+	return resource.Set(c.Name, val)
 }
 func resolveDynamodbTableBillingModeSummary(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
@@ -587,7 +587,7 @@ func resolveDynamodbTableBillingModeSummary(ctx context.Context, meta schema.Cli
 }
 func resolveDynamodbTableKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
-	return diag.WrapError(resource.Set(c.Name, marshalKeySchema(r.KeySchema)))
+	return resource.Set(c.Name, marshalKeySchema(r.KeySchema))
 }
 func resolveDynamodbTableRestoreSummary(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
@@ -620,11 +620,11 @@ func fetchDynamodbTableGlobalSecondaryIndexes(ctx context.Context, meta schema.C
 }
 func resolveDynamodbTableGlobalSecondaryIndexKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.GlobalSecondaryIndexDescription)
-	return diag.WrapError(resource.Set(c.Name, marshalKeySchema(r.KeySchema)))
+	return resource.Set(c.Name, marshalKeySchema(r.KeySchema))
 }
 func resolveDynamodbTableLocalSecondaryIndexKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.LocalSecondaryIndexDescription)
-	return diag.WrapError(resource.Set(c.Name, marshalKeySchema(r.KeySchema)))
+	return resource.Set(c.Name, marshalKeySchema(r.KeySchema))
 }
 func fetchDynamodbTableReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(*types.TableDescription)
@@ -646,7 +646,7 @@ func resolveDynamodbTableReplicaGlobalSecondaryIndexes(ctx context.Context, meta
 			"provisioned_throughput_override": r.GlobalSecondaryIndexes[i].ProvisionedThroughputOverride,
 		}
 	}
-	return diag.WrapError(resource.Set(c.Name, val))
+	return resource.Set(c.Name, val)
 }
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	par := parent.Item.(*types.TableDescription)
@@ -691,21 +691,21 @@ func resolveDynamodbTableReplicaAutoScalingGlobalSecondaryIndexes(ctx context.Co
 		}
 	}
 
-	return diag.WrapError(resource.Set(c.Name, val))
+	return resource.Set(c.Name, val)
 }
 func resolveDynamodbTableReplicaAutoScalingReadCapacity(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ReplicaAutoScalingDescription)
 	if r.ReplicaProvisionedReadCapacityAutoScalingSettings == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, marshalAutoScalingSettingsDescription(r.ReplicaProvisionedReadCapacityAutoScalingSettings)))
+	return resource.Set(c.Name, marshalAutoScalingSettingsDescription(r.ReplicaProvisionedReadCapacityAutoScalingSettings))
 }
 func resolveDynamodbTableReplicaAutoScalingWriteCapacity(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ReplicaAutoScalingDescription)
 	if r.ReplicaProvisionedWriteCapacityAutoScalingSettings == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, marshalAutoScalingSettingsDescription(r.ReplicaProvisionedWriteCapacityAutoScalingSettings)))
+	return resource.Set(c.Name, marshalAutoScalingSettingsDescription(r.ReplicaProvisionedWriteCapacityAutoScalingSettings))
 }
 func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	par := parent.Item.(*types.TableDescription)

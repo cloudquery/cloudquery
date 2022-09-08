@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -23,13 +22,12 @@ var groupNotFoundRegex = regexp.MustCompile(`AutoScalingGroup name not found|Gro
 
 func AutoscalingGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_autoscaling_groups",
-		Description:  "Describes an Auto Scaling group.",
-		Resolver:     fetchAutoscalingGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_autoscaling_groups",
+		Description: "Describes an Auto Scaling group.",
+		Resolver:    fetchAutoscalingGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -624,7 +622,7 @@ func resolveAutoscalingGroupLoadBalancers(ctx context.Context, meta schema.Clien
 		}
 		config.NextToken = output.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -649,7 +647,7 @@ func resolveAutoscalingGroupLoadBalancerTargetGroups(ctx context.Context, meta s
 		}
 		config.NextToken = output.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupNotificationsConfigurations(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -657,7 +655,7 @@ func resolveAutoscalingGroupNotificationsConfigurations(ctx context.Context, met
 	for _, n := range p.NotificationConfigurations {
 		j[*n.NotificationType] = *n.TopicARN
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupsEnabledMetrics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -666,7 +664,7 @@ func resolveAutoscalingGroupsEnabledMetrics(ctx context.Context, meta schema.Cli
 		j[*em.Metric] = *em.Granularity
 	}
 
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(autoscalingGroupWrapper)
@@ -675,7 +673,7 @@ func resolveAutoscalingGroupsSuspendedProcesses(ctx context.Context, meta schema
 		j[*sp.ProcessName] = *sp.SuspensionReason
 	}
 
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func fetchAutoscalingGroupScalingPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(autoscalingGroupWrapper)
@@ -706,7 +704,7 @@ func resolveAutoscalingGroupScalingPoliciesAlarms(ctx context.Context, meta sche
 	for _, a := range p.Alarms {
 		j[*a.AlarmName] = *a.AlarmARN
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomizedMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.ScalingPolicy)
@@ -717,7 +715,7 @@ func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomized
 	for _, d := range p.TargetTrackingConfiguration.CustomizedMetricSpecification.Dimensions {
 		j[*d.Name] = *d.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func fetchAutoscalingGroupLifecycleHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(autoscalingGroupWrapper)

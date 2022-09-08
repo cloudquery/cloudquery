@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Registries() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_registries",
-		Description:  "A structure containing the details for a registry.",
-		Resolver:     fetchGlueRegistries,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_registries",
+		Description: "A structure containing the details for a registry.",
+		Resolver:    fetchGlueRegistries,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -252,7 +249,7 @@ func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resour
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Tags))
+	return resource.Set(c.Name, result.Tags)
 }
 func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.RegistryListItem)
@@ -297,7 +294,7 @@ func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, 
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Tags))
+	return resource.Set(c.Name, result.Tags)
 }
 func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
@@ -360,5 +357,5 @@ func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.C
 		}
 		input.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, metadata))
+	return resource.Set(c.Name, metadata)
 }

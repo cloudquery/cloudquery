@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
 
 func Ec2Images() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_ec2_images",
-		Description:   "Describes an image.",
-		Resolver:      fetchEc2Images,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
+		Name:        "aws_ec2_images",
+		Description: "Describes an image.",
+		Resolver:    fetchEc2Images,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -322,7 +320,7 @@ func resolveEc2imageProductCodes(ctx context.Context, meta schema.ClientMeta, re
 	for _, t := range r.ProductCodes {
 		productCodes[*t.ProductCodeId] = string(t.ProductCodeType)
 	}
-	return diag.WrapError(resource.Set(c.Name, productCodes))
+	return resource.Set(c.Name, productCodes)
 }
 
 func resolveEc2ImageLastLaunchedTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -352,5 +350,5 @@ func resolveEc2ImageLastLaunchedTime(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, t))
+	return resource.Set(c.Name, t)
 }

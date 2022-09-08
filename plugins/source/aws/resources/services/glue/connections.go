@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Connections() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_connections",
-		Description:  "Defines a connection to a data source",
-		Resolver:     fetchGlueConnections,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_connections",
+		Description: "Defines a connection to a data source",
+		Resolver:    fetchGlueConnections,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "arn",
@@ -128,7 +125,7 @@ func resolveGlueConnectionArn(ctx context.Context, meta schema.ClientMeta, resou
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.Connection)
 	arn := aws.String(connectionARN(cl, &r))
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 
 // ====================================================================================================================

@@ -9,16 +9,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamGroupPolicies() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_iam_group_policies",
-		Description:   "Inline policies that are embedded in the specified IAM group",
-		Resolver:      fetchIamGroupPolicies,
-		
+		Name:        "aws_iam_group_policies",
+		Description: "Inline policies that are embedded in the specified IAM group",
+		Resolver:    fetchIamGroupPolicies,
+
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -107,5 +106,5 @@ func resolveIamGroupPolicyPolicyDocument(ctx context.Context, meta schema.Client
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, document))
+	return resource.Set(c.Name, document)
 }

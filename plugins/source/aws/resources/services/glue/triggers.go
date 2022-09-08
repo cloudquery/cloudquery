@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Triggers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_triggers",
-		Description:  "Information about a specific trigger",
-		Resolver:     fetchGlueTriggers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_triggers",
+		Description: "Information about a specific trigger",
+		Resolver:    fetchGlueTriggers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -193,12 +190,12 @@ func Triggers() *schema.Table {
 // ====================================================================================================================
 
 func fetchGlueTriggers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listTriggers, triggerDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listTriggers, triggerDetail)
 }
 func resolveGlueTriggerArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	arn := aws.String(triggerARN(cl, aws.ToString(resource.Item.(types.Trigger).Name)))
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func resolveGlueTriggerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -212,7 +209,7 @@ func resolveGlueTriggerTags(ctx context.Context, meta schema.ClientMeta, resourc
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Tags))
+	return resource.Set(c.Name, result.Tags)
 }
 
 // ====================================================================================================================

@@ -6,17 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ClientCertificates() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigateway_client_certificates",
-		Description:  "Represents a client certificate used to configure client-side SSL authentication while sending requests to the integration endpoint",
-		Resolver:     fetchApigatewayClientCertificates,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_client_certificates",
+		Description: "Represents a client certificate used to configure client-side SSL authentication while sending requests to the integration endpoint",
+		Resolver:    fetchApigatewayClientCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,10 +29,10 @@ func ClientCertificates() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the resource",
-				Type:        schema.TypeString,
-				Resolver:    resolveApigatewayClientCertificateArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for the resource",
+				Type:            schema.TypeString,
+				Resolver:        resolveApigatewayClientCertificateArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -93,5 +91,5 @@ func resolveApigatewayClientCertificateArn(ctx context.Context, meta schema.Clie
 	cl := meta.(*client.Client)
 	cert := resource.Item.(types.ClientCertificate)
 	arn := cl.RegionGlobalARN(client.ApigatewayService, "/clientcertificates", *cert.ClientCertificateId)
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }

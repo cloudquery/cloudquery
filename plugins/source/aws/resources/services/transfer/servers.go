@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/transfer"
 	"github.com/aws/aws-sdk-go-v2/service/transfer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_transfer_servers",
-		Description:  "Describes the properties of a file transfer protocol-enabled server that was specified",
-		Resolver:     fetchTransferServers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
+		Name:        "aws_transfer_servers",
+		Description: "Describes the properties of a file transfer protocol-enabled server that was specified",
+		Resolver:    fetchTransferServers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,9 +30,9 @@ func Servers() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "Specifies the unique Amazon Resource Name (ARN) of the server",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "Specifies the unique Amazon Resource Name (ARN) of the server",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -187,7 +185,7 @@ func Servers() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name: "workflow_details",
+				Name:        "workflow_details",
 				Description: "Specifies the workflow ID for the workflow to assign and the execution role that's used for executing the workflow",
 				Type:        schema.TypeJSON,
 			},
@@ -247,5 +245,5 @@ func resolveServersTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		}
 		input.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

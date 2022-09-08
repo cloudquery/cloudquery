@@ -9,16 +9,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Wafv2RuleGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafv2_rule_groups",
-		Description:  "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
-		Resolver:     fetchWafv2RuleGroups,
-		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Name:        "aws_wafv2_rule_groups",
+		Description: "A rule group defines a collection of rules to inspect and control web requests that you can use in a WebACL",
+		Resolver:    fetchWafv2RuleGroups,
+		Multiplex:   client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -50,10 +49,10 @@ func Wafv2RuleGroups() *schema.Table {
 				Resolver:      resolveWafv2ruleGroupPolicy,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the entity.  ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the entity.  ",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -185,7 +184,7 @@ func resolveWafv2ruleGroupTags(ctx context.Context, meta schema.ClientMeta, reso
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, outputTags))
+	return resource.Set(c.Name, outputTags)
 }
 func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -201,12 +200,12 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 		// we may get WAFNonexistentItemException error until SetPermissionPolicy is called on a rule group
 		var e *types.WAFNonexistentItemException
 		if errors.As(err, &e) {
-			return diag.WrapError(resource.Set(c.Name, "null"))
+			return resource.Set(c.Name, "null")
 		}
 		return err
 	}
 
-	return diag.WrapError(resource.Set(c.Name, policy.Policy))
+	return resource.Set(c.Name, policy.Policy)
 }
 func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -217,7 +216,7 @@ func resolveWafv2ruleGroupRules(ctx context.Context, meta schema.ClientMeta, res
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }
 func resolveWafv2AvailableLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -225,7 +224,7 @@ func resolveWafv2AvailableLabels(ctx context.Context, meta schema.ClientMeta, re
 	for i, l := range ruleGroup.AvailableLabels {
 		labels[i] = *l.Name
 	}
-	return diag.WrapError(resource.Set(c.Name, labels))
+	return resource.Set(c.Name, labels)
 }
 func resolveWafv2ConsumedLabels(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -233,5 +232,5 @@ func resolveWafv2ConsumedLabels(ctx context.Context, meta schema.ClientMeta, res
 	for i, l := range ruleGroup.ConsumedLabels {
 		labels[i] = *l.Name
 	}
-	return diag.WrapError(resource.Set(c.Name, labels))
+	return resource.Set(c.Name, labels)
 }

@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Databases() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_databases",
-		Description:  "The Database object represents a logical grouping of tables that might reside in a Hive metastore or an RDBMS",
-		Resolver:     fetchGlueDatabases,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_databases",
+		Description: "The Database object represents a logical grouping of tables that might reside in a Hive metastore or an RDBMS",
+		Resolver:    fetchGlueDatabases,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -430,7 +427,7 @@ func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *sch
 func resolveGlueDatabaseArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	arn := aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name)))
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -443,7 +440,7 @@ func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resour
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, response.Tags))
+	return resource.Set(c.Name, response.Tags)
 }
 func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Database)

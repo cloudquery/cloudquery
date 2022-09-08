@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CloudwatchAlarms() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cloudwatch_alarms",
-		Description:  "The details about a metric alarm.",
-		Resolver:     fetchCloudwatchAlarms,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_cloudwatch_alarms",
+		Description: "The details about a metric alarm.",
+		Resolver:    fetchCloudwatchAlarms,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -298,7 +296,7 @@ func resolveCloudwatchAlarmDimensions(ctx context.Context, meta schema.ClientMet
 	for _, d := range alarm.Dimensions {
 		dimensions[*d.Name] = d.Value
 	}
-	return diag.WrapError(resource.Set("dimensions", dimensions))
+	return resource.Set("dimensions", dimensions)
 }
 
 func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -310,7 +308,7 @@ func resolveCloudwatchAlarmMetricMetricStatMetricDimensions(ctx context.Context,
 	for _, d := range metric.MetricStat.Metric.Dimensions {
 		dimensions[*d.Name] = d.Value
 	}
-	return diag.WrapError(resource.Set("metric_stat_metric_dimensions", dimensions))
+	return resource.Set("metric_stat_metric_dimensions", dimensions)
 }
 
 func resolveCloudwatchAlarmTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -325,5 +323,5 @@ func resolveCloudwatchAlarmTags(ctx context.Context, meta schema.ClientMeta, res
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(output.Tags)))
+	return resource.Set(c.Name, client.TagsToMap(output.Tags))
 }

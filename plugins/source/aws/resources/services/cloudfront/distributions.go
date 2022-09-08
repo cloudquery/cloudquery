@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CloudfrontDistributions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cloudfront_distributions",
-		Description:  "A summary of the information about a CloudFront distribution.",
-		Resolver:     fetchCloudfrontDistributions,
-		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_cloudfront_distributions",
+		Description: "A summary of the information about a CloudFront distribution.",
+		Resolver:    fetchCloudfrontDistributions,
+		Multiplex:   client.AccountMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -801,7 +799,7 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags.Items)))
+	return resource.Set(c.Name, client.TagsToMap(response.Tags.Items))
 }
 func resolveCloudfrontDistributionsActiveTrustedKeyGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	distribution := resource.Item.(types.Distribution)
@@ -812,7 +810,7 @@ func resolveCloudfrontDistributionsActiveTrustedKeyGroups(ctx context.Context, m
 	for _, k := range distribution.ActiveTrustedKeyGroups.Items {
 		j[*k.KeyGroupId] = k.KeyPairIds.Items
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveCloudfrontDistributionsActiveTrustedSigners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	distribution := resource.Item.(types.Distribution)
@@ -823,7 +821,7 @@ func resolveCloudfrontDistributionsActiveTrustedSigners(ctx context.Context, met
 	for _, k := range distribution.ActiveTrustedSigners.Items {
 		j[*k.AwsAccountNumber] = k.KeyPairIds.Items
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	distribution := resource.Item.(types.Distribution)
@@ -831,7 +829,7 @@ func resolveCloudfrontDistributionsAliasIcpRecordals(ctx context.Context, meta s
 	for _, a := range distribution.AliasICPRecordals {
 		j[*a.CNAME] = a.ICPRecordalStatus
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 
 func resolveCloudfrontDistributionOriginsCustomHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -843,5 +841,5 @@ func resolveCloudfrontDistributionOriginsCustomHeaders(ctx context.Context, meta
 	for _, t := range r.CustomHeaders.Items {
 		tags[*t.HeaderName] = *t.HeaderValue
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

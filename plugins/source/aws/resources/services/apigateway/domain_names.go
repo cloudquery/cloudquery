@@ -6,17 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func DomainNames() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigateway_domain_names",
-		Description:  "Represents a custom domain name as a user-friendly host name of an API (RestApi)",
-		Resolver:     fetchApigatewayDomainNames,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_domain_names",
+		Description: "Represents a custom domain name as a user-friendly host name of an API (RestApi)",
+		Resolver:    fetchApigatewayDomainNames,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,10 +29,10 @@ func DomainNames() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the resource",
-				Type:        schema.TypeString,
-				Resolver:    resolveApigatewayDomainNameArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for the resource",
+				Type:            schema.TypeString,
+				Resolver:        resolveApigatewayDomainNameArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -209,7 +207,7 @@ func resolveApigatewayDomainNameArn(ctx context.Context, meta schema.ClientMeta,
 	cl := meta.(*client.Client)
 	domain := resource.Item.(types.DomainName)
 	arn := cl.RegionGlobalARN(client.ApigatewayService, domainNameIDPart, *domain.DomainName)
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func fetchApigatewayDomainNameBasePathMappings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.DomainName)
@@ -230,5 +228,5 @@ func resolveApigatewayDomainNameBasePathMappingArn(ctx context.Context, meta sch
 	domain := resource.Parent.Item.(types.DomainName)
 	mapping := resource.Item.(types.BasePathMapping)
 	arn := cl.RegionGlobalARN(client.ApigatewayService, domainNameIDPart, *domain.DomainName, "basepathmappings", *mapping.BasePath)
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }

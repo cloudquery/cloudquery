@@ -8,10 +8,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
 
 func Attacks() *schema.Table {
 	return &schema.Table{
@@ -34,10 +32,10 @@ func Attacks() *schema.Table {
 				Resolver:    schema.PathResolver("AttackCounters"),
 			},
 			{
-				Name:        "id",
-				Description: "The unique identifier (ID) of the attack",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AttackId"),
+				Name:            "id",
+				Description:     "The unique identifier (ID) of the attack",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("AttackId"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -67,9 +65,9 @@ func Attacks() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "sub_resources",
+				Name:        "sub_resources",
 				Description: "The attack information for the specified SubResource",
-				Type: 			schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 		},
 	}
@@ -117,7 +115,7 @@ func resolveAttacksMitigations(ctx context.Context, meta schema.ClientMeta, reso
 	for _, m := range r.Mitigations {
 		mitigations = append(mitigations, *m.MitigationName)
 	}
-	return diag.WrapError(resource.Set(c.Name, mitigations))
+	return resource.Set(c.Name, mitigations)
 }
 
 func resolveAttackPropertiesTopContributors(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -126,5 +124,5 @@ func resolveAttackPropertiesTopContributors(ctx context.Context, meta schema.Cli
 	for _, c := range r.TopContributors {
 		marshalledJson[*c.Name] = c.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, marshalledJson))
+	return resource.Set(c.Name, marshalledJson)
 }

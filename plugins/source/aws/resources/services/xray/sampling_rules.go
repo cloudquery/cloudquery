@@ -6,20 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func SamplingRules() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_xray_sampling_rules",
-		Description:  "A SamplingRule (https://docsawsamazoncom/xray/latest/api/API_SamplingRulehtml) and its metadata",
-		Resolver:     fetchXraySamplingRules,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("xray"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_xray_sampling_rules",
+		Description: "A SamplingRule (https://docsawsamazoncom/xray/latest/api/API_SamplingRulehtml) and its metadata",
+		Resolver:    fetchXraySamplingRules,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -162,5 +159,5 @@ func resolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, re
 	tags := map[string]string{}
 	client.TagsIntoMap(output.Tags, tags)
 
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

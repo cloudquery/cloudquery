@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsDbParameterGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_rds_db_parameter_groups",
-		Description:  "Contains the details of an Amazon RDS DB parameter group",
-		Resolver:     fetchRdsDbParameterGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_rds_db_parameter_groups",
+		Description: "Contains the details of an Amazon RDS DB parameter group",
+		Resolver:    fetchRdsDbParameterGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -68,7 +66,7 @@ func RdsDbParameterGroups() *schema.Table {
 				Name:        "aws_rds_db_parameters",
 				Description: "Database Parameters",
 				Resolver:    fetchRdsDbParameterGroupDbParameters,
-				
+
 				Columns: []schema.Column{
 					{
 						Name:        "db_parameter_group_cq_id",
@@ -192,5 +190,5 @@ func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
+	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

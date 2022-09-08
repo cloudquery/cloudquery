@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Pipelines() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_codepipeline_pipelines",
-		Description:  "Represents the output of a GetPipeline action",
-		Resolver:     fetchCodepipelinePipelines,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_codepipeline_pipelines",
+		Description: "Represents the output of a GetPipeline action",
+		Resolver:    fetchCodepipelinePipelines,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("codepipeline"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -269,7 +266,7 @@ func resolveCodepipelinePipelineTags(ctx context.Context, meta schema.ClientMeta
 		return err
 	}
 
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
+	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }
 func fetchCodepipelinePipelineStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	type StageWrapper struct {

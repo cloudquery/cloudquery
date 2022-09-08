@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -23,12 +22,11 @@ type ConfigSettings struct {
 
 func ElasticbeanstalkEnvironments() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_elasticbeanstalk_environments",
-		Description:   "Describes the properties of an environment.",
-		Resolver:      fetchElasticbeanstalkEnvironments,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		
-		
+		Name:        "aws_elasticbeanstalk_environments",
+		Description: "Describes the properties of an environment.",
+		Resolver:    fetchElasticbeanstalkEnvironments,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -429,7 +427,7 @@ func resolveElasticbeanstalkEnvironmentTags(ctx context.Context, meta schema.Cli
 	for _, l := range p.Resources.LoadBalancer.Listeners {
 		listeners[l.Port] = l.Protocol
 	}
-	return diag.WrapError(resource.Set(c.Name, listeners))
+	return resource.Set(c.Name, listeners)
 }
 func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	p := resource.Item.(types.EnvironmentDescription)
@@ -453,7 +451,7 @@ func resolveElasticbeanstalkEnvironmentListeners(ctx context.Context, meta schem
 	for _, s := range tagsOutput.ResourceTags {
 		tags[*s.Key] = s.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

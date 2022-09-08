@@ -8,17 +8,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Ipsets() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafv2_ipsets",
-		Description:  "Contains one or more IP addresses or blocks of IP addresses specified in Classless Inter-Domain Routing (CIDR) notation",
-		Resolver:     fetchWafv2Ipsets,
-		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Name:        "aws_wafv2_ipsets",
+		Description: "Contains one or more IP addresses or blocks of IP addresses specified in Classless Inter-Domain Routing (CIDR) notation",
+		Resolver:    fetchWafv2Ipsets,
+		Multiplex:   client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,10 +37,10 @@ func Ipsets() *schema.Table {
 				Resolver:    client.ResolveWAFScope,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the entity.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the entity.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -134,7 +132,7 @@ func resolveIpsetAddresses(ctx context.Context, meta schema.ClientMeta, resource
 		}
 		addrs = append(addrs, n)
 	}
-	return diag.WrapError(resource.Set(c.Name, addrs))
+	return resource.Set(c.Name, addrs)
 }
 
 func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -160,5 +158,5 @@ func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

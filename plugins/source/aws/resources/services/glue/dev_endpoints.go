@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func DevEndpoints() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_dev_endpoints",
-		Description:  "A development endpoint where a developer can remotely debug extract, transform, and load (ETL) scripts",
-		Resolver:     fetchGlueDevEndpoints,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_dev_endpoints",
+		Description: "A development endpoint where a developer can remotely debug extract, transform, and load (ETL) scripts",
+		Resolver:    fetchGlueDevEndpoints,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -203,7 +200,7 @@ func fetchGlueDevEndpoints(ctx context.Context, meta schema.ClientMeta, parent *
 func resolveGlueDevEndpointArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	arn := aws.String(devEndpointARN(cl, aws.ToString(resource.Item.(types.DevEndpoint).EndpointName)))
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func resolveGlueDevEndpointTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -217,7 +214,7 @@ func resolveGlueDevEndpointTags(ctx context.Context, meta schema.ClientMeta, res
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Tags))
+	return resource.Set(c.Name, result.Tags)
 }
 
 // ====================================================================================================================

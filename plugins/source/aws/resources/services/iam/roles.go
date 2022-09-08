@@ -9,20 +9,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Roles() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iam_roles",
-		Description:  "An IAM role is an IAM identity that you can create in your account that has specific permissions.",
-		Resolver:     fetchIamRoles,
-		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_iam_roles",
+		Description: "An IAM role is an IAM identity that you can create in your account that has specific permissions.",
+		Resolver:    fetchIamRoles,
+		Multiplex:   client.AccountMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -148,7 +145,7 @@ func Roles() *schema.Table {
 // ====================================================================================================================
 
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listRoles, roleDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listRoles, roleDetail)
 }
 func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Role)
@@ -174,7 +171,7 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 		}
 		input.Marker = response.Marker
 	}
-	return diag.WrapError(resource.Set("policies", policies))
+	return resource.Set("policies", policies)
 }
 func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Role)
@@ -185,7 +182,7 @@ func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.Clien
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set("assume_role_policy_document", decodedDocument))
+	return resource.Set("assume_role_policy_document", decodedDocument)
 }
 func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -229,7 +226,7 @@ func resolveRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMe
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, document))
+	return resource.Set(c.Name, document)
 }
 
 // ====================================================================================================================

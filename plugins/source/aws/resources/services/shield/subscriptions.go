@@ -6,10 +6,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
 
 func Subscriptions() *schema.Table {
 	return &schema.Table{
@@ -70,10 +68,10 @@ func Subscriptions() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) of the subscription",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SubscriptionArn"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) of the subscription",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("SubscriptionArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -109,7 +107,7 @@ func resolveSubscriptionsProtectionGroupLimitsMaxProtectionGroups(ctx context.Co
 	if r.SubscriptionLimits == nil || r.SubscriptionLimits.ProtectionGroupLimits == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, int32(r.SubscriptionLimits.ProtectionGroupLimits.MaxProtectionGroups)))
+	return resource.Set(c.Name, int32(r.SubscriptionLimits.ProtectionGroupLimits.MaxProtectionGroups))
 }
 func resolveSubscriptionsProtectionGroupLimitsArbitraryPatternLimitsMaxMembers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Subscription)
@@ -119,7 +117,7 @@ func resolveSubscriptionsProtectionGroupLimitsArbitraryPatternLimitsMaxMembers(c
 		r.SubscriptionLimits.ProtectionGroupLimits.PatternTypeLimits.ArbitraryPatternLimits == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, int32(r.SubscriptionLimits.ProtectionGroupLimits.PatternTypeLimits.ArbitraryPatternLimits.MaxMembers)))
+	return resource.Set(c.Name, int32(r.SubscriptionLimits.ProtectionGroupLimits.PatternTypeLimits.ArbitraryPatternLimits.MaxMembers))
 }
 func resolveSubscriptionsProtectedResourceTypeLimits(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Subscription)
@@ -130,7 +128,7 @@ func resolveSubscriptionsProtectedResourceTypeLimits(ctx context.Context, meta s
 	for _, l := range r.SubscriptionLimits.ProtectionLimits.ProtectedResourceTypeLimits {
 		json[*l.Type] = l.Max
 	}
-	return diag.WrapError(resource.Set(c.Name, json))
+	return resource.Set(c.Name, json)
 }
 func resolveSubscriptionsLimits(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Subscription)
@@ -138,9 +136,9 @@ func resolveSubscriptionsLimits(ctx context.Context, meta schema.ClientMeta, res
 	for _, l := range r.SubscriptionLimits.ProtectionLimits.ProtectedResourceTypeLimits {
 		json[*l.Type] = l.Max
 	}
-	return diag.WrapError(resource.Set(c.Name, json))
+	return resource.Set(c.Name, json)
 }
 func resolveSubscriptionsTimeCommitmentInSeconds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.Subscription)
-	return diag.WrapError(resource.Set(c.Name, int32(r.TimeCommitmentInSeconds)))
+	return resource.Set(c.Name, int32(r.TimeCommitmentInSeconds))
 }

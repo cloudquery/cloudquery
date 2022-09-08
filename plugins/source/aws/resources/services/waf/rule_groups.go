@@ -7,16 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func WafRuleGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_waf_rule_groups",
-		Description:  "This is AWS WAF Classic documentation",
-		Resolver:     fetchWafRuleGroups,
-		Multiplex:    client.AccountMultiplex,
+		Name:        "aws_waf_rule_groups",
+		Description: "This is AWS WAF Classic documentation",
+		Resolver:    fetchWafRuleGroups,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -25,9 +24,9 @@ func WafRuleGroups() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveWafRuleGroupArn,
+				Name:            "arn",
+				Type:            schema.TypeString,
+				Resolver:        resolveWafRuleGroupArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -95,7 +94,7 @@ func fetchWafRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *sch
 func resolveWafRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	ruleGroup := resource.Item.(*types.RuleGroup)
-	return diag.WrapError(resource.Set(c.Name, cl.ARN("waf", "rulegroup", aws.ToString(ruleGroup.RuleGroupId))))
+	return resource.Set(c.Name, cl.ARN("waf", "rulegroup", aws.ToString(ruleGroup.RuleGroupId)))
 }
 func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -119,7 +118,7 @@ func resolveWafRuleGroupRuleIds(ctx context.Context, meta schema.ClientMeta, res
 		}
 		listActivatedRulesConfig.NextMarker = rules.NextMarker
 	}
-	return diag.WrapError(resource.Set("rule_ids", ruleIDs))
+	return resource.Set("rule_ids", ruleIDs)
 }
 func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ruleGroup := resource.Item.(*types.RuleGroup)
@@ -149,5 +148,5 @@ func resolveWafRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resour
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return diag.WrapError(resource.Set("tags", outputTags))
+	return resource.Set("tags", outputTags)
 }

@@ -8,18 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func CodebuildProjects() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_codebuild_projects",
-		Description:   "Information about a build project.",
-		Resolver:      fetchCodebuildProjects,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("codebuild"),
-		
-		
+		Name:        "aws_codebuild_projects",
+		Description: "Information about a build project.",
+		Resolver:    fetchCodebuildProjects,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("codebuild"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -717,7 +715,7 @@ func resolveCodebuildProjectsSecondarySourceVersions(ctx context.Context, meta s
 	for _, v := range p.SecondarySourceVersions {
 		j[*v.SourceIdentifier] = *v.SourceVersion
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 
 // currently SDK is not able to support serializing [][]types.WebhookFilter
@@ -731,5 +729,5 @@ func resolveCodebuildProjectsWebhookFilterGroups(ctx context.Context, meta schem
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }

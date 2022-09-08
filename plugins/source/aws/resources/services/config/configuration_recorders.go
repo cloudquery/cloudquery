@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -24,12 +23,11 @@ type configurationRecorderWrapper struct {
 
 func ConfigConfigurationRecorders() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_config_configuration_recorders",
-		Description:   "An object that represents the recording of configuration changes of an AWS resource.",
-		Resolver:      fetchConfigConfigurationRecorders,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("config"),
-		
-		
+		Name:        "aws_config_configuration_recorders",
+		Description: "An object that represents the recording of configuration changes of an AWS resource.",
+		Resolver:    fetchConfigConfigurationRecorders,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -176,5 +174,5 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 func generateConfigRecorderArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cfg := resource.Item.(configurationRecorderWrapper)
-	return diag.WrapError(resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name)))
+	return resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name))
 }

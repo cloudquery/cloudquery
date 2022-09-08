@@ -6,19 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EksClusters() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_eks_clusters",
-		Description:  "An object representing an Amazon EKS cluster.",
-		Resolver:     fetchEksClusters,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("eks"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_eks_clusters",
+		Description: "An object representing an Amazon EKS cluster.",
+		Resolver:    fetchEksClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("eks"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -238,5 +236,5 @@ func resolveEksClusterLoggingTypes(ctx context.Context, meta schema.ClientMeta, 
 	for i, l := range logSetup.Types {
 		logTypes[i] = string(l)
 	}
-	return diag.WrapError(resource.Set("types", logTypes))
+	return resource.Set("types", logTypes)
 }

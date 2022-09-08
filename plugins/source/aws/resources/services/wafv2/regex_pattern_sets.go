@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func RegexPatternSets() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafv2_regex_pattern_sets",
-		Description:  "Contains one or more regular expressions",
-		Resolver:     fetchWafv2RegexPatternSets,
-		Multiplex:    client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Name:        "aws_wafv2_regex_pattern_sets",
+		Description: "Contains one or more regular expressions",
+		Resolver:    fetchWafv2RegexPatternSets,
+		Multiplex:   client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,10 +36,10 @@ func RegexPatternSets() *schema.Table {
 				Resolver:    client.ResolveWAFScope,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the entity.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the entity.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -125,7 +123,7 @@ func resolveRegexPatternSetsRegularExpressionList(ctx context.Context, meta sche
 			items[i] = *v.RegexString
 		}
 	}
-	return diag.WrapError(resource.Set(c.Name, items))
+	return resource.Set(c.Name, items)
 }
 
 func resolveRegexPatternSetTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -151,5 +149,5 @@ func resolveRegexPatternSetTags(ctx context.Context, meta schema.ClientMeta, res
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

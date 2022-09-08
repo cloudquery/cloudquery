@@ -8,19 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ecs_clusters",
-		Description:  "A regional grouping of one or more container instances where you can run task requests",
-		Resolver:     fetchEcsClusters,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ecs"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_ecs_clusters",
+		Description: "A regional grouping of one or more container instances where you can run task requests",
+		Resolver:    fetchEcsClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ecs"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -1468,41 +1466,41 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 func resolveClustersSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cluster, ok := resource.Item.(types.Cluster)
 	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
+		return fmt.Errorf("expected to have types.Cluster but got %T", resource.Item)
 	}
 	settings := make(map[string]*string)
 	for _, s := range cluster.Settings {
 		settings[string(s.Name)] = s.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, settings))
+	return resource.Set(c.Name, settings)
 }
 func resolveClustersStatistics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cluster, ok := resource.Item.(types.Cluster)
 	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", resource.Item))
+		return fmt.Errorf("expected to have types.Cluster but got %T", resource.Item)
 	}
 	stats := make(map[string]*string)
 	for _, s := range cluster.Statistics {
 		stats[*s.Name] = s.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, stats))
+	return resource.Set(c.Name, stats)
 }
 
 func resolveClusterAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	attachment, ok := resource.Item.(types.Attachment)
 	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Attachment but got %T", resource.Item))
+		return fmt.Errorf("expected to have types.Attachment but got %T", resource.Item)
 	}
 	details := make(map[string]*string)
 	for _, s := range attachment.Details {
 		details[*s.Name] = s.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, details))
+	return resource.Set(c.Name, details)
 }
 func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
-		return diag.WrapError(fmt.Errorf("expected to have types.Cluster but got %T", parent.Item))
+		return fmt.Errorf("expected to have types.Cluster but got %T", parent.Item)
 	}
 	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
@@ -1548,7 +1546,7 @@ func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.Clien
 		j[*i.Name] = *i.Value
 	}
 
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -1597,7 +1595,7 @@ func resolveClusterServicesPlacementConstraints(ctx context.Context, meta schema
 		j[string(i.Type)] = aws.ToString(i.Expression)
 	}
 
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 
 func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -1607,7 +1605,7 @@ func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.Cl
 		j[string(i.Type)] = aws.ToString(i.Field)
 	}
 
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -1655,5 +1653,5 @@ func resolveClusterContainerInstanceAttachmentsDetails(ctx context.Context, meta
 	for _, s := range attachment.Details {
 		details[*s.Name] = s.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, details))
+	return resource.Set(c.Name, details)
 }

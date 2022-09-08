@@ -8,16 +8,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamUserPolicies() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_iam_user_policies",
-		Description:   "Inline policies that are embedded in the specified IAM user",
-		Resolver:      fetchIamUserPolicies,
-		
+		Name:        "aws_iam_user_policies",
+		Description: "Inline policies that are embedded in the specified IAM user",
+		Resolver:    fetchIamUserPolicies,
+
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -107,5 +106,5 @@ func resolveIamUserPolicyPolicyDocument(ctx context.Context, meta schema.ClientM
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, document))
+	return resource.Set(c.Name, document)
 }

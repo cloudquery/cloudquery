@@ -7,18 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2EbsVolumes() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_ebs_volumes",
-		Resolver:     fetchEc2EbsVolumes,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:      "aws_ec2_ebs_volumes",
+		Resolver:  fetchEc2EbsVolumes,
+		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -169,5 +167,5 @@ func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.R
 func resolveEbsVolumeArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	ebs := resource.Item.(types.Volume)
-	return diag.WrapError(resource.Set(c.Name, cl.ARN(client.EC2Service, "volume", *ebs.VolumeId)))
+	return resource.Set(c.Name, cl.ARN(client.EC2Service, "volume", *ebs.VolumeId))
 }

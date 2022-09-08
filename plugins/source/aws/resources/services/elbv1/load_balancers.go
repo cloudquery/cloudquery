@@ -7,7 +7,6 @@ import (
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -19,12 +18,11 @@ type ELBv1LoadBalancerWrapper struct {
 
 func Elbv1LoadBalancers() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_elbv1_load_balancers",
-		Description:   "Information about a load balancer.",
-		Resolver:      fetchElbv1LoadBalancers,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		
-		
+		Name:        "aws_elbv1_load_balancers",
+		Description: "Information about a load balancer.",
+		Resolver:    fetchElbv1LoadBalancers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -467,7 +465,7 @@ func resolveElbv1loadBalancerAttributesAdditionalAttributes(ctx context.Context,
 	for _, a := range r.Attributes.AdditionalAttributes {
 		response[*a.Key] = a.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, response))
+	return resource.Set(c.Name, response)
 }
 
 func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -488,7 +486,7 @@ func resolveElbv1loadBalancerPolicyPolicyAttributeDescriptions(ctx context.Conte
 	for _, a := range r.PolicyAttributeDescriptions {
 		response[*a.AttributeName] = a.AttributeValue
 	}
-	return diag.WrapError(resource.Set(c.Name, response))
+	return resource.Set(c.Name, response)
 }
 
 // ====================================================================================================================

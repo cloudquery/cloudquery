@@ -7,17 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/dax/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func DaxClusters() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_dax_clusters",
-		Description:   "Information about a DAX cluster.",
-		Resolver:      fetchDaxClusters,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("dax"),
-		
+		Name:        "aws_dax_clusters",
+		Description: "Information about a DAX cluster.",
+		Resolver:    fetchDaxClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("dax"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -260,7 +259,7 @@ func resolveDaxClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(response.Tags)))
+	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }
 func resolveDaxClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Cluster)
@@ -271,5 +270,5 @@ func resolveDaxClusterSecurityGroups(ctx context.Context, meta schema.ClientMeta
 			"status":     r.SecurityGroups[i].Status,
 		}
 	}
-	return diag.WrapError(resource.Set(c.Name, val))
+	return resource.Set(c.Name, val)
 }

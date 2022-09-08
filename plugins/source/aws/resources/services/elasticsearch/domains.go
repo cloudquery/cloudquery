@@ -6,19 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice"
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func ElasticsearchDomains() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticsearch_domains",
-		Description:  "The current status of an Elasticsearch domain.",
-		Resolver:     fetchElasticsearchDomains,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("es"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
+		Name:        "aws_elasticsearch_domains",
+		Description: "The current status of an Elasticsearch domain.",
+		Resolver:    fetchElasticsearchDomains,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("es"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -474,5 +472,5 @@ func resolveElasticsearchDomainTags(ctx context.Context, meta schema.ClientMeta,
 	for _, s := range tagsOutput.TagList {
 		tags[*s.Key] = s.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

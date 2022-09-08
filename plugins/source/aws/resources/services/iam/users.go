@@ -11,7 +11,6 @@ import (
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cq-provider-sdk/helpers"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gocarina/gocsv"
 	"github.com/spf13/cast"
@@ -52,11 +51,10 @@ const rootName = "<root_account>"
 
 func IamUsers() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_iam_users",
-		Resolver:             fetchIamUsers,
-		Multiplex:            client.AccountMultiplex,
-		
-		
+		Name:      "aws_iam_users",
+		Resolver:  fetchIamUsers,
+		Multiplex: client.AccountMultiplex,
+
 		PostResourceResolver: postIamUserResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
@@ -323,7 +321,7 @@ func IamUsers() *schema.Table {
 }
 
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listUsers, userDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listUsers, userDetail)
 }
 
 func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
@@ -404,7 +402,7 @@ func postIamUserResolver(_ context.Context, _ schema.ClientMeta, resource *schem
 			return err
 		}
 
-		return diag.WrapError(resource.Set("access_key_2_last_rotated", nil))
+		return resource.Set("access_key_2_last_rotated", nil)
 	}
 
 	if r.PasswordNextRotation == "N/A" || r.PasswordNextRotation == "not_supported" {

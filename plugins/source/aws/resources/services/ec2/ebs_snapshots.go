@@ -8,18 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2EbsSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_ec2_ebs_snapshots",
-		Description:   "Describes a snapshot.",
-		Resolver:      fetchEc2EbsSnapshots,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
+		Name:        "aws_ec2_ebs_snapshots",
+		Description: "Describes a snapshot.",
+		Resolver:    fetchEc2EbsSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "snapshot_id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -175,5 +173,5 @@ func resolveEc2ebsSnapshotCreateVolumePermissions(ctx context.Context, meta sche
 		return err
 	}
 
-	return diag.WrapError(resource.Set("create_volume_permissions", b))
+	return resource.Set("create_volume_permissions", b)
 }

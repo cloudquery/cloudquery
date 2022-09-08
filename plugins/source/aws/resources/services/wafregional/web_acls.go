@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func WebAcls() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafregional_web_acls",
-		Description:  "Contains the Rules that identify the requests that you want to allow, block, or count.",
-		Resolver:     fetchWafregionalWebAcls,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Name:        "aws_wafregional_web_acls",
+		Description: "Contains the Rules that identify the requests that you want to allow, block, or count.",
+		Resolver:    fetchWafregionalWebAcls,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -60,10 +58,10 @@ func WebAcls() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "Tha Amazon Resource Name (ARN) of the web ACL.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("WebACLArn"),
+				Name:            "arn",
+				Description:     "Tha Amazon Resource Name (ARN) of the web ACL.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("WebACLArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -131,7 +129,7 @@ func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, r
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 func resolveWebACLRulesExcludedRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(types.ActivatedRule)
@@ -141,5 +139,5 @@ func resolveWebACLRulesExcludedRules(ctx context.Context, meta schema.ClientMeta
 			ids = append(ids, *item.RuleId)
 		}
 	}
-	return diag.WrapError(resource.Set(c.Name, ids))
+	return resource.Set(c.Name, ids)
 }

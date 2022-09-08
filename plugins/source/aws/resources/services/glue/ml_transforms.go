@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func MlTransforms() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_ml_transforms",
-		Description:  "A structure for a machine learning transform",
-		Resolver:     fetchGlueMlTransforms,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_ml_transforms",
+		Description: "A structure for a machine learning transform",
+		Resolver:    fetchGlueMlTransforms,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -384,7 +381,7 @@ func resolveGlueMlTransformArn(ctx context.Context, meta schema.ClientMeta, reso
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.MLTransform)
 	arn := aws.String(mlTransformARN(cl, &r))
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -399,7 +396,7 @@ func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, res
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Tags))
+	return resource.Set(c.Name, result.Tags)
 }
 func resolveMlTransformsEvaluationMetricsFindMatchesMetricsColumnImportances(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.MLTransform)
@@ -410,7 +407,7 @@ func resolveMlTransformsEvaluationMetricsFindMatchesMetricsColumnImportances(ctx
 	for _, c := range r.EvaluationMetrics.FindMatchesMetrics.ColumnImportances {
 		j[*c.ColumnName] = *c.Importance
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.MLTransform)
@@ -418,7 +415,7 @@ func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, reso
 	for _, c := range r.Schema {
 		j[*c.Name] = *c.DataType
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.MLTransform)

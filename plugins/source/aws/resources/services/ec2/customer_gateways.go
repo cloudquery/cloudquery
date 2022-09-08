@@ -12,12 +12,11 @@ import (
 
 func Ec2CustomerGateways() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_ec2_customer_gateways",
-		Description:   "Describes a customer gateway.",
-		Resolver:      fetchEc2CustomerGateways,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
+		Name:        "aws_ec2_customer_gateways",
+		Description: "Describes a customer gateway.",
+		Resolver:    fetchEc2CustomerGateways,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -106,5 +105,5 @@ func fetchEc2CustomerGateways(ctx context.Context, meta schema.ClientMeta, paren
 func resolveCustomerGatewayArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	cg := resource.Item.(types.CustomerGateway)
-	return diag.WrapError(diag.WrapError(resource.Set(c.Name, cl.ARN(client.EC2Service, "customer-gateway", *cg.CustomerGatewayId))))
+	return diag.WrapError(resource.Set(c.Name, cl.ARN(client.EC2Service, "customer-gateway", *cg.CustomerGatewayId)))
 }

@@ -6,20 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func VpcLinks() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigateway_vpc_links",
-		Description:  "An API Gateway VPC link for a RestApi to access resources in an Amazon Virtual Private Cloud (VPC)",
-		Resolver:     fetchApigatewayVpcLinks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_apigateway_vpc_links",
+		Description: "An API Gateway VPC link for a RestApi to access resources in an Amazon Virtual Private Cloud (VPC)",
+		Resolver:    fetchApigatewayVpcLinks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -100,5 +97,5 @@ func resolveApigatewayVpcLinkArn(ctx context.Context, meta schema.ClientMeta, re
 	cl := meta.(*client.Client)
 	link := resource.Item.(types.VpcLink)
 	arn := cl.RegionGlobalARN(client.ApigatewayService, "/vpclinks", *link.Id)
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }

@@ -8,20 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/aws/aws-sdk-go-v2/service/kms/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Keys() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_kms_keys",
-		Description:  "Contains metadata about a KMS key",
-		Resolver:     fetchKmsKeys,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("kms"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_kms_keys",
+		Description: "Contains metadata about a KMS key",
+		Resolver:    fetchKmsKeys,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("kms"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -236,7 +233,7 @@ func resolveKeysReplicaKeys(ctx context.Context, meta schema.ClientMeta, resourc
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, b))
+	return resource.Set(c.Name, b)
 }
 func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -260,7 +257,7 @@ func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 		}
 		params.Marker = result.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -273,5 +270,5 @@ func resolveKeysRotationEnabled(ctx context.Context, meta schema.ClientMeta, res
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.KeyRotationEnabled))
+	return resource.Set(c.Name, result.KeyRotationEnabled)
 }

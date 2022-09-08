@@ -6,19 +6,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Ledgers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_qldb_ledgers",
-		Resolver:     fetchQldbLedgers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("qldb"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:      "aws_qldb_ledgers",
+		Resolver:  fetchQldbLedgers,
+		Multiplex: client.ServiceAccountRegionMultiplexer("qldb"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -293,7 +290,7 @@ func ResolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, response.Tags))
+	return resource.Set(c.Name, response.Tags)
 }
 func fetchQldbLedgerJournalKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	ledger := parent.Item.(*qldb.DescribeLedgerOutput)

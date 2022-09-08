@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func RuleGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafregional_rule_groups",
-		Description:  "A collection of predefined rules that you can add to a web ACL.",
-		Resolver:     fetchWafregionalRuleGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Name:        "aws_wafregional_rule_groups",
+		Description: "A collection of predefined rules that you can add to a web ACL.",
+		Resolver:    fetchWafregionalRuleGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,10 @@ func RuleGroups() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "ARN of the rule group.",
-				Type:        schema.TypeString,
-				Resolver:    resolveWafregionalRuleGroupArn,
+				Name:            "arn",
+				Description:     "ARN of the rule group.",
+				Type:            schema.TypeString,
+				Resolver:        resolveWafregionalRuleGroupArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -103,7 +101,7 @@ func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 func resolveWafregionalRuleGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId)))
+	return resource.Set(c.Name, ruleGroupARN(meta, *resource.Item.(types.RuleGroup).RuleGroupId))
 }
 func resolveWafregionalRuleGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -124,7 +122,7 @@ func resolveWafregionalRuleGroupTags(ctx context.Context, meta schema.ClientMeta
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 // ====================================================================================================================

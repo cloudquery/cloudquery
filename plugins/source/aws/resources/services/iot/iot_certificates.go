@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotCertificates() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iot_certificates",
-		Description:  "Describes a certificate.",
-		Resolver:     fetchIotCertificates,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_iot_certificates",
+		Description: "Describes a certificate.",
+		Resolver:    fetchIotCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -217,5 +215,5 @@ func ResolveIotCertificatePolicies(ctx context.Context, meta schema.ClientMeta, 
 		}
 		input.Marker = response.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, policies))
+	return resource.Set(c.Name, policies)
 }

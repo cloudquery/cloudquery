@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func APIKeys() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigateway_api_keys",
-		Description:  "A resource that can be distributed to callers for executing Method resources that require an API key",
-		Resolver:     fetchApigatewayApiKeys,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_api_keys",
+		Description: "A resource that can be distributed to callers for executing Method resources that require an API key",
+		Resolver:    fetchApigatewayApiKeys,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,10 @@ func APIKeys() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the resource",
-				Type:        schema.TypeString,
-				Resolver:    resolveApigatewayAPIKeyArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for the resource",
+				Type:            schema.TypeString,
+				Resolver:        resolveApigatewayAPIKeyArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -116,5 +114,5 @@ func resolveApigatewayAPIKeyArn(ctx context.Context, meta schema.ClientMeta, res
 	cl := meta.(*client.Client)
 	ak := resource.Item.(types.ApiKey)
 	arn := cl.RegionGlobalARN(client.ApigatewayService, "/apikeys", *ak.Id)
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }

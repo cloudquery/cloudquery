@@ -9,19 +9,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Accounts() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_organizations_accounts",
-		Description:   "Contains information about an AWS account that is a member of an organization",
-		Resolver:      fetchOrganizationsAccounts,
-		Multiplex:     client.AccountMultiplex,
-		
-		
+		Name:        "aws_organizations_accounts",
+		Description: "Contains information about an AWS account that is a member of an organization",
+		Resolver:    fetchOrganizationsAccounts,
+		Multiplex:   client.AccountMultiplex,
+
 		IgnoreInTests: true,
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
@@ -129,5 +126,5 @@ func ResolveOrganizationsAccountTags(ctx context.Context, meta schema.ClientMeta
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set("tags", allTags))
+	return resource.Set("tags", allTags)
 }

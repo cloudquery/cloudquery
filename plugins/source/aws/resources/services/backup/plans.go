@@ -6,19 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Plans() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_backup_plans",
-		Description:  "Contains metadata about a backup plan.",
-		Resolver:     fetchBackupPlans,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_backup_plans",
+		Description: "Contains metadata about a backup plan.",
+		Resolver:    fetchBackupPlans,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -91,7 +89,7 @@ func Plans() *schema.Table {
 				Name:        "aws_backup_plan_rules",
 				Description: "Specifies a scheduled task used to back up a selection of resources.",
 				Resolver:    schema.PathTableResolver("BackupPlan.Rules"),
-				
+
 				Columns: []schema.Column{
 					{
 						Name:        "plan_cq_id",
@@ -169,7 +167,7 @@ func Plans() *schema.Table {
 				Name:        "aws_backup_plan_selections",
 				Description: "Contains metadata about a BackupSelection object.",
 				Resolver:    fetchBackupSelections,
-				
+
 				Columns: []schema.Column{
 					{
 						Name:        "plan_cq_id",
@@ -295,7 +293,7 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 		}
 		params.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 func fetchBackupSelections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

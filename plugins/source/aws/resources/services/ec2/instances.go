@@ -9,19 +9,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Ec2Instances() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_instances",
-		Description:  "Describes an instance.",
-		Resolver:     fetchEc2Instances,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_ec2_instances",
+		Description: "Describes an instance.",
+		Resolver:    fetchEc2Instances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -866,5 +864,5 @@ func resolveEc2InstanceStateTransitionReasonTime(ctx context.Context, meta schem
 		// failed to parse last transition time
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, tm))
+	return resource.Set(c.Name, tm)
 }

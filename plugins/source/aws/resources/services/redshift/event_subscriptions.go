@@ -8,19 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EventSubscriptions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_redshift_event_subscriptions",
-		Description:  "Describes event subscriptions.",
-		Resolver:     fetchRedshiftEventSubscriptions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_redshift_event_subscriptions",
+		Description: "Describes event subscriptions.",
+		Resolver:    fetchRedshiftEventSubscriptions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "arn",
@@ -127,7 +125,7 @@ func fetchRedshiftEventSubscriptions(ctx context.Context, meta schema.ClientMeta
 func resolveEventSubscriptionARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	sub := resource.Item.(types.EventSubscription)
-	return diag.WrapError(resource.Set(c.Name, eventSubscriptionARN(cl, *sub.CustSubscriptionId)))
+	return resource.Set(c.Name, eventSubscriptionARN(cl, *sub.CustSubscriptionId))
 }
 
 func eventSubscriptionARN(cl *client.Client, name string) string {

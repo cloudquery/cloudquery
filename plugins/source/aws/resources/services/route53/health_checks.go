@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -18,12 +17,11 @@ type Route53HealthCheckWrapper struct {
 
 func Route53HealthChecks() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_route53_health_checks",
-		Description:   "A complex type that contains information about one health check that is associated with the current AWS account.",
-		Resolver:      fetchRoute53HealthChecks,
-		Multiplex:     client.AccountMultiplex,
-		
-		
+		Name:        "aws_route53_health_checks",
+		Description: "A complex type that contains information about one health check that is associated with the current AWS account.",
+		Resolver:    fetchRoute53HealthChecks,
+		Multiplex:   client.AccountMultiplex,
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -299,5 +297,5 @@ func resolveRoute53healthCheckCloudWatchAlarmConfigurationDimensions(ctx context
 	for _, t := range r.CloudWatchAlarmConfiguration.Dimensions {
 		tags[*t.Name] = t.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

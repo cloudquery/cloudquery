@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsClusterParameterGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_rds_cluster_parameter_groups",
-		Description:  "Contains the details of an Amazon RDS DB cluster parameter group",
-		Resolver:     fetchRdsClusterParameterGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_rds_cluster_parameter_groups",
+		Description: "Contains the details of an Amazon RDS DB cluster parameter group",
+		Resolver:    fetchRdsClusterParameterGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -68,7 +66,7 @@ func RdsClusterParameterGroups() *schema.Table {
 				Name:        "aws_rds_cluster_parameters",
 				Description: "This data type is used as a request parameter in the ModifyDBParameterGroup and ResetDBParameterGroup actions",
 				Resolver:    fetchRdsClusterParameterGroupDbParameters,
-				
+
 				Columns: []schema.Column{
 					{
 						Name:        "cluster_parameter_group_cq_id",
@@ -188,5 +186,5 @@ func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.Client
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
+	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

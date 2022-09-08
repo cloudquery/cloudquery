@@ -8,19 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RedshiftClusters() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_redshift_clusters",
-		Description:  "Describes a cluster.",
-		Resolver:     fetchRedshiftClusters,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_redshift_clusters",
+		Description: "Describes a cluster.",
+		Resolver:    fetchRedshiftClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -819,7 +817,7 @@ func resolveRedshiftClusterLoggingStatus(ctx context.Context, meta schema.Client
 		return err
 	}
 
-	return diag.WrapError(resource.Set(c.Name, response))
+	return resource.Set(c.Name, response)
 }
 
 func fetchRedshiftClusterParameter(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -51,10 +50,10 @@ func SecretsmanagerSecrets() *schema.Table {
 				Resolver:    resolveSecretsmanagerSecretReplicationStatus,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the secret",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the secret",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -199,7 +198,7 @@ func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, b))
+	return resource.Set(c.Name, b)
 }
 
 func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -219,5 +218,5 @@ func resolveSecretsmanagerSecretReplicationStatus(_ context.Context, _ schema.Cl
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, b))
+	return resource.Set(c.Name, b)
 }

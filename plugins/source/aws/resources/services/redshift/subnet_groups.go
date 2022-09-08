@@ -8,19 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RedshiftSubnetGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_redshift_subnet_groups",
-		Description:  "Describes a subnet group.",
-		Resolver:     fetchRedshiftSubnetGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_redshift_subnet_groups",
+		Description: "Describes a subnet group.",
+		Resolver:    fetchRedshiftSubnetGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -137,5 +135,5 @@ func resolveRedshiftSubnetGroupSubnetSubnetAvailabilityZoneSupportedPlatforms(ct
 	for i, p := range r.SubnetAvailabilityZone.SupportedPlatforms {
 		platforms[i] = p.Name
 	}
-	return diag.WrapError(resource.Set("subnet_availability_zone_supported_platforms", platforms))
+	return resource.Set("subnet_availability_zone_supported_platforms", platforms)
 }

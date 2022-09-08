@@ -7,16 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/waf"
 	"github.com/aws/aws-sdk-go-v2/service/waf/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func WafRules() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_waf_rules",
-		Description:  "This is AWS WAF Classic documentation",
-		Resolver:     fetchWafRules,
-		Multiplex:    client.AccountMultiplex,
+		Name:        "aws_waf_rules",
+		Description: "This is AWS WAF Classic documentation",
+		Resolver:    fetchWafRules,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -24,9 +23,9 @@ func WafRules() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: resolveWafRuleArn,
+				Name:            "arn",
+				Type:            schema.TypeString,
+				Resolver:        resolveWafRuleArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -118,7 +117,7 @@ func fetchWafRules(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 func resolveWafRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	rule := resource.Item.(*types.Rule)
-	return diag.WrapError(resource.Set(c.Name, cl.ARN("waf", "rule", aws.ToString(rule.RuleId))))
+	return resource.Set(c.Name, cl.ARN("waf", "rule", aws.ToString(rule.RuleId)))
 }
 func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(*types.Rule)
@@ -148,7 +147,7 @@ func resolveWafRuleTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		}
 		tagsConfig.NextMarker = tags.NextMarker
 	}
-	return diag.WrapError(resource.Set("tags", outputTags))
+	return resource.Set("tags", outputTags)
 }
 func fetchWafRulePredicates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	rule := parent.Item.(*types.Rule)

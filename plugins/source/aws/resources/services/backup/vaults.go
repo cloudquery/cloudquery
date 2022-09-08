@@ -11,18 +11,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Vaults() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_backup_vaults",
-		Description:          "Contains metadata about a backup vault.",
-		Resolver:             fetchBackupVaults,
-		Multiplex:            client.ServiceAccountRegionMultiplexer("backup"),
-		
-		
+		Name:        "aws_backup_vaults",
+		Description: "Contains metadata about a backup vault.",
+		Resolver:    fetchBackupVaults,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
+
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		PostResourceResolver: resolveVaultNotifications,
 		Columns: []schema.Column{
@@ -120,10 +118,10 @@ func Vaults() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:          "aws_backup_vault_recovery_points",
-				Description:   "The recovery points stored in a backup vault.",
-				Resolver:      fetchVaultRecoveryPoints,
-				
+				Name:        "aws_backup_vault_recovery_points",
+				Description: "The recovery points stored in a backup vault.",
+				Resolver:    fetchVaultRecoveryPoints,
+
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
@@ -287,7 +285,7 @@ func resolveVaultTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 		}
 		params.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -307,7 +305,7 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Policy))
+	return resource.Set(c.Name, result.Policy)
 }
 
 func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
@@ -335,7 +333,7 @@ func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, reso
 	if err := resource.Set("notification_events", result.BackupVaultEvents); err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set("notification_sns_topic_arn", result.SNSTopicArn))
+	return resource.Set("notification_sns_topic_arn", result.SNSTopicArn)
 }
 
 func fetchVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -413,5 +411,5 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		params.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

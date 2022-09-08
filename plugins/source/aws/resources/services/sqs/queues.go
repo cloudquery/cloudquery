@@ -7,18 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
-
 func Queues() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_sqs_queues",
-		Description:  "Amazon Simple Queue Service",
-		Resolver:     fetchSqsQueues,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("sqs"),
+		Name:        "aws_sqs_queues",
+		Description: "Amazon Simple Queue Service",
+		Resolver:    fetchSqsQueues,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("sqs"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -89,9 +87,9 @@ func Queues() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon resource name (ARN) of the queue",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon resource name (ARN) of the queue",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -210,5 +208,5 @@ func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Tags))
+	return resource.Set(c.Name, result.Tags)
 }

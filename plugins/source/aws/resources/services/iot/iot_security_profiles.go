@@ -12,12 +12,11 @@ import (
 
 func IotSecurityProfiles() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iot_security_profiles",
-		Resolver:     fetchIotSecurityProfiles,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:      "aws_iot_security_profiles",
+		Resolver:  fetchIotSecurityProfiles,
+		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -241,7 +240,7 @@ func ResolveIotSecurityProfileTargets(ctx context.Context, meta schema.ClientMet
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, targets))
+	return resource.Set(c.Name, targets)
 }
 func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeSecurityProfileOutput)
@@ -266,5 +265,5 @@ func ResolveIotSecurityProfileTags(ctx context.Context, meta schema.ClientMeta, 
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(diag.WrapError(resource.Set(c.Name, tags)))
+	return diag.WrapError(resource.Set(c.Name, tags))
 }

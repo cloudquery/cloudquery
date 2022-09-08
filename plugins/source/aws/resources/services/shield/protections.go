@@ -7,10 +7,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/aws/aws-sdk-go-v2/service/shield/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
 
 func Protections() *schema.Table {
 	return &schema.Table{
@@ -60,10 +58,10 @@ func Protections() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) of the protection",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ProtectionArn"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) of the protection",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ProtectionArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -120,5 +118,5 @@ func ResolveShieldProtectionTags(ctx context.Context, meta schema.ClientMeta, re
 	tags := map[string]string{}
 	client.TagsIntoMap(output.Tags, tags)
 
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

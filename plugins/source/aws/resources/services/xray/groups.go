@@ -6,17 +6,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Groups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_xray_groups",
-		Description:  "Details for a group without metadata",
-		Resolver:     fetchXrayGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("xray"),
+		Name:        "aws_xray_groups",
+		Description: "Details for a group without metadata",
+		Resolver:    fetchXrayGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("xray"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -41,10 +39,10 @@ func Groups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN of the group generated based on the GroupName",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("GroupARN"),
+				Name:            "arn",
+				Description:     "The ARN of the group generated based on the GroupName",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("GroupARN"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -100,5 +98,5 @@ func resolveXrayGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 	tags := map[string]string{}
 	client.TagsIntoMap(output.Tags, tags)
 
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

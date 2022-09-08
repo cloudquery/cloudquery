@@ -18,15 +18,13 @@ type AliasWrapper struct {
 	UrlConfig *lambda.GetFunctionUrlConfigOutput
 }
 
-
 func Functions() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_lambda_functions",
-		Description:          "AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers, creating workload-aware cluster scaling logic, maintaining event integrations, or managing runtimes",
-		Resolver:             fetchLambdaFunctions,
-		Multiplex:            client.ServiceAccountRegionMultiplexer("lambda"),
-		
-		
+		Name:        "aws_lambda_functions",
+		Description: "AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers, creating workload-aware cluster scaling logic, maintaining event integrations, or managing runtimes",
+		Resolver:    fetchLambdaFunctions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
+
 		PostResourceResolver: resolvePolicyCodeSigningConfig,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
@@ -1214,7 +1212,7 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set("code_signing_last_modified", codeSigningLastModified))
+	return resource.Set("code_signing_last_modified", codeSigningLastModified)
 }
 
 func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

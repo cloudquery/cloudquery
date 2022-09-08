@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotTopicRules() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iot_topic_rules",
-		Description:  "The output from the GetTopicRule operation.",
-		Resolver:     fetchIotTopicRules,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_iot_topic_rules",
+		Description: "The output from the GetTopicRule operation.",
+		Resolver:    fetchIotTopicRules,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -1357,7 +1355,7 @@ func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resour
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 func resolveIotTopicRulesErrorActionHttpHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
@@ -1368,7 +1366,7 @@ func resolveIotTopicRulesErrorActionHttpHeaders(ctx context.Context, meta schema
 	for _, h := range i.Rule.ErrorAction.Http.Headers {
 		j[*h.Key] = *h.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.GetTopicRuleOutput)
@@ -1379,7 +1377,7 @@ func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, me
 	for _, h := range i.Rule.ErrorAction.Timestream.Dimensions {
 		j[*h.Name] = *h.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveIotTopicRuleActionsHttpHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.Action)
@@ -1390,7 +1388,7 @@ func resolveIotTopicRuleActionsHttpHeaders(ctx context.Context, meta schema.Clie
 	for _, h := range i.Http.Headers {
 		j[*h.Key] = *h.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func resolveIotTopicRuleActionsTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(types.Action)
@@ -1401,5 +1399,5 @@ func resolveIotTopicRuleActionsTimestreamDimensions(ctx context.Context, meta sc
 	for _, h := range i.Timestream.Dimensions {
 		j[*h.Name] = *h.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }

@@ -11,19 +11,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	xj "github.com/basgys/goxml2json"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Brokers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_mq_brokers",
-		Resolver:     fetchMqBrokers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("mq"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:      "aws_mq_brokers",
+		Resolver:  fetchMqBrokers,
+		Multiplex: client.ServiceAccountRegionMultiplexer("mq"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -397,7 +394,7 @@ func resolveBrokersBrokerInstances(ctx context.Context, meta schema.ClientMeta, 
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }
 func resolveBrokersLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	broker := resource.Item.(*mq.DescribeBrokerOutput)
@@ -405,7 +402,7 @@ func resolveBrokersLdapServerMetadata(ctx context.Context, meta schema.ClientMet
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }
 func resolveBrokersLogs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	broker := resource.Item.(*mq.DescribeBrokerOutput)
@@ -413,7 +410,7 @@ func resolveBrokersLogs(ctx context.Context, meta schema.ClientMeta, resource *s
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }
 func resolveBrokersMaintenanceWindowStartTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	broker := resource.Item.(*mq.DescribeBrokerOutput)
@@ -421,7 +418,7 @@ func resolveBrokersMaintenanceWindowStartTime(ctx context.Context, meta schema.C
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }
 
 func resolveBrokersPendingLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -430,7 +427,7 @@ func resolveBrokersPendingLdapServerMetadata(ctx context.Context, meta schema.Cl
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }
 func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
@@ -511,7 +508,7 @@ func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.Cl
 		return err
 	}
 
-	return diag.WrapError(resource.Set(c.Name, marshalledJson.Bytes()))
+	return resource.Set(c.Name, marshalledJson.Bytes())
 }
 
 func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -537,5 +534,5 @@ func resolveBrokerUsersPending(ctx context.Context, meta schema.ClientMeta, reso
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, data))
+	return resource.Set(c.Name, data)
 }

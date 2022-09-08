@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -19,13 +18,12 @@ const (
 
 func Apigatewayv2Apis() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigatewayv2_apis",
-		Description:  "Represents an API.",
-		Resolver:     fetchApigatewayv2Apis,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_apigatewayv2_apis",
+		Description: "Represents an API.",
+		Resolver:    fetchApigatewayv2Apis,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -1027,7 +1025,7 @@ func resolveApigatewayv2apiModelModelTemplate(ctx context.Context, meta schema.C
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, response.Value))
+	return resource.Set(c.Name, response.Value)
 }
 func fetchApigatewayv2ApiRoutes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Api)

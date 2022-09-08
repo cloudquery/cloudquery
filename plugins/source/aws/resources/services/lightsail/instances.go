@@ -8,19 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lightsail_instances",
-		Description:  "Describes an instance (a virtual private server)",
-		Resolver:     fetchLightsailInstances,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_lightsail_instances",
+		Description: "Describes an instance (a virtual private server)",
+		Resolver:    fetchLightsailInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -481,7 +479,7 @@ func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, j))
+	return resource.Set(c.Name, j)
 }
 func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Instance)

@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Classifiers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_classifiers",
-		Description:  "Classifiers are triggered during a crawl task",
-		Resolver:     fetchGlueClassifiers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
+		Name:        "aws_glue_classifiers",
+		Description: "Classifiers are triggered during a crawl task",
+		Resolver:    fetchGlueClassifiers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -237,16 +234,16 @@ func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *s
 func resolveGlueClassifierName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Classifier)
 	if r.CsvClassifier != nil {
-		return diag.WrapError(resource.Set(c.Name, r.CsvClassifier.Name))
+		return resource.Set(c.Name, r.CsvClassifier.Name)
 	}
 	if r.JsonClassifier != nil {
-		return diag.WrapError(resource.Set(c.Name, r.JsonClassifier.Name))
+		return resource.Set(c.Name, r.JsonClassifier.Name)
 	}
 	if r.GrokClassifier != nil {
-		return diag.WrapError(resource.Set(c.Name, r.GrokClassifier.Name))
+		return resource.Set(c.Name, r.GrokClassifier.Name)
 	}
 	if r.XMLClassifier != nil {
-		return diag.WrapError(resource.Set(c.Name, r.XMLClassifier.Name))
+		return resource.Set(c.Name, r.XMLClassifier.Name)
 	}
 	return nil
 }

@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsEventSubscriptions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_rds_event_subscriptions",
-		Description:  "Contains the results of a successful invocation of the DescribeEventSubscriptions action.",
-		Resolver:     fetchRdsEventSubscriptions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_rds_event_subscriptions",
+		Description: "Contains the results of a successful invocation of the DescribeEventSubscriptions action.",
+		Resolver:    fetchRdsEventSubscriptions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -126,5 +124,5 @@ func resolveRDSEventSubscriptionTags(ctx context.Context, meta schema.ClientMeta
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
+	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -51,10 +50,10 @@ func SagemakerEndpointConfigurations() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the endpoint configuration.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EndpointConfigArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the endpoint configuration.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("EndpointConfigArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -183,5 +182,5 @@ func resolveSagemakerEndpointConfigurationTags(ctx context.Context, meta schema.
 		tags[*t.Key] = t.Value
 	}
 
-	return diag.WrapError(resource.Set("tags", tags))
+	return resource.Set("tags", tags)
 }

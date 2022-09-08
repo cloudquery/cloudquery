@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func LogGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cloudwatchlogs_log_groups",
-		Description:  "Represents a log group.",
-		Resolver:     fetchCloudwatchlogsLogGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("logs"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_cloudwatchlogs_log_groups",
+		Description: "Represents a log group.",
+		Resolver:    fetchCloudwatchlogsLogGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -110,5 +107,5 @@ func ResolveCloudwatchlogsLogGroupTags(ctx context.Context, meta schema.ClientMe
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, out.Tags))
+	return resource.Set(c.Name, out.Tags)
 }

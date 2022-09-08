@@ -7,18 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsInstances() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_rds_instances",
-		Description:   "Contains the details of an Amazon RDS DB instance",
-		Resolver:      fetchRdsInstances,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
+		Name:        "aws_rds_instances",
+		Description: "Contains the details of an Amazon RDS DB instance",
+		Resolver:    fetchRdsInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -773,7 +771,7 @@ func resolveRdsInstancePendingModifiedValuesProcessorFeatures(ctx context.Contex
 	for _, t := range r.PendingModifiedValues.ProcessorFeatures {
 		pendingProcessorFeatures[*t.Name] = t.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, pendingProcessorFeatures))
+	return resource.Set(c.Name, pendingProcessorFeatures)
 }
 func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBInstance)
@@ -781,7 +779,7 @@ func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.Client
 	for _, t := range r.ProcessorFeatures {
 		processorFeatures[*t.Name] = t.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, processorFeatures))
+	return resource.Set(c.Name, processorFeatures)
 }
 func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBInstance)
@@ -789,5 +787,5 @@ func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resourc
 	for _, t := range r.TagList {
 		tags[*t.Key] = t.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

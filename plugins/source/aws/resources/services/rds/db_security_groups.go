@@ -8,19 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsDbSecurityGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_rds_db_security_groups",
-		Description:  "Contains the details for an Amazon RDS DB security group",
-		Resolver:     fetchRdsDbSecurityGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_rds_db_security_groups",
+		Description: "Contains the details for an Amazon RDS DB security group",
+		Resolver:    fetchRdsDbSecurityGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -119,7 +117,7 @@ func resolveRdsDbSecurityGroupJSONField(getter func(g types.DBSecurityGroup) int
 		if err != nil {
 			return err
 		}
-		return diag.WrapError(resource.Set(c.Name, b))
+		return resource.Set(c.Name, b)
 	}
 }
 
@@ -131,5 +129,5 @@ func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, 
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(out.TagList)))
+	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

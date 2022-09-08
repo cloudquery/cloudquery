@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Workflows() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_workflows",
-		Description:  "A workflow is a collection of multiple dependent Glue jobs and crawlers that are run to complete a complex ETL task",
-		Resolver:     fetchGlueWorkflows,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_workflows",
+		Description: "A workflow is a collection of multiple dependent Glue jobs and crawlers that are run to complete a complex ETL task",
+		Resolver:    fetchGlueWorkflows,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -235,7 +232,7 @@ func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *sch
 func resolveGlueWorkflowArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	arn := aws.String(workflowARN(cl, aws.ToString(resource.Item.(types.Workflow).Name)))
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func resolveGlueWorkflowTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -249,7 +246,7 @@ func resolveGlueWorkflowTags(ctx context.Context, meta schema.ClientMeta, resour
 		}
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, result.Tags))
+	return resource.Set(c.Name, result.Tags)
 }
 
 // ====================================================================================================================

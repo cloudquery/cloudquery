@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -33,10 +32,10 @@ func SsmDocuments() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the managed instance.",
-				Type:        schema.TypeString,
-				Resolver:    resolveSSMDocumentARN,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the managed instance.",
+				Type:            schema.TypeString,
+				Resolver:        resolveSSMDocumentARN,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -259,7 +258,7 @@ func resolveSSMDocumentJSONField(getter func(d *types.DocumentDescription) inter
 		if err != nil {
 			return err
 		}
-		return diag.WrapError(resource.Set(c.Name, b))
+		return resource.Set(c.Name, b)
 	}
 }
 
@@ -293,11 +292,11 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set("account_sharing_info_list", b))
+	return resource.Set("account_sharing_info_list", b)
 }
 
 func resolveSSMDocumentARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	d := resource.Item.(*types.DocumentDescription)
 	cl := meta.(*client.Client)
-	return diag.WrapError(resource.Set(c.Name, cl.ARN("ssm", "document", *d.Name)))
+	return resource.Set(c.Name, cl.ARN("ssm", "document", *d.Name))
 }

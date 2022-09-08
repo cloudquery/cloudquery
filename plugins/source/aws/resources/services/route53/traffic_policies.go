@@ -8,18 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Route53TrafficPolicies() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_route53_traffic_policies",
-		Description:   "A complex type that contains information about the latest version of one traffic policy that is associated with the current AWS account.",
-		Resolver:      fetchRoute53TrafficPolicies,
-		Multiplex:     client.AccountMultiplex,
-		
-		
+		Name:        "aws_route53_traffic_policies",
+		Description: "A complex type that contains information about the latest version of one traffic policy that is associated with the current AWS account.",
+		Resolver:    fetchRoute53TrafficPolicies,
+		Multiplex:   client.AccountMultiplex,
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -162,5 +160,5 @@ func resolveRoute53trafficPolicyVersionDocument(ctx context.Context, meta schema
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, value))
+	return resource.Set(c.Name, value)
 }

@@ -6,20 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func UsagePlans() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigateway_usage_plans",
-		Description:  "Represents a usage plan used to specify who can assess associated API stages",
-		Resolver:     fetchApigatewayUsagePlans,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_apigateway_usage_plans",
+		Description: "Represents a usage plan used to specify who can assess associated API stages",
+		Resolver:    fetchApigatewayUsagePlans,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -200,7 +197,7 @@ func resolveApigatewayUsagePlanArn(ctx context.Context, meta schema.ClientMeta, 
 	cl := meta.(*client.Client)
 	up := resource.Item.(types.UsagePlan)
 	arn := cl.RegionGlobalARN(client.ApigatewayService, usagePlanIDPart, *up.Id)
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func fetchApigatewayUsagePlanKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.UsagePlan)
@@ -221,5 +218,5 @@ func resolveApigatewayUsagePlanKeyArn(ctx context.Context, meta schema.ClientMet
 	up := resource.Parent.Item.(types.UsagePlan)
 	key := resource.Item.(types.UsagePlanKey)
 	arn := cl.RegionGlobalARN(client.ApigatewayService, usagePlanIDPart, *up.Id, "keys", *key.Id)
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }

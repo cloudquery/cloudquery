@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func RateBasedRules() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafregional_rate_based_rules",
-		Description:  "A combination of identifiers for web requests that you want to allow, block, or count, including rate limit.",
-		Resolver:     fetchWafregionalRateBasedRules,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Name:        "aws_wafregional_rate_based_rules",
+		Description: "A combination of identifiers for web requests that you want to allow, block, or count, including rate limit.",
+		Resolver:    fetchWafregionalRateBasedRules,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,10 @@ func RateBasedRules() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "ARN of the rate based rule.",
-				Type:        schema.TypeString,
-				Resolver:    resolveWafregionalRateBasedRuleArn,
+				Name:            "arn",
+				Description:     "ARN of the rate based rule.",
+				Type:            schema.TypeString,
+				Resolver:        resolveWafregionalRateBasedRuleArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -73,8 +71,8 @@ func RateBasedRules() *schema.Table {
 			{
 				Name:        "match_predicates",
 				Description: "Contains one Predicate element for each ByteMatchSet, IPSet, or SqlInjectionMatchSet object that you want to include in a RateBasedRule.",
-				Resolver: schema.PathResolver("MatchPredicates"),
-				Type: schema.TypeJSON,
+				Resolver:    schema.PathResolver("MatchPredicates"),
+				Type:        schema.TypeJSON,
 			},
 		},
 	}
@@ -119,7 +117,7 @@ func fetchWafregionalRateBasedRules(ctx context.Context, meta schema.ClientMeta,
 	return nil
 }
 func resolveWafregionalRateBasedRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, rateBasedRuleARN(meta, *resource.Item.(types.RateBasedRule).RuleId)))
+	return resource.Set(c.Name, rateBasedRuleARN(meta, *resource.Item.(types.RateBasedRule).RuleId))
 }
 func resolveWafregionalRateBasedRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -140,7 +138,7 @@ func resolveWafregionalRateBasedRuleTags(ctx context.Context, meta schema.Client
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 // ====================================================================================================================

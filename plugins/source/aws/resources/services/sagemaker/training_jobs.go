@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -16,7 +15,7 @@ func SagemakerTrainingJobs() *schema.Table {
 		Name:        "aws_sagemaker_training_jobs",
 		Description: "Provides summary information about a training job.",
 		Resolver: func(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-			return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listSagemakerTrainingJobs, sagemakerTrainingJobsDetail))
+			return client.ListAndDetailResolver(ctx, meta, res, listSagemakerTrainingJobs, sagemakerTrainingJobsDetail)
 		},
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		IgnoreInTests: true,
@@ -176,10 +175,10 @@ func SagemakerTrainingJobs() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the training job.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TrainingJobArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the training job.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("TrainingJobArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -194,47 +193,47 @@ func SagemakerTrainingJobs() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:     "secondary_status_transitions",
-				Type:     schema.TypeJSON,
+				Name: "secondary_status_transitions",
+				Type: schema.TypeJSON,
 			},
 			{
-				Name:     "final_metric_data_list",
-				Type:     schema.TypeJSON,
+				Name: "final_metric_data_list",
+				Type: schema.TypeJSON,
 			},
 			{
-				Name:     "algorithm_specification",
+				Name:        "algorithm_specification",
 				Description: "Specifies the training algorithm to use in a CreateTrainingJob request",
-				Type: 	 schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name:     "debug_hook_config",
+				Name:        "debug_hook_config",
 				Description: "Configuration information for the Debugger hook parameters, metric and tensor collections, and storage paths",
-				Type: 	 schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name:     "debug_rule_configurations",
+				Name:        "debug_rule_configurations",
 				Description: "Configuration information for SageMaker Debugger rules for debugging",
-				Type: 	 schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "debug_rule_evaluation_statuses",
+				Name:        "debug_rule_evaluation_statuses",
 				Description: "Information about the status of the rule evaluation.",
-				Type: 	 schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "input_data_config",
+				Name:        "input_data_config",
 				Description: "A channel is a named input source that training algorithms can consume.",
-				Type: 	 schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "profiler_rule_configurations",
+				Name:        "profiler_rule_configurations",
 				Description: "Configuration information for profiling rules.",
-				Type: 	 schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name: "profiler_rule_evaluation_statuses",
+				Name:        "profiler_rule_evaluation_statuses",
 				Description: "Information about the status of the rule evaluation.",
-				Type: 	 schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 		},
 	}
@@ -280,7 +279,6 @@ func listSagemakerTrainingJobs(ctx context.Context, meta schema.ClientMeta, res 
 	return nil
 }
 
-
 func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(*sagemaker.DescribeTrainingJobOutput)
 	if r == nil {
@@ -302,6 +300,5 @@ func resolveSagemakerTrainingJobTags(ctx context.Context, meta schema.ClientMeta
 		tags[*t.Key] = t.Value
 	}
 
-	return diag.WrapError(resource.Set("tags", tags))
+	return resource.Set("tags", tags)
 }
-

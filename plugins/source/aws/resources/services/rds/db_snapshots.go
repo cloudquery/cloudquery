@@ -8,19 +8,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsDbSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_rds_db_snapshots",
-		Description:  "Contains the details of an Amazon RDS DB snapshot",
-		Resolver:     fetchRdsDbSnapshots,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_rds_db_snapshots",
+		Description: "Contains the details of an Amazon RDS DB snapshot",
+		Resolver:    fetchRdsDbSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -231,7 +229,7 @@ func resolveRDSDBSnapshotTags(ctx context.Context, meta schema.ClientMeta, resou
 	for _, t := range s.TagList {
 		tags[*t.Key] = t.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
@@ -259,5 +257,5 @@ func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta,
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(column.Name, b))
+	return resource.Set(column.Name, b)
 }

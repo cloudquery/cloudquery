@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
@@ -32,13 +31,12 @@ type lbAttributes struct {
 
 func Elbv2LoadBalancers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elbv2_load_balancers",
-		Description:  "Information about a load balancer.",
-		Resolver:     fetchElbv2LoadBalancers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_elbv2_load_balancers",
+		Description: "Information about a load balancer.",
+		Resolver:    fetchElbv2LoadBalancers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -347,7 +345,7 @@ func resolveElbv2loadBalancerWebACLArn(ctx context.Context, meta schema.ClientMe
 		return nil
 	}
 
-	return diag.WrapError(resource.Set(c.Name, response.WebACL.ARN))
+	return resource.Set(c.Name, response.WebACL.ARN)
 }
 func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -377,7 +375,7 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 		}
 	}
 
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 // ====================================================================================================================

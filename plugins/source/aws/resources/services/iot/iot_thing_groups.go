@@ -6,19 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotThingGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iot_thing_groups",
-		Description:  "Groups allow you to manage several things at once by categorizing them into groups",
-		Resolver:     fetchIotThingGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("iot"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_iot_thing_groups",
+		Description: "Groups allow you to manage several things at once by categorizing them into groups",
+		Resolver:    fetchIotThingGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -195,7 +193,7 @@ func ResolveIotThingGroupThingsInGroup(ctx context.Context, meta schema.ClientMe
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, things))
+	return resource.Set(c.Name, things)
 }
 func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
@@ -222,7 +220,7 @@ func ResolveIotThingGroupPolicies(ctx context.Context, meta schema.ClientMeta, r
 		}
 		input.Marker = response.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, policies))
+	return resource.Set(c.Name, policies)
 }
 func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeThingGroupOutput)
@@ -247,5 +245,5 @@ func ResolveIotThingGroupTags(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

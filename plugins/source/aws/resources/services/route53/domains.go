@@ -8,18 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Route53Domains() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_route53_domains",
-		Description:   "The domain names registered with Amazon Route 53.",
-		Resolver:      fetchRoute53Domains,
-		Multiplex:     client.AccountMultiplex,
-		
-		
+		Name:        "aws_route53_domains",
+		Description: "The domain names registered with Amazon Route 53.",
+		Resolver:    fetchRoute53Domains,
+		Multiplex:   client.AccountMultiplex,
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "domain_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -459,7 +457,7 @@ func resolveRoute53DomainTags(ctx context.Context, meta schema.ClientMeta, resou
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(col.Name, client.TagsToMap(out.TagList)))
+	return resource.Set(col.Name, client.TagsToMap(out.TagList))
 }
 
 func resolveRoute53DomainContactExtraParams(extractValue func(*route53domains.GetDomainDetailOutput) *types.ContactDetail) func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
@@ -477,6 +475,6 @@ func resolveRoute53DomainContactExtraParams(extractValue func(*route53domains.Ge
 		if err != nil {
 			return err
 		}
-		return diag.WrapError(resource.Set(col.Name, b))
+		return resource.Set(col.Name, b)
 	}
 }

@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	sagemakertypes "github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -19,10 +18,10 @@ type WrappedSageMakerNotebookInstance struct {
 
 func SagemakerNotebookInstances() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_sagemaker_notebook_instances",
-		Description:  "Provides summary information for an Amazon SageMaker notebook instance.",
-		Resolver:     fetchSagemakerNotebookInstances,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		Name:        "aws_sagemaker_notebook_instances",
+		Description: "Provides summary information for an Amazon SageMaker notebook instance.",
+		Resolver:    fetchSagemakerNotebookInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -84,10 +83,10 @@ func SagemakerNotebookInstances() *schema.Table {
 				Resolver:    resolveSagemakerNotebookInstanceTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the notebook instance. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("NotebookInstanceArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the notebook instance. ",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("NotebookInstanceArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -203,14 +202,14 @@ func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.Clien
 		tags[*t.Key] = t.Value
 	}
 
-	return diag.WrapError(resource.Set("tags", tags))
+	return resource.Set("tags", tags)
 }
 
 func resolveSagemakerNotebookInstanceDirectInternetAccess(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	r := resource.Item.(WrappedSageMakerNotebookInstance)
 	if r.DirectInternetAccess == sagemakertypes.DirectInternetAccessEnabled {
-		return diag.WrapError(resource.Set("direct_internet_access", true))
+		return resource.Set("direct_internet_access", true)
 	}
 
-	return diag.WrapError(resource.Set("direct_internet_access", false))
+	return resource.Set("direct_internet_access", false)
 }

@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -24,12 +23,11 @@ var groupNameRegex = regexp.MustCompile("arn:[a-zA-Z0-9-]+:logs:[a-z0-9-]+:[0-9]
 
 func CloudtrailTrails() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_cloudtrail_trails",
-		Description:          "The settings for a trail.",
-		Resolver:             fetchCloudtrailTrails,
-		Multiplex:            client.AccountMultiplex,
-		
-		
+		Name:        "aws_cloudtrail_trails",
+		Description: "The settings for a trail.",
+		Resolver:    fetchCloudtrailTrails,
+		Multiplex:   client.AccountMultiplex,
+
 		PostResourceResolver: postCloudtrailTrailResolver,
 		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		IgnoreInTests:        true,
@@ -361,7 +359,7 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	if err := resource.Set("start_logging_time", response.StartLoggingTime); err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set("stop_logging_time", response.StopLoggingTime))
+	return resource.Set("stop_logging_time", response.StopLoggingTime)
 }
 
 func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -379,7 +377,7 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 		log.Info("CloudWatchLogsLogGroupARN is empty")
 	}
 
-	return diag.WrapError(resource.Set("cloudwatch_logs_log_group_name", groupName))
+	return resource.Set("cloudwatch_logs_log_group_name", groupName)
 }
 
 func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -409,7 +407,7 @@ func aggregateCloudTrails(trails []types.Trail) (map[string][]types.Trail, error
 	resp := make(map[string][]types.Trail)
 	for _, t := range trails {
 		if t.HomeRegion == nil {
-			return nil, diag.WrapError(fmt.Errorf("got cloudtrail with HomeRegion == nil"))
+			return nil, fmt.Errorf("got cloudtrail with HomeRegion == nil")
 		}
 		resp[*t.HomeRegion] = append(resp[*t.HomeRegion], t)
 	}

@@ -7,19 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ResourceGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_resourcegroups_resource_groups",
-		Resolver:     fetchResourcegroupsResourceGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("resource-groups"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:      "aws_resourcegroups_resource_groups",
+		Resolver:  fetchResourcegroupsResourceGroups,
+		Multiplex: client.ServiceAccountRegionMultiplexer("resource-groups"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -77,7 +74,7 @@ func ResourceGroups() *schema.Table {
 // ====================================================================================================================
 
 func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listResourceGroups, resourceGroupDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listResourceGroups, resourceGroupDetail)
 }
 func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -92,7 +89,7 @@ func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.Cli
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, output.Tags))
+	return resource.Set(c.Name, output.Tags)
 }
 
 // ====================================================================================================================

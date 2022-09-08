@@ -7,18 +7,16 @@ import (
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Elbv2TargetGroups() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_elbv2_target_groups",
-		Description:   "Information about a target group.",
-		Resolver:      fetchElbv2TargetGroups,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
-		
-		
+		Name:        "aws_elbv2_target_groups",
+		Description: "Information about a target group.",
+		Resolver:    fetchElbv2TargetGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -241,7 +239,7 @@ func resolveElbv2targetGroupTags(ctx context.Context, meta schema.ClientMeta, re
 	for _, s := range tagsOutput.TagDescriptions[0].Tags {
 		tags[*s.Key] = s.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 func resolveElbv2TargetGroupTargetHealthDescriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

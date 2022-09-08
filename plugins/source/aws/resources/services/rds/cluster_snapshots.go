@@ -8,18 +8,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func RdsClusterSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_rds_cluster_snapshots",
-		Description:   "Contains the details for an Amazon RDS DB cluster snapshot This data type is used as a response element in the DescribeDBClusterSnapshots action.",
-		Resolver:      fetchRdsClusterSnapshots,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("rds"),
-		
-		
+		Name:        "aws_rds_cluster_snapshots",
+		Description: "Contains the details for an Amazon RDS DB cluster snapshot This data type is used as a response element in the DescribeDBClusterSnapshots action.",
+		Resolver:    fetchRdsClusterSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -190,7 +188,7 @@ func resolveRDSClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, 
 	for _, t := range s.TagList {
 		tags[*t.Key] = t.Value
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
@@ -218,5 +216,5 @@ func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.Client
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(column.Name, b))
+	return resource.Set(column.Name, b)
 }

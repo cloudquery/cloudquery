@@ -7,17 +7,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafregional"
 	"github.com/aws/aws-sdk-go-v2/service/wafregional/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Rules() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_wafregional_rules",
-		Description:  "A combination of identifiers for web requests that you want to allow, block, or count.",
-		Resolver:     fetchWafregionalRules,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
+		Name:        "aws_wafregional_rules",
+		Description: "A combination of identifiers for web requests that you want to allow, block, or count.",
+		Resolver:    fetchWafregionalRules,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,10 @@ func Rules() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "ARN of the rule.",
-				Type:        schema.TypeString,
-				Resolver:    resolveWafregionalRuleArn,
+				Name:            "arn",
+				Description:     "ARN of the rule.",
+				Type:            schema.TypeString,
+				Resolver:        resolveWafregionalRuleArn,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -64,7 +62,7 @@ func Rules() *schema.Table {
 				Name:        "predicates",
 				Description: "Contains one Predicate element for each ByteMatchSet, IPSet, or SqlInjectionMatchSet object that you want to include in a RateBasedRule.",
 				Type:        schema.TypeJSON,
-				Resolver: schema.PathResolver("Predicates"),
+				Resolver:    schema.PathResolver("Predicates"),
 			},
 		},
 	}
@@ -109,7 +107,7 @@ func fetchWafregionalRules(ctx context.Context, meta schema.ClientMeta, parent *
 	return nil
 }
 func resolveWafregionalRuleArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return diag.WrapError(resource.Set(c.Name, ruleARN(meta, *resource.Item.(types.Rule).RuleId)))
+	return resource.Set(c.Name, ruleARN(meta, *resource.Item.(types.Rule).RuleId))
 }
 func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -130,7 +128,7 @@ func resolveWafregionalRuleTags(ctx context.Context, meta schema.ClientMeta, res
 		}
 		params.NextMarker = result.NextMarker
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 
 // ====================================================================================================================

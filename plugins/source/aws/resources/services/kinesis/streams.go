@@ -7,19 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Streams() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_kinesis_streams",
-		Description:  "Represents the output for DescribeStreamSummary",
-		Resolver:     fetchKinesisStreams,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("kinesis"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_kinesis_streams",
+		Description: "Represents the output for DescribeStreamSummary",
+		Resolver:    fetchKinesisStreams,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("kinesis"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -124,7 +122,7 @@ func Streams() *schema.Table {
 // ====================================================================================================================
 
 func fetchKinesisStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listKinesisStreams, streamDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listKinesisStreams, streamDetail)
 }
 func ResolveKinesisStreamTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -145,7 +143,7 @@ func ResolveKinesisStreamTags(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		input.ExclusiveStartTagKey = aws.String(*output.Tags[len(output.Tags)-1].Key)
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(tags)))
+	return resource.Set(c.Name, client.TagsToMap(tags))
 }
 
 // ====================================================================================================================

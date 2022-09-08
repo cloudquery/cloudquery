@@ -8,7 +8,6 @@ import (
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -18,10 +17,10 @@ var (
 
 func Elbv2Listeners() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_elbv2_listeners",
-		Description:   "Information about a listener.",
-		Resolver:      fetchElbv2Listeners,
-		
+		Name:        "aws_elbv2_listeners",
+		Description: "Information about a listener.",
+		Resolver:    fetchElbv2Listeners,
+
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -401,7 +400,7 @@ func resolveElbv2listenerTags(ctx context.Context, meta schema.ClientMeta, resou
 		}
 	}
 
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)

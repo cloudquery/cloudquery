@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func DeliveryStreams() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_firehose_delivery_streams",
-		Description:  "Contains information about a delivery stream",
-		Resolver:     fetchFirehoseDeliveryStreams,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("firehose"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_firehose_delivery_streams",
+		Description: "Contains information about a delivery stream",
+		Resolver:    fetchFirehoseDeliveryStreams,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("firehose"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -1422,7 +1419,7 @@ func DeliveryStreams() *schema.Table {
 // ====================================================================================================================
 
 func fetchFirehoseDeliveryStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listDeliveryStreams, deliveryStreamDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listDeliveryStreams, deliveryStreamDetail)
 }
 func resolveFirehoseDeliveryStreamTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -1443,7 +1440,7 @@ func resolveFirehoseDeliveryStreamTags(ctx context.Context, meta schema.ClientMe
 		}
 		input.ExclusiveStartTagKey = aws.String(*output.Tags[len(output.Tags)-1].Key)
 	}
-	return diag.WrapError(resource.Set(c.Name, client.TagsToMap(tags)))
+	return resource.Set(c.Name, client.TagsToMap(tags))
 }
 
 // ====================================================================================================================

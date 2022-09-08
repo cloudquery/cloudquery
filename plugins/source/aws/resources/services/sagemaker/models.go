@@ -6,7 +6,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -68,10 +67,10 @@ func SagemakerModels() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the model.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ModelArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the model.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ModelArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -83,12 +82,12 @@ func SagemakerModels() *schema.Table {
 			{
 				Name:        "containers",
 				Description: "Describes the container, as part of model definition.",
-				Type: 			schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 			{
 				Name:        "vpc_config",
 				Description: "Specifies a VPC that your training jobs and hosted models have access to. Control access to and from your training and model containers by configuring the VPC",
-				Type: 			schema.TypeJSON,
+				Type:        schema.TypeJSON,
 			},
 		},
 	}
@@ -154,6 +153,5 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 		tags[*t.Key] = t.Value
 	}
 
-	return diag.WrapError(resource.Set("tags", tags))
+	return resource.Set("tags", tags)
 }
-

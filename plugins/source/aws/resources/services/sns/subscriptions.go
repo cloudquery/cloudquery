@@ -7,18 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
 
-
 func Subscriptions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_sns_subscriptions",
-		Description:  "Amazon SNS subscription",
-		Resolver:     fetchSnsSubscriptions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
+		Name:        "aws_sns_subscriptions",
+		Description: "Amazon SNS subscription",
+		Resolver:    fetchSnsSubscriptions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("sns"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -51,10 +49,10 @@ func Subscriptions() *schema.Table {
 				Resolver:    schema.PathResolver("Subscription.Protocol"),
 			},
 			{
-				Name:        "arn",
-				Description: "The subscription's ARN",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Subscription.SubscriptionArn"),
+				Name:            "arn",
+				Description:     "The subscription's ARN",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Subscription.SubscriptionArn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -117,7 +115,7 @@ func Subscriptions() *schema.Table {
 // ====================================================================================================================
 
 func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listSubscriptions, subscriptionDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listSubscriptions, subscriptionDetail)
 }
 
 func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {

@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -19,12 +18,11 @@ type ConformancePackComplianceWrapper struct {
 
 func ConfigConformancePack() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_config_conformance_packs",
-		Description:   "Returns details of a conformance pack.",
-		Resolver:      fetchConfigConformancePacks,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("config"),
-		
-		
+		Name:        "aws_config_conformance_packs",
+		Description: "Returns details of a conformance pack.",
+		Resolver:    fetchConfigConformancePacks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -85,12 +83,11 @@ func ConfigConformancePack() *schema.Table {
 		},
 		Relations: []*schema.Table{
 			{
-				Name:         "aws_config_conformance_pack_rule_compliances",
-				Description:  "Compliance information of one or more AWS Config rules within a conformance pack",
-				Resolver:     fetchConfigConformancePackRuleCompliances,
-				Multiplex:    client.ServiceAccountRegionMultiplexer("config"),
-				
-				
+				Name:        "aws_config_conformance_pack_rule_compliances",
+				Description: "Compliance information of one or more AWS Config rules within a conformance pack",
+				Resolver:    fetchConfigConformancePackRuleCompliances,
+				Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
+
 				Columns: []schema.Column{
 					{
 						Name:        "conformance_pack_cq_id",
@@ -187,7 +184,7 @@ func resolveConfigConformancePackConformancePackInputParameters(ctx context.Cont
 	for _, p := range conformancePack.ConformancePackInputParameters {
 		params[*p.ParameterName] = p.ParameterValue
 	}
-	return diag.WrapError(resource.Set(c.Name, params))
+	return resource.Set(c.Name, params)
 }
 
 func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

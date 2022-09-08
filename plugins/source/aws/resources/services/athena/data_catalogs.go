@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func DataCatalogs() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_athena_data_catalogs",
-		Description:  "Contains information about a data catalog in an Amazon Web Services account",
-		Resolver:     fetchAthenaDataCatalogs,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("athena"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_athena_data_catalogs",
+		Description: "Contains information about a data catalog in an Amazon Web Services account",
+		Resolver:    fetchAthenaDataCatalogs,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -211,12 +208,12 @@ func DataCatalogs() *schema.Table {
 // ====================================================================================================================
 
 func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return diag.WrapError(client.ListAndDetailResolver(ctx, meta, res, listDataCatalogs, dataCatalogDetail))
+	return client.ListAndDetailResolver(ctx, meta, res, listDataCatalogs, dataCatalogDetail)
 }
 func resolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.DataCatalog)
-	return diag.WrapError(resource.Set(c.Name, createDataCatalogArn(cl, *dc.Name)))
+	return resource.Set(c.Name, createDataCatalogArn(cl, *dc.Name))
 }
 func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -239,7 +236,7 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 		}
 		params.NextToken = result.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }
 func fetchAthenaDataCatalogDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)

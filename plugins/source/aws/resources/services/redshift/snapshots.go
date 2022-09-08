@@ -8,16 +8,15 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Snapshots() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_redshift_snapshots",
-		Description:   "Describes a snapshot.",
-		Resolver:      fetchRedshiftSnapshots,
-		
+		Name:        "aws_redshift_snapshots",
+		Description: "Describes a snapshot.",
+		Resolver:    fetchRedshiftSnapshots,
+
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -263,7 +262,7 @@ func fetchRedshiftSnapshots(ctx context.Context, meta schema.ClientMeta, parent 
 func resolveSnapshotARN(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	snapshot := resource.Item.(types.Snapshot)
-	return diag.WrapError(resource.Set(c.Name, snapshotARN(cl, *snapshot.ClusterIdentifier, *snapshot.SnapshotIdentifier)))
+	return resource.Set(c.Name, snapshotARN(cl, *snapshot.ClusterIdentifier, *snapshot.SnapshotIdentifier))
 }
 
 func snapshotARN(cl *client.Client, clusterName, snapshotName string) string {

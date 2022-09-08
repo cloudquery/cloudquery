@@ -7,18 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/efs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func EfsFilesystems() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_efs_filesystems",
-		Description:   "A description of the file system.",
-		Resolver:      fetchEfsFilesystems,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
-		
-		
+		Name:        "aws_efs_filesystems",
+		Description: "A description of the file system.",
+		Resolver:    fetchEfsFilesystems,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -182,7 +180,7 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	response, err := svc.DescribeBackupPolicy(ctx, &config)
 	if err != nil {
 		if cl.IsNotFoundError(err) {
-			return diag.WrapError(resource.Set(c.Name, types.StatusDisabled))
+			return resource.Set(c.Name, types.StatusDisabled)
 		}
 		return err
 	}
@@ -190,5 +188,5 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 		return nil
 	}
 
-	return diag.WrapError(resource.Set(c.Name, response.BackupPolicy.Status))
+	return resource.Set(c.Name, response.BackupPolicy.Status)
 }

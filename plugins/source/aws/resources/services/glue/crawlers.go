@@ -7,20 +7,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Crawlers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_glue_crawlers",
-		Description:  "Specifies a crawler program that examines a data source and uses classifiers to try to determine its schema",
-		Resolver:     fetchGlueCrawlers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_glue_crawlers",
+		Description: "Specifies a crawler program that examines a data source and uses classifiers to try to determine its schema",
+		Resolver:    fetchGlueCrawlers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("glue"),
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "arn",
@@ -408,7 +405,7 @@ func fetchGlueCrawlers(ctx context.Context, meta schema.ClientMeta, parent *sche
 func resolveGlueCrawlerArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	arn := aws.String(crawlerARN(cl, aws.ToString(resource.Item.(types.Crawler).Name)))
-	return diag.WrapError(resource.Set(c.Name, arn))
+	return resource.Set(c.Name, arn)
 }
 func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
@@ -421,7 +418,7 @@ func resolveGlueCrawlerTags(ctx context.Context, meta schema.ClientMeta, resourc
 	if err != nil {
 		return err
 	}
-	return diag.WrapError(resource.Set(c.Name, response.Tags))
+	return resource.Set(c.Name, response.Tags)
 }
 
 // ====================================================================================================================

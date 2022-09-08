@@ -7,18 +7,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IamGroups() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_iam_groups",
-		Description:   "Contains information about an IAM group entity.",
-		Resolver:      fetchIamGroups,
-		Multiplex:     client.AccountMultiplex,
-		
-		
+		Name:        "aws_iam_groups",
+		Description: "Contains information about an IAM group entity.",
+		Resolver:    fetchIamGroups,
+		Multiplex:   client.AccountMultiplex,
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -103,5 +101,5 @@ func resolveIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, resour
 	for _, p := range response.AttachedPolicies {
 		policyMap[*p.PolicyArn] = p.PolicyName
 	}
-	return diag.WrapError(resource.Set(c.Name, policyMap))
+	return resource.Set(c.Name, policyMap)
 }

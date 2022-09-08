@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -32,10 +31,10 @@ func SsmInstances() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the managed instance.",
-				Type:        schema.TypeString,
-				Resolver:    resolveSSMInstanceARN,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the managed instance.",
+				Type:            schema.TypeString,
+				Resolver:        resolveSSMInstanceARN,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -267,5 +266,5 @@ func fetchSsmInstanceComplianceItems(ctx context.Context, meta schema.ClientMeta
 func resolveSSMInstanceARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(types.InstanceInformation)
 	cl := meta.(*client.Client)
-	return diag.WrapError(resource.Set(c.Name, cl.ARN("ssm", "managed-instance", *instance.InstanceId)))
+	return resource.Set(c.Name, cl.ARN("ssm", "managed-instance", *instance.InstanceId))
 }

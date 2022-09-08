@@ -6,18 +6,16 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func IotBillingGroups() *schema.Table {
 	return &schema.Table{
-		Name:          "aws_iot_billing_groups",
-		Description:   "Billing groups are groups of things created for billing purposes that collect billable information for the things",
-		Resolver:      fetchIotBillingGroups,
-		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
-		
-		
+		Name:        "aws_iot_billing_groups",
+		Description: "Billing groups are groups of things created for billing purposes that collect billable information for the things",
+		Resolver:    fetchIotBillingGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
+
 		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
@@ -142,7 +140,7 @@ func ResolveIotBillingGroupThingsInGroup(ctx context.Context, meta schema.Client
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, things))
+	return resource.Set(c.Name, things)
 }
 func ResolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	i := resource.Item.(*iot.DescribeBillingGroupOutput)
@@ -167,5 +165,5 @@ func ResolveIotBillingGroupTags(ctx context.Context, meta schema.ClientMeta, res
 		}
 		input.NextToken = response.NextToken
 	}
-	return diag.WrapError(resource.Set(c.Name, tags))
+	return resource.Set(c.Name, tags)
 }

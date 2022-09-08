@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -22,13 +21,12 @@ type Route53HostedZoneWrapper struct {
 
 func Route53HostedZones() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_route53_hosted_zones",
-		Description:  "A complex type that contains general information about the hosted zone.",
-		Resolver:     fetchRoute53HostedZones,
-		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_route53_hosted_zones",
+		Description: "A complex type that contains general information about the hosted zone.",
+		Resolver:    fetchRoute53HostedZones,
+		Multiplex:   client.AccountMultiplex,
+
+		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -451,7 +449,7 @@ func resolveRoute53hostedZoneResourceRecordSetResourceRecords(ctx context.Contex
 	for _, t := range r.ResourceRecords {
 		recordSets = append(recordSets, *t.Value)
 	}
-	return diag.WrapError(resource.Set(c.Name, recordSets))
+	return resource.Set(c.Name, recordSets)
 }
 func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(Route53HostedZoneWrapper)
@@ -487,20 +485,20 @@ func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.T
 func resolveRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	hz := resource.Item.(Route53HostedZoneWrapper)
-	return diag.WrapError(resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "hostedzone", *hz.Id)))
+	return resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "hostedzone", *hz.Id))
 }
 func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	ql := resource.Item.(types.QueryLoggingConfig)
-	return diag.WrapError(resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "queryloggingconfig", *ql.Id)))
+	return resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "queryloggingconfig", *ql.Id))
 }
 func resolveRoute53HostedZoneTrafficPolicyInstancesArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	tp := resource.Item.(types.TrafficPolicyInstance)
-	return diag.WrapError(resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "trafficpolicyinstance", *tp.Id)))
+	return resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "trafficpolicyinstance", *tp.Id))
 }
 func resolveRoute53HostedZoneVpcArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	vpc := resource.Item.(types.VPC)
-	return diag.WrapError(resource.Set(c.Name, cl.ARN(client.EC2Service, "vpc", *vpc.VPCId)))
+	return resource.Set(c.Name, cl.ARN(client.EC2Service, "vpc", *vpc.VPCId))
 }
