@@ -4,6 +4,8 @@ import (
 	logAlerts "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
 	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Monitor() []Resource {
@@ -148,6 +150,7 @@ func Monitor() []Resource {
 					azureStruct:        &insights.DiagnosticSettingsResource{},
 					listFunction:       "List",
 					subServiceOverride: "DiagnosticSettings",
+					customColumns:      []codegen.ColumnDefinition{{Name: "ResourceURI", Type: schema.TypeString, Resolver: `schema.PathResolver("ResourceURI")`}},
 					helpers: []string{`
 					func isResourceTypeNotSupported(err error) bool {
 						var azureErr *azure.RequestError
