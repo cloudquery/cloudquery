@@ -24,7 +24,7 @@ type publishData struct {
 	PublishData []publishProfile `xml:"publishProfile"`
 }
 
-func PublishingProfiles() *schema.Table {
+func publishingProfiles() *schema.Table {
 	return &schema.Table{
 		Name:     "azure_web_app_publishing_profiles",
 		Resolver: fetchPublishingProfiles,
@@ -56,11 +56,6 @@ func PublishingProfiles() *schema.Table {
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
 func fetchPublishingProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	p := parent.Item.(web.Site)
 	svc := meta.(*client.Client).Services().Web.Apps
