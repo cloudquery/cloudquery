@@ -261,11 +261,11 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 			// We skip, and not fetch the trail tags
 			arnParts, err := arn.Parse(*h.TrailARN)
 			if err != nil {
-				log.Warn("cloud not parse cloudtrail ARN", "arn", *h.TrailARN)
+				log.Warn().Str("arn", *h.TrailARN).Msg("cloud not parse cloudtrail ARN")
 				continue
 			}
 			if aws.ToBool(h.IsOrganizationTrail) && c.AccountID != arnParts.AccountID {
-				log.Warn("the trail is an organization level trail, cloud not fetch tags", "arn", *h.TrailARN)
+				log.Warn().Str("arn", *h.TrailARN).Msg("the trail is an organization level trail, cloud not fetch tags")
 				continue
 			}
 
@@ -370,12 +370,12 @@ func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta 
 	if r.CloudWatchLogsLogGroupArn != nil {
 		matches := groupNameRegex.FindStringSubmatch(*r.CloudWatchLogsLogGroupArn)
 		if len(matches) < 2 {
-			log.Warn("CloudWatchLogsLogGroupARN doesn't fit standard regex", "arn", *r.CloudWatchLogsLogGroupArn)
+			log.Warn().Str("arn", *r.CloudWatchLogsLogGroupArn).Msg("CloudWatchLogsLogGroupARN doesn't fit standard regex")
 		} else {
 			groupName = matches[1]
 		}
 	} else {
-		log.Info("CloudWatchLogsLogGroupARN is empty")
+		log.Info().Msg("CloudWatchLogsLogGroupARN is empty")
 	}
 
 	return resource.Set("cloudwatch_logs_log_group_name", groupName)
