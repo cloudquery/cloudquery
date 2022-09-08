@@ -82,86 +82,14 @@ func Plans() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolvePlanTags,
 			},
+			{
+				Name:        "backup_plan",
+				Description: "Backup plan details",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("BackupPlan"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_backup_plan_rules",
-				Description: "Specifies a scheduled task used to back up a selection of resources.",
-				Resolver:    schema.PathTableResolver("BackupPlan.Rules"),
-
-				Columns: []schema.Column{
-					{
-						Name:        "plan_cq_id",
-						Description: "Unique CloudQuery ID of aws_backup_plan table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "A display name for a backup rule.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RuleName"),
-					},
-					{
-						Name:        "target_backup_vault_name",
-						Description: "The name of a logical container where backups are stored.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "completion_window_minutes",
-						Description: "A value in minutes after a backup job is successfully started before it must be completed or it will be canceled by Backup.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:          "copy_actions",
-						Description:   "The details of the copy operation.",
-						Type:          schema.TypeJSON,
-						Resolver:      schema.PathResolver("CopyActions"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "enable_continuous_backup",
-						Description: "Specifies whether Backup creates continuous backups.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:          "delete_after_days",
-						Description:   "Specifies the number of days after creation that a recovery point is deleted.",
-						Type:          schema.TypeInt,
-						Resolver:      schema.PathResolver("Lifecycle.DeleteAfterDays"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "move_to_cold_storage_after_days",
-						Description:   "Specifies the number of days after creation that a recovery point is moved to cold storage.",
-						Type:          schema.TypeInt,
-						Resolver:      schema.PathResolver("Lifecycle.MoveToColdStorageAfterDays"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "recovery_point_tags",
-						Description:   "An array of key-value pair strings that are assigned to resources that are associated with this rule when restored from backup.",
-						Type:          schema.TypeJSON,
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "id",
-						Description: "Uniquely identifies a rule that is used to schedule the backup of a selection of resources.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RuleId"),
-					},
-					{
-						Name:        "schedule_expression",
-						Description: "A cron expression in UTC specifying when Backup initiates a backup job.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "start_window_minutes",
-						Description: "A value in minutes after a backup is scheduled before a job will be canceled if it doesn't start successfully.",
-						Type:        schema.TypeInt,
-					},
-				},
-			},
 			{
 				Name:        "aws_backup_plan_selections",
 				Description: "Contains metadata about a BackupSelection object.",
