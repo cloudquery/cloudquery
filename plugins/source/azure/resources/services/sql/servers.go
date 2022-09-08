@@ -102,7 +102,7 @@ func Servers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			databases(), encryptionProtectors(),
+			databases(), encryptionProtectors(), virtualNetworkRules(), firewallRules(), serverAdmins(), serverBlobAuditingPolicies(), serverDevOpsAuditingSettings(), serverVulnerabilityAssessments(), serverSecurityAlertPolicies(),
 		},
 	}
 }

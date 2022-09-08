@@ -14,10 +14,10 @@ type SQLClient struct {
 	DatabaseVulnerabilityAssessmentScans        SQLDatabaseVulnerabilityAssessmentScansClient
 	DatabaseThreatDetectionPolicies             SQLDatabaseThreatDetectionPoliciesClient
 	DatabaseVulnerabilityAssessments            SQLDatabaseVulnerabilityAssessmentsClient
-	Firewall                                    SQLFirewallsClient
+	FirewallRules                               SQLFirewallRulesClient
 	ServerAdmins                                SQLServerAdminsClient
 	ServerBlobAuditingPolicies                  SQLServerBlobAuditingPoliciesClient
-	ServerDevOpsAuditSettings                   SQLServerDevOpsAuditSettingsClient
+	ServerDevOpsAuditingSettings                SQLServerDevOpsAuditingSettingsClient
 	Servers                                     SQLServersClient
 	ServerVulnerabilityAssessments              SQLServerVulnerabilityAssessmentsClient
 	TransparentDataEncryptions                  SQLTransparentDataEncryptionsClient
@@ -32,12 +32,12 @@ type SQLClient struct {
 	ServerSecurityAlertPolicies                 ServerSecurityAlertPoliciesClient
 }
 
-//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLServersClient,SQLFirewallsClient,SQLServerAdminsClient,SQLServerBlobAuditingPoliciesClient,SQLServerDevOpsAuditSettingsClient,SQLServerVulnerabilityAssessmentsClient,SQLEncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient,SQLDatabasesClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,SQLTransparentDataEncryptionsClient,SQLBackupLongTermRetentionPoliciesClient,SQLManagedInstancesClient,SQLManagedInstanceVulnerabilityAssessmentsClient,SQLManagedInstanceEncryptionProtectorsClient,SQLManagedDatabasesClient,SQLManagedDatabaseVulnerabilityAssessmentsClient,SQLManagedDatabaseVulnerabilityAssessmentScansClient
+//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLServersClient,SQLFirewallRulesClient,SQLServerAdminsClient,SQLServerBlobAuditingPoliciesClient,SQLServerDevOpsAuditingSettingsClient,SQLServerVulnerabilityAssessmentsClient,SQLEncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient,SQLDatabasesClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,SQLTransparentDataEncryptionsClient,SQLBackupLongTermRetentionPoliciesClient,SQLManagedInstancesClient,SQLManagedInstanceVulnerabilityAssessmentsClient,SQLManagedInstanceEncryptionProtectorsClient,SQLManagedDatabasesClient,SQLManagedDatabaseVulnerabilityAssessmentsClient,SQLManagedDatabaseVulnerabilityAssessmentScansClient
 type SQLServersClient interface {
 	List(ctx context.Context) (result sql.ServerListResultPage, err error)
 }
 
-type SQLFirewallsClient interface {
+type SQLFirewallRulesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.FirewallRuleListResult, err error)
 }
 
@@ -49,7 +49,7 @@ type SQLServerBlobAuditingPoliciesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerBlobAuditingPolicyListResultPage, err error)
 }
 
-type SQLServerDevOpsAuditSettingsClient interface {
+type SQLServerDevOpsAuditingSettingsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.ServerDevOpsAuditSettingsListResultPage, err error)
 }
 
@@ -173,10 +173,10 @@ func NewSQLClient(subscriptionId string, auth autorest.Authorizer) SQLClient {
 		DatabaseThreatDetectionPolicies:             dtdp,
 		DatabaseVulnerabilityAssessments:            dva,
 		DatabaseVulnerabilityAssessmentScans:        dvas,
-		Firewall:                                    firewall,
+		FirewallRules:                               firewall,
 		ServerAdmins:                                serverAdmins,
 		ServerBlobAuditingPolicies:                  sbap,
-		ServerDevOpsAuditSettings:                   sdas,
+		ServerDevOpsAuditingSettings:                sdas,
 		Servers:                                     servers,
 		ServerVulnerabilityAssessments:              sva,
 		TransparentDataEncryptions:                  enc,
