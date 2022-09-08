@@ -29,7 +29,9 @@ func LambdaRuntimes() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchLambdaRuntimes(_ context.Context, _ schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	runtimes := make([]RuntimeWrapper, len(types.RuntimeProvidedal2.Values()))

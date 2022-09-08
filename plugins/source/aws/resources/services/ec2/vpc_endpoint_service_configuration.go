@@ -141,7 +141,9 @@ func Ec2VpcEndpointServiceConfigurations() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchEc2VpcEndpointServiceConfigurations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeVpcEndpointServiceConfigurationsInput

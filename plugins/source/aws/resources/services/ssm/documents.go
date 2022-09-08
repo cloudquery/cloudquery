@@ -46,10 +46,12 @@ func SsmDocuments() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "attachments_information",
-				Description:   "Details about the document attachments, including names, locations, sizes, and so on.",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.AttachmentsInformation }),
+				Name:        "attachments_information",
+				Description: "Details about the document attachments, including names, locations, sizes, and so on.",
+				Type:        schema.TypeJSON,
+				Resolver: resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} {
+					return d.AttachmentsInformation
+				}),
 				IgnoreInTests: true,
 			},
 			{
@@ -123,7 +125,9 @@ func SsmDocuments() *schema.Table {
 				Name:        "parameters",
 				Description: "A description of the parameters for a document.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.Parameters }),
+				Resolver: resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} {
+					return d.Parameters
+				}),
 			},
 			{
 				Name:          "pending_review_version",
@@ -137,10 +141,12 @@ func SsmDocuments() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:          "requires",
-				Description:   "A list of SSM documents required by a document.",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.Requires }),
+				Name:        "requires",
+				Description: "A list of SSM documents required by a document.",
+				Type:        schema.TypeJSON,
+				Resolver: resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} {
+					return d.Requires
+				}),
 				IgnoreInTests: true,
 			},
 			{
@@ -183,10 +189,12 @@ func SsmDocuments() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "review_information",
-				Description:   "Details about the review of a document.",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} { return d.ReviewInformation }),
+				Name:        "review_information",
+				Description: "Details about the review of a document.",
+				Type:        schema.TypeJSON,
+				Resolver: resolveSSMDocumentJSONField(func(d *types.DocumentDescription) interface{} {
+					return d.ReviewInformation
+				}),
 				IgnoreInTests: true,
 			},
 			{
@@ -212,7 +220,9 @@ func SsmDocuments() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)

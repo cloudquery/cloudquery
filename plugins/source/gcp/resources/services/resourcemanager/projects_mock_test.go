@@ -6,16 +6,13 @@ import (
 	"net"
 	"testing"
 
+	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	"google.golang.org/api/option"
+	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
-
-	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
-
-	"google.golang.org/api/option"
 )
 
 func createProjects() (*client.Services, error) {

@@ -582,12 +582,16 @@ func CognitoUserPools() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchCognitoUserPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().CognitoUserPools
-	optsFunc := func(options *cognitoidentityprovider.Options) { options.Region = c.Region }
+	optsFunc := func(options *cognitoidentityprovider.Options) {
+		options.Region = c.Region
+	}
 	params := cognitoidentityprovider.ListUserPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
@@ -616,7 +620,9 @@ func fetchCognitoUserPoolIdentityProviders(ctx context.Context, meta schema.Clie
 	pool := parent.Item.(*types.UserPoolType)
 	c := meta.(*client.Client)
 	svc := c.Services().CognitoUserPools
-	optsFunc := func(options *cognitoidentityprovider.Options) { options.Region = c.Region }
+	optsFunc := func(options *cognitoidentityprovider.Options) {
+		options.Region = c.Region
+	}
 	params := cognitoidentityprovider.ListIdentityProvidersInput{UserPoolId: pool.Id}
 	for {
 		out, err := svc.ListIdentityProviders(ctx, &params, optsFunc)

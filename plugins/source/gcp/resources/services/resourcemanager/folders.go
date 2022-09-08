@@ -4,13 +4,12 @@ package resourcemanager
 
 import (
 	"context"
-	"github.com/pkg/errors"
-	"google.golang.org/api/iterator"
-
-	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
+	"github.com/pkg/errors"
+	"google.golang.org/api/iterator"
+	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 )
 
 func Folders() *schema.Table {

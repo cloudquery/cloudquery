@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/fuzz
 
-go 1.18
+go 1.19
 
 require (
 	github.com/caitlinelfring/go-env-default v1.1.0

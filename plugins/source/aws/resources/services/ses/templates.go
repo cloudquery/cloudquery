@@ -81,14 +81,18 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 	listInput := new(sesv2.ListEmailTemplatesInput)
 	for {
-		output, err := svc.ListEmailTemplates(ctx, listInput, func(o *sesv2.Options) { o.Region = c.Region })
+		output, err := svc.ListEmailTemplates(ctx, listInput, func(o *sesv2.Options) {
+			o.Region = c.Region
+		})
 		if err != nil {
 			return err
 		}
 
 		for _, templateMeta := range output.TemplatesMetadata {
 			getInput := &sesv2.GetEmailTemplateInput{TemplateName: templateMeta.TemplateName}
-			getOutput, err := svc.GetEmailTemplate(ctx, getInput, func(o *sesv2.Options) { o.Region = c.Region })
+			getOutput, err := svc.GetEmailTemplate(ctx, getInput, func(o *sesv2.Options) {
+				o.Region = c.Region
+			})
 			if err != nil {
 				return err
 			}

@@ -270,7 +270,9 @@ func resolveVaultTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	params := backup.ListTagsInput{ResourceArn: vault.BackupVaultArn}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) { o.Region = cl.Region })
+		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) {
+			o.Region = cl.Region
+		})
 		if result == nil {
 			break
 		}
@@ -295,7 +297,9 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 	result, err := svc.GetBackupVaultAccessPolicy(
 		ctx,
 		&backup.GetBackupVaultAccessPolicyInput{BackupVaultName: vault.BackupVaultName},
-		func(o *backup.Options) { o.Region = cl.Region },
+		func(o *backup.Options) {
+			o.Region = cl.Region
+		},
 	)
 	if err != nil {
 		if cl.IsNotFoundError(err) {
@@ -313,7 +317,9 @@ func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, reso
 	result, err := svc.GetBackupVaultNotifications(
 		ctx,
 		&backup.GetBackupVaultNotificationsInput{BackupVaultName: vault.BackupVaultName},
-		func(o *backup.Options) { o.Region = cl.Region },
+		func(o *backup.Options) {
+			o.Region = cl.Region
+		},
 	)
 	if err != nil {
 		var ae smithy.APIError
@@ -379,7 +385,9 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	params := backup.ListTagsInput{ResourceArn: rp.RecoveryPointArn}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) { o.Region = cl.Region })
+		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			if client.IsAWSError(err, "ERROR_2603") {
 				// ignoring "ERROR_2603: Cannot find recovery point."

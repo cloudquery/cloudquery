@@ -252,7 +252,9 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 			plan, err := svc.GetBackupPlan(
 				ctx,
 				&backup.GetBackupPlanInput{BackupPlanId: m.BackupPlanId, VersionId: m.VersionId},
-				func(o *backup.Options) { o.Region = cl.Region },
+				func(o *backup.Options) {
+					o.Region = cl.Region
+				},
 			)
 			if err != nil {
 				return err
@@ -276,7 +278,9 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 	params := backup.ListTagsInput{ResourceArn: plan.BackupPlanArn}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) { o.Region = cl.Region })
+		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) {
+			o.Region = cl.Region
+		})
 		if result == nil {
 			break
 		}
@@ -311,7 +315,9 @@ func fetchBackupSelections(ctx context.Context, meta schema.ClientMeta, parent *
 			s, err := svc.GetBackupSelection(
 				ctx,
 				&backup.GetBackupSelectionInput{BackupPlanId: plan.BackupPlanId, SelectionId: m.SelectionId},
-				func(o *backup.Options) { o.Region = cl.Region },
+				func(o *backup.Options) {
+					o.Region = cl.Region
+				},
 			)
 			if err != nil {
 				return err
