@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/network.go -package=mocks . NetworkExpressRouteCircuitsClient,NetworkExpressRouteGatewaysClient,NetworkExpressRoutePortsClient,NetworkInterfacesClient,NetworkPublicIPAddressesClient,NetworkRouteFiltersClient,NetworkRouteTablesClient,NetworkSecurityGroupsClient,NetworkVirtualNetworkGatewaysClient,NetworkVirtualNetworksClient,NetworkWatchersClient,NetworkFlowLogsClient
+//go:generate mockgen -destination=./mocks/network.go -package=mocks . NetworkExpressRouteCircuitsClient,NetworkExpressRouteGatewaysClient,NetworkExpressRoutePortsClient,NetworkInterfacesClient,NetworkPublicIPAddressesClient,NetworkRouteFiltersClient,NetworkRouteTablesClient,NetworkSecurityGroupsClient,NetworkVirtualNetworkGatewaysClient,NetworkVirtualNetworkGatewayConnectionsClient,NetworkVirtualNetworksClient,NetworkWatchersClient,NetworkFlowLogsClient
 package services
 
 import (
@@ -9,18 +9,19 @@ import (
 )
 
 type NetworkClient struct {
-	ExpressRouteCircuits   NetworkExpressRouteCircuitsClient
-	ExpressRouteGateways   NetworkExpressRouteGatewaysClient
-	ExpressRoutePorts      NetworkExpressRoutePortsClient
-	Interfaces             NetworkInterfacesClient
-	PublicIPAddresses      NetworkPublicIPAddressesClient
-	RouteFilters           NetworkRouteFiltersClient
-	RouteTables            NetworkRouteTablesClient
-	SecurityGroups         NetworkSecurityGroupsClient
-	VirtualNetworkGateways NetworkVirtualNetworkGatewaysClient
-	VirtualNetworks        NetworkVirtualNetworksClient
-	Watchers               NetworkWatchersClient
-	FlowLogs               NetworkFlowLogsClient
+	ExpressRouteCircuits             NetworkExpressRouteCircuitsClient
+	ExpressRouteGateways             NetworkExpressRouteGatewaysClient
+	ExpressRoutePorts                NetworkExpressRoutePortsClient
+	Interfaces                       NetworkInterfacesClient
+	PublicIPAddresses                NetworkPublicIPAddressesClient
+	RouteFilters                     NetworkRouteFiltersClient
+	RouteTables                      NetworkRouteTablesClient
+	SecurityGroups                   NetworkSecurityGroupsClient
+	VirtualNetworkGateways           NetworkVirtualNetworkGatewaysClient
+	VirtualNetworkGatewayConnections NetworkVirtualNetworkGatewayConnectionsClient
+	VirtualNetworks                  NetworkVirtualNetworksClient
+	Watchers                         NetworkWatchersClient
+	FlowLogs                         NetworkFlowLogsClient
 }
 type NetworkExpressRouteCircuitsClient interface {
 	ListAll(ctx context.Context) (result network.ExpressRouteCircuitListResultPage, err error)
@@ -56,6 +57,9 @@ type NetworkSecurityGroupsClient interface {
 
 type NetworkVirtualNetworkGatewaysClient interface {
 	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayListResultPage, err error)
+}
+
+type NetworkVirtualNetworkGatewayConnectionsClient interface {
 	ListConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewayListConnectionsResultPage, err error)
 }
 
@@ -97,17 +101,18 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworkC
 	fl := network.NewFlowLogsClient(subscriptionId)
 	fl.Authorizer = auth
 	return NetworkClient{
-		ExpressRouteCircuits:   erc,
-		ExpressRouteGateways:   erg,
-		ExpressRoutePorts:      erp,
-		Interfaces:             ifs,
-		PublicIPAddresses:      pips,
-		RouteFilters:           rf,
-		RouteTables:            rt,
-		SecurityGroups:         sg,
-		VirtualNetworkGateways: vng,
-		VirtualNetworks:        vn,
-		Watchers:               wch,
-		FlowLogs:               fl,
+		ExpressRouteCircuits:             erc,
+		ExpressRouteGateways:             erg,
+		ExpressRoutePorts:                erp,
+		Interfaces:                       ifs,
+		PublicIPAddresses:                pips,
+		RouteFilters:                     rf,
+		RouteTables:                      rt,
+		SecurityGroups:                   sg,
+		VirtualNetworkGateways:           vng,
+		VirtualNetworkGatewayConnections: vng,
+		VirtualNetworks:                  vn,
+		Watchers:                         wch,
+		FlowLogs:                         fl,
 	}
 }

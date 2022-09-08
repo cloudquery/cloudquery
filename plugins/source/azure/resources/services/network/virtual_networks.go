@@ -115,6 +115,10 @@ func VirtualNetworks() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			virtualNetworkGateways(),
+		},
 	}
 }
 
