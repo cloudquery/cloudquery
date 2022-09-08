@@ -18,7 +18,7 @@ import (
 )
 
 func TestResourcesPolicyAssignments(t *testing.T) {
-	client.AzureMockTestHelper(t, PolicyAssignments(), createPolicyAssignmentsMock, client.TestOptions{})
+	client.MockTestHelper(t, PolicyAssignments(), createPolicyAssignmentsMock)
 }
 
 func createPolicyAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

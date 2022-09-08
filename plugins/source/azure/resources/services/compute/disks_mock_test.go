@@ -18,7 +18,7 @@ import (
 )
 
 func TestComputeDisks(t *testing.T) {
-	client.AzureMockTestHelper(t, Disks(), createDisksMock, client.TestOptions{})
+	client.MockTestHelper(t, Disks(), createDisksMock)
 }
 
 func createDisksMock(t *testing.T, ctrl *gomock.Controller) services.Services {

@@ -7,7 +7,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 )
 
@@ -35,11 +35,6 @@ func virtualMachineExtensions() *schema.Table {
 				Name:     "publisher",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Publisher"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
 			},
 			{
 				Name:     "type_handler_version",
@@ -80,11 +75,6 @@ func virtualMachineExtensions() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-			{
 				Name:     "location",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Location"),
@@ -93,6 +83,11 @@ func virtualMachineExtensions() *schema.Table {
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver(`Type`),
 			},
 		},
 	}

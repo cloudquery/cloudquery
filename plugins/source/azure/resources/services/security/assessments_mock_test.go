@@ -18,7 +18,7 @@ import (
 )
 
 func TestSecurityAssessments(t *testing.T) {
-	client.AzureMockTestHelper(t, Assessments(), createAssessmentsMock, client.TestOptions{})
+	client.MockTestHelper(t, Assessments(), createAssessmentsMock)
 }
 
 func createAssessmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

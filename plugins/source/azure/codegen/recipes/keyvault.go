@@ -69,7 +69,6 @@ func KeyValue() []Resource {
 					listFunction:         "GetKeys",
 					listFunctionArgs:     []string{"*vault.Properties.VaultURI", "&maxResults"},
 					listFunctionArgsInit: []string{"vault := parent.Item.(keyvault.Vault)", "maxResults := int32(25)"},
-					relations:            []string{"keys()"},
 					subServiceOverride:   "Keys",
 					isRelation:           true,
 				},

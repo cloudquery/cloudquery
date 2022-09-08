@@ -18,7 +18,7 @@ import (
 )
 
 func TestSearchServices(t *testing.T) {
-	client.AzureMockTestHelper(t, Services(), createServicesMock, client.TestOptions{})
+	client.MockTestHelper(t, Services(), createServicesMock)
 }
 
 func createServicesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

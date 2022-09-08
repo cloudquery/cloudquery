@@ -18,7 +18,7 @@ import (
 )
 
 func TestAuthorizationRoleAssignments(t *testing.T) {
-	client.AzureMockTestHelper(t, RoleAssignments(), createRoleAssignmentsMock, client.TestOptions{})
+	client.MockTestHelper(t, RoleAssignments(), createRoleAssignmentsMock)
 }
 
 func createRoleAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

@@ -17,7 +17,7 @@ import (
 )
 
 func TestNetworkWatchers(t *testing.T) {
-	client.AzureMockTestHelper(t, Watchers(), createWatchersMock, client.TestOptions{})
+	client.MockTestHelper(t, Watchers(), createWatchersMock)
 }
 
 func createWatchersMock(t *testing.T, ctrl *gomock.Controller) services.Services {

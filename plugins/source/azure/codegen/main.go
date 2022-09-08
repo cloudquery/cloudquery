@@ -24,14 +24,9 @@ import (
 //go:embed templates/*.go.tpl
 var azureTemplatesFS embed.FS
 
-type providerResource struct {
-	ServiceName string
-	Function    string
-}
-
-type provider struct {
+type plugin struct {
 	Packages  []string
-	Resources []providerResource
+	Resources []string
 }
 
 func main() {
@@ -41,38 +36,34 @@ func main() {
 	}
 	pattern := regexp.MustCompile("(?i)" + filter)
 	resourcesDir := path.Join(path.Dir(getFilename()), "../resources")
-	providerDir := path.Join(resourcesDir, "provider")
+	pluginDir := path.Join(resourcesDir, "plugin")
 	servicesDir := path.Join(resourcesDir, "services")
 
-	providerResources := make(map[string]providerResource)
-	providerPackages := make(map[string]bool)
+	pluginResources := make(map[string]bool)
+	pluginPackages := make(map[string]bool)
 
 	for _, r := range codegen.AllResources() {
 		if pattern.MatchString(fmt.Sprintf("%s/%s", r.AzureService, r.AzureSubService)) {
 			fmt.Printf("Generating %s\n", r.Template.Destination)
 			generateResource(servicesDir, r)
 			packageName := strings.ToLower(r.AzureService)
-			serviceName := fmt.Sprintf("%s.%s", packageName, strcase.ToSnake(r.AzureSubService))
 			function := fmt.Sprintf("%s.%s", packageName, r.AzureSubService)
 
 			// Only add top level resources to provider.go
 			if !r.IsRelation {
-				providerResources[serviceName] = providerResource{
-					ServiceName: serviceName,
-					Function:    function,
-				}
-				providerPackages[packageName] = true
+				pluginResources[function] = true
+				pluginPackages[packageName] = true
 			}
 		}
 	}
 
-	sortedPackages := maps.Keys(providerPackages)
+	sortedPackages := maps.Keys(pluginPackages)
 	sort.Strings(sortedPackages)
 
-	sortedResources := maps.Values(providerResources)
-	sort.SliceStable(sortedResources, func(i, j int) bool { return sortedResources[i].ServiceName < sortedResources[j].ServiceName })
+	sortedResources := maps.Keys(pluginResources)
+	sort.Strings(sortedResources)
 
-	generateProvider(providerDir, provider{Packages: sortedPackages, Resources: sortedResources})
+	generatePlugin(pluginDir, plugin{Packages: sortedPackages, Resources: sortedResources})
 
 	exec.Command("goimports", "-w", resourcesDir).Run()
 }
@@ -124,8 +115,8 @@ func generateResource(destinationDir string, r codegen.Resource) {
 	writeContent(destination, content)
 }
 
-func generateProvider(providerDir string, p provider) {
-	destination := path.Join(providerDir, "provider.go")
-	content := getContent("provider.go.tpl", destination, p)
+func generatePlugin(pluginDir string, p plugin) {
+	destination := path.Join(pluginDir, "plugin.go")
+	content := getContent("plugin.go.tpl", destination, p)
 	writeContent(destination, content)
 }

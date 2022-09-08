@@ -17,7 +17,7 @@ import (
 )
 
 func TestCosmosDBAccounts(t *testing.T) {
-	client.AzureMockTestHelper(t, Accounts(), createAccountsMock, client.TestOptions{})
+	client.MockTestHelper(t, Accounts(), createAccountsMock)
 }
 
 func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

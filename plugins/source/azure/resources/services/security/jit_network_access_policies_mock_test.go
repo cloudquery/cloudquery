@@ -18,7 +18,7 @@ import (
 )
 
 func TestSecurityJitNetworkAccessPolicies(t *testing.T) {
-	client.AzureMockTestHelper(t, JitNetworkAccessPolicies(), createJitNetworkAccessPoliciesMock, client.TestOptions{})
+	client.MockTestHelper(t, JitNetworkAccessPolicies(), createJitNetworkAccessPoliciesMock)
 }
 
 func createJitNetworkAccessPoliciesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

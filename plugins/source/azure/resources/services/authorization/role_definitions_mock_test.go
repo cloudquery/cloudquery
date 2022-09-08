@@ -18,7 +18,7 @@ import (
 )
 
 func TestAuthorizationRoleDefinitions(t *testing.T) {
-	client.AzureMockTestHelper(t, RoleDefinitions(), createRoleDefinitionsMock, client.TestOptions{})
+	client.MockTestHelper(t, RoleDefinitions(), createRoleDefinitionsMock)
 }
 
 func createRoleDefinitionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

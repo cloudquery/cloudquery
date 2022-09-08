@@ -18,7 +18,7 @@ import (
 )
 
 func TestNetworkExpressRouteCircuits(t *testing.T) {
-	client.AzureMockTestHelper(t, ExpressRouteCircuits(), createExpressRouteCircuitsMock, client.TestOptions{})
+	client.MockTestHelper(t, ExpressRouteCircuits(), createExpressRouteCircuitsMock)
 }
 
 func createExpressRouteCircuitsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

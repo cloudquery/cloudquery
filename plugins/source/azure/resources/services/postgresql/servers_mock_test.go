@@ -17,7 +17,7 @@ import (
 )
 
 func TestPostgreSQLServers(t *testing.T) {
-	client.AzureMockTestHelper(t, Servers(), createServersMock, client.TestOptions{})
+	client.MockTestHelper(t, Servers(), createServersMock)
 }
 
 func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services {

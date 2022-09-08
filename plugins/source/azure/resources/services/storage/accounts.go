@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
@@ -239,7 +239,7 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
 		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			meta.Logger().Warn().Msgf("received access denied on Accounts.ListKeys %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
 			return nil
 		}
 		return errors.WithStack(err)
@@ -259,7 +259,7 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 		// For premium 'page blob' storage accounts, we sometimes get "authorization error", not sure why.
 		// In any case, we can probably ignore this since it only happens for premium 'page blob' storage accounts.
 		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn("received access denied on GetServiceProperties", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			meta.Logger().Warn().Msgf("received access denied on GetServiceProperties %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
 			return nil
 		}
 		return errors.WithStack(err)
@@ -290,7 +290,7 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
 		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			meta.Logger().Warn().Msgf("received access denied on Accounts.ListKeys %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
 			return nil
 		}
 	}

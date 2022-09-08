@@ -18,7 +18,7 @@ import (
 )
 
 func TestSQLManagedInstances(t *testing.T) {
-	client.AzureMockTestHelper(t, ManagedInstances(), createManagedInstancesMock, client.TestOptions{})
+	client.MockTestHelper(t, ManagedInstances(), createManagedInstancesMock)
 }
 
 func createManagedInstancesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

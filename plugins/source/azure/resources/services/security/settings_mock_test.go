@@ -18,7 +18,7 @@ import (
 )
 
 func TestSecuritySettings(t *testing.T) {
-	client.AzureMockTestHelper(t, Settings(), createSettingsMock, client.TestOptions{})
+	client.MockTestHelper(t, Settings(), createSettingsMock)
 }
 
 func createSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

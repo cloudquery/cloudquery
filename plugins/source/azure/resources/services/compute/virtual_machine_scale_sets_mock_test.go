@@ -18,7 +18,7 @@ import (
 )
 
 func TestComputeVirtualMachineScaleSets(t *testing.T) {
-	client.AzureMockTestHelper(t, VirtualMachineScaleSets(), createVirtualMachineScaleSetsMock, client.TestOptions{})
+	client.MockTestHelper(t, VirtualMachineScaleSets(), createVirtualMachineScaleSetsMock)
 }
 
 func createVirtualMachineScaleSetsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

@@ -18,7 +18,7 @@ import (
 )
 
 func TestServicebusNamespaces(t *testing.T) {
-	client.AzureMockTestHelper(t, Namespaces(), createNamespacesMock, client.TestOptions{})
+	client.MockTestHelper(t, Namespaces(), createNamespacesMock)
 }
 
 func createNamespacesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

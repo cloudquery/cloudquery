@@ -22,7 +22,7 @@ const fetchStorageAccountBlobLoggingSettings = `func fetchStorageAccountBlobLogg
 	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
 		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			meta.Logger().Warn().Msgf("received access denied on Accounts.ListKeys %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
 			return nil
 		}
 		return errors.WithStack(err)
@@ -42,7 +42,7 @@ const fetchStorageAccountBlobLoggingSettings = `func fetchStorageAccountBlobLogg
 		// For premium 'page blob' storage accounts, we sometimes get "authorization error", not sure why.
 		// In any case, we can probably ignore this since it only happens for premium 'page blob' storage accounts.
 		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn("received access denied on GetServiceProperties", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			meta.Logger().Warn().Msgf("received access denied on GetServiceProperties %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
 			return nil
 		}
 		return errors.WithStack(err)
@@ -73,7 +73,7 @@ const fetchStorageAccountQueueLoggingSettings = `func fetchStorageAccountQueueLo
 	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
 	if err != nil {
 		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn("received access denied on Accounts.ListKeys", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
+			meta.Logger().Warn().Msgf("received access denied on Accounts.ListKeys %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
 			return nil
 		}
 	}

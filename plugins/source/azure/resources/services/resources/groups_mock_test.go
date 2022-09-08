@@ -18,7 +18,7 @@ import (
 )
 
 func TestResourcesGroups(t *testing.T) {
-	client.AzureMockTestHelper(t, Groups(), createGroupsMock, client.TestOptions{})
+	client.MockTestHelper(t, Groups(), createGroupsMock)
 }
 
 func createGroupsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

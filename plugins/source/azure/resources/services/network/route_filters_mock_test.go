@@ -18,7 +18,7 @@ import (
 )
 
 func TestNetworkRouteFilters(t *testing.T) {
-	client.AzureMockTestHelper(t, RouteFilters(), createRouteFiltersMock, client.TestOptions{})
+	client.MockTestHelper(t, RouteFilters(), createRouteFiltersMock)
 }
 
 func createRouteFiltersMock(t *testing.T, ctrl *gomock.Controller) services.Services {

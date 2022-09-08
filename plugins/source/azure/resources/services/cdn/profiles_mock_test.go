@@ -18,7 +18,7 @@ import (
 )
 
 func TestCDNProfiles(t *testing.T) {
-	client.AzureMockTestHelper(t, Profiles(), createProfilesMock, client.TestOptions{})
+	client.MockTestHelper(t, Profiles(), createProfilesMock)
 }
 
 func createProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

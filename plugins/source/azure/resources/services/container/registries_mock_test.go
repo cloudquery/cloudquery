@@ -18,7 +18,7 @@ import (
 )
 
 func TestContainerRegistries(t *testing.T) {
-	client.AzureMockTestHelper(t, Registries(), createRegistriesMock, client.TestOptions{})
+	client.MockTestHelper(t, Registries(), createRegistriesMock)
 }
 
 func createRegistriesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

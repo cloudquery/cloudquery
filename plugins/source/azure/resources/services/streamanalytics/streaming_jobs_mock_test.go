@@ -18,7 +18,7 @@ import (
 )
 
 func TestStreamAnalyticsStreamingJobs(t *testing.T) {
-	client.AzureMockTestHelper(t, StreamingJobs(), createStreamingJobsMock, client.TestOptions{})
+	client.MockTestHelper(t, StreamingJobs(), createStreamingJobsMock)
 }
 
 func createStreamingJobsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

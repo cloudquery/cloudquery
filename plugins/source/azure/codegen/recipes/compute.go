@@ -2,6 +2,8 @@ package recipes
 
 import (
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Compute() []Resource {
@@ -72,7 +74,9 @@ func Compute() []Resource {
 					}`},
 					listFunctionArgs: []string{"resource.ResourceGroup", "*virtualMachine.Name", `""`},
 					listHandler:      valueHandler,
+					skipFields:       []string{"Type"},
 					isRelation:       true,
+					customColumns:    []codegen.ColumnDefinition{{Name: "type", Type: schema.TypeString, Resolver: "schema.PathResolver(`Type`)"}},
 				},
 			},
 		},

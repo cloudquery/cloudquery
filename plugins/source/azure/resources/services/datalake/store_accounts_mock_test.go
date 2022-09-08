@@ -17,7 +17,7 @@ import (
 )
 
 func TestDataLakeStoreAccounts(t *testing.T) {
-	client.AzureMockTestHelper(t, StoreAccounts(), createStoreAccountsMock, client.TestOptions{})
+	client.MockTestHelper(t, StoreAccounts(), createStoreAccountsMock)
 }
 
 func createStoreAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

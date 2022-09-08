@@ -17,7 +17,7 @@ import (
 )
 
 func TestMonitorResources(t *testing.T) {
-	client.AzureMockTestHelper(t, Resources(), createResourcesMock, client.TestOptions{})
+	client.MockTestHelper(t, Resources(), createResourcesMock)
 }
 
 func createResourcesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

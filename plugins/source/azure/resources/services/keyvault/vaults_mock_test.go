@@ -18,7 +18,7 @@ import (
 )
 
 func TestKeyVaultVaults(t *testing.T) {
-	client.AzureMockTestHelper(t, Vaults(), createVaultsMock, client.TestOptions{})
+	client.MockTestHelper(t, Vaults(), createVaultsMock)
 }
 
 func createVaultsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

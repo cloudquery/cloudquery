@@ -18,7 +18,7 @@ import (
 )
 
 func TestKeyVaultManagedHsms(t *testing.T) {
-	client.AzureMockTestHelper(t, ManagedHsms(), createManagedHsmsMock, client.TestOptions{})
+	client.MockTestHelper(t, ManagedHsms(), createManagedHsmsMock)
 }
 
 func createManagedHsmsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

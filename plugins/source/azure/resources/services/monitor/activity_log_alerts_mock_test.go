@@ -17,7 +17,7 @@ import (
 )
 
 func TestMonitorActivityLogAlerts(t *testing.T) {
-	client.AzureMockTestHelper(t, ActivityLogAlerts(), createActivityLogAlertsMock, client.TestOptions{})
+	client.MockTestHelper(t, ActivityLogAlerts(), createActivityLogAlertsMock)
 }
 
 func createActivityLogAlertsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

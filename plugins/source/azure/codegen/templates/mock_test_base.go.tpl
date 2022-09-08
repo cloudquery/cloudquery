@@ -17,7 +17,7 @@ import (
 )
 
 func Test{{ .AzureService }}{{ .AzureSubService }}(t *testing.T) {
-	client.AzureMockTestHelper(t, {{ .AzureSubService }}(), create{{ .AzureSubService }}Mock, client.TestOptions{})
+	client.MockTestHelper(t, {{ .AzureSubService }}(), create{{ .AzureSubService }}Mock)
 }
 
 {{range .MockHelpers}}

@@ -4,7 +4,7 @@ package {{.AzureService | ToLower}}
 
 import (
 	"context"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/pkg/errors"
     {{template "imports.go.tpl" .}}

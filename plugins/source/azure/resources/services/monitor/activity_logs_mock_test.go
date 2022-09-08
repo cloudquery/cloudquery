@@ -20,7 +20,7 @@ import (
 )
 
 func TestMonitorActivityLogs(t *testing.T) {
-	client.AzureMockTestHelper(t, ActivityLogs(), createActivityLogsMock, client.TestOptions{})
+	client.MockTestHelper(t, ActivityLogs(), createActivityLogsMock)
 }
 
 type regexMatcher struct {

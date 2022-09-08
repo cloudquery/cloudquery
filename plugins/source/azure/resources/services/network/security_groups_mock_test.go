@@ -18,7 +18,7 @@ import (
 )
 
 func TestNetworkSecurityGroups(t *testing.T) {
-	client.AzureMockTestHelper(t, SecurityGroups(), createSecurityGroupsMock, client.TestOptions{})
+	client.MockTestHelper(t, SecurityGroups(), createSecurityGroupsMock)
 }
 
 func createSecurityGroupsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

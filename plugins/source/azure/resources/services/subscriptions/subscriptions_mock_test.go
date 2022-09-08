@@ -19,7 +19,7 @@ import (
 )
 
 func TestSubscriptionsSubscriptions(t *testing.T) {
-	client.AzureMockTestHelper(t, Subscriptions(), createSubscriptionsMock, client.TestOptions{})
+	client.MockTestHelper(t, Subscriptions(), createSubscriptionsMock)
 }
 
 func createSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

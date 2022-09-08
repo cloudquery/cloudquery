@@ -18,7 +18,7 @@ import (
 )
 
 func TestNetworkVirtualNetworks(t *testing.T) {
-	client.AzureMockTestHelper(t, VirtualNetworks(), createVirtualNetworksMock, client.TestOptions{})
+	client.MockTestHelper(t, VirtualNetworks(), createVirtualNetworksMock)
 }
 
 func createVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) services.Services {

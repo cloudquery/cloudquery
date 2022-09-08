@@ -18,7 +18,7 @@ import (
 )
 
 func TestIotHubDevices(t *testing.T) {
-	client.AzureMockTestHelper(t, Devices(), createDevicesMock, client.TestOptions{})
+	client.MockTestHelper(t, Devices(), createDevicesMock)
 }
 
 func createDevicesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

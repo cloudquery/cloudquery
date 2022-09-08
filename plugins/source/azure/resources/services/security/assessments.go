@@ -7,7 +7,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 )
 

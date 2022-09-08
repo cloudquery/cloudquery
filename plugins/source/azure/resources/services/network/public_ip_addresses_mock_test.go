@@ -18,7 +18,7 @@ import (
 )
 
 func TestNetworkPublicIPAddresses(t *testing.T) {
-	client.AzureMockTestHelper(t, PublicIPAddresses(), createPublicIPAddressesMock, client.TestOptions{})
+	client.MockTestHelper(t, PublicIPAddresses(), createPublicIPAddressesMock)
 }
 
 func createPublicIPAddressesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

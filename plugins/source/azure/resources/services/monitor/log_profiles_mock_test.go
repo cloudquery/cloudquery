@@ -17,7 +17,7 @@ import (
 )
 
 func TestMonitorLogProfiles(t *testing.T) {
-	client.AzureMockTestHelper(t, LogProfiles(), createLogProfilesMock, client.TestOptions{})
+	client.MockTestHelper(t, LogProfiles(), createLogProfilesMock)
 }
 
 func createLogProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {

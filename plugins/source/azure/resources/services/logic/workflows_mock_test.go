@@ -18,7 +18,7 @@ import (
 )
 
 func TestLogicWorkflows(t *testing.T) {
-	client.AzureMockTestHelper(t, Workflows(), createWorkflowsMock, client.TestOptions{})
+	client.MockTestHelper(t, Workflows(), createWorkflowsMock)
 }
 
 func createWorkflowsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

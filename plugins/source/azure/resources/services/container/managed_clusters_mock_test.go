@@ -18,7 +18,7 @@ import (
 )
 
 func TestContainerManagedClusters(t *testing.T) {
-	client.AzureMockTestHelper(t, ManagedClusters(), createManagedClustersMock, client.TestOptions{})
+	client.MockTestHelper(t, ManagedClusters(), createManagedClustersMock)
 }
 
 func createManagedClustersMock(t *testing.T, ctrl *gomock.Controller) services.Services {

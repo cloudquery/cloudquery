@@ -18,7 +18,7 @@ import (
 )
 
 func TestResourcesLinks(t *testing.T) {
-	client.AzureMockTestHelper(t, Links(), createLinksMock, client.TestOptions{})
+	client.MockTestHelper(t, Links(), createLinksMock)
 }
 
 func createLinksMock(t *testing.T, ctrl *gomock.Controller) services.Services {

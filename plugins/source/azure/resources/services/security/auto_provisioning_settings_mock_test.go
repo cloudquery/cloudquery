@@ -18,7 +18,7 @@ import (
 )
 
 func TestSecurityAutoProvisioningSettings(t *testing.T) {
-	client.AzureMockTestHelper(t, AutoProvisioningSettings(), createAutoProvisioningSettingsMock, client.TestOptions{})
+	client.MockTestHelper(t, AutoProvisioningSettings(), createAutoProvisioningSettingsMock)
 }
 
 func createAutoProvisioningSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

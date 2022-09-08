@@ -18,7 +18,7 @@ import (
 )
 
 func TestFrontDoorDoors(t *testing.T) {
-	client.AzureMockTestHelper(t, Doors(), createDoorsMock, client.TestOptions{})
+	client.MockTestHelper(t, Doors(), createDoorsMock)
 }
 
 func createDoorsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

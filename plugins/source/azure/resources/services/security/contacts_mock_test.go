@@ -18,7 +18,7 @@ import (
 )
 
 func TestSecurityContacts(t *testing.T) {
-	client.AzureMockTestHelper(t, Contacts(), createContactsMock, client.TestOptions{})
+	client.MockTestHelper(t, Contacts(), createContactsMock)
 }
 
 func createContactsMock(t *testing.T, ctrl *gomock.Controller) services.Services {

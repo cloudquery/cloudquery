@@ -19,7 +19,7 @@ import (
 )
 
 func TestSubscriptionsTenants(t *testing.T) {
-	client.AzureMockTestHelper(t, Tenants(), createTenantsMock, client.TestOptions{})
+	client.MockTestHelper(t, Tenants(), createTenantsMock)
 }
 
 func createTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
