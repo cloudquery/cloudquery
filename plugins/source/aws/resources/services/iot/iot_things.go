@@ -16,8 +16,6 @@ func IotThings() *schema.Table {
 		Description: "The properties of the thing, including thing name, thing type name, and a list of thing attributes.",
 		Resolver:    fetchIotThings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -44,10 +42,11 @@ func IotThings() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "arn",
-				Description: "The thing ARN.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ThingArn"),
+				Name:            "arn",
+				Description:     "The thing ARN.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ThingArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

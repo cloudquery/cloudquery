@@ -16,8 +16,6 @@ func Streams() *schema.Table {
 		Description: "Represents the output for DescribeStreamSummary",
 		Resolver:    fetchKinesisStreams,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("kinesis"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,9 +30,10 @@ func Streams() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StreamARN"),
+				Name:            "arn",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("StreamARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "tags",

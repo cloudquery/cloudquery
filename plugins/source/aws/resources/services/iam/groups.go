@@ -12,19 +12,18 @@ import (
 
 func IamGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_groups",
-		Description: "Contains information about an IAM group entity.",
-		Resolver:    fetchIamGroups,
-		Multiplex:   client.AccountMultiplex,
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_iam_groups",
+		Description:   "Contains information about an IAM group entity.",
+		Resolver:      fetchIamGroups,
+		Multiplex:     client.AccountMultiplex,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "policies",
@@ -43,10 +42,11 @@ func IamGroups() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "id",
-				Description: "The stable and unique string identifying the group. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("GroupId"),
+				Name:            "id",
+				Description:     "The stable and unique string identifying the group. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("GroupId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

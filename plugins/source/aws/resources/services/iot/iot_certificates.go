@@ -16,8 +16,6 @@ func IotCertificates() *schema.Table {
 		Description: "Describes a certificate.",
 		Resolver:    fetchIotCertificates,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -44,10 +42,11 @@ func IotCertificates() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN of the certificate.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CertificateArn"),
+				Name:            "arn",
+				Description:     "The ARN of the certificate.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("CertificateArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",

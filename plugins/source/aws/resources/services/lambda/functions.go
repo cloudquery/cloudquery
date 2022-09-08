@@ -20,13 +20,11 @@ type AliasWrapper struct {
 
 func Functions() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_lambda_functions",
-		Description: "AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers, creating workload-aware cluster scaling logic, maintaining event integrations, or managing runtimes",
-		Resolver:    fetchLambdaFunctions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
-
+		Name:                 "aws_lambda_functions",
+		Description:          "AWS Lambda is a serverless compute service that lets you run code without provisioning or managing servers, creating workload-aware cluster scaling logic, maintaining event integrations, or managing runtimes",
+		Resolver:             fetchLambdaFunctions,
+		Multiplex:            client.ServiceAccountRegionMultiplexer("lambda"),
 		PostResourceResolver: resolvePolicyCodeSigningConfig,
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -176,10 +174,11 @@ func Functions() *schema.Table {
 				Resolver:    schema.PathResolver("Configuration.EphemeralStorage.Size"),
 			},
 			{
-				Name:        "arn",
-				Description: "The function's Amazon Resource Name (ARN).",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Configuration.FunctionArn"),
+				Name:            "arn",
+				Description:     "The function's Amazon Resource Name (ARN).",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Configuration.FunctionArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

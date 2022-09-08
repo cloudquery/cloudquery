@@ -56,19 +56,20 @@ func IamUsers() *schema.Table {
 		Multiplex: client.AccountMultiplex,
 
 		PostResourceResolver: postIamUserResolver,
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "id",
-				Description: "The stable and unique string identifying the user",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("UserId"),
+				Name:            "id",
+				Description:     "The stable and unique string identifying the user",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("UserId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "password_last_used",

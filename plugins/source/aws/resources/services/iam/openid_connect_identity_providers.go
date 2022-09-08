@@ -19,9 +19,6 @@ func IamOpenidConnectIdentityProviders() *schema.Table {
 		Description:   "IAM OIDC identity providers are entities in IAM that describe an external identity provider (IdP) service that supports the OpenID Connect (OIDC) standard, such as Google or Salesforce.",
 		Resolver:      fetchIamOpenidConnectIdentityProviders,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -31,9 +28,10 @@ func IamOpenidConnectIdentityProviders() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:        "arn",
-				Description: "Amazon Resource Name (ARN) of the openid connect identity provider.",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "Amazon Resource Name (ARN) of the openid connect identity provider.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "client_id_list",

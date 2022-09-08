@@ -18,14 +18,13 @@ func IamPolicies() *schema.Table {
 		Description: "Contains information about a managed policy, including the policy's ARN, versions, and the number of principal entities (users, groups, and roles) that the policy is attached to.",
 		Resolver:    fetchIamPolicies,
 		Multiplex:   client.AccountMultiplex,
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",
@@ -69,10 +68,11 @@ func IamPolicies() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "id",
-				Description: "The stable and unique string identifying the policy. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PolicyId"),
+				Name:            "id",
+				Description:     "The stable and unique string identifying the policy. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide. ",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("PolicyId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

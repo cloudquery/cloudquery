@@ -15,9 +15,6 @@ func IamVirtualMfaDevices() *schema.Table {
 		Description:   "Contains information about a virtual MFA device.",
 		Resolver:      fetchIamVirtualMfaDevices,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"serial_number"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -27,9 +24,10 @@ func IamVirtualMfaDevices() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:        "serial_number",
-				Description: "The serial number associated with VirtualMFADevice.",
-				Type:        schema.TypeString,
+				Name:            "serial_number",
+				Description:     "The serial number associated with VirtualMFADevice.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "base32_string_seed",

@@ -17,13 +17,10 @@ const (
 
 func LambdaLayers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lambda_layers",
-		Description:  "Details about an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
-		Resolver:     fetchLambdaLayers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lambda"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_lambda_layers",
+		Description: "Details about an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). ",
+		Resolver:    fetchLambdaLayers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -75,10 +72,11 @@ func LambdaLayers() *schema.Table {
 				Resolver:    schema.PathResolver("LatestMatchingVersion.Version"),
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the function layer.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LayerArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the function layer.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("LayerArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

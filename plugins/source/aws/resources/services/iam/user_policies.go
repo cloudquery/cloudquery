@@ -13,10 +13,9 @@ import (
 
 func IamUserPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_user_policies",
-		Description: "Inline policies that are embedded in the specified IAM user",
-		Resolver:    fetchIamUserPolicies,
-
+		Name:          "aws_iam_user_policies",
+		Description:   "Inline policies that are embedded in the specified IAM user",
+		Resolver:      fetchIamUserPolicies,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

@@ -16,19 +16,17 @@ type PasswordPolicy struct {
 
 func IamPasswordPolicies() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_iam_password_policies",
-		Description:  "Contains information about the account password policy.",
-		Resolver:     fetchIamPasswordPolicies,
-		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
+		Name:        "aws_iam_password_policies",
+		Description: "Contains information about the account password policy.",
+		Resolver:    fetchIamPasswordPolicies,
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "allow_users_to_change_password",

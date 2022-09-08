@@ -18,14 +18,13 @@ func Roles() *schema.Table {
 		Description: "An IAM role is an IAM identity that you can create in your account that has specific permissions.",
 		Resolver:    fetchIamRoles,
 		Multiplex:   client.AccountMultiplex,
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "policies",
@@ -49,10 +48,11 @@ func Roles() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "id",
-				Description: "The stable and unique string identifying the role",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RoleId"),
+				Name:            "id",
+				Description:     "The stable and unique string identifying the role",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("RoleId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "role_name",

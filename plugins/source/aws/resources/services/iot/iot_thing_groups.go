@@ -15,8 +15,6 @@ func IotThingGroups() *schema.Table {
 		Description: "Groups allow you to manage several things at once by categorizing them into groups",
 		Resolver:    fetchIotThingGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -73,10 +71,11 @@ func IotThingGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The thing group ARN.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ThingGroupArn"),
+				Name:            "arn",
+				Description:     "The thing group ARN.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ThingGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",

@@ -14,10 +14,9 @@ import (
 
 func IamGroupPolicies() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iam_group_policies",
-		Description: "Inline policies that are embedded in the specified IAM group",
-		Resolver:    fetchIamGroupPolicies,
-
+		Name:          "aws_iam_group_policies",
+		Description:   "Inline policies that are embedded in the specified IAM group",
+		Resolver:      fetchIamGroupPolicies,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{

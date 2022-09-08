@@ -16,8 +16,6 @@ func IotTopicRules() *schema.Table {
 		Description: "The output from the GetTopicRule operation.",
 		Resolver:    fetchIotTopicRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -673,10 +671,11 @@ func IotTopicRules() *schema.Table {
 				Resolver:    schema.PathResolver("Rule.Sql"),
 			},
 			{
-				Name:        "arn",
-				Description: "The rule ARN.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RuleArn"),
+				Name:            "arn",
+				Description:     "The rule ARN.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("RuleArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 		Relations: []*schema.Table{

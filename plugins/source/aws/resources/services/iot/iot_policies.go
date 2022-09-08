@@ -15,8 +15,6 @@ func IotPolicies() *schema.Table {
 		Description: "The output from the GetPolicy operation.",
 		Resolver:    fetchIotPolicies,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -57,10 +55,11 @@ func IotPolicies() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "arn",
-				Description: "The policy ARN.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PolicyArn"),
+				Name:            "arn",
+				Description:     "The policy ARN.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("PolicyArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "document",

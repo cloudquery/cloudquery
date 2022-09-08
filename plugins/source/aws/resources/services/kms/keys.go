@@ -17,8 +17,6 @@ func Keys() *schema.Table {
 		Description: "Contains metadata about a KMS key",
 		Resolver:    fetchKmsKeys,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("kms"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -57,9 +55,10 @@ func Keys() *schema.Table {
 				Resolver:    schema.PathResolver("AWSAccountId"),
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the KMS key",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the KMS key",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "cloud_hsm_cluster_id",

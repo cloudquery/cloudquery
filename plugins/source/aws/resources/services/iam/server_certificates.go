@@ -15,22 +15,21 @@ func IamServerCertificates() *schema.Table {
 		Description:   "Contains information about a server certificate without its certificate body, certificate chain, and private key.",
 		Resolver:      fetchIamServerCertificates,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "id",
-				Description: "The stable and unique string identifying the server certificate.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ServerCertificateId"),
+				Name:            "id",
+				Description:     "The stable and unique string identifying the server certificate.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ServerCertificateId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",

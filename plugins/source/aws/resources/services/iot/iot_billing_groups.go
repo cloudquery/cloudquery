@@ -11,12 +11,10 @@ import (
 
 func IotBillingGroups() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iot_billing_groups",
-		Description: "Billing groups are groups of things created for billing purposes that collect billable information for the things",
-		Resolver:    fetchIotBillingGroups,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_iot_billing_groups",
+		Description:   "Billing groups are groups of things created for billing purposes that collect billable information for the things",
+		Resolver:      fetchIotBillingGroups,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -44,10 +42,11 @@ func IotBillingGroups() *schema.Table {
 				Resolver:    ResolveIotBillingGroupTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN of the billing group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("BillingGroupArn"),
+				Name:            "arn",
+				Description:     "The ARN of the billing group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("BillingGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",

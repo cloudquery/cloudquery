@@ -9,22 +9,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Findings() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_inspector2_findings",
-		Description:  "Details about an Amazon Inspector finding",
-		Resolver:     fetchInspector2Findings,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("inspector2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_inspector2_findings",
+		Description: "Details about an Amazon Inspector finding",
+		Resolver:    fetchInspector2Findings,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("inspector2"),
 		Columns: []schema.Column{
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the finding",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("FindingArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the finding",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("FindingArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",

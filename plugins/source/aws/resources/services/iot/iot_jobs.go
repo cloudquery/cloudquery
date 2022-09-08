@@ -17,7 +17,6 @@ func IotJobs() *schema.Table {
 		Resolver:    fetchIotJobs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
 
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -68,10 +67,11 @@ func IotJobs() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "arn",
-				Description: "An ARN identifying the job with format \"arn:aws:iot:region:account:job/jobId\".",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("JobArn"),
+				Name:            "arn",
+				Description:     "An ARN identifying the job with format \"arn:aws:iot:region:account:job/jobId\".",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("JobArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "base_rate_per_minute",

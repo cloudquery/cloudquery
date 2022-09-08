@@ -13,16 +13,15 @@ type RuntimeWrapper struct {
 
 func LambdaRuntimes() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lambda_runtimes",
-		Description:  "All known values for Runtime",
-		Resolver:     fetchLambdaRuntimes,
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"name"}},
+		Name:        "aws_lambda_runtimes",
+		Description: "All known values for Runtime",
+		Resolver:    fetchLambdaRuntimes,
 		Columns: []schema.Column{
 			{
-				Name:        "name",
-				Description: "Runtime name",
-				Type:        schema.TypeString,
+				Name:            "name",
+				Description:     "Runtime name",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}

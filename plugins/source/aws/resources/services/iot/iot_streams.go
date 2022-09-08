@@ -16,9 +16,6 @@ func IotStreams() *schema.Table {
 		Description:   "Information about a stream.",
 		Resolver:      fetchIotStreams,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -54,10 +51,11 @@ func IotStreams() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The stream ARN.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StreamArn"),
+				Name:            "arn",
+				Description:     "The stream ARN.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("StreamArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",

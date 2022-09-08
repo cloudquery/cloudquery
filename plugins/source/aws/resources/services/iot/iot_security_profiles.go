@@ -15,8 +15,6 @@ func IotSecurityProfiles() *schema.Table {
 		Name:      "aws_iot_security_profiles",
 		Resolver:  fetchIotSecurityProfiles,
 		Multiplex: client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -69,10 +67,11 @@ func IotSecurityProfiles() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN of the security profile.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SecurityProfileArn"),
+				Name:            "arn",
+				Description:     "The ARN of the security profile.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("SecurityProfileArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "description",

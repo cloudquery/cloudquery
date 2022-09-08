@@ -12,12 +12,10 @@ import (
 
 func IotCaCertificates() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_iot_ca_certificates",
-		Description: "Describes a CA certificate.",
-		Resolver:    fetchIotCaCertificates,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_iot_ca_certificates",
+		Description:   "Describes a CA certificate.",
+		Resolver:      fetchIotCaCertificates,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("iot"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -44,10 +42,11 @@ func IotCaCertificates() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The CA certificate ARN.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CertificateArn"),
+				Name:            "arn",
+				Description:     "The CA certificate ARN.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("CertificateArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",
