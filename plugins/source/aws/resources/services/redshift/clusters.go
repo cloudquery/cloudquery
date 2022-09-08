@@ -13,12 +13,10 @@ import (
 
 func RedshiftClusters() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_redshift_clusters",
-		Description: "Describes a cluster.",
-		Resolver:    fetchRedshiftClusters,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:         "aws_redshift_clusters",
+		Description:  "Describes a cluster.",
+		Resolver:     fetchRedshiftClusters,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +37,7 @@ func RedshiftClusters() *schema.Table {
 				Resolver: client.ResolveARN(client.RedshiftService, func(resource *schema.Resource) ([]string, error) {
 					return []string{fmt.Sprintf("cluster:%s", *resource.Item.(types.Cluster).ClusterIdentifier)}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "allow_version_upgrade",
@@ -471,311 +470,36 @@ func RedshiftClusters() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveRedshiftClusterLoggingStatus,
 			},
+			{
+				Name:        "cluster_nodes",
+				Type: 			schema.TypeJSON,
+			},
+			{
+				Name:        "cluster_parameter_groups",
+				Type: 			schema.TypeJSON,
+			},
+			{
+				Name:        "cluster_security_groups",
+				Type: 			schema.TypeJSON,
+			},
+			{
+				Name:        "deferred_maintenance_windows",
+				Type: 			schema.TypeJSON,
+			},
+			{
+				Name:        "endpoint",
+				Type: 			schema.TypeJSON,
+			},
+			{
+				Name:        "iam_roles",
+				Type: 			schema.TypeJSON,
+			},
+			{
+				Name:        "vpc_security_groups",
+				Type: 			schema.TypeJSON,
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_redshift_cluster_nodes",
-				Description: "The identifier of a node in a cluster.",
-				Resolver:    schema.PathTableResolver("ClusterNodes"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "node_role",
-						Description: "Whether the node is a leader node or a compute node.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "private_ip_address",
-						Description: "The private IP address of a node within a cluster.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PrivateIPAddress"),
-					},
-					{
-						Name:        "public_ip_address",
-						Description: "The public IP address of a node within a cluster.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PublicIPAddress"),
-					},
-				},
-			},
-			{
-				Name:        "aws_redshift_cluster_parameter_groups",
-				Description: "Describes the status of a parameter group.",
-				Resolver:    schema.PathTableResolver("ClusterParameterGroups"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "parameter_apply_status",
-						Description: "The status of parameter updates.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "parameter_group_name",
-						Description: "The name of the cluster parameter group.",
-						Type:        schema.TypeString,
-					},
-				},
-				Relations: []*schema.Table{
-					{
-						Name:        "aws_redshift_cluster_parameters",
-						Description: "Describes a parameter in a cluster parameter group.",
-						Resolver:    fetchRedshiftClusterParameter,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_parameter_group_cq_id",
-								Description: "Unique CloudQuery ID of aws_redshift_cluster_parameter_groups table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "allowed_values",
-								Description: "The valid range of values for the parameter.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "apply_type",
-								Description: "Specifies how to apply the WLM configuration parameter",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "data_type",
-								Description: "The data type of the parameter.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "description",
-								Description: "A description of the parameter.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "is_modifiable",
-								Description: "If true, the parameter can be modified",
-								Type:        schema.TypeBool,
-							},
-							{
-								Name:          "minimum_engine_version",
-								Description:   "The earliest engine version to which the parameter can apply.",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-							{
-								Name:        "parameter_name",
-								Description: "The name of the parameter.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "parameter_value",
-								Description: "The value of the parameter",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "source",
-								Description: "The source of the parameter value, such as \"engine-default\" or \"user\".",
-								Type:        schema.TypeString,
-							},
-						},
-					},
-					{
-						Name:          "aws_redshift_cluster_parameter_group_status_lists",
-						Description:   "Describes the status of a parameter group.",
-						Resolver:      schema.PathTableResolver("ClusterParameterStatusList"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_parameter_group_cq_id",
-								Description: "Unique CloudQuery ID of aws_redshift_cluster_parameter_groups table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "parameter_apply_error_description",
-								Description: "The error that prevented the parameter from being applied to the database.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "parameter_apply_status",
-								Description: "The status of the parameter that indicates whether the parameter is in sync with the database, waiting for a cluster reboot, or encountered an error when being applied.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "parameter_name",
-								Description: "The name of the parameter.",
-								Type:        schema.TypeString,
-							},
-						},
-					},
-				},
-			},
-			{
-				Name:          "aws_redshift_cluster_security_groups",
-				Description:   "Describes a cluster security group.",
-				Resolver:      schema.PathTableResolver("ClusterSecurityGroups"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "cluster_security_group_name",
-						Description: "The name of the cluster security group.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the cluster security group.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:          "aws_redshift_cluster_deferred_maintenance_windows",
-				Description:   "Describes a deferred maintenance window .",
-				Resolver:      schema.PathTableResolver("DeferredMaintenanceWindows"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "defer_maintenance_end_time",
-						Description: "A timestamp for the end of the time period when we defer maintenance.",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "defer_maintenance_identifier",
-						Description: "A unique identifier for the maintenance window.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "defer_maintenance_start_time",
-						Description: "A timestamp for the beginning of the time period when we defer maintenance.",
-						Type:        schema.TypeTimestamp,
-					},
-				},
-			},
-			{
-				Name:          "aws_redshift_cluster_endpoint_vpc_endpoints",
-				Description:   "The connection endpoint for connecting to an Amazon Redshift cluster through the proxy.",
-				Resolver:      schema.PathTableResolver("Endpoint.VpcEndpoints"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "vpc_endpoint_id",
-						Description: "The connection endpoint ID for connecting an Amazon Redshift cluster through the proxy.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "vpc_id",
-						Description: "The VPC identifier that the endpoint is associated.",
-						Type:        schema.TypeString,
-					},
-				},
-				Relations: []*schema.Table{
-					{
-						Name:          "aws_redshift_cluster_endpoint_vpc_endpoint_network_interfaces",
-						Description:   "Describes a network interface.",
-						Resolver:      schema.PathTableResolver("NetworkInterfaces"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_endpoint_vpc_endpoint_cq_id",
-								Description: "Unique CloudQuery ID of aws_redshift_cluster_endpoint_vpc_endpoints table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "availability_zone",
-								Description: "The Availability Zone.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "network_interface_id",
-								Description: "The network interface identifier.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "private_ip_address",
-								Description: "The IPv4 address of the network interface within the subnet.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "subnet_id",
-								Description: "The subnet identifier.",
-								Type:        schema.TypeString,
-							},
-						},
-					},
-				},
-			},
-			{
-				Name:          "aws_redshift_cluster_iam_roles",
-				Description:   "An AWS Identity and Access Management (IAM) role that can be used by the associated Amazon Redshift cluster to access other AWS services.",
-				Resolver:      schema.PathTableResolver("IamRoles"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "apply_status",
-						Description: "A value that describes the status of the IAM role's association with an Amazon Redshift cluster.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "iam_role_arn",
-						Description: "The Amazon Resource Name (ARN) of the IAM role, for example, arn:aws:iam::123456789012:role/RedshiftCopyUnload.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:        "aws_redshift_cluster_vpc_security_groups",
-				Description: "Describes the members of a VPC security group.",
-				Resolver:    schema.PathTableResolver("VpcSecurityGroups"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_redshift_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the VPC security group.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "vpc_security_group_id",
-						Description: "The identifier of the VPC security group.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			Snapshots(),
 		},
 	}

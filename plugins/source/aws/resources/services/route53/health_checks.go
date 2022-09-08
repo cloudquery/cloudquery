@@ -17,12 +17,10 @@ type Route53HealthCheckWrapper struct {
 
 func Route53HealthChecks() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_route53_health_checks",
-		Description: "A complex type that contains information about one health check that is associated with the current AWS account.",
-		Resolver:    fetchRoute53HealthChecks,
-		Multiplex:   client.AccountMultiplex,
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_route53_health_checks",
+		Description:   "A complex type that contains information about one health check that is associated with the current AWS account.",
+		Resolver:      fetchRoute53HealthChecks,
+		Multiplex:     client.AccountMultiplex,
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -227,6 +225,7 @@ func Route53HealthChecks() *schema.Table {
 				Resolver: client.ResolveARNGlobal(client.Route53Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"healthcheck", *resource.Item.(Route53HealthCheckWrapper).Id}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}

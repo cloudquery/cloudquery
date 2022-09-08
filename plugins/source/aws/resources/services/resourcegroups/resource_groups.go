@@ -12,11 +12,9 @@ import (
 
 func ResourceGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_resourcegroups_resource_groups",
-		Resolver:  fetchResourcegroupsResourceGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("resource-groups"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:         "aws_resourcegroups_resource_groups",
+		Resolver:     fetchResourcegroupsResourceGroups,
+		Multiplex:    client.ServiceAccountRegionMultiplexer("resource-groups"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -40,6 +38,7 @@ func ResourceGroups() *schema.Table {
 				Description: "The ARN of the resource group",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Group.GroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "group",
