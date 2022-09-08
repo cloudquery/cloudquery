@@ -135,6 +135,10 @@ func Servers() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			configurations(), firewallRules(),
+		},
 	}
 }
 

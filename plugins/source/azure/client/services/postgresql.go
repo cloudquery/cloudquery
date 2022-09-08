@@ -9,9 +9,9 @@ import (
 )
 
 type PostgreSQLClient struct {
-	Servers       PostgreSQLServersClient
-	Configuration PostgreSQLConfigurationsClient
-	FirewallRule  PostgreSQLFirewallRulesClient
+	Servers        PostgreSQLServersClient
+	Configurations PostgreSQLConfigurationsClient
+	FirewallRules  PostgreSQLFirewallRulesClient
 }
 
 type PostgreSQLServersClient interface {
@@ -36,8 +36,8 @@ func NewPostgresClient(subscriptionId string, auth autorest.Authorizer) PostgreS
 	firewallSvc := postgresql.NewFirewallRulesClient(subscriptionId)
 	firewallSvc.Authorizer = auth
 	return PostgreSQLClient{
-		Servers:       servers,
-		Configuration: confSvc,
-		FirewallRule:  firewallSvc,
+		Servers:        servers,
+		Configurations: confSvc,
+		FirewallRules:  firewallSvc,
 	}
 }
