@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.2.4
+	github.com/cloudquery/plugin-sdk v0.2.6
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/google/go-cmp v0.5.8
 	github.com/jackc/pgtype v1.12.0
@@ -13,7 +13,7 @@ require (
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
 	github.com/vgarvardt/pgx-google-uuid/v4 v4.0.0
-	golang.org/x/sync v0.0.0-20220819030929-7fc1605a5dde
+	golang.org/x/sync v0.0.0-20220907140024-f12130a52804
 	google.golang.org/grpc v1.49.0
 )
 
