@@ -31,7 +31,7 @@ build:
 # build and run the cq provider
 .PHONY: run
 run: build
-	CQ_PROVIDER_DEBUG=1 CQ_REATTACH_PROVIDERS=.cq_reattach ./cq-provider
+	CQ_PROVIDER_DEBUG=1 CQ_REATTACH_PROVIDERS=.cq_reattach ./cq-provider serve
 
 # Run a fetch command
 .PHONY: fetch
