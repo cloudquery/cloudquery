@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"sync"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -40,9 +39,6 @@ func Buckets() *schema.Table {
 		Description:  "An Amazon S3 bucket is a public cloud storage resource available in Amazon Web Services' (AWS) Simple Storage Service (S3)",
 		Resolver:     fetchS3Buckets,
 		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -126,11 +122,17 @@ func Buckets() *schema.Table {
 				Resolver: client.ResolveARNGlobal(client.S3Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{*resource.Item.(*WrappedBucket).Name}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "ownership_controls",
 				Description: "The OwnershipControls (BucketOwnerEnforced, BucketOwnerPreferred, or ObjectWriter) currently in effect for this Amazon S3 bucket.",
 				Type:        schema.TypeStringArray,
+			},
+			{
+				Name:        "replication_rules",
+				Description:   "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
+				Type:          schema.TypeJSON,
 			},
 		},
 		Relations: []*schema.Table{
@@ -258,124 +260,6 @@ func Buckets() *schema.Table {
 						Name:        "bucket_key_enabled",
 						Description: "Specifies whether Amazon S3 should use an S3 Bucket Key with server-side encryption using KMS (SSE-KMS) for new objects in the bucket",
 						Type:        schema.TypeBool,
-					},
-				},
-			},
-			{
-				Name:          "aws_s3_bucket_replication_rules",
-				Description:   "Specifies which Amazon S3 objects to replicate and where to store the replicas.",
-				Resolver:      schema.PathTableResolver("ReplicationRules"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "bucket_cq_id",
-						Description: "Unique CloudQuery ID of aws_s3_buckets table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "destination_bucket",
-						Description: "The Amazon Resource Name (ARN) of the bucket where you want Amazon S3 to store the results.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Destination.Bucket"),
-					},
-					{
-						Name:        "destination_access_control_translation_owner",
-						Description: "Specifies the replica ownership",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Destination.AccessControlTranslation.Owner"),
-					},
-					{
-						Name:        "destination_account",
-						Description: "Destination bucket owner account ID",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Destination.Account"),
-					},
-					{
-						Name:        "destination_encryption_configuration_replica_kms_key_id",
-						Description: "Specifies the ID (Key ARN or Alias ARN) of the customer managed customer master key (CMK) stored in AWS Key Management Service (KMS) for the destination bucket. Amazon S3 uses this key to encrypt replica objects",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Destination.EncryptionConfiguration.ReplicaKmsKeyID"),
-					},
-					{
-						Name:        "destination_metrics_status",
-						Description: "Specifies whether the replication metrics are enabled.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Destination.Metrics.Status"),
-					},
-					{
-						Name:        "destination_metrics_event_threshold_minutes",
-						Description: "Contains an integer specifying time in minutes",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Destination.Metrics.EventThreshold.Minutes"),
-					},
-					{
-						Name:        "destination_replication_time_status",
-						Description: "Specifies whether the replication time is enabled.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Destination.ReplicationTime.Status"),
-					},
-					{
-						Name:        "destination_replication_time_minutes",
-						Description: "Contains an integer specifying time in minutes",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Destination.ReplicationTime.Time.Minutes"),
-					},
-					{
-						Name:        "destination_storage_class",
-						Description: "The storage class to use when replicating objects, such as S3 Standard or reduced redundancy",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Destination.StorageClass"),
-					},
-					{
-						Name:        "status",
-						Description: "Specifies whether the rule is enabled.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "delete_marker_replication_status",
-						Description: "Indicates whether to replicate delete markers",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DeleteMarkerReplication.Status"),
-					},
-					{
-						Name:     "existing_object_replication_status",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("ExistingObjectReplication.Status"),
-					},
-					{
-						Name:        "filter",
-						Description: "A filter that identifies the subset of objects to which the replication rule applies",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("Filter"),
-					},
-					{
-						Name:        "id",
-						Description: "A unique identifier for the rule",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ID"),
-					},
-					{
-						Name:        "prefix",
-						Description: "An object key name prefix that identifies the object or objects to which the rule applies",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "priority",
-						Description: "The priority indicates which rule has precedence whenever two or more replication rules conflict",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "source_replica_modifications_status",
-						Description: "Specifies whether Amazon S3 replicates modifications on replicas.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SourceSelectionCriteria.ReplicaModifications.Status"),
-					},
-					{
-						Name:        "source_sse_kms_encrypted_objects_status",
-						Description: "Specifies whether Amazon S3 replicates objects created with server-side encryption using a customer master key (CMK) stored in AWS Key Management Service.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SourceSelectionCriteria.SseKmsEncryptedObjects.Status"),
 					},
 				},
 			},
@@ -538,8 +422,6 @@ func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <
 }
 
 func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, resource *WrappedBucket) error {
-	log := meta.Logger()
-	log.Debug("fetching bucket attributes", "bucket", aws.ToString(resource.Name))
 	c := meta.(*client.Client)
 	mgr := c.Services().S3Manager
 
@@ -675,7 +557,7 @@ func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource 
 	})
 	if err != nil {
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetBucketLogging", "bucket", resource.Name, "err", err)
+			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketLogging")
 			return nil
 		}
 		return err
@@ -701,7 +583,7 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetBucketPolicy", "bucket", resource.Name, "err", err)
+			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketPolicy")
 			return nil
 		}
 		return err
@@ -721,7 +603,7 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 	})
 	if err != nil {
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetBucketVersioning", "bucket", resource.Name, "err", err)
+			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketVersioning")
 			return nil
 		}
 		return err
@@ -743,7 +625,7 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetPublicAccessBlock", "bucket", resource.Name, "err", err)
+			meta.Logger().Warn().Err(err).Msg("received access denied on GetPublicAccessBlock")
 			return nil
 		}
 		return err
@@ -768,7 +650,7 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetBucketReplication", "bucket", resource.Name, "err", err)
+			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketReplication")
 			return nil
 		}
 		return err
@@ -793,7 +675,7 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetBucketTagging", "bucket", resource.Name, "err", err)
+			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketTagging")
 			return nil
 		}
 		return err
@@ -830,7 +712,7 @@ func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta,
 		}
 
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn("received access denied on GetBucketOwnershipControls", "bucket", resource.Name, "err", err)
+			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketOwnershipControls")
 			return nil
 		}
 
