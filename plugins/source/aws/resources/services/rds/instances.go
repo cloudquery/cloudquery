@@ -16,8 +16,6 @@ func RdsInstances() *schema.Table {
 		Description: "Contains the details of an Amazon RDS DB instance",
 		Resolver:    fetchRdsInstances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -89,6 +87,7 @@ func RdsInstances() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the DB instance.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBInstanceArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "db_instance_class",
@@ -483,68 +482,18 @@ func RdsInstances() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("StatusInfos"),
 			},
+			{
+				Name:        "associated_roles",
+				Description: "The AWS Identity and Access Management (IAM) roles associated with the DB instance",
+				Type:        schema.TypeJSON,
+			},
+			{
+				Name:        "db_instance_automated_backups_replications",
+				Type: 			schema.TypeJSON,
+				Resolver: 		schema.PathResolver("DBInstanceAutomatedBackupsReplications"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:          "aws_rds_instance_associated_roles",
-				Description:   "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB instance. ",
-				Resolver:      schema.PathTableResolver("AssociatedRoles"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "instance_cq_id",
-						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "instance_id",
-						Description: "The AWS Region-unique, immutable identifier for the DB instance",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "feature_name",
-						Description: "The name of the feature associated with the AWS Identity and Access Management (IAM) role",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "role_arn",
-						Description: "The Amazon Resource Name (ARN) of the IAM role that is associated with the DB instance.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "Describes the state of association between the IAM role and the DB instance",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:        "aws_rds_instance_db_instance_automated_backups_replications",
-				Description: "Automated backups of a DB instance replicated to another AWS Region",
-				Resolver:    schema.PathTableResolver("DBInstanceAutomatedBackupsReplications"),
-				Columns: []schema.Column{
-					{
-						Name:        "instance_cq_id",
-						Description: "Unique CloudQuery ID of aws_rds_instances table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "instance_id",
-						Description: "The AWS Region-unique, immutable identifier for the DB instance",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "db_instance_automated_backups_arn",
-						Description: "The Amazon Resource Name (ARN) of the replicated automated backups.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DBInstanceAutomatedBackupsArn"),
-					},
-				},
-			},
 			{
 				Name:        "aws_rds_instance_db_parameter_groups",
 				Description: "The status of the DB parameter group",

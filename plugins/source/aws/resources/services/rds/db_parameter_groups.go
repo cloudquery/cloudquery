@@ -16,8 +16,6 @@ func RdsDbParameterGroups() *schema.Table {
 		Description: "Contains the details of an Amazon RDS DB parameter group",
 		Resolver:    fetchRdsDbParameterGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -168,7 +166,7 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 		output, err := svc.DescribeDBParameters(ctx, &input)
 		if err != nil {
 			if client.IsAWSError(err, "DBParameterGroupNotFound") {
-				cl.Logger().Debug("received DBParameterGroupNotFound on DescribeDBParameters", "region", cl.Region, "err", err)
+				cl.Logger().Warn().Err(err).Msg("received DBParameterGroupNotFound on DescribeDBParameters")
 				return nil
 			}
 			return err

@@ -17,8 +17,6 @@ func RdsDbSnapshots() *schema.Table {
 		Description: "Contains the details of an Amazon RDS DB snapshot",
 		Resolver:    fetchRdsDbSnapshots,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -53,6 +51,7 @@ func RdsDbSnapshots() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the DB snapshot.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBSnapshotArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "db_snapshot_identifier",

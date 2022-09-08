@@ -16,8 +16,6 @@ func RdsClusters() *schema.Table {
 		Description: "Contains the details of an Amazon Aurora DB cluster",
 		Resolver:    fetchRdsClusters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -117,6 +115,7 @@ func RdsClusters() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) for the DB cluster.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("DBClusterArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "db_cluster_identifier",
@@ -134,7 +133,7 @@ func RdsClusters() *schema.Table {
 				Name:        "db_cluster_option_group_memberships",
 				Description: "Provides the map of option group memberships for this DB cluster.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRdsClusterDbClusterOptionGroupMemberships,
+				Resolver:    schema.PathResolver("DBClusterOptionGroupMemberships"),
 			},
 			{
 				Name:        "db_subnet_group",
@@ -357,128 +356,22 @@ func RdsClusters() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    resolveRdsClusterTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_rds_cluster_associated_roles",
-				Description: "Describes an AWS Identity and Access Management (IAM) role that is associated with a DB cluster. ",
-				Resolver:    schema.PathTableResolver("AssociatedRoles"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "feature_name",
-						Description: "The name of the feature associated with the AWS Identity and Access Management (IAM) role",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "role_arn",
-						Description: "The Amazon Resource Name (ARN) of the IAM role that is associated with the DB cluster.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "Describes the state of association between the IAM role and the DB cluster",
-						Type:        schema.TypeString,
-					},
-				},
+				Name: "associated_roles",
+				Type: schema.TypeJSON,
 			},
 			{
-				Name:        "aws_rds_cluster_db_cluster_members",
-				Description: "Contains information about an instance that is part of a DB cluster. ",
-				Resolver:    schema.PathTableResolver("DBClusterMembers"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "db_cluster_parameter_group_status",
-						Description: "Specifies the status of the DB cluster parameter group for this member of the DB cluster.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DBClusterParameterGroupStatus"),
-					},
-					{
-						Name:        "db_instance_identifier",
-						Description: "Specifies the instance identifier for this member of the DB cluster.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DBInstanceIdentifier"),
-					},
-					{
-						Name:        "is_cluster_writer",
-						Description: "Value that is true if the cluster member is the primary instance for the DB cluster and false otherwise.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "promotion_tier",
-						Description: "A value that specifies the order in which an Aurora Replica is promoted to the primary instance after a failure of the existing primary instance",
-						Type:        schema.TypeInt,
-					},
-				},
+				Name: "db_cluster_memebers",
+				Resolver: schema.PathResolver("DBClusterMembers"),
+				Type: schema.TypeJSON,
 			},
 			{
-				Name:        "aws_rds_cluster_domain_memberships",
-				Description: "An Active Directory Domain membership record associated with the DB instance or cluster. ",
-				Resolver:    schema.PathTableResolver("DomainMemberships"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "domain",
-						Description: "The identifier of the Active Directory Domain.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "fqdn",
-						Description: "The fully qualified domain name of the Active Directory Domain.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("FQDN"),
-					},
-					{
-						Name:        "iam_role_name",
-						Description: "The name of the IAM role to be used when making API calls to the Directory Service.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("IAMRoleName"),
-					},
-					{
-						Name:        "status",
-						Description: "The status of the Active Directory Domain membership for the DB instance or cluster",
-						Type:        schema.TypeString,
-					},
-				},
+				Name: "domain_memberships",
+				Type: schema.TypeJSON,
 			},
 			{
-				Name:        "aws_rds_cluster_vpc_security_groups",
-				Description: "This data type is used as a response element for queries on VPC security group membership. ",
-				Resolver:    schema.PathTableResolver("VpcSecurityGroups"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_rds_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the VPC security group.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "vpc_security_group_id",
-						Description: "The name of the VPC security group.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name: "vpc_security_groups",
+				Type: schema.TypeJSON,
 			},
 		},
 	}
@@ -513,15 +406,4 @@ func resolveRdsClusterTags(ctx context.Context, meta schema.ClientMeta, resource
 		tags[*t.Key] = t.Value
 	}
 	return resource.Set("tags", tags)
-}
-func resolveRdsClusterDbClusterOptionGroupMemberships(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster := resource.Item.(types.DBCluster)
-	if cluster.DBClusterOptionGroupMemberships == nil {
-		return nil
-	}
-	memberships := make(map[string]interface{}, len(cluster.DBClusterOptionGroupMemberships))
-	for _, m := range cluster.DBClusterOptionGroupMemberships {
-		memberships[*m.DBClusterOptionGroupName] = m.Status
-	}
-	return resource.Set(c.Name, memberships)
 }
