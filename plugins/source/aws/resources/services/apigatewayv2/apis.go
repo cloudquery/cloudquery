@@ -22,14 +22,20 @@ func Apigatewayv2Apis() *schema.Table {
 		Description: "Represents an API.",
 		Resolver:    fetchApigatewayv2Apis,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "id",
+				Description:     "The API ID.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ApiId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -69,12 +75,6 @@ func Apigatewayv2Apis() *schema.Table {
 				Name:        "api_gateway_managed",
 				Description: "Specifies whether an API is managed by API Gateway. You can't update or delete a managed API by using API Gateway. A managed API can be deleted only through the tooling or service that created it.",
 				Type:        schema.TypeBool,
-			},
-			{
-				Name:        "id",
-				Description: "The API ID.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ApiId"),
 			},
 			{
 				Name:        "api_key_selection_expression",

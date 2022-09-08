@@ -19,22 +19,27 @@ func Apigatewayv2DomainNames() *schema.Table {
 		Description:   "Represents a domain name.",
 		Resolver:      fetchApigatewayv2DomainNames,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("apigateway"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "domain_name"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "domain_name",
+				Description:     "The name of the DomainName resource.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",
@@ -43,11 +48,6 @@ func Apigatewayv2DomainNames() *schema.Table {
 				Resolver: client.ResolveARNWithRegion(client.ApigatewayService, func(resource *schema.Resource) ([]string, error) {
 					return []string{domainNamesIDPart, *resource.Item.(types.DomainName).DomainName}, nil
 				}),
-			},
-			{
-				Name:        "domain_name",
-				Description: "The name of the DomainName resource.",
-				Type:        schema.TypeString,
 			},
 			{
 				Name:        "api_mapping_selection_expression",
@@ -77,66 +77,14 @@ func Apigatewayv2DomainNames() *schema.Table {
 				Description: "The collection of tags associated with a domain name.",
 				Type:        schema.TypeJSON,
 			},
+			{
+				Name:        "configurations",
+				Description: "The domain name configuration.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("DomainNameConfigurations"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_apigatewayv2_domain_name_configurations",
-				Description: "The domain name configuration.",
-				Resolver:    schema.PathTableResolver("DomainNameConfigurations"),
-				Columns: []schema.Column{
-					{
-						Name:        "domain_name_cq_id",
-						Description: "Unique CloudQuery ID of aws_apigatewayv2_domain_names table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "api_gateway_domain_name",
-						Description: "A domain name for the API.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "certificate_arn",
-						Description: "An AWS-managed certificate that will be used by the edge-optimized endpoint for this domain name. AWS Certificate Manager is the only supported source.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "certificate_name",
-						Description: "The user-friendly name of the certificate that will be used by the edge-optimized endpoint for this domain name.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "certificate_upload_date",
-						Description: "The timestamp when the certificate that was used by edge-optimized endpoint for this domain name was uploaded.",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "domain_name_status",
-						Description: "The status of the domain name migration. The valid values are AVAILABLE and UPDATING. If the status is UPDATING, the domain cannot be modified further until the existing operation is complete. If it is AVAILABLE, the domain can be updated.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "domain_name_status_message",
-						Description: "An optional text message containing detailed information about status of the domain name migration.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "endpoint_type",
-						Description: "The endpoint type.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "hosted_zone_id",
-						Description: "The Amazon Route 53 Hosted Zone ID of the endpoint.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "security_policy",
-						Description: "The Transport Layer Security (TLS) version of the security policy for this domain name. The valid values are TLS_1_0 and TLS_1_2.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:        "aws_apigatewayv2_domain_name_rest_api_mappings",
 				Description: "Represents an API mapping.",

@@ -12,19 +12,24 @@ import (
 
 func Apigatewayv2VpcLinks() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_apigatewayv2_vpc_links",
-		Description:  "Represents a VPC link.",
-		Resolver:     fetchApigatewayv2VpcLinks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("apigateway"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_apigatewayv2_vpc_links",
+		Description: "Represents a VPC link.",
+		Resolver:    fetchApigatewayv2VpcLinks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:            "id",
+				Description:     "The ID of the VPC link.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VpcLinkId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -54,12 +59,6 @@ func Apigatewayv2VpcLinks() *schema.Table {
 				Name:        "subnet_ids",
 				Description: "A list of subnet IDs to include in the VPC link.",
 				Type:        schema.TypeStringArray,
-			},
-			{
-				Name:        "id",
-				Description: "The ID of the VPC link.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("VpcLinkId"),
 			},
 			{
 				Name:        "created_date",
