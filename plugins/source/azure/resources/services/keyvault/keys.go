@@ -31,6 +31,9 @@ func keys() *schema.Table {
 				Name:     "kid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kid"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "attributes",

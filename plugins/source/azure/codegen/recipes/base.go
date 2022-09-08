@@ -178,7 +178,7 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	columns = append(columns, definition.customColumns...)
 
 	for i := range columns {
-		if columns[i].Name == "id" {
+		if columns[i].Name == "id" || columns[i].Name == "kid" {
 			columns[i].Options.PrimaryKey = true
 		}
 	}
