@@ -56,13 +56,17 @@ func RdsDbSecurityGroups() *schema.Table {
 				Name:        "ec2_security_groups",
 				Description: "Contains a list of EC2 Security Group elements.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRdsDbSecurityGroupJSONField(func(g types.DBSecurityGroup) interface{} { return g.EC2SecurityGroups }),
+				Resolver: resolveRdsDbSecurityGroupJSONField(func(g types.DBSecurityGroup) interface{} {
+					return g.EC2SecurityGroups
+				}),
 			},
 			{
 				Name:        "ip_ranges",
 				Description: "Contains a list of IP range elements.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRdsDbSecurityGroupJSONField(func(g types.DBSecurityGroup) interface{} { return g.IPRanges }),
+				Resolver: resolveRdsDbSecurityGroupJSONField(func(g types.DBSecurityGroup) interface{} {
+					return g.IPRanges
+				}),
 			},
 			{
 				Name:        "owner_id",
@@ -86,7 +90,9 @@ func RdsDbSecurityGroups() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)

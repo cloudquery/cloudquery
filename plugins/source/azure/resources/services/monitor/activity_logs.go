@@ -234,7 +234,9 @@ func MonitorActivityLogs() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchMonitorActivityLogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	// we fetch activity logs records from now to some point in the past. fetchWindow defines how far that point in the past is.

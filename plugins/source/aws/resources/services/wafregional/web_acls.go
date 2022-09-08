@@ -130,7 +130,9 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 	svc := cl.Services().WafRegional
 	var params wafregional.ListWebACLsInput
 	for {
-		result, err := svc.ListWebACLs(ctx, &params, func(o *wafregional.Options) { o.Region = cl.Region })
+		result, err := svc.ListWebACLs(ctx, &params, func(o *wafregional.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -138,7 +140,9 @@ func fetchWafregionalWebAcls(ctx context.Context, meta schema.ClientMeta, parent
 			detail, err := svc.GetWebACL(
 				ctx,
 				&wafregional.GetWebACLInput{WebACLId: item.WebACLId},
-				func(o *wafregional.Options) { o.Region = cl.Region },
+				func(o *wafregional.Options) {
+					o.Region = cl.Region
+				},
 			)
 			if err != nil {
 				return diag.WrapError(err)

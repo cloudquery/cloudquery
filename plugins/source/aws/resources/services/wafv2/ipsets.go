@@ -109,7 +109,9 @@ func fetchWafv2Ipsets(ctx context.Context, meta schema.ClientMeta, parent *schem
 					Name:  s.Name,
 					Scope: cl.WAFScope,
 				},
-				func(options *wafv2.Options) { options.Region = cl.Region },
+				func(options *wafv2.Options) {
+					options.Region = cl.Region
+				},
 			)
 			if err != nil {
 				return diag.WrapError(err)
@@ -144,7 +146,9 @@ func resolveIpsetTags(ctx context.Context, meta schema.ClientMeta, resource *sch
 	tags := make(map[string]string)
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) { options.Region = cl.Region })
+		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return diag.WrapError(err)
 		}
