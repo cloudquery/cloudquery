@@ -45,7 +45,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 		return nil, errors.WithStack(fmt.Errorf("failed to unmarshal GitHub spec: %w", err))
 	}
 
-	// validate provider config
+	// validate plugin config
 	if spec.AccessToken == "" {
 		return nil, errors.WithStack(fmt.Errorf("missing personal access token in configuration"))
 	}
@@ -58,7 +58,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (sche
 	c := github.NewClient(tc)
 
 	// Init your client and 3rd party clients using the user's configuration
-	// passed by the SDK providerConfig
+	// passed by the SDK.
 	return &Client{
 		logger: logger,
 		Github: GithubServices{
