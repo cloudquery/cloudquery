@@ -1,6 +1,6 @@
 package client
 
 type Spec struct {
-	AccessToken string   `yaml:"access_token"`
-	Orgs        []string `yaml:"orgs"`
+	AccessToken string   `json:"access_token"`
+	Orgs        []string `json:"orgs"`
 }
