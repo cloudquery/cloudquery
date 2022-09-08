@@ -1,13 +1,11 @@
 package client
 
-// Provider Spec
-
 type Spec struct {
-	Token    string   `yaml:"api_token,omitempty"`
-	ApiKey   string   `yaml:"api_key,omitempty"`
-	ApiEmail string   `yaml:"api_email,omitempty"`
-	Accounts []string `yaml:"accounts,omitempty"`
-	Zones    []string `yaml:"zones,omitempty"`
+	Token    string   `json:"api_token,omitempty"`
+	ApiKey   string   `json:"api_key,omitempty"`
+	ApiEmail string   `json:"api_email,omitempty"`
+	Accounts []string `json:"accounts,omitempty"`
+	Zones    []string `json:"zones,omitempty"`
 }
 
 func (Spec) Example() string {
