@@ -55,6 +55,10 @@ func Vaults() *schema.Table {
 				Resolver: schema.PathResolver("Properties"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			keys(),
+		},
 	}
 }
 
