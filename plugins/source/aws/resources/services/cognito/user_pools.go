@@ -16,16 +16,14 @@ func CognitoUserPools() *schema.Table {
 		Description:   "A container for information about the user pool.",
 		Resolver:      fetchCognitoUserPools,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("cognito-idp"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -177,10 +175,11 @@ func CognitoUserPools() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the user pool.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Id"),
+				Name:            "id",
+				Description:     "The ID of the user pool.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "lambda_config_create_auth_challenge",
@@ -510,10 +509,10 @@ func CognitoUserPools() *schema.Table {
 				},
 			},
 			{
-				Name:          "aws_cognito_user_pool_identity_providers",
-				Description:   "A container for information about an identity provider.",
-				Resolver:      fetchCognitoUserPoolIdentityProviders,
-				
+				Name:        "aws_cognito_user_pool_identity_providers",
+				Description: "A container for information about an identity provider.",
+				Resolver:    fetchCognitoUserPoolIdentityProviders,
+
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{

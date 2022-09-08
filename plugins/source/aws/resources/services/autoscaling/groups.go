@@ -26,8 +26,6 @@ func AutoscalingGroups() *schema.Table {
 		Description: "Describes an Auto Scaling group.",
 		Resolver:    fetchAutoscalingGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -98,10 +96,11 @@ func AutoscalingGroups() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the Auto Scaling group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AutoScalingGroupARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the Auto Scaling group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("AutoScalingGroupARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "capacity_rebalance",

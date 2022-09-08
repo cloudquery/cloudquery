@@ -16,16 +16,14 @@ func Ec2FlowLogs() *schema.Table {
 		Description:   "Describes a flow log.",
 		Resolver:      fetchEc2FlowLogs,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -42,10 +40,11 @@ func Ec2FlowLogs() *schema.Table {
 				}),
 			},
 			{
-				Name:        "id",
-				Description: "The flow log ID.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("FlowLogId"),
+				Name:            "id",
+				Description:     "The flow log ID.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("FlowLogId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "creation_time",

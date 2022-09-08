@@ -12,19 +12,17 @@ import (
 
 func Ec2NetworkAcls() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_network_acls",
-		Description:  "Describes a network ACL.",
-		Resolver:     fetchEc2NetworkAcls,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_ec2_network_acls",
+		Description: "Describes a network ACL.",
+		Resolver:    fetchEc2NetworkAcls,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -46,10 +44,11 @@ func Ec2NetworkAcls() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the network ACL.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("NetworkAclId"),
+				Name:            "id",
+				Description:     "The ID of the network ACL.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("NetworkAclId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "owner_id",

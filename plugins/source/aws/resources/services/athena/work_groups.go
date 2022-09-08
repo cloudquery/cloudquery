@@ -19,8 +19,6 @@ func WorkGroups() *schema.Table {
 		Description: "A workgroup, which contains a name, description, creation time, state, and other configuration, listed under WorkGroup$Configuration",
 		Resolver:    fetchAthenaWorkGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -29,10 +27,11 @@ func WorkGroups() *schema.Table {
 				Resolver:    client.ResolveAWSAccount,
 			},
 			{
-				Name:        "arn",
-				Description: "ARN of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    resolveAthenaWorkGroupArn,
+				Name:            "arn",
+				Description:     "ARN of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        resolveAthenaWorkGroupArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",

@@ -13,19 +13,18 @@ import (
 
 func Ec2EbsSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_ec2_ebs_snapshots",
-		Description: "Describes a snapshot.",
-		Resolver:    fetchEc2EbsSnapshots,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "snapshot_id"}},
+		Name:          "aws_ec2_ebs_snapshots",
+		Description:   "Describes a snapshot.",
+		Resolver:      fetchEc2EbsSnapshots,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -79,9 +78,10 @@ func Ec2EbsSnapshots() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "snapshot_id",
-				Description: "The ID of the snapshot",
-				Type:        schema.TypeString,
+				Name:            "snapshot_id",
+				Description:     "The ID of the snapshot",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "start_time",

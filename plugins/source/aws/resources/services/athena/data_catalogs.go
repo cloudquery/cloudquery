@@ -16,8 +16,6 @@ func DataCatalogs() *schema.Table {
 		Description: "Contains information about a data catalog in an Amazon Web Services account",
 		Resolver:    fetchAthenaDataCatalogs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -32,10 +30,11 @@ func DataCatalogs() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "ARN of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    resolveAthenaDataCatalogArn,
+				Name:            "arn",
+				Description:     "ARN of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        resolveAthenaDataCatalogArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

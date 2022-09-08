@@ -12,19 +12,17 @@ import (
 
 func Ec2InternetGateways() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_internet_gateways",
-		Description:  "Describes an internet gateway.",
-		Resolver:     fetchEc2InternetGateways,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_ec2_internet_gateways",
+		Description: "Describes an internet gateway.",
+		Resolver:    fetchEc2InternetGateways,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -41,10 +39,11 @@ func Ec2InternetGateways() *schema.Table {
 				}),
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the internet gateway.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InternetGatewayId"),
+				Name:            "id",
+				Description:     "The ID of the internet gateway.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("InternetGatewayId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "owner_id",

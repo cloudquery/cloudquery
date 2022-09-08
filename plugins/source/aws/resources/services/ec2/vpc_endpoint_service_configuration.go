@@ -12,13 +12,10 @@ import (
 
 func Ec2VpcEndpointServiceConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_vpc_endpoint_service_configurations",
-		Description:  "Describes a service configuration for a VPC endpoint service.",
-		Resolver:     fetchEc2VpcEndpointServiceConfigurations,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_ec2_vpc_endpoint_service_configurations",
+		Description: "Describes a service configuration for a VPC endpoint service.",
+		Resolver:    fetchEc2VpcEndpointServiceConfigurations,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +36,7 @@ func Ec2VpcEndpointServiceConfigurations() *schema.Table {
 				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"vpc-endpoint-service-configuration", *resource.Item.(types.ServiceConfiguration).ServiceId}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "acceptance_required",

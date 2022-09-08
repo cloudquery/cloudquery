@@ -15,13 +15,12 @@ func Ec2EbsVolumes() *schema.Table {
 		Name:      "aws_ec2_ebs_volumes",
 		Resolver:  fetchEc2EbsVolumes,
 		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:            "account_id",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "region",
@@ -29,9 +28,10 @@ func Ec2EbsVolumes() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeId"),
+				Name:            "id",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VolumeId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",

@@ -8,21 +8,18 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func GlobalSettings() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_backup_global_settings",
-		Resolver:     fetchBackupGlobalSettings,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id"}},
+		Name:      "aws_backup_global_settings",
+		Resolver:  fetchBackupGlobalSettings,
+		Multiplex: client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "global_settings",

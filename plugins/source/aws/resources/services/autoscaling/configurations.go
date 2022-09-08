@@ -11,13 +11,10 @@ import (
 
 func AutoscalingLaunchConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_autoscaling_launch_configurations",
-		Description:  "Describes a launch configuration.",
-		Resolver:     fetchAutoscalingLaunchConfigurations,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_autoscaling_launch_configurations",
+		Description: "Describes a launch configuration.",
+		Resolver:    fetchAutoscalingLaunchConfigurations,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -97,10 +94,11 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the launch configuration.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LaunchConfigurationARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the launch configuration.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("LaunchConfigurationARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "metadata_options_http_endpoint",

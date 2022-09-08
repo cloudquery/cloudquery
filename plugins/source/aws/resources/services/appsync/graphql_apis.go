@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func GraphqlApis() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_appsync_graphql_apis",
-		Description:  "Describes a GraphQL API",
-		Resolver:     fetchAppsyncGraphqlApis,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("appsync"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_appsync_graphql_apis",
+		Description: "Describes a GraphQL API",
+		Resolver:    fetchAppsyncGraphqlApis,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("appsync"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,9 +35,10 @@ func GraphqlApis() *schema.Table {
 				Resolver:    schema.PathResolver("ApiId"),
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN)",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN)",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "authentication_type",

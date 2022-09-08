@@ -15,15 +15,13 @@ func Ec2TransitGateways() *schema.Table {
 		Name:          "aws_ec2_transit_gateways",
 		Resolver:      fetchEc2TransitGateways,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:            "account_id",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "region",
@@ -103,9 +101,10 @@ func Ec2TransitGateways() *schema.Table {
 				Resolver: schema.PathResolver("Options.TransitGatewayCidrBlocks"),
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TransitGatewayId"),
+				Name:            "id",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("TransitGatewayId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "vpn_ecmp_support",

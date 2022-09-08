@@ -15,16 +15,14 @@ func CognitoIdentityPools() *schema.Table {
 		Description:   "An object representing an Amazon Cognito identity pool.",
 		Resolver:      fetchCognitoIdentityPools,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("cognito-identity"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -46,10 +44,11 @@ func CognitoIdentityPools() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "id",
-				Description: "An identity pool ID in the format REGION:GUID.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("IdentityPoolId"),
+				Name:            "id",
+				Description:     "An identity pool ID in the format REGION:GUID.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("IdentityPoolId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "identity_pool_name",

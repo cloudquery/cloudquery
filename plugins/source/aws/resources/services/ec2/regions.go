@@ -16,7 +16,6 @@ func AwsRegions() *schema.Table {
 		Description: "Describes a Region.",
 		Resolver:    fetchRegions,
 		Multiplex:   client.AccountMultiplex,
-
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",

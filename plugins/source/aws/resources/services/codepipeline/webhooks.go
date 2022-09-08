@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Webhooks() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_codepipeline_webhooks",
-		Description:  "The detail returned for each webhook after listing webhooks, such as the webhook URL, the webhook name, and the webhook ARN",
-		Resolver:     fetchCodepipelineWebhooks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("codepipeline"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_codepipeline_webhooks",
+		Description: "The detail returned for each webhook after listing webhooks, such as the webhook URL, the webhook name, and the webhook ARN",
+		Resolver:    fetchCodepipelineWebhooks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("codepipeline"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -74,9 +70,10 @@ func Webhooks() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the webhook",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the webhook",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "error_code",

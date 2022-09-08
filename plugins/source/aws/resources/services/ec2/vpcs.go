@@ -12,19 +12,17 @@ import (
 
 func Ec2Vpcs() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_vpcs",
-		Description:  "Describes a VPC.",
-		Resolver:     fetchEc2Vpcs,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_ec2_vpcs",
+		Description: "Describes a VPC.",
+		Resolver:    fetchEc2Vpcs,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -77,10 +75,11 @@ func Ec2Vpcs() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the VPC.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("VpcId"),
+				Name:            "id",
+				Description:     "The ID of the VPC.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VpcId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 		Relations: []*schema.Table{

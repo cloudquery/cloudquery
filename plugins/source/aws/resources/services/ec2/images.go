@@ -13,19 +13,18 @@ import (
 
 func Ec2Images() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_ec2_images",
-		Description: "Describes an image.",
-		Resolver:    fetchEc2Images,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_ec2_images",
+		Description:   "Describes an image.",
+		Resolver:      fetchEc2Images,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -42,10 +41,11 @@ func Ec2Images() *schema.Table {
 				}),
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the AMI.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ImageId"),
+				Name:            "id",
+				Description:     "The ID of the AMI.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ImageId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "architecture",

@@ -16,8 +16,6 @@ func LogGroups() *schema.Table {
 		Description: "Represents a log group.",
 		Resolver:    fetchCloudwatchlogsLogGroups,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,9 +36,10 @@ func LogGroups() *schema.Table {
 				Resolver:    ResolveCloudwatchlogsLogGroupTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the log group.",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the log group.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "creation_time",

@@ -17,19 +17,17 @@ type ipPermission struct {
 
 func Ec2SecurityGroups() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_security_groups",
-		Description:  "Describes a security group .",
-		Resolver:     fetchEc2SecurityGroups,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_ec2_security_groups",
+		Description: "Describes a security group .",
+		Resolver:    fetchEc2SecurityGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -51,10 +49,11 @@ func Ec2SecurityGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the security group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("GroupId"),
+				Name:            "id",
+				Description:     "The ID of the security group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("GroupId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "group_name",

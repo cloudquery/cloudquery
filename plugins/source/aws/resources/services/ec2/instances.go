@@ -18,14 +18,13 @@ func Ec2Instances() *schema.Table {
 		Description: "Describes an instance.",
 		Resolver:    fetchEc2Instances,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -153,10 +152,11 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the instance.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InstanceId"),
+				Name:            "id",
+				Description:     "The ID of the instance.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("InstanceId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "instance_lifecycle",

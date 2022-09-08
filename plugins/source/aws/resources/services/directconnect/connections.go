@@ -15,16 +15,14 @@ func DirectconnectConnections() *schema.Table {
 		Description:   "Information about a Direct Connect Connection",
 		Resolver:      fetchDirectconnectConnections,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -51,10 +49,11 @@ func DirectconnectConnections() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the connection.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ConnectionId"),
+				Name:            "id",
+				Description:     "The ID of the connection.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ConnectionId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

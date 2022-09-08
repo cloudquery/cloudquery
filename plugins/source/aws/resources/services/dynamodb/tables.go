@@ -21,12 +21,10 @@ type simplifiedGlobalSecondaryIndex struct {
 
 func DynamodbTables() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_dynamodb_tables",
-		Description: "Information about a DynamoDB table.",
-		Resolver:    fetchDynamodbTables,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("dynamodb"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_dynamodb_tables",
+		Description:   "Information about a DynamoDB table.",
+		Resolver:      fetchDynamodbTables,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("dynamodb"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -163,10 +161,11 @@ func DynamodbTables() *schema.Table {
 				Resolver:    resolveDynamodbTableStreamSpecification,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) that uniquely identifies the table.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TableArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) that uniquely identifies the table.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("TableArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "table_class_last_update",

@@ -9,28 +9,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func InstanceTypes() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_instance_types",
-		Description:  "Describes the instance type.",
-		Resolver:     fetchEc2InstanceTypes,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "instance_type"}},
+		Name:        "aws_ec2_instance_types",
+		Description: "Describes the instance type.",
+		Resolver:    fetchEc2InstanceTypes,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "auto_recovery_supported",
@@ -162,9 +160,10 @@ func InstanceTypes() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "instance_type",
-				Description: "The instance type",
-				Type:        schema.TypeString,
+				Name:            "instance_type",
+				Description:     "The instance type",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "memory_info_size_in_mi_b",

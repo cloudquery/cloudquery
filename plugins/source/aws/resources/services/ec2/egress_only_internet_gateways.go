@@ -10,16 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func EgressOnlyInternetGateways() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_egress_only_internet_gateways",
-		Description:  "Describes an egress-only internet gateway.",
-		Resolver:     fetchEc2EgressOnlyInternetGateways,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_ec2_egress_only_internet_gateways",
+		Description: "Describes an egress-only internet gateway.",
+		Resolver:    fetchEc2EgressOnlyInternetGateways,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -40,6 +36,7 @@ func EgressOnlyInternetGateways() *schema.Table {
 				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"egress-only-internet-gateway", *resource.Item.(types.EgressOnlyInternetGateway).EgressOnlyInternetGatewayId}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "attachments",

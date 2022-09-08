@@ -15,16 +15,14 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 		Description:   "Information about a virtual interface. A virtual interface (VLAN) transmits the traffic between the AWS Direct Connect location and the customer network",
 		Resolver:      fetchDirectconnectVirtualInterfaces,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",
@@ -127,10 +125,11 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the virtual interface.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("VirtualInterfaceId"),
+				Name:            "id",
+				Description:     "The ID of the virtual interface.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VirtualInterfaceId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "virtual_interface_name",

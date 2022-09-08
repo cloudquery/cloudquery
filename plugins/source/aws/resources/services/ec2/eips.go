@@ -12,19 +12,17 @@ import (
 
 func Ec2Eips() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_eips",
-		Description:  "Describes an Elastic IP address, or a carrier IP address.",
-		Resolver:     fetchEc2Eips,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "allocation_id"}},
+		Name:        "aws_ec2_eips",
+		Description: "Describes an Elastic IP address, or a carrier IP address.",
+		Resolver:    fetchEc2Eips,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -33,9 +31,10 @@ func Ec2Eips() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "allocation_id",
-				Description: "The ID representing the allocation of the address for use with EC2-VPC.",
-				Type:        schema.TypeString,
+				Name:            "allocation_id",
+				Description:     "The ID representing the allocation of the address for use with EC2-VPC.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "association_id",

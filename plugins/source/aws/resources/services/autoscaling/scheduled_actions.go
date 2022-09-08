@@ -9,16 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func AutoscalingScheduledActions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_autoscaling_scheduled_actions",
-		Description:  "Describes a scheduled scaling action.",
-		Resolver:     fetchAutoscalingScheduledActions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("autoscaling"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_autoscaling_scheduled_actions",
+		Description: "Describes a scheduled scaling action.",
+		Resolver:    fetchAutoscalingScheduledActions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("autoscaling"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -64,10 +60,11 @@ func AutoscalingScheduledActions() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the scheduled action.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ScheduledActionARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the scheduled action.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ScheduledActionARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

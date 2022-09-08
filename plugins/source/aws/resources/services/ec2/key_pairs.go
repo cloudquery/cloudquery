@@ -9,22 +9,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func KeyPairs() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_key_pairs",
-		Description:  "Describes an EC2 Key Pair.",
-		Resolver:     fetchEc2KeyPairs,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_ec2_key_pairs",
+		Description: "Describes an EC2 Key Pair.",
+		Resolver:    fetchEc2KeyPairs,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the Key Pair",
-				Type:        schema.TypeString,
-				Resolver:    resolveEc2keyPairArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the Key Pair",
+				Type:            schema.TypeString,
+				Resolver:        resolveEc2keyPairArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "account_id",

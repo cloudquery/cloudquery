@@ -15,16 +15,12 @@ var (
 	validStackNotFoundRegex = regexp.MustCompile("Stack with id (.*) does not exist")
 )
 
-
 func Stacks() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_cloudformation_stacks",
-		Description:  "The Stack data type.",
-		Resolver:     fetchCloudformationStacks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("cloudformation"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:        "aws_cloudformation_stacks",
+		Description: "The Stack data type.",
+		Resolver:    fetchCloudformationStacks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -159,10 +155,11 @@ func Stacks() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "id",
-				Description: "Unique identifier of the stack.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StackId"),
+				Name:            "id",
+				Description:     "Unique identifier of the stack.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("StackId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "stack_status_reason",

@@ -15,23 +15,22 @@ type ec2RegionalConfig struct {
 
 func Ec2RegionalConfig() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_regional_config",
-		Description:  "Ec2 Regional Config defines common default configuration for ec2 service",
-		Resolver:     fetchEc2RegionalConfig,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
+		Name:        "aws_ec2_regional_config",
+		Description: "Ec2 Regional Config defines common default configuration for ec2 service",
+		Resolver:    fetchEc2RegionalConfig,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:            "account_id",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:            "region",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "ebs_encryption_enabled_by_default",

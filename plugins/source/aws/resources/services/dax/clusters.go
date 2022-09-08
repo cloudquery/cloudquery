@@ -12,12 +12,10 @@ import (
 
 func DaxClusters() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_dax_clusters",
-		Description: "Information about a DAX cluster.",
-		Resolver:    fetchDaxClusters,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("dax"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_dax_clusters",
+		Description:   "Information about a DAX cluster.",
+		Resolver:      fetchDaxClusters,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("dax"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -44,10 +42,11 @@ func DaxClusters() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) that uniquely identifies the cluster.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ClusterArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) that uniquely identifies the cluster.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ClusterArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "cluster_discovery_endpoint_address",

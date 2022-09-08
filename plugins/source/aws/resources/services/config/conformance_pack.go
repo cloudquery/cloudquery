@@ -18,12 +18,10 @@ type ConformancePackComplianceWrapper struct {
 
 func ConfigConformancePack() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_config_conformance_packs",
-		Description: "Returns details of a conformance pack.",
-		Resolver:    fetchConfigConformancePacks,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("config"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_config_conformance_packs",
+		Description:   "Returns details of a conformance pack.",
+		Resolver:      fetchConfigConformancePacks,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("config"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -39,10 +37,11 @@ func ConfigConformancePack() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "Amazon Resource Name (ARN) of the conformance pack.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ConformancePackArn"),
+				Name:            "arn",
+				Description:     "Amazon Resource Name (ARN) of the conformance pack.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ConformancePackArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "conformance_pack_id",

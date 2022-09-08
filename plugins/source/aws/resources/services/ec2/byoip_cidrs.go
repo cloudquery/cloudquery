@@ -15,27 +15,27 @@ func Ec2ByoipCidrs() *schema.Table {
 		Description:   "Information about an address range that is provisioned for use with your AWS resources through bring your own IP addresses (BYOIP).",
 		Resolver:      fetchEc2ByoipCidrs,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "cidr"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "cidr",
-				Description: "The address range, in CIDR notation.",
-				Type:        schema.TypeString,
+				Name:            "cidr",
+				Description:     "The address range, in CIDR notation.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "description",

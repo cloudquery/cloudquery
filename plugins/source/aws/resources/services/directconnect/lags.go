@@ -15,16 +15,14 @@ func DirectconnectLags() *schema.Table {
 		Description:   "Information about Direct Connect Link Aggregation Group (LAG)",
 		Resolver:      fetchDirectconnectLags,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -77,10 +75,11 @@ func DirectconnectLags() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the LAG.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LagId"),
+				Name:            "id",
+				Description:     "The ID of the LAG.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("LagId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

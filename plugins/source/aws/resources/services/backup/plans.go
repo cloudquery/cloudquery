@@ -15,8 +15,6 @@ func Plans() *schema.Table {
 		Description: "Contains metadata about a backup plan.",
 		Resolver:    fetchBackupPlans,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,10 +29,11 @@ func Plans() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "An Amazon Resource Name (ARN) that uniquely identifies a backup plan.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("BackupPlanArn"),
+				Name:            "arn",
+				Description:     "An Amazon Resource Name (ARN) that uniquely identifies a backup plan.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("BackupPlanArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "id",

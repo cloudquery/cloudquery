@@ -10,17 +10,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Hosts() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_ec2_hosts",
 		Description:   "Describes the properties of the Dedicated Host.",
 		Resolver:      fetchEc2Hosts,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
 		IgnoreInTests: true,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -41,6 +37,7 @@ func Hosts() *schema.Table {
 				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"dedicated-host", *resource.Item.(types.Host).HostId}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "allocation_time",

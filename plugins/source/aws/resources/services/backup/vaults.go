@@ -16,12 +16,10 @@ import (
 
 func Vaults() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_backup_vaults",
-		Description: "Contains metadata about a backup vault.",
-		Resolver:    fetchBackupVaults,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
-
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:                 "aws_backup_vaults",
+		Description:          "Contains metadata about a backup vault.",
+		Resolver:             fetchBackupVaults,
+		Multiplex:            client.ServiceAccountRegionMultiplexer("backup"),
 		PostResourceResolver: resolveVaultNotifications,
 		Columns: []schema.Column{
 			{
@@ -37,10 +35,11 @@ func Vaults() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "An Amazon Resource Name (ARN) that uniquely identifies a backup vault; for example, arn:aws:backup:us-east-1:123456789012:vault:aBackupVault.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("BackupVaultArn"),
+				Name:            "arn",
+				Description:     "An Amazon Resource Name (ARN) that uniquely identifies a backup vault; for example, arn:aws:backup:us-east-1:123456789012:vault:aBackupVault.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("BackupVaultArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

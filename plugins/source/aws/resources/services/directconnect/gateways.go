@@ -16,16 +16,14 @@ func DirectconnectGateways() *schema.Table {
 		Description:   "Information about a Direct Connect gateway, which enables you to connect virtual interfaces and virtual private gateway or transit gateways.",
 		Resolver:      fetchDirectconnectGateways,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",
@@ -41,10 +39,11 @@ func DirectconnectGateways() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the Direct Connect gateway.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DirectConnectGatewayId"),
+				Name:            "id",
+				Description:     "The ID of the Direct Connect gateway.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("DirectConnectGatewayId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

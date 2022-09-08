@@ -12,19 +12,17 @@ import (
 
 func Ec2RouteTables() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_route_tables",
-		Description:  "Describes a route table.",
-		Resolver:     fetchEc2RouteTables,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:        "aws_ec2_route_tables",
+		Description: "Describes a route table.",
+		Resolver:    fetchEc2RouteTables,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -46,10 +44,11 @@ func Ec2RouteTables() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the route table.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RouteTableId"),
+				Name:            "id",
+				Description:     "The ID of the route table.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("RouteTableId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

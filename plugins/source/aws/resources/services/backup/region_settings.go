@@ -8,27 +8,25 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func RegionSettings() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_backup_region_settings",
-		Resolver:     fetchBackupRegionSettings,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("backup"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
+		Name:      "aws_backup_region_settings",
+		Resolver:  fetchBackupRegionSettings,
+		Multiplex: client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "resource_type_management_preference",

@@ -14,15 +14,13 @@ func Ec2VpnGateways() *schema.Table {
 		Name:          "aws_ec2_vpn_gateways",
 		Resolver:      fetchEc2VpnGateways,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:            "account_id",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:     "region",
@@ -59,9 +57,10 @@ func Ec2VpnGateways() *schema.Table {
 				Type: schema.TypeString,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VpnGatewayId"),
+				Name:            "id",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VpnGatewayId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 		Relations: []*schema.Table{

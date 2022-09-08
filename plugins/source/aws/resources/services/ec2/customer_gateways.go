@@ -12,19 +12,18 @@ import (
 
 func Ec2CustomerGateways() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_ec2_customer_gateways",
-		Description: "Describes a customer gateway.",
-		Resolver:    fetchEc2CustomerGateways,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
+		Name:          "aws_ec2_customer_gateways",
+		Description:   "Describes a customer gateway.",
+		Resolver:      fetchEc2CustomerGateways,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -33,10 +32,11 @@ func Ec2CustomerGateways() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the customer gateway.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CustomerGatewayId"),
+				Name:            "id",
+				Description:     "The ID of the customer gateway.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("CustomerGatewayId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "bgp_asn",

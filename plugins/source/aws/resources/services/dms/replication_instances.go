@@ -20,16 +20,14 @@ func DmsReplicationInstances() *schema.Table {
 		Description:   "Provides information that defines a replication instance.",
 		Resolver:      fetchDmsReplicationInstances,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("dms"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -123,10 +121,11 @@ func DmsReplicationInstances() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the replication instance.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ReplicationInstanceArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the replication instance.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ReplicationInstanceArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "class",

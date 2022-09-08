@@ -12,13 +12,10 @@ import (
 
 func Ec2InstanceStatuses() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_instance_statuses",
-		Description:  "Describes the status of an instance.",
-		Resolver:     fetchEc2InstanceStatuses,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_ec2_instance_statuses",
+		Description: "Describes the status of an instance.",
+		Resolver:    fetchEc2InstanceStatuses,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +36,7 @@ func Ec2InstanceStatuses() *schema.Table {
 				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"instance", *resource.Item.(types.InstanceStatus).InstanceId}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "availability_zone",

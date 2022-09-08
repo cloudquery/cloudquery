@@ -16,8 +16,6 @@ func CloudfrontDistributions() *schema.Table {
 		Description: "A summary of the information about a CloudFront distribution.",
 		Resolver:    fetchCloudfrontDistributions,
 		Multiplex:   client.AccountMultiplex,
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,10 +29,11 @@ func CloudfrontDistributions() *schema.Table {
 				Resolver: resolveCloudfrontDistributionTags,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN (Amazon Resource Name) for the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ARN"),
+				Name:            "arn",
+				Description:     "The ARN (Amazon Resource Name) for the distribution",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("ARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "caller_reference",

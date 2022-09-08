@@ -10,16 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func NetworkInterfaces() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_network_interfaces",
-		Description:  "Describes a network interface.",
-		Resolver:     fetchEc2NetworkInterfaces,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:        "aws_ec2_network_interfaces",
+		Description: "Describes a network interface.",
+		Resolver:    fetchEc2NetworkInterfaces,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -40,6 +36,7 @@ func NetworkInterfaces() *schema.Table {
 				Resolver: client.ResolveARN(client.EC2Service, func(resource *schema.Resource) ([]string, error) {
 					return []string{"network-interface", *resource.Item.(types.NetworkInterface).NetworkInterfaceId}, nil
 				}),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

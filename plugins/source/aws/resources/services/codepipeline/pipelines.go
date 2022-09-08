@@ -16,8 +16,6 @@ func Pipelines() *schema.Table {
 		Description: "Represents the output of a GetPipeline action",
 		Resolver:    fetchCodepipelinePipelines,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("codepipeline"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -44,10 +42,11 @@ func Pipelines() *schema.Table {
 				Resolver:    schema.PathResolver("Metadata.Created"),
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the pipeline",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Metadata.PipelineArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the pipeline",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("Metadata.PipelineArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "updated",

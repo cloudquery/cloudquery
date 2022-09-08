@@ -16,22 +16,21 @@ func Ec2VpcPeeringConnections() *schema.Table {
 		Description:   "Describes a VPC peering connection.",
 		Resolver:      fetchEc2VpcPeeringConnections,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "arn",
@@ -173,10 +172,11 @@ func Ec2VpcPeeringConnections() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the VPC peering connection.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("VpcPeeringConnectionId"),
+				Name:            "id",
+				Description:     "The ID of the VPC peering connection.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VpcPeeringConnectionId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}

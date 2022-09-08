@@ -16,16 +16,14 @@ func Ec2VpcEndpoints() *schema.Table {
 		Description:   "Describes a VPC endpoint.",
 		Resolver:      fetchEc2VpcEndpoints,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ec2"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -110,10 +108,11 @@ func Ec2VpcEndpoints() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the VPC endpoint.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("VpcEndpointId"),
+				Name:            "id",
+				Description:     "The ID of the VPC endpoint.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VpcEndpointId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "vpc_endpoint_type",

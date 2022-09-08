@@ -16,8 +16,6 @@ func CloudwatchAlarms() *schema.Table {
 		Description: "The details about a metric alarm.",
 		Resolver:    fetchCloudwatchAlarms,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -48,10 +46,11 @@ func CloudwatchAlarms() *schema.Table {
 				Resolver:    schema.PathResolver("AlarmActions"),
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the alarm.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AlarmArn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the alarm.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("AlarmArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "configuration_updated_timestamp",

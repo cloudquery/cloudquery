@@ -16,8 +16,6 @@ func ApplicationautoscalingPolicies() *schema.Table {
 		Description:   "Information about a scaling policy to use with Application Auto Scaling",
 		Resolver:      fetchApplicationautoscalingPolicies,
 		Multiplex:     client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -44,10 +42,11 @@ func ApplicationautoscalingPolicies() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the scaling policy. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PolicyARN"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the scaling policy. ",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("PolicyARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

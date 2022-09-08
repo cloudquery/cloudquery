@@ -13,12 +13,10 @@ import (
 
 func CodebuildProjects() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_codebuild_projects",
-		Description: "Information about a build project.",
-		Resolver:    fetchCodebuildProjects,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("codebuild"),
-
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
+		Name:          "aws_codebuild_projects",
+		Description:   "Information about a build project.",
+		Resolver:      fetchCodebuildProjects,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("codebuild"),
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -34,9 +32,10 @@ func CodebuildProjects() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the build project.",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the build project.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "artifacts_type",

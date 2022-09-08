@@ -14,16 +14,14 @@ func DirectconnectVirtualGateways() *schema.Table {
 		Description:   "Information about a virtual private gateway for a private virtual interface.",
 		Resolver:      fetchDirectconnectVirtualGateways,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("directconnect"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
@@ -32,10 +30,11 @@ func DirectconnectVirtualGateways() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "id",
-				Description: "The ID of the virtual private gateway.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("VirtualGatewayId"),
+				Name:            "id",
+				Description:     "The ID of the virtual private gateway.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("VirtualGatewayId"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "state",

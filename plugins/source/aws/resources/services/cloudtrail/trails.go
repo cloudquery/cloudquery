@@ -29,14 +29,14 @@ func CloudtrailTrails() *schema.Table {
 		Multiplex:   client.AccountMultiplex,
 
 		PostResourceResolver: postCloudtrailTrailResolver,
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "arn"}},
 		IgnoreInTests:        true,
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",
@@ -181,10 +181,11 @@ func CloudtrailTrails() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "arn",
-				Description: "Specifies the ARN of the trail",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TrailARN"),
+				Name:            "arn",
+				Description:     "Specifies the ARN of the trail",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("TrailARN"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 		Relations: []*schema.Table{
