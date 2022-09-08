@@ -15,8 +15,6 @@ func VpcLinks() *schema.Table {
 		Description: "An API Gateway VPC link for a RestApi to access resources in an Amazon Virtual Private Cloud (VPC)",
 		Resolver:    fetchApigatewayVpcLinks,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,10 +29,11 @@ func VpcLinks() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the resource",
-				Type:        schema.TypeString,
-				Resolver:    resolveApigatewayVpcLinkArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for the resource",
+				Type:            schema.TypeString,
+				Resolver:        resolveApigatewayVpcLinkArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "description",

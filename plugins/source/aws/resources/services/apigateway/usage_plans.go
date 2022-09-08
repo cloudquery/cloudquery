@@ -15,8 +15,6 @@ func UsagePlans() *schema.Table {
 		Description: "Represents a usage plan used to specify who can assess associated API stages",
 		Resolver:    fetchApigatewayUsagePlans,
 		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
-
-		Options: schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -31,10 +29,11 @@ func UsagePlans() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) for the resource",
-				Type:        schema.TypeString,
-				Resolver:    resolveApigatewayUsagePlanArn,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) for the resource",
+				Type:            schema.TypeString,
+				Resolver:        resolveApigatewayUsagePlanArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "description",
@@ -91,42 +90,13 @@ func UsagePlans() *schema.Table {
 				Type:        schema.TypeFloat,
 				Resolver:    schema.PathResolver("Throttle.RateLimit"),
 			},
+			{
+				Name:        "api_stages",
+				Description: "API stage name of the associated API stage in a usage plan",
+				Type:        schema.TypeJSON,
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_apigateway_usage_plan_api_stages",
-				Description: "API stage name of the associated API stage in a usage plan",
-				Resolver:    schema.PathTableResolver("ApiStages"),
-				Columns: []schema.Column{
-					{
-						Name:        "usage_plan_cq_id",
-						Description: "Unique CloudQuery ID of aws_apigateway_usage_plans table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "usage_plan_id",
-						Description: "The identifier of a UsagePlan resource",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentPathResolver("Id"),
-					},
-					{
-						Name:        "api_id",
-						Description: "API Id of the associated API stage in a usage plan",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "stage",
-						Description: "API stage name of the associated API stage in a usage plan",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "throttle",
-						Description: "Map containing method level throttling information for API stage in a usage plan",
-						Type:        schema.TypeJSON,
-					},
-				},
-			},
 			{
 				Name:        "aws_apigateway_usage_plan_keys",
 				Description: "Represents a usage plan key to identify a plan customer",
