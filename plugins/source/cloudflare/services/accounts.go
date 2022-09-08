@@ -6,7 +6,6 @@ import (
 	cloudflare "github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Accounts() *schema.Table {
@@ -145,7 +144,7 @@ func fetchAccounts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for {
 		accounts, resp, err := svc.ClientApi.Accounts(ctx, opt)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- accounts
 		if !resp.HasMorePages() {
@@ -167,7 +166,7 @@ func fetchAccountMembers(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		accountMembers, resp, err := svc.ClientApi.AccountMembers(ctx, account.ID, opt)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- accountMembers
 		if !resp.HasMorePages() {

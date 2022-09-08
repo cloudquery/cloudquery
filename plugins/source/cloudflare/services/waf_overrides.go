@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func WafOverrides() *schema.Table {
@@ -83,7 +82,7 @@ func fetchWafOverrides(ctx context.Context, meta schema.ClientMeta, parent *sche
 
 	resp, err := svc.ClientApi.ListWAFOverrides(ctx, zoneId)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- resp
 

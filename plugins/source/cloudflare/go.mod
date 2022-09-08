@@ -7,7 +7,6 @@ require (
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/cloudquery/plugin-sdk v0.2.6
 	github.com/golang/mock v1.6.0
-	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
 )
 
@@ -152,6 +151,7 @@ require (
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
 	github.com/phayes/checkstyle v0.0.0-20170904204023-bfd46e6a821d // indirect
+	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/polyfloyd/go-errorlint v1.0.0 // indirect
 	github.com/posener/complete v1.2.3 // indirect

@@ -6,7 +6,6 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func AccessGroups() *schema.Table {
@@ -85,7 +84,7 @@ func fetchAccessGroups(ctx context.Context, meta schema.ClientMeta, parent *sche
 	for {
 		resp, info, err := svc.ClientApi.ZoneLevelAccessGroups(ctx, zoneID, pagination)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- resp
 

@@ -6,7 +6,6 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Zones() *schema.Table {
@@ -153,7 +152,7 @@ func fetchZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 
 	resp, err := svc.ClientApi.ListZonesContext(ctx, opts)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- resp.Result
 

@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 type IpWrapper struct {
@@ -39,7 +38,7 @@ func Ips() *schema.Table {
 func fetchIps(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	resp, err := cloudflare.IPs()
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for _, ip := range resp.IPv4CIDRs {

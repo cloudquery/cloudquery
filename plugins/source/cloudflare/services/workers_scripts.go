@@ -6,7 +6,6 @@ import (
 	cloudflare "github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func WorkersScripts() *schema.Table {
@@ -127,7 +126,7 @@ func fetchWorkersScripts(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	resp, err := svc.ClientApi.ListWorkerScripts(ctx)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- resp.WorkerList
 
@@ -140,7 +139,7 @@ func fetchWorkersScriptCronTriggers(ctx context.Context, meta schema.ClientMeta,
 
 	resp, err := svc.ClientApi.ListWorkerCronTriggers(ctx, accountId, script.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- resp
 
@@ -152,7 +151,7 @@ func fetchWorkersScriptSecrets(ctx context.Context, meta schema.ClientMeta, pare
 
 	resp, err := svc.ClientApi.ListWorkersSecrets(ctx, script.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- resp.Result
 

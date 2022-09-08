@@ -6,7 +6,6 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func DNSRecords() *schema.Table {
@@ -114,7 +113,7 @@ func fetchDnsRecords(ctx context.Context, meta schema.ClientMeta, parent *schema
 
 	records, err := svc.ClientApi.DNSRecords(ctx, zoneId, cloudflare.DNSRecord{})
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- records
 	return nil

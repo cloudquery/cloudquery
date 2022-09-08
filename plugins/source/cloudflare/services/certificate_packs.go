@@ -6,7 +6,6 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func CertificatePacks() *schema.Table {
@@ -189,7 +188,7 @@ func fetchCertificatePacks(ctx context.Context, meta schema.ClientMeta, parent *
 
 	packs, err := svc.ClientApi.ListCertificatePacks(ctx, zoneId)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- packs
 	return nil

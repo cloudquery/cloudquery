@@ -6,7 +6,6 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Images() *schema.Table {
@@ -68,7 +67,7 @@ func fetchImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 
 	records, err := svc.ClientApi.ListImages(ctx, accountId, cloudflare.PaginationOptions{})
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- records
 	return nil
