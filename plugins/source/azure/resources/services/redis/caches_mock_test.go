@@ -17,15 +17,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis"
 )
 
-func TestRedisResourceTypes(t *testing.T) {
-	client.AzureMockTestHelper(t, ResourceTypes(), createResourceTypesMock, client.TestOptions{})
+func TestRedisCaches(t *testing.T) {
+	client.AzureMockTestHelper(t, Caches(), createCachesMock, client.TestOptions{})
 }
 
-func createResourceTypesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockRedisResourceTypesClient(ctrl)
+func createCachesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockRedisCachesClient(ctrl)
 	s := services.Services{
 		Redis: services.RedisClient{
-			ResourceTypes: mockClient,
+			Caches: mockClient,
 		},
 	}
 

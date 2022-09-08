@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisResourceTypesClient
+//go:generate mockgen -destination=./mocks/redis.go -package=mocks . RedisCachesClient
 package services
 
 import (
@@ -9,10 +9,10 @@ import (
 )
 
 type RedisClient struct {
-	ResourceTypes RedisResourceTypesClient
+	Caches RedisCachesClient
 }
 
-type RedisResourceTypesClient interface {
+type RedisCachesClient interface {
 	ListBySubscription(ctx context.Context) (result redis.ListResultPage, err error)
 }
 
@@ -20,5 +20,5 @@ func NewRedisClient(subscriptionId string, auth autorest.Authorizer) RedisClient
 	cl := redis.NewClient(subscriptionId)
 	cl.Authorizer = auth
 
-	return RedisClient{ResourceTypes: cl}
+	return RedisClient{Caches: cl}
 }

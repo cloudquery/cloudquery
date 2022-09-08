@@ -10,10 +10,10 @@ import (
 	"github.com/pkg/errors"
 )
 
-func ResourceTypes() *schema.Table {
+func Caches() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_redis_resource_types",
-		Resolver:  fetchRedisResourceTypes,
+		Name:      "azure_redis_caches",
+		Resolver:  fetchRedisCaches,
 		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
@@ -158,8 +158,8 @@ func ResourceTypes() *schema.Table {
 	}
 }
 
-func fetchRedisResourceTypes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().Redis.ResourceTypes
+func fetchRedisCaches(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().Redis.Caches
 
 	response, err := svc.ListBySubscription(ctx)
 

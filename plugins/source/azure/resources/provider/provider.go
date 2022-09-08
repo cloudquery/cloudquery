@@ -79,7 +79,7 @@ func Provider() *provider.Provider {
 			"network.virtual_networks":             network.VirtualNetworks(),
 			"network.watchers":                     network.Watchers(),
 			"postgresql.servers":                   postgresql.Servers(),
-			"redis.resource_types":                 redis.ResourceTypes(),
+			"redis.caches":                         redis.Caches(),
 			"resources.groups":                     resources.Groups(),
 			"resources.links":                      resources.Links(),
 			"resources.policy_assignments":         resources.PolicyAssignments(),

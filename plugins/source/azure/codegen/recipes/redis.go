@@ -21,9 +21,10 @@ func Redis() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:    &redis.ResourceType{},
-					listFunction:   "ListBySubscription",
-					mockListResult: "ListResult",
+					azureStruct:        &redis.ResourceType{},
+					listFunction:       "ListBySubscription",
+					mockListResult:     "ListResult",
+					subServiceOverride: "Caches",
 				},
 			},
 		},
