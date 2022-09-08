@@ -22,9 +22,6 @@ func SagemakerModels() *schema.Table {
 		Description:   "Provides summary information about a model.",
 		Resolver:      fetchSagemakerModels,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("api.sagemaker"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -75,6 +72,7 @@ func SagemakerModels() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the model.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ModelArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",
@@ -82,93 +80,15 @@ func SagemakerModels() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ModelName"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_sagemaker_model_containers",
-				Description:   "Describes the container, as part of model definition.",
-				Resolver:      fetchSagemakerModelContainers,
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "model_cq_id",
-						Description: "Unique CloudQuery ID of aws_sagemaker_model table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "container_hostname",
-						Description: "This parameter is ignored for models that contain only a PrimaryContainer",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "environment",
-						Description: "The environment variables to set in the Docker container",
-						Type:        schema.TypeJSON,
-					},
-					{
-						Name:        "image",
-						Description: "The path where inference code is stored",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "image_config_repository_access_mode",
-						Description: "Set this to one of the following values:  * Platform - The model image is hosted in Amazon ECR.  * Vpc - The model image is hosted in a private Docker registry in your VPC. ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ImageConfig.RepositoryAccessMode"),
-					},
-					{
-						Name:        "image_config_repository_auth_config_repo_creds_provider_arn",
-						Description: "The Amazon Resource Name (ARN) of an Amazon Web Services Lambda function that provides credentials to authenticate to the private Docker registry where your model image is hosted",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ImageConfig.RepositoryAuthConfig.RepositoryCredentialsProviderArn"),
-					},
-					{
-						Name:        "mode",
-						Description: "Whether the container hosts a single model or multiple models.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "model_data_url",
-						Description: "The S3 path where the model artifacts, which result from model training, are stored",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "model_package_name",
-						Description: "The name or Amazon Resource Name (ARN) of the model package to use to create the model.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "multi_model_config_model_cache_setting",
-						Description: "Whether to cache models for a multi-model endpoint",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("MultiModelConfig.ModelCacheSetting"),
-					},
-				},
+				Name:        "containers",
+				Description: "Describes the container, as part of model definition.",
+				Type: 			schema.TypeJSON,
 			},
 			{
-				Name:          "aws_sagemaker_model_vpc_config",
-				Description:   "Specifies a VPC that your training jobs and hosted models have access to. Control access to and from your training and model containers by configuring the VPC",
-				Resolver:      fetchSagemakerModelVpcConfigs,
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "model_cq_id",
-						Description: "Unique CloudQuery ID of aws_sagemaker_model table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "security_group_ids",
-						Description: "The VPC security group IDs, in the form sg-xxxxxxxx",
-						Type:        schema.TypeStringArray,
-					},
-					{
-						Name:        "subnets",
-						Description: "The ID of the subnets in the VPC to which you want to connect your training job or model",
-						Type:        schema.TypeStringArray,
-					},
-				},
+				Name:        "vpc_config",
+				Description: "Specifies a VPC that your training jobs and hosted models have access to. Control access to and from your training and model containers by configuring the VPC",
+				Type: 			schema.TypeJSON,
 			},
 		},
 	}
@@ -237,14 +157,3 @@ func resolveSagemakerModelTags(ctx context.Context, meta schema.ClientMeta, reso
 	return diag.WrapError(resource.Set("tags", tags))
 }
 
-func fetchSagemakerModelContainers(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(WrappedSageMakerModel)
-	res <- r.Containers
-	return nil
-}
-
-func fetchSagemakerModelVpcConfigs(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(WrappedSageMakerModel)
-	res <- r.VpcConfig
-	return nil
-}

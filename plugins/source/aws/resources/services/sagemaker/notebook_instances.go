@@ -23,9 +23,6 @@ func SagemakerNotebookInstances() *schema.Table {
 		Description:  "Provides summary information for an Amazon SageMaker notebook instance.",
 		Resolver:     fetchSagemakerNotebookInstances,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("api.sagemaker"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -91,6 +88,7 @@ func SagemakerNotebookInstances() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the notebook instance. ",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("NotebookInstanceArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "name",

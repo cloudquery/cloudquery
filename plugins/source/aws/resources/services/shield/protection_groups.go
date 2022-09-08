@@ -18,9 +18,6 @@ func ProtectionGroups() *schema.Table {
 		Description:   "A grouping of protected resources that you and Shield Advanced can monitor as a collective",
 		Resolver:      fetchShieldProtectionGroups,
 		Multiplex:     client.AccountMultiplex,
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -60,6 +57,7 @@ func ProtectionGroups() *schema.Table {
 				Description: "The ARN (Amazon Resource Name) of the protection group",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("ProtectionGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "resource_type",
