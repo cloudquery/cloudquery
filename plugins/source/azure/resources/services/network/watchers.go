@@ -60,6 +60,10 @@ func Watchers() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			flowLogs(),
+		},
 	}
 }
 

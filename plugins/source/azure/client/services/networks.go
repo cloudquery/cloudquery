@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/network.go -package=mocks . NetworkExpressRouteCircuitsClient,NetworkExpressRouteGatewaysClient,NetworkExpressRoutePortsClient,NetworkInterfacesClient,NetworkPublicIPAddressesClient,NetworkRouteFiltersClient,NetworkRouteTablesClient,NetworkSecurityGroupsClient,NetworkVirtualNetworkGatewaysClient,NetworkVirtualNetworksClient,NetworkWatchersClient
+//go:generate mockgen -destination=./mocks/network.go -package=mocks . NetworkExpressRouteCircuitsClient,NetworkExpressRouteGatewaysClient,NetworkExpressRoutePortsClient,NetworkInterfacesClient,NetworkPublicIPAddressesClient,NetworkRouteFiltersClient,NetworkRouteTablesClient,NetworkSecurityGroupsClient,NetworkVirtualNetworkGatewaysClient,NetworkVirtualNetworksClient,NetworkWatchersClient,NetworkFlowLogsClient
 package services
 
 import (
@@ -20,6 +20,7 @@ type NetworkClient struct {
 	VirtualNetworkGateways NetworkVirtualNetworkGatewaysClient
 	VirtualNetworks        NetworkVirtualNetworksClient
 	Watchers               NetworkWatchersClient
+	FlowLogs               NetworkFlowLogsClient
 }
 type NetworkExpressRouteCircuitsClient interface {
 	ListAll(ctx context.Context) (result network.ExpressRouteCircuitListResultPage, err error)
@@ -64,7 +65,10 @@ type NetworkVirtualNetworksClient interface {
 
 type NetworkWatchersClient interface {
 	ListAll(ctx context.Context) (result network.WatcherListResult, err error)
-	GetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters network.FlowLogStatusParameters) (result network.WatchersGetFlowLogStatusFuture, err error)
+}
+
+type NetworkFlowLogsClient interface {
+	List(ctx context.Context, resourceGroupName string, networkWatcherName string) (result network.FlowLogListResultPage, err error)
 }
 
 func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworkClient {
@@ -90,6 +94,8 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworkC
 	vn.Authorizer = auth
 	wch := network.NewWatchersClient(subscriptionId)
 	wch.Authorizer = auth
+	fl := network.NewFlowLogsClient(subscriptionId)
+	fl.Authorizer = auth
 	return NetworkClient{
 		ExpressRouteCircuits:   erc,
 		ExpressRouteGateways:   erg,
@@ -102,5 +108,6 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworkC
 		VirtualNetworkGateways: vng,
 		VirtualNetworks:        vn,
 		Watchers:               wch,
+		FlowLogs:               fl,
 	}
 }
