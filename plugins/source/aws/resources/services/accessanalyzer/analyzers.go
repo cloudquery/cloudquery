@@ -6,19 +6,17 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
-	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/aws/smithy-go/middleware"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Analyzers() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_access_analyzer_analyzers",
-		Description:  "Contains information about the analyzer",
-		Resolver:     fetchAccessAnalyzerAnalyzers,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("access-analyzer"),
+		Name:        "aws_access_analyzer_analyzers",
+		Description: "Contains information about the analyzer",
+		Resolver:    fetchAccessAnalyzerAnalyzers,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("access-analyzer"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -33,9 +31,9 @@ func Analyzers() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The ARN of the analyzer",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The ARN of the analyzer",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -79,144 +77,15 @@ func Analyzers() *schema.Table {
 				Description: "The tags added to the analyzer",
 				Type:        schema.TypeJSON,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_access_analyzer_analyzer_findings",
+				Name:        "findings",
 				Description: "Contains information about a finding",
-				Resolver:    fetchAccessAnalyzerAnalyzerFindings,
-				Columns: []schema.Column{
-					{
-						Name:        "analyzer_cq_id",
-						Description: "Unique CloudQuery ID of aws_access_analyzer_analyzers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "analyzed_at",
-						Description: "The time at which the resource-based policy that generated the finding was analyzed",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "condition",
-						Description: "The condition in the analyzed policy statement that resulted in a finding",
-						Type:        schema.TypeJSON,
-					},
-					{
-						Name:        "created_at",
-						Description: "The time at which the finding was created",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "id",
-						Description: "The ID of the finding",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "resource_owner_account",
-						Description: "The Amazon Web Services account ID that owns the resource",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "resource_type",
-						Description: "The type of the resource that the external principal has access to",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the finding",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "updated_at",
-						Description: "The time at which the finding was most recently updated",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "action",
-						Description: "The action in the analyzed policy statement that an external principal has permission to use",
-						Type:        schema.TypeStringArray,
-					},
-					{
-						Name:        "error",
-						Description: "The error that resulted in an Error finding",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "is_public",
-						Description: "Indicates whether the finding reports a resource that has a policy that allows public access",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "principal",
-						Description: "The external principal that has access to a resource within the zone of trust",
-						Type:        schema.TypeJSON,
-					},
-					{
-						Name:        "resource",
-						Description: "The resource that the external principal has access to",
-						Type:        schema.TypeString,
-					},
-				},
-				Relations: []*schema.Table{
-					{
-						Name:        "aws_access_analyzer_analyzer_finding_sources",
-						Description: "The source of the finding",
-						Resolver:    schema.PathTableResolver("Sources"),
-						Columns: []schema.Column{
-							{
-								Name:        "analyzer_finding_cq_id",
-								Description: "Unique CloudQuery ID of aws_access_analyzer_analyzer_findings table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "type",
-								Description: "Indicates the type of access that generated the finding",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "detail_access_point_arn",
-								Description: "The ARN of the access point that generated the finding",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("Detail.AccessPointArn"),
-							},
-						},
-					},
-				},
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "aws_access_analyzer_analyzer_archive_rules",
+				Name:        "archive_rules",
 				Description: "Contains information about an archive rule",
-				Resolver:    fetchAccessAnalyzerAnalyzerArchiveRules,
-				Columns: []schema.Column{
-					{
-						Name:        "analyzer_cq_id",
-						Description: "Unique CloudQuery ID of aws_access_analyzer_analyzers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "created_at",
-						Description: "The time at which the archive rule was created",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "filter",
-						Description: "A filter used to define the archive rule",
-						Type:        schema.TypeJSON,
-					},
-					{
-						Name:        "rule_name",
-						Description: "The name of the archive rule",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "updated_at",
-						Description: "The time at which the archive rule was last updated",
-						Type:        schema.TypeTimestamp,
-					},
-				},
+				Type:        schema.TypeJSON,
 			},
 		},
 	}
@@ -249,48 +118,6 @@ func fetchAccessAnalyzerAnalyzers(ctx context.Context, meta schema.ClientMeta, p
 		}
 
 		res <- response.Analyzers
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
-	}
-	return nil
-}
-func fetchAccessAnalyzerAnalyzerFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	analyzer := parent.Item.(types.AnalyzerSummary)
-	c := meta.(*client.Client)
-	svc := c.Services().Analyzer
-	config := accessanalyzer.ListFindingsInput{
-		AnalyzerArn: analyzer.Arn,
-	}
-	for {
-		response, err := svc.ListFindings(ctx, &config)
-		if err != nil {
-			return err
-		}
-
-		res <- response.Findings
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		config.NextToken = response.NextToken
-	}
-	return nil
-}
-func fetchAccessAnalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	analyzer := parent.Item.(types.AnalyzerSummary)
-	c := meta.(*client.Client)
-	svc := c.Services().Analyzer
-	config := accessanalyzer.ListArchiveRulesInput{
-		AnalyzerName: analyzer.Name,
-	}
-	for {
-		response, err := svc.ListArchiveRules(ctx, &config)
-		if err != nil {
-			return err
-		}
-
-		res <- response.ArchiveRules
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}

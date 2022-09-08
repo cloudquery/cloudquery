@@ -233,7 +233,6 @@ func IgnoreNotAvailableRegion(err error) bool {
 	return false
 }
 
-
 // makeARN creates an ARN using supplied service name, partition, account id, region name and resource id parts.
 // Resource id parts are concatenated using forward slash (/).
 // See https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html for more information.
@@ -296,7 +295,7 @@ func ResolveARNGlobal(service AWSService, resourceID func(resource *schema.Resou
 // IsNotFoundError checks if api error should be ignored
 func (c *Client) IsNotFoundError(err error) bool {
 	if isNotFoundError(err) {
-		c.logger.Warn("API returned \"NotFound\" error ignoring it...", "error", err)
+		c.logger.Warn().Err(err).Msg("API returned \"NotFound\" error ignoring it...")
 		return true
 	}
 	return false
@@ -319,7 +318,7 @@ func isNotFoundError(err error) bool {
 // IsAccessDeniedError checks if api error should be classified as a permissions issue
 func (c *Client) IsAccessDeniedError(err error) bool {
 	if isAccessDeniedError(err) {
-		c.logger.Warn("API returned an Access Denied error, ignoring it and continuing...", "error", err)
+		c.logger.Warn().Err(err).Msg("API returned an Access Denied error, ignoring it and continuing...")
 		return true
 	}
 	return false

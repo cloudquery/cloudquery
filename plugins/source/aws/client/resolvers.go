@@ -77,7 +77,9 @@ func ResolveTimestampField(path string, rfcs ...string) func(_ context.Context, 
 		case reflect.Int32, reflect.Int64:
 			return diag.WrapError(r.Set(c.Name, time.Unix(val.Int(), 0)))
 		case reflect.String:
-			return schema.DateResolver(path, rfcs...)(ctx, cl, r, c)
+			// TODO: v2 SDK refactor: see if this is still used
+			panic("schema.DateResolver not implemented in new SDK")
+			// return schema.DateResolver(path, rfcs...)(ctx, cl, r, c)
 		default:
 			return diag.WrapError(r.Set(c.Name, nil))
 		}
