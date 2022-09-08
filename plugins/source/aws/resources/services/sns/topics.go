@@ -18,9 +18,6 @@ func Topics() *schema.Table {
 		Description:  "Amazon SNS topic",
 		Resolver:     fetchSnsTopics,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -78,6 +75,7 @@ func Topics() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon Resource Name (ARN) of the topic",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "effective_delivery_policy",

@@ -19,9 +19,6 @@ func Queues() *schema.Table {
 		Description:  "Amazon Simple Queue Service",
 		Resolver:     fetchSqsQueues,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("sqs"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -95,6 +92,7 @@ func Queues() *schema.Table {
 				Name:        "arn",
 				Description: "The Amazon resource name (ARN) of the queue",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "receive_message_wait_time_seconds",

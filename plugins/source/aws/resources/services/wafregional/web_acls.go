@@ -18,9 +18,6 @@ func WebAcls() *schema.Table {
 		Description:  "Contains the Rules that identify the requests that you want to allow, block, or count.",
 		Resolver:     fetchWafregionalWebAcls,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -67,55 +64,12 @@ func WebAcls() *schema.Table {
 				Description: "Tha Amazon Resource Name (ARN) of the web ACL.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("WebACLArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_wafregional_web_acl_rules",
+				Name:        "rules",
 				Description: "The action for each Rule in a WebACL",
-				Resolver:    schema.PathTableResolver("Rules"),
-				Columns: []schema.Column{
-					{
-						Name:        "web_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_wafregional_web_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "priority",
-						Description: "Specifies the order in which the Rules in a WebACL are evaluated",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "rule_id",
-						Description: "The RuleId for a Rule",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "action",
-						Description: "Specifies how you want AWS WAF to respond to requests that match the settings in a Rule",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Action.Type"),
-					},
-					{
-						Name:        "excluded_rules",
-						Description: "An array of rules to exclude from a rule group",
-						Type:        schema.TypeStringArray,
-						Resolver:    resolveWebACLRulesExcludedRules,
-					},
-					{
-						Name:          "override_action",
-						Description:   "Describes an override action for the rule.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("OverrideAction.Type"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "type",
-						Description: "The rule type, either REGULAR, as defined by Rule, RATE_BASED, as defined by RateBasedRule, or GROUP, as defined by RuleGroup",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
 			},
 		},
 	}

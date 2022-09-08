@@ -18,9 +18,6 @@ func RuleGroups() *schema.Table {
 		Description:  "A collection of predefined rules that you can add to a web ACL.",
 		Resolver:     fetchWafregionalRuleGroups,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +36,7 @@ func RuleGroups() *schema.Table {
 				Description: "ARN of the rule group.",
 				Type:        schema.TypeString,
 				Resolver:    resolveWafregionalRuleGroupArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",

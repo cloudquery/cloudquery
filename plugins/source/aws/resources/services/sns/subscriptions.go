@@ -19,9 +19,6 @@ func Subscriptions() *schema.Table {
 		Description:  "Amazon SNS subscription",
 		Resolver:     fetchSnsSubscriptions,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("sns"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -58,6 +55,7 @@ func Subscriptions() *schema.Table {
 				Description: "The subscription's ARN",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("Subscription.SubscriptionArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "topic_arn",

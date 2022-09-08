@@ -18,10 +18,7 @@ func SsmDocuments() *schema.Table {
 		Description:          "Describes a Amazon Web Services Systems Manager document (SSM document).",
 		Resolver:             fetchSsmDocuments,
 		Multiplex:            client.ServiceAccountRegionMultiplexer("ssm"),
-		
-		
 		PostResourceResolver: ssmDocumentPostResolver,
-		Options:              schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -40,6 +37,7 @@ func SsmDocuments() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the managed instance.",
 				Type:        schema.TypeString,
 				Resolver:    resolveSSMDocumentARN,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:          "approved_version",

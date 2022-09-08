@@ -16,21 +16,20 @@ func Parameters() *schema.Table {
 		Description:  "Metadata includes information like the ARN of the last user and the date/time the parameter was last used",
 		Resolver:     fetchSsmParameters,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("ssm"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "name"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
 				Description: "The AWS Account ID of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "region",
 				Description: "The AWS Region of the resource",
 				Type:        schema.TypeString,
 				Resolver:    client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "allowed_pattern",
@@ -66,6 +65,7 @@ func Parameters() *schema.Table {
 				Name:        "name",
 				Description: "The parameter name",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tier",
@@ -82,35 +82,10 @@ func Parameters() *schema.Table {
 				Description: "The parameter version",
 				Type:        schema.TypeInt,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ssm_parameter_policies",
-				Description: "One or more policies assigned to a parameter",
-				Resolver:    schema.PathTableResolver("Policies"),
-				Columns: []schema.Column{
-					{
-						Name:        "parameter_cq_id",
-						Description: "Unique CloudQuery ID of aws_ssm_parameters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "policy_status",
-						Description: "The status of the policy",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "policy_text",
-						Description: "The JSON text of the policy",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "policy_type",
-						Description: "The type of policy",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "policies",
+				Description: "A list of policies assigned to a parameter",
+				Type:        schema.TypeJSON,
 			},
 		},
 	}

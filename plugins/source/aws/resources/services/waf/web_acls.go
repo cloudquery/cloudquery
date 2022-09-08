@@ -23,9 +23,6 @@ func WafWebAcls() *schema.Table {
 		Description:  "This is AWS WAF Classic documentation",
 		Resolver:     fetchWafWebAcls,
 		Multiplex:    client.AccountMultiplex,
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -65,6 +62,7 @@ func WafWebAcls() *schema.Table {
 				Description: "Tha Amazon Resource Name (ARN) of the web ACL.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("WebACLArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "logging_configuration",
@@ -72,82 +70,15 @@ func WafWebAcls() *schema.Table {
 				Type:        schema.TypeStringArray,
 				Resolver:    resolveWafWebACLRuleLoggingConfiguration,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_waf_web_acl_rules",
+				Name:        "rules",
 				Description: "This is AWS WAF Classic documentation",
-				Resolver:    fetchWafWebAclRules,
-				Columns: []schema.Column{
-					{
-						Name:        "web_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_waf_web_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "priority",
-						Description: "Specifies the order in which the Rules in a WebACL are evaluated",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "rule_id",
-						Description: "The RuleId for a Rule",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "action_type",
-						Description: "Specifies how you want AWS WAF to respond to requests that match the settings in a Rule",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Action.Type"),
-					},
-					{
-						Name:        "excluded_rules",
-						Description: "An array of rules to exclude from a rule group",
-						Type:        schema.TypeStringArray,
-						Resolver:    resolveWafWebACLRuleExcludedRules,
-					},
-					{
-						Name:        "override_action_type",
-						Description: "COUNT overrides the action specified by the individual rule within a RuleGroup . If set to NONE, the rule's action will take place.  ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("OverrideAction.Type"),
-					},
-					{
-						Name:        "type",
-						Description: "The rule type, either REGULAR, as defined by Rule, RATE_BASED, as defined by RateBasedRule, or GROUP, as defined by RuleGroup",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "aws_waf_web_acl_logging_configuration",
-				Description: "The LoggingConfiguration for the specified web ACL.",
-				Resolver:    fetchWafWebACLLoggingConfiguration,
-				Columns: []schema.Column{
-					{
-						Name:        "web_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_waf_web_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "log_destination_configs",
-						Description: "An array of Amazon Kinesis Data Firehose ARNs.",
-						Type:        schema.TypeStringArray,
-					},
-					{
-						Name:        "resource_arn",
-						Description: "The Amazon Resource Name (ARN) of the web ACL that you want to associate with LogDestinationConfigs.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "redacted_fields",
-						Description: "The parts of the request that you want redacted from the logs. For example, if you redact the cookie field, the cookie field in the firehose will be xxx.",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveWafWebACLLoggingConfigurationRedactedFields,
-					},
-				},
+				Name:        "configuration",
+				Description: "The LoggingConfiguration for the specified web ACL",
+				Type:        schema.TypeJSON,
 			},
 		},
 	}
@@ -181,11 +112,7 @@ func fetchWafWebAcls(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 				options.Region = c.Region
 			})
 			if err != nil {
-				if client.IsAWSError(err, "WAFNonexistentItemException") {
-					c.Logger().Debug("Logging configuration not found for: %s", webAclOutput.WebACL.Name)
-				} else {
-					c.Logger().Error("GetLoggingConfiguration failed with error: %s", err.Error())
-				}
+				c.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed")
 			}
 
 			var webAclLoggingConfiguration *types.LoggingConfiguration
@@ -229,11 +156,7 @@ func resolveWafWebACLTags(ctx context.Context, meta schema.ClientMeta, resource 
 	}
 	return diag.WrapError(resource.Set("tags", outputTags))
 }
-func fetchWafWebAclRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	webACL := parent.Item.(*WebACLWrapper)
-	res <- webACL.Rules
-	return nil
-}
+
 func resolveWafWebACLRuleExcludedRules(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	rule := resource.Item.(types.ActivatedRule)
 	excludedRules := make([]string, len(rule.ExcludedRules))
@@ -242,11 +165,7 @@ func resolveWafWebACLRuleExcludedRules(ctx context.Context, meta schema.ClientMe
 	}
 	return diag.WrapError(resource.Set(c.Name, excludedRules))
 }
-func fetchWafWebACLLoggingConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, res chan<- interface{}) error {
-	rule := resource.Item.(*WebACLWrapper)
-	res <- rule.LoggingConfiguration
-	return nil
-}
+
 func resolveWafWebACLLoggingConfigurationRedactedFields(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	if conf := resource.Item.(*types.LoggingConfiguration); conf != nil {
 		out, err := json.Marshal(conf.RedactedFields)

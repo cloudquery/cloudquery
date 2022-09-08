@@ -18,9 +18,6 @@ func Servers() *schema.Table {
 		Description:  "Describes the properties of a file transfer protocol-enabled server that was specified",
 		Resolver:     fetchTransferServers,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("glue"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -38,6 +35,7 @@ func Servers() *schema.Table {
 				Name:        "arn",
 				Description: "Specifies the unique Amazon Resource Name (ARN) of the server",
 				Type:        schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "certificate",
@@ -188,30 +186,10 @@ func Servers() *schema.Table {
 				Description: "Specifies the number of users that are assigned to a server you specified with the ServerId",
 				Type:        schema.TypeInt,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_transfer_server_workflow_details_on_upload",
+				Name: "workflow_details",
 				Description: "Specifies the workflow ID for the workflow to assign and the execution role that's used for executing the workflow",
-				Resolver:    schema.PathTableResolver("WorkflowDetails.OnUpload"),
-				Columns: []schema.Column{
-					{
-						Name:        "server_cq_id",
-						Description: "Unique CloudQuery ID of aws_transfer_servers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "execution_role",
-						Description: "Includes the necessary permissions for S3, EFS, and Lambda operations that Transfer can assume, so that all workflow steps can operate on the required resources",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "workflow_id",
-						Description: "A unique identifier for the workflow",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
 			},
 		},
 	}

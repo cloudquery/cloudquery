@@ -18,9 +18,6 @@ func Rules() *schema.Table {
 		Description:  "A combination of identifiers for web requests that you want to allow, block, or count.",
 		Resolver:     fetchWafregionalRules,
 		Multiplex:    client.ServiceAccountRegionMultiplexer("waf-regional"),
-		
-		
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "id"}},
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -39,6 +36,7 @@ func Rules() *schema.Table {
 				Description: "ARN of the rule.",
 				Type:        schema.TypeString,
 				Resolver:    resolveWafregionalRuleArn,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "tags",
@@ -62,35 +60,11 @@ func Rules() *schema.Table {
 				Description: "The friendly name or description for the Rule",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_wafregional_rule_predicates",
+				Name:        "predicates",
 				Description: "Contains one Predicate element for each ByteMatchSet, IPSet, or SqlInjectionMatchSet object that you want to include in a RateBasedRule.",
-				Resolver:    schema.PathTableResolver("Predicates"),
-				Columns: []schema.Column{
-					{
-						Name:        "rule_cq_id",
-						Description: "Unique CloudQuery ID of aws_wafregional_rules table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "data_id",
-						Description: "A unique identifier for a predicate in a Rule, such as ByteMatchSetId or IPSetId",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "negated",
-						Description: "Set Negated to False if you want AWS WAF to allow, block, or count requests based on the settings in the specified ByteMatchSet, IPSet, SqlInjectionMatchSet, XssMatchSet, RegexMatchSet, GeoMatchSet, or SizeConstraintSet",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "type",
-						Description: "The type of predicate in a Rule, such as ByteMatch or IPSet.  This member is required.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver: schema.PathResolver("Predicates"),
 			},
 		},
 	}

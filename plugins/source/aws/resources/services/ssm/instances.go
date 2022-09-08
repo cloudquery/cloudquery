@@ -17,9 +17,6 @@ func SsmInstances() *schema.Table {
 		Description:   "Describes a filter for a specific list of instances.",
 		Resolver:      fetchSsmInstances,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("ssm"),
-		
-		
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"arn"}},
 		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
@@ -39,6 +36,7 @@ func SsmInstances() *schema.Table {
 				Description: "The Amazon Resource Name (ARN) of the managed instance.",
 				Type:        schema.TypeString,
 				Resolver:    resolveSSMInstanceARN,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "activation_id",
@@ -149,7 +147,6 @@ func SsmInstances() *schema.Table {
 				Name:        "aws_ssm_instance_compliance_items",
 				Description: "Information about the compliance as defined by the resource type",
 				Resolver:    fetchSsmInstanceComplianceItems,
-				
 				Columns: []schema.Column{
 					{
 						Name:        "instance_cq_id",
