@@ -261,7 +261,9 @@ func DmsReplicationInstances() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)

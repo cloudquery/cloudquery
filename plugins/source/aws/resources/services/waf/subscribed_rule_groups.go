@@ -47,7 +47,9 @@ func WafSubscribedRuleGroups() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchWafSubscribedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)

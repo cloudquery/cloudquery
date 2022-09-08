@@ -65,7 +65,9 @@ func ResourcesGroups() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchResourcesGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Resources.Groups

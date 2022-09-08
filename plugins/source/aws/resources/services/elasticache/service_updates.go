@@ -105,7 +105,9 @@ func ServiceUpdates() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchElasticacheServiceUpdates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	paginator := elasticache.NewDescribeServiceUpdatesPaginator(meta.(*client.Client).Services().ElastiCache, nil)

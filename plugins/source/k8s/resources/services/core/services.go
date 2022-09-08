@@ -373,7 +373,9 @@ func Services() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchCoreServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	services := meta.(*client.Client).Services().Services

@@ -102,7 +102,9 @@ func fetchWafv2RegexPatternSets(ctx context.Context, meta schema.ClientMeta, par
 					Name:  s.Name,
 					Scope: cl.WAFScope,
 				},
-				func(options *wafv2.Options) { options.Region = cl.Region },
+				func(options *wafv2.Options) {
+					options.Region = cl.Region
+				},
 			)
 			if err != nil {
 				return diag.WrapError(err)
@@ -135,7 +137,9 @@ func resolveRegexPatternSetTags(ctx context.Context, meta schema.ClientMeta, res
 	tags := make(map[string]string)
 	params := wafv2.ListTagsForResourceInput{ResourceARN: s.ARN}
 	for {
-		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) { options.Region = cl.Region })
+		result, err := svc.ListTagsForResource(ctx, &params, func(options *wafv2.Options) {
+			options.Region = cl.Region
+		})
 		if err != nil {
 			return diag.WrapError(err)
 		}

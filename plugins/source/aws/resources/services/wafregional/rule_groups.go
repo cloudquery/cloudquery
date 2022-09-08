@@ -75,7 +75,9 @@ func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, par
 	svc := cl.Services().WafRegional
 	var params wafregional.ListRuleGroupsInput
 	for {
-		result, err := svc.ListRuleGroups(ctx, &params, func(o *wafregional.Options) { o.Region = cl.Region })
+		result, err := svc.ListRuleGroups(ctx, &params, func(o *wafregional.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -83,7 +85,9 @@ func fetchWafregionalRuleGroups(ctx context.Context, meta schema.ClientMeta, par
 			detail, err := svc.GetRuleGroup(
 				ctx,
 				&wafregional.GetRuleGroupInput{RuleGroupId: g.RuleGroupId},
-				func(o *wafregional.Options) { o.Region = cl.Region },
+				func(o *wafregional.Options) {
+					o.Region = cl.Region
+				},
 			)
 			if err != nil {
 				return diag.WrapError(err)

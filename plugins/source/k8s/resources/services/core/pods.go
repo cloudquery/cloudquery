@@ -388,7 +388,9 @@ func Pods() *schema.Table {
 						Name:        "env_from",
 						Description: "List of sources to populate environment variables in the container.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.EnvFrom }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.EnvFrom
+						}),
 					},
 					{
 						Name:        "resources_limits",
@@ -406,25 +408,33 @@ func Pods() *schema.Table {
 						Name:        "liveness_probe",
 						Description: "Periodic probe of container liveness.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.LivenessProbe }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.LivenessProbe
+						}),
 					},
 					{
 						Name:        "readiness_probe",
 						Description: "Periodic probe of container service readiness.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.ReadinessProbe }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.ReadinessProbe
+						}),
 					},
 					{
 						Name:        "startup_probe",
 						Description: "Startup probe indicates that the Pod has successfully initialized.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.ReadinessProbe }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.ReadinessProbe
+						}),
 					},
 					{
 						Name:        "lifecycle",
 						Description: "Actions that the management system should take in response to container lifecycle events.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.Lifecycle }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.Lifecycle
+						}),
 					},
 					{
 						Name:        "termination_message_path",
@@ -445,7 +455,9 @@ func Pods() *schema.Table {
 						Name:        "security_context",
 						Description: "security options the container should be run with.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.SecurityContext }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.SecurityContext
+						}),
 					},
 					{
 						Name:        "stdin",
@@ -702,10 +714,12 @@ func Pods() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:          "env_from",
-						Description:   "List of sources to populate environment variables in the container.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveContainerJSONField(func(c corev1.Container) interface{} { return c.EnvFrom }),
+						Name:        "env_from",
+						Description: "List of sources to populate environment variables in the container.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.EnvFrom
+						}),
 						IgnoreInTests: true,
 					},
 					{
@@ -724,25 +738,33 @@ func Pods() *schema.Table {
 						Name:        "liveness_probe",
 						Description: "Periodic probe of container liveness.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.LivenessProbe }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.LivenessProbe
+						}),
 					},
 					{
 						Name:        "readiness_probe",
 						Description: "Periodic probe of container service readiness.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.ReadinessProbe }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.ReadinessProbe
+						}),
 					},
 					{
 						Name:        "startup_probe",
 						Description: "Startup probe indicates that the Pod has successfully initialized.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.StartupProbe }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.StartupProbe
+						}),
 					},
 					{
-						Name:          "lifecycle",
-						Description:   "Actions that the management system should take in response to container lifecycle events.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveContainerJSONField(func(c corev1.Container) interface{} { return c.Lifecycle }),
+						Name:        "lifecycle",
+						Description: "Actions that the management system should take in response to container lifecycle events.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.Lifecycle
+						}),
 						IgnoreInTests: true,
 					},
 					{
@@ -764,7 +786,9 @@ func Pods() *schema.Table {
 						Name:        "security_context",
 						Description: "security options the container should be run with.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerJSONField(func(c corev1.Container) interface{} { return c.SecurityContext }),
+						Resolver: resolveContainerJSONField(func(c corev1.Container) interface{} {
+							return c.SecurityContext
+						}),
 					},
 					{
 						Name:        "stdin",
@@ -1033,7 +1057,9 @@ func Pods() *schema.Table {
 						Name:        "env_from",
 						Description: "List of sources to populate environment variables in the container.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} { return c.EphemeralContainerCommon.EnvFrom }),
+						Resolver: resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} {
+							return c.EphemeralContainerCommon.EnvFrom
+						}),
 					},
 					{
 						Name:        "resources_limits",
@@ -1051,25 +1077,33 @@ func Pods() *schema.Table {
 						Name:        "liveness_probe",
 						Description: "Periodic probe of container liveness.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} { return c.EphemeralContainerCommon.LivenessProbe }),
+						Resolver: resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} {
+							return c.EphemeralContainerCommon.LivenessProbe
+						}),
 					},
 					{
 						Name:        "readiness_probe",
 						Description: "Periodic probe of container service readiness.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} { return c.EphemeralContainerCommon.ReadinessProbe }),
+						Resolver: resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} {
+							return c.EphemeralContainerCommon.ReadinessProbe
+						}),
 					},
 					{
 						Name:        "startup_probe",
 						Description: "Startup probe indicates that the Pod has successfully initialized.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} { return c.EphemeralContainerCommon.StartupProbe }),
+						Resolver: resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} {
+							return c.EphemeralContainerCommon.StartupProbe
+						}),
 					},
 					{
 						Name:        "lifecycle",
 						Description: "Actions that the management system should take in response to container lifecycle events.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} { return c.EphemeralContainerCommon.Lifecycle }),
+						Resolver: resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} {
+							return c.EphemeralContainerCommon.Lifecycle
+						}),
 					},
 					{
 						Name:        "termination_message_path",
@@ -1093,7 +1127,9 @@ func Pods() *schema.Table {
 						Name:        "security_context",
 						Description: "security options the container should be run with.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} { return c.EphemeralContainerCommon.SecurityContext }),
+						Resolver: resolveEphemeralContainerJSONField(func(c corev1.EphemeralContainer) interface{} {
+							return c.EphemeralContainerCommon.SecurityContext
+						}),
 					},
 					{
 						Name:        "stdin",
@@ -1334,192 +1370,248 @@ func Pods() *schema.Table {
 						Name:        "host_path",
 						Description: "Pre-existing file or directory on the host machine that is directly exposed to the container.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.HostPath }),
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.HostPath
+						}),
 					},
 					{
 						Name:        "empty_dir",
 						Description: "Temporary directory that shares a pod's lifetime.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.EmptyDir }),
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.EmptyDir
+						}),
 					},
 					{
-						Name:          "gce_persistent_disk",
-						Description:   "GCE Disk resource that is attached to a kubelet's host machine and then exposed to the pod.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.GCEPersistentDisk }),
+						Name:        "gce_persistent_disk",
+						Description: "GCE Disk resource that is attached to a kubelet's host machine and then exposed to the pod.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.GCEPersistentDisk
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "aws_elastic_block_store",
-						Description:   "AWS Disk resource that is attached to a kubelet's host machine and then exposed to the pod.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.AWSElasticBlockStore }),
+						Name:        "aws_elastic_block_store",
+						Description: "AWS Disk resource that is attached to a kubelet's host machine and then exposed to the pod.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.AWSElasticBlockStore
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "secret",
-						Description:   "A secret that should populate this volume.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Secret }),
+						Name:        "secret",
+						Description: "A secret that should populate this volume.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.Secret
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "nfs",
-						Description:   "NFS mount on the host that shares a pod's lifetime",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.NFS }),
+						Name:        "nfs",
+						Description: "NFS mount on the host that shares a pod's lifetime",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.NFS
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "iscsi",
-						Description:   "ISCSI represents an ISCSI Disk resource that is attached to a kubelet's host machine and then exposed to the pod.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.ISCSI }),
+						Name:        "iscsi",
+						Description: "ISCSI represents an ISCSI Disk resource that is attached to a kubelet's host machine and then exposed to the pod.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.ISCSI
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "glusterfs",
-						Description:   "Glusterfs mount on the host that shares a pod's lifetime.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Glusterfs }),
+						Name:        "glusterfs",
+						Description: "Glusterfs mount on the host that shares a pod's lifetime.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.Glusterfs
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "persistent_volume_claim",
-						Description:   "Persistent volume claim.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.PersistentVolumeClaim }),
+						Name:        "persistent_volume_claim",
+						Description: "Persistent volume claim.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.PersistentVolumeClaim
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "rbd",
-						Description:   "Rados Block Device mount on the host that shares a pod's lifetime.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.RBD }),
+						Name:        "rbd",
+						Description: "Rados Block Device mount on the host that shares a pod's lifetime.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.RBD
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "flex_volume",
-						Description:   "Generic volume resource that is provisioned/attached using an exec based plugin.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.FlexVolume }),
+						Name:        "flex_volume",
+						Description: "Generic volume resource that is provisioned/attached using an exec based plugin.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.FlexVolume
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "cinder",
-						Description:   "Cinder volume attached and mounted on kubelets host machine.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Cinder }),
+						Name:        "cinder",
+						Description: "Cinder volume attached and mounted on kubelets host machine.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.Cinder
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "ceph_fs",
-						Description:   "Ceph FS mount on the host that shares a pod's lifetime.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.CephFS }),
+						Name:        "ceph_fs",
+						Description: "Ceph FS mount on the host that shares a pod's lifetime.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.CephFS
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "flocker",
-						Description:   "Flocker volume attached to a kubelet's host machine.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Flocker }),
+						Name:        "flocker",
+						Description: "Flocker volume attached to a kubelet's host machine.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.Flocker
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "downward_api",
-						Description:   "Optional: mode bits to use on created files by default",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.DownwardAPI }),
+						Name:        "downward_api",
+						Description: "Optional: mode bits to use on created files by default",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.DownwardAPI
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "fc",
-						Description:   "Fibre Channel resource that is attached to a kubelet's host machine.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.FC }),
+						Name:        "fc",
+						Description: "Fibre Channel resource that is attached to a kubelet's host machine.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.FC
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "azure_file",
-						Description:   "Azure File Service mount on the host and bind mount to the pod.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.AzureFile }),
+						Name:        "azure_file",
+						Description: "Azure File Service mount on the host and bind mount to the pod.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.AzureFile
+						}),
 						IgnoreInTests: true,
 					},
 					{
 						Name:        "config_map",
 						Description: "configMap that should populate this volume",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.ConfigMap }),
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.ConfigMap
+						}),
 					},
 					{
-						Name:          "vsphere_volume",
-						Description:   "vSphere volume attached and mounted on kubelets host machine.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.VsphereVolume }),
+						Name:        "vsphere_volume",
+						Description: "vSphere volume attached and mounted on kubelets host machine.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.VsphereVolume
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "quobyte",
-						Description:   "Quobyte mount on the host that shares a pod's lifetime.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Quobyte }),
+						Name:        "quobyte",
+						Description: "Quobyte mount on the host that shares a pod's lifetime.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.Quobyte
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "azure_disk",
-						Description:   "The Name of the data disk in the blob storage",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.AzureDisk }),
+						Name:        "azure_disk",
+						Description: "The Name of the data disk in the blob storage",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.AzureDisk
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "photon_persistent_disk",
-						Description:   "PhotonController persistent disk attached and mounted on kubelets host machine.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.PhotonPersistentDisk }),
+						Name:        "photon_persistent_disk",
+						Description: "PhotonController persistent disk attached and mounted on kubelets host machine.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.PhotonPersistentDisk
+						}),
 						IgnoreInTests: true,
 					},
 					{
 						Name:        "projected",
 						Description: "Items for all in one resources secrets, configmaps, and downward API.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Projected }),
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.Projected
+						}),
 					},
 					{
-						Name:          "portworx_volume",
-						Description:   "Portworx volume attached and mounted on kubelets host machine.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.PortworxVolume }),
+						Name:        "portworx_volume",
+						Description: "Portworx volume attached and mounted on kubelets host machine.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.PortworxVolume
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "scale_io",
-						Description:   "ScaleIO persistent volume attached and mounted on Kubernetes nodes.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.ScaleIO }),
+						Name:        "scale_io",
+						Description: "ScaleIO persistent volume attached and mounted on Kubernetes nodes.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.ScaleIO
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "storage_os",
-						Description:   "StorageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.StorageOS }),
+						Name:        "storage_os",
+						Description: "StorageOS represents a StorageOS volume attached and mounted on Kubernetes nodes.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.StorageOS
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "csi",
-						Description:   "CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature).",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.CSI }),
+						Name:        "csi",
+						Description: "CSI (Container Storage Interface) represents ephemeral storage that is handled by certain external CSI drivers (Beta feature).",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.CSI
+						}),
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "ephemeral",
-						Description:   "Ephemeral represents a volume that is handled by a cluster storage driver.",
-						Type:          schema.TypeJSON,
-						Resolver:      resolveVolumeJSONField(func(v corev1.Volume) interface{} { return v.Ephemeral }),
+						Name:        "ephemeral",
+						Description: "Ephemeral represents a volume that is handled by a cluster storage driver.",
+						Type:        schema.TypeJSON,
+						Resolver: resolveVolumeJSONField(func(v corev1.Volume) interface{} {
+							return v.Ephemeral
+						}),
 						IgnoreInTests: true,
 					},
 				},
@@ -1545,13 +1637,17 @@ func Pods() *schema.Table {
 						Name:        "state",
 						Description: "Details about the container's current condition.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} { return s.State }),
+						Resolver: resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} {
+							return s.State
+						}),
 					},
 					{
 						Name:        "last_state",
 						Description: "Details about the container's last termination condition.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} { return s.LastTerminationState }),
+						Resolver: resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} {
+							return s.LastTerminationState
+						}),
 					},
 					{
 						Name:        "ready",
@@ -1607,13 +1703,17 @@ func Pods() *schema.Table {
 						Name:        "state",
 						Description: "Details about the container's current condition.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} { return s.State }),
+						Resolver: resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} {
+							return s.State
+						}),
 					},
 					{
 						Name:        "last_state",
 						Description: "Details about the container's last termination condition.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} { return s.LastTerminationState }),
+						Resolver: resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} {
+							return s.LastTerminationState
+						}),
 					},
 					{
 						Name:        "ready",
@@ -1670,13 +1770,17 @@ func Pods() *schema.Table {
 						Name:        "state",
 						Description: "Details about the container's current condition.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} { return s.State }),
+						Resolver: resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} {
+							return s.State
+						}),
 					},
 					{
 						Name:        "last_state",
 						Description: "Details about the container's last termination condition.",
 						Type:        schema.TypeJSON,
-						Resolver:    resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} { return s.LastTerminationState }),
+						Resolver: resolveContainerStatusJSONField(func(s corev1.ContainerStatus) interface{} {
+							return s.LastTerminationState
+						}),
 					},
 					{
 						Name:        "ready",
@@ -1717,7 +1821,9 @@ func Pods() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchCorePods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	pods := meta.(*client.Client).Services().Pods

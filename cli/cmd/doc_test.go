@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -28,7 +27,7 @@ func TestDoc(t *testing.T) {
 	if err := cmd.Execute(); err != nil {
 		t.Fatal(err)
 	}
-	files, err := ioutil.ReadDir(tmpdir)
+	files, err := os.ReadDir(tmpdir)
 	if err != nil {
 		t.Fatal(err)
 	}

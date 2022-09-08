@@ -111,7 +111,9 @@ func Route53Domains() *schema.Table {
 				Name:        "admin_contact_extra_params",
 				Description: "A mapping of name to value parameter pairs required by certain top-level domains.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRoute53DomainContactExtraParams(func(d *route53domains.GetDomainDetailOutput) *types.ContactDetail { return d.AdminContact }),
+				Resolver: resolveRoute53DomainContactExtraParams(func(d *route53domains.GetDomainDetailOutput) *types.ContactDetail {
+					return d.AdminContact
+				}),
 			},
 			{
 				Name:        "domain_name",
@@ -200,7 +202,9 @@ func Route53Domains() *schema.Table {
 				Name:        "registrant_contact_extra_params",
 				Description: "A mapping of name to value parameter pairs required by certain top-level domains.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRoute53DomainContactExtraParams(func(d *route53domains.GetDomainDetailOutput) *types.ContactDetail { return d.RegistrantContact }),
+				Resolver: resolveRoute53DomainContactExtraParams(func(d *route53domains.GetDomainDetailOutput) *types.ContactDetail {
+					return d.RegistrantContact
+				}),
 			},
 			{
 				Name:        "tech_contact_address_line1",
@@ -284,7 +288,9 @@ func Route53Domains() *schema.Table {
 				Name:        "tech_contact_extra_params",
 				Description: "A mapping of name to value parameter pairs required by certain top-level domains.",
 				Type:        schema.TypeJSON,
-				Resolver:    resolveRoute53DomainContactExtraParams(func(d *route53domains.GetDomainDetailOutput) *types.ContactDetail { return d.TechContact }),
+				Resolver: resolveRoute53DomainContactExtraParams(func(d *route53domains.GetDomainDetailOutput) *types.ContactDetail {
+					return d.TechContact
+				}),
 			},
 			{
 				Name:        "abuse_contact_email",
@@ -402,7 +408,9 @@ func Route53Domains() *schema.Table {
 }
 
 // ====================================================================================================================
-//                                               Table Resolver Functions
+//
+//	Table Resolver Functions
+//
 // ====================================================================================================================
 func fetchRoute53Domains(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)

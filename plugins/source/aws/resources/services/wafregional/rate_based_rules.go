@@ -115,7 +115,9 @@ func fetchWafregionalRateBasedRules(ctx context.Context, meta schema.ClientMeta,
 	svc := cl.Services().WafRegional
 	var params wafregional.ListRateBasedRulesInput
 	for {
-		result, err := svc.ListRateBasedRules(ctx, &params, func(o *wafregional.Options) { o.Region = cl.Region })
+		result, err := svc.ListRateBasedRules(ctx, &params, func(o *wafregional.Options) {
+			o.Region = cl.Region
+		})
 		if err != nil {
 			return diag.WrapError(err)
 		}
@@ -123,7 +125,9 @@ func fetchWafregionalRateBasedRules(ctx context.Context, meta schema.ClientMeta,
 			detail, err := svc.GetRateBasedRule(
 				ctx,
 				&wafregional.GetRateBasedRuleInput{RuleId: item.RuleId},
-				func(o *wafregional.Options) { o.Region = cl.Region },
+				func(o *wafregional.Options) {
+					o.Region = cl.Region
+				},
 			)
 			if err != nil {
 				return diag.WrapError(err)
