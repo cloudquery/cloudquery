@@ -178,42 +178,14 @@ func Stacks() *schema.Table {
 				Description: "The amount of time within which stack creation should complete.",
 				Type:        schema.TypeInt,
 			},
+			{
+				Name:        "outputs",
+				Description: "The Output data type.",
+				Resolver:    schema.PathResolver("Outputs"),
+				Type:        schema.TypeJSON,
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:          "aws_cloudformation_stack_outputs",
-				Description:   "The Output data type.",
-				Resolver:      schema.PathTableResolver("Outputs"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "stack_cq_id",
-						Description: "Unique CloudQuery ID of aws_cloudformation_stacks table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "description",
-						Description: "User defined description associated with the output.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "export_name",
-						Description: "The name of the export associated with the output.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "output_key",
-						Description: "The key associated with the output.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "output_value",
-						Description: "The value associated with the output.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:        "aws_cloudformation_stack_resources",
 				Description: "Contains high-level information about the specified stack resource.",
@@ -321,7 +293,7 @@ func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMe
 		output, err := svc.ListStackResources(ctx, &config)
 		if err != nil {
 			if client.IsErrorRegex(err, "ValidationError", validStackNotFoundRegex) {
-				meta.Logger().Debug("received ValidationError on ListStackResources, stack does not exist", "region", c.Region, "err", err)
+				meta.Logger().Debug().Err(err).Str("region", c.Region).Msg("received ValidationError on ListStackResources, stack does not exist")
 				return nil
 			}
 			return err
