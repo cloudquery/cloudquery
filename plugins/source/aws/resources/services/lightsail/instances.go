@@ -36,9 +36,9 @@ func Instances() *schema.Table {
 				Resolver: resolveLightsailInstanceAccessDetails,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the instance (eg, arn:aws:lightsail:us-east-2:123456789101:Instance/244ad76f-8aad-4741-809f-12345EXAMPLE)",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the instance (eg, arn:aws:lightsail:us-east-2:123456789101:Instance/244ad76f-8aad-4741-809f-12345EXAMPLE)",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -62,16 +62,9 @@ func Instances() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "hardware_cpu_count",
-				Description: "The number of vCPUs the instance has",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Hardware.CpuCount"),
-			},
-			{
-				Name:        "hardware_ram_size_in_gb",
-				Description: "The amount of RAM in GB on the instance (eg, 10)",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("Hardware.RamSizeInGb"),
+				Name:     "hardware",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Hardware"),
 			},
 			{
 				Name:        "ip_address_type",
@@ -89,16 +82,9 @@ func Instances() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "location_availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
-			},
-			{
-				Name:        "location_region_name",
-				Description: "The AWS Region name",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.RegionName"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "name",
@@ -132,16 +118,9 @@ func Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "state_code",
-				Description: "The status code for the instance",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("State.Code"),
-			},
-			{
-				Name:        "state_name",
-				Description: "The state of the instance (eg, running or pending)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("State.Name"),
+				Name:     "state",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("State"),
 			},
 			{
 				Name:        "support_code",
@@ -165,13 +144,8 @@ func Instances() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "hardware",
-				Description: "Describes a block storage disk",
-				Type:        schema.TypeJSON,
-			},
-			{
-				Name:        "networking",
-				Type: 			schema.TypeJSON,
+				Name: "networking",
+				Type: schema.TypeJSON,
 			},
 		},
 		Relations: []*schema.Table{

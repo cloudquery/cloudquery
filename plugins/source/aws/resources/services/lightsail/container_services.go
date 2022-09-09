@@ -9,13 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func ContainerServices() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lightsail_container_services",
-		Description:  "Describes an Amazon Lightsail container service",
-		Resolver:     fetchLightsailContainerServices,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_container_services",
+		Description: "Describes an Amazon Lightsail container service",
+		Resolver:    fetchLightsailContainerServices,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -30,9 +29,9 @@ func ContainerServices() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the container service",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the container service",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -46,46 +45,9 @@ func ContainerServices() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "current_deployment_containers",
-				Description: "An object that describes the configuration for the containers of the deployment",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("CurrentDeployment.Containers"),
-			},
-			{
-				Name:        "current_deployment_created_at",
-				Description: "The timestamp when the deployment was created",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("CurrentDeployment.CreatedAt"),
-			},
-			{
-				Name:        "current_deployment_public_endpoint_container_name",
-				Description: "The name of the container entry of the deployment that the endpoint configuration applies to",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CurrentDeployment.PublicEndpoint.ContainerName"),
-			},
-			{
-				Name:        "current_deployment_public_endpoint_container_port",
-				Description: "The port of the specified container to which traffic is forwarded to",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("CurrentDeployment.PublicEndpoint.ContainerPort"),
-			},
-			{
-				Name:        "current_deployment_public_endpoint_health_check",
-				Description: "An object that describes the health check configuration of the container",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("CurrentDeployment.PublicEndpoint.HealthCheck"),
-			},
-			{
-				Name:        "current_deployment_state",
-				Description: "The state of the deployment",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CurrentDeployment.State"),
-			},
-			{
-				Name:        "current_deployment_version",
-				Description: "The version number of the deployment",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("CurrentDeployment.Version"),
+				Name:     "current_deployment",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CurrentDeployment"),
 			},
 			{
 				Name:        "is_disabled",
@@ -93,57 +55,14 @@ func ContainerServices() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:          "next_deployment_containers",
-				Description:   "An object that describes the configuration for the containers of the deployment",
+				Name:          "next_deployment",
 				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("NextDeployment.Containers"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "next_deployment_created_at",
-				Description:   "The timestamp when the deployment was created",
-				Type:          schema.TypeTimestamp,
-				Resolver:      schema.PathResolver("NextDeployment.CreatedAt"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "next_deployment_public_endpoint_container_name",
-				Description:   "The name of the container entry of the deployment that the endpoint configuration applies to",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("NextDeployment.PublicEndpoint.ContainerName"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "next_deployment_public_endpoint_container_port",
-				Description:   "The port of the specified container to which traffic is forwarded to",
-				Type:          schema.TypeInt,
-				Resolver:      schema.PathResolver("NextDeployment.PublicEndpoint.ContainerPort"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "next_deployment_public_endpoint_health_check",
-				Description:   "An object that describes the health check configuration of the container",
-				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("NextDeployment.PublicEndpoint.HealthCheck"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "next_deployment_state",
-				Description: "The state of the deployment",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("NextDeployment.State"),
-			},
-			{
-				Name:          "next_deployment_version",
-				Description:   "The version number of the deployment",
-				Type:          schema.TypeInt,
-				Resolver:      schema.PathResolver("NextDeployment.Version"),
+				Resolver:      schema.PathResolver("NextDeployment"),
 				IgnoreInTests: true,
 			},
 			{
@@ -167,10 +86,9 @@ func ContainerServices() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "private_registry_access_ecr_image_puller_role_is_active",
-				Description: "A Boolean value that indicates whether the role is activated",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("PrivateRegistryAccess.EcrImagePullerRole.IsActive"),
+				Name:     "private_registry_access",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateRegistryAccess"),
 			},
 			{
 				Name:        "private_registry_access_ecr_image_puller_role_principal_arn",
@@ -200,17 +118,9 @@ func ContainerServices() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "state_detail_code",
-				Description: "The state code of the container service",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StateDetail.Code"),
-			},
-			{
-				Name:          "state_detail_message",
-				Description:   "A message that provides more information for the state code",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("StateDetail.Message"),
-				IgnoreInTests: true,
+				Name:     "state_detail",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StateDetail"),
 			},
 			{
 				Name:        "tags",
@@ -247,22 +157,9 @@ func ContainerServices() *schema.Table {
 						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name:        "public_endpoint_container_name",
-						Description: "The name of the container entry of the deployment that the endpoint configuration applies to",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PublicEndpoint.ContainerName"),
-					},
-					{
-						Name:        "public_endpoint_container_port",
-						Description: "The port of the specified container to which traffic is forwarded to",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("PublicEndpoint.ContainerPort"),
-					},
-					{
-						Name:        "public_endpoint_health_check",
-						Description: "An object that describes the health check configuration of the container",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("PublicEndpoint.HealthCheck"),
+						Name:     "public_endpoint",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("PublicEndpoint"),
 					},
 					{
 						Name:        "state",

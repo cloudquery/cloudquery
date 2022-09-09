@@ -9,13 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func StaticIps() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lightsail_static_ips",
-		Description:  "Describes a static IP",
-		Resolver:     fetchLightsailStaticIps,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_static_ips",
+		Description: "Describes a static IP",
+		Resolver:    fetchLightsailStaticIps,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -30,9 +29,9 @@ func StaticIps() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the static IP (eg, arn:aws:lightsail:us-east-2:123456789101:StaticIp/9cbb4a9e-f8e3-4dfe-b57e-12345EXAMPLE)",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the static IP (eg, arn:aws:lightsail:us-east-2:123456789101:StaticIp/9cbb4a9e-f8e3-4dfe-b57e-12345EXAMPLE)",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -56,10 +55,9 @@ func StaticIps() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "name",

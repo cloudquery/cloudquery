@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func DatabaseSnapshots() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_database_snapshots",
@@ -31,9 +30,9 @@ func DatabaseSnapshots() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the database snapshot",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the database snapshot",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -72,10 +71,9 @@ func DatabaseSnapshots() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "name",

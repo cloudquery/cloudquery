@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Alarms() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_alarms",
@@ -31,9 +30,9 @@ func Alarms() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the alarm",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the alarm",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -62,10 +61,9 @@ func Alarms() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "metric_name",
@@ -79,16 +77,9 @@ func Alarms() *schema.Table {
 				Resolver:    schema.PathResolver("MonitoredResourceInfo.Arn"),
 			},
 			{
-				Name:        "monitored_resource_name",
-				Description: "The name of the Lightsail resource being monitored",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MonitoredResourceInfo.Name"),
-			},
-			{
-				Name:        "monitored_resource_resource_type",
-				Description: "The Lightsail resource type of the resource being monitored",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MonitoredResourceInfo.ResourceType"),
+				Name:     "monitored_resource_info",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MonitoredResourceInfo"),
 			},
 			{
 				Name:        "name",

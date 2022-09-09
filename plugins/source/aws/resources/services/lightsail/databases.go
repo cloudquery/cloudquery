@@ -12,13 +12,12 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-
 func Databases() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lightsail_databases",
-		Description:  "Describes a database",
-		Resolver:     fetchLightsailDatabases,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_databases",
+		Description: "Describes a database",
+		Resolver:    fetchLightsailDatabases,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -63,22 +62,9 @@ func Databases() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "hardware_cpu_count",
-				Description: "The number of vCPUs for the database",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Hardware.CpuCount"),
-			},
-			{
-				Name:        "hardware_disk_size_in_gb",
-				Description: "The size of the disk for the database",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Hardware.DiskSizeInGb"),
-			},
-			{
-				Name:        "hardware_ram_size_in_gb",
-				Description: "The amount of RAM in GB for the database",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("Hardware.RamSizeInGb"),
+				Name:     "hardware",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Hardware"),
 			},
 			{
 				Name:        "latest_restorable_time",
@@ -86,10 +72,9 @@ func Databases() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "master_database_name",
@@ -97,16 +82,9 @@ func Databases() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "master_endpoint_address",
-				Description: "Specifies the DNS address of the database",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MasterEndpoint.Address"),
-			},
-			{
-				Name:        "master_endpoint_port",
-				Description: "Specifies the port that the database is listening on",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("MasterEndpoint.Port"),
+				Name:     "master_endpoint",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MasterEndpoint"),
 			},
 			{
 				Name:        "master_username",
@@ -182,7 +160,7 @@ func Databases() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "pending_maintenance_actions",
+				Name: "pending_maintenance_actions",
 				Type: schema.TypeJSON,
 			},
 		},
@@ -287,16 +265,9 @@ func Databases() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "created_at",
-						Description: "The timestamp when the database log event was created",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("LogEvent.CreatedAt"),
-					},
-					{
-						Name:        "message",
-						Description: "The message of the database log event",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LogEvent.Message"),
+						Name:     "log_event",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("LogEvent"),
 					},
 					{
 						Name:        "log_stream_name",

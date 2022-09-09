@@ -30,9 +30,9 @@ func LoadBalancers() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the load balancer",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the load balancer",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -71,10 +71,9 @@ func LoadBalancers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "name",
@@ -119,12 +118,12 @@ func LoadBalancers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "instance_health_summary",
-				Type: 			 schema.TypeJSON,
+				Name: "instance_health_summary",
+				Type: schema.TypeJSON,
 			},
 			{
-				Name:        "tsl_certificate_summaries",
-				Type: 			 schema.TypeJSON,
+				Name: "tsl_certificate_summaries",
+				Type: schema.TypeJSON,
 			},
 		},
 		Relations: []*schema.Table{
@@ -191,16 +190,9 @@ func LoadBalancers() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "availability_zone",
-						Description: "The Availability Zone",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Location.AvailabilityZone"),
-					},
-					{
-						Name:        "region_name",
-						Description: "The AWS Region name",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Location.RegionName"),
+						Name:     "location",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Location"),
 					},
 					{
 						Name:        "name",
@@ -224,10 +216,9 @@ func LoadBalancers() *schema.Table {
 						Resolver:    schema.PathResolver("RenewalSummary.DomainValidationOptions"),
 					},
 					{
-						Name:        "renewal_summary_renewal_status",
-						Description: "The renewal status of the certificate",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RenewalSummary.RenewalStatus"),
+						Name:     "renewal_summary",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("RenewalSummary"),
 					},
 					{
 						Name:        "resource_type",

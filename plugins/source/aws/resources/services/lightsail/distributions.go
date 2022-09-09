@@ -11,7 +11,6 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-
 func Distributions() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_distributions",
@@ -32,137 +31,16 @@ func Distributions() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "able_to_update_bundle",
-				Description: "Indicates whether the bundle that is currently applied to your distribution, specified using the distributionName parameter, can be changed to another bundle",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("LightsailDistribution.AbleToUpdateBundle"),
+				Name:     "lightsail_distribution",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LightsailDistribution"),
 			},
 			{
-				Name:        "alternative_domain_names",
-				Description: "The alternate domain names of the distribution",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("LightsailDistribution.AlternativeDomainNames"),
-			},
-			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Arn"),
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the distribution",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("LightsailDistribution.Arn"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name:        "bundle_id",
-				Description: "The ID of the bundle currently applied to the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.BundleId"),
-			},
-			{
-				Name:        "cache_behavior_settings",
-				Description: "An object that describes the cache behavior settings of the distribution",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("LightsailDistribution.CacheBehaviorSettings"),
-			},
-			{
-				Name:        "cache_behaviors",
-				Description: "An array of objects that describe the per-path cache behavior of the distribution",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("LightsailDistribution.CacheBehaviors"),
-			},
-			{
-				Name:        "certificate_name",
-				Description: "The name of the SSL/TLS certificate attached to the distribution, if any",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.CertificateName"),
-			},
-			{
-				Name:        "created_at",
-				Description: "The timestamp when the distribution was created",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("LightsailDistribution.CreatedAt"),
-			},
-			{
-				Name:        "default_cache_behavior",
-				Description: "The cache behavior of the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.DefaultCacheBehavior.Behavior"),
-			},
-			{
-				Name:        "domain_name",
-				Description: "The domain name of the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.DomainName"),
-			},
-			{
-				Name:        "ip_address_type",
-				Description: "The IP address type of the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.IpAddressType"),
-			},
-			{
-				Name:        "is_enabled",
-				Description: "Indicates whether the distribution is enabled",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("LightsailDistribution.IsEnabled"),
-			},
-			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Location.AvailabilityZone"),
-			},
-			{
-				Name:        "name",
-				Description: "The name of the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Name"),
-			},
-			{
-				Name:        "origin_name",
-				Description: "The name of the origin resource",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Origin.Name"),
-			},
-			{
-				Name:        "origin_protocol_policy",
-				Description: "The protocol that your Amazon Lightsail distribution uses when establishing a connection with your origin to pull content",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Origin.ProtocolPolicy"),
-			},
-			{
-				Name:        "origin_region_name",
-				Description: "The AWS Region name of the origin resource",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Origin.RegionName"),
-			},
-			{
-				Name:        "origin_resource_type",
-				Description: "The resource type of the origin resource (eg, Instance)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Origin.ResourceType"),
-			},
-			{
-				Name:        "origin_public_dns",
-				Description: "The public DNS of the origin",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.OriginPublicDNS"),
-			},
-			{
-				Name:        "resource_type",
-				Description: "The Lightsail resource type (eg, Distribution)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.ResourceType"),
-			},
-			{
-				Name:        "status",
-				Description: "The status of the distribution",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.Status"),
-			},
-			{
-				Name:        "support_code",
-				Description: "The support code",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LightsailDistribution.SupportCode"),
 			},
 			{
 				Name:        "tags",
@@ -171,16 +49,9 @@ func Distributions() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "cache_reset_create_time",
-				Description: "The timestamp of the last cache reset (eg, 147973490917) in Unix time format",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("GetDistributionLatestCacheResetOutput.CreateTime"),
-			},
-			{
-				Name:        "cache_reset_status",
-				Description: "The status of the last cache reset",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("GetDistributionLatestCacheResetOutput.Status"),
+				Name:     "get_distribution_latest_cache_reset_output",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("GetDistributionLatestCacheResetOutput"),
 			},
 		},
 	}

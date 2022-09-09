@@ -10,13 +10,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Buckets() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lightsail_buckets",
-		Description:  "Describes an Amazon Lightsail bucket",
-		Resolver:     fetchLightsailBuckets,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_buckets",
+		Description: "Describes an Amazon Lightsail bucket",
+		Resolver:    fetchLightsailBuckets,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -36,37 +35,15 @@ func Buckets() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:          "access_log_config_enabled",
-				Description:   "A Boolean value that indicates whether bucket access logging is enabled for the bucket",
-				Type:          schema.TypeBool,
-				Resolver:      schema.PathResolver("AccessLogConfig.Enabled"),
+				Name:          "access_log_config",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("AccessLogConfig"),
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "access_log_config_destination",
-				Description:   "The name of the bucket where the access logs are saved",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("AccessLogConfig.Destination"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "access_log_config_prefix",
-				Description:   "The optional object prefix for the bucket access log",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("AccessLogConfig.Prefix"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "access_rules_allow_public_overrides",
-				Description: "A Boolean value that indicates whether the access control list (ACL) permissions that are applied to individual objects override the getObject option that is currently specified",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("AccessRules.AllowPublicOverrides"),
-			},
-			{
-				Name:        "access_rules_get_object",
-				Description: "Specifies the anonymous access to all objects in a bucket",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("AccessRules.GetObject"),
+				Name:     "access_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AccessRules"),
 			},
 			{
 				Name:        "arn",
@@ -84,16 +61,9 @@ func Buckets() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "location_availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
-			},
-			{
-				Name:        "location_region_name",
-				Description: "The AWS Region name",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.RegionName"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "name",
@@ -122,17 +92,9 @@ func Buckets() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "state_code",
-				Description: "The state code of the bucket",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("State.Code"),
-			},
-			{
-				Name:          "state_message",
-				Description:   "A message that describes the state of the bucket",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("State.Message"),
-				IgnoreInTests: true,
+				Name:     "state",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("State"),
 			},
 			{
 				Name:        "support_code",
@@ -175,16 +137,9 @@ func Buckets() *schema.Table {
 						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name:        "last_used_date",
-						Description: "The date and time when the access key was most recently used",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("LastUsed.LastUsedDate"),
-					},
-					{
-						Name:        "last_used_region",
-						Description: "The AWS Region where this access key was most recently used",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LastUsed.Region"),
+						Name:     "last_used",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("LastUsed"),
 					},
 					{
 						Name:        "last_used_service_name",

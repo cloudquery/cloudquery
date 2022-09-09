@@ -8,13 +8,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Certificates() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lightsail_certificates",
-		Description:  "Describes the full details of an Amazon Lightsail SSL/TLS certificate",
-		Resolver:     fetchLightsailCertificates,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_certificates",
+		Description: "Describes the full details of an Amazon Lightsail SSL/TLS certificate",
+		Resolver:    fetchLightsailCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -88,24 +87,9 @@ func Certificates() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "renewal_summary_status",
-				Description: "The renewal status of the certificate",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RenewalSummary.RenewalStatus"),
-			},
-			{
-				Name:          "renewal_summary_reason",
-				Description:   "The reason for the renewal status of the certificate",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("RenewalSummary.RenewalStatusReason"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "renewal_summary_updated_at",
-				Description:   "The timestamp when the certificate was last updated",
-				Type:          schema.TypeTimestamp,
-				Resolver:      schema.PathResolver("RenewalSummary.UpdatedAt"),
-				IgnoreInTests: true,
+				Name:     "renewal_summary",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RenewalSummary"),
 			},
 			{
 				Name:        "request_failure_reason",
@@ -152,12 +136,8 @@ func Certificates() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "domain_validation_records",
-				Type: 			schema.TypeJSON,
-			},
-			{
-				Name:        "renewal_summary",
-				Type: 			schema.TypeJSON,
+				Name: "domain_validation_records",
+				Type: schema.TypeJSON,
 			},
 		},
 	}

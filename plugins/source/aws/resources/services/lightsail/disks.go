@@ -9,13 +9,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func Disks() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_lightsail_disks",
-		Description:  "Describes a block storage disk",
-		Resolver:     fetchLightsailDisks,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_disks",
+		Description: "Describes a block storage disk",
+		Resolver:    fetchLightsailDisks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:        "account_id",
@@ -30,9 +29,9 @@ func Disks() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the disk",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the disk",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -72,16 +71,9 @@ func Disks() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "location_availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
-			},
-			{
-				Name:        "location_region_name",
-				Description: "The AWS Region name",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.RegionName"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "name",
@@ -120,7 +112,7 @@ func Disks() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "add_ons",
+				Name: "add_ons",
 				Type: schema.TypeJSON,
 			},
 		},
@@ -173,16 +165,9 @@ func Disks() *schema.Table {
 						Type:        schema.TypeBool,
 					},
 					{
-						Name:        "location_availability_zone",
-						Description: "The Availability Zone",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Location.AvailabilityZone"),
-					},
-					{
-						Name:        "location_region_name",
-						Description: "The AWS Region name",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Location.RegionName"),
+						Name:     "location",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Location"),
 					},
 					{
 						Name:        "name",

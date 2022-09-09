@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func InstanceSnapshots() *schema.Table {
 	return &schema.Table{
 		Name:          "aws_lightsail_instance_snapshots",
@@ -31,9 +30,9 @@ func InstanceSnapshots() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "arn",
-				Description: "The Amazon Resource Name (ARN) of the snapshot (eg, arn:aws:lightsail:us-east-2:123456789101:InstanceSnapshot/d23b5706-3322-4d83-81e5-12345EXAMPLE)",
-				Type:        schema.TypeString,
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the snapshot (eg, arn:aws:lightsail:us-east-2:123456789101:InstanceSnapshot/d23b5706-3322-4d83-81e5-12345EXAMPLE)",
+				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
@@ -67,10 +66,9 @@ func InstanceSnapshots() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Location.AvailabilityZone"),
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:        "name",
@@ -109,8 +107,8 @@ func InstanceSnapshots() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "from_attached_disks",
-				Type: 			schema.TypeJSON,
+				Name: "from_attached_disks",
+				Type: schema.TypeJSON,
 			},
 		},
 	}
