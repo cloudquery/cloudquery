@@ -108,10 +108,9 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "route_filter_prefixes",
-				Description: "The routes to be advertised to the AWS network in this Region",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("RouteFilterPrefixes.Cidr"),
+				Name:     "route_filter_prefixes",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RouteFilterPrefixes"),
 			},
 			{
 				Name:        "tags",

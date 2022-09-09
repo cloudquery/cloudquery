@@ -95,34 +95,9 @@ func DynamodbTables() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "provisioned_throughput_last_decrease_date_time",
-				Description: "The date and time of the last provisioned throughput decrease for this table.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("ProvisionedThroughput.LastDecreaseDateTime"),
-			},
-			{
-				Name:        "provisioned_throughput_last_increase_date_time",
-				Description: "The date and time of the last provisioned throughput increase for this table.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("ProvisionedThroughput.LastIncreaseDateTime"),
-			},
-			{
-				Name:        "provisioned_throughput_number_of_decreases_today",
-				Description: "The number of provisioned throughput decreases for this table during this UTC calendar day",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ProvisionedThroughput.NumberOfDecreasesToday"),
-			},
-			{
-				Name:        "provisioned_throughput_read_capacity_units",
-				Description: "The maximum number of strongly consistent reads consumed per second before DynamoDB returns a ThrottlingException",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ProvisionedThroughput.ReadCapacityUnits"),
-			},
-			{
-				Name:        "provisioned_throughput_write_capacity_units",
-				Description: "The maximum number of writes consumed per second before DynamoDB returns a ThrottlingException.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ProvisionedThroughput.WriteCapacityUnits"),
+				Name:     "provisioned_throughput",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ProvisionedThroughput"),
 			},
 			{
 				Name:        "restore_summary",
@@ -137,22 +112,9 @@ func DynamodbTables() *schema.Table {
 				Resolver:    schema.PathResolver("SSEDescription.InaccessibleEncryptionDateTime"),
 			},
 			{
-				Name:        "kms_master_key_arn",
-				Description: "The KMS key ARN used for the KMS encryption.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SSEDescription.KMSMasterKeyArn"),
-			},
-			{
-				Name:        "sse_type",
-				Description: "Server-side encryption type",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SSEDescription.SSEType"),
-			},
-			{
-				Name:        "sse_status",
-				Description: "Represents the current state of server-side encryption",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SSEDescription.Status"),
+				Name:     "sse_description",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SSEDescription"),
 			},
 			{
 				Name:        "stream_specification",
@@ -168,16 +130,9 @@ func DynamodbTables() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "table_class_last_update",
-				Description: "The date and time at which the table class was last updated.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("TableClassSummary.LastUpdateDateTime"),
-			},
-			{
-				Name:        "table_class",
-				Description: "The table class of the specified table",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TableClassSummary.TableClass"),
+				Name:     "table_class_summary",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TableClassSummary"),
 			},
 			{
 				Name:        "id",
@@ -281,16 +236,9 @@ func DynamodbTables() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "earliest_restorable_date_time",
-						Description: "Specifies the earliest point in time you can restore your table to",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("PointInTimeRecoveryDescription.EarliestRestorableDateTime"),
-					},
-					{
-						Name:        "latest_restorable_date_time",
-						Description: "LatestRestorableDateTime is typically 5 minutes before the current time.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("PointInTimeRecoveryDescription.LatestRestorableDateTime"),
+						Name:     "point_in_time_recovery_description",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("PointInTimeRecoveryDescription"),
 					},
 					{
 						Name:        "point_in_time_recovery_status",

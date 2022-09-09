@@ -93,22 +93,15 @@ func DmsReplicationInstances() *schema.Table {
 				Resolver:    schema.PathResolver("PendingModifiedValues.AllocatedStorage"),
 			},
 			{
-				Name:        "pending_modified_values_engine_version",
-				Description: "The engine version number of the replication instance.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.EngineVersion"),
+				Name:     "pending_modified_values",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PendingModifiedValues"),
 			},
 			{
 				Name:        "pending_modified_values_multi_az",
 				Description: "Specifies whether the replication instance is a Multi-AZ deployment",
 				Type:        schema.TypeBool,
 				Resolver:    schema.PathResolver("PendingModifiedValues.MultiAZ"),
-			},
-			{
-				Name:        "pending_modified_values_class",
-				Description: "The compute and memory capacity of the replication instance as defined for the specified replication instance class",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.ReplicationInstanceClass"),
 			},
 			{
 				Name:        "preferred_maintenance_window",
@@ -170,39 +163,14 @@ func DmsReplicationInstances() *schema.Table {
 				Resolver:    schema.PathResolver("ReplicationInstanceStatus"),
 			},
 			{
-				Name:        "replication_subnet_group_description",
-				Description: "A description for the replication subnet group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ReplicationSubnetGroup.ReplicationSubnetGroupDescription"),
-			},
-			{
-				Name:        "replication_subnet_group_identifier",
-				Description: "The identifier of the replication instance subnet group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ReplicationSubnetGroup.ReplicationSubnetGroupIdentifier"),
-			},
-			{
-				Name:        "replication_subnet_group_subnet_group_status",
-				Description: "The status of the subnet group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ReplicationSubnetGroup.SubnetGroupStatus"),
-			},
-			{
-				Name:        "replication_subnet_group_vpc_id",
-				Description: "The ID of the VPC.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ReplicationSubnetGroup.VpcId"),
+				Name:     "replication_subnet_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ReplicationSubnetGroup"),
 			},
 			{
 				Name:        "secondary_availability_zone",
 				Description: "The Availability Zone of the standby replication instance in a Multi-AZ deployment.",
 				Type:        schema.TypeString,
-			},
-			{
-				Name:        "replication_subnet_group",
-				Description: "Replication subnet group",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("ReplicationSubnetGroup"),
 			},
 			{
 				Name:        "vpc_security_groups",

@@ -49,10 +49,9 @@ func DirectconnectLags() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "connection_ids",
-				Description: "The list of IDs of Direct Connect Connections bundled by the LAG",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Connections.ConnectionId"),
+				Name:     "connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Connections"),
 			},
 			{
 				Name:        "connections_bandwidth",
