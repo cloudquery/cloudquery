@@ -8,17 +8,23 @@ import (
 )
 
 const exampleConfig = `
-# Required. OAuth token to authenticate with Heroku API
-token: <token>
+# Use can use either the API token or the API key. (API key requires setting the API email field)
+# API token is preferred
 
-## Optional. GRPC Retry/backoff configuration, time units in seconds. Documented in https://github.com/grpc/grpc/blob/master/doc/connection-backoff.md
-# backoff_base_delay: 1
-# backoff_multiplier: 1.6
-# backoff_max_delay: 120
-# backoff_jitter: 0.2
-# backoff_min_connect_timeout = 0
-## Optional. Max amount of retries for retrier, defaults to max 3 retries.
-# max_retries: 3
+# API token to access Cloudflare resources, also can be set with the CLOUDFLARE_API_TOKEN environment variable
+api_token: "<YOUR_API_TOKEN_HERE>"
+# API key to access Cloudflare resources, also can be set with the CLOUDFLARE_API_KEY environment variable
+#api_key: "<YOUR_API_KEY_HERE>"
+# API email to access Cloudflare resources, also can be set with the CLOUDFLARE_API_EMAIL environment variable
+#api_email: "<YOUR_API_EMAIL_HERE>"
+
+# List of accounts to target, if empty, all accounts will be targeted
+#accounts:
+# - "<YOUR_ACCOUNT_ID>"
+
+# List of accounts to target, if empty, all available zones will be targeted
+#zones:
+# - "<YOUR_ZONE_ID>"
 `
 
 var (
