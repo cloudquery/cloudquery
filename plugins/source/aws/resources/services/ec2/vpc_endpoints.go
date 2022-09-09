@@ -45,16 +45,9 @@ func Ec2VpcEndpoints() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "last_error_code",
-				Description: "The error code for the VPC endpoint error.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LastError.Code"),
-			},
-			{
-				Name:        "last_error_message",
-				Description: "The error message for the VPC endpoint error.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LastError.Message"),
+				Name:     "last_error",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LastError"),
 			},
 			{
 				Name:        "network_interface_ids",

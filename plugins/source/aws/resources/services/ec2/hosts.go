@@ -65,10 +65,9 @@ func Hosts() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "available_vcpus",
-				Description: "The number of vCPUs available for launching instances onto the Dedicated Host.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("AvailableCapacity.AvailableVCpus"),
+				Name:     "available_capacity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AvailableCapacity"),
 			},
 			{
 				Name:        "client_token",
@@ -82,34 +81,9 @@ func Hosts() *schema.Table {
 				Resolver:    schema.PathResolver("HostId"),
 			},
 			{
-				Name:        "cores",
-				Description: "The number of cores on the Dedicated Host.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("HostProperties.Cores"),
-			},
-			{
-				Name:        "instance_family",
-				Description: "The instance family supported by the Dedicated Host",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("HostProperties.InstanceFamily"),
-			},
-			{
-				Name:        "instance_type",
-				Description: "The instance type supported by the Dedicated Host",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("HostProperties.InstanceType"),
-			},
-			{
-				Name:        "sockets",
-				Description: "The number of sockets on the Dedicated Host.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("HostProperties.Sockets"),
-			},
-			{
-				Name:        "total_vcpus",
-				Description: "The total number of vCPUs on the Dedicated Host.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("HostProperties.TotalVCpus"),
+				Name:     "host_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("HostProperties"),
 			},
 			{
 				Name:        "host_recovery",
@@ -147,11 +121,6 @@ func Hosts() *schema.Table {
 				Description: "Any tags assigned to the Dedicated Host.",
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
-			},
-			{
-				Name:     "available_capacity",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AvailableCapacity"),
 			},
 			{
 				Name:        "instances",

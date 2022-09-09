@@ -29,56 +29,21 @@ func Ec2TransitGateways() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "amazon_side_asn",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Options.AmazonSideAsn"),
-			},
-			{
-				Name:     "association_default_route_table_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.AssociationDefaultRouteTableId"),
-			},
-			{
-				Name:     "auto_accept_shared_attachments",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.AutoAcceptSharedAttachments"),
+				Name:     "options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Options"),
 			},
 			{
 				Name: "creation_time",
 				Type: schema.TypeTimestamp,
 			},
 			{
-				Name:     "default_route_table_association",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.DefaultRouteTableAssociation"),
-			},
-			{
-				Name:     "default_route_table_propagation",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.DefaultRouteTablePropagation"),
-			},
-			{
 				Name: "description",
 				Type: schema.TypeString,
 			},
 			{
-				Name:     "dns_support",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.DnsSupport"),
-			},
-			{
-				Name:     "multicast_support",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.MulticastSupport"),
-			},
-			{
 				Name: "owner_id",
 				Type: schema.TypeString,
-			},
-			{
-				Name:     "propagation_default_route_table_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.PropagationDefaultRouteTableId"),
 			},
 			{
 				Name: "state",
@@ -96,20 +61,10 @@ func Ec2TransitGateways() *schema.Table {
 				Resolver:    schema.PathResolver("TransitGatewayArn"),
 			},
 			{
-				Name:     "transit_gateway_cidr_blocks",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("Options.TransitGatewayCidrBlocks"),
-			},
-			{
 				Name:            "id",
 				Type:            schema.TypeString,
 				Resolver:        schema.PathResolver("TransitGatewayId"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name:     "vpn_ecmp_support",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Options.VpnEcmpSupport"),
 			},
 		},
 		Relations: []*schema.Table{
@@ -124,14 +79,9 @@ func Ec2TransitGateways() *schema.Table {
 						Resolver: schema.ParentIdResolver,
 					},
 					{
-						Name:     "association_state",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Association.State"),
-					},
-					{
-						Name:     "association_route_table_id",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Association.TransitGatewayRouteTableId"),
+						Name:     "association",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Association"),
 					},
 					{
 						Name: "creation_time",
@@ -216,19 +166,9 @@ func Ec2TransitGateways() *schema.Table {
 						Type: schema.TypeTimestamp,
 					},
 					{
-						Name:     "appliance_mode_support",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Options.ApplianceModeSupport"),
-					},
-					{
-						Name:     "dns_support",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Options.DnsSupport"),
-					},
-					{
-						Name:     "ipv6_support",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Options.Ipv6Support"),
+						Name:     "options",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Options"),
 					},
 					{
 						Name: "state",
@@ -264,52 +204,27 @@ func Ec2TransitGateways() *schema.Table {
 						Resolver: schema.ParentIdResolver,
 					},
 					{
-						Name:     "accepter_owner_id",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("AccepterTgwInfo.OwnerId"),
-					},
-					{
-						Name:     "accepter_region",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("AccepterTgwInfo.Region"),
-					},
-					{
-						Name:     "accepter_transit_gateway_id",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("AccepterTgwInfo.TransitGatewayId"),
+						Name:     "accepter_tgw_info",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("AccepterTgwInfo"),
 					},
 					{
 						Name: "creation_time",
 						Type: schema.TypeTimestamp,
 					},
 					{
-						Name:     "requester_owner_id",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("RequesterTgwInfo.OwnerId"),
-					},
-					{
-						Name:     "requester_region",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("RequesterTgwInfo.Region"),
-					},
-					{
-						Name:     "requester_transit_gateway_id",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("RequesterTgwInfo.TransitGatewayId"),
+						Name:     "requester_tgw_info",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("RequesterTgwInfo"),
 					},
 					{
 						Name: "state",
 						Type: schema.TypeString,
 					},
 					{
-						Name:     "status_code",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Status.Code"),
-					},
-					{
-						Name:     "status_message",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Status.Message"),
+						Name:     "status",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Status"),
 					},
 					{
 						Name:     "tags",
@@ -337,19 +252,9 @@ func Ec2TransitGateways() *schema.Table {
 						Type: schema.TypeTimestamp,
 					},
 					{
-						Name:     "auto_accept_shared_associations",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Options.AutoAcceptSharedAssociations"),
-					},
-					{
-						Name:     "igmpv2_support",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Options.Igmpv2Support"),
-					},
-					{
-						Name:     "static_sources_support",
-						Type:     schema.TypeString,
-						Resolver: schema.PathResolver("Options.StaticSourcesSupport"),
+						Name:     "options",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Options"),
 					},
 					{
 						Name: "owner_id",

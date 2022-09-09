@@ -150,16 +150,9 @@ func Ec2Images() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "state_reason_code",
-				Description: "The reason code for the state change.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StateReason.Code"),
-			},
-			{
-				Name:        "state_reason_message",
-				Description: "The message for the state change.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StateReason.Message"),
+				Name:     "state_reason",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StateReason"),
 			},
 			{
 				Name:        "tags",

@@ -79,10 +79,9 @@ func Ec2VpcEndpointServices() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "private_dns_names",
-				Description: "The private DNS names assigned to the VPC endpoint service.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("PrivateDnsNames.PrivateDnsName"),
+				Name:     "private_dns_names",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateDnsNames"),
 			},
 			{
 				Name:        "id",
@@ -96,10 +95,9 @@ func Ec2VpcEndpointServices() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "service_type",
-				Description: "The type of service.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ServiceType.ServiceType"),
+				Name:     "service_type",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServiceType"),
 			},
 			{
 				Name:        "tags",

@@ -81,30 +81,9 @@ func Ec2VpcEndpointServiceConfigurations() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "private_dns_name_configuration_name",
-				Description:   "The name of the record subdomain the service provider needs to create.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PrivateDnsNameConfiguration.Name"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "private_dns_name_configuration_state",
-				Description: "The verification state of the VPC endpoint service.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PrivateDnsNameConfiguration.State"),
-			},
-			{
-				Name:          "private_dns_name_configuration_type",
-				Description:   "The endpoint service verification type, for example TXT.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PrivateDnsNameConfiguration.Type"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "private_dns_name_configuration_value",
-				Description:   "The value the service provider adds to the private DNS name domain record before verification.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PrivateDnsNameConfiguration.Value"),
+				Name:          "private_dns_name_configuration",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("PrivateDnsNameConfiguration"),
 				IgnoreInTests: true,
 			},
 			{
@@ -123,10 +102,9 @@ func Ec2VpcEndpointServiceConfigurations() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "service_type",
-				Description: "The type of service.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ServiceType.ServiceType"),
+				Name:     "service_type",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ServiceType"),
 			},
 			{
 				Name:        "tags",

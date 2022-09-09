@@ -55,22 +55,14 @@ func Ec2InstanceStatuses() *schema.Table {
 				Resolver:    schema.PathResolver("InstanceState.Code"),
 			},
 			{
-				Name:        "instance_state_name",
-				Description: "The current state of the instance.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InstanceState.Name"),
+				Name:     "instance_state",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("InstanceState"),
 			},
 			{
-				Name:        "details",
-				Description: "The system instance health or application instance health.",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("InstanceStatus.Details"),
-			},
-			{
-				Name:        "status",
-				Description: "The instance status.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("InstanceStatus.Status"),
+				Name:     "instance_status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("InstanceStatus"),
 			},
 			{
 				Name:          "outpost_arn",
@@ -79,16 +71,9 @@ func Ec2InstanceStatuses() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "system_status",
-				Description: "The system status.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SystemStatus.Status"),
-			},
-			{
-				Name:        "system_status_details",
-				Description: "The system instance health or application instance health.",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("SystemStatus.Details"),
+				Name:     "system_status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SystemStatus"),
 			},
 			{
 				Name:        "events",
