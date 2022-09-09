@@ -115,59 +115,11 @@ func Findings() *schema.Table {
 				Description: "The date and time the finding was last updated at",
 				Type:        schema.TypeTimestamp,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_inspector2_finding_resources",
+				Name:        "resources",
 				Description: "Details about the resource involved in a finding",
-				Resolver:    schema.PathTableResolver("Resources"),
-				Columns: []schema.Column{
-					{
-						Name:        "finding_cq_id",
-						Description: "Unique CloudQuery ID of aws_inspector2_findings table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "id",
-						Description: "The ID of the resource",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "type",
-						Description: "The type of resource",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "aws_ec2_instance",
-						Description:   "An object that contains details about the Amazon EC2 instance involved in the finding",
-						Type:          schema.TypeJSON,
-						Resolver:      schema.PathResolver("Details.AwsEc2Instance"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "aws_ecr_container_image",
-						Description:   "An object that contains details about the Amazon ECR container image involved in the finding",
-						Type:          schema.TypeJSON,
-						Resolver:      schema.PathResolver("Details.AwsEcrContainerImage"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "partition",
-						Description: "The partition of the resource",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "region",
-						Description: "The Amazon Web Services Region the impacted resource is located in",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "tags",
-						Description: "The tags attached to the resource",
-						Type:        schema.TypeJSON,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Resources"),
 			},
 		},
 	}

@@ -63,7 +63,7 @@ func GuarddutyDetectors() *schema.Table {
 				Name:        "created_at",
 				Description: "The timestamp of when the detector was created.",
 				Type:        schema.TypeTimestamp,
-				Resolver:    schema.DateResolver("CreatedAt"),
+				Resolver:    schema.PathResolver("CreatedAt"),
 			},
 			{
 				Name:        "data_sources_cloud_trail_status",
@@ -103,7 +103,7 @@ func GuarddutyDetectors() *schema.Table {
 				Name:        "updated_at",
 				Description: "The last-updated timestamp for the detector.",
 				Type:        schema.TypeTimestamp,
-				Resolver:    schema.DateResolver("UpdatedAt"),
+				Resolver:    schema.PathResolver("UpdatedAt"),
 			},
 		},
 		Relations: []*schema.Table{
@@ -143,7 +143,7 @@ func GuarddutyDetectors() *schema.Table {
 						Name:        "updated_at",
 						Description: "The last-updated timestamp of the member.",
 						Type:        schema.TypeTimestamp,
-						Resolver:    schema.DateResolver("UpdatedAt"),
+						Resolver:    schema.PathResolver("UpdatedAt"),
 					},
 					{
 						Name:        "detector_id",
@@ -154,7 +154,7 @@ func GuarddutyDetectors() *schema.Table {
 						Name:        "invited_at",
 						Description: "The timestamp when the invitation was sent.",
 						Type:        schema.TypeTimestamp,
-						Resolver:    schema.DateResolver("InvitedAt"),
+						Resolver:    schema.PathResolver("InvitedAt"),
 					},
 				},
 			},

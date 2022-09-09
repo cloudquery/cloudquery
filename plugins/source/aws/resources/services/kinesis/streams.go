@@ -92,25 +92,11 @@ func Streams() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("StreamModeDetails.StreamMode"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_kinesis_stream_enhanced_monitoring",
+				Name:        "enhanced_monitoring",
 				Description: "Represents enhanced metrics types",
-				Resolver:    schema.PathTableResolver("EnhancedMonitoring"),
-				Columns: []schema.Column{
-					{
-						Name:        "stream_cq_id",
-						Description: "Unique CloudQuery ID of aws_kinesis_streams table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "shard_level_metrics",
-						Description: "List of shard-level metrics",
-						Type:        schema.TypeStringArray,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("EnhancedMonitoring"),
 			},
 		},
 	}

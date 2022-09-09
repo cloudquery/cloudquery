@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
-	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -678,8 +677,8 @@ func IotTopicRules() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:       "rule",
-				Type: 			schema.TypeJSON,
+				Name: "rule",
+				Type: schema.TypeJSON,
 			},
 		},
 	}
@@ -764,28 +763,6 @@ func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, me
 	}
 	j := map[string]interface{}{}
 	for _, h := range i.Rule.ErrorAction.Timestream.Dimensions {
-		j[*h.Name] = *h.Value
-	}
-	return resource.Set(c.Name, j)
-}
-func resolveIotTopicRuleActionsHttpHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(types.Action)
-	if i.Http == nil {
-		return nil
-	}
-	j := map[string]interface{}{}
-	for _, h := range i.Http.Headers {
-		j[*h.Key] = *h.Value
-	}
-	return resource.Set(c.Name, j)
-}
-func resolveIotTopicRuleActionsTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(types.Action)
-	if i.Timestream == nil {
-		return nil
-	}
-	j := map[string]interface{}{}
-	for _, h := range i.Timestream.Dimensions {
 		j[*h.Name] = *h.Value
 	}
 	return resource.Set(c.Name, j)
