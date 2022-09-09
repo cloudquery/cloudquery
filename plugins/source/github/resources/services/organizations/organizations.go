@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
-	"github.com/pkg/errors"
 )
 
 func Organizations() *schema.Table {
@@ -247,7 +246,7 @@ func fetchOrganizations(ctx context.Context, meta schema.ClientMeta, parent *sch
 	c := meta.(*client.Client)
 	org, _, err := c.Github.Organizations.Get(ctx, c.Org)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- org
 	return nil
@@ -264,12 +263,12 @@ func resolveOrganizationMembers(ctx context.Context, meta schema.ClientMeta, res
 	for {
 		members, resp, err := c.Github.Organizations.ListMembers(ctx, c.Org, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		for _, member := range members {
 			membership, _, err := c.Github.Organizations.GetOrgMembership(ctx, *member.Login, c.Org)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			orgMembers = append(orgMembers, &Member{
 				User:       member,
@@ -281,5 +280,5 @@ func resolveOrganizationMembers(ctx context.Context, meta schema.ClientMeta, res
 			break
 		}
 	}
-	return errors.WithStack(resource.Set(column.Name, orgMembers))
+	return resource.Set(column.Name, orgMembers)
 }

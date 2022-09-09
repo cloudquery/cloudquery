@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
-	"github.com/pkg/errors"
 )
 
 func Hooks() *schema.Table {
@@ -102,7 +101,7 @@ func fetchHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	for {
 		hooks, resp, err := c.Github.Organizations.ListHooks(ctx, c.Org, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- hooks
 		opts.Page = resp.NextPage
@@ -122,7 +121,7 @@ func resolveHookDeliveries(ctx context.Context, meta schema.ClientMeta, resource
 	for {
 		hooks, resp, err := c.Github.Organizations.ListHookDeliveries(ctx, c.Org, *h.ID, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		deliveries = append(deliveries, hooks...)
 		if len(hooks) == 0 || resp.Cursor == "" {
@@ -130,5 +129,5 @@ func resolveHookDeliveries(ctx context.Context, meta schema.ClientMeta, resource
 		}
 		opts.Cursor = resp.Cursor
 	}
-	return errors.WithStack(resource.Set(column.Name, deliveries))
+	return resource.Set(column.Name, deliveries)
 }

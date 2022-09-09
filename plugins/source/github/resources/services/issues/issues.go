@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
-	"github.com/pkg/errors"
 )
 
 func Issues() *schema.Table {
@@ -171,7 +170,7 @@ func fetchIssues(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	for {
 		issues, resp, err := c.Github.Issues.ListByOrg(ctx, c.Org, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- issues
 		opts.Page = resp.NextPage

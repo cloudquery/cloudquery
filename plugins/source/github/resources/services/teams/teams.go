@@ -8,7 +8,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
-	"github.com/pkg/errors"
 )
 
 func Teams() *schema.Table {
@@ -128,7 +127,7 @@ func fetchTeams(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	for {
 		repos, resp, err := c.Github.Teams.ListTeams(ctx, c.Org, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- repos
 		opts.Page = resp.NextPage
@@ -150,13 +149,13 @@ func resolveTeamMembers(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	orgId, err := strconv.Atoi(strings.Split(*t.MembersURL, "/")[4])
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	var teamMembers []*github.User
 	for {
 		members, resp, err := c.Github.Teams.ListTeamMembersByID(ctx, int64(orgId), *t.ID, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		teamMembers = append(teamMembers, members...)
 		opts.Page = resp.NextPage
@@ -164,7 +163,7 @@ func resolveTeamMembers(ctx context.Context, meta schema.ClientMeta, resource *s
 			break
 		}
 	}
-	return errors.WithStack(resource.Set(column.Name, teamMembers))
+	return resource.Set(column.Name, teamMembers)
 }
 
 func resolveTeamRepositories(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
@@ -176,13 +175,13 @@ func resolveTeamRepositories(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	orgId, err := strconv.Atoi(strings.Split(*t.MembersURL, "/")[4])
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	var repositories []*github.Repository
 	for {
 		repos, resp, err := c.Github.Teams.ListTeamReposByID(ctx, int64(orgId), *t.ID, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		repositories = append(repositories, repos...)
 		opts.Page = resp.NextPage
@@ -190,5 +189,5 @@ func resolveTeamRepositories(ctx context.Context, meta schema.ClientMeta, resour
 			break
 		}
 	}
-	return errors.WithStack(resource.Set(column.Name, repositories))
+	return resource.Set(column.Name, repositories)
 }

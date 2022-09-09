@@ -7,7 +7,6 @@ require (
 	github.com/cloudquery/plugin-sdk v0.2.4
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v45 v45.2.0
-	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
 	golang.org/x/oauth2 v0.0.0-20211104180415-d3ed0bb246c8
 )
