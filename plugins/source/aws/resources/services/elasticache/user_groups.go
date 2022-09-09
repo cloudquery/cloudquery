@@ -45,16 +45,9 @@ func UserGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "pending_user_ids_to_add",
-				Description: "The list of user IDs to add.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("PendingChanges.UserIdsToAdd"),
-			},
-			{
-				Name:        "pending_user_ids_to_remove",
-				Description: "The list of user IDs to remove.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("PendingChanges.UserIdsToRemove"),
+				Name:     "pending_changes",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PendingChanges"),
 			},
 			{
 				Name:        "replication_groups",

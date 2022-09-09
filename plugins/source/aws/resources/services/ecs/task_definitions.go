@@ -59,10 +59,9 @@ func EcsTaskDefinitions() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "ephemeral_storage_size",
-				Description: "The total amount, in GiB, of ephemeral storage to set for the task.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("EphemeralStorage.SizeInGiB"),
+				Name:     "ephemeral_storage",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EphemeralStorage"),
 			},
 			{
 				Name:        "execution_role_arn",
@@ -107,22 +106,15 @@ func EcsTaskDefinitions() *schema.Table {
 				Resolver:    resolveEcsTaskDefinitionsPlacementConstraints,
 			},
 			{
-				Name:        "proxy_configuration_container_name",
-				Description: "The name of the container that will serve as the App Mesh proxy.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ProxyConfiguration.ContainerName"),
+				Name:     "proxy_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ProxyConfiguration"),
 			},
 			{
 				Name:        "proxy_configuration_properties",
 				Description: "The set of network configuration parameters to provide the Container Network Interface (CNI) plugin, specified as key-value pairs.  * IgnoredUID - (Required) The user ID (UID) of the proxy container as defined by the user parameter in a container definition",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveEcsTaskDefinitionsProxyConfigurationProperties,
-			},
-			{
-				Name:        "proxy_configuration_type",
-				Description: "The proxy type",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ProxyConfiguration.Type"),
 			},
 			{
 				Name:        "registered_at",
@@ -151,16 +143,9 @@ func EcsTaskDefinitions() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "runtime_platform_cpu_architecture",
-				Description: "The CPU architecture.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RuntimePlatform.CpuArchitecture"),
-			},
-			{
-				Name:        "runtime_platform_os_family",
-				Description: "The operating system.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RuntimePlatform.OperatingSystemFamily"),
+				Name:     "runtime_platform",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RuntimePlatform"),
 			},
 			{
 				Name:        "status",

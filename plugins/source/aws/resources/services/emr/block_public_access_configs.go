@@ -29,48 +29,14 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "block_public_security_group_rules",
-				Description: "Indicates whether Amazon EMR block public access is enabled or disabled.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("BlockPublicAccessConfiguration.BlockPublicSecurityGroupRules"),
-			},
-			{
-				Name:          "classification",
-				Description:   "The classification within a configuration.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("BlockPublicAccessConfiguration.Classification"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "configurations",
-				Description:   "A list of additional configurations to apply within a configuration object.",
-				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("BlockPublicAccessConfiguration.Configurations"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "properties",
-				Description:   "A set of properties specified within a configuration classification.",
-				Type:          schema.TypeJSON,
-				Resolver:      schema.PathResolver("BlockPublicAccessConfiguration.Properties"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "created_by_arn",
-				Description: "The Amazon Resource Name that created or last modified the configuration.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("BlockPublicAccessConfigurationMetadata.CreatedByArn"),
-			},
-			{
-				Name:        "creation_date_time",
-				Description: "The date and time that the configuration was created.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("BlockPublicAccessConfigurationMetadata.CreationDateTime"),
-			},
-			{
 				Name:     "block_public_access_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("BlockPublicAccessConfiguration"),
+			},
+			{
+				Name:     "block_public_access_configuration_metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BlockPublicAccessConfigurationMetadata"),
 			},
 		},
 	}

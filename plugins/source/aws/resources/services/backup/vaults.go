@@ -136,16 +136,9 @@ func Vaults() *schema.Table {
 						Resolver:    schema.PathResolver("BackupSizeInBytes"),
 					},
 					{
-						Name:        "calculated_delete_at",
-						Description: "A timestamp that specifies when to delete a recovery point.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("CalculatedLifecycle.DeleteAt"),
-					},
-					{
-						Name:        "calculated_move_to_cold_storage_at",
-						Description: "A timestamp that specifies when to transition a recovery point to cold storage.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("CalculatedLifecycle.MoveToColdStorageAt"),
+						Name:     "calculated_lifecycle",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("CalculatedLifecycle"),
 					},
 					{
 						Name:        "completion_date",
@@ -184,16 +177,9 @@ func Vaults() *schema.Table {
 						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name:        "delete_after",
-						Description: "Specifies the number of days after creation that a recovery point is deleted.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Lifecycle.DeleteAfterDays"),
-					},
-					{
-						Name:        "move_to_cold_storage_after",
-						Description: "Specifies the number of days after creation that a recovery point is moved to cold storage.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Lifecycle.MoveToColdStorageAfterDays"),
+						Name:     "lifecycle",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Lifecycle"),
 					},
 					{
 						Name:        "arn",

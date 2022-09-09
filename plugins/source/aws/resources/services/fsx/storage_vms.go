@@ -29,40 +29,9 @@ func StorageVms() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "ad_cfg_net_bios_name",
-				Description: "The NetBIOS name of the Active Directory computer object that is joined to your SVM",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ActiveDirectoryConfiguration.NetBiosName"),
-			},
-			{
-				Name:        "ad_cfg_dns_ips",
-				Description: "A list of up to three IP addresses of DNS servers or domain controllers in the self-managed AD directory",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ActiveDirectoryConfiguration.SelfManagedActiveDirectoryConfiguration.DnsIps"),
-			},
-			{
-				Name:        "ad_cfg_domain_name",
-				Description: "The fully qualified domain name of the self-managed AD directory",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ActiveDirectoryConfiguration.SelfManagedActiveDirectoryConfiguration.DomainName"),
-			},
-			{
-				Name:        "ad_cfg_file_system_administrators_group",
-				Description: "The name of the domain group whose members have administrative privileges for the FSx file system",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ActiveDirectoryConfiguration.SelfManagedActiveDirectoryConfiguration.FileSystemAdministratorsGroup"),
-			},
-			{
-				Name:        "ad_cfg_organizational_unit_distinguished_name",
-				Description: "The fully qualified distinguished name of the organizational unit within the self-managed AD directory to which the Windows File Server or ONTAP storage virtual machine (SVM) instance is joined",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ActiveDirectoryConfiguration.SelfManagedActiveDirectoryConfiguration.OrganizationalUnitDistinguishedName"),
-			},
-			{
-				Name:        "ad_cfg_user_name",
-				Description: "The user name for the service account on your self-managed AD domain that FSx uses to join to your AD domain",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ActiveDirectoryConfiguration.SelfManagedActiveDirectoryConfiguration.UserName"),
+				Name:     "active_directory_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ActiveDirectoryConfiguration"),
 			},
 			{
 				Name:        "creation_time",
@@ -128,10 +97,9 @@ func StorageVms() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "lifecycle_transition_reason_message",
-				Description: "A detailed error message",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LifecycleTransitionReason.Message"),
+				Name:     "lifecycle_transition_reason",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LifecycleTransitionReason"),
 			},
 			{
 				Name:        "name",

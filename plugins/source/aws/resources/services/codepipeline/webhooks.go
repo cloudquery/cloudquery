@@ -29,40 +29,9 @@ func Webhooks() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "authentication",
-				Description: "Supported options are GITHUB_HMAC, IP, and UNAUTHENTICATED",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Definition.Authentication"),
-			},
-			{
-				Name:        "authentication_allowed_ip_range",
-				Description: "The property used to configure acceptance of webhooks in an IP address range For IP, only the AllowedIPRange property must be set",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Definition.AuthenticationConfiguration.AllowedIPRange"),
-			},
-			{
-				Name:        "authentication_secret_token",
-				Description: "The property used to configure GitHub authentication",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Definition.AuthenticationConfiguration.SecretToken"),
-			},
-			{
-				Name:        "name",
-				Description: "The name of the webhook",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Definition.Name"),
-			},
-			{
-				Name:        "target_action",
-				Description: "The name of the action in a pipeline you want to connect to the webhook",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Definition.TargetAction"),
-			},
-			{
-				Name:        "target_pipeline",
-				Description: "The name of the pipeline you want to connect to the webhook",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Definition.TargetPipeline"),
+				Name:     "definition",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Definition"),
 			},
 			{
 				Name:        "url",
@@ -95,12 +64,6 @@ func Webhooks() *schema.Table {
 				Description: "The tags associated with the webhook",
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
-			},
-			{
-				Name:        "definition",
-				Description: "The detail returned for each webhook, such as the webhook authentication type and filter rules",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("Definition"),
 			},
 		},
 	}

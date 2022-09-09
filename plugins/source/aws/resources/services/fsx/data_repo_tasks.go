@@ -59,10 +59,9 @@ func DataRepoTasks() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "failure_details_message",
-				Description: "A detailed error message",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("FailureDetails.Message"),
+				Name:     "failure_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FailureDetails"),
 			},
 			{
 				Name:        "paths",
@@ -70,28 +69,9 @@ func DataRepoTasks() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "report_enabled",
-				Description: "Set Enabled to True to generate a CompletionReport when the task completes",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("Report.Enabled"),
-			},
-			{
-				Name:        "report_format",
-				Description: "Required if Enabled is set to true",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Report.Format"),
-			},
-			{
-				Name:        "report_path",
-				Description: "Required if Enabled is set to true",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Report.Path"),
-			},
-			{
-				Name:        "report_scope",
-				Description: "Required if Enabled is set to true",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Report.Scope"),
+				Name:     "report",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Report"),
 			},
 			{
 				Name:            "arn",
@@ -106,28 +86,9 @@ func DataRepoTasks() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "status_failed_count",
-				Description: "A running total of the number of files that the task failed to process",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Status.FailedCount"),
-			},
-			{
-				Name:        "status_last_updated_time",
-				Description: "The time at which the task status was last updated",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("Status.LastUpdatedTime"),
-			},
-			{
-				Name:        "status_succeeded_count",
-				Description: "A running total of the number of files that the task has successfully processed",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Status.SucceededCount"),
-			},
-			{
-				Name:        "status_total_count",
-				Description: "The total number of files that the task will process",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Status.TotalCount"),
+				Name:     "status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Status"),
 			},
 			{
 				Name:        "tags",

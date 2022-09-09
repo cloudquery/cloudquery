@@ -70,16 +70,9 @@ func ReplicationGroups() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "configuration_endpoint_address",
-				Description: "The DNS hostname of the cache node.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ConfigurationEndpoint.Address"),
-			},
-			{
-				Name:        "configuration_endpoint_port",
-				Description: "The port number that the cache engine is listening on.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ConfigurationEndpoint.Port"),
+				Name:     "configuration_endpoint",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ConfigurationEndpoint"),
 			},
 			{
 				Name:        "data_tiering",
@@ -92,16 +85,9 @@ func ReplicationGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "global_replication_group_id",
-				Description: "The name of the Global datastore",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("GlobalReplicationGroupInfo.GlobalReplicationGroupId"),
-			},
-			{
-				Name:        "global_replication_group_member",
-				Description: "The role of the replication group in a Global datastore",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("GlobalReplicationGroupInfo.GlobalReplicationGroupMemberRole"),
+				Name:     "global_replication_group_info",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("GlobalReplicationGroupInfo"),
 			},
 			{
 				Name:        "kms_key_id",
@@ -125,40 +111,15 @@ func ReplicationGroups() *schema.Table {
 				Resolver:    schema.PathResolver("MultiAZ"),
 			},
 			{
-				Name:        "pending_auth_token_status",
-				Description: "Pending modified auth token status",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.AuthTokenStatus"),
-			},
-			{
-				Name:        "pending_automatic_failover_status",
-				Description: "pending autmatic failover for this redis replication group",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.AutomaticFailoverStatus"),
+				Name:     "pending_modified_values",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PendingModifiedValues"),
 			},
 			{
 				Name:        "pending_primary_cluster_id",
 				Description: "The primary cluster ID that is applied immediately (if --apply-immediately was specified), or during the next maintenance window.",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("PendingModifiedValues.PrimaryClusterId"),
-			},
-			{
-				Name:        "pending_resharding_slot_migration_progress_percentage",
-				Description: "The percentage of the slot migration that is complete.",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("PendingModifiedValues.Resharding.SlotMigration.ProgressPercentage"),
-			},
-			{
-				Name:        "pending_user_group_ids_to_add",
-				Description: "The ID of the user group to add.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("PendingModifiedValues.UserGroups.UserGroupIdsToAdd"),
-			},
-			{
-				Name:        "pending_user_group_ids_to_remove",
-				Description: "The ID of the user group to remove.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("PendingModifiedValues.UserGroups.UserGroupIdsToRemove"),
 			},
 			{
 				Name:        "replication_group_create_time",

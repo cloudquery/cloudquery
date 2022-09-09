@@ -40,10 +40,9 @@ func Filesystems() *schema.Table {
 				Resolver:    schema.PathResolver("DNSName"),
 			},
 			{
-				Name:        "failure_details_message",
-				Description: "A message describing any failures that occurred during file system creation",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("FailureDetails.Message"),
+				Name:     "failure_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FailureDetails"),
 			},
 			{
 				Name:        "id",

@@ -124,22 +124,15 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "load_balancer_domain",
-				Description: "The domain name of the LoadBalancer.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Resources.LoadBalancer.Domain"),
+				Name:     "resources",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Resources"),
 			},
 			{
 				Name:        "listeners",
 				Description: "A list of Listeners used by the LoadBalancer.",
 				Type:        schema.TypeJSON,
 				Resolver:    resolveElasticbeanstalkEnvironmentListeners,
-			},
-			{
-				Name:        "load_balancer_name",
-				Description: "The name of the LoadBalancer.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Resources.LoadBalancer.LoadBalancerName"),
 			},
 			{
 				Name:        "solution_stack_name",
@@ -157,22 +150,9 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "tier_name",
-				Description: "The name of this environment tier",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Tier.Name"),
-			},
-			{
-				Name:        "tier_type",
-				Description: "The type of this environment tier",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Tier.Type"),
-			},
-			{
-				Name:        "tier_version",
-				Description: "The version of this environment tier",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Tier.Version"),
+				Name:     "tier",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tier"),
 			},
 			{
 				Name:        "version_label",
@@ -316,16 +296,9 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 						Type:        schema.TypeInt,
 					},
 					{
-						Name:        "regex_label",
-						Description: "A unique name representing this regular expression.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Regex.Label"),
-					},
-					{
-						Name:        "regex_pattern",
-						Description: "The regular expression pattern that a string configuration option value with this restriction must match.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Regex.Pattern"),
+						Name:     "regex",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Regex"),
 					},
 					{
 						Name:        "user_defined",

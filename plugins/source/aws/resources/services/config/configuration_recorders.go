@@ -54,10 +54,9 @@ func ConfigConfigurationRecorders() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "recording_group_all_supported",
-				Description: "Specifies whether AWS Config records configuration changes for every supported type of regional resource.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("RecordingGroup.AllSupported"),
+				Name:     "recording_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RecordingGroup"),
 			},
 			{
 				Name:        "recording_group_include_global_resource_types",

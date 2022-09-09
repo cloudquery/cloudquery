@@ -69,40 +69,9 @@ func ElasticbeanstalkApplications() *schema.Table {
 				Resolver:    schema.PathResolver("ResourceLifecycleConfig.ServiceRole"),
 			},
 			{
-				Name:        "max_age_rule_enabled",
-				Description: "Specify true to apply the rule, or false to disable it. ",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxAgeRule.Enabled"),
-			},
-			{
-				Name:        "max_age_rule_delete_source_from_s3",
-				Description: "Set to true to delete a version's source bundle from Amazon S3 when Elastic Beanstalk deletes the application version.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxAgeRule.DeleteSourceFromS3"),
-			},
-			{
-				Name:        "max_age_rule_max_age_in_days",
-				Description: "Specify the number of days to retain an application versions.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxAgeRule.MaxAgeInDays"),
-			},
-			{
-				Name:        "max_count_rule_enabled",
-				Description: "Specify true to apply the rule, or false to disable it. ",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxCountRule.Enabled"),
-			},
-			{
-				Name:        "max_count_rule_delete_source_from_s3",
-				Description: "Set to true to delete a version's source bundle from Amazon S3 when Elastic Beanstalk deletes the application version.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxCountRule.DeleteSourceFromS3"),
-			},
-			{
-				Name:        "max_count_rule_max_count",
-				Description: "Specify the maximum number of application versions to retain.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ResourceLifecycleConfig.VersionLifecycleConfig.MaxCountRule.MaxCount"),
+				Name:     "resource_lifecycle_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResourceLifecycleConfig"),
 			},
 			{
 				Name:        "versions",

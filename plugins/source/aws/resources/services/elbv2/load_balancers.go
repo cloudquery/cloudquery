@@ -112,17 +112,9 @@ func Elbv2LoadBalancers() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "state_code",
-				Description: "The state code",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("State.Code"),
-			},
-			{
-				Name:          "state_reason",
-				Description:   "A description of the state.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("State.Reason"),
-				IgnoreInTests: true,
+				Name:     "state",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("State"),
 			},
 			{
 				Name:        "type",

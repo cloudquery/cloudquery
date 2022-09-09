@@ -39,10 +39,9 @@ func Snapshots() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "lifecycle_transition_reason_message",
-				Description: "A detailed error message",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LifecycleTransitionReason.Message"),
+				Name:     "lifecycle_transition_reason",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LifecycleTransitionReason"),
 			},
 			{
 				Name:        "name",

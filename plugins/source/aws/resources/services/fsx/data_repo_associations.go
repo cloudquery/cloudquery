@@ -49,10 +49,9 @@ func DataRepoAssociations() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "failure_details_message",
-				Description: "A detailed error message",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("FailureDetails.Message"),
+				Name:     "failure_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FailureDetails"),
 			},
 			{
 				Name:        "file_system_id",

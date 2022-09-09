@@ -56,16 +56,14 @@ func EksClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "identity_oidc_issuer",
-				Description: "The issuer URL for the OIDC identity provider.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Identity.Oidc.Issuer"),
+				Name:     "identity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Identity"),
 			},
 			{
-				Name:        "kubernetes_network_config_service_ipv4_cidr",
-				Description: "The CIDR block that Kubernetes service IP addresses are assigned from.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("KubernetesNetworkConfig.ServiceIpv4Cidr"),
+				Name:     "kubernetes_network_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("KubernetesNetworkConfig"),
 			},
 			{
 				Name:        "name",
@@ -78,22 +76,9 @@ func EksClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resources_vpc_config_cluster_security_group_id",
-				Description: "The cluster security group that was created by Amazon EKS for the cluster.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourcesVpcConfig.ClusterSecurityGroupId"),
-			},
-			{
-				Name:        "resources_vpc_config_endpoint_private_access",
-				Description: "This parameter indicates whether the Amazon EKS private API server endpoint is enabled.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ResourcesVpcConfig.EndpointPrivateAccess"),
-			},
-			{
-				Name:        "resources_vpc_config_endpoint_public_access",
-				Description: "This parameter indicates whether the Amazon EKS public API server endpoint is enabled.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ResourcesVpcConfig.EndpointPublicAccess"),
+				Name:     "resources_vpc_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResourcesVpcConfig"),
 			},
 			{
 				Name:        "resources_vpc_config_public_access_cidrs",
@@ -106,18 +91,6 @@ func EksClusters() *schema.Table {
 				Description: "The security groups associated with the cross-account elastic network interfaces that are used to allow communication between your nodes and the Kubernetes control plane.",
 				Type:        schema.TypeStringArray,
 				Resolver:    schema.PathResolver("ResourcesVpcConfig.SecurityGroupIds"),
-			},
-			{
-				Name:        "resources_vpc_config_subnet_ids",
-				Description: "The subnets associated with your cluster.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ResourcesVpcConfig.SubnetIds"),
-			},
-			{
-				Name:        "resources_vpc_config_vpc_id",
-				Description: "The VPC associated with your cluster.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourcesVpcConfig.VpcId"),
 			},
 			{
 				Name:        "role_arn",

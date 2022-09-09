@@ -47,49 +47,9 @@ func Elbv1LoadBalancers() *schema.Table {
 				}),
 			},
 			{
-				Name:     "attributes_access_log_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Attributes.AccessLog.Enabled"),
-			},
-			{
-				Name:     "attributes_access_log_s3_bucket_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Attributes.AccessLog.S3BucketName"),
-			},
-			{
-				Name:     "attributes_access_log_s3_bucket_prefix",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Attributes.AccessLog.S3BucketPrefix"),
-			},
-			{
-				Name:     "attributes_access_log_emit_interval",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Attributes.AccessLog.EmitInterval"),
-			},
-			{
-				Name:     "attributes_connection_settings_idle_timeout",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Attributes.ConnectionSettings.IdleTimeout"),
-			},
-			{
-				Name:     "attributes_cross_zone_load_balancing_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Attributes.CrossZoneLoadBalancing.Enabled"),
-			},
-			{
-				Name:     "attributes_connection_draining_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Attributes.ConnectionDraining.Enabled"),
-			},
-			{
-				Name:     "attributes_connection_draining_timeout",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Attributes.ConnectionDraining.Timeout"),
-			},
-			{
-				Name:     "attributes_additional_attributes",
+				Name:     "attributes",
 				Type:     schema.TypeJSON,
-				Resolver: resolveElbv1loadBalancerAttributesAdditionalAttributes,
+				Resolver: schema.PathResolver("Attributes"),
 			},
 			{
 				Name: "tags",
@@ -123,40 +83,14 @@ func Elbv1LoadBalancers() *schema.Table {
 				Resolver:    schema.PathResolver("DNSName"),
 			},
 			{
-				Name:        "health_check_healthy_threshold",
-				Description: "The number of consecutive health checks successes required before moving the instance to the Healthy state.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("HealthCheck.HealthyThreshold"),
+				Name:     "health_check",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("HealthCheck"),
 			},
 			{
-				Name:        "health_check_interval",
-				Description: "The approximate interval, in seconds, between health checks of an individual instance.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("HealthCheck.Interval"),
-			},
-			{
-				Name:        "health_check_target",
-				Description: "The instance being checked.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("HealthCheck.Target"),
-			},
-			{
-				Name:        "health_check_timeout",
-				Description: "The amount of time, in seconds, during which no response means a failed health check.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("HealthCheck.Timeout"),
-			},
-			{
-				Name:        "health_check_unhealthy_threshold",
-				Description: "The number of consecutive health check failures required before moving the instance to the Unhealthy state.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("HealthCheck.UnhealthyThreshold"),
-			},
-			{
-				Name:        "instances",
-				Description: "The IDs of the instances for the load balancer.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Instances.InstanceId"),
+				Name:     "instances",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Instances"),
 			},
 			{
 				Name:            "name",
@@ -166,10 +100,9 @@ func Elbv1LoadBalancers() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "other_policies",
-				Description: "The policies other than the stickiness policies.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Policies.OtherPolicies"),
+				Name:     "policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Policies"),
 			},
 			{
 				Name:        "scheme",
@@ -182,16 +115,9 @@ func Elbv1LoadBalancers() *schema.Table {
 				Type:        schema.TypeStringArray,
 			},
 			{
-				Name:        "source_security_group_name",
-				Description: "The name of the security group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SourceSecurityGroup.GroupName"),
-			},
-			{
-				Name:        "source_security_group_owner_alias",
-				Description: "The owner of the security group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SourceSecurityGroup.OwnerAlias"),
+				Name:     "source_security_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SourceSecurityGroup"),
 			},
 			{
 				Name:        "subnets",
@@ -215,11 +141,6 @@ func Elbv1LoadBalancers() *schema.Table {
 				Description: "The policies enabled for a listener.",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("ListenerDescriptions"),
-			},
-			{
-				Name:     "policies",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Policies"),
 			},
 		},
 		Relations: []*schema.Table{

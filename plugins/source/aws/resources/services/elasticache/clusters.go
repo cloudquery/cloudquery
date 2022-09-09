@@ -79,22 +79,9 @@ func Clusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "cache_parameter_group_cache_node_ids_to_reboot",
-				Description: "A list of the cache node IDs which need to be rebooted for parameter changes to be applied",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("CacheParameterGroup.CacheNodeIdsToReboot"),
-			},
-			{
-				Name:        "cache_parameter_group_name",
-				Description: "The name of the cache parameter group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CacheParameterGroup.CacheParameterGroupName"),
-			},
-			{
-				Name:        "cache_parameter_group_parameter_apply_status",
-				Description: "The status of parameter updates.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CacheParameterGroup.ParameterApplyStatus"),
+				Name:     "cache_parameter_group",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CacheParameterGroup"),
 			},
 			{
 				Name:        "cache_subnet_group_name",
@@ -107,16 +94,9 @@ func Clusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "configuration_endpoint_address",
-				Description: "The DNS hostname of the cache node.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ConfigurationEndpoint.Address"),
-			},
-			{
-				Name:        "configuration_endpoint_port",
-				Description: "The port number that the cache engine is listening on.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ConfigurationEndpoint.Port"),
+				Name:     "configuration_endpoint",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ConfigurationEndpoint"),
 			},
 			{
 				Name:        "engine",
@@ -146,10 +126,9 @@ func Clusters() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "pending_auth_token_status",
-				Description: "Auth token status that is applied to the cluster in the future or is currently being applied",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.AuthTokenStatus"),
+				Name:     "pending_modified_values",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PendingModifiedValues"),
 			},
 			{
 				Name:        "pending_cache_node_ids_to_remove",
@@ -158,22 +137,10 @@ func Clusters() *schema.Table {
 				Resolver:    schema.PathResolver("PendingModifiedValues.CacheNodeIdsToRemove"),
 			},
 			{
-				Name:        "pending_cache_node_type",
-				Description: "The cache node type that this cluster or replication group is scaled to.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.CacheNodeType"),
-			},
-			{
 				Name:        "pending_engine_version",
 				Description: "Cache engine version that is being applied to the cluster (or will be applied)",
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("PendingModifiedValues.EngineVersion"),
-			},
-			{
-				Name:        "pending_num_cache_nodes",
-				Description: "The new number of cache nodes for the cluster",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("PendingModifiedValues.NumCacheNodes"),
 			},
 			{
 				Name:        "preferred_availability_zone",

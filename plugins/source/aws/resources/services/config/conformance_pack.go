@@ -95,10 +95,9 @@ func ConfigConformancePack() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "compliance_type",
-						Description: "Compliance of the AWS Config rule",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ConformancePackRuleCompliance.ComplianceType"),
+						Name:     "conformance_pack_rule_compliance",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("ConformancePackRuleCompliance"),
 					},
 					{
 						Name:        "config_rule_name",
@@ -116,22 +115,9 @@ func ConfigConformancePack() *schema.Table {
 						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name:        "resource_id",
-						Description: "The ID of the evaluated AWS resource.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("EvaluationResultIdentifier.EvaluationResultQualifier.ResourceId"),
-					},
-					{
-						Name:        "resource_type",
-						Description: "The type of AWS resource that was evaluated.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("EvaluationResultIdentifier.EvaluationResultQualifier.ResourceType"),
-					},
-					{
-						Name:        "ordering_timestamp",
-						Description: "The time of the event that triggered the evaluation of your AWS resources.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("EvaluationResultIdentifier.OrderingTimestamp"),
+						Name:     "evaluation_result_identifier",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("EvaluationResultIdentifier"),
 					},
 					{
 						Name:        "result_recorded_time",

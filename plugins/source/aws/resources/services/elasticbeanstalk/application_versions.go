@@ -81,16 +81,9 @@ func ApplicationVersions() *schema.Table {
 				Resolver:    schema.PathResolver("SourceBuildInformation.SourceType"),
 			},
 			{
-				Name:        "source_bundle_s3_bucket",
-				Description: "The Amazon S3 bucket where the data is located.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SourceBundle.S3Bucket"),
-			},
-			{
-				Name:        "source_bundle_s3_key",
-				Description: "The Amazon S3 key where the data is located.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SourceBundle.S3Key"),
+				Name:     "source_bundle",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SourceBundle"),
 			},
 			{
 				Name:        "status",

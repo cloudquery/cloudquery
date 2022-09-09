@@ -52,10 +52,9 @@ func Backups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "directory_information_active_directory_id",
-				Description:   "The ID of the AWS Managed Microsoft Active Directory instance to which the file system is joined.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("DirectoryInformation.ActiveDirectoryId"),
+				Name:          "directory_information",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("DirectoryInformation"),
 				IgnoreInTests: true,
 			},
 			{
@@ -66,10 +65,9 @@ func Backups() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "failure_details_message",
-				Description:   "A message describing the backup creation failure.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("FailureDetails.Message"),
+				Name:          "failure_details",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("FailureDetails"),
 				IgnoreInTests: true,
 			},
 			{

@@ -40,16 +40,9 @@ func Users() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "authentication_password_count",
-				Description: "The number of passwords belonging to the user",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Authentication.PasswordCount"),
-			},
-			{
-				Name:        "authentication_type",
-				Description: "Indicates whether the user requires a password to authenticate.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Authentication.Type"),
+				Name:     "authentication",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Authentication"),
 			},
 			{
 				Name:        "engine",
