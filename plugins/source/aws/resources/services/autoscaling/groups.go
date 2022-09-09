@@ -125,24 +125,9 @@ func AutoscalingGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "launch_template_id",
-				Description:   "The ID of the launch template",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateId"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "launch_template_name",
-				Description:   "The name of the launch template",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("LaunchTemplate.LaunchTemplateName"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "launch_template_version",
-				Description:   "The version number, $Latest, or $Default",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("LaunchTemplate.Version"),
+				Name:          "launch_template",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("LaunchTemplate"),
 				IgnoreInTests: true,
 			},
 			{
@@ -310,58 +295,9 @@ func AutoscalingGroups() *schema.Table {
 						Resolver:    schema.PathResolver("StepAdjustments"),
 					},
 					{
-						Name:        "target_tracking_configuration_target_value",
-						Description: "The target value for the metric.",
-						Type:        schema.TypeFloat,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.TargetValue"),
-					},
-					{
-						Name:        "target_tracking_configuration_customized_metric_name",
-						Description: "The name of the metric.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.CustomizedMetricSpecification.MetricName"),
-					},
-					{
-						Name:        "target_tracking_configuration_customized_metric_namespace",
-						Description: "The namespace of the metric.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.CustomizedMetricSpecification.Namespace"),
-					},
-					{
-						Name:        "target_tracking_configuration_customized_metric_statistic",
-						Description: "The statistic of the metric.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.CustomizedMetricSpecification.Statistic"),
-					},
-					{
-						Name:        "target_tracking_configuration_customized_metric_dimensions",
-						Description: "The dimensions of the metric",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomizedMetricDimensions,
-					},
-					{
-						Name:        "target_tracking_configuration_customized_metric_unit",
-						Description: "The unit of the metric.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.CustomizedMetricSpecification.Unit"),
-					},
-					{
-						Name:        "target_tracking_configuration_disable_scale_in",
-						Description: "Indicates whether scaling in by the target tracking scaling policy is disabled. If scaling in is disabled, the target tracking scaling policy doesn't remove instances from the Auto Scaling group",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.DisableScaleIn"),
-					},
-					{
-						Name:        "target_tracking_configuration_predefined_metric_type",
-						Description: "The metric type",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.PredefinedMetricSpecification.PredefinedMetricType"),
-					},
-					{
-						Name:        "target_tracking_configuration_predefined_metric_resource_label",
-						Description: "Identifies the resource associated with the metric type",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTrackingConfiguration.PredefinedMetricSpecification.ResourceLabel"),
+						Name:     "target_tracking_configuration",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("TargetTrackingConfiguration"),
 					},
 				},
 			},
@@ -599,17 +535,6 @@ func resolveAutoscalingGroupScalingPoliciesAlarms(ctx context.Context, meta sche
 	j := map[string]interface{}{}
 	for _, a := range p.Alarms {
 		j[*a.AlarmName] = *a.AlarmARN
-	}
-	return resource.Set(c.Name, j)
-}
-func resolveAutoscalingGroupScalingPoliciesTargetTrackingConfigurationCustomizedMetricDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.ScalingPolicy)
-	if p.TargetTrackingConfiguration == nil || p.TargetTrackingConfiguration.CustomizedMetricSpecification == nil {
-		return nil
-	}
-	j := map[string]interface{}{}
-	for _, d := range p.TargetTrackingConfiguration.CustomizedMetricSpecification.Dimensions {
-		j[*d.Name] = *d.Value
 	}
 	return resource.Set(c.Name, j)
 }

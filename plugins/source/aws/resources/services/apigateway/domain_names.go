@@ -88,22 +88,9 @@ func DomainNames() *schema.Table {
 				Resolver:    schema.PathResolver("EndpointConfiguration.VpcEndpointIds"),
 			},
 			{
-				Name:        "mutual_tls_authentication_truststore_uri",
-				Description: "An Amazon S3 URL that specifies the truststore for mutual TLS authentication, for example s3://bucket-name/key-name",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MutualTlsAuthentication.TruststoreUri"),
-			},
-			{
-				Name:        "mutual_tls_authentication_truststore_version",
-				Description: "The version of the S3 object that contains your truststore",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MutualTlsAuthentication.TruststoreVersion"),
-			},
-			{
-				Name:        "mutual_tls_authentication_truststore_warnings",
-				Description: "A list of warnings that API Gateway returns while processing your truststore",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("MutualTlsAuthentication.TruststoreWarnings"),
+				Name:     "mutual_tls_authentication",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MutualTlsAuthentication"),
 			},
 			{
 				Name:        "ownership_verification_certificate_arn",

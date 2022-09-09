@@ -68,10 +68,9 @@ func Analyzers() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "status_reason_code",
-				Description: "The reason code for the current status of the analyzer",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("StatusReason.Code"),
+				Name:     "status_reason",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StatusReason"),
 			},
 			{
 				Name:        "tags",

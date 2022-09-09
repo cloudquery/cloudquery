@@ -78,10 +78,9 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "instance_monitoring_enabled",
-				Description: "If true, detailed monitoring is enabled. Otherwise, basic monitoring is enabled.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("InstanceMonitoring.Enabled"),
+				Name:     "instance_monitoring",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("InstanceMonitoring"),
 			},
 			{
 				Name:        "kernel_id",
@@ -101,22 +100,9 @@ func AutoscalingLaunchConfigurations() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "metadata_options_http_endpoint",
-				Description: "This parameter enables or disables the HTTP metadata endpoint on your instances. If the parameter is not specified, the default state is enabled. If you specify a value of disabled, you will not be able to access your instance metadata.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MetadataOptions.HttpEndpoint"),
-			},
-			{
-				Name:        "metadata_options_http_put_response_hop_limit",
-				Description: "The desired HTTP PUT response hop limit for instance metadata requests. The larger the number, the further instance metadata requests can travel. Default: 1",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("MetadataOptions.HttpPutResponseHopLimit"),
-			},
-			{
-				Name:        "metadata_options_http_tokens",
-				Description: "The state of token usage for your instance metadata requests.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MetadataOptions.HttpTokens"),
+				Name:     "metadata_options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MetadataOptions"),
 			},
 			{
 				Name:          "placement_tenancy",

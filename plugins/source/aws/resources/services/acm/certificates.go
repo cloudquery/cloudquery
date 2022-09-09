@@ -97,10 +97,9 @@ func Certificates() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "key_usages",
-				Description: "A list of Key Usage X.509 v3 extension objects",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("KeyUsages.Name"),
+				Name:     "key_usages",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("KeyUsages"),
 			},
 			{
 				Name:        "not_after",
@@ -113,10 +112,9 @@ func Certificates() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "certificate_transparency_logging_preference",
-				Description: "You can opt out of certificate transparency logging by specifying the DISABLED option",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Options.CertificateTransparencyLoggingPreference"),
+				Name:     "options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Options"),
 			},
 			{
 				Name:        "renewal_eligibility",
@@ -124,28 +122,9 @@ func Certificates() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "renewal_summary_domain_validation_options",
-				Description: "Contains information about the validation of each domain name in the certificate, as it pertains to ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html)",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("RenewalSummary.DomainValidationOptions"),
-			},
-			{
-				Name:        "renewal_summary_status",
-				Description: "The status of ACM's managed renewal (https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html) of the certificate",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RenewalSummary.RenewalStatus"),
-			},
-			{
-				Name:        "renewal_summary_updated_at",
-				Description: "The time at which the renewal summary was last updated",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("RenewalSummary.UpdatedAt"),
-			},
-			{
-				Name:        "renewal_summary_failure_reason",
-				Description: "The reason that a renewal request was unsuccessful",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RenewalSummary.RenewalStatusReason"),
+				Name:     "renewal_summary",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RenewalSummary"),
 			},
 			{
 				Name:        "revocation_reason",

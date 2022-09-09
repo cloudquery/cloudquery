@@ -56,22 +56,9 @@ func UsagePlans() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "quota_limit",
-				Description: "The target maximum number of requests that can be made in a given time period",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Quota.Limit"),
-			},
-			{
-				Name:        "quota_offset",
-				Description: "The number of requests subtracted from the given limit in the initial time period",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Quota.Offset"),
-			},
-			{
-				Name:        "quota_period",
-				Description: "The time period in which the limit applies",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Quota.Period"),
+				Name:     "quota",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Quota"),
 			},
 			{
 				Name:        "tags",
@@ -79,16 +66,9 @@ func UsagePlans() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "throttle_burst_limit",
-				Description: "The API target request burst rate limit",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Throttle.BurstLimit"),
-			},
-			{
-				Name:        "throttle_rate_limit",
-				Description: "The API target request rate limit",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("Throttle.RateLimit"),
+				Name:     "throttle",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Throttle"),
 			},
 			{
 				Name:        "api_stages",
