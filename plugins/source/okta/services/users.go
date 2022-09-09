@@ -1,21 +1,18 @@
-package resources
+package services
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/okta/okta-sdk-golang/v2/okta"
 	"github.com/okta/okta-sdk-golang/v2/okta/query"
 )
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:         "okta_users",
-		Resolver:     fetchUsers,
-		DeleteFilter: client.DeleteFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"id"}},
+		Name:     "okta_users",
+		Resolver: fetchUsers,
 		Columns: []schema.Column{
 			{
 				Name: "activated",
@@ -47,7 +44,7 @@ func Users() *schema.Table {
 			},
 			{
 				Name:     "credentials_password_hash_work_factor",
-				Type:     schema.TypeBigInt,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Credentials.Password.Hash.WorkFactor"),
 			},
 			{
@@ -81,8 +78,9 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("Credentials.RecoveryQuestion.Question"),
 			},
 			{
-				Name: "id",
-				Type: schema.TypeString,
+				Name:            "id",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name: "last_login",
@@ -170,7 +168,7 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	api := meta.(*client.Client)
 	users, resp, err := api.Okta.User.ListUsers(ctx, query.NewQueryParams(query.WithLimit(200), query.WithAfter("")))
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	if len(users) == 0 {
 		return nil
@@ -180,7 +178,7 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		var nextUserSet []*okta.User
 		resp, err = resp.Next(ctx, &nextUserSet)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- nextUserSet
 	}
