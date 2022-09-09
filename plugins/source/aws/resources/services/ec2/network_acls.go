@@ -66,101 +66,17 @@ func Ec2NetworkAcls() *schema.Table {
 				Description: "The ID of the VPC for the network ACL.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_network_acl_associations",
+				Name:        "associations",
 				Description: "Describes an association between a network ACL and a subnet.",
-				Resolver:    schema.PathTableResolver("Associations"),
-				Columns: []schema.Column{
-					{
-						Name:        "network_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_network_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "network_acl_association_id",
-						Description: "The ID of the association between a network ACL and a subnet.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "subnet_id",
-						Description: "The ID of the subnet.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Associations"),
 			},
 			{
-				Name:        "aws_ec2_network_acl_entries",
+				Name:        "entries",
 				Description: "Describes an entry in a network ACL.",
-				Resolver:    schema.PathTableResolver("Entries"),
-				Columns: []schema.Column{
-					{
-						Name:        "network_acl_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_network_acls table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "cidr_block",
-						Description: "The IPv4 network range to allow or deny, in CIDR notation.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "egress",
-						Description: "Indicates whether the rule is an egress rule (applied to traffic leaving the subnet).",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:          "icmp_type_code",
-						Description:   "The ICMP code.",
-						Type:          schema.TypeInt,
-						Resolver:      schema.PathResolver("IcmpTypeCode.Code"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "icmp_type_code_type",
-						Description:   "The ICMP type.",
-						Type:          schema.TypeInt,
-						Resolver:      schema.PathResolver("IcmpTypeCode.Type"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "ipv6_cidr_block",
-						Description: "The IPv6 network range to allow or deny, in CIDR notation.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "port_range_from",
-						Description:   "The first port in the range.",
-						Type:          schema.TypeInt,
-						Resolver:      schema.PathResolver("PortRange.From"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "port_range_to",
-						Description:   "The last port in the range.",
-						Type:          schema.TypeInt,
-						Resolver:      schema.PathResolver("PortRange.To"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "protocol",
-						Description: "The protocol number.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "rule_action",
-						Description: "Indicates whether to allow or deny the traffic that matches the rule.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "rule_number",
-						Description: "The rule number for the entry.",
-						Type:        schema.TypeInt,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Entries"),
 			},
 		},
 	}

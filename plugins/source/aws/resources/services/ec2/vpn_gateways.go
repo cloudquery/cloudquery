@@ -62,27 +62,10 @@ func Ec2VpnGateways() *schema.Table {
 				Resolver:        schema.PathResolver("VpnGatewayId"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_ec2_vpc_attachment",
-				Resolver:      schema.PathTableResolver("VpcAttachments"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:     "vpn_gateway_cq_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
-					},
-					{
-						Name: "state",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "vpc_id",
-						Type: schema.TypeString,
-					},
-				},
+				Name:     "vpc_attachments",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("VpcAttachments"),
 			},
 		},
 	}

@@ -305,160 +305,35 @@ func InstanceTypes() *schema.Table {
 				Type:        schema.TypeIntArray,
 				Resolver:    schema.PathResolver("VCpuInfo.ValidThreadsPerCore"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_instance_type_fpga_info_fpgas",
+				Name:        "fpga_info",
 				Description: "Describes the FPGA accelerator for the instance type.",
-				Resolver:    schema.PathTableResolver("FpgaInfo.Fpgas"),
-				Columns: []schema.Column{
-					{
-						Name:        "instance_type_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_instance_types table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "count",
-						Description: "The count of FPGA accelerators for the instance type.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "manufacturer",
-						Description: "The manufacturer of the FPGA accelerator.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "memory_info_size_in_mi_b",
-						Description: "The size of the memory available to the FPGA accelerator, in MiB.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("MemoryInfo.SizeInMiB"),
-					},
-					{
-						Name:        "name",
-						Description: "The name of the FPGA accelerator.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("FpgaInfo"),
 			},
 			{
-				Name:        "aws_ec2_instance_type_gpu_info_gpus",
+				Name:        "gpu_info",
 				Description: "Describes the GPU accelerators for the instance type.",
-				Resolver:    schema.PathTableResolver("GpuInfo.Gpus"),
-				Columns: []schema.Column{
-					{
-						Name:        "instance_type_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_instance_types table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "count",
-						Description: "The number of GPUs for the instance type.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "manufacturer",
-						Description: "The manufacturer of the GPU accelerator.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "memory_info_size_in_mi_b",
-						Description: "The size of the memory available to the GPU accelerator, in MiB.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("MemoryInfo.SizeInMiB"),
-					},
-					{
-						Name:        "name",
-						Description: "The name of the GPU accelerator.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("GpuInfo"),
 			},
 			{
-				Name:        "aws_ec2_instance_type_inference_accelerator_info_accelerators",
+				Name:        "inference_accelerator_info",
 				Description: "Describes the Inference accelerators for the instance type.",
-				Resolver:    schema.PathTableResolver("InferenceAcceleratorInfo.Accelerators"),
-				Columns: []schema.Column{
-					{
-						Name:        "instance_type_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_instance_types table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "count",
-						Description: "The number of Inference accelerators for the instance type.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "manufacturer",
-						Description: "The manufacturer of the Inference accelerator.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the Inference accelerator.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("InferenceAcceleratorInfo"),
 			},
 			{
-				Name:        "aws_ec2_instance_type_instance_storage_info_disks",
-				Description: "Describes a disk.",
-				Resolver:    schema.PathTableResolver("InstanceStorageInfo.Disks"),
-				Columns: []schema.Column{
-					{
-						Name:        "instance_type_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_instance_types table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "count",
-						Description: "The number of disks with this configuration.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "size_in_gb",
-						Description: "The size of the disk in GB.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("SizeInGB"),
-					},
-					{
-						Name:        "type",
-						Description: "The type of disk.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "instance_storage_info",
+				Description: "Describes instance storage for the instance type.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("InstanceStorageInfo"),
 			},
 			{
-				Name:        "aws_ec2_instance_type_network_info_network_cards",
+				Name:        "network_info",
 				Description: "Describes the network card support of the instance type.",
-				Resolver:    schema.PathTableResolver("NetworkInfo.NetworkCards"),
-				Columns: []schema.Column{
-					{
-						Name:        "instance_type_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_instance_types table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "maximum_network_interfaces",
-						Description: "The maximum number of network interfaces for the network card.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "network_card_index",
-						Description: "The index of the network card.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "network_performance",
-						Description: "The network performance of the network card.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("NetworkInfo"),
 			},
 		},
 	}

@@ -124,40 +124,11 @@ func Ec2NatGateways() *schema.Table {
 				Description: "The ID of the VPC in which the NAT gateway is located.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_nat_gateway_addresses",
+				Name:        "nat_gateway_addresses",
 				Description: "Describes the IP addresses and network interface associated with a NAT gateway.",
-				Resolver:    schema.PathTableResolver("NatGatewayAddresses"),
-				Columns: []schema.Column{
-					{
-						Name:        "nat_gateway_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_nat_gateways table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "allocation_id",
-						Description: "The allocation ID of the Elastic IP address that's associated with the NAT gateway.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "network_interface_id",
-						Description: "The ID of the network interface associated with the NAT gateway.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "private_ip",
-						Description: "The private IP address associated with the Elastic IP address.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "public_ip",
-						Description: "The Elastic IP address associated with the NAT gateway.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("NatGatewayAddresses"),
 			},
 		},
 	}

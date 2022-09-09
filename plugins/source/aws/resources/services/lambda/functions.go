@@ -376,9 +376,9 @@ func Functions() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "Configuration",
-				Description:   "The function's configuration.",
-				Type:          schema.TypeJSON,
+				Name:        "Configuration",
+				Description: "The function's configuration.",
+				Type:        schema.TypeJSON,
 			},
 		},
 		Relations: []*schema.Table{
@@ -759,12 +759,12 @@ func Functions() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "file_system_configs",
-						Type: 				schema.TypeJSON,
+						Name: "file_system_configs",
+						Type: schema.TypeJSON,
 					},
 					{
-						Name:          "layers",
-						Type: 				schema.TypeJSON,
+						Name: "layers",
+						Type: schema.TypeJSON,
 					},
 				},
 			},

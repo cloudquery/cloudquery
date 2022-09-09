@@ -255,79 +255,11 @@ func NetworkInterfaces() *schema.Table {
 				Description: "The ID of the VPC.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_network_interface_private_ip_addresses",
+				Name:        "private_ip_addresses",
 				Description: "Describes the private IPv4 address of a network interface.",
-				Resolver:    schema.PathTableResolver("PrivateIpAddresses"),
-				Columns: []schema.Column{
-					{
-						Name:        "network_interface_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_network_interfaces table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "association_allocation_id",
-						Description: "The allocation ID.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Association.AllocationId"),
-					},
-					{
-						Name:        "association_id",
-						Description: "The association ID.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Association.AssociationId"),
-					},
-					{
-						Name:          "association_carrier_ip",
-						Description:   "The carrier IP address associated with the network interface",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("Association.CarrierIp"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:          "association_customer_owned_ip",
-						Description:   "The customer-owned IP address associated with the network interface.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("Association.CustomerOwnedIp"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "association_ip_owner_id",
-						Description: "The ID of the Elastic IP address owner.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Association.IpOwnerId"),
-					},
-					{
-						Name:        "association_public_dns_name",
-						Description: "The public DNS name.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Association.PublicDnsName"),
-					},
-					{
-						Name:        "association_public_ip",
-						Description: "The address of the Elastic IP address bound to the network interface.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Association.PublicIp"),
-					},
-					{
-						Name:        "primary",
-						Description: "Indicates whether this IPv4 address is the primary private IPv4 address of the network interface.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "private_dns_name",
-						Description: "The private DNS name.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "private_ip_address",
-						Description: "The private IPv4 address.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("PrivateIpAddresses"),
 			},
 		},
 	}

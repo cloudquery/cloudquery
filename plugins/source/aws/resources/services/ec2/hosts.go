@@ -148,63 +148,16 @@ func Hosts() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_host_available_instance_capacity",
-				Description: "Information about the number of instances that can be launched onto the Dedicated Host.",
-				Resolver:    schema.PathTableResolver("AvailableCapacity.AvailableInstanceCapacity"),
-				Columns: []schema.Column{
-					{
-						Name:        "host_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_hosts table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "available_capacity",
-						Description: "The number of instances that can be launched onto the Dedicated Host based on the host's available capacity.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "instance_type",
-						Description: "The instance type supported by the Dedicated Host.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "total_capacity",
-						Description: "The total number of instances that can be launched onto the Dedicated Host if there are no instances running on it.",
-						Type:        schema.TypeInt,
-					},
-				},
+				Name:     "available_capacity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AvailableCapacity"),
 			},
 			{
-				Name:        "aws_ec2_host_instances",
+				Name:        "instances",
+				Type:        schema.TypeJSON,
 				Description: "Describes an instance running on a Dedicated Host.",
-				Resolver:    schema.PathTableResolver("Instances"),
-				Columns: []schema.Column{
-					{
-						Name:        "host_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_hosts table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "instance_id",
-						Description: "The ID of instance that is running on the Dedicated Host.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "instance_type",
-						Description: "The instance type (for example, m3.medium) of the running instance.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "owner_id",
-						Description: "The ID of the Amazon Web Services account that owns the instance.",
-						Type:        schema.TypeString,
-					},
-				},
+				Resolver:    schema.PathResolver("Instances"),
 			},
 		},
 	}

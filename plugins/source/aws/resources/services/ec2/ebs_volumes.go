@@ -100,42 +100,10 @@ func Ec2EbsVolumes() *schema.Table {
 				Name: "volume_type",
 				Type: schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:     "aws_ec2_ebs_volume_attachments",
-				Resolver: schema.PathTableResolver("Attachments"),
-				Columns: []schema.Column{
-					{
-						Name:     "ebs_volume_cq_id",
-						Type:     schema.TypeUUID,
-						Resolver: schema.ParentIdResolver,
-					},
-					{
-						Name: "attach_time",
-						Type: schema.TypeTimestamp,
-					},
-					{
-						Name: "delete_on_termination",
-						Type: schema.TypeBool,
-					},
-					{
-						Name: "device",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "instance_id",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "state",
-						Type: schema.TypeString,
-					},
-					{
-						Name: "volume_id",
-						Type: schema.TypeString,
-					},
-				},
+				Name:     "attachments",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Attachments"),
 			},
 		},
 	}

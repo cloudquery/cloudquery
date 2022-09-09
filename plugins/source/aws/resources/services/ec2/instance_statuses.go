@@ -90,52 +90,11 @@ func Ec2InstanceStatuses() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("SystemStatus.Details"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_ec2_instance_status_events",
-				Description:   "Any scheduled events associated with the instance.",
-				Resolver:      schema.PathTableResolver("Events"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "instance_status_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_instance_statuses table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "code",
-						Description: "The event code.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "description",
-						Description: "A description of the event.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "id",
-						Description: "The ID of the event.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("InstanceEventId"),
-					},
-					{
-						Name:        "not_after",
-						Description: "The latest scheduled end time for the event.",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "not_before",
-						Description: "The earliest scheduled start time for the event.",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "not_before_deadline",
-						Description: "The deadline for starting the event.",
-						Type:        schema.TypeTimestamp,
-					},
-				},
+				Name:        "events",
+				Description: "Any scheduled events associated with the instance.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Events"),
 			},
 		},
 	}

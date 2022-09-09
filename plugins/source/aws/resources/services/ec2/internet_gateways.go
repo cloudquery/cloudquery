@@ -56,30 +56,11 @@ func Ec2InternetGateways() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_internet_gateway_attachments",
+				Name:        "attachments",
 				Description: "Describes the attachment of a VPC to an internet gateway or an egress-only internet gateway.",
-				Resolver:    schema.PathTableResolver("Attachments"),
-				Columns: []schema.Column{
-					{
-						Name:        "internet_gateway_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_internet_gateways table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "state",
-						Description: "The current state of the attachment.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "vpc_id",
-						Description: "The ID of the VPC.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Attachments"),
 			},
 		},
 	}

@@ -124,55 +124,17 @@ func Ec2VpcEndpoints() *schema.Table {
 				Description: "The ID of the VPC to which the endpoint is associated.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_ec2_vpc_endpoint_dns_entries",
-				Description:   "Describes a DNS entry.",
-				Resolver:      schema.PathTableResolver("DnsEntries"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "vpc_endpoint_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_vpc_endpoints table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "dns_name",
-						Description: "The DNS name.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "hosted_zone_id",
-						Description: "The ID of the private hosted zone.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "dns_entries",
+				Description: "Describes DNS entries.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("DnsEntries"),
 			},
 			{
-				Name:          "aws_ec2_vpc_endpoint_groups",
-				Description:   "Describes a security group.",
-				Resolver:      schema.PathTableResolver("Groups"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "vpc_endpoint_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_vpc_endpoints table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "group_id",
-						Description: "The ID of the security group.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "group_name",
-						Description: "The name of the security group.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "groups",
+				Description: "Describes security groups.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Groups"),
 			},
 		},
 	}

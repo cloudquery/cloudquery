@@ -45,14 +45,14 @@ func Ec2Eips() *schema.Table {
 				Name:          "carrier_ip",
 				Description:   "The carrier IP address associated",
 				Type:          schema.TypeInet,
-				Resolver:      schema.IPAddressResolver("CarrierIp"),
+				Resolver:      schema.PathResolver("CarrierIp"),
 				IgnoreInTests: true,
 			},
 			{
 				Name:          "customer_owned_ip",
 				Description:   "The customer-owned IP address.",
 				Type:          schema.TypeInet,
-				Resolver:      schema.IPAddressResolver("CustomerOwnedIp"),
+				Resolver:      schema.PathResolver("CustomerOwnedIp"),
 				IgnoreInTests: true,
 			},
 			{
@@ -91,13 +91,13 @@ func Ec2Eips() *schema.Table {
 				Name:        "private_ip_address",
 				Description: "The private IP address associated with the Elastic IP address.",
 				Type:        schema.TypeInet,
-				Resolver:    schema.IPAddressResolver("PrivateIpAddress"),
+				Resolver:    schema.PathResolver("PrivateIpAddress"),
 			},
 			{
 				Name:        "public_ip",
 				Description: "The Elastic IP address.",
 				Type:        schema.TypeInet,
-				Resolver:    schema.IPAddressResolver("PublicIp"),
+				Resolver:    schema.PathResolver("PublicIp"),
 			},
 			{
 				Name:        "public_ipv4_pool",

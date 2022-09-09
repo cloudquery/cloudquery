@@ -81,89 +81,17 @@ func Ec2Vpcs() *schema.Table {
 				Resolver:        schema.PathResolver("VpcId"),
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_ec2_vpc_cidr_block_association_sets",
+				Name:        "cidr_block_association_set",
 				Description: "Describes an IPv4 CIDR block associated with a VPC.",
-				Resolver:    schema.PathTableResolver("CidrBlockAssociationSet"),
-				Columns: []schema.Column{
-					{
-						Name:        "vpc_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_vpcs table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "association_id",
-						Description: "The association ID for the IPv4 CIDR block.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "cidr_block",
-						Description: "The IPv4 CIDR block.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "cidr_block_state",
-						Description: "The state of the CIDR block.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("CidrBlockState.State"),
-					},
-					{
-						Name:          "cidr_block_state_status_message",
-						Description:   "A message about the status of the CIDR block, if applicable.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("CidrBlockState.StatusMessage"),
-						IgnoreInTests: true,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("CidrBlockAssociationSet"),
 			},
 			{
-				Name:        "aws_ec2_vpc_ipv6_cidr_block_association_sets",
+				Name:        "ipv6_cidr_block_association_set",
 				Description: "Describes an IPv6 CIDR block associated with a VPC.",
-				Resolver:    schema.PathTableResolver("Ipv6CidrBlockAssociationSet"),
-				Columns: []schema.Column{
-					{
-						Name:        "vpc_cq_id",
-						Description: "Unique CloudQuery ID of aws_ec2_vpcs table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "association_id",
-						Description: "The association ID for the IPv6 CIDR block.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "ipv6_cidr_block",
-						Description: "The IPv6 CIDR block.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "ipv6_cidr_block_state",
-						Description: "The state of the CIDR block.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Ipv6CidrBlockState.State"),
-					},
-					{
-						Name:          "ipv6_cidr_block_state_status_message",
-						Description:   "A message about the status of the CIDR block, if applicable.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("Ipv6CidrBlockState.StatusMessage"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "ipv6_pool",
-						Description: "The ID of the IPv6 address pool from which the IPv6 CIDR block is allocated.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "network_border_group",
-						Description: "The name of the unique set of Availability Zones, Local Zones, or Wavelength Zones from which AWS advertises IP addresses, for example, us-east-1-wl1-bos-wlz-1.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Ipv6CidrBlockAssociationSet"),
 			},
 		},
 	}
