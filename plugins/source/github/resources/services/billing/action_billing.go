@@ -5,7 +5,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func ActionBillings() *schema.Table {
@@ -50,7 +49,7 @@ func fetchActionBillings(ctx context.Context, meta schema.ClientMeta, parent *sc
 	c := meta.(*client.Client)
 	billing, _, err := c.Github.Billing.GetActionsBillingOrg(ctx, c.Org)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- billing
 	return nil

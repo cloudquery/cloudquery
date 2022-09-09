@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
-	"github.com/pkg/errors"
 )
 
 func Installations() *schema.Table {
@@ -126,7 +125,7 @@ func fetchInstallations(ctx context.Context, meta schema.ClientMeta, parent *sch
 	for {
 		installations, resp, err := c.Github.Organizations.ListInstallations(ctx, c.Org, opts)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- installations.Installations
 		opts.Page = resp.NextPage
