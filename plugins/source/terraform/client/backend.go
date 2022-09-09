@@ -21,9 +21,9 @@ type BackendType string
 
 // BackendConfigBlock - abstract backend config
 type BackendConfigBlock struct {
-	BackendName string                 `yaml:"name"`
-	BackendType string                 `yaml:"backend"`
-	ConfigAttrs map[string]interface{} `yaml:",inline"`
+	BackendName string                 `json:"name"`
+	BackendType string                 `json:"backend"`
+	ConfigAttrs map[string]interface{} `json:",inline"`
 }
 
 type TerraformBackend struct {
@@ -33,14 +33,14 @@ type TerraformBackend struct {
 }
 
 type LocalBackendConfig struct {
-	Path string `yaml:"path"`
+	Path string `json:"path"`
 }
 
 type S3BackendConfig struct {
-	Bucket  string `yaml:"bucket"`
-	Key     string `yaml:"key"`
-	Region  string `yaml:"region"`
-	RoleArn string `yaml:"role_arn,omitempty"`
+	Bucket  string `json:"bucket"`
+	Key     string `json:"key"`
+	Region  string `json:"region"`
+	RoleArn string `json:"role_arn,omitempty"`
 }
 
 // currently supported backends type
