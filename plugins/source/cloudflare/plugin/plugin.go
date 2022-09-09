@@ -22,7 +22,7 @@ api_token: "<YOUR_API_TOKEN_HERE>"
 #accounts:
 # - "<YOUR_ACCOUNT_ID>"
 
-# List of accounts to target, if empty, all available zones will be targeted
+# List of zones to target, if empty, all available zones will be targeted
 #zones:
 # - "<YOUR_ZONE_ID>"
 `
