@@ -294,74 +294,20 @@ func Databases() *schema.Table {
 						Description: "If the table is a view, the original text of the view; otherwise null",
 						Type:        schema.TypeString,
 					},
+					{
+						Name:        "partition_keys",
+						Description: "Partition keys",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("PartitionKeys"),
+					},
+					{
+						Name:        "storage_descriptor",
+						Description: "Storage descriptor",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("StorageDescriptor"),
+					},
 				},
 				Relations: []*schema.Table{
-					{
-						Name:        "aws_glue_database_table_partition_keys",
-						Description: "A column in a Table",
-						Resolver:    schema.PathTableResolver("PartitionKeys"),
-						Columns: []schema.Column{
-							{
-								Name:        "database_table_cq_id",
-								Description: "Unique CloudQuery ID of aws_glue_database_tables table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "name",
-								Description: "The name of the Column",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "comment",
-								Description: "A free-form text comment",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "parameters",
-								Description: "These key-value pairs define properties associated with the column",
-								Type:        schema.TypeJSON,
-							},
-							{
-								Name:        "type",
-								Description: "The data type of the Column",
-								Type:        schema.TypeString,
-							},
-						},
-					},
-					{
-						Name:        "aws_glue_database_table_columns",
-						Description: "A column in a Table",
-						Resolver:    schema.PathTableResolver("StorageDescriptor.Columns"),
-						Columns: []schema.Column{
-							{
-								Name:        "database_table_cq_id",
-								Description: "Unique CloudQuery ID of aws_glue_database_tables table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "name",
-								Description: "The name of the Column",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "comment",
-								Description: "A free-form text comment",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "parameters",
-								Description: "These key-value pairs define properties associated with the column",
-								Type:        schema.TypeJSON,
-							},
-							{
-								Name:        "type",
-								Description: "The data type of the Column",
-								Type:        schema.TypeString,
-							},
-						},
-					},
 					{
 						Name:        "aws_glue_database_table_indexes",
 						Description: "A descriptor for a partition index in a table",

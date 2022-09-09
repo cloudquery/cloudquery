@@ -209,41 +209,14 @@ func MlTransforms() *schema.Table {
 				Description: "The type of predefined worker that is allocated when a task of this transform runs",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "input_record_tables",
+				Description: "The database and table in the Glue Data Catalog that is used for input or output data",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("InputRecordTables"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_glue_ml_transform_input_record_tables",
-				Description: "The database and table in the Glue Data Catalog that is used for input or output data",
-				Resolver:    schema.PathTableResolver("InputRecordTables"),
-				Columns: []schema.Column{
-					{
-						Name:        "ml_transform_cq_id",
-						Description: "Unique CloudQuery ID of aws_glue_ml_transforms table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "database_name",
-						Description: "A database name in the Glue Data Catalog",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "table_name",
-						Description: "A table name in the Glue Data Catalog",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "catalog_id",
-						Description: "A unique identifier for the Glue Data Catalog",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "connection_name",
-						Description: "The name of the connection to the Glue Data Catalog",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:        "aws_glue_ml_transform_task_runs",
 				Description: "The sampling parameters that are associated with the machine learning transform",

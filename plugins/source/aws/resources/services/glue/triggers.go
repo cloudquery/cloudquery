@@ -95,90 +95,16 @@ func Triggers() *schema.Table {
 				Description: "The name of the workflow associated with the trigger",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_glue_trigger_actions",
+				Name:        "actions",
 				Description: "Defines an action to be initiated by a trigger",
-				Resolver:    schema.PathTableResolver("Actions"),
-				Columns: []schema.Column{
-					{
-						Name:        "trigger_cq_id",
-						Description: "Unique CloudQuery ID of aws_glue_triggers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "arguments",
-						Description: "The job arguments used when this trigger fires",
-						Type:        schema.TypeJSON,
-					},
-					{
-						Name:        "crawler_name",
-						Description: "The name of the crawler to be used with this action",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "job_name",
-						Description: "The name of a job to be run",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "notify_delay_after",
-						Description: "After a job run starts, the number of minutes to wait before sending a job run delay notification",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("NotificationProperty.NotifyDelayAfter"),
-					},
-					{
-						Name:        "security_configuration",
-						Description: "The name of the SecurityConfiguration structure to be used with this action",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "timeout",
-						Description: "The JobRun timeout in minutes",
-						Type:        schema.TypeInt,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Actions"),
 			},
 			{
-				Name:          "aws_glue_trigger_predicate_conditions",
-				Description:   "Defines a condition under which a trigger fires",
-				Resolver:      schema.PathTableResolver("Predicate.Conditions"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "trigger_cq_id",
-						Description: "Unique CloudQuery ID of aws_glue_triggers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "crawl_state",
-						Description: "The state of the crawler to which this condition applies",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "crawler_name",
-						Description: "The name of the crawler to which this condition applies",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "job_name",
-						Description: "The name of the job whose JobRuns this condition applies to, and on which this trigger waits",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "logical_operator",
-						Description: "A logical operator",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "state",
-						Description: "The condition state",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:     "predicate",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Predicate"),
 			},
 		},
 	}

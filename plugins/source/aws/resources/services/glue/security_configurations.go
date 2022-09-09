@@ -65,30 +65,11 @@ func SecurityConfigurations() *schema.Table {
 				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_glue_security_configuration_s3_encryption",
-				Description: "Specifies how Amazon Simple Storage Service (Amazon S3) data should be encrypted",
-				Resolver:    schema.PathTableResolver("EncryptionConfiguration.S3Encryption"),
-				Columns: []schema.Column{
-					{
-						Name:        "security_configuration_cq_id",
-						Description: "Unique CloudQuery ID of aws_glue_security_configurations table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "kms_key_arn",
-						Description: "The Amazon Resource Name (ARN) of the KMS key to be used to encrypt the data",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "s3_encryption_mode",
-						Description: "The encryption mode to use for Amazon S3 data",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "encryption_configuration",
+				Description: "Specifies how data should be encrypted",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("EncryptionConfiguration"),
 			},
 		},
 	}
