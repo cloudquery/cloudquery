@@ -8,7 +8,7 @@ import (
 )
 
 const exampleConfig = `
-# Use can use either the API token or the API key. (API key requires setting the API email field)
+# You may use either the API token or the API key. (API key requires setting the API email field)
 # API token is preferred
 
 # API token to access Cloudflare resources, also can be set with the CLOUDFLARE_API_TOKEN environment variable
