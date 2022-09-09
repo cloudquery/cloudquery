@@ -76,16 +76,9 @@ func Roles() *schema.Table {
 				Type:        schema.TypeInt,
 			},
 			{
-				Name:        "permissions_boundary_arn",
-				Description: "The ARN of the policy used to set the permissions boundary for the user or role.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
-			},
-			{
-				Name:        "permissions_boundary_type",
-				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryType"),
+				Name:     "permissions_boundary",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PermissionsBoundary"),
 			},
 			{
 				Name:        "role_last_used_last_used_date",
@@ -94,10 +87,9 @@ func Roles() *schema.Table {
 				Resolver:    schema.PathResolver("RoleLastUsed.LastUsedDate"),
 			},
 			{
-				Name:        "role_last_used_region",
-				Description: "The name of the Amazon Web Services Region in which the role was last used.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("RoleLastUsed.Region"),
+				Name:     "role_last_used",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RoleLastUsed"),
 			},
 			{
 				Name:        "tags",

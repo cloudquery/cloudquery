@@ -55,10 +55,9 @@ func IotBillingGroups() *schema.Table {
 				Resolver:    schema.PathResolver("BillingGroupId"),
 			},
 			{
-				Name:        "creation_date",
-				Description: "The date the billing group was created.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("BillingGroupMetadata.CreationDate"),
+				Name:     "billing_group_metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BillingGroupMetadata"),
 			},
 			{
 				Name:        "name",
@@ -67,10 +66,9 @@ func IotBillingGroups() *schema.Table {
 				Resolver:    schema.PathResolver("BillingGroupName"),
 			},
 			{
-				Name:        "description",
-				Description: "The description of the billing group.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("BillingGroupProperties.BillingGroupDescription"),
+				Name:     "billing_group_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BillingGroupProperties"),
 			},
 			{
 				Name:        "version",

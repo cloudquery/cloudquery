@@ -91,16 +91,9 @@ func IotCaCertificates() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "validity_not_after",
-				Description: "The certificate is not valid after this date.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("Validity.NotAfter"),
-			},
-			{
-				Name:        "validity_not_before",
-				Description: "The certificate is not valid before this date.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("Validity.NotBefore"),
+				Name:     "validity",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Validity"),
 			},
 		},
 	}

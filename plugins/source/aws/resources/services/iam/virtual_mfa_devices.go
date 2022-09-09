@@ -76,28 +76,15 @@ func IamVirtualMfaDevices() *schema.Table {
 				Resolver:    schema.PathResolver("User.UserId"),
 			},
 			{
-				Name:        "user_name",
-				Description: "The friendly name identifying the user.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("User.UserName"),
+				Name:     "user",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("User"),
 			},
 			{
 				Name:        "user_password_last_used",
 				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the user's password was last used to sign in to an AWS website. For a list of AWS websites that capture a user's last sign-in time, see the Credential reports (https://docs.aws.amazon.com/IAM/latest/UserGuide/credential-reports.html) topic in the IAM User Guide. If a password is used more than once in a five-minute span, only the first use is returned in this field. If the field is null (no value), then it indicates that they never signed in with a password. This can be because:",
 				Type:        schema.TypeTimestamp,
 				Resolver:    schema.PathResolver("User.PasswordLastUsed"),
-			},
-			{
-				Name:        "user_permissions_boundary_permissions_boundary_arn",
-				Description: "The ARN of the policy used to set the permissions boundary for the user or role. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("User.PermissionsBoundary.PermissionsBoundaryArn"),
-			},
-			{
-				Name:        "user_permissions_boundary_permissions_boundary_type",
-				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity. This data type can only have a value of Policy. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("User.PermissionsBoundary.PermissionsBoundaryType"),
 			},
 			{
 				Name:        "user_tags",

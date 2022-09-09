@@ -84,22 +84,9 @@ func IotThingGroups() *schema.Table {
 				Resolver:    schema.PathResolver("ThingGroupId"),
 			},
 			{
-				Name:        "creation_date",
-				Description: "The UNIX timestamp of when the thing group was created.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("ThingGroupMetadata.CreationDate"),
-			},
-			{
-				Name:        "parent_group_name",
-				Description: "The parent thing group name.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ThingGroupMetadata.ParentGroupName"),
-			},
-			{
-				Name:        "root_to_parent_thing_groups",
-				Description: "The root parent thing group.",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("ThingGroupMetadata.RootToParentThingGroups"),
+				Name:     "thing_group_metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ThingGroupMetadata"),
 			},
 			{
 				Name:        "name",
@@ -114,16 +101,9 @@ func IotThingGroups() *schema.Table {
 				Resolver:    schema.PathResolver("ThingGroupProperties.AttributePayload.Attributes"),
 			},
 			{
-				Name:        "attribute_payload_merge",
-				Description: "Specifies whether the list of attributes provided in the AttributePayload is merged with the attributes stored in the registry, instead of overwriting them. To remove an attribute, call UpdateThing with an empty attribute value",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ThingGroupProperties.AttributePayload.Merge"),
-			},
-			{
-				Name:        "thing_group_description",
-				Description: "The thing group description.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ThingGroupProperties.ThingGroupDescription"),
+				Name:     "thing_group_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ThingGroupProperties"),
 			},
 			{
 				Name:        "version",

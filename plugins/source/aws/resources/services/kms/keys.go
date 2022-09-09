@@ -136,10 +136,9 @@ func Keys() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "multi_region_key_type",
-				Description: "Indicates whether the KMS key is a PRIMARY or REPLICA key.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MultiRegionConfiguration.MultiRegionKeyType"),
+				Name:     "multi_region_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MultiRegionConfiguration"),
 			},
 			{
 				Name:          "primary_key_arn",

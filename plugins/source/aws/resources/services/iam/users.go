@@ -120,17 +120,10 @@ func IamUsers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "permissions_boundary_arn",
-				Description:   "The ARN of the policy used to set the permissions boundary for the user or role",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("PermissionsBoundary.PermissionsBoundaryArn"),
+				Name:          "permissions_boundary",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("PermissionsBoundary"),
 				IgnoreInTests: true,
-			},
-			{
-				Name:        "permissions_boundary_type",
-				Description: "The permissions boundary usage type that indicates what type of IAM resource is used as the permissions boundary for an entity",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PermissionsBoundary.PermissionsBoundaryType"),
 			},
 			{
 				Name:        "tags",

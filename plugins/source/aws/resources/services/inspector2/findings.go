@@ -56,16 +56,9 @@ func Findings() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "remediation_recommendation_text",
-				Description: "The recommended course of action to remediate the finding",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Remediation.Recommendation.Text"),
-			},
-			{
-				Name:        "remediation_recommendation_url",
-				Description: "The URL address to the CVE remediation recommendations",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Remediation.Recommendation.Url"),
+				Name:     "remediation",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Remediation"),
 			},
 			{
 				Name:        "severity",

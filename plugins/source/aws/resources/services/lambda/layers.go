@@ -35,41 +35,9 @@ func LambdaLayers() *schema.Table {
 				Resolver:    client.ResolveAWSRegion,
 			},
 			{
-				Name:        "latest_matching_version_compatible_runtimes",
-				Description: "The layer's compatible runtimes.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("LatestMatchingVersion.CompatibleRuntimes"),
-			},
-			{
-				Name:        "latest_matching_version_created_date",
-				Description: "The date that the version was created, in ISO 8601 format",
-				Type:        schema.TypeTimestamp,
-				Resolver:    client.ResolveTimestampField("LatestMatchingVersion.CreatedDate", TimestampLayoutNano),
-			},
-			{
-				Name:        "latest_matching_version_description",
-				Description: "The description of the version.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LatestMatchingVersion.Description"),
-			},
-			{
-				Name:        "latest_matching_version_layer_version_arn",
-				Description: "The ARN of the layer version.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LatestMatchingVersion.LayerVersionArn"),
-			},
-			{
-				Name:          "latest_matching_version_license_info",
-				Description:   "The layer's open-source license.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("LatestMatchingVersion.LicenseInfo"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "latest_matching_version",
-				Description: "The version number.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("LatestMatchingVersion.Version"),
+				Name:     "latest_matching_version",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LatestMatchingVersion"),
 			},
 			{
 				Name:            "arn",
@@ -106,7 +74,7 @@ func LambdaLayers() *schema.Table {
 						Name:        "created_date",
 						Description: "The date that the version was created, in ISO 8601 format",
 						Type:        schema.TypeTimestamp,
-						Resolver:    client.ResolveTimestampField("CreatedDate", TimestampLayoutNano),
+						Resolver:    schema.PathResolver("CreatedDate"), // TimestampLayoutNano
 					},
 					{
 						Name:        "description",
