@@ -149,43 +149,14 @@ func Clusters() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
+			{
+				Name:        "attachments",
+				Description: "An object representing a container instance or task attachment.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Attachments"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:          "aws_ecs_cluster_attachments",
-				Description:   "An object representing a container instance or task attachment.",
-				Resolver:      schema.PathTableResolver("Attachments"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_ecs_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "details",
-						Description: "Details of the attachment",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveClusterAttachmentsDetails,
-					},
-					{
-						Name:        "id",
-						Description: "The unique identifier for the attachment.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the attachment",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "type",
-						Description: "The type of the attachment, such as ElasticNetworkInterface.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:          "aws_ecs_cluster_tasks",
 				Description:   "Details on a task in a cluster.",
@@ -374,142 +345,17 @@ func Clusters() *schema.Table {
 						Description: "The version counter for the task",
 						Type:        schema.TypeInt,
 					},
-				},
-				Relations: []*schema.Table{
 					{
-						Name:        "aws_ecs_cluster_task_attachments",
+						Name:        "attachments",
 						Description: "An object representing a container instance or task attachment.",
-						Resolver:    schema.PathTableResolver("Attachments"),
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_task_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_tasks table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "details",
-								Description: "Details of the attachment",
-								Type:        schema.TypeJSON,
-								Resolver:    resolveClusterTaskAttachmentsDetails,
-							},
-							{
-								Name:        "id",
-								Description: "The unique identifier for the attachment.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "status",
-								Description: "The status of the attachment",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "type",
-								Description: "The type of the attachment, such as ElasticNetworkInterface.",
-								Type:        schema.TypeString,
-							},
-						},
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("Attachments"),
 					},
 					{
-						Name:        "aws_ecs_cluster_task_containers",
+						Name:        "containers",
 						Description: "A Docker container that's part of a task.",
-						Resolver:    schema.PathTableResolver("Containers"),
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_task_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_tasks table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "container_arn",
-								Description: "The Amazon Resource Name (ARN) of the container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "cpu",
-								Description: "The number of CPU units set for the container",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "exit_code",
-								Description: "The exit code returned from the container.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "gpu_ids",
-								Description: "The IDs of each GPU assigned to the container.",
-								Type:        schema.TypeStringArray,
-							},
-							{
-								Name:        "health_status",
-								Description: "The health status of the container",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "image",
-								Description: "The image used for the container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "image_digest",
-								Description: "The container image manifest digest",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "last_status",
-								Description: "The last known status of the container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "managed_agents",
-								Description: "The details of any Amazon ECS managed agents associated with the container.",
-								Type:        schema.TypeJSON,
-								Resolver:    schema.PathResolver("ManagedAgents"),
-							},
-							{
-								Name:        "memory",
-								Description: "The hard limit (in MiB) of memory set for the container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "memory_reservation",
-								Description: "The soft limit (in MiB) of memory set for the container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "name",
-								Description: "The name of the container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "network_bindings",
-								Description: "The network bindings associated with the container.",
-								Type:        schema.TypeJSON,
-								Resolver:    schema.PathResolver("NetworkBindings"),
-							},
-							{
-								Name:        "network_interfaces",
-								Description: "The network interfaces associated with the container.",
-								Type:        schema.TypeJSON,
-								Resolver:    schema.PathResolver("NetworkInterfaces"),
-							},
-							{
-								Name:        "reason",
-								Description: "A short (255 max characters) human-readable string to provide additional details about a running or stopped container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "runtime_id",
-								Description: "The ID of the Docker container.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "task_arn",
-								Description: "The ARN of the task.",
-								Type:        schema.TypeString,
-							},
-						},
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("Containers"),
 					},
 				},
 			},
@@ -698,435 +544,35 @@ func Clusters() *schema.Table {
 						Description: "The task definition to use for tasks in the service",
 						Type:        schema.TypeString,
 					},
-				},
-				Relations: []*schema.Table{
 					{
-						Name:        "aws_ecs_cluster_service_deployments",
+						Name:        "deployments",
 						Description: "The details of an Amazon ECS service deployment",
-						Resolver:    schema.PathTableResolver("Deployments"),
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_service_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_services table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:          "capacity_provider_strategy",
-								Description:   "The capacity provider strategy that the deployment is using.",
-								Type:          schema.TypeJSON,
-								Resolver:      schema.PathResolver("CapacityProviderStrategy"),
-								IgnoreInTests: true,
-							},
-							{
-								Name:        "created_at",
-								Description: "The Unix timestamp for the time when the service deployment was created.",
-								Type:        schema.TypeTimestamp,
-							},
-							{
-								Name:        "desired_count",
-								Description: "The most recent desired count of tasks that was specified for the service to deploy or maintain.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "failed_tasks",
-								Description: "The number of consecutively failed tasks in the deployment",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "id",
-								Description: "The ID of the deployment.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "launch_type",
-								Description: "The launch type the tasks in the service are using",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "network_configuration_awsvpc_configuration_subnets",
-								Description: "The IDs of the subnets associated with the task or service",
-								Type:        schema.TypeStringArray,
-								Resolver:    schema.PathResolver("NetworkConfiguration.AwsvpcConfiguration.Subnets"),
-							},
-							{
-								Name:        "network_configuration_awsvpc_configuration_assign_public_ip",
-								Description: "Whether the task's elastic network interface receives a public IP address",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("NetworkConfiguration.AwsvpcConfiguration.AssignPublicIp"),
-							},
-							{
-								Name:        "network_configuration_awsvpc_configuration_security_groups",
-								Description: "The IDs of the security groups associated with the task or service",
-								Type:        schema.TypeStringArray,
-								Resolver:    schema.PathResolver("NetworkConfiguration.AwsvpcConfiguration.SecurityGroups"),
-							},
-							{
-								Name:        "pending_count",
-								Description: "The number of tasks in the deployment that are in the PENDING status.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:          "platform_family",
-								Description:   "The operating system that your tasks in the service, or tasks are running on",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-							{
-								Name:          "platform_version",
-								Description:   "The platform version that your tasks in the service run on",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-							{
-								Name:        "rollout_state",
-								Description: "The rolloutState of a service is only returned for services that use the rolling update (ECS) deployment type that aren't behind a Classic Load Balancer",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "rollout_state_reason",
-								Description: "A description of the rollout state of a deployment.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "running_count",
-								Description: "The number of tasks in the deployment that are in the RUNNING status.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "status",
-								Description: "The status of the deployment",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "task_definition",
-								Description: "The most recent task definition that was specified for the tasks in the service to use.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "updated_at",
-								Description: "The Unix timestamp for the time when the service deployment was last updated.",
-								Type:        schema.TypeTimestamp,
-							},
-						},
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("Deployments"),
 					},
 					{
-						Name:        "aws_ecs_cluster_service_events",
+						Name:        "events",
 						Description: "The details for an event that's associated with a service.",
-						Resolver:    schema.PathTableResolver("Events"),
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_service_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_services table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "created_at",
-								Description: "The Unix timestamp for the time when the event was triggered.",
-								Type:        schema.TypeTimestamp,
-							},
-							{
-								Name:        "id",
-								Description: "The ID string for the event.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "message",
-								Description: "The event message.",
-								Type:        schema.TypeString,
-							},
-						},
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("Events"),
 					},
 					{
-						Name:          "aws_ecs_cluster_service_load_balancers",
-						Description:   "The load balancer configuration to use with a service or task set",
-						Resolver:      schema.PathTableResolver("LoadBalancers"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_service_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_services table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "container_name",
-								Description: "The name of the container (as it appears in a container definition) to associate with the load balancer.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "container_port",
-								Description: "The port on the container to associate with the load balancer",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:          "load_balancer_name",
-								Description:   "The name of the load balancer to associate with the Amazon ECS service or task set",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-							{
-								Name:        "target_group_arn",
-								Description: "The full Amazon Resource Name (ARN) of the Elastic Load Balancing target group or groups associated with a service or task set",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:        "load_balancers",
+						Description: "The load balancer configuration to use with a service or task set",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("LoadBalancers"),
 					},
 					{
-						Name:          "aws_ecs_cluster_service_service_registries",
-						Description:   "The details for the service registry",
-						Resolver:      schema.PathTableResolver("ServiceRegistries"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_service_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_services table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "container_name",
-								Description: "The container name value to be used for your service discovery service",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "container_port",
-								Description: "The port value to be used for your service discovery service",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "port",
-								Description: "The port value used if your service discovery service specified an SRV record. This field might be used if both the awsvpc network mode and SRV records are used.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "registry_arn",
-								Description: "The Amazon Resource Name (ARN) of the service registry",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:        "service_registries",
+						Description: "The details for the service registry",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("ServiceRegistries"),
 					},
 					{
-						Name:          "aws_ecs_cluster_service_task_sets",
-						Description:   "Information about a set of Amazon ECS tasks in either an CodeDeploy or an EXTERNAL deployment",
-						Resolver:      schema.PathTableResolver("TaskSets"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_service_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_services table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:          "capacity_provider_strategy",
-								Description:   "The capacity provider strategy that are associated with the task set.",
-								Type:          schema.TypeJSON,
-								Resolver:      schema.PathResolver("CapacityProviderStrategy"),
-								IgnoreInTests: true,
-							},
-							{
-								Name:        "cluster_arn",
-								Description: "The Amazon Resource Name (ARN) of the cluster that the service that hosts the task set exists in.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "computed_desired_count",
-								Description: "The computed desired count for the task set",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "created_at",
-								Description: "The Unix timestamp for the time when the task set was created.",
-								Type:        schema.TypeTimestamp,
-							},
-							{
-								Name:        "external_id",
-								Description: "The external ID associated with the task set",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "id",
-								Description: "The ID of the task set.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "launch_type",
-								Description: "The launch type the tasks in the task set are using",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "network_configuration_awsvpc_configuration_subnets",
-								Description: "The IDs of the subnets associated with the task or service",
-								Type:        schema.TypeStringArray,
-								Resolver:    schema.PathResolver("NetworkConfiguration.AwsvpcConfiguration.Subnets"),
-							},
-							{
-								Name:        "network_configuration_awsvpc_configuration_assign_public_ip",
-								Description: "Whether the task's elastic network interface receives a public IP address",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("NetworkConfiguration.AwsvpcConfiguration.AssignPublicIp"),
-							},
-							{
-								Name:        "network_configuration_awsvpc_configuration_security_groups",
-								Description: "The IDs of the security groups associated with the task or service",
-								Type:        schema.TypeStringArray,
-								Resolver:    schema.PathResolver("NetworkConfiguration.AwsvpcConfiguration.SecurityGroups"),
-							},
-							{
-								Name:        "pending_count",
-								Description: "The number of tasks in the task set that are in the PENDING status during a deployment",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:          "platform_family",
-								Description:   "The operating system that your tasks in the set are running on",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-							{
-								Name:          "platform_version",
-								Description:   "The Fargate platform version where the tasks in the task set are running",
-								Type:          schema.TypeString,
-								IgnoreInTests: true,
-							},
-							{
-								Name:        "running_count",
-								Description: "The number of tasks in the task set that are in the RUNNING status during a deployment",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "scale_unit",
-								Description: "The unit of measure for the scale value.",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("Scale.Unit"),
-							},
-							{
-								Name:        "scale_value",
-								Description: "The value, specified as a percent total of a service's desiredCount, to scale the task set",
-								Type:        schema.TypeFloat,
-								Resolver:    schema.PathResolver("Scale.Value"),
-							},
-							{
-								Name:        "service_arn",
-								Description: "The Amazon Resource Name (ARN) of the service the task set exists in.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "stability_status",
-								Description: "The stability status",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "stability_status_at",
-								Description: "The Unix timestamp for the time when the task set stability status was retrieved.",
-								Type:        schema.TypeTimestamp,
-							},
-							{
-								Name:        "started_by",
-								Description: "The tag specified when a task set is started",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "status",
-								Description: "The status of the task set",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "tags",
-								Description: "The metadata that you apply to the task set to help you categorize and organize them",
-								Type:        schema.TypeJSON,
-								Resolver:    client.ResolveTags,
-							},
-							{
-								Name:        "task_definition",
-								Description: "The task definition that the task set is using.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "arn",
-								Description: "The Amazon Resource Name (ARN) of the task set.",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("TaskSetArn"),
-							},
-							{
-								Name:        "updated_at",
-								Description: "The Unix timestamp for the time when the task set was last updated.",
-								Type:        schema.TypeTimestamp,
-							},
-						},
-						Relations: []*schema.Table{
-							{
-								Name:          "aws_ecs_cluster_service_task_set_load_balancers",
-								Description:   "The load balancer configuration to use with a service or task set",
-								Resolver:      schema.PathTableResolver("LoadBalancers"),
-								IgnoreInTests: true,
-								Columns: []schema.Column{
-									{
-										Name:        "cluster_service_task_set_cq_id",
-										Description: "Unique CloudQuery ID of aws_ecs_cluster_service_task_sets table (FK)",
-										Type:        schema.TypeUUID,
-										Resolver:    schema.ParentIdResolver,
-									},
-									{
-										Name:        "container_name",
-										Description: "The name of the container (as it appears in a container definition) to associate with the load balancer.",
-										Type:        schema.TypeString,
-									},
-									{
-										Name:        "container_port",
-										Description: "The port on the container to associate with the load balancer",
-										Type:        schema.TypeInt,
-									},
-									{
-										Name:        "load_balancer_name",
-										Description: "The name of the load balancer to associate with the Amazon ECS service or task set",
-										Type:        schema.TypeString,
-									},
-									{
-										Name:        "target_group_arn",
-										Description: "The full Amazon Resource Name (ARN) of the Elastic Load Balancing target group or groups associated with a service or task set",
-										Type:        schema.TypeString,
-									},
-								},
-							},
-							{
-								Name:          "aws_ecs_cluster_service_task_set_service_registries",
-								Description:   "The details for the service registry",
-								Resolver:      schema.PathTableResolver("ServiceRegistries"),
-								IgnoreInTests: true,
-								Columns: []schema.Column{
-									{
-										Name:        "cluster_service_task_set_cq_id",
-										Description: "Unique CloudQuery ID of aws_ecs_cluster_service_task_sets table (FK)",
-										Type:        schema.TypeUUID,
-										Resolver:    schema.ParentIdResolver,
-									},
-									{
-										Name:        "container_name",
-										Description: "The container name value to be used for your service discovery service",
-										Type:        schema.TypeString,
-									},
-									{
-										Name:        "container_port",
-										Description: "The port value to be used for your service discovery service",
-										Type:        schema.TypeInt,
-									},
-									{
-										Name:        "port",
-										Description: "The port value used if your service discovery service specified an SRV record. This field might be used if both the awsvpc network mode and SRV records are used.",
-										Type:        schema.TypeInt,
-									},
-									{
-										Name:        "arn",
-										Description: "The Amazon Resource Name (ARN) of the service registry",
-										Type:        schema.TypeString,
-										Resolver:    schema.PathResolver("RegistryArn"),
-									},
-								},
-							},
-						},
+						Name:        "task_sets",
+						Description: "Information about a set of Amazon ECS tasks in either an CodeDeploy or an EXTERNAL deployment",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("TaskSets"),
 					},
 				},
 			},
@@ -1227,197 +673,35 @@ func Clusters() *schema.Table {
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("VersionInfo.DockerVersion"),
 					},
-				},
-				Relations: []*schema.Table{
 					{
-						Name:          "aws_ecs_cluster_container_instance_attachments",
-						Description:   "An object representing a container instance or task attachment.",
-						Resolver:      schema.PathTableResolver("Attachments"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_container_instance_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_container_instances table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "details",
-								Description: "Details of the attachment",
-								Type:        schema.TypeJSON,
-								Resolver:    resolveClusterContainerInstanceAttachmentsDetails,
-							},
-							{
-								Name:        "id",
-								Description: "The unique identifier for the attachment.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "status",
-								Description: "The status of the attachment",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "type",
-								Description: "The type of the attachment, such as ElasticNetworkInterface.",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:        "attachments",
+						Description: "An object representing a container instance or task attachment.",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("Attachments"),
 					},
 					{
-						Name:          "aws_ecs_cluster_container_instance_attributes",
-						Description:   "An attribute is a name-value pair that's associated with an Amazon ECS object. Use attributes to extend the Amazon ECS data model by adding custom metadata to your resources",
-						Resolver:      schema.PathTableResolver("Attributes"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_container_instance_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_container_instances table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "name",
-								Description: "The name of the attribute",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "target_id",
-								Description: "The ID of the target",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "target_type",
-								Description: "The type of the target to attach the attribute with",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "value",
-								Description: "The value of the attribute",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:        "attributes",
+						Description: "An attribute is a name-value pair that's associated with an Amazon ECS object. Use attributes to extend the Amazon ECS data model by adding custom metadata to your resources",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("Attributes"),
 					},
 					{
-						Name:        "aws_ecs_cluster_container_instance_health_status_details",
+						Name:        "health_status",
 						Description: "An object representing the result of a container instance health status check.",
-						Resolver:    schema.PathTableResolver("HealthStatus.Details"),
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_container_instance_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_container_instances table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "last_status_change",
-								Description: "The Unix timestamp for when the container instance health status last changed.",
-								Type:        schema.TypeTimestamp,
-							},
-							{
-								Name:        "last_updated",
-								Description: "The Unix timestamp for when the container instance health status was last updated.",
-								Type:        schema.TypeTimestamp,
-							},
-							{
-								Name:        "status",
-								Description: "The container instance health status.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "type",
-								Description: "The type of container instance health status that was verified.",
-								Type:        schema.TypeString,
-							},
-						},
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("HealthStatus"),
 					},
 					{
-						Name:          "aws_ecs_cluster_container_instance_registered_resources",
-						Description:   "Describes the resources available for a container instance.",
-						Resolver:      schema.PathTableResolver("RegisteredResources"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_container_instance_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_container_instances table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "double_value",
-								Description: "When the doubleValue type is set, the value of the resource must be a double precision floating-point type.",
-								Type:        schema.TypeFloat,
-							},
-							{
-								Name:        "integer_value",
-								Description: "When the integerValue type is set, the value of the resource must be an integer.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "long_value",
-								Description: "When the longValue type is set, the value of the resource must be an extended precision floating-point type.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "name",
-								Description: "The name of the resource, such as CPU, MEMORY, PORTS, PORTS_UDP, or a user-defined resource.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "string_set_value",
-								Description: "When the stringSetValue type is set, the value of the resource must be a string type.",
-								Type:        schema.TypeStringArray,
-							},
-							{
-								Name:        "type",
-								Description: "The type of the resource",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:        "registered_resources",
+						Description: "Describes the resources available for a container instance.",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("RegisteredResources"),
 					},
 					{
-						Name:          "aws_ecs_cluster_container_instance_remaining_resources",
-						Description:   "Describes the resources available for a container instance.",
-						Resolver:      schema.PathTableResolver("RemainingResources"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "cluster_container_instance_cq_id",
-								Description: "Unique CloudQuery ID of aws_ecs_cluster_container_instances table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "double_value",
-								Description: "When the doubleValue type is set, the value of the resource must be a double precision floating-point type.",
-								Type:        schema.TypeFloat,
-							},
-							{
-								Name:        "integer_value",
-								Description: "When the integerValue type is set, the value of the resource must be an integer.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "long_value",
-								Description: "When the longValue type is set, the value of the resource must be an extended precision floating-point type.",
-								Type:        schema.TypeInt,
-							},
-							{
-								Name:        "name",
-								Description: "The name of the resource, such as CPU, MEMORY, PORTS, PORTS_UDP, or a user-defined resource.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "string_set_value",
-								Description: "When the stringSetValue type is set, the value of the resource must be a string type.",
-								Type:        schema.TypeStringArray,
-							},
-							{
-								Name:        "type",
-								Description: "The type of the resource",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:        "remaining_resources",
+						Description: "Describes the resources available for a container instance.",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("RemainingResources"),
 					},
 				},
 			},
@@ -1484,18 +768,6 @@ func resolveClustersStatistics(ctx context.Context, meta schema.ClientMeta, reso
 	}
 	return resource.Set(c.Name, stats)
 }
-
-func resolveClusterAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	attachment, ok := resource.Item.(types.Attachment)
-	if !ok {
-		return fmt.Errorf("expected to have types.Attachment but got %T", resource.Item)
-	}
-	details := make(map[string]*string)
-	for _, s := range attachment.Details {
-		details[*s.Name] = s.Value
-	}
-	return resource.Set(c.Name, details)
-}
 func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
@@ -1537,17 +809,6 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-
-func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Attachment)
-	j := make(map[string]interface{})
-	for _, i := range p.Details {
-		j[*i.Name] = *i.Value
-	}
-
-	return resource.Set(c.Name, j)
-}
-
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
@@ -1644,13 +905,4 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 		config.NextToken = listContainerInstances.NextToken
 	}
 	return nil
-}
-
-func resolveClusterContainerInstanceAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	attachment := resource.Item.(types.Attachment)
-	details := make(map[string]*string)
-	for _, s := range attachment.Details {
-		details[*s.Name] = s.Value
-	}
-	return resource.Set(c.Name, details)
 }
