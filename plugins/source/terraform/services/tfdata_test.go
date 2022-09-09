@@ -11,8 +11,8 @@ package services_test
 //	cfg := `
 //    config:
 //      - name: mylocal
-//        backend: local
-//        path: "../examples/terraform.tfstate"
+//        local:
+//          path: "../examples/terraform.tfstate"
 //`
 //
 //	// TODO
