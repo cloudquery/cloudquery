@@ -83,16 +83,9 @@ func Connections() *schema.Table {
 				Resolver:    schema.PathResolver("PhysicalConnectionRequirements.AvailabilityZone"),
 			},
 			{
-				Name:        "security_group_id_list",
-				Description: "The security group ID list used by the connection",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("PhysicalConnectionRequirements.SecurityGroupIdList"),
-			},
-			{
-				Name:        "subnet_id",
-				Description: "The subnet ID used by the connection",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PhysicalConnectionRequirements.SubnetId"),
+				Name:     "physical_connection_requirements",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PhysicalConnectionRequirements"),
 			},
 		},
 	}

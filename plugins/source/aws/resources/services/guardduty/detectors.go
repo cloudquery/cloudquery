@@ -66,28 +66,9 @@ func GuarddutyDetectors() *schema.Table {
 				Resolver:    schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name:        "data_sources_cloud_trail_status",
-				Description: "Describes whether CloudTrail is enabled as a data source for the detector.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DataSources.CloudTrail.Status"),
-			},
-			{
-				Name:        "data_sources_dns_logs_status",
-				Description: "Denotes whether DNS logs is enabled as a data source.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DataSources.DNSLogs.Status"),
-			},
-			{
-				Name:        "data_sources_flow_logs_status",
-				Description: "Denotes whether VPC flow logs is enabled as a data source.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DataSources.FlowLogs.Status"),
-			},
-			{
-				Name:        "data_sources_s3_logs_status",
-				Description: "A value that describes whether S3 data event logs are automatically enabled for new members of the organization.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DataSources.S3Logs.Status"),
+				Name:     "data_sources",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("DataSources"),
 			},
 			{
 				Name:        "finding_publishing_frequency",

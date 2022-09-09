@@ -78,16 +78,9 @@ func Databases() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "target_database_catalog_id",
-				Description: "The ID of the Data Catalog in which the database resides",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TargetDatabase.CatalogId"),
-			},
-			{
-				Name:        "target_database_name",
-				Description: "The name of the catalog database",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TargetDatabase.DatabaseName"),
+				Name:     "target_database",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TargetDatabase"),
 			},
 		},
 		Relations: []*schema.Table{
@@ -108,9 +101,9 @@ func Databases() *schema.Table {
 						Resolver: schema.PathResolver("Parameters"),
 					},
 					{
-						Name:     "storage_parameters",
+						Name:     "storage_descriptor",
 						Type:     schema.TypeJSON,
-						Resolver: schema.PathResolver("StorageDescriptor.Parameters"),
+						Resolver: schema.PathResolver("StorageDescriptor"),
 					},
 					{
 						Name:        "name",
@@ -168,64 +161,16 @@ func Databases() *schema.Table {
 						Type:        schema.TypeInt,
 					},
 					{
-						Name:        "additional_locations",
-						Description: "A list of locations that point to the path where a Delta table is located",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("StorageDescriptor.AdditionalLocations"),
-					},
-					{
-						Name:        "bucket_columns",
-						Description: "A list of reducer grouping columns, clustering columns, and bucketing columns in the table",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("StorageDescriptor.BucketColumns"),
-					},
-					{
-						Name:        "compressed",
-						Description: "True if the data in the table is compressed, or False if not",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("StorageDescriptor.Compressed"),
-					},
-					{
 						Name:        "input_format",
 						Description: "The input format: SequenceFileInputFormat (binary), or TextInputFormat, or a custom format",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("StorageDescriptor.InputFormat"),
 					},
 					{
-						Name:        "location",
-						Description: "The physical location of the table",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("StorageDescriptor.Location"),
-					},
-					{
-						Name:        "number_of_buckets",
-						Description: "Must be specified if the table contains any dimension columns",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("StorageDescriptor.NumberOfBuckets"),
-					},
-					{
 						Name:        "output_format",
 						Description: "The output format: SequenceFileOutputFormat (binary), or IgnoreKeyTextOutputFormat, or a custom format",
 						Type:        schema.TypeString,
 						Resolver:    schema.PathResolver("StorageDescriptor.OutputFormat"),
-					},
-					{
-						Name:        "schema_reference_schema_id",
-						Description: "A structure that contains schema identity fields",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("StorageDescriptor.SchemaReference.SchemaId"),
-					},
-					{
-						Name:        "schema_reference_schema_version_id",
-						Description: "The unique ID assigned to a version of the schema",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("StorageDescriptor.SchemaReference.SchemaVersionId"),
-					},
-					{
-						Name:        "schema_reference_schema_version_number",
-						Description: "The version number of the schema",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("StorageDescriptor.SchemaReference.SchemaVersionNumber"),
 					},
 					{
 						Name:        "serde_info",
@@ -240,39 +185,14 @@ func Databases() *schema.Table {
 						Resolver:    schema.PathResolver("StorageDescriptor.SkewedInfo"),
 					},
 					{
-						Name:        "sort_columns",
-						Description: "A list specifying the sort order of each bucket in the table",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("StorageDescriptor.SortColumns"),
-					},
-					{
-						Name:        "stored_as_sub_directories",
-						Description: "True if the table data is stored in subdirectories, or False if not",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("StorageDescriptor.StoredAsSubDirectories"),
-					},
-					{
 						Name:        "table_type",
 						Description: "The type of this table (EXTERNAL_TABLE, VIRTUAL_VIEW, etc)",
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "target_table_catalog_id",
-						Description: "The ID of the Data Catalog in which the table resides",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTable.CatalogId"),
-					},
-					{
-						Name:        "target_table_database_name",
-						Description: "The name of the catalog database that contains the target table",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTable.DatabaseName"),
-					},
-					{
-						Name:        "target_table_name",
-						Description: "The name of the target table",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("TargetTable.Name"),
+						Name:     "target_table",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("TargetTable"),
 					},
 					{
 						Name:        "update_time",
@@ -299,12 +219,6 @@ func Databases() *schema.Table {
 						Description: "Partition keys",
 						Type:        schema.TypeJSON,
 						Resolver:    schema.PathResolver("PartitionKeys"),
-					},
-					{
-						Name:        "storage_descriptor",
-						Description: "Storage descriptor",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("StorageDescriptor"),
 					},
 				},
 				Relations: []*schema.Table{

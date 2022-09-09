@@ -35,10 +35,9 @@ func DatacatalogEncryptionSettings() *schema.Table {
 				Resolver:    schema.PathResolver("ConnectionPasswordEncryption.ReturnConnectionPasswordEncrypted"),
 			},
 			{
-				Name:        "aws_kms_key_id",
-				Description: "An KMS key that is used to encrypt the connection password",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ConnectionPasswordEncryption.AwsKmsKeyId"),
+				Name:     "connection_password_encryption",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ConnectionPasswordEncryption"),
 			},
 			{
 				Name:        "encryption_at_rest_catalog_encryption_mode",
@@ -47,10 +46,9 @@ func DatacatalogEncryptionSettings() *schema.Table {
 				Resolver:    schema.PathResolver("EncryptionAtRest.CatalogEncryptionMode"),
 			},
 			{
-				Name:        "encryption_at_rest_sse_aws_kms_key_id",
-				Description: "The ID of the KMS key to use for encryption at rest",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionAtRest.SseAwsKmsKeyId"),
+				Name:     "encryption_at_rest",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EncryptionAtRest"),
 			},
 		},
 	}

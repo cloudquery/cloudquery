@@ -53,16 +53,9 @@ func Jobs() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "command_name",
-				Description: "The name of the job command",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Command.Name"),
-			},
-			{
-				Name:        "command_python_version",
-				Description: "The Python version being used to run a Python shell job",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Command.PythonVersion"),
+				Name:     "command",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Command"),
 			},
 			{
 				Name:        "command_script_location",
@@ -71,10 +64,9 @@ func Jobs() *schema.Table {
 				Resolver:    schema.PathResolver("Command.ScriptLocation"),
 			},
 			{
-				Name:        "connections",
-				Description: "A list of connections used by the job",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Connections.Connections"),
+				Name:     "connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Connections"),
 			},
 			{
 				Name:        "created_on",
@@ -92,10 +84,9 @@ func Jobs() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "execution_property_max_concurrent_runs",
-				Description: "The maximum number of concurrent runs allowed for the job",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("ExecutionProperty.MaxConcurrentRuns"),
+				Name:     "execution_property",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExecutionProperty"),
 			},
 			{
 				Name:        "glue_version",
@@ -133,10 +124,9 @@ func Jobs() *schema.Table {
 				Type:        schema.TypeJSON,
 			},
 			{
-				Name:        "notification_property_notify_delay_after",
-				Description: "After a job run starts, the number of minutes to wait before sending a job run delay notification",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("NotificationProperty.NotifyDelayAfter"),
+				Name:     "notification_property",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NotificationProperty"),
 			},
 			{
 				Name:        "number_of_workers",
@@ -248,10 +238,9 @@ func Jobs() *schema.Table {
 						Type:        schema.TypeFloat,
 					},
 					{
-						Name:        "notification_property_notify_delay_after",
-						Description: "After a job run starts, the number of minutes to wait before sending a job run delay notification",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("NotificationProperty.NotifyDelayAfter"),
+						Name:     "notification_property",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("NotificationProperty"),
 					},
 					{
 						Name:        "number_of_workers",

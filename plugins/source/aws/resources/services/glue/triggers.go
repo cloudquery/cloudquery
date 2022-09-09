@@ -48,16 +48,9 @@ func Triggers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "event_batching_condition_size",
-				Description: "Number of events that must be received from Amazon EventBridge before EventBridge event trigger fires",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("EventBatchingCondition.BatchSize"),
-			},
-			{
-				Name:        "event_batching_condition_window",
-				Description: "Window of time in seconds after which EventBridge event trigger fires",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("EventBatchingCondition.BatchWindow"),
+				Name:     "event_batching_condition",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EventBatchingCondition"),
 			},
 			{
 				Name:        "id",
@@ -70,10 +63,9 @@ func Triggers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "predicate_logical",
-				Description: "An optional field if only one condition is listed",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Predicate.Logical"),
+				Name:     "predicate",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Predicate"),
 			},
 			{
 				Name:        "schedule",
@@ -100,11 +92,6 @@ func Triggers() *schema.Table {
 				Description: "Defines an action to be initiated by a trigger",
 				Type:        schema.TypeJSON,
 				Resolver:    schema.PathResolver("Actions"),
-			},
-			{
-				Name:     "predicate",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Predicate"),
 			},
 		},
 	}

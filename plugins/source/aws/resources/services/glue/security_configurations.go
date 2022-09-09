@@ -36,10 +36,9 @@ func SecurityConfigurations() *schema.Table {
 				Type:        schema.TypeTimestamp,
 			},
 			{
-				Name:        "cloud_watch_encryption_mode",
-				Description: "The encryption mode to use for CloudWatch data",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionConfiguration.CloudWatchEncryption.CloudWatchEncryptionMode"),
+				Name:     "encryption_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EncryptionConfiguration"),
 			},
 			{
 				Name:        "cloud_watch_encryption_kms_key_arn",
@@ -48,28 +47,10 @@ func SecurityConfigurations() *schema.Table {
 				Resolver:    schema.PathResolver("EncryptionConfiguration.CloudWatchEncryption.KmsKeyArn"),
 			},
 			{
-				Name:        "job_bookmarks_encryption_mode",
-				Description: "The encryption mode to use for job bookmarks data",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionConfiguration.JobBookmarksEncryption.JobBookmarksEncryptionMode"),
-			},
-			{
-				Name:        "job_bookmarks_encryption_kms_key_arn",
-				Description: "The Amazon Resource Name (ARN) of the KMS key to be used to encrypt the data",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionConfiguration.JobBookmarksEncryption.KmsKeyArn"),
-			},
-			{
 				Name:            "name",
 				Description:     "The name of the security configuration",
 				Type:            schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name:        "encryption_configuration",
-				Description: "Specifies how data should be encrypted",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("EncryptionConfiguration"),
 			},
 		},
 	}
