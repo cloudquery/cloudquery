@@ -129,48 +129,11 @@ func DirectconnectLags() *schema.Table {
 				Type:        schema.TypeJSON,
 				Resolver:    client.ResolveTags,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_directconnect_lag_mac_sec_keys",
-				Description:   "The MAC Security (MACsec) security keys associated with the LAG.",
-				Resolver:      schema.PathTableResolver("MacSecKeys"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "lag_cq_id",
-						Description: "Unique CloudQuery ID of aws_directconnect_lags table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "lag_id",
-						Description: "The ID of the LAG.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "ckn",
-						Description: "The Connection Key Name (CKN) for the MAC Security secret key.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "secret_arn",
-						Description: "The Amazon Resource Name (ARN) of the MAC Security (MACsec) secret key.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SecretARN"),
-					},
-					{
-						Name:        "start_on",
-						Description: "The date that the MAC Security (MACsec) secret key takes effect. The value is displayed in UTC format.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "state",
-						Description: "The state of the MAC Security secret key. The possible values are: associating, associated, disassociating, disassociated",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "mac_sec_keys",
+				Description: "The MAC Security (MACsec) security keys associated with the connection.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("MacSecKeys"),
 			},
 		},
 	}

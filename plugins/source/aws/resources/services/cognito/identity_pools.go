@@ -87,42 +87,11 @@ func CognitoIdentityPools() *schema.Table {
 				Description: "Optional key:value pairs mapping provider names to provider app IDs.",
 				Type:        schema.TypeJSON,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_cognito_identity_pool_cognito_identity_providers",
-				Description:   "A provider representing an Amazon Cognito user pool and its client ID.",
-				Resolver:      schema.PathTableResolver("CognitoIdentityProviders"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "identity_pool_cq_id",
-						Description: "Unique CloudQuery ID of aws_cognito_identity_pools table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "identity_pool_id",
-						Description: "An identity pool ID in the format REGION:GUID.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "client_id",
-						Description: "The client ID for the Amazon Cognito user pool.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "provider_name",
-						Description: "The provider name for an Amazon Cognito user pool",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "server_side_token_check",
-						Description: "TRUE if server-side token validation is enabled for the identity provider’s token",
-						Type:        schema.TypeBool,
-					},
-				},
+				Name:        "cognito_identity_providers",
+				Description: "A provider representing an Amazon Cognito user pool and its client ID.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("CognitoIdentityProviders"),
 			},
 		},
 	}

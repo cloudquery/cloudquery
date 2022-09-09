@@ -159,63 +159,11 @@ func DaxClusters() *schema.Table {
 				Description: "The total number of nodes in the cluster.",
 				Type:        schema.TypeInt,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_dax_cluster_nodes",
+				Name:        "nodes",
 				Description: "Represents an individual node within a DAX cluster.",
-				Resolver:    schema.PathTableResolver("Nodes"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_dax_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "availability_zone",
-						Description: "The Availability Zone (AZ) in which the node has been deployed.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "endpoint_address",
-						Description: "The DNS hostname of the endpoint.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Endpoint.Address"),
-					},
-					{
-						Name:        "endpoint_port",
-						Description: "The port number that applications should use to connect to the endpoint.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Endpoint.Port"),
-					},
-					{
-						Name:        "endpoint_url",
-						Description: "The URL that applications should use to connect to the endpoint",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Endpoint.URL"),
-					},
-					{
-						Name:        "node_create_time",
-						Description: "The date and time (in UNIX epoch format) when the node was launched.",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "node_id",
-						Description: "A system-generated identifier for the node.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "node_status",
-						Description: "The current status of the node",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "parameter_group_status",
-						Description: "The status of the parameter group associated with this node",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Nodes"),
 			},
 		},
 	}

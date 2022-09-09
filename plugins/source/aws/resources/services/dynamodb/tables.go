@@ -203,223 +203,26 @@ func DynamodbTables() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("TableStatus"),
 			},
+			{
+				Name:        "global_secondary_indexes",
+				Description: "Represents the properties of a global secondary index.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("GlobalSecondaryIndexes"),
+			},
+			{
+				Name:        "local_secondary_indexes",
+				Description: "Represents the properties of a local secondary index.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("LocalSecondaryIndexes"),
+			},
+			{
+				Name:        "replicas",
+				Description: "Contains the details of replicas.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Replicas"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:        "aws_dynamodb_table_global_secondary_indexes",
-				Description: "Represents the properties of a global secondary index.",
-				Resolver:    fetchDynamodbTableGlobalSecondaryIndexes,
-				Columns: []schema.Column{
-					{
-						Name:        "table_cq_id",
-						Description: "Unique CloudQuery ID of aws_dynamodb_tables table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "backfilling",
-						Description: "Indicates whether the index is currently backfilling",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "arn",
-						Description: "The Amazon Resource Name (ARN) that uniquely identifies the index.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("IndexArn"),
-					},
-					{
-						Name:        "name",
-						Description: "The name of the global secondary index.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("IndexName"),
-					},
-					{
-						Name:        "index_size_bytes",
-						Description: "The total size of the specified index, in bytes",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "status",
-						Description: "The current state of the global secondary index:  * CREATING - The index is being created.  * UPDATING - The index is being updated.  * DELETING - The index is being deleted.  * ACTIVE - The index is ready for use.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("IndexStatus"),
-					},
-					{
-						Name:        "item_count",
-						Description: "The number of items in the specified index",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "key_schema",
-						Description: "The complete key schema for a global secondary index, which consists of one or more pairs of attribute names and key types:  * HASH - partition key  * RANGE - sort key  The partition key of an item is also known as its hash attribute",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveDynamodbTableGlobalSecondaryIndexKeySchema,
-					},
-					{
-						Name:        "projection_non_key_attributes",
-						Description: "Represents the non-key attribute names which will be projected into the index. For local secondary indexes, the total count of NonKeyAttributes summed across all of the local secondary indexes, must not exceed 20",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("Projection.NonKeyAttributes"),
-					},
-					{
-						Name:        "projection_type",
-						Description: "The set of attributes that are projected into the index:  * KEYS_ONLY - Only the index and primary keys are projected into the index.  * INCLUDE - In addition to the attributes described in KEYS_ONLY, the secondary index will include other non-key attributes that you specify.  * ALL - All of the table attributes are projected into the index.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Projection.ProjectionType"),
-					},
-					{
-						Name:        "provisioned_throughput_last_decrease_date_time",
-						Description: "The date and time of the last provisioned throughput decrease for this table.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("ProvisionedThroughput.LastDecreaseDateTime"),
-					},
-					{
-						Name:        "provisioned_throughput_last_increase_date_time",
-						Description: "The date and time of the last provisioned throughput increase for this table.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("ProvisionedThroughput.LastIncreaseDateTime"),
-					},
-					{
-						Name:        "provisioned_throughput_number_of_decreases_today",
-						Description: "The number of provisioned throughput decreases for this table during this UTC calendar day",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("ProvisionedThroughput.NumberOfDecreasesToday"),
-					},
-					{
-						Name:        "provisioned_throughput_read_capacity_units",
-						Description: "The maximum number of strongly consistent reads consumed per second before DynamoDB returns a ThrottlingException",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("ProvisionedThroughput.ReadCapacityUnits"),
-					},
-					{
-						Name:        "provisioned_throughput_write_capacity_units",
-						Description: "The maximum number of writes consumed per second before DynamoDB returns a ThrottlingException.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("ProvisionedThroughput.WriteCapacityUnits"),
-					},
-				},
-			},
-			{
-				Name:        "aws_dynamodb_table_local_secondary_indexes",
-				Description: "Represents the properties of a local secondary index.",
-				Resolver:    schema.PathTableResolver("LocalSecondaryIndexes"),
-				Columns: []schema.Column{
-					{
-						Name:        "table_cq_id",
-						Description: "Unique CloudQuery ID of aws_dynamodb_tables table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "arn",
-						Description: "The Amazon Resource Name (ARN) that uniquely identifies the index.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("IndexArn"),
-					},
-					{
-						Name:        "name",
-						Description: "Represents the name of the local secondary index.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("IndexName"),
-					},
-					{
-						Name:        "index_size_bytes",
-						Description: "The total size of the specified index, in bytes",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "item_count",
-						Description: "The number of items in the specified index",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "key_schema",
-						Description: "The complete key schema for the local secondary index, consisting of one or more pairs of attribute names and key types:  * HASH - partition key  * RANGE - sort key  The partition key of an item is also known as its hash attribute",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveDynamodbTableLocalSecondaryIndexKeySchema,
-					},
-					{
-						Name:        "projection_non_key_attributes",
-						Description: "Represents the non-key attribute names which will be projected into the index. For local secondary indexes, the total count of NonKeyAttributes summed across all of the local secondary indexes, must not exceed 20",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("Projection.NonKeyAttributes"),
-					},
-					{
-						Name:        "projection_type",
-						Description: "The set of attributes that are projected into the index:  * KEYS_ONLY - Only the index and primary keys are projected into the index.  * INCLUDE - In addition to the attributes described in KEYS_ONLY, the secondary index will include other non-key attributes that you specify.  * ALL - All of the table attributes are projected into the index.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Projection.ProjectionType"),
-					},
-				},
-			},
-			{
-				Name:        "aws_dynamodb_table_replicas",
-				Description: "Contains the details of the replica.",
-				Resolver:    fetchDynamodbTableReplicas,
-				Columns: []schema.Column{
-					{
-						Name:        "table_cq_id",
-						Description: "Unique CloudQuery ID of aws_dynamodb_tables table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "global_secondary_indexes",
-						Description: "Replica-specific global secondary index settings.",
-						Type:        schema.TypeJSON,
-						Resolver:    resolveDynamodbTableReplicaGlobalSecondaryIndexes,
-					},
-					{
-						Name:        "kms_master_key_id",
-						Description: "The KMS key of the replica that will be used for KMS encryption.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("KMSMasterKeyId"),
-					},
-					{
-						Name:        "provisioned_throughput_override_read_capacity_units",
-						Description: "Replica-specific read capacity units",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("ProvisionedThroughputOverride.ReadCapacityUnits"),
-					},
-					{
-						Name:        "region_name",
-						Description: "The name of the Region.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "replica_inaccessible_date_time",
-						Description: "The time at which the replica was first detected as inaccessible",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "replica_status",
-						Description: "The current state of the replica:  * CREATING - The replica is being created.  * UPDATING - The replica is being updated.  * DELETING - The replica is being deleted.  * ACTIVE - The replica is ready for use.  * REGION_DISABLED - The replica is inaccessible because the Amazon Web Services Region has been disabled",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "replica_status_description",
-						Description: "Detailed information about the replica status.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "replica_status_percent_progress",
-						Description: "Specifies the progress of a Create, Update, or Delete action on the replica as a percentage.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "summary_last_update_date_time",
-						Description: "The date and time at which the table class was last updated.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("ReplicaTableClassSummary.LastUpdateDateTime"),
-					},
-					{
-						Name:        "summary_table_class",
-						Description: "The table class of the specified table",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ReplicaTableClassSummary.TableClass"),
-					},
-				},
-			},
 			{
 				Name:        "aws_dynamodb_table_replica_auto_scalings",
 				Description: "Represents the auto scaling settings of the replica.",
@@ -609,43 +412,6 @@ func resolveDynamodbTableStreamSpecification(ctx context.Context, meta schema.Cl
 		"enabled":   r.StreamSpecification.StreamEnabled,
 		"view_type": r.StreamSpecification.StreamViewType,
 	}))
-}
-func fetchDynamodbTableGlobalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(*types.TableDescription)
-	for i := range p.GlobalSecondaryIndexes {
-		res <- p.GlobalSecondaryIndexes[i]
-	}
-	return nil
-}
-func resolveDynamodbTableGlobalSecondaryIndexKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.GlobalSecondaryIndexDescription)
-	return resource.Set(c.Name, marshalKeySchema(r.KeySchema))
-}
-func resolveDynamodbTableLocalSecondaryIndexKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.LocalSecondaryIndexDescription)
-	return resource.Set(c.Name, marshalKeySchema(r.KeySchema))
-}
-func fetchDynamodbTableReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(*types.TableDescription)
-	for i := range p.Replicas {
-		res <- p.Replicas[i]
-	}
-	return nil
-}
-func resolveDynamodbTableReplicaGlobalSecondaryIndexes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ReplicaDescription)
-	if len(r.GlobalSecondaryIndexes) == 0 {
-		return nil
-	}
-
-	val := make(map[string]interface{}, len(r.GlobalSecondaryIndexes))
-	for i := range r.GlobalSecondaryIndexes {
-		val[aws.ToString(r.GlobalSecondaryIndexes[i].IndexName)] = map[string]interface{}{
-			"name":                            r.GlobalSecondaryIndexes[i].IndexName,
-			"provisioned_throughput_override": r.GlobalSecondaryIndexes[i].ProvisionedThroughputOverride,
-		}
-	}
-	return resource.Set(c.Name, val)
 }
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	par := parent.Item.(*types.TableDescription)

@@ -151,72 +151,11 @@ func DirectconnectVirtualInterfaces() *schema.Table {
 				Description: "The ID of the VLAN.",
 				Type:        schema.TypeInt,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_directconnect_virtual_interface_bgp_peers",
-				Description:   "Information about a BGP peer. ",
-				Resolver:      schema.PathTableResolver("BgpPeers"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "virtual_interface_cq_id",
-						Description: "Unique CloudQuery ID of aws_directconnect_virtual_interfaces table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "virtual_interface_id",
-						Description: "The ID of the virtual interface.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "address_family",
-						Description: "The address family for the BGP peer.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "amazon_address",
-						Description: "The IP address assigned to the Amazon interface.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "asn",
-						Description: "The autonomous system (AS) number for Border Gateway Protocol (BGP) configuration.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "auth_key",
-						Description: "The authentication key for BGP configuration",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "aws_device_v2",
-						Description: "The Direct Connect endpoint on which the BGP peer terminates.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "bgp_peer_id",
-						Description: "The ID of the BGP peer.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "bgp_peer_state",
-						Description: "The state of the BGP peer",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "bgp_status",
-						Description: "The status of the BGP peer",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "customer_address",
-						Description: "The IP address assigned to the customer interface.",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "bgp_peers",
+				Description: "Information about BGP peers.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("BgpPeers"),
 			},
 		},
 	}

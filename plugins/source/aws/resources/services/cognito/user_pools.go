@@ -437,82 +437,19 @@ func CognitoUserPools() *schema.Table {
 				Resolver:      schema.PathResolver("VerificationMessageTemplate.SmsMessage"),
 				IgnoreInTests: true,
 			},
+			{
+				Name:          "schema_attributes",
+				Description:   "Contains information about the schema attribute.",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("SchemaAttributes"),
+				IgnoreInTests: true,
+			},
 		},
 		Relations: []*schema.Table{
 			{
-				Name:        "aws_cognito_user_pool_schema_attributes",
-				Description: "Contains information about the schema attribute.",
-				Resolver:    schema.PathTableResolver("SchemaAttributes"),
-				Columns: []schema.Column{
-					{
-						Name:        "user_pool_cq_id",
-						Description: "Unique CloudQuery ID of aws_cognito_user_pools table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "user_pool_id",
-						Description: "The ID of the user pool.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("id"),
-					},
-					{
-						Name:        "attribute_data_type",
-						Description: "The attribute data type.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "developer_only_attribute",
-						Description: "We recommend that you use WriteAttributes (https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolClientType.html#CognitoUserPools-Type-UserPoolClientType-WriteAttributes) in the user pool client to control how attributes can be mutated for new use cases instead of using DeveloperOnlyAttribute",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "mutable",
-						Description: "Specifies whether the value of the attribute can be changed",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "name",
-						Description: "A schema attribute of the name type.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "number_attribute_constraints_max_value",
-						Description:   "The maximum value of an attribute that is of the number data type.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("NumberAttributeConstraints.MaxValue"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "number_attribute_constraints_min_value",
-						Description: "The minimum value of an attribute that is of the number data type.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("NumberAttributeConstraints.MinValue"),
-					},
-					{
-						Name:        "required",
-						Description: "Specifies whether a user pool attribute is required",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "string_attribute_constraints_max_length",
-						Description: "The maximum length.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("StringAttributeConstraints.MaxLength"),
-					},
-					{
-						Name:        "string_attribute_constraints_min_length",
-						Description: "The minimum length.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("StringAttributeConstraints.MinLength"),
-					},
-				},
-			},
-			{
-				Name:        "aws_cognito_user_pool_identity_providers",
-				Description: "A container for information about an identity provider.",
-				Resolver:    fetchCognitoUserPoolIdentityProviders,
-
+				Name:          "aws_cognito_user_pool_identity_providers",
+				Description:   "A container for information about an identity provider.",
+				Resolver:      fetchCognitoUserPoolIdentityProviders,
 				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
