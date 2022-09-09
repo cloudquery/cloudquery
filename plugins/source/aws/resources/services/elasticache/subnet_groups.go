@@ -49,37 +49,11 @@ func SubnetGroups() *schema.Table {
 				Description: "The Amazon Virtual Private Cloud identifier (VPC ID) of the cache subnet group.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_elasticache_subnet_group_subnets",
+				Name:        "subnets",
 				Description: "Represents the subnet associated with a cluster",
-				Resolver:    schema.PathTableResolver("Subnets"),
-				Columns: []schema.Column{
-					{
-						Name:        "subnet_group_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticache_subnet_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "subnet_availability_zone_name",
-						Description: "The name of the Availability Zone.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SubnetAvailabilityZone.Name"),
-					},
-					{
-						Name:        "subnet_identifier",
-						Description: "The unique identifier for the subnet.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "subnet_outpost_arn",
-						Description: "The outpost ARN of the subnet.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("SubnetOutpost.SubnetOutpostArn"),
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Subnets"),
 			},
 		},
 	}

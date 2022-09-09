@@ -78,68 +78,17 @@ func GlobalReplicationGroups() *schema.Table {
 				Description: "A flag that enables in-transit encryption when set to true",
 				Type:        schema.TypeBool,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_elasticache_global_replication_group_global_node_groups",
-				Description: "Indicates the slot configuration and global identifier for a slice group.",
-				Resolver:    schema.PathTableResolver("GlobalNodeGroups"),
-				Columns: []schema.Column{
-					{
-						Name:        "global_replication_group_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticache_global_replication_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "global_node_group_id",
-						Description: "The name of the global node group",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "slots",
-						Description: "The keyspace for this node group",
-						Type:        schema.TypeString,
-					},
-				},
+				Name:        "global_node_groups",
+				Description: "Indicates the slot configuration and global identifier for a slice group",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("GlobalNodeGroups"),
 			},
 			{
-				Name:        "aws_elasticache_global_replication_group_members",
+				Name:        "members",
 				Description: "A member of a Global datastore",
-				Resolver:    schema.PathTableResolver("Members"),
-				Columns: []schema.Column{
-					{
-						Name:        "global_replication_group_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticache_global_replication_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "automatic_failover",
-						Description: "Indicates whether automatic failover is enabled for the replication group.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "replication_group_id",
-						Description: "The replication group id of the Global datastore member.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "replication_group_region",
-						Description: "The Amazon region of the Global datastore member.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "role",
-						Description: "Indicates the role of the replication group, primary or secondary.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "The status of the membership of the replication group.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Members"),
 			},
 		},
 	}

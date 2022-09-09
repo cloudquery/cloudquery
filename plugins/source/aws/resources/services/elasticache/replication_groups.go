@@ -200,161 +200,17 @@ func ReplicationGroups() *schema.Table {
 				Description: "The ID of the user group associated to the replication group.",
 				Type:        schema.TypeStringArray,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_elasticache_replication_group_log_delivery_configurations",
+				Name:        "log_delivery_configurations",
 				Description: "Returns the destination, format and type of the logs.",
-				Resolver:    schema.PathTableResolver("LogDeliveryConfigurations"),
-				Columns: []schema.Column{
-					{
-						Name:        "replication_group_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticache_replication_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "cloudwatch_destination_log_group",
-						Description: "The log group of the CloudWatch Logs destination",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DestinationDetails.CloudWatchLogsDetails.LogGroup"),
-					},
-					{
-						Name:        "kinesis_firehose_destination_delivery_stream",
-						Description: "The Kinesis Data Firehose delivery stream of the Kinesis Data Firehose destination",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DestinationDetails.KinesisFirehoseDetails.DeliveryStream"),
-					},
-					{
-						Name:        "destination_type",
-						Description: "Returns the destination type, either cloudwatch-logs or kinesis-firehose.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "log_format",
-						Description: "Returns the log format, either JSON or TEXT.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "log_type",
-						Description: "Refers to slow-log (https://redis.io/commands/slowlog) or engine-log.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "message",
-						Description: "Returns an error message for the log delivery configuration.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "Returns the log delivery configuration status",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("LogDeliveryConfigurations"),
 			},
 			{
-				Name:        "aws_elasticache_replication_group_node_groups",
+				Name:        "node_groups",
 				Description: "Represents a collection of cache nodes in a replication group",
-				Resolver:    schema.PathTableResolver("NodeGroups"),
-				Columns: []schema.Column{
-					{
-						Name:        "replication_group_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticache_replication_groups table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "node_group_id",
-						Description: "The identifier for the node group (shard)",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "primary_endpoint_address",
-						Description: "The DNS hostname of the cache node.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PrimaryEndpoint.Address"),
-					},
-					{
-						Name:        "primary_endpoint_port",
-						Description: "The port number that the cache engine is listening on.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("PrimaryEndpoint.Port"),
-					},
-					{
-						Name:        "reader_endpoint_address",
-						Description: "The DNS hostname of the cache node.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ReaderEndpoint.Address"),
-					},
-					{
-						Name:        "reader_endpoint_port",
-						Description: "The port number that the cache engine is listening on.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("ReaderEndpoint.Port"),
-					},
-					{
-						Name:        "slots",
-						Description: "The keyspace for this node group (shard).",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "status",
-						Description: "The current state of this replication group - creating, available, modifying, deleting.",
-						Type:        schema.TypeString,
-					},
-				},
-				Relations: []*schema.Table{
-					{
-						Name:        "aws_elasticache_replication_group_node_group_members",
-						Description: "Represents a single node within a node group (shard).",
-						Resolver:    schema.PathTableResolver("NodeGroupMembers"),
-						Columns: []schema.Column{
-							{
-								Name:        "replication_group_node_group_cq_id",
-								Description: "Unique CloudQuery ID of aws_elasticache_replication_group_node_groups table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "cache_cluster_id",
-								Description: "The ID of the cluster to which the node belongs.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "cache_node_id",
-								Description: "The ID of the node within its cluster",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "current_role",
-								Description: "The role that is currently assigned to the node - primary or replica",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "preferred_availability_zone",
-								Description: "The name of the Availability Zone in which the node is located.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "preferred_outpost_arn",
-								Description: "The outpost ARN of the node group member.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "read_endpoint_address",
-								Description: "The DNS hostname of the cache node.",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("ReadEndpoint.Address"),
-							},
-							{
-								Name:        "read_endpoint_port",
-								Description: "The port number that the cache engine is listening on.",
-								Type:        schema.TypeInt,
-								Resolver:    schema.PathResolver("ReadEndpoint.Port"),
-							},
-						},
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("NodeGroups"),
 			},
 		},
 	}

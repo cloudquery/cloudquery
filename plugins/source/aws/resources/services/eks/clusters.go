@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/eks"
-	"github.com/aws/aws-sdk-go-v2/service/eks/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -140,56 +139,17 @@ func EksClusters() *schema.Table {
 				Description: "The Kubernetes server version for the cluster.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:          "aws_eks_cluster_encryption_configs",
-				Description:   "The encryption configuration for the cluster.",
-				Resolver:      schema.PathTableResolver("EncryptionConfig"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "provider_key_arn",
-						Description: "Amazon Resource Name (ARN) or alias of the customer master key (CMK).",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Provider.KeyArn"),
-					},
-					{
-						Name:        "resources",
-						Description: "Specifies the resources to be encrypted.",
-						Type:        schema.TypeStringArray,
-					},
-				},
+				Name:        "encryption_configs",
+				Description: "The encryption configuration for the cluster.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("EncryptionConfig"),
 			},
 			{
-				Name:        "aws_eks_cluster_loggings",
-				Description: "An object representing the enabled or disabled Kubernetes control plane logs for your cluster.",
-				Resolver:    schema.PathTableResolver("Logging.ClusterLogging"),
-				Columns: []schema.Column{
-					{
-						Name:        "cluster_cq_id",
-						Description: "Unique CloudQuery ID of aws_eks_clusters table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "enabled",
-						Description: "If a log type is enabled, that log type exports its control plane logs to CloudWatch Logs.",
-						Type:        schema.TypeBool,
-					},
-					{
-						Name:        "types",
-						Description: "The available cluster control plane log types.",
-						Type:        schema.TypeStringArray,
-						Resolver:    resolveEksClusterLoggingTypes,
-					},
-				},
+				Name:        "logging",
+				Description: "Cluster logging",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("Logging"),
 			},
 		},
 	}
@@ -227,13 +187,4 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 		config.NextToken = listClustersOutput.NextToken
 	}
 	return nil
-}
-
-func resolveEksClusterLoggingTypes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	logSetup := resource.Item.(types.LogSetup)
-	logTypes := make([]string, len(logSetup.Types))
-	for i, l := range logSetup.Types {
-		logTypes[i] = string(l)
-	}
-	return resource.Set("types", logTypes)
 }

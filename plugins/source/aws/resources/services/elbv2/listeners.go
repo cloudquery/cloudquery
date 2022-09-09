@@ -76,6 +76,12 @@ func Elbv2Listeners() *schema.Table {
 				Description: "[HTTPS or TLS listener] The security policy that defines which protocols and ciphers are supported.",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "default_actions",
+				Description: "Information about default actions",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("DefaultActions"),
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -99,247 +105,6 @@ func Elbv2Listeners() *schema.Table {
 						Name:        "is_default",
 						Description: "Indicates whether the certificate is the default certificate",
 						Type:        schema.TypeBool,
-					},
-				},
-			},
-			{
-				Name:          "aws_elbv2_listener_default_actions",
-				Description:   "Information about an action",
-				Resolver:      schema.PathTableResolver("DefaultActions"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "listener_cq_id",
-						Description: "Unique CloudQuery ID of aws_elbv2_listeners table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "type",
-						Description: "The type of action. ",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "auth_cognito_user_pool_arn",
-						Description: "The Amazon Resource Name (ARN) of the Amazon Cognito user pool. ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.UserPoolArn"),
-					},
-					{
-						Name:        "auth_cognito_user_pool_client_id",
-						Description: "The ID of the Amazon Cognito user pool client. ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.UserPoolClientId"),
-					},
-					{
-						Name:        "auth_cognito_user_pool_domain",
-						Description: "The domain prefix or fully-qualified domain name of the Amazon Cognito user pool. ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.UserPoolDomain"),
-					},
-					{
-						Name:        "auth_cognito_authentication_request_extra_params",
-						Description: "The query parameters (up to 10) to include in the redirect request to the authorization endpoint.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.AuthenticationRequestExtraParams"),
-					},
-					{
-						Name:        "auth_cognito_on_unauthenticated_request",
-						Description: "The behavior if the user is not authenticated",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.OnUnauthenticatedRequest"),
-					},
-					{
-						Name:        "auth_cognito_scope",
-						Description: "The set of user claims to be requested from the IdP",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.Scope"),
-					},
-					{
-						Name:        "auth_cognito_session_cookie_name",
-						Description: "The name of the cookie used to maintain session information",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.SessionCookieName"),
-					},
-					{
-						Name:        "auth_cognito_session_timeout",
-						Description: "The maximum duration of the authentication session, in seconds",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("AuthenticateCognitoConfig.SessionTimeout"),
-					},
-					{
-						Name:        "auth_oidc_authorization_endpoint",
-						Description: "The authorization endpoint of the IdP",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.AuthorizationEndpoint"),
-					},
-					{
-						Name:        "auth_oidc_client_id",
-						Description: "The OAuth 2.0 client identifier. ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.ClientId"),
-					},
-					{
-						Name:        "auth_oidc_issuer",
-						Description: "The OIDC issuer identifier of the IdP",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.Issuer"),
-					},
-					{
-						Name:        "auth_oidc_token_endpoint",
-						Description: "The token endpoint of the IdP",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.TokenEndpoint"),
-					},
-					{
-						Name:        "auth_oidc_user_info_endpoint",
-						Description: "The user info endpoint of the IdP",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.UserInfoEndpoint"),
-					},
-					{
-						Name:        "auth_oidc_authentication_request_extra_params",
-						Description: "The query parameters (up to 10) to include in the redirect request to the authorization endpoint.",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.AuthenticationRequestExtraParams"),
-					},
-					{
-						Name:        "auth_oidc_client_secret",
-						Description: "The OAuth 2.0 client secret",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.ClientSecret"),
-					},
-					{
-						Name:        "auth_oidc_on_unauthenticated_request",
-						Description: "The behavior if the user is not authenticated",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.OnUnauthenticatedRequest"),
-					},
-					{
-						Name:        "auth_oidc_scope",
-						Description: "The set of user claims to be requested from the IdP",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.Scope"),
-					},
-					{
-						Name:        "auth_oidc_session_cookie_name",
-						Description: "The name of the cookie used to maintain session information",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.SessionCookieName"),
-					},
-					{
-						Name:        "auth_oidc_session_timeout",
-						Description: "The maximum duration of the authentication session, in seconds",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.SessionTimeout"),
-					},
-					{
-						Name:        "auth_oidc_use_existing_client_secret",
-						Description: "Indicates whether to use the existing client secret when modifying a rule",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("AuthenticateOidcConfig.UseExistingClientSecret"),
-					},
-					{
-						Name:        "fixed_response_config_status_code",
-						Description: "The HTTP response code (2XX, 4XX, or 5XX). ",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("FixedResponseConfig.StatusCode"),
-					},
-					{
-						Name:        "fixed_response_config_content_type",
-						Description: "The content type",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("FixedResponseConfig.ContentType"),
-					},
-					{
-						Name:        "fixed_response_config_message_body",
-						Description: "The message.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("FixedResponseConfig.MessageBody"),
-					},
-					{
-						Name:        "forward_config_target_group_stickiness_config_duration_seconds",
-						Description: "The time period, in seconds, during which requests from a client should be routed to the same target group",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("ForwardConfig.TargetGroupStickinessConfig.DurationSeconds"),
-					},
-					{
-						Name:        "forward_config_target_group_stickiness_config_enabled",
-						Description: "Indicates whether target group stickiness is enabled.",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("ForwardConfig.TargetGroupStickinessConfig.Enabled"),
-					},
-					{
-						Name:        "order",
-						Description: "The order for the action",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "redirect_config_status_code",
-						Description: "The HTTP redirect code",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RedirectConfig.StatusCode"),
-					},
-					{
-						Name:        "redirect_config_host",
-						Description: "The hostname",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RedirectConfig.Host"),
-					},
-					{
-						Name:        "redirect_config_path",
-						Description: "The absolute path, starting with the leading \"/\"",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RedirectConfig.Path"),
-					},
-					{
-						Name:        "redirect_config_port",
-						Description: "The port",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RedirectConfig.Port"),
-					},
-					{
-						Name:        "redirect_config_protocol",
-						Description: "The protocol",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RedirectConfig.Protocol"),
-					},
-					{
-						Name:        "redirect_config_query",
-						Description: "The query parameters, URL-encoded when necessary, but not percent-encoded",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("RedirectConfig.Query"),
-					},
-					{
-						Name:        "target_group_arn",
-						Description: "The Amazon Resource Name (ARN) of the target group",
-						Type:        schema.TypeString,
-					},
-				},
-				Relations: []*schema.Table{
-					{
-						Name:          "aws_elbv2_listener_default_action_forward_config_target_groups",
-						Description:   "Information about how traffic will be distributed between multiple target groups in a forward rule.",
-						Resolver:      schema.PathTableResolver("ForwardConfig.TargetGroups"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "listener_default_action_cq_id",
-								Description: "Unique CloudQuery ID of aws_elbv2_listener_default_actions table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "target_group_arn",
-								Description: "The Amazon Resource Name (ARN) of the target group.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "weight",
-								Description: "The weight",
-								Type:        schema.TypeInt,
-							},
-						},
 					},
 				},
 			},
@@ -413,7 +178,7 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 		})
 		if err != nil {
 			if client.IsErrorRegex(err, "ValidationError", notSupportedGatewayLB) {
-				c.Logger().Debug("ELBv2: DescribeListenerCertificates not supported for Gateway Load Balancers")
+				c.Logger().Debug().Msg("ELBv2: DescribeListenerCertificates not supported for Gateway Load Balancers")
 				return nil
 			}
 			return err

@@ -179,6 +179,12 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Description: "The application version deployed in this environment.",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "environment_links",
+				Description: "A link to another environment, defined in the environment's manifest",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("EnvironmentLinks"),
+			},
 		},
 		Relations: []*schema.Table{
 			{
@@ -244,41 +250,11 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 						Description: "If not null, the name of the configuration template for this configuration set.",
 						Type:        schema.TypeString,
 					},
-				},
-				Relations: []*schema.Table{
 					{
-						Name:          "aws_elasticbeanstalk_configuration_setting_options",
-						Description:   "A specification identifying an individual configuration option along with its current value",
-						Resolver:      fetchElasticbeanstalkConfigurationSettingOptionSettings,
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "configuration_setting_cq_id",
-								Description: "Unique CloudQuery ID of aws_elasticbeanstalk_configuration_setting_options table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "namespace",
-								Description: "A unique namespace that identifies the option's associated AWS resource.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "option_name",
-								Description: "The name of the configuration option.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "resource_name",
-								Description: "A unique resource name for the option setting",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "value",
-								Description: "The current value for the configuration option.",
-								Type:        schema.TypeString,
-							},
-						},
+						Name:        "option_settings",
+						Description: "A specification identifying an individual configuration option along with its current value",
+						Type:        schema.TypeJSON,
+						Resolver:    schema.PathResolver("OptionSettings"),
 					},
 				},
 			},
@@ -368,30 +344,6 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 					},
 				},
 			},
-			{
-				Name:          "aws_elasticbeanstalk_environment_links",
-				Description:   "A link to another environment, defined in the environment's manifest",
-				Resolver:      schema.PathTableResolver("EnvironmentLinks"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "environment_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticbeanstalk_environments table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "environment_name",
-						Description: "The name of the linked environment (the dependency).",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "link_name",
-						Description: "The name of the link.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 		},
 	}
 }
@@ -467,7 +419,7 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment
 		if client.IsInvalidParameterValueError(err) {
-			meta.Logger().Debug("Failed extracting configuration options for environment. It might be terminated", "environment", p.EnvironmentName, "application", p.ApplicationName)
+			meta.Logger().Debug().Interface("environment", p.EnvironmentName).Interface("application", p.ApplicationName).Msg("Failed extracting configuration options for environment. It might be terminated")
 			return nil
 		}
 		return err
@@ -496,7 +448,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		// It takes a few minutes for an environment to be terminated
 		// This ensures we don't error while trying to fetch related resources for a terminated environment
 		if client.IsInvalidParameterValueError(err) {
-			meta.Logger().Debug("Failed extracting configuration settings for environment. It might be terminated", "environment", p.EnvironmentName, "application", p.ApplicationName)
+			meta.Logger().Debug().Interface("environment", p.EnvironmentName).Interface("application", p.ApplicationName).Msg("Failed extracting configuration settings for environment. It might be terminated")
 			return nil
 		}
 		return err
@@ -506,15 +458,6 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		res <- ConfigSettings{
 			option, c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
 		}
-	}
-
-	return nil
-}
-
-func fetchElasticbeanstalkConfigurationSettingOptionSettings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	option := parent.Item.(ConfigSettings)
-	for _, t := range option.OptionSettings {
-		res <- t
 	}
 
 	return nil

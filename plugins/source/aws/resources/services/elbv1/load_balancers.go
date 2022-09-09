@@ -204,153 +204,25 @@ func Elbv1LoadBalancers() *schema.Table {
 				Type:        schema.TypeString,
 				Resolver:    schema.PathResolver("VPCId"),
 			},
+			{
+				Name:        "backend_server_descriptions",
+				Description: "Information about the configuration of an EC2 instance.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("BackendServerDescriptions"),
+			},
+			{
+				Name:        "listener_descriptions",
+				Description: "The policies enabled for a listener.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("ListenerDescriptions"),
+			},
+			{
+				Name:     "policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Policies"),
+			},
 		},
 		Relations: []*schema.Table{
-			{
-				Name:          "aws_elbv1_load_balancer_backend_server_descriptions",
-				Description:   "Information about the configuration of an EC2 instance.",
-				Resolver:      schema.PathTableResolver("BackendServerDescriptions"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "load_balancer_cq_id",
-						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the load balancer.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("name"),
-					},
-					{
-						Name:        "instance_port",
-						Description: "The port on which the EC2 instance is listening.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "policy_names",
-						Description: "The names of the policies enabled for the EC2 instance.",
-						Type:        schema.TypeStringArray,
-					},
-				},
-			},
-			{
-				Name:          "aws_elbv1_load_balancer_listeners",
-				Description:   "The policies enabled for a listener.",
-				Resolver:      schema.PathTableResolver("ListenerDescriptions"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "load_balancer_cq_id",
-						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "load_balance_name",
-						Description: "The name of the load balancer.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("name"),
-					},
-					{
-						Name:        "listener_instance_port",
-						Description: "The port on which the instance is listening.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Listener.InstancePort"),
-					},
-					{
-						Name:        "listener_load_balancer_port",
-						Description: "The port on which the load balancer is listening.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("Listener.LoadBalancerPort"),
-					},
-					{
-						Name:        "listener_protocol",
-						Description: "The load balancer transport protocol to use for routing: HTTP, HTTPS, TCP, or SSL.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Listener.Protocol"),
-					},
-					{
-						Name:        "listener_instance_protocol",
-						Description: "The protocol to use for routing traffic to instances: HTTP, HTTPS, TCP, or SSL.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Listener.InstanceProtocol"),
-					},
-					{
-						Name:        "listener_ssl_certificate_id",
-						Description: "The Amazon Resource Name (ARN) of the server certificate.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Listener.SSLCertificateId"),
-					},
-					{
-						Name:        "policy_names",
-						Description: "The policies.",
-						Type:        schema.TypeStringArray,
-					},
-				},
-			},
-			{
-				Name:          "aws_elbv1_load_balancer_policies_app_cookie_stickiness",
-				Description:   "Information about a policy for application-controlled session stickiness.",
-				Resolver:      schema.PathTableResolver("Policies.AppCookieStickinessPolicies"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "load_balancer_cq_id",
-						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "load_balance_name",
-						Description: "The name of the load balancer.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("name"),
-					},
-					{
-						Name:        "cookie_name",
-						Description: "The name of the application cookie used for stickiness.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "policy_name",
-						Description: "The mnemonic name for the policy being created.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:          "aws_elbv1_load_balancer_policies_lb_cookie_stickiness",
-				Description:   "Information about a policy for duration-based session stickiness.",
-				Resolver:      schema.PathTableResolver("Policies.LBCookieStickinessPolicies"),
-				IgnoreInTests: true,
-				Columns: []schema.Column{
-					{
-						Name:        "load_balancer_cq_id",
-						Description: "Unique CloudQuery ID of aws_elbv1_load_balancers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "load_balance_name",
-						Description: "The name of the load balancer.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("name"),
-					},
-					{
-						Name:        "cookie_expiration_period",
-						Description: "The time period, in seconds, after which the cookie should be considered stale.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "policy_name",
-						Description: "The name of the policy.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
 			{
 				Name:          "aws_elbv1_load_balancer_policies",
 				Description:   "Information about a policy.",

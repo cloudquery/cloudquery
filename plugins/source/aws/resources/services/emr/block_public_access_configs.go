@@ -67,30 +67,10 @@ func EmrBlockPublicAccessConfigs() *schema.Table {
 				Type:        schema.TypeTimestamp,
 				Resolver:    schema.PathResolver("BlockPublicAccessConfigurationMetadata.CreationDateTime"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_emr_block_public_access_config_port_ranges",
-				Description: "A list of port ranges that are permitted to allow inbound traffic from all public IP addresses",
-				Resolver:    schema.PathTableResolver("BlockPublicAccessConfiguration.PermittedPublicSecurityGroupRuleRanges"),
-				Columns: []schema.Column{
-					{
-						Name:        "block_public_access_config_cq_id",
-						Description: "Unique CloudQuery ID of aws_emr_block_public_access_configs table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "min_range",
-						Description: "The smallest port number in a specified range of port numbers.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "max_range",
-						Description: "The smallest port number in a specified range of port numbers.",
-						Type:        schema.TypeInt,
-					},
-				},
+				Name:     "block_public_access_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BlockPublicAccessConfiguration"),
 			},
 		},
 	}
@@ -107,7 +87,7 @@ func fetchEmrBlockPublicAccessConfigs(ctx context.Context, meta schema.ClientMet
 	out, err := svc.GetBlockPublicAccessConfiguration(ctx, &emr.GetBlockPublicAccessConfigurationInput{})
 	if err != nil {
 		if client.IgnoreNotAvailableRegion(err) {
-			meta.Logger().Debug("received InvalidRequestException on GetBlockPublicAccessConfiguration, api is not available in the current Region.", "err", err)
+			meta.Logger().Debug().Err(err).Msg("received InvalidRequestException on GetBlockPublicAccessConfiguration, api is not available in the current Region.")
 			return nil
 		}
 		return err

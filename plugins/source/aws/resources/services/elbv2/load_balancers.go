@@ -134,88 +134,15 @@ func Elbv2LoadBalancers() *schema.Table {
 				Description: "The ID of the VPC for the load balancer.",
 				Type:        schema.TypeString,
 			},
+			{
+				Name:        "availability_zones",
+				Description: "Information about an Availability Zone.",
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("AvailabilityZones"),
+			},
 		},
 		Relations: []*schema.Table{
 			Elbv2Listeners(),
-			{
-				Name:        "aws_elbv2_load_balancer_availability_zones",
-				Description: "Information about an Availability Zone.",
-				Resolver:    schema.PathTableResolver("AvailabilityZones"),
-				Columns: []schema.Column{
-					{
-						Name:        "load_balancer_cq_id",
-						Description: "Unique CloudQuery ID of aws_elbv2_load_balancers table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "load_balance_name",
-						Description: "The name of the load balancer.",
-						Type:        schema.TypeString,
-						Resolver:    schema.ParentResourceFieldResolver("name"),
-					},
-					{
-						Name:          "outpost_id",
-						Description:   "[Application Load Balancers on Outposts] The ID of the Outpost.",
-						Type:          schema.TypeString,
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "subnet_id",
-						Description: "The ID of the subnet",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "zone_name",
-						Description: "The name of the Availability Zone.",
-						Type:        schema.TypeString,
-					},
-				},
-				Relations: []*schema.Table{
-					{
-						Name:          "aws_elbv2_load_balancer_availability_zone_addresses",
-						Description:   "Information about a static IP address for a load balancer.",
-						Resolver:      schema.PathTableResolver("LoadBalancerAddresses"),
-						IgnoreInTests: true,
-						Columns: []schema.Column{
-							{
-								Name:        "load_balancer_availability_zone_cq_id",
-								Description: "Unique CloudQuery ID of aws_elbv2_load_balancer_availability_zones table (FK)",
-								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
-							},
-							{
-								Name:        "zone_name",
-								Description: "The name of the Availability Zone..",
-								Type:        schema.TypeString,
-								Resolver:    schema.ParentResourceFieldResolver("zone_name"),
-							},
-							{
-								Name:        "allocation_id",
-								Description: "[Network Load Balancers] The allocation ID of the Elastic IP address for an internal-facing load balancer.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "ipv6_address",
-								Description: "[Network Load Balancers] The IPv6 address.",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("IPv6Address"),
-							},
-							{
-								Name:        "ip_address",
-								Description: "The static IP address.",
-								Type:        schema.TypeString,
-							},
-							{
-								Name:        "private_ipv4_address",
-								Description: "[Network Load Balancers] The private IPv4 address for an internal load balancer.",
-								Type:        schema.TypeString,
-								Resolver:    schema.PathResolver("PrivateIPv4Address"),
-							},
-						},
-					},
-				},
-			},
 			{
 				Name:        "aws_elbv2_load_balancer_attributes",
 				Description: "Load balancer attributes",

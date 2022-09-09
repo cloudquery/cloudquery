@@ -164,92 +164,11 @@ func Snapshots() *schema.Table {
 				Description: "The Amazon Virtual Private Cloud identifier (VPC ID) of the cache subnet group for the source cluster.",
 				Type:        schema.TypeString,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_elasticache_snapshot_node_snapshots",
+				Name:        "node_snapshots",
 				Description: "Represents an individual cache node in a snapshot of a cluster.",
-				Resolver:    schema.PathTableResolver("NodeSnapshots"),
-				Columns: []schema.Column{
-					{
-						Name:        "snapshot_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticache_snapshots table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "cache_cluster_id",
-						Description: "A unique identifier for the source cluster.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "cache_node_create_time",
-						Description: "The date and time when the cache node was created in the source cluster.",
-						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "cache_node_id",
-						Description: "The cache node identifier for the node in the source cluster.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "cache_size",
-						Description: "The size of the cache on the source cache node.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "node_group_configuration_node_group_id",
-						Description: "Either the ElastiCache for Redis supplied 4-digit id or a user supplied id for the node group these configuration values apply to.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("NodeGroupConfiguration.NodeGroupId"),
-					},
-					{
-						Name:        "node_group_configuration_primary_availability_zone",
-						Description: "The Availability Zone where the primary node of this node group (shard) is launched.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("NodeGroupConfiguration.PrimaryAvailabilityZone"),
-					},
-					{
-						Name:        "node_group_configuration_primary_outpost_arn",
-						Description: "The outpost ARN of the primary node.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("NodeGroupConfiguration.PrimaryOutpostArn"),
-					},
-					{
-						Name:        "node_group_configuration_replica_availability_zones",
-						Description: "A list of Availability Zones to be used for the read replicas",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("NodeGroupConfiguration.ReplicaAvailabilityZones"),
-					},
-					{
-						Name:        "node_group_configuration_replica_count",
-						Description: "The number of read replica nodes in this node group (shard).",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("NodeGroupConfiguration.ReplicaCount"),
-					},
-					{
-						Name:        "node_group_configuration_replica_outpost_arns",
-						Description: "The outpost ARN of the node replicas.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("NodeGroupConfiguration.ReplicaOutpostArns"),
-					},
-					{
-						Name:        "node_group_configuration_slots",
-						Description: "A string that specifies the keyspace for a particular node group",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("NodeGroupConfiguration.Slots"),
-					},
-					{
-						Name:        "node_group_id",
-						Description: "A unique identifier for the source node group (shard).",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "snapshot_create_time",
-						Description: "The date and time when the source node's metadata and cache data set was obtained for the snapshot.",
-						Type:        schema.TypeTimestamp,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("NodeSnapshots"),
 			},
 		},
 	}

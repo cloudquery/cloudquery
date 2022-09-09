@@ -89,30 +89,11 @@ func ReservedCacheNodes() *schema.Table {
 				Description: "The hourly price charged for this reserved cache node.",
 				Type:        schema.TypeFloat,
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_elasticache_reserved_cache_node_recurring_charges",
+				Name:        "recurring_charges",
 				Description: "Contains the specific price and frequency of a recurring charges for a reserved cache node, or for a reserved cache node offering.",
-				Resolver:    schema.PathTableResolver("RecurringCharges"),
-				Columns: []schema.Column{
-					{
-						Name:        "reserved_cache_node_cq_id",
-						Description: "Unique CloudQuery ID of aws_elasticache_reserved_cache_nodes table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "recurring_charge_amount",
-						Description: "The monetary amount of the recurring charge.",
-						Type:        schema.TypeFloat,
-					},
-					{
-						Name:        "recurring_charge_frequency",
-						Description: "The frequency of the recurring charge.",
-						Type:        schema.TypeString,
-					},
-				},
+				Type:        schema.TypeJSON,
+				Resolver:    schema.PathResolver("RecurringCharges"),
 			},
 		},
 	}
