@@ -116,12 +116,6 @@ func ReplicationGroups() *schema.Table {
 				Resolver: schema.PathResolver("PendingModifiedValues"),
 			},
 			{
-				Name:        "pending_primary_cluster_id",
-				Description: "The primary cluster ID that is applied immediately (if --apply-immediately was specified), or during the next maintenance window.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.PrimaryClusterId"),
-			},
-			{
 				Name:        "replication_group_create_time",
 				Description: "The date and time when the cluster was created.",
 				Type:        schema.TypeTimestamp,

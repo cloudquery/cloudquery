@@ -87,21 +87,9 @@ func DmsReplicationInstances() *schema.Table {
 				Resolver:    schema.PathResolver("MultiAZ"),
 			},
 			{
-				Name:        "pending_modified_values_allocated_storage",
-				Description: "The amount of storage (in gigabytes) that is allocated for the replication instance.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("PendingModifiedValues.AllocatedStorage"),
-			},
-			{
 				Name:     "pending_modified_values",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PendingModifiedValues"),
-			},
-			{
-				Name:        "pending_modified_values_multi_az",
-				Description: "Specifies whether the replication instance is a Multi-AZ deployment",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("PendingModifiedValues.MultiAZ"),
 			},
 			{
 				Name:        "preferred_maintenance_window",

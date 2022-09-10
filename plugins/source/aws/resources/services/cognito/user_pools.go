@@ -89,26 +89,6 @@ func CognitoUserPools() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "email_configuration_sending_account",
-				Description: "Specifies whether Amazon Cognito emails your users by using its built-in email functionality or your Amazon SES email configuration",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EmailConfiguration.EmailSendingAccount"),
-			},
-			{
-				Name:          "email_configuration_from",
-				Description:   "Identifies either the sender’s email address or the sender’s name with their email address",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("EmailConfiguration.From"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "email_configuration_source_arn",
-				Description:   "The Amazon Resource Name (ARN) of a verified email address in Amazon SES",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("EmailConfiguration.SourceArn"),
-				IgnoreInTests: true,
-			},
-			{
 				Name:          "email_configuration_failure",
 				Description:   "The reason why the email configuration cannot send the messages to your users.",
 				Type:          schema.TypeString,
@@ -145,12 +125,6 @@ func CognitoUserPools() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "lambda_config_custom_email_sender_lambda_version",
-				Description: "The Lambda version represents the signature of the \"request\" attribute in the \"event\" information Amazon Cognito passes to your custom email Lambda function. The only supported value is V1_0. ",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LambdaConfig.CustomEmailSender.LambdaVersion"),
-			},
-			{
 				Name:        "last_modified_date",
 				Description: "The date the user pool was last modified.",
 				Type:        schema.TypeTimestamp,
@@ -174,13 +148,6 @@ func CognitoUserPools() *schema.Table {
 				Name:          "sms_authentication_message",
 				Description:   "The contents of the SMS authentication message.",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "sms_configuration_sns_caller_arn",
-				Description:   "The Amazon Resource Name (ARN) of the Amazon Simple Notification Service (SNS) caller",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("SmsConfiguration.SnsCallerArn"),
 				IgnoreInTests: true,
 			},
 			{
@@ -232,13 +199,6 @@ func CognitoUserPools() *schema.Table {
 				Name:     "verification_message_template",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("VerificationMessageTemplate"),
-			},
-			{
-				Name:          "verification_message_template_email_message_by_link",
-				Description:   "The email message template for sending a confirmation link to the user. EmailMessageByLink is allowed only if  EmailSendingAccount (https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_EmailConfigurationType.html#CognitoUserPools-Type-EmailConfigurationType-EmailSendingAccount) is DEVELOPER.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("VerificationMessageTemplate.EmailMessageByLink"),
-				IgnoreInTests: true,
 			},
 			{
 				Name:          "schema_attributes",

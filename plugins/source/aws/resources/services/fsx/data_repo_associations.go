@@ -81,16 +81,9 @@ func DataRepoAssociations() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "s3_auto_export_policy_events",
-				Description: "The AutoExportPolicy can have the following event values:  * NEW - Amazon FSx automatically exports new files and directories to the data repository as they are added to the file system",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("S3.AutoExportPolicy.Events"),
-			},
-			{
-				Name:        "s3_auto_import_policy_events",
-				Description: "The AutoImportPolicy can have the following event values:  * NEW - Amazon FSx automatically imports metadata of files added to the linked S3 bucket that do not currently exist in the FSx file system",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("S3.AutoImportPolicy.Events"),
+				Name:        "s3",
+				Type: 			schema.TypeJSON,
+				Resolver:    schema.PathResolver("S3"),
 			},
 			{
 				Name:        "tags",

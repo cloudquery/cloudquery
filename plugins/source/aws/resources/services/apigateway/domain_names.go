@@ -76,16 +76,8 @@ func DomainNames() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "endpoint_configuration_types",
-				Description: "A list of endpoint types of an API (RestApi) or its custom domain name (DomainName)",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("EndpointConfiguration.Types"),
-			},
-			{
-				Name:        "endpoint_configuration_vpc_endpoint_ids",
-				Description: "A list of VpcEndpointIds of an API (RestApi) against which to create Route53 ALIASes",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("EndpointConfiguration.VpcEndpointIds"),
+				Name:        "endpoint_configuration",
+				Type: 			schema.TypeJSON,
 			},
 			{
 				Name:     "mutual_tls_authentication",

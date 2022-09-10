@@ -75,28 +75,8 @@ func EfsFilesystems() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "size_in_bytes_value",
-				Description: "The latest known metered size (in bytes) of data stored in the file system. ",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("SizeInBytes.Value"),
-			},
-			{
-				Name:        "size_in_bytes_timestamp",
-				Description: "The time at which the size of data, returned in the Value field, was determined. The value is the integer number of seconds since 1970-01-01T00:00:00Z.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("SizeInBytes.Timestamp"),
-			},
-			{
-				Name:        "size_in_bytes_value_in_ia",
-				Description: "The latest known metered size (in bytes) of data stored in the Infrequent Access storage class.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("SizeInBytes.ValueInIA"),
-			},
-			{
-				Name:        "size_in_bytes_value_in_standard",
-				Description: "The latest known metered size (in bytes) of data stored in the Standard storage class.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("SizeInBytes.ValueInStandard"),
+				Name:        "size_in_bytes",
+				Type: 			schema.TypeJSON,
 			},
 			{
 				Name:        "tags",

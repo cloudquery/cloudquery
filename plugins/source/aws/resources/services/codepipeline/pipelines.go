@@ -5,7 +5,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
-	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -41,54 +40,14 @@ func Pipelines() *schema.Table {
 				Resolver: schema.PathResolver("Metadata"),
 			},
 			{
-				Name:            "arn",
-				Description:     "The Amazon Resource Name (ARN) of the pipeline",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("Metadata.PipelineArn"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
 				Name:     "pipeline",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Pipeline"),
 			},
-		},
-		Relations: []*schema.Table{
 			{
-				Name:        "aws_codepipeline_pipeline_stages",
-				Description: "Represents information about a stage and its definition",
-				Resolver:    fetchCodepipelinePipelineStages,
-				Columns: []schema.Column{
-					{
-						Name:        "pipeline_cq_id",
-						Description: "Unique CloudQuery ID of aws_codepipeline_pipelines table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "stage_order",
-						Description: "The stage order in the pipeline.",
-						Type:        schema.TypeInt,
-					},
-					{
-						Name:        "name",
-						Description: "The name of the stage",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:          "blockers",
-						Description:   "Reserved for future use",
-						Type:          schema.TypeJSON,
-						Resolver:      schema.PathResolver("Blockers"),
-						IgnoreInTests: true,
-					},
-					{
-						Name:        "actions",
-						Description: "Represents information about an action declaration",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("Actions"),
-					},
-				},
+				Name:     "stages",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Stages"),
 			},
 		},
 	}
@@ -138,19 +97,4 @@ func resolveCodepipelinePipelineTags(ctx context.Context, meta schema.ClientMeta
 	}
 
 	return resource.Set(c.Name, client.TagsToMap(response.Tags))
-}
-func fetchCodepipelinePipelineStages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	type StageWrapper struct {
-		types.StageDeclaration
-		StageOrder int32
-	}
-
-	r := parent.Item.(*codepipeline.GetPipelineOutput)
-	for i, stage := range r.Pipeline.Stages {
-		res <- StageWrapper{
-			StageDeclaration: stage,
-			StageOrder:       int32(i),
-		}
-	}
-	return nil
 }

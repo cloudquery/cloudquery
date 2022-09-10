@@ -161,30 +161,6 @@ func Databases() *schema.Table {
 						Type:        schema.TypeInt,
 					},
 					{
-						Name:        "input_format",
-						Description: "The input format: SequenceFileInputFormat (binary), or TextInputFormat, or a custom format",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("StorageDescriptor.InputFormat"),
-					},
-					{
-						Name:        "output_format",
-						Description: "The output format: SequenceFileOutputFormat (binary), or IgnoreKeyTextOutputFormat, or a custom format",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("StorageDescriptor.OutputFormat"),
-					},
-					{
-						Name:        "serde_info",
-						Description: "The serialization/deserialization (SerDe) information",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("StorageDescriptor.SerdeInfo"),
-					},
-					{
-						Name:        "skewed_info",
-						Description: "The information about values that appear frequently in a column (skewed values)",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("StorageDescriptor.SkewedInfo"),
-					},
-					{
 						Name:        "table_type",
 						Description: "The type of this table (EXTERNAL_TABLE, VIRTUAL_VIEW, etc)",
 						Type:        schema.TypeString,

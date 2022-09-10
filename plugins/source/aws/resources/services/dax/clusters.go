@@ -85,12 +85,6 @@ func DaxClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "notification_configuration_topic_arn",
-				Description: "The Amazon Resource Name (ARN) that identifies the topic.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("NotificationConfiguration.TopicArn"),
-			},
-			{
 				Name:     "notification_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("NotificationConfiguration"),
@@ -106,10 +100,9 @@ func DaxClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "sse_description_status",
-				Description: "The current state of server-side encryption:  * ENABLING - Server-side encryption is being enabled.  * ENABLED - Server-side encryption is enabled.  * DISABLING - Server-side encryption is being disabled.  * DISABLED - Server-side encryption is disabled.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SSEDescription.Status"),
+				Name:        "sse_description",
+				Type: 			schema.TypeJSON,
+				Resolver: schema.PathResolver("SSEDescription"),
 			},
 			{
 				Name:        "security_groups",

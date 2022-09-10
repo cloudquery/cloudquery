@@ -81,12 +81,6 @@ func Roles() *schema.Table {
 				Resolver: schema.PathResolver("PermissionsBoundary"),
 			},
 			{
-				Name:        "role_last_used_last_used_date",
-				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601) that the role was last used",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("RoleLastUsed.LastUsedDate"),
-			},
-			{
 				Name:     "role_last_used",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("RoleLastUsed"),

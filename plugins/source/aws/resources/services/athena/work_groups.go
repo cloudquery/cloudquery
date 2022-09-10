@@ -51,19 +51,6 @@ func WorkGroups() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "bytes_scanned_cutoff_per_query",
-				Description:   "The upper data usage limit (cutoff) for the amount of bytes a single query in a workgroup is allowed to scan",
-				Type:          schema.TypeInt,
-				Resolver:      schema.PathResolver("Configuration.BytesScannedCutoffPerQuery"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:        "enforce_work_group_configuration",
-				Description: "If set to \"true\", the settings for the workgroup override client-side settings If set to \"false\", client-side settings are used",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("Configuration.EnforceWorkGroupConfiguration"),
-			},
-			{
 				Name:     "configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Configuration"),

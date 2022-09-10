@@ -58,13 +58,6 @@ func Backups() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:          "directory_information_domain_name",
-				Description:   "The fully qualified domain name of the self-managed AD directory.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("DirectoryInformation.DomainName"),
-				IgnoreInTests: true,
-			},
-			{
 				Name:          "failure_details",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("FailureDetails"),

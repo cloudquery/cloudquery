@@ -75,18 +75,6 @@ func EmrClusters() *schema.Table {
 				Resolver: schema.PathResolver("Ec2InstanceAttributes"),
 			},
 			{
-				Name:        "ec2_instance_attribute_key_name",
-				Description: "The name of the Amazon EC2 key pair to use when connecting with SSH into the master node as a user named \"hadoop\".",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Ec2InstanceAttributes.Ec2KeyName"),
-			},
-			{
-				Name:        "ec2_instance_attribute_requested_availability_zones",
-				Description: "Specifies one or more Availability Zones in which to launch EC2 cluster instances when the EC2-Classic network configuration is supported.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("Ec2InstanceAttributes.RequestedEc2AvailabilityZones"),
-			},
-			{
 				Name:        "id",
 				Description: "The unique identifier for the cluster.",
 				Type:        schema.TypeString,
@@ -97,30 +85,9 @@ func EmrClusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "kerberos_kdc_admin_password",
-				Description:   "The password used within the cluster for the kadmin service on the cluster-dedicated KDC, which maintains Kerberos principals, password policies, and keytabs for the cluster. ",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("KerberosAttributes.KdcAdminPassword"),
-				IgnoreInTests: true,
-			},
-			{
 				Name:          "kerberos_attributes",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("KerberosAttributes"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "kerberos_ad_domain_join_user",
-				Description:   "Required only when establishing a cross-realm trust with an Active Directory domain",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("KerberosAttributes.ADDomainJoinUser"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "kerberos_cross_realm_trust_principal_password",
-				Description:   "Required only when establishing a cross-realm trust with a KDC in a different realm",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("KerberosAttributes.CrossRealmTrustPrincipalPassword"),
 				IgnoreInTests: true,
 			},
 			{

@@ -34,16 +34,13 @@ func EksClusters() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "certificate_authority_data",
-				Description: "The Base64-encoded certificate data required to communicate with your cluster.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CertificateAuthority.Data"),
+				Name: "certificate_authority",
+				Type: schema.TypeJSON,
 			},
 			{
 				Name:          "client_request_token",
 				Description:   "Unique, case-sensitive identifier that you provide to ensure the idempotency of the request.",
 				Type:          schema.TypeString,
-				IgnoreInTests: true,
 			},
 			{
 				Name:        "created_at",
@@ -79,18 +76,6 @@ func EksClusters() *schema.Table {
 				Name:     "resources_vpc_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ResourcesVpcConfig"),
-			},
-			{
-				Name:        "resources_vpc_config_public_access_cidrs",
-				Description: "The CIDR blocks that are allowed access to your cluster's public Kubernetes API server endpoint.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ResourcesVpcConfig.PublicAccessCidrs"),
-			},
-			{
-				Name:        "resources_vpc_config_security_group_ids",
-				Description: "The security groups associated with the cross-account elastic network interfaces that are used to allow communication between your nodes and the Kubernetes control plane.",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("ResourcesVpcConfig.SecurityGroupIds"),
 			},
 			{
 				Name:        "role_arn",

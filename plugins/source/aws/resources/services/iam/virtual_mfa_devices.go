@@ -52,30 +52,6 @@ func IamVirtualMfaDevices() *schema.Table {
 				Resolver:    client.ResolveTags,
 			},
 			{
-				Name:        "user_arn",
-				Description: "The Amazon Resource Name (ARN) that identifies the user. For more information about ARNs and how to use ARNs in policies, see IAM Identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("User.Arn"),
-			},
-			{
-				Name:        "user_create_date",
-				Description: "The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the user was created.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("User.CreateDate"),
-			},
-			{
-				Name:        "user_path",
-				Description: "The path to the user. For more information about paths, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide. The ARN of the policy used to set the permissions boundary for the user.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("User.Path"),
-			},
-			{
-				Name:        "user_id",
-				Description: "The stable and unique string identifying the user. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("User.UserId"),
-			},
-			{
 				Name:     "user",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("User"),

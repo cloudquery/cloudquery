@@ -215,16 +215,8 @@ func Apigatewayv2Apis() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:        "jwt_configuration_audience",
-						Description: "A list of the intended recipients of the JWT. A valid JWT must provide an aud that matches at least one entry in this list. See RFC 7519 (https://tools.ietf.org/html/rfc7519#section-4.1.3). Supported only for HTTP APIs.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("JwtConfiguration.Audience"),
-					},
-					{
-						Name:        "jwt_configuration_issuer",
-						Description: "The base domain of the identity provider that issues JSON Web Tokens. For example, an Amazon Cognito user pool has the following format: https://cognito-idp.{region}.amazonaws.com/{userPoolId} . Required for the JWT authorizer type. Supported only for HTTP APIs.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("JwtConfiguration.Issuer"),
+						Name:        "jwt_configuration",
+						Type: 			schema.TypeJSON,
 					},
 				},
 			},
@@ -420,11 +412,8 @@ func Apigatewayv2Apis() *schema.Table {
 						Type:        schema.TypeInt,
 					},
 					{
-						Name:          "tls_config_server_name_to_verify",
-						Description:   "If you specify a server name, API Gateway uses it to verify the hostname on the integration's certificate. The server name is also included in the TLS handshake to support Server Name Indication (SNI) or virtual hosting.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("TlsConfig.ServerNameToVerify"),
-						IgnoreInTests: true,
+						Name:        "tls_config",
+						Type: 			schema.TypeJSON,
 					},
 				},
 				Relations: []*schema.Table{
@@ -432,7 +421,6 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:          "aws_apigatewayv2_api_integration_responses",
 						Description:   "Represents an integration response.",
 						Resolver:      fetchApigatewayv2ApiIntegrationResponses,
-						IgnoreInTests: true,
 						Columns: []schema.Column{
 							{
 								Name:        "api_integration_cq_id",
@@ -749,13 +737,6 @@ func Apigatewayv2Apis() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:          "access_log_settings_format",
-						Description:   "A single line format of the access logs of data, as specified by selected $context variables. The format must include at least $context.requestId.",
-						Type:          schema.TypeString,
-						Resolver:      schema.PathResolver("AccessLogSettings.Format"),
-						IgnoreInTests: true,
-					},
-					{
 						Name:        "api_gateway_managed",
 						Description: "Specifies whether a stage is managed by API Gateway. If you created an API using quick create, the $default stage is managed by API Gateway. You can't modify the $default stage.",
 						Type:        schema.TypeBool,
@@ -775,12 +756,6 @@ func Apigatewayv2Apis() *schema.Table {
 						Name:        "created_date",
 						Description: "The timestamp when the stage was created.",
 						Type:        schema.TypeTimestamp,
-					},
-					{
-						Name:        "route_settings_data_trace_enabled",
-						Description: "Specifies whether (true) or not (false) data trace logging is enabled for this route. This property affects the log entries pushed to Amazon CloudWatch Logs. Supported only for WebSocket APIs.",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("DefaultRouteSettings.DataTraceEnabled"),
 					},
 					{
 						Name:     "default_route_settings",

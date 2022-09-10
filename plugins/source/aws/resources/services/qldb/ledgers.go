@@ -50,24 +50,8 @@ func Ledgers() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "encryption_status",
-				Description: "The current state of encryption at rest for the ledger",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionDescription.EncryptionStatus"),
-			},
-			{
-				Name:          "kms_key_arn",
-				Description:   "The Amazon Resource Name (ARN) of the customer managed KMS key that the ledger uses for encryption at rest",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
-				Resolver:      schema.PathResolver("EncryptionDescription.KmsKeyArn"),
-			},
-			{
-				Name:          "inaccessible_kms_key_date_time",
-				Description:   "The date and time, in epoch time format, when the KMS key first became inaccessible, in the case of an error",
-				Type:          schema.TypeTimestamp,
-				IgnoreInTests: true,
-				Resolver:      schema.PathResolver("EncryptionDescription.InaccessibleKmsKeyDateTime"),
+				Name:        "encryption_description",
+				Type: 			schema.TypeJSON,
 			},
 			{
 				Name:        "name",
@@ -99,16 +83,8 @@ func Ledgers() *schema.Table {
 						Resolver:    schema.ParentIdResolver,
 					},
 					{
-						Name:        "stream_arn",
-						Description: "The Amazon Resource Name (ARN) of the Kinesis Data Streams resource.  This member is required.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("KinesisConfiguration.StreamArn"),
-					},
-					{
-						Name:        "aggregation_enabled",
-						Description: "Enables QLDB to publish multiple data records in a single Kinesis Data Streams record, increasing the number of records sent per API call",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("KinesisConfiguration.AggregationEnabled"),
+						Name:        "kinesis_configuration",
+						Type: 			schema.TypeJSON,
 					},
 					{
 						Name:        "ledger_name",
@@ -205,28 +181,8 @@ func Ledgers() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "bucket",
-						Description: "The Amazon S3 bucket name in which a journal export job writes the journal contents",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("S3ExportConfiguration.Bucket"),
-					},
-					{
-						Name:        "object_encryption_type",
-						Description: "The Amazon S3 object encryption type",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("S3ExportConfiguration.EncryptionConfiguration.ObjectEncryptionType"),
-					},
-					{
-						Name:        "kms_key_arn",
-						Description: "The Amazon Resource Name (ARN) of a symmetric key in Key Management Service (KMS)",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("S3ExportConfiguration.EncryptionConfiguration.KmsKeyArn"),
-					},
-					{
-						Name:        "prefix",
-						Description: "The prefix for the Amazon S3 bucket in which a journal export job writes the journal contents",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("S3ExportConfiguration.Prefix"),
+						Name:        "s3_export_configuration",
+						Type: 			schema.TypeJSON,
 					},
 					{
 						Name:        "status",

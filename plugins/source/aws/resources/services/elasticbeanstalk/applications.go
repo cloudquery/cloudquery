@@ -63,12 +63,6 @@ func ElasticbeanstalkApplications() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "resource_lifecycle_config_service_role",
-				Description: "The ARN of an IAM service role that Elastic Beanstalk has permission to assume. The ServiceRole property is required the first time that you provide a VersionLifecycleConfig for the application in one of the supporting calls (CreateApplication or UpdateApplicationResourceLifecycle)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ResourceLifecycleConfig.ServiceRole"),
-			},
-			{
 				Name:     "resource_lifecycle_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ResourceLifecycleConfig"),

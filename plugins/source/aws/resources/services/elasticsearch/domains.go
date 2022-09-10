@@ -60,12 +60,6 @@ func ElasticsearchDomains() *schema.Table {
 				Resolver: schema.PathResolver("ElasticsearchClusterConfig"),
 			},
 			{
-				Name:        "cluster_warm_type",
-				Description: "The instance type for the Elasticsearch cluster's warm nodes.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ElasticsearchClusterConfig.WarmType"),
-			},
-			{
 				Name:        "access_policies",
 				Description: "IAM access policy as a JSON-formatted string.",
 				Type:        schema.TypeString,
@@ -79,13 +73,6 @@ func ElasticsearchDomains() *schema.Table {
 				Name:     "advanced_security_options",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AdvancedSecurityOptions"),
-			},
-			{
-				Name:          "auto_tune_error_message",
-				Description:   "Specifies the error message while enabling or disabling the Auto-Tune.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("AutoTuneOptions.ErrorMessage"),
-				IgnoreInTests: true,
 			},
 			{
 				Name:     "auto_tune_options",
@@ -114,28 +101,9 @@ func ElasticsearchDomains() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "ebs_enabled",
-				Description: "Specifies whether EBS-based storage is enabled.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("EBSOptions.EBSEnabled"),
-			},
-			{
-				Name:          "ebs_iops",
-				Description:   "Specifies the IOPD for a Provisioned IOPS EBS volume (SSD).",
-				Type:          schema.TypeInt,
-				Resolver:      schema.PathResolver("EBSOptions.Iops"),
-				IgnoreInTests: true,
-			},
-			{
 				Name:     "ebs_options",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("EBSOptions"),
-			},
-			{
-				Name:        "ebs_volume_type",
-				Description: "Specifies the volume type for EBS-based storage.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EBSOptions.VolumeType"),
 			},
 			{
 				Name: "elasticsearch_version",
@@ -164,10 +132,8 @@ func ElasticsearchDomains() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "node_to_node_encryption_enabled",
-				Description: "Specify true to enable node-to-node encryption.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("NodeToNodeEncryptionOptions.Enabled"),
+				Name:     "node_to_node_encryption_options",
+				Type:     schema.TypeJSON,
 			},
 			{
 				Name:        "processing",

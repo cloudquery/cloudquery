@@ -210,12 +210,6 @@ func LoadBalancers() *schema.Table {
 						Type:        schema.TypeTimestamp,
 					},
 					{
-						Name:        "renewal_summary_domain_validation_options",
-						Description: "Contains information about the validation of each domain name in the certificate, as it pertains to Lightsail's managed renewal",
-						Type:        schema.TypeJSON,
-						Resolver:    schema.PathResolver("RenewalSummary.DomainValidationOptions"),
-					},
-					{
 						Name:     "renewal_summary",
 						Type:     schema.TypeJSON,
 						Resolver: schema.PathResolver("RenewalSummary"),

@@ -19,7 +19,6 @@ func Apigatewayv2DomainNames() *schema.Table {
 		Description:   "Represents a domain name.",
 		Resolver:      fetchApigatewayv2DomainNames,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("apigateway"),
-		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:            "account_id",

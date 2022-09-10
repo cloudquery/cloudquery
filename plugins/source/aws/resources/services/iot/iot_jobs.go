@@ -105,16 +105,8 @@ func IotJobs() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "presigned_url_config_expires_in_sec",
-				Description: "How long (in seconds) pre-signed URLs are valid",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("PresignedUrlConfig.ExpiresInSec"),
-			},
-			{
-				Name:        "presigned_url_config_role_arn",
-				Description: "The ARN of an IAM role that grants grants permission to download files from the S3 bucket where the job data/updates are stored",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PresignedUrlConfig.RoleArn"),
+				Name:        "presigned_url_config",
+				Type: 			schema.TypeJSON,
 			},
 			{
 				Name:        "reason_code",

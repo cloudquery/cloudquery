@@ -49,12 +49,6 @@ func Ec2InstanceStatuses() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "instance_state_code",
-				Description: "The state of the instance as a 16-bit unsigned integer.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("InstanceState.Code"),
-			},
-			{
 				Name:     "instance_state",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("InstanceState"),

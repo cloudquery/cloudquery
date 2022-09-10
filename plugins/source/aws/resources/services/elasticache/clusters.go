@@ -109,16 +109,8 @@ func Clusters() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "notification_configuration_topic_arn",
-				Description: "The arn of a notification topic used for publishing ElastiCache events to subscribers using Amazon Simple Notification Service (SNS)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("NotificationConfiguration.TopicArn"),
-			},
-			{
-				Name:        "notification_configuration_topic_status",
-				Description: "The current state of a notification topic used for publishing ElastiCache events to subscribers using Amazon Simple Notification Service (SNS)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("NotificationConfiguration.TopicStatus"),
+				Name:        "notification_configuration",
+				Type: 			schema.TypeJSON,
 			},
 			{
 				Name:        "num_cache_nodes",
@@ -129,18 +121,6 @@ func Clusters() *schema.Table {
 				Name:     "pending_modified_values",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PendingModifiedValues"),
-			},
-			{
-				Name:        "pending_cache_node_ids_to_remove",
-				Description: "A list of cache node IDs that are being removed (or will be removed) from the cluster",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("PendingModifiedValues.CacheNodeIdsToRemove"),
-			},
-			{
-				Name:        "pending_engine_version",
-				Description: "Cache engine version that is being applied to the cluster (or will be applied)",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PendingModifiedValues.EngineVersion"),
 			},
 			{
 				Name:        "preferred_availability_zone",

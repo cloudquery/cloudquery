@@ -124,12 +124,6 @@ func MlTransforms() *schema.Table {
 				Resolver: schema.PathResolver("TransformEncryption"),
 			},
 			{
-				Name:        "transform_encryption_ml_user_data_encryption_kms_key_id",
-				Description: "The ID for the customer-provided KMS key",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("TransformEncryption.MlUserDataEncryption.KmsKeyId"),
-			},
-			{
 				Name:        "id",
 				Description: "The unique transform ID that is generated for the machine learning transform The ID is guaranteed to be unique and does not change",
 				Type:        schema.TypeString,
@@ -183,12 +177,6 @@ func MlTransforms() *schema.Table {
 						Name:        "log_group_name",
 						Description: "The names of the log group for secure logging, associated with this task run",
 						Type:        schema.TypeString,
-					},
-					{
-						Name:        "export_labels_task_run_properties_output_s3_path",
-						Description: "The Amazon Simple Storage Service (Amazon S3) path where you will export the labels",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("Properties.ExportLabelsTaskRunProperties.OutputS3Path"),
 					},
 					{
 						Name:     "properties",

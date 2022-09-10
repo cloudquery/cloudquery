@@ -59,18 +59,6 @@ func ConfigConfigurationRecorders() *schema.Table {
 				Resolver: schema.PathResolver("RecordingGroup"),
 			},
 			{
-				Name:        "recording_group_include_global_resource_types",
-				Description: "Specifies whether AWS Config includes all supported types of global resources (for example, IAM resources) with the resources that it records.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("RecordingGroup.IncludeGlobalResourceTypes"),
-			},
-			{
-				Name:        "recording_group_resource_types",
-				Description: "A comma-separated list that specifies the types of AWS resources for which AWS Config records configuration changes (for example, AWS::EC2::Instance or AWS::CloudTrail::Trail).",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("RecordingGroup.ResourceTypes"),
-			},
-			{
 				Name:        "role_arn",
 				Description: "Amazon Resource Name (ARN) of the IAM role used to describe the AWS resources associated with the account.",
 				Type:        schema.TypeString,

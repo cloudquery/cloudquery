@@ -38,25 +38,6 @@ func CloudfrontCachePolicies() *schema.Table {
 				Resolver: schema.PathResolver("CachePolicy"),
 			},
 			{
-				Name:        "enable_accept_encoding_gzip",
-				Description: "A flag that can affect whether the Accept-Encoding HTTP header is included in the cache key and included in requests that CloudFront sends to the origin",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.EnableAcceptEncodingGzip"),
-			},
-			{
-				Name:        "enable_accept_encoding_brotli",
-				Description: "A flag that can affect whether the Accept-Encoding HTTP header is included in the cache key and included in requests that CloudFront sends to the origin",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("CachePolicy.CachePolicyConfig.ParametersInCacheKeyAndForwardedToOrigin.EnableAcceptEncodingBrotli"),
-			},
-			{
-				Name:            "id",
-				Description:     "The unique identifier for the cache policy",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("CachePolicy.Id"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
 				Name:        "type",
 				Description: "The type of cache policy, either managed (created by AWS) or custom (created in this AWS account)",
 				Type:        schema.TypeString,

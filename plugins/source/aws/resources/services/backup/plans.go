@@ -107,12 +107,6 @@ func Plans() *schema.Table {
 						IgnoreInTests: true,
 					},
 					{
-						Name:        "iam_role_arn",
-						Description: "Specifies the IAM role Amazon Resource Name (ARN) to create the target recovery point; for example, arn:aws:iam::123456789012:role/S3Access.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("BackupSelection.IamRoleArn"),
-					},
-					{
 						Name:        "selection_id",
 						Description: "Uniquely identifies a request to assign a set of resources to a backup plan.",
 						Type:        schema.TypeString,

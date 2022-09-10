@@ -50,13 +50,6 @@ func NetworkInterfaces() *schema.Table {
 				Resolver: schema.PathResolver("Association"),
 			},
 			{
-				Name:          "association_customer_owned_ip",
-				Description:   "The customer-owned IP address associated with the network interface.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("Association.CustomerOwnedIp"),
-				IgnoreInTests: true,
-			},
-			{
 				Name:     "attachment",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Attachment"),

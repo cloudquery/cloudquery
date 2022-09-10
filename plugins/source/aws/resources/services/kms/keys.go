@@ -141,20 +141,6 @@ func Keys() *schema.Table {
 				Resolver: schema.PathResolver("MultiRegionConfiguration"),
 			},
 			{
-				Name:          "primary_key_arn",
-				Description:   "Displays the key ARN of a primary or replica key of a multi-Region key.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("MultiRegionConfiguration.PrimaryKey.Arn"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "primary_key_region",
-				Description:   "Displays the Amazon Web Services Region of a primary or replica key in a multi-Region key.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("MultiRegionConfiguration.PrimaryKey.Region"),
-				IgnoreInTests: true,
-			},
-			{
 				Name:          "replica_keys",
 				Description:   "displays the key ARNs and Regions of all replica keys",
 				Type:          schema.TypeJSON,

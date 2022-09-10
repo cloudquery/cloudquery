@@ -41,12 +41,6 @@ func SecurityConfigurations() *schema.Table {
 				Resolver: schema.PathResolver("EncryptionConfiguration"),
 			},
 			{
-				Name:        "cloud_watch_encryption_kms_key_arn",
-				Description: "The Amazon Resource Name (ARN) of the KMS key to be used to encrypt the data",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionConfiguration.CloudWatchEncryption.KmsKeyArn"),
-			},
-			{
 				Name:            "name",
 				Description:     "The name of the security configuration",
 				Type:            schema.TypeString,

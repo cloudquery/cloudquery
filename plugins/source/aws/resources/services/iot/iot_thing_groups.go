@@ -95,12 +95,6 @@ func IotThingGroups() *schema.Table {
 				Resolver:    schema.PathResolver("ThingGroupName"),
 			},
 			{
-				Name:        "attribute_payload_attributes",
-				Description: "A JSON string containing up to three key-value pair in JSON format",
-				Type:        schema.TypeJSON,
-				Resolver:    schema.PathResolver("ThingGroupProperties.AttributePayload.Attributes"),
-			},
-			{
 				Name:     "thing_group_properties",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ThingGroupProperties"),

@@ -58,12 +58,6 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("Command"),
 			},
 			{
-				Name:        "command_script_location",
-				Description: "Specifies the Amazon Simple Storage Service (Amazon S3) path to a script that runs a job",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Command.ScriptLocation"),
-			},
-			{
 				Name:     "connections",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Connections"),

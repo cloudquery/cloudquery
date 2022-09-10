@@ -46,12 +46,6 @@ func GraphqlApis() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "lambda_authorizer_config_authorizer_uri",
-				Description: "The Amazon Resource Name (ARN) of the Lambda function to be called for authorization",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("LambdaAuthorizerConfig.AuthorizerUri"),
-			},
-			{
 				Name:     "lambda_authorizer_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("LambdaAuthorizerConfig"),

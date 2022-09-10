@@ -56,48 +56,6 @@ func InstanceTypes() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "ebs_info_ebs_optimized_info_baseline_bandwidth_in_mbps",
-				Description: "The baseline bandwidth performance for an EBS-optimized instance type, in Mbps.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.BaselineBandwidthInMbps"),
-			},
-			{
-				Name:        "ebs_info_ebs_optimized_info_baseline_iops",
-				Description: "The baseline input/output storage operations per seconds for an EBS-optimized instance type.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.BaselineIops"),
-			},
-			{
-				Name:        "ebs_info_ebs_optimized_info_baseline_throughput_in_mb_ps",
-				Description: "The baseline throughput performance for an EBS-optimized instance type, in MB/s.",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.BaselineThroughputInMBps"),
-			},
-			{
-				Name:        "ebs_info_ebs_optimized_info_maximum_bandwidth_in_mbps",
-				Description: "The maximum bandwidth performance for an EBS-optimized instance type, in Mbps.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.MaximumBandwidthInMbps"),
-			},
-			{
-				Name:        "ebs_info_ebs_optimized_info_maximum_iops",
-				Description: "The maximum input/output storage operations per second for an EBS-optimized instance type.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.MaximumIops"),
-			},
-			{
-				Name:        "ebs_info_ebs_optimized_info_maximum_throughput_in_mb_ps",
-				Description: "The maximum throughput performance for an EBS-optimized instance type, in MB/s.",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedInfo.MaximumThroughputInMBps"),
-			},
-			{
-				Name:        "ebs_info_ebs_optimized_support",
-				Description: "Indicates whether the instance type is Amazon EBS-optimized",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EbsInfo.EbsOptimizedSupport"),
-			},
-			{
 				Name:     "ebs_info",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("EbsInfo"),

@@ -66,12 +66,6 @@ func Clusters() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "execute_config_logging",
-				Description: "The log setting to use for redirecting logs for your execute command results. The following log settings are available.  * NONE: The execute command session is not logged.  * DEFAULT: The awslogs configuration in the task definition is used",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Configuration.ExecuteCommandConfiguration.Logging"),
-			},
-			{
 				Name:        "default_capacity_provider_strategy",
 				Description: "The default capacity provider strategy for the cluster",
 				Type:        schema.TypeJSON,
@@ -587,21 +581,9 @@ func Clusters() *schema.Table {
 						Type:        schema.TypeInt,
 					},
 					{
-						Name:        "version_info_agent_hash",
-						Description: "The Git commit hash for the Amazon ECS container agent build on the amazon-ecs-agent  (https://github.com/aws/amazon-ecs-agent/commits/master) GitHub repository.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VersionInfo.AgentHash"),
-					},
-					{
 						Name:     "version_info",
 						Type:     schema.TypeJSON,
 						Resolver: schema.PathResolver("VersionInfo"),
-					},
-					{
-						Name:        "version_info_docker_version",
-						Description: "The Docker version that's running on the container instance.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VersionInfo.DockerVersion"),
 					},
 					{
 						Name:        "attachments",

@@ -2,7 +2,6 @@ package codebuild
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codebuild"
@@ -43,52 +42,8 @@ func CodebuildProjects() *schema.Table {
 				Resolver: schema.PathResolver("Artifacts"),
 			},
 			{
-				Name:        "artifacts_bucket_owner_access",
-				Description: "Specifies the bucket owner's access for objects that another account uploads to their Amazon S3 bucket",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Artifacts.BucketOwnerAccess"),
-			},
-			{
-				Name:        "artifacts_location",
-				Description: "Information about the build output artifact location:  * If type is set to CODEPIPELINE, CodePipeline ignores this value if specified",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Artifacts.Location"),
-			},
-			{
-				Name:        "artifacts_name",
-				Description: "Along with path and namespaceType, the pattern that CodeBuild uses to name and store the output artifact:  * If type is set to CODEPIPELINE, CodePipeline ignores this value if specified",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Artifacts.Name"),
-			},
-			{
-				Name:        "artifacts_namespace_type",
-				Description: "Along with path and name, the pattern that CodeBuild uses to determine the name and location to store the output artifact:  * If type is set to CODEPIPELINE, CodePipeline ignores this value if specified",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Artifacts.NamespaceType"),
-			},
-			{
-				Name:        "artifacts_packaging",
-				Description: "The type of build output artifact to create:  * If type is set to CODEPIPELINE, CodePipeline ignores this value if specified",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Artifacts.Packaging"),
-			},
-			{
-				Name:        "artifacts_path",
-				Description: "Along with namespaceType and name, the pattern that CodeBuild uses to name and store the output artifact:  * If type is set to CODEPIPELINE, CodePipeline ignores this value if specified",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Artifacts.Path"),
-			},
-			{
-				Name:        "badge_enabled",
-				Description: "Set this to true to generate a publicly accessible URL for your project's build badge.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("Badge.BadgeEnabled"),
-			},
-			{
-				Name:        "badge_request_url",
-				Description: "The publicly-accessible URL through which you can access the build badge for your project.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Badge.BadgeRequestUrl"),
+				Name:     "badge",
+				Type:     schema.TypeJSON,
 			},
 			{
 				Name:     "build_batch_config",
@@ -99,12 +54,6 @@ func CodebuildProjects() *schema.Table {
 				Name:     "cache",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Cache"),
-			},
-			{
-				Name:        "cache_location",
-				Description: "Information about the cache location:  * NO_CACHE or LOCAL: This value is ignored.  * S3: This is the S3 bucket name/prefix.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Cache.Location"),
 			},
 			{
 				Name:        "concurrent_build_limit",
@@ -210,18 +159,6 @@ func CodebuildProjects() *schema.Table {
 				Resolver: schema.PathResolver("Webhook"),
 			},
 			{
-				Name:        "webhook_filter_groups",
-				Description: "An array of arrays of WebhookFilter objects used to determine which webhooks are triggered",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveCodebuildProjectsWebhookFilterGroups,
-			},
-			{
-				Name:        "webhook_last_modified_secret",
-				Description: "A timestamp that indicates the last time a repository's secret token was modified.",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("Webhook.LastModifiedSecret"),
-			},
-			{
 				Name:        "file_system_locations",
 				Description: "Information about a file system created by Amazon Elastic File System (EFS)",
 				Type:        schema.TypeJSON,
@@ -281,16 +218,3 @@ func resolveCodebuildProjectsSecondarySourceVersions(ctx context.Context, meta s
 	return resource.Set(c.Name, j)
 }
 
-// currently SDK is not able to support serializing [][]types.WebhookFilter
-// so it must be done manually
-func resolveCodebuildProjectsWebhookFilterGroups(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Project)
-	if p.Webhook == nil {
-		return nil
-	}
-	data, err := json.Marshal(p.Webhook.FilterGroups)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, data)
-}

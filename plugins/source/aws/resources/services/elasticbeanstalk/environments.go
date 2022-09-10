@@ -26,7 +26,6 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 		Description:   "Describes the properties of an environment.",
 		Resolver:      fetchElasticbeanstalkEnvironments,
 		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
-		IgnoreInTests: true,
 		Columns: []schema.Column{
 			{
 				Name:            "account_id",
@@ -171,7 +170,6 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Name:          "aws_elasticbeanstalk_configuration_settings",
 				Description:   "Describes the settings for a configuration set.",
 				Resolver:      fetchElasticbeanstalkConfigurationSettings,
-				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "environment_cq_id",
@@ -242,7 +240,6 @@ func ElasticbeanstalkEnvironments() *schema.Table {
 				Name:          "aws_elasticbeanstalk_configuration_options",
 				Description:   "Describes the possible values for a configuration option.",
 				Resolver:      fetchElasticbeanstalkConfigurationOptions,
-				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "environment_cq_id",

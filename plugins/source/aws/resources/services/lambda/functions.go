@@ -107,31 +107,6 @@ func Functions() *schema.Table {
 				Resolver: schema.PathResolver("Configuration"),
 			},
 			{
-				Name:            "arn",
-				Description:     "The function's Amazon Resource Name (ARN).",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("Configuration.FunctionArn"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name:        "code_sha256",
-				Description: "The SHA256 hash of the function's deployment package.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Configuration.CodeSha256"),
-			},
-			{
-				Name:        "code_size",
-				Description: "The size of the function's deployment package, in bytes.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("Configuration.CodeSize"),
-			},
-			{
-				Name:        "dead_letter_config_target_arn",
-				Description: "The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("Configuration.DeadLetterConfig.TargetArn"),
-			},
-			{
 				Name:        "description",
 				Description: "The function's description.",
 				Type:        schema.TypeString,
@@ -150,7 +125,6 @@ func Functions() *schema.Table {
 				Name:          "aws_lambda_function_event_invoke_configs",
 				Description:   "A configuration object that specifies the destination of an event after Lambda processes it. ",
 				Resolver:      fetchLambdaFunctionEventInvokeConfigs,
-				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "function_cq_id",
@@ -196,7 +170,6 @@ func Functions() *schema.Table {
 				Name:          "aws_lambda_function_aliases",
 				Description:   "Provides configuration information about a Lambda function alias (https://docs.aws.amazon.com/lambda/latest/dg/versioning-aliases.html).",
 				Resolver:      fetchLambdaFunctionAliases,
-				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "function_cq_id",
@@ -421,7 +394,6 @@ func Functions() *schema.Table {
 				Name:          "aws_lambda_function_concurrency_configs",
 				Description:   "Details about the provisioned concurrency configuration for a function alias or version.",
 				Resolver:      fetchLambdaFunctionConcurrencyConfigs,
-				IgnoreInTests: true,
 				Columns: []schema.Column{
 					{
 						Name:        "function_cq_id",

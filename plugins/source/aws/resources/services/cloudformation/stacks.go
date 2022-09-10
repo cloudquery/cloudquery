@@ -86,12 +86,6 @@ func Stacks() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "stack_drift_status",
-				Description: "Status of the stack's actual configuration compared to its expected template configuration.  * DRIFTED: The stack differs from its expected template configuration",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("DriftInformation.StackDriftStatus"),
-			},
-			{
 				Name:          "drift_information",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("DriftInformation"),
@@ -207,12 +201,6 @@ func Stacks() *schema.Table {
 						Name:        "resource_type",
 						Description: "Type of resource",
 						Type:        schema.TypeString,
-					},
-					{
-						Name:        "stack_resource_drift_status",
-						Description: "Status of the resource's actual configuration compared to its expected configuration.  * DELETED: The resource differs from its expected configuration in that it has been deleted.  * MODIFIED: The resource differs from its expected configuration.  * NOT_CHECKED: CloudFormation hasn't checked if the resource differs from its expected configuration",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DriftInformation.StackResourceDriftStatus"),
 					},
 					{
 						Name:          "drift_information",

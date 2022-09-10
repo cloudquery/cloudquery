@@ -82,17 +82,8 @@ func Brokers() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "encryption_options_use_aws_owned_key",
-				Description: "Enables the use of an AWS owned CMK using AWS Key Management Service (KMS).",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("EncryptionOptions.UseAwsOwnedKey"),
-			},
-			{
-				Name:          "encryption_options_kms_key_id",
-				Description:   "The symmetric customer master key (CMK) to use for the AWS Key Management Service (KMS).",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("EncryptionOptions.KmsKeyId"),
-				IgnoreInTests: true,
+				Name:        "encryption_options",
+				Type: 			schema.TypeJSON,
 			},
 			{
 				Name:        "engine_type",
@@ -244,22 +235,8 @@ func Brokers() *schema.Table {
 						Type:        schema.TypeString,
 					},
 					{
-						Name:        "latest_revision_created",
-						Description: "The date and time of the configuration revision.",
-						Type:        schema.TypeTimestamp,
-						Resolver:    schema.PathResolver("LatestRevision.Created"),
-					},
-					{
 						Name:        "latest_revision",
-						Description: "The revision number of the configuration.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("LatestRevision.Revision"),
-					},
-					{
-						Name:        "latest_revision_description",
-						Description: "The description of the configuration revision.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LatestRevision.Description"),
+						Type: 			schema.TypeJSON,
 					},
 					{
 						Name:        "name",

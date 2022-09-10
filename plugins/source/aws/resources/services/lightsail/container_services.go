@@ -91,12 +91,6 @@ func ContainerServices() *schema.Table {
 				Resolver: schema.PathResolver("PrivateRegistryAccess"),
 			},
 			{
-				Name:        "private_registry_access_ecr_image_puller_role_principal_arn",
-				Description: "The Amazon Resource Name (ARN) of the role, if it is activated",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PrivateRegistryAccess.EcrImagePullerRole.PrincipalArn"),
-			},
-			{
 				Name:          "public_domain_names",
 				Description:   "The public domain name of the container service, such as examplecom and wwwexamplecom",
 				Type:          schema.TypeJSON,

@@ -69,12 +69,6 @@ func Ec2Instances() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "cap_reservation_preference",
-				Description: "Describes the instance's Capacity Reservation preferences",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("CapacityReservationSpecification.CapacityReservationPreference"),
-			},
-			{
 				Name:          "capacity_reservation_specification",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("CapacityReservationSpecification"),
@@ -101,16 +95,12 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "enclave_options_enabled",
-				Description: "If this parameter is set to true, the instance is enabled for Amazon Web Services Nitro Enclaves; otherwise, it is not enabled for Amazon Web Services Nitro Enclaves.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("EnclaveOptions.Enabled"),
+				Name:        "enclave_options",
+				Type: 			schema.TypeJSON,
 			},
 			{
-				Name:        "hibernation_options_configured",
-				Description: "If this parameter is set to true, your instance is enabled for hibernation; otherwise, it is not enabled for hibernation.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("HibernationOptions.Configured"),
+				Name:        "hibernation_options",
+				Type:        schema.TypeJSON,
 			},
 			{
 				Name:        "hypervisor",
@@ -118,17 +108,9 @@ func Ec2Instances() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:          "iam_instance_profile_arn",
-				Description:   "The Amazon Resource Name (ARN) of the instance profile.",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("IamInstanceProfile.Arn"),
-				IgnoreInTests: true,
-			},
-			{
 				Name:          "iam_instance_profile",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("IamInstanceProfile"),
-				IgnoreInTests: true,
 			},
 			{
 				Name:        "image_id",
@@ -256,12 +238,6 @@ func Ec2Instances() *schema.Table {
 				IgnoreInTests: true,
 			},
 			{
-				Name:        "state_code",
-				Description: "The state of the instance as a 16-bit unsigned integer",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("State.Code"),
-			},
-			{
 				Name:     "state",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("State"),
@@ -270,14 +246,6 @@ func Ec2Instances() *schema.Table {
 				Name:          "state_reason",
 				Type:          schema.TypeJSON,
 				Resolver:      schema.PathResolver("StateReason"),
-				IgnoreInTests: true,
-			},
-			{
-				Name:          "state_reason_message",
-				Description:   "The message for the state change.  * Server.InsufficientInstanceCapacity: There was insufficient capacity available to satisfy the launch request.  * Server.InternalError: An internal error caused the instance to terminate during launch.  * Server.ScheduledStop: The instance was stopped due to a scheduled retirement.  * Server.SpotInstanceShutdown: The instance was stopped because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Server.SpotInstanceTermination: The instance was terminated because the number of Spot requests with a maximum price equal to or higher than the Spot price exceeded available capacity or because of an increase in the Spot price.  * Client.InstanceInitiatedShutdown: The instance was shut down using the shutdown -h command from the instance.  * Client.InstanceTerminated: The instance was terminated or rebooted during AMI creation.  * Client.InternalError: A client error caused the instance to terminate during launch.  * Client.InvalidSnapshot.NotFound: The specified snapshot was not found.  * Client.UserInitiatedHibernate: Hibernation was initiated on the instance.  * Client.UserInitiatedShutdown: The instance was shut down using the Amazon EC2 API.  * Client.VolumeLimitExceeded: The limit on the number of EBS volumes or total storage was exceeded",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("StateReason.Message"),
-				IgnoreInTests: true,
 			},
 			{
 				Name:        "state_transition_reason",

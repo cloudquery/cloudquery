@@ -105,12 +105,6 @@ func DynamodbTables() *schema.Table {
 				Resolver:    resolveDynamodbTableRestoreSummary,
 			},
 			{
-				Name:        "inaccessible_encryption_date_time",
-				Description: "Indicates the time, in UNIX epoch date format, when DynamoDB detected that the table's KMS key was inaccessible",
-				Type:        schema.TypeTimestamp,
-				Resolver:    schema.PathResolver("SSEDescription.InaccessibleEncryptionDateTime"),
-			},
-			{
 				Name:     "sse_description",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SSEDescription"),
@@ -238,12 +232,6 @@ func DynamodbTables() *schema.Table {
 						Name:     "point_in_time_recovery_description",
 						Type:     schema.TypeJSON,
 						Resolver: schema.PathResolver("PointInTimeRecoveryDescription"),
-					},
-					{
-						Name:        "point_in_time_recovery_status",
-						Description: "The current state of point in time recovery:  * ENABLING - Point in time recovery is being enabled.  * ENABLED - Point in time recovery is enabled.  * DISABLED - Point in time recovery is disabled.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("PointInTimeRecoveryDescription.PointInTimeRecoveryStatus"),
 					},
 				},
 			},

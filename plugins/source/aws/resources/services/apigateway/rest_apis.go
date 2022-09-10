@@ -62,16 +62,8 @@ func RestApis() *schema.Table {
 				Type:        schema.TypeBool,
 			},
 			{
-				Name:        "endpoint_configuration_types",
-				Description: "A list of endpoint types of an API (RestApi) or its custom domain name (DomainName)",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("EndpointConfiguration.Types"),
-			},
-			{
-				Name:        "endpoint_configuration_vpc_endpoint_ids",
-				Description: "A list of VpcEndpointIds of an API (RestApi) against which to create Route53 ALIASes",
-				Type:        schema.TypeStringArray,
-				Resolver:    schema.PathResolver("EndpointConfiguration.VpcEndpointIds"),
+				Name:        "endpoint_configuration",
+				Type: 			schema.TypeJSON,
 			},
 			{
 				Name:        "id",
@@ -535,16 +527,8 @@ func RestApis() *schema.Table {
 						Resolver:    resolveApigatewayRestAPIStageArn,
 					},
 					{
-						Name:        "access_log_settings_destination_arn",
-						Description: "The Amazon Resource Name (ARN) of the CloudWatch Logs log group or Kinesis Data Firehose delivery stream to receive access logs",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AccessLogSettings.DestinationArn"),
-					},
-					{
-						Name:        "access_log_settings_format",
-						Description: "A single line format of the access logs of data, as specified by selected $context variables",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("AccessLogSettings.Format"),
+						Name:        "access_log_settings",
+						Type: 			schema.TypeJSON,
 					},
 					{
 						Name:        "cache_cluster_enabled",

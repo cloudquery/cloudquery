@@ -77,12 +77,6 @@ func Connections() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "availability_zone",
-				Description: "The connection's Availability Zone",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("PhysicalConnectionRequirements.AvailabilityZone"),
-			},
-			{
 				Name:     "physical_connection_requirements",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PhysicalConnectionRequirements"),

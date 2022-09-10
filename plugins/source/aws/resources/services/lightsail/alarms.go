@@ -71,12 +71,6 @@ func Alarms() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "monitored_resource_info_arn",
-				Description: "The Amazon Resource Name (ARN) of the resource being monitored",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("MonitoredResourceInfo.Arn"),
-			},
-			{
 				Name:     "monitored_resource_info",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("MonitoredResourceInfo"),

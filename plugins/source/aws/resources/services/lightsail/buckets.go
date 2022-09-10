@@ -142,12 +142,6 @@ func Buckets() *schema.Table {
 						Resolver: schema.PathResolver("LastUsed"),
 					},
 					{
-						Name:        "last_used_service_name",
-						Description: "The name of the AWS service with which this access key was most recently used This value is N/A if the access key has not been used",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("LastUsed.ServiceName"),
-					},
-					{
 						Name:        "secret_access_key",
 						Description: "The secret access key used to sign requests",
 						Type:        schema.TypeString,
