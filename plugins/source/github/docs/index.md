@@ -21,7 +21,7 @@ First, generate the configuration template using the following command:
 cloudquery gen source github
 ```
 
-After that up fill in the `access_token` and `orgs` values. 
+After that, edit `github.yml` and set the `access_token` and `orgs` values. 
 CloudQuery will fetch information about all the organizations specified in `orgs`.
 
 More information can be found in the [CloudQuery documentation](https://docs.cloudquery.io/docs/intro)
