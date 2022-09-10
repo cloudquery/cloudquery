@@ -8,3 +8,5 @@ type Member struct {
 	*github.User
 	Membership *github.Membership
 }
+
+// TODO: resolver
