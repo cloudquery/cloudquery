@@ -78,12 +78,6 @@ func Hooks() *schema.Table {
 				Name: "active",
 				Type: schema.TypeBool,
 			},
-			{
-				Name:        "deliveries",
-				Description: "Webhook deliveries",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveHookDeliveries,
-			},
 		},
 	}
 }
@@ -110,24 +104,4 @@ func fetchHooks(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 		}
 	}
 	return nil
-}
-func resolveHookDeliveries(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	c := meta.(*client.Client)
-	h := resource.Item.(*github.Hook)
-	opts := &github.ListCursorOptions{
-		PerPage: 100,
-	}
-	var deliveries []*github.HookDelivery
-	for {
-		hooks, resp, err := c.Github.Organizations.ListHookDeliveries(ctx, c.Org, *h.ID, opts)
-		if err != nil {
-			return err
-		}
-		deliveries = append(deliveries, hooks...)
-		if len(hooks) == 0 || resp.Cursor == "" {
-			break
-		}
-		opts.Cursor = resp.Cursor
-	}
-	return resource.Set(column.Name, deliveries)
 }
