@@ -138,6 +138,7 @@ func fetchTeams(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	return nil
 }
 
+// TODO: move to relation
 func resolveTeamMembers(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	t := resource.Item.(*github.Team)
 	c := meta.(*client.Client)
@@ -166,6 +167,7 @@ func resolveTeamMembers(ctx context.Context, meta schema.ClientMeta, resource *s
 	return resource.Set(column.Name, teamMembers)
 }
 
+// TODO: move to relation
 func resolveTeamRepositories(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
 	t := resource.Item.(*github.Team)
 	c := meta.(*client.Client)
