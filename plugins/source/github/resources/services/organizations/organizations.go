@@ -259,22 +259,13 @@ func resolveOrganizationMembers(ctx context.Context, meta schema.ClientMeta, res
 			PerPage: 100,
 		},
 	}
-	var orgMembers []*Member
+	var orgMembers []*github.User
 	for {
 		members, resp, err := c.Github.Organizations.ListMembers(ctx, c.Org, opts)
 		if err != nil {
 			return err
 		}
-		for _, member := range members {
-			membership, _, err := c.Github.Organizations.GetOrgMembership(ctx, *member.Login, c.Org)
-			if err != nil {
-				return err
-			}
-			orgMembers = append(orgMembers, &Member{
-				User:       member,
-				Membership: membership,
-			})
-		}
+		orgMembers = append(orgMembers, members...)
 		opts.Page = resp.NextPage
 		if opts.Page == resp.LastPage {
 			break
