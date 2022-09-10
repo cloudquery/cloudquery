@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -308,11 +307,11 @@ func resolveDynamodbTableArchivalSummary(ctx context.Context, meta schema.Client
 	if r.ArchivalSummary == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, map[string]interface{}{
+	return resource.Set(c.Name, map[string]interface{}{
 		"date_time":  r.ArchivalSummary.ArchivalDateTime,
 		"backup_arn": r.ArchivalSummary.ArchivalBackupArn,
 		"reason":     r.ArchivalSummary.ArchivalReason,
-	}))
+	})
 }
 func resolveDynamodbTableAttributeDefinitions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
@@ -330,10 +329,10 @@ func resolveDynamodbTableBillingModeSummary(ctx context.Context, meta schema.Cli
 	if r.BillingModeSummary == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, map[string]interface{}{
+	return resource.Set(c.Name, map[string]interface{}{
 		"billing_mode": r.BillingModeSummary.BillingMode,
 		"last_update_to_pay_per_request_date_time": r.BillingModeSummary.LastUpdateToPayPerRequestDateTime,
-	}))
+	})
 }
 func resolveDynamodbTableKeySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
@@ -344,22 +343,22 @@ func resolveDynamodbTableRestoreSummary(ctx context.Context, meta schema.ClientM
 	if r.RestoreSummary == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, map[string]interface{}{
+	return resource.Set(c.Name, map[string]interface{}{
 		"date_time":         r.RestoreSummary.RestoreDateTime,
 		"in_progress":       r.RestoreSummary.RestoreInProgress,
 		"source_table_arn":  r.RestoreSummary.SourceTableArn,
 		"source_backup_arn": r.RestoreSummary.SourceBackupArn,
-	}))
+	})
 }
 func resolveDynamodbTableStreamSpecification(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(*types.TableDescription)
 	if r.StreamSpecification == nil {
 		return nil
 	}
-	return diag.WrapError(resource.Set(c.Name, map[string]interface{}{
+	return resource.Set(c.Name, map[string]interface{}{
 		"enabled":   r.StreamSpecification.StreamEnabled,
 		"view_type": r.StreamSpecification.StreamViewType,
-	}))
+	})
 }
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	par := parent.Item.(*types.TableDescription)

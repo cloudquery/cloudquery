@@ -6,7 +6,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -82,7 +81,6 @@ func IotStreams() *schema.Table {
 // ====================================================================================================================
 
 func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var diags diag.Diagnostics
 	input := iot.ListStreamsInput{
 		MaxResults: aws.Int32(250),
 	}
@@ -92,7 +90,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 	for {
 		response, err := svc.ListStreams(ctx, &input)
 		if err != nil {
-			return diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
+			return err
 		}
 		for _, s := range response.Streams {
 			stream, err := svc.DescribeStream(ctx, &iot.DescribeStreamInput{
@@ -102,7 +100,7 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 			})
 			if err != nil {
 				// A single `Describe` call error should not end resolving of table
-				diags = diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.WARNING)))
+				c.Logger().Warn().Err(err).Msg("failed to describe stream")
 				continue
 			}
 			res <- stream.StreamInfo
@@ -112,5 +110,5 @@ func fetchIotStreams(ctx context.Context, meta schema.ClientMeta, parent *schema
 		}
 		input.NextToken = response.NextToken
 	}
-	return diags
+	return nil
 }

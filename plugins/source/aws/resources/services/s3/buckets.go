@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -390,11 +389,10 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 			}
 		}
 	}()
-	var diags diag.Diagnostics
 	done := make(chan struct{})
 	go func() {
 		for err = range errs {
-			diags = diags.Add(err)
+			cl.Logger().Err(err).Msg("failed to fetch s3 bucket")
 		}
 		close(done)
 	}()
@@ -402,7 +400,7 @@ func fetchS3Buckets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resou
 	close(errs)
 	<-done
 
-	return diags
+	return nil
 }
 
 func fetchS3BucketsWorker(ctx context.Context, meta schema.ClientMeta, buckets <-chan types.Bucket, errs chan<- error, res chan<- interface{}, wg *sync.WaitGroup) {

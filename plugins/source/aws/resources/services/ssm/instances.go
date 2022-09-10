@@ -73,7 +73,7 @@ func SsmInstances() *schema.Table {
 				Name:        "ip_address",
 				Description: "The IP address of the managed instance.",
 				Type:        schema.TypeInet,
-				Resolver:    schema.IPAddressResolver("IPAddress"),
+				Resolver:    schema.PathResolver("IPAddress"),
 			},
 			{
 				Name:        "iam_role",

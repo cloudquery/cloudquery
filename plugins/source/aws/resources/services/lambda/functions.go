@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -616,14 +615,13 @@ func Functions() *schema.Table {
 // ====================================================================================================================
 
 func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var diags diag.Diagnostics
 	var input lambda.ListFunctionsInput
 	c := meta.(*client.Client)
 	svc := c.Services().Lambda
 	for {
 		response, err := svc.ListFunctions(ctx, &input)
 		if err != nil {
-			return diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
+			return err
 		}
 
 		for _, f := range response.Functions {
@@ -636,13 +634,13 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 
 			if err != nil {
 				if c.IsNotFoundError(err) || c.IsAccessDeniedError(err) {
-					diags = diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.WARNING)))
+					c.Logger().Warn().Err(err).Msg("Failed to get function")
 					res <- &lambda.GetFunctionOutput{
 						Configuration: &f,
 					}
 					continue
 				}
-				return diags.Add(diag.FromError(err, diag.RESOLVING, diag.WithSeverity(diag.ERROR)))
+				return err
 			}
 			res <- funcResponse
 		}
@@ -652,7 +650,7 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 		}
 		input.Marker = response.NextMarker
 	}
-	return diags
+	return nil
 }
 func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	r := resource.Item.(*lambda.GetFunctionOutput)

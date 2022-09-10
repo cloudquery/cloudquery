@@ -10,7 +10,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/helpers"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gocarina/gocsv"
 	"github.com/spf13/cast"
@@ -636,13 +635,13 @@ func getCredentialReport(ctx context.Context, meta schema.ClientMeta) (reportUse
 				if serviceError.ErrorCode() != "LimitExceeded" {
 					return nil, err
 				}
-				if err := helpers.Sleep(ctx, 5*time.Second); err != nil {
+				if err := client.Sleep(ctx, 5*time.Second); err != nil {
 					return nil, err
 				}
 			}
 		case "ReportInProgress":
 			meta.Logger().Debug().Msg("Waiting for credential report to be generated")
-			if err := helpers.Sleep(ctx, 5*time.Second); err != nil {
+			if err := client.Sleep(ctx, 5*time.Second); err != nil {
 				return nil, err
 			}
 		default:
