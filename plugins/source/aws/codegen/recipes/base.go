@@ -24,6 +24,7 @@ type Resource struct {
 	ExtraColumns []codegen.ColumnDefinition
 	Table *codegen.TableDefinition
 	Multiplex string
+	PreResourceResolver string
 }
 
 //go:embed templates/*.go.tpl
@@ -62,6 +63,9 @@ func (r *Resource) Generate() error {
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.Service) + strcase.ToCamel(r.SubService)
 	if r.Multiplex != "" {
 		r.Table.Multiplex = r.Multiplex
+	}
+	if r.PreResourceResolver != "" {
+		r.Table.PreResourceResolver = r.PreResourceResolver
 	}
 
 	tpl, err := template.New("resource.go.tpl").Funcs(template.FuncMap{

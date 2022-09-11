@@ -8,6 +8,9 @@ import (
 
 func main() {
 	resources := recipes.Ec2Resources()
+	resources = append(resources, recipes.EcsResources()...)
+	resources = append(resources, recipes.EfsResources()...)
+	resources = append(resources, recipes.EksResources()...)
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
 			log.Fatal(err)
