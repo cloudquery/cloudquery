@@ -129,7 +129,7 @@ func Storage() []Resource {
 						codegen.ColumnDefinition{Name: "blob_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountBlobLoggingSettings"},
 						codegen.ColumnDefinition{Name: "queue_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountQueueLoggingSettings"},
 					},
-					relations: []string{"blobServices(),containers()"},
+					relations: []string{"blobServices()", "containers()"},
 				},
 				{
 					azureStruct:  &storage.BlobServiceProperties{},

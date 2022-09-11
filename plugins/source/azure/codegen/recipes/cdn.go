@@ -23,7 +23,7 @@ func CDN() []Resource {
 				{
 					azureStruct:  &cdn.Profile{},
 					listFunction: "List",
-					relations:    []string{"endpoints(),ruleSets(),securityPolicies()"},
+					relations:    []string{"endpoints()", "ruleSets()", "securityPolicies()"},
 				},
 			},
 			serviceNameOverride: "CDN",
@@ -46,7 +46,7 @@ func CDN() []Resource {
 						return errors.WithStack(err)
 					}`},
 					listFunctionArgs: []string{"resource.ResourceGroup", "*profile.Name"},
-					relations:        []string{"customDomains(),routes()"},
+					relations:        []string{"customDomains()", "routes()"},
 					isRelation:       true,
 				},
 				{

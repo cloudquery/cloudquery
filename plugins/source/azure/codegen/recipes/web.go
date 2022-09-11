@@ -26,7 +26,7 @@ func Web() []Resource {
 					listFunction:       "List",
 					subServiceOverride: "Apps",
 					mockListResult:     "AppCollection",
-					relations:          []string{"siteAuthSettings(),publishingProfiles(),vnetConnections(),publishingProfiles()"},
+					relations:          []string{"siteAuthSettings()", "publishingProfiles()", "vnetConnections()", "publishingProfiles()"},
 				},
 				{
 					azureStruct:          &web.SiteAuthSettings{},

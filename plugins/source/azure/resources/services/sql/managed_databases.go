@@ -143,7 +143,8 @@ func managedDatabases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			managedDatabaseVulnerabilityAssessments(), managedDatabaseVulnerabilityAssessmentScans(),
+			managedDatabaseVulnerabilityAssessments(),
+			managedDatabaseVulnerabilityAssessmentScans(),
 		},
 	}
 }

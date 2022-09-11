@@ -182,7 +182,9 @@ func ManagedInstances() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			managedDatabases(), managedInstanceVulnerabilityAssessments(), managedInstanceEncryptionProtectors(),
+			managedDatabases(),
+			managedInstanceVulnerabilityAssessments(),
+			managedInstanceEncryptionProtectors(),
 		},
 	}
 }

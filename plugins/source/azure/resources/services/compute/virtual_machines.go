@@ -192,7 +192,8 @@ func VirtualMachines() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			instanceViews(), virtualMachineExtensions(),
+			instanceViews(),
+			virtualMachineExtensions(),
 		},
 	}
 }

@@ -262,7 +262,10 @@ func Apps() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			siteAuthSettings(), publishingProfiles(), vnetConnections(), publishingProfiles(),
+			siteAuthSettings(),
+			publishingProfiles(),
+			vnetConnections(),
+			publishingProfiles(),
 		},
 	}
 }

@@ -23,12 +23,22 @@ func SQL() []Resource {
 				{
 					azureStruct:  &sql.Server{},
 					listFunction: "List",
-					relations:    []string{"databases(), encryptionProtectors(), virtualNetworkRules(), firewallRules(), serverAdmins(), serverBlobAuditingPolicies(), serverDevOpsAuditingSettings(), serverVulnerabilityAssessments(), serverSecurityAlertPolicies()"},
+					relations: []string{
+						"databases()",
+						"encryptionProtectors()",
+						"virtualNetworkRules()",
+						"firewallRules()",
+						"serverAdmins()",
+						"serverBlobAuditingPolicies()",
+						"serverDevOpsAuditingSettings()",
+						"serverVulnerabilityAssessments()",
+						"serverSecurityAlertPolicies()",
+					},
 				},
 				{
 					azureStruct:  &sql.ManagedInstance{},
 					listFunction: "List",
-					relations:    []string{"managedDatabases(), managedInstanceVulnerabilityAssessments(), managedInstanceEncryptionProtectors()"},
+					relations:    []string{"managedDatabases()", "managedInstanceVulnerabilityAssessments()", "managedInstanceEncryptionProtectors()"},
 				},
 			},
 			serviceNameOverride: "SQL",
@@ -51,7 +61,7 @@ func SQL() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					relations:  []string{"managedDatabaseVulnerabilityAssessments(),managedDatabaseVulnerabilityAssessmentScans()"},
+					relations:  []string{"managedDatabaseVulnerabilityAssessments()", "managedDatabaseVulnerabilityAssessmentScans()"},
 					isRelation: true,
 				},
 				{
@@ -118,7 +128,14 @@ func SQL() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					relations:  []string{"databaseBlobAuditingPolicies(),databaseVulnerabilityAssessments(), databaseVulnerabilityAssessmentScans(), backupLongTermRetentionPolicies(), databaseThreatDetectionPolicies(), transparentDataEncryptions()"},
+					relations: []string{
+						"databaseBlobAuditingPolicies()",
+						"databaseVulnerabilityAssessments()",
+						"databaseVulnerabilityAssessmentScans()",
+						"backupLongTermRetentionPolicies()",
+						"databaseThreatDetectionPolicies()",
+						"transparentDataEncryptions()",
+					},
 					isRelation: true,
 				},
 				{

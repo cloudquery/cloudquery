@@ -238,7 +238,12 @@ func databases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			databaseBlobAuditingPolicies(), databaseVulnerabilityAssessments(), databaseVulnerabilityAssessmentScans(), backupLongTermRetentionPolicies(), databaseThreatDetectionPolicies(), transparentDataEncryptions(),
+			databaseBlobAuditingPolicies(),
+			databaseVulnerabilityAssessments(),
+			databaseVulnerabilityAssessmentScans(),
+			backupLongTermRetentionPolicies(),
+			databaseThreatDetectionPolicies(),
+			transparentDataEncryptions(),
 		},
 	}
 }

@@ -34,7 +34,7 @@ func Compute() []Resource {
 				{
 					azureStruct:      &compute.VirtualMachine{},
 					listFunctionArgs: []string{`"false"`},
-					relations:        []string{"instanceViews(),virtualMachineExtensions()"},
+					relations:        []string{"instanceViews()", "virtualMachineExtensions()"},
 				},
 			},
 		},

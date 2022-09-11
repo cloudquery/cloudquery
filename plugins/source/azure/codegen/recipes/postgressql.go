@@ -24,7 +24,7 @@ func PostgresSQL() []Resource {
 					azureStruct:  &postgresql.Server{},
 					listFunction: "List",
 					listHandler:  valueHandler,
-					relations:    []string{"configurations(), firewallRules()"},
+					relations:    []string{"configurations()", "firewallRules()"},
 				},
 			},
 			serviceNameOverride: "PostgreSQL",

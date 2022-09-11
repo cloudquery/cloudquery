@@ -158,7 +158,8 @@ func endpoints() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			customDomains(), routes(),
+			customDomains(),
+			routes(),
 		},
 	}
 }

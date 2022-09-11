@@ -137,7 +137,8 @@ func Servers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			configurations(), firewallRules(),
+			configurations(),
+			firewallRules(),
 		},
 	}
 }
