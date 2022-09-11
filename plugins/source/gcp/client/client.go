@@ -117,7 +117,7 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
 
-	call := service.Projects.List().Filter("LifecycleState=ACTIVE").Context(ctx)
+	call := service.Projects.List().Filter("lifecycleState=ACTIVE").Context(ctx)
 	for {
 		output, err := call.Do()
 		if err != nil {
