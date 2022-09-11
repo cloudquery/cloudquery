@@ -17,7 +17,7 @@ func Datalake() []Resource {
 					},
 				},
 				{
-					source:            "resource_list_value_mock_test.go.tpl",
+					source:            "resource_list_mock_test.go.tpl",
 					destinationSuffix: "_mock_test.go",
 					imports: []string{
 						"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/analytics/mgmt/account",
@@ -33,10 +33,11 @@ func Datalake() []Resource {
 					getFunctionArgsInit: []string{"account := r.Item.(account.DataLakeAnalyticsAccountBasic)", "resourceDetails, err := client.ParseResourceID(*account.ID)", `if err != nil {
 						errors.WithStack(err)
 					}`},
-					getFunctionArgs:    []string{"resourceDetails.ResourceGroup", "*account.Name"},
-					subServiceOverride: "AnalyticsAccounts",
-					mockValueType:      "DataLakeAnalyticsAccountBasic",
-					mockDefinitionType: `DataLakeAnalyticsAccountBasic`,
+					getFunctionArgs:     []string{"resourceDetails.ResourceGroup", "*account.Name"},
+					subServiceOverride:  "AnalyticsAccounts",
+					mockValueType:       "DataLakeAnalyticsAccountBasic",
+					mockDefinitionType:  `DataLakeAnalyticsAccountBasic`,
+					mockGetFunctionArgs: []string{`"test"`, `*data.Name`},
 				},
 			},
 			serviceNameOverride: "DataLake",
@@ -51,7 +52,7 @@ func Datalake() []Resource {
 					},
 				},
 				{
-					source:            "resource_list_value_mock_test.go.tpl",
+					source:            "resource_list_mock_test.go.tpl",
 					destinationSuffix: "_mock_test.go",
 					imports: []string{
 						"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/store/mgmt/account",
@@ -64,13 +65,14 @@ func Datalake() []Resource {
 					listFunction:     "List",
 					listFunctionArgs: []string{`""`, `nil`, `nil`, `""`, `""`, `nil`},
 					getFunction:      "Get",
-					getFunctionArgsInit: []string{"account := r.Item.(account.DataLakeStoreAccount)", "resourceDetails, err := client.ParseResourceID(*account.ID)", `if err != nil {
+					getFunctionArgsInit: []string{"account := r.Item.(account.DataLakeStoreAccountBasic)", "resourceDetails, err := client.ParseResourceID(*account.ID)", `if err != nil {
 						errors.WithStack(err)
 					}`},
-					getFunctionArgs:    []string{"resourceDetails.ResourceGroup", "*account.Name"},
-					subServiceOverride: "StoreAccounts",
-					mockValueType:      "DataLakeStoreAccountBasic",
-					mockDefinitionType: "DataLakeStoreAccountBasic",
+					getFunctionArgs:     []string{"resourceDetails.ResourceGroup", "*account.Name"},
+					subServiceOverride:  "StoreAccounts",
+					mockValueType:       "DataLakeStoreAccountBasic",
+					mockDefinitionType:  "DataLakeStoreAccountBasic",
+					mockGetFunctionArgs: []string{`"test"`, `*data.Name`},
 				},
 			},
 			serviceNameOverride: "DataLake",

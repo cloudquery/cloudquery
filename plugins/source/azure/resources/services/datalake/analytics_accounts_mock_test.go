@@ -3,6 +3,7 @@
 package datalake
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -32,8 +33,18 @@ func createAnalyticsAccountsMock(t *testing.T, ctrl *gomock.Controller) services
 	fieldsToIgnore := []string{"Response"}
 	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
-	result := account.DataLakeAnalyticsAccountListResult{Value: &[]account.DataLakeAnalyticsAccountBasic{data}}
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
+
+	getData := account.DataLakeAnalyticsAccount{}
+	require.Nil(t, faker.FakeData(&getData, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+
+	result := account.NewDataLakeAnalyticsAccountListResultPage(account.DataLakeAnalyticsAccountListResult{Value: &[]account.DataLakeAnalyticsAccountBasic{data}}, func(ctx context.Context, result account.DataLakeAnalyticsAccountListResult) (account.DataLakeAnalyticsAccountListResult, error) {
+		return account.DataLakeAnalyticsAccountListResult{}, nil
+	})
 
 	mockClient.EXPECT().List(gomock.Any(), "", nil, nil, "", "", nil).Return(result, nil)
+
+	mockClient.EXPECT().Get(gomock.Any(), "test", *data.Name).Return(getData, nil)
 	return s
 }

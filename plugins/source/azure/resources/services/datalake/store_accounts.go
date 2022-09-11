@@ -168,7 +168,7 @@ func fetchDataLakeStoreAccounts(ctx context.Context, meta schema.ClientMeta, par
 func getDataLakeStoreAccount(ctx context.Context, meta schema.ClientMeta, r *schema.Resource) error {
 	svc := meta.(*client.Client).Services().DataLake.StoreAccounts
 
-	account := r.Item.(account.DataLakeStoreAccount)
+	account := r.Item.(account.DataLakeStoreAccountBasic)
 	resourceDetails, err := client.ParseResourceID(*account.ID)
 	if err != nil {
 		errors.WithStack(err)
