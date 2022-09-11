@@ -8,8 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/go-faker/faker/v4"
-	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
@@ -29,8 +28,7 @@ func createExpressRouteGatewaysMock(t *testing.T, ctrl *gomock.Controller) servi
 	}
 
 	data := network.ExpressRouteGateway{}
-	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeObject(&data))
 
 	result := network.ExpressRouteGatewayList{Value: &[]network.ExpressRouteGateway{data}}
 

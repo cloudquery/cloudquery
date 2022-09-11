@@ -9,8 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/go-faker/faker/v4"
-	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
@@ -30,13 +29,12 @@ func createAssessmentsMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 	}
 
 	data := security.Assessment{}
-	fieldsToIgnore := []string{"Response", "ResourceDetails"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeObject(&data))
 
 	result := security.NewAssessmentListPage(security.AssessmentList{Value: &[]security.Assessment{data}}, func(ctx context.Context, result security.AssessmentList) (security.AssessmentList, error) {
 		return security.AssessmentList{}, nil
 	})
 
-	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/test_sub").Return(result, nil)
+	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/testSubscription").Return(result, nil)
 	return s
 }

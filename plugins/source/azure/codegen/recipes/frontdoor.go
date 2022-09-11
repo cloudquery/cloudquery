@@ -25,7 +25,7 @@ func FrontDoor() []Resource {
 					listFunction:       "List",
 					subServiceOverride: "Doors",
 					mockListResult:     "ListResult",
-					skipFields:         []string{"Properties"},
+					mockFieldsToIgnore: []string{"RouteConfiguration"},
 				},
 			},
 			serviceNameOverride: "FrontDoor",

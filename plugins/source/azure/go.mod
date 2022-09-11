@@ -11,8 +11,7 @@ require (
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/cloudquery/plugin-sdk v0.2.5
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/go-faker/faker/v4 v4.0.0-beta.2
-	github.com/gofrs/uuid v4.2.0+incompatible
+	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/pkg/errors v0.9.1

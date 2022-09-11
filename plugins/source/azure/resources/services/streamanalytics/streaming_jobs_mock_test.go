@@ -9,8 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/go-faker/faker/v4"
-	fakerOptions "github.com/go-faker/faker/v4/pkg/options"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
@@ -30,8 +29,7 @@ func createStreamingJobsMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 	}
 
 	data := streamanalytics.StreamingJob{}
-	fieldsToIgnore := []string{"Response", "Properties", "Datasource", "Serialization"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeObject(&data))
 
 	result := streamanalytics.NewStreamingJobListResultPage(streamanalytics.StreamingJobListResult{Value: &[]streamanalytics.StreamingJob{data}}, func(ctx context.Context, result streamanalytics.StreamingJobListResult) (streamanalytics.StreamingJobListResult, error) {
 		return streamanalytics.StreamingJobListResult{}, nil
