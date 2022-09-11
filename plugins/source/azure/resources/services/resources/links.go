@@ -35,9 +35,19 @@ func Links() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
+				Name:     "source_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SourceID"),
+			},
+			{
+				Name:     "target_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TargetID"),
+			},
+			{
+				Name:     "notes",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Notes"),
 			},
 		},
 	}

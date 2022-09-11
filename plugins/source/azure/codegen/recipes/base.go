@@ -188,7 +188,16 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 
 func initTable(definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
 	skipFields := append(definition.skipFields, defaultSkipFields...)
-	table, err := codegen.NewTableFromStruct(fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService)), definition.azureStruct, codegen.WithSkipFields(skipFields), codegen.WithUnwrapEmbeddedStructs())
+	table, err := codegen.NewTableFromStruct(
+		fmt.Sprintf("%s_%s_%s",
+			pluginName,
+			strings.ToLower(azureService),
+			strcase.ToSnake(azureSubService)),
+		definition.azureStruct,
+		codegen.WithSkipFields(skipFields),
+		codegen.WithUnwrapAllEmbeddedStructs(),                  // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
+		codegen.WithUnwrapFieldsStructs([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
+	)
 	if err != nil {
 		log.Fatal(err)
 	}

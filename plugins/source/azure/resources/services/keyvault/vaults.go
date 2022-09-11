@@ -50,9 +50,69 @@ func Vaults() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:     "properties",
+				Name:     "sku",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
+				Resolver: schema.PathResolver("Sku"),
+			},
+			{
+				Name:     "access_policies",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AccessPolicies"),
+			},
+			{
+				Name:     "vault_uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("VaultURI"),
+			},
+			{
+				Name:     "enabled_for_deployment",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnabledForDeployment"),
+			},
+			{
+				Name:     "enabled_for_disk_encryption",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnabledForDiskEncryption"),
+			},
+			{
+				Name:     "enabled_for_template_deployment",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnabledForTemplateDeployment"),
+			},
+			{
+				Name:     "enable_soft_delete",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableSoftDelete"),
+			},
+			{
+				Name:     "soft_delete_retention_in_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("SoftDeleteRetentionInDays"),
+			},
+			{
+				Name:     "enable_rbac_authorization",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableRbacAuthorization"),
+			},
+			{
+				Name:     "create_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CreateMode"),
+			},
+			{
+				Name:     "enable_purge_protection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnablePurgeProtection"),
+			},
+			{
+				Name:     "network_acls",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkAcls"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
 			},
 		},
 

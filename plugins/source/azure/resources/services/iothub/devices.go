@@ -27,9 +27,124 @@ func Devices() *schema.Table {
 				Resolver: schema.PathResolver("Etag"),
 			},
 			{
-				Name:     "properties",
+				Name:     "authorization_policies",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
+				Resolver: schema.PathResolver("AuthorizationPolicies"),
+			},
+			{
+				Name:     "disable_local_auth",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DisableLocalAuth"),
+			},
+			{
+				Name:     "disable_device_sas",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DisableDeviceSAS"),
+			},
+			{
+				Name:     "disable_module_sas",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("DisableModuleSAS"),
+			},
+			{
+				Name:     "restrict_outbound_network_access",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("RestrictOutboundNetworkAccess"),
+			},
+			{
+				Name:     "allowed_fqdn_list",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("AllowedFqdnList"),
+			},
+			{
+				Name:     "public_network_access",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PublicNetworkAccess"),
+			},
+			{
+				Name:     "ip_filter_rules",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("IPFilterRules"),
+			},
+			{
+				Name:     "network_rule_sets",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NetworkRuleSets"),
+			},
+			{
+				Name:     "min_tls_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("MinTLSVersion"),
+			},
+			{
+				Name:     "private_endpoint_connections",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PrivateEndpointConnections"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
+			},
+			{
+				Name:     "state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("State"),
+			},
+			{
+				Name:     "host_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HostName"),
+			},
+			{
+				Name:     "event_hub_endpoints",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EventHubEndpoints"),
+			},
+			{
+				Name:     "routing",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Routing"),
+			},
+			{
+				Name:     "storage_endpoints",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("StorageEndpoints"),
+			},
+			{
+				Name:     "messaging_endpoints",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MessagingEndpoints"),
+			},
+			{
+				Name:     "enable_file_upload_notifications",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableFileUploadNotifications"),
+			},
+			{
+				Name:     "cloud_to_device",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CloudToDevice"),
+			},
+			{
+				Name:     "comments",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Comments"),
+			},
+			{
+				Name:     "features",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Features"),
+			},
+			{
+				Name:     "locations",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Locations"),
+			},
+			{
+				Name:     "enable_data_residency",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableDataResidency"),
 			},
 			{
 				Name:     "sku",

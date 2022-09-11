@@ -22,9 +22,44 @@ func ManagedHsms() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "properties",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Properties"),
+				Name:     "initial_admin_object_ids",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("InitialAdminObjectIds"),
+			},
+			{
+				Name:     "hsm_uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HsmURI"),
+			},
+			{
+				Name:     "enable_soft_delete",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableSoftDelete"),
+			},
+			{
+				Name:     "soft_delete_retention_in_days",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("SoftDeleteRetentionInDays"),
+			},
+			{
+				Name:     "enable_purge_protection",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnablePurgeProtection"),
+			},
+			{
+				Name:     "create_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CreateMode"),
+			},
+			{
+				Name:     "status_message",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StatusMessage"),
+			},
+			{
+				Name:     "provisioning_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ProvisioningState"),
 			},
 			{
 				Name:     "id",
