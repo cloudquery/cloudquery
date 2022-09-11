@@ -11,6 +11,7 @@ func main() {
 	resources = append(resources, recipes.EcsResources()...)
 	resources = append(resources, recipes.EfsResources()...)
 	resources = append(resources, recipes.EksResources()...)
+	resources = append(resources, recipes.ElastiCacheResources()...)
 	for _, resource := range resources {
 		if err := resource.Generate(); err != nil {
 			log.Fatal(err)

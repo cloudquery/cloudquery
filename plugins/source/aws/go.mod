@@ -89,6 +89,7 @@ require (
 )
 
 require (
+	github.com/aws/aws-sdk-go v1.44.95 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.9 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
