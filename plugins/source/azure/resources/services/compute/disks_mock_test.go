@@ -30,9 +30,6 @@ func createDisksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := compute.Disk{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := compute.NewDiskListPage(compute.DiskList{Value: &[]compute.Disk{data}}, func(ctx context.Context, result compute.DiskList) (compute.DiskList, error) {
 		return compute.DiskList{}, nil

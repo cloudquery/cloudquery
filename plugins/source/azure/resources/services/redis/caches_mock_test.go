@@ -30,9 +30,6 @@ func createCachesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := redis.ResourceType{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := redis.NewListResultPage(redis.ListResult{Value: &[]redis.ResourceType{data}}, func(ctx context.Context, result redis.ListResult) (redis.ListResult, error) {
 		return redis.ListResult{}, nil

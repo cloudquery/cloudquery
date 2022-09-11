@@ -30,9 +30,6 @@ func createContactsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := security.Contact{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := security.NewContactListPage(security.ContactList{Value: &[]security.Contact{data}}, func(ctx context.Context, result security.ContactList) (security.ContactList, error) {
 		return security.ContactList{}, nil

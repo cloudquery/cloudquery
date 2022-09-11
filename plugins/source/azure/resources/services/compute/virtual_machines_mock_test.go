@@ -24,14 +24,21 @@ func createVirtualMachinesMock(t *testing.T, ctrl *gomock.Controller) services.S
 	mockClient := mocks.NewMockComputeVirtualMachinesClient(ctrl)
 	s := services.Services{
 		Compute: services.ComputeClient{
-			VirtualMachines: mockClient,
+			VirtualMachines:          mockClient,
+			InstanceViews:            createInstanceViewsMock(t, ctrl).Compute.InstanceViews,
+			VirtualMachineExtensions: createVirtualMachineExtensionsMock(t, ctrl).Compute.VirtualMachineExtensions,
 		},
 	}
 
 	data := compute.VirtualMachine{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := compute.NewVirtualMachineListResultPage(compute.VirtualMachineListResult{Value: &[]compute.VirtualMachine{data}}, func(ctx context.Context, result compute.VirtualMachineListResult) (compute.VirtualMachineListResult, error) {

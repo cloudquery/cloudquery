@@ -36,6 +36,11 @@ func EventHub() []Resource {
 					destinationSuffix: ".go",
 					imports:           []string{},
 				},
+				{
+					source:            "resource_list_value_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"},
+				},
 			},
 			definitions: []resourceDefinition{
 				{
@@ -50,9 +55,10 @@ func EventHub() []Resource {
 					listHandler: `if err != nil {
 						return errors.WithStack(err)
 					}
-					res <- response
-					return nil`,
-					isRelation: true,
+					res <- response`,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 			},
 			serviceNameOverride: "EventHub",

@@ -30,9 +30,6 @@ func createServicesMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := search.Service{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := search.NewServiceListResultPage(search.ServiceListResult{Value: &[]search.Service{data}}, func(ctx context.Context, result search.ServiceListResult) (search.ServiceListResult, error) {
 		return search.ServiceListResult{}, nil

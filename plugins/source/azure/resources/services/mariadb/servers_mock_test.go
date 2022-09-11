@@ -23,14 +23,20 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 	mockClient := mocks.NewMockMariaDBServersClient(ctrl)
 	s := services.Services{
 		MariaDB: services.MariaDBClient{
-			Servers: mockClient,
+			Servers:        mockClient,
+			Configurations: createConfigurationsMock(t, ctrl).MariaDB.Configurations,
 		},
 	}
 
 	data := mariadb.Server{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := mariadb.ServerListResult{Value: &[]mariadb.Server{data}}

@@ -144,6 +144,14 @@ func Monitor() []Resource {
 						"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources",
 					},
 				},
+				{
+					source:            "resource_list_value_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports: []string{
+						"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights",
+						"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources",
+					},
+				},
 			},
 			definitions: []resourceDefinition{
 				{
@@ -180,7 +188,10 @@ func Monitor() []Resource {
 							ResourceURI:                *resource.ID,
 						}
 					}`,
-					isRelation: true,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`},
+					mockListResult:           "DiagnosticSettingsResourceCollection",
 				},
 			},
 			serviceNameOverride: "Monitor",

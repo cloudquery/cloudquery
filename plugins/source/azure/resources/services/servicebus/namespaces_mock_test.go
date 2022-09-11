@@ -25,13 +25,19 @@ func createNamespacesMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 	s := services.Services{
 		Servicebus: services.ServicebusClient{
 			Namespaces: mockClient,
+			Topics:     createTopicsMock(t, ctrl).Servicebus.Topics,
 		},
 	}
 
 	data := servicebus.SBNamespace{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := servicebus.NewSBNamespaceListResultPage(servicebus.SBNamespaceListResult{Value: &[]servicebus.SBNamespace{data}}, func(ctx context.Context, result servicebus.SBNamespaceListResult) (servicebus.SBNamespaceListResult, error) {

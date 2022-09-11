@@ -30,9 +30,6 @@ func createLinksMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := links.ResourceLink{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := links.NewResourceLinkResultPage(links.ResourceLinkResult{Value: &[]links.ResourceLink{data}}, func(ctx context.Context, result links.ResourceLinkResult) (links.ResourceLinkResult, error) {
 		return links.ResourceLinkResult{}, nil

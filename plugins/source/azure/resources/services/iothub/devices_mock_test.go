@@ -30,9 +30,6 @@ func createDevicesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 
 	data := devices.IotHubDescription{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := devices.NewIotHubDescriptionListResultPage(devices.IotHubDescriptionListResult{Value: &[]devices.IotHubDescription{data}}, func(ctx context.Context, result devices.IotHubDescriptionListResult) (devices.IotHubDescriptionListResult, error) {
 		return devices.IotHubDescriptionListResult{}, nil

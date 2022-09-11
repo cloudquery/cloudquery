@@ -31,9 +31,6 @@ func createTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 
 	data := armsubscriptions.TenantIDDescription{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.TenantsClientListResponse]{
 		More: func(page armsubscriptions.TenantsClientListResponse) bool {

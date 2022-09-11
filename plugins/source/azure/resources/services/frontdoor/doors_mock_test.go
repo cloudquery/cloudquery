@@ -30,9 +30,6 @@ func createDoorsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := frontdoor.FrontDoor{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := frontdoor.NewListResultPage(frontdoor.ListResult{Value: &[]frontdoor.FrontDoor{data}}, func(ctx context.Context, result frontdoor.ListResult) (frontdoor.ListResult, error) {
 		return frontdoor.ListResult{}, nil

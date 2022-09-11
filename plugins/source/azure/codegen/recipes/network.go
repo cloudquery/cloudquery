@@ -83,6 +83,11 @@ func Network() []Resource {
 					destinationSuffix: ".go",
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
 				},
+				{
+					source:            "resource_list_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
+				},
 			},
 			definitions: []resourceDefinition{
 				{
@@ -93,7 +98,9 @@ func Network() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					isRelation: true,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 				{
 					azureStruct:      &network.VirtualNetworkGateway{},
@@ -103,8 +110,10 @@ func Network() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					relations:  []string{"virtualNetworkGatewayConnections()"},
-					isRelation: true,
+					relations:                []string{"virtualNetworkGatewayConnections()"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`},
 				},
 				{
 					azureStruct:      &network.VirtualNetworkGatewayConnection{},
@@ -114,7 +123,9 @@ func Network() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					isRelation: true,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 			},
 		},

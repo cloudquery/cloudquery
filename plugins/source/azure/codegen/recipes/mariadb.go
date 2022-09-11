@@ -24,18 +24,6 @@ func MariaDB() []Resource {
 					listHandler:  valueHandler,
 					relations:    []string{"configurations()"},
 				},
-			},
-			serviceNameOverride: "MariaDB",
-		},
-		{
-			templates: []template{
-				{
-					source:            "resource_list.go.tpl",
-					destinationSuffix: ".go",
-					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"},
-				},
-			},
-			definitions: []resourceDefinition{
 				{
 					azureStruct:      &mariadb.Configuration{},
 					listFunction:     "ListByServer",
@@ -44,8 +32,10 @@ func MariaDB() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listHandler: valueHandler,
-					isRelation:  true,
+					listHandler:              valueHandler,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 			},
 			serviceNameOverride: "MariaDB",

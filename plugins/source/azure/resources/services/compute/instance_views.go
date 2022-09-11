@@ -124,5 +124,4 @@ func fetchComputeInstanceViews(ctx context.Context, meta schema.ClientMeta, pare
 	}
 	res <- response
 	return nil
-	return nil
 }

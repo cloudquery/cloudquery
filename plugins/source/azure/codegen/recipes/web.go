@@ -19,6 +19,11 @@ func Web() []Resource {
 					destinationSuffix: ".go",
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"},
 				},
+				{
+					source:            "resource_list_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"},
+				},
 			},
 			definitions: []resourceDefinition{
 				{
@@ -26,7 +31,7 @@ func Web() []Resource {
 					listFunction:       "List",
 					subServiceOverride: "Apps",
 					mockListResult:     "AppCollection",
-					relations:          []string{"siteAuthSettings()", "publishingProfiles()", "vnetConnections()", "publishingProfiles()"},
+					relations:          []string{"siteAuthSettings()", "vnetConnections()", "publishingProfiles()"},
 				},
 				{
 					azureStruct:          &web.SiteAuthSettings{},
@@ -37,7 +42,9 @@ func Web() []Resource {
 						return errors.WithStack(err)
 					}
 					res <- response`,
-					isRelation: true,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 				{
 					azureStruct:          &web.VnetInfo{},
@@ -48,8 +55,10 @@ func Web() []Resource {
 						return errors.WithStack(err)
 					}
 					res <- response`,
-					subServiceOverride: "VnetConnections",
-					isRelation:         true,
+					subServiceOverride:       "VnetConnections",
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 				{
 					azureStruct: &publishProfile{},
@@ -79,8 +88,10 @@ func Web() []Resource {
 					}
 				
 					res <- profileData.PublishData`,
-					subServiceOverride: "PublishingProfiles",
-					isRelation:         true,
+					subServiceOverride:       "PublishingProfiles",
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 			},
 			serviceNameOverride: "Web",

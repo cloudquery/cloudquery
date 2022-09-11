@@ -30,18 +30,6 @@ func CosmosDB() []Resource {
 					mockListResult:     "DatabaseAccountsListResult",
 					relations:          []string{"mongoDBDatabases()", "sQLDatabases()"},
 				},
-			},
-			serviceNameOverride: "CosmosDB",
-		},
-		{
-			templates: []template{
-				{
-					source:            "resource_list.go.tpl",
-					destinationSuffix: ".go",
-					imports:           []string{},
-				},
-			},
-			definitions: []resourceDefinition{
 				{
 					azureStruct:        &documentdb.MongoDBDatabaseGetResults{},
 					listFunction:       "ListMongoDBDatabases",
@@ -52,8 +40,11 @@ func CosmosDB() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*account.Name"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           "MongoDBDatabaseListResult",
 				},
 				{
 					azureStruct:        &documentdb.SQLDatabaseGetResults{},
@@ -65,8 +56,11 @@ func CosmosDB() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*account.Name"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           "SQLDatabaseListResult",
 				},
 			},
 			serviceNameOverride: "CosmosDB",

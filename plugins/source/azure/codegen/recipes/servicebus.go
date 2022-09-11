@@ -26,17 +26,6 @@ func ServiceBus() []Resource {
 					subServiceOverride: "Namespaces",
 					relations:          []string{"topics()"},
 				},
-			},
-		},
-		{
-			templates: []template{
-				{
-					source:            "resource_list.go.tpl",
-					destinationSuffix: ".go",
-					imports:           []string{},
-				},
-			},
-			definitions: []resourceDefinition{
 				{
 					azureStruct:        &servicebus.SBTopic{},
 					listFunction:       "ListByNamespace",
@@ -46,8 +35,10 @@ func ServiceBus() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					relations:  []string{"authorizationRules()"},
-					isRelation: true,
+					relations:                []string{"authorizationRules()"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `nil`, `nil`},
 				},
 				{
 					azureStruct:        &servicebus.SBAuthorizationRule{},
@@ -61,8 +52,10 @@ func ServiceBus() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					relations:  []string{"accessKeys()"},
-					isRelation: true,
+					relations:                []string{"accessKeys()"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 				},
 				{
 					azureStruct:        &servicebus.AccessKeys{},
@@ -81,7 +74,9 @@ func ServiceBus() []Resource {
 						return errors.WithStack(err)
 					}
 					res <- response`,
-					isRelation: true,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`, `"test"`},
 				},
 			},
 		},

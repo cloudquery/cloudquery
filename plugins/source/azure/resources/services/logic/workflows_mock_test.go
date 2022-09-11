@@ -24,14 +24,20 @@ func createWorkflowsMock(t *testing.T, ctrl *gomock.Controller) services.Service
 	mockClient := mocks.NewMockLogicWorkflowsClient(ctrl)
 	s := services.Services{
 		Logic: services.LogicClient{
-			Workflows: mockClient,
+			Workflows:          mockClient,
+			DiagnosticSettings: createDiagnosticSettingsMock(t, ctrl).Logic.DiagnosticSettings,
 		},
 	}
 
 	data := logic.Workflow{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := logic.NewWorkflowListResultPage(logic.WorkflowListResult{Value: &[]logic.Workflow{data}}, func(ctx context.Context, result logic.WorkflowListResult) (logic.WorkflowListResult, error) {

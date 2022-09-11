@@ -23,14 +23,20 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 	mockClient := mocks.NewMockMySQLServersClient(ctrl)
 	s := services.Services{
 		MySQL: services.MySQLClient{
-			Servers: mockClient,
+			Servers:        mockClient,
+			Configurations: createConfigurationsMock(t, ctrl).MySQL.Configurations,
 		},
 	}
 
 	data := mysql.Server{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := mysql.ServerListResult{Value: &[]mysql.Server{data}}

@@ -30,9 +30,6 @@ func createAssessmentsMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := security.Assessment{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := security.NewAssessmentListPage(security.AssessmentList{Value: &[]security.Assessment{data}}, func(ctx context.Context, result security.AssessmentList) (security.AssessmentList, error) {
 		return security.AssessmentList{}, nil

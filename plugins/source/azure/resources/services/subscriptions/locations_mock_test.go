@@ -31,9 +31,6 @@ func createLocationsMock(t *testing.T, ctrl *gomock.Controller) services.Service
 
 	data := armsubscriptions.Location{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.ClientListLocationsResponse]{
 		More: func(page armsubscriptions.ClientListLocationsResponse) bool {

@@ -25,18 +25,6 @@ func CDN() []Resource {
 					listFunction: "List",
 					relations:    []string{"endpoints()", "ruleSets()", "securityPolicies()"},
 				},
-			},
-			serviceNameOverride: "CDN",
-		},
-		{
-			templates: []template{
-				{
-					source:            "resource_list.go.tpl",
-					destinationSuffix: ".go",
-					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"},
-				},
-			},
-			definitions: []resourceDefinition{
 				{
 					azureStruct:  &cdn.Endpoint{},
 					listFunction: "ListByProfile",
@@ -45,9 +33,11 @@ func CDN() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*profile.Name"},
-					relations:        []string{"customDomains()", "routes()"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
+					relations:                []string{"customDomains()", "routes()"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 				{
 					azureStruct:  &cdn.RuleSet{},
@@ -57,9 +47,11 @@ func CDN() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*profile.Name"},
-					relations:        []string{"rules()"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
+					relations:                []string{"rules()"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 				{
 					azureStruct:  &cdn.SecurityPolicy{},
@@ -69,8 +61,10 @@ func CDN() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*profile.Name"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 				{
 					azureStruct:  &cdn.CustomDomain{},
@@ -80,8 +74,10 @@ func CDN() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`, `endpoint := parent.Item.(cdn.Endpoint)`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 				},
 				{
 					azureStruct:  &cdn.Route{},
@@ -91,8 +87,10 @@ func CDN() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`, `endpoint := parent.Item.(cdn.Endpoint)`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 				},
 				{
 					azureStruct:  &cdn.Rule{},
@@ -102,8 +100,10 @@ func CDN() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`, `ruleSet := parent.Item.(cdn.RuleSet)`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*profile.Name", "*ruleSet.Name"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*ruleSet.Name"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 				},
 			},
 			serviceNameOverride: "CDN",

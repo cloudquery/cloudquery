@@ -5,11 +5,10 @@ package mariadb
 import (
 	"context"
 
+	"github.com/Azure/azure-sdk-for-go/profiles/latest/mariadb/mgmt/mariadb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
-
-	"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 )
 
 func configurations() *schema.Table {

@@ -15,9 +15,11 @@ import (
     {{template "imports.go.tpl" .}}
 )
 
+{{ if not .IsRelation }}
 func Test{{ .AzureService }}{{ .AzureSubService }}(t *testing.T) {
 	client.MockTestHelper(t, {{ .AzureSubService }}(), create{{ .AzureSubService }}Mock)
 }
+{{ end }}
 
 {{range .MockHelpers}}
 {{.}}

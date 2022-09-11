@@ -24,14 +24,20 @@ func createVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) services.S
 	mockClient := mocks.NewMockNetworkVirtualNetworksClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
-			VirtualNetworks: mockClient,
+			VirtualNetworks:        mockClient,
+			VirtualNetworkGateways: createVirtualNetworkGatewaysMock(t, ctrl).Network.VirtualNetworkGateways,
 		},
 	}
 
 	data := network.VirtualNetwork{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := network.NewVirtualNetworkListResultPage(network.VirtualNetworkListResult{Value: &[]network.VirtualNetwork{data}}, func(ctx context.Context, result network.VirtualNetworkListResult) (network.VirtualNetworkListResult, error) {

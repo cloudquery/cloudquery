@@ -82,5 +82,4 @@ func fetchEventHubNetworkRuleSets(ctx context.Context, meta schema.ClientMeta, p
 	}
 	res <- response
 	return nil
-	return nil
 }

@@ -30,9 +30,6 @@ func createGroupsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := resources.Group{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := resources.NewGroupListResultPage(resources.GroupListResult{Value: &[]resources.Group{data}}, func(ctx context.Context, result resources.GroupListResult) (resources.GroupListResult, error) {
 		return resources.GroupListResult{}, nil

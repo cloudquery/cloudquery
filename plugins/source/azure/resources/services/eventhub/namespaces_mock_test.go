@@ -24,14 +24,20 @@ func createNamespacesMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 	mockClient := mocks.NewMockEventHubNamespacesClient(ctrl)
 	s := services.Services{
 		EventHub: services.EventHubClient{
-			Namespaces: mockClient,
+			Namespaces:      mockClient,
+			NetworkRuleSets: createNetworkRuleSetsMock(t, ctrl).EventHub.NetworkRuleSets,
 		},
 	}
 
 	data := eventhub.EHNamespace{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := eventhub.NewEHNamespaceListResultPage(eventhub.EHNamespaceListResult{Value: &[]eventhub.EHNamespace{data}}, func(ctx context.Context, result eventhub.EHNamespaceListResult) (eventhub.EHNamespaceListResult, error) {

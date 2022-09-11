@@ -30,9 +30,6 @@ func createRouteFiltersMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 
 	data := network.RouteFilter{}
 	require.Nil(t, faker.FakeObject(&data))
-	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
-	data.ID = &id
 
 	result := network.NewRouteFilterListResultPage(network.RouteFilterListResult{Value: &[]network.RouteFilter{data}}, func(ctx context.Context, result network.RouteFilterListResult) (network.RouteFilterListResult, error) {
 		return network.RouteFilterListResult{}, nil

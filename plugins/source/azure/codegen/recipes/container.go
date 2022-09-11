@@ -33,18 +33,6 @@ func Container() []Resource {
 					listFunction: "List",
 					relations:    []string{"replications()"},
 				},
-			},
-			serviceNameOverride: "Container",
-		},
-		{
-			templates: []template{
-				{
-					source:            "resource_list.go.tpl",
-					destinationSuffix: ".go",
-					imports:           []string{},
-				},
-			},
-			definitions: []resourceDefinition{
 				{
 					azureStruct:  &containerregistry.Replication{},
 					listFunction: "List",
@@ -53,8 +41,10 @@ func Container() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*registry.Name"},
-					isRelation:       true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*registry.Name"},
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 			},
 			serviceNameOverride: "Container",

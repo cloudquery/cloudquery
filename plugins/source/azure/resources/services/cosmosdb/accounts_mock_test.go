@@ -23,14 +23,21 @@ func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 	mockClient := mocks.NewMockCosmosDBAccountsClient(ctrl)
 	s := services.Services{
 		CosmosDB: services.CosmosDBClient{
-			Accounts: mockClient,
+			Accounts:         mockClient,
+			MongoDBDatabases: createMongoDBDatabasesMock(t, ctrl).CosmosDB.MongoDBDatabases,
+			SQLDatabases:     createSQLDatabasesMock(t, ctrl).CosmosDB.SQLDatabases,
 		},
 	}
 
 	data := documentdb.DatabaseAccountGetResults{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := documentdb.DatabaseAccountsListResult{Value: &[]documentdb.DatabaseAccountGetResults{data}}

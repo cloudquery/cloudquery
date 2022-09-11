@@ -26,18 +26,6 @@ func PostgresSQL() []Resource {
 					listHandler:  valueHandler,
 					relations:    []string{"configurations()", "firewallRules()"},
 				},
-			},
-			serviceNameOverride: "PostgreSQL",
-		},
-		{
-			templates: []template{
-				{
-					source:            "resource_list.go.tpl",
-					destinationSuffix: ".go",
-					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
-				},
-			},
-			definitions: []resourceDefinition{
 				{
 					azureStruct:      &postgresql.Configuration{},
 					listFunction:     "ListByServer",
@@ -47,7 +35,9 @@ func PostgresSQL() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					isRelation: true,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 				{
 					azureStruct:      &postgresql.FirewallRule{},
@@ -58,7 +48,9 @@ func PostgresSQL() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					isRelation: true,
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
 				},
 			},
 			serviceNameOverride: "PostgreSQL",

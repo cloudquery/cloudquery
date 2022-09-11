@@ -24,14 +24,28 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 	mockClient := mocks.NewMockSQLServersClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
-			Servers: mockClient,
+			Servers:                        mockClient,
+			Databases:                      createDatabasesMock(t, ctrl).SQL.Databases,
+			EncryptionProtectors:           createEncryptionProtectorsMock(t, ctrl).SQL.EncryptionProtectors,
+			VirtualNetworkRules:            createVirtualNetworkRulesMock(t, ctrl).SQL.VirtualNetworkRules,
+			FirewallRules:                  createFirewallRulesMock(t, ctrl).SQL.FirewallRules,
+			ServerAdmins:                   createServerAdminsMock(t, ctrl).SQL.ServerAdmins,
+			ServerBlobAuditingPolicies:     createServerBlobAuditingPoliciesMock(t, ctrl).SQL.ServerBlobAuditingPolicies,
+			ServerDevOpsAuditingSettings:   createServerDevOpsAuditingSettingsMock(t, ctrl).SQL.ServerDevOpsAuditingSettings,
+			ServerVulnerabilityAssessments: createServerVulnerabilityAssessmentsMock(t, ctrl).SQL.ServerVulnerabilityAssessments,
+			ServerSecurityAlertPolicies:    createServerSecurityAlertPoliciesMock(t, ctrl).SQL.ServerSecurityAlertPolicies,
 		},
 	}
 
 	data := sql.Server{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := sql.NewServerListResultPage(sql.ServerListResult{Value: &[]sql.Server{data}}, func(ctx context.Context, result sql.ServerListResult) (sql.ServerListResult, error) {

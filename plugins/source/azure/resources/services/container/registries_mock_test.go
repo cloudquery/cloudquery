@@ -24,14 +24,20 @@ func createRegistriesMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 	mockClient := mocks.NewMockContainerRegistriesClient(ctrl)
 	s := services.Services{
 		Container: services.ContainerClient{
-			Registries: mockClient,
+			Registries:   mockClient,
+			Replications: createReplicationsMock(t, ctrl).Container.Replications,
 		},
 	}
 
 	data := containerregistry.Registry{}
 	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
 	// Use correct Azure ID format
-	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
 	data.ID = &id
 
 	result := containerregistry.NewRegistryListResultPage(containerregistry.RegistryListResult{Value: &[]containerregistry.Registry{data}}, func(ctx context.Context, result containerregistry.RegistryListResult) (containerregistry.RegistryListResult, error) {
