@@ -67,6 +67,7 @@ func SQL() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.ManagedInstanceEncryptionProtector{},
@@ -97,7 +98,7 @@ func SQL() []Resource {
 					subServiceOverride:       "ManagedDatabaseVulnerabilityAssessments",
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 				},
 				{
 					azureStruct:      &sql.VulnerabilityAssessmentScanRecord{},
@@ -113,7 +114,7 @@ func SQL() []Resource {
 					isRelation:               true,
 					subServiceOverride:       "ManagedDatabaseVulnerabilityAssessmentScans",
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 				},
 				// relations of sql.Server
 				{
@@ -184,6 +185,7 @@ func SQL() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.ServerAzureADAdministrator{},
@@ -199,6 +201,7 @@ func SQL() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           "AdministratorListResult",
 				},
 				{
 					azureStruct:      &sql.ServerBlobAuditingPolicy{},
@@ -227,6 +230,7 @@ func SQL() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.ServerVulnerabilityAssessment{},
@@ -255,6 +259,7 @@ func SQL() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				// relations of sql.Database
 				{
@@ -270,7 +275,8 @@ func SQL() []Resource {
 					}`},
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.DatabaseVulnerabilityAssessment{},
@@ -285,7 +291,8 @@ func SQL() []Resource {
 					}`},
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.VulnerabilityAssessmentScanRecord{},
@@ -301,7 +308,8 @@ func SQL() []Resource {
 					subServiceOverride:       "DatabaseVulnerabilityAssessmentScans",
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.BackupLongTermRetentionPolicy{},
@@ -321,7 +329,8 @@ func SQL() []Resource {
 					subServiceOverride:       "BackupLongTermRetentionPolicies",
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.DatabaseSecurityAlertPolicy{},
@@ -341,7 +350,8 @@ func SQL() []Resource {
 					subServiceOverride:       "DatabaseThreatDetectionPolicies",
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:      &sql.TransparentDataEncryption{},
@@ -360,7 +370,8 @@ func SQL() []Resource {
 					res <- response`,
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 			},
 			serviceNameOverride: "SQL",

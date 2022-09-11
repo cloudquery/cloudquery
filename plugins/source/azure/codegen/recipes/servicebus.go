@@ -77,6 +77,7 @@ func ServiceBus() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 			},
 		},

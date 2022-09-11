@@ -69,6 +69,7 @@ func Compute() []Resource {
 					subServiceOverride:       "InstanceViews",
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:  &compute.VirtualMachineExtension{},

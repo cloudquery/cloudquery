@@ -3,7 +3,6 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,9 +25,7 @@ func createFirewallRulesMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 	data := sql.FirewallRule{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := sql.NewFirewallRuleListResultPage(sql.FirewallRuleListResult{Value: &[]sql.FirewallRule{data}}, func(ctx context.Context, result sql.FirewallRuleListResult) (sql.FirewallRuleListResult, error) {
-		return sql.FirewallRuleListResult{}, nil
-	})
+	result := data
 
 	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
 	return s

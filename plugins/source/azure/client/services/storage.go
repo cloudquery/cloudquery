@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountsClient,StorageBlobServicePropertiesClient,StorageBlobServicesClient,StorageContainerClient,StorageQueueServicePropertiesClient
+//go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountsClient,StorageBlobServicePropertiesClient,StorageBlobServicesClient,StorageContainersClient,StorageQueueServicePropertiesClient
 package services
 
 import (
@@ -13,7 +13,7 @@ import (
 type StorageClient struct {
 	Accounts                  StorageAccountsClient
 	BlobServices              StorageBlobServicesClient
-	Containers                StorageContainerClient
+	Containers                StorageContainersClient
 	NewBlobServiceProperties  func(autorest.Authorizer) StorageBlobServicePropertiesClient
 	NewQueueServiceProperties func(autorest.Authorizer) StorageQueueServicePropertiesClient
 }
@@ -27,7 +27,7 @@ type StorageBlobServicesClient interface {
 	List(ctx context.Context, resourceGroupName string, accountName string) (result storage.BlobServiceItems, err error)
 }
 
-type StorageContainerClient interface {
+type StorageContainersClient interface {
 	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsPage, err error)
 }
 

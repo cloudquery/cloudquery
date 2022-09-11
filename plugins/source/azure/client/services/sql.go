@@ -29,10 +29,10 @@ type SQLClient struct {
 	ManagedDatabaseVulnerabilityAssessmentScans SQLManagedDatabaseVulnerabilityAssessmentScansClient
 	ManagedInstanceEncryptionProtectors         SQLManagedInstanceEncryptionProtectorsClient
 	VirtualNetworkRules                         SQLVirtualNetworkRulesClient
-	ServerSecurityAlertPolicies                 ServerSecurityAlertPoliciesClient
+	ServerSecurityAlertPolicies                 SQLServerSecurityAlertPoliciesClient
 }
 
-//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLServersClient,SQLFirewallRulesClient,SQLServerAdminsClient,SQLServerBlobAuditingPoliciesClient,SQLServerDevOpsAuditingSettingsClient,SQLServerVulnerabilityAssessmentsClient,SQLEncryptionProtectorsClient,SQLVirtualNetworkRulesClient,ServerSecurityAlertPoliciesClient,SQLDatabasesClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,SQLTransparentDataEncryptionsClient,SQLBackupLongTermRetentionPoliciesClient,SQLManagedInstancesClient,SQLManagedInstanceVulnerabilityAssessmentsClient,SQLManagedInstanceEncryptionProtectorsClient,SQLManagedDatabasesClient,SQLManagedDatabaseVulnerabilityAssessmentsClient,SQLManagedDatabaseVulnerabilityAssessmentScansClient
+//go:generate mockgen -destination=./mocks/sql.go -package=mocks . SQLServersClient,SQLFirewallRulesClient,SQLServerAdminsClient,SQLServerBlobAuditingPoliciesClient,SQLServerDevOpsAuditingSettingsClient,SQLServerVulnerabilityAssessmentsClient,SQLEncryptionProtectorsClient,SQLVirtualNetworkRulesClient,SQLServerSecurityAlertPoliciesClient,SQLDatabasesClient,SQLDatabaseBlobAuditingPoliciesClient,SQLDatabaseThreatDetectionPoliciesClient,SQLDatabaseVulnerabilityAssessmentsClient,SQLDatabaseVulnerabilityAssessmentScansClient,SQLTransparentDataEncryptionsClient,SQLBackupLongTermRetentionPoliciesClient,SQLManagedInstancesClient,SQLManagedInstanceVulnerabilityAssessmentsClient,SQLManagedInstanceEncryptionProtectorsClient,SQLManagedDatabasesClient,SQLManagedDatabaseVulnerabilityAssessmentsClient,SQLManagedDatabaseVulnerabilityAssessmentScansClient
 type SQLServersClient interface {
 	List(ctx context.Context) (result sql.ServerListResultPage, err error)
 }
@@ -65,7 +65,7 @@ type SQLVirtualNetworkRulesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.VirtualNetworkRuleListResultPage, err error)
 }
 
-type ServerSecurityAlertPoliciesClient interface {
+type SQLServerSecurityAlertPoliciesClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.LogicalServerSecurityAlertPolicyListResultPage, err error)
 }
 

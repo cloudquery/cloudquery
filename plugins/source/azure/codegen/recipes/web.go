@@ -32,6 +32,19 @@ func Web() []Resource {
 					subServiceOverride: "Apps",
 					mockListResult:     "AppCollection",
 					relations:          []string{"siteAuthSettings()", "vnetConnections()", "publishingProfiles()"},
+					mockHelpers: []string{`func createPublishingProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+						mockClient := mocks.NewMockWebPublishingProfilesClient(ctrl)
+						s := services.Services{
+							Web: services.WebClient{
+								PublishingProfiles: mockClient,
+							},
+						}
+						data := web.ReadCloser{}
+						require.Nil(t, faker.FakeObject(&data))
+
+						mockClient.EXPECT().ListPublishingProfileXMLWithSecrets(gomock.Any(), "test", "test", "test").Return(data, nil)
+						return s
+					}`},
 				},
 				{
 					azureStruct:          &web.SiteAuthSettings{},
@@ -45,6 +58,7 @@ func Web() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 				{
 					azureStruct:          &web.VnetInfo{},
@@ -58,8 +72,21 @@ func Web() []Resource {
 					subServiceOverride:       "VnetConnections",
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
+			},
+			serviceNameOverride: "Web",
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"},
+				},
+			},
+			definitions: []resourceDefinition{
 				{
 					azureStruct: &publishProfile{},
 					helpers: []string{`type PublishProfile struct {
@@ -91,7 +118,7 @@ func Web() []Resource {
 					subServiceOverride:       "PublishingProfiles",
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 				},
 			},
 			serviceNameOverride: "Web",

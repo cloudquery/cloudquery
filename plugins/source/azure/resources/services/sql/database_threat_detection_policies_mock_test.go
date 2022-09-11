@@ -3,7 +3,6 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,10 +25,8 @@ func createDatabaseThreatDetectionPoliciesMock(t *testing.T, ctrl *gomock.Contro
 	data := sql.DatabaseSecurityAlertPolicy{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := sql.NewDatabaseSecurityAlertPolicyListResultPage(sql.DatabaseSecurityAlertPolicyListResult{Value: &[]sql.DatabaseSecurityAlertPolicy{data}}, func(ctx context.Context, result sql.DatabaseSecurityAlertPolicyListResult) (sql.DatabaseSecurityAlertPolicyListResult, error) {
-		return sql.DatabaseSecurityAlertPolicyListResult{}, nil
-	})
+	result := data
 
-	mockClient.EXPECT().Get(gomock.Any(), "test", "test").Return(result, nil)
+	mockClient.EXPECT().Get(gomock.Any(), "test", "test", "test").Return(result, nil)
 	return s
 }

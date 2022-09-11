@@ -3,7 +3,6 @@
 package web
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,9 +25,7 @@ func createSiteAuthSettingsMock(t *testing.T, ctrl *gomock.Controller) services.
 	data := web.SiteAuthSettings{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := web.NewSiteAuthSettingsListResultPage(web.SiteAuthSettingsListResult{Value: &[]web.SiteAuthSettings{data}}, func(ctx context.Context, result web.SiteAuthSettingsListResult) (web.SiteAuthSettingsListResult, error) {
-		return web.SiteAuthSettingsListResult{}, nil
-	})
+	result := data
 
 	mockClient.EXPECT().GetAuthSettings(gomock.Any(), "test", "test").Return(result, nil)
 	return s

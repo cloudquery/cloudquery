@@ -25,7 +25,7 @@ func createNetworkRuleSetsMock(t *testing.T, ctrl *gomock.Controller) services.S
 	data := eventhub.NetworkRuleSet{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := eventhub.NetworkRuleSetListResult{Value: &[]eventhub.NetworkRuleSet{data}}
+	result := data
 
 	mockClient.EXPECT().GetNetworkRuleSet(gomock.Any(), "test", "test").Return(result, nil)
 	return s

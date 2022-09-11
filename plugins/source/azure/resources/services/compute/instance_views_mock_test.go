@@ -25,7 +25,7 @@ func createInstanceViewsMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 	data := compute.VirtualMachineInstanceView{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := compute.VirtualMachineInstanceViewListResult{Value: &[]compute.VirtualMachineInstanceView{data}}
+	result := data
 
 	mockClient.EXPECT().InstanceView(gomock.Any(), "test", "test").Return(result, nil)
 	return s

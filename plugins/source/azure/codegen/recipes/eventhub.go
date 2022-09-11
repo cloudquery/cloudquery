@@ -59,6 +59,7 @@ func EventHub() []Resource {
 					isRelation:               true,
 					mockListFunctionArgsInit: []string{""},
 					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           mockDirectResponse,
 				},
 			},
 			serviceNameOverride: "EventHub",

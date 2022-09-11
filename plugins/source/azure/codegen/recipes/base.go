@@ -95,6 +95,7 @@ const (
 	}
 	res <- *response.Value
 	`
+	mockDirectResponse = `CQ_CODEGEN_DIRECT_RESPONSE`
 )
 
 var (

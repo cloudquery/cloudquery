@@ -3,7 +3,6 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,10 +25,8 @@ func createBackupLongTermRetentionPoliciesMock(t *testing.T, ctrl *gomock.Contro
 	data := sql.BackupLongTermRetentionPolicy{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := sql.NewBackupLongTermRetentionPolicyListResultPage(sql.BackupLongTermRetentionPolicyListResult{Value: &[]sql.BackupLongTermRetentionPolicy{data}}, func(ctx context.Context, result sql.BackupLongTermRetentionPolicyListResult) (sql.BackupLongTermRetentionPolicyListResult, error) {
-		return sql.BackupLongTermRetentionPolicyListResult{}, nil
-	})
+	result := data
 
-	mockClient.EXPECT().ListByDatabase(gomock.Any(), "test", "test").Return(result, nil)
+	mockClient.EXPECT().ListByDatabase(gomock.Any(), "test", "test", "test").Return(result, nil)
 	return s
 }

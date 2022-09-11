@@ -26,8 +26,8 @@ func createServerAdminsMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 	data := sql.ServerAzureADAdministrator{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := sql.NewServerAzureADAdministratorListResultPage(sql.ServerAzureADAdministratorListResult{Value: &[]sql.ServerAzureADAdministrator{data}}, func(ctx context.Context, result sql.ServerAzureADAdministratorListResult) (sql.ServerAzureADAdministratorListResult, error) {
-		return sql.ServerAzureADAdministratorListResult{}, nil
+	result := sql.NewAdministratorListResultPage(sql.AdministratorListResult{Value: &[]sql.ServerAzureADAdministrator{data}}, func(ctx context.Context, result sql.AdministratorListResult) (sql.AdministratorListResult, error) {
+		return sql.AdministratorListResult{}, nil
 	})
 
 	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)

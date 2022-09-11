@@ -3,7 +3,6 @@
 package servicebus
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,9 +25,7 @@ func createAccessKeysMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 	data := servicebus.AccessKeys{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := servicebus.NewAccessKeysListResultPage(servicebus.AccessKeysListResult{Value: &[]servicebus.AccessKeys{data}}, func(ctx context.Context, result servicebus.AccessKeysListResult) (servicebus.AccessKeysListResult, error) {
-		return servicebus.AccessKeysListResult{}, nil
-	})
+	result := data
 
 	mockClient.EXPECT().ListKeys(gomock.Any(), "test", "test", "test", "test").Return(result, nil)
 	return s

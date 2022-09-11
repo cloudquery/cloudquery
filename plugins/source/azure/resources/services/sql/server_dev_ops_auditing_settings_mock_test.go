@@ -3,7 +3,6 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,9 +25,7 @@ func createServerDevOpsAuditingSettingsMock(t *testing.T, ctrl *gomock.Controlle
 	data := sql.ServerDevOpsAuditingSettings{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := sql.NewServerDevOpsAuditingSettingsListResultPage(sql.ServerDevOpsAuditingSettingsListResult{Value: &[]sql.ServerDevOpsAuditingSettings{data}}, func(ctx context.Context, result sql.ServerDevOpsAuditingSettingsListResult) (sql.ServerDevOpsAuditingSettingsListResult, error) {
-		return sql.ServerDevOpsAuditingSettingsListResult{}, nil
-	})
+	result := data
 
 	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
 	return s

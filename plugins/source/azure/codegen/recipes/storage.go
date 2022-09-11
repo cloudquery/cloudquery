@@ -119,6 +119,11 @@ func Storage() []Resource {
 					destinationSuffix: ".go",
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage", "github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"},
 				},
+				{
+					source:            "resource_list_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage", "github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"},
+				},
 			},
 			definitions: []resourceDefinition{
 				{
@@ -132,23 +137,6 @@ func Storage() []Resource {
 					relations: []string{"blobServices()", "containers()"},
 				},
 				{
-					azureStruct:  &storage.BlobServiceProperties{},
-					listFunction: "List",
-					listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
-					if !isBlobSupported(&account) {
-						return nil
-					}
-				
-					resource, err := client.ParseResourceID(*account.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:   []string{"resource.ResourceGroup", "*account.Name"},
-					listHandler:        valueHandler,
-					subServiceOverride: "BlobServices",
-					isRelation:         true,
-				},
-				{
 					azureStruct:  &storage.ListContainerItem{},
 					listFunction: "List",
 					listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
@@ -160,9 +148,48 @@ func Storage() []Resource {
 					if err != nil {
 						return errors.WithStack(err)
 					}`},
-					listFunctionArgs:   []string{"resource.ResourceGroup", "*account.Name", `""`, `""`, `""`},
-					subServiceOverride: "Containers",
-					isRelation:         true,
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name", `""`, `""`, `""`},
+					subServiceOverride:       "Containers",
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`, `""`, `""`, `""`},
+					mockListResult:           "ListContainerItems",
+				},
+			},
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage", "github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"},
+				},
+				{
+					source:            "resource_list_value_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage", "github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"},
+				},
+			},
+			definitions: []resourceDefinition{
+				{
+					azureStruct:  &storage.BlobServiceProperties{},
+					listFunction: "List",
+					listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
+					if !isBlobSupported(&account) {
+						return nil
+					}
+				
+					resource, err := client.ParseResourceID(*account.ID)
+					if err != nil {
+						return errors.WithStack(err)
+					}`},
+					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
+					listHandler:              valueHandler,
+					subServiceOverride:       "BlobServices",
+					isRelation:               true,
+					mockListFunctionArgsInit: []string{""},
+					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					mockListResult:           "BlobServiceItems",
 				},
 			},
 		},

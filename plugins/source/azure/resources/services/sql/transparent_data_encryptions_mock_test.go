@@ -3,7 +3,6 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,10 +25,8 @@ func createTransparentDataEncryptionsMock(t *testing.T, ctrl *gomock.Controller)
 	data := sql.TransparentDataEncryption{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := sql.NewTransparentDataEncryptionListResultPage(sql.TransparentDataEncryptionListResult{Value: &[]sql.TransparentDataEncryption{data}}, func(ctx context.Context, result sql.TransparentDataEncryptionListResult) (sql.TransparentDataEncryptionListResult, error) {
-		return sql.TransparentDataEncryptionListResult{}, nil
-	})
+	result := data
 
-	mockClient.EXPECT().Get(gomock.Any(), "test", "test").Return(result, nil)
+	mockClient.EXPECT().Get(gomock.Any(), "test", "test", "test").Return(result, nil)
 	return s
 }

@@ -3,7 +3,6 @@
 package web
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,10 +25,8 @@ func createVnetConnectionsMock(t *testing.T, ctrl *gomock.Controller) services.S
 	data := web.VnetInfo{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := web.NewVnetInfoListResultPage(web.VnetInfoListResult{Value: &[]web.VnetInfo{data}}, func(ctx context.Context, result web.VnetInfoListResult) (web.VnetInfoListResult, error) {
-		return web.VnetInfoListResult{}, nil
-	})
+	result := data
 
-	mockClient.EXPECT().GetVnetConnection(gomock.Any(), "test", "test").Return(result, nil)
+	mockClient.EXPECT().GetVnetConnection(gomock.Any(), "test", "test", "test").Return(result, nil)
 	return s
 }
