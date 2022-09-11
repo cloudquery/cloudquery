@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.2.8
+	github.com/cloudquery/plugin-sdk v0.2.9
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/google/go-cmp v0.5.9
 	github.com/jackc/pgtype v1.12.0
@@ -22,7 +22,7 @@ require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gofrs/uuid v4.2.0+incompatible // indirect
+	github.com/gofrs/uuid v4.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
