@@ -8,6 +8,7 @@ import (
 
 func main() {
 	resources := recipes.Ec2Resources()
+	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.EcsResources()...)
 	resources = append(resources, recipes.EfsResources()...)
 	resources = append(resources, recipes.EksResources()...)

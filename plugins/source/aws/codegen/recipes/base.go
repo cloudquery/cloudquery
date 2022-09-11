@@ -25,6 +25,7 @@ type Resource struct {
 	Table *codegen.TableDefinition
 	Multiplex string
 	PreResourceResolver string
+	Relations []string
 }
 
 //go:embed templates/*.go.tpl
@@ -67,6 +68,9 @@ func (r *Resource) Generate() error {
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver
 	}
+	if r.Relations != nil {
+		r.Table.Relations = r.Relations
+	}
 
 	tpl, err := template.New("resource.go.tpl").Funcs(template.FuncMap{
 		"ToCamel": strcase.ToCamel,
@@ -90,9 +94,12 @@ func (r *Resource) Generate() error {
 	}
 
 	filePath := path.Join(dir, r.SubService + ".go")
-	content, err := format.Source(buff.Bytes())
+	content := buff.Bytes()
+	formattedContent, err := format.Source(buff.Bytes())
 	if err != nil {
-		return fmt.Errorf("failed to format code for %s: %w", filePath, err)
+		fmt.Printf("failed to format source: %s: %w\n", filePath, err)
+	} else {
+		content = formattedContent
 	}
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		return fmt.Errorf("failed to write file %s: %w", filePath, err)
