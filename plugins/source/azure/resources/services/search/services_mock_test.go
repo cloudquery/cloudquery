@@ -31,7 +31,7 @@ func createServicesMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := search.Service{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := search.NewServiceListResultPage(search.ServiceListResult{Value: &[]search.Service{data}}, func(ctx context.Context, result search.ServiceListResult) (search.ServiceListResult, error) {
 		return search.ServiceListResult{}, nil

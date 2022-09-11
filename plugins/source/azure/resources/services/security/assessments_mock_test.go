@@ -31,7 +31,7 @@ func createAssessmentsMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := security.Assessment{}
 	fieldsToIgnore := []string{"Response", "ResourceDetails"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := security.NewAssessmentListPage(security.AssessmentList{Value: &[]security.Assessment{data}}, func(ctx context.Context, result security.AssessmentList) (security.AssessmentList, error) {
 		return security.AssessmentList{}, nil

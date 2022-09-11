@@ -32,7 +32,7 @@ func createTenantsMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 
 	data := armsubscriptions.TenantIDDescription{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.TenantsClientListResponse]{
 		More: func(page armsubscriptions.TenantsClientListResponse) bool {

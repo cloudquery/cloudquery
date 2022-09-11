@@ -31,7 +31,7 @@ func createRoleDefinitionsMock(t *testing.T, ctrl *gomock.Controller) services.S
 
 	data := authorization.RoleDefinition{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := authorization.NewRoleDefinitionListResultPage(authorization.RoleDefinitionListResult{Value: &[]authorization.RoleDefinition{data}}, func(ctx context.Context, result authorization.RoleDefinitionListResult) (authorization.RoleDefinitionListResult, error) {
 		return authorization.RoleDefinitionListResult{}, nil

@@ -31,7 +31,7 @@ func createInterfacesMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 
 	data := network.Interface{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := network.NewInterfaceListResultPage(network.InterfaceListResult{Value: &[]network.Interface{data}}, func(ctx context.Context, result network.InterfaceListResult) (network.InterfaceListResult, error) {
 		return network.InterfaceListResult{}, nil

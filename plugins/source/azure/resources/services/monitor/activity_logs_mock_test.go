@@ -49,7 +49,7 @@ func createActivityLogsMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 
 	data := insights.EventData{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := insights.NewEventDataCollectionPage(insights.EventDataCollection{Value: &[]insights.EventData{data}}, func(ctx context.Context, result insights.EventDataCollection) (insights.EventDataCollection, error) {
 		return insights.EventDataCollection{}, nil

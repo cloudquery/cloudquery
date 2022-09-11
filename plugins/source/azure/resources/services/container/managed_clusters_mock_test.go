@@ -31,7 +31,7 @@ func createManagedClustersMock(t *testing.T, ctrl *gomock.Controller) services.S
 
 	data := containerservice.ManagedCluster{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := containerservice.NewManagedClusterListResultPage(containerservice.ManagedClusterListResult{Value: &[]containerservice.ManagedCluster{data}}, func(ctx context.Context, result containerservice.ManagedClusterListResult) (containerservice.ManagedClusterListResult, error) {
 		return containerservice.ManagedClusterListResult{}, nil

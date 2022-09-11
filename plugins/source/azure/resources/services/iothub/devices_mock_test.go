@@ -31,7 +31,7 @@ func createDevicesMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 
 	data := devices.IotHubDescription{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := devices.NewIotHubDescriptionListResultPage(devices.IotHubDescriptionListResult{Value: &[]devices.IotHubDescription{data}}, func(ctx context.Context, result devices.IotHubDescriptionListResult) (devices.IotHubDescriptionListResult, error) {
 		return devices.IotHubDescriptionListResult{}, nil

@@ -32,7 +32,7 @@ func createSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 
 	data := armsubscriptions.Subscription{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.ClientListResponse]{
 		More: func(page armsubscriptions.ClientListResponse) bool {

@@ -31,7 +31,7 @@ func createSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := security.Setting{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := security.NewSettingsListPage(security.SettingsList{Value: &[]security.BasicSetting{data}}, func(ctx context.Context, result security.SettingsList) (security.SettingsList, error) {
 		return security.SettingsList{}, nil

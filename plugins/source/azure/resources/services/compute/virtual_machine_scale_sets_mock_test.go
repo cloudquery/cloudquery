@@ -31,7 +31,7 @@ func createVirtualMachineScaleSetsMock(t *testing.T, ctrl *gomock.Controller) se
 
 	data := compute.VirtualMachineScaleSet{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := compute.NewVirtualMachineScaleSetListWithLinkResultPage(compute.VirtualMachineScaleSetListWithLinkResult{Value: &[]compute.VirtualMachineScaleSet{data}}, func(ctx context.Context, result compute.VirtualMachineScaleSetListWithLinkResult) (compute.VirtualMachineScaleSetListWithLinkResult, error) {
 		return compute.VirtualMachineScaleSetListWithLinkResult{}, nil

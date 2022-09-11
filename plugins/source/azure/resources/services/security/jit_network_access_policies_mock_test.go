@@ -31,7 +31,7 @@ func createJitNetworkAccessPoliciesMock(t *testing.T, ctrl *gomock.Controller) s
 
 	data := security.JitNetworkAccessPolicy{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := security.NewJitNetworkAccessPoliciesListPage(security.JitNetworkAccessPoliciesList{Value: &[]security.JitNetworkAccessPolicy{data}}, func(ctx context.Context, result security.JitNetworkAccessPoliciesList) (security.JitNetworkAccessPoliciesList, error) {
 		return security.JitNetworkAccessPoliciesList{}, nil

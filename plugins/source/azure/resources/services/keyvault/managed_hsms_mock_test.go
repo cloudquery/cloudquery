@@ -31,7 +31,7 @@ func createManagedHsmsMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := keyvault.ManagedHsm{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := keyvault.NewManagedHsmListResultPage(keyvault.ManagedHsmListResult{Value: &[]keyvault.ManagedHsm{data}}, func(ctx context.Context, result keyvault.ManagedHsmListResult) (keyvault.ManagedHsmListResult, error) {
 		return keyvault.ManagedHsmListResult{}, nil

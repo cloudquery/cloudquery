@@ -31,7 +31,7 @@ func createGroupsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := resources.Group{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := resources.NewGroupListResultPage(resources.GroupListResult{Value: &[]resources.Group{data}}, func(ctx context.Context, result resources.GroupListResult) (resources.GroupListResult, error) {
 		return resources.GroupListResult{}, nil

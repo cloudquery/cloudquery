@@ -31,7 +31,7 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 
 	data := sql.Server{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := sql.NewServerListResultPage(sql.ServerListResult{Value: &[]sql.Server{data}}, func(ctx context.Context, result sql.ServerListResult) (sql.ServerListResult, error) {
 		return sql.ServerListResult{}, nil

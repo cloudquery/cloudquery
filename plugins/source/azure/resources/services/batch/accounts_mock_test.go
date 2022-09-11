@@ -31,7 +31,7 @@ func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := batch.Account{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := batch.NewAccountListResultPage(batch.AccountListResult{Value: &[]batch.Account{data}}, func(ctx context.Context, result batch.AccountListResult) (batch.AccountListResult, error) {
 		return batch.AccountListResult{}, nil

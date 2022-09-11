@@ -31,7 +31,7 @@ func createRouteFiltersMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 
 	data := network.RouteFilter{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := network.NewRouteFilterListResultPage(network.RouteFilterListResult{Value: &[]network.RouteFilter{data}}, func(ctx context.Context, result network.RouteFilterListResult) (network.RouteFilterListResult, error) {
 		return network.RouteFilterListResult{}, nil

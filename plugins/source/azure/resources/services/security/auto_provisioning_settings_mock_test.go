@@ -31,7 +31,7 @@ func createAutoProvisioningSettingsMock(t *testing.T, ctrl *gomock.Controller) s
 
 	data := security.AutoProvisioningSetting{}
 	fieldsToIgnore := []string{"Response"}
-	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
+	require.Nil(t, faker.FakeData(&data, fakerOptions.WithIgnoreInterface(true), fakerOptions.WithRecursionMaxDepth(2), fakerOptions.WithFieldsToIgnore(fieldsToIgnore...), fakerOptions.WithRandomMapAndSliceMinSize(1), fakerOptions.WithRandomMapAndSliceMaxSize(1)))
 
 	result := security.NewAutoProvisioningSettingListPage(security.AutoProvisioningSettingList{Value: &[]security.AutoProvisioningSetting{data}}, func(ctx context.Context, result security.AutoProvisioningSettingList) (security.AutoProvisioningSettingList, error) {
 		return security.AutoProvisioningSettingList{}, nil

@@ -42,17 +42,17 @@ func RoleAssignments() *schema.Table {
 			{
 				Name:     "scope",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Scope"),
+				Resolver: schema.PathResolver("Properties.Scope"),
 			},
 			{
 				Name:     "role_definition_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RoleDefinitionID"),
+				Resolver: schema.PathResolver("Properties.RoleDefinitionID"),
 			},
 			{
 				Name:     "principal_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PrincipalID"),
+				Resolver: schema.PathResolver("Properties.PrincipalID"),
 			},
 		},
 	}
