@@ -30,6 +30,9 @@ func createRoleDefinitionsMock(t *testing.T, ctrl *gomock.Controller) services.S
 
 	data := authorization.RoleDefinition{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := authorization.NewRoleDefinitionListResultPage(authorization.RoleDefinitionListResult{Value: &[]authorization.RoleDefinition{data}}, func(ctx context.Context, result authorization.RoleDefinitionListResult) (authorization.RoleDefinitionListResult, error) {
 		return authorization.RoleDefinitionListResult{}, nil

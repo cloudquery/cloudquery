@@ -30,6 +30,9 @@ func createStreamingJobsMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 
 	data := streamanalytics.StreamingJob{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := streamanalytics.NewStreamingJobListResultPage(streamanalytics.StreamingJobListResult{Value: &[]streamanalytics.StreamingJob{data}}, func(ctx context.Context, result streamanalytics.StreamingJobListResult) (streamanalytics.StreamingJobListResult, error) {
 		return streamanalytics.StreamingJobListResult{}, nil

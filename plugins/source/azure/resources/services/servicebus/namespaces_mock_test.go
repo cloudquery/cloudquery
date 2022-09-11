@@ -30,6 +30,9 @@ func createNamespacesMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 
 	data := servicebus.SBNamespace{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := servicebus.NewSBNamespaceListResultPage(servicebus.SBNamespaceListResult{Value: &[]servicebus.SBNamespace{data}}, func(ctx context.Context, result servicebus.SBNamespaceListResult) (servicebus.SBNamespaceListResult, error) {
 		return servicebus.SBNamespaceListResult{}, nil

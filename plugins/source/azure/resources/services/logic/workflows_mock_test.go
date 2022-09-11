@@ -30,6 +30,9 @@ func createWorkflowsMock(t *testing.T, ctrl *gomock.Controller) services.Service
 
 	data := logic.Workflow{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := logic.NewWorkflowListResultPage(logic.WorkflowListResult{Value: &[]logic.Workflow{data}}, func(ctx context.Context, result logic.WorkflowListResult) (logic.WorkflowListResult, error) {
 		return logic.WorkflowListResult{}, nil

@@ -31,6 +31,9 @@ func createSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 
 	data := armsubscriptions.Subscription{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	pager := runtime.NewPager(runtime.PagingHandler[armsubscriptions.ClientListResponse]{
 		More: func(page armsubscriptions.ClientListResponse) bool {

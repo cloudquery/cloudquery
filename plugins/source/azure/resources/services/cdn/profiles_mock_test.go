@@ -30,6 +30,9 @@ func createProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := cdn.Profile{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := cdn.NewProfileListResultPage(cdn.ProfileListResult{Value: &[]cdn.Profile{data}}, func(ctx context.Context, result cdn.ProfileListResult) (cdn.ProfileListResult, error) {
 		return cdn.ProfileListResult{}, nil

@@ -7,10 +7,10 @@
 
 	data := {{ .AzurePackageName }}.{{ or .MockDefinitionType .AzureStructName }}{}
 	require.Nil(t, faker.FakeObject(&data))
-
-	{{if .GetFunction}}
+	// Use correct Azure ID format
 	id :=  "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
 	data.ID = &id
+	{{if .GetFunction}}
 
 	getData := {{ .AzurePackageName }}.{{ .AzureStructName }}{}
 	require.Nil(t, faker.FakeObject(&getData))

@@ -30,6 +30,9 @@ func createJitNetworkAccessPoliciesMock(t *testing.T, ctrl *gomock.Controller) s
 
 	data := security.JitNetworkAccessPolicy{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := security.NewJitNetworkAccessPoliciesListPage(security.JitNetworkAccessPoliciesList{Value: &[]security.JitNetworkAccessPolicy{data}}, func(ctx context.Context, result security.JitNetworkAccessPoliciesList) (security.JitNetworkAccessPoliciesList, error) {
 		return security.JitNetworkAccessPoliciesList{}, nil

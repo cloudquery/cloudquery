@@ -30,6 +30,9 @@ func createVirtualMachineScaleSetsMock(t *testing.T, ctrl *gomock.Controller) se
 
 	data := compute.VirtualMachineScaleSet{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := compute.NewVirtualMachineScaleSetListWithLinkResultPage(compute.VirtualMachineScaleSetListWithLinkResult{Value: &[]compute.VirtualMachineScaleSet{data}}, func(ctx context.Context, result compute.VirtualMachineScaleSetListWithLinkResult) (compute.VirtualMachineScaleSetListWithLinkResult, error) {
 		return compute.VirtualMachineScaleSetListWithLinkResult{}, nil

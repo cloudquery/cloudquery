@@ -30,6 +30,9 @@ func createVaultsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 
 	data := keyvault.Vault{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := keyvault.NewVaultListResultPage(keyvault.VaultListResult{Value: &[]keyvault.Vault{data}}, func(ctx context.Context, result keyvault.VaultListResult) (keyvault.VaultListResult, error) {
 		return keyvault.VaultListResult{}, nil

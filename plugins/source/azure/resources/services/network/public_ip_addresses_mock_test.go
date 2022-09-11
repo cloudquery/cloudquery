@@ -30,6 +30,9 @@ func createPublicIPAddressesMock(t *testing.T, ctrl *gomock.Controller) services
 
 	data := network.PublicIPAddress{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := network.NewPublicIPAddressListResultPage(network.PublicIPAddressListResult{Value: &[]network.PublicIPAddress{data}}, func(ctx context.Context, result network.PublicIPAddressListResult) (network.PublicIPAddressListResult, error) {
 		return network.PublicIPAddressListResult{}, nil

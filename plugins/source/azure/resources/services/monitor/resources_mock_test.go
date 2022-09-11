@@ -29,6 +29,9 @@ func createResourcesMock(t *testing.T, ctrl *gomock.Controller) services.Service
 
 	data := resources.GenericResourceExpanded{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := resources.NewListResultPage(resources.ListResult{Value: &[]resources.GenericResourceExpanded{data}}, func(ctx context.Context, result resources.ListResult) (resources.ListResult, error) {
 		return resources.ListResult{}, nil

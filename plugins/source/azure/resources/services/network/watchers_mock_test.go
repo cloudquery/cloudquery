@@ -29,6 +29,9 @@ func createWatchersMock(t *testing.T, ctrl *gomock.Controller) services.Services
 
 	data := network.Watcher{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := network.WatcherListResult{Value: &[]network.Watcher{data}}
 

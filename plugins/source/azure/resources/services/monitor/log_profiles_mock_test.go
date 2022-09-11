@@ -29,6 +29,9 @@ func createLogProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := insights.LogProfileResource{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := insights.LogProfileCollection{Value: &[]insights.LogProfileResource{data}}
 

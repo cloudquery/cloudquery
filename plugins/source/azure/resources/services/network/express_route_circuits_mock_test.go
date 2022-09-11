@@ -30,6 +30,9 @@ func createExpressRouteCircuitsMock(t *testing.T, ctrl *gomock.Controller) servi
 
 	data := network.ExpressRouteCircuit{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := network.NewExpressRouteCircuitListResultPage(network.ExpressRouteCircuitListResult{Value: &[]network.ExpressRouteCircuit{data}}, func(ctx context.Context, result network.ExpressRouteCircuitListResult) (network.ExpressRouteCircuitListResult, error) {
 		return network.ExpressRouteCircuitListResult{}, nil

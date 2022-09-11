@@ -30,6 +30,9 @@ func createRegistriesMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 
 	data := containerregistry.Registry{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := containerregistry.NewRegistryListResultPage(containerregistry.RegistryListResult{Value: &[]containerregistry.Registry{data}}, func(ctx context.Context, result containerregistry.RegistryListResult) (containerregistry.RegistryListResult, error) {
 		return containerregistry.RegistryListResult{}, nil

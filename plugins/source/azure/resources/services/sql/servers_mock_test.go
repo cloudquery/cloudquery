@@ -30,6 +30,9 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 
 	data := sql.Server{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := sql.NewServerListResultPage(sql.ServerListResult{Value: &[]sql.Server{data}}, func(ctx context.Context, result sql.ServerListResult) (sql.ServerListResult, error) {
 		return sql.ServerListResult{}, nil

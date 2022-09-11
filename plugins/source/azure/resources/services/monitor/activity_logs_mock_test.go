@@ -48,6 +48,9 @@ func createActivityLogsMock(t *testing.T, ctrl *gomock.Controller) services.Serv
 
 	data := insights.EventData{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := insights.NewEventDataCollectionPage(insights.EventDataCollection{Value: &[]insights.EventData{data}}, func(ctx context.Context, result insights.EventDataCollection) (insights.EventDataCollection, error) {
 		return insights.EventDataCollection{}, nil

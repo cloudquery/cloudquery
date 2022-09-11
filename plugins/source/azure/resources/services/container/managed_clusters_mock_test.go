@@ -30,6 +30,9 @@ func createManagedClustersMock(t *testing.T, ctrl *gomock.Controller) services.S
 
 	data := containerservice.ManagedCluster{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := containerservice.NewManagedClusterListResultPage(containerservice.ManagedClusterListResult{Value: &[]containerservice.ManagedCluster{data}}, func(ctx context.Context, result containerservice.ManagedClusterListResult) (containerservice.ManagedClusterListResult, error) {
 		return containerservice.ManagedClusterListResult{}, nil

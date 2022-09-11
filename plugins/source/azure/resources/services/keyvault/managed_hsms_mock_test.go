@@ -30,6 +30,9 @@ func createManagedHsmsMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 
 	data := keyvault.ManagedHsm{}
 	require.Nil(t, faker.FakeObject(&data))
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/" + *data.ID
+	data.ID = &id
 
 	result := keyvault.NewManagedHsmListResultPage(keyvault.ManagedHsmListResult{Value: &[]keyvault.ManagedHsm{data}}, func(ctx context.Context, result keyvault.ManagedHsmListResult) (keyvault.ManagedHsmListResult, error) {
 		return keyvault.ManagedHsmListResult{}, nil
