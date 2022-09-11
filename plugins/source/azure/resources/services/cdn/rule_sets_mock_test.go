@@ -20,7 +20,6 @@ func createRuleSetsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 	s := services.Services{
 		CDN: services.CDNClient{
 			RuleSets: mockClient,
-			Rules:    createRulesMock(t, ctrl).CDN.Rules,
 		},
 	}
 

@@ -19,9 +19,7 @@ func createEndpointsMock(t *testing.T, ctrl *gomock.Controller) services.Service
 	mockClient := mocks.NewMockCDNEndpointsClient(ctrl)
 	s := services.Services{
 		CDN: services.CDNClient{
-			Endpoints:     mockClient,
-			CustomDomains: createCustomDomainsMock(t, ctrl).CDN.CustomDomains,
-			Routes:        createRoutesMock(t, ctrl).CDN.Routes,
+			Endpoints: mockClient,
 		},
 	}
 

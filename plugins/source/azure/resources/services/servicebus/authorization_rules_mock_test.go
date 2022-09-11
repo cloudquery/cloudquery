@@ -20,7 +20,6 @@ func createAuthorizationRulesMock(t *testing.T, ctrl *gomock.Controller) service
 	s := services.Services{
 		Servicebus: services.ServicebusClient{
 			AuthorizationRules: mockClient,
-			AccessKeys:         createAccessKeysMock(t, ctrl).Servicebus.AccessKeys,
 		},
 	}
 

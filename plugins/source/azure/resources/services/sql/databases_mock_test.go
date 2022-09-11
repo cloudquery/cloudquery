@@ -19,13 +19,7 @@ func createDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.Service
 	mockClient := mocks.NewMockSQLDatabasesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
-			Databases:                            mockClient,
-			DatabaseBlobAuditingPolicies:         createDatabaseBlobAuditingPoliciesMock(t, ctrl).SQL.DatabaseBlobAuditingPolicies,
-			DatabaseVulnerabilityAssessments:     createDatabaseVulnerabilityAssessmentsMock(t, ctrl).SQL.DatabaseVulnerabilityAssessments,
-			DatabaseVulnerabilityAssessmentScans: createDatabaseVulnerabilityAssessmentScansMock(t, ctrl).SQL.DatabaseVulnerabilityAssessmentScans,
-			BackupLongTermRetentionPolicies:      createBackupLongTermRetentionPoliciesMock(t, ctrl).SQL.BackupLongTermRetentionPolicies,
-			DatabaseThreatDetectionPolicies:      createDatabaseThreatDetectionPoliciesMock(t, ctrl).SQL.DatabaseThreatDetectionPolicies,
-			TransparentDataEncryptions:           createTransparentDataEncryptionsMock(t, ctrl).SQL.TransparentDataEncryptions,
+			Databases: mockClient,
 		},
 	}
 

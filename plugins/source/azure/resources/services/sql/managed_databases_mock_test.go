@@ -19,9 +19,7 @@ func createManagedDatabasesMock(t *testing.T, ctrl *gomock.Controller) services.
 	mockClient := mocks.NewMockSQLManagedDatabasesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
-			ManagedDatabases:                            mockClient,
-			ManagedDatabaseVulnerabilityAssessments:     createManagedDatabaseVulnerabilityAssessmentsMock(t, ctrl).SQL.ManagedDatabaseVulnerabilityAssessments,
-			ManagedDatabaseVulnerabilityAssessmentScans: createManagedDatabaseVulnerabilityAssessmentScansMock(t, ctrl).SQL.ManagedDatabaseVulnerabilityAssessmentScans,
+			ManagedDatabases: mockClient,
 		},
 	}
 

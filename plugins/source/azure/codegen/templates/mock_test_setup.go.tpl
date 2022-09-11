@@ -1,8 +1,9 @@
     mockClient := mocks.NewMock{{ .AzureService }}{{ .AzureSubService }}Client(ctrl)
 	s := services.Services{
 		{{ .AzureService }}: services.{{ .AzureService }}Client{
-			{{ .AzureSubService }}: mockClient,{{ range .Table.Relations }}
+			{{ .AzureSubService }}: mockClient,{{ if not $.IsRelation }}{{ range .Table.Relations }}
 			{{ $relation := TrimEnd . 2 }}{{ $relation | ToCamel }}: create{{ $relation | ToCamel }}Mock(t, ctrl).{{ $.AzureService }}.{{ $relation | ToCamel }},{{ end }}
+			{{end}}
 		},
 	}
 

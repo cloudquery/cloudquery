@@ -19,8 +19,7 @@ func createTopicsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	mockClient := mocks.NewMockServicebusTopicsClient(ctrl)
 	s := services.Services{
 		Servicebus: services.ServicebusClient{
-			Topics:             mockClient,
-			AuthorizationRules: createAuthorizationRulesMock(t, ctrl).Servicebus.AuthorizationRules,
+			Topics: mockClient,
 		},
 	}
 
