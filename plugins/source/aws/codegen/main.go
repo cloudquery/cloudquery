@@ -1,10 +1,16 @@
 package main
 
-import "github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
+import (
+	"log"
+
+	"github.com/cloudquery/cloudquery/plugins/source/aws/codegen/recipes"
+)
 
 func main() {
-	resources := recipes.GlueResources()
+	resources := recipes.Ec2Resources()
 	for _, resource := range resources {
-		resource.Generate()
+		if err := resource.Generate(); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
