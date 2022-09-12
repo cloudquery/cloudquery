@@ -3,6 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/aws
 go 1.19
 
 require (
+	github.com/aws/aws-sdk-go v1.44.95
 	github.com/aws/aws-sdk-go-v2 v1.16.11
 	github.com/aws/aws-sdk-go-v2/config v1.15.14
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.9
@@ -79,7 +80,7 @@ require (
 	github.com/cloudquery/plugin-sdk v0.2.9
 	github.com/gocarina/gocsv v0.0.0-20220823132111-71f3a5cb2654
 	github.com/golang/mock v1.6.0
-	github.com/google/go-cmp v0.5.8
+	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rs/zerolog v1.28.0
 	github.com/spf13/cast v1.5.0
@@ -89,7 +90,6 @@ require (
 )
 
 require (
-	github.com/aws/aws-sdk-go v1.44.95 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.9 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
@@ -123,7 +123,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.8
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gofrs/uuid v4.2.0+incompatible // indirect
+	github.com/gofrs/uuid v4.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/iancoleman/strcase v0.2.0
