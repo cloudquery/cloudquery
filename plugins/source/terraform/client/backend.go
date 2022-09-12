@@ -132,7 +132,7 @@ func NewLocalTerraformBackend(config *BackendConfigBlock) (*TerraformBackend, er
 
 	f, err := os.Open(b.Path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read tfstate from %s", b.Path)
+		return nil, fmt.Errorf("failed to read tfstate from %s: %w", b.Path, err)
 	}
 	defer f.Close()
 
