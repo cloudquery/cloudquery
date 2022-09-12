@@ -118,12 +118,6 @@ func generateResource(r codegen.Resource, mock bool) {
 		r.ListFunctionName = strings.Split(r.ListFunctionName, "-")[0]
 	}
 
-	// if r.OutputField == "" {
-	// 	r.OutputField = "Items"
-	// }
-	if r.DefaultColumns == nil {
-		r.DefaultColumns = []sdkgen.ColumnDefinition{codegen.ProjectIdColumn}
-	}
 	if r.StructName == "" {
 		r.StructName = reflect.TypeOf(r.Struct).Elem().Name()
 	}
@@ -135,12 +129,15 @@ func generateResource(r codegen.Resource, mock bool) {
 		r.MockImports = []string{reflect.TypeOf(r.Struct).Elem().PkgPath()}
 	}
 
+	for _, f := range r.ExtraColumns {
+		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
+	}
+
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
 		r.Struct,
 		sdkgen.WithSkipFields(r.SkipFields),
-		sdkgen.WithOverrideColumns(r.OverrideColumns),
-		sdkgen.WithExtraColumns(r.DefaultColumns),
+		sdkgen.WithExtraColumns(append([]sdkgen.ColumnDefinition{codegen.ProjectIdColumn}, r.ExtraColumns...)),
 	)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))

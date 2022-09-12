@@ -17,6 +17,18 @@ func Roles() *schema.Table {
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
+			},
+			{
+				Name:     "project_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveProject,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name: "name",
+				Type: schema.TypeString,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -40,13 +52,6 @@ func Roles() *schema.Table {
 				Name:     "included_permissions",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("IncludedPermissions"),
-			},
-			{
-				Name: "name",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "stage",

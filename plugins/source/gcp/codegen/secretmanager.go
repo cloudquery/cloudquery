@@ -17,7 +17,7 @@ var secretmanagerResources = []*Resource{
 		RegisterServer:      pb.RegisterSecretManagerServiceServer,
 		ListFunction:        (&pb.UnimplementedSecretManagerServiceServer{}).ListSecrets,
 		UnimplementedServer: &pb.UnimplementedSecretManagerServiceServer{},
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
 				Type:     schema.TypeString,

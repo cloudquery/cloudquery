@@ -14,7 +14,7 @@ var iamResources = []*Resource{
 		NewFunction:  iam.NewProjectsRolesService,
 		ListFunction: (&iam.ProjectsRolesService{}).List,
 		// ListFunction: ,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
@@ -35,7 +35,7 @@ var iamResources = []*Resource{
 		NewFunction:  iam.NewProjectsServiceAccountsService,
 		ListFunction: (&iam.ProjectsServiceAccountsService{}).List,
 		OutputField:  "Accounts",
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "unique_id",
 				Type:     schema.TypeString,
