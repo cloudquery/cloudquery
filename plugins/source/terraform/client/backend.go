@@ -21,7 +21,7 @@ type BackendType string
 // BackendConfigBlock - abstract backend config
 type BackendConfigBlock struct {
 	BackendName string           `json:"name"`
-	Type        string           `json:"type"`
+	Type        BackendType      `json:"type"`
 	Config      *json.RawMessage `json:"config"`
 }
 
@@ -118,7 +118,7 @@ func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error
 	}
 
 	return &TerraformBackend{
-		BackendType: S3,
+		BackendType: config.Type,
 		BackendName: config.BackendName,
 		Data:        terraformData,
 	}, nil
@@ -142,7 +142,7 @@ func NewLocalTerraformBackend(config *BackendConfigBlock) (*TerraformBackend, er
 	}
 
 	return &TerraformBackend{
-		BackendType: LOCAL,
+		BackendType: config.Type,
 		BackendName: config.BackendName,
 		Data:        terraformData,
 	}, nil
@@ -155,13 +155,13 @@ func NewBackend(cfg *BackendConfigBlock) (*TerraformBackend, error) {
 	}
 
 	switch cfg.Type {
-	case "local":
+	case LOCAL:
 		localBackend, err := NewLocalTerraformBackend(cfg)
 		if err != nil {
 			return nil, err
 		}
 		return localBackend, nil
-	case "s3":
+	case S3:
 		s3Backend, err := NewS3TerraformBackend(cfg)
 		if err != nil {
 			return nil, err
