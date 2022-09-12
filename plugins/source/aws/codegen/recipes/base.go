@@ -31,6 +31,14 @@ type Resource struct {
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
+var defaultAccountColumns = []codegen.ColumnDefinition{
+	{
+		Name: "account_id",
+		Type: schema.TypeString,
+		Resolver: "client.ResolveAWSAccount",
+	},
+}
+
 var defaultRegionalColumns = []codegen.ColumnDefinition{
 	{
 		Name:     "account_id",

@@ -40,5 +40,5 @@ func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services
 }
 
 func TestDAXClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, DaxClusters(), buildDAXClustersMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildDAXClustersMock, client.TestOptions{})
 }

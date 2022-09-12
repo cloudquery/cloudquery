@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func LogGroups() *schema.Table {
+func MetricFilters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cloudwatchlogs_log_groups",
-		Resolver:  fetchCloudwatchlogsLogGroups,
+		Name:      "aws_cloudwatchlogs_metric_filters",
+		Resolver:  fetchCloudwatchlogsMetricFilters,
 		Multiplex: client.ServiceAccountRegionMultiplexer("cloudwatchlogs"),
 		Columns: []schema.Column{
 			{
@@ -26,20 +26,10 @@ func LogGroups() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
+				Resolver: resolveMetricFilterArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveLogGroupArn,
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
 			},
 			{
 				Name:     "creation_time",
@@ -47,9 +37,14 @@ func LogGroups() *schema.Table {
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
-				Name:     "kms_key_id",
+				Name:     "filter_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("KmsKeyId"),
+				Resolver: schema.PathResolver("FilterName"),
+			},
+			{
+				Name:     "filter_pattern",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FilterPattern"),
 			},
 			{
 				Name:     "log_group_name",
@@ -57,19 +52,9 @@ func LogGroups() *schema.Table {
 				Resolver: schema.PathResolver("LogGroupName"),
 			},
 			{
-				Name:     "metric_filter_count",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MetricFilterCount"),
-			},
-			{
-				Name:     "retention_in_days",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("RetentionInDays"),
-			},
-			{
-				Name:     "stored_bytes",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("StoredBytes"),
+				Name:     "metric_transformations",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MetricTransformations"),
 			},
 		},
 	}
