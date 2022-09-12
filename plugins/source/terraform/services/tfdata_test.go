@@ -1,15 +1,16 @@
 package services_test
 
 import (
+	"path"
+	"path/filepath"
+	"runtime"
+	"testing"
+
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/services"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
-	"path"
-	"path/filepath"
-	"runtime"
-	"testing"
 )
 
 func TestTfData(t *testing.T) {
