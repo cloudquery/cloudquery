@@ -6,10 +6,15 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"path"
+	"path/filepath"
+	"runtime"
 	"testing"
 )
 
 func TestTfData(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	pth := filepath.Dir(filename)
 	p := plugins.NewSourcePlugin(
 		"terraform",
 		"test",
@@ -28,7 +33,7 @@ func TestTfData(t *testing.T) {
 					"name": "mylocal",
 					"type": "local",
 					"config": map[string]string{
-						"path": "testdata/terraform.tfstate",
+						"path": path.Join(pth, "testdata/terraform.tfstate"),
 					},
 				},
 			},
