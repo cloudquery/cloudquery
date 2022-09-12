@@ -34,7 +34,7 @@ func Certificates() *schema.Table {
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: resolveCertificateTags,
 			},
 			{

@@ -25,7 +25,7 @@ func ACMResources() []*Resource {
 					},
 					{
 						Name:     "tags",
-						Type:     schema.TypeString,
+						Type:     schema.TypeJSON,
 						Resolver: `resolveCertificateTags`,
 					},
 				}...),

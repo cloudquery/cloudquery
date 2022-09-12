@@ -23,7 +23,7 @@ var ecsResources = []*Resource{
 				},
 				{
 					Name:     "tags",
-					Type:     schema.TypeString,
+					Type:     schema.TypeJSON,
 					Resolver: `schema.PathResolver("Tags")`,
 				},
 			}...),

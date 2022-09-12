@@ -34,7 +34,7 @@ func TaskDefinitions() *schema.Table {
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
