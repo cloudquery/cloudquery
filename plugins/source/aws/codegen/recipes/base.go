@@ -17,15 +17,16 @@ import (
 )
 
 type Resource struct {
-	Service             string
-	SubService          string
-	Struct              interface{}
-	SkipFields          []string
-	ExtraColumns        []codegen.ColumnDefinition
-	Table               *codegen.TableDefinition
-	Multiplex           string
-	PreResourceResolver string
-	Relations           []string
+	Service              string
+	SubService           string
+	Struct               interface{}
+	SkipFields           []string
+	ExtraColumns         []codegen.ColumnDefinition
+	Table                *codegen.TableDefinition
+	Multiplex            string
+	PreResourceResolver  string
+	PostResourceResolver string
+	Relations            []string
 }
 
 //go:embed templates/*.go.tpl
@@ -33,8 +34,8 @@ var templatesFS embed.FS
 
 var defaultAccountColumns = []codegen.ColumnDefinition{
 	{
-		Name: "account_id",
-		Type: schema.TypeString,
+		Name:     "account_id",
+		Type:     schema.TypeString,
 		Resolver: "client.ResolveAWSAccount",
 	},
 }
@@ -75,6 +76,9 @@ func (r *Resource) Generate() error {
 	}
 	if r.PreResourceResolver != "" {
 		r.Table.PreResourceResolver = r.PreResourceResolver
+	}
+	if r.PostResourceResolver != "" {
+		r.Table.PostResourceResolver = r.PostResourceResolver
 	}
 	if r.Relations != nil {
 		r.Table.Relations = r.Relations
