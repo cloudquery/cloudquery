@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/cq-provider-sdk/provider/schema"
+import "github.com/cloudquery/plugin-sdk/schema"
 
 func SpacesRegionMultiplex(client schema.ClientMeta) []schema.ClientMeta {
 	doClient := client.(*Client)

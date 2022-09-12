@@ -11,12 +11,12 @@ cloudquery init digitalocean
 ### Authentication
 
 #### DigitalOcean API
-
-To authenticate CloudQuery follow the authentication [instructions](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication) in DigitalOcean's API reference
+To authenticate CloudQuery follow the authentication [instructions](https://docs.digitalocean.com/reference/api/api-reference/#section/Authentication) in digitaloceans API reference
 
 #### Spaces API
 
-To create an access key for CloudQuery to read the spaces API visit this [Apps & API](https://cloud.digitalocean.com/settings/api/tokens?i=d6d4a6) section of the DigitalOcean control panel for your account.
+To create an access key for CloudQuery to read spaces api visit this [Apps & API](https://cloud.digitalocean.com/settings/api/tokens?i=d6d4a6) section of the DigitalOcean control panel for your account.
+
 
 ### Configuration
 

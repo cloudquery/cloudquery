@@ -13,13 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
-## [0.6.5](https://github.com/cloudquery/cloudquery/compare/plugins/source/digitalocean/v0.6.4...plugins/source/digitalocean/v0.6.5) (2022-09-01)
-
-
-### Bug Fixes
-
-* **deps:** Update Terraform tls to v4.0.2 ([#1653](https://github.com/cloudquery/cloudquery/issues/1653)) ([8f3bbeb](https://github.com/cloudquery/cloudquery/commit/8f3bbeba64723c6744ae0f9db747261668f6a087))
-
 ## [0.6.4](https://github.com/cloudquery/cloudquery/compare/plugins/source/digitalocean-v0.6.3...plugins/source/digitalocean/v0.6.4) (2022-08-25)
 
 
