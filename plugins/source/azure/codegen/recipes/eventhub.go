@@ -54,7 +54,7 @@ func EventHub() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"},
 				},
 				{
 					source:            "resource_list_value_mock_test.go.tpl",

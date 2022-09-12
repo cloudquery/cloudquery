@@ -30,7 +30,7 @@ func createPublishingProfilesMock(t *testing.T, ctrl *gomock.Controller) service
 	data := web.ReadCloser{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	mockClient.EXPECT().ListPublishingProfileXMLWithSecrets(gomock.Any(), "test", "test", "test").Return(data, nil)
+	mockClient.EXPECT().ListPublishingProfileXMLWithSecrets(gomock.Any(), "test", "test", web.CsmPublishingProfileOptions{}).Return(data, nil)
 	return s
 }
 
@@ -60,6 +60,10 @@ func createAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		return web.AppCollection{}, nil
 	})
 
+	vnetName := "test"
+	result.Values()[0].SiteConfig.VnetName = &vnetName
+	resourceGroup := "test"
+	result.Values()[0].ResourceGroup = &resourceGroup
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

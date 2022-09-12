@@ -35,6 +35,6 @@ func createAssessmentsMock(t *testing.T, ctrl *gomock.Controller) services.Servi
 		return security.AssessmentList{}, nil
 	})
 
-	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/test_sub").Return(result, nil)
+	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/testSubscription").Return(result, nil)
 	return s
 }

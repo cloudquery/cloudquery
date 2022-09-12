@@ -45,6 +45,8 @@ func createVaultsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	})
 
 	maxResults := int32(1000)
+	vaultURI := "test"
+	data.Properties.VaultURI = &vaultURI
 	mockClient.EXPECT().ListBySubscription(gomock.Any(), &maxResults).Return(result, nil)
 	return s
 }

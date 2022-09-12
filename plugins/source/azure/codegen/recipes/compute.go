@@ -41,7 +41,7 @@ func Compute() []Resource {
 			isRelation:               true,
 			customColumns:            []codegen.ColumnDefinition{{Name: "type", Type: schema.TypeString, Resolver: "schema.PathResolver(`Type`)"}},
 			mockListFunctionArgsInit: []string{""},
-			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`, `""`},
 			mockListResult:           "VirtualMachineExtensionsListResult",
 		},
 	}
@@ -81,7 +81,7 @@ func Compute() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"},
 				},
 				{
 					source:            "resource_list_value_mock_test.go.tpl",

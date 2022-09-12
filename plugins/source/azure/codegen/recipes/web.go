@@ -108,6 +108,12 @@ func Web() []Resource {
 						mockClient.EXPECT().ListPublishingProfileXMLWithSecrets(gomock.Any(), "test", "test", "test").Return(data, nil)
 						return s
 					}`},
+					mockListFunctionArgsInit: []string{
+						`vnetName := "test"`,
+						`result.Values()[0].SiteConfig.VnetName = &vnetName`,
+						`resourceGroup := "test"`,
+						`result.Values()[0].ResourceGroup = &resourceGroup`,
+					},
 				},
 				authSettingsResource,
 				vnetInfoResource,

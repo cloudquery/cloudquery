@@ -5,10 +5,11 @@ package cosmosdb
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/cosmos-db/mgmt/documentdb"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 )
 
 func sQLDatabases() *schema.Table {

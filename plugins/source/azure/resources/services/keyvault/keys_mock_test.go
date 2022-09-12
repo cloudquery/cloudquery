@@ -30,6 +30,7 @@ func createKeysMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		return keyvault.KeyListResult{}, nil
 	})
 
-	mockClient.EXPECT().GetKeys(gomock.Any(), "test", "test").Return(result, nil)
+	maxResults := int32(25)
+	mockClient.EXPECT().GetKeys(gomock.Any(), "test", &maxResults).Return(result, nil)
 	return s
 }

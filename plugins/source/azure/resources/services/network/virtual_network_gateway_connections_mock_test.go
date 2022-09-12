@@ -23,11 +23,11 @@ func createVirtualNetworkGatewayConnectionsMock(t *testing.T, ctrl *gomock.Contr
 		},
 	}
 
-	data := network.VirtualNetworkGatewayConnection{}
+	data := network.VirtualNetworkGatewayConnectionListEntity{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := network.NewVirtualNetworkGatewayConnectionListResultPage(network.VirtualNetworkGatewayConnectionListResult{Value: &[]network.VirtualNetworkGatewayConnection{data}}, func(ctx context.Context, result network.VirtualNetworkGatewayConnectionListResult) (network.VirtualNetworkGatewayConnectionListResult, error) {
-		return network.VirtualNetworkGatewayConnectionListResult{}, nil
+	result := network.NewVirtualNetworkGatewayListConnectionsResultPage(network.VirtualNetworkGatewayListConnectionsResult{Value: &[]network.VirtualNetworkGatewayConnectionListEntity{data}}, func(ctx context.Context, result network.VirtualNetworkGatewayListConnectionsResult) (network.VirtualNetworkGatewayListConnectionsResult, error) {
+		return network.VirtualNetworkGatewayListConnectionsResult{}, nil
 	})
 
 	mockClient.EXPECT().ListConnections(gomock.Any(), "test", "test").Return(result, nil)

@@ -16,7 +16,7 @@ func Logic() []Resource {
 			isRelation:               true,
 			subServiceOverride:       "DiagnosticSettings",
 			mockListFunctionArgsInit: []string{""},
-			mockListFunctionArgs:     []string{`"test"`},
+			mockListFunctionArgs:     []string{`"/subscriptions/test/resourceGroups/test/providers/test/test/test"`},
 			mockListResult:           "DiagnosticSettingsResourceCollection",
 		},
 	}
@@ -49,7 +49,7 @@ func Logic() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"},
 				},
 				{
 					source:            "resource_list_value_mock_test.go.tpl",

@@ -45,7 +45,9 @@ func CosmosDB() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports: []string{
+						"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb",
+					},
 				},
 				{
 					source:            "resource_list_value_mock_test.go.tpl",

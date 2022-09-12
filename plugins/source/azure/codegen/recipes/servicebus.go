@@ -70,7 +70,7 @@ func ServiceBus() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"},
 				},
 				{
 					source:            "resource_list_mock_test.go.tpl",

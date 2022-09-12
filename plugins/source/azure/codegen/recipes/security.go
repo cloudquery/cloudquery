@@ -26,7 +26,7 @@ func Security() []Resource {
 					azureStruct:          &security.Assessment{},
 					listFunction:         "List",
 					listFunctionArgs:     []string{`fmt.Sprintf("/subscriptions/%s", meta.(*client.Client).SubscriptionId)`},
-					mockListFunctionArgs: []string{`"/subscriptions/test_sub"`},
+					mockListFunctionArgs: []string{`"/subscriptions/testSubscription"`},
 					mockListResult:       "AssessmentList",
 					mockFieldsToIgnore:   []string{"ResourceDetails"},
 				},

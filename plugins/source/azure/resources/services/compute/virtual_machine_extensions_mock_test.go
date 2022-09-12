@@ -27,6 +27,6 @@ func createVirtualMachineExtensionsMock(t *testing.T, ctrl *gomock.Controller) s
 
 	result := compute.VirtualMachineExtensionsListResult{Value: &[]compute.VirtualMachineExtension{data}}
 
-	mockClient.EXPECT().List(gomock.Any(), "test", "test", "test").Return(result, nil)
+	mockClient.EXPECT().List(gomock.Any(), "test", "test", "").Return(result, nil)
 	return s
 }

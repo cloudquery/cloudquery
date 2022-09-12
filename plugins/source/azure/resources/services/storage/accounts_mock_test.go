@@ -14,6 +14,10 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
+
+	"github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"
+
+	"github.com/tombuildsstuff/giovanni/storage/2020-08-04/queue/queues"
 )
 
 func TestStorageAccounts(t *testing.T) {
@@ -45,6 +49,16 @@ func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 		return storage.AccountListResult{}, nil
 	})
 
+	result.Values()[0].Sku.Tier = storage.Standard
+	result.Values()[0].Kind = storage.StorageV2
+	blobProperties := accounts.StorageServiceProperties{}
+	require.Nil(t, faker.FakeObject(&blobProperties))
+	blobResult := accounts.GetServicePropertiesResult{StorageServiceProperties: &blobProperties}
+	mockClient.EXPECT().GetBlobServiceProperties(gomock.Any(), "test", "test").Return(blobResult, nil)
+	queueProperties := queues.StorageServiceProperties{}
+	require.Nil(t, faker.FakeObject(&queueProperties))
+	queueResult := queues.StorageServicePropertiesResponse{StorageServiceProperties: queueProperties}
+	mockClient.EXPECT().GetQueueServiceProperties(gomock.Any(), "test", "test").Return(queueResult, nil)
 	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
 	return s
 }

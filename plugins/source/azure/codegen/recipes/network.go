@@ -21,7 +21,7 @@ func Network() []Resource {
 	}
 	var gatewayRelations = []resourceDefinition{
 		{
-			azureStruct:      &network.VirtualNetworkGatewayConnection{},
+			azureStruct:      &network.VirtualNetworkGatewayConnectionListEntity{},
 			listFunction:     "ListConnections",
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*gateway.Name"},
 			listFunctionArgsInit: []string{"gateway := parent.Item.(network.VirtualNetworkGateway)", `resourceDetails, err := client.ParseResourceID(*gateway.ID)
@@ -29,8 +29,10 @@ func Network() []Resource {
 				return errors.WithStack(err)
 			}`},
 			isRelation:               true,
+			subServiceOverride:       "VirtualNetworkGatewayConnections",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+			mockListResult:           "VirtualNetworkGatewayListConnectionsResult",
 		},
 	}
 	var networkRelations = []resourceDefinition{

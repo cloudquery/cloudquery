@@ -46,7 +46,7 @@ func Monitor() []Resource {
 			}`,
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
-			mockListFunctionArgs:     []string{`"test"`},
+			mockListFunctionArgs:     []string{`"/subscriptions/test/resourceGroups/test/providers/test/test/test"`},
 			mockListResult:           "DiagnosticSettingsResourceCollection",
 		},
 	}

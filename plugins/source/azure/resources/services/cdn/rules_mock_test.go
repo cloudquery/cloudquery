@@ -30,6 +30,8 @@ func createRulesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 		return cdn.RuleListResult{}, nil
 	})
 
+	data.Actions = &[]cdn.BasicDeliveryRuleAction{}
+	data.Conditions = &[]cdn.BasicDeliveryRuleCondition{}
 	mockClient.EXPECT().ListByRuleSet(gomock.Any(), "test", "test", "test").Return(result, nil)
 	return s
 }

@@ -5,10 +5,11 @@ package eventhub
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/eventhub/mgmt/eventhub"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 )
 
 func networkRuleSets() *schema.Table {

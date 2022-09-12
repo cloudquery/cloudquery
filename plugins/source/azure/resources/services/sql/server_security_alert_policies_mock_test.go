@@ -3,6 +3,7 @@
 package sql
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -25,7 +26,9 @@ func createServerSecurityAlertPoliciesMock(t *testing.T, ctrl *gomock.Controller
 	data := sql.ServerSecurityAlertPolicy{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := data
+	result := sql.NewLogicalServerSecurityAlertPolicyListResultPage(sql.LogicalServerSecurityAlertPolicyListResult{Value: &[]sql.ServerSecurityAlertPolicy{data}}, func(ctx context.Context, result sql.LogicalServerSecurityAlertPolicyListResult) (sql.LogicalServerSecurityAlertPolicyListResult, error) {
+		return sql.LogicalServerSecurityAlertPolicyListResult{}, nil
+	})
 
 	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
 	return s

@@ -31,6 +31,14 @@ func createAnalyticsAccountsMock(t *testing.T, ctrl *gomock.Controller) services
 	data := account.DataLakeAnalyticsAccountBasic{}
 	require.Nil(t, faker.FakeObject(&data))
 
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	data.ID = &id
+
 	getData := account.DataLakeAnalyticsAccount{}
 	require.Nil(t, faker.FakeObject(&getData))
 

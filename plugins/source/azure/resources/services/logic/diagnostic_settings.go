@@ -5,10 +5,11 @@ package logic
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/logic/mgmt/logic"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2019-05-01/logic"
 )
 
 func diagnosticSettings() *schema.Table {

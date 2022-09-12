@@ -63,11 +63,6 @@ func virtualNetworkGatewayConnections() *schema.Table {
 				Resolver: schema.PathResolver("RoutingWeight"),
 			},
 			{
-				Name:     "dpd_timeout_seconds",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DpdTimeoutSeconds"),
-			},
-			{
 				Name:     "connection_mode",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ConnectionMode"),
@@ -106,11 +101,6 @@ func virtualNetworkGatewayConnections() *schema.Table {
 				Name:     "enable_bgp",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableBgp"),
-			},
-			{
-				Name:     "use_local_azure_ip_address",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("UseLocalAzureIPAddress"),
 			},
 			{
 				Name:     "use_policy_based_traffic_selectors",

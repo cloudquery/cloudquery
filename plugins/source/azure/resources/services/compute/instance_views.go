@@ -5,10 +5,11 @@ package compute
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/compute/mgmt/compute"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 )
 
 func instanceViews() *schema.Table {

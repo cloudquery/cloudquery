@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountsClient,StorageBlobServicePropertiesClient,StorageBlobServicesClient,StorageContainersClient,StorageQueueServicePropertiesClient
+//go:generate mockgen -destination=./mocks/storage.go -package=mocks . StorageAccountsClient,StorageBlobServicesClient,StorageContainersClient
 package services
 
 import (
@@ -11,16 +11,15 @@ import (
 )
 
 type StorageClient struct {
-	Accounts                  StorageAccountsClient
-	BlobServices              StorageBlobServicesClient
-	Containers                StorageContainersClient
-	NewBlobServiceProperties  func(autorest.Authorizer) StorageBlobServicePropertiesClient
-	NewQueueServiceProperties func(autorest.Authorizer) StorageQueueServicePropertiesClient
+	Accounts     StorageAccountsClient
+	BlobServices StorageBlobServicesClient
+	Containers   StorageContainersClient
 }
 
 type StorageAccountsClient interface {
 	List(ctx context.Context) (result storage.AccountListResultPage, err error)
-	ListKeys(ctx context.Context, resourceGroupName string, accountName string, expand storage.ListKeyExpand) (result storage.AccountListKeysResult, err error)
+	GetBlobServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result accounts.GetServicePropertiesResult, err error)
+	GetQueueServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result queues.StorageServicePropertiesResponse, err error)
 }
 
 type StorageBlobServicesClient interface {
@@ -31,12 +30,49 @@ type StorageContainersClient interface {
 	List(ctx context.Context, resourceGroupName string, accountName string, maxpagesize string, filter string, include storage.ListContainersInclude) (result storage.ListContainerItemsPage, err error)
 }
 
-type StorageBlobServicePropertiesClient interface {
-	GetServiceProperties(ctx context.Context, accountName string) (result accounts.GetServicePropertiesResult, err error)
+type StorageAccountsClientImpl struct {
+	*storage.AccountsClient
 }
 
-type StorageQueueServicePropertiesClient interface {
-	GetServiceProperties(ctx context.Context, accountName string) (result queues.StorageServicePropertiesResponse, err error)
+func (c StorageAccountsClientImpl) GetKeyAuthorizer(ctx context.Context, resourceGroupName string, accountName string) (*autorest.SharedKeyAuthorizer, error) {
+	// use account key to create a new authorizer and then fetch service properties
+	keysResult, err := c.ListKeys(ctx, resourceGroupName, accountName, "")
+	if err != nil {
+		return nil, err
+	}
+	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
+		return nil, nil
+	}
+
+	// use account key to create a new authorizer and then fetch service properties
+	auth, err := autorest.NewSharedKeyAuthorizer(accountName, *(*keysResult.Keys)[0].Value, autorest.SharedKeyLite)
+	if err != nil {
+		return nil, nil
+	}
+
+	return auth, nil
+}
+
+func (c StorageAccountsClientImpl) GetBlobServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result accounts.GetServicePropertiesResult, err error) {
+	auth, err := c.GetKeyAuthorizer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		return accounts.GetServicePropertiesResult{}, err
+	}
+
+	blobServices := accounts.New()
+	blobServices.Authorizer = auth
+	return blobServices.GetServiceProperties(ctx, accountName)
+}
+
+func (c StorageAccountsClientImpl) GetQueueServiceProperties(ctx context.Context, resourceGroupName string, accountName string) (result queues.StorageServicePropertiesResponse, err error) {
+	auth, err := c.GetKeyAuthorizer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		return queues.StorageServicePropertiesResponse{}, err
+	}
+
+	queueServices := queues.New()
+	queueServices.Authorizer = auth
+	return queueServices.GetServiceProperties(ctx, accountName)
 }
 
 func NewStorageClient(subscriptionId string, auth autorest.Authorizer) StorageClient {
@@ -47,18 +83,8 @@ func NewStorageClient(subscriptionId string, auth autorest.Authorizer) StorageCl
 	containers := storage.NewBlobContainersClient(subscriptionId)
 	containers.Authorizer = auth
 	return StorageClient{
-		Accounts:     accs,
+		Accounts:     StorageAccountsClientImpl{&accs},
 		BlobServices: blobServices,
 		Containers:   containers,
-		NewBlobServiceProperties: func(auth autorest.Authorizer) StorageBlobServicePropertiesClient {
-			client := accounts.New()
-			client.Authorizer = auth
-			return client
-		},
-		NewQueueServiceProperties: func(auth autorest.Authorizer) StorageQueueServicePropertiesClient {
-			client := queues.New()
-			client.Authorizer = auth
-			return client
-		},
 	}
 }

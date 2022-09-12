@@ -5,10 +5,11 @@ package servicebus
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/profiles/latest/servicebus/mgmt/servicebus"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
 
 func topics() *schema.Table {

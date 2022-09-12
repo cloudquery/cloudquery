@@ -3,7 +3,6 @@
 package sql
 
 import (
-	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -26,9 +25,7 @@ func createEncryptionProtectorsMock(t *testing.T, ctrl *gomock.Controller) servi
 	data := sql.EncryptionProtector{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := sql.NewEncryptionProtectorListResultPage(sql.EncryptionProtectorListResult{Value: &[]sql.EncryptionProtector{data}}, func(ctx context.Context, result sql.EncryptionProtectorListResult) (sql.EncryptionProtectorListResult, error) {
-		return sql.EncryptionProtectorListResult{}, nil
-	})
+	result := data
 
 	mockClient.EXPECT().Get(gomock.Any(), "test", "test").Return(result, nil)
 	return s

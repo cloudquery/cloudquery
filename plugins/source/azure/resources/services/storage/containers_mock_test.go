@@ -16,7 +16,6 @@ import (
 )
 
 func createContainersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-
 	mockClient := mocks.NewMockStorageContainersClient(ctrl)
 	s := services.Services{
 		Storage: services.StorageClient{
@@ -31,6 +30,6 @@ func createContainersMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 		return storage.ListContainerItems{}, nil
 	})
 
-	mockClient.EXPECT().List(gomock.Any(), "test", "test", "", "", "").Return(result, nil)
+	mockClient.EXPECT().List(gomock.Any(), "test", "test", "", "", gomock.Any()).Return(result, nil)
 	return s
 }

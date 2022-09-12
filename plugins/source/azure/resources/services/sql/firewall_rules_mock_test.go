@@ -25,7 +25,7 @@ func createFirewallRulesMock(t *testing.T, ctrl *gomock.Controller) services.Ser
 	data := sql.FirewallRule{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := data
+	result := sql.FirewallRuleListResult{Value: &[]sql.FirewallRule{data}}
 
 	mockClient.EXPECT().ListByServer(gomock.Any(), "test", "test").Return(result, nil)
 	return s

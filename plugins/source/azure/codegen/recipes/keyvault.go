@@ -15,8 +15,8 @@ func KeyValue() []Resource {
 			listFunctionArgsInit:     []string{"vault := parent.Item.(keyvault.Vault)", "maxResults := int32(25)"},
 			subServiceOverride:       "Keys",
 			isRelation:               true,
-			mockListFunctionArgsInit: []string{""},
-			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+			mockListFunctionArgsInit: []string{"maxResults := int32(25)"},
+			mockListFunctionArgs:     []string{`"test"`, `&maxResults`},
 			mockListResult:           "KeyListResult",
 		},
 	}
@@ -59,11 +59,12 @@ func KeyValue() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:          &keyvault.Vault{},
-					listFunction:         "ListBySubscription",
-					listFunctionArgs:     []string{"&maxResults"},
-					listFunctionArgsInit: []string{"maxResults := int32(1000)"},
-					relations:            vaultRelations,
+					azureStruct:              &keyvault.Vault{},
+					listFunction:             "ListBySubscription",
+					listFunctionArgs:         []string{"&maxResults"},
+					listFunctionArgsInit:     []string{"maxResults := int32(1000)"},
+					relations:                vaultRelations,
+					mockListFunctionArgsInit: []string{"maxResults := int32(1000)", `vaultURI := "test"`, `data.Properties.VaultURI = &vaultURI`},
 				},
 			},
 			serviceNameOverride: "KeyVault",

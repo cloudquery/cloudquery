@@ -16,7 +16,7 @@ func CDN() []Resource {
 			}`, `ruleSet := parent.Item.(cdn.RuleSet)`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*ruleSet.Name"},
 			isRelation:               true,
-			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgsInit: []string{`data.Actions = &[]cdn.BasicDeliveryRuleAction{}`, `data.Conditions = &[]cdn.BasicDeliveryRuleCondition{}`},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
 	}

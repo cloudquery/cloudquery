@@ -3,6 +3,7 @@
 package sql
 
 import (
+	"context"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
@@ -25,7 +26,9 @@ func createDatabaseBlobAuditingPoliciesMock(t *testing.T, ctrl *gomock.Controlle
 	data := sql.DatabaseBlobAuditingPolicy{}
 	require.Nil(t, faker.FakeObject(&data))
 
-	result := data
+	result := sql.NewDatabaseBlobAuditingPolicyListResultPage(sql.DatabaseBlobAuditingPolicyListResult{Value: &[]sql.DatabaseBlobAuditingPolicy{data}}, func(ctx context.Context, result sql.DatabaseBlobAuditingPolicyListResult) (sql.DatabaseBlobAuditingPolicyListResult, error) {
+		return sql.DatabaseBlobAuditingPolicyListResult{}, nil
+	})
 
 	mockClient.EXPECT().ListByDatabase(gomock.Any(), "test", "test", "test").Return(result, nil)
 	return s

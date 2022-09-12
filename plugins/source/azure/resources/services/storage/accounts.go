@@ -4,16 +4,12 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
-	"github.com/Azure/go-autorest/autorest"
-
-	"github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"
 )
 
 func Accounts() *schema.Table {
@@ -231,49 +227,19 @@ func fetchStorageAccountBlobLoggingSettings(ctx context.Context, meta schema.Cli
 		return nil
 	}
 
-	// fetch storageClient account keys for Shared Key authentication
-	storageClient := meta.(*client.Client).Services().Storage
+	storageClient := meta.(*client.Client).Services().Storage.Accounts
 	details, err := client.ParseResourceID(*acc.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
-	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
+	result, err := storageClient.GetBlobServiceProperties(ctx, details.ResourceGroup, *acc.Name)
 	if err != nil {
-		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn().Msgf("received access denied on Accounts.ListKeys %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
-			return nil
-		}
-		return errors.WithStack(err)
+		return err
 	}
-	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
-		return nil
-	}
-
-	// use account key to create a new authorizer and then fetch service properties
-	auth, err := autorest.NewSharedKeyAuthorizer(*acc.Name, *(*keysResult.Keys)[0].Value, autorest.SharedKeyLite)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	blobProps := storageClient.NewBlobServiceProperties(auth)
-	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
-	if err != nil {
-		// For premium 'page blob' storage accounts, we sometimes get "authorization error", not sure why.
-		// In any case, we can probably ignore this since it only happens for premium 'page blob' storage accounts.
-		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn().Msgf("received access denied on GetServiceProperties %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
-			return nil
-		}
-		return errors.WithStack(err)
-	}
-	var logging *accounts.Logging
 	if result.StorageServiceProperties != nil {
-		logging = result.StorageServiceProperties.Logging
+		return resource.Set(c.Name, result.StorageServiceProperties.Logging)
 	}
-	data, err := json.Marshal(logging)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	return errors.WithStack(resource.Set(c.Name, data))
+	return nil
 }
 
 func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -282,38 +248,16 @@ func fetchStorageAccountQueueLoggingSettings(ctx context.Context, meta schema.Cl
 		return nil
 	}
 
-	// fetch storage account keys for Shared Key authentication
-	storageClient := meta.(*client.Client).Services().Storage
+	storageClient := meta.(*client.Client).Services().Storage.Accounts
 	details, err := client.ParseResourceID(*acc.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
-	keysResult, err := storageClient.Accounts.ListKeys(ctx, details.ResourceGroup, *acc.Name, "")
+	result, err := storageClient.GetQueueServiceProperties(ctx, details.ResourceGroup, *acc.Name)
 	if err != nil {
-		if client.IgnoreAccessDenied(err) {
-			meta.Logger().Warn().Msgf("received access denied on Accounts.ListKeys %s %s %s %s %s %s", "resource_group", details.ResourceGroup, "account", *acc.Name, "err", err)
-			return nil
-		}
+		return err
 	}
-	if keysResult.Keys == nil || len(*keysResult.Keys) == 0 {
-		return nil
-	}
-
-	// use account key to create a new authorizer and then fetch service properties
-	auth, err := autorest.NewSharedKeyAuthorizer(*acc.Name, *(*keysResult.Keys)[0].Value, autorest.SharedKeyLite)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	blobProps := storageClient.NewQueueServiceProperties(auth)
-	result, err := blobProps.GetServiceProperties(ctx, *acc.Name)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	data, err := json.Marshal(result.Logging)
-	if err != nil {
-		return errors.WithStack(err)
-	}
-	return errors.WithStack(resource.Set(c.Name, data))
+	return resource.Set(c.Name, result.Logging)
 }
 
 // isQueueSupported checks whether queues are supported for a storage account.

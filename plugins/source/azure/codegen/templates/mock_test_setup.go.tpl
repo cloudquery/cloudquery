@@ -8,7 +8,7 @@
 
 	data := {{ .AzurePackageName }}.{{ or .MockDefinitionType .AzureStructName }}{}
 	require.Nil(t, faker.FakeObject(&data))
-	{{ if .Table.Relations }}
+	{{ if (or .GetFunction .Table.Relations) }}
 	// Ensure name and ID are consistent so we can reference it in other mock
 	name :=  "test"
 	data.Name = &name

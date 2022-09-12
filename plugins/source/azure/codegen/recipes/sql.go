@@ -20,7 +20,6 @@ func SQL() []Resource {
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
-			mockListResult:           mockDirectResponse,
 		},
 		{
 			azureStruct:      &sql.DatabaseVulnerabilityAssessment{},
@@ -36,7 +35,6 @@ func SQL() []Resource {
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
-			mockListResult:           mockDirectResponse,
 		},
 		{
 			azureStruct:      &sql.VulnerabilityAssessmentScanRecord{},
@@ -53,7 +51,6 @@ func SQL() []Resource {
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
-			mockListResult:           mockDirectResponse,
 		},
 		{
 			azureStruct:      &sql.BackupLongTermRetentionPolicy{},
@@ -119,6 +116,21 @@ func SQL() []Resource {
 		},
 	}
 
+	var firewallRuleResource = resourceDefinition{
+		azureStruct:      &sql.FirewallRule{},
+		listFunction:     "ListByServer",
+		listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
+		listFunctionArgsInit: []string{
+			"server := parent.Item.(sql.Server)",
+			`resourceDetails, err := client.ParseResourceID(*server.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+		listHandler:              valueHandler,
+		isRelation:               true,
+		mockListFunctionArgsInit: []string{""},
+		mockListFunctionArgs:     []string{`"test"`, `"test"`},
+	}
 	var sqlServerRelations = []resourceDefinition{
 		{
 			azureStruct:      &sql.Database{},
@@ -152,6 +164,7 @@ func SQL() []Resource {
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+			mockListResult:           mockDirectResponse,
 		},
 		{
 			azureStruct:      &sql.VirtualNetworkRule{},
@@ -167,22 +180,7 @@ func SQL() []Resource {
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
-		{
-			azureStruct:      &sql.FirewallRule{},
-			listFunction:     "ListByServer",
-			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
-			listFunctionArgsInit: []string{
-				"server := parent.Item.(sql.Server)",
-				`resourceDetails, err := client.ParseResourceID(*server.ID)
-			if err != nil {
-				return errors.WithStack(err)
-			}`},
-			listHandler:              valueHandler,
-			isRelation:               true,
-			mockListFunctionArgsInit: []string{""},
-			mockListFunctionArgs:     []string{`"test"`, `"test"`},
-			mockListResult:           mockDirectResponse,
-		},
+		firewallRuleResource,
 		{
 			azureStruct:      &sql.ServerAzureADAdministrator{},
 			listFunction:     "ListByServer",
@@ -226,7 +224,7 @@ func SQL() []Resource {
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
-			mockListResult:           mockDirectResponse,
+			mockListResult:           "ServerDevOpsAuditSettingsListResult",
 		},
 		{
 			azureStruct:      &sql.ServerVulnerabilityAssessment{},
@@ -255,7 +253,7 @@ func SQL() []Resource {
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
-			mockListResult:           mockDirectResponse,
+			mockListResult:           "LogicalServerSecurityAlertPolicyListResult",
 		},
 	}
 
@@ -321,7 +319,6 @@ func SQL() []Resource {
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
-			mockListResult:           mockDirectResponse,
 		},
 		{
 			azureStruct:      &sql.ManagedInstanceEncryptionProtector{},
@@ -357,7 +354,7 @@ func SQL() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"},
 				},
 				{
 					source:            "resource_list_mock_test.go.tpl",
@@ -366,6 +363,22 @@ func SQL() []Resource {
 				},
 			},
 			definitions:         topLevelResources,
+			serviceNameOverride: "SQL",
+		},
+		{
+			templates: []template{
+				{
+					source:            "resource_list.go.tpl",
+					destinationSuffix: ".go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"},
+				},
+				{
+					source:            "resource_list_value_mock_test.go.tpl",
+					destinationSuffix: "_mock_test.go",
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"},
+				},
+			},
+			definitions:         []resourceDefinition{firewallRuleResource},
 			serviceNameOverride: "SQL",
 		},
 	}
