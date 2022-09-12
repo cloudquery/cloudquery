@@ -45,6 +45,6 @@ func Plugin() *plugins.SourcePlugin {
 		allTables,
 		client.New,
 		plugins.WithSourceExampleConfig(exampleConfig),
-		plugins.WithClassifyError(client.ClassifyError),
+		//plugins.WithClassifyError(client.ClassifyError),
 	)
 }
