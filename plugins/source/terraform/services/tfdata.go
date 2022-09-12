@@ -208,8 +208,8 @@ func resolveProviderName(_ context.Context, _ schema.ClientMeta, resource *schem
 
 func resolveInstanceAttributes(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(client.Instance)
-	attrs, err := instance.AttributesRaw.MarshalJSON()
-	if err != nil {
+	var attrs map[string]interface{}
+	if err := json.Unmarshal(instance.AttributesRaw, &attrs); err != nil {
 		return fmt.Errorf("not valid JSON attributes")
 	}
 	return resource.Set(c.Name, attrs)
@@ -217,7 +217,7 @@ func resolveInstanceAttributes(_ context.Context, _ schema.ClientMeta, resource 
 
 func resolveInstanceInternalId(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(client.Instance)
-	data := make(map[string]interface{})
+	var data map[string]interface{}
 	if err := json.Unmarshal(instance.AttributesRaw, &data); err != nil {
 		return fmt.Errorf("could not parse internal instance id")
 	}
