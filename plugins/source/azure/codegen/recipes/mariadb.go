@@ -3,6 +3,21 @@ package recipes
 import "github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"
 
 func MariaDB() []Resource {
+	var serverRelations = []resourceDefinition{
+		{
+			azureStruct:      &mariadb.Configuration{},
+			listFunction:     "ListByServer",
+			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
+			listFunctionArgsInit: []string{"server := parent.Item.(mariadb.Server)", `resourceDetails, err := client.ParseResourceID(*server.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listHandler:              valueHandler,
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -17,27 +32,14 @@ func MariaDB() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"},
 				},
 			},
-			definitions: []resourceDefinition{
+			definitions: append([]resourceDefinition{
 				{
 					azureStruct:  &mariadb.Server{},
 					listFunction: "List",
 					listHandler:  valueHandler,
-					relations:    []string{"configurations()"},
+					relations:    serverRelations,
 				},
-				{
-					azureStruct:      &mariadb.Configuration{},
-					listFunction:     "ListByServer",
-					listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
-					listFunctionArgsInit: []string{"server := parent.Item.(mariadb.Server)", `resourceDetails, err := client.ParseResourceID(*server.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listHandler:              valueHandler,
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-				},
-			},
+			}, serverRelations...),
 			serviceNameOverride: "MariaDB",
 		},
 	}

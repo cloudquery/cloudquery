@@ -24,10 +24,12 @@ func createManagedInstancesMock(t *testing.T, ctrl *gomock.Controller) services.
 	mockClient := mocks.NewMockSQLManagedInstancesClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
-			ManagedInstances:                        mockClient,
-			ManagedDatabases:                        createManagedDatabasesMock(t, ctrl).SQL.ManagedDatabases,
-			ManagedInstanceVulnerabilityAssessments: createManagedInstanceVulnerabilityAssessmentsMock(t, ctrl).SQL.ManagedInstanceVulnerabilityAssessments,
-			ManagedInstanceEncryptionProtectors:     createManagedInstanceEncryptionProtectorsMock(t, ctrl).SQL.ManagedInstanceEncryptionProtectors,
+			ManagedInstances:                            mockClient,
+			ManagedDatabases:                            createManagedDatabasesMock(t, ctrl).SQL.ManagedDatabases,
+			ManagedDatabaseVulnerabilityAssessments:     createManagedDatabaseVulnerabilityAssessmentsMock(t, ctrl).SQL.ManagedDatabaseVulnerabilityAssessments,
+			ManagedDatabaseVulnerabilityAssessmentScans: createManagedDatabaseVulnerabilityAssessmentScansMock(t, ctrl).SQL.ManagedDatabaseVulnerabilityAssessmentScans,
+			ManagedInstanceVulnerabilityAssessments:     createManagedInstanceVulnerabilityAssessmentsMock(t, ctrl).SQL.ManagedInstanceVulnerabilityAssessments,
+			ManagedInstanceEncryptionProtectors:         createManagedInstanceEncryptionProtectorsMock(t, ctrl).SQL.ManagedInstanceEncryptionProtectors,
 		},
 	}
 

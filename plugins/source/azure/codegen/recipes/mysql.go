@@ -5,6 +5,21 @@ import (
 )
 
 func MySQL() []Resource {
+	var serverRelations = []resourceDefinition{
+		{
+			azureStruct:      &mysql.Configuration{},
+			listFunction:     "ListByServer",
+			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
+			listFunctionArgsInit: []string{"server := parent.Item.(mysql.Server)", `resourceDetails, err := client.ParseResourceID(*server.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listHandler:              valueHandler,
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -24,20 +39,7 @@ func MySQL() []Resource {
 					azureStruct:  &mysql.Server{},
 					listFunction: "List",
 					listHandler:  valueHandler,
-					relations:    []string{"configurations()"},
-				},
-				{
-					azureStruct:      &mysql.Configuration{},
-					listFunction:     "ListByServer",
-					listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
-					listFunctionArgsInit: []string{"server := parent.Item.(mysql.Server)", `resourceDetails, err := client.ParseResourceID(*server.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listHandler:              valueHandler,
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
+					relations:    serverRelations,
 				},
 			},
 			serviceNameOverride: "MySQL",

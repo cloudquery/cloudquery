@@ -5,6 +5,49 @@ import (
 )
 
 func Network() []Resource {
+	var watcherRelations = []resourceDefinition{
+		{
+			azureStruct:      &network.FlowLog{},
+			listFunction:     "List",
+			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*watcher.Name"},
+			listFunctionArgsInit: []string{"watcher := parent.Item.(network.Watcher)", `resourceDetails, err := client.ParseResourceID(*watcher.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+	}
+	var gatewayRelations = []resourceDefinition{
+		{
+			azureStruct:      &network.VirtualNetworkGatewayConnection{},
+			listFunction:     "ListConnections",
+			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*gateway.Name"},
+			listFunctionArgsInit: []string{"gateway := parent.Item.(network.VirtualNetworkGateway)", `resourceDetails, err := client.ParseResourceID(*gateway.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+	}
+	var networkRelations = []resourceDefinition{
+		{
+			azureStruct:      &network.VirtualNetworkGateway{},
+			listFunction:     "List",
+			listFunctionArgs: []string{"resourceDetails.ResourceGroup"},
+			listFunctionArgsInit: []string{"network := parent.Item.(network.VirtualNetwork)", `resourceDetails, err := client.ParseResourceID(*network.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			relations:                gatewayRelations,
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`},
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -42,7 +85,7 @@ func Network() []Resource {
 				},
 				{
 					azureStruct: &network.VirtualNetwork{},
-					relations:   []string{"virtualNetworkGateways()"},
+					relations:   networkRelations,
 				},
 				{
 					azureStruct: &network.SecurityGroup{},
@@ -72,7 +115,7 @@ func Network() []Resource {
 				{
 					azureStruct: &network.Watcher{},
 					listHandler: valueHandler,
-					relations:   []string{"flowLogs()"},
+					relations:   watcherRelations,
 				},
 			},
 		},
@@ -89,45 +132,7 @@ func Network() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
 				},
 			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:      &network.FlowLog{},
-					listFunction:     "List",
-					listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*watcher.Name"},
-					listFunctionArgsInit: []string{"watcher := parent.Item.(network.Watcher)", `resourceDetails, err := client.ParseResourceID(*watcher.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-				},
-				{
-					azureStruct:      &network.VirtualNetworkGateway{},
-					listFunction:     "List",
-					listFunctionArgs: []string{"resourceDetails.ResourceGroup"},
-					listFunctionArgsInit: []string{"network := parent.Item.(network.VirtualNetwork)", `resourceDetails, err := client.ParseResourceID(*network.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					relations:                []string{"virtualNetworkGatewayConnections()"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`},
-				},
-				{
-					azureStruct:      &network.VirtualNetworkGatewayConnection{},
-					listFunction:     "ListConnections",
-					listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*gateway.Name"},
-					listFunctionArgsInit: []string{"gateway := parent.Item.(network.VirtualNetworkGateway)", `resourceDetails, err := client.ParseResourceID(*gateway.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-				},
-			},
+			definitions: append(append(watcherRelations, networkRelations...), gatewayRelations...),
 		},
 	}
 

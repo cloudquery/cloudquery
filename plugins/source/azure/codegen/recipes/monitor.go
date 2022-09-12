@@ -9,6 +9,47 @@ import (
 )
 
 func Monitor() []Resource {
+	var resourceRelation = []resourceDefinition{
+		{
+			azureStruct:        &insights.DiagnosticSettingsResource{},
+			listFunction:       "List",
+			subServiceOverride: "DiagnosticSettings",
+			customColumns:      []codegen.ColumnDefinition{{Name: "ResourceURI", Type: schema.TypeString, Resolver: `schema.PathResolver("ResourceURI")`}},
+			helpers: []string{`
+			func isResourceTypeNotSupported(err error) bool {
+				var azureErr *azure.RequestError
+				if errors.As(err, &azureErr) {
+					return azureErr.ServiceError != nil && azureErr.ServiceError.Code == "ResourceTypeNotSupported"
+				}
+				return false
+			}`, `// diagnosticSettingResource is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
+			type diagnosticSettingResource struct {
+				insights.DiagnosticSettingsResource
+				ResourceURI string
+			}`},
+			listFunctionArgsInit: []string{`resource := parent.Item.(resources.GenericResourceExpanded)`},
+			listFunctionArgs:     []string{"*resource.ID"},
+			listHandler: `if err != nil {
+				if isResourceTypeNotSupported(err) {
+					return nil
+				}
+				return errors.WithStack(err)
+			}
+			if response.Value == nil {
+				return nil
+			}
+			for _, v := range *response.Value {
+				res <- diagnosticSettingResource{
+					DiagnosticSettingsResource: v,
+					ResourceURI:                *resource.ID,
+				}
+			}`,
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`},
+			mockListResult:           "DiagnosticSettingsResourceCollection",
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -129,7 +170,7 @@ func Monitor() []Resource {
 					subServiceOverride:       "Resources",
 					mockListResult:           "ListResult",
 					mockListFunctionArgsInit: []string{``},
-					relations:                []string{"diagnosticSettings()"},
+					relations:                resourceRelation,
 				},
 			},
 			serviceNameOverride: "Monitor",
@@ -153,47 +194,7 @@ func Monitor() []Resource {
 					},
 				},
 			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:        &insights.DiagnosticSettingsResource{},
-					listFunction:       "List",
-					subServiceOverride: "DiagnosticSettings",
-					customColumns:      []codegen.ColumnDefinition{{Name: "ResourceURI", Type: schema.TypeString, Resolver: `schema.PathResolver("ResourceURI")`}},
-					helpers: []string{`
-					func isResourceTypeNotSupported(err error) bool {
-						var azureErr *azure.RequestError
-						if errors.As(err, &azureErr) {
-							return azureErr.ServiceError != nil && azureErr.ServiceError.Code == "ResourceTypeNotSupported"
-						}
-						return false
-					}`, `// diagnosticSettingResource is a custom copy of insights.DiagnosticSettingsResource with extra ResourceURI field
-					type diagnosticSettingResource struct {
-						insights.DiagnosticSettingsResource
-						ResourceURI string
-					}`},
-					listFunctionArgsInit: []string{`resource := parent.Item.(resources.GenericResourceExpanded)`},
-					listFunctionArgs:     []string{"*resource.ID"},
-					listHandler: `if err != nil {
-						if isResourceTypeNotSupported(err) {
-							return nil
-						}
-						return errors.WithStack(err)
-					}
-					if response.Value == nil {
-						return nil
-					}
-					for _, v := range *response.Value {
-						res <- diagnosticSettingResource{
-							DiagnosticSettingsResource: v,
-							ResourceURI:                *resource.ID,
-						}
-					}`,
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`},
-					mockListResult:           "DiagnosticSettingsResourceCollection",
-				},
-			},
+			definitions:         resourceRelation,
 			serviceNameOverride: "Monitor",
 		},
 	}

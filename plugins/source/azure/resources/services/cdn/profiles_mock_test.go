@@ -26,7 +26,10 @@ func createProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services
 		CDN: services.CDNClient{
 			Profiles:         mockClient,
 			Endpoints:        createEndpointsMock(t, ctrl).CDN.Endpoints,
+			CustomDomains:    createCustomDomainsMock(t, ctrl).CDN.CustomDomains,
+			Routes:           createRoutesMock(t, ctrl).CDN.Routes,
 			RuleSets:         createRuleSetsMock(t, ctrl).CDN.RuleSets,
+			Rules:            createRulesMock(t, ctrl).CDN.Rules,
 			SecurityPolicies: createSecurityPoliciesMock(t, ctrl).CDN.SecurityPolicies,
 		},
 	}

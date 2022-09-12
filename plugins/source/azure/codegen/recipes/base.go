@@ -44,6 +44,7 @@ type Resource struct {
 	MockValueType            string
 	MockDefinitionType       string
 	MockGetFunctionArgs      []string
+	MockRelations            []string
 	IsRelation               bool
 }
 
@@ -76,7 +77,7 @@ type resourceDefinition struct {
 	mockDefinitionType       string
 	mockGetFunctionArgs      []string
 	subServiceOverride       string
-	relations                []string
+	relations                []resourceDefinition
 }
 
 type byTemplates struct {
@@ -189,7 +190,7 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	return columns
 }
 
-func initTable(definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
+func initTable(byTemplate byTemplates, definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
 	skipFields := append(definition.skipFields, defaultSkipFields...)
 	table, err := codegen.NewTableFromStruct(
 		fmt.Sprintf("%s_%s_%s",
@@ -222,13 +223,27 @@ func initTable(definition resourceDefinition, azureService string, azureSubServi
 	}
 
 	table.Resolver = "fetch" + azureService + azureSubService
-	table.Relations = definition.relations
+	table.Relations = make([]string, 0)
+	for _, relation := range definition.relations {
+		_, _, _, azureSubService := parseAzureStruct(byTemplate, relation)
+		table.Relations = append(table.Relations, strcase.ToLowerCamel(azureSubService)+"()")
+	}
 
 	if definition.getFunction != "" {
 		table.PreResourceResolver = "get" + azureStructName
 	}
 
 	return table
+}
+
+func getMockRelations(byTemplate byTemplates, azureService string, definition resourceDefinition) []string {
+	mockRelations := make([]string, 0)
+	for _, relation := range definition.relations {
+		_, _, _, azureSubService := parseAzureStruct(byTemplate, relation)
+		mockRelations = append(mockRelations, fmt.Sprintf("%s: create%sMock(t,ctrl).%s.%s", azureSubService, azureSubService, azureService, azureSubService))
+		mockRelations = append(mockRelations, getMockRelations(byTemplate, azureService, relation)...)
+	}
+	return mockRelations
 }
 
 func generateResources(resourcesByTemplates []byTemplates) []Resource {
@@ -241,7 +256,12 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 		for _, template := range templates {
 			for _, definition := range definitions {
 				azurePackageName, azureStructName, azureService, azureSubService := parseAzureStruct(byTemplate, definition)
-				table := initTable(definition, azureService, azureSubService, azureStructName)
+				table := initTable(byTemplate, definition, azureService, azureSubService, azureStructName)
+
+				mockRelations := make([]string, 0)
+				if !definition.isRelation {
+					mockRelations = getMockRelations(byTemplate, azureService, definition)
+				}
 				resource := Resource{
 					Table:            table,
 					AzurePackageName: azurePackageName,
@@ -270,6 +290,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					MockDefinitionType:       definition.mockDefinitionType,
 					MockGetFunctionArgs:      definition.mockGetFunctionArgs,
 					IsRelation:               definition.isRelation,
+					MockRelations:            mockRelations,
 				}
 				allResources = append(allResources, resource)
 			}

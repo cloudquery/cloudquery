@@ -5,6 +5,40 @@ import (
 )
 
 func CosmosDB() []Resource {
+	var accountRelations = []resourceDefinition{
+		{
+			azureStruct:        &documentdb.MongoDBDatabaseGetResults{},
+			listFunction:       "ListMongoDBDatabases",
+			listHandler:        valueHandler,
+			subServiceOverride: "MongoDBDatabases",
+			listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
+			resource, err := client.ParseResourceID(*account.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+			mockListResult:           "MongoDBDatabaseListResult",
+		},
+		{
+			azureStruct:        &documentdb.SQLDatabaseGetResults{},
+			listFunction:       "ListSQLDatabases",
+			listHandler:        valueHandler,
+			subServiceOverride: "SQLDatabases",
+			listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
+			resource, err := client.ParseResourceID(*account.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+			mockListResult:           "SQLDatabaseListResult",
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -21,48 +55,16 @@ func CosmosDB() []Resource {
 					},
 				},
 			},
-			definitions: []resourceDefinition{
+			definitions: append([]resourceDefinition{
 				{
 					azureStruct:        &documentdb.DatabaseAccountGetResults{},
 					listFunction:       "List",
 					listHandler:        valueHandler,
 					subServiceOverride: "Accounts",
 					mockListResult:     "DatabaseAccountsListResult",
-					relations:          []string{"mongoDBDatabases()", "sQLDatabases()"},
+					relations:          accountRelations,
 				},
-				{
-					azureStruct:        &documentdb.MongoDBDatabaseGetResults{},
-					listFunction:       "ListMongoDBDatabases",
-					listHandler:        valueHandler,
-					subServiceOverride: "MongoDBDatabases",
-					listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
-					resource, err := client.ParseResourceID(*account.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-					mockListResult:           "MongoDBDatabaseListResult",
-				},
-				{
-					azureStruct:        &documentdb.SQLDatabaseGetResults{},
-					listFunction:       "ListSQLDatabases",
-					listHandler:        valueHandler,
-					subServiceOverride: "SQLDatabases",
-					listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
-					resource, err := client.ParseResourceID(*account.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-					mockListResult:           "SQLDatabaseListResult",
-				},
-			},
+			}, accountRelations...),
 			serviceNameOverride: "CosmosDB",
 		},
 	}

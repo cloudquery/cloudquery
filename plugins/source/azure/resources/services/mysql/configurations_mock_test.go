@@ -15,6 +15,7 @@ import (
 )
 
 func createConfigurationsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+
 	mockClient := mocks.NewMockMySQLConfigurationsClient(ctrl)
 	s := services.Services{
 		MySQL: services.MySQLClient{

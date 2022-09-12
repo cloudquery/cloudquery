@@ -25,8 +25,8 @@ func createAccountsMock(t *testing.T, ctrl *gomock.Controller) services.Services
 	s := services.Services{
 		Storage: services.StorageClient{
 			Accounts:     mockClient,
-			BlobServices: createBlobServicesMock(t, ctrl).Storage.BlobServices,
 			Containers:   createContainersMock(t, ctrl).Storage.Containers,
+			BlobServices: createBlobServicesMock(t, ctrl).Storage.BlobServices,
 		},
 	}
 

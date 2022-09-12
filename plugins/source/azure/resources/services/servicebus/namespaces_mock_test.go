@@ -24,8 +24,10 @@ func createNamespacesMock(t *testing.T, ctrl *gomock.Controller) services.Servic
 	mockClient := mocks.NewMockServicebusNamespacesClient(ctrl)
 	s := services.Services{
 		Servicebus: services.ServicebusClient{
-			Namespaces: mockClient,
-			Topics:     createTopicsMock(t, ctrl).Servicebus.Topics,
+			Namespaces:         mockClient,
+			Topics:             createTopicsMock(t, ctrl).Servicebus.Topics,
+			AuthorizationRules: createAuthorizationRulesMock(t, ctrl).Servicebus.AuthorizationRules,
+			AccessKeys:         createAccessKeysMock(t, ctrl).Servicebus.AccessKeys,
 		},
 	}
 

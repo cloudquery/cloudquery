@@ -24,8 +24,9 @@ func createVirtualNetworksMock(t *testing.T, ctrl *gomock.Controller) services.S
 	mockClient := mocks.NewMockNetworkVirtualNetworksClient(ctrl)
 	s := services.Services{
 		Network: services.NetworkClient{
-			VirtualNetworks:        mockClient,
-			VirtualNetworkGateways: createVirtualNetworkGatewaysMock(t, ctrl).Network.VirtualNetworkGateways,
+			VirtualNetworks:                  mockClient,
+			VirtualNetworkGateways:           createVirtualNetworkGatewaysMock(t, ctrl).Network.VirtualNetworkGateways,
+			VirtualNetworkGatewayConnections: createVirtualNetworkGatewayConnectionsMock(t, ctrl).Network.VirtualNetworkGatewayConnections,
 		},
 	}
 

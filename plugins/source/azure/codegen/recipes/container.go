@@ -6,6 +6,21 @@ import (
 )
 
 func Container() []Resource {
+	var registryRelations = []resourceDefinition{
+		{
+			azureStruct:  &containerregistry.Replication{},
+			listFunction: "List",
+			listFunctionArgsInit: []string{`registry := parent.Item.(containerregistry.Registry)
+			resource, err := client.ParseResourceID(*registry.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*registry.Name"},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -23,7 +38,7 @@ func Container() []Resource {
 					},
 				},
 			},
-			definitions: []resourceDefinition{
+			definitions: append([]resourceDefinition{
 				{
 					azureStruct:  &containerservice.ManagedCluster{},
 					listFunction: "List",
@@ -31,22 +46,9 @@ func Container() []Resource {
 				{
 					azureStruct:  &containerregistry.Registry{},
 					listFunction: "List",
-					relations:    []string{"replications()"},
+					relations:    registryRelations,
 				},
-				{
-					azureStruct:  &containerregistry.Replication{},
-					listFunction: "List",
-					listFunctionArgsInit: []string{`registry := parent.Item.(containerregistry.Registry)
-					resource, err := client.ParseResourceID(*registry.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*registry.Name"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-				},
-			},
+			}, registryRelations...),
 			serviceNameOverride: "Container",
 		},
 	}

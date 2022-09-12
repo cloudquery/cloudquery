@@ -6,6 +6,20 @@ import (
 )
 
 func Logic() []Resource {
+	var workflowRelations = []resourceDefinition{
+		{
+			azureStruct:              &insights.DiagnosticSettingsResource{},
+			listFunction:             "List",
+			listHandler:              valueHandler,
+			listFunctionArgs:         []string{"*workflow.ID"},
+			listFunctionArgsInit:     []string{"workflow := parent.Item.(logic.Workflow)"},
+			isRelation:               true,
+			subServiceOverride:       "DiagnosticSettings",
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`},
+			mockListResult:           "DiagnosticSettingsResourceCollection",
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -26,7 +40,7 @@ func Logic() []Resource {
 					listFunction:         "ListBySubscription",
 					listFunctionArgs:     []string{"&top", "\"\""},
 					listFunctionArgsInit: []string{"var top int32 = 100"},
-					relations:            []string{"diagnosticSettings()"},
+					relations:            workflowRelations,
 				},
 			},
 		},
@@ -43,20 +57,7 @@ func Logic() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/monitor/mgmt/insights"},
 				},
 			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:              &insights.DiagnosticSettingsResource{},
-					listFunction:             "List",
-					listHandler:              valueHandler,
-					listFunctionArgs:         []string{"*workflow.ID"},
-					listFunctionArgsInit:     []string{"workflow := parent.Item.(logic.Workflow)"},
-					isRelation:               true,
-					subServiceOverride:       "DiagnosticSettings",
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`},
-					mockListResult:           "DiagnosticSettingsResourceCollection",
-				},
-			},
+			definitions:         workflowRelations,
 			serviceNameOverride: "Logic",
 		},
 	}

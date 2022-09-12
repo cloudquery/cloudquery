@@ -5,6 +5,101 @@ import (
 )
 
 func CDN() []Resource {
+	var ruleSetRelations = []resourceDefinition{
+		{
+			azureStruct:  &cdn.Rule{},
+			listFunction: "ListByRuleSet",
+			listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
+			resource, err := client.ParseResourceID(*profile.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`, `ruleSet := parent.Item.(cdn.RuleSet)`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*ruleSet.Name"},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+		},
+	}
+	var endpointRelations = []resourceDefinition{
+		{
+			azureStruct:  &cdn.CustomDomain{},
+			listFunction: "ListByEndpoint",
+			listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
+			resource, err := client.ParseResourceID(*profile.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`, `endpoint := parent.Item.(cdn.Endpoint)`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+		},
+		{
+			azureStruct:  &cdn.Route{},
+			listFunction: "ListByEndpoint",
+			listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
+			resource, err := client.ParseResourceID(*profile.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`, `endpoint := parent.Item.(cdn.Endpoint)`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
+		},
+	}
+	var profileRelations = []resourceDefinition{
+		{
+			azureStruct:  &cdn.Endpoint{},
+			listFunction: "ListByProfile",
+			listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
+			resource, err := client.ParseResourceID(*profile.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
+			relations:                endpointRelations,
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+		{
+			azureStruct:  &cdn.RuleSet{},
+			listFunction: "ListByProfile",
+			listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
+			resource, err := client.ParseResourceID(*profile.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
+			relations:                ruleSetRelations,
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+		{
+			azureStruct:  &cdn.SecurityPolicy{},
+			listFunction: "ListByProfile",
+			listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
+			resource, err := client.ParseResourceID(*profile.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		},
+	}
+
+	var topLevelResources = []resourceDefinition{
+		{
+			azureStruct:  &cdn.Profile{},
+			listFunction: "List",
+			relations:    profileRelations,
+		},
+	}
+
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -19,96 +114,14 @@ func CDN() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2020-09-01/cdn"},
 				},
 			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:  &cdn.Profile{},
-					listFunction: "List",
-					relations:    []string{"endpoints()", "ruleSets()", "securityPolicies()"},
-				},
-				{
-					azureStruct:  &cdn.Endpoint{},
-					listFunction: "ListByProfile",
-					listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
-					resource, err := client.ParseResourceID(*profile.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
-					relations:                []string{"customDomains()", "routes()"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-				},
-				{
-					azureStruct:  &cdn.RuleSet{},
-					listFunction: "ListByProfile",
-					listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
-					resource, err := client.ParseResourceID(*profile.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
-					relations:                []string{"rules()"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-				},
-				{
-					azureStruct:  &cdn.SecurityPolicy{},
-					listFunction: "ListByProfile",
-					listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
-					resource, err := client.ParseResourceID(*profile.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-				},
-				{
-					azureStruct:  &cdn.CustomDomain{},
-					listFunction: "ListByEndpoint",
-					listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
-					resource, err := client.ParseResourceID(*profile.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`, `endpoint := parent.Item.(cdn.Endpoint)`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
-				},
-				{
-					azureStruct:  &cdn.Route{},
-					listFunction: "ListByEndpoint",
-					listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
-					resource, err := client.ParseResourceID(*profile.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`, `endpoint := parent.Item.(cdn.Endpoint)`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
-				},
-				{
-					azureStruct:  &cdn.Rule{},
-					listFunction: "ListByRuleSet",
-					listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
-					resource, err := client.ParseResourceID(*profile.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`, `ruleSet := parent.Item.(cdn.RuleSet)`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*ruleSet.Name"},
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
-				},
-			},
+			definitions:         topLevelResources,
 			serviceNameOverride: "CDN",
 		},
 	}
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, profileRelations...)
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, endpointRelations...)
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, ruleSetRelations...)
 
 	return generateResources(resourcesByTemplates)
 }

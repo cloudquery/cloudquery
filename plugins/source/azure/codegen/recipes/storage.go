@@ -111,6 +111,45 @@ func isBlobSupported(account *storage.Account) bool {
 }`
 
 func Storage() []Resource {
+	var listContainerResource = resourceDefinition{
+		azureStruct:  &storage.ListContainerItem{},
+		listFunction: "List",
+		listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
+		if !isBlobSupported(&account) {
+			return nil
+		}
+	
+		resource, err := client.ParseResourceID(*account.ID)
+		if err != nil {
+			return errors.WithStack(err)
+		}`},
+		listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name", `""`, `""`, `""`},
+		subServiceOverride:       "Containers",
+		isRelation:               true,
+		mockListFunctionArgsInit: []string{""},
+		mockListFunctionArgs:     []string{`"test"`, `"test"`, `""`, `""`, `""`},
+		mockListResult:           "ListContainerItems",
+	}
+	var blobPropertiesResource = resourceDefinition{
+		azureStruct:  &storage.BlobServiceProperties{},
+		listFunction: "List",
+		listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
+		if !isBlobSupported(&account) {
+			return nil
+		}
+	
+		resource, err := client.ParseResourceID(*account.ID)
+		if err != nil {
+			return errors.WithStack(err)
+		}`},
+		listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
+		listHandler:              valueHandler,
+		subServiceOverride:       "BlobServices",
+		isRelation:               true,
+		mockListFunctionArgsInit: []string{""},
+		mockListFunctionArgs:     []string{`"test"`, `"test"`},
+		mockListResult:           "BlobServiceItems",
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -134,26 +173,7 @@ func Storage() []Resource {
 						codegen.ColumnDefinition{Name: "blob_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountBlobLoggingSettings"},
 						codegen.ColumnDefinition{Name: "queue_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountQueueLoggingSettings"},
 					},
-					relations: []string{"blobServices()", "containers()"},
-				},
-				{
-					azureStruct:  &storage.ListContainerItem{},
-					listFunction: "List",
-					listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
-					if !isBlobSupported(&account) {
-						return nil
-					}
-				
-					resource, err := client.ParseResourceID(*account.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name", `""`, `""`, `""`},
-					subServiceOverride:       "Containers",
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`, `""`, `""`, `""`},
-					mockListResult:           "ListContainerItems",
+					relations: []resourceDefinition{listContainerResource, blobPropertiesResource},
 				},
 			},
 		},
@@ -170,28 +190,7 @@ func Storage() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage", "github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"},
 				},
 			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:  &storage.BlobServiceProperties{},
-					listFunction: "List",
-					listFunctionArgsInit: []string{`account := parent.Item.(storage.Account)
-					if !isBlobSupported(&account) {
-						return nil
-					}
-				
-					resource, err := client.ParseResourceID(*account.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
-					listHandler:              valueHandler,
-					subServiceOverride:       "BlobServices",
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-					mockListResult:           "BlobServiceItems",
-				},
-			},
+			definitions: []resourceDefinition{blobPropertiesResource},
 		},
 	}
 

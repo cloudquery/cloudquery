@@ -16,6 +16,7 @@ import (
 )
 
 func createContainersMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+
 	mockClient := mocks.NewMockStorageContainersClient(ctrl)
 	s := services.Services{
 		Storage: services.StorageClient{

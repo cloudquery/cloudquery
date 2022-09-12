@@ -7,6 +7,19 @@ import (
 )
 
 func KeyValue() []Resource {
+	var vaultRelations = []resourceDefinition{
+		{
+			azureStruct:              &keyvault71.KeyItem{},
+			listFunction:             "GetKeys",
+			listFunctionArgs:         []string{"*vault.Properties.VaultURI", "&maxResults"},
+			listFunctionArgsInit:     []string{"vault := parent.Item.(keyvault.Vault)", "maxResults := int32(25)"},
+			subServiceOverride:       "Keys",
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+			mockListResult:           "KeyListResult",
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -50,7 +63,7 @@ func KeyValue() []Resource {
 					listFunction:         "ListBySubscription",
 					listFunctionArgs:     []string{"&maxResults"},
 					listFunctionArgsInit: []string{"maxResults := int32(1000)"},
-					relations:            []string{"keys()"},
+					relations:            vaultRelations,
 				},
 			},
 			serviceNameOverride: "KeyVault",
@@ -68,19 +81,7 @@ func KeyValue() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/keyvault/v7.1/keyvault"},
 				},
 			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:              &keyvault71.KeyItem{},
-					listFunction:             "GetKeys",
-					listFunctionArgs:         []string{"*vault.Properties.VaultURI", "&maxResults"},
-					listFunctionArgsInit:     []string{"vault := parent.Item.(keyvault.Vault)", "maxResults := int32(25)"},
-					subServiceOverride:       "Keys",
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-					mockListResult:           "KeyListResult",
-				},
-			},
+			definitions:         vaultRelations,
 			serviceNameOverride: "KeyVault",
 		},
 	}

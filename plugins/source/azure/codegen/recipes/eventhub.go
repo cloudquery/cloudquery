@@ -5,6 +5,26 @@ import (
 )
 
 func EventHub() []Resource {
+	var namespaceRelations = []resourceDefinition{
+		{
+			azureStruct:  &eventhub.NetworkRuleSet{},
+			listFunction: "GetNetworkRuleSet",
+			listFunctionArgsInit: []string{`namespace := parent.Item.(eventhub.EHNamespace)
+			resource, err := client.ParseResourceID(*namespace.ID)
+			if err != nil {
+				return errors.WithStack(err)
+			}`},
+			listFunctionArgs: []string{"resource.ResourceGroup", "*namespace.Name"},
+			listHandler: `if err != nil {
+				return errors.WithStack(err)
+			}
+			res <- response`,
+			isRelation:               true,
+			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgs:     []string{`"test"`, `"test"`},
+			mockListResult:           mockDirectResponse,
+		},
+	}
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -24,7 +44,7 @@ func EventHub() []Resource {
 					azureStruct:        &eventhub.EHNamespace{},
 					listFunction:       "List",
 					subServiceOverride: "Namespaces",
-					relations:          []string{"networkRuleSets()"},
+					relations:          namespaceRelations,
 				},
 			},
 			serviceNameOverride: "EventHub",
@@ -42,26 +62,7 @@ func EventHub() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"},
 				},
 			},
-			definitions: []resourceDefinition{
-				{
-					azureStruct:  &eventhub.NetworkRuleSet{},
-					listFunction: "GetNetworkRuleSet",
-					listFunctionArgsInit: []string{`namespace := parent.Item.(eventhub.EHNamespace)
-					resource, err := client.ParseResourceID(*namespace.ID)
-					if err != nil {
-						return errors.WithStack(err)
-					}`},
-					listFunctionArgs: []string{"resource.ResourceGroup", "*namespace.Name"},
-					listHandler: `if err != nil {
-						return errors.WithStack(err)
-					}
-					res <- response`,
-					isRelation:               true,
-					mockListFunctionArgsInit: []string{""},
-					mockListFunctionArgs:     []string{`"test"`, `"test"`},
-					mockListResult:           mockDirectResponse,
-				},
-			},
+			definitions:         namespaceRelations,
 			serviceNameOverride: "EventHub",
 		},
 	}

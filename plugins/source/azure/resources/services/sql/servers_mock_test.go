@@ -24,16 +24,22 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 	mockClient := mocks.NewMockSQLServersClient(ctrl)
 	s := services.Services{
 		SQL: services.SQLClient{
-			Servers:                        mockClient,
-			Databases:                      createDatabasesMock(t, ctrl).SQL.Databases,
-			EncryptionProtectors:           createEncryptionProtectorsMock(t, ctrl).SQL.EncryptionProtectors,
-			VirtualNetworkRules:            createVirtualNetworkRulesMock(t, ctrl).SQL.VirtualNetworkRules,
-			FirewallRules:                  createFirewallRulesMock(t, ctrl).SQL.FirewallRules,
-			ServerAdmins:                   createServerAdminsMock(t, ctrl).SQL.ServerAdmins,
-			ServerBlobAuditingPolicies:     createServerBlobAuditingPoliciesMock(t, ctrl).SQL.ServerBlobAuditingPolicies,
-			ServerDevOpsAuditingSettings:   createServerDevOpsAuditingSettingsMock(t, ctrl).SQL.ServerDevOpsAuditingSettings,
-			ServerVulnerabilityAssessments: createServerVulnerabilityAssessmentsMock(t, ctrl).SQL.ServerVulnerabilityAssessments,
-			ServerSecurityAlertPolicies:    createServerSecurityAlertPoliciesMock(t, ctrl).SQL.ServerSecurityAlertPolicies,
+			Servers:                              mockClient,
+			Databases:                            createDatabasesMock(t, ctrl).SQL.Databases,
+			DatabaseBlobAuditingPolicies:         createDatabaseBlobAuditingPoliciesMock(t, ctrl).SQL.DatabaseBlobAuditingPolicies,
+			DatabaseVulnerabilityAssessments:     createDatabaseVulnerabilityAssessmentsMock(t, ctrl).SQL.DatabaseVulnerabilityAssessments,
+			DatabaseVulnerabilityAssessmentScans: createDatabaseVulnerabilityAssessmentScansMock(t, ctrl).SQL.DatabaseVulnerabilityAssessmentScans,
+			BackupLongTermRetentionPolicies:      createBackupLongTermRetentionPoliciesMock(t, ctrl).SQL.BackupLongTermRetentionPolicies,
+			DatabaseThreatDetectionPolicies:      createDatabaseThreatDetectionPoliciesMock(t, ctrl).SQL.DatabaseThreatDetectionPolicies,
+			TransparentDataEncryptions:           createTransparentDataEncryptionsMock(t, ctrl).SQL.TransparentDataEncryptions,
+			EncryptionProtectors:                 createEncryptionProtectorsMock(t, ctrl).SQL.EncryptionProtectors,
+			VirtualNetworkRules:                  createVirtualNetworkRulesMock(t, ctrl).SQL.VirtualNetworkRules,
+			FirewallRules:                        createFirewallRulesMock(t, ctrl).SQL.FirewallRules,
+			ServerAdmins:                         createServerAdminsMock(t, ctrl).SQL.ServerAdmins,
+			ServerBlobAuditingPolicies:           createServerBlobAuditingPoliciesMock(t, ctrl).SQL.ServerBlobAuditingPolicies,
+			ServerDevOpsAuditingSettings:         createServerDevOpsAuditingSettingsMock(t, ctrl).SQL.ServerDevOpsAuditingSettings,
+			ServerVulnerabilityAssessments:       createServerVulnerabilityAssessmentsMock(t, ctrl).SQL.ServerVulnerabilityAssessments,
+			ServerSecurityAlertPolicies:          createServerSecurityAlertPoliciesMock(t, ctrl).SQL.ServerSecurityAlertPolicies,
 		},
 	}
 
