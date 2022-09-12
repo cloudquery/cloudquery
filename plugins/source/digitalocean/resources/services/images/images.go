@@ -100,28 +100,28 @@ func fetchImages(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 	}
 
 	done := false
-	for !done {
-		listFunc := func() error {
-			data, resp, err := svc.Services.Images.List(ctx, opt)
-			if err != nil {
-				return errors.WithStack(err)
-			}
-			// pass the current page's data to our result channel
-			res <- data
-			// if we are at the last page, break out the for loop
-			if resp.Links == nil || resp.Links.IsLastPage() {
-				done = true
-				return nil
-			}
-			page, err := resp.Links.CurrentPage()
-			if err != nil {
-				return errors.WithStack(err)
-			}
-			// set the page we want for the next request
-			opt.Page = page + 1
+	listFunc := func() error {
+		data, resp, err := svc.Services.Images.List(ctx, opt)
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		// pass the current page's data to our result channel
+		res <- data
+		// if we are at the last page, break out the for loop
+		if resp.Links == nil || resp.Links.IsLastPage() {
+			done = true
 			return nil
 		}
+		page, err := resp.Links.CurrentPage()
+		if err != nil {
+			return errors.WithStack(err)
+		}
+		// set the page we want for the next request
+		opt.Page = page + 1
+		return nil
+	}
 
+	for !done {
 		err := client.ThrottleWrapper(ctx, svc, listFunc)
 		if err != nil {
 			return errors.WithStack(err)

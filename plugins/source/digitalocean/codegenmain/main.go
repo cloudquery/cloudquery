@@ -66,46 +66,9 @@ func generatePlugin(rr []*codegen.Resource) {
 }
 
 func configureResource(r *codegen.Resource) {
-	if r.NewFunction != nil {
-		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.NewFunction).Pointer()).Name(), ".")
-		r.NewFunctionName = path[len(path)-1]
-	}
-	if r.RegisterServer != nil {
-		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.RegisterServer).Pointer()).Name(), ".")
-		r.RegisterServerName = path[len(path)-1]
-	}
-	if r.ResponseStruct != nil {
-		r.ResponseStructName = reflect.TypeOf(r.ResponseStruct).Elem().Name()
-	}
-	if r.RequestStruct != nil {
-		r.RequestStructName = reflect.TypeOf(r.RequestStruct).Elem().Name()
-	}
-	if r.UnimplementedServer != nil {
-		r.UnimplementedServerName = reflect.TypeOf(r.UnimplementedServer).Elem().Name()
-	}
-	if r.ClientName == "" && r.NewFunctionName != "" {
-		n := strings.Split(fmt.Sprintf("%v", reflect.TypeOf(r.NewFunction).Out(0)), ".")[1]
-		r.ClientName = n
-	}
-
-	if r.ListFunction != nil {
-		path := strings.Split(runtime.FuncForPC(reflect.ValueOf(r.ListFunction).Pointer()).Name(), ".")
-		r.ListFunctionName = path[len(path)-1]
-		// https://stackoverflow.com/questions/32925344/why-is-there-a-fm-suffix-when-getting-a-functions-name-in-go
-		r.ListFunctionName = strings.Split(r.ListFunctionName, "-")[0]
-	}
-
-	// if r.OutputField == "" {
-	// 	r.OutputField = "Items"
-	// }
-	//if r.DefaultColumns == nil {
-	//	r.DefaultColumns = []sdkgen.ColumnDefinition{codegen.ProjectIdColumn}
-	//}
-
 	if r.MockStruct == nil {
 		r.MockStruct = r.Struct
 	}
-
 	r.StructName, r.IsStructPointer = getElemNameAndPointer(r.Struct)
 	r.ParentStructName, r.IsParentPointer = getElemNameAndPointer(r.ParentStruct)
 	r.MockStructName, _ = getElemNameAndPointer(r.MockStruct)
@@ -117,7 +80,6 @@ func configureResource(r *codegen.Resource) {
 	if r.Args == "" {
 		r.Args = ",p.ID"
 	}
-
 }
 
 func generateResource(r codegen.Resource, mock bool) {
@@ -132,11 +94,12 @@ func generateResource(r codegen.Resource, mock bool) {
 	if r.SubService == "" {
 		tableName = fmt.Sprintf("digitalocean_%s", r.Service)
 	}
+
 	r.Table, err = sdkgen.NewTableFromStruct(
 		tableName,
 		r.Struct,
 		sdkgen.WithSkipFields(r.SkipFields),
-		sdkgen.WithOverrideColumns(r.OverrideColumns),
+		sdkgen.WithExtraColumns(r.ExtraColumns),
 	)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))
@@ -147,9 +110,7 @@ func generateResource(r codegen.Resource, mock bool) {
 		r.Table.Multiplex = *r.Multiplex
 	}
 	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubServiceName)
-	// if r.GetFunction != "" {
-	// r.Table.PreResourceResolver = "get" + strcase.ToCamel(r.StructName)
-	// }
+
 	if r.Relations != nil {
 		relations := make([]string, 0, len(r.Relations))
 		for _, r := range r.Relations {
@@ -198,10 +159,6 @@ func generateResource(r codegen.Resource, mock bool) {
 	} else {
 		content = formattedContent
 	}
-	// if err != nil {
-	// 	fmt.Println(buff.String())
-	// 	log.Fatal(fmt.Errorf("failed to format code for %s: %w", filePath, err))
-	// }
 	if err := os.WriteFile(filePath, content, 0644); err != nil {
 		log.Fatal(fmt.Errorf("failed to write file %s: %w", filePath, err))
 	}

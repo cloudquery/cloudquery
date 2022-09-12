@@ -41,28 +41,28 @@ func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientM
     }
 
     done := false
-    for !done {
-        listFunc := func() error {
-            data, resp, err := svc.Services.{{.Service | ToCamel}}.{{$func}}(ctx{{if ne .ParentStructName ""}}{{.Args}}{{end}}, opt)
-            if err != nil {
-                return errors.WithStack(err)
-            }
-            // pass the current page's data to our result channel
-            res <- data{{.ResponsePath}}
-            // if we are at the last page, break out the for loop
-            if resp.Links == nil || resp.Links.IsLastPage() {
-                done = true
-                return nil
-            }
-            page, err := resp.Links.CurrentPage()
-            if err != nil {
-                return errors.WithStack(err)
-            }
-            // set the page we want for the next request
-            opt.Page = page + 1
+    listFunc := func() error {
+        data, resp, err := svc.Services.{{.Service | ToCamel}}.{{$func}}(ctx{{if ne .ParentStructName ""}}{{.Args}}{{end}}, opt)
+        if err != nil {
+            return errors.WithStack(err)
+        }
+        // pass the current page's data to our result channel
+        res <- data{{.ResponsePath}}
+        // if we are at the last page, break out the for loop
+        if resp.Links == nil || resp.Links.IsLastPage() {
+            done = true
             return nil
         }
+        page, err := resp.Links.CurrentPage()
+        if err != nil {
+            return errors.WithStack(err)
+        }
+        // set the page we want for the next request
+        opt.Page = page + 1
+        return nil
+    }
 
+    for !done {
         err := client.ThrottleWrapper(ctx, svc, listFunc)
         if err != nil {
             return errors.WithStack(err)

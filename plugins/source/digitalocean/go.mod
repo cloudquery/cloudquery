@@ -10,7 +10,7 @@ require (
 	github.com/aws/smithy-go v1.12.0
 	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.2.9
+	github.com/cloudquery/plugin-sdk v0.3.0
 	github.com/digitalocean/godo v1.81.0
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
