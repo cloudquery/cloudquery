@@ -81,6 +81,15 @@ func generatePlugin(rr []*codegen.Resource) {
 	}
 }
 
+func needsProjectIDColumn(r codegen.Resource) bool {
+	for _, c := range r.ExtraColumns {
+		if c.Name == "project_id" {
+			return false
+		}
+	}
+	return true
+}
+
 func generateResource(r codegen.Resource, mock bool) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
@@ -133,11 +142,16 @@ func generateResource(r codegen.Resource, mock bool) {
 		r.SkipFields = append(r.SkipFields, strcase.ToCamel(f.Name))
 	}
 
+	extraColumns := r.ExtraColumns
+	if needsProjectIDColumn(r) {
+		extraColumns = append([]sdkgen.ColumnDefinition{codegen.ProjectIdColumn}, extraColumns...)
+	}
+
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
 		r.Struct,
 		sdkgen.WithSkipFields(r.SkipFields),
-		sdkgen.WithExtraColumns(append([]sdkgen.ColumnDefinition{codegen.ProjectIdColumn}, r.ExtraColumns...)),
+		sdkgen.WithExtraColumns(extraColumns),
 	)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))

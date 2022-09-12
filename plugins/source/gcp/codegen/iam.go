@@ -13,7 +13,6 @@ var iamResources = []*Resource{
 		Struct:       &iam.Role{},
 		NewFunction:  iam.NewProjectsRolesService,
 		ListFunction: (&iam.ProjectsRolesService{}).List,
-		// ListFunction: ,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "project_id",

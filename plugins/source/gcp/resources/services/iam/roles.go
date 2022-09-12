@@ -17,11 +17,6 @@ func Roles() *schema.Table {
 				Name:     "project_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveProject,
-			},
-			{
-				Name:     "project_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveProject,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
