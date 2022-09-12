@@ -10,10 +10,12 @@ import (
 const exampleConfig = `
 backends:
   - name: mylocal # local backend
-    local:
+    type: local
+    config:
       path: ./examples/terraform.tfstate
 #  - name: myremote # s3 backend
-#    s3:
+#    type: s3
+#    config:
 #      bucket: tf-states
 #      key: terraform.tfstate
 #      region: us-east-1

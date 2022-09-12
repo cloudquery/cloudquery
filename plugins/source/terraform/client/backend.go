@@ -20,9 +20,9 @@ type BackendType string
 
 // BackendConfigBlock - abstract backend config
 type BackendConfigBlock struct {
-	BackendName string              `json:"name"`
-	Local       *LocalBackendConfig `json:"local,omitempty"`
-	S3          *S3BackendConfig    `json:"s3,omitempty"`
+	BackendName string           `json:"name"`
+	Type        string           `json:"type"`
+	Config      *json.RawMessage `json:"config"`
 }
 
 type TerraformBackend struct {
@@ -62,26 +62,27 @@ func parseAndValidate(reader io.Reader) (*TerraformData, error) {
 }
 
 func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error) {
-	if config.S3 == nil {
-		return nil, errors.New("cannot parse s3 backend config")
+	var b S3BackendConfig
+	if err := json.Unmarshal(*config.Config, &b); err != nil {
+		return nil, fmt.Errorf("cannot parse s3 backend config: %w", err)
 	}
 
-	if config.S3.Region == "" {
+	if b.Region == "" {
 		if region, err := s3manager.GetBucketRegion(
 			context.Background(),
 			session.Must(session.NewSession()),
-			config.S3.Bucket,
+			b.Bucket,
 			"us-east-1",
 		); err != nil {
 			return nil, err
 		} else { //nolint:revive
-			config.S3.Region = region
+			b.Region = region
 		}
 	}
 
 	sess, err := session.NewSessionWithOptions(session.Options{
 		Config: aws.Config{
-			Region: aws.String(config.S3.Region),
+			Region: aws.String(b.Region),
 		},
 		SharedConfigState: session.SharedConfigEnable,
 	})
@@ -91,9 +92,9 @@ func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error
 	}
 
 	awsCfg := &aws.Config{}
-	if config.S3.RoleArn != "" {
+	if b.RoleArn != "" {
 		// if it has RoleArn use it instead
-		parsedArn, err := arn.Parse(config.S3.RoleArn)
+		parsedArn, err := arn.Parse(b.RoleArn)
 		if err != nil {
 			return nil, err
 		}
@@ -104,8 +105,8 @@ func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error
 
 	// get the tf state file
 	result, err := svc.GetObject(&s3.GetObjectInput{
-		Bucket: aws.String(config.S3.Bucket),
-		Key:    aws.String(config.S3.Key),
+		Bucket: aws.String(b.Bucket),
+		Key:    aws.String(b.Key),
 	})
 	if err != nil {
 		return nil, err
@@ -124,13 +125,14 @@ func NewS3TerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error
 }
 
 func NewLocalTerraformBackend(config *BackendConfigBlock) (*TerraformBackend, error) {
-	if config.Local == nil {
-		return nil, errors.New("cannot parse local backend config")
+	var b LocalBackendConfig
+	if err := json.Unmarshal(*config.Config, &b); err != nil {
+		return nil, fmt.Errorf("cannot parse local backend config: %w", err)
 	}
 
-	f, err := os.Open(config.Local.Path)
+	f, err := os.Open(b.Path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read tfstate from %s", config.Local.Path)
+		return nil, fmt.Errorf("failed to read tfstate from %s", b.Path)
 	}
 	defer f.Close()
 
@@ -148,24 +150,24 @@ func NewLocalTerraformBackend(config *BackendConfigBlock) (*TerraformBackend, er
 
 // NewBackend initialize function
 func NewBackend(cfg *BackendConfigBlock) (*TerraformBackend, error) {
-	if cfg.Local != nil && cfg.S3 != nil {
-		return nil, errors.New("cannot have both local and s3 backends")
+	if cfg.Config == nil {
+		return nil, errors.New("missing `config` in spec")
 	}
 
-	if cfg.Local != nil {
+	switch cfg.Type {
+	case "local":
 		localBackend, err := NewLocalTerraformBackend(cfg)
 		if err != nil {
 			return nil, err
 		}
 		return localBackend, nil
-	}
-	if cfg.S3 != nil {
+	case "s3":
 		s3Backend, err := NewS3TerraformBackend(cfg)
 		if err != nil {
 			return nil, err
 		}
 		return s3Backend, nil
+	default:
+		return nil, fmt.Errorf("unsupported backend: %q", cfg.Type)
 	}
-
-	return nil, errors.New("unsupported backend: specify local or s3")
 }
