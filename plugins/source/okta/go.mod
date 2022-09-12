@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/okta
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.2.6
+	github.com/cloudquery/plugin-sdk v0.3.0
 	github.com/okta/okta-sdk-golang/v2 v2.13.0
 	github.com/rs/zerolog v1.28.0
 )
@@ -14,7 +14,7 @@ require (
 	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gofrs/uuid v4.2.0+incompatible // indirect
+	github.com/gofrs/uuid v4.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.2 // indirect
