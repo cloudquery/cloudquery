@@ -24,6 +24,13 @@ func Projects() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "common_instance_metadata",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("CommonInstanceMetadata"),
@@ -72,13 +79,6 @@ func Projects() *schema.Table {
 				Name:     "quotas",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Quotas"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "usage_export_location",

@@ -25,6 +25,13 @@ func Firewalls() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "allowed",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Allowed"),
@@ -88,13 +95,6 @@ func Firewalls() *schema.Table {
 				Name:     "priority",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Priority"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "source_ranges",

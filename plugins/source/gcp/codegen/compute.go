@@ -227,8 +227,8 @@ func ComputeResources() []*Resource {
 		}
 		resource.MockImports = []string{"cloud.google.com/go/compute/apiv1"}
 		resource.ProtobufImport = "google.golang.org/genproto/googleapis/cloud/compute/v1"
-		if resource.OverrideColumns == nil {
-			resource.OverrideColumns = []codegen.ColumnDefinition{
+		if resource.ExtraColumns == nil {
+			resource.ExtraColumns = []codegen.ColumnDefinition{
 				{
 					Name:    "self_link",
 					Type:    schema.TypeString,
