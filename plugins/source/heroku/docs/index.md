@@ -5,8 +5,10 @@ The CloudQuery Heroku plugin extracts and loads your Heroku data into PostgreSQL
 ## Install
 
 ```bash
-cloudquery init heroku
+cloudquery generate heroku
 ```
+
+This will generate a `heroku.yml` file containing example configuration.
 
 ## Authentication
 
@@ -24,7 +26,7 @@ A token can be generated using the Heroku CLI.
     
     (For additional options for this command, such as expiry, see the [Heroku CLI commands documentation](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-authorizations-create))
     
-    Copy the token value into your CloudQuery config:
+    Copy the token value into your `heroku.yml` file:
     
     ```
     token: <Token HERE>
@@ -61,66 +63,6 @@ If you are interested in fetching any of these resources, a `global` scope will 
 
 ## Configuration
 
-If you have an existing CloudQuery configuration file, add the following block your providers list in your `cloudquery.yml` configuration to start using the Heroku plugin:
-
-```yaml
-- name: heroku
-  configuration:
-    token: "<YOUR ACCESS TOKEN HERE>"
-  resources:
-    - account_features
-    - add_on_attachments
-    - add_on_configs
-    - add_on_region_capabilities
-    - add_on_services
-    - add_on_webhook_deliveries
-    - add_on_webhook_events
-    - add_on_webhooks
-    - add_ons
-    - app_features
-    - app_transfers
-    - app_webhook_deliveries
-    - app_webhook_events
-    - app_webhooks
-    - apps
-    - buildpack_installations
-    - builds
-    - collaborators
-    - credits
-    - domains
-    - dyno_sizes
-    - dynos
-    - enterprise_account_members
-    - enterprise_accounts
-    - formations
-    - inbound_rulesets
-    - invoices
-    - keys
-    - log_drains
-    - oauth_authorizations
-    - oauth_clients
-    - outbound_rulesets
-    - peerings
-    - permission_entities
-    - pipeline_builds
-    - pipeline_couplings
-    - pipeline_deployments
-    - pipeline_releases
-    - pipelines
-    - regions
-    - releases
-    - review_apps
-    - space_app_accesses
-    - spaces
-    - stacks
-    - team_app_permissions
-    - team_features
-    - team_invitations
-    - team_invoices
-    - team_members
-    - team_spaces
-    - teams
-    - vpn_connections
-```
+Edit the generated `heroku.yml` file to include your Heroku OAuth token.
 
 More information can be found in the [CloudQuery documentation](https://docs.cloudquery.io/docs/intro)
