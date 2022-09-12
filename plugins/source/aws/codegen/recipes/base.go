@@ -17,15 +17,15 @@ import (
 )
 
 type Resource struct {
-	Service string
-	SubService string
-	Struct interface{}
-	SkipFields []string
-	ExtraColumns []codegen.ColumnDefinition
-	Table *codegen.TableDefinition
-	Multiplex string
+	Service             string
+	SubService          string
+	Struct              interface{}
+	SkipFields          []string
+	ExtraColumns        []codegen.ColumnDefinition
+	Table               *codegen.TableDefinition
+	Multiplex           string
 	PreResourceResolver string
-	Relations []string
+	Relations           []string
 }
 
 //go:embed templates/*.go.tpl
@@ -33,13 +33,13 @@ var templatesFS embed.FS
 
 var defaultRegionalColumns = []codegen.ColumnDefinition{
 	{
-		Name: "account_id",
-		Type: schema.TypeString,
+		Name:     "account_id",
+		Type:     schema.TypeString,
 		Resolver: "client.ResolveAWSAccount",
 	},
 	{
-		Name: "region",
-		Type: schema.TypeString,
+		Name:     "region",
+		Type:     schema.TypeString,
 		Resolver: "client.ResolveAWSRegion",
 	},
 }
@@ -50,7 +50,7 @@ func (r *Resource) Generate() error {
 		return fmt.Errorf("failed to get caller information")
 	}
 	dir := path.Dir(filename)
-	
+
 	var err error
 	r.Table, err = codegen.NewTableFromStruct(
 		fmt.Sprintf("aws_%s_%s", r.Service, r.SubService),
@@ -93,7 +93,7 @@ func (r *Resource) Generate() error {
 		return fmt.Errorf("failed to create directory %s: %w", dir, err)
 	}
 
-	filePath := path.Join(dir, r.SubService + ".go")
+	filePath := path.Join(dir, r.SubService+".go")
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
 	if err != nil {

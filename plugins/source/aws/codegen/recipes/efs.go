@@ -9,23 +9,23 @@ import (
 var efsResources = []*Resource{
 	{
 		SubService: "filesystems",
-		Struct: &types.FileSystemDescription{},
+		Struct:     &types.FileSystemDescription{},
 		SkipFields: []string{"FileSystemArn"},
 		ExtraColumns: append(
 			defaultRegionalColumns,
 			[]codegen.ColumnDefinition{
-			{
-				Name: "arn",
-				Type: schema.TypeString,
-				Resolver: `schema.PathResolver("FileSystemArn")`,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name: "backup_policy_status",
-				Type: schema.TypeString,
-				Resolver: `ResolveEfsFilesystemBackupPolicyStatus`,
-			},
-		}...),
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("FileSystemArn")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "backup_policy_status",
+					Type:     schema.TypeString,
+					Resolver: `ResolveEfsFilesystemBackupPolicyStatus`,
+				},
+			}...),
 	},
 }
 

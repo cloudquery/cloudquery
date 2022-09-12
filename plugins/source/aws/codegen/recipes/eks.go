@@ -6,25 +6,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-
 func EksResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "clusters",
-			Struct: &types.Cluster{},
-			SkipFields: []string{"Arn"},
+			SubService:          "clusters",
+			Struct:              &types.Cluster{},
+			SkipFields:          []string{"Arn"},
 			PreResourceResolver: "getEksCluster",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("Arn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Arn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 	}
 

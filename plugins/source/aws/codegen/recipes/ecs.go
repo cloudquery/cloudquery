@@ -8,25 +8,25 @@ import (
 
 var ecsResources = []*Resource{
 	{
-		SubService: "task_definitions",
-		Struct: &types.TaskDefinition{},
-		SkipFields: []string{"TaskDefinitionArn"},
+		SubService:          "task_definitions",
+		Struct:              &types.TaskDefinition{},
+		SkipFields:          []string{"TaskDefinitionArn"},
 		PreResourceResolver: "getEcsTaskDefinition",
 		ExtraColumns: append(
 			defaultRegionalColumns,
 			[]codegen.ColumnDefinition{
-			{
-				Name: "arn",
-				Type: schema.TypeString,
-				Resolver: `schema.PathResolver("TaskDefinitionArn")`,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-			{
-				Name: "tags",
-				Type: schema.TypeString,
-				Resolver: `schema.PathResolver("Tags")`,
-			},
-		}...),
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("TaskDefinitionArn")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "tags",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Tags")`,
+				},
+			}...),
 	},
 }
 

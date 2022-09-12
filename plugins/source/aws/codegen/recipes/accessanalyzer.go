@@ -6,59 +6,57 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-
 func AccessAnalyzerResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "analyzers",
-			Struct: &types.AnalyzerSummary{},
+			Struct:     &types.AnalyzerSummary{},
 			SkipFields: []string{"Arn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("access-analyzer")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("access-analyzer")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("Arn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Arn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 			Relations: []string{"AnalyzerFindings()", "AnalyzerArchiveRules()"},
 		},
 		{
 			SubService: "analyzer_findings",
-			Struct: &types.FindingSummary{},
+			Struct:     &types.FindingSummary{},
 			SkipFields: []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `resolveFindingArn`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name: "analyzer_arn",
-					Type: schema.TypeString,
-					Resolver: `schema.ParentPathResolver("Arn")`,
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveFindingArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "analyzer_arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentPathResolver("Arn")`,
+					},
+				}...),
 		},
 		{
 			SubService: "analyzer_archive_rules",
-			Struct: &types.ArchiveRuleSummary{},
+			Struct:     &types.ArchiveRuleSummary{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "analyzer_arn",
-					Type: schema.TypeString,
-					Resolver: `schema.ParentPathResolver("Arn")`,
-				},
-			}...),
+					{
+						Name:     "analyzer_arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentPathResolver("Arn")`,
+					},
+				}...),
 		},
 	}
 
