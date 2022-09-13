@@ -3,24 +3,35 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/ettle/strcase"
 	"os"
 	"path"
 	"strings"
+	"text/template"
 )
 
 var directory string
+var createStarterTemplate bool
 
-func migrate(dir string) {
+func migrate(dir string) []string {
 	items, _ := os.ReadDir(dir)
+	names := make([]string, 0)
 	for _, it := range items {
-		if strings.HasSuffix(it.Name(), "_fetch.go") || strings.HasSuffix(it.Name(), ".bk") {
+		if strings.HasSuffix(it.Name(), ".go.bk") {
+			fmt.Fprintln(os.Stderr, "Skipping "+it.Name())
+			names = append(names, strings.TrimSuffix(it.Name(), ".go.bk"))
+			continue
+		}
+		if strings.HasSuffix(it.Name(), "_fetch.go") {
 			fmt.Fprintln(os.Stderr, "Skipping "+it.Name())
 			continue
 		}
 		if strings.HasSuffix(it.Name(), ".go") && !strings.HasSuffix(it.Name(), "_test.go") {
 			migrateFile(path.Join(dir, it.Name()))
+			names = append(names, strings.TrimSuffix(it.Name(), ".go"))
 		}
 	}
+	return names
 }
 
 func migrateFile(f string) {
@@ -72,13 +83,78 @@ func migrateFile(f string) {
 	os.RemoveAll(f)
 }
 
+var starterTemplate = `package recipes
+
+import (
+	"github.com/aws/aws-sdk-go-v2/service/{{.ServiceName}}/types"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
+)
+
+func {{.ServiceName | Title}}Resources() []*Resource {
+	resources := []*Resource{
+		{{ range $i, $name := .Names }}
+		{
+			SubService: "{{ $name }}",
+			Struct:     &types.{{ $name | Title }}{},
+			SkipFields: []string{"ARN"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: ` + "`" + `schema.PathResolver("ARN")` + "`" + `,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{{ end }}
+	}
+
+	// set default values
+	for _, r := range resources {
+		r.Service = "{{.ServiceName}}"
+		// r.Multiplex = ""
+	}
+	return resources
+}
+`
+
+func writeStarterTemplate(dir string, names []string) {
+	tpl, err := template.New("starter").Funcs(template.FuncMap{
+		"Title": strcase.ToGoPascal,
+	}).Parse(starterTemplate)
+	if err != nil {
+		panic(err)
+	}
+	pth := "../../codegen/recipes/" + dir + ".go"
+	f, err := os.Create(pth)
+	if err != nil {
+		panic(err)
+	}
+	values := map[string]interface{}{
+		"ServiceName": dir,
+		"Names":       names,
+	}
+	err = tpl.Execute(f, values)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Starter template created at " + pth)
+}
+
 func main() {
 	flag.StringVar(&directory, "d", "", "directory to migrate")
+	flag.BoolVar(&createStarterTemplate, "s", false, "whether to create starter template")
 	flag.Parse()
 
 	if directory == "" {
 		fmt.Fprintln(os.Stderr, "Usage: -d <directory_to_migrate>")
 		return
 	}
-	migrate(directory)
+	names := migrate(directory)
+	if createStarterTemplate {
+		writeStarterTemplate(directory, names)
+	}
 }

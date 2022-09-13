@@ -93,6 +93,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.9 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
+	github.com/ettle/strcase v0.1.1 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2 // indirect
