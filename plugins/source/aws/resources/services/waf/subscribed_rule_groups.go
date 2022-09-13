@@ -23,11 +23,6 @@ func SubscribedRuleGroups() *schema.Table {
 				},
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
 				Name:        "rule_group_id",
 				Type:        schema.TypeString,
 				Description: `A unique identifier for a RuleGroup.`,

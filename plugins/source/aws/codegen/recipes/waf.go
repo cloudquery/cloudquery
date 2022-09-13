@@ -14,7 +14,7 @@ func WAFResources() []*Resource {
 			Struct:     &types.RuleGroupSummary{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: append(
-				defaultRegionalColumns,
+				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "arn",
@@ -40,7 +40,7 @@ func WAFResources() []*Resource {
 			Struct:     &types.RuleSummary{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: append(
-				defaultRegionalColumns,
+				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "arn",
@@ -69,11 +69,6 @@ func WAFResources() []*Resource {
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 				{
-					Name:     "region",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSRegion`,
-				},
-				{
 					Name:        "rule_group_id",
 					Description: "A unique identifier for a RuleGroup.",
 					Type:        schema.TypeString,
@@ -87,7 +82,7 @@ func WAFResources() []*Resource {
 			Struct:     &types.WebACLSummary{},
 			SkipFields: []string{"WebACLArn"},
 			ExtraColumns: append(
-				defaultRegionalColumns,
+				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "arn",
