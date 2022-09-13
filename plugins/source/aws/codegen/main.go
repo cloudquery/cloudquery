@@ -22,6 +22,7 @@ func main() {
 	resources = append(resources, recipes.EksResources()...)
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
+	resources = append(resources, recipes.SecretsManagerResources()...)
 	resources = append(resources, recipes.SESResources()...)
 	resources = append(resources, recipes.ShieldResources()...)
 	resources = append(resources, recipes.SNSResources()...)

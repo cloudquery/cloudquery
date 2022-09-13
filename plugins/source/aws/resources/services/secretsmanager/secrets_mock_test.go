@@ -49,5 +49,5 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestSecretsManagerModels(t *testing.T) {
-	client.AwsMockTestHelper(t, SecretsmanagerSecrets(), buildSecretsmanagerModels, client.TestOptions{})
+	client.AwsMockTestHelper(t, Secrets(), buildSecretsmanagerModels, client.TestOptions{})
 }
