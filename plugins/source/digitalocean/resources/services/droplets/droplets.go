@@ -16,6 +16,21 @@ func Droplets() *schema.Table {
 		Resolver: fetchDroplets,
 		Columns: []schema.Column{
 			{
+				Name:     "backup_ids",
+				Type:     schema.TypeIntArray,
+				Resolver: schema.PathResolver("BackupIDs"),
+			},
+			{
+				Name:     "snapshot_ids",
+				Type:     schema.TypeIntArray,
+				Resolver: schema.PathResolver("SnapshotIDs"),
+			},
+			{
+				Name:     "volume_ids",
+				Type:     schema.TypeIntArray,
+				Resolver: schema.PathResolver("VolumeIDs"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
@@ -61,19 +76,9 @@ func Droplets() *schema.Table {
 				Resolver: schema.PathResolver("SizeSlug"),
 			},
 			{
-				Name:     "backup_i_ds",
-				Type:     schema.TypeIntArray,
-				Resolver: schema.PathResolver("BackupIDs"),
-			},
-			{
 				Name:     "next_backup_window",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("NextBackupWindow"),
-			},
-			{
-				Name:     "snapshot_i_ds",
-				Type:     schema.TypeIntArray,
-				Resolver: schema.PathResolver("SnapshotIDs"),
 			},
 			{
 				Name:     "features",
@@ -111,11 +116,6 @@ func Droplets() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:     "volume_i_ds",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("VolumeIDs"),
-			},
-			{
 				Name:     "vpcuuid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VPCUUID"),
@@ -129,7 +129,6 @@ func Droplets() *schema.Table {
 }
 
 func fetchDroplets(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{

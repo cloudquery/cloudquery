@@ -103,13 +103,12 @@ func Databases() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			Backups(), Replicas(), FirewallRules(),
+			FirewallRules(), Replicas(), Backups(),
 		},
 	}
 }
 
 func fetchDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{

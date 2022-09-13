@@ -28,7 +28,6 @@ type Client struct {
 	Regions          []string
 	SpacesRegion     string
 	CredentialStatus DoCredentialStruct
-	S3               *s3.Client
 	Services         *Services
 }
 
@@ -61,8 +60,7 @@ func (c *Client) WithSpacesRegion(region string) *Client {
 		logger:       c.Logger().With().Str("spaces_region", region).Logger(),
 		DoClient:     c.DoClient,
 		SpacesRegion: region,
-		S3:           c.S3,
-		Services:     initServices(c.DoClient),
+		Services:     initServices(c.DoClient, c.Services.Spaces),
 	}
 }
 
@@ -118,6 +116,7 @@ type Services struct {
 	Snapshots      SnapshotsService
 	Storage        StorageService
 	Vpcs           VpcsService
+	Spaces         SpacesService
 }
 
 type ServicesRegionMap map[string]*Services
@@ -182,9 +181,8 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		DoClient:         godo.NewFromToken(doSpec.Token),
 		Regions:          spacesRegions,
 		SpacesRegion:     "nyc3",
-		S3:               s3.NewFromConfig(awsCfg),
 		CredentialStatus: credStatus,
-		Services:         initServices(client),
+		Services:         initServices(client, s3.NewFromConfig(awsCfg)),
 	}
 	return &c, nil
 }
@@ -201,7 +199,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func initServices(doClient *godo.Client) *Services {
+func initServices(doClient *godo.Client, spacesService SpacesService) *Services {
 	return &Services{
 		Account:        doClient.Account,
 		Cdn:            doClient.CDNs,
@@ -223,5 +221,6 @@ func initServices(doClient *godo.Client) *Services {
 		Snapshots:      doClient.Snapshots,
 		Storage:        doClient.Storage,
 		Vpcs:           doClient.VPCs,
+		Spaces:         spacesService,
 	}
 }

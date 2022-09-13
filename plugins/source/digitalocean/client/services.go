@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/digitalocean/godo"
 )
 
@@ -117,4 +118,10 @@ type StorageService interface {
 type VpcsService interface {
 	List(context.Context, *godo.ListOptions) ([]*godo.VPC, *godo.Response, error)
 	ListMembers(context.Context, string, *godo.VPCListMembersRequest, *godo.ListOptions) ([]*godo.VPCMember, *godo.Response, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/spaces_service.go . SpacesService
+type SpacesService interface {
+	ListBuckets(ctx context.Context, params *s3.ListBucketsInput, optFns ...func(*s3.Options)) (*s3.ListBucketsOutput, error)
+	GetBucketCors(ctx context.Context, params *s3.GetBucketCorsInput, optFns ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error)
 }

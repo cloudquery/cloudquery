@@ -34,8 +34,9 @@ func create{{.SubServiceName | ToCamel}}(t *testing.T, ctrl *gomock.Controller) 
 
 	m.EXPECT().{{$func}}(gomock.Any(),gomock.Any(){{if ne .ParentStructName ""}},gomock.Any(){{end}}).Return(data, &godo.Response{}, nil)
 
-    //add children mocks
-    {{range $val := .Relations}}create{{$val}}(t, m){{end}}
+    {{range $val := .Relations -}}
+    create{{$val}}(t, m)
+    {{end}}
 
 	return client.Services{
 		{{.Service | ToCamel}}: m,

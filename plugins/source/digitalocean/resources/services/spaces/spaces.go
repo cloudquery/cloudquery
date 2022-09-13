@@ -27,9 +27,9 @@ func Spaces() *schema.Table {
 				Resolver: schema.PathResolver("Public"),
 			},
 			{
-				Name:     "acls",
+				Name:     "ac_ls",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Acls"),
+				Resolver: schema.PathResolver("ACLs"),
 			},
 		},
 	}

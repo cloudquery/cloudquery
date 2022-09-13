@@ -17,25 +17,12 @@ func createDatabases(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeData(&data); err != nil {
 		t.Fatal(err)
 	}
+
 	m.EXPECT().List(gomock.Any(), gomock.Any()).Return(data, &godo.Response{}, nil)
 
-	var backups []godo.DatabaseBackup
-	if err := faker.FakeData(&backups); err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListBackups(gomock.Any(), gomock.Any(), gomock.Any()).Return(backups, &godo.Response{}, nil)
-
-	var replicas []godo.DatabaseReplica
-	if err := faker.FakeData(&replicas); err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().ListReplicas(gomock.Any(), gomock.Any(), gomock.Any()).Return(replicas, &godo.Response{}, nil)
-
-	var firewallRules []godo.DatabaseFirewallRule
-	if err := faker.FakeData(&replicas); err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().GetFirewallRules(gomock.Any(), gomock.Any()).Return(firewallRules, &godo.Response{}, nil)
+	createFirewallRules(t, m)
+	createReplicas(t, m)
+	createBackups(t, m)
 
 	return client.Services{
 		Databases: m,

@@ -12,6 +12,11 @@ var (
 // todo change it
 const exampleConfig = `
 # token: "<CHANGE_THIS_TO_YOUR_TOKEN>"
+# spaces_regions: 
+#   - "<CHANGE_THIS_TO_YOUR_SPACES_REGION>"
+# spaces_access_key: "<CHANGE_THIS_TO_YOUR_SPACES_ACCESS_KEY>"
+# spaces_access_key_id: "<CHANGE_THIS_TO_YOUR_SPACES_ACCESS_KEY_ID>"
+# spaces_debug_logging: "<CHANGE_THIS_TO_YOUR_SPACES_LOGGING_FLAG>"
 `
 
 func Plugin() *plugins.SourcePlugin {

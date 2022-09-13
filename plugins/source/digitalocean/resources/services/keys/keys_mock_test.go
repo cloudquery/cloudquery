@@ -20,8 +20,6 @@ func createKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().List(gomock.Any(), gomock.Any()).Return(data, &godo.Response{}, nil)
 
-	//add children mocks
-
 	return client.Services{
 		Keys: m,
 	}

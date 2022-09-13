@@ -32,7 +32,7 @@ func {{.SubServiceName | ToCamel}}() *schema.Table {
 
 {{if not .SkipFetch}}
 func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientMeta, {{if eq .ParentStructName ""}}_{{else}}parent{{end}} *schema.Resource, res chan<- interface{}) error {
-	{{if ne .ParentStructName ""}}p := parent.Item.({{if .IsParentPointer}}*{{end}}godo.{{.ParentStructName}}){{end}}
+	{{- if ne .ParentStructName ""}}p := parent.Item.({{if .IsParentPointer}}*{{end}}godo.{{.ParentStructName}}){{- end}}
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{

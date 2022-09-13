@@ -20,8 +20,6 @@ func createVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().ListVolumes(gomock.Any(), gomock.Any()).Return(data, &godo.Response{}, nil)
 
-	//add children mocks
-
 	return client.Services{
 		Storage: m,
 	}

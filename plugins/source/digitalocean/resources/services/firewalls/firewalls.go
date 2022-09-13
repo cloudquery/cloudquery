@@ -46,11 +46,6 @@ func Firewalls() *schema.Table {
 				Resolver: schema.PathResolver("OutboundRules"),
 			},
 			{
-				Name:     "droplet_i_ds",
-				Type:     schema.TypeIntArray,
-				Resolver: schema.PathResolver("DropletIDs"),
-			},
-			{
 				Name:     "tags",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("Tags"),
@@ -70,7 +65,6 @@ func Firewalls() *schema.Table {
 }
 
 func fetchFirewalls(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{

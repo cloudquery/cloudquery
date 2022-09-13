@@ -20,8 +20,6 @@ func createAlertPolicies(t *testing.T, ctrl *gomock.Controller) client.Services 
 
 	m.EXPECT().ListAlertPolicies(gomock.Any(), gomock.Any()).Return(data, &godo.Response{}, nil)
 
-	//add children mocks
-
 	return client.Services{
 		Monitoring: m,
 	}

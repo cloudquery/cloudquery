@@ -70,7 +70,6 @@ func AlertPolicies() *schema.Table {
 }
 
 func fetchAlertPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{

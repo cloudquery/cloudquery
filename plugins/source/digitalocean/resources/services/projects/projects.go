@@ -74,7 +74,6 @@ func Projects() *schema.Table {
 }
 
 func fetchProjects(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{

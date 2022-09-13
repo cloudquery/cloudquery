@@ -15,18 +15,18 @@ type WrappedBucket struct {
 	types.Bucket
 	Location string
 	Public   bool
-	Acls     []types.Grant
+	ACLs     []types.Grant
 }
 
 func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client)
+	c := meta.(*client.Client)
 	log := meta.Logger()
 
-	buckets, err := svc.S3.ListBuckets(ctx, &s3.ListBucketsInput{}, func(options *s3.Options) {
-		options.Region = svc.SpacesRegion
+	buckets, err := c.Services.Spaces.ListBuckets(ctx, &s3.ListBucketsInput{}, func(options *s3.Options) {
+		options.Region = c.SpacesRegion
 	})
 	if err != nil {
-		if !svc.CredentialStatus.Spaces {
+		if !c.CredentialStatus.Spaces {
 			log.Warn().Msg("Spaces credentials not set. skipping")
 			return nil
 		}
@@ -38,7 +38,7 @@ func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	for i, b := range buckets.Buckets {
 		wb[i] = &WrappedBucket{
 			Bucket:   b,
-			Location: svc.SpacesRegion,
+			Location: c.SpacesRegion,
 		}
 	}
 	res <- wb
@@ -48,8 +48,8 @@ func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 func fetchCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
-	svc := meta.(*client.Client).S3
-	corsOutput, err := svc.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
+	svc := meta.(*client.Client).Services
+	corsOutput, err := svc.Spaces.GetBucketCors(ctx, &s3.GetBucketCorsInput{Bucket: r.Name}, func(options *s3.Options) {
 		options.Region = r.Location
 	})
 	if err != nil && !(errors.As(err, &ae) && ae.ErrorCode() == "NoSuchCORSConfiguration") {

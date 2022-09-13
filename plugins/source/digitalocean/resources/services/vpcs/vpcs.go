@@ -64,7 +64,6 @@ func Vpcs() *schema.Table {
 }
 
 func fetchVpcs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
 	svc := meta.(*client.Client)
 
 	opt := &godo.ListOptions{
