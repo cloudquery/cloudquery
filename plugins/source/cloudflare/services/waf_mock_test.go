@@ -6,11 +6,12 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegen"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 
-func buildWafs(t *testing.T, ctrl *gomock.Controller) client.Clients {
+func buildWAFPackages(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var wafPackage cloudflare.WAFPackage
@@ -66,6 +67,6 @@ func buildWafs(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	}
 }
 
-func TestWafs(t *testing.T) {
-	client.MockTestHelper(t, Wafs(), buildWafs)
+func TestWAFPackages(t *testing.T) {
+	client.MockTestHelper(t, codegen.WAFPackages(), buildWAFPackages)
 }

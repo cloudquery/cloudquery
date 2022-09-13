@@ -6,6 +6,7 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegen"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
@@ -43,5 +44,5 @@ func buildAccessGroups(t *testing.T, ctrl *gomock.Controller) client.Clients {
 }
 
 func TestAccessGroups(t *testing.T) {
-	client.MockTestHelper(t, AccessGroups(), buildAccessGroups)
+	client.MockTestHelper(t, codegen.AccessGroups(), buildAccessGroups)
 }

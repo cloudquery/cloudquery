@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegen"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/services"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -36,17 +37,17 @@ func Plugin() *plugins.SourcePlugin {
 		"cloudflare",
 		Version,
 		[]*schema.Table{
-			services.AccessGroups(),
-			services.Accounts(),
-			services.CertificatePacks(),
-			services.DNSRecords(),
-			services.Images(),
+			codegen.AccessGroups(),
+			codegen.Accounts(),
+			codegen.CertificatePacks(),
+			codegen.DNSRecords(),
+			codegen.Images(),
 			services.Ips(),
-			services.Wafs(),
-			services.WafOverrides(),
-			services.WorkersScripts(),
-			services.WorkersRoutes(),
-			services.Zones(),
+			codegen.WAFPackages(),
+			codegen.WAFOverrides(),
+			codegen.WorkerMetaData(),
+			codegen.WorkerRoutes(),
+			codegen.Zones(),
 		},
 		client.Configure,
 		plugins.WithSourceExampleConfig(exampleConfig),

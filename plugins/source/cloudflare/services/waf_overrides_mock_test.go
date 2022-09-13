@@ -6,11 +6,12 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegen"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 
-func buildWafOverrides(t *testing.T, ctrl *gomock.Controller) client.Clients {
+func buildWAFOverrides(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
 	var wafOverride cloudflare.WAFOverride
@@ -31,5 +32,5 @@ func buildWafOverrides(t *testing.T, ctrl *gomock.Controller) client.Clients {
 }
 
 func TestWafOverrides(t *testing.T) {
-	client.MockTestHelper(t, WafOverrides(), buildWafOverrides)
+	client.MockTestHelper(t, codegen.WAFOverrides(), buildWAFOverrides)
 }

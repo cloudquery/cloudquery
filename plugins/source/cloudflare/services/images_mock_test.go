@@ -6,6 +6,7 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegen"
 	"github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
@@ -34,5 +35,5 @@ func buildImages(t *testing.T, ctrl *gomock.Controller) client.Clients {
 }
 
 func TestImages(t *testing.T) {
-	client.MockTestHelper(t, Images(), buildImages)
+	client.MockTestHelper(t, codegen.Images(), buildImages)
 }

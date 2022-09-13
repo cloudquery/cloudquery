@@ -7,6 +7,8 @@ require (
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/cloudquery/plugin-sdk v0.5.2
 	github.com/golang/mock v1.6.0
+	github.com/iancoleman/strcase v0.2.0
+	github.com/jinzhu/inflection v1.0.0
 	github.com/rs/zerolog v1.28.0
 )
 
@@ -109,7 +111,6 @@ require (
 	github.com/hashicorp/terraform-plugin-docs v0.13.0 // indirect
 	github.com/hexops/gotextdiff v1.0.3 // indirect
 	github.com/huandu/xstrings v1.3.2 // indirect
-	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
