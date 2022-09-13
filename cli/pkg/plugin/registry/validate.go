@@ -1,4 +1,4 @@
-//nolint: staticcheck
+// nolint: staticcheck
 package registry
 
 import (
@@ -77,6 +77,10 @@ func validateChecksumProvider(providerName string, providerPath string, checksum
 		}
 		nameWithOSAndArch := fmt.Sprintf("%s_%s_%s", providerName, runtime.GOOS, runtime.GOARCH)
 		oldNameWithOSAndArch := fmt.Sprintf("cq-provider-%s", nameWithOSAndArch)
+		if runtime.GOOS == "windows" {
+			nameWithOSAndArch += ".exe"
+			oldNameWithOSAndArch += ".exe"
+		}
 		if nameWithOSAndArch == split[1] || oldNameWithOSAndArch == split[1] {
 			if split[0] == sha256sum {
 				return nil
