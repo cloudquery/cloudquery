@@ -12,7 +12,7 @@ var sqlResources = []*Resource{
 		Struct:     &sqladmin.DatabaseInstance{},
 		SkipMock:   true,
 		SkipFetch:  true,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "self_link",
 				Type:     schema.TypeString,

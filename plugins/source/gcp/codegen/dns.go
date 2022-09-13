@@ -13,7 +13,7 @@ var dnsResources = []*Resource{
 		Struct:       &dns.Policy{},
 		NewFunction:  dns.NewService,
 		ListFunction: (&dns.PoliciesService{}).List,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
 				Type:     schema.TypeInt,
@@ -27,7 +27,7 @@ var dnsResources = []*Resource{
 		Struct:       &dns.ManagedZone{},
 		NewFunction:  dns.NewManagedZoneOperationsService,
 		ListFunction: (&dns.ManagedZonesService{}).List,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
 				Type:     schema.TypeInt,

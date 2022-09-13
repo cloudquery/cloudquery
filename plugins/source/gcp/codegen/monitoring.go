@@ -17,7 +17,7 @@ var monitoringResources = []*Resource{
 		RegisterServer:      pb.RegisterAlertPolicyServiceServer,
 		ListFunction:        (&pb.UnimplementedAlertPolicyServiceServer{}).ListAlertPolicies,
 		UnimplementedServer: &pb.UnimplementedAlertPolicyServiceServer{},
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "name",
 				Type:    schema.TypeString,
