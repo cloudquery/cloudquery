@@ -34,14 +34,14 @@ func MySQL() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"},
 				},
 			},
-			definitions: []resourceDefinition{
+			definitions: append([]resourceDefinition{
 				{
 					azureStruct:  &mysql.Server{},
 					listFunction: "List",
 					listHandler:  valueHandler,
 					relations:    serverRelations,
 				},
-			},
+			}, serverRelations...),
 			serviceNameOverride: "MySQL",
 		},
 	}

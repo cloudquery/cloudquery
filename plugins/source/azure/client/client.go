@@ -52,7 +52,7 @@ func getAuth(logger *zerolog.Logger) (autorest.Authorizer, *azidentity.DefaultAz
 
 func getSubscriptions(logger *zerolog.Logger, spec *Spec, azureAuth autorest.Authorizer) ([]string, error) {
 	subscriptions := make([]string, 0)
-	if len(spec.SubscriptionIDs) == 0 {
+	if len(spec.Subscriptions) == 0 {
 		ctx := context.Background()
 		svc := subscription.NewSubscriptionsClient()
 		svc.Authorizer = azureAuth
@@ -78,7 +78,7 @@ func getSubscriptions(logger *zerolog.Logger, spec *Spec, azureAuth autorest.Aut
 		}
 		logger.Info().Msgf("No subscriptions specified, going to using all available ones %s %s", "subscriptions", subscriptions)
 	} else {
-		subscriptions = spec.SubscriptionIDs
+		subscriptions = spec.Subscriptions
 	}
 
 	if len(subscriptions) == 0 {

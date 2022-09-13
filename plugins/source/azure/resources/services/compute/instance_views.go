@@ -25,7 +25,7 @@ func instanceViews() *schema.Table {
 			{
 				Name:     "cq_id_parent",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIdResolver,
+				Resolver: schema.ParentIDResolver,
 			},
 			{
 				Name:     "platform_update_domain",

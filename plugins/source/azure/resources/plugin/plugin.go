@@ -38,7 +38,7 @@ var (
 )
 
 const exampleConfig = `
-Optional. if you not specified, CloudQuery tries to access all subscriptions available to tenant
+# Optional. if you not specified, CloudQuery tries to access all subscriptions available to tenant
 subscriptions:
   - "<YOUR_SUBSCRIPTION_ID_HERE>"
 `

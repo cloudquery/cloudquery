@@ -1,5 +1,5 @@
 package client
 
 type Spec struct {
-	SubscriptionIDs []string `json:"subscription_ids"`
+	Subscriptions []string `json:"subscriptions"`
 }
