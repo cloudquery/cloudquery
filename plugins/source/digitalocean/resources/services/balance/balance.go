@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Balance() *schema.Table {
@@ -45,7 +44,7 @@ func fetchBalance(ctx context.Context, meta schema.ClientMeta, _ *schema.Resourc
 	getFunc := func() error {
 		response, _, err := svc.Services.Balance.Get(ctx)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- response
 		return nil
@@ -53,7 +52,7 @@ func fetchBalance(ctx context.Context, meta schema.ClientMeta, _ *schema.Resourc
 
 	err := client.ThrottleWrapper(ctx, svc, getFunc)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	return nil
 }

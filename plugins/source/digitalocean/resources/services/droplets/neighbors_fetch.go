@@ -6,7 +6,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/digitalocean/godo"
-	"github.com/pkg/errors"
 )
 
 type NeighborWrapper struct {
@@ -20,7 +19,7 @@ func fetchNeighbors(ctx context.Context, meta schema.ClientMeta, parent *schema.
 
 	neighbors, _, err := svc.Services.Droplets.Neighbors(ctx, droplet.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	if neighbors == nil {
 		return nil

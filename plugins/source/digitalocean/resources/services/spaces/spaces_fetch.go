@@ -31,7 +31,7 @@ func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			return nil
 		}
 
-		return errors.WithStack(err)
+		return err
 	}
 
 	wb := make([]*WrappedBucket, len(buckets.Buckets))
@@ -53,7 +53,7 @@ func fetchCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 		options.Region = r.Location
 	})
 	if err != nil && !(errors.As(err, &ae) && ae.ErrorCode() == "NoSuchCORSConfiguration") {
-		return errors.WithStack(err)
+		return err
 	}
 	if corsOutput != nil {
 		res <- corsOutput.CORSRules

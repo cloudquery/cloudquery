@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Registry() *schema.Table {
@@ -54,7 +53,7 @@ func fetchRegistry(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 	getFunc := func() error {
 		response, _, err := svc.Services.Registry.Get(ctx)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- response
 		return nil
@@ -62,7 +61,7 @@ func fetchRegistry(ctx context.Context, meta schema.ClientMeta, _ *schema.Resour
 
 	err := client.ThrottleWrapper(ctx, svc, getFunc)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	return nil
 }

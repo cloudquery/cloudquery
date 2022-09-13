@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
-	"github.com/pkg/errors"
   {{range .Imports}}
   "{{.}}"
   {{end}}
@@ -23,7 +22,7 @@ func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientM
 	getFunc := func() error {
         response, _, err := svc.Services.{{.Service  | ToCamel}}.Get{{.SubService | ToCamel}}(ctx{{if ne .ParentStructName ""}}, p.ID{{end}})
         if err != nil {
-            return errors.WithStack(err)
+            return err
         }
         res <- response
         return nil
@@ -31,7 +30,7 @@ func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientM
 
     err := client.ThrottleWrapper(ctx, svc, getFunc)
     if err != nil {
-        return errors.WithStack(err)
+        return err
     }
     return nil
 }

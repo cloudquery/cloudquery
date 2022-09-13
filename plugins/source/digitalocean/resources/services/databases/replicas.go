@@ -6,10 +6,8 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
-	"github.com/digitalocean/godo"
-	"github.com/pkg/errors"
-
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/digitalocean/godo"
 )
 
 func Replicas() *schema.Table {
@@ -73,7 +71,7 @@ func fetchReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	listFunc := func() error {
 		data, resp, err := svc.Services.Databases.ListReplicas(ctx, p.ID, opt)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		// pass the current page's data to our result channel
 		res <- data
@@ -84,7 +82,7 @@ func fetchReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 		}
 		page, err := resp.Links.CurrentPage()
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		// set the page we want for the next request
 		opt.Page = page + 1
@@ -94,7 +92,7 @@ func fetchReplicas(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	for !done {
 		err := client.ThrottleWrapper(ctx, svc, listFunc)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 	return nil

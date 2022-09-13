@@ -9,8 +9,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/digitalocean/godo"
-	"github.com/pkg/errors"
-{{end}}
+{{end -}}
 
     "github.com/cloudquery/plugin-sdk/schema"
 
@@ -44,7 +43,7 @@ func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientM
     listFunc := func() error {
         data, resp, err := svc.Services.{{.Service | ToCamel}}.{{$func}}(ctx{{if ne .ParentStructName ""}}{{.Args}}{{end}}, opt)
         if err != nil {
-            return errors.WithStack(err)
+            return err
         }
         // pass the current page's data to our result channel
         res <- data{{.ResponsePath}}
@@ -55,7 +54,7 @@ func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientM
         }
         page, err := resp.Links.CurrentPage()
         if err != nil {
-            return errors.WithStack(err)
+            return err
         }
         // set the page we want for the next request
         opt.Page = page + 1
@@ -65,7 +64,7 @@ func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientM
     for !done {
         err := client.ThrottleWrapper(ctx, svc, listFunc)
         if err != nil {
-            return errors.WithStack(err)
+            return err
         }
     }
     return nil

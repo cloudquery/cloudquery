@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/digitalocean/godo"
 )
@@ -52,7 +51,7 @@ func fetchFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 	getFunc := func() error {
 		response, _, err := svc.Services.Databases.GetFirewallRules(ctx, p.ID)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		res <- response
 		return nil
@@ -60,7 +59,7 @@ func fetchFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *sch
 
 	err := client.ThrottleWrapper(ctx, svc, getFunc)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	return nil
 }
