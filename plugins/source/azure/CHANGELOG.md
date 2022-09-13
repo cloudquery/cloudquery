@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.13.4](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.13.3...plugins/source/azure/v0.13.4) (2022-09-13)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/sync digest to 7fc1605 ([#1652](https://github.com/cloudquery/cloudquery/issues/1652)) ([daafae1](https://github.com/cloudquery/cloudquery/commit/daafae1c60c14c90b70c3338a8ff6dc25ba84290))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.1.2 ([#1664](https://github.com/cloudquery/cloudquery/issues/1664)) ([5390e13](https://github.com/cloudquery/cloudquery/commit/5390e1350854a74b5431ebaa18cb230687481819))
+
 ## [0.13.3](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.13.2...plugins/source/azure/v0.13.3) (2022-08-21)
 
 
