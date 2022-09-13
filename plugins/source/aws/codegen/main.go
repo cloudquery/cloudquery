@@ -22,6 +22,7 @@ func main() {
 	resources = append(resources, recipes.EksResources()...)
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
+	resources = append(resources, recipes.WAFResources()...)
 	resources = append(resources, recipes.WAFRegionalResources()...)
 	resources = append(resources, recipes.WAFv2Resources()...)
 	resources = append(resources, recipes.XRayResources()...)
