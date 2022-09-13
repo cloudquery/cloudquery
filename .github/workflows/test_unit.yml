@@ -3,7 +3,7 @@ name: Unit Tests
 on:
   pull_request:
     branches:
-      - main
+      - releases_v1
 env: 
   CGO_ENABLED: 0
   CQ_NO_TELEMETRY: 1
