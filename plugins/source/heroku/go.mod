@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudquery/cq-gen v0.0.12
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.5.0
+	github.com/cloudquery/plugin-sdk v0.5.2
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/googleapis/gax-go/v2 v2.4.0
@@ -27,6 +27,7 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/cloudquery/cq-provider-sdk v0.14.7 // indirect
 	github.com/creasty/defaults v1.6.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/getkin/kin-openapi v0.83.0 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
@@ -50,11 +51,13 @@ require (
 	github.com/mitchellh/hashstructure/v2 v2.0.2 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pborman/uuid v1.2.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/cobra v1.5.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/thoas/go-funk v0.9.2 // indirect
 	github.com/vektah/gqlparser/v2 v2.2.0 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
@@ -72,4 +75,5 @@ require (
 	google.golang.org/genproto v0.0.0-20220801145646-83ce21fca29f // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
