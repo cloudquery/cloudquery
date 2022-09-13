@@ -125,7 +125,9 @@ var listResources = combine(
 	},
 	parentize(
 		&Resource{
-			CFStruct: &cloudflare.WorkerMetaData{},
+			DefaultColumns: []codegen.ColumnDefinition{AccountIDColumn},
+			Multiplex:      "client.AccountMultiplex",
+			CFStruct:       &cloudflare.WorkerMetaData{},
 		},
 		&Resource{
 			CFStruct: &cloudflare.WorkerCronTrigger{},

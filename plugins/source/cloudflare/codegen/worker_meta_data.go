@@ -3,15 +3,23 @@
 package codegen
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/services"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func WorkerMetaData() *schema.Table {
 	return &schema.Table{
-		Name:     "cloudflare_worker_meta_data",
-		Resolver: services.FetchWorkerMetaData,
+		Name:      "cloudflare_worker_meta_data",
+		Resolver:  services.FetchWorkerMetaData,
+		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
+			{
+				Name:        "account_id",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAccountID,
+				Description: `The Account ID of the resource.`,
+			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
