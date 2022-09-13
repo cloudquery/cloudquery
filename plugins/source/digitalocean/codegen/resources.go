@@ -1,7 +1,9 @@
 package codegen
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/droplets"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/spaces"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/digitalocean/godo"
@@ -262,5 +264,24 @@ var Resources = []*Resource{
 		Multiplex:    &emptyString,
 		ChildTable:   true,
 		SkipMock:     true,
+	},
+	{
+		Service:   "spaces",
+		Template:  "resource_list",
+		Struct:    spaces.WrappedBucket{},
+		Multiplex: &emptyString,
+		SkipMock:  true,
+		SkipFetch: true,
+	},
+	{
+		Service:      "spaces",
+		SubService:   "cors",
+		Template:     "resource_list",
+		Struct:       types.CORSRule{},
+		ParentStruct: spaces.WrappedBucket{},
+		Multiplex:    &emptyString,
+		SkipMock:     true,
+		ChildTable:   true,
+		SkipFetch:    true,
 	},
 }

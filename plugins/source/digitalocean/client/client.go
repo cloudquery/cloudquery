@@ -9,10 +9,10 @@ import (
 	awscfg "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/digitalocean/godo"
+	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
 
@@ -163,7 +163,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	)
 
 	if err != nil {
-		return nil, diag.FromError(err, diag.INTERNAL)
+		return nil, errors.WithStack(err)
 	}
 
 	if doSpec.SpacesDebugLogging {

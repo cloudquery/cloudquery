@@ -8,7 +8,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.8.0
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.1
 	github.com/aws/smithy-go v1.12.0
-	github.com/cloudquery/cq-provider-sdk v0.14.7
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/cloudquery/plugin-sdk v0.3.0
 	github.com/digitalocean/godo v1.81.0
