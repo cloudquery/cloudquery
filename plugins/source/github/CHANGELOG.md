@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.10](https://github.com/cloudquery/cloudquery/compare/plugins/source/github/v0.1.9...plugins/source/github/v0.1.10) (2022-09-13)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/oauth2 digest to 0ebed06 ([#1651](https://github.com/cloudquery/cloudquery/issues/1651)) ([c31b001](https://github.com/cloudquery/cloudquery/commit/c31b00145b70316ca38873769e33b21db783b937))
+
 ## [0.1.9](https://github.com/cloudquery/cloudquery/compare/plugins/source/github/v0.1.8...plugins/source/github/v0.1.9) (2022-08-21)
 
 
