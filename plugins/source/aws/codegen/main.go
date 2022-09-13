@@ -10,6 +10,7 @@ func main() {
 	resources := recipes.Ec2Resources()
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.ACMResources()...)
+	resources = append(resources, recipes.ApiGatewayV2Resources()...)
 	resources = append(resources, recipes.ApiGatewayesources()...)
 	resources = append(resources, recipes.ApplicationAutoScalingResources()...)
 	resources = append(resources, recipes.AppSync()...)

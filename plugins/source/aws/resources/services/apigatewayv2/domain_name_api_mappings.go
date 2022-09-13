@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func DomainNames() *schema.Table {
+func DomainNameApiMappings() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_domain_names",
-		Resolver:  fetchApigatewayv2DomainNames,
+		Name:      "aws_apigatewayv2_domain_name_api_mappings",
+		Resolver:  fetchApigatewayv2DomainNameApiMappings,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
 		Columns: []schema.Column{
 			{
@@ -26,35 +26,30 @@ func DomainNames() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveDomainNameArn,
+				Resolver: resolveDomainNameApiMappingArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 			{
-				Name:     "domain_name",
+				Name:     "api_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DomainName"),
+				Resolver: schema.PathResolver("ApiId"),
 			},
 			{
-				Name:     "api_mapping_selection_expression",
+				Name:     "stage",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ApiMappingSelectionExpression"),
+				Resolver: schema.PathResolver("Stage"),
 			},
 			{
-				Name:     "domain_name_configurations",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DomainNameConfigurations"),
+				Name:     "api_mapping_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ApiMappingId"),
 			},
 			{
-				Name:     "mutual_tls_authentication",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("MutualTlsAuthentication"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Name:     "api_mapping_key",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ApiMappingKey"),
 			},
 		},
 	}
