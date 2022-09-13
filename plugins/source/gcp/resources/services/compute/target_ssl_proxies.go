@@ -25,6 +25,13 @@ func TargetSslProxies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "certificate_map",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CertificateMap"),
@@ -58,13 +65,6 @@ func TargetSslProxies() *schema.Table {
 				Name:     "proxy_header",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ProxyHeader"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "service",
