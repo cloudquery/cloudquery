@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/digitalocean/godo"
@@ -9,7 +10,6 @@ import (
 )
 
 func fetchVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
 	svc := meta.(*client.Client)
 	opt := &godo.ListVolumeParams{
 		ListOptions: &godo.ListOptions{PerPage: client.MaxItemsPerPage},

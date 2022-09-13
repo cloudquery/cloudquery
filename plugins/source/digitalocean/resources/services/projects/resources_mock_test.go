@@ -10,7 +10,6 @@ import (
 )
 
 func createResources(t *testing.T, m *mocks.MockProjectsService) {
-
 	var data []godo.ProjectResource
 	if err := faker.FakeData(&data); err != nil {
 		t.Fatal(err)

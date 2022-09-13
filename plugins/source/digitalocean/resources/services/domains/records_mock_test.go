@@ -10,7 +10,6 @@ import (
 )
 
 func createRecords(t *testing.T, m *mocks.MockDomainsService) {
-
 	var data []godo.DomainRecord
 	if err := faker.FakeData(&data); err != nil {
 		t.Fatal(err)

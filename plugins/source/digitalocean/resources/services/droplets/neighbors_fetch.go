@@ -2,6 +2,7 @@ package droplets
 
 import (
 	"context"
+
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 	"github.com/cloudquery/plugin-sdk/schema"

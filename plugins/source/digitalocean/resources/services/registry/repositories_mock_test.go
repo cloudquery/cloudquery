@@ -10,7 +10,6 @@ import (
 )
 
 func createRepositories(t *testing.T, m *mocks.MockRegistryService) {
-
 	var data []*godo.Repository
 	if err := faker.FakeData(&data); err != nil {
 		t.Fatal(err)

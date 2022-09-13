@@ -17,18 +17,18 @@ import (
 
 
 func create{{.SubServiceName | ToCamel}}(t *testing.T, m *mocks.Mock{{.Service | ToCamel}}Service) {
-{{if .MockWrapper}}
+{{- if .MockWrapper -}}
     data := &godo.{{.MockStructName}}{}
 	if err := faker.FakeData(data); err != nil {
 		t.Fatal(err)
 	}
 	data.Links = nil
-{{else}}
+{{- else -}}
     var data  []{{if .IsStructPointer}}*{{end}}godo.{{.MockStructName}}
 	if err := faker.FakeData(&data); err != nil {
 		t.Fatal(err)
 	}
-{{end}}
+{{- end}}
 
 	m.EXPECT().{{$func}}(gomock.Any(),gomock.Any(){{if ne .ParentStructName ""}},gomock.Any(){{end}}).Return(data, &godo.Response{}, nil)
 }

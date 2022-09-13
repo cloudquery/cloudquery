@@ -2,7 +2,6 @@ package resources
 
 import (
 	"context"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
@@ -21,7 +20,7 @@ type WrappedBucket struct {
 
 // todo why aws here
 
-const publicAccessURI = "http://acs.amazonaws.com/groups/global/AllUsers"
+//const publicAccessURI = "http://acs.amazonaws.com/groups/global/AllUsers"
 
 func Spaces() *schema.Table {
 	return &schema.Table{
@@ -181,42 +180,6 @@ func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	return nil
 }
 
-func resolveSpaceAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	log := meta.Logger()
-	r := resource.Item.(*WrappedBucket)
-	log.Debug().Str("space", *r.Name).Msg("fetching space attributes")
-
-	acls, err := resolveSpacesAcls(ctx, meta, r)
-	if err != nil {
-		log.Error().Str("space", *r.Name).Msg("failed to fetch space acls")
-		return nil
-	}
-	for _, a := range acls {
-		if a.Grantee == nil || a.Grantee.URI == nil {
-			continue
-		}
-		if *a.Grantee.URI == publicAccessURI {
-			if err := resource.Set("public", true); err != nil {
-				return diag.WrapError(err)
-			}
-			break
-		}
-	}
-	return nil
-}
-
-func resolveSpacesAcls(ctx context.Context, meta schema.ClientMeta, space *WrappedBucket) ([]types.Grant, error) {
-	var ae smithy.APIError
-	svc := meta.(*client.Client).S3
-	aclOutput, err := svc.GetBucketAcl(ctx, &s3.GetBucketAclInput{Bucket: space.Name}, func(options *s3.Options) {
-		options.Region = space.Location
-	})
-	if err != nil && !(errors.As(err, &ae) && ae.ErrorCode() == "ServerSideEncryptionConfigurationNotFoundError") {
-		return nil, diag.WrapError(err)
-	}
-	return aclOutput.Grants, nil
-}
-
 func fetchSpacesAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(*WrappedBucket)
 	if r == nil {
@@ -234,7 +197,7 @@ func fetchSpaceCorsRules(ctx context.Context, meta schema.ClientMeta, parent *sc
 		options.Region = r.Location
 	})
 	if err != nil && !(errors.As(err, &ae) && ae.ErrorCode() == "NoSuchCORSConfiguration") {
-		return diag.WrapError(err)
+		return errors.WithStack(err)
 	}
 	if corsOutput != nil {
 		res <- corsOutput.CORSRules

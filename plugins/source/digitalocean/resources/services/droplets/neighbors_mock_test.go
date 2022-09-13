@@ -10,7 +10,6 @@ import (
 )
 
 func createNeighbors(t *testing.T, m *mocks.MockDropletsService) {
-
 	var data []godo.Droplet
 	if err := faker.FakeData(&data); err != nil {
 		t.Fatal(err)

@@ -10,7 +10,6 @@ import (
 )
 
 func createMembers(t *testing.T, m *mocks.MockVpcsService) {
-
 	var data []*godo.VPCMember
 	if err := faker.FakeData(&data); err != nil {
 		t.Fatal(err)

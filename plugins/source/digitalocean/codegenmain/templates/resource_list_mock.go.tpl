@@ -19,7 +19,6 @@ import (
 
 func create{{.SubServiceName | ToCamel}}(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMock{{.Service | ToCamel}}Service(ctrl)
-
 {{if .MockWrapper}}
     data := &godo.{{.MockStructName}}{}
 	if err := faker.FakeData(data); err != nil {
