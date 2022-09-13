@@ -1,6 +1,6 @@
 package client
 
 type Spec struct {
-	Token  string `yaml:"token,omitempty"`
-	Domain string `yaml:"domain"`
+	Token  string `json:"token,omitempty"`
+	Domain string `json:"domain"`
 }
