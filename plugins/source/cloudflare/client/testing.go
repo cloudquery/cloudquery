@@ -43,7 +43,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 			},
 		})
 
-		return c.withZoneId(TestAccountID, TestZoneID), nil
+		return c.withZoneID(TestAccountID, TestZoneID), nil
 	}
 
 	p := plugins.NewSourcePlugin(

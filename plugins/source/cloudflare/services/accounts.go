@@ -52,13 +52,13 @@ func Accounts() *schema.Table {
 						Name:        "account_cq_id",
 						Description: "Unique CloudQuery ID of cloudflare_accounts table (FK)",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name:        "account_id",
 						Description: "The Account ID of the resource.",
 						Type:        schema.TypeString,
-						Resolver:    client.ResolveAccountId,
+						Resolver:    client.ResolveAccountID,
 					},
 					{
 						Name:        "id",
@@ -91,13 +91,13 @@ func Accounts() *schema.Table {
 								Name:        "account_member_cq_id",
 								Description: "Unique CloudQuery ID of cloudflare_account_members table (FK)",
 								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
+								Resolver:    schema.ParentIDResolver,
 							},
 							{
 								Name:        "account_id",
 								Description: "The Account ID of the resource.",
 								Type:        schema.TypeString,
-								Resolver:    client.ResolveAccountId,
+								Resolver:    client.ResolveAccountID,
 							},
 							{
 								Name:        "id",

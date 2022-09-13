@@ -19,13 +19,13 @@ func CertificatePacks() *schema.Table {
 				Name:        "account_id",
 				Description: "The Account ID of the resource.",
 				Type:        schema.TypeString,
-				Resolver:    client.ResolveAccountId,
+				Resolver:    client.ResolveAccountID,
 			},
 			{
 				Name:        "zone_id",
 				Description: "The Zone ID of the resource.",
 				Type:        schema.TypeString,
-				Resolver:    client.ResolveZoneId,
+				Resolver:    client.ResolveZoneID,
 			},
 			{
 				Name:            "id",
@@ -60,7 +60,7 @@ func CertificatePacks() *schema.Table {
 						Name:        "certificate_pack_cq_id",
 						Description: "Unique CloudQuery ID of cloudflare_certificate_packs table (FK)",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name:     "id",
@@ -123,7 +123,7 @@ func CertificatePacks() *schema.Table {
 						Name:        "certificate_pack_cq_id",
 						Description: "Unique CloudQuery ID of cloudflare_certificate_packs table (FK)",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name: "cname_target",
@@ -166,7 +166,7 @@ func CertificatePacks() *schema.Table {
 						Name:        "certificate_pack_cq_id",
 						Description: "Unique CloudQuery ID of cloudflare_certificate_packs table (FK)",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name: "message",

@@ -45,7 +45,7 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
-func (c *Client) withAccountId(accountId string) *Client {
+func (c *Client) withAccountID(accountId string) *Client {
 	return &Client{
 		logger:        c.logger.With().Str("account_id", accountId).Logger(),
 		accountsZones: c.accountsZones,
@@ -55,7 +55,7 @@ func (c *Client) withAccountId(accountId string) *Client {
 	}
 }
 
-func (c *Client) withZoneId(accountId, zoneId string) *Client {
+func (c *Client) withZoneID(accountId, zoneId string) *Client {
 	return &Client{
 		logger:        c.logger.With().Str("account_id", accountId).Str("zone_id", zoneId).Logger(),
 		accountsZones: c.accountsZones,

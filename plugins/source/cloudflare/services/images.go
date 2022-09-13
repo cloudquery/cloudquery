@@ -19,7 +19,7 @@ func Images() *schema.Table {
 				Name:        "account_id",
 				Description: "The Account ID of the resource.",
 				Type:        schema.TypeString,
-				Resolver:    client.ResolveAccountId,
+				Resolver:    client.ResolveAccountID,
 			},
 			{
 				Name:            "id",

@@ -19,7 +19,7 @@ func WorkersScripts() *schema.Table {
 				Name:        "account_id",
 				Description: "The Account ID of the resource.",
 				Type:        schema.TypeString,
-				Resolver:    client.ResolveAccountId,
+				Resolver:    client.ResolveAccountID,
 			},
 			{
 				Name:            "id",
@@ -59,13 +59,13 @@ func WorkersScripts() *schema.Table {
 						Name:        "workers_script_cq_id",
 						Description: "Unique CloudQuery ID of cloudflare_workers_scripts table (FK)",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name:        "account_id",
 						Description: "The Account ID of the resource.",
 						Type:        schema.TypeString,
-						Resolver:    client.ResolveAccountId,
+						Resolver:    client.ResolveAccountID,
 					},
 					{
 						Name:        "cron",
@@ -93,13 +93,13 @@ func WorkersScripts() *schema.Table {
 						Name:        "workers_script_cq_id",
 						Description: "Unique CloudQuery ID of cloudflare_workers_scripts table (FK)",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name:        "account_id",
 						Description: "The Account ID of the resource.",
 						Type:        schema.TypeString,
-						Resolver:    client.ResolveAccountId,
+						Resolver:    client.ResolveAccountID,
 					},
 					{
 						Name:        "name",
