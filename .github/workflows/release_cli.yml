@@ -87,7 +87,7 @@ jobs:
           # required so the PR triggers workflow runs
           token: ${{ secrets.GH_CQ_BOT }}
           branch: chore/update-cli-version
-          base: main
+          base: releases_v1
           title: "chore: Update CLI version to ${{steps.split.outputs.version}}"
           commit-message: "chore: Update CLI version to ${{steps.split.outputs.version}}"
           body: Updates the CLI latest version to ${{steps.split.outputs.version}}

@@ -3,7 +3,7 @@ name: Approve Vercel Website Build
 on:
   pull_request_target:
     branches:
-      - main
+      - releases_v1
 
 jobs:
   set-vercel-to-success:

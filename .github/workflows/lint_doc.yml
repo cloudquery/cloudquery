@@ -2,8 +2,7 @@ name: Lint Docs
 on:
   pull_request:
     branches:
-      - main
-
+      - releases_v1
 jobs:
   resolve-modules:
     name: Resolve Modules

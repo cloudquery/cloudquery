@@ -72,7 +72,7 @@ jobs:
           # required so the PR triggers workflow runs
           token: ${{ secrets.GH_CQ_BOT }}
           branch: chore/update-plugin-${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}-version
-          base: main
+          base: releases_v1
           title: "chore: Update plugin `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` version to ${{steps.split.outputs.plugin_version}}"
           commit-message: "chore: Update plugin `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` version to ${{steps.split.outputs.plugin_version}}"
           body: Updates the `${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}` plugin latest version to ${{steps.split.outputs.plugin_version}}

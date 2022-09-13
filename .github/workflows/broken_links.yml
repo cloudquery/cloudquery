@@ -6,7 +6,7 @@ on:
     - cron:  "0 12 * * *"
   pull_request:
     branches:
-      - main
+      - releases_v1
     paths:
       - .github/workflows/broken_links.yml
       - plugins/**/docs/**

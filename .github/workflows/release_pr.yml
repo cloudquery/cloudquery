@@ -2,7 +2,7 @@ name: release-please
 on:
   push:
     branches:
-      - main
+      - releases_v1
 
 jobs:
   release-pr:
@@ -13,7 +13,7 @@ jobs:
         with:
           command: manifest
           token: ${{ secrets.GH_CQ_BOT }}
-          default-branch: main
+          default-branch: releases_v1
       - uses: actions/github-script@v6
         env:
           RELEASES: '${{ toJSON(steps.release.outputs) }}'
