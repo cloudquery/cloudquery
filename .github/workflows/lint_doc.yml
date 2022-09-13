@@ -1,12 +1,8 @@
 name: Lint Docs
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
-      - main
-
+      - releases_v1
 jobs:
   lint_doc:
     name: Lint Provider Doc
