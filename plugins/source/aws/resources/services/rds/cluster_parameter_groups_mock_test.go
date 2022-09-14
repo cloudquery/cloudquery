@@ -54,5 +54,5 @@ func buildRdsClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) clien
 }
 
 func TestRdsClusterParameterGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsClusterParameterGroups(), buildRdsClusterParameterGroups, client.TestOptions{})
+	client.AwsMockTestHelper(t, ClusterParameterGroups(), buildRdsClusterParameterGroups, client.TestOptions{})
 }

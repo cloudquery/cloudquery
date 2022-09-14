@@ -80,14 +80,14 @@ func buildRdsDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestRdsCertificates(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsCertificates(), buildRdsCertificates, client.TestOptions{})
+	client.AwsMockTestHelper(t, Certificates(), buildRdsCertificates, client.TestOptions{})
 }
 func TestRdsInstances(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsInstances(), buildRdsDBInstances, client.TestOptions{})
+	client.AwsMockTestHelper(t, Instances(), buildRdsDBInstances, client.TestOptions{})
 }
 func TestRdsClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsClusters(), buildRdsDBClusters, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildRdsDBClusters, client.TestOptions{})
 }
 func TestRdsSubnetGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsSubnetGroups(), buildRdsDBSubnetGroups, client.TestOptions{})
+	client.AwsMockTestHelper(t, SubnetGroups(), buildRdsDBSubnetGroups, client.TestOptions{})
 }
