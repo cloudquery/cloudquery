@@ -12,7 +12,6 @@ import (
 	"text/template"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
 )
 
@@ -31,16 +30,6 @@ type Resource struct {
 
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
-
-var defaultOrgColumns = []codegen.ColumnDefinition{
-	{
-		Name:        "org",
-		Description: "The Github Organization of the resource.",
-		Type:        schema.TypeString,
-		Resolver:    "client.ResolveOrg",
-		Options:     schema.ColumnCreationOptions{PrimaryKey: true},
-	},
-}
 
 func (r *Resource) Generate() error {
 	_, filename, _, ok := runtime.Caller(0)

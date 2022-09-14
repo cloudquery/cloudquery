@@ -1,4 +1,4 @@
-package external_groups
+package external
 
 import (
 	"testing"
@@ -22,5 +22,5 @@ func buildExternalGroups(t *testing.T, ctrl *gomock.Controller) client.GithubSer
 }
 
 func TestExternalGroups(t *testing.T) {
-	client.GithubMockTestHelper(t, ExternalGroups(), buildExternalGroups, client.TestOptions{})
+	client.GithubMockTestHelper(t, Group(), buildExternalGroups, client.TestOptions{})
 }
