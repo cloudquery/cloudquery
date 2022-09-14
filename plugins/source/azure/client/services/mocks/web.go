@@ -9,6 +9,7 @@ import (
 	reflect "reflect"
 
 	web "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
+	services "github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -149,17 +150,17 @@ func (m *MockWebPublishingProfilesClient) EXPECT() *MockWebPublishingProfilesCli
 	return m.recorder
 }
 
-// ListPublishingProfileXMLWithSecrets mocks base method.
-func (m *MockWebPublishingProfilesClient) ListPublishingProfileXMLWithSecrets(arg0 context.Context, arg1, arg2 string, arg3 web.CsmPublishingProfileOptions) (web.ReadCloser, error) {
+// ListPublishingProfiles mocks base method.
+func (m *MockWebPublishingProfilesClient) ListPublishingProfiles(arg0 context.Context, arg1, arg2 string) (services.PublishingProfiles, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ListPublishingProfileXMLWithSecrets", arg0, arg1, arg2, arg3)
-	ret0, _ := ret[0].(web.ReadCloser)
+	ret := m.ctrl.Call(m, "ListPublishingProfiles", arg0, arg1, arg2)
+	ret0, _ := ret[0].(services.PublishingProfiles)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ListPublishingProfileXMLWithSecrets indicates an expected call of ListPublishingProfileXMLWithSecrets.
-func (mr *MockWebPublishingProfilesClientMockRecorder) ListPublishingProfileXMLWithSecrets(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+// ListPublishingProfiles indicates an expected call of ListPublishingProfiles.
+func (mr *MockWebPublishingProfilesClientMockRecorder) ListPublishingProfiles(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPublishingProfileXMLWithSecrets", reflect.TypeOf((*MockWebPublishingProfilesClient)(nil).ListPublishingProfileXMLWithSecrets), arg0, arg1, arg2, arg3)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListPublishingProfiles", reflect.TypeOf((*MockWebPublishingProfilesClient)(nil).ListPublishingProfiles), arg0, arg1, arg2)
 }

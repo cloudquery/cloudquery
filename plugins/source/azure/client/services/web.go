@@ -2,7 +2,9 @@
 package services
 
 import (
+	"bytes"
 	"context"
+	"encoding/xml"
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 	"github.com/Azure/go-autorest/autorest"
@@ -20,7 +22,7 @@ type WebAppsClient interface {
 }
 
 type WebPublishingProfilesClient interface {
-	ListPublishingProfileXMLWithSecrets(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions web.CsmPublishingProfileOptions) (result web.ReadCloser, err error)
+	ListPublishingProfiles(ctx context.Context, resourceGroupName string, name string) (result PublishingProfiles, err error)
 }
 
 type WebVnetConnectionsClient interface {
@@ -30,6 +32,40 @@ type WebVnetConnectionsClient interface {
 type WebSiteAuthSettingsClient interface {
 	GetAuthSettings(ctx context.Context, resourceGroupName string, name string) (result web.SiteAuthSettings, err error)
 }
+type WebPublishingProfilesClientImpl struct {
+	web.AppsClient
+}
+
+type PublishingProfile struct {
+	PublishUrl string `xml:"publishUrl,attr"`
+	UserName   string `xml:"userName,attr"`
+	UserPWD    string `xml:"userPWD,attr"`
+}
+type PublishData struct {
+	XMLName     xml.Name            `xml:"publishData"`
+	PublishData []PublishingProfile `xml:"publishProfile"`
+}
+
+type PublishingProfiles []PublishingProfile
+
+func (c WebPublishingProfilesClientImpl) ListPublishingProfiles(ctx context.Context, resourceGroupName string, siteName string) (result PublishingProfiles, err error) {
+	response, err := c.ListPublishingProfileXMLWithSecrets(ctx, resourceGroupName, siteName, web.CsmPublishingProfileOptions{})
+	if err != nil {
+		return nil, err
+	}
+
+	buf := new(bytes.Buffer)
+	if _, err = buf.ReadFrom(response.Body); err != nil {
+		return nil, err
+	}
+	var profileData PublishData
+	if err = xml.Unmarshal(buf.Bytes(), &profileData); err != nil {
+		return nil, err
+	}
+
+	return profileData.PublishData, nil
+
+}
 
 func NewWebClient(subscriptionId string, auth autorest.Authorizer) WebClient {
 	apps := web.NewAppsClient(subscriptionId)
@@ -38,6 +74,6 @@ func NewWebClient(subscriptionId string, auth autorest.Authorizer) WebClient {
 		Apps:               apps,
 		SiteAuthSettings:   apps,
 		VnetConnections:    apps,
-		PublishingProfiles: apps,
+		PublishingProfiles: WebPublishingProfilesClientImpl{apps},
 	}
 }

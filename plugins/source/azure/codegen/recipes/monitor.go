@@ -166,7 +166,7 @@ func Monitor() []Resource {
 					listFunctionArgsInit: []string{`// Add subscription id as the first entry
 					res <- struct {
 						ID string
-					}{ID: "/subscriptions/" + meta.(*client.Client).SubscriptionId}`},
+					}{ID: client.ScopeSubscription(meta.(*client.Client).SubscriptionId)}`},
 					subServiceOverride:       "Resources",
 					mockListResult:           "ListResult",
 					mockListFunctionArgsInit: []string{``},

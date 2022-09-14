@@ -37,7 +37,7 @@ func fetchMonitorResources(ctx context.Context, meta schema.ClientMeta, parent *
 	// Add subscription id as the first entry
 	res <- struct {
 		ID string
-	}{ID: "/subscriptions/" + meta.(*client.Client).SubscriptionId}
+	}{ID: client.ScopeSubscription(meta.(*client.Client).SubscriptionId)}
 	response, err := svc.List(ctx, "", "", nil)
 
 	if err != nil {

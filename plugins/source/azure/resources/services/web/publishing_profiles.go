@@ -3,9 +3,7 @@
 package web
 
 import (
-	"bytes"
 	"context"
-	"encoding/xml"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -47,35 +45,15 @@ func publishingProfiles() *schema.Table {
 	}
 }
 
-type PublishProfile struct {
-	PublishUrl string `xml:"publishUrl,attr"`
-	UserName   string `xml:"userName,attr"`
-	UserPWD    string `xml:"userPWD,attr"`
-}
-
-type publishData struct {
-	XMLName     xml.Name         `xml:"publishUrl,attr"`
-	PublishData []PublishProfile `xml:"PublishProfile"`
-}
-
 func fetchWebPublishingProfiles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().Web.PublishingProfiles
 
 	site := parent.Item.(web.Site)
-	response, err := svc.ListPublishingProfileXMLWithSecrets(ctx, *site.ResourceGroup, *site.Name, web.CsmPublishingProfileOptions{})
+	response, err := svc.ListPublishingProfiles(ctx, *site.ResourceGroup, *site.Name)
 	if err != nil {
 		return err
 	}
 
-	buf := new(bytes.Buffer)
-	if _, err = buf.ReadFrom(response.Body); err != nil {
-		return err
-	}
-	var profileData publishData
-	if err = xml.Unmarshal(buf.Bytes(), &profileData); err != nil {
-		return err
-	}
-
-	res <- profileData.PublishData
+	res <- response
 	return nil
 }

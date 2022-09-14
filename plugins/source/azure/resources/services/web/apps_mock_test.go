@@ -20,20 +20,6 @@ func TestWebApps(t *testing.T) {
 	client.MockTestHelper(t, Apps(), createAppsMock)
 }
 
-func createPublishingProfilesMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	mockClient := mocks.NewMockWebPublishingProfilesClient(ctrl)
-	s := services.Services{
-		Web: services.WebClient{
-			PublishingProfiles: mockClient,
-		},
-	}
-	data := web.ReadCloser{}
-	require.Nil(t, faker.FakeObject(&data))
-
-	mockClient.EXPECT().ListPublishingProfileXMLWithSecrets(gomock.Any(), "test", "test", "test").Return(data, nil)
-	return s
-}
-
 func createAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	mockClient := mocks.NewMockWebAppsClient(ctrl)
 	s := services.Services{

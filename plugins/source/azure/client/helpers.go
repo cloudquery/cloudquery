@@ -1,14 +1,9 @@
 package client
 
 import (
-	"errors"
 	"fmt"
-	"net/http"
 	"regexp"
 	"strings"
-
-	"github.com/Azure/go-autorest/autorest"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 // ResourceDetails contains details about an Azure resource
@@ -23,11 +18,6 @@ type ResourceDetails struct {
 const resourceIDPatternText = `(?i)subscriptions/(.+)/resourceGroups/(.+)/providers/(.+?)/(.+?)/(.+)`
 
 var resourceIDPattern = regexp.MustCompile(resourceIDPatternText)
-
-func DeleteSubscriptionFilter(meta schema.ClientMeta, _ *schema.Resource) []interface{} {
-	client := meta.(*Client)
-	return []interface{}{"subscription_id", client.SubscriptionId}
-}
 
 // ParseResourceID parses a resource ID into a ResourceDetails struct
 func ParseResourceID(resourceID string) (ResourceDetails, error) {
@@ -54,10 +44,4 @@ func ParseResourceID(resourceID string) (ResourceDetails, error) {
 // ScopeSubscription returns a scope for the given subscription
 func ScopeSubscription(subscriptionID string) string {
 	return "subscriptions/" + subscriptionID
-}
-
-func IgnoreAccessDenied(err error) bool {
-	var detailedError autorest.DetailedError
-
-	return errors.As(err, &detailedError) && detailedError.StatusCode == http.StatusForbidden
 }
