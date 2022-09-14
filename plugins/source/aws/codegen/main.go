@@ -24,6 +24,7 @@ func main() {
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
 
+	resources = append(resources, recipes.ResourceGroupsResources()...)
 	resources = append(resources, recipes.Route53Resources()...)
 	resources = append(resources, recipes.S3Resources()...)
 	resources = append(resources, recipes.SagemakerResources()...)
