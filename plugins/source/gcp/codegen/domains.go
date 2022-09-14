@@ -2,8 +2,6 @@ package codegen
 
 import (
 	domains "cloud.google.com/go/domains/apiv1beta1"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	pb "google.golang.org/genproto/googleapis/cloud/domains/v1beta1"
 )
 
@@ -19,13 +17,6 @@ var domainsResources = []*Resource{
 		UnimplementedServer: &pb.UnimplementedDomainsServer{},
 		RequestStructFields: `Parent: fmt.Sprintf("projects/%s/locations/-", c.ProjectId),`,
 		Imports:             []string{"fmt"},
-		OverrideColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "self_link",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
 	},
 }
 

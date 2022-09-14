@@ -17,7 +17,7 @@ var redisResources = []*Resource{
 		RegisterServer:      pb.RegisterCloudRedisServer,
 		UnimplementedServer: &pb.UnimplementedCloudRedisServer{},
 		ListFunction:        (&pb.UnimplementedCloudRedisServer{}).ListInstances,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
 				Type:     schema.TypeString,

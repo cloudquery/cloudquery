@@ -17,7 +17,7 @@ var serviceusageResources = []*Resource{
 		RegisterServer:      pb.RegisterServiceUsageServer,
 		ListFunction:        (&pb.UnimplementedServiceUsageServer{}).ListServices,
 		UnimplementedServer: &pb.UnimplementedServiceUsageServer{},
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "name",
 				Type:    schema.TypeString,

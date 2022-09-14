@@ -19,6 +19,13 @@ func Clusters() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -202,13 +209,6 @@ func Clusters() *schema.Table {
 				Name:     "identity_service_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("IdentityServiceConfig"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "zone",

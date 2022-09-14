@@ -19,7 +19,7 @@ var containerResources = []*Resource{
 		UnimplementedServer: &pb.UnimplementedClusterManagerServer{},
 		SkipFetch:           true,
 		SkipMock:            true,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",
 				Type:    schema.TypeString,
