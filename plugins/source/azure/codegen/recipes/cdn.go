@@ -12,7 +12,7 @@ func CDN() []Resource {
 			listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
 			resource, err := client.ParseResourceID(*profile.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`, `ruleSet := parent.Item.(cdn.RuleSet)`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*ruleSet.Name"},
 			isRelation:               true,
@@ -27,7 +27,7 @@ func CDN() []Resource {
 			listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
 			resource, err := client.ParseResourceID(*profile.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`, `endpoint := parent.Item.(cdn.Endpoint)`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
 			isRelation:               true,
@@ -40,7 +40,7 @@ func CDN() []Resource {
 			listFunctionArgsInit: []string{`profile := parent.Parent.Item.(cdn.Profile)
 			resource, err := client.ParseResourceID(*profile.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`, `endpoint := parent.Item.(cdn.Endpoint)`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
 			isRelation:               true,
@@ -55,7 +55,7 @@ func CDN() []Resource {
 			listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
 			resource, err := client.ParseResourceID(*profile.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
 			relations:                endpointRelations,
@@ -69,7 +69,7 @@ func CDN() []Resource {
 			listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
 			resource, err := client.ParseResourceID(*profile.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
 			relations:                ruleSetRelations,
@@ -83,7 +83,7 @@ func CDN() []Resource {
 			listFunctionArgsInit: []string{`profile := parent.Item.(cdn.Profile)
 			resource, err := client.ParseResourceID(*profile.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
 			isRelation:               true,

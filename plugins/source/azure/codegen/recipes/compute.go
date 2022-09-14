@@ -14,11 +14,11 @@ func Compute() []Resource {
 			listFunctionArgsInit: []string{`virtualMachine := parent.Item.(compute.VirtualMachine)
 			resource, err := client.ParseResourceID(*virtualMachine.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs: []string{"resource.ResourceGroup", "*virtualMachine.Name"},
 			listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 			isRelation:               true,
@@ -33,7 +33,7 @@ func Compute() []Resource {
 			listFunctionArgsInit: []string{`virtualMachine := parent.Item.(compute.VirtualMachine)
 			resource, err := client.ParseResourceID(*virtualMachine.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*virtualMachine.Name", `""`},
 			listHandler:              valueHandler,

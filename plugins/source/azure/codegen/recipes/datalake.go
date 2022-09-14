@@ -31,7 +31,7 @@ func Datalake() []Resource {
 					listFunctionArgs: []string{`""`, `nil`, `nil`, `""`, `""`, `nil`},
 					getFunction:      "Get",
 					getFunctionArgsInit: []string{"account := r.Item.(account.DataLakeAnalyticsAccountBasic)", "resourceDetails, err := client.ParseResourceID(*account.ID)", `if err != nil {
-						errors.WithStack(err)
+						return err
 					}`},
 					getFunctionArgs:     []string{"resourceDetails.ResourceGroup", "*account.Name"},
 					subServiceOverride:  "AnalyticsAccounts",
@@ -66,7 +66,7 @@ func Datalake() []Resource {
 					listFunctionArgs: []string{`""`, `nil`, `nil`, `""`, `""`, `nil`},
 					getFunction:      "Get",
 					getFunctionArgsInit: []string{"account := r.Item.(account.DataLakeStoreAccountBasic)", "resourceDetails, err := client.ParseResourceID(*account.ID)", `if err != nil {
-						errors.WithStack(err)
+						return err
 					}`},
 					getFunctionArgs:     []string{"resourceDetails.ResourceGroup", "*account.Name"},
 					subServiceOverride:  "StoreAccounts",

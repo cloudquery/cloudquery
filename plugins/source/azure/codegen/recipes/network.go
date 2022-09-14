@@ -12,7 +12,7 @@ func Network() []Resource {
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*watcher.Name"},
 			listFunctionArgsInit: []string{"watcher := parent.Item.(network.Watcher)", `resourceDetails, err := client.ParseResourceID(*watcher.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -26,7 +26,7 @@ func Network() []Resource {
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*gateway.Name"},
 			listFunctionArgsInit: []string{"gateway := parent.Item.(network.VirtualNetworkGateway)", `resourceDetails, err := client.ParseResourceID(*gateway.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			subServiceOverride:       "VirtualNetworkGatewayConnections",
@@ -42,7 +42,7 @@ func Network() []Resource {
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup"},
 			listFunctionArgsInit: []string{"network := parent.Item.(network.VirtualNetwork)", `resourceDetails, err := client.ParseResourceID(*network.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			relations:                gatewayRelations,
 			isRelation:               true,

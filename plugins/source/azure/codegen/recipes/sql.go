@@ -15,7 +15,7 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.Database)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -30,7 +30,7 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.Database)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -45,7 +45,7 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.Database)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			subServiceOverride:       "DatabaseVulnerabilityAssessmentScans",
 			isRelation:               true,
@@ -61,10 +61,10 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.Database)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 			subServiceOverride:       "BackupLongTermRetentionPolicies",
@@ -82,10 +82,10 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.Database)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 			subServiceOverride:       "DatabaseThreatDetectionPolicies",
@@ -103,10 +103,10 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.Database)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 			isRelation:               true,
@@ -124,7 +124,7 @@ func SQL() []Resource {
 			"server := parent.Item.(sql.Server)",
 			`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 		listHandler:              valueHandler,
 		isRelation:               true,
@@ -140,7 +140,7 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			relations:                sqlDatabaseRelations,
 			isRelation:               true,
@@ -155,10 +155,10 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 			isRelation:               true,
@@ -174,7 +174,7 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -189,7 +189,7 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			subServiceOverride:       "ServerAdmins",
 			isRelation:               true,
@@ -205,7 +205,7 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -219,7 +219,7 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -234,7 +234,7 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -248,7 +248,7 @@ func SQL() []Resource {
 				"server := parent.Item.(sql.Server)",
 				`resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -267,7 +267,7 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.ManagedDatabase)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			subServiceOverride:       "ManagedDatabaseVulnerabilityAssessments",
 			isRelation:               true,
@@ -283,7 +283,7 @@ func SQL() []Resource {
 				"database := parent.Item.(sql.ManagedDatabase)",
 				`resourceDetails, err := client.ParseResourceID(*database.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			subServiceOverride:       "ManagedDatabaseVulnerabilityAssessmentScans",
@@ -299,7 +299,7 @@ func SQL() []Resource {
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*instance.Name"},
 			listFunctionArgsInit: []string{"instance := parent.Item.(sql.ManagedInstance)", `resourceDetails, err := client.ParseResourceID(*instance.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			relations:                managedDatabaseRelations,
 			isRelation:               true,
@@ -314,7 +314,7 @@ func SQL() []Resource {
 				"instance := parent.Item.(sql.ManagedInstance)",
 				`resourceDetails, err := client.ParseResourceID(*instance.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -328,7 +328,7 @@ func SQL() []Resource {
 				"instance := parent.Item.(sql.ManagedInstance)",
 				`resourceDetails, err := client.ParseResourceID(*instance.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},

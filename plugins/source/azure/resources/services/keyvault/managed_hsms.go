@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func ManagedHsms() *schema.Table {
@@ -105,13 +104,13 @@ func fetchKeyVaultManagedHsms(ctx context.Context, meta schema.ClientMeta, paren
 	response, err := svc.ListBySubscription(ctx, &maxResults)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

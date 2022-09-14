@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/keyvault/mgmt/2019-09-01/keyvault"
 )
@@ -62,13 +61,13 @@ func fetchKeyVaultKeys(ctx context.Context, meta schema.ClientMeta, parent *sche
 	response, err := svc.GetKeys(ctx, *vault.Properties.VaultURI, &maxResults)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

@@ -13,7 +13,7 @@ func Container() []Resource {
 			listFunctionArgsInit: []string{`registry := parent.Item.(containerregistry.Registry)
 			resource, err := client.ParseResourceID(*registry.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*registry.Name"},
 			isRelation:               true,

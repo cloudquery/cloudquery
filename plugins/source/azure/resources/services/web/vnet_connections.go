@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 )
@@ -95,7 +94,7 @@ func fetchWebVnetConnections(ctx context.Context, meta schema.ClientMeta, parent
 	site := parent.Item.(web.Site)
 	response, err := svc.GetVnetConnection(ctx, *site.ResourceGroup, *site.Name, *site.SiteConfig.VnetName)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- response
 	return nil

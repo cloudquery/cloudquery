@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
@@ -164,18 +163,18 @@ func fetchNetworkVirtualNetworkGateways(ctx context.Context, meta schema.ClientM
 	network := parent.Item.(network.VirtualNetwork)
 	resourceDetails, err := client.ParseResourceID(*network.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.List(ctx, resourceDetails.ResourceGroup)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

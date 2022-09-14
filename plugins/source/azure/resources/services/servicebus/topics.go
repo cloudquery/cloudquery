@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
@@ -149,18 +148,18 @@ func fetchServicebusTopics(ctx context.Context, meta schema.ClientMeta, parent *
 	namespace := parent.Item.(servicebus.SBNamespace)
 	resourceDetails, err := client.ParseResourceID(*namespace.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.ListByNamespace(ctx, resourceDetails.ResourceGroup, *namespace.Name, nil, nil)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

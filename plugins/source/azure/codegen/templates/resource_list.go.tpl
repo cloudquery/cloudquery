@@ -7,13 +7,13 @@ func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema
 	response, err := svc.{{ or .ListFunction "ListAll" }}(ctx{{ range .ListFunctionArgs }}, {{.}}{{ end }})
 	{{ or .ListHandler `
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 	`}}
@@ -27,7 +27,7 @@ func {{.Table.PreResourceResolver}}(ctx context.Context, meta schema.ClientMeta,
 	{{.}}{{ end }}
 	item, err := svc.{{.GetFunction}}(ctx{{ range .GetFunctionArgs }}, {{.}}{{ end }})
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	r.SetItem(item)
 	return nil

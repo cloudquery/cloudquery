@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
@@ -66,11 +65,11 @@ func fetchSQLTransparentDataEncryptions(ctx context.Context, meta schema.ClientM
 	database := parent.Item.(sql.Database)
 	resourceDetails, err := client.ParseResourceID(*database.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.Get(ctx, resourceDetails.ResourceGroup, *server.Name, *database.Name)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- response
 	return nil

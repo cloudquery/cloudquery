@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
@@ -70,18 +69,18 @@ func fetchSQLServerAdmins(ctx context.Context, meta schema.ClientMeta, parent *s
 	server := parent.Item.(sql.Server)
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.ListByServer(ctx, resourceDetails.ResourceGroup, *server.Name)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

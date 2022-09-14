@@ -8,7 +8,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/containerregistry/mgmt/containerregistry"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func replications() *schema.Table {
@@ -74,18 +73,18 @@ func fetchContainerReplications(ctx context.Context, meta schema.ClientMeta, par
 	registry := parent.Item.(containerregistry.Registry)
 	resource, err := client.ParseResourceID(*registry.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.List(ctx, resource.ResourceGroup, *registry.Name)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

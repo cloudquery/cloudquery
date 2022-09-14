@@ -12,11 +12,11 @@ func EventHub() []Resource {
 			listFunctionArgsInit: []string{`namespace := parent.Item.(eventhub.EHNamespace)
 			resource, err := client.ParseResourceID(*namespace.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs: []string{"resource.ResourceGroup", "*namespace.Name"},
 			listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 			isRelation:               true,

@@ -13,7 +13,7 @@ func PostgresSQL() []Resource {
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
 			listFunctionArgsInit: []string{"server := parent.Item.(postgresql.Server)", `resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
@@ -26,7 +26,7 @@ func PostgresSQL() []Resource {
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
 			listFunctionArgsInit: []string{"server := parent.Item.(postgresql.Server)", `resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},

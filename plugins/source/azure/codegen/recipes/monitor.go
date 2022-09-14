@@ -33,7 +33,7 @@ func Monitor() []Resource {
 				if isResourceTypeNotSupported(err) {
 					return nil
 				}
-				return errors.WithStack(err)
+				return err
 			}
 			if response.Value == nil {
 				return nil

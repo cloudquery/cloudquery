@@ -17,10 +17,10 @@ func ServiceBus() []Resource {
 				"rule := parent.Item.(servicebus.SBAuthorizationRule)",
 				`resourceDetails, err := client.ParseResourceID(*rule.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 			isRelation:               true,
@@ -40,7 +40,7 @@ func ServiceBus() []Resource {
 				"topic := parent.Item.(servicebus.SBTopic)",
 				`resourceDetails, err := client.ParseResourceID(*topic.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			relations:                ruleRelations,
 			isRelation:               true,
@@ -56,7 +56,7 @@ func ServiceBus() []Resource {
 			listFunctionArgs:   []string{"resourceDetails.ResourceGroup", "*namespace.Name", "nil", "nil"},
 			listFunctionArgsInit: []string{"namespace := parent.Item.(servicebus.SBNamespace)", `resourceDetails, err := client.ParseResourceID(*namespace.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			relations:                topicRelations,
 			isRelation:               true,

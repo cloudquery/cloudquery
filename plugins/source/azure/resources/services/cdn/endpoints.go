@@ -8,7 +8,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/cdn/mgmt/cdn"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func endpoints() *schema.Table {
@@ -169,18 +168,18 @@ func fetchCDNEndpoints(ctx context.Context, meta schema.ClientMeta, parent *sche
 	profile := parent.Item.(cdn.Profile)
 	resource, err := client.ParseResourceID(*profile.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.ListByProfile(ctx, resource.ResourceGroup, *profile.Name)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

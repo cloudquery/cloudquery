@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus"
 )
@@ -74,11 +73,11 @@ func fetchServicebusAccessKeys(ctx context.Context, meta schema.ClientMeta, pare
 	rule := parent.Item.(servicebus.SBAuthorizationRule)
 	resourceDetails, err := client.ParseResourceID(*rule.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.ListKeys(ctx, resourceDetails.ResourceGroup, *namespace.Name, *topic.Name, *rule.Name)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- response
 	return nil

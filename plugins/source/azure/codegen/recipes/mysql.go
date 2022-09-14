@@ -12,7 +12,7 @@ func MySQL() []Resource {
 			listFunctionArgs: []string{"resourceDetails.ResourceGroup", "*server.Name"},
 			listFunctionArgsInit: []string{"server := parent.Item.(mysql.Server)", `resourceDetails, err := client.ParseResourceID(*server.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listHandler:              valueHandler,
 			isRelation:               true,

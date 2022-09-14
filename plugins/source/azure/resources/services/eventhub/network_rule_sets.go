@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2018-01-01-preview/eventhub"
 )
@@ -75,11 +74,11 @@ func fetchEventHubNetworkRuleSets(ctx context.Context, meta schema.ClientMeta, p
 	namespace := parent.Item.(eventhub.EHNamespace)
 	resource, err := client.ParseResourceID(*namespace.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.GetNetworkRuleSet(ctx, resource.ResourceGroup, *namespace.Name)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- response
 	return nil

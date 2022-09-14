@@ -14,7 +14,7 @@ func CosmosDB() []Resource {
 			listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
 			resource, err := client.ParseResourceID(*account.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
 			isRelation:               true,
@@ -30,7 +30,7 @@ func CosmosDB() []Resource {
 			listFunctionArgsInit: []string{`account := parent.Item.(documentdb.DatabaseAccountGetResults)
 			resource, err := client.ParseResourceID(*account.ID)
 			if err != nil {
-				return errors.WithStack(err)
+				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
 			isRelation:               true,

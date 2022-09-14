@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func PolicyAssignments() *schema.Table {
@@ -99,13 +98,13 @@ func fetchResourcesPolicyAssignments(ctx context.Context, meta schema.ClientMeta
 	response, err := svc.List(ctx, meta.(*client.Client).SubscriptionId, "", nil)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Workflows() *schema.Table {
@@ -129,13 +128,13 @@ func fetchLogicWorkflows(ctx context.Context, meta schema.ClientMeta, parent *sc
 	response, err := svc.ListBySubscription(ctx, &top, "")
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

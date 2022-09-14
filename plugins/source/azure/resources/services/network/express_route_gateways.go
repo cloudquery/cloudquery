@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func ExpressRouteGateways() *schema.Table {
@@ -83,7 +82,7 @@ func fetchNetworkExpressRouteGateways(ctx context.Context, meta schema.ClientMet
 
 	response, err := svc.ListBySubscription(ctx)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	if response.Value == nil {
 		return nil

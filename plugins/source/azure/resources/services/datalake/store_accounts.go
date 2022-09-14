@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/profiles/latest/datalake/store/mgmt/account"
 )
@@ -152,13 +151,13 @@ func fetchDataLakeStoreAccounts(ctx context.Context, meta schema.ClientMeta, par
 	response, err := svc.List(ctx, "", nil, nil, "", "", nil)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 
@@ -171,11 +170,11 @@ func getDataLakeStoreAccount(ctx context.Context, meta schema.ClientMeta, r *sch
 	account := r.Item.(account.DataLakeStoreAccountBasic)
 	resourceDetails, err := client.ParseResourceID(*account.ID)
 	if err != nil {
-		errors.WithStack(err)
+		return err
 	}
 	item, err := svc.Get(ctx, resourceDetails.ResourceGroup, *account.Name)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	r.SetItem(item)
 	return nil

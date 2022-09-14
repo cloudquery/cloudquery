@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 )
@@ -250,7 +249,7 @@ func fetchWebSiteAuthSettings(ctx context.Context, meta schema.ClientMeta, paren
 	site := parent.Item.(web.Site)
 	response, err := svc.GetAuthSettings(ctx, *site.ResourceGroup, *site.Name)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	res <- response
 	return nil

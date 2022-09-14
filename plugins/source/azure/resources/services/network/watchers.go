@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Watchers() *schema.Table {
@@ -72,7 +71,7 @@ func fetchNetworkWatchers(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	response, err := svc.ListAll(ctx)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	if response.Value == nil {
 		return nil

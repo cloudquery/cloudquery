@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func Tenants() *schema.Table {
@@ -84,7 +83,7 @@ func fetchSubscriptionsTenants(ctx context.Context, meta schema.ClientMeta, _ *s
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		for _, v := range nextResult.Value {
 			res <- v

@@ -49,7 +49,7 @@ func Security() []Resource {
 					azureStruct:  &security.Setting{},
 					listFunction: "List",
 					listHandler: `if err != nil {
-						return errors.WithStack(err)
+						return err
 					}
 					for response.NotDone() {
 						for _, item := range response.Values() {
@@ -64,7 +64,7 @@ func Security() []Resource {
 							}
 						}
 						if err := response.NextWithContext(ctx); err != nil {
-							return errors.WithStack(err)
+							return err
 						}
 					}`,
 					mockListResult: "SettingsList",

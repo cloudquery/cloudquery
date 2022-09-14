@@ -17,7 +17,7 @@ func Web() []Resource {
 		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)"},
 		listFunctionArgs:     []string{"*site.ResourceGroup", "*site.Name"},
 		listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 		isRelation:               true,
@@ -32,7 +32,7 @@ func Web() []Resource {
 		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)"},
 		listFunctionArgs:     []string{"*site.ResourceGroup", "*site.Name", "*site.SiteConfig.VnetName"},
 		listHandler: `if err != nil {
-				return errors.WithStack(err)
+				return err
 			}
 			res <- response`,
 		subServiceOverride:       "VnetConnections",
@@ -56,16 +56,16 @@ func Web() []Resource {
 		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)"},
 		listFunctionArgs:     []string{"*site.ResourceGroup", "*site.Name", "web.CsmPublishingProfileOptions{}"},
 		listHandler: `if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	
 		buf := new(bytes.Buffer)
 		if _, err = buf.ReadFrom(response.Body); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		var profileData publishData
 		if err = xml.Unmarshal(buf.Bytes(), &profileData); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	
 		res <- profileData.PublishData`,

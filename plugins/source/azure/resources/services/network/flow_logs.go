@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
@@ -110,18 +109,18 @@ func fetchNetworkFlowLogs(ctx context.Context, meta schema.ClientMeta, parent *s
 	watcher := parent.Item.(network.Watcher)
 	resourceDetails, err := client.ParseResourceID(*watcher.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.List(ctx, resourceDetails.ResourceGroup, *watcher.Name)
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

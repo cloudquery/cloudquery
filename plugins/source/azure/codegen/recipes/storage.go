@@ -69,7 +69,7 @@ func Storage() []Resource {
 	
 		resource, err := client.ParseResourceID(*account.ID)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}`},
 		listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name", `""`, `""`, `""`},
 		subServiceOverride:       "Containers",
@@ -88,7 +88,7 @@ func Storage() []Resource {
 	
 		resource, err := client.ParseResourceID(*account.ID)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}`},
 		listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
 		listHandler:              valueHandler,

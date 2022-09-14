@@ -72,7 +72,7 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 
 	response, err := svc.List(ctx)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	for response.NotDone() {
 		for _, item := range response.Values() {
@@ -87,7 +87,7 @@ func fetchSecuritySettings(ctx context.Context, meta schema.ClientMeta, parent *
 			}
 		}
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 	return nil

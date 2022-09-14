@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 
 	"github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 )
@@ -100,11 +99,11 @@ func fetchComputeVirtualMachineExtensions(ctx context.Context, meta schema.Clien
 	virtualMachine := parent.Item.(compute.VirtualMachine)
 	resource, err := client.ParseResourceID(*virtualMachine.ID)
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	response, err := svc.List(ctx, resource.ResourceGroup, *virtualMachine.Name, "")
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 	if response.Value == nil {
 		return nil

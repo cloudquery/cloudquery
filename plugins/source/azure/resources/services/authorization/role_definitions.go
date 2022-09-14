@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/pkg/errors"
 )
 
 func RoleDefinitions() *schema.Table {
@@ -74,13 +73,13 @@ func fetchAuthorizationRoleDefinitions(ctx context.Context, meta schema.ClientMe
 	response, err := svc.List(ctx, client.ScopeSubscription(meta.(*client.Client).SubscriptionId), "")
 
 	if err != nil {
-		return errors.WithStack(err)
+		return err
 	}
 
 	for response.NotDone() {
 		res <- response.Values()
 		if err := response.NextWithContext(ctx); err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 	}
 

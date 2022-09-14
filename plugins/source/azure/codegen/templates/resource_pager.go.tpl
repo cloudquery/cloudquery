@@ -6,7 +6,7 @@ func fetch{{.AzureService}}{{.AzureSubService}}(ctx context.Context, meta schema
 	for pager.More() {
 		nextResult, err := pager.NextPage(ctx)
 		if err != nil {
-			return errors.WithStack(err)
+			return err
 		}
 		for _, v := range nextResult.Value {
 			res <- v
