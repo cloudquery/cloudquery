@@ -1,15 +1,12 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/provider"
-	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/cloudquery/cloudquery/plugins/source/okta/plugin"
+	"github.com/cloudquery/plugin-sdk/serve"
 )
 
 func main() {
-	serve.Serve(&serve.Options{
-		Name:                "okta",
-		Provider:            provider.Provider(),
-		Logger:              nil,
-		NoLogOutputOverride: false,
+	serve.Serve(serve.Options{
+		SourcePlugin: plugin.Plugin(),
 	})
 }
