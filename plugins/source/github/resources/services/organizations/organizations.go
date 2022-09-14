@@ -4,11 +4,26 @@ import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
+	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/users"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/google/go-github/v45/github"
 )
 
 func Organizations() *schema.Table {
+	membersRelation := users.Users()
+	membersRelation.Name = "github_organization_members"
+	membersRelation.Columns = append(
+		[]schema.Column{
+			{
+				Name:        "organization_cq_id",
+				Description: "Unique CloudQuery ID of github_organizations table (FK)",
+				Type:        schema.TypeUUID,
+				Resolver:    schema.ParentIdResolver,
+			},
+		},
+		membersRelation.Columns...,
+	)
+	membersRelation.Resolver = resolveOrganizationMembers
 	return &schema.Table{
 		Name:        "github_organizations",
 		Description: "Organization represents a GitHub organization account.",
@@ -235,6 +250,7 @@ func Organizations() *schema.Table {
 				Resolver: schema.PathResolver("ReposURL"),
 			},
 		},
+		Relations: schema.Tables{membersRelation},
 	}
 }
 
