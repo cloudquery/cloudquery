@@ -231,7 +231,7 @@ func findExtraColumns(content string) ([]string, []string) {
 		// put quotes around Resolver
 		r := regexp.MustCompile(`Resolver:\s+([^\,]+)\,`)
 		m := r.FindAllStringSubmatchIndex(block, -1)
-		if len(m[0]) > 2 {
+		if len(m) > 0 && len(m[0]) > 2 {
 			s := m[0][2]
 			e := m[0][3]
 			block = block[:s] + "`" + block[s:e] + "`" + block[e:]
