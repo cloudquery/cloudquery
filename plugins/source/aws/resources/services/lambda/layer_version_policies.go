@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Layers() *schema.Table {
+func LayerVersionPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lambda_layers",
-		Resolver:  fetchLambdaLayers,
+		Name:      "aws_lambda_layer_version_policies",
+		Resolver:  fetchLambdaLayerVersionPolicies,
 		Multiplex: client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{
 			{
@@ -24,32 +24,30 @@ func Layers() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "layer_version_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LayerArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "latest_matching_version",
+				Name:     "layer_version",
+				Type:     schema.TypeInt,
+				Resolver: schema.ParentResourceFieldResolver("version"),
+			},
+			{
+				Name:     "policy",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Policy"),
+			},
+			{
+				Name:     "revision_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RevisionId"),
+			},
+			{
+				Name:     "result_metadata",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LatestMatchingVersion"),
+				Resolver: schema.PathResolver("ResultMetadata"),
 			},
-			{
-				Name:     "layer_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LayerArn"),
-			},
-			{
-				Name:     "layer_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LayerName"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			LayerVersions(),
 		},
 	}
 }
