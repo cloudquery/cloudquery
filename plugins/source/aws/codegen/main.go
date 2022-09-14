@@ -24,6 +24,7 @@ func main() {
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
 
+	resources = append(resources, recipes.MQResources()...)
 	resources = append(resources, recipes.QLDBResources()...)
 	resources = append(resources, recipes.RDSResources()...)
 	resources = append(resources, recipes.RedshiftResources()...)

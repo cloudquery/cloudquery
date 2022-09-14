@@ -19,6 +19,7 @@ var createStarterTemplate bool
 type resource struct {
 	Name         string
 	ExtraColumns []string
+	Relations    []string
 }
 
 func migrate(dir string) []resource {
@@ -109,6 +110,7 @@ func extractResources(s, dirname string) []resource {
 		Name:         name,
 		ExtraColumns: cols,
 	}
+	relations := []string{}
 	resources := []resource{res}
 	substr := "Relations: []*schema.Table{"
 	rs := strings.Index(s, substr)
@@ -120,10 +122,13 @@ func extractResources(s, dirname string) []resource {
 				break
 			}
 			re := findMatchingBracket(s, rs)
+			rname := findName(s[rs:re], 0, dirname)
+			relations = append(relations, strcase.ToGoPascal(rname))
 			resources = append(resources, extractResources(s[rs:re], dirname)...)
 			index = re + 1
 		}
 	}
+	resources[0].Relations = relations
 
 	return resources
 }
@@ -150,6 +155,13 @@ func {{.ServiceName | Title}}Resources() []*Resource {
 						{{ $col }},
 					{{- end }}
 				}...),
+			{{- if $resource.Relations }}
+			Relations: []string{
+ 				{{- range $r, $rel := $resource.Relations }}
+					"{{ $rel }}()",
+				{{- end }}
+			},
+			{{- end }}
 		},
 		{{- end }}
 	}
@@ -207,6 +219,7 @@ func findExtraColumns(content string) []string {
 	cols := []string{}
 	blocks := findBlocks(content)
 	for _, block := range blocks {
+		block = removeDescription(block)
 		if strings.Contains(block, "CreationOptions") {
 			block = strings.ReplaceAll(block, "CreationOptions:", "Options:")
 			cols = append(cols, block)
@@ -229,11 +242,27 @@ func findExtraColumns(content string) []string {
 				e := m[0][3]
 				block = block[:s] + "`" + block[s:e] + "`" + block[e:]
 			}
+
+			strings.ReplaceAll(block, "_cq_id", "_arn")
+			strings.ReplaceAll(block, "schema.TypeUUID", "schema.TypeString")
+			strings.ReplaceAll(block, "schema.ParentIdResolver", `schema.ParentResourceFieldResolver("arn")`)
 			cols = append(cols, block)
 			continue
 		}
 	}
 	return cols
+}
+
+func removeDescription(b string) string {
+	lines := strings.Split(b, "\n")
+	final := []string{}
+	for _, l := range lines {
+		if strings.Contains(l, "Description:") {
+			continue
+		}
+		final = append(final, l)
+	}
+	return strings.Join(final, "\n")
 }
 
 func findBlocks(content string) []string {
