@@ -144,6 +144,40 @@ func writeStarterTemplate(dir string, names []string) {
 	fmt.Println("Starter template created at " + pth)
 }
 
+func calcProgress() {
+	items, _ := os.ReadDir(".")
+	migratedDirs := 0
+	migratedFiles := 0
+	unmigratedFiles := 0
+	for _, it := range items {
+		if it.IsDir() {
+			dirItems, _ := os.ReadDir(it.Name())
+			migrated := false
+			n := 0
+			for _, dit := range dirItems {
+
+				if strings.HasSuffix(dit.Name(), ".go") && !strings.HasSuffix(dit.Name(), "_test.go") {
+					n++
+					if strings.HasSuffix(dit.Name(), "_fetch.go") {
+						if !migrated {
+							migratedDirs++
+						}
+						migratedFiles++
+						migrated = true
+					}
+				}
+			}
+			if !migrated {
+				unmigratedFiles += n
+			}
+		}
+	}
+	fmt.Println("==============================")
+	fmt.Printf("Directories migrated: %d/%d\n", migratedDirs, len(items))
+	fmt.Printf("Files left to migrate: %d/%d\n", unmigratedFiles, unmigratedFiles+migratedFiles)
+	fmt.Println("==============================")
+}
+
 func main() {
 	flag.StringVar(&directory, "d", "", "directory to migrate")
 	flag.BoolVar(&createStarterTemplate, "s", false, "whether to create starter template")
@@ -157,4 +191,6 @@ func main() {
 	if createStarterTemplate {
 		writeStarterTemplate(directory, names)
 	}
+
+	calcProgress()
 }
