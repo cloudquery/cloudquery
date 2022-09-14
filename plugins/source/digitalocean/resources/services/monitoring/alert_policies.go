@@ -19,6 +19,9 @@ func AlertPolicies() *schema.Table {
 				Name:     "uuid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("UUID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "type",

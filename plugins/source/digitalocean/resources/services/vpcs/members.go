@@ -19,6 +19,9 @@ func Members() *schema.Table {
 				Name:     "urn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("URN"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "name",

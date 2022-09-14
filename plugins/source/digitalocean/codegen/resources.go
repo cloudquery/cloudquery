@@ -20,6 +20,15 @@ var Resources = []*Resource{
 		Multiplex:    &emptyString,
 		ChildTable:   false,
 		SkipMock:     false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "uuid",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("UUID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"UUID"},
 	},
 	{
 		Service:      "cdn",
@@ -28,6 +37,15 @@ var Resources = []*Resource{
 		Struct:       godo.CDN{},
 		Multiplex:    &emptyString,
 		ChildTable:   false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:      "billing_history",
@@ -39,6 +57,15 @@ var Resources = []*Resource{
 		Multiplex:    &emptyString,
 		ChildTable:   false,
 		MockWrapper:  true,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "invoice_id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("InvoiceID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"InvoiceID"},
 	},
 	{
 		Service:      "monitoring",
@@ -48,6 +75,15 @@ var Resources = []*Resource{
 		Struct:       godo.AlertPolicy{},
 		Multiplex:    &emptyString,
 		ChildTable:   false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "uuid",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("UUID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"UUID"},
 	},
 
 	{
@@ -65,6 +101,15 @@ var Resources = []*Resource{
 		Struct:       godo.Certificate{},
 		Multiplex:    &emptyString,
 		ChildTable:   false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:      "databases",
@@ -74,6 +119,15 @@ var Resources = []*Resource{
 		Multiplex:    &emptyString,
 		Relations:    []string{"FirewallRules", "Replicas", "Backups"},
 		ChildTable:   false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:      "databases",
@@ -113,6 +167,15 @@ var Resources = []*Resource{
 		Multiplex: &emptyString,
 		SkipMock:  false,
 		Relations: []string{"Records"},
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("Name")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"Name"},
 	},
 	{
 		Service:      "domains",
@@ -125,6 +188,15 @@ var Resources = []*Resource{
 		FunctionName: "Records",
 		Multiplex:    &emptyString,
 		SkipMock:     false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:   "droplets",
@@ -149,8 +221,14 @@ var Resources = []*Resource{
 				Type:     schema.TypeIntArray,
 				Resolver: `schema.PathResolver("VolumeIDs")`,
 			},
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
 		},
-		SkipFields: []string{"BackupIDs", "SnapshotIDs", "VolumeIDs"},
+		SkipFields: []string{"BackupIDs", "SnapshotIDs", "VolumeIDs", "ID"},
 	},
 	{
 		Service:      "droplets",
@@ -163,6 +241,15 @@ var Resources = []*Resource{
 		Multiplex:    &emptyString,
 		SkipMock:     true,
 		SkipFetch:    true,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "neighbor_id",
+				Type:     schema.TypeInt,
+				Resolver: `schema.PathResolver("NeighborId")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"NeighborId"},
 	},
 	{
 		Service:   "firewalls",
@@ -176,8 +263,14 @@ var Resources = []*Resource{
 				Type:     schema.TypeIntArray,
 				Resolver: `schema.PathResolver("DropletIDs")`,
 			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
 		},
-		SkipFields: []string{"DropletIDs"},
+		SkipFields: []string{"DropletIDs", "ID"},
 	},
 
 	{
@@ -186,6 +279,15 @@ var Resources = []*Resource{
 		Struct:    godo.FloatingIP{},
 		Multiplex: &emptyString,
 		SkipMock:  false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "ip",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("IP")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"IP"},
 	},
 	{
 		Service:   "images",
@@ -193,6 +295,15 @@ var Resources = []*Resource{
 		Struct:    godo.Image{},
 		Multiplex: &emptyString,
 		SkipMock:  false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:   "keys",
@@ -200,6 +311,15 @@ var Resources = []*Resource{
 		Struct:    godo.Key{},
 		Multiplex: &emptyString,
 		SkipMock:  false,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:   "projects",
@@ -208,6 +328,15 @@ var Resources = []*Resource{
 		Multiplex: &emptyString,
 		SkipMock:  false,
 		Relations: []string{"Resources"},
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:      "projects",
@@ -219,6 +348,15 @@ var Resources = []*Resource{
 		Multiplex:    &emptyString,
 		SkipMock:     false,
 		ChildTable:   true,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "urn",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("URN")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"URN"},
 	},
 	{
 		Service:      "registry",
@@ -229,6 +367,15 @@ var Resources = []*Resource{
 		ChildTable:   false,
 		SkipMock:     false,
 		Relations:    []string{"Repositories"},
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("Name")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"Name"},
 	},
 	{
 		Service:      "registry",
@@ -240,6 +387,15 @@ var Resources = []*Resource{
 		ParentStruct: &godo.Registry{},
 		Multiplex:    &emptyString,
 		ChildTable:   true,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("Name")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"Name"},
 	},
 	{
 		Service:      "sizes",
@@ -254,42 +410,15 @@ var Resources = []*Resource{
 		MockTemplate: "resource_list_mock",
 		Struct:       godo.Snapshot{},
 		Multiplex:    &emptyString,
-	},
-	{
-		Service:      "storage",
-		SubService:   "volumes",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       godo.Volume{},
-		Multiplex:    &emptyString,
-		SkipFetch:    true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
-				Name:     "droplet_ids",
-				Type:     schema.TypeIntArray,
-				Resolver: `schema.PathResolver("DropletIDs")`,
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
-		SkipFields: []string{"DropletIDs"},
-	},
-	{
-		Service:      "vpcs",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       &godo.VPC{},
-		Multiplex:    &emptyString,
-		Relations:    []string{"Members"},
-	},
-	{
-		Service:      "vpcs",
-		SubService:   "members",
-		Args:         ", p.ID, nil",
-		Template:     "resource_list",
-		Struct:       &godo.VPCMember{},
-		ParentStruct: &godo.VPC{},
-		Multiplex:    &emptyString,
-		ChildTable:   true,
-		SkipMock:     true,
+		SkipFields: []string{"ID"},
 	},
 	{
 		Service:   "spaces",
@@ -310,5 +439,74 @@ var Resources = []*Resource{
 		SkipMock:     true,
 		ChildTable:   true,
 		SkipFetch:    true,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
+	},
+	{
+		Service:      "storage",
+		SubService:   "volumes",
+		Template:     "resource_list",
+		MockTemplate: "resource_list_mock",
+		Struct:       godo.Volume{},
+		Multiplex:    &emptyString,
+		SkipFetch:    true,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:     "droplet_ids",
+				Type:     schema.TypeIntArray,
+				Resolver: `schema.PathResolver("DropletIDs")`,
+			},
+		},
+		SkipFields: []string{"DropletIDs", "ID"},
+	},
+	{
+		Service:      "vpcs",
+		Template:     "resource_list",
+		MockTemplate: "resource_list_mock",
+		Struct:       &godo.VPC{},
+		Multiplex:    &emptyString,
+		Relations:    []string{"Members"},
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("ID")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"ID"},
+	},
+	{
+		Service:      "vpcs",
+		SubService:   "members",
+		Args:         ", p.ID, nil",
+		Template:     "resource_list",
+		Struct:       &godo.VPCMember{},
+		ParentStruct: &godo.VPC{},
+		Multiplex:    &emptyString,
+		ChildTable:   true,
+		SkipMock:     true,
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "urn",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("URN")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"URN"},
 	},
 }

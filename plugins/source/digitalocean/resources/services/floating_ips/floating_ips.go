@@ -16,6 +16,14 @@ func FloatingIps() *schema.Table {
 		Resolver: fetchFloatingIps,
 		Columns: []schema.Column{
 			{
+				Name:     "ip",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("IP"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "region",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Region"),
@@ -24,11 +32,6 @@ func FloatingIps() *schema.Table {
 				Name:     "droplet",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Droplet"),
-			},
-			{
-				Name:     "ip",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("IP"),
 			},
 		},
 	}

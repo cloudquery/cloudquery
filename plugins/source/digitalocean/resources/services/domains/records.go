@@ -17,8 +17,11 @@ func Records() *schema.Table {
 		Columns: []schema.Column{
 			{
 				Name:     "id",
-				Type:     schema.TypeInt,
+				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "type",

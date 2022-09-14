@@ -12,14 +12,17 @@ func Neighbors() *schema.Table {
 		Resolver: fetchNeighbors,
 		Columns: []schema.Column{
 			{
-				Name:     "droplet_id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("DropletId"),
-			},
-			{
 				Name:     "neighbor_id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("NeighborId"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "droplet_id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("DropletId"),
 			},
 		},
 	}

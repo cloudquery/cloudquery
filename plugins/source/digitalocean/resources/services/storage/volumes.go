@@ -12,14 +12,17 @@ func Volumes() *schema.Table {
 		Resolver: fetchVolumes,
 		Columns: []schema.Column{
 			{
-				Name:     "droplet_ids",
-				Type:     schema.TypeIntArray,
-				Resolver: schema.PathResolver("DropletIDs"),
-			},
-			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "droplet_ids",
+				Type:     schema.TypeIntArray,
+				Resolver: schema.PathResolver("DropletIDs"),
 			},
 			{
 				Name:     "region",

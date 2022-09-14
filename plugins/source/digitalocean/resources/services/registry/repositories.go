@@ -16,14 +16,17 @@ func Repositories() *schema.Table {
 		Resolver: fetchRepositories,
 		Columns: []schema.Column{
 			{
-				Name:     "registry_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RegistryName"),
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "registry_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RegistryName"),
 			},
 			{
 				Name:     "latest_tag",

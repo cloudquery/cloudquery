@@ -16,6 +16,14 @@ func BillingHistory() *schema.Table {
 		Resolver: fetchBillingHistory,
 		Columns: []schema.Column{
 			{
+				Name:     "invoice_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("InvoiceID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Description"),
@@ -24,11 +32,6 @@ func BillingHistory() *schema.Table {
 				Name:     "amount",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Amount"),
-			},
-			{
-				Name:     "invoice_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("InvoiceID"),
 			},
 			{
 				Name:     "invoice_uuid",

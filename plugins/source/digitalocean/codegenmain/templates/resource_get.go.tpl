@@ -17,7 +17,7 @@ func {{.SubServiceName | ToCamel}}() *schema.Table {
 }
 
 func fetch{{.SubServiceName | ToCamel}}(ctx context.Context, meta schema.ClientMeta, {{if eq .ParentStructName ""}}_{{else}}parent{{end}} *schema.Resource, res chan<- interface{}) error {
-	{{if ne .ParentStructName ""}}p := parent.Item.(godo.{{.ParentStructName}}){{end}}
+	{{if ne .ParentStructName ""}}p := parent.Item.(godo.{{.ParentStructName}}){{- end}}
     svc := meta.(*client.Client)
 	getFunc := func() error {
         response, _, err := svc.Services.{{.Service  | ToCamel}}.Get{{.SubService | ToCamel}}(ctx{{if ne .ParentStructName ""}}, p.ID{{end}})

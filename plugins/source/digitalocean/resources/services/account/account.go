@@ -15,6 +15,14 @@ func Account() *schema.Table {
 		Resolver: fetchAccount,
 		Columns: []schema.Column{
 			{
+				Name:     "uuid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UUID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "droplet_limit",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("DropletLimit"),
@@ -38,11 +46,6 @@ func Account() *schema.Table {
 				Name:     "email",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Email"),
-			},
-			{
-				Name:     "uuid",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UUID"),
 			},
 			{
 				Name:     "email_verified",
