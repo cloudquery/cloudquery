@@ -14,8 +14,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegenmain/recipes"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/iancoleman/strcase"
-	"github.com/jinzhu/inflection"
 )
 
 //go:embed templates/*.go.tpl
@@ -32,15 +30,20 @@ func main() {
 		log.Fatal(fmt.Errorf("failed to clear codegen directory: %w", err))
 	}
 
-	resources := recipes.All()
+	var resources []recipes.Resource
+	resources = append(resources, recipes.AccessGroupResources()...)
+	resources = append(resources, recipes.AccountResources()...)
+	resources = append(resources, recipes.CertificatePackResources()...)
+	resources = append(resources, recipes.DNSRecordResources()...)
+	resources = append(resources, recipes.ImageResources()...)
+	resources = append(resources, recipes.WAFOverrideResources()...)
+	resources = append(resources, recipes.WAFPackageResources()...)
+	resources = append(resources, recipes.WorkerMetaDataResources()...)
+	resources = append(resources, recipes.WorkerRouteResources()...)
+	resources = append(resources, recipes.ZoneResources()...)
+
 	for _, r := range resources {
-		generateTable(r)
-		if r.Parent != nil && r.TableFuncName != "" {
-			r.Parent.Table.Relations = append(r.Parent.Table.Relations, r.TableFuncName+"()")
-		}
-	}
-	for _, r := range resources {
-		writeResource(codegenDir, r)
+		generateTable(codegenDir, r)
 	}
 }
 
@@ -61,22 +64,19 @@ func clearDirectory(dir string) error {
 	return nil
 }
 
-func generateTable(r *recipes.Resource) {
+func generateTable(basedir string, r recipes.Resource) {
 	var err error
 
-	tableName := fmt.Sprintf("cloudflare_%s", strcase.ToSnake(inflection.Plural(r.CFStructName)))
-	if r.TableName != "" {
-		tableName = r.TableName
-	}
-	log.Println("Generating table", tableName)
-	r.Table, err = sdkgen.NewTableFromStruct(tableName, r.CFStruct, sdkgen.WithSkipFields(r.SkipFields))
+	log.Println("Generating table", r.TableName)
+	r.Table, err = sdkgen.NewTableFromStruct(r.TableName, r.CFStruct, sdkgen.WithSkipFields(r.SkipFields))
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	r.Table.Resolver = "services.Fetch" + inflection.Plural(r.CFStructName)
+	r.Table.Resolver = r.ResolverFuncName
 	r.Table.Multiplex = r.Multiplex
 	r.ImportClient = strings.HasPrefix(r.Multiplex, "client.")
+	r.Table.Relations = r.Relations
 
 	r.Table.Columns = append(append(r.DefaultColumns, r.Table.Columns...), r.ExtraColumns...)
 	for i := range r.Table.Columns {
@@ -92,15 +92,8 @@ func generateTable(r *recipes.Resource) {
 		}
 	}
 
-}
-
-func writeResource(basedir string, r *recipes.Resource) {
 	mainTemplate := r.Template + ".go.tpl"
-	tpl, err := template.New(mainTemplate).Funcs(template.FuncMap{
-		"ToCamel":   strcase.ToCamel,
-		"ToSnake":   strcase.ToSnake,
-		"Pluralize": inflection.Plural,
-	}).ParseFS(templatesFS, "templates/"+mainTemplate)
+	tpl, err := template.New(mainTemplate).ParseFS(templatesFS, "templates/"+mainTemplate)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse cf templates: %w", err))
 	}
@@ -112,7 +105,7 @@ func writeResource(basedir string, r *recipes.Resource) {
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	filePath := path.Join(basedir, r.Filename+".go")
+	filePath := path.Join(basedir, r.Filename)
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())

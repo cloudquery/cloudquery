@@ -61,8 +61,8 @@ func WAFPackages() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			wAFGroups(),
-			wAFRules(),
+			wafGroups(),
+			wafRules(),
 		},
 	}
 }

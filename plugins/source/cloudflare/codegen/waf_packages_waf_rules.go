@@ -7,13 +7,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func wAFRules() *schema.Table {
+func wafRules() *schema.Table {
 	return &schema.Table{
 		Name:     "cloudflare_waf_rules",
 		Resolver: services.FetchWAFRules,
 		Columns: []schema.Column{
 			{
-				Name:     "parent_cq_id",
+				Name:     "waf_package_cq_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},

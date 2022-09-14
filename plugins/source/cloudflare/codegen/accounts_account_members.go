@@ -13,7 +13,7 @@ func accountMembers() *schema.Table {
 		Resolver: services.FetchAccountMembers,
 		Columns: []schema.Column{
 			{
-				Name:     "parent_cq_id",
+				Name:     "account_cq_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},

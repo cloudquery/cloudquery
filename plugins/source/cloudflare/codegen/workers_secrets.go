@@ -13,7 +13,7 @@ func workersSecrets() *schema.Table {
 		Resolver: services.FetchWorkersSecrets,
 		Columns: []schema.Column{
 			{
-				Name:     "parent_cq_id",
+				Name:     "worker_meta_data_cq_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},
