@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-github/v45/github"
 )
 
-func buildStorageBilling(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
+func buildStorage(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock := mocks.NewMockBillingService(ctrl)
 
 	var cs *github.StorageBilling
@@ -22,5 +22,5 @@ func buildStorageBilling(t *testing.T, ctrl *gomock.Controller) client.GithubSer
 }
 
 func TestStorageBillings(t *testing.T) {
-	client.GithubMockTestHelper(t, StorageBillings(), buildStorageBilling, client.TestOptions{})
+	client.GithubMockTestHelper(t, Storage(), buildStorage, client.TestOptions{})
 }

@@ -14,9 +14,9 @@ import (
 
 func Tables() []*schema.Table {
 	return []*schema.Table{
-		billing.ActionBillings(),
-		billing.StorageBillings(),
-		billing.PackageBillings(),
+		billing.Action(),
+		billing.Storage(),
+		billing.Package(),
 		issues.Issues(),
 		hooks.Hooks(),
 		installations.Installations(),

@@ -10,7 +10,7 @@ import (
 	"github.com/google/go-github/v45/github"
 )
 
-func buildActionBilling(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
+func buildAction(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock := mocks.NewMockBillingService(ctrl)
 
 	var cs *github.ActionBilling
@@ -22,5 +22,5 @@ func buildActionBilling(t *testing.T, ctrl *gomock.Controller) client.GithubServ
 }
 
 func TestActionBillings(t *testing.T) {
-	client.GithubMockTestHelper(t, ActionBillings(), buildActionBilling, client.TestOptions{})
+	client.GithubMockTestHelper(t, Action(), buildAction, client.TestOptions{})
 }
