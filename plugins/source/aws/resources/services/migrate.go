@@ -1,11 +1,14 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"github.com/ettle/strcase"
+	"go/format"
 	"os"
 	"path"
+	"regexp"
 	"strings"
 	"text/template"
 )
@@ -13,13 +16,18 @@ import (
 var directory string
 var createStarterTemplate bool
 
-func migrate(dir string) []string {
+type resource struct {
+	Name         string
+	ExtraColumns []string
+}
+
+func migrate(dir string) []resource {
 	items, _ := os.ReadDir(dir)
-	names := make([]string, 0)
+	resources := make([]resource, 0)
 	for _, it := range items {
 		if strings.HasSuffix(it.Name(), ".go.bk") {
 			fmt.Fprintln(os.Stderr, "Skipping "+it.Name())
-			names = append(names, strings.TrimSuffix(it.Name(), ".go.bk"))
+			resources = append(resources, resource{Name: strings.TrimSuffix(it.Name(), ".go.bk")})
 			continue
 		}
 		if strings.HasSuffix(it.Name(), "_fetch.go") {
@@ -27,14 +35,14 @@ func migrate(dir string) []string {
 			continue
 		}
 		if strings.HasSuffix(it.Name(), ".go") && !strings.HasSuffix(it.Name(), "_test.go") {
-			migrateFile(path.Join(dir, it.Name()))
-			names = append(names, strings.TrimSuffix(it.Name(), ".go"))
+			recs := migrateFile(path.Join(dir, it.Name()), dir)
+			resources = append(resources, recs...)
 		}
 	}
-	return names
+	return resources
 }
 
-func migrateFile(f string) {
+func migrateFile(f, dirname string) []resource {
 	data, err := os.ReadFile(f)
 	if err != nil {
 		panic(err)
@@ -44,7 +52,7 @@ func migrateFile(f string) {
 	stopAt := strings.Index(s, "// ==========")
 	if stopAt == -1 {
 		fmt.Fprintln(os.Stderr, "Already migrated?")
-		return
+		return []resource{}
 	}
 
 	importEnd := strings.Index(s, ")")
@@ -81,6 +89,43 @@ func migrateFile(f string) {
 
 	// delete original file (this will need to be regenerated)
 	os.RemoveAll(f)
+
+	// calculate columns that need to be copied
+	resources := []resource{}
+	ts := strings.Index(s, "&schema.Table{")
+	te := findMatchingBracket(s, ts+len("&schema.Table{"))
+	resources = append(resources, extractResources(s[ts:te], dirname)...)
+	return resources
+}
+
+func extractResources(s, dirname string) []resource {
+	name := findName(s, 0, dirname)
+	i := strings.Index(s, "Columns: []schema.Column{")
+	br := findNextBracket(s, i)
+	cl := findMatchingBracket(s, br)
+	cols := findExtraColumns(strings.Trim(s[br:cl+1], " {}"))
+
+	res := resource{
+		Name:         name,
+		ExtraColumns: cols,
+	}
+	resources := []resource{res}
+	substr := "Relations: []*schema.Table{"
+	rs := strings.Index(s, substr)
+	if rs != -1 {
+		index := rs + len(substr) + 1
+		for {
+			rs = findNextBracket(s, index)
+			if rs == -1 {
+				break
+			}
+			re := findMatchingBracket(s, rs)
+			resources = append(resources, extractResources(s[rs:re], dirname)...)
+			index = re + 1
+		}
+	}
+
+	return resources
 }
 
 var starterTemplate = `package recipes
@@ -93,23 +138,20 @@ import (
 
 func {{.ServiceName | Title}}Resources() []*Resource {
 	resources := []*Resource{
-		{{ range $i, $name := .Names }}
+		{{- range $i, $resource := .Resources }}
 		{
-			SubService: "{{ $name }}",
-			Struct:     &types.{{ $name | Title }}{},
-			SkipFields: []string{"ARN"},
+			SubService: "{{ $resource.Name }}",
+			Struct:     &types.{{ $resource.Name | Title }}{},
+			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: ` + "`" + `schema.PathResolver("ARN")` + "`" + `,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
+					{{- range $c, $col := $resource.ExtraColumns }}
+						{{ $col }},
+					{{- end }}
 				}...),
 		},
-		{{ end }}
+		{{- end }}
 	}
 
 	// set default values
@@ -121,7 +163,7 @@ func {{.ServiceName | Title}}Resources() []*Resource {
 }
 `
 
-func writeStarterTemplate(dir string, names []string) {
+func writeStarterTemplate(dir string, resources []resource) {
 	tpl, err := template.New("starter").Funcs(template.FuncMap{
 		"Title": strcase.ToGoPascal,
 	}).Parse(starterTemplate)
@@ -135,13 +177,104 @@ func writeStarterTemplate(dir string, names []string) {
 	}
 	values := map[string]interface{}{
 		"ServiceName": dir,
-		"Names":       names,
+		"Resources":   resources,
 	}
-	err = tpl.Execute(f, values)
+	var buff bytes.Buffer
+	err = tpl.Execute(&buff, values)
 	if err != nil {
 		panic(err)
 	}
+	content := buff.Bytes()
+	formattedContent, err := format.Source(buff.Bytes())
+	if err != nil {
+		fmt.Printf("failed to format source: %s: %v\n", pth, err)
+	} else {
+		content = formattedContent
+	}
+	f.Write(content)
+
 	fmt.Println("Starter template created at " + pth)
+}
+
+func findName(content string, index int, dirname string) string {
+	r := regexp.MustCompile(`Name:\s+\"([^\"]+)\"\,`)
+	m := r.FindAllStringSubmatch(content[index:], 1)
+	name := m[0][1]
+	return strings.TrimPrefix(name, "aws_"+dirname+"_")
+}
+
+func findExtraColumns(content string) []string {
+	cols := []string{}
+	blocks := findBlocks(content)
+	for _, block := range blocks {
+		if strings.Contains(block, "CreationOptions") {
+			block = strings.ReplaceAll(block, "CreationOptions:", "Options:")
+			cols = append(cols, block)
+			continue
+		}
+		if strings.Contains(block, "client.ResolveAWSRegion") {
+			continue
+		}
+		if strings.Contains(block, "client.ResolveAWSAccount") {
+			continue
+		}
+		if strings.Contains(block, "PathResolver(") {
+			continue
+		}
+		if strings.Contains(block, "Resolver:") {
+			r := regexp.MustCompile(`Resolver:\s+([^\,]+)\,`)
+			m := r.FindAllStringSubmatchIndex(block, -1)
+			if len(m[0]) > 2 {
+				s := m[0][2]
+				e := m[0][3]
+				block = block[:s] + "`" + block[s:e] + "`" + block[e:]
+			}
+			cols = append(cols, block)
+			continue
+		}
+	}
+	return cols
+}
+
+func findBlocks(content string) []string {
+	blocks := []string{}
+	index := 0
+	for {
+		s := findNextBracket(content, index)
+		if s == -1 {
+			return blocks
+		}
+		e := findMatchingBracket(content, s)
+		blocks = append(blocks, content[s:e+1])
+		index = e + 1
+	}
+}
+
+func findNextBracket(content string, index int) int {
+	i := strings.Index(content[index:], "{")
+	if i == -1 {
+		return -1
+	}
+	return i + index
+}
+
+func findMatchingBracket(content string, bracketIndex int) int {
+	stack := 0
+	index := bracketIndex
+	for {
+		nextOpening := strings.Index(content[index+1:], "{")
+		nextClosing := strings.Index(content[index+1:], "}")
+		if nextOpening == -1 || nextClosing < nextOpening {
+			if stack == 0 {
+				return nextClosing + index + 1
+			}
+			stack--
+			index = nextClosing + index + 1
+		} else {
+			stack++
+			index = nextOpening + index + 1
+		}
+	}
 }
 
 func calcProgress() {
@@ -187,9 +320,9 @@ func main() {
 		fmt.Fprintln(os.Stderr, "Usage: -d <directory_to_migrate>")
 		return
 	}
-	names := migrate(directory)
+	resources := migrate(directory)
 	if createStarterTemplate {
-		writeStarterTemplate(directory, names)
+		writeStarterTemplate(directory, resources)
 	}
 
 	calcProgress()
