@@ -20,6 +20,7 @@ type resource struct {
 	Name         string
 	ExtraColumns []string
 	Relations    []string
+	SkipFields   []string
 }
 
 func migrate(dir string) []resource {
@@ -104,11 +105,12 @@ func extractResources(s, dirname string) []resource {
 	i := strings.Index(s, "Columns: []schema.Column{")
 	br := findNextBracket(s, i)
 	cl := findMatchingBracket(s, br)
-	cols := findExtraColumns(strings.Trim(s[br:cl+1], " {}"))
+	cols, skip := findExtraColumns(strings.Trim(s[br:cl+1], " {}"))
 
 	res := resource{
 		Name:         name,
 		ExtraColumns: cols,
+		SkipFields:   skip,
 	}
 	relations := []string{}
 	resources := []resource{res}
@@ -147,7 +149,11 @@ func {{.ServiceName | Title}}Resources() []*Resource {
 		{
 			SubService: "{{ $resource.Name }}",
 			Struct:     &types.{{ $resource.Name | Title }}{},
-			SkipFields: []string{},
+			SkipFields: []string{
+				{{- range $s, $skip := $resource.SkipFields -}}
+					"{{ $skip }}",
+				{{- end -}}
+			},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -215,14 +221,32 @@ func findName(content string, index int, dirname string) string {
 	return strings.TrimPrefix(name, "aws_"+dirname+"_")
 }
 
-func findExtraColumns(content string) []string {
+func findExtraColumns(content string) ([]string, []string) {
 	cols := []string{}
+	skipFields := []string{}
 	blocks := findBlocks(content)
 	for _, block := range blocks {
 		block = removeDescription(block)
+
+		// put quotes around Resolver
+		r := regexp.MustCompile(`Resolver:\s+([^\,]+)\,`)
+		m := r.FindAllStringSubmatchIndex(block, -1)
+		if len(m[0]) > 2 {
+			s := m[0][2]
+			e := m[0][3]
+			block = block[:s] + "`" + block[s:e] + "`" + block[e:]
+		}
+
 		if strings.Contains(block, "CreationOptions") {
 			block = strings.ReplaceAll(block, "CreationOptions:", "Options:")
 			cols = append(cols, block)
+			if !strings.Contains(block, "Resolver:") {
+				skipFields = append(skipFields, strcase.ToPascal(findName(block, 0, "")))
+			} else if strings.Contains(block, "PathResolver(") {
+				r := regexp.MustCompile(`PathResolver\(\"([^\"]+)\"`)
+				name := r.FindAllStringSubmatch(block, 1)
+				skipFields = append(skipFields, name[0][1])
+			}
 			continue
 		}
 		if strings.Contains(block, "client.ResolveAWSRegion") {
@@ -235,22 +259,17 @@ func findExtraColumns(content string) []string {
 			continue
 		}
 		if strings.Contains(block, "Resolver:") {
-			r := regexp.MustCompile(`Resolver:\s+([^\,]+)\,`)
-			m := r.FindAllStringSubmatchIndex(block, -1)
-			if len(m[0]) > 2 {
-				s := m[0][2]
-				e := m[0][3]
-				block = block[:s] + "`" + block[s:e] + "`" + block[e:]
+			block = strings.ReplaceAll(block, "_cq_id", "_arn")
+			block = strings.ReplaceAll(block, "schema.TypeUUID", "schema.TypeString")
+			block = strings.ReplaceAll(block, "schema.ParentIdResolver", `schema.ParentResourceFieldResolver("arn")`)
+			if strings.Contains(block, "client.ResolveTags") {
+				skipFields = append(skipFields, "Tags")
 			}
-
-			strings.ReplaceAll(block, "_cq_id", "_arn")
-			strings.ReplaceAll(block, "schema.TypeUUID", "schema.TypeString")
-			strings.ReplaceAll(block, "schema.ParentIdResolver", `schema.ParentResourceFieldResolver("arn")`)
 			cols = append(cols, block)
 			continue
 		}
 	}
-	return cols
+	return cols, skipFields
 }
 
 func removeDescription(b string) string {

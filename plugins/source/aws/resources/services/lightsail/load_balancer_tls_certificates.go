@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Certificates() *schema.Table {
+func LoadBalancerTlsCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_certificates",
-		Resolver:  fetchLightsailCertificates,
+		Name:      "aws_lightsail_load_balancer_tls_certificates",
+		Resolver:  fetchLightsailLoadBalancerTlsCertificates,
 		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
@@ -22,6 +22,11 @@ func Certificates() *schema.Table {
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
+			},
+			{
+				Name:     "load_balancer_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
 				Name:     "tags",
@@ -49,14 +54,14 @@ func Certificates() *schema.Table {
 				Resolver: schema.PathResolver("DomainValidationRecords"),
 			},
 			{
-				Name:     "eligible_to_renew",
+				Name:     "failure_reason",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EligibleToRenew"),
+				Resolver: schema.PathResolver("FailureReason"),
 			},
 			{
-				Name:     "in_use_resource_count",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("InUseResourceCount"),
+				Name:     "is_attached",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsAttached"),
 			},
 			{
 				Name:     "issued_at",
@@ -64,14 +69,24 @@ func Certificates() *schema.Table {
 				Resolver: schema.PathResolver("IssuedAt"),
 			},
 			{
-				Name:     "issuer_ca",
+				Name:     "issuer",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("IssuerCA"),
+				Resolver: schema.PathResolver("Issuer"),
 			},
 			{
 				Name:     "key_algorithm",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("KeyAlgorithm"),
+			},
+			{
+				Name:     "load_balancer_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LoadBalancerName"),
+			},
+			{
+				Name:     "location",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
 				Name:     "name",
@@ -94,9 +109,9 @@ func Certificates() *schema.Table {
 				Resolver: schema.PathResolver("RenewalSummary"),
 			},
 			{
-				Name:     "request_failure_reason",
+				Name:     "resource_type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RequestFailureReason"),
+				Resolver: schema.PathResolver("ResourceType"),
 			},
 			{
 				Name:     "revocation_reason",
@@ -109,14 +124,24 @@ func Certificates() *schema.Table {
 				Resolver: schema.PathResolver("RevokedAt"),
 			},
 			{
-				Name:     "serial_number",
+				Name:     "serial",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SerialNumber"),
+				Resolver: schema.PathResolver("Serial"),
+			},
+			{
+				Name:     "signature_algorithm",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SignatureAlgorithm"),
 			},
 			{
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "subject",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Subject"),
 			},
 			{
 				Name:     "subject_alternative_names",

@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func InstanceSnapshots() *schema.Table {
+func DiskSnapshot() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_instance_snapshots",
-		Resolver:  fetchLightsailInstanceSnapshots,
+		Name:      "aws_lightsail_disk_snapshot",
+		Resolver:  fetchLightsailDiskSnapshot,
 		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
@@ -24,11 +24,9 @@ func InstanceSnapshots() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name: "arn",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:     "disk_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
 				Name:     "tags",
@@ -36,24 +34,24 @@ func InstanceSnapshots() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Arn"),
+			},
+			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name:     "from_attached_disks",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("FromAttachedDisks"),
+				Name:     "from_disk_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FromDiskArn"),
 			},
 			{
-				Name:     "from_blueprint_id",
+				Name:     "from_disk_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FromBlueprintId"),
-			},
-			{
-				Name:     "from_bundle_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FromBundleId"),
+				Resolver: schema.PathResolver("FromDiskName"),
 			},
 			{
 				Name:     "from_instance_arn",

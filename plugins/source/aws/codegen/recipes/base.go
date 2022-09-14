@@ -17,16 +17,17 @@ import (
 )
 
 type Resource struct {
-	Service              string
-	SubService           string
-	Struct               interface{}
-	SkipFields           []string
-	ExtraColumns         []codegen.ColumnDefinition
-	Table                *codegen.TableDefinition
-	Multiplex            string
-	PreResourceResolver  string
-	PostResourceResolver string
-	Relations            []string
+	Service               string
+	SubService            string
+	Struct                interface{}
+	SkipFields            []string
+	ExtraColumns          []codegen.ColumnDefinition
+	Table                 *codegen.TableDefinition
+	Multiplex             string
+	PreResourceResolver   string
+	PostResourceResolver  string
+	Relations             []string
+	UnwrapEmbeddedStructs bool
 }
 
 //go:embed templates/*.go.tpl
@@ -61,11 +62,17 @@ func (r *Resource) Generate() error {
 	dir := path.Dir(filename)
 
 	var err error
+	opts := []codegen.TableOptions{
+		codegen.WithSkipFields(r.SkipFields),
+		codegen.WithExtraColumns(r.ExtraColumns),
+	}
+	if r.UnwrapEmbeddedStructs {
+		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
+	}
 	r.Table, err = codegen.NewTableFromStruct(
 		fmt.Sprintf("aws_%s_%s", r.Service, r.SubService),
 		r.Struct,
-		codegen.WithSkipFields(r.SkipFields),
-		codegen.WithExtraColumns(r.ExtraColumns),
+		opts...,
 	)
 	if err != nil {
 		return err
