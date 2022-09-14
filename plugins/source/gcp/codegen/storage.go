@@ -2,8 +2,6 @@ package codegen
 
 import (
 	"cloud.google.com/go/storage"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 var storageResources = []*Resource{
@@ -14,13 +12,6 @@ var storageResources = []*Resource{
 		ResponseStruct: &storage.BucketAttrs{},
 		SkipFetch:      true,
 		SkipMock:       true,
-		OverrideColumns: []codegen.ColumnDefinition{
-			{
-				Name:    "self_link",
-				Type:    schema.TypeString,
-				Options: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
 	},
 }
 
