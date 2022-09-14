@@ -37,10 +37,9 @@ func ClusterSnapshots() *schema.Table {
 				Resolver: resolveRDSClusterSnapshotTags,
 			},
 			{
-				Name:        "attributes",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveRDSClusterSnapshotAttributes,
-				Description: `Snapshot attribute names and values`,
+				Name:     "attributes",
+				Type:     schema.TypeJSON,
+				Resolver: resolveRDSClusterSnapshotAttributes,
 			},
 			{
 				Name:     "allocated_storage",

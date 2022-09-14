@@ -32,10 +32,9 @@ func DbParameterGroups() *schema.Table {
 				},
 			},
 			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveRdsDbParameterGroupTags,
-				Description: `List of tags`,
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveRdsDbParameterGroupTags,
 			},
 			{
 				Name:     "db_parameter_group_family",

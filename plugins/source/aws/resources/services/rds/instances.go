@@ -32,16 +32,14 @@ func Instances() *schema.Table {
 				},
 			},
 			{
-				Name:        "processor_features",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveRdsInstanceProcessorFeatures,
-				Description: `The number of CPU cores and the number of threads per core for the DB instance class of the DB instance.`,
+				Name:     "processor_features",
+				Type:     schema.TypeJSON,
+				Resolver: resolveRdsInstanceProcessorFeatures,
 			},
 			{
-				Name:        "tags",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveRdsInstanceTags,
-				Description: `A list of tags`,
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveRdsInstanceTags,
 			},
 			{
 				Name:     "activity_stream_engine_native_audit_fields_included",

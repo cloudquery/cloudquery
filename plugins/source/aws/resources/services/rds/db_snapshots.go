@@ -37,10 +37,9 @@ func DbSnapshots() *schema.Table {
 				Resolver: resolveRDSDBSnapshotTags,
 			},
 			{
-				Name:        "attributes",
-				Type:        schema.TypeJSON,
-				Resolver:    resolveRDSDBSnapshotAttributes,
-				Description: `Snapshot attribute names and values`,
+				Name:     "attributes",
+				Type:     schema.TypeJSON,
+				Resolver: resolveRDSDBSnapshotAttributes,
 			},
 			{
 				Name:     "allocated_storage",
