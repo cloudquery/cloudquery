@@ -15,7 +15,6 @@ func MySQL() []Resource {
 				return err
 			}`},
 			listHandler:              valueHandler,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -34,17 +33,21 @@ func MySQL() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql"},
 				},
 			},
-			definitions: append([]resourceDefinition{
+			definitions: []resourceDefinition{
 				{
 					azureStruct:  &mysql.Server{},
 					listFunction: "List",
 					listHandler:  valueHandler,
 					relations:    serverRelations,
 				},
-			}, serverRelations...),
+			},
 			serviceNameOverride: "MySQL",
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, serverRelations...)
 
 	return generateResources(resourcesByTemplates)
 }

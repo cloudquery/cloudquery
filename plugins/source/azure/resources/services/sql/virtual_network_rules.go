@@ -22,7 +22,7 @@ func virtualNetworkRules() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "cq_id_parent",
+				Name:     "sql_server_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},

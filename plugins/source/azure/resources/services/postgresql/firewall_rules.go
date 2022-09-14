@@ -21,7 +21,7 @@ func firewallRules() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "cq_id_parent",
+				Name:     "postgresql_server_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},

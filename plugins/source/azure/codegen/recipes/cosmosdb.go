@@ -17,7 +17,6 @@ func CosmosDB() []Resource {
 				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           "MongoDBDatabaseListResult",
@@ -33,7 +32,6 @@ func CosmosDB() []Resource {
 				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           "SQLDatabaseListResult",
@@ -57,7 +55,7 @@ func CosmosDB() []Resource {
 					},
 				},
 			},
-			definitions: append([]resourceDefinition{
+			definitions: []resourceDefinition{
 				{
 					azureStruct:        &documentdb.DatabaseAccountGetResults{},
 					listFunction:       "List",
@@ -66,10 +64,14 @@ func CosmosDB() []Resource {
 					mockListResult:     "DatabaseAccountsListResult",
 					relations:          accountRelations,
 				},
-			}, accountRelations...),
+			},
 			serviceNameOverride: "CosmosDB",
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, accountRelations...)
 
 	return generateResources(resourcesByTemplates)
 }

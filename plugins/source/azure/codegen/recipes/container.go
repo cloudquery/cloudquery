@@ -16,7 +16,6 @@ func Container() []Resource {
 				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*registry.Name"},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -38,7 +37,7 @@ func Container() []Resource {
 					},
 				},
 			},
-			definitions: append([]resourceDefinition{
+			definitions: []resourceDefinition{
 				{
 					azureStruct:  &containerservice.ManagedCluster{},
 					listFunction: "List",
@@ -48,10 +47,14 @@ func Container() []Resource {
 					listFunction: "List",
 					relations:    registryRelations,
 				},
-			}, registryRelations...),
+			},
 			serviceNameOverride: "Container",
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, registryRelations...)
 
 	return generateResources(resourcesByTemplates)
 }

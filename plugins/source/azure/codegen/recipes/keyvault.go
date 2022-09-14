@@ -14,7 +14,6 @@ func KeyValue() []Resource {
 			listFunctionArgs:         []string{"*vault.Properties.VaultURI", "&maxResults"},
 			listFunctionArgsInit:     []string{"vault := parent.Item.(keyvault.Vault)", "maxResults := int32(25)"},
 			subServiceOverride:       "Keys",
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{"maxResults := int32(25)"},
 			mockListFunctionArgs:     []string{`"test"`, `&maxResults`},
 			mockListResult:           "KeyListResult",
@@ -87,5 +86,6 @@ func KeyValue() []Resource {
 		},
 	}
 
+	initParents(resourcesByTemplates)
 	return generateResources(resourcesByTemplates)
 }

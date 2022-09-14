@@ -15,7 +15,6 @@ func PostgresSQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -28,7 +27,6 @@ func PostgresSQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -47,17 +45,21 @@ func PostgresSQL() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql"},
 				},
 			},
-			definitions: append([]resourceDefinition{
+			definitions: []resourceDefinition{
 				{
 					azureStruct:  &postgresql.Server{},
 					listFunction: "List",
 					listHandler:  valueHandler,
 					relations:    serverRelations,
 				},
-			}, serverRelations...),
+			},
 			serviceNameOverride: "PostgreSQL",
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, serverRelations...)
 
 	return generateResources(resourcesByTemplates)
 }

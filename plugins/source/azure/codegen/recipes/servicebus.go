@@ -23,7 +23,6 @@ func ServiceBus() []Resource {
 				return err
 			}
 			res <- response`,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`, `"test"`},
 			mockListResult:           mockDirectResponse,
@@ -43,7 +42,6 @@ func ServiceBus() []Resource {
 				return err
 			}`},
 			relations:                ruleRelations,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -59,7 +57,6 @@ func ServiceBus() []Resource {
 				return err
 			}`},
 			relations:                topicRelations,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `nil`, `nil`},
 		},
@@ -88,6 +85,8 @@ func ServiceBus() []Resource {
 			},
 		},
 	}
+
+	initParents(resourcesByTemplates)
 
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, namespaceRelations...)
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, topicRelations...)

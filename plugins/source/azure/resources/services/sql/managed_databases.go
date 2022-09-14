@@ -22,7 +22,7 @@ func managedDatabases() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "cq_id_parent",
+				Name:     "sql_managed_instance_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},

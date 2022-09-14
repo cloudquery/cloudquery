@@ -21,7 +21,7 @@ func configurations() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "cq_id_parent",
+				Name:     "mysql_server_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},

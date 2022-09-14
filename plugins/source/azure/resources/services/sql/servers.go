@@ -101,10 +101,10 @@ func Servers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
+			firewallRules(),
 			databases(),
 			encryptionProtectors(),
 			virtualNetworkRules(),
-			firewallRules(),
 			serverAdmins(),
 			serverBlobAuditingPolicies(),
 			serverDevOpsAuditingSettings(),

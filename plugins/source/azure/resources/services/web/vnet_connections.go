@@ -22,7 +22,7 @@ func vnetConnections() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:     "cq_id_parent",
+				Name:     "web_app_id",
 				Type:     schema.TypeUUID,
 				Resolver: schema.ParentIDResolver,
 			},

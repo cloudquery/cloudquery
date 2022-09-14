@@ -19,7 +19,6 @@ func EventHub() []Resource {
 				return err
 			}
 			res <- response`,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           mockDirectResponse,
@@ -67,5 +66,6 @@ func EventHub() []Resource {
 		},
 	}
 
+	initParents(resourcesByTemplates)
 	return generateResources(resourcesByTemplates)
 }

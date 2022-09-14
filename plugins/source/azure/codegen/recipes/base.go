@@ -60,7 +60,7 @@ type resourceDefinition struct {
 	skipFields               []string
 	includeColumns           string
 	helpers                  []string
-	isRelation               bool
+	parent                   string
 	listFunction             string
 	listFunctionArgs         []string
 	listFunctionArgsInit     []string
@@ -149,13 +149,13 @@ func needsSubscriptionId(table *codegen.TableDefinition) bool {
 	return true
 }
 
-func parseAzureStruct(byTemplate byTemplates, definition resourceDefinition) (string, string, string, string) {
+func parseAzureStruct(serviceNameOverride string, definition resourceDefinition) (string, string, string, string) {
 	plural := pluralize.NewClient()
 	elementTypeParts := strings.Split(reflect.TypeOf(definition.azureStruct).Elem().String(), ".")
 	azurePackageName, azureStructName := elementTypeParts[0], elementTypeParts[1]
 	azureService := strcase.ToCamel(azurePackageName)
-	if byTemplate.serviceNameOverride != "" {
-		azureService = byTemplate.serviceNameOverride
+	if serviceNameOverride != "" {
+		azureService = serviceNameOverride
 	}
 	azureSubService := plural.Plural(azureStructName)
 	if definition.subServiceOverride != "" {
@@ -170,9 +170,9 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	if needsSubscriptionId(table) {
 		columns = append(columns, subscriptionIdColumn)
 	}
-	if definition.isRelation {
+	if definition.parent != "" {
 		columns = append(columns, codegen.ColumnDefinition{
-			Name:     "cq_id_parent",
+			Name:     definition.parent,
 			Type:     schema.TypeUUID,
 			Resolver: "schema.ParentIDResolver",
 		})
@@ -190,13 +190,14 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	return columns
 }
 
-func initTable(byTemplate byTemplates, definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
+func getTableName(azureService, azureSubService string) string {
+	return fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService))
+}
+
+func initTable(serviceNameOverride string, definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
 	skipFields := append(definition.skipFields, defaultSkipFields...)
 	table, err := codegen.NewTableFromStruct(
-		fmt.Sprintf("%s_%s_%s",
-			pluginName,
-			strings.ToLower(azureService),
-			strcase.ToSnake(azureSubService)),
+		getTableName(azureService, azureSubService),
 		definition.azureStruct,
 		codegen.WithSkipFields(skipFields),
 		codegen.WithUnwrapAllEmbeddedStructs(),                  // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
@@ -207,7 +208,7 @@ func initTable(byTemplate byTemplates, definition resourceDefinition, azureServi
 	}
 	table.Columns = initColumns(table, definition)
 
-	if !definition.isRelation {
+	if definition.parent == "" {
 		table.Multiplex = "client.SubscriptionMultiplex"
 	}
 
@@ -224,9 +225,11 @@ func initTable(byTemplate byTemplates, definition resourceDefinition, azureServi
 
 	table.Resolver = "fetch" + azureService + azureSubService
 	table.Relations = make([]string, 0)
-	for _, relation := range definition.relations {
-		_, _, _, azureSubService := parseAzureStruct(byTemplate, relation)
-		table.Relations = append(table.Relations, strcase.ToLowerCamel(azureSubService)+"()")
+	if definition.relations != nil {
+		for _, relation := range definition.relations {
+			_, _, _, azureSubService := parseAzureStruct(serviceNameOverride, relation)
+			table.Relations = append(table.Relations, strcase.ToLowerCamel(azureSubService)+"()")
+		}
 	}
 
 	if definition.getFunction != "" {
@@ -236,12 +239,14 @@ func initTable(byTemplate byTemplates, definition resourceDefinition, azureServi
 	return table
 }
 
-func getMockRelations(byTemplate byTemplates, azureService string, definition resourceDefinition) []string {
+func getMockRelations(serviceNameOverride string, azureService string, definition resourceDefinition) []string {
 	mockRelations := make([]string, 0)
-	for _, relation := range definition.relations {
-		_, _, _, azureSubService := parseAzureStruct(byTemplate, relation)
-		mockRelations = append(mockRelations, fmt.Sprintf("%s: create%sMock(t,ctrl).%s.%s", azureSubService, azureSubService, azureService, azureSubService))
-		mockRelations = append(mockRelations, getMockRelations(byTemplate, azureService, relation)...)
+	if definition.relations != nil {
+		for _, relation := range definition.relations {
+			_, _, _, azureSubService := parseAzureStruct(serviceNameOverride, relation)
+			mockRelations = append(mockRelations, fmt.Sprintf("%s: create%sMock(t,ctrl).%s.%s", azureSubService, azureSubService, azureService, azureSubService))
+			mockRelations = append(mockRelations, getMockRelations(serviceNameOverride, azureService, relation)...)
+		}
 	}
 	return mockRelations
 }
@@ -255,12 +260,12 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 
 		for _, template := range templates {
 			for _, definition := range definitions {
-				azurePackageName, azureStructName, azureService, azureSubService := parseAzureStruct(byTemplate, definition)
-				table := initTable(byTemplate, definition, azureService, azureSubService, azureStructName)
+				azurePackageName, azureStructName, azureService, azureSubService := parseAzureStruct(byTemplate.serviceNameOverride, definition)
+				table := initTable(byTemplate.serviceNameOverride, definition, azureService, azureSubService, azureStructName)
 
 				mockRelations := make([]string, 0)
-				if !definition.isRelation {
-					mockRelations = getMockRelations(byTemplate, azureService, definition)
+				if definition.parent == "" {
+					mockRelations = getMockRelations(byTemplate.serviceNameOverride, azureService, definition)
 				}
 				resource := Resource{
 					Table:            table,
@@ -289,7 +294,7 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 					MockValueType:            definition.mockValueType,
 					MockDefinitionType:       definition.mockDefinitionType,
 					MockGetFunctionArgs:      definition.mockGetFunctionArgs,
-					IsRelation:               definition.isRelation,
+					IsRelation:               definition.parent != "",
 					MockRelations:            mockRelations,
 				}
 				allResources = append(allResources, resource)
@@ -298,4 +303,26 @@ func generateResources(resourcesByTemplates []byTemplates) []Resource {
 	}
 
 	return allResources
+}
+
+func initParentsForResources(serviceNameOverride string, resources []resourceDefinition) {
+	plural := pluralize.NewClient()
+	for i := range resources {
+		parent := resources[i]
+		relations := parent.relations
+		if relations != nil {
+			_, _, azureService, azureSubService := parseAzureStruct(serviceNameOverride, parent)
+			parentColumnName := fmt.Sprintf("%s_%s_id", strings.ToLower(azureService), strcase.ToSnake(plural.Singular(azureSubService)))
+			for j := range relations {
+				relations[j].parent = parentColumnName
+			}
+			initParentsForResources(serviceNameOverride, relations)
+		}
+	}
+}
+
+func initParents(resourcesByTemplates []byTemplates) {
+	for i := range resourcesByTemplates {
+		initParentsForResources(resourcesByTemplates[i].serviceNameOverride, resourcesByTemplates[i].definitions)
+	}
 }

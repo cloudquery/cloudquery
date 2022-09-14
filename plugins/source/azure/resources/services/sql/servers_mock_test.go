@@ -25,6 +25,7 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 	s := services.Services{
 		SQL: services.SQLClient{
 			Servers:                              mockClient,
+			FirewallRules:                        createFirewallRulesMock(t, ctrl).SQL.FirewallRules,
 			Databases:                            createDatabasesMock(t, ctrl).SQL.Databases,
 			DatabaseBlobAuditingPolicies:         createDatabaseBlobAuditingPoliciesMock(t, ctrl).SQL.DatabaseBlobAuditingPolicies,
 			DatabaseVulnerabilityAssessments:     createDatabaseVulnerabilityAssessmentsMock(t, ctrl).SQL.DatabaseVulnerabilityAssessments,
@@ -34,7 +35,6 @@ func createServersMock(t *testing.T, ctrl *gomock.Controller) services.Services 
 			TransparentDataEncryptions:           createTransparentDataEncryptionsMock(t, ctrl).SQL.TransparentDataEncryptions,
 			EncryptionProtectors:                 createEncryptionProtectorsMock(t, ctrl).SQL.EncryptionProtectors,
 			VirtualNetworkRules:                  createVirtualNetworkRulesMock(t, ctrl).SQL.VirtualNetworkRules,
-			FirewallRules:                        createFirewallRulesMock(t, ctrl).SQL.FirewallRules,
 			ServerAdmins:                         createServerAdminsMock(t, ctrl).SQL.ServerAdmins,
 			ServerBlobAuditingPolicies:           createServerBlobAuditingPoliciesMock(t, ctrl).SQL.ServerBlobAuditingPolicies,
 			ServerDevOpsAuditingSettings:         createServerDevOpsAuditingSettingsMock(t, ctrl).SQL.ServerDevOpsAuditingSettings,

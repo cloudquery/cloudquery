@@ -15,7 +15,6 @@ func CDN() []Resource {
 				return err
 			}`, `ruleSet := parent.Item.(cdn.RuleSet)`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*ruleSet.Name"},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{`data.Actions = &[]cdn.BasicDeliveryRuleAction{}`, `data.Conditions = &[]cdn.BasicDeliveryRuleCondition{}`},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -30,7 +29,6 @@ func CDN() []Resource {
 				return err
 			}`, `endpoint := parent.Item.(cdn.Endpoint)`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -43,7 +41,6 @@ func CDN() []Resource {
 				return err
 			}`, `endpoint := parent.Item.(cdn.Endpoint)`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name", "*endpoint.Name"},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -59,7 +56,6 @@ func CDN() []Resource {
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
 			relations:                endpointRelations,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -73,7 +69,6 @@ func CDN() []Resource {
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
 			relations:                ruleSetRelations,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -86,7 +81,6 @@ func CDN() []Resource {
 				return err
 			}`},
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*profile.Name"},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -118,6 +112,8 @@ func CDN() []Resource {
 			serviceNameOverride: "CDN",
 		},
 	}
+
+	initParents(resourcesByTemplates)
 
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, profileRelations...)
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, endpointRelations...)

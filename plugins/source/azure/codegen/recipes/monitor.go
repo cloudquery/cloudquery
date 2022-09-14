@@ -44,7 +44,6 @@ func Monitor() []Resource {
 					ResourceURI:                *resource.ID,
 				}
 			}`,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"/subscriptions/test/resourceGroups/test/providers/test/test/test"`},
 			mockListResult:           "DiagnosticSettingsResourceCollection",
@@ -199,5 +198,6 @@ func Monitor() []Resource {
 		},
 	}
 
+	initParents(resourcesByTemplates)
 	return generateResources(resourcesByTemplates)
 }

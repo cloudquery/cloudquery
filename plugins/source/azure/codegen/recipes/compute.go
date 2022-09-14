@@ -21,7 +21,6 @@ func Compute() []Resource {
 				return err
 			}
 			res <- response`,
-			isRelation:               true,
 			subServiceOverride:       "InstanceViews",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
@@ -38,7 +37,6 @@ func Compute() []Resource {
 			listFunctionArgs:         []string{"resource.ResourceGroup", "*virtualMachine.Name", `""`},
 			listHandler:              valueHandler,
 			skipFields:               []string{"Type"},
-			isRelation:               true,
 			customColumns:            []codegen.ColumnDefinition{{Name: "type", Type: schema.TypeString, Resolver: "schema.PathResolver(`Type`)"}},
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `""`},
@@ -93,5 +91,6 @@ func Compute() []Resource {
 		},
 	}
 
+	initParents(resourcesByTemplates)
 	return generateResources(resourcesByTemplates)
 }

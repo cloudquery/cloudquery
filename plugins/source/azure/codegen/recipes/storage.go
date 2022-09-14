@@ -73,7 +73,6 @@ func Storage() []Resource {
 		}`},
 		listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name", `""`, `""`, `""`},
 		subServiceOverride:       "Containers",
-		isRelation:               true,
 		mockListFunctionArgsInit: []string{""},
 		mockListFunctionArgs:     []string{`"test"`, `"test"`, `""`, `""`, `gomock.Any()`},
 		mockListResult:           "ListContainerItems",
@@ -93,11 +92,13 @@ func Storage() []Resource {
 		listFunctionArgs:         []string{"resource.ResourceGroup", "*account.Name"},
 		listHandler:              valueHandler,
 		subServiceOverride:       "BlobServices",
-		isRelation:               true,
 		mockListFunctionArgsInit: []string{""},
 		mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		mockListResult:           "BlobServiceItems",
 	}
+
+	var accountRelations = []resourceDefinition{listContainerResource, blobPropertiesResource}
+
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -129,7 +130,7 @@ func Storage() []Resource {
 						codegen.ColumnDefinition{Name: "blob_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountBlobLoggingSettings"},
 						codegen.ColumnDefinition{Name: "queue_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountQueueLoggingSettings"},
 					},
-					relations: []resourceDefinition{listContainerResource, blobPropertiesResource},
+					relations: accountRelations,
 					mockListFunctionArgsInit: []string{
 						`result.Values()[0].Sku.Tier = storage.Standard`,
 						`result.Values()[0].Kind = storage.StorageV2`,
@@ -145,7 +146,6 @@ func Storage() []Resource {
 						`mockClient.EXPECT().GetQueueServiceProperties(gomock.Any(), "test", "test").Return(queueResult, nil)`,
 					},
 				},
-				listContainerResource,
 			},
 		},
 		{
@@ -161,9 +161,13 @@ func Storage() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage", "github.com/tombuildsstuff/giovanni/storage/2020-08-04/blob/accounts"},
 				},
 			},
-			definitions: []resourceDefinition{blobPropertiesResource},
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, accountRelations[0])
+	resourcesByTemplates[1].definitions = []resourceDefinition{accountRelations[1]}
 
 	return generateResources(resourcesByTemplates)
 }

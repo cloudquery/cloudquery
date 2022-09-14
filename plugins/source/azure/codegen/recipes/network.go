@@ -14,7 +14,6 @@ func Network() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -28,7 +27,6 @@ func Network() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			subServiceOverride:       "VirtualNetworkGatewayConnections",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
@@ -45,7 +43,6 @@ func Network() []Resource {
 				return err
 			}`},
 			relations:                gatewayRelations,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`},
 		},
@@ -56,7 +53,7 @@ func Network() []Resource {
 				{
 					source:            "resource_list.go.tpl",
 					destinationSuffix: ".go",
-					imports:           []string{},
+					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
 				},
 				{
 					source:            "resource_list_mock_test.go.tpl",
@@ -134,9 +131,12 @@ func Network() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"},
 				},
 			},
-			definitions: append(append(watcherRelations, networkRelations...), gatewayRelations...),
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, append(append(watcherRelations, networkRelations...), gatewayRelations...)...)
 
 	return generateResources(resourcesByTemplates)
 }

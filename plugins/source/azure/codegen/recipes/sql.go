@@ -17,7 +17,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -32,7 +31,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -48,7 +46,6 @@ func SQL() []Resource {
 				return err
 			}`},
 			subServiceOverride:       "DatabaseVulnerabilityAssessmentScans",
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -68,7 +65,6 @@ func SQL() []Resource {
 			}
 			res <- response`,
 			subServiceOverride:       "BackupLongTermRetentionPolicies",
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 			mockListResult:           mockDirectResponse,
@@ -89,7 +85,6 @@ func SQL() []Resource {
 			}
 			res <- response`,
 			subServiceOverride:       "DatabaseThreatDetectionPolicies",
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 			mockListResult:           mockDirectResponse,
@@ -109,7 +104,6 @@ func SQL() []Resource {
 				return err
 			}
 			res <- response`,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 			mockListResult:           mockDirectResponse,
@@ -127,11 +121,11 @@ func SQL() []Resource {
 				return err
 			}`},
 		listHandler:              valueHandler,
-		isRelation:               true,
 		mockListFunctionArgsInit: []string{""},
 		mockListFunctionArgs:     []string{`"test"`, `"test"`},
 	}
 	var sqlServerRelations = []resourceDefinition{
+		firewallRuleResource,
 		{
 			azureStruct:      &sql.Database{},
 			listFunction:     "ListByServer",
@@ -143,7 +137,6 @@ func SQL() []Resource {
 				return err
 			}`},
 			relations:                sqlDatabaseRelations,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -161,7 +154,6 @@ func SQL() []Resource {
 				return err
 			}
 			res <- response`,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           mockDirectResponse,
@@ -176,11 +168,9 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
-		firewallRuleResource,
 		{
 			azureStruct:      &sql.ServerAzureADAdministrator{},
 			listFunction:     "ListByServer",
@@ -192,7 +182,6 @@ func SQL() []Resource {
 				return err
 			}`},
 			subServiceOverride:       "ServerAdmins",
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           "AdministratorListResult",
@@ -207,7 +196,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -221,7 +209,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           "ServerDevOpsAuditSettingsListResult",
@@ -236,7 +223,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -250,7 +236,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 			mockListResult:           "LogicalServerSecurityAlertPolicyListResult",
@@ -270,7 +255,6 @@ func SQL() []Resource {
 				return err
 			}`},
 			subServiceOverride:       "ManagedDatabaseVulnerabilityAssessments",
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		},
@@ -285,7 +269,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			subServiceOverride:       "ManagedDatabaseVulnerabilityAssessmentScans",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
@@ -302,7 +285,6 @@ func SQL() []Resource {
 				return err
 			}`},
 			relations:                managedDatabaseRelations,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -316,7 +298,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -330,7 +311,6 @@ func SQL() []Resource {
 			if err != nil {
 				return err
 			}`},
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -378,15 +358,17 @@ func SQL() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"},
 				},
 			},
-			definitions:         []resourceDefinition{firewallRuleResource},
 			serviceNameOverride: "SQL",
 		},
 	}
+
+	initParents(resourcesByTemplates)
 
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, sqlServerRelations...)
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, sqlDatabaseRelations...)
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, managedInstanceRelations...)
 	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, managedDatabaseRelations...)
+	resourcesByTemplates[1].definitions = []resourceDefinition{sqlServerRelations[0]}
 
 	return generateResources(resourcesByTemplates)
 }

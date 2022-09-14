@@ -15,7 +15,6 @@ func Web() []Resource {
 				return err
 			}
 			res <- response`,
-		isRelation:               true,
 		mockListFunctionArgsInit: []string{""},
 		mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		mockListResult:           mockDirectResponse,
@@ -31,7 +30,6 @@ func Web() []Resource {
 			}
 			res <- response`,
 		subServiceOverride:       "VnetConnections",
-		isRelation:               true,
 		mockListFunctionArgsInit: []string{""},
 		mockListFunctionArgs:     []string{`"test"`, `"test"`, `"test"`},
 		mockListResult:           mockDirectResponse,
@@ -46,12 +44,18 @@ func Web() []Resource {
 		}
 	
 		res <- response`,
-		isRelation:               true,
 		mockListFunctionArgsInit: []string{""},
 		mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		mockListResult:           mockDirectResponse,
 		mockDefinitionType:       "PublishingProfiles",
 	}
+
+	var appRelations = []resourceDefinition{
+		authSettingsResource,
+		vnetInfoResource,
+		publishingProfileResource,
+	}
+
 	var resourcesByTemplates = []byTemplates{
 		{
 			templates: []template{
@@ -72,7 +76,7 @@ func Web() []Resource {
 					listFunction:       "List",
 					subServiceOverride: "Apps",
 					mockListResult:     "AppCollection",
-					relations:          []resourceDefinition{authSettingsResource, vnetInfoResource, publishingProfileResource},
+					relations:          appRelations,
 					mockListFunctionArgsInit: []string{
 						`vnetName := "test"`,
 						`result.Values()[0].SiteConfig.VnetName = &vnetName`,
@@ -80,13 +84,14 @@ func Web() []Resource {
 						`result.Values()[0].ResourceGroup = &resourceGroup`,
 					},
 				},
-				publishingProfileResource,
-				authSettingsResource,
-				vnetInfoResource,
 			},
 			serviceNameOverride: "Web",
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, appRelations...)
 
 	return generateResources(resourcesByTemplates)
 }

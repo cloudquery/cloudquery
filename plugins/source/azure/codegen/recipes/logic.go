@@ -13,7 +13,6 @@ func Logic() []Resource {
 			listHandler:              valueHandler,
 			listFunctionArgs:         []string{"*workflow.ID"},
 			listFunctionArgsInit:     []string{"workflow := parent.Item.(logic.Workflow)"},
-			isRelation:               true,
 			subServiceOverride:       "DiagnosticSettings",
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"/subscriptions/test/resourceGroups/test/providers/test/test/test"`},
@@ -62,5 +61,6 @@ func Logic() []Resource {
 		},
 	}
 
+	initParents(resourcesByTemplates)
 	return generateResources(resourcesByTemplates)
 }

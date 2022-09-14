@@ -13,7 +13,6 @@ func MariaDB() []Resource {
 				return err
 			}`},
 			listHandler:              valueHandler,
-			isRelation:               true,
 			mockListFunctionArgsInit: []string{""},
 			mockListFunctionArgs:     []string{`"test"`, `"test"`},
 		},
@@ -32,17 +31,21 @@ func MariaDB() []Resource {
 					imports:           []string{"github.com/Azure/azure-sdk-for-go/services/mariadb/mgmt/2020-01-01/mariadb"},
 				},
 			},
-			definitions: append([]resourceDefinition{
+			definitions: []resourceDefinition{
 				{
 					azureStruct:  &mariadb.Server{},
 					listFunction: "List",
 					listHandler:  valueHandler,
 					relations:    serverRelations,
 				},
-			}, serverRelations...),
+			},
 			serviceNameOverride: "MariaDB",
 		},
 	}
+
+	initParents(resourcesByTemplates)
+
+	resourcesByTemplates[0].definitions = append(resourcesByTemplates[0].definitions, serverRelations...)
 
 	return generateResources(resourcesByTemplates)
 }
