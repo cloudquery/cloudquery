@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func TrafficPolicies() *schema.Table {
+func HostedZoneQueryLoggingConfigs() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_route53_traffic_policies",
-		Resolver:  fetchRoute53TrafficPolicies,
+		Name:      "aws_route53_hosted_zone_query_logging_configs",
+		Resolver:  fetchRoute53HostedZoneQueryLoggingConfigs,
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
@@ -21,40 +21,31 @@ func TrafficPolicies() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveTrafficPolicyArn(),
+				Resolver: resolveRoute53HostedZoneQueryLoggingConfigsArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "hosted_zone_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
+			},
+			{
+				Name:     "cloud_watch_logs_log_group_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CloudWatchLogsLogGroupArn"),
+			},
+			{
+				Name:     "hosted_zone_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HostedZoneId"),
 			},
 			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
 			},
-			{
-				Name:     "latest_version",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("LatestVersion"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "traffic_policy_count",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("TrafficPolicyCount"),
-			},
-			{
-				Name:     "type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Type"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			TrafficPolicyVersions(),
 		},
 	}
 }

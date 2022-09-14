@@ -38,5 +38,5 @@ func buildRoute53TrafficPoliciesMock(t *testing.T, ctrl *gomock.Controller) clie
 }
 
 func TestRoute53TrafficPolicies(t *testing.T) {
-	client.AwsMockTestHelper(t, Route53TrafficPolicies(), buildRoute53TrafficPoliciesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, TrafficPolicies(), buildRoute53TrafficPoliciesMock, client.TestOptions{})
 }

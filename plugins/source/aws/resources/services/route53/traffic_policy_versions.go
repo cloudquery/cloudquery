@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func TrafficPolicies() *schema.Table {
+func TrafficPolicyVersions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_route53_traffic_policies",
-		Resolver:  fetchRoute53TrafficPolicies,
+		Name:      "aws_route53_traffic_policy_versions",
+		Resolver:  fetchRoute53TrafficPolicyVersions,
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
@@ -19,9 +19,9 @@ func TrafficPolicies() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "arn",
+				Name:     "traffic_policy_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveTrafficPolicyArn(),
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -30,11 +30,22 @@ func TrafficPolicies() *schema.Table {
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:     "latest_version",
+				Name:     "version",
 				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("LatestVersion"),
+				Resolver: schema.PathResolver("Version"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "document",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Document"),
 			},
 			{
 				Name:     "name",
@@ -42,19 +53,15 @@ func TrafficPolicies() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "traffic_policy_count",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("TrafficPolicyCount"),
-			},
-			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			TrafficPolicyVersions(),
+			{
+				Name:     "comment",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Comment"),
+			},
 		},
 	}
 }
