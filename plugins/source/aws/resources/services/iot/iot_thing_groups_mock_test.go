@@ -63,5 +63,5 @@ func buildIotThingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestIotThingGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, IotThingGroups(), buildIotThingGroupsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, ThingGroups(), buildIotThingGroupsMock, client.TestOptions{})
 }

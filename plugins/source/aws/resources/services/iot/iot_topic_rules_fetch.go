@@ -9,51 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func IotTopicRules() *schema.Table {
-	return &schema.Table{
-		Name:        "aws_iot_topic_rules",
-		Description: "The output from the GetTopicRule operation.",
-		Resolver:    fetchIotTopicRules,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("iot"),
-		Columns: []schema.Column{
-			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
-			},
-			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
-			},
-			{
-				Name:        "tags",
-				Description: "Tags of the resource",
-				Type:        schema.TypeJSON,
-				Resolver:    ResolveIotTopicRuleTags,
-			},
-			{
-				Name:     "rule",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Rule"),
-			},
-			{
-				Name:            "arn",
-				Description:     "The rule ARN.",
-				Type:            schema.TypeString,
-				Resolver:        schema.PathResolver("RuleArn"),
-				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
-			},
-		},
-	}
-}
-
-// ====================================================================================================================
-//                                               Table Resolver Functions
-// ====================================================================================================================
-
 func fetchIotTopicRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().IOT
