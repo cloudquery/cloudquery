@@ -21,7 +21,7 @@ var defaultSpacesRegions = []string{"nyc3", "sfo3", "ams3", "sgp1", "fra1"}
 const MaxItemsPerPage = 200
 
 type Client struct {
-	// This is a client that you need to create and initialize in Configure
+	// This is a client that you need to create and initialize in New
 	// It will be passed for each resource fetcher.
 	logger           zerolog.Logger
 	DoClient         *godo.Client
@@ -134,14 +134,14 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	// providerConfig := config.(*Config)
 	var doSpec Spec
 	if err := s.UnmarshalSpec(&doSpec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
+		return nil, errors.WithStack(fmt.Errorf("failed to unmarshal gcp spec: %w", err))
 	}
 
 	if doSpec.Token == "" {
 		doSpec.Token = getTokenFromEnv()
 	}
 	if doSpec.Token == "" {
-		return nil, fmt.Errorf("missing API token")
+		return nil, errors.WithStack(fmt.Errorf("missing API token"))
 	}
 
 	credStatus := DoCredentialStruct{
