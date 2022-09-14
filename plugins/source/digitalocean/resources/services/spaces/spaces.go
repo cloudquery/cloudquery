@@ -32,5 +32,9 @@ func Spaces() *schema.Table {
 				Resolver: schema.PathResolver("ACLs"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			Cors(),
+		},
 	}
 }

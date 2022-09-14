@@ -298,6 +298,7 @@ var Resources = []*Resource{
 		Multiplex: &emptyString,
 		SkipMock:  true,
 		SkipFetch: true,
+		Relations: []string{"Cors"},
 	},
 	{
 		Service:      "spaces",
