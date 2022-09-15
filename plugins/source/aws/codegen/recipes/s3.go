@@ -62,7 +62,7 @@ func S3Resources() []*Resource {
 		{
 			SubService: "bucket_lifecycles",
 			Struct:     &types.LifecycleRule{},
-			SkipFields: []string{},
+			SkipFields: []string{"Filter"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
