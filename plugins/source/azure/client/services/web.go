@@ -64,7 +64,6 @@ func (c WebPublishingProfilesClientImpl) ListPublishingProfiles(ctx context.Cont
 	}
 
 	return profileData.PublishData, nil
-
 }
 
 func NewWebClient(subscriptionId string, auth autorest.Authorizer) WebClient {
