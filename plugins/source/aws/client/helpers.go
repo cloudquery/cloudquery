@@ -44,6 +44,7 @@ type DetailResolverFunc func(ctx context.Context, meta schema.ClientMeta, result
 const (
 	ApigatewayService           AWSService = "apigateway"
 	Athena                      AWSService = "athena"
+	CloudformationService       AWSService = "cloudformation"
 	CloudfrontService           AWSService = "cloudfront"
 	CognitoIdentityService      AWSService = "cognito-identity"
 	DirectConnectService        AWSService = "directconnect"
@@ -456,7 +457,6 @@ func ListAndDetailResolver(ctx context.Context, meta schema.ClientMeta, res chan
 
 	return nil
 }
-
 
 func Sleep(ctx context.Context, dur time.Duration) error {
 	select {

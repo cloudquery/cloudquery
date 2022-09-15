@@ -24,6 +24,7 @@ func main() {
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
 
+	resources = append(resources, recipes.CloudformationResources()...)
 	resources = append(resources, recipes.CloudfrontResources()...)
 	resources = append(resources, recipes.CloudtrailResources()...)
 	resources = append(resources, recipes.CloudwatchResources()...)
