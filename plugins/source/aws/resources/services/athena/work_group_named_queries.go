@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func WorkGroups() *schema.Table {
+func WorkGroupNamedQueries() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_athena_work_groups",
-		Resolver:  fetchAthenaWorkGroups,
+		Name:      "aws_athena_work_group_named_queries",
+		Resolver:  fetchAthenaWorkGroupNamedQueries,
 		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
@@ -24,17 +24,14 @@ func WorkGroups() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "work_group_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveAthenaWorkGroupArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveAthenaWorkGroupTags,
+				Name:     "database",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Database"),
 			},
 			{
 				Name:     "name",
@@ -42,14 +39,9 @@ func WorkGroups() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Configuration"),
-			},
-			{
-				Name:     "creation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationTime"),
+				Name:     "query_string",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("QueryString"),
 			},
 			{
 				Name:     "description",
@@ -57,16 +49,15 @@ func WorkGroups() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "state",
+				Name:     "named_query_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
+				Resolver: schema.PathResolver("NamedQueryId"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			WorkGroupPreparedStatements(),
-			WorkGroupQueryExecutions(),
-			WorkGroupNamedQueries(),
+			{
+				Name:     "work_group",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("WorkGroup"),
+			},
 		},
 	}
 }

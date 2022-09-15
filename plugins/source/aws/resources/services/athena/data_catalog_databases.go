@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func WorkGroups() *schema.Table {
+func DataCatalogDatabases() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_athena_work_groups",
-		Resolver:  fetchAthenaWorkGroups,
+		Name:      "aws_athena_data_catalog_databases",
+		Resolver:  fetchAthenaDataCatalogDatabases,
 		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
@@ -24,32 +24,20 @@ func WorkGroups() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "data_catalog_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveAthenaWorkGroupArn,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveAthenaWorkGroupTags,
-			},
-			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Configuration"),
-			},
-			{
-				Name:     "creation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreationTime"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "description",
@@ -57,16 +45,14 @@ func WorkGroups() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
+				Name:     "parameters",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Parameters"),
 			},
 		},
 
 		Relations: []*schema.Table{
-			WorkGroupPreparedStatements(),
-			WorkGroupQueryExecutions(),
-			WorkGroupNamedQueries(),
+			DataCatalogDatabaseTables(),
 		},
 	}
 }
