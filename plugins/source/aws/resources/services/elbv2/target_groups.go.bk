@@ -1,0 +1,160 @@
+package elbv2
+
+import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/aws"
+	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
+	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/plugin-sdk/schema"
+)
+
+func Elbv2TargetGroups() *schema.Table {
+	return &schema.Table{
+		Name:          "aws_elbv2_target_groups",
+		Description:   "Information about a target group.",
+		Resolver:      fetchElbv2TargetGroups,
+		Multiplex:     client.ServiceAccountRegionMultiplexer("elasticloadbalancing"),
+		IgnoreInTests: true,
+		Columns: []schema.Column{
+			{
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name:        "region",
+				Description: "The AWS Region of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSRegion,
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveElbv2targetGroupTags,
+			},
+			{
+				Name:        "health_check_enabled",
+				Description: "Indicates whether health checks are enabled.",
+				Type:        schema.TypeBool,
+			},
+			{
+				Name:        "health_check_interval_seconds",
+				Description: "The approximate amount of time, in seconds, between health checks of an individual target.",
+				Type:        schema.TypeInt,
+			},
+			{
+				Name:        "health_check_path",
+				Description: "The destination for health checks on the targets.",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "health_check_port",
+				Description: "The port to use to connect with the target.",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "health_check_protocol",
+				Description: "The protocol to use to connect with the target",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "health_check_timeout_seconds",
+				Description: "The amount of time, in seconds, during which no response means a failed health check.",
+				Type:        schema.TypeInt,
+			},
+			{
+				Name:        "healthy_threshold_count",
+				Description: "The number of consecutive health checks successes required before considering an unhealthy target healthy.",
+				Type:        schema.TypeInt,
+			},
+			{
+				Name:        "load_balancer_arns",
+				Description: "The Amazon Resource Names (ARN) of the load balancers that route traffic to this target group.",
+				Type:        schema.TypeStringArray,
+			},
+			{
+				Name:     "matcher",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Matcher"),
+			},
+			{
+				Name:        "port",
+				Description: "The port on which the targets are listening",
+				Type:        schema.TypeInt,
+			},
+			{
+				Name:        "protocol",
+				Description: "The protocol to use for routing traffic to the targets.",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "protocol_version",
+				Description: "[HTTP/HTTPS protocol] The protocol version",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:            "arn",
+				Description:     "The Amazon Resource Name (ARN) of the target group.",
+				Type:            schema.TypeString,
+				Resolver:        schema.PathResolver("TargetGroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:        "name",
+				Description: "The name of the target group.",
+				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("TargetGroupName"),
+			},
+			{
+				Name:        "target_type",
+				Description: "The type of target that you must specify when registering targets with this target group",
+				Type:        schema.TypeString,
+			},
+			{
+				Name:        "unhealthy_threshold_count",
+				Description: "The number of consecutive health check failures required before considering the target unhealthy.",
+				Type:        schema.TypeInt,
+			},
+			{
+				Name:        "vpc_id",
+				Description: "The ID of the VPC for the targets.",
+				Type:        schema.TypeString,
+			},
+		},
+		Relations: []*schema.Table{
+			{
+				Name:          "aws_elbv2_target_group_target_health_descriptions",
+				Description:   "Information about the health of a target.",
+				Resolver:      resolveElbv2TargetGroupTargetHealthDescriptions,
+				IgnoreInTests: true,
+				Columns: []schema.Column{
+					{
+						Name:        "target_group_cq_id",
+						Description: "Unique CloudQuery ID of aws_elbv2_target_groups table (FK)",
+						Type:        schema.TypeUUID,
+						Resolver:    schema.ParentIdResolver,
+					},
+					{
+						Name:        "health_check_port",
+						Description: "The port to use to connect with the target.",
+						Type:        schema.TypeString,
+					},
+					{
+						Name:     "target",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("Target"),
+					},
+					{
+						Name:     "target_health",
+						Type:     schema.TypeJSON,
+						Resolver: schema.PathResolver("TargetHealth"),
+					},
+				},
+			},
+		},
+	}
+}
+

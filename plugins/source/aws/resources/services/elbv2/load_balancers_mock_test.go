@@ -52,29 +52,30 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Times(2).Return(&tags, nil)
+	m.EXPECT().DescribeTags(gomock.Any(), gomock.Any(), gomock.Any()).Times(1).Return(&tags, nil)
 
 	lis := elbv2Types.Listener{}
 	if err := faker.FakeData(&lis); err != nil {
 		t.Fatal(err)
 	}
-
-	m.EXPECT().DescribeListeners(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&elasticloadbalancingv2.DescribeListenersOutput{
-			Listeners: []elbv2Types.Listener{lis},
-		}, nil)
-
-	c := elbv2Types.Certificate{}
-	if err := faker.FakeData(&c); err != nil {
-		t.Fatal(err)
-	}
-	m.EXPECT().DescribeListenerCertificates(
-		gomock.Any(),
-		&elasticloadbalancingv2.DescribeListenerCertificatesInput{ListenerArn: lis.ListenerArn},
-		gomock.Any(),
-	).Return(&elasticloadbalancingv2.DescribeListenerCertificatesOutput{
-		Certificates: []elbv2Types.Certificate{c},
-	}, nil)
+	
+	// These tables were not implemented during v2 migration
+	//m.EXPECT().DescribeListeners(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+	//	&elasticloadbalancingv2.DescribeListenersOutput{
+	//		Listeners: []elbv2Types.Listener{lis},
+	//	}, nil)
+	//
+	//c := elbv2Types.Certificate{}
+	//if err := faker.FakeData(&c); err != nil {
+	//	t.Fatal(err)
+	//}
+	//m.EXPECT().DescribeListenerCertificates(
+	//	gomock.Any(),
+	//	&elasticloadbalancingv2.DescribeListenerCertificatesInput{ListenerArn: lis.ListenerArn},
+	//	gomock.Any(),
+	//).Return(&elasticloadbalancingv2.DescribeListenerCertificatesOutput{
+	//	Certificates: []elbv2Types.Certificate{c},
+	//}, nil)
 
 	return client.Services{
 		ELBv2: m,
@@ -103,5 +104,5 @@ func fakeLoadBalancerAttributes() *elasticloadbalancingv2.DescribeLoadBalancerAt
 }
 
 func TestElbv2LoadBalancers(t *testing.T) {
-	client.AwsMockTestHelper(t, Elbv2LoadBalancers(), buildElbv2LoadBalancers, client.TestOptions{})
+	client.AwsMockTestHelper(t, LoadBalancers(), buildElbv2LoadBalancers, client.TestOptions{})
 }
