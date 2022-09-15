@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Plans() *schema.Table {
+func PlanSelections() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_backup_plans",
-		Resolver:  fetchBackupPlans,
+		Name:      "aws_backup_plan_selections",
+		Resolver:  fetchBackupPlanSelections,
 		Multiplex: client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{
 			{
@@ -24,32 +24,19 @@ func Plans() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "plan_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BackupPlanArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolvePlanTags,
-			},
-			{
-				Name:     "advanced_backup_settings",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AdvancedBackupSettings"),
-			},
-			{
-				Name:     "backup_plan",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("BackupPlan"),
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
 				Name:     "backup_plan_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("BackupPlanId"),
+			},
+			{
+				Name:     "backup_selection",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BackupSelection"),
 			},
 			{
 				Name:     "creation_date",
@@ -62,29 +49,15 @@ func Plans() *schema.Table {
 				Resolver: schema.PathResolver("CreatorRequestId"),
 			},
 			{
-				Name:     "deletion_date",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("DeletionDate"),
-			},
-			{
-				Name:     "last_execution_date",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastExecutionDate"),
-			},
-			{
-				Name:     "version_id",
+				Name:     "selection_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VersionId"),
+				Resolver: schema.PathResolver("SelectionId"),
 			},
 			{
 				Name:     "result_metadata",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ResultMetadata"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			PlanSelections(),
 		},
 	}
 }
