@@ -16,6 +16,11 @@ func Subscriptions() *schema.Table {
 		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "authorization_source",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AuthorizationSource"),
@@ -52,11 +57,6 @@ func Subscriptions() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SubscriptionID"),
 			},
 			{
 				Name:     "tenant_id",

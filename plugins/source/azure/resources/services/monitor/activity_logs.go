@@ -18,6 +18,11 @@ func ActivityLogs() *schema.Table {
 		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "authorization",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Authorization"),
@@ -129,11 +134,6 @@ func ActivityLogs() *schema.Table {
 				Name:     "submission_timestamp",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SubmissionTimestamp"),
-			},
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SubscriptionID"),
 			},
 			{
 				Name:     "tenant_id",

@@ -16,6 +16,11 @@ func Locations() *schema.Table {
 		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
 			{
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
+			},
+			{
 				Name:     "metadata",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Metadata"),
@@ -42,11 +47,6 @@ func Locations() *schema.Table {
 				Name:     "regional_display_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RegionalDisplayName"),
-			},
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SubscriptionID"),
 			},
 			{
 				Name:     "type",

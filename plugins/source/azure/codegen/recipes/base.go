@@ -105,7 +105,7 @@ var (
 		Type:     schema.TypeString,
 		Resolver: "client.ResolveAzureSubscription",
 	}
-	defaultSkipFields = []string{"Response"}
+	defaultSkipFields = []string{"Response", "SubscriptionID"}
 )
 
 func AllResources() []Resource {
@@ -140,15 +140,6 @@ func AllResources() []Resource {
 	return resources
 }
 
-func needsSubscriptionId(table *codegen.TableDefinition) bool {
-	for _, column := range table.Columns {
-		if column.Name == "subscription_id" {
-			return false
-		}
-	}
-	return true
-}
-
 func parseAzureStruct(serviceNameOverride string, definition resourceDefinition) (string, string, string, string) {
 	plural := pluralize.NewClient()
 	elementTypeParts := strings.Split(reflect.TypeOf(definition.azureStruct).Elem().String(), ".")
@@ -167,9 +158,7 @@ func parseAzureStruct(serviceNameOverride string, definition resourceDefinition)
 
 func initColumns(table *codegen.TableDefinition, definition resourceDefinition) codegen.ColumnDefinitions {
 	columns := []codegen.ColumnDefinition{}
-	if needsSubscriptionId(table) {
-		columns = append(columns, subscriptionIdColumn)
-	}
+	columns = append(columns, subscriptionIdColumn)
 	if definition.parent != "" {
 		columns = append(columns, codegen.ColumnDefinition{
 			Name:     definition.parent,
