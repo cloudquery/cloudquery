@@ -11,7 +11,7 @@ func External() []*Resource {
 			SubService:   "group",
 			Struct:       new(github.ExternalGroup),
 			SkipFields:   []string{"UpdatedAt"},
-			ExtraColumns: append(defaultOrgColumns, timestampField("updated_at", "UpdatedAt")),
+			ExtraColumns: append(orgColumns, timestampField("updated_at", "UpdatedAt")),
 		},
 	}
 }

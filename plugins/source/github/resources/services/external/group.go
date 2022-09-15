@@ -10,7 +10,7 @@ import (
 func Group() *schema.Table {
 	return &schema.Table{
 		Name:     "github_external_group",
-		Resolver: fetchExternalGroup,
+		Resolver: fetchGroup,
 		Columns: []schema.Column{
 			{
 				Name:        "org",
