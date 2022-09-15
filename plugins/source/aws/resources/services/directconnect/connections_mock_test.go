@@ -28,5 +28,5 @@ func buildDirectconnectConnection(t *testing.T, ctrl *gomock.Controller) client.
 }
 
 func TestDirectconnectConnection(t *testing.T) {
-	client.AwsMockTestHelper(t, DirectconnectConnections(), buildDirectconnectConnection, client.TestOptions{})
+	client.AwsMockTestHelper(t, Connections(), buildDirectconnectConnection, client.TestOptions{})
 }
