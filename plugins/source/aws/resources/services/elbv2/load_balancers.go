@@ -104,6 +104,7 @@ func LoadBalancers() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
+			Listeners(),
 			LoadBalancerAttributes(),
 		},
 	}

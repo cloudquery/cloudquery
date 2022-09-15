@@ -58,7 +58,7 @@ func buildElbv2LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 	if err := faker.FakeData(&lis); err != nil {
 		t.Fatal(err)
 	}
-	
+
 	// These tables were not implemented during v2 migration
 	//m.EXPECT().DescribeListeners(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 	//	&elasticloadbalancingv2.DescribeListenersOutput{

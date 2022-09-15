@@ -24,6 +24,7 @@ func main() {
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
 
+	resources = append(resources, recipes.ElasticsearchResources()...)
 	resources = append(resources, recipes.ELBv1Resources()...)
 	resources = append(resources, recipes.ELBv2Resources()...)
 	resources = append(resources, recipes.EMRResources()...)
