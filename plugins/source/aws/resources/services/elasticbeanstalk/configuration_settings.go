@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ApplicationVersions() *schema.Table {
+func ConfigurationSettings() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticbeanstalk_application_versions",
-		Resolver:  fetchElasticbeanstalkApplicationVersions,
+		Name:      "aws_elasticbeanstalk_configuration_settings",
+		Resolver:  fetchElasticbeanstalkConfigurationSettings,
 		Multiplex: client.ServiceAccountRegionMultiplexer("elasticbeanstalk"),
 		Columns: []schema.Column{
 			{
@@ -24,22 +24,14 @@ func ApplicationVersions() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "environment_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ApplicationVersionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "application_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ApplicationName"),
-			},
-			{
-				Name:     "build_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("BuildArn"),
 			},
 			{
 				Name:     "date_created",
@@ -52,29 +44,44 @@ func ApplicationVersions() *schema.Table {
 				Resolver: schema.PathResolver("DateUpdated"),
 			},
 			{
+				Name:     "deployment_status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DeploymentStatus"),
+			},
+			{
 				Name:     "description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "source_build_information",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SourceBuildInformation"),
-			},
-			{
-				Name:     "source_bundle",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("SourceBundle"),
-			},
-			{
-				Name:     "status",
+				Name:     "environment_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
+				Resolver: schema.PathResolver("EnvironmentName"),
 			},
 			{
-				Name:     "version_label",
+				Name:     "option_settings",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("OptionSettings"),
+			},
+			{
+				Name:     "platform_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VersionLabel"),
+				Resolver: schema.PathResolver("PlatformArn"),
+			},
+			{
+				Name:     "solution_stack_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SolutionStackName"),
+			},
+			{
+				Name:     "template_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TemplateName"),
+			},
+			{
+				Name:     "application_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ApplicationArn"),
 			},
 		},
 	}
