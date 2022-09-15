@@ -10,7 +10,7 @@ import (
 )
 
 const wantSourceConfig = `
-kind: source
+kind: "source"
 spec:
   # Name of the plugin.
   name: "test"
@@ -44,7 +44,7 @@ spec:
 `
 
 const wantDestinationConfig = `
-kind: destination
+kind: "destination"
 spec:
   # Name of the plugin.
   name: "postgresql"
