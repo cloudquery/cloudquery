@@ -44,5 +44,5 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestEMRClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, EmrClusters(), buildEMRClusters, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildEMRClusters, client.TestOptions{})
 }
