@@ -1,4 +1,4 @@
-kind: destination
+kind: "destination"
 spec:
   # Name of the plugin.
   name: "{{.Name}}"

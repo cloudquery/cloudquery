@@ -35,12 +35,6 @@ func createKeyrings() (*client.Services, error) {
 		}
 	}()
 
-	item := kmsold.ListCryptoKeysResponse{}
-	if err := faker.FakeObject(&item); err != nil {
-		return nil, fmt.Errorf("failed to fake data: %w", err)
-	}
-	item.NextPageToken = ""
-
 	mux := httprouter.New()
 	mux.GET("/v1/projects/testProject/locations", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		resp := &kmsold.ListLocationsResponse{
@@ -91,6 +85,15 @@ type fakeKeyringsServer struct {
 
 func (*fakeKeyringsServer) ListKeyRings(context.Context, *pb.ListKeyRingsRequest) (*pb.ListKeyRingsResponse, error) {
 	resp := pb.ListKeyRingsResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	resp.NextPageToken = ""
+	return &resp, nil
+}
+
+func (*fakeKeyringsServer) ListCryptoKeys(context.Context, *pb.ListCryptoKeysRequest) (*pb.ListCryptoKeysResponse, error) {
+	resp := pb.ListCryptoKeysResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
