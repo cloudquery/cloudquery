@@ -1,4 +1,4 @@
-kind: source
+kind: "source"
 spec:
   # Name of the plugin.
   name: "{{.Name}}"
