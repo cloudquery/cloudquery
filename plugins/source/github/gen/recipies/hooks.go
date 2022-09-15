@@ -6,14 +6,19 @@ import (
 	"github.com/google/go-github/v45/github"
 )
 
-func Hook() []*Resource {
+func Hooks() []*Resource {
+	const (
+		deliveredAt = "DeliveredAt"
+	)
+
 	return []*Resource{
 		{
 			Service:      "hooks",
 			SubService:   "hooks",
 			Struct:       new(github.Hook),
 			TableName:    "hooks",
-			ExtraColumns: orgColumns,
+			SkipFields:   skipID,
+			ExtraColumns: append(orgColumns, idColumn),
 			Relations:    []string{"Deliveries()"},
 		},
 		{
@@ -21,8 +26,8 @@ func Hook() []*Resource {
 			SubService: "deliveries",
 			Struct:     new(github.HookDelivery),
 			TableName:  "hook_deliveries",
-			SkipFields: []string{"DeliveredAt"},
-			ExtraColumns: append(orgColumns,
+			SkipFields: append(skipID, deliveredAt),
+			ExtraColumns: append(orgColumns, idColumn,
 				codegen.ColumnDefinition{
 					Name:        "hook_id",
 					Type:        schema.TypeString,
@@ -30,7 +35,7 @@ func Hook() []*Resource {
 					Description: "Hook ID",
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 				},
-				timestampField("delivered_at", "DeliveredAt")),
+				timestampField("delivered_at", deliveredAt)),
 		},
 	}
 }
