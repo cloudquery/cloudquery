@@ -43,6 +43,11 @@ func Members() *schema.Table {
 				Resolver: schema.PathResolver("HTMLURL"),
 			},
 			{
+				Name:     "membership",
+				Type:     schema.TypeJSON,
+				Resolver: resolveMembership,
+			},
+			{
 				Name:     "login",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Login"),

@@ -32,13 +32,20 @@ func Teams() []*Resource {
 			Relations:    []string{"Members()", "Repositories()"},
 		},
 		{
-			Service:      "teams",
-			SubService:   "members",
-			Multiplex:    "", // we skip multiplexing here as it's a relation
-			Struct:       new(github.User),
-			TableName:    "team_members",
-			SkipFields:   append(skipID, htmlURL),
-			ExtraColumns: append(orgColumns, idColumn, teamID, htmlURLCol),
+			Service:    "teams",
+			SubService: "members",
+			Multiplex:  "", // we skip multiplexing here as it's a relation
+			Struct:     new(github.User),
+			TableName:  "team_members",
+			SkipFields: append(skipID, htmlURL),
+			ExtraColumns: append(orgColumns, idColumn, teamID,
+				htmlURLCol,
+				codegen.ColumnDefinition{
+					Name:     "membership",
+					Type:     schema.TypeJSON,
+					Resolver: "resolveMembership",
+				},
+			),
 		},
 		repos,
 	}

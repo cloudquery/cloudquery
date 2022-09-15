@@ -43,6 +43,13 @@ func buildTeams(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock.EXPECT().ListTeamReposByID(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		[]*github.Repository{&r}, &github.Response{}, nil)
 
+	var m github.Membership
+	if err := faker.FakeDataSkipFields(&m, []string{}); err != nil {
+		t.Fatal(err)
+	}
+	mock.EXPECT().GetTeamMembershipBySlug(gomock.Any(), "testorg", *cs.Slug, *u.Login).Return(
+		&m, &github.Response{}, nil)
+
 	return client.GithubServices{Teams: mock}
 }
 

@@ -31,3 +31,15 @@ func fetchMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	}
 	return nil
 }
+
+func resolveMembership(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
+	c := meta.(*client.Client)
+
+	m := resource.Item.(*github.User)
+	t := resource.Parent.Item.(*github.Team)
+	membership, _, err := c.Github.Teams.GetTeamMembershipBySlug(ctx, c.Org, *t.Slug, *m.Login)
+	if err != nil {
+		return err
+	}
+	return resource.Set(col.Name, membership)
+}

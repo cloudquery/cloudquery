@@ -22,5 +22,5 @@ func buildExternalGroups(t *testing.T, ctrl *gomock.Controller) client.GithubSer
 }
 
 func TestExternalGroups(t *testing.T) {
-	client.GithubMockTestHelper(t, Group(), buildExternalGroups, client.TestOptions{})
+	client.GithubMockTestHelper(t, Groups(), buildExternalGroups, client.TestOptions{})
 }
