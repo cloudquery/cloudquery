@@ -8,7 +8,7 @@ import (
 	"github.com/google/go-github/v45/github"
 )
 
-func fetchGroup(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	opts := &github.ListExternalGroupsOptions{
 		ListOptions: github.ListOptions{

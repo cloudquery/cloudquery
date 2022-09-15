@@ -7,10 +7,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Group() *schema.Table {
+func Groups() *schema.Table {
 	return &schema.Table{
-		Name:     "github_external_group",
-		Resolver: fetchGroup,
+		Name:      "github_external_groups",
+		Resolver:  fetchGroups,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "org",
@@ -23,7 +24,7 @@ func Group() *schema.Table {
 			},
 			{
 				Name:     "group_id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("GroupID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,

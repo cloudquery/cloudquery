@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/billing"
-	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/external_groups"
+	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/external"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/hooks"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/installations"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/issues"
@@ -17,12 +17,12 @@ func Tables() []*schema.Table {
 		billing.Action(),
 		billing.Storage(),
 		billing.Package(),
+		external.Groups(),
 		issues.Issues(),
 		hooks.Hooks(),
 		installations.Installations(),
 		organizations.Organizations(),
 		repositories.Repositories(),
 		teams.Teams(),
-		external_groups.ExternalGroups(),
 	}
 }

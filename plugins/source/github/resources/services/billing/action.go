@@ -9,8 +9,9 @@ import (
 
 func Action() *schema.Table {
 	return &schema.Table{
-		Name:     "github_billing_action",
-		Resolver: fetchAction,
+		Name:      "github_billing_action",
+		Resolver:  fetchAction,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "org",

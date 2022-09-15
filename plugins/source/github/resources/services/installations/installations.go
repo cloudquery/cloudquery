@@ -9,8 +9,9 @@ import (
 
 func Installations() *schema.Table {
 	return &schema.Table{
-		Name:     "github_installations",
-		Resolver: fetchInstallations,
+		Name:      "github_installations",
+		Resolver:  fetchInstallations,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "org",
@@ -23,7 +24,7 @@ func Installations() *schema.Table {
 			},
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
