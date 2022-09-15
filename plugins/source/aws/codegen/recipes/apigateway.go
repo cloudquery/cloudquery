@@ -6,56 +6,55 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-func ApiGatewayesources() []*Resource {
+func APIGatewayesources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "api_keys",
-			Struct: &types.ApiKey{},
+			Struct:     &types.ApiKey{},
 			SkipFields: []string{"Arn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("apigateway")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigateway")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `resolveApiKeyArn`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveApiKeyArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 		{
 			SubService: "client_certificates",
-			Struct: &types.ClientCertificate{},
+			Struct:     &types.ClientCertificate{},
 			SkipFields: []string{"Arn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("apigateway")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigateway")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `resolveClientCertificateArn`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveClientCertificateArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 		{
 			SubService: "vpc_links",
-			Struct: &types.ClientCertificate{},
+			Struct:     &types.ClientCertificate{},
 			SkipFields: []string{"Arn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("apigateway")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigateway")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `resolveVpcLinkArn`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveVpcLinkArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 	}
 

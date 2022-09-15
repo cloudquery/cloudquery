@@ -29,7 +29,7 @@ var efsResources = []*Resource{
 	},
 }
 
-func EfsResources() []*Resource {
+func EFSResources() []*Resource {
 	for _, r := range efsResources {
 		r.Service = "efs"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("efs")`

@@ -6,12 +6,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ApiGatewayV2Resources() []*Resource {
+func APIGatewayV2Resources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:          "apis",
-			Struct:              &types.Api{},
-			Multiplex:           `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
+			SubService: "apis",
+			Struct:     &types.Api{},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -24,9 +24,9 @@ func ApiGatewayV2Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService:          "vpc_links",
-			Struct:              &types.VpcLink{},
-			Multiplex:           `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
+			SubService: "vpc_links",
+			Struct:     &types.VpcLink{},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -39,9 +39,9 @@ func ApiGatewayV2Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService:          "domain_name_api_mappings",
-			Struct:              &types.ApiMapping{},
-			Multiplex:           `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
+			SubService: "domain_name_api_mappings",
+			Struct:     &types.ApiMapping{},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -54,9 +54,9 @@ func ApiGatewayV2Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService:          "domain_names",
-			Struct:              &types.DomainName{},
-			Multiplex:           `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
+			SubService: "domain_names",
+			Struct:     &types.DomainName{},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

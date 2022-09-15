@@ -6,42 +6,42 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func EcrResources() []*Resource {
+func ECRResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "repositories",
-			Struct: &types.Repository{},
+			Struct:     &types.Repository{},
 			SkipFields: []string{"RepositoryArn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("ecr")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("ecr")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("RepositoryArn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name: "tags",
-					Type: schema.TypeString,
-					Resolver: `resolveRepositoryTags`,
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("RepositoryArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeString,
+						Resolver: `resolveRepositoryTags`,
+					},
+				}...),
 		},
 		{
 			SubService: "repository_images",
-			Struct: &types.ImageDetail{},
+			Struct:     &types.ImageDetail{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `resolveImageArn`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveImageArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 	}
 

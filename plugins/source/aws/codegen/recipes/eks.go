@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func EksResources() []*Resource {
+func EKSResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService:          "clusters",

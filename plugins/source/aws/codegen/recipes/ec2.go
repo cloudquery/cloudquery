@@ -375,7 +375,7 @@ var ec2Resources = []*Resource{
 	},
 }
 
-func Ec2Resources() []*Resource {
+func EC2Resources() []*Resource {
 	for _, r := range ec2Resources {
 		r.Service = "ec2"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("ec2")`

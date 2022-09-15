@@ -30,7 +30,7 @@ var ecsResources = []*Resource{
 	},
 }
 
-func EcsResources() []*Resource {
+func ECSResources() []*Resource {
 	for _, r := range ecsResources {
 		r.Service = "ecs"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("ecs")`
