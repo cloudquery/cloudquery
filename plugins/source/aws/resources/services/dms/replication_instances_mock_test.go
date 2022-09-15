@@ -39,6 +39,7 @@ func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.
 		DMS: m,
 	}
 }
+
 func TestDmsReplicationInstances(t *testing.T) {
-	client.AwsMockTestHelper(t, DmsReplicationInstances(), buildDmsReplicationInstances, client.TestOptions{})
+	client.AwsMockTestHelper(t, ReplicationInstances(), buildDmsReplicationInstances, client.TestOptions{})
 }
