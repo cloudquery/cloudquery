@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Snapshots() *schema.Table {
+func StorageVirtualMachines() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_snapshots",
-		Resolver:  fetchFsxSnapshots,
+		Name:      "aws_fsx_storage_virtual_machines",
+		Resolver:  fetchFsxStorageVirtualMachines,
 		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
@@ -37,14 +37,24 @@ func Snapshots() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
-				Name:     "administrative_actions",
+				Name:     "active_directory_configuration",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AdministrativeActions"),
+				Resolver: schema.PathResolver("ActiveDirectoryConfiguration"),
 			},
 			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "endpoints",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Endpoints"),
+			},
+			{
+				Name:     "file_system_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileSystemId"),
 			},
 			{
 				Name:     "lifecycle",
@@ -62,14 +72,24 @@ func Snapshots() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "snapshot_id",
+				Name:     "root_volume_security_style",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SnapshotId"),
+				Resolver: schema.PathResolver("RootVolumeSecurityStyle"),
 			},
 			{
-				Name:     "volume_id",
+				Name:     "storage_virtual_machine_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeId"),
+				Resolver: schema.PathResolver("StorageVirtualMachineId"),
+			},
+			{
+				Name:     "subtype",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Subtype"),
+			},
+			{
+				Name:     "uuid",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UUID"),
 			},
 		},
 	}

@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Snapshots() *schema.Table {
+func DataRepositoryAssociations() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_snapshots",
-		Resolver:  fetchFsxSnapshots,
+		Name:      "aws_fsx_data_repository_associations",
+		Resolver:  fetchFsxDataRepositoryAssociations,
 		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
@@ -37,9 +37,14 @@ func Snapshots() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
-				Name:     "administrative_actions",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AdministrativeActions"),
+				Name:     "association_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AssociationId"),
+			},
+			{
+				Name:     "batch_import_meta_data_on_create",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("BatchImportMetaDataOnCreate"),
 			},
 			{
 				Name:     "creation_time",
@@ -47,29 +52,39 @@ func Snapshots() *schema.Table {
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
+				Name:     "data_repository_path",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DataRepositoryPath"),
+			},
+			{
+				Name:     "failure_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FailureDetails"),
+			},
+			{
+				Name:     "file_system_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileSystemId"),
+			},
+			{
+				Name:     "file_system_path",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileSystemPath"),
+			},
+			{
+				Name:     "imported_file_chunk_size",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ImportedFileChunkSize"),
+			},
+			{
 				Name:     "lifecycle",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Lifecycle"),
 			},
 			{
-				Name:     "lifecycle_transition_reason",
+				Name:     "s_3",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LifecycleTransitionReason"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "snapshot_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SnapshotId"),
-			},
-			{
-				Name:     "volume_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeId"),
+				Resolver: schema.PathResolver("S3"),
 			},
 		},
 	}

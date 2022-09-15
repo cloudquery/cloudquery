@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Snapshots() *schema.Table {
+func DataRepositoryTasks() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_snapshots",
-		Resolver:  fetchFsxSnapshots,
+		Name:      "aws_fsx_data_repository_tasks",
+		Resolver:  fetchFsxDataRepositoryTasks,
 		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
@@ -37,14 +37,14 @@ func Snapshots() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
-				Name:     "administrative_actions",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AdministrativeActions"),
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "file_system_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileSystemId"),
 			},
 			{
 				Name:     "lifecycle",
@@ -52,24 +52,44 @@ func Snapshots() *schema.Table {
 				Resolver: schema.PathResolver("Lifecycle"),
 			},
 			{
-				Name:     "lifecycle_transition_reason",
+				Name:     "task_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TaskId"),
+			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
+			},
+			{
+				Name:     "end_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("EndTime"),
+			},
+			{
+				Name:     "failure_details",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LifecycleTransitionReason"),
+				Resolver: schema.PathResolver("FailureDetails"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Name:     "paths",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("Paths"),
 			},
 			{
-				Name:     "snapshot_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SnapshotId"),
+				Name:     "report",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Report"),
 			},
 			{
-				Name:     "volume_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeId"),
+				Name:     "start_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("StartTime"),
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Status"),
 			},
 		},
 	}

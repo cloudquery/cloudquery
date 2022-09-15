@@ -32,5 +32,5 @@ func buildDataRepoTasksMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestDataRepoTasks(t *testing.T) {
-	client.AwsMockTestHelper(t, DataRepoTasks(), buildDataRepoTasksMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, DataRepositoryTasks(), buildDataRepoTasksMock, client.TestOptions{})
 }

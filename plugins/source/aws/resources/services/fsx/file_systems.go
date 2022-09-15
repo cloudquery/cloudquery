@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Volumes() *schema.Table {
+func FileSystems() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_fsx_volumes",
-		Resolver:  fetchFsxVolumes,
+		Name:      "aws_fsx_file_systems",
+		Resolver:  fetchFsxFileSystems,
 		Multiplex: client.ServiceAccountRegionMultiplexer("fsx"),
 		Columns: []schema.Column{
 			{
@@ -47,9 +47,34 @@ func Volumes() *schema.Table {
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
+				Name:     "dns_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DNSName"),
+			},
+			{
+				Name:     "failure_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("FailureDetails"),
+			},
+			{
 				Name:     "file_system_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("FileSystemId"),
+			},
+			{
+				Name:     "file_system_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileSystemType"),
+			},
+			{
+				Name:     "file_system_type_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileSystemTypeVersion"),
+			},
+			{
+				Name:     "kms_key_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("KmsKeyId"),
 			},
 			{
 				Name:     "lifecycle",
@@ -57,14 +82,14 @@ func Volumes() *schema.Table {
 				Resolver: schema.PathResolver("Lifecycle"),
 			},
 			{
-				Name:     "lifecycle_transition_reason",
+				Name:     "lustre_configuration",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("LifecycleTransitionReason"),
+				Resolver: schema.PathResolver("LustreConfiguration"),
 			},
 			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Name:     "network_interface_ids",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("NetworkInterfaceIds"),
 			},
 			{
 				Name:     "ontap_configuration",
@@ -77,14 +102,34 @@ func Volumes() *schema.Table {
 				Resolver: schema.PathResolver("OpenZFSConfiguration"),
 			},
 			{
-				Name:     "volume_id",
+				Name:     "owner_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeId"),
+				Resolver: schema.PathResolver("OwnerId"),
 			},
 			{
-				Name:     "volume_type",
+				Name:     "storage_capacity",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("StorageCapacity"),
+			},
+			{
+				Name:     "storage_type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeType"),
+				Resolver: schema.PathResolver("StorageType"),
+			},
+			{
+				Name:     "subnet_ids",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("SubnetIds"),
+			},
+			{
+				Name:     "vpc_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("VpcId"),
+			},
+			{
+				Name:     "windows_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("WindowsConfiguration"),
 			},
 		},
 	}

@@ -32,5 +32,5 @@ func buildDataRepoAssociationsMock(t *testing.T, ctrl *gomock.Controller) client
 }
 
 func TestDataRepoAssociations(t *testing.T) {
-	client.AwsMockTestHelper(t, DataRepoAssociations(), buildDataRepoAssociationsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, DataRepositoryAssociations(), buildDataRepoAssociationsMock, client.TestOptions{})
 }
