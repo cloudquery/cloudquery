@@ -9,8 +9,9 @@ import (
 
 func Storage() *schema.Table {
 	return &schema.Table{
-		Name:     "github_billing_storage",
-		Resolver: fetchStorage,
+		Name:      "github_billing_storage",
+		Resolver:  fetchStorage,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "org",

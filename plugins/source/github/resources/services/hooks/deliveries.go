@@ -23,7 +23,7 @@ func Deliveries() *schema.Table {
 			},
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
@@ -31,7 +31,7 @@ func Deliveries() *schema.Table {
 			},
 			{
 				Name:        "hook_id",
-				Type:        schema.TypeString,
+				Type:        schema.TypeInt,
 				Resolver:    client.ResolveParentColumn("ID"),
 				Description: `Hook ID`,
 				CreationOptions: schema.ColumnCreationOptions{

@@ -4,14 +4,14 @@ import (
 	"github.com/google/go-github/v45/github"
 )
 
-func Installations() []*Resource {
+func Issues() []*Resource {
 	return []*Resource{
 		{
-			Service:      "installations",
-			SubService:   "installations",
+			Service:      "issues",
+			SubService:   "issues",
 			Multiplex:    orgMultiplex,
-			Struct:       new(github.Installation),
-			TableName:    "installations",
+			Struct:       new(github.Issue),
+			TableName:    "issues",
 			SkipFields:   append(skipID, htmlURL),
 			ExtraColumns: append(orgColumns, idColumn, htmlURLCol),
 		},

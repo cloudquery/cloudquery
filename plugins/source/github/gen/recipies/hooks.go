@@ -15,6 +15,7 @@ func Hooks() []*Resource {
 		{
 			Service:      "hooks",
 			SubService:   "hooks",
+			Multiplex:    orgMultiplex,
 			Struct:       new(github.Hook),
 			TableName:    "hooks",
 			SkipFields:   skipID,
@@ -24,13 +25,14 @@ func Hooks() []*Resource {
 		{
 			Service:    "hooks",
 			SubService: "deliveries",
+			Multiplex:  "", // we skip multiplexing here as it's a relation
 			Struct:     new(github.HookDelivery),
 			TableName:  "hook_deliveries",
 			SkipFields: append(skipID, deliveredAt),
 			ExtraColumns: append(orgColumns, idColumn,
 				codegen.ColumnDefinition{
 					Name:        "hook_id",
-					Type:        schema.TypeString,
+					Type:        schema.TypeInt,
 					Resolver:    `client.ResolveParentColumn("ID")`,
 					Description: "Hook ID",
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},

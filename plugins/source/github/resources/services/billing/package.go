@@ -9,8 +9,9 @@ import (
 
 func Package() *schema.Table {
 	return &schema.Table{
-		Name:     "github_billing_package",
-		Resolver: fetchPackage,
+		Name:      "github_billing_package",
+		Resolver:  fetchPackage,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "org",

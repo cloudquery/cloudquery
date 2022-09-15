@@ -9,8 +9,9 @@ import (
 
 func Hooks() *schema.Table {
 	return &schema.Table{
-		Name:     "github_hooks",
-		Resolver: fetchHooks,
+		Name:      "github_hooks",
+		Resolver:  fetchHooks,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "org",
@@ -23,7 +24,7 @@ func Hooks() *schema.Table {
 			},
 			{
 				Name:     "id",
-				Type:     schema.TypeString,
+				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ID"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,

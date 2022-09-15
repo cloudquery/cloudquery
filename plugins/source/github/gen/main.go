@@ -12,6 +12,10 @@ func main() {
 		recipies.External,
 		recipies.Hooks,
 		recipies.Installations,
+		recipies.Issues,
+		recipies.Organizations,
+		recipies.Repositories,
+		recipies.Teams,
 	} {
 		for _, resource := range f() {
 			if err := resource.Generate(); err != nil {

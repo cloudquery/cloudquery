@@ -12,7 +12,8 @@ func External() []*Resource {
 	return []*Resource{
 		{
 			Service:    "external",
-			SubService: "group",
+			SubService: "groups",
+			Multiplex:  orgMultiplex,
 			Struct:     new(github.ExternalGroup),
 			SkipFields: append(skipID, groupID, updatedAt),
 			ExtraColumns: append(orgColumns,
