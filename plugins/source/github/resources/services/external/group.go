@@ -22,14 +22,17 @@ func Group() *schema.Table {
 				},
 			},
 			{
+				Name:     "group_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("GroupID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "updated_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt.Time"),
-			},
-			{
-				Name:     "group_id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("GroupID"),
 			},
 			{
 				Name:     "group_name",

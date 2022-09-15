@@ -5,13 +5,20 @@ import (
 )
 
 func External() []*Resource {
+	const (
+		groupID   = "GroupID"
+		updatedAt = "UpdatedAt"
+	)
 	return []*Resource{
 		{
-			Service:      "external",
-			SubService:   "group",
-			Struct:       new(github.ExternalGroup),
-			SkipFields:   []string{"UpdatedAt"},
-			ExtraColumns: append(orgColumns, timestampField("updated_at", "UpdatedAt")),
+			Service:    "external",
+			SubService: "group",
+			Struct:     new(github.ExternalGroup),
+			SkipFields: append(skipID, groupID, updatedAt),
+			ExtraColumns: append(orgColumns,
+				pkColumn("group_id", groupID),
+				timestampField("updated_at", updatedAt),
+			),
 		},
 	}
 }

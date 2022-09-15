@@ -10,7 +10,8 @@ func main() {
 	for _, f := range []func() []*recipies.Resource{
 		recipies.Billing,
 		recipies.External,
-		recipies.Hook,
+		recipies.Hooks,
+		recipies.Installations,
 	} {
 		for _, resource := range f() {
 			if err := resource.Generate(); err != nil {
