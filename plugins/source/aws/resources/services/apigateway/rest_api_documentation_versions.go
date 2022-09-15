@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func ClientCertificates() *schema.Table {
+func RestApiDocumentationVersions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_client_certificates",
-		Resolver:  fetchApigatewayClientCertificates,
+		Name:      "aws_apigateway_rest_api_documentation_versions",
+		Resolver:  fetchApigatewayRestApiDocumentationVersions,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
@@ -24,17 +24,14 @@ func ClientCertificates() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApigatewayClientCertificateArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "client_certificate_id",
+				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ClientCertificateId"),
+				Resolver: resolveApigatewayRestAPIDocumentationVersionArn,
 			},
 			{
 				Name:     "created_date",
@@ -47,19 +44,9 @@ func ClientCertificates() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "expiration_date",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ExpirationDate"),
-			},
-			{
-				Name:     "pem_encoded_certificate",
+				Name:     "version",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PemEncodedCertificate"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: schema.PathResolver("Version"),
 			},
 		},
 	}

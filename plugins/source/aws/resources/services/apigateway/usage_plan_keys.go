@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func UsagePlans() *schema.Table {
+func UsagePlanKeys() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_usage_plans",
-		Resolver:  fetchApigatewayUsagePlans,
+		Name:      "aws_apigateway_usage_plan_keys",
+		Resolver:  fetchApigatewayUsagePlanKeys,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
@@ -24,19 +24,14 @@ func UsagePlans() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "usage_plan_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApigatewayUsagePlanArn,
-			},
-			{
-				Name:     "api_stages",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ApiStages"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
+				Resolver: resolveApigatewayUsagePlanKeyArn,
 			},
 			{
 				Name:     "id",
@@ -49,29 +44,15 @@ func UsagePlans() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "product_code",
+				Name:     "type",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProductCode"),
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "quota",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Quota"),
+				Name:     "value",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Value"),
 			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "throttle",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Throttle"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			UsagePlanKeys(),
 		},
 	}
 }

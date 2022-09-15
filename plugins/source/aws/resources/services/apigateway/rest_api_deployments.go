@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func UsagePlans() *schema.Table {
+func RestApiDeployments() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_usage_plans",
-		Resolver:  fetchApigatewayUsagePlans,
+		Name:      "aws_apigateway_rest_api_deployments",
+		Resolver:  fetchApigatewayRestApiDeployments,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
@@ -24,14 +24,24 @@ func UsagePlans() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApigatewayUsagePlanArn,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "api_stages",
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: resolveApigatewayRestAPIDeploymentArn,
+			},
+			{
+				Name:     "api_summary",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ApiStages"),
+				Resolver: schema.PathResolver("ApiSummary"),
+			},
+			{
+				Name:     "created_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreatedDate"),
 			},
 			{
 				Name:     "description",
@@ -43,35 +53,6 @@ func UsagePlans() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Id"),
 			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "product_code",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProductCode"),
-			},
-			{
-				Name:     "quota",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Quota"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "throttle",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Throttle"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			UsagePlanKeys(),
 		},
 	}
 }

@@ -4,13 +4,11 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
-	"github.com/aws/aws-sdk-go-v2/service/appsync/types"
+	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
 
 func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	config := apigateway.GetApiKeysInput{
@@ -28,17 +26,9 @@ func fetchApigatewayApiKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
-
-
-func resolveApiKeyArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveApigatewayAPIKeyArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	item := resource.Item.(types.ApiKey)
-	a := arn.ARN{
-		Partition: cl.Partition,
-		Service: "apigateway",
-		Region: cl.Region,
-		AccountID: cl.AccountID,
-		Resource: "api_key/" + aws.ToString(item.Id),
-	}
-	return resource.Set(c.Name, a.String())
+	ak := resource.Item.(types.ApiKey)
+	arn := cl.RegionGlobalARN(client.ApigatewayService, "/apikeys", *ak.Id)
+	return resource.Set(c.Name, arn)
 }

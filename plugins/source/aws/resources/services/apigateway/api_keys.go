@@ -26,7 +26,7 @@ func ApiKeys() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApiKeyArn,
+				Resolver: resolveApigatewayAPIKeyArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

@@ -3,8 +3,6 @@ package apigateway
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -25,17 +23,9 @@ func fetchApigatewayVpcLinks(ctx context.Context, meta schema.ClientMeta, parent
 	}
 	return nil
 }
-
-func resolveVpcLinkArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveApigatewayVpcLinkArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	item := resource.Item.(types.VpcLink)
-	a := arn.ARN{
-		Partition: cl.Partition,
-		Service: "apigateway",
-		Region: cl.Region,
-		AccountID: cl.AccountID,
-		Resource: "vpc_link/" + aws.ToString(item.Id),
-	}
-	return resource.Set(c.Name, a.String())
+	link := resource.Item.(types.VpcLink)
+	arn := cl.RegionGlobalARN(client.ApigatewayService, "/vpclinks", *link.Id)
+	return resource.Set(c.Name, arn)
 }
-

@@ -11,7 +11,7 @@ func main() {
 	resources = append(resources, recipes.ACMResources()...)
 	resources = append(resources, recipes.AccessAnalyzerResources()...)
 	resources = append(resources, recipes.APIGatewayV2Resources()...)
-	resources = append(resources, recipes.APIGatewayesources()...)
+	resources = append(resources, recipes.APIGatewayResources()...)
 	resources = append(resources, recipes.AppSync()...)
 	resources = append(resources, recipes.ApplicationAutoScalingResources()...)
 	resources = append(resources, recipes.AthenaResources()...)

@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func UsagePlans() *schema.Table {
+func RestApiModels() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_usage_plans",
-		Resolver:  fetchApigatewayUsagePlans,
+		Name:      "aws_apigateway_rest_api_models",
+		Resolver:  fetchApigatewayRestApiModels,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
@@ -24,14 +24,24 @@ func UsagePlans() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApigatewayUsagePlanArn,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "api_stages",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ApiStages"),
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: resolveApigatewayRestAPIModelArn,
+			},
+			{
+				Name:     "model_template",
+				Type:     schema.TypeString,
+				Resolver: resolveApigatewayRestAPIModelModelTemplate,
+			},
+			{
+				Name:     "content_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ContentType"),
 			},
 			{
 				Name:     "description",
@@ -49,29 +59,10 @@ func UsagePlans() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "product_code",
+				Name:     "schema",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProductCode"),
+				Resolver: schema.PathResolver("Schema"),
 			},
-			{
-				Name:     "quota",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Quota"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "throttle",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Throttle"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			UsagePlanKeys(),
 		},
 	}
 }

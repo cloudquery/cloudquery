@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func VpcLinks() *schema.Table {
+func RestApiRequestValidators() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_vpc_links",
-		Resolver:  fetchApigatewayVpcLinks,
+		Name:      "aws_apigateway_rest_api_request_validators",
+		Resolver:  fetchApigatewayRestApiRequestValidators,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
@@ -24,14 +24,14 @@ func VpcLinks() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApigatewayVpcLinkArn,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "description",
+				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
+				Resolver: resolveApigatewayRestAPIRequestValidatorArn,
 			},
 			{
 				Name:     "id",
@@ -44,24 +44,14 @@ func VpcLinks() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Status"),
+				Name:     "validate_request_body",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ValidateRequestBody"),
 			},
 			{
-				Name:     "status_message",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("StatusMessage"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "target_arns",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("TargetArns"),
+				Name:     "validate_request_parameters",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ValidateRequestParameters"),
 			},
 		},
 	}

@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func UsagePlans() *schema.Table {
+func RestApiResources() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_usage_plans",
-		Resolver:  fetchApigatewayUsagePlans,
+		Name:      "aws_apigateway_rest_api_resources",
+		Resolver:  fetchApigatewayRestApiResources,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
@@ -24,19 +24,14 @@ func UsagePlans() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "rest_api_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApigatewayUsagePlanArn,
-			},
-			{
-				Name:     "api_stages",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ApiStages"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
+				Resolver: resolveApigatewayRestAPIResourceArn,
 			},
 			{
 				Name:     "id",
@@ -44,34 +39,25 @@ func UsagePlans() *schema.Table {
 				Resolver: schema.PathResolver("Id"),
 			},
 			{
-				Name:     "name",
+				Name:     "parent_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
+				Resolver: schema.PathResolver("ParentId"),
 			},
 			{
-				Name:     "product_code",
+				Name:     "path",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ProductCode"),
+				Resolver: schema.PathResolver("Path"),
 			},
 			{
-				Name:     "quota",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Quota"),
+				Name:     "path_part",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PathPart"),
 			},
 			{
-				Name:     "tags",
+				Name:     "resource_methods",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: schema.PathResolver("ResourceMethods"),
 			},
-			{
-				Name:     "throttle",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Throttle"),
-			},
-		},
-
-		Relations: []*schema.Table{
-			UsagePlanKeys(),
 		},
 	}
 }
