@@ -14,7 +14,7 @@ func Monitor() []Resource {
 			azureStruct:        &insights.DiagnosticSettingsResource{},
 			listFunction:       "List",
 			subServiceOverride: "DiagnosticSettings",
-			customColumns:      []codegen.ColumnDefinition{{Name: "ResourceURI", Type: schema.TypeString, Resolver: `schema.PathResolver("ResourceURI")`}},
+			customColumns:      []codegen.ColumnDefinition{{Name: "resource_uri", Type: schema.TypeString, Resolver: `schema.PathResolver("ResourceURI")`}},
 			helpers: []string{`
 			func isResourceTypeNotSupported(err error) bool {
 				var azureErr *azure.RequestError

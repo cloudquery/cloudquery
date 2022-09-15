@@ -89,7 +89,7 @@ func diagnosticSettings() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "ResourceURI",
+				Name:     "resource_uri",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ResourceURI"),
 			},
