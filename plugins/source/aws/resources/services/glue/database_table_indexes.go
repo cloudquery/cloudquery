@@ -7,55 +7,60 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Classifiers() *schema.Table {
+func DatabaseTableIndexes() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_classifiers",
-		Resolver:  fetchGlueClassifiers,
+		Name:      "aws_glue_database_table_indexes",
+		Resolver:  fetchGlueDatabaseTableIndexes,
 		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
-				Name:     "name",
+				Name:     "database_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveGlueClassifierName,
+				Resolver: schema.ParentResourceFieldResolver("database_arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
 			},
 			{
-				Name:     "csv_classifier",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CsvClassifier"),
+				Name:     "database_table_name",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:     "grok_classifier",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("GrokClassifier"),
+				Name:     "index_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("IndexName"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:     "json_classifier",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("JsonClassifier"),
+				Name:     "index_status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("IndexStatus"),
 			},
 			{
-				Name:     "xml_classifier",
+				Name:     "keys",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("XMLClassifier"),
+				Resolver: schema.PathResolver("Keys"),
+			},
+			{
+				Name:     "backfill_errors",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("BackfillErrors"),
 			},
 		},
 	}

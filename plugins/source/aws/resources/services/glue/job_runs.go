@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Jobs() *schema.Table {
+func JobRuns() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_jobs",
-		Resolver:  fetchGlueJobs,
+		Name:      "aws_glue_job_runs",
+		Resolver:  fetchGlueJobRuns,
 		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
@@ -24,17 +24,9 @@ func Jobs() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
+				Name:     "job_arn",
 				Type:     schema.TypeString,
-				Resolver: resolveGlueJobArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveGlueJobTags,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
 				Name:     "allocated_capacity",
@@ -42,39 +34,34 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("AllocatedCapacity"),
 			},
 			{
-				Name:     "code_gen_configuration_nodes",
+				Name:     "arguments",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CodeGenConfigurationNodes"),
+				Resolver: schema.PathResolver("Arguments"),
 			},
 			{
-				Name:     "command",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Command"),
+				Name:     "attempt",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Attempt"),
 			},
 			{
-				Name:     "connections",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Connections"),
-			},
-			{
-				Name:     "created_on",
+				Name:     "completed_on",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreatedOn"),
+				Resolver: schema.PathResolver("CompletedOn"),
 			},
 			{
-				Name:     "default_arguments",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DefaultArguments"),
+				Name:     "dpu_seconds",
+				Type:     schema.TypeFloat,
+				Resolver: schema.PathResolver("DPUSeconds"),
 			},
 			{
-				Name:     "description",
+				Name:     "error_message",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
+				Resolver: schema.PathResolver("ErrorMessage"),
 			},
 			{
-				Name:     "execution_property",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ExecutionProperty"),
+				Name:     "execution_time",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ExecutionTime"),
 			},
 			{
 				Name:     "glue_version",
@@ -82,34 +69,34 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("GlueVersion"),
 			},
 			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Id"),
+			},
+			{
+				Name:     "job_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("JobName"),
+			},
+			{
+				Name:     "job_run_state",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("JobRunState"),
+			},
+			{
 				Name:     "last_modified_on",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastModifiedOn"),
 			},
 			{
-				Name:     "log_uri",
+				Name:     "log_group_name",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("LogUri"),
+				Resolver: schema.PathResolver("LogGroupName"),
 			},
 			{
 				Name:     "max_capacity",
 				Type:     schema.TypeFloat,
 				Resolver: schema.PathResolver("MaxCapacity"),
-			},
-			{
-				Name:     "max_retries",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("MaxRetries"),
-			},
-			{
-				Name:     "name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Name"),
-			},
-			{
-				Name:     "non_overridable_arguments",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NonOverridableArguments"),
 			},
 			{
 				Name:     "notification_property",
@@ -122,9 +109,14 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("NumberOfWorkers"),
 			},
 			{
-				Name:     "role",
+				Name:     "predecessor_runs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PredecessorRuns"),
+			},
+			{
+				Name:     "previous_run_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Role"),
+				Resolver: schema.PathResolver("PreviousRunId"),
 			},
 			{
 				Name:     "security_configuration",
@@ -132,19 +124,25 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("SecurityConfiguration"),
 			},
 			{
+				Name:     "started_on",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("StartedOn"),
+			},
+			{
 				Name:     "timeout",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Timeout"),
+			},
+			{
+				Name:     "trigger_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TriggerName"),
 			},
 			{
 				Name:     "worker_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("WorkerType"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			JobRuns(),
 		},
 	}
 }
