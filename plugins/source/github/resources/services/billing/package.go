@@ -10,7 +10,7 @@ import (
 func Package() *schema.Table {
 	return &schema.Table{
 		Name:     "github_billing_package",
-		Resolver: fetchBillingPackage,
+		Resolver: fetchPackage,
 		Columns: []schema.Column{
 			{
 				Name:        "org",

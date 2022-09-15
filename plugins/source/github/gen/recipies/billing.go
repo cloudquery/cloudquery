@@ -10,19 +10,19 @@ func Billing() []*Resource {
 			Service:      "billing",
 			SubService:   "action",
 			Struct:       new(github.ActionBilling),
-			ExtraColumns: defaultOrgColumns,
+			ExtraColumns: orgColumns,
 		},
 		{
 			Service:      "billing",
 			SubService:   "package",
 			Struct:       new(github.PackageBilling),
-			ExtraColumns: defaultOrgColumns,
+			ExtraColumns: orgColumns,
 		},
 		{
 			Service:      "billing",
 			SubService:   "storage",
 			Struct:       new(github.StorageBilling),
-			ExtraColumns: defaultOrgColumns,
+			ExtraColumns: orgColumns,
 		},
 	}
 }

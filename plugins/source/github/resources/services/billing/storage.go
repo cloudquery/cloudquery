@@ -10,7 +10,7 @@ import (
 func Storage() *schema.Table {
 	return &schema.Table{
 		Name:     "github_billing_storage",
-		Resolver: fetchBillingStorage,
+		Resolver: fetchStorage,
 		Columns: []schema.Column{
 			{
 				Name:        "org",

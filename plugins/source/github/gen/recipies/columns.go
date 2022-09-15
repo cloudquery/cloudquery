@@ -5,7 +5,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-var defaultOrgColumns = []codegen.ColumnDefinition{
+var orgColumns = []codegen.ColumnDefinition{
 	{
 		Name:        "org",
 		Description: "The Github Organization of the resource.",

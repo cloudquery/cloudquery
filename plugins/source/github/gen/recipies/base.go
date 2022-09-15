@@ -22,6 +22,7 @@ type Resource struct {
 	SkipFields           []string
 	ExtraColumns         []codegen.ColumnDefinition
 	Table                *codegen.TableDefinition
+	TableName            string
 	Multiplex            string
 	PreResourceResolver  string
 	PostResourceResolver string
@@ -39,16 +40,18 @@ func (r *Resource) Generate() error {
 	dir := path.Dir(filename)
 
 	var err error
-	r.Table, err = codegen.NewTableFromStruct(
-		fmt.Sprintf("github_%s_%s", r.Service, r.SubService),
-		r.Struct,
+	if r.TableName == "" {
+		r.TableName = r.Service + "_" + r.SubService
+	}
+	r.TableName = `github_` + r.TableName
+	r.Table, err = codegen.NewTableFromStruct(r.TableName, r.Struct,
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 	)
 	if err != nil {
 		return err
 	}
-	r.Table.Resolver = "fetch" + strcase.ToCamel(r.Service) + strcase.ToCamel(r.SubService)
+	r.Table.Resolver = "fetch" + strcase.ToCamel(r.SubService)
 	if r.Multiplex != "" {
 		r.Table.Multiplex = r.Multiplex
 	}
