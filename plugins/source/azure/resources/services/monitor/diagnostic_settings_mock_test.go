@@ -27,6 +27,7 @@ func createDiagnosticSettingsMock(t *testing.T, ctrl *gomock.Controller) service
 
 	result := insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{data}}
 
+	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/testSubscription").Return(result, nil)
 	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/test/resourceGroups/test/providers/test/test/test").Return(result, nil)
 	return s
 }

@@ -44,7 +44,7 @@ func Monitor() []Resource {
 					ResourceURI:                *resource.ID,
 				}
 			}`,
-			mockListFunctionArgsInit: []string{""},
+			mockListFunctionArgsInit: []string{`mockClient.EXPECT().List(gomock.Any(), "/subscriptions/testSubscription").Return(result, nil)`},
 			mockListFunctionArgs:     []string{`"/subscriptions/test/resourceGroups/test/providers/test/test/test"`},
 			mockListResult:           "DiagnosticSettingsResourceCollection",
 		},
@@ -163,9 +163,8 @@ func Monitor() []Resource {
 					listFunction:     "List",
 					listFunctionArgs: []string{`""`, `""`, `nil`},
 					listFunctionArgsInit: []string{`// Add subscription id as the first entry
-					res <- struct {
-						ID string
-					}{ID: client.ScopeSubscription(meta.(*client.Client).SubscriptionId)}`},
+					subscriptionId := "/" + client.ScopeSubscription(meta.(*client.Client).SubscriptionId)
+					res <- resources.GenericResourceExpanded{ID: &subscriptionId}`},
 					subServiceOverride:       "Resources",
 					mockListResult:           "ListResult",
 					mockListFunctionArgsInit: []string{``},
