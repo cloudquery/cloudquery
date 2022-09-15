@@ -16,7 +16,8 @@ func AccessGroupResources() []Resource {
 			TableName:        "cloudflare_access_groups",
 			TableFuncName:    "AccessGroups",
 			Filename:         "access_groups.go",
-			ResolverFuncName: "services.FetchAccessGroups",
+			Package:          "access_groups",
+			ResolverFuncName: "fetchAccessGroups",
 		},
 	}
 }

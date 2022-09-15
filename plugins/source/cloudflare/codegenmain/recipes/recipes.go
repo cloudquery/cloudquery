@@ -26,6 +26,7 @@ type Resource struct {
 	ResolverFuncName string
 	TableFuncName    string
 	Filename         string
+	Package          string
 	ImportClient     bool
 }
 

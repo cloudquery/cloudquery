@@ -17,8 +17,9 @@ func WAFPackageResources() []Resource {
 			TableName:        "cloudflare_waf_packages",
 			TableFuncName:    "WAFPackages",
 			Filename:         "waf_packages.go",
+			Package:          "waf_packages",
 			Relations:        []string{"wafGroups()", "wafRules()"},
-			ResolverFuncName: "services.FetchWAFPackages",
+			ResolverFuncName: "fetchWAFPackages",
 		},
 		{
 			CFStruct: &cloudflare.WAFGroup{},
@@ -32,8 +33,9 @@ func WAFPackageResources() []Resource {
 			Template:         "resource_manual",
 			TableName:        "cloudflare_waf_groups",
 			TableFuncName:    "wafGroups",
-			Filename:         "waf_packages_waf_groups.go",
-			ResolverFuncName: "services.FetchWAFGroups",
+			Filename:         "waf_groups.go",
+			Package:          "waf_packages",
+			ResolverFuncName: "fetchWAFGroups",
 		},
 		{
 			CFStruct: &cloudflare.WAFRule{},
@@ -47,8 +49,9 @@ func WAFPackageResources() []Resource {
 			Template:         "resource_manual",
 			TableName:        "cloudflare_waf_rules",
 			TableFuncName:    "wafRules",
-			Filename:         "waf_packages_waf_rules.go",
-			ResolverFuncName: "services.FetchWAFRules",
+			Filename:         "waf_rules.go",
+			Package:          "waf_packages",
+			ResolverFuncName: "fetchWAFRules",
 		},
 	}
 }

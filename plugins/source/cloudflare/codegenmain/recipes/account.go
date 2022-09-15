@@ -15,8 +15,9 @@ func AccountResources() []Resource {
 			TableName:        "cloudflare_accounts",
 			TableFuncName:    "Accounts",
 			Filename:         "accounts.go",
+			Package:          "accounts",
 			Relations:        []string{"accountMembers()"},
-			ResolverFuncName: "services.FetchAccounts",
+			ResolverFuncName: "fetchAccounts",
 		},
 		{
 			CFStruct: &cloudflare.AccountMember{},
@@ -30,8 +31,9 @@ func AccountResources() []Resource {
 			Template:         "resource_manual",
 			TableName:        "cloudflare_account_members",
 			TableFuncName:    "accountMembers",
-			Filename:         "accounts_account_members.go",
-			ResolverFuncName: "services.FetchAccountMembers",
+			Filename:         "account_members.go",
+			Package:          "accounts",
+			ResolverFuncName: "fetchAccountMembers",
 		},
 	}
 }

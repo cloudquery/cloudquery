@@ -31,7 +31,8 @@ func DNSRecordResources() []Resource {
 			TableName:        "cloudflare_dns_records",
 			TableFuncName:    "DNSRecords",
 			Filename:         "dns_records.go",
-			ResolverFuncName: "services.FetchDNSRecords",
+			Package:          "dns_records",
+			ResolverFuncName: "fetchDNSRecords",
 		},
 	}
 }

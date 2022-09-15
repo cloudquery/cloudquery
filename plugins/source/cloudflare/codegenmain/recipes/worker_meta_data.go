@@ -17,8 +17,9 @@ func WorkerMetaDataResources() []Resource {
 			TableName:        "cloudflare_worker_meta_data",
 			TableFuncName:    "WorkerMetaData",
 			Filename:         "worker_meta_data.go",
+			Package:          "worker_meta_data",
 			Relations:        []string{"workerCronTriggers()", "workersSecrets()"},
-			ResolverFuncName: "services.FetchWorkerMetaData",
+			ResolverFuncName: "fetchWorkerMetaData",
 		},
 		{
 			CFStruct: &cloudflare.WorkerCronTrigger{},
@@ -33,7 +34,8 @@ func WorkerMetaDataResources() []Resource {
 			TableName:        "cloudflare_worker_cron_triggers",
 			TableFuncName:    "workerCronTriggers",
 			Filename:         "worker_cron_triggers.go",
-			ResolverFuncName: "services.FetchWorkerCronTriggers",
+			Package:          "worker_meta_data",
+			ResolverFuncName: "fetchWorkerCronTriggers",
 		},
 		{
 			CFStruct: &cloudflare.WorkersSecret{},
@@ -48,7 +50,8 @@ func WorkerMetaDataResources() []Resource {
 			TableName:        "cloudflare_workers_secrets",
 			TableFuncName:    "workersSecrets",
 			Filename:         "workers_secrets.go",
-			ResolverFuncName: "services.FetchWorkersSecrets",
+			Package:          "worker_meta_data",
+			ResolverFuncName: "fetchWorkersSecrets",
 		},
 	}
 }

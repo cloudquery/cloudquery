@@ -24,11 +24,7 @@ func main() {
 	if !ok {
 		log.Fatal("Failed to get caller information")
 	}
-	codegenDir := path.Join(path.Dir(filename), "..", "codegen")
-
-	if err := clearDirectory(codegenDir); err != nil {
-		log.Fatal(fmt.Errorf("failed to clear codegen directory: %w", err))
-	}
+	codegenDir := path.Join(path.Dir(filename), "..", "resources", "services")
 
 	var resources []recipes.Resource
 	resources = append(resources, recipes.AccessGroupResources()...)
@@ -45,23 +41,6 @@ func main() {
 	for _, r := range resources {
 		generateTable(codegenDir, r)
 	}
-}
-
-func clearDirectory(dir string) error {
-	entry, err := os.ReadDir(dir)
-	if err != nil {
-		return err
-	}
-	for _, e := range entry {
-		if e.IsDir() {
-			continue
-		}
-		err = os.Remove(path.Join(dir, e.Name()))
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func generateTable(basedir string, r recipes.Resource) {
@@ -105,7 +84,13 @@ func generateTable(basedir string, r recipes.Resource) {
 	if err := tpl.Execute(&buff, r); err != nil {
 		log.Fatal(fmt.Errorf("failed to execute template: %w", err))
 	}
-	filePath := path.Join(basedir, r.Filename)
+
+	pkgPath := path.Join(basedir, r.Package)
+	if err := os.Mkdir(pkgPath, 0755); err != nil && !os.IsExist(err) {
+		log.Fatal(err)
+	}
+
+	filePath := path.Join(pkgPath, r.Filename)
 	content, err := format.Source(buff.Bytes())
 	if err != nil {
 		fmt.Println(buff.String())

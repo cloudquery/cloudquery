@@ -16,7 +16,8 @@ func WorkerRouteResources() []Resource {
 			TableName:        "cloudflare_worker_routes",
 			TableFuncName:    "WorkerRoutes",
 			Filename:         "worker_routes.go",
-			ResolverFuncName: "services.FetchWorkerRoutes",
+			Package:          "worker_routes",
+			ResolverFuncName: "fetchWorkerRoutes",
 		},
 	}
 }

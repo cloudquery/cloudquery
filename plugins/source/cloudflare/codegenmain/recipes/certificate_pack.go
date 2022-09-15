@@ -16,7 +16,8 @@ func CertificatePackResources() []Resource {
 			TableName:        "cloudflare_certificate_packs",
 			TableFuncName:    "CertificatePacks",
 			Filename:         "certificate_packs.go",
-			ResolverFuncName: "services.FetchCertificatePacks",
+			Package:          "certificate_packs",
+			ResolverFuncName: "fetchCertificatePacks",
 		},
 	}
 }

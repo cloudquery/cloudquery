@@ -16,7 +16,8 @@ func ImageResources() []Resource {
 			TableName:        "cloudflare_images",
 			TableFuncName:    "Images",
 			Filename:         "images.go",
-			ResolverFuncName: "services.FetchImages",
+			Package:          "images",
+			ResolverFuncName: "fetchImages",
 		},
 	}
 }

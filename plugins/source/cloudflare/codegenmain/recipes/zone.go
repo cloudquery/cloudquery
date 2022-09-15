@@ -16,7 +16,8 @@ func ZoneResources() []Resource {
 			TableName:        "cloudflare_zones",
 			TableFuncName:    "Zones",
 			Filename:         "zones.go",
-			ResolverFuncName: "services.FetchZones",
+			Package:          "zones",
+			ResolverFuncName: "fetchZones",
 		},
 	}
 }

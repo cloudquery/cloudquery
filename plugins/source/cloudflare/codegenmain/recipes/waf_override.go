@@ -17,7 +17,8 @@ func WAFOverrideResources() []Resource {
 			TableName:        "cloudflare_waf_overrides",
 			TableFuncName:    "WAFOverrides",
 			Filename:         "waf_overrides.go",
-			ResolverFuncName: "services.FetchWAFOverrides",
+			Package:          "waf_overrides",
+			ResolverFuncName: "fetchWAFOverrides",
 		},
 	}
 }
