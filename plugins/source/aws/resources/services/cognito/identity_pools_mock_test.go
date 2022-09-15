@@ -43,5 +43,5 @@ func buildCognitoIdentityPools(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestCognitoIdentityPools(t *testing.T) {
-	client.AwsMockTestHelper(t, CognitoIdentityPools(), buildCognitoIdentityPools, client.TestOptions{})
+	client.AwsMockTestHelper(t, IdentityPools(), buildCognitoIdentityPools, client.TestOptions{})
 }

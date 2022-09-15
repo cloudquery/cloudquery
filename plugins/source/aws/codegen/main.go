@@ -24,6 +24,7 @@ func main() {
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
 
+	resources = append(resources, recipes.CognitoResources()...)
 	resources = append(resources, recipes.ConfigResources()...)
 	resources = append(resources, recipes.DirectConnectResources()...)
 	resources = append(resources, recipes.DMSResources()...)
