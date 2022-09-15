@@ -11,7 +11,7 @@ func MetricFilters() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_cloudwatchlogs_metric_filters",
 		Resolver:  fetchCloudwatchlogsMetricFilters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cloudwatchlogs"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("logs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -27,7 +27,7 @@ func fetchCloudwatchlogsLogGroups(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
-func resolveLogGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveLogGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	lg := resource.Item.(types.LogGroup)
 	cl := meta.(*client.Client)
 	svc := cl.Services().CloudwatchLogs

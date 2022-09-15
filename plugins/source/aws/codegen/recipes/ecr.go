@@ -12,7 +12,7 @@ func ECRResources() []*Resource {
 			SubService: "repositories",
 			Struct:     &types.Repository{},
 			SkipFields: []string{"RepositoryArn"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("ecr")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -28,6 +28,7 @@ func ECRResources() []*Resource {
 						Resolver: `resolveRepositoryTags`,
 					},
 				}...),
+			Relations: []string{"RepositoryImages()"},
 		},
 		{
 			SubService: "repository_images",

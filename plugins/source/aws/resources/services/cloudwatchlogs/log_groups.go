@@ -11,7 +11,7 @@ func LogGroups() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_cloudwatchlogs_log_groups",
 		Resolver:  fetchCloudwatchlogsLogGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cloudwatchlogs"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("logs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -34,12 +34,7 @@ func LogGroups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: resolveLogGroupArn,
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
+				Resolver: resolveLogGroupTags,
 			},
 			{
 				Name:     "creation_time",

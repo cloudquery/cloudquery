@@ -11,7 +11,7 @@ func Repositories() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_ecr_repositories",
 		Resolver:  fetchEcrRepositories,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ecr"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("api.ecr"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -71,6 +71,10 @@ func Repositories() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RepositoryUri"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			RepositoryImages(),
 		},
 	}
 }

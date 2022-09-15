@@ -11,7 +11,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildCloudwatchLogsFiltersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildMetricFiltersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCloudwatchLogsClient(ctrl)
 	l := types.MetricFilter{}
 	err := faker.FakeData(&l)
@@ -28,5 +28,5 @@ func buildCloudwatchLogsFiltersMock(t *testing.T, ctrl *gomock.Controller) clien
 }
 
 func TestCloudwatchlogsFilter(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudwatchlogsFilters(), buildCloudwatchLogsFiltersMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, MetricFilters(), buildMetricFiltersMock, client.TestOptions{})
 }

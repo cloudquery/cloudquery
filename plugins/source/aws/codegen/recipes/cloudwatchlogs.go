@@ -6,49 +6,48 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-
 func CloudWatchLogsResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "metric_filters",
-			Struct: &types.MetricFilter{},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("cloudwatchlogs")`,
+			Struct:     &types.MetricFilter{},
+			SkipFields: []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `resolveMetricFilterArn`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveMetricFilterArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 		{
 			SubService: "log_groups",
-			Struct: &types.LogGroup{},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("cloudwatchlogs")`,
+			Struct:     &types.LogGroup{},
+			SkipFields: []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("Arn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name: "tags",
-					Type: schema.TypeJSON,
-					Resolver: `resolveLogGroupArn`,
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Arn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveLogGroupTags`,
+					},
+				}...),
 		},
 	}
 
 	for _, r := range resources {
 		r.Service = "cloudwatchlogs"
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("logs")`
 	}
 	return resources
 }

@@ -6,25 +6,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-
 func ApplicationAutoScalingResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "policies",
-			Struct: &types.ScalingPolicy{},
+			Struct:     &types.ScalingPolicy{},
 			SkipFields: []string{"PolicyARN"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("applicationautoscaling")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("application-autoscaling")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("PolicyARN")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("PolicyARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 	}
 
