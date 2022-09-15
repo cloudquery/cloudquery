@@ -1,0 +1,61 @@
+package iam
+
+import (
+	"context"
+
+	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/plugin-sdk/schema"
+)
+
+func IamOpenidConnectIdentityProviders() *schema.Table {
+	return &schema.Table{
+		Name:          "aws_iam_openid_connect_identity_providers",
+		Description:   "IAM OIDC identity providers are entities in IAM that describe an external identity provider (IdP) service that supports the OpenID Connect (OIDC) standard, such as Google or Salesforce.",
+		Resolver:      fetchIamOpenidConnectIdentityProviders,
+		Multiplex:     client.AccountMultiplex,
+		IgnoreInTests: true,
+		Columns: []schema.Column{
+			{
+				Name:        "account_id",
+				Description: "The AWS Account ID of the resource.",
+				Type:        schema.TypeString,
+				Resolver:    client.ResolveAWSAccount,
+			},
+			{
+				Name:            "arn",
+				Description:     "Amazon Resource Name (ARN) of the openid connect identity provider.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+			{
+				Name:        "client_id_list",
+				Description: "A list of client IDs (also known as audiences) that are associated with the specified IAM OIDC provider resource object. For more information, see CreateOpenIDConnectProvider. ",
+				Type:        schema.TypeStringArray,
+				Resolver:    schema.PathResolver("ClientIDList"),
+			},
+			{
+				Name:        "create_date",
+				Description: "The date and time when the IAM OIDC provider resource object was created in the AWS account. ",
+				Type:        schema.TypeTimestamp,
+			},
+			{
+				Name:        "tags",
+				Description: "A list of tags that are attached to the specified IAM OIDC provider. The returned list of tags is sorted by tag key. For more information about tagging, see Tagging IAM resources (https://docs.aws.amazon.com/IAM/latest/UserGuide/id_tags.html) in the IAM User Guide. ",
+				Type:        schema.TypeJSON,
+				Resolver:    client.ResolveTags,
+			},
+			{
+				Name:        "thumbprint_list",
+				Description: "A list of certificate thumbprints that are associated with the specified IAM OIDC provider resource object. For more information, see CreateOpenIDConnectProvider. ",
+				Type:        schema.TypeStringArray,
+			},
+			{
+				Name:        "url",
+				Description: "The URL that the IAM OIDC provider resource object is associated with. For more information, see CreateOpenIDConnectProvider. ",
+				Type:        schema.TypeString,
+			},
+		},
+	}
+}
+

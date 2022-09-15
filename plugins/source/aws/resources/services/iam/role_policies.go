@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func GroupPolicies() *schema.Table {
+func RolePolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_group_policies",
-		Resolver:  fetchIamGroupPolicies,
+		Name:      "aws_iam_role_policies",
+		Resolver:  fetchIamRolePolicies,
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
@@ -19,29 +19,24 @@ func GroupPolicies() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "group_arn",
+				Name:     "role_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "group_id",
-				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
-			},
-			{
 				Name:     "policy_document",
 				Type:     schema.TypeJSON,
-				Resolver: resolveIamGroupPolicyPolicyDocument,
-			},
-			{
-				Name:     "group_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("GroupName"),
+				Resolver: resolveRolePoliciesPolicyDocument,
 			},
 			{
 				Name:     "policy_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PolicyName"),
+			},
+			{
+				Name:     "role_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RoleName"),
 			},
 			{
 				Name:     "result_metadata",

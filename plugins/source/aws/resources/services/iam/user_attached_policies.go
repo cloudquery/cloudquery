@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func GroupPolicies() *schema.Table {
+func UserAttachedPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_group_policies",
-		Resolver:  fetchIamGroupPolicies,
+		Name:      "aws_iam_user_attached_policies",
+		Resolver:  fetchIamUserAttachedPolicies,
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
@@ -19,34 +19,24 @@ func GroupPolicies() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "group_arn",
+				Name:     "user_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
-				Name:     "group_id",
+				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentResourceFieldResolver("user_id"),
 			},
 			{
-				Name:     "policy_document",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamGroupPolicyPolicyDocument,
-			},
-			{
-				Name:     "group_name",
+				Name:     "policy_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("GroupName"),
+				Resolver: schema.PathResolver("PolicyArn"),
 			},
 			{
 				Name:     "policy_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PolicyName"),
-			},
-			{
-				Name:     "result_metadata",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ResultMetadata"),
 			},
 		},
 	}

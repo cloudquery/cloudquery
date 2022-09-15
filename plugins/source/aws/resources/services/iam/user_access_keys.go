@@ -7,11 +7,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func UserPolicies() *schema.Table {
+func UserAccessKeys() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_user_policies",
-		Resolver:  fetchIamUserPolicies,
-		Multiplex: client.AccountMultiplex,
+		Name:                 "aws_iam_user_access_keys",
+		Resolver:             fetchIamUserAccessKeys,
+		PostResourceResolver: postIamUserAccessKeyResolver,
+		Multiplex:            client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -29,14 +30,19 @@ func UserPolicies() *schema.Table {
 				Resolver: schema.ParentResourceFieldResolver("user_id"),
 			},
 			{
-				Name:     "policy_document",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamUserPolicyPolicyDocument,
+				Name:     "access_key_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccessKeyId"),
 			},
 			{
-				Name:     "policy_name",
+				Name:     "create_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreateDate"),
+			},
+			{
+				Name:     "status",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyName"),
+				Resolver: schema.PathResolver("Status"),
 			},
 			{
 				Name:     "user_name",
@@ -44,9 +50,9 @@ func UserPolicies() *schema.Table {
 				Resolver: schema.PathResolver("UserName"),
 			},
 			{
-				Name:     "result_metadata",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ResultMetadata"),
+				Name:     "last_rotated",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("LastRotated"),
 			},
 		},
 	}

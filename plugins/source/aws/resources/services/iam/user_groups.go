@@ -7,32 +7,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Groups() *schema.Table {
+func UserGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_groups",
-		Resolver:  fetchIamGroups,
+		Name:      "aws_iam_user_groups",
+		Resolver:  fetchIamUserGroups,
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
-				Name:     "policies",
-				Type:     schema.TypeJSON,
-				Resolver: resolveIamGroupPolicies,
-			},
-			{
-				Name:     "id",
+				Name:     "user_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("GroupId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: schema.ParentResourceFieldResolver("arn"),
+			},
+			{
+				Name:     "user_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("user_id"),
 			},
 			{
 				Name:     "arn",
@@ -45,6 +39,11 @@ func Groups() *schema.Table {
 				Resolver: schema.PathResolver("CreateDate"),
 			},
 			{
+				Name:     "group_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("GroupId"),
+			},
+			{
 				Name:     "group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GroupName"),
@@ -54,10 +53,6 @@ func Groups() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Path"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			GroupPolicies(),
 		},
 	}
 }

@@ -24,6 +24,7 @@ func main() {
 	resources = append(resources, recipes.DaxResources()...)
 	resources = append(resources, recipes.ElastiCacheResources()...)
 
+	resources = append(resources, recipes.IAMResources()...)
 	resources = append(resources, recipes.InspectorResources()...)
 	resources = append(resources, recipes.Inspector2Resources()...)
 	resources = append(resources, recipes.IOTResources()...)

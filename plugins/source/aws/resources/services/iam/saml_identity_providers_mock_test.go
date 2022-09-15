@@ -36,5 +36,5 @@ func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestIAMSamlIdentityProviders(t *testing.T) {
-	client.AwsMockTestHelper(t, IamSamlIdentityProviders(), buildIamSAMLProviders, client.TestOptions{})
+	client.AwsMockTestHelper(t, SamlIdentityProviders(), buildIamSAMLProviders, client.TestOptions{})
 }
