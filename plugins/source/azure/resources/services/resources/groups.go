@@ -39,7 +39,7 @@ func Groups() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:     "provisioning_state",
+				Name:     "properties_provisioning_state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Properties.ProvisioningState"),
 			},
