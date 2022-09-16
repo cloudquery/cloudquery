@@ -3,11 +3,11 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/pkg/errors"
 	"reflect"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 	"github.com/thoas/go-funk"
 )
 

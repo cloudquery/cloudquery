@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
-	"github.com/ettle/strcase"
 	"go/format"
 	"os"
 	"path"
 	"regexp"
 	"strings"
 	"text/template"
+
+	"github.com/ettle/strcase"
 )
 
 var directory string

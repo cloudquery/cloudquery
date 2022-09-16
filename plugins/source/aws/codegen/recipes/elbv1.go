@@ -1,12 +1,13 @@
 package recipes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	elbv1Service "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"reflect"
-	"strings"
 )
 
 func ELBv1Resources() []*Resource {

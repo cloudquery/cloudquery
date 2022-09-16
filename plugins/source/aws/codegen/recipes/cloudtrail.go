@@ -1,11 +1,12 @@
 package recipes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"reflect"
-	"strings"
 )
 
 func CloudtrailResources() []*Resource {

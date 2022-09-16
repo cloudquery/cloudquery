@@ -3,15 +3,15 @@ package client
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/plugins"
-	"github.com/cloudquery/plugin-sdk/specs"
-	"github.com/rs/zerolog"
 	"os"
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
+	"github.com/rs/zerolog"
 )
 
 type TestOptions struct{}

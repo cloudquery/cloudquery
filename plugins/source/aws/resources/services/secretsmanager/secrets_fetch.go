@@ -3,6 +3,7 @@ package secretsmanager
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"

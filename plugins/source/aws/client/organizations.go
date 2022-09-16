@@ -2,13 +2,13 @@ package client
 
 import (
 	"context"
-	"github.com/rs/zerolog"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	orgTypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
+	"github.com/rs/zerolog"
 )
 
 // Parses org configuration and grabs the appropriate accounts

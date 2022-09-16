@@ -1,11 +1,11 @@
 package client
 
 import (
-	"github.com/rs/zerolog"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
+	"github.com/rs/zerolog"
 )
 
 type retryer struct {
