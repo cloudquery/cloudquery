@@ -116,7 +116,7 @@ func (r *Resource) Generate() error {
 	content := buff.Bytes()
 	formattedContent, err := format.Source(buff.Bytes())
 	if err != nil {
-		fmt.Printf("failed to format source: %s: %w\n", filePath, err)
+		fmt.Printf("failed to format source: %s: %v\n", filePath, err)
 	} else {
 		content = formattedContent
 	}
