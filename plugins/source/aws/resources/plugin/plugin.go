@@ -9,7 +9,7 @@ import (
 
 var (
 	Version = "Development"
-	
+
 	//go:embed example.yml
 	exampleConfig string
 )
