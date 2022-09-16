@@ -1,11 +1,11 @@
 # For additional help, see https://www.cloudquery.io/plugins/aws
 # Optional. Enable AWS SDK debug logging.
 aws_debug: false
-# Optional. The maximum number of times that a request will be retried for failures. Defaults to 10 retry attempts.
-max_retries: 10
-# Optional. The maximum back off delay between attempts (in seconds). The backoff delays exponentially with a jitter
-# based on the number of attempts. Defaults to 30 seconds.
-max_backoff: 30
+## Optional. The maximum number of times that a request will be retried for failures. Defaults to 10 retry attempts.
+#max_retries: 10
+## Optional. The maximum back off delay between attempts (in seconds). The backoff delays exponentially with a jitter
+## based on the number of attempts. Defaults to 30 seconds.
+#max_backoff: 30
 ## Optional. Sync only specified regions. Default assumes all regions.
 #regions:
 #- us-east-1
