@@ -39,47 +39,7 @@ func fetchMqBrokers(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	return nil
 }
-func resolveBrokersBrokerInstances(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
-	data, err := json.Marshal(broker.BrokerInstances)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, data)
-}
-func resolveBrokersLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
-	data, err := json.Marshal(broker.LdapServerMetadata)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, data)
-}
-func resolveBrokersLogs(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
-	data, err := json.Marshal(broker.Logs)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, data)
-}
-func resolveBrokersMaintenanceWindowStartTime(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
-	data, err := json.Marshal(broker.MaintenanceWindowStartTime)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, data)
-}
 
-func resolveBrokersPendingLdapServerMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	broker := resource.Item.(*mq.DescribeBrokerOutput)
-	data, err := json.Marshal(broker.PendingLdapServerMetadata)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, data)
-}
 func fetchMqBrokerConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	broker := parent.Item.(*mq.DescribeBrokerOutput)
 	c := meta.(*client.Client)
@@ -159,7 +119,10 @@ func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.Cl
 		return err
 	}
 	unmarshalledJson := map[string]interface{}{}
-	json.Unmarshal(marshalledJson.Bytes(), &unmarshalledJson)
+	err = json.Unmarshal(marshalledJson.Bytes(), &unmarshalledJson)
+	if err != nil {
+		return err
+	}
 	return resource.Set(c.Name, unmarshalledJson)
 }
 
@@ -179,12 +142,4 @@ func fetchMqBrokerUsers(ctx context.Context, meta schema.ClientMeta, parent *sch
 		res <- output
 	}
 	return nil
-}
-func resolveBrokerUsersPending(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	user := resource.Item.(*mq.DescribeUserOutput)
-	data, err := json.Marshal(user.Pending)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, data)
 }

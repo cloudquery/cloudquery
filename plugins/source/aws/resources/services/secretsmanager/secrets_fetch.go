@@ -64,6 +64,9 @@ func fetchSecretsmanagerSecretPolicy(ctx context.Context, meta schema.ClientMeta
 	}
 
 	v := map[string]interface{}{}
-	json.Unmarshal([]byte(*response.ResourcePolicy), &v)
+	err = json.Unmarshal([]byte(*response.ResourcePolicy), &v)
+	if err != nil {
+		return err
+	}
 	return resource.Set(c.Name, v)
 }

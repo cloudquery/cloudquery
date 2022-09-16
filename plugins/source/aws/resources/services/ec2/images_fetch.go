@@ -37,10 +37,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		return nil
 	})
 
-	if err := g.Wait(); err != nil {
-		return err
-	}
-	return nil
+	return g.Wait()
 }
 
 func resolveImageArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

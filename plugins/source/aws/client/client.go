@@ -472,7 +472,10 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 	var awsConfig *Config
-	spec.UnmarshalSpec(awsConfig)
+	err := spec.UnmarshalSpec(awsConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+	}
 
 	client := NewAwsClient(logger)
 	client.GlobalRegion = awsConfig.GlobalRegion

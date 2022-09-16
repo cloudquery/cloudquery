@@ -66,25 +66,3 @@ func ResolveIotTopicRuleTags(ctx context.Context, meta schema.ClientMeta, resour
 	}
 	return resource.Set(c.Name, tags)
 }
-func resolveIotTopicRulesErrorActionHttpHeaders(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(*iot.GetTopicRuleOutput)
-	if i.Rule == nil || i.Rule.ErrorAction == nil || i.Rule.ErrorAction.Http == nil {
-		return nil
-	}
-	j := map[string]interface{}{}
-	for _, h := range i.Rule.ErrorAction.Http.Headers {
-		j[*h.Key] = *h.Value
-	}
-	return resource.Set(c.Name, j)
-}
-func resolveIotTopicRulesErrorActionTimestreamDimensions(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	i := resource.Item.(*iot.GetTopicRuleOutput)
-	if i.Rule == nil || i.Rule.ErrorAction == nil || i.Rule.ErrorAction.Timestream == nil {
-		return nil
-	}
-	j := map[string]interface{}{}
-	for _, h := range i.Rule.ErrorAction.Timestream.Dimensions {
-		j[*h.Name] = *h.Value
-	}
-	return resource.Set(c.Name, j)
-}

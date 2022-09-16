@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -44,40 +43,6 @@ func fetchEcsClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 
-func resolveClustersSettings(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster, ok := resource.Item.(types.Cluster)
-	if !ok {
-		return fmt.Errorf("expected to have types.Cluster but got %T", resource.Item)
-	}
-	settings := make(map[string]*string)
-	for _, s := range cluster.Settings {
-		settings[string(s.Name)] = s.Value
-	}
-	return resource.Set(c.Name, settings)
-}
-func resolveClustersStatistics(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cluster, ok := resource.Item.(types.Cluster)
-	if !ok {
-		return fmt.Errorf("expected to have types.Cluster but got %T", resource.Item)
-	}
-	stats := make(map[string]*string)
-	for _, s := range cluster.Statistics {
-		stats[*s.Name] = s.Value
-	}
-	return resource.Set(c.Name, stats)
-}
-
-func resolveClusterAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	attachment, ok := resource.Item.(types.Attachment)
-	if !ok {
-		return fmt.Errorf("expected to have types.Attachment but got %T", resource.Item)
-	}
-	details := make(map[string]*string)
-	for _, s := range attachment.Details {
-		details[*s.Name] = s.Value
-	}
-	return resource.Set(c.Name, details)
-}
 func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster, ok := parent.Item.(types.Cluster)
 	if !ok {
@@ -120,16 +85,6 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 
-func resolveClusterTaskAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	p := resource.Item.(types.Attachment)
-	j := make(map[string]interface{})
-	for _, i := range p.Details {
-		j[*i.Name] = *i.Value
-	}
-
-	return resource.Set(c.Name, j)
-}
-
 func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
@@ -169,26 +124,6 @@ func fetchEcsClusterServices(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 
-func resolveClusterServicesPlacementConstraints(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Service)
-	j := make(map[string]interface{})
-	for _, i := range service.PlacementConstraints {
-		j[string(i.Type)] = aws.ToString(i.Expression)
-	}
-
-	return resource.Set(c.Name, j)
-}
-
-func resolveClusterServicesPlacementStrategy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	service := resource.Item.(types.Service)
-	j := make(map[string]interface{})
-	for _, i := range service.PlacementStrategy {
-		j[string(i.Type)] = aws.ToString(i.Field)
-	}
-
-	return resource.Set(c.Name, j)
-}
-
 func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cluster := parent.Item.(types.Cluster)
 	region := meta.(*client.Client).Region
@@ -226,13 +161,4 @@ func fetchEcsClusterContainerInstances(ctx context.Context, meta schema.ClientMe
 		config.NextToken = listContainerInstances.NextToken
 	}
 	return nil
-}
-
-func resolveClusterContainerInstanceAttachmentsDetails(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	attachment := resource.Item.(types.Attachment)
-	details := make(map[string]*string)
-	for _, s := range attachment.Details {
-		details[*s.Name] = s.Value
-	}
-	return resource.Set(c.Name, details)
 }

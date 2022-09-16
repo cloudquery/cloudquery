@@ -343,7 +343,6 @@ func calcProgress() {
 			migrated := false
 			n := 0
 			for _, dit := range dirItems {
-
 				if strings.HasSuffix(dit.Name(), ".go") && !strings.HasSuffix(dit.Name(), "_test.go") {
 					n++
 					if strings.HasSuffix(dit.Name(), "_fetch.go") {

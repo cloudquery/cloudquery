@@ -48,17 +48,6 @@ func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, res
 	}
 	return resource.Set(c.Name, result.Tags)
 }
-func resolveMlTransformsEvaluationMetricsFindMatchesMetricsColumnImportances(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.MLTransform)
-	j := make(map[string]float64)
-	if r.EvaluationMetrics == nil || r.EvaluationMetrics.FindMatchesMetrics == nil {
-		return nil
-	}
-	for _, c := range r.EvaluationMetrics.FindMatchesMetrics.ColumnImportances {
-		j[*c.ColumnName] = *c.Importance
-	}
-	return resource.Set(c.Name, j)
-}
 func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.MLTransform)
 	j := make(map[string]string)
@@ -87,10 +76,6 @@ func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, p
 	}
 	return nil
 }
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
 
 func mlTransformARN(cl *client.Client, tr *types.MLTransform) string {
 	return cl.ARN(client.GlueService, "mlTransform", *tr.TransformId)

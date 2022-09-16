@@ -76,19 +76,6 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 
-func resolveElbv1loadBalancerAttributesAdditionalAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(ELBv1LoadBalancerWrapper)
-	if r.Attributes == nil {
-		return nil
-	}
-
-	response := make(map[string]interface{}, len(r.Attributes.AdditionalAttributes))
-	for _, a := range r.Attributes.AdditionalAttributes {
-		response[*a.Key] = a.Value
-	}
-	return resource.Set(c.Name, response)
-}
-
 func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(ELBv1LoadBalancerWrapper)
 	c := meta.(*client.Client)

@@ -70,7 +70,6 @@ func fetchConfigConformancePacks(ctx context.Context, meta schema.ClientMeta, pa
 		config.NextToken = resp.NextToken
 	}
 	return nil
-
 }
 
 func fetchConfigConformancePackRuleCompliances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

@@ -27,14 +27,7 @@ func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 	return nil
 }
-func resolveRdsInstancePendingModifiedValuesProcessorFeatures(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.DBInstance)
-	pendingProcessorFeatures := map[string]*string{}
-	for _, t := range r.PendingModifiedValues.ProcessorFeatures {
-		pendingProcessorFeatures[*t.Name] = t.Value
-	}
-	return resource.Set(c.Name, pendingProcessorFeatures)
-}
+
 func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBInstance)
 	processorFeatures := map[string]*string{}
@@ -43,6 +36,7 @@ func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.Client
 	}
 	return resource.Set(c.Name, processorFeatures)
 }
+
 func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.DBInstance)
 	tags := map[string]*string{}
