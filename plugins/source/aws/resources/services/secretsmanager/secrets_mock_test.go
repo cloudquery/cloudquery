@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	types "github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -38,6 +38,8 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err := faker.FakeData(&policy); err != nil {
 		t.Fatal(err)
 	}
+	p := `{"key":"value"}`
+	policy.ResourcePolicy = &p
 	m.EXPECT().GetResourcePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&policy,
 		nil,
