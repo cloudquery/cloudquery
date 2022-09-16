@@ -195,6 +195,7 @@ func tables() []*schema.Table {
 		glue.Workflows(),
 		guardduty.Detectors(),
 		iam.Accounts(),
+		iam.CredentialReportUsers(),
 		iam.Groups(),
 		iam.OpenidConnectIdentityProviders(),
 		iam.PasswordPolicies(),
