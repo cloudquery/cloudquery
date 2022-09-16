@@ -44,4 +44,3 @@ func resolveClusterTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	}
 	return resource.Set(c.Name, response.Tags)
 }
-

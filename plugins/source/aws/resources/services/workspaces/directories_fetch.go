@@ -35,10 +35,10 @@ func resolveDirectoryArn(ctx context.Context, meta schema.ClientMeta, resource *
 
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service: "workspaces",
-		Region: cl.Region,
+		Service:   "workspaces",
+		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource: "diretory/" + *item.DirectoryId,
+		Resource:  "diretory/" + *item.DirectoryId,
 	}
 	return resource.Set(c.Name, a.String())
 }

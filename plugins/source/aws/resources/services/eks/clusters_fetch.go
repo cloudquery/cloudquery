@@ -26,15 +26,14 @@ func fetchEksClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 
-
-func getEksCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error{
+func getEksCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Eks
 	name := resource.Item.(string)
 	output, err := svc.DescribeCluster(
 		ctx, &eks.DescribeClusterInput{Name: &name}, func(options *eks.Options) {
-		options.Region = c.Region
-	})
+			options.Region = c.Region
+		})
 	if err != nil {
 		return err
 	}

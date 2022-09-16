@@ -5,7 +5,7 @@ import (
 )
 
 type awsLogger struct {
-	logger zerolog.Logger
+	logger   zerolog.Logger
 	accounts []string
 }
 

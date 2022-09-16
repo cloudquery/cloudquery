@@ -115,7 +115,6 @@ func fetchEc2SecurityGroups(ctx context.Context, meta schema.ClientMeta, parent 
 	return nil
 }
 
-
 func resolveSecurityGroupArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	item := resource.Item.(types.SecurityGroup)

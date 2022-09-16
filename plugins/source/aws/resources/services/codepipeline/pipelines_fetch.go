@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().CodePipeline
@@ -34,7 +33,7 @@ func fetchCodepipelinePipelines(ctx context.Context, meta schema.ClientMeta, par
 func getPipeline(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().CodePipeline
-	item := resource.Item.(types.PipelineSummary) 
+	item := resource.Item.(types.PipelineSummary)
 	response, err := svc.GetPipeline(ctx, &codepipeline.GetPipelineInput{Name: item.Name})
 	if err != nil {
 		return err
@@ -58,17 +57,16 @@ func resolvePipelineTags(ctx context.Context, meta schema.ClientMeta, resource *
 	return resource.Set(c.Name, client.TagsToMap(response.Tags))
 }
 
-
 func resolvePipelineArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	pipeline := resource.Item.(*codepipeline.GetPipelineOutput)
 
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service: "codepipeline",
-		Region: cl.Region,
+		Service:   "codepipeline",
+		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource: "pipelines/" + *pipeline.Metadata.PipelineArn,
+		Resource:  "pipelines/" + *pipeline.Metadata.PipelineArn,
 	}
 
 	return resource.Set(c.Name, a.String())

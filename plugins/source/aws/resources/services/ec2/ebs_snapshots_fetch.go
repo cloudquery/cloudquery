@@ -45,7 +45,6 @@ func resolveEbsSnapshotAttribute(ctx context.Context, meta schema.ClientMeta, re
 	return resource.Set(c.Name, output)
 }
 
-
 func resolveEbsSnapshotArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	a := arn.ARN{

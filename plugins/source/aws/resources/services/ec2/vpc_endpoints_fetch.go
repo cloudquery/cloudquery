@@ -31,7 +31,6 @@ func fetchEc2VpcEndpoints(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 
-
 func resolveVpcEndpointArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	item := resource.Item.(types.VpcEndpoint)

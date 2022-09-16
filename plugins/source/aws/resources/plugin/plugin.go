@@ -6,7 +6,6 @@ import (
 )
 
 var (
-
 	Version = "Development"
 )
 

@@ -1,7 +1,7 @@
 package client
 
 type Account struct {
-	ID              string `json:"id"`
+	ID              string   `json:"id"`
 	AccountName     string   `json:"account_name,omitempty"`
 	LocalProfile    string   `json:"local_profile,omitempty"`
 	RoleARN         string   `json:"role_arn,omitempty"`

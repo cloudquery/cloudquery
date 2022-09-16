@@ -10,19 +10,19 @@ func AppSync() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "graphql_apis",
-			Struct: &types.GraphqlApi{},
+			Struct:     &types.GraphqlApi{},
 			SkipFields: []string{"Arn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("appsync")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("appsync")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("Arn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Arn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 	}
 

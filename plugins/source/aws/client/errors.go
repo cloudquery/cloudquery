@@ -18,9 +18,6 @@ var throttleCodes = map[string]struct{}{
 	"PriorRequestNotComplete":                {}, // Route53
 }
 
-
-
-
 // IsErrorThrottle returns whether the error is to be throttled based on its code.
 // Returns false if error is nil.
 func IsErrorThrottle(err error) bool {
@@ -36,4 +33,3 @@ func isCodeThrottle(code string) bool {
 	_, ok := throttleCodes[code]
 	return ok
 }
-

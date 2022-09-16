@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/spf13/cast"
 )
+
 func fetchWafv2ManagedRuleGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	service := c.Services().WafV2

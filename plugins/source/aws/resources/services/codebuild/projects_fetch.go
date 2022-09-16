@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Codebuild
@@ -35,4 +34,3 @@ func fetchCodebuildProjects(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 	return nil
 }
-

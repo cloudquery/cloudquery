@@ -6,30 +6,28 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
-
 func DaxResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "clusters",
-			Struct: &types.Cluster{},
+			Struct:     &types.Cluster{},
 			SkipFields: []string{"ClusterArn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("dax")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("dax")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("ClusterArn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name: "tags",
-					Type: schema.TypeString,
-					Resolver: `resolveClusterTags`,
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ClusterArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeString,
+						Resolver: `resolveClusterTags`,
+					},
+				}...),
 		},
 	}
 

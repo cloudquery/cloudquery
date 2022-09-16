@@ -76,10 +76,10 @@ func resolveImageArn(ctx context.Context, meta schema.ClientMeta, resource *sche
 
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service: "ecr",
-		Region: cl.Region,
+		Service:   "ecr",
+		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource: "repository_image/" + *item.RegistryId + "/" + *item.ImageDigest,
+		Resource:  "repository_image/" + *item.RegistryId + "/" + *item.ImageDigest,
 	}
 	return resource.Set(c.Name, a.String())
 }

@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func fetchEc2EgressOnlyInternetGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EC2
@@ -42,4 +41,3 @@ func resolveEgressOnlyInternetGatewaysArn(_ context.Context, meta schema.ClientM
 	}
 	return resource.Set(c.Name, a.String())
 }
-

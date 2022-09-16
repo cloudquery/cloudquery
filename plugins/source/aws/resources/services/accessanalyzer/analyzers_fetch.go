@@ -88,7 +88,6 @@ func fetchAccessanalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.Cl
 	return nil
 }
 
-
 func resolveFindingArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	a := arn.ARN{

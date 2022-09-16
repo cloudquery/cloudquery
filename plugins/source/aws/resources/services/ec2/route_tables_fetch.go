@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func fetchEc2RouteTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeRouteTablesInput
 	c := meta.(*client.Client)
@@ -29,7 +28,6 @@ func fetchEc2RouteTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 	}
 	return nil
 }
-
 
 func resolveRouteTableArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)

@@ -29,17 +29,16 @@ func fetchWorkspacesWorkspaces(ctx context.Context, meta schema.ClientMeta, _ *s
 	return nil
 }
 
-
 func resolveWorkspaceArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	item := resource.Item.(types.Workspace)
 
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service: "workspaces",
-		Region: cl.Region,
+		Service:   "workspaces",
+		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource: "workspaces/" + *item.WorkspaceId,
+		Resource:  "workspaces/" + *item.WorkspaceId,
 	}
 	return resource.Set(c.Name, a.String())
 }

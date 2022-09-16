@@ -24,7 +24,7 @@ func fetchAcmCertificates(ctx context.Context, meta schema.ClientMeta, parent *s
 	return nil
 }
 
-func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error{ 
+func getCertificate(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().ACM
 	input := acm.DescribeCertificateInput{CertificateArn: resource.Item.(types.CertificateSummary).CertificateArn}

@@ -43,7 +43,6 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	return nil
 }
 
-
 func resolveImageArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	item := resource.Item.(types.Image)

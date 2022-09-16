@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-
 func fetchElasticacheReservedCacheNodesOfferings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	paginator := elasticache.NewDescribeReservedCacheNodesOfferingsPaginator(meta.(*client.Client).Services().ElastiCache, nil)
 	for paginator.HasMorePages() {
@@ -23,7 +22,6 @@ func fetchElasticacheReservedCacheNodesOfferings(ctx context.Context, meta schem
 	}
 	return nil
 }
-
 
 func resolveCacheNodesOfferingArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)

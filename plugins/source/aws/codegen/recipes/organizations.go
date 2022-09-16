@@ -10,24 +10,24 @@ func OrganizationsResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "accounts",
-			Struct: &types.Account{},
+			Struct:     &types.Account{},
 			SkipFields: []string{"Arn"},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("dax")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("dax")`,
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("Arn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name: "tags",
-					Type: schema.TypeJSON,
-					Resolver: `resolveAccountTags`,
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Arn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveAccountTags`,
+					},
+				}...),
 		},
 	}
 

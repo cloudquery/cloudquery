@@ -29,7 +29,6 @@ func fetchEc2VpcEndpointServiceConfigurations(ctx context.Context, meta schema.C
 	return nil
 }
 
-
 func resolveVpcEndpointServiceConfigurationArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	item := resource.Item.(types.ServiceConfiguration)

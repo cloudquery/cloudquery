@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
+
 func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.GetAccountAuthorizationDetailsInput
 	svc := meta.(*client.Client).Services().IAM
@@ -25,7 +26,6 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 	}
 	return nil
 }
-
 
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ManagedPolicyDetail)

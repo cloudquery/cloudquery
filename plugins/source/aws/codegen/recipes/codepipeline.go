@@ -11,41 +11,41 @@ func CodePipelineResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "webhooks",
-			Struct: &types.ListWebhookItem{},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("codepipeline")`,
+			Struct:     &types.ListWebhookItem{},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("codepipeline")`,
 			SkipFields: []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `schema.PathResolver("Arn")`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("Arn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 		{
-			SubService: "pipelines",
-			Struct: &codepipeline.GetPipelineOutput{},
-			Multiplex: `client.ServiceAccountRegionMultiplexer("codepipeline")`,
+			SubService:          "pipelines",
+			Struct:              &codepipeline.GetPipelineOutput{},
+			Multiplex:           `client.ServiceAccountRegionMultiplexer("codepipeline")`,
 			PreResourceResolver: "getPipeline",
-			SkipFields: []string{"ResultMetadata"},
+			SkipFields:          []string{"ResultMetadata"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-				{
-					Name: "arn",
-					Type: schema.TypeString,
-					Resolver: `resolvePipelineArn`,
-					Options: schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name: "tags",
-					Type: schema.TypeString,
-					Resolver: `resolvePipelineTags`,
-				},
-			}...),
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolvePipelineArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeString,
+						Resolver: `resolvePipelineTags`,
+					},
+				}...),
 		},
 	}
 
