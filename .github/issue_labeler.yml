@@ -1,0 +1,26 @@
+cli:
+    - '/(cli|command)/i'
+aws:
+    - '/(aws)/i'
+azure:
+    - '/(azure)/i'
+cloudflare:
+    - '/(cloudflare)/i'
+digitalocean:
+    - '/(digitalocean)/i'
+gcp:
+    - '/(gcp)/i'
+github:
+    - '/(github)/i'
+heroku:
+    - '/(heroku)/i'
+k8s:
+    - '/(k8s)/i'
+okta:
+    - '/(okta)/i'
+terraform:
+    - '/(terraform)/i'
+docs:
+    - '/(docs|documentation)/i'
+website:
+    - '/(website)/i'

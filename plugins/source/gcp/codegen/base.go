@@ -8,8 +8,6 @@ import (
 type Resource struct {
 	// PackageName name is the packgename in the source plugin this resource is located
 	PackageName string
-	// DefaultColumns columns that will be appended to the main table
-	DefaultColumns []codegen.ColumnDefinition
 	// Sets PreResourceResolver
 	PreResourceResolver string
 	// Table is the table definition that will be used to generate the cloudquery table
@@ -81,7 +79,7 @@ type Resource struct {
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
 	// Columns override, override generated columns
-	OverrideColumns []codegen.ColumnDefinition
+	ExtraColumns []codegen.ColumnDefinition
 }
 
 var ProjectIdColumn = codegen.ColumnDefinition{

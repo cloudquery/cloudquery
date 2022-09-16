@@ -17,7 +17,7 @@ var billingResources = []*Resource{
 		ListFunction:        (&billing.CloudBillingClient{}).ListBillingAccounts,
 		RegisterServer:      pb.RegisterCloudBillingServer,
 		UnimplementedServer: &pb.UnimplementedCloudBillingServer{},
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "name",
 				Type:    schema.TypeString,
@@ -34,7 +34,7 @@ var billingResources = []*Resource{
 		ListFunction:        (&billing.CloudCatalogClient{}).ListServices,
 		RegisterServer:      pb.RegisterCloudCatalogServer,
 		UnimplementedServer: &pb.UnimplementedCloudCatalogServer{},
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "name",
 				Type:    schema.TypeString,

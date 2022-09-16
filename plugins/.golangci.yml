@@ -20,10 +20,6 @@ linters-settings:
   dupl:
     # tokens count to trigger issue, 150 by default
     threshold: 500
-  wrapcheck:
-    ignoreSigs:
-      - diag.WrapError
-      - errors.WithStack
 
   revive:
     enable-all-rules: true
@@ -91,7 +87,6 @@ linters:
     - unconvert
     - unparam
     - unused
-    - wrapcheck
 
 issues:
   exclude-rules:
@@ -100,7 +95,6 @@ issues:
       linters:
         - dupl
         - gocritic
-        - wrapcheck
       # Exclude some linters from running on resource files.
     - path: resources(\\|\/).*\.go
       linters:
@@ -109,7 +103,3 @@ issues:
     - path: services\.go
       linters:
         - dupl
-    # Run wrapcheck only on resources files.
-    - path: '(client|test|tools)(\\|\/).*\.go'
-      linters:
-        - wrapcheck
