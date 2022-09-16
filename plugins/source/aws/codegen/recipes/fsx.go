@@ -12,27 +12,31 @@ func FSXResources() []*Resource {
 			SubService: "backups",
 			Struct:     &types.Backup{},
 			SkipFields: []string{"BackupId", "Tags"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "account_id",
-						Type:     schema.TypeString,
-						Resolver: `client.ResolveAWSAccount`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "id",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("BackupId")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `client.ResolveTags`,
-					},
-				}...),
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSAccount`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "region",
+					Type:     schema.TypeString,
+					Resolver: "client.ResolveAWSRegion",
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("BackupId")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "tags",
+					Type:     schema.TypeJSON,
+					Resolver: `client.ResolveTags`,
+				},
+			},
 		},
 		{
 			SubService: "data_repository_associations",
