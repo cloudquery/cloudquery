@@ -32,54 +32,29 @@ func NetworkAcls() *schema.Table {
 				},
 			},
 			{
-				Name:     "connectivity_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ConnectivityType"),
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "delete_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("DeleteTime"),
-			},
-			{
-				Name:     "failure_code",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FailureCode"),
-			},
-			{
-				Name:     "failure_message",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("FailureMessage"),
-			},
-			{
-				Name:     "nat_gateway_addresses",
+				Name:     "associations",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NatGatewayAddresses"),
+				Resolver: schema.PathResolver("Associations"),
 			},
 			{
-				Name:     "nat_gateway_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("NatGatewayId"),
-			},
-			{
-				Name:     "provisioned_bandwidth",
+				Name:     "entries",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ProvisionedBandwidth"),
+				Resolver: schema.PathResolver("Entries"),
 			},
 			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
+				Name:     "is_default",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("IsDefault"),
 			},
 			{
-				Name:     "subnet_id",
+				Name:     "network_acl_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SubnetId"),
+				Resolver: schema.PathResolver("NetworkAclId"),
+			},
+			{
+				Name:     "owner_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("OwnerId"),
 			},
 			{
 				Name:     "tags",

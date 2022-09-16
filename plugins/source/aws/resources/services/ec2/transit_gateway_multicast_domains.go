@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func TransitGateways() *schema.Table {
+func TransitGatewayMulticastDomains() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_transit_gateways",
-		Resolver:  fetchEc2TransitGateways,
+		Name:      "aws_ec2_transit_gateway_multicast_domains",
+		Resolver:  fetchEc2TransitGatewayMulticastDomains,
 		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
@@ -19,35 +19,24 @@ func TransitGateways() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
+			},
+			{
+				Name:     "transit_gateway_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: client.ResolveTags,
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TransitGatewayId"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TransitGatewayArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
-			},
-			{
-				Name:     "description",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Description"),
 			},
 			{
 				Name:     "options",
@@ -64,14 +53,21 @@ func TransitGateways() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			TransitGatewayAttachments(),
-			TransitGatewayRouteTables(),
-			TransitGatewayVpcAttachments(),
-			TransitGatewayPeeringAttachments(),
-			TransitGatewayMulticastDomains(),
+			{
+				Name:     "transit_gateway_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TransitGatewayId"),
+			},
+			{
+				Name:     "transit_gateway_multicast_domain_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TransitGatewayMulticastDomainArn"),
+			},
+			{
+				Name:     "transit_gateway_multicast_domain_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TransitGatewayMulticastDomainId"),
+			},
 		},
 	}
 }

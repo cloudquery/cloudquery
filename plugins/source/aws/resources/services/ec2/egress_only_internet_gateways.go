@@ -37,79 +37,14 @@ func EgressOnlyInternetGateways() *schema.Table {
 				Resolver: schema.PathResolver("Attachments"),
 			},
 			{
-				Name:     "availability_zone",
+				Name:     "egress_only_internet_gateway_id",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AvailabilityZone"),
-			},
-			{
-				Name:     "create_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("CreateTime"),
-			},
-			{
-				Name:     "encrypted",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Encrypted"),
-			},
-			{
-				Name:     "fast_restored",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("FastRestored"),
-			},
-			{
-				Name:     "iops",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Iops"),
-			},
-			{
-				Name:     "kms_key_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("KmsKeyId"),
-			},
-			{
-				Name:     "multi_attach_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("MultiAttachEnabled"),
-			},
-			{
-				Name:     "outpost_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("OutpostArn"),
-			},
-			{
-				Name:     "size",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Size"),
-			},
-			{
-				Name:     "snapshot_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SnapshotId"),
-			},
-			{
-				Name:     "state",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("State"),
+				Resolver: schema.PathResolver("EgressOnlyInternetGatewayId"),
 			},
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
-			},
-			{
-				Name:     "throughput",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Throughput"),
-			},
-			{
-				Name:     "volume_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeId"),
-			},
-			{
-				Name:     "volume_type",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VolumeType"),
 			},
 		},
 	}
