@@ -12,7 +12,6 @@ func ApplicationAutoScalingResources() []*Resource {
 			SubService: "policies",
 			Struct:     &types.ScalingPolicy{},
 			SkipFields: []string{"PolicyARN"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("application-autoscaling")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -28,6 +27,7 @@ func ApplicationAutoScalingResources() []*Resource {
 
 	for _, r := range resources {
 		r.Service = "applicationautoscaling"
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("application-autoscaling")`
 	}
 	return resources
 }

@@ -9,10 +9,9 @@ import (
 
 func TaskDefinitions() *schema.Table {
 	return &schema.Table{
-		Name:                "aws_ecs_task_definitions",
-		Resolver:            fetchEcsTaskDefinitions,
-		PreResourceResolver: getEcsTaskDefinition,
-		Multiplex:           client.ServiceAccountRegionMultiplexer("ecs"),
+		Name:      "aws_ecs_task_definitions",
+		Resolver:  fetchEcsTaskDefinitions,
+		Multiplex: client.ServiceAccountRegionMultiplexer("ecs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -25,17 +24,9 @@ func TaskDefinitions() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TaskDefinitionArn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
+				Resolver: resolveEcsTaskDefinitionTags,
 			},
 			{
 				Name:     "compatibilities",
@@ -141,6 +132,11 @@ func TaskDefinitions() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "task_definition_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TaskDefinitionArn"),
 			},
 			{
 				Name:     "task_role_arn",

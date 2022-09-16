@@ -115,6 +115,10 @@ func extractResources(s, dirname string) []resource {
 	relations := []string{}
 	resources := []resource{res}
 	substr := "Relations: []*schema.Table{"
+	if strings.Contains(s, "PathTableResolver(") {
+		// skip resources with PathTableResolver and their descendants
+		return []resource{}
+	}
 	rs := strings.Index(s, substr)
 	if rs != -1 {
 		index := rs + len(substr) + 1
