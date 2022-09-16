@@ -27,6 +27,20 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
+			SubService: "credential_report_users",
+			Struct:     &iamService.CredentialReportUser{},
+			SkipFields: []string{"Arn"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Arn")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+			Relations: []string{},
+		},
+		{
 			SubService: "groups",
 			Struct:     &types.Group{},
 			SkipFields: []string{"GroupId"},
@@ -226,10 +240,9 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService:           "users",
-			Struct:               &iamService.UserWrapper{},
-			SkipFields:           []string{"Arn", "Tags"},
-			PostResourceResolver: `postIamUserResolver`,
+			SubService: "users",
+			Struct:     &types.User{},
+			SkipFields: []string{"Arn", "Tags"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "arn",

@@ -3,6 +3,7 @@ package iam
 import (
 	"context"
 	"encoding/json"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -14,7 +15,7 @@ import (
 func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().IAM
-	user := parent.Item.(UserWrapper)
+	user := parent.Item.(*types.User)
 	if aws.ToString(user.UserName) == rootName {
 		return nil
 	}
