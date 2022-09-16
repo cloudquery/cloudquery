@@ -77,7 +77,8 @@ require (
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.4.2
+	github.com/cloudquery/plugin-sdk v0.6.1
+	github.com/ettle/strcase v0.1.1
 	github.com/gocarina/gocsv v0.0.0-20220823132111-71f3a5cb2654
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
@@ -93,7 +94,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.9 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
-	github.com/ettle/strcase v0.1.1 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2 // indirect
@@ -145,5 +145,3 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/cloudquery/plugin-sdk v0.4.2 => /Users/hermanschaaf/code/cloudquery/plugin-sdk
