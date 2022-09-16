@@ -16,4 +16,4 @@ If this is not possible, you can use multiple accounts by specifying multiple [p
 
 ## Daily Infrastructure Snapshot
 
-It is advised to run `cloudquery fetch` via cron on a daily basis (on lambda or any other secure place that has access to the required infrastructure). This, of course, varies highly depending on your needs, and can run even more frequently.
+It is advised to run `cloudquery sync` via cron on a daily basis (on lambda or any other secure place that has access to the required infrastructure). This, of course, varies highly depending on your needs, and can run even more frequently.

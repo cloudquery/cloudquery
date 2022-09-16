@@ -15,15 +15,15 @@ import { Callout } from 'nextra-theme-docs'
 
 ## Running
 
-### Init command
+### Generate command
 
-After installing CloudQuery, you need to generate a `cloudquery.yml` file that will describe which cloud provider you want to use and which resources you want CloudQuery to ETL:
+After installing CloudQuery,
+you need to generate configuration that will describe at least one source plugin to extract data from and at least one
+destination plugins to save the data.
 
 ```bash
-cloudquery init azure
-
-# cloudquery init azure aws # This will generate a config containing azure and aws providers
-# cloudquery init --help # Show all possible auto generated configs and flags
+cloudquery gen source azure
+cloudquery gen destination postgresql
 ```
 
 All official and approved community plugins are listed [here](/plugins) with their respective documentation.
@@ -32,10 +32,8 @@ All official and approved community plugins are listed [here](/plugins) with the
 
 ### Authenticate with Azure
 
-CloudQuery needs to be authenticated with your Azure account in order to `fetch` information about your cloud setup.
-
-You can either authenticate with `az login` (when running cloudquery locally), or by using a "service principal"
-and exporting environment variables (appropriate for automated deployments).
+CloudQuery needs to be authenticated with your Azure account in order to `sync` information from your cloud setup to your
+chosen destination/database.
 
 <Tabs options={['az login', 'Service Principal']}>
 <Tab>

@@ -1,6 +1,6 @@
 {
   "overview": "Overview",
+  "plugins": "Plugins",
   "environment-variable-substitution": "Environment variable substitution",
-  "providers": "Providers",
   "proxy-configuration": "Using CloudQuery CLI with a Proxy Server"
 }

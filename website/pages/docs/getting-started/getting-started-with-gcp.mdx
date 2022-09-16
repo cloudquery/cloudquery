@@ -14,15 +14,13 @@ import { Tabs, Tab } from '../../../components/Tabs'
 
 ## Running
 
-### Init command
+### Generate command
 
 After installing CloudQuery, you need to generate a `cloudquery.yml` file that will describe which cloud provider you want to use and which resources you want CloudQuery to ETL:
 
 ```bash
-cloudquery init gcp
-
-# cloudquery init gcp aws # This will generate a config containing gcp and aws providers
-# cloudquery init --help # Show all possible auto generated configs and flags
+cloudquery gen source gcp
+cloudquery destination postgresql
 ```
 
 All official and approved community plugins are listed [here](/plugins) with their respective documentation.
@@ -31,7 +29,8 @@ All official and approved community plugins are listed [here](/plugins) with the
 
 ### Authenticate with GCP
 
-CloudQuery needs to be authenticated with your GCP account in order to `fetch` information about your cloud setup.
+CloudQuery needs to be authenticated with your GCP account in order to `sync` information from your cloud setup to your
+chosen destination/database.
 
 <ReadonlyTip />
 

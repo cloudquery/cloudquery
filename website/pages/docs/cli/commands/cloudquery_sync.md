@@ -1,25 +1,36 @@
 ---
-title: "cloudquery"
+title: "sync"
 ---
-## cloudquery
+## cloudquery sync
 
-CloudQuery CLI
+Sync resources from configured source plugins to destination
 
 ### Synopsis
 
-CloudQuery CLI
+Sync resources from configured source plugins to destination
 
-Open source data integration that works.
+```
+cloudquery sync [directory] [flags]
+```
 
-Find more information at:
-	https://cloudquery.io
+### Examples
+
+```
+# Sync configured providers to PostgreSQL as configured in cloudquery.yml
+	cloudquery sync ./directory
+```
 
 ### Options
 
 ```
+  -h, --help   help for sync
+```
+
+### Options inherited from parent commands
+
+```
       --color string           Enable colorized output (on, off, auto) (default "auto")
       --data-dir string        set persistent data directory (env: CQ_DATA_DIR) (default "./.cq")
-  -h, --help                   help for cloudquery
       --log-console            enable console logging
       --log-file-name string   Log filename (default "cloudquery.log")
       --log-format string      Logging format (json, text) (default "text")
@@ -30,7 +41,5 @@ Find more information at:
 
 ### SEE ALSO
 
-* [cloudquery completion](/docs/cli/commands/cloudquery_completion)	 - Generate the autocompletion script for the specified shell
-* [cloudquery generate](/docs/cli/commands/cloudquery_generate)	 - Generate initial config file for source and destination plugins
-* [cloudquery sync](/docs/cli/commands/cloudquery_sync)	 - Sync resources from configured source plugins to destination
+* [cloudquery](/docs/cli/commands/cloudquery)	 - CloudQuery CLI
 

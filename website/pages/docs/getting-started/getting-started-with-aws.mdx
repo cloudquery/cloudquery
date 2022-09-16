@@ -17,13 +17,13 @@ import { Callout } from 'nextra-theme-docs'
 
 ### Init command
 
-After installing CloudQuery, you need to generate a `cloudquery.yml` file that will describe which cloud provider you want to use and which resources you want CloudQuery to ETL:
+After installing CloudQuery,
+you need to generate configuration that will describe at least one source plugin to extract data from and at least one
+destination plugins to save the data.
 
 ```bash
-cloudquery init aws
-
-# cloudquery init aws gcp # This will generate a config containing aws and gcp providers
-# cloudquery init --help # Show all possible auto generated configs and flags
+cloudquery gen source aws
+cloudquery gen destination postgresql
 ```
 
 All official and approved community plugins are listed [here](/plugins) with their respective documentation.
@@ -32,7 +32,8 @@ All official and approved community plugins are listed [here](/plugins) with the
 
 ### Authenticate with AWS
 
-CloudQuery needs to be authenticated with your AWS account in order to `fetch` information about your cloud setup.
+CloudQuery needs to be authenticated with your AWS account in order to `sync` information from your cloud setup to your
+chosen destination/database.
 
 <Callout type="info">
 CloudQuery requires only _read_ permissions (we will never make any changes to your cloud setup).
@@ -157,13 +158,12 @@ credentials manually. For more information on configuring IAM, see the AWS docs 
 
 If you have multiple AWS accounts/organizations, you can follow the steps set in the [cq-provider-aws README](/plugins/aws#multi-account-configuration-aws-organizations).
 
-### Fetch Command
+### Sync Command
 
 Once `cloudquery.yml` is generated and you are authenticated with AWS, run the following command to fetch the resources.
 
 ```bash
-cloudquery fetch
-# cloudquery fetch --help # Show all possible fetch flags
+cloudquery sync .
 ```
 
 ### Exploring and Running Queries

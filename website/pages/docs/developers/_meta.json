@@ -1,7 +1,7 @@
 {
   "architecture": "Architecture",
-  "debugging": "Debugging a Provider",
   "developing-new-provider": "Developing a New Provider",
+  "debugging": "Debugging a Provider",
   "sdk": "SDK",
   "cq-gen": "Generating resources",
   "tutorials": "Tutorials"

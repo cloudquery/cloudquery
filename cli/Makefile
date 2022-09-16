@@ -7,3 +7,7 @@ lint:
 .PHONY: test-unit
 test-unit:
 	go test ./...
+
+.PHONY: gen-docs
+gen-docs:
+	go run main.go doc ../website/pages/docs/cli/commands

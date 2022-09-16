@@ -6,17 +6,17 @@ title: Glossary
 
 ## CLI
 
-The CloudQuery CLI (command-line interface) is the core [open-source](https://github.com/cloudquery/cloudquery) project that expects to be run on your local machine as CLI or on a remote machine.
+The CloudQuery CLI (command-line interface) [open-source](https://github.com/cloudquery/cloudquery/tree/main/cli) is in charge of downloading and executing appropriate source plugins and then sending the data to the appropriate destination plugins.
 
 ## SDK
 
-The [CloudQuery SDK](https://github.com/cloudquery/cq-provider-sdk) is the open-source SDK library used by official and community plugins to integrate with the CloudQuery ecosystem.
+The [CloudQuery SDK](https://github.com/cloudquery/plugin-sdk) is the open-source SDK library used by official and community plugins to integrate with the CloudQuery ecosystem.
 The SDK makes it easy to write new plugins (both source and destination plugins) and takes care of the TL in ETL (extract-transform-load).
 
-## Fetch
+## Sync
 
-Fetch is both the CLI command and the process when CloudQuery extracts all the configured resources in a directory
-with `*.cq.yml`, transforms them, and loads them into the destination (database).
+Sync is both the CLI command and the process when CloudQuery extracts all the configured resources in a directory
+with `*.yml`, transforms them, and loads them into the destination (database).
 
 ## Policy
 

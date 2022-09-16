@@ -1,29 +1,19 @@
 # Environment variable substitution
 
-`cloudquery.yml` supports substitution of values from environment variables. This allows to extract security sensitive data (like passwords etc) or variable data (that you want to change without touching CloudQuery configuration) from configuration file and store in the environment variable. To use the feature, set an environment variable before running CLI, adding a `CQ_VAR` prefix to your desired name:
+CloudQuery configuration `.yml` files supports substitution of values
+from environment variables. This allows to extract security sensitive data (like passwords etc) or variable data (that you want to change without touching CloudQuery configuration) from configuration file and store in the environment variable
 
-```bash
-export CQ_VAR_AWS_VERSION=latest
-export CQ_VAR_ARN=some_value
-export CQ_VAR_DSN="postgres://postgres:pass@localhost:5432/postgres?sslmode=disable"
-```
+## Example
 
-And use it inside `cloudquery.yml`:
+And use it inside `gcp.yml`:
 
 ```yaml
-cloudquery:
-  providers:
-    - name: aws
-      version: "${AWS_VERSION}"
-
-  connection:
-    dsn: "${DSN}"
-
-providers:
-  - name: aws
-    accounts:
-      - name: "<YOUR ID>"
-        role_arn: "${ARN}"
+kind: destination
+spec:
+  name: postgresql
+  tables: [""]
+  spec:
+    connection_string: ${PG_CONNECTION_STRING}
 ```
 
-Note that only environment variables starting with `CQ_VAR` are available for use in `cloudquery.yml`, and their prefix is removed.
+`PG_CONNECTION_STRING` will be sourced from the environment and replaces with the `${PG_CONNECTION_STRING}` before processing.

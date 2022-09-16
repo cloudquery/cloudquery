@@ -14,11 +14,7 @@ First things first - feel free to join our new [Discord](https://discord.gg/2mPf
 
 There are couple of ways to get help for any CloudQuery-related issues or questions.
 
-1. Check out previous issues at [https://github.com/cloudquery](https://github.com/cloudquery) and open a new one if no previous one has been opened or resolved.
-
-### Intercom Chat
-
-Our Intercom chat is available on all our public sites, so feel free to drop us a line there.
+1. Check out previous issues at [https://github.com/cloudquery/cloudquery](https://github.com/cloudquery/cloudquery) and open a new one if no previous one has been opened or resolved.
 
 ## Debugging
 
