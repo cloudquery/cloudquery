@@ -38,7 +38,7 @@ func MQResources() []*Resource {
 					{
 						Name:     "broker_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentIdResolver`,
+						Resolver: `schema.ParentResourceFieldResolver("arn")`,
 					},
 				}...),
 			Relations: []string{
@@ -48,7 +48,7 @@ func MQResources() []*Resource {
 		{
 			SubService: "broker_configuration_revisions",
 			Struct:     &mq.DescribeConfigurationRevisionOutput{},
-			SkipFields: []string{},
+			SkipFields: []string{"Data"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -57,12 +57,17 @@ func MQResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
 					},
+					{
+						Name:     "data",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveBrokerConfigurationRevisionsData`,
+					},
 				}...),
 		},
 		{
 			SubService: "broker_users",
 			Struct:     &mq.DescribeUserOutput{},
-			SkipFields: []string{"Password"},
+			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

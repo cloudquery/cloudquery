@@ -29,6 +29,11 @@ func BrokerConfigurationRevisions() *schema.Table {
 				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
+				Name:     "data",
+				Type:     schema.TypeJSON,
+				Resolver: resolveBrokerConfigurationRevisionsData,
+			},
+			{
 				Name:     "configuration_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ConfigurationId"),
@@ -37,11 +42,6 @@ func BrokerConfigurationRevisions() *schema.Table {
 				Name:     "created",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("Created"),
-			},
-			{
-				Name:     "data",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Data"),
 			},
 			{
 				Name:     "description",
