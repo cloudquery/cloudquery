@@ -32,11 +32,6 @@ func Projects() *schema.Table {
 				},
 			},
 			{
-				Name:     "arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
-			},
-			{
 				Name:     "artifacts",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Artifacts"),

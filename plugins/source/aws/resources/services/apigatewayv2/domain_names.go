@@ -11,7 +11,7 @@ func DomainNames() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_apigatewayv2_domain_names",
 		Resolver:  fetchApigatewayv2DomainNames,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigatewayv2"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

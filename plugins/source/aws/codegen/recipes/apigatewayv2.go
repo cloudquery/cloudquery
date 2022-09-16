@@ -11,7 +11,6 @@ func APIGatewayV2Resources() []*Resource {
 		{
 			SubService: "apis",
 			Struct:     &types.Api{},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -26,7 +25,6 @@ func APIGatewayV2Resources() []*Resource {
 		{
 			SubService: "vpc_links",
 			Struct:     &types.VpcLink{},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -41,7 +39,6 @@ func APIGatewayV2Resources() []*Resource {
 		{
 			SubService: "domain_name_api_mappings",
 			Struct:     &types.ApiMapping{},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -56,7 +53,6 @@ func APIGatewayV2Resources() []*Resource {
 		{
 			SubService: "domain_names",
 			Struct:     &types.DomainName{},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("apigatewayv2")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -72,6 +68,7 @@ func APIGatewayV2Resources() []*Resource {
 
 	for _, r := range resources {
 		r.Service = "apigatewayv2"
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("apigateway")`
 	}
 	return resources
 }
