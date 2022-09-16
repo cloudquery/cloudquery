@@ -45,5 +45,5 @@ func buildIotJobs(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIotJobs(t *testing.T) {
-	client.AwsMockTestHelper(t, IotJobs(), buildIotJobs, client.TestOptions{})
+	client.AwsMockTestHelper(t, Jobs(), buildIotJobs, client.TestOptions{})
 }

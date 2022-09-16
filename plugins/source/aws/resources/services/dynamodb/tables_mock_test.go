@@ -81,5 +81,5 @@ func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestDynamodbTables(t *testing.T) {
-	client.AwsMockTestHelper(t, DynamodbTables(), buildDynamodbTablesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Tables(), buildDynamodbTablesMock, client.TestOptions{})
 }

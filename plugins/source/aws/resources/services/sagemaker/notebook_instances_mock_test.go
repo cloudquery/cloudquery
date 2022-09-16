@@ -48,5 +48,5 @@ func buildSageMakerNotebookInstances(t *testing.T, ctrl *gomock.Controller) clie
 }
 
 func TestSageMakerNotebookInstances(t *testing.T) {
-	client.AwsMockTestHelper(t, SagemakerNotebookInstances(), buildSageMakerNotebookInstances, client.TestOptions{})
+	client.AwsMockTestHelper(t, NotebookInstances(), buildSageMakerNotebookInstances, client.TestOptions{})
 }

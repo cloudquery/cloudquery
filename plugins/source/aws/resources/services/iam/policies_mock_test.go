@@ -47,5 +47,5 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIamPolicies(t *testing.T) {
-	client.AwsMockTestHelper(t, IamPolicies(), buildIamPolicies, client.TestOptions{})
+	client.AwsMockTestHelper(t, Policies(), buildIamPolicies, client.TestOptions{})
 }

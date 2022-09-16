@@ -37,5 +37,5 @@ func buildEc2EbsSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services
 }
 
 func TestEc2EbsSnapshots(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2EbsSnapshots(), buildEc2EbsSnapshots, client.TestOptions{})
+	client.AwsMockTestHelper(t, EbsSnapshots(), buildEc2EbsSnapshots, client.TestOptions{})
 }

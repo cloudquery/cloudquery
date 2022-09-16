@@ -66,5 +66,5 @@ func buildElbv1LoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestElbv1LoadBalancers(t *testing.T) {
-	client.AwsMockTestHelper(t, Elbv1LoadBalancers(), buildElbv1LoadBalancers, client.TestOptions{})
+	client.AwsMockTestHelper(t, LoadBalancers(), buildElbv1LoadBalancers, client.TestOptions{})
 }

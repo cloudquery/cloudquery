@@ -29,5 +29,5 @@ func buildAutoscalingSheduledActionMock(t *testing.T, ctrl *gomock.Controller) c
 }
 
 func TestAutoscalingSheduledActions(t *testing.T) {
-	client.AwsMockTestHelper(t, AutoscalingScheduledActions(), buildAutoscalingSheduledActionMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, ScheduledActions(), buildAutoscalingSheduledActionMock, client.TestOptions{})
 }

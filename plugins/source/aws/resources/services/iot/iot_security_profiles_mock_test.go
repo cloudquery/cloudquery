@@ -55,5 +55,5 @@ func buildIotSecurityProfilesMock(t *testing.T, ctrl *gomock.Controller) client.
 }
 
 func TestIotSecurityProfiles(t *testing.T) {
-	client.AwsMockTestHelper(t, IotSecurityProfiles(), buildIotSecurityProfilesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, SecurityProfiles(), buildIotSecurityProfilesMock, client.TestOptions{})
 }
