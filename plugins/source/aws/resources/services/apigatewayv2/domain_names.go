@@ -26,10 +26,7 @@ func DomainNames() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveDomainNameArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: resolveDomainNameArn(),
 			},
 			{
 				Name:     "domain_name",
@@ -56,6 +53,10 @@ func DomainNames() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			DomainNameRestApiMappings(),
 		},
 	}
 }

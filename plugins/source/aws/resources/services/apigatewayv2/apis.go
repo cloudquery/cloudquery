@@ -26,10 +26,12 @@ func Apis() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveApiArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: resolveApiArn(),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ApiId"),
 			},
 			{
 				Name:     "name",
@@ -55,11 +57,6 @@ func Apis() *schema.Table {
 				Name:     "api_gateway_managed",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("ApiGatewayManaged"),
-			},
-			{
-				Name:     "api_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ApiId"),
 			},
 			{
 				Name:     "api_key_selection_expression",
@@ -111,6 +108,15 @@ func Apis() *schema.Table {
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("Warnings"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			ApiAuthorizers(),
+			ApiDeployments(),
+			ApiIntegrations(),
+			ApiModels(),
+			ApiRoutes(),
+			ApiStages(),
 		},
 	}
 }

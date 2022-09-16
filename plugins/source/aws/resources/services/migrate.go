@@ -115,10 +115,6 @@ func extractResources(s, dirname string) []resource {
 	relations := []string{}
 	resources := []resource{res}
 	substr := "Relations: []*schema.Table{"
-	if strings.Contains(s, "PathTableResolver(") {
-		// skip resources with PathTableResolver and their descendants
-		return []resource{}
-	}
 	rs := strings.Index(s, substr)
 	if rs != -1 {
 		index := rs + len(substr) + 1
@@ -129,6 +125,12 @@ func extractResources(s, dirname string) []resource {
 			}
 			re := findMatchingBracket(s, rs)
 			rname := findName(s[rs:re], 0, dirname)
+			pathTableIndex := strings.Index(s[rs:re], "PathTableResolver(")
+			relationsIndex := strings.Index(s[rs:re], "Relations: []*schema.Table{")
+			if pathTableIndex != -1 && (pathTableIndex < relationsIndex || relationsIndex == -1) {
+				// skip resources with PathTableResolver and their descendants
+				return []resource{}
+			}
 			relations = append(relations, strcase.ToGoPascal(rname))
 			resources = append(resources, extractResources(s[rs:re], dirname)...)
 			index = re + 1

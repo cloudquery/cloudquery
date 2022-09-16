@@ -26,10 +26,7 @@ func VpcLinks() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveVpcLinkArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: resolveVpcLinkArn(),
 			},
 			{
 				Name:     "name",

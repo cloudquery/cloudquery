@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func DomainNameApiMappings() *schema.Table {
+func DomainNameRestApiMappings() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_domain_name_api_mappings",
-		Resolver:  fetchApigatewayv2DomainNameApiMappings,
+		Name:      "aws_apigatewayv2_domain_name_rest_api_mappings",
+		Resolver:  fetchApigatewayv2DomainNameRestApiMappings,
 		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
@@ -24,12 +24,14 @@ func DomainNameApiMappings() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "domain_name_arn",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("arn"),
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: resolveDomainNameApiMappingArn,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Resolver: resolveDomainNameRestApiMappingArn(),
 			},
 			{
 				Name:     "api_id",
