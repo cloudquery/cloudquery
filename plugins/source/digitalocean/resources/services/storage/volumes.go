@@ -9,7 +9,7 @@ import (
 func Volumes() *schema.Table {
 	return &schema.Table{
 		Name:     "digitalocean_storage_volumes",
-		Resolver: fetchVolumes,
+		Resolver: fetchStorageVolumes,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

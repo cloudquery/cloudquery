@@ -1,7 +1,8 @@
-package codegen
+package main
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/codegen/recipes"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/droplets"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/spaces"
 	"github.com/cloudquery/plugin-sdk/codegen"
@@ -9,17 +10,13 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-var emptyString = ""
-
-var Resources = []*Resource{
+var Resources = []*recipes.Resource{
 	{
 		Service:      "account",
 		Template:     "resource_get",
 		MockTemplate: "resource_get_mock",
 		Struct:       godo.Account{},
-		Multiplex:    &emptyString,
 		ChildTable:   false,
-		SkipMock:     false,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "uuid",
@@ -35,7 +32,6 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		MockTemplate: "resource_list_mock",
 		Struct:       godo.CDN{},
-		Multiplex:    &emptyString,
 		ChildTable:   false,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -54,7 +50,6 @@ var Resources = []*Resource{
 		ResponsePath: ".BillingHistory",
 		Struct:       godo.BillingHistoryEntry{},
 		MockStruct:   godo.BillingHistory{},
-		Multiplex:    &emptyString,
 		ChildTable:   false,
 		MockWrapper:  true,
 		ExtraColumns: []codegen.ColumnDefinition{
@@ -73,7 +68,6 @@ var Resources = []*Resource{
 		MockTemplate: "resource_list_mock",
 		SubService:   "alert_policies",
 		Struct:       godo.AlertPolicy{},
-		Multiplex:    &emptyString,
 		ChildTable:   false,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -91,7 +85,6 @@ var Resources = []*Resource{
 		Template:     "resource_get",
 		MockTemplate: "resource_get_mock",
 		Struct:       godo.Balance{},
-		Multiplex:    &emptyString,
 		ChildTable:   false,
 	},
 	{
@@ -99,7 +92,6 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		MockTemplate: "resource_list_mock",
 		Struct:       godo.Certificate{},
-		Multiplex:    &emptyString,
 		ChildTable:   false,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -116,8 +108,7 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		MockTemplate: "resource_list_mock",
 		Struct:       godo.Database{},
-		Multiplex:    &emptyString,
-		Relations:    []string{"FirewallRules", "Replicas", "Backups"},
+		Relations:    []string{"FirewallRules()", "Replicas()", "Backups()"},
 		ChildTable:   false,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -136,7 +127,6 @@ var Resources = []*Resource{
 		MockTemplate: "resource_list_child_mock",
 		Struct:       godo.DatabaseBackup{},
 		ParentStruct: godo.Database{},
-		Multiplex:    &emptyString,
 		ChildTable:   true,
 	},
 	{
@@ -146,7 +136,6 @@ var Resources = []*Resource{
 		MockTemplate: "resource_list_child_mock",
 		Struct:       godo.DatabaseReplica{},
 		ParentStruct: godo.Database{},
-		Multiplex:    &emptyString,
 		ChildTable:   true,
 	},
 	{
@@ -154,19 +143,15 @@ var Resources = []*Resource{
 		SubService:   "firewall_rules",
 		Template:     "resource_get",
 		MockTemplate: "resource_get_child_mock",
-		Imports:      []string{"github.com/digitalocean/godo"},
 		Struct:       godo.DatabaseFirewallRule{},
 		ParentStruct: godo.Database{},
-		Multiplex:    &emptyString,
 		ChildTable:   true,
 	},
 	{
 		Service:   "domains",
 		Template:  "resource_list",
 		Struct:    godo.Domain{},
-		Multiplex: &emptyString,
-		SkipMock:  false,
-		Relations: []string{"Records"},
+		Relations: []string{"Records()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
@@ -185,9 +170,6 @@ var Resources = []*Resource{
 		Args:         ", p.Name",
 		Struct:       godo.DomainRecord{},
 		ParentStruct: godo.Domain{},
-		FunctionName: "Records",
-		Multiplex:    &emptyString,
-		SkipMock:     false,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -202,9 +184,7 @@ var Resources = []*Resource{
 		Service:   "droplets",
 		Template:  "resource_list",
 		Struct:    godo.Droplet{},
-		Multiplex: &emptyString,
-		SkipMock:  false,
-		Relations: []string{"Neighbors"},
+		Relations: []string{"Neighbors()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "backup_ids",
@@ -235,12 +215,8 @@ var Resources = []*Resource{
 		SubService:   "neighbors",
 		Template:     "resource_list",
 		MockTemplate: "resource_list_child_mock",
-		FunctionName: "Neighbors",
 		Struct:       &droplets.NeighborWrapper{},
 		ParentStruct: &godo.Droplet{},
-		Multiplex:    &emptyString,
-		SkipMock:     true,
-		SkipFetch:    true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "neighbor_id",
@@ -252,11 +228,9 @@ var Resources = []*Resource{
 		SkipFields: []string{"NeighborId"},
 	},
 	{
-		Service:   "firewalls",
-		Template:  "resource_list",
-		Struct:    godo.Firewall{},
-		Multiplex: &emptyString,
-		SkipMock:  false,
+		Service:  "firewalls",
+		Template: "resource_list",
+		Struct:   godo.Firewall{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "droplet_ids",
@@ -274,11 +248,9 @@ var Resources = []*Resource{
 	},
 
 	{
-		Service:   "floating_ips",
-		Template:  "resource_list",
-		Struct:    godo.FloatingIP{},
-		Multiplex: &emptyString,
-		SkipMock:  false,
+		Service:  "floating_ips",
+		Template: "resource_list",
+		Struct:   godo.FloatingIP{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "ip",
@@ -290,11 +262,9 @@ var Resources = []*Resource{
 		SkipFields: []string{"IP"},
 	},
 	{
-		Service:   "images",
-		Template:  "resource_list",
-		Struct:    godo.Image{},
-		Multiplex: &emptyString,
-		SkipMock:  false,
+		Service:  "images",
+		Template: "resource_list",
+		Struct:   godo.Image{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -306,11 +276,9 @@ var Resources = []*Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:   "keys",
-		Template:  "resource_list",
-		Struct:    godo.Key{},
-		Multiplex: &emptyString,
-		SkipMock:  false,
+		Service:  "keys",
+		Template: "resource_list",
+		Struct:   godo.Key{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -325,9 +293,7 @@ var Resources = []*Resource{
 		Service:   "projects",
 		Template:  "resource_list",
 		Struct:    godo.Project{},
-		Multiplex: &emptyString,
-		SkipMock:  false,
-		Relations: []string{"Resources"},
+		Relations: []string{"Resources()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -345,8 +311,6 @@ var Resources = []*Resource{
 		MockTemplate: "resource_list_child_mock",
 		Struct:       godo.ProjectResource{},
 		ParentStruct: godo.Project{},
-		Multiplex:    &emptyString,
-		SkipMock:     false,
 		ChildTable:   true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -363,10 +327,8 @@ var Resources = []*Resource{
 		Template:     "resource_get",
 		MockTemplate: "resource_get_mock",
 		Struct:       &godo.Registry{},
-		Multiplex:    &emptyString,
 		ChildTable:   false,
-		SkipMock:     false,
-		Relations:    []string{"Repositories"},
+		Relations:    []string{"Repositories()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
@@ -385,7 +347,6 @@ var Resources = []*Resource{
 		MockTemplate: "resource_list_child_mock",
 		Struct:       &godo.Repository{},
 		ParentStruct: &godo.Registry{},
-		Multiplex:    &emptyString,
 		ChildTable:   true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -402,14 +363,12 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		MockTemplate: "resource_list_mock",
 		Struct:       godo.Size{},
-		Multiplex:    &emptyString,
 	},
 	{
 		Service:      "snapshots",
 		Template:     "resource_list",
 		MockTemplate: "resource_list_mock",
 		Struct:       godo.Snapshot{},
-		Multiplex:    &emptyString,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -424,10 +383,9 @@ var Resources = []*Resource{
 		Service:   "spaces",
 		Template:  "resource_list",
 		Struct:    spaces.WrappedBucket{},
-		Multiplex: &emptyString,
-		SkipMock:  true,
-		SkipFetch: true,
-		Relations: []string{"Cors"},
+		Multiplex: "client.SpacesRegionMultiplex",
+		Imports:   []string{"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"},
+		Relations: []string{"Cors()"},
 	},
 	{
 		Service:      "spaces",
@@ -435,10 +393,7 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		Struct:       types.CORSRule{},
 		ParentStruct: spaces.WrappedBucket{},
-		Multiplex:    &emptyString,
-		SkipMock:     true,
 		ChildTable:   true,
-		SkipFetch:    true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -455,8 +410,6 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		MockTemplate: "resource_list_mock",
 		Struct:       godo.Volume{},
-		Multiplex:    &emptyString,
-		SkipFetch:    true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -477,8 +430,7 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		MockTemplate: "resource_list_mock",
 		Struct:       &godo.VPC{},
-		Multiplex:    &emptyString,
-		Relations:    []string{"Members"},
+		Relations:    []string{"Members()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -496,9 +448,7 @@ var Resources = []*Resource{
 		Template:     "resource_list",
 		Struct:       &godo.VPCMember{},
 		ParentStruct: &godo.VPC{},
-		Multiplex:    &emptyString,
 		ChildTable:   true,
-		SkipMock:     true,
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "urn",
@@ -509,4 +459,10 @@ var Resources = []*Resource{
 		},
 		SkipFields: []string{"URN"},
 	},
+}
+
+func main() {
+	for _, r := range Resources {
+		r.Generate()
+	}
 }

@@ -1,4 +1,4 @@
-package storage
+package monitoring
 
 import (
 	"context"
@@ -8,15 +8,16 @@ import (
 	"github.com/digitalocean/godo"
 )
 
-func fetchStorageVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchMonitoringAlertPolicies(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
-	opt := &godo.ListVolumeParams{
-		ListOptions: &godo.ListOptions{PerPage: client.MaxItemsPerPage},
+
+	opt := &godo.ListOptions{
+		PerPage: client.MaxItemsPerPage,
 	}
 
 	done := false
 	listFunc := func() error {
-		data, resp, err := svc.Services.Storage.ListVolumes(ctx, opt)
+		data, resp, err := svc.Services.Monitoring.ListAlertPolicies(ctx, opt)
 		if err != nil {
 			return err
 		}
@@ -32,7 +33,7 @@ func fetchStorageVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.
 			return err
 		}
 		// set the page we want for the next request
-		opt.ListOptions.Page = page + 1
+		opt.Page = page + 1
 		return nil
 	}
 

@@ -13,7 +13,7 @@ type NeighborWrapper struct {
 	NeighborId int
 }
 
-func fetchNeighbors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchDropletsNeighbors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client)
 	droplet := parent.Item.(godo.Droplet)
 

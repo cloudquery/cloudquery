@@ -3,16 +3,13 @@
 package account
 
 import (
-	"context"
-
-	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Account() *schema.Table {
 	return &schema.Table{
 		Name:     "digitalocean_account",
-		Resolver: fetchAccount,
+		Resolver: fetchAccountAccount,
 		Columns: []schema.Column{
 			{
 				Name:     "uuid",
@@ -69,23 +66,4 @@ func Account() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchAccount(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
-	svc := meta.(*client.Client)
-	getFunc := func() error {
-		response, _, err := svc.Services.Account.Get(ctx)
-		if err != nil {
-			return err
-		}
-		res <- response
-		return nil
-	}
-
-	err := client.ThrottleWrapper(ctx, svc, getFunc)
-	if err != nil {
-		return err
-	}
-	return nil
 }

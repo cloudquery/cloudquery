@@ -9,7 +9,7 @@ import (
 func Cors() *schema.Table {
 	return &schema.Table{
 		Name:     "digitalocean_spaces_cors",
-		Resolver: fetchCors,
+		Resolver: fetchSpacesCors,
 		Columns: []schema.Column{
 			{
 				Name:     "id",

@@ -3,16 +3,13 @@
 package registry
 
 import (
-	"context"
-
-	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Registry() *schema.Table {
 	return &schema.Table{
 		Name:     "digitalocean_registry",
-		Resolver: fetchRegistry,
+		Resolver: fetchRegistryRegistry,
 		Columns: []schema.Column{
 			{
 				Name:     "name",
@@ -48,23 +45,4 @@ func Registry() *schema.Table {
 			Repositories(),
 		},
 	}
-}
-
-func fetchRegistry(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
-	svc := meta.(*client.Client)
-	getFunc := func() error {
-		response, _, err := svc.Services.Registry.Get(ctx)
-		if err != nil {
-			return err
-		}
-		res <- response
-		return nil
-	}
-
-	err := client.ThrottleWrapper(ctx, svc, getFunc)
-	if err != nil {
-		return err
-	}
-	return nil
 }

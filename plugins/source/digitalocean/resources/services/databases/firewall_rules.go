@@ -3,18 +3,13 @@
 package databases
 
 import (
-	"context"
-
-	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
-
-	"github.com/digitalocean/godo"
 )
 
 func FirewallRules() *schema.Table {
 	return &schema.Table{
 		Name:     "digitalocean_databases_firewall_rules",
-		Resolver: fetchFirewallRules,
+		Resolver: fetchDatabasesFirewallRules,
 		Columns: []schema.Column{
 			{
 				Name:     "uuid",
@@ -43,23 +38,4 @@ func FirewallRules() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchFirewallRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	p := parent.Item.(godo.Database)
-	svc := meta.(*client.Client)
-	getFunc := func() error {
-		response, _, err := svc.Services.Databases.GetFirewallRules(ctx, p.ID)
-		if err != nil {
-			return err
-		}
-		res <- response
-		return nil
-	}
-
-	err := client.ThrottleWrapper(ctx, svc, getFunc)
-	if err != nil {
-		return err
-	}
-	return nil
 }

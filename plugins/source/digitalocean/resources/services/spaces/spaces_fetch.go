@@ -18,7 +18,7 @@ type WrappedBucket struct {
 	ACLs     []types.Grant
 }
 
-func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSpacesSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	log := meta.Logger()
 
@@ -45,7 +45,7 @@ func fetchSpaces(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	return nil
 }
 
-func fetchCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSpacesCors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var ae smithy.APIError
 	r := parent.Item.(*WrappedBucket)
 	svc := meta.(*client.Client).Services

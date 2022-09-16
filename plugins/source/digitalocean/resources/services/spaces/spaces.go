@@ -4,12 +4,15 @@ package spaces
 
 import (
 	"github.com/cloudquery/plugin-sdk/schema"
+
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 )
 
 func Spaces() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_spaces",
-		Resolver: fetchSpaces,
+		Name:      "digitalocean_spaces",
+		Resolver:  fetchSpacesSpaces,
+		Multiplex: client.SpacesRegionMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "bucket",

@@ -3,16 +3,13 @@
 package balance
 
 import (
-	"context"
-
-	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Balance() *schema.Table {
 	return &schema.Table{
 		Name:     "digitalocean_balance",
-		Resolver: fetchBalance,
+		Resolver: fetchBalanceBalance,
 		Columns: []schema.Column{
 			{
 				Name:     "month_to_date_balance",
@@ -36,23 +33,4 @@ func Balance() *schema.Table {
 			},
 		},
 	}
-}
-
-func fetchBalance(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-
-	svc := meta.(*client.Client)
-	getFunc := func() error {
-		response, _, err := svc.Services.Balance.Get(ctx)
-		if err != nil {
-			return err
-		}
-		res <- response
-		return nil
-	}
-
-	err := client.ThrottleWrapper(ctx, svc, getFunc)
-	if err != nil {
-		return err
-	}
-	return nil
 }
