@@ -24,9 +24,12 @@ func Listeners() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "load_balancer_arn",
+				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.PathResolver("ListenerArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "tags",
@@ -47,11 +50,6 @@ func Listeners() *schema.Table {
 				Name:     "default_actions",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("DefaultActions"),
-			},
-			{
-				Name:     "listener_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ListenerArn"),
 			},
 			{
 				Name:     "load_balancer_arn",

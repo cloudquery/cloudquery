@@ -11,7 +11,7 @@ func Filesystems() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_efs_filesystems",
 		Resolver:  fetchEfsFilesystems,
-		Multiplex: client.ServiceAccountRegionMultiplexer("efs"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("elasticfilesystem"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

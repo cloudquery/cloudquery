@@ -32,7 +32,7 @@ var efsResources = []*Resource{
 func EFSResources() []*Resource {
 	for _, r := range efsResources {
 		r.Service = "efs"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("efs")`
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("elasticfilesystem")`
 	}
 	return efsResources
 }
