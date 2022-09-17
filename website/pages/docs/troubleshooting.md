@@ -21,3 +21,5 @@ There are couple of ways to get help for any CloudQuery-related issues or questi
 ### Verbose Logging
 
 Usually the first step that will be needed to debug/resolve an issue is to run `cloudquery` with `-v` to enable verbose logging.
+
+## Rate limiting

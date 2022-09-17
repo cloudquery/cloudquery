@@ -13,8 +13,17 @@ CloudQuery has a pluggable architecture and uses the [gRPC](https://grpc.io/docs
 - Downloading, verifying, and running providers.
 - Running policy packs.
 
-## CloudQuery Provider Responsibilities
+## CloudQuery Plugin Responsibilities
 
 - Intended to be run only by cloudquery-core.
 - Communicates with cloudquery-core over gRPC to receive commands and actions.
 - Initialization, authentication, and fetching data via third-party cloud/SaaS API.
+
+## SDK
+
+CloudQuery providers utilize `plugin-sdk`, which abstracts most of the TL \(in ETL, extract-transform-load\). So, as a developer, you will only have to implement the \("E" in "ETL"\) initializing, authentication, and fetching of the data via the third-party APIs — the SDK will take care of transforming the data and loading it into the database. Also, your plugin will get support out-of-the-box for new features and things like other database support as cloudquery-core progresses.
+
+## Resources
+
+- [Creating a new plugin Tutorial](https://www.cloudquery.io/docs/developers/tutorials/creating-new-plugin).
+- [cloudquery/plugin-sdk documentation](https://pkg.go.dev/github.com/cloudquery/plugin-sdk)

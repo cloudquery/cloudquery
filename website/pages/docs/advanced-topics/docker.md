@@ -16,7 +16,7 @@ CloudQuery uses a YAML file as the primary means of configuration, you can execu
 docker run \
   -v <ABSOLUTE PATH TO CONFIG>/cloudquery.yml:/config/cloudquery.yml \
   ghcr.io/cloudquery/cloudquery:latest \
-  fetch --config /config/cloudquery.yml
+  sync --config /config/cloudquery.yml
 ```
 
 As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](/docs/cli/commands/cloudquery_options) with the docker container. You will also need to make sure you load any ENV variables for providers, such as your `AWS_*` keys etc.

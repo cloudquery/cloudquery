@@ -1,7 +1,0 @@
-{
-  "sync": "Sync",
-  "migrations": "Migrations",
-  "commands": "Commands",
-  "docker": "Docker",
-  "rate_limiting": "Rate Limiting"
-}
