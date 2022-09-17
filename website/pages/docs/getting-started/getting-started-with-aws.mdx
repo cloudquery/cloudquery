@@ -22,8 +22,8 @@ you need to generate configuration that will describe at least one source plugin
 destination plugins to save the data.
 
 ```bash
-cloudquery gen source aws
 cloudquery gen destination postgresql
+cloudquery gen source aws
 ```
 
 All official and approved community plugins are listed [here](/plugins) with their respective documentation.
@@ -39,7 +39,7 @@ chosen destination/database.
 CloudQuery requires only _read_ permissions (we will never make any changes to your cloud setup).
 Attaching the `ReadOnlyAccess` policy to the user/role CloudQuery is running as should work for the most part,
 but you can fine-tune it even more to have read-only access for the specific set of resources that you want
-CloudQuery to fetch.
+CloudQuery to sync.
 [See also this blog post](https://alestic.com/2015/10/aws-iam-readonly-too-permissive/).
 </Callout>
 
@@ -160,7 +160,7 @@ If you have multiple AWS accounts/organizations, you can follow the steps set in
 
 ### Sync Command
 
-Once `cloudquery.yml` is generated and you are authenticated with AWS, run the following command to fetch the resources.
+Once `cloudquery.yml` is generated and you are authenticated with AWS, run the following command to sync the resources.
 
 ```bash
 cloudquery sync .

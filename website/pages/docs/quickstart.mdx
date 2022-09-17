@@ -16,23 +16,34 @@ Generate the initial configuration for one or more of your destinations.
 Update the accordingly per documentation.
 
 ```bash
-cloudquery generate destination <YOUR_PLUGIN_NAME>
+cloudquery generate destination <DESTINATION_PLUGIN_NAME>
 ```
 
 ## Generate Source Plugin Configuration
 
 Generate initial configuration for the source plugins your are interested
-and update the configuration accordingly.
-Also make sure for every source plugin to specify which destinations you want to sync to.
+and update the configuration accordingly. Also make sure for every
+source plugin to specify which destinations you want to sync to.
 
 ```bash
-cloudquery generate source <YOUR_PLUGIN_NAME>
+cloudquery generate source <SOURCE_PLUGIN_NAME>
+```
+
+```
+kind: source
+spec:
+  name: SOURCE_PLUGIN_NAME
+  destinations:
+    - DESTINATION_PLUGIN_NAME
 ```
 
 ## Start Syncing
 
-Now you can start syncing the data from your source plugins to the specified destination
+Now you can start syncing the data from your source plugins
+to the specified destination
 
 ```bash
 cloudquery sync ./config_dir
 ```
+
+## Logs

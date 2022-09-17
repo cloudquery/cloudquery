@@ -1,6 +1,5 @@
 {
   "environment-variables-substitution": "Environment Variables Substitution",
-  "rate_limiting": "Rate Limiting",
   "proxy-configuration": "Proxy Configuration",
   "docker": "Docker",
   "security": "Security",

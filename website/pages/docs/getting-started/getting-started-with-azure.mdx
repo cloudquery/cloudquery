@@ -22,8 +22,8 @@ you need to generate configuration that will describe at least one source plugin
 destination plugins to save the data.
 
 ```bash
-cloudquery gen source azure
 cloudquery gen destination postgresql
+cloudquery gen source azure
 ```
 
 All official and approved community plugins are listed [here](/plugins) with their respective documentation.
@@ -186,13 +186,13 @@ $Env:AZURE_SUBSCRIPTION_ID=$Env:SUBSCRIPTION_ID
 </Tab>
 </Tabs>
 
-### Fetch Command
+### Sync Command
 
-Once `cloudquery.yml` is generated and you are authenticated with Azure, run the following command to fetch the resources.
+Once source and destination plugin configuration are generated and you are authenticated with Azure,
+run the following command to sync the resources.
 
 ```bash
-cloudquery fetch
-# cloudquery fetch --help # Show all possible fetch flags
+cloudquery sync
 ```
 
 ### Exploring and Running Queries
