@@ -1,0 +1,38 @@
+---
+title: Quickstart
+---
+
+import DownloadSection from '../../components/mdx/_getting-started-download-section.mdx'
+
+# Quickstart
+
+Follow the steps below to start syncing data from CloudQuery supported source plugins to one or more destination plugins.
+
+<DownloadSection/>
+
+## Generate Destination Plugin Configuration
+
+Generate the initial configuration for one or more of your destinations.
+Update the accordingly per documentation.
+
+```bash
+cloudquery generate destination <YOUR_PLUGIN_NAME>
+```
+
+## Generate Source Plugin Configuration
+
+Generate initial configuration for the source plugins your are interested
+and update the configuration accordingly.
+Also make sure for every source plugin to specify which destinations you want to sync to.
+
+```bash
+cloudquery generate source <YOUR_PLUGIN_NAME>
+```
+
+## Start Syncing
+
+Now you can start syncing the data from your source plugins to the specified destination
+
+```bash
+cloudquery sync ./config_dir
+```

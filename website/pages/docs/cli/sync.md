@@ -1,6 +1,10 @@
 # Overview
 
-Fetch command is the core command for CloudQuery. It extracts the configuration of your cloud assets, transforms them and loads them into a single PostgreSQL database.
+Sync command is the core command for CloudQuery. It does the following:
+
+- Reads a given directory to read all configuration files
+- Downloads all source and destination plugins specified in the configuration
+- Start source plugins with the given config and sync the information extract by the source plugins to the specified destination plugins.
 
 ## Running
 
@@ -37,11 +41,10 @@ cloudquery:
         sslmode: disable
 ```
 
-### Fetch
+### Sync
 
 Once `cloudquery.yml` is generated, run the following command to fetch the resources. (You need to be authenticated — see relevant section under each provider):
 
 ```powershell
 cloudquery fetch
-# cloudquery fetch --help # Show all possible fetch flags
 ```

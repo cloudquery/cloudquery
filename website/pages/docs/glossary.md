@@ -28,6 +28,5 @@ by any BI tools and standard set of data engineering tools.
 
 CloudQuery supports two plugins: source & destination.
 
-`source` plugin is responsible for extracting data from remote APIs, transforming it and sending it to CloudQuery for further handling.
-
-`destination` plugin is responsible for getting data from one the `source` plugin and save it to a database, a data lake or a subscription (Kafka) according to configuration.
+- `source` plugin is responsible for extracting data from remote APIs, transforming it and sending it to CloudQuery for further handling.
+- `destination` plugin is responsible for getting data from one the `source` plugin and save it to a database, a data lake or a subscription (Kafka) according to configuration.

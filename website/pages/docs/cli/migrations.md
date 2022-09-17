@@ -1,25 +1,22 @@
 # Overview
 
+This section describes how CloudQuery is dealing with schema changes in plugins.
+The overall idea is to not to have breaking changes but rather always add columns because it is common for users to build views on top which we don't want to break. Those migration tactics are usually implemented in the destination plugins as source plugins are database agnostic and just send back json objects.
+
+## Addition
+
+Column addition is the easy case where a source plugin adds additional column the destination plugin will not drop old one and will add a new one.
+
+## Removal
+
+If a source plugin removes a column the destination plugin will not drop it and it will be up to the user to drop it if necessary or to do any other logic.
+
+## Rename
+
+Rename is basically Removal + Addition, meaning the destination plugin will just add additional column and new data will be saved there. It will be up to the user to do any migrations if needed.
+
 CloudQuery is an open-source cloud asset inventory powered by SQL, and as such, when providers change their schema (change/remove columns) some migrations from the previous run are required. CloudQuery automatically drops and recreates those tables automatically as needed.
 
-## Running
+## Type Change
 
-### Sync (Upgrade/Downgrade) providers
-
-The following command will upgrade or downgrade the provider to the version defined in our `cloudquery.yml`, if the version is defined as `latest` the latest version will be downloaded and the provider migrated to the latest schema version.
-
-```bash
-cloudquery provider sync aws
-```
-
-### Drop providers schema
-
-The following command will drop a providers tables. Running CloudQuery fetch after a drop command will result in a recreation of all tables.
-
-```bash
-cloudquery provider drop aws
-```
-
-## Fetch Auto upgrade
-
-CloudQuery automatically attempts to upgrade providers when fetch is executed, this action can be disabled by passing the `--skip-schema-upgrade` flag.
+This is the most complex situation most probabbly and as a source plugin developer you want to avoid it if possible. However, on the destination plugin side, it will first try to change the column if it happens the new type can also store the old type data, if not, this will be the only case where the destination plugin will be re-creating the column.

@@ -13,7 +13,7 @@ Every resource can define one or more tables this resource configuration is tran
 
 ## Hosting
 
-Providers are hosted on GitHub while [hub.cloudquery.io](https://hub.cloudquery.io) serves as a central registry for discovery, validation & verification.
+Plugins are hosted on GitHub while [hub.cloudquery.io](https://hub.cloudquery.io) serves as a central registry for discovery, validation & verification.
 
 Currently CloudQuery Hub contains two types of providers:
 
