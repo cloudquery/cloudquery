@@ -1,4 +1,4 @@
-module github.com/cloudquery/cq-source-test
+module github.com/cloudquery/cloudquery/plugins/source/test
 
 go 1.18
 
