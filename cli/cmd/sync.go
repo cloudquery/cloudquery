@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/cloudquery/cloudquery/cli/internal/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
-
-	"github.com/briandowns/spinner"
 )
 
 const (
