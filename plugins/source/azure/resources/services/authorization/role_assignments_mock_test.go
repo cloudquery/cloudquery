@@ -1,41 +1,40 @@
+// Auto generated code - DO NOT EDIT.
+
 package authorization
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 )
 
-func buildAuthorizationRoleAssignments(t *testing.T, ctrl *gomock.Controller) services.Services {
-	assignments := mocks.NewMockRoleAssignmentsClient(ctrl)
+func TestAuthorizationRoleAssignments(t *testing.T) {
+	client.MockTestHelper(t, RoleAssignments(), createRoleAssignmentsMock)
+}
+
+func createRoleAssignmentsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockAuthorizationRoleAssignmentsClient(ctrl)
 	s := services.Services{
 		Authorization: services.AuthorizationClient{
-			RoleAssignments: assignments,
+			RoleAssignments: mockClient,
 		},
 	}
 
-	var a authorization.RoleAssignment
-	if err := faker.FakeData(&a); err != nil {
-		t.Fatal(err)
-	}
-	assignments.EXPECT().List(gomock.Any(), "").Return(
-		authorization.NewRoleAssignmentListResultPage(
-			authorization.RoleAssignmentListResult{Value: &[]authorization.RoleAssignment{a}},
-			func(context.Context, authorization.RoleAssignmentListResult) (authorization.RoleAssignmentListResult, error) {
-				return authorization.RoleAssignmentListResult{}, nil
-			},
-		), nil,
-	)
+	data := authorization.RoleAssignment{}
+	require.Nil(t, faker.FakeObject(&data))
 
+	result := authorization.NewRoleAssignmentListResultPage(authorization.RoleAssignmentListResult{Value: &[]authorization.RoleAssignment{data}}, func(ctx context.Context, result authorization.RoleAssignmentListResult) (authorization.RoleAssignmentListResult, error) {
+		return authorization.RoleAssignmentListResult{}, nil
+	})
+
+	mockClient.EXPECT().List(gomock.Any(), "").Return(result, nil)
 	return s
-}
-
-func TestAuthorizationRoleAssignments(t *testing.T) {
-	client.AzureMockTestHelper(t, AuthorizationRoleAssignments(), buildAuthorizationRoleAssignments, client.TestOptions{})
 }

@@ -1,106 +1,100 @@
+// Auto generated code - DO NOT EDIT.
+
 package sql
 
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func SQLServerEncryptionProtectors() *schema.Table {
+func encryptionProtectors() *schema.Table {
 	return &schema.Table{
-		Name:        "azure_sql_server_encryption_protectors",
-		Description: "EncryptionProtector the server encryption protector",
-		Resolver:    fetchSqlServerEncryptionProtectors,
+		Name:     "azure_sql_encryption_protectors",
+		Resolver: fetchSQLEncryptionProtectors,
 		Columns: []schema.Column{
 			{
-				Name:        "server_cq_id",
-				Description: "Unique ID of azure_sql_servers table (FK)",
-				Type:        schema.TypeUUID,
-				Resolver:    schema.ParentIdResolver,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "kind",
-				Description: "Kind of encryption protector This is metadata used for the Azure portal experience",
-				Type:        schema.TypeString,
+				Name:     "sql_server_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIDResolver,
 			},
 			{
-				Name:          "location",
-				Description:   "Resource location",
-				Type:          schema.TypeString,
-				IgnoreInTests: true,
+				Name:     "kind",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Kind"),
 			},
 			{
-				Name:          "subregion",
-				Description:   "Subregion of the encryption protector",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("EncryptionProtectorProperties.Subregion"),
-				IgnoreInTests: true,
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:        "server_key_name",
-				Description: "The name of the server key",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionProtectorProperties.ServerKeyName"),
+				Name:     "subregion",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Subregion"),
 			},
 			{
-				Name:        "server_key_type",
-				Description: "The encryption protector type like 'ServiceManaged', 'AzureKeyVault' Possible values include: 'ServiceManaged', 'AzureKeyVault'",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("EncryptionProtectorProperties.ServerKeyType"),
+				Name:     "server_key_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServerKeyName"),
 			},
 			{
-				Name:          "uri",
-				Description:   "The URI of the server key",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("EncryptionProtectorProperties.URI"),
-				IgnoreInTests: true,
+				Name:     "server_key_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ServerKeyType"),
 			},
 			{
-				Name:          "thumbprint",
-				Description:   "Thumbprint of the server key",
-				Type:          schema.TypeString,
-				Resolver:      schema.PathResolver("EncryptionProtectorProperties.Thumbprint"),
-				IgnoreInTests: true,
+				Name:     "uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("URI"),
 			},
 			{
-				Name:        "id",
-				Description: "Resource ID",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "thumbprint",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Thumbprint"),
 			},
 			{
-				Name:        "name",
-				Description: "Resource name",
-				Type:        schema.TypeString,
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:        "type",
-				Description: "Resource type",
-				Type:        schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//
-//	Table Resolver Functions
-//
-// ====================================================================================================================
-func fetchSqlServerEncryptionProtectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSQLEncryptionProtectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.EncryptionProtectors
+
 	server := parent.Item.(sql.Server)
 	resourceDetails, err := client.ParseResourceID(*server.ID)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
-	ep, err := svc.Get(ctx, resourceDetails.ResourceGroup, *server.Name)
+	response, err := svc.Get(ctx, resourceDetails.ResourceGroup, *server.Name)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
-	res <- ep
+	res <- response
 	return nil
 }
