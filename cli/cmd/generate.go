@@ -5,6 +5,7 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -169,6 +170,10 @@ func writeDestination(path string, destinationSpec specs.Destination) error {
 }
 
 func writeConfig(path, cfgTemplate string, spec interface{}) error {
+	err := os.MkdirAll(filepath.Dir(path), 0744)
+	if err != nil {
+		return fmt.Errorf("failed to directory for file: %w", err)
+	}
 	f, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY|os.O_EXCL, 0644)
 	if err != nil {
 		return fmt.Errorf("failed to create file: %w", err)
