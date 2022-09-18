@@ -29,5 +29,5 @@ func buildEc2RouteTables(t *testing.T, ctrl *gomock.Controller) client.Services 
 }
 
 func TestEc2RouteTables(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2RouteTables(), buildEc2RouteTables, client.TestOptions{})
+	client.AwsMockTestHelper(t, RouteTables(), buildEc2RouteTables, client.TestOptions{})
 }

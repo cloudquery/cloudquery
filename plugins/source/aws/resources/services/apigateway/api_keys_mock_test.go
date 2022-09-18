@@ -30,5 +30,5 @@ func buildApiKeysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestAPIKeys(t *testing.T) {
-	client.AwsMockTestHelper(t, APIKeys(), buildApiKeysMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, ApiKeys(), buildApiKeysMock, client.TestOptions{})
 }

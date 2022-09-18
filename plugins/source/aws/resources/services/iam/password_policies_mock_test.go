@@ -29,5 +29,5 @@ func buildIamPasswordPolicies(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestIamPasswordPolicies(t *testing.T) {
-	client.AwsMockTestHelper(t, IamPasswordPolicies(), buildIamPasswordPolicies, client.TestOptions{})
+	client.AwsMockTestHelper(t, PasswordPolicies(), buildIamPasswordPolicies, client.TestOptions{})
 }

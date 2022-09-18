@@ -44,5 +44,5 @@ func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestSSMInstances(t *testing.T) {
-	client.AwsMockTestHelper(t, SsmInstances(), buildSSMInstances, client.TestOptions{})
+	client.AwsMockTestHelper(t, Instances(), buildSSMInstances, client.TestOptions{})
 }

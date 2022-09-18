@@ -38,5 +38,5 @@ func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestCloudwatchAlarms(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudwatchAlarms(), buildCloudWatchAlarmsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Alarms(), buildCloudWatchAlarmsMock, client.TestOptions{})
 }

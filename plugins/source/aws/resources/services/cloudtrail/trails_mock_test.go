@@ -24,6 +24,7 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	}
 
 	trail.TrailARN = aws.String("arn:aws:cloudtrail:eu-central-1:testAccount:trail/test-trail")
+	trail.CloudWatchLogsLogGroupArn = aws.String("arn:aws:logs:eu-central-1:123:log-group:test-group:")
 
 	trailStatus := cloudtrail.GetTrailStatusOutput{}
 	err = faker.FakeData(&trailStatus)
@@ -64,5 +65,5 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestCloudtrailTrails(t *testing.T) {
-	client.AwsMockTestHelper(t, CloudtrailTrails(), buildCloudtrailTrailsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Trails(), buildCloudtrailTrailsMock, client.TestOptions{})
 }

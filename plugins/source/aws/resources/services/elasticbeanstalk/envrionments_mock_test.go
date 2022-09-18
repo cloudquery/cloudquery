@@ -62,5 +62,5 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 }
 
 func TestElasticbeanstalkEnvironments(t *testing.T) {
-	client.AwsMockTestHelper(t, ElasticbeanstalkEnvironments(), buildElasticbeanstalkEnvironments, client.TestOptions{})
+	client.AwsMockTestHelper(t, Environments(), buildElasticbeanstalkEnvironments, client.TestOptions{})
 }

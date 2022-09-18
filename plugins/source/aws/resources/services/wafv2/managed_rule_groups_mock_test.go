@@ -34,5 +34,5 @@ func buildWAFV2ManagedRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) clie
 }
 
 func TestWafV2ManagedRuleGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, Wafv2ManagedRuleGroups(), buildWAFV2ManagedRuleGroupsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, ManagedRuleGroups(), buildWAFV2ManagedRuleGroupsMock, client.TestOptions{})
 }

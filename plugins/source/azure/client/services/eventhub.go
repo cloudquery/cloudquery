@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/eventhub.go -package=mocks . EventHubClient
+//go:generate mockgen -destination=./mocks/eventhub.go -package=mocks . EventHubNamespacesClient,EventHubNetworkRuleSetsClient
 package services
 
 import (
@@ -8,13 +8,21 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type EventHubClient interface {
-	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSet, err error)
+type EventHubClient struct {
+	Namespaces      EventHubNamespacesClient
+	NetworkRuleSets EventHubNetworkRuleSetsClient
+}
+
+type EventHubNamespacesClient interface {
 	List(ctx context.Context) (result eventhub.EHNamespaceListResultPage, err error)
+}
+
+type EventHubNetworkRuleSetsClient interface {
+	GetNetworkRuleSet(ctx context.Context, resourceGroupName string, namespaceName string) (result eventhub.NetworkRuleSet, err error)
 }
 
 func NewEventHubClient(subscriptionId string, auth autorest.Authorizer) EventHubClient {
 	cl := eventhub.NewNamespacesClient(subscriptionId)
 	cl.Authorizer = auth
-	return cl
+	return EventHubClient{Namespaces: cl, NetworkRuleSets: cl}
 }

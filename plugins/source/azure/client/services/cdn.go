@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/cdn.go -package=mocks . ProfilesClient,EndpointsClient,CustomDomainsClient,OriginsClient,OriginGroupsClient,RoutesClient,RuleSetsClient,RulesClient,SecurityPoliciesClient
+//go:generate mockgen -destination=./mocks/cdn.go -package=mocks . CDNProfilesClient,CDNEndpointsClient,CDNCustomDomainsClient,CDNOriginsClient,CDNOriginGroupsClient,CDNRoutesClient,CDNRuleSetsClient,CDNRulesClient,CDNSecurityPoliciesClient
 package services
 
 import (
@@ -8,52 +8,52 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type ProfilesClient interface {
+type CDNProfilesClient interface {
 	List(ctx context.Context) (result cdn.ProfileListResultPage, err error)
 }
 
-type EndpointsClient interface {
+type CDNEndpointsClient interface {
 	ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result cdn.EndpointListResultPage, err error)
 }
 
-type CustomDomainsClient interface {
+type CDNCustomDomainsClient interface {
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.CustomDomainListResultPage, err error)
 }
 
-type OriginsClient interface {
+type CDNOriginsClient interface {
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.OriginListResultPage, err error)
 }
 
-type OriginGroupsClient interface {
+type CDNOriginGroupsClient interface {
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.OriginGroupListResultPage, err error)
 }
 
-type RoutesClient interface {
+type CDNRoutesClient interface {
 	ListByEndpoint(ctx context.Context, resourceGroupName string, profileName string, endpointName string) (result cdn.RouteListResultPage, err error)
 }
 
-type RuleSetsClient interface {
+type CDNRuleSetsClient interface {
 	ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result cdn.RuleSetListResultPage, err error)
 }
 
-type RulesClient interface {
+type CDNRulesClient interface {
 	ListByRuleSet(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string) (result cdn.RuleListResultPage, err error)
 }
 
-type SecurityPoliciesClient interface {
+type CDNSecurityPoliciesClient interface {
 	ListByProfile(ctx context.Context, resourceGroupName string, profileName string) (result cdn.SecurityPolicyListResultPage, err error)
 }
 
 type CDNClient struct {
-	Profiles         ProfilesClient
-	Endpoints        EndpointsClient
-	CustomDomains    CustomDomainsClient
-	Origins          OriginsClient
-	OriginGroups     OriginGroupsClient
-	Routes           RoutesClient
-	RuleSets         RuleSetsClient
-	Rules            RulesClient
-	SecurityPolicies SecurityPoliciesClient
+	Profiles         CDNProfilesClient
+	Endpoints        CDNEndpointsClient
+	CustomDomains    CDNCustomDomainsClient
+	Origins          CDNOriginsClient
+	OriginGroups     CDNOriginGroupsClient
+	Routes           CDNRoutesClient
+	RuleSets         CDNRuleSetsClient
+	Rules            CDNRulesClient
+	SecurityPolicies CDNSecurityPoliciesClient
 }
 
 func NewCDNClient(subscriptionId string, auth autorest.Authorizer) CDNClient {

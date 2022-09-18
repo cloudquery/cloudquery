@@ -1,10 +1,10 @@
 const path = require("path");
 const { promises: fs } = require("fs");
-const {execSync} = require("child_process");
+const { execSync } = require("child_process");
 
 const PLUGINS_DATA = {
   // aws: { name: "AWS" },
-  // azure: { name: "Azure" },
+  azure: { name: "Azure" },
   // cloudflare: { name: "CloudFlare" },
   // digitalocean: { name: "DigitalOcean" },
   gcp: { name: "GCP" },
@@ -132,8 +132,8 @@ const generatePluginTablePages = async (plugin) => {
   const tablesPath = `${PLUGINS_PATH}/${plugin.id}/tables.mdx`;
   const tablesDir = `${PLUGINS_PATH}/${plugin.id}/tables`;
   await fs.mkdir(tablesDir, { recursive: true });
-  const stdout  = execSync("go run main.go doc " + tablesDir, {
-    cwd: sourcePlugin
+  const stdout = execSync("go run main.go doc " + tablesDir, {
+    cwd: sourcePlugin,
   }).toString();
   console.log(stdout);
 
@@ -144,10 +144,7 @@ const generatePluginTablePages = async (plugin) => {
   await generatePluginTablePagesMeta(plugin.name, tablesList);
 
   const tablesLinks = tablesList
-    .map(
-      (table) =>
-        `|[${table}](tables/${table})|`
-    )
+    .map((table) => `|[${table}](tables/${table})|`)
     .join("\n");
   const content = TABLES_TEMPLATE.replaceAll(
     NAME_PLACEHOLDER,

@@ -28,5 +28,5 @@ func buildEc2InternetGateways(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestEc2InternetGateways(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2InternetGateways(), buildEc2InternetGateways, client.TestOptions{})
+	client.AwsMockTestHelper(t, InternetGateways(), buildEc2InternetGateways, client.TestOptions{})
 }

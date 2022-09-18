@@ -57,5 +57,5 @@ func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestSSMDocuments(t *testing.T) {
-	client.AwsMockTestHelper(t, SsmDocuments(), buildSSMDocuments, client.TestOptions{})
+	client.AwsMockTestHelper(t, Documents(), buildSSMDocuments, client.TestOptions{})
 }

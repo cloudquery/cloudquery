@@ -28,5 +28,5 @@ func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) clien
 }
 
 func TestEc2VpcsPeeringConnections(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2VpcPeeringConnections(), buildEc2VpcsPeeringConnections, client.TestOptions{})
+	client.AwsMockTestHelper(t, VpcPeeringConnections(), buildEc2VpcsPeeringConnections, client.TestOptions{})
 }

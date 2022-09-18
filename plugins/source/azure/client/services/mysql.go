@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServerClient,MySQLConfigurationClient
+//go:generate mockgen -destination=./mocks/my_sql.go -package=mocks . MySQLServersClient,MySQLConfigurationsClient
 package services
 
 import (
@@ -8,26 +8,26 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type MySQL struct {
-	Servers       MySQLServerClient
-	Configuration MySQLConfigurationClient
+type MySQLClient struct {
+	Servers        MySQLServersClient
+	Configurations MySQLConfigurationsClient
 }
 
-type MySQLServerClient interface {
+type MySQLServersClient interface {
 	List(ctx context.Context) (result mysql.ServerListResult, err error)
 }
 
-type MySQLConfigurationClient interface {
+type MySQLConfigurationsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mysql.ConfigurationListResult, err error)
 }
 
-func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQL {
+func NewMySQLClient(subscriptionId string, auth autorest.Authorizer) MySQLClient {
 	servers := mysql.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
 	conf := mysql.NewConfigurationsClient(subscriptionId)
 	conf.Authorizer = auth
-	return MySQL{
-		Servers:       servers,
-		Configuration: conf,
+	return MySQLClient{
+		Servers:        servers,
+		Configurations: conf,
 	}
 }

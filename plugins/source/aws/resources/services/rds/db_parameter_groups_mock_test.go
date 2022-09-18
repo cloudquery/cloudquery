@@ -54,5 +54,5 @@ func buildRDSDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestRDSDBParameterGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsDbParameterGroups(), buildRDSDBParameterGroups, client.TestOptions{})
+	client.AwsMockTestHelper(t, DbParameterGroups(), buildRDSDBParameterGroups, client.TestOptions{})
 }

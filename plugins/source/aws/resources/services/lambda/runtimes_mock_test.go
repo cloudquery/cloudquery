@@ -16,5 +16,5 @@ func buildLambdaRuntimesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestLambdaRuntimes(t *testing.T) {
-	client.AwsMockTestHelper(t, LambdaRuntimes(), buildLambdaRuntimesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Runtimes(), buildLambdaRuntimesMock, client.TestOptions{})
 }

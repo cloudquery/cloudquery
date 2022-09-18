@@ -1,35 +1,37 @@
+// Auto generated code - DO NOT EDIT.
+
 package monitor
 
 import (
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
 )
 
-func buildActivityLogAlertsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	alertsSvc := mocks.NewMockActivityLogAlertsClient(ctrl)
-	s := services.Services{
-		Monitor: services.MonitorClient{
-			ActivityLogAlerts: alertsSvc,
-		},
-	}
-	alert := insights.ActivityLogAlertResource{}
-	err := faker.FakeData(&alert)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-
-	page := insights.ActivityLogAlertList{Value: &[]insights.ActivityLogAlertResource{alert}}
-	alertsSvc.EXPECT().ListBySubscriptionID(gomock.Any()).Return(page, nil)
-
-	return s
+func TestMonitorActivityLogAlerts(t *testing.T) {
+	client.MockTestHelper(t, ActivityLogAlerts(), createActivityLogAlertsMock)
 }
 
-func TestActivityLogAlerts(t *testing.T) {
-	client.AzureMockTestHelper(t, MonitorActivityLogAlerts(), buildActivityLogAlertsMock, client.TestOptions{})
+func createActivityLogAlertsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockMonitorActivityLogAlertsClient(ctrl)
+	s := services.Services{
+		Monitor: services.MonitorClient{
+			ActivityLogAlerts: mockClient,
+		},
+	}
+
+	data := insights.ActivityLogAlertResource{}
+	require.Nil(t, faker.FakeObject(&data))
+
+	result := insights.ActivityLogAlertList{Value: &[]insights.ActivityLogAlertResource{data}}
+
+	mockClient.EXPECT().ListBySubscriptionID(gomock.Any()).Return(result, nil)
+	return s
 }

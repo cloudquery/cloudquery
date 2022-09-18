@@ -37,5 +37,5 @@ func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestEfsFilesystems(t *testing.T) {
-	client.AwsMockTestHelper(t, EfsFilesystems(), buildEfsFilesystemsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Filesystems(), buildEfsFilesystemsMock, client.TestOptions{})
 }

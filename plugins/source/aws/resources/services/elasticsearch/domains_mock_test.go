@@ -41,5 +41,5 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestElasticSearchDomains(t *testing.T) {
-	client.AwsMockTestHelper(t, ElasticsearchDomains(), buildElasticSearchDomains, client.TestOptions{})
+	client.AwsMockTestHelper(t, Domains(), buildElasticSearchDomains, client.TestOptions{})
 }

@@ -31,5 +31,5 @@ func buildEc2NetworkAcls(t *testing.T, ctrl *gomock.Controller) client.Services 
 }
 
 func TestEc2NetworkAclsMockTest(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2NetworkAcls(), buildEc2NetworkAcls, client.TestOptions{})
+	client.AwsMockTestHelper(t, NetworkAcls(), buildEc2NetworkAcls, client.TestOptions{})
 }

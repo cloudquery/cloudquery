@@ -13,7 +13,7 @@ type LogEventWrapper struct {
 
 type DistributionWrapper struct {
 	*types.LightsailDistribution
-	*lightsail.GetDistributionLatestCacheResetOutput
+	LatestCacheReset *lightsail.GetDistributionLatestCacheResetOutput
 }
 
 const MaxGoroutines = 10

@@ -43,5 +43,5 @@ func buildElbv2TargetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestElbv2TargetGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, Elbv2TargetGroups(), buildElbv2TargetGroups, client.TestOptions{})
+	client.AwsMockTestHelper(t, TargetGroups(), buildElbv2TargetGroups, client.TestOptions{})
 }

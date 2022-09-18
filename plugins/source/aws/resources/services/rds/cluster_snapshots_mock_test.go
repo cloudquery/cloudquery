@@ -45,5 +45,5 @@ func buildRDSClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) cl
 }
 
 func TestRDSDBClusterSnapshots(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsClusterSnapshots(), buildRDSClientForClusterSnapshots, client.TestOptions{})
+	client.AwsMockTestHelper(t, ClusterSnapshots(), buildRDSClientForClusterSnapshots, client.TestOptions{})
 }
