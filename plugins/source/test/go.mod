@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/test
 
-go 1.18
+go 1.19
 
 require (
 	github.com/cloudquery/plugin-sdk v0.1.2
