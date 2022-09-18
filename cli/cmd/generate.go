@@ -73,7 +73,6 @@ func getDestinations(directory string) []string {
 	destinations := make([]string, 0)
 	for _, destination := range specReader.GetDestinations() {
 		destinations = append(destinations, destination.Name)
-
 	}
 
 	return destinations
