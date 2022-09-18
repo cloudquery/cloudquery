@@ -1,73 +1,41 @@
 package client
 
 import (
+	"context"
+	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
-	"github.com/cloudquery/cq-provider-sdk/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
-	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog"
 )
 
-type TestOptions struct {
-	SkipEmptyJsonB bool
-}
-
-const (
-	SnapshotsDirPath   = "./snapshots"
-	TestSubscriptionID = "test_sub"
-	FakeResourceGroup  = "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/cqprovidertest"
-)
-
-func AzureMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) services.Services, options TestOptions) {
-	t.Helper()
-	ctrl := gomock.NewController(t)
-
-	cfg := `
-subscriptions: ["test_sub"]
-`
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:    "azure_mock_test_provider",
-			Version: "development",
-			Configure: func(logger hclog.Logger, i interface{}) (schema.ClientMeta, diag.Diagnostics) {
-				c := NewAzureClient(logging.New(&hclog.LoggerOptions{
-					Level: hclog.Warn,
-				}), []string{TestSubscriptionID})
-				c.SetSubscriptionServices(TestSubscriptionID, builder(t, ctrl))
-				return c, nil
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-			Config: func() provider.Config {
-				return &Config{}
-			},
-		},
-		Config:           cfg,
-		SkipIgnoreInTest: true,
-	})
-}
-
-func AzureTestHelper(t *testing.T, table *schema.Table) {
+func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *testing.T, ctrl *gomock.Controller) services.Services) {
 	t.Helper()
 
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:      "azure_mock_test_provider",
-			Version:   "development",
-			Configure: Configure,
-			Config: func() provider.Config {
-				return &Config{}
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-		},
-		Config: "",
+	table.IgnoreInTests = false
+
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+		svc := createServices(t, gomock.NewController(t))
+		l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+		servicesMap := make(map[string]*services.Services)
+		servicesMap["testSubscription"] = &svc
+		c := &Client{
+			logger:        l,
+			services:      servicesMap,
+			subscriptions: []string{"testSubscription"},
+		}
+
+		return c, nil
+	}
+
+	p := plugins.NewSourcePlugin(table.Name, "dev", []*schema.Table{table}, newTestExecutionClient)
+	plugins.TestSourcePluginSync(t, p, specs.Source{
+		Name:   "dev",
+		Tables: []string{table.Name},
 	})
 }

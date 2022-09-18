@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/streamanalytics.go -package=mocks . JobsClient
+//go:generate mockgen -destination=./mocks/streamanalytics.go -package=mocks . StreamAnalyticsStreamingJobsClient
 package services
 
 import (
@@ -9,10 +9,10 @@ import (
 )
 
 type StreamAnalyticsClient struct {
-	Jobs JobsClient
+	StreamingJobs StreamAnalyticsStreamingJobsClient
 }
 
-type JobsClient interface {
+type StreamAnalyticsStreamingJobsClient interface {
 	List(ctx context.Context, expand string) (result streamanalytics.StreamingJobListResultPage, err error)
 }
 
@@ -20,6 +20,6 @@ func NewStreamAnalyticsClient(subscriptionID string, auth autorest.Authorizer) S
 	jobs := streamanalytics.NewStreamingJobsClient(subscriptionID)
 	jobs.Authorizer = auth
 	return StreamAnalyticsClient{
-		Jobs: jobs,
+		StreamingJobs: jobs,
 	}
 }

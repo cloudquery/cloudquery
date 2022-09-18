@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/authorization.go -package=mocks . RoleAssignmentsClient,RoleDefinitionsClient
+//go:generate mockgen -destination=./mocks/authorization.go -package=mocks . AuthorizationRoleAssignmentsClient,AuthorizationRoleDefinitionsClient
 package services
 
 import (
@@ -9,15 +9,15 @@ import (
 )
 
 type AuthorizationClient struct {
-	RoleAssignments RoleAssignmentsClient
-	RoleDefinitions RoleDefinitionsClient
+	RoleAssignments AuthorizationRoleAssignmentsClient
+	RoleDefinitions AuthorizationRoleDefinitionsClient
 }
 
-type RoleAssignmentsClient interface {
+type AuthorizationRoleAssignmentsClient interface {
 	List(ctx context.Context, filter string) (result authorization.RoleAssignmentListResultPage, err error)
 }
 
-type RoleDefinitionsClient interface {
+type AuthorizationRoleDefinitionsClient interface {
 	List(ctx context.Context, scope string, filter string) (result authorization.RoleDefinitionListResultPage, err error)
 }
 

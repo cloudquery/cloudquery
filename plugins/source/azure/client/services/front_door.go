@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/front_door.go -package=mocks . FrontDoorClient
+//go:generate mockgen -destination=./mocks/front_door.go -package=mocks . FrontDoorDoorsClient
 package services
 
 import (
@@ -8,12 +8,16 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type FrontDoorClient interface {
+type FrontDoorClient struct {
+	Doors FrontDoorDoorsClient
+}
+
+type FrontDoorDoorsClient interface {
 	List(ctx context.Context) (result frontdoor.ListResultPage, err error)
 }
 
 func NewFrontDoorClient(subscriptionId string, auth autorest.Authorizer) FrontDoorClient {
 	cl := frontdoor.NewFrontDoorsClient(subscriptionId)
 	cl.Authorizer = auth
-	return cl
+	return FrontDoorClient{Doors: cl}
 }
