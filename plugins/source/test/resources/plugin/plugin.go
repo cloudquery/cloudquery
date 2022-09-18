@@ -1,8 +1,8 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cq-source-test/client"
-	"github.com/cloudquery/cq-source-test/tables"
+	"github.com/cloudquery/cloudquery/plugins/source/test/client"
+	"github.com/cloudquery/cloudquery/plugins/source/test/tables"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 )

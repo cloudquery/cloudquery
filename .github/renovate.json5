@@ -4,6 +4,6 @@
     "github>cloudquery/.github//.github/renovate-node-default.json5",
   ],
   packageRules: [
-    { matchManagers: ["node", "js"], groupName: "Website" },
+    { matchManagers: ["npm"], groupName: "Website" },
   ],
 }
