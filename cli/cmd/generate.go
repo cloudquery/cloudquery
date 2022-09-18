@@ -5,6 +5,7 @@ import (
 	"embed"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -62,6 +63,22 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	}
 }
 
+func getDestinations(directory string) []string {
+	specReader, err := specs.NewSpecReader(directory)
+	if err != nil {
+		// no need to fail here as we only use this for config generation
+		return nil
+	}
+
+	destinations := make([]string, 0)
+	for _, destination := range specReader.GetDestinations() {
+		destinations = append(destinations, destination.Name)
+
+	}
+
+	return destinations
+}
+
 func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, registry specs.Registry, outputFile string) error {
 	if registry == specs.RegistryGithub && !strings.Contains(path, "/") {
 		path = "cloudquery/" + path
@@ -102,12 +119,16 @@ func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, regis
 	if err != nil {
 		return fmt.Errorf("failed to get example config: %w", err)
 	}
-	sourceSpec.Spec = cfg
 
 	configPath := outputFile
 	if configPath == "" {
 		configPath = name + ".yml"
 	}
+
+	sourceSpec.Destinations = getDestinations(filepath.Dir(configPath))
+
+	sourceSpec.Spec = cfg
+
 	err = writeSource(configPath, sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to write file: %w", err)

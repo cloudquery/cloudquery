@@ -18,9 +18,12 @@ spec:
   ## Tables to skip during sync. Optional.
   # skip_tables: []
 
-  # Names of destination plugins to sync to.
+  # Names of destination plugins to sync to.{{ if .Destinations }}
+  destinations:{{ range .Destinations }}
+    - "{{.}}"{{ end }}
+  {{ else }}
   destinations: []
-
+  {{ end }}
   ## Approximate cap on number of requests to perform concurrently. Optional.
   # max_goroutines: {{or .MaxGoRoutines 5 }}
 
