@@ -80,7 +80,7 @@ func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, regis
 	}
 	sourceSpec.SetDefaults()
 
-	plugin, err := pm.NewSourcePlugin(cmd.Context(), sourceSpec)
+	plugin, err := pm.NewSourcePlugin(cmd.Context(), &sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to create source plugin: %w", err)
 	}
@@ -92,13 +92,6 @@ func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, regis
 		return fmt.Errorf("failed to get plugin name: %w", err)
 	}
 	sourceSpec.Name = name
-
-	version, err = client.Version(cmd.Context())
-	if err != nil {
-		return fmt.Errorf("failed to get plugin name: %w", err)
-	}
-	sourceSpec.Version = version
-
 	cfg, err := client.ExampleConfig(cmd.Context())
 	if err != nil {
 		return fmt.Errorf("failed to get example config: %w", err)

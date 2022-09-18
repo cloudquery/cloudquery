@@ -59,7 +59,7 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func syncConnection(ctx context.Context, pm *plugins.PluginManager, specReader *specs.SpecReader, sourceSpec specs.Source) error {
-	sourcePlugin, err := pm.NewSourcePlugin(ctx, sourceSpec)
+	sourcePlugin, err := pm.NewSourcePlugin(ctx, &sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
