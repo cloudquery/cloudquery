@@ -1,4 +1,4 @@
-package resources
+package services
 
 import (
 	"context"
@@ -7,19 +7,17 @@ import (
 	"regexp"
 
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 var providerNameRegex = regexp.MustCompile(`^.*\["(?P<Hostname>.*)/(?P<Namespace>.*)/(?P<Type>.*)"\].*?$`)
 
 func TFData() *schema.Table {
 	return &schema.Table{
-		Name:         "tf_data",
-		Description:  "Terraform meta data",
-		Resolver:     resolveTerraformMetaData,
-		DeleteFilter: client.DeleteLineageSerialFilter,
-		Multiplex:    client.BackendMultiplex,
+		Name:        "tf_data",
+		Description: "Terraform meta data",
+		Resolver:    resolveTerraformMetaData,
+		Multiplex:   client.BackendMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "backend_type",
@@ -35,7 +33,7 @@ func TFData() *schema.Table {
 			},
 			{
 				Name:        "version",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Description: "Terraform backend version",
 			},
 			{
@@ -45,7 +43,7 @@ func TFData() *schema.Table {
 			},
 			{
 				Name:        "serial",
-				Type:        schema.TypeBigInt,
+				Type:        schema.TypeInt,
 				Description: "Incremental number which describe the state version",
 			},
 			{
@@ -64,13 +62,13 @@ func TFData() *schema.Table {
 						Name:        "tf_data_cq_id",
 						Description: "Unique CloudQuery ID of tf_data table (FK)",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name:        "running_id",
 						Description: "Unique fetch operation id",
 						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
+						Resolver:    schema.ParentIDResolver,
 					},
 					{
 						Name:        "module",
@@ -115,13 +113,13 @@ func TFData() *schema.Table {
 								Name:        "tf_resource_cq_id",
 								Description: "Unique CloudQuery ID of tf_resource_instance table (FK)",
 								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
+								Resolver:    schema.ParentIDResolver,
 							},
 							{
 								Name:        "resource_id",
 								Description: "Parent resource id",
 								Type:        schema.TypeUUID,
-								Resolver:    schema.ParentIdResolver,
+								Resolver:    schema.ParentIDResolver,
 							},
 							{
 								Name:        "instance_id",
@@ -132,7 +130,7 @@ func TFData() *schema.Table {
 							{
 								Name:        "schema_version",
 								Description: "Terraform schema version",
-								Type:        schema.TypeBigInt,
+								Type:        schema.TypeInt,
 							},
 							{
 								Name:        "attributes",
@@ -173,13 +171,13 @@ func resolveTerraformMetaData(_ context.Context, meta schema.ClientMeta, _ *sche
 func resolveBackendType(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	c := meta.(*client.Client)
 	backend := c.Backend()
-	return diag.WrapError(resource.Set("backend_type", backend.BackendType))
+	return resource.Set("backend_type", backend.BackendType)
 }
 
 func resolveBackendName(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
 	c := meta.(*client.Client)
 	backend := c.Backend()
-	return diag.WrapError(resource.Set("backend_name", backend.BackendName))
+	return resource.Set("backend_name", backend.BackendName)
 }
 
 func resolveTerraformResources(_ context.Context, _ schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
@@ -203,28 +201,28 @@ func resolveProviderName(_ context.Context, _ schema.ClientMeta, resource *schem
 	matches := providerNameRegex.FindStringSubmatch(res.ProviderConfig)
 	typeIndex := providerNameRegex.SubexpIndex("Type")
 	if len(matches) >= 3 {
-		return diag.WrapError(resource.Set(c.Name, matches[typeIndex]))
+		return resource.Set(c.Name, matches[typeIndex])
 	}
 	return nil
 }
 
 func resolveInstanceAttributes(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(client.Instance)
-	attrs, err := instance.AttributesRaw.MarshalJSON()
-	if err != nil {
-		return diag.WrapError(fmt.Errorf("not valid JSON attributes"))
+	var attrs map[string]interface{}
+	if err := json.Unmarshal(instance.AttributesRaw, &attrs); err != nil {
+		return fmt.Errorf("not valid JSON attributes")
 	}
-	return diag.WrapError(resource.Set(c.Name, attrs))
+	return resource.Set(c.Name, attrs)
 }
 
 func resolveInstanceInternalId(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	instance := resource.Item.(client.Instance)
-	data := make(map[string]interface{})
+	var data map[string]interface{}
 	if err := json.Unmarshal(instance.AttributesRaw, &data); err != nil {
-		return diag.WrapError(fmt.Errorf("could not parse internal instance id"))
+		return fmt.Errorf("could not parse internal instance id")
 	}
 	if val, ok := data["id"]; ok {
-		return diag.WrapError(resource.Set(c.Name, val))
+		return resource.Set(c.Name, val)
 	}
 	return nil
 }
