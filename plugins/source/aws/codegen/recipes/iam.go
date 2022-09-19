@@ -240,14 +240,25 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService: "users",
-			Struct:     &types.User{},
-			SkipFields: []string{"Arn", "Tags"},
+			SubService:   "users",
+			Struct:       &types.User{},
+			SkipFields:   []string{"Arn", "AccountId", "Id", "Tags"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "arn",
 					Type:     schema.TypeString,
 					Resolver: `schema.PathResolver("Arn")`,
+				},
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("AccountId")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Id")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 				{
