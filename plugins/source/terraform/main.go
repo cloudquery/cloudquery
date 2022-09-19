@@ -8,8 +8,7 @@ import (
 const sentryDSN = "https://8a66aa7c550b46258f2391cbae261fe2@o1396617.ingest.sentry.io/6747630"
 
 func main() {
-	serve.Serve(serve.Options{
-		SourcePlugin: plugin.Plugin(),
-		SentryDsn:    sentryDSN,
-	})
+	serve.Source(plugin.Plugin(),
+		serve.WithSourceSentryDSN(sentryDSN),
+	)
 }
