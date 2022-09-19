@@ -1,6 +1,6 @@
 ## Azure Plugin
 
-The CloudQuery Azure provider pulls configuration out of Azure resources, normalizes them and stores them in any of the supported CloudQuery destination plugins.
+The CloudQuery Azure source plugin pulls configuration out of Azure resources, normalizes them and stores them in any of the supported CloudQuery destinations.
 
 ### Install
 
