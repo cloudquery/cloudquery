@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient,JitNetworkAccessPoliciesClient,AssessmentsClient
+//go:generate mockgen -destination=./mocks/security.go -package=mocks . SecurityAutoProvisioningSettingsClient,SecurityContactsClient,SecurityPricingsClient,SecuritySettingsClient,SecurityJitNetworkAccessPoliciesClient,SecurityAssessmentsClient
 package services
 
 import (
@@ -24,21 +24,21 @@ type SecuritySettingsClient interface {
 	List(ctx context.Context) (result security.SettingsListPage, err error)
 }
 
-type JitNetworkAccessPoliciesClient interface {
+type SecurityJitNetworkAccessPoliciesClient interface {
 	List(ctx context.Context) (result security.JitNetworkAccessPoliciesListPage, err error)
 }
 
-type AssessmentsClient interface {
+type SecurityAssessmentsClient interface {
 	List(ctx context.Context, scope string) (result security.AssessmentListPage, err error)
 }
 
 type SecurityClient struct {
-	Assessments              AssessmentsClient
+	Assessments              SecurityAssessmentsClient
 	AutoProvisioningSettings SecurityAutoProvisioningSettingsClient
 	Contacts                 SecurityContactsClient
 	Pricings                 SecurityPricingsClient
 	Settings                 SecuritySettingsClient
-	JitNetworkAccessPolicies JitNetworkAccessPoliciesClient
+	JitNetworkAccessPolicies SecurityJitNetworkAccessPoliciesClient
 }
 
 func NewSecurityClient(subscriptionId string, auth autorest.Authorizer) SecurityClient {

@@ -1,144 +1,89 @@
+// Auto generated code - DO NOT EDIT.
+
 package cosmosdb
 
 import (
 	"context"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-04-01-preview/documentdb"
 )
 
-func CosmosDBSqlDatabases() *schema.Table {
+func sQLDatabases() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_cosmosdb_sql_databases",
-		Description:   "Azure Cosmos DB SQL database.",
-		Resolver:      fetchCosmosdbSqlDatabases,
-		Multiplex:     client.SubscriptionMultiplex,
-		DeleteFilter:  client.DeleteSubscriptionFilter,
-		Options:       schema.TableCreationOptions{PrimaryKeys: []string{"subscription_id", "id"}},
-		IgnoreInTests: true,
+		Name:     "azure_cosmosdb_sql_databases",
+		Resolver: fetchCosmosDBSQLDatabases,
 		Columns: []schema.Column{
 			{
-				Name:        "subscription_id",
-				Description: "Azure subscription id",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAzureSubscription,
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "database_id",
-				Description: "Name of the Cosmos DB SQL database",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Resource.ID"),
+				Name:     "cosmosdb_account_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIDResolver,
 			},
 			{
-				Name:        "database_rid",
-				Description: "A system generated property",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Resource.Rid"),
+				Name:     "resource",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Resource"),
 			},
 			{
-				Name:        "database_ts",
-				Description: "A system generated property that denotes the last updated timestamp of the resource.",
-				Type:        schema.TypeFloat,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Resource.Ts"),
+				Name:     "options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Options"),
 			},
 			{
-				Name:        "database_etag",
-				Description: "A system generated property representing the resource etag required for optimistic concurrency control.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Resource.Etag"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:        "database_colls",
-				Description: "A system generated property that specified the addressable path of the collections resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Resource.Colls"),
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "database_users",
-				Description: "A system generated property that specifies the addressable path of the users resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Resource.Users"),
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 			{
-				Name:        "sql_database_get_properties_throughput",
-				Description: "Value of the Cosmos DB resource throughput or autoscaleSettings",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Options.Throughput"),
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:        "autoscale_settings_max_throughput",
-				Description: "Represents maximum throughput, the resource can scale up to.",
-				Type:        schema.TypeInt,
-				Resolver:    schema.PathResolver("SQLDatabaseGetProperties.Options.AutoscaleSettings.MaxThroughput"),
-			},
-			{
-				Name:        "id",
-				Description: "The unique resource identifier of the ARM resource.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
-			},
-			{
-				Name:        "name",
-				Description: "The name of the ARM resource.",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "type",
-				Description: "The type of Azure resource.",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "location",
-				Description: "The location of the resource group to which the resource belongs.",
-				Type:        schema.TypeString,
-			},
-			{
-				Name:        "tags",
-				Description: "Resource tags.",
-				Type:        schema.TypeJSON,
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 	}
 }
 
-// ====================================================================================================================
-//                                               Table Resolver Functions
-// ====================================================================================================================
+func fetchCosmosDBSQLDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	svc := meta.(*client.Client).Services().CosmosDB.SQLDatabases
 
-func fetchCosmosdbSqlDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
-	m := meta.(*client.Client)
-	accSvc := m.Services().CosmosDb.Accounts
-	sqlSvc := m.Services().CosmosDb.SQL
-
-	response, err := accSvc.List(ctx)
+	account := parent.Item.(documentdb.DatabaseAccountGetResults)
+	resource, err := client.ParseResourceID(*account.ID)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
+	}
+	response, err := svc.ListSQLDatabases(ctx, resource.ResourceGroup, *account.Name)
+	if err != nil {
+		return err
 	}
 	if response.Value == nil {
 		return nil
 	}
-
-	for _, account := range *response.Value {
-		if account.Name == nil {
-			m.Logger().Debug("could not found cosmosdb account name", "accountId", account.ID)
-			continue
-		}
-		details, err := client.ParseResourceID(*account.ID)
-		if err != nil {
-			m.Logger().Debug("could not parse cosmosdb account id", "accountId", account.ID)
-			continue
-		}
-
-		response, err := sqlSvc.ListSQLDatabases(ctx, details.ResourceGroup, *account.Name)
-		if err != nil {
-			return diag.WrapError(err)
-		}
-		if response.Value == nil {
-			continue
-		}
-		res <- *response.Value
-	}
+	res <- *response.Value
 
 	return nil
 }

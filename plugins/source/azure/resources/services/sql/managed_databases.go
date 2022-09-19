@@ -1,351 +1,173 @@
+// Auto generated code - DO NOT EDIT.
+
 package sql
 
 import (
 	"context"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql"
 )
 
-func sqlManagedDatabases() *schema.Table {
+func managedDatabases() *schema.Table {
 	return &schema.Table{
-		Name:          "azure_sql_managed_databases",
-		Description:   "ManagedDatabase a managed database resource.",
-		Resolver:      fetchSqlManagedDatabases,
-		IgnoreInTests: true,
+		Name:     "azure_sql_managed_databases",
+		Resolver: fetchSQLManagedDatabases,
 		Columns: []schema.Column{
 			{
-				Name:        "collation",
-				Description: "Collation of the managed database.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.Collation"),
+				Name:     "subscription_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAzureSubscription,
 			},
 			{
-				Name:        "status",
-				Description: "Status of the database",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.Status"),
+				Name:     "sql_managed_instance_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.ParentIDResolver,
 			},
 			{
-				Name:     "creation_date_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ManagedDatabaseProperties.CreationDate.Time"),
+				Name:     "collation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Collation"),
 			},
 			{
-				Name:     "earliest_restore_point_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ManagedDatabaseProperties.EarliestRestorePoint.Time"),
+				Name:     "status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Status"),
+			},
+			{
+				Name:     "creation_date",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("CreationDate"),
+			},
+			{
+				Name:     "earliest_restore_point",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("EarliestRestorePoint"),
 			},
 			{
 				Name:     "restore_point_in_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("ManagedDatabaseProperties.RestorePointInTime.Time"),
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RestorePointInTime"),
 			},
 			{
-				Name:        "default_secondary_location",
-				Description: "Geo paired region.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.DefaultSecondaryLocation"),
+				Name:     "default_secondary_location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DefaultSecondaryLocation"),
 			},
 			{
-				Name:        "catalog_collation",
-				Description: "Collation of the metadata catalog",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.CatalogCollation"),
+				Name:     "catalog_collation",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CatalogCollation"),
 			},
 			{
-				Name:        "create_mode",
-				Description: "Managed database create mode",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.CreateMode"),
+				Name:     "create_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CreateMode"),
 			},
 			{
-				Name:        "storage_container_uri",
-				Description: "Conditional",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.StorageContainerURI"),
+				Name:     "storage_container_uri",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StorageContainerURI"),
 			},
 			{
-				Name:        "source_database_id",
-				Description: "The resource identifier of the source database associated with create operation of this database.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.SourceDatabaseID"),
+				Name:     "source_database_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SourceDatabaseID"),
 			},
 			{
-				Name:        "restorable_dropped_database_id",
-				Description: "The restorable dropped database resource id to restore when creating this database.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.RestorableDroppedDatabaseID"),
+				Name:     "restorable_dropped_database_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RestorableDroppedDatabaseID"),
 			},
 			{
-				Name:        "storage_container_sas_token",
-				Description: "SAS token used to access resources",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.StorageContainerSasToken"),
+				Name:     "storage_container_sas_token",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("StorageContainerSasToken"),
 			},
 			{
-				Name:        "failover_group_id",
-				Description: "Instance Failover Group resource identifier that this managed database belongs to.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.FailoverGroupID"),
+				Name:     "failover_group_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FailoverGroupID"),
 			},
 			{
-				Name:        "recoverable_database_id",
-				Description: "The resource identifier of the recoverable database associated with create operation of this database.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.RecoverableDatabaseID"),
+				Name:     "recoverable_database_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RecoverableDatabaseID"),
 			},
 			{
-				Name:        "long_term_retention_backup_resource_id",
-				Description: "The name of the Long Term Retention backup to be used for restore of this managed database.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.LongTermRetentionBackupResourceID"),
+				Name:     "long_term_retention_backup_resource_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LongTermRetentionBackupResourceID"),
 			},
 			{
-				Name:        "auto_complete_restore",
-				Description: "Whether to auto complete restore of this managed database.",
-				Type:        schema.TypeBool,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.AutoCompleteRestore"),
+				Name:     "auto_complete_restore",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("AutoCompleteRestore"),
 			},
 			{
-				Name:        "last_backup_name",
-				Description: "Last backup file name for restore of this managed database.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ManagedDatabaseProperties.LastBackupName"),
+				Name:     "last_backup_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("LastBackupName"),
 			},
 			{
-				Name:        "location",
-				Description: "Resource location.",
-				Type:        schema.TypeString,
+				Name:     "location",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Location"),
 			},
 			{
-				Name:        "tags",
-				Description: "Resource tags.",
-				Type:        schema.TypeJSON,
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:        "id",
-				Description: "Resource ID.",
-				Type:        schema.TypeString,
-				Resolver:    schema.PathResolver("ID"),
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ID"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:        "name",
-				Description: "Resource name.",
-				Type:        schema.TypeString,
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:        "type",
-				Description: "Resource type.",
-				Type:        schema.TypeString,
+				Name:     "type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Type"),
 			},
 		},
+
 		Relations: []*schema.Table{
-			{
-				Name:        "azure_sql_managed_database_vulnerability_assessments",
-				Description: "DatabaseVulnerabilityAssessment a database vulnerability assessment.",
-				Resolver:    fetchSqlManagedDatabaseVulnerabilityAssessments,
-				Columns: []schema.Column{
-					{
-						Name:        "managed_database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_managed_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "storage_container_path",
-						Description: "A blob storage container path to hold the scan results",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.StorageContainerPath"),
-					},
-					{
-						Name:        "storage_container_sas_key",
-						Description: "A shared access signature (SAS Key) that has read and write access to the blob container specified in 'storageContainerPath' parameter",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.StorageContainerSasKey"),
-					},
-					{
-						Name:        "storage_account_access_key",
-						Description: "Specifies the identifier key of the storage account for vulnerability assessment scan results",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.StorageAccountAccessKey"),
-					},
-					{
-						Name:        "recurring_scans_is_enabled",
-						Description: "Recurring scans state.",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.RecurringScans.IsEnabled"),
-					},
-					{
-						Name:        "recurring_scans_email_subscription_admins",
-						Description: "Specifies that the schedule scan notification will be is sent to the subscription administrators.",
-						Type:        schema.TypeBool,
-						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.RecurringScans.EmailSubscriptionAdmins"),
-					},
-					{
-						Name:        "recurring_scans_emails",
-						Description: "Specifies an array of e-mail addresses to which the scan notification is sent.",
-						Type:        schema.TypeStringArray,
-						Resolver:    schema.PathResolver("DatabaseVulnerabilityAssessmentProperties.RecurringScans.Emails"),
-					},
-					{
-						Name:        "id",
-						Description: "Resource ID.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ID"),
-					},
-					{
-						Name:        "name",
-						Description: "Resource name.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "type",
-						Description: "Resource type.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
-			{
-				Name:        "azure_sql_managed_database_vulnerability_assessment_scans",
-				Description: "VulnerabilityAssessmentScanRecord a vulnerability assessment scan record.",
-				Resolver:    fetchSqlManagedDatabaseVulnerabilityAssessmentScans,
-				Columns: []schema.Column{
-					{
-						Name:        "managed_database_cq_id",
-						Description: "Unique CloudQuery ID of azure_sql_managed_databases table (FK)",
-						Type:        schema.TypeUUID,
-						Resolver:    schema.ParentIdResolver,
-					},
-					{
-						Name:        "scan_id",
-						Description: "The scan ID.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VulnerabilityAssessmentScanRecordProperties.ScanID"),
-					},
-					{
-						Name:        "trigger_type",
-						Description: "The scan trigger type",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VulnerabilityAssessmentScanRecordProperties.TriggerType"),
-					},
-					{
-						Name:        "state",
-						Description: "The scan status",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VulnerabilityAssessmentScanRecordProperties.State"),
-					},
-					{
-						Name:     "start_time",
-						Type:     schema.TypeTimestamp,
-						Resolver: schema.PathResolver("VulnerabilityAssessmentScanRecordProperties.StartTime.Time"),
-					},
-					{
-						Name:     "end_time",
-						Type:     schema.TypeTimestamp,
-						Resolver: schema.PathResolver("VulnerabilityAssessmentScanRecordProperties.EndTime.Time"),
-					},
-					{
-						Name:        "errors",
-						Description: "The scan errors.",
-						Type:        schema.TypeJSON,
-					},
-					{
-						Name:        "storage_container_path",
-						Description: "The scan results storage container path.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("VulnerabilityAssessmentScanRecordProperties.StorageContainerPath"),
-					},
-					{
-						Name:        "number_of_failed_security_checks",
-						Description: "The number of failed security checks.",
-						Type:        schema.TypeInt,
-						Resolver:    schema.PathResolver("VulnerabilityAssessmentScanRecordProperties.NumberOfFailedSecurityChecks"),
-					},
-					{
-						Name:        "id",
-						Description: "Resource ID.",
-						Type:        schema.TypeString,
-						Resolver:    schema.PathResolver("ID"),
-					},
-					{
-						Name:        "name",
-						Description: "Resource name.",
-						Type:        schema.TypeString,
-					},
-					{
-						Name:        "type",
-						Description: "Resource type.",
-						Type:        schema.TypeString,
-					},
-				},
-			},
+			managedDatabaseVulnerabilityAssessments(),
+			managedDatabaseVulnerabilityAssessmentScans(),
 		},
 	}
 }
 
-// ====================================================================================================================
-//                                               Table Resolver Functions
-// ====================================================================================================================
-
-func fetchSqlManagedDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchSQLManagedDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().SQL.ManagedDatabases
-	server := parent.Item.(sql.ManagedInstance)
-	resourceDetails, err := client.ParseResourceID(*server.ID)
+
+	instance := parent.Item.(sql.ManagedInstance)
+	resourceDetails, err := client.ParseResourceID(*instance.ID)
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
-	databases, err := svc.ListByInstance(ctx, resourceDetails.ResourceGroup, *server.Name)
+	response, err := svc.ListByInstance(ctx, resourceDetails.ResourceGroup, *instance.Name)
+
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
-	for databases.NotDone() {
-		res <- databases.Values()
-		if err := databases.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
+
+	for response.NotDone() {
+		res <- response.Values()
+		if err := response.NextWithContext(ctx); err != nil {
+			return err
 		}
 	}
-	return nil
-}
-func fetchSqlManagedDatabaseVulnerabilityAssessments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.ManagedDatabaseVulnerabilityAssessments
-	database := parent.Item.(sql.ManagedDatabase)
-	details, err := client.ParseResourceID(*database.ID)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	server := parent.Parent.Item.(sql.ManagedInstance)
-	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	for result.NotDone() {
-		res <- result.Values()
-		if err := result.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
-		}
-	}
-	return nil
-}
-func fetchSqlManagedDatabaseVulnerabilityAssessmentScans(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	svc := meta.(*client.Client).Services().SQL.ManagedDatabaseVulnerabilityAssessmentScans
-	database := parent.Item.(sql.ManagedDatabase)
-	details, err := client.ParseResourceID(*database.ID)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	server := parent.Parent.Item.(sql.ManagedInstance)
-	result, err := svc.ListByDatabase(ctx, details.ResourceGroup, *server.Name, *database.Name)
-	if err != nil {
-		return diag.WrapError(err)
-	}
-	for result.NotDone() {
-		res <- result.Values()
-		if err := result.NextWithContext(ctx); err != nil {
-			return diag.WrapError(err)
-		}
-	}
+
 	return nil
 }

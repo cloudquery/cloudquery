@@ -1,40 +1,40 @@
+// Auto generated code - DO NOT EDIT.
+
 package authorization
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
 )
 
-func buildAuthorizationRoleDefinitions(t *testing.T, ctrl *gomock.Controller) services.Services {
-	defs := mocks.NewMockRoleDefinitionsClient(ctrl)
+func TestAuthorizationRoleDefinitions(t *testing.T) {
+	client.MockTestHelper(t, RoleDefinitions(), createRoleDefinitionsMock)
+}
+
+func createRoleDefinitionsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockAuthorizationRoleDefinitionsClient(ctrl)
 	s := services.Services{
 		Authorization: services.AuthorizationClient{
-			RoleDefinitions: defs,
+			RoleDefinitions: mockClient,
 		},
 	}
 
-	var def authorization.RoleDefinition
-	if err := faker.FakeData(&def); err != nil {
-		t.Fatal(err)
-	}
-	defs.EXPECT().List(gomock.Any(), gomock.Any(), "").Return(
-		authorization.NewRoleDefinitionListResultPage(
-			authorization.RoleDefinitionListResult{Value: &[]authorization.RoleDefinition{def}},
-			func(context.Context, authorization.RoleDefinitionListResult) (authorization.RoleDefinitionListResult, error) {
-				return authorization.RoleDefinitionListResult{}, nil
-			},
-		), nil,
-	)
-	return s
-}
+	data := authorization.RoleDefinition{}
+	require.Nil(t, faker.FakeObject(&data))
 
-func TestAuthorizationRoleDefinitions(t *testing.T) {
-	client.AzureMockTestHelper(t, AuthorizationRoleDefinitions(), buildAuthorizationRoleDefinitions, client.TestOptions{})
+	result := authorization.NewRoleDefinitionListResultPage(authorization.RoleDefinitionListResult{Value: &[]authorization.RoleDefinition{data}}, func(ctx context.Context, result authorization.RoleDefinitionListResult) (authorization.RoleDefinitionListResult, error) {
+		return authorization.RoleDefinitionListResult{}, nil
+	})
+
+	mockClient.EXPECT().List(gomock.Any(), gomock.Any(), "").Return(result, nil)
+	return s
 }

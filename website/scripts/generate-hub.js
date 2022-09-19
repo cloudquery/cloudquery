@@ -1,18 +1,19 @@
+const util = require("util");
 const path = require("path");
 const { promises: fs } = require("fs");
-const {execSync} = require("child_process");
+const execa = require("execa");
 
 const PLUGINS_DATA = {
-  // aws: { name: "AWS" },
-  // azure: { name: "Azure" },
-  // cloudflare: { name: "CloudFlare" },
-  // digitalocean: { name: "DigitalOcean" },
+  aws: { name: "AWS" },
+  azure: { name: "Azure" },
+  cloudflare: { name: "CloudFlare" },
+  digitalocean: { name: "DigitalOcean" },
   gcp: { name: "GCP" },
-  // github: { name: "GitHub" },
+  github: { name: "GitHub" },
   heroku: { name: "Heroku" },
-  // k8s: { name: "Kubernetes" },
-  // okta: { name: "Okta" },
-  // terraform: { name: "Terraform" },
+  k8s: { name: "Kubernetes" },
+  okta: { name: "Okta" },
+  terraform: { name: "Terraform" },
   yandexcloud: {
     name: "Yandex Cloud",
     external: true,
@@ -127,33 +128,43 @@ const generatePluginsIndexPage = async () => {
   await fs.writeFile(page.path, page.content, { encoding: "utf8" });
 };
 
+const isNewSDK = async (sourcePlugin) => {
+  const goMod = await fs.readFile(`${sourcePlugin}/go.mod`, "utf8");
+  return goMod.includes("cloudquery/plugin-sdk");
+};
+
+const generateTablesDir = async (sourcePlugin, tablesDir) => {
+  if (await isNewSDK(sourcePlugin)) {
+    const process = execa.command("go run main.go doc " + tablesDir, {
+      cwd: sourcePlugin,
+    });
+    process.stdout.pipe(process.stdout);
+    await process;
+  } else {
+    await fs.cp(`${sourcePlugin}/docs/tables`, tablesDir, { recursive: true });
+  }
+};
+
 const generatePluginTablePages = async (plugin) => {
   const sourcePlugin = `${PLUGINS_SOURCE}/${plugin.id}`;
-  const tablesPath = `${PLUGINS_PATH}/${plugin.id}/tables.mdx`;
   const tablesDir = `${PLUGINS_PATH}/${plugin.id}/tables`;
   await fs.mkdir(tablesDir, { recursive: true });
-  const stdout  = execSync("go run main.go doc " + tablesDir, {
-    cwd: sourcePlugin
-  }).toString();
-  console.log(stdout);
-
+  await generateTablesDir(sourcePlugin, tablesDir);
+  const tablesIndexPath = `${PLUGINS_PATH}/${plugin.id}/tables.mdx`;
   const tablesList = (await fs.readdir(tablesDir, { withFileTypes: true }))
     .filter((dirent) => dirent.isFile() && dirent.name.endsWith(".md"))
     .map((dirent) => path.basename(dirent.name, path.extname(dirent.name)));
 
-  await generatePluginTablePagesMeta(plugin.name, tablesList);
+  await generatePluginTablePagesMeta(plugin.id, tablesList);
 
   const tablesLinks = tablesList
-    .map(
-      (table) =>
-        `|[${table}](tables/${table})|`
-    )
+    .map((table) => `|[${table}](tables/${table})|`)
     .join("\n");
   const content = TABLES_TEMPLATE.replaceAll(
     NAME_PLACEHOLDER,
     plugin.name
   ).replace(CONTENT_PLACEHOLDER, tablesLinks);
-  await fs.writeFile(tablesPath, content, { encoding: "utf8" });
+  await fs.writeFile(tablesIndexPath, content, { encoding: "utf8" });
 };
 
 const generatePluginTablePagesMeta = async (plugin, tablesList) => {

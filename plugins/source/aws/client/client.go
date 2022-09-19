@@ -471,8 +471,8 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-	var awsConfig *Config
-	err := spec.UnmarshalSpec(awsConfig)
+	var awsConfig Config
+	err := spec.UnmarshalSpec(&awsConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
@@ -485,7 +485,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 	}
 	if awsConfig.Organization != nil {
 		var err error
-		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsConfig)
+		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsConfig)
 		if err != nil {
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
@@ -515,7 +515,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 			logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
 		}
 
-		awsCfg, err := configureAwsClient(ctx, logger, awsConfig, account, adminAccountSts)
+		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)
 		if err != nil {
 			if account.source == "org" {
 				logger.Warn().Msg("unable to assume role in account")
