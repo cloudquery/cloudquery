@@ -1,6 +1,6 @@
 # AWS Plugin
 
-The CloudQuery AWS provider extracts and transforms your AWS cloud assets configuration into any of CloudQuery supported desintations.
+The CloudQuery AWS provider extracts and transforms your AWS cloud assets configuration into any of CloudQuery's supported destinations.
 
 ## Install
 
