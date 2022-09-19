@@ -31,11 +31,6 @@ func Issues() *schema.Table {
 				},
 			},
 			{
-				Name:     "html_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HTMLURL"),
-			},
-			{
 				Name:     "number",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Number"),
@@ -111,6 +106,11 @@ func Issues() *schema.Table {
 				Resolver: schema.PathResolver("URL"),
 			},
 			{
+				Name:     "html_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HTMLURL"),
+			},
+			{
 				Name:     "comments_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CommentsURL"),
@@ -136,7 +136,7 @@ func Issues() *schema.Table {
 				Resolver: schema.PathResolver("Milestone"),
 			},
 			{
-				Name:     "pull_request_links",
+				Name:     "pull_request",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PullRequestLinks"),
 			},

@@ -5,12 +5,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-const (
-	htmlURL = "HTMLURL"
-	sshURL  = "SSHURL"
-	svnURL  = "SVNURL"
-)
-
 var (
 	orgColumns = []codegen.ColumnDefinition{
 		{
@@ -20,21 +14,6 @@ var (
 			Resolver:    `client.ResolveOrg`,
 			Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 		},
-	}
-	htmlURLCol = codegen.ColumnDefinition{
-		Name:     "html_url",
-		Type:     schema.TypeString,
-		Resolver: `schema.PathResolver("` + htmlURL + `")`,
-	}
-	svnURLCol = codegen.ColumnDefinition{
-		Name:     "svn_url",
-		Type:     schema.TypeString,
-		Resolver: `schema.PathResolver("` + svnURL + `")`,
-	}
-	sshURLCol = codegen.ColumnDefinition{
-		Name:     "ssh_url",
-		Type:     schema.TypeString,
-		Resolver: `schema.PathResolver("` + sshURL + `")`,
 	}
 	idColumn = pkColumn("id", "ID")
 	skipID   = []string{"ID"}

@@ -12,8 +12,8 @@ func Issues() []*Resource {
 			Multiplex:    orgMultiplex,
 			Struct:       new(github.Issue),
 			TableName:    "issues",
-			SkipFields:   append(skipID, htmlURL),
-			ExtraColumns: append(orgColumns, idColumn, htmlURLCol),
+			SkipFields:   skipID,
+			ExtraColumns: append(orgColumns, idColumn),
 		},
 	}
 }

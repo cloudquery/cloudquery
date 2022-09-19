@@ -14,8 +14,8 @@ func Organizations() []*Resource {
 			Multiplex:    orgMultiplex,
 			Struct:       new(github.Organization),
 			TableName:    "organizations",
-			SkipFields:   append(skipID, htmlURL),
-			ExtraColumns: append(orgColumns, idColumn, htmlURLCol),
+			SkipFields:   skipID,
+			ExtraColumns: append(orgColumns, idColumn),
 			Relations:    []string{"Members()"},
 		},
 		{
@@ -24,9 +24,8 @@ func Organizations() []*Resource {
 			Multiplex:  "", // we skip multiplexing here as it's a relation
 			Struct:     new(github.User),
 			TableName:  "organization_members",
-			SkipFields: append(skipID, htmlURL),
+			SkipFields: skipID,
 			ExtraColumns: append(orgColumns, idColumn, // we can use orgColumns here
-				htmlURLCol,
 				codegen.ColumnDefinition{
 					Name:     "membership",
 					Type:     schema.TypeJSON,

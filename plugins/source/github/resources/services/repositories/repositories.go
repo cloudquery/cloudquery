@@ -31,21 +31,6 @@ func Repositories() *schema.Table {
 				},
 			},
 			{
-				Name:     "html_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HTMLURL"),
-			},
-			{
-				Name:     "ssh_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SSHURL"),
-			},
-			{
-				Name:     "svn_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SVNURL"),
-			},
-			{
 				Name:     "created_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt.Time"),
@@ -106,6 +91,11 @@ func Repositories() *schema.Table {
 				Resolver: schema.PathResolver("MasterBranch"),
 			},
 			{
+				Name:     "html_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HTMLURL"),
+			},
+			{
 				Name:     "clone_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CloneURL"),
@@ -119,6 +109,16 @@ func Repositories() *schema.Table {
 				Name:     "mirror_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("MirrorURL"),
+			},
+			{
+				Name:     "ssh_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SSHURL"),
+			},
+			{
+				Name:     "svn_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SVNURL"),
 			},
 			{
 				Name:     "language",
