@@ -102,7 +102,7 @@ spec:
     # - "<subscription_2>"
 ```
 
-By default, CloudQuery will fetch all configuration from **all** resources in **all** subscription. You can change this behaviour with the following arguments:
+By default, CloudQuery will fetch all configurations from **all** resources in **all** subscriptions. You can change this behaviour with the following arguments:
 
 - `subscriptions` **(Optional)** - Specify multiple subscriptions to fetch data from them concurrently.
 
