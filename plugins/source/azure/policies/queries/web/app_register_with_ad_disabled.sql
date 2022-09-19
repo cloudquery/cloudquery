@@ -6,7 +6,7 @@ SELECT :'execution_time'                                                        
        subscription_id                                                                      AS subscription_id,
        id                                                                                   AS resource_id,
        CASE
-           WHEN identity_principal_id IS NULL OR identity_principal_id = ''
+           WHEN identity->>'principalId' IS NULL OR identity->>'principalId' = ''
                THEN 'fail'
            ELSE 'pass'
            END                                                                                  AS status

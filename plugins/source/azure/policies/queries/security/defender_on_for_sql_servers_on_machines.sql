@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when pricing_properties_tier = 'Standard'
+    when pricing_tier = 'Standard'
     then 'pass' else 'fail'
   end
 FROM azure_security_pricings asp

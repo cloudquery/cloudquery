@@ -6,7 +6,7 @@ SELECT :'execution_time'                                 AS execution_time,
        subscription_id                                   AS subscription_id,
        id                                                AS resource_id,
        CASE
-           WHEN enable_soft_delete IS NOT TRUE OR enable_purge_protection IS NOT TRUE
+           WHEN properties_enable_soft_delete IS NOT TRUE OR properties_enable_purge_protection IS NOT TRUE
                THEN 'fail'
            ELSE 'pass'
            END                                           AS status
