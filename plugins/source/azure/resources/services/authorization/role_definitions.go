@@ -49,7 +49,7 @@ func RoleDefinitions() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "role_type",
+				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RoleType"),
 			},

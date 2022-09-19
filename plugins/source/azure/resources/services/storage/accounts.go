@@ -108,12 +108,12 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("AzureFilesIdentityBasedAuthentication"),
 			},
 			{
-				Name:     "enable_https_traffic_only",
+				Name:     "supports_https_traffic_only",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableHTTPSTrafficOnly"),
 			},
 			{
-				Name:     "network_rule_set",
+				Name:     "network_acls",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("NetworkRuleSet"),
 			},
@@ -168,7 +168,7 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("AllowSharedKeyAccess"),
 			},
 			{
-				Name:     "enable_nfs_v_3",
+				Name:     "is_nfs_v_3_enabled",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableNfsV3"),
 			},
