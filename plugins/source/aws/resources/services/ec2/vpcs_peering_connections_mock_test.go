@@ -23,7 +23,7 @@ func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) clien
 			VpcPeeringConnections: []ec2Types.VpcPeeringConnection{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Networking: m,
 	}
 }
 
