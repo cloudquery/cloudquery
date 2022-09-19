@@ -31,11 +31,6 @@ func Teams() *schema.Table {
 				},
 			},
 			{
-				Name:     "html_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HTMLURL"),
-			},
-			{
 				Name:     "node_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("NodeID"),
@@ -91,6 +86,11 @@ func Teams() *schema.Table {
 				Resolver: schema.PathResolver("Organization"),
 			},
 			{
+				Name:     "html_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HTMLURL"),
+			},
+			{
 				Name:     "members_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("MembersURL"),
@@ -106,7 +106,7 @@ func Teams() *schema.Table {
 				Resolver: schema.PathResolver("Parent"),
 			},
 			{
-				Name:     "ldapdn",
+				Name:     "ldap_dn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("LDAPDN"),
 			},

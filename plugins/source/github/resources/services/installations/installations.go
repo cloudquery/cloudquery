@@ -31,11 +31,6 @@ func Installations() *schema.Table {
 				},
 			},
 			{
-				Name:     "html_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HTMLURL"),
-			},
-			{
 				Name:     "node_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("NodeID"),
@@ -69,6 +64,11 @@ func Installations() *schema.Table {
 				Name:     "repositories_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RepositoriesURL"),
+			},
+			{
+				Name:     "html_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HTMLURL"),
 			},
 			{
 				Name:     "target_type",

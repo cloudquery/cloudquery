@@ -30,11 +30,6 @@ func Members() *schema.Table {
 				},
 			},
 			{
-				Name:     "html_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HTMLURL"),
-			},
-			{
 				Name:     "membership",
 				Type:     schema.TypeJSON,
 				Resolver: resolveMembership,
@@ -53,6 +48,11 @@ func Members() *schema.Table {
 				Name:     "avatar_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AvatarURL"),
+			},
+			{
+				Name:     "html_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HTMLURL"),
 			},
 			{
 				Name:     "gravatar_id",

@@ -31,11 +31,6 @@ func Organizations() *schema.Table {
 				},
 			},
 			{
-				Name:     "html_url",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("HTMLURL"),
-			},
-			{
 				Name:     "login",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Login"),
@@ -49,6 +44,11 @@ func Organizations() *schema.Table {
 				Name:     "avatar_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AvatarURL"),
+			},
+			{
+				Name:     "html_url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("HTMLURL"),
 			},
 			{
 				Name:     "name",
@@ -176,37 +176,37 @@ func Organizations() *schema.Table {
 				Resolver: schema.PathResolver("HasRepositoryProjects"),
 			},
 			{
-				Name:     "default_repo_permission",
+				Name:     "default_repository_permission",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DefaultRepoPermission"),
 			},
 			{
-				Name:     "default_repo_settings",
+				Name:     "default_repository_settings",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DefaultRepoSettings"),
 			},
 			{
-				Name:     "members_can_create_repos",
+				Name:     "members_can_create_repositories",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("MembersCanCreateRepos"),
 			},
 			{
-				Name:     "members_can_create_public_repos",
+				Name:     "members_can_create_public_repositories",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("MembersCanCreatePublicRepos"),
 			},
 			{
-				Name:     "members_can_create_private_repos",
+				Name:     "members_can_create_private_repositories",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("MembersCanCreatePrivateRepos"),
 			},
 			{
-				Name:     "members_can_create_internal_repos",
+				Name:     "members_can_create_internal_repositories",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("MembersCanCreateInternalRepos"),
 			},
 			{
-				Name:     "members_can_fork_private_repos",
+				Name:     "members_can_fork_private_repositories",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("MembersCanForkPrivateRepos"),
 			},
