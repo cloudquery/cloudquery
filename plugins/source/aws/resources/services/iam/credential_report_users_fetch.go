@@ -3,12 +3,13 @@ package iam
 import (
 	"context"
 	"errors"
+	"time"
+
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gocarina/gocsv"
-	"time"
 )
 
 type CredentialReportUser struct {

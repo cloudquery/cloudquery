@@ -1,14 +1,15 @@
 package iam
 
 import (
+	"testing"
+	"time"
+
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
 	"github.com/gocarina/gocsv"
 	"github.com/golang/mock/gomock"
-	"testing"
-	"time"
 )
 
 func buildCredentialReportUsers(t *testing.T, ctrl *gomock.Controller) client.Services {

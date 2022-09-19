@@ -17,7 +17,7 @@ type AccessKeyWrapper struct {
 }
 
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listUsers, getUserDetail)
+	return client.ListAndDetailResolver(ctx, meta, res, listUsers, fetchUserDetail)
 }
 
 func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
@@ -37,7 +37,7 @@ func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- in
 	return nil
 }
 
-func getUserDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+func fetchUserDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
 	c := meta.(*client.Client)
 
 	listUser := listInfo.(types.User)
