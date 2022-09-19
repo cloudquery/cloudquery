@@ -16,6 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	applicationautoscalingTypes "github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -103,7 +104,7 @@ type Client struct {
 	AccountID            string
 	GlobalRegion         string
 	Region               string
-	AutoscalingNamespace string
+	AutoscalingNamespace applicationautoscalingTypes.ServiceNamespace
 	WAFScope             wafv2types.Scope
 	Partition            string
 }
@@ -290,7 +291,7 @@ func (c *Client) Identify() string {
 	return strings.TrimRight(strings.Join([]string{
 		c.AccountID,
 		c.Region,
-		c.AutoscalingNamespace,
+		string(c.AutoscalingNamespace),
 		string(c.WAFScope),
 	}, ":"), ":")
 }
@@ -334,21 +335,6 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		AccountID:            accountID,
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
-		WAFScope:             c.WAFScope,
-	}
-}
-
-func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, region, namespace string) *Client {
-	return &Client{
-		Partition:            partition,
-		logLevel:             c.logLevel,
-		maxRetries:           c.maxRetries,
-		maxBackoff:           c.maxBackoff,
-		ServicesManager:      c.ServicesManager,
-		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Str("autoscaling_namespace", namespace).Logger(),
-		AccountID:            accountID,
-		Region:               region,
-		AutoscalingNamespace: namespace,
 		WAFScope:             c.WAFScope,
 	}
 }

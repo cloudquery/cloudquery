@@ -7,10 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-var AllNamespaces = []string{ // this is only used in applicationautoscaling
-	"comprehend", "rds", "sagemaker", "appstream", "elasticmapreduce", "dynamodb", "lambda", "ecs", "cassandra", "ec2", "neptune", "kafka", "custom-resource", "elasticache",
-}
-
 // Extract region from service list
 func getRegion(regionalMap map[string]*Services) string {
 	if len(regionalMap) == 0 {
@@ -57,26 +53,6 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 	}
 }
 
-func ServiceAccountRegionNamespaceMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
-	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		var l = make([]schema.ClientMeta, 0)
-		client := meta.(*Client)
-		for partition := range client.ServicesManager.services {
-			for accountID := range client.ServicesManager.services[partition] {
-				for region := range client.ServicesManager.services[partition][accountID] {
-					if !isSupportedServiceForRegion(service, region) {
-						meta.Logger().Trace().Str("service", service).Str("region", region).Str("partition", partition).Msg("region is not supported for service")
-						continue
-					}
-					for _, ns := range AllNamespaces {
-						l = append(l, client.withPartitionAccountIDRegionAndNamespace(partition, accountID, region, ns))
-					}
-				}
-			}
-		}
-		return l
-	}
-}
 
 func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
