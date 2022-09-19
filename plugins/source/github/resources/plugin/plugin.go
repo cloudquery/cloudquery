@@ -5,14 +5,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/plugins"
 )
 
-const (
-	exampleConfig = `
-		access_token: <Access Token HERE>
-		orgs:
-		- cloudquery
-`
-)
-
 var (
 	Version = "Development"
 )
@@ -25,6 +17,6 @@ func Plugin() *plugins.SourcePlugin {
 		Version,
 		allTables,
 		client.Configure,
-		plugins.WithSourceExampleConfig(exampleConfig),
+		plugins.WithSourceExampleConfig(client.ExampleSpec()),
 	)
 }
