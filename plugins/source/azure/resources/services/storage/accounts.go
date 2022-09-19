@@ -168,11 +168,6 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("AllowSharedKeyAccess"),
 			},
 			{
-				Name:     "is_nfs_v_3_enabled",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableNfsV3"),
-			},
-			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
@@ -209,6 +204,11 @@ func Accounts() *schema.Table {
 				Name:     "queue_logging_settings",
 				Type:     schema.TypeJSON,
 				Resolver: fetchStorageAccountQueueLoggingSettings,
+			},
+			{
+				Name:     "is_nfs_v3_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableNfsV3"),
 			},
 		},
 
