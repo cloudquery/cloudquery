@@ -1,11 +1,12 @@
-name: Unit Tests Plugins
+name: Unit Tests
 
 on:
   pull_request:
     branches:
       - main
-env:
+env: 
   CGO_ENABLED: 0
+  CQ_NO_TELEMETRY: 1
 
 jobs:
   resolve-modules:
@@ -25,7 +26,6 @@ jobs:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
       fail-fast: false
     runs-on: ubuntu-latest
-    if: matrix.workdir != 'cli'
     services:
       postgres:
         image: postgres:11
@@ -74,6 +74,11 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
+
+      - name: Build
+        if: steps.changed-files.outputs.any_changed == 'true' && matrix.workdir == 'cli'
+        run: go build
+        working-directory: ${{ matrix.workdir }}
 
       - name: Test
         if: steps.changed-files.outputs.any_changed == 'true'

@@ -24,20 +24,19 @@ jobs:
         with:
           files: |
             cli
-            .github/workflows/test_integration.yml
+            .github/workflows/test_cli.yml
           files_ignore: |
             cli/CHANGELOG.md
   test-unit:
-    name: Unit Tests
+    name: Cross Env Unit Tests
     needs: [check-cli-changes]
     if: needs.check-cli-changes.outputs.cli-changed == 'true'
-    name: Integration Tests
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 20
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        workdir: cli
+        os: [macos-latest, windows-latest]
+        workdir: [cli]
         postgres: ['11']
       fail-fast: false
     steps:
@@ -50,7 +49,6 @@ jobs:
         with:
           go-version: 1.19.1
       - uses: actions/cache@v3
-        if: steps.changed-files.outputs.any_changed == 'true'
         with:
           path: |
             ~/.cache/go-build
@@ -58,16 +56,9 @@ jobs:
           key: ${{ runner.os }}-go-1.19.1-${{ hashFiles(format('{0}/go.sum', matrix.workdir)) }}
           restore-keys: |
             ${{ runner.os }}-go-1.19.1-${{ matrix.workdir }}
-
       - name: Get dependencies
-        if: steps.changed-files.outputs.any_changed == 'true'
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
-
-      - name: Test
-        if: steps.changed-files.outputs.any_changed == 'true'
-        run: go test -v ./...
-        working-directory: ${{ matrix.workdir }}
       - uses: docker-practice/actions-setup-docker@50400dd6e7c92d4a9f5a3cb9162b21e8a041aeec
         if: matrix.os != 'windows-latest'
       - name: Test
