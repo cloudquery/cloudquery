@@ -148,7 +148,9 @@ type Services struct {
 	Directconnect          DirectconnectClient
 	DMS                    DatabasemigrationserviceClient
 	DynamoDB               DynamoDBClient
-	EC2                    Ec2Client
+	EC2Networking          Ec2Client
+	EC2Instances           Ec2Client
+	EC2Storage             Ec2Client
 	ECR                    EcrClient
 	ECS                    EcsClient
 	EFS                    EfsClient
@@ -606,7 +608,9 @@ func initServices(region string, c aws.Config) Services {
 		Directconnect:          directconnect.NewFromConfig(awsCfg),
 		DMS:                    databasemigrationservice.NewFromConfig(awsCfg),
 		DynamoDB:               dynamodb.NewFromConfig(awsCfg),
-		EC2:                    ec2.NewFromConfig(awsCfg),
+		EC2Networking:          ec2.NewFromConfig(awsCfg),
+		EC2Instances:           ec2.NewFromConfig(awsCfg),
+		EC2Storage:             ec2.NewFromConfig(awsCfg),
 		ECR:                    ecr.NewFromConfig(awsCfg),
 		ECS:                    ecs.NewFromConfig(awsCfg),
 		EFS:                    efs.NewFromConfig(awsCfg),

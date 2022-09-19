@@ -22,7 +22,7 @@ func buildEc2VpcEndpointServices(t *testing.T, ctrl *gomock.Controller) client.S
 			ServiceDetails: []ec2Types.ServiceDetail{sd},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Networking: m,
 	}
 }
 

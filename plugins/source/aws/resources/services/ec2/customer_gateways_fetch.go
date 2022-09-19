@@ -13,7 +13,7 @@ import (
 
 func fetchEc2CustomerGateways(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().EC2Networking
 	response, err := svc.DescribeCustomerGateways(ctx, nil, func(options *ec2.Options) {
 		options.Region = c.Region
 	})

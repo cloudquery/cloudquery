@@ -23,7 +23,7 @@ func buildEc2CustomerGateways(t *testing.T, ctrl *gomock.Controller) client.Serv
 			CustomerGateways: []types.CustomerGateway{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Networking: m,
 	}
 }
 

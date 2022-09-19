@@ -23,7 +23,7 @@ func buildEc2SecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 			SecurityGroups: []ec2Types.SecurityGroup{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Networking: m,
 	}
 }
 

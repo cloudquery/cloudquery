@@ -32,7 +32,7 @@ func buildEc2EbsSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services
 			CreateVolumePermissions: []ec2Types.CreateVolumePermission{sa},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Storage: m,
 	}
 }
 

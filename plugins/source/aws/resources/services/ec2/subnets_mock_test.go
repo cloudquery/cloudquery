@@ -23,7 +23,7 @@ func buildEc2Subnets(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Subnets: []ec2Types.Subnet{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Networking: m,
 	}
 }
 

@@ -23,7 +23,7 @@ func buildEc2InstanceStatuses(t *testing.T, ctrl *gomock.Controller) client.Serv
 			InstanceStatuses: []ec2Types.InstanceStatus{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Instances: m,
 	}
 }
 func TestEc2InstanceStatuses(t *testing.T) {

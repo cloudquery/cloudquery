@@ -13,7 +13,7 @@ import (
 
 func fetchEc2EbsVolumes(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().EC2Storage
 	config := ec2.DescribeVolumesInput{}
 	for {
 		response, err := svc.DescribeVolumes(ctx, &config)

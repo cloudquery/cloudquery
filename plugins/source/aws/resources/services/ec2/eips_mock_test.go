@@ -32,7 +32,7 @@ func buildEc2Eips(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Addresses: []ec2Types.Address{a},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Networking: m,
 	}
 }
 

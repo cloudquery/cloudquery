@@ -14,7 +14,7 @@ import (
 func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeInstancesInput
 	c := meta.(*client.Client)
-	svc := c.Services().EC2
+	svc := c.Services().EC2Instances
 	for {
 		output, err := svc.DescribeInstances(ctx, &config, func(options *ec2.Options) {
 			options.Region = c.Region

@@ -23,7 +23,7 @@ func buildEc2VpnGateways(t *testing.T, ctrl *gomock.Controller) client.Services 
 			VpnGateways: []ec2Types.VpnGateway{l},
 		}, nil)
 	return client.Services{
-		EC2: m,
+		EC2Networking: m,
 	}
 }
 
