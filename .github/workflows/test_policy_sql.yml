@@ -5,7 +5,6 @@ on:
       - main
 env:
   CGO_ENABLED: 0
-  CQ_NO_TELEMETRY: 1
   PGPASSWORD: pass
 
 jobs:
@@ -37,7 +36,8 @@ jobs:
               }
             }))).filter(Boolean)
             return { include: withPolicies }
-  SQLPolicyTest:
+  sql-policy-test:
+    name: SQL Policy Tests
     needs: resolve-modules
     runs-on: ubuntu-latest
     strategy:

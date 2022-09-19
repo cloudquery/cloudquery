@@ -1,4 +1,4 @@
-name: Build
+name: Unit Tests CLI
 
 on:
   pull_request:
@@ -8,24 +8,11 @@ env:
   CGO_ENABLED: 0
 
 jobs:
-  resolve-modules:
-    name: Resolve Modules
+  check-cli-changes:
+    name: Check for CLI Changes
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - name: Checkout Sources
-        uses: actions/checkout@v3
-      - id: set-matrix
-        run: ./scripts/resolve-modules.sh
-  test-build:
-    name: Build
-    needs: resolve-modules
-    strategy:
-      matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
-      fail-fast: false
-    runs-on: ubuntu-latest
-    
+      cli-changed: ${{ steps.changed-files.outputs.any_changed }}
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v3
@@ -36,12 +23,29 @@ jobs:
         uses: tj-actions/changed-files@v28
         with:
           files: |
-            ${{ matrix.workdir }}
-            .github/workflows/test_build.yml
+            cli
+            .github/workflows/test_integration.yml
           files_ignore: |
-            ${{ matrix.workdir }}/CHANGELOG.md
+            cli/CHANGELOG.md
+  test-unit:
+    name: Unit Tests
+    needs: [check-cli-changes]
+    if: needs.check-cli-changes.outputs.cli-changed == 'true'
+    name: Integration Tests
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        workdir: cli
+        postgres: ['11']
+      fail-fast: false
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - name: Set up Go 1.x
-        if: steps.changed-files.outputs.any_changed == 'true'
         uses: actions/setup-go@v3
         with:
           go-version: 1.19.1
@@ -60,7 +64,15 @@ jobs:
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
 
-      - name: Build
+      - name: Test
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: go build .
+        run: go test -v ./...
+        working-directory: ${{ matrix.workdir }}
+      - uses: docker-practice/actions-setup-docker@50400dd6e7c92d4a9f5a3cb9162b21e8a041aeec
+        if: matrix.os != 'windows-latest'
+      - name: Test
+        run: |
+          docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres:${{ matrix.postgres }}
+          go build
+          go test -v ./...
         working-directory: ${{ matrix.workdir }}

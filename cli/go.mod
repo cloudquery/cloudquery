@@ -3,6 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
+	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/briandowns/spinner v1.19.0
 	github.com/cloudquery/plugin-sdk v0.7.1
 	github.com/getsentry/sentry-go v0.13.0
@@ -13,9 +14,11 @@ require (
 	github.com/schollz/progressbar/v3 v3.9.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
+	github.com/stretchr/testify v1.8.0
 	github.com/vgarvardt/pgx-google-uuid/v4 v4.0.0
 	golang.org/x/sync v0.0.0-20220907140024-f12130a52804
 	google.golang.org/grpc v1.49.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -54,7 +57,6 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/subosito/gotenv v1.3.0 // indirect
 	github.com/thoas/go-funk v0.9.2 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
@@ -69,5 +71,4 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/ini.v1 v1.66.4 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

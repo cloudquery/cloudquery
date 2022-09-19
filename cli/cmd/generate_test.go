@@ -68,11 +68,7 @@ spec:
 `
 
 func TestGenerate(t *testing.T) {
-	tmpdir, tmpErr := os.MkdirTemp("", "generate_test_*")
-	if tmpErr != nil {
-		t.Fatalf("failed to create temporary directory: %v", tmpErr)
-	}
-	defer os.RemoveAll(tmpdir)
+	tmpdir := t.TempDir()
 
 	t.Run("generate source", func(t *testing.T) {
 		output := path.Join(tmpdir, "test-source.yml")
