@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -87,9 +86,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray"
 	"github.com/aws/smithy-go"
 	"github.com/aws/smithy-go/logging"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/rs/zerolog"
 )
 
 type Client struct {
@@ -99,7 +98,7 @@ type Client struct {
 	maxRetries      int
 	maxBackoff      int
 	ServicesManager ServicesManager
-	logger          hclog.Logger
+	logger          zerolog.Logger
 	// this is set by table clientList
 	AccountID            string
 	GlobalRegion         string
@@ -118,7 +117,7 @@ type S3Manager struct {
 }
 
 type AwsLogger struct {
-	l hclog.Logger
+	l zerolog.Logger
 }
 
 type AssumeRoleAPIClient interface {
@@ -215,25 +214,10 @@ const (
 	cloudfrontScopeRegion      = defaultRegion
 )
 
-var envVarsToCheck = []string{
-	"AWS_PROFILE",
-	"AWS_ACCESS_KEY_ID",
-	"AWS_SECRET_ACCESS_KEY",
-	"AWS_CONFIG_FILE",
-	"AWS_ROLE_ARN",
-	"AWS_SESSION_TOKEN",
-	"AWS_SHARED_CREDENTIALS_FILE",
-}
-
 var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
 var errUnknownRegion = func(region string) error {
 	return fmt.Errorf("unknown region: %q", region)
 }
-
-var (
-	_ schema.ClientMeta       = (*Client)(nil)
-	_ schema.ClientIdentifier = (*Client)(nil)
-)
 
 func (s *ServicesManager) ServicesByPartitionAccountAndRegion(partition, accountId, region string) *Services {
 	if region == "" {
@@ -279,7 +263,7 @@ func (s3Manager S3Manager) GetBucketRegion(ctx context.Context, bucket string, o
 	return manager.GetBucketRegion(ctx, s3Manager.s3Client, bucket, optFns...)
 }
 
-func NewAwsClient(logger hclog.Logger) Client {
+func NewAwsClient(logger zerolog.Logger) Client {
 	return Client{
 		ServicesManager: ServicesManager{
 			services: ServicesPartitionAccountRegionMap{},
@@ -297,14 +281,14 @@ func (s ServicesPartitionAccountRegionMap) Accounts() []string {
 	}
 	return accounts
 }
-func (c *Client) Logger() hclog.Logger {
-	return &awsLogger{c.logger, c.ServicesManager.services.Accounts()}
+func (c *Client) Logger() *zerolog.Logger {
+	return &c.logger
 }
 
 // Identify the given client
 func (c *Client) Identify() string {
 	return strings.TrimRight(strings.Join([]string{
-		obfuscateAccountId(c.AccountID),
+		c.AccountID,
 		c.Region,
 		c.AutoscalingNamespace,
 		string(c.WAFScope),
@@ -346,7 +330,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		maxRetries:           c.maxRetries,
 		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
-		logger:               c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region),
+		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Logger(),
 		AccountID:            accountID,
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
@@ -361,7 +345,7 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		maxRetries:           c.maxRetries,
 		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
-		logger:               c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region, "AutoscalingNamespace", namespace),
+		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Str("autoscaling_namespace", namespace).Logger(),
 		AccountID:            accountID,
 		Region:               region,
 		AutoscalingNamespace: namespace,
@@ -376,7 +360,7 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		maxRetries:           c.maxRetries,
 		maxBackoff:           c.maxBackoff,
 		ServicesManager:      c.ServicesManager,
-		logger:               c.logger.With("account_id", obfuscateAccountId(accountID), "Region", region, "Scope", scope),
+		logger:               c.logger.With().Str("account_id", accountID).Str("region", region).Str("waf_scope", string(scope)).Logger(),
 		AccountID:            accountID,
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
@@ -428,7 +412,7 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Config, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Config, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 	configFns := []func(*config.LoadOptions) error{
@@ -448,7 +432,7 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 	awsCfg, err = config.LoadDefaultConfig(ctx, configFns...)
 
 	if err != nil {
-		logger.Error("error loading default config", "err", err)
+		logger.Error().Err(err).Msg("error loading default config")
 		return awsCfg, err
 	}
 
@@ -474,61 +458,37 @@ func configureAwsClient(ctx context.Context, logger hclog.Logger, awsConfig *Con
 
 	if awsConfig.AWSDebug {
 		awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
-		awsCfg.Logger = AwsLogger{logger.With("accountName", account.AccountName)}
+		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.AccountName).Logger()}
 	}
 
 	// Test out retrieving credentials
 	if _, err := awsCfg.Credentials.Retrieve(ctx); err != nil {
-		logger.Error("error retrieving credentials", "err", err)
-
-		var ae smithy.APIError
-		if errors.As(err, &ae) {
-			if strings.Contains(ae.ErrorCode(), "InvalidClientTokenId") {
-				return awsCfg, diag.FromError(
-					err,
-					diag.USER,
-					diag.WithSummary("Invalid credentials for assuming role"),
-					diag.WithDetails("The credentials being used to assume role are invalid. Please check that your credentials are valid in the partition you are using. If you are using a partition other than the AWS commercial region, be sure set the default_region attribute in the cloudquery.yml file."),
-					diag.WithSeverity(diag.WARNING),
-				)
-			}
-		}
-
-		return awsCfg, diag.FromError(
-			err,
-			diag.USER,
-			diag.WithSummary("No credentials available"),
-			diag.WithDetails("Couldn't find any credentials in environment variables or configuration files."),
-			diag.WithSeverity(diag.WARNING),
-		)
+		logger.Error().Err(err).Msg("error retrieving credentials")
+		return awsCfg, fmt.Errorf("error retrieving credentials: %w", err)
 	}
 
 	return awsCfg, err
 }
 
-func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, diag.Diagnostics) {
-	var diags diag.Diagnostics
+func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+	var awsConfig Config
+	err := spec.UnmarshalSpec(&awsConfig)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+	}
 
-	ctx := context.Background()
-	awsConfig := providerConfig.(*Config)
 	client := NewAwsClient(logger)
 	client.GlobalRegion = awsConfig.GlobalRegion
 	var adminAccountSts AssumeRoleAPIClient
 	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
-		return nil, diags.Add(diag.FromError(errors.New("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple provider blocks"), diag.USER))
+		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple provider blocks")
 	}
 	if awsConfig.Organization != nil {
 		var err error
-		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, awsConfig)
+		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsConfig)
 		if err != nil {
-			logger.Error("error getting child accounts", "err", err)
-			var ae smithy.APIError
-			if errors.As(err, &ae) {
-				if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-					return nil, diags.Add(diag.FromError(fmt.Errorf(awsOrgsFailedToFindMembers), diag.ACCESS, diag.WithSeverity(diag.ERROR)))
-				}
-			}
-			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
+			logger.Error().Err(err).Msg("error getting child accounts")
+			return nil, err
 		}
 	}
 	if len(awsConfig.Accounts) == 0 {
@@ -538,11 +498,6 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 	}
 
 	for _, account := range awsConfig.Accounts {
-		logger.Debug("user defined account", "account", account)
-		if account.AccountID != "" {
-			return nil, diags.Add(diag.FromError(errors.New("account_id is no longer supported. To specify a profile use `local_profile`. To specify an account alias use `account_name`"), diag.USER))
-		}
-
 		if account.AccountName == "" {
 			account.AccountName = account.ID
 		}
@@ -553,37 +508,28 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		}
 
 		if err := verifyRegions(localRegions); err != nil {
-			return nil, diags.Add(classifyError(err, diag.USER, nil))
+			return nil, err
 		}
 
 		if isAllRegions(localRegions) {
-			logger.Info("All regions specified in `cloudquery.yml`. Assuming all regions")
+			logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
 		}
 
-		awsCfg, err := configureAwsClient(ctx, logger, awsConfig, account, adminAccountSts)
+		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)
 		if err != nil {
 			if account.source == "org" {
-				logger.Warn("unable to assume role in account")
-				principal := "unknown principal"
-				// Identify the principal making the request and use it to construct the error message. Any errors can be ignored as they are only for improving the user experience.
-				awsAdminCfg, _ := configureAwsClient(ctx, logger, awsConfig, *awsConfig.Organization.AdminAccount, nil)
-				output, accountErr := getAccountId(ctx, awsAdminCfg)
-				if accountErr == nil {
-					principal = *output.Arn
-				}
-
-				diags = diags.Add(diag.FromError(err, diag.ACCESS, diag.WithDetails("ensure that %s has access to be able perform `sts:AssumeRole` on %s ", principal, account.RoleARN), diag.WithSeverity(diag.WARNING)))
+				logger.Warn().Msg("unable to assume role in account")
 				continue
 			}
 			var ae smithy.APIError
 			if errors.As(err, &ae) {
 				if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-					diags = diags.Add(diag.FromError(fmt.Errorf(awsFailedToConfigureErrMsg, account.AccountName, err, checkEnvVariables()), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+					// log warning here
 					continue
 				}
 			}
 
-			return nil, diags.Add(diag.FromError(err, diag.ACCESS))
+			return nil, err
 		}
 
 		// This is a work-around to skip disabled regions
@@ -601,25 +547,25 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 				}
 			})
 		if err != nil {
-			diags = diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			// log warning here
+			// diags = diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
 			continue
 		}
 		account.Regions = filterDisabledRegions(localRegions, res.Regions)
 
 		if len(account.Regions) == 0 {
-			diags = diags.Add(diag.FromError(fmt.Errorf("no enabled regions provided in config for account %s", account.AccountName), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			// log warning here
+			// diags = diags.Add(FromError(fmt.Errorf("no enabled regions provided in config for account %s", account.AccountName), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
 			continue
 		}
 		awsCfg.Region = account.Regions[0]
 		output, err := getAccountId(ctx, awsCfg)
 		if err != nil {
-			// This should only ever fail when there is a network or endpoint issue. There is no way for IAM to deny this call.
-			diags = diags.Add(diag.FromError(fmt.Errorf("failed to get caller identity. AWS Error: %w", err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
-			continue
+			return nil, err
 		}
 		iamArn, err := arn.Parse(*output.Arn)
 		if err != nil {
-			return nil, diags.Add(classifyError(err, diag.INTERNAL, nil))
+			return nil, err
 		}
 
 		for _, region := range account.Regions {
@@ -628,9 +574,9 @@ func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMe
 		client.ServicesManager.InitServicesForPartitionAccountAndScope(iamArn.Partition, *output.Account, initServices(cloudfrontScopeRegion, awsCfg))
 	}
 	if len(client.ServicesManager.services) == 0 {
-		return nil, diags.Add(diag.FromError(errors.New("no accounts instantiated"), diag.USER))
+		return nil, fmt.Errorf("no enabled accounts instantiated ")
 	}
-	return &client, diags
+	return &client, nil
 }
 
 func initServices(region string, c aws.Config) Services {
@@ -738,26 +684,8 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 
 func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
 	if classification == logging.Warn {
-		a.l.Warn(fmt.Sprintf(format, v...))
+		a.l.Warn().Msg(fmt.Sprintf(format, v...))
 	} else {
-		a.l.Debug(fmt.Sprintf(format, v...))
+		a.l.Debug().Msg(fmt.Sprintf(format, v...))
 	}
-}
-
-func obfuscateAccountId(accountId string) string {
-	if len(accountId) <= 4 {
-		return accountId
-	}
-	return accountId[:4] + "xxxxxxxx"
-}
-
-// checkEnvVariables checks which aws environment variables are set
-func checkEnvVariables() string {
-	var result []string
-	for _, v := range envVarsToCheck {
-		if _, present := os.LookupEnv(v); present {
-			result = append(result, v)
-		}
-	}
-	return strings.Join(result, ",")
 }

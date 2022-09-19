@@ -35,5 +35,5 @@ func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestEcsTaskDefinitions(t *testing.T) {
-	client.AwsMockTestHelper(t, EcsTaskDefinitions(), buildEcsTaskDefinitions, client.TestOptions{})
+	client.AwsMockTestHelper(t, TaskDefinitions(), buildEcsTaskDefinitions, client.TestOptions{})
 }

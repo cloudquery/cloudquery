@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	types1 "github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	types2 "github.com/aws/aws-sdk-go-v2/service/redshift/types"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -61,7 +61,7 @@ func TestResolveTags(t *testing.T) {
 				},
 			},
 		}
-		r := schema.NewResourceData(schema.PostgresDialect{}, ta, nil, tc.InputItem, nil, time.Now())
+		r := schema.NewResourceData(ta, nil, time.Now(), tc.InputItem)
 		err := ResolveTags(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
 		assert.Equal(t, tc.ExpectedTags, r.Get(ta.Columns[0].Name))
@@ -141,7 +141,7 @@ func TestResolveSliceJson(t *testing.T) {
 				},
 			},
 		}
-		r := schema.NewResourceData(schema.PostgresDialect{}, ta, nil, tc.InputItem, nil, time.Now())
+		r := schema.NewResourceData(ta, nil, time.Now(), tc.InputItem)
 		err := SliceJsonResolver(tc.path, tc.keyPath, tc.valuePath)(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
 		assert.Equal(t, tc.ExpectedData, r.Get(ta.Columns[0].Name))

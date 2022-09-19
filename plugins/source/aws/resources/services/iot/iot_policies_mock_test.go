@@ -45,5 +45,5 @@ func buildIotPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestIotPolicies(t *testing.T) {
-	client.AwsMockTestHelper(t, IotPolicies(), buildIotPolicies, client.TestOptions{})
+	client.AwsMockTestHelper(t, Policies(), buildIotPolicies, client.TestOptions{})
 }

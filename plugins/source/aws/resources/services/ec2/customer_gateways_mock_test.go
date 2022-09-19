@@ -28,5 +28,5 @@ func buildEc2CustomerGateways(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestEc2CustomerGateways(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2CustomerGateways(), buildEc2CustomerGateways, client.TestOptions{})
+	client.AwsMockTestHelper(t, CustomerGateways(), buildEc2CustomerGateways, client.TestOptions{})
 }

@@ -78,6 +78,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		RuleLabels:       labels,
 	}
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
+		immunityTime := int64(300)
 		tempWebACL := types.WebACL{
 			ARN:                                  aws.String(faker.UUIDHyphenated()),
 			DefaultAction:                        &defaultAction,
@@ -92,6 +93,9 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 			PostProcessFirewallManagerRuleGroups: []types.FirewallManagerRuleGroup{processRuleGroups},
 			PreProcessFirewallManagerRuleGroups:  []types.FirewallManagerRuleGroup{processRuleGroups},
 			Rules:                                []types.Rule{rule},
+			CaptchaConfig: &types.CaptchaConfig{ImmunityTimeProperty: &types.ImmunityTimeProperty{
+				ImmunityTime: &immunityTime,
+			}},
 		}
 		m.EXPECT().ListWebACLs(gomock.Any(), &wafv2.ListWebACLsInput{
 			Scope: scope,
@@ -130,5 +134,5 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 }
 
 func TestWafV2WebACL(t *testing.T) {
-	client.AwsMockTestHelper(t, Wafv2WebAcls(), buildWAFV2WebACLMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, WebAcls(), buildWAFV2WebACLMock, client.TestOptions{})
 }

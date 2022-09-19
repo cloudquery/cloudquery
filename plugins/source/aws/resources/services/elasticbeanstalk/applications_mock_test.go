@@ -31,5 +31,5 @@ func buildElasticbeanstalkApplications(t *testing.T, ctrl *gomock.Controller) cl
 }
 
 func TestElasticbeanstalkApplications(t *testing.T) {
-	client.AwsMockTestHelper(t, ElasticbeanstalkApplications(), buildElasticbeanstalkApplications, client.TestOptions{})
+	client.AwsMockTestHelper(t, Applications(), buildElasticbeanstalkApplications, client.TestOptions{})
 }

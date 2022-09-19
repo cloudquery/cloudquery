@@ -1,34 +1,40 @@
+// Auto generated code - DO NOT EDIT.
+
 package resources
 
 import (
 	"context"
 	"testing"
 
-	resourcegroup "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 )
 
-func buildResourceGroupMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockGroupsClient(ctrl)
-	s := services.Services{
-		Resources: services.ResourcesClient{Groups: m},
-	}
-	l := resourcegroup.Group{}
-	err := faker.FakeData(&l)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-	groupPage := resourcegroup.NewGroupListResultPage(resourcegroup.GroupListResult{Value: &[]resourcegroup.Group{l}}, func(ctx context.Context, result resourcegroup.GroupListResult) (resourcegroup.GroupListResult, error) {
-		return resourcegroup.GroupListResult{}, nil
-	})
-	m.EXPECT().List(gomock.Any(), "", nil).Return(groupPage, nil)
-	return s
+func TestResourcesGroups(t *testing.T) {
+	client.MockTestHelper(t, Groups(), createGroupsMock)
 }
 
-func TestResourceGroups(t *testing.T) {
-	client.AzureMockTestHelper(t, ResourcesGroups(), buildResourceGroupMock, client.TestOptions{})
+func createGroupsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockResourcesGroupsClient(ctrl)
+	s := services.Services{
+		Resources: services.ResourcesClient{
+			Groups: mockClient,
+		},
+	}
+
+	data := resources.Group{}
+	require.Nil(t, faker.FakeObject(&data))
+
+	result := resources.NewGroupListResultPage(resources.GroupListResult{Value: &[]resources.Group{data}}, func(ctx context.Context, result resources.GroupListResult) (resources.GroupListResult, error) {
+		return resources.GroupListResult{}, nil
+	})
+
+	mockClient.EXPECT().List(gomock.Any(), "", nil).Return(result, nil)
+	return s
 }

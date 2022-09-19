@@ -48,5 +48,5 @@ func buildSageMakerModels(t *testing.T, ctrl *gomock.Controller) client.Services
 }
 
 func TestSageMakerModels(t *testing.T) {
-	client.AwsMockTestHelper(t, SagemakerModels(), buildSageMakerModels, client.TestOptions{})
+	client.AwsMockTestHelper(t, Models(), buildSageMakerModels, client.TestOptions{})
 }

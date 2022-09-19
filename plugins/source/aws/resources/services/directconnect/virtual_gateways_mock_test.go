@@ -27,5 +27,5 @@ func buildDirectconnectVirtualGatewaysMock(t *testing.T, ctrl *gomock.Controller
 	}
 }
 func TestDirectconnecVirtualGateways(t *testing.T) {
-	client.AwsMockTestHelper(t, DirectconnectVirtualGateways(), buildDirectconnectVirtualGatewaysMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, VirtualGateways(), buildDirectconnectVirtualGatewaysMock, client.TestOptions{})
 }

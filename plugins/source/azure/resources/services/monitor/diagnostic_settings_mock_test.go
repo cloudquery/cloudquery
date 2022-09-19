@@ -1,60 +1,33 @@
+// Auto generated code - DO NOT EDIT.
+
 package monitor
 
 import (
-	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
-	resources2 "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
-	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 )
 
-func buildMonitorDiagnosticsSettings(t *testing.T, ctrl *gomock.Controller) services.Services {
-	ds := mocks.NewMockDiagnosticSettingsClient(ctrl)
-	res := mocks.NewMockResClient(ctrl)
-
-	faker.SetIgnoreInterface(true)
-
-	resource := resources2.GenericResourceExpanded{}
-	if err := faker.FakeData(&resource); err != nil {
-		t.Fatal(err)
-	}
-	id := "/subscriptions/" + client.TestSubscriptionID
-	resource.ID = &id
-	resourcesPage := resources2.NewListResultPage(
-		resources2.ListResult{Value: &[]resources2.GenericResourceExpanded{resource}},
-		func(ctx context.Context, result resources2.ListResult) (resources2.ListResult, error) {
-			return resources2.ListResult{}, nil
+func createDiagnosticSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockMonitorDiagnosticSettingsClient(ctrl)
+	s := services.Services{
+		Monitor: services.MonitorClient{
+			DiagnosticSettings: mockClient,
 		},
-	)
-	res.EXPECT().List(gomock.Any(), "", "", nil).Return(resourcesPage, nil)
-
-	d1 := insights.DiagnosticSettingsResource{}
-	if err := faker.FakeData(&d1); err != nil {
-		t.Fatal(err)
 	}
-	ds.EXPECT().List(gomock.Any(), id).Return(
-		insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{d1}}, nil,
-	)
 
-	d2 := insights.DiagnosticSettingsResource{}
-	if err := faker.FakeData(&d2); err != nil {
-		t.Fatal(err)
-	}
-	ds.EXPECT().List(gomock.Any(), *resource.ID).Return(
-		insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{d2}}, nil,
-	)
+	data := insights.DiagnosticSettingsResource{}
+	require.Nil(t, faker.FakeObject(&data))
 
-	return services.Services{
-		Monitor:   services.MonitorClient{DiagnosticSettings: ds},
-		Resources: services.ResourcesClient{Resources: res},
-	}
-}
+	result := insights.DiagnosticSettingsResourceCollection{Value: &[]insights.DiagnosticSettingsResource{data}}
 
-func TestMonitorDiagnosticsSettings(t *testing.T) {
-	client.AzureMockTestHelper(t, MonitorDiagnosticSettings(), buildMonitorDiagnosticsSettings, client.TestOptions{})
+	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/testSubscription").Return(result, nil)
+	mockClient.EXPECT().List(gomock.Any(), "/subscriptions/test/resourceGroups/test/providers/test/test/test").Return(result, nil)
+	return s
 }

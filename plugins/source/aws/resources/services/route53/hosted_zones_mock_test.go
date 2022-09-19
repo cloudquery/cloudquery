@@ -84,5 +84,5 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 }
 
 func TestRoute53HostedZones(t *testing.T) {
-	client.AwsMockTestHelper(t, Route53HostedZones(), buildRoute53HostedZonesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, HostedZones(), buildRoute53HostedZonesMock, client.TestOptions{})
 }

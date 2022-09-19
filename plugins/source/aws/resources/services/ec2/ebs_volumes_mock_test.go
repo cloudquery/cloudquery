@@ -26,5 +26,5 @@ func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestEc2EbsVolumes(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2EbsVolumes(), buildEc2EbsVolumes, client.TestOptions{})
+	client.AwsMockTestHelper(t, EbsVolumes(), buildEc2EbsVolumes, client.TestOptions{})
 }

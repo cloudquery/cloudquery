@@ -28,5 +28,5 @@ func buildEc2ByoipCidrsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestEc2ByoipCidrs(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2ByoipCidrs(), buildEc2ByoipCidrsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, ByoipCidrs(), buildEc2ByoipCidrsMock, client.TestOptions{})
 }

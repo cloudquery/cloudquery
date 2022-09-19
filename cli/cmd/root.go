@@ -16,12 +16,7 @@ import (
 const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
 
 var (
-	// Values for Commit and Date should be injected at build time with -ldflags "-X github.com/cloudquery/cloudquery/cli/cmd.Variable=Value"
-
-	Commit    = "development"
-	Date      = "unknown"
-	APIKey    = ""
-	Version   = "dev"
+	Version   = "development"
 	rootShort = "CloudQuery CLI"
 	rootLong  = `CloudQuery CLI
 
@@ -80,7 +75,7 @@ func NewCmdRoot() *cobra.Command {
 			err = sentry.Init(sentry.ClientOptions{
 				Debug:   false,
 				Dsn:     sentryDsn,
-				Release: "cloudquery@" + Commit,
+				Release: "cloudquery@" + Version,
 				// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
 				Integrations: func(integrations []sentry.Integration) []sentry.Integration {
 					var filteredIntegrations []sentry.Integration

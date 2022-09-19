@@ -34,10 +34,10 @@ func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&redshift.DescribeClustersOutput{
 			Clusters: []types.Cluster{g},
 		}, nil)
-	m.EXPECT().DescribeClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&redshift.DescribeClusterParametersOutput{
-			Parameters: []types.Parameter{p},
-		}, nil)
+	//m.EXPECT().DescribeClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+	//	&redshift.DescribeClusterParametersOutput{
+	//		Parameters: []types.Parameter{p},
+	//	}, nil)
 	m.EXPECT().DescribeLoggingStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&logging, nil)
 
@@ -84,9 +84,9 @@ func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client
 }
 
 func TestRedshiftClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, RedshiftClusters(), buildRedshiftClustersMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildRedshiftClustersMock, client.TestOptions{})
 }
 
 func TestRedshiftSubnetGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, RedshiftSubnetGroups(), buildRedshiftSubnetGroupsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, SubnetGroups(), buildRedshiftSubnetGroupsMock, client.TestOptions{})
 }

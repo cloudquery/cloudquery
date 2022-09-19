@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/iothub.go -package=mocks . IotHubClient
+//go:generate mockgen -destination=./mocks/iothub.go -package=mocks . IotHubDevicesClient
 package services
 
 import (
@@ -8,12 +8,18 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type IotHubClient interface {
+type IotHubClient struct {
+	Devices IotHubDevicesClient
+}
+
+type IotHubDevicesClient interface {
 	ListBySubscription(ctx context.Context) (result devices.IotHubDescriptionListResultPage, err error)
 }
 
 func NewIotHubClient(subscriptionId string, auth autorest.Authorizer) IotHubClient {
 	cl := devices.NewIotHubResourceClient(subscriptionId)
 	cl.Authorizer = auth
-	return cl
+	return IotHubClient{
+		Devices: cl,
+	}
 }

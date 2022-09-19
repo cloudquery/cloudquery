@@ -103,5 +103,5 @@ func fakeLoadBalancerAttributes() *elasticloadbalancingv2.DescribeLoadBalancerAt
 }
 
 func TestElbv2LoadBalancers(t *testing.T) {
-	client.AwsMockTestHelper(t, Elbv2LoadBalancers(), buildElbv2LoadBalancers, client.TestOptions{})
+	client.AwsMockTestHelper(t, LoadBalancers(), buildElbv2LoadBalancers, client.TestOptions{})
 }

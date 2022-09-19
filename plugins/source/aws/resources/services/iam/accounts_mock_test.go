@@ -64,5 +64,5 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestAccounts(t *testing.T) {
-	client.AwsMockTestHelper(t, IamAccounts(), buildAccount, client.TestOptions{})
+	client.AwsMockTestHelper(t, Accounts(), buildAccount, client.TestOptions{})
 }

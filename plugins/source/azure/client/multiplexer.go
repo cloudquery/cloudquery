@@ -1,6 +1,6 @@
 package client
 
-import "github.com/cloudquery/cq-provider-sdk/provider/schema"
+import "github.com/cloudquery/plugin-sdk/schema"
 
 // SingleSubscriptionMultiplex can be used in cases where any single subscription would do. This can reduce the number
 // of API calls.

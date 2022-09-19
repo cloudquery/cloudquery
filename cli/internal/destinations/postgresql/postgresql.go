@@ -377,7 +377,7 @@ func (p *Client) Write(ctx context.Context, table string, data map[string]interf
 
 func (*Client) ExampleConfig() string {
 	return `
-connection_string: "postgresql://user:password@localhost:5432/dbname"
+connection_string: "postgresql://postgres:pass@localhost:5432/postgres"
 `
 }
 

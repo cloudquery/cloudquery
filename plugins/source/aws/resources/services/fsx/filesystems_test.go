@@ -40,5 +40,5 @@ func buildFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 }
 
 func TestFilesystems(t *testing.T) {
-	client.AwsMockTestHelper(t, Filesystems(), buildFilesystemsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, FileSystems(), buildFilesystemsMock, client.TestOptions{})
 }

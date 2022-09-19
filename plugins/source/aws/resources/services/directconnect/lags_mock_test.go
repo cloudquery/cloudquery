@@ -28,5 +28,5 @@ func buildDirectconnectLag(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestDirectconnectLag(t *testing.T) {
-	client.AwsMockTestHelper(t, DirectconnectLags(), buildDirectconnectLag, client.TestOptions{})
+	client.AwsMockTestHelper(t, Lags(), buildDirectconnectLag, client.TestOptions{})
 }
