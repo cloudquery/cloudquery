@@ -16,10 +16,8 @@ SELECT DISTINCT gsi.name                                                        
                 CASE
                     WHEN
                                     gsi.database_version LIKE 'SQLSERVER%'
-                                AND gsiia.type = 'PRIMARY' OR gsi.backend_type != 'SECOND_GEN'
+                                AND gsiia->>'type' = 'PRIMARY' OR gsi.backend_type != 'SECOND_GEN'
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                       AS status
-FROM gcp_sql_instances gsi
-         JOIN gcp_sql_instance_ip_addresses gsiia ON
-    gsi.cq_id = gsiia.instance_cq_id;
+FROM gcp_sql_instances gsi, JSON_ARRAY_ELEMENTS(gsi.ip_addresses) AS gsiia;

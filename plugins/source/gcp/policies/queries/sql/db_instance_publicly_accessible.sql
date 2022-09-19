@@ -16,10 +16,8 @@ SELECT DISTINCT gsi.name                                                        
                 CASE
                     WHEN
                                 gsi.database_version LIKE 'SQLSERVER%'
-                            AND gsisican.value = '0.0.0.0/0'
+                            AND gsisican->>'value' = '0.0.0.0/0'
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                          AS status
-FROM gcp_sql_instances gsi
-         JOIN gcp_sql_instance_settings_ip_config_authorized_networks gsisican ON
-    gsi.cq_id = gsisican.instance_cq_id;
+FROM gcp_sql_instances gsi, JSON_ARRAY_ELEMENTS(gsi.settings->'ipConfiguration'->'authorizedNetworks') AS gsisican

@@ -12,7 +12,7 @@ SELECT "name"                                                                   
        project_id                                                                              AS project_id,
        CASE
            WHEN
-               confidential_instance_config_enable_confidential_compute = FALSE
+               (confidential_instance_config->>'enable_confidential_compute')::boolean = FALSE
                THEN 'fail'
            ELSE 'pass'
            END                                                                                 AS status

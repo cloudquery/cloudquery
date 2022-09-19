@@ -12,7 +12,7 @@ SELECT "name"                                                                   
        project_id                                                                               AS project_id,
        CASE
            WHEN
-               iam_configuration_uniform_bucket_level_access_enabled = FALSE
+               (uniform_bucket_level_access->>'Enabled')::boolean = FALSE
                THEN 'fail'
            ELSE 'pass'
            END                                                                                  AS status

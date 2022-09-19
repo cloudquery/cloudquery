@@ -14,7 +14,7 @@ SELECT gsi.name                                                                 
        CASE
            WHEN
                        gsi.database_version LIKE 'SQLSERVER%'
-                   AND gsi.settings_ip_configuration_require_ssl = FALSE
+                   AND (gsi.settings->'ipConfiguration'->>'requireSsl')::boolean = FALSE
                THEN 'fail'
            ELSE 'pass'
            END                                                                                                AS status

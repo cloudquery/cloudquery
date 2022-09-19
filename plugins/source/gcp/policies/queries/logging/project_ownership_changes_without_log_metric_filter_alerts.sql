@@ -14,10 +14,10 @@ SELECT "filter"                                                                 
        project_id                                                                                        AS project_id,
        CASE
            WHEN
-                       enabled = TRUE
+                       disabled = FALSE
                    AND "filter" ~
                        '\s*(\s*protoPayload.serviceName\s*=\s*"cloudresourcemanager.googleapis.com"\s*)\s*AND\s*(\s*ProjectOwnership\s*OR\s*projectOwnerInvitee\s*)\s*OR\s*(\s*protoPayload.serviceData.policyDelta.bindingDeltas.action\s*=\s*"REMOVE"\s*AND\s*protoPayload.serviceData.policyDelta.bindingDeltas.role\s*=\s*"roles/owner"\s*)\s*OR\s*(\s*protoPayload.serviceData.policyDelta.bindingDeltas.action\s*=\s*"ADD"\s*AND\s*protoPayload.serviceData.policyDelta.bindingDeltas.role\s*=\s*"roles/owner"\s*)\s*'
                THEN 'fail'
            ELSE 'pass'
            END                                                                                           AS status
-FROM gcp_log_metric_filters;
+FROM gcp_logging_metrics;

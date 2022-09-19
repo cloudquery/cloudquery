@@ -12,7 +12,7 @@ SELECT "id"                                                      AS resource_id,
        project_id                                                AS project_id,
        CASE
            WHEN
-               ip_v4_range IS NULL
+               i_pv_4_range IS NULL
                THEN 'fail'
            ELSE 'pass'
            END                                                   AS status

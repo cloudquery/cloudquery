@@ -12,7 +12,7 @@ SELECT "id"                                                            AS resour
        project_id                                                      AS project_id,
        CASE
            WHEN
-               dnssec_config_state != 'on'
+               dnssec_config->>'state' != 'on'
                THEN 'fail'
            ELSE 'pass'
            END                                                         AS status
