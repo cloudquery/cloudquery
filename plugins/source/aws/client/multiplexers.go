@@ -53,7 +53,6 @@ func ServiceAccountRegionMultiplexer(service string) func(meta schema.ClientMeta
 	}
 }
 
-
 func ServiceAccountRegionScopeMultiplexer(service string) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		var l = make([]schema.ClientMeta, 0)

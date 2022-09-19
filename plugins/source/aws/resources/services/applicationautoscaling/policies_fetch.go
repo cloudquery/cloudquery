@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func applicationAutoscalingMultiplexer(multiplexer func(meta schema.ClientMeta) []schema.ClientMeta)  func(meta schema.ClientMeta) []schema.ClientMeta {
+func applicationAutoscalingMultiplexer(multiplexer func(meta schema.ClientMeta) []schema.ClientMeta) func(meta schema.ClientMeta) []schema.ClientMeta {
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		clients := multiplexer(meta)
 		var namespace types.ServiceNamespace
@@ -23,7 +23,7 @@ func applicationAutoscalingMultiplexer(multiplexer func(meta schema.ClientMeta) 
 				allClients = append(allClients, c)
 			}
 		}
-		return clients
+		return allClients
 	}
 }
 
@@ -32,7 +32,7 @@ func fetchApplicationautoscalingPolicies(ctx context.Context, meta schema.Client
 	svc := c.Services().ApplicationAutoscaling
 
 	config := applicationautoscaling.DescribeScalingPoliciesInput{
-		ServiceNamespace: types.ServiceNamespace(c.AutoscalingNamespace),
+		ServiceNamespace: c.AutoscalingNamespace,
 	}
 	for {
 		output, err := svc.DescribeScalingPolicies(ctx, &config)
