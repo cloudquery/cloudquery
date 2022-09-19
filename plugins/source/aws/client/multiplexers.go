@@ -31,7 +31,6 @@ func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 		for accountID := range client.ServicesManager.services[partition] {
 			region := getRegion(client.ServicesManager.services[partition][accountID])
 			// Ensure that the region is always set by a region that has been initialized
-			// Instead of this we could use client.GlobalRegions
 			l = append(l, client.withPartitionAccountIDAndRegion(partition, accountID, region))
 		}
 	}
