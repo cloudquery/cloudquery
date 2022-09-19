@@ -26,7 +26,7 @@ func NewCmdSync() *cobra.Command {
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
-		Args:    cobra.ExactArgs(1),
+		Args:    cobra.MaximumNArgs(1),
 		RunE:    sync,
 	}
 	return cmd
@@ -34,7 +34,10 @@ func NewCmdSync() *cobra.Command {
 
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
-	directory := args[0]
+	directory := "."
+	if len(args) > 0 {
+		directory = args[0]
+	}
 	fmt.Println("Loading specs from directory: ", directory)
 	specReader, err := specs.NewSpecReader(directory)
 	if err != nil {
