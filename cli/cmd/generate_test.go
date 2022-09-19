@@ -31,7 +31,7 @@ spec:
   # skip_tables: []
 
   # Names of destination plugins to sync to.
-  destinations: []
+  destinations: ["postgresql"]
 
   ## Approximate cap on number of requests to perform concurrently. Optional.
   # max_goroutines: 5
