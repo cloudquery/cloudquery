@@ -470,7 +470,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 	}
 
 	if awsConfig.AWSDebug {
-		awsCfg.ClientLogMode =  aws.LogRetries
+		awsCfg.ClientLogMode = aws.LogRetries
 		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.AccountName).Logger()}
 	}
 
@@ -697,11 +697,11 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 
 func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
 	switch classification {
-		case logging.Debug:
-			a.l.Debug().Msgf(format, v...)
-		case logging.Warn:
-			a.l.Warn().Msgf(format, v...)
-		default:
-			a.l.Debug().Msgf(format, v...)
+	case logging.Debug:
+		a.l.Debug().Msgf(format, v...)
+	case logging.Warn:
+		a.l.Warn().Msgf(format, v...)
+	default:
+		a.l.Debug().Msgf(format, v...)
 	}
 }
