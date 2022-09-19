@@ -16,9 +16,6 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	c := meta.(*client.Client)
 	svc := c.Services().IAM
 	user := parent.Item.(*types.User)
-	if aws.ToString(user.UserName) == rootName {
-		return nil
-	}
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
 	for {
 		output, err := svc.ListUserPolicies(ctx, &config)

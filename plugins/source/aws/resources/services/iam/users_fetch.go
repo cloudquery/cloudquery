@@ -16,8 +16,6 @@ type AccessKeyWrapper struct {
 	LastRotated time.Time
 }
 
-const rootName = "<root_account>"
-
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	return client.ListAndDetailResolver(ctx, meta, res, listUsers, getUserDetail)
 }
@@ -43,23 +41,6 @@ func getUserDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan
 	c := meta.(*client.Client)
 
 	listUser := listInfo.(types.User)
-	arn := ""
-	if listUser.Arn != nil {
-		arn = *listUser.Arn
-	}
-	if arn == c.AccountGlobalARN(client.IamService, "root") {
-		// TODO: check if this is still necessary after unbundling credential reports
-		resultsChan <- types.User{
-			Arn:                 listUser.Arn,
-			CreateDate:          listUser.CreateDate,
-			UserId:              aws.String("root"),
-			UserName:            listUser.UserName,
-			Path:                listUser.Path,
-			PermissionsBoundary: listUser.PermissionsBoundary,
-			Tags:                listUser.Tags,
-		}
-		return
-	}
 	svc := meta.(*client.Client).Services().IAM
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
 		UserName: aws.String(*listUser.UserName),
@@ -77,9 +58,6 @@ func getUserDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan
 func fetchIamUserGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListGroupsForUserInput
 	p := parent.Item.(*types.User)
-	if aws.ToString(p.UserName) == rootName {
-		return nil
-	}
 	svc := meta.(*client.Client).Services().IAM
 	config.UserName = p.UserName
 	for {
@@ -100,9 +78,6 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 	var config iam.ListAccessKeysInput
 	p := parent.Item.(*types.User)
 	svc := meta.(*client.Client).Services().IAM
-	if aws.ToString(p.UserName) == rootName {
-		return nil
-	}
 	config.UserName = p.UserName
 	for {
 		output, err := svc.ListAccessKeys(ctx, &config)
@@ -164,9 +139,6 @@ func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, r
 func fetchIamUserAttachedPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.ListAttachedUserPoliciesInput
 	p := parent.Item.(*types.User)
-	if aws.ToString(p.UserName) == rootName {
-		return nil
-	}
 	svc := meta.(*client.Client).Services().IAM
 	config.UserName = p.UserName
 	for {

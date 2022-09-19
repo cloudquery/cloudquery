@@ -12,21 +12,28 @@ import (
 )
 
 type CredentialReportUser struct {
-	User                  string    `csv:"user"`
-	Arn                   string    `csv:"arn"`
-	UserCreationTime      time.Time `csv:"user_creation_time"`
-	PasswordStatus        string    `csv:"password_enabled"`
-	PasswordLastChanged   string    `csv:"password_last_changed"`
-	PasswordNextRotation  string    `csv:"password_next_rotation"`
-	MfaActive             bool      `csv:"mfa_active"`
-	AccessKey1Active      bool      `csv:"access_key_1_active"`
-	AccessKey2Active      bool      `csv:"access_key_2_active"`
-	AccessKey1LastRotated string    `csv:"access_key_1_last_rotated"`
-	AccessKey2LastRotated string    `csv:"access_key_2_last_rotated"`
-	Cert1Active           bool      `csv:"cert_1_active"`
-	Cert2Active           bool      `csv:"cert_2_active"`
-	Cert1LastRotated      string    `csv:"cert_1_last_rotated"`
-	Cert2LastRotated      string    `csv:"cert_2_last_rotated"`
+	User                      string    `csv:"user"`
+	Arn                       string    `csv:"arn"`
+	UserCreationTime          time.Time `csv:"user_creation_time"`
+	PasswordStatus            string    `csv:"password_enabled"`
+	PasswordLastChanged       string    `csv:"password_last_changed"`
+	PasswordNextRotation      string    `csv:"password_next_rotation"`
+	MfaActive                 bool      `csv:"mfa_active"`
+	AccessKey1Active          bool      `csv:"access_key_1_active"`
+	AccessKey2Active          bool      `csv:"access_key_2_active"`
+	AccessKey1LastRotated     string    `csv:"access_key_1_last_rotated"`
+	AccessKey2LastRotated     string    `csv:"access_key_2_last_rotated"`
+	Cert1Active               bool      `csv:"cert_1_active"`
+	Cert2Active               bool      `csv:"cert_2_active"`
+	Cert1LastRotated          string    `csv:"cert_1_last_rotated"`
+	Cert2LastRotated          string    `csv:"cert_2_last_rotated"`
+	AccessKey1LastUsedDate    time.Time `csv:"access_key_1_last_used_date"`
+	AccessKey1LastUsedRegion  string    `csv:"access_key_1_last_used_region"`
+	AccessKey1LastUsedService string    `csv:"access_key_1_last_used_service"`
+	AccessKey2LastUsedDate    time.Time `csv:"access_key_2_last_used_date"`
+	AccessKey2LastUsedRegion  string    `csv:"access_key_2_last_used_region"`
+	AccessKey2LastUsedService string    `csv:"access_key_2_last_used_service"`
+	PasswordLastUsed          string    `csv:"password_last_used"`
 }
 
 func fetchIamCredentialReportUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {

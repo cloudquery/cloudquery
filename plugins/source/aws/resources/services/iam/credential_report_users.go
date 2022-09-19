@@ -91,6 +91,41 @@ func CredentialReportUsers() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Cert2LastRotated"),
 			},
+			{
+				Name:     "access_key_1_last_used_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("AccessKey1LastUsedDate"),
+			},
+			{
+				Name:     "access_key_1_last_used_region",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccessKey1LastUsedRegion"),
+			},
+			{
+				Name:     "access_key_1_last_used_service",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccessKey1LastUsedService"),
+			},
+			{
+				Name:     "access_key_2_last_used_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("AccessKey2LastUsedDate"),
+			},
+			{
+				Name:     "access_key_2_last_used_region",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccessKey2LastUsedRegion"),
+			},
+			{
+				Name:     "access_key_2_last_used_service",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccessKey2LastUsedService"),
+			},
+			{
+				Name:     "password_last_used",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PasswordLastUsed"),
+			},
 		},
 	}
 }
