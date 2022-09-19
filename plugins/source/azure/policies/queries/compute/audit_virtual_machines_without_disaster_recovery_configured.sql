@@ -1,5 +1,5 @@
 WITH asr_protect AS (
-    SELECT source_id
+    SELECT properties_source_id
     FROM azure_resources_links
     WHERE name LIKE 'ASR-Protect-%'
 )
@@ -12,9 +12,9 @@ SELECT
   subscription_id,
   id,
   case
-    when p.source_id is null then 'fail' else 'pass'
+    when p.properties_source_id is null then 'fail' else 'pass'
   end
 FROM
     azure_compute_virtual_machines vm
     LEFT OUTER JOIN asr_protect p
-    ON LOWER(vm.id) = LOWER(p.source_id)
+    ON LOWER(vm.id) = LOWER(p.properties_source_id)
