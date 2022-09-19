@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/network.go -package=mocks . ExpressRouteCircuitsClient,ExpressRouteGatewaysClient,ExpressRoutePortsClient,InterfacesClient,PublicIPAddressesClient,RouteFiltersClient,RouteTablesClient,SecurityGroupsClient,VirtualNetworkGatewaysClient,VirtualNetworksClient,WatchersClient
+//go:generate mockgen -destination=./mocks/network.go -package=mocks . NetworkExpressRouteCircuitsClient,NetworkExpressRouteGatewaysClient,NetworkExpressRoutePortsClient,NetworkInterfacesClient,NetworkPublicIPAddressesClient,NetworkRouteFiltersClient,NetworkRouteTablesClient,NetworkSecurityGroupsClient,NetworkVirtualNetworkGatewaysClient,NetworkVirtualNetworkGatewayConnectionsClient,NetworkVirtualNetworksClient,NetworkWatchersClient,NetworkFlowLogsClient
 package services
 
 import (
@@ -8,66 +8,74 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type NetworksClient struct {
-	ExpressRouteCircuits   ExpressRouteCircuitsClient
-	ExpressRouteGateways   ExpressRouteGatewaysClient
-	ExpressRoutePorts      ExpressRoutePortsClient
-	Interfaces             InterfacesClient
-	PublicIPAddresses      PublicIPAddressesClient
-	RouteFilters           RouteFiltersClient
-	RouteTables            RouteTablesClient
-	SecurityGroups         SecurityGroupsClient
-	VirtualNetworkGateways VirtualNetworkGatewaysClient
-	VirtualNetworks        VirtualNetworksClient
-	Watchers               WatchersClient
+type NetworkClient struct {
+	ExpressRouteCircuits             NetworkExpressRouteCircuitsClient
+	ExpressRouteGateways             NetworkExpressRouteGatewaysClient
+	ExpressRoutePorts                NetworkExpressRoutePortsClient
+	Interfaces                       NetworkInterfacesClient
+	PublicIPAddresses                NetworkPublicIPAddressesClient
+	RouteFilters                     NetworkRouteFiltersClient
+	RouteTables                      NetworkRouteTablesClient
+	SecurityGroups                   NetworkSecurityGroupsClient
+	VirtualNetworkGateways           NetworkVirtualNetworkGatewaysClient
+	VirtualNetworkGatewayConnections NetworkVirtualNetworkGatewayConnectionsClient
+	VirtualNetworks                  NetworkVirtualNetworksClient
+	Watchers                         NetworkWatchersClient
+	FlowLogs                         NetworkFlowLogsClient
 }
-type ExpressRouteCircuitsClient interface {
+type NetworkExpressRouteCircuitsClient interface {
 	ListAll(ctx context.Context) (result network.ExpressRouteCircuitListResultPage, err error)
 }
 
-type ExpressRouteGatewaysClient interface {
+type NetworkExpressRouteGatewaysClient interface {
 	ListBySubscription(ctx context.Context) (result network.ExpressRouteGatewayList, err error)
 }
 
-type ExpressRoutePortsClient interface {
+type NetworkExpressRoutePortsClient interface {
 	List(ctx context.Context) (result network.ExpressRoutePortListResultPage, err error)
 }
 
-type InterfacesClient interface {
+type NetworkInterfacesClient interface {
 	ListAll(ctx context.Context) (result network.InterfaceListResultPage, err error)
 }
 
-type PublicIPAddressesClient interface {
+type NetworkPublicIPAddressesClient interface {
 	ListAll(ctx context.Context) (result network.PublicIPAddressListResultPage, err error)
 }
 
-type RouteFiltersClient interface {
+type NetworkRouteFiltersClient interface {
 	List(ctx context.Context) (result network.RouteFilterListResultPage, err error)
 }
 
-type RouteTablesClient interface {
+type NetworkRouteTablesClient interface {
 	ListAll(ctx context.Context) (result network.RouteTableListResultPage, err error)
 }
 
-type SecurityGroupsClient interface {
+type NetworkSecurityGroupsClient interface {
 	ListAll(ctx context.Context) (result network.SecurityGroupListResultPage, err error)
 }
 
-type VirtualNetworkGatewaysClient interface {
+type NetworkVirtualNetworkGatewaysClient interface {
 	List(ctx context.Context, resourceGroupName string) (result network.VirtualNetworkGatewayListResultPage, err error)
+}
+
+type NetworkVirtualNetworkGatewayConnectionsClient interface {
 	ListConnections(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string) (result network.VirtualNetworkGatewayListConnectionsResultPage, err error)
 }
 
-type VirtualNetworksClient interface {
+type NetworkVirtualNetworksClient interface {
 	ListAll(ctx context.Context) (result network.VirtualNetworkListResultPage, err error)
 }
 
-type WatchersClient interface {
+type NetworkWatchersClient interface {
 	ListAll(ctx context.Context) (result network.WatcherListResult, err error)
-	GetFlowLogStatus(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters network.FlowLogStatusParameters) (result network.WatchersGetFlowLogStatusFuture, err error)
 }
 
-func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworksClient {
+type NetworkFlowLogsClient interface {
+	List(ctx context.Context, resourceGroupName string, networkWatcherName string) (result network.FlowLogListResultPage, err error)
+}
+
+func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) NetworkClient {
 	erc := network.NewExpressRouteCircuitsClient(subscriptionId)
 	erc.Authorizer = auth
 	erg := network.NewExpressRouteGatewaysClient(subscriptionId)
@@ -90,17 +98,21 @@ func NewNetworksClient(subscriptionId string, auth autorest.Authorizer) Networks
 	vn.Authorizer = auth
 	wch := network.NewWatchersClient(subscriptionId)
 	wch.Authorizer = auth
-	return NetworksClient{
-		ExpressRouteCircuits:   erc,
-		ExpressRouteGateways:   erg,
-		ExpressRoutePorts:      erp,
-		Interfaces:             ifs,
-		PublicIPAddresses:      pips,
-		RouteFilters:           rf,
-		RouteTables:            rt,
-		SecurityGroups:         sg,
-		VirtualNetworkGateways: vng,
-		VirtualNetworks:        vn,
-		Watchers:               wch,
+	fl := network.NewFlowLogsClient(subscriptionId)
+	fl.Authorizer = auth
+	return NetworkClient{
+		ExpressRouteCircuits:             erc,
+		ExpressRouteGateways:             erg,
+		ExpressRoutePorts:                erp,
+		Interfaces:                       ifs,
+		PublicIPAddresses:                pips,
+		RouteFilters:                     rf,
+		RouteTables:                      rt,
+		SecurityGroups:                   sg,
+		VirtualNetworkGateways:           vng,
+		VirtualNetworkGatewayConnections: vng,
+		VirtualNetworks:                  vn,
+		Watchers:                         wch,
+		FlowLogs:                         fl,
 	}
 }

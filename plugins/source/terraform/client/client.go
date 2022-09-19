@@ -1,54 +1,58 @@
 package client
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	"github.com/hashicorp/go-hclog"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/rs/zerolog"
 )
 
 type Client struct {
 	Backends map[string]*TerraformBackend
-	logger   hclog.Logger
+	logger   zerolog.Logger
 
 	// CurrentBackend set by client multiplexer
 	CurrentBackend string
 }
 
-func NewTerraformClient(logger hclog.Logger, backends map[string]*TerraformBackend) Client {
+func New(logger zerolog.Logger, backends map[string]*TerraformBackend) Client {
 	return Client{
 		Backends: backends,
 		logger:   logger,
 	}
 }
 
-func (c *Client) Logger() hclog.Logger {
-	return c.logger
+func (c *Client) Logger() *zerolog.Logger {
+	return &c.logger
 }
 
-func Configure(logger hclog.Logger, providerConfig interface{}) (schema.ClientMeta, diag.Diagnostics) {
-	terraformConfig := providerConfig.(*Config)
+func Configure(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+	tfSpec := &Spec{}
+	if err := s.UnmarshalSpec(tfSpec); err != nil {
+		return nil, fmt.Errorf("failed to unmarshal terraform spec: %w", err)
+	}
 
-	if len(terraformConfig.Config) == 0 {
-		return nil, diag.FromError(errors.New("no config were provided"), diag.USER)
+	if len(tfSpec.Backends) == 0 {
+		return nil, errors.New("no backends were provided")
 	}
 
 	var backends = make(map[string]*TerraformBackend)
-	for _, config := range terraformConfig.Config {
+	for _, config := range tfSpec.Backends {
 		config := config
 
-		logger.Info("creating new backend", "type", config.BackendType)
+		logger.Info().Msg("creating new backend")
 		// create backend for each backend config
 		if b, err := NewBackend(&config); err == nil { //nolint:revive
 			backends[b.BackendName] = b
 		} else {
-			return nil, diag.FromError(fmt.Errorf("cannot initialize %s backend: %w", config.BackendType, err), diag.INTERNAL)
+			return nil, fmt.Errorf("cannot initialize backend: %w", err)
 		}
 	}
 
-	client := NewTerraformClient(logger, backends)
+	client := New(logger, backends)
 
 	// Returns the initialized client with requested backends
 	return &client, nil

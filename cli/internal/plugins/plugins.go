@@ -115,7 +115,7 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 }
 
 // DownloadSource downloads a plugin from the specified registry and return the path to plugin
-func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.Source) (string, error) {
+func (p *PluginManager) DownloadSource(ctx context.Context, spec *specs.Source) (string, error) {
 	switch spec.Registry {
 	case specs.RegistryLocal, specs.RegistryGrpc:
 		fmt.Printf("Skipping plugin download. registry: %s, path: %s\n", spec.Registry, spec.Path)
@@ -128,7 +128,7 @@ func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.Source) (
 	}
 }
 
-func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Source) (string, error) {
+func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec *specs.Source) (string, error) {
 	var err error
 	pathSplit := strings.Split(spec.Path, "/")
 	org, repo := pathSplit[0], pathSplit[1]
@@ -204,7 +204,7 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, spec specs.Des
 	}
 }
 
-func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) (*SourcePlugin, error) {
+func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec *specs.Source) (*SourcePlugin, error) {
 	pl := SourcePlugin{}
 	// var grpcTarget string
 	var pluginPath string
