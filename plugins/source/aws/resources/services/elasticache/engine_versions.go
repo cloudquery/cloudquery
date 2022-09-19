@@ -5,32 +5,29 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-//go:generate cq-gen --resource engine_versions --config ./gen.hcl --output .
 func EngineVersions() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_elasticache_engine_versions",
-		Description:  "Provides all of the details about a particular cache engine version.",
-		Resolver:     fetchElasticacheEngineVersions,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("elasticache"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region", "engine", "engine_version"}},
+		Name:        "aws_elasticache_engine_versions",
+		Description: "Provides all of the details about a particular cache engine version.",
+		Resolver:    fetchElasticacheEngineVersions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Description: "The AWS Account ID of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSAccount,
+				Name:            "account_id",
+				Description:     "The AWS Account ID of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "region",
-				Description: "The AWS Region of the resource.",
-				Type:        schema.TypeString,
-				Resolver:    client.ResolveAWSRegion,
+				Name:            "region",
+				Description:     "The AWS Region of the resource.",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "cache_engine_description",
@@ -48,14 +45,16 @@ func EngineVersions() *schema.Table {
 				Type:        schema.TypeString,
 			},
 			{
-				Name:        "engine",
-				Description: "The name of the cache engine.",
-				Type:        schema.TypeString,
+				Name:            "engine",
+				Description:     "The name of the cache engine.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:        "engine_version",
-				Description: "The version number of the cache engine.",
-				Type:        schema.TypeString,
+				Name:            "engine_version",
+				Description:     "The version number of the cache engine.",
+				Type:            schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
 	}
@@ -70,7 +69,7 @@ func fetchElasticacheEngineVersions(ctx context.Context, meta schema.ClientMeta,
 	for paginator.HasMorePages() {
 		v, err := paginator.NextPage(ctx)
 		if err != nil {
-			return diag.WrapError(err)
+			return err
 		}
 		res <- v.CacheEngineVersions
 	}

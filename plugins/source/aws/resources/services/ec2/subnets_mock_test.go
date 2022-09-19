@@ -28,5 +28,5 @@ func buildEc2Subnets(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestEc2Subnets(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2Subnets(), buildEc2Subnets, client.TestOptions{})
+	client.AwsMockTestHelper(t, Subnets(), buildEc2Subnets, client.TestOptions{})
 }

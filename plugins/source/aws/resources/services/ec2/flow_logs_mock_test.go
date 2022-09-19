@@ -29,5 +29,5 @@ func buildEc2FlowLogsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	}
 }
 func TestEc2FlowLogs(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2FlowLogs(), buildEc2FlowLogsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, FlowLogs(), buildEc2FlowLogsMock, client.TestOptions{})
 }

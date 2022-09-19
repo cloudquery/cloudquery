@@ -5,8 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type ec2RegionalConfig struct {
@@ -16,23 +15,22 @@ type ec2RegionalConfig struct {
 
 func Ec2RegionalConfig() *schema.Table {
 	return &schema.Table{
-		Name:         "aws_ec2_regional_config",
-		Description:  "Ec2 Regional Config defines common default configuration for ec2 service",
-		Resolver:     fetchEc2RegionalConfig,
-		Multiplex:    client.ServiceAccountRegionMultiplexer("ec2"),
-		IgnoreError:  client.IgnoreCommonErrors,
-		DeleteFilter: client.DeleteAccountRegionFilter,
-		Options:      schema.TableCreationOptions{PrimaryKeys: []string{"account_id", "region"}},
+		Name:        "aws_ec2_regional_config",
+		Description: "Ec2 Regional Config defines common default configuration for ec2 service",
+		Resolver:    fetchEc2RegionalConfig,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
-				Name:     "account_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSAccount,
+				Name:            "account_id",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Name:            "region",
+				Type:            schema.TypeString,
+				Resolver:        client.ResolveAWSRegion,
+				CreationOptions: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 			{
 				Name:        "ebs_encryption_enabled_by_default",
@@ -55,13 +53,13 @@ func fetchEc2RegionalConfig(ctx context.Context, meta schema.ClientMeta, _ *sche
 	var regionalConfig ec2RegionalConfig
 	resp, err := svc.GetEbsDefaultKmsKeyId(ctx, &ec2.GetEbsDefaultKmsKeyIdInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 	regionalConfig.EbsDefaultKmsKeyId = resp.KmsKeyId
 
 	ebsResp, err := svc.GetEbsEncryptionByDefault(ctx, &ec2.GetEbsEncryptionByDefaultInput{})
 	if err != nil {
-		return diag.WrapError(err)
+		return err
 	}
 
 	if ebsResp.EbsEncryptionByDefault != nil {

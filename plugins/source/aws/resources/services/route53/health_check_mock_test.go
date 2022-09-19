@@ -46,5 +46,5 @@ func buildRoute53HealthChecksMock(t *testing.T, ctrl *gomock.Controller) client.
 }
 
 func TestRoute53HealthCheck(t *testing.T) {
-	client.AwsMockTestHelper(t, Route53HealthChecks(), buildRoute53HealthChecksMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, HealthChecks(), buildRoute53HealthChecksMock, client.TestOptions{})
 }

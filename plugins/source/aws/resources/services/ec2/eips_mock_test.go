@@ -37,5 +37,5 @@ func buildEc2Eips(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestEc2Eips(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2Eips(), buildEc2Eips, client.TestOptions{})
+	client.AwsMockTestHelper(t, Eips(), buildEc2Eips, client.TestOptions{})
 }

@@ -10,13 +10,13 @@ import (
 )
 
 const wantSourceConfig = `
-kind: source
+kind: "source"
 spec:
   # Name of the plugin.
   name: "test"
 
   # Version of the plugin to use.
-  version: "development"
+  version: "v1.1.4"
 
   # Registry to use (one of "github", "local" or "grpc").
   registry: "github"
@@ -31,7 +31,7 @@ spec:
   # skip_tables: []
 
   # Names of destination plugins to sync to.
-  destinations: []
+  destinations: ["postgresql"]
 
   ## Approximate cap on number of requests to perform concurrently. Optional.
   # max_goroutines: 5
@@ -44,7 +44,7 @@ spec:
 `
 
 const wantDestinationConfig = `
-kind: destination
+kind: "destination"
 spec:
   # Name of the plugin.
   name: "postgresql"

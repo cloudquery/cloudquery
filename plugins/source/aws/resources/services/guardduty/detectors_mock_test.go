@@ -46,5 +46,5 @@ func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestGuarddutyDetectors(t *testing.T) {
-	client.AwsMockTestHelper(t, GuarddutyDetectors(), buildGuardDutyDetectors, client.TestOptions{})
+	client.AwsMockTestHelper(t, Detectors(), buildGuardDutyDetectors, client.TestOptions{})
 }

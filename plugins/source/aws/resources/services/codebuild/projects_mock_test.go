@@ -44,5 +44,5 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestCodebuildProjects(t *testing.T) {
-	client.AwsMockTestHelper(t, CodebuildProjects(), buildCodebuildProjects, client.TestOptions{})
+	client.AwsMockTestHelper(t, Projects(), buildCodebuildProjects, client.TestOptions{})
 }

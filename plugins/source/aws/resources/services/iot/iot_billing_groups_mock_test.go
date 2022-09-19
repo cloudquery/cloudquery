@@ -54,5 +54,5 @@ func buildIotBillingGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 }
 
 func TestIotBillingGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, IotBillingGroups(), buildIotBillingGroupsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, BillingGroups(), buildIotBillingGroupsMock, client.TestOptions{})
 }

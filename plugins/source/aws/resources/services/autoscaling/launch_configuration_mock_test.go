@@ -29,5 +29,5 @@ func buildAutoscalingLaunchConfigurationsMock(t *testing.T, ctrl *gomock.Control
 }
 
 func TestAutoscalingLaunchConfigurations(t *testing.T) {
-	client.AwsMockTestHelper(t, AutoscalingLaunchConfigurations(), buildAutoscalingLaunchConfigurationsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, LaunchConfigurations(), buildAutoscalingLaunchConfigurationsMock, client.TestOptions{})
 }

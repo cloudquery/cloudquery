@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/pkg/errors"
 	"github.com/thoas/go-funk"
 )
 
@@ -27,7 +27,7 @@ func ResolveAWSNamespace(_ context.Context, meta schema.ClientMeta, r *schema.Re
 }
 
 func ResolveWAFScope(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	return diag.WrapError(r.Set(c.Name, meta.(*Client).WAFScope))
+	return errors.WithStack(r.Set(c.Name, meta.(*Client).WAFScope))
 }
 
 func ResolveTags(ctx context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
@@ -49,12 +49,12 @@ func ResolveTagField(fieldName string) func(context.Context, schema.ClientMeta, 
 		}
 		f := val.FieldByName(fieldName)
 		if f.IsNil() {
-			return diag.WrapError(r.Set(c.Name, map[string]string{})) // can't have nil or the integration test will make a fuss
+			return errors.WithStack(r.Set(c.Name, map[string]string{})) // can't have nil or the integration test will make a fuss
 		} else if f.IsZero() {
 			panic("no such field " + fieldName)
 		}
 		data := TagsToMap(f.Interface())
-		return diag.WrapError(r.Set(c.Name, data))
+		return errors.WithStack(r.Set(c.Name, data))
 	}
 }
 
@@ -64,7 +64,7 @@ func ResolveTimestampField(path string, rfcs ...string) func(_ context.Context, 
 
 		value := funk.Get(r.Item, path, funk.WithAllowZero())
 		if value == nil {
-			return diag.WrapError(r.Set(c.Name, nil))
+			return errors.WithStack(r.Set(c.Name, nil))
 		}
 
 		if reflect.TypeOf(value).Kind() == reflect.Ptr {
@@ -75,11 +75,13 @@ func ResolveTimestampField(path string, rfcs ...string) func(_ context.Context, 
 
 		switch val.Kind() {
 		case reflect.Int32, reflect.Int64:
-			return diag.WrapError(r.Set(c.Name, time.Unix(val.Int(), 0)))
+			return errors.WithStack(r.Set(c.Name, time.Unix(val.Int(), 0)))
 		case reflect.String:
-			return schema.DateResolver(path, rfcs...)(ctx, cl, r, c)
+			// TODO: v2 SDK refactor: see if this is still used
+			panic("schema.DateResolver not implemented in new SDK")
+			// return schema.DateResolver(path, rfcs...)(ctx, cl, r, c)
 		default:
-			return diag.WrapError(r.Set(c.Name, nil))
+			return errors.WithStack(r.Set(c.Name, nil))
 		}
 	}
 }
@@ -112,7 +114,7 @@ func SliceJsonResolver(path, keyPath, valuePath string) schema.ColumnResolver {
 		}
 		j = make(map[string]interface{})
 		if reflect.TypeOf(field).Kind() != reflect.Slice {
-			return diag.WrapError(fmt.Errorf("field: %s is not a slice", path))
+			return errors.WithStack(fmt.Errorf("field: %s is not a slice", path))
 		}
 		for i := 0; i < s.Len(); i++ {
 			key := funk.Get(s.Index(i).Interface(), keyPath, funk.WithAllowZero())
@@ -122,7 +124,7 @@ func SliceJsonResolver(path, keyPath, valuePath string) schema.ColumnResolver {
 				k = k.Elem()
 			}
 			if k.Kind() != reflect.String {
-				return diag.WrapError(fmt.Errorf("key field: %s is not a string", path))
+				return errors.WithStack(fmt.Errorf("key field: %s is not a string", path))
 			}
 			j[k.String()] = value
 		}

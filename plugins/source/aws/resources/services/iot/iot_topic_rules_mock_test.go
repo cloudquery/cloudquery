@@ -72,5 +72,5 @@ func buildRule() (*iot.GetTopicRuleOutput, error) {
 }
 
 func TestIotTopicRules(t *testing.T) {
-	client.AwsMockTestHelper(t, IotTopicRules(), buildIotTopicRules, client.TestOptions{})
+	client.AwsMockTestHelper(t, TopicRules(), buildIotTopicRules, client.TestOptions{})
 }
