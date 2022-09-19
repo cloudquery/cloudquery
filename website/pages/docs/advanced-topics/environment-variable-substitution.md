@@ -16,4 +16,4 @@ spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```
 
-`PG_CONNECTION_STRING` will be sourced from the environment and replaces with the `${PG_CONNECTION_STRING}` before processing.
+`PG_CONNECTION_STRING` will be sourced from the environment and replaced with the value of `${PG_CONNECTION_STRING}` before processing.
