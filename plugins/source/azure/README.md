@@ -93,6 +93,7 @@ kind: source
 spec:
   name: azure
   tables: ["*"]
+  destinations: ["postgresql"]
   spec:
     # configuration:
     # subscriptions:
