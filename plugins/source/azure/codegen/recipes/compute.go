@@ -66,6 +66,8 @@ func Compute() []Resource {
 				{
 					azureStruct:    &compute.VirtualMachineScaleSet{},
 					mockListResult: "VirtualMachineScaleSetListWithLinkResult",
+					skipFields:     []string{"DoNotRunExtensionsOnOverprovisionedVMs"},
+					customColumns:  []codegen.ColumnDefinition{{Name: "do_not_run_extensions_on_overprovisioned_vms", Type: schema.TypeBool, Resolver: "schema.PathResolver(`DoNotRunExtensionsOnOverprovisionedVMs`)"}},
 				},
 				{
 					azureStruct:      &compute.VirtualMachine{},
