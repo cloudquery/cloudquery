@@ -3,7 +3,7 @@ package commands_tests
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"path"
 	"testing"
 
@@ -11,11 +11,11 @@ import (
 )
 
 func addDestination(t *testing.T, configFile string) {
-	input, err := ioutil.ReadFile(configFile)
+	input, err := os.ReadFile(configFile)
 	require.NoError(t, err)
 
-	output := bytes.Replace(input, []byte("destinations: []"), []byte("destinations: [postgresql]"), -1)
-	err = ioutil.WriteFile(configFile, output, 0666)
+	output := bytes.ReplaceAll(input, []byte("destinations: []"), []byte("destinations: [postgresql]"))
+	err = os.WriteFile(configFile, output, 0666)
 	require.NoError(t, err)
 }
 
