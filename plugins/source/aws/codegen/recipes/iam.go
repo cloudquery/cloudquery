@@ -27,8 +27,8 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService: "credential_report_users",
-			Struct:     &iamService.CredentialReportUser{},
+			SubService: "credential_reports",
+			Struct:     &iamService.CredentialReportEntry{},
 			SkipFields: []string{"Arn"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{

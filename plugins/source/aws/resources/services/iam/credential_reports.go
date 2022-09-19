@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func CredentialReportUsers() *schema.Table {
+func CredentialReports() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_credential_report_users",
-		Resolver:  fetchIamCredentialReportUsers,
+		Name:      "aws_iam_credential_reports",
+		Resolver:  fetchIamCredentialReports,
 		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{

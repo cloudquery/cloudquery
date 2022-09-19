@@ -15,7 +15,7 @@ import (
 func buildCredentialReportUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 
-	ru := CredentialReportUser{}
+	ru := CredentialReportEntry{}
 	err := faker.FakeData(&ru)
 	if err != nil {
 		t.Fatal(err)
@@ -28,7 +28,7 @@ func buildCredentialReportUsers(t *testing.T, ctrl *gomock.Controller) client.Se
 	ru.AccessKey2LastRotated = time.Now().Format(time.RFC3339)
 	ru.Cert1LastRotated = time.Now().Format(time.RFC3339)
 	ru.Cert2LastRotated = time.Now().Format(time.RFC3339)
-	content, err := gocsv.MarshalBytes([]CredentialReportUser{ru})
+	content, err := gocsv.MarshalBytes([]CredentialReportEntry{ru})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -43,6 +43,6 @@ func buildCredentialReportUsers(t *testing.T, ctrl *gomock.Controller) client.Se
 	}
 }
 
-func TestCredentialReportUsers(t *testing.T) {
-	client.AwsMockTestHelper(t, CredentialReportUsers(), buildCredentialReportUsers, client.TestOptions{})
+func TestCredentialReports(t *testing.T) {
+	client.AwsMockTestHelper(t, CredentialReports(), buildCredentialReportUsers, client.TestOptions{})
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/gocarina/gocsv"
 )
 
-type CredentialReportUser struct {
+type CredentialReportEntry struct {
 	User                      string    `csv:"user"`
 	Arn                       string    `csv:"arn"`
 	UserCreationTime          time.Time `csv:"user_creation_time"`
@@ -37,7 +37,7 @@ type CredentialReportUser struct {
 	PasswordLastUsed          string    `csv:"password_last_used"`
 }
 
-func fetchIamCredentialReportUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	var err error
 	var apiErr smithy.APIError
 	var reportOutput *iam.GetCredentialReportOutput
@@ -45,7 +45,7 @@ func fetchIamCredentialReportUsers(ctx context.Context, meta schema.ClientMeta, 
 	for {
 		reportOutput, err = svc.GetCredentialReport(ctx, &iam.GetCredentialReportInput{})
 		if err == nil && reportOutput != nil {
-			var users []*CredentialReportUser
+			var users []*CredentialReportEntry
 			err = gocsv.UnmarshalBytes(reportOutput.Content, &users)
 			if err != nil {
 				return err
