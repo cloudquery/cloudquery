@@ -1,5 +1,5 @@
 {
-  "environment-variables-substitution": "Environment Variables Substitution",
+  "environment-variable-substitution": "Environment Variable Substitution",
   "proxy-configuration": "Proxy Configuration",
   "docker": "Docker",
   "security": "Security",
