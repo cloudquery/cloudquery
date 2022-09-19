@@ -35,7 +35,7 @@ jobs:
     timeout-minutes: 20
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-12, windows-2022]
         workdir: [cli]
       fail-fast: false
     steps:
