@@ -9,10 +9,9 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_iam_users",
-		Resolver:             fetchIamUsers,
-		PostResourceResolver: postIamUserResolver,
-		Multiplex:            client.AccountMultiplex,
+		Name:      "aws_iam_users",
+		Resolver:  fetchIamUsers,
+		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "arn",
@@ -56,71 +55,6 @@ func Users() *schema.Table {
 				Name:     "permissions_boundary",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PermissionsBoundary"),
-			},
-			{
-				Name:     "user_creation_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UserCreationTime"),
-			},
-			{
-				Name:     "password_status",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PasswordStatus"),
-			},
-			{
-				Name:     "password_last_changed",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PasswordLastChanged"),
-			},
-			{
-				Name:     "password_next_rotation",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PasswordNextRotation"),
-			},
-			{
-				Name:     "mfa_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("MfaActive"),
-			},
-			{
-				Name:     "access_key_1_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("AccessKey1Active"),
-			},
-			{
-				Name:     "access_key_2_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("AccessKey2Active"),
-			},
-			{
-				Name:     "access_key_1_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessKey1LastRotated"),
-			},
-			{
-				Name:     "access_key_2_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessKey2LastRotated"),
-			},
-			{
-				Name:     "cert_1_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Cert1Active"),
-			},
-			{
-				Name:     "cert_2_active",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("Cert2Active"),
-			},
-			{
-				Name:     "cert_1_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Cert1LastRotated"),
-			},
-			{
-				Name:     "cert_2_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Cert2LastRotated"),
 			},
 		},
 

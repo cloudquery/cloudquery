@@ -7,6 +7,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
+	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -14,10 +15,7 @@ import (
 func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().IAM
-	user := parent.Item.(UserWrapper)
-	if aws.ToString(user.UserName) == rootName {
-		return nil
-	}
+	user := parent.Item.(*types.User)
 	config := iam.ListUserPoliciesInput{UserName: user.UserName}
 	for {
 		output, err := svc.ListUserPolicies(ctx, &config)
