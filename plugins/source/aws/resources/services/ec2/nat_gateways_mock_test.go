@@ -28,5 +28,5 @@ func buildEc2NatGateways(t *testing.T, ctrl *gomock.Controller) client.Services 
 }
 
 func TestEc2NatGateways(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2NatGateways(), buildEc2NatGateways, client.TestOptions{})
+	client.AwsMockTestHelper(t, NatGateways(), buildEc2NatGateways, client.TestOptions{})
 }

@@ -45,5 +45,5 @@ func buildRDSClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestRDSDBSnapshots(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsDbSnapshots(), buildRDSClient, client.TestOptions{})
+	client.AwsMockTestHelper(t, DbSnapshots(), buildRDSClient, client.TestOptions{})
 }

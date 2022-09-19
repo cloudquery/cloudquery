@@ -28,5 +28,5 @@ func buildEc2VpnGateways(t *testing.T, ctrl *gomock.Controller) client.Services 
 }
 
 func TestEc2VpnGateways(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2VpnGateways(), buildEc2VpnGateways, client.TestOptions{})
+	client.AwsMockTestHelper(t, VpnGateways(), buildEc2VpnGateways, client.TestOptions{})
 }

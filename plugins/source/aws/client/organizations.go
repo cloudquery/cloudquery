@@ -8,11 +8,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	orgTypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
-	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog"
 )
 
 // Parses org configuration and grabs the appropriate accounts
-func loadOrgAccounts(ctx context.Context, logger hclog.Logger, awsConfig *Config) ([]Account, AssumeRoleAPIClient, error) {
+func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsConfig *Config) ([]Account, AssumeRoleAPIClient, error) {
 	// If user doesn't specify any configs for admin account instantiate default values
 	if awsConfig.Organization.AdminAccount == nil {
 		awsConfig.Organization.AdminAccount = &Account{

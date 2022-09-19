@@ -3,12 +3,13 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"time"
 
+	"github.com/briandowns/spinner"
 	"github.com/cloudquery/cloudquery/cli/internal/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
-	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
 )
@@ -25,7 +26,7 @@ func NewCmdSync() *cobra.Command {
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
-		Args:    cobra.ExactArgs(1),
+		Args:    cobra.MaximumNArgs(1),
 		RunE:    sync,
 	}
 	return cmd
@@ -33,7 +34,10 @@ func NewCmdSync() *cobra.Command {
 
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
-	directory := args[0]
+	directory := "."
+	if len(args) > 0 {
+		directory = args[0]
+	}
 	fmt.Println("Loading specs from directory: ", directory)
 	specReader, err := specs.NewSpecReader(directory)
 	if err != nil {
@@ -58,7 +62,7 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func syncConnection(ctx context.Context, pm *plugins.PluginManager, specReader *specs.SpecReader, sourceSpec specs.Source) error {
-	sourcePlugin, err := pm.NewSourcePlugin(ctx, sourceSpec)
+	sourcePlugin, err := pm.NewSourcePlugin(ctx, &sourceSpec)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
@@ -107,18 +111,17 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, specReader *
 		return nil
 	})
 
-	bar := progressbar.NewOptions(-1,
-		progressbar.OptionSetDescription("Syncing"),
-		progressbar.OptionShowCount(),
-		progressbar.OptionShowIts(),
-		progressbar.OptionSetItsString("resources"),
-	)
+	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+	startTime := time.Now()
+	format := " Syncing (%d resources) %s"
+	s.Suffix = fmt.Sprintf(format, 0, time.Duration(0))
+	s.Start()
 	failedWrites := 0
 	totalResources := 0
 	g.Go(func() error {
 		for resource := range resources {
-			_ = bar.Add(1)
 			totalResources++
+			s.Suffix = fmt.Sprintf(format, totalResources, time.Since(startTime).Truncate(time.Second))
 			for i, destination := range sourceSpec.Destinations {
 				if err := destPlugins[i].GetClient().Write(ctx, resource.TableName, resource.Data); err != nil {
 					failedWrites++
@@ -131,10 +134,10 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, specReader *
 	})
 
 	if err := g.Wait(); err != nil {
-		_ = bar.Finish()
+		s.Stop()
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
-	_ = bar.Finish()
+	s.Stop()
 	fmt.Println("Fetch completed successfully.")
 	fmt.Printf("Summary: Resources: %d, Failed Writes: %d, Fetch Errors: %d, Fetch Warnings: %d\n",
 		totalResources, failedWrites, sourcePlugin.Errors(), sourcePlugin.Warnings())

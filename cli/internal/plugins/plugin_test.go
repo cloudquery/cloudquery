@@ -49,7 +49,7 @@ func TestPluginManagerDownloadSource(t *testing.T) {
 	// this test is mainly a smoke test as we test all permutations in GetSourceClientTest
 	// which calls to download anyways.
 	pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
-	if _, err := pm.DownloadSource(ctx, specs.Source{
+	if _, err := pm.DownloadSource(ctx, &specs.Source{
 		Name:     "test",
 		Registry: specs.RegistryGithub,
 		Path:     "cloudquery/test",
@@ -70,7 +70,7 @@ func TestPluginManagerGetSourceClient(t *testing.T) {
 			}
 			defer os.RemoveAll(dirName)
 			pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
-			pl, err := pm.NewSourcePlugin(ctx, specs.Source{
+			pl, err := pm.NewSourcePlugin(ctx, &specs.Source{
 				Name:     tc.Name,
 				Registry: tc.Registry,
 				Path:     tc.Path,

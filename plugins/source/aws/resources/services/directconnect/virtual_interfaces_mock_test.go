@@ -28,5 +28,5 @@ func buildDirectconnectVirtualInterfacesMock(t *testing.T, ctrl *gomock.Controll
 }
 
 func TestDirectconnecVirtualInterfaces(t *testing.T) {
-	client.AwsMockTestHelper(t, DirectconnectVirtualInterfaces(), buildDirectconnectVirtualInterfacesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, VirtualInterfaces(), buildDirectconnectVirtualInterfacesMock, client.TestOptions{})
 }

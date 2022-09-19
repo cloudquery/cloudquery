@@ -42,5 +42,5 @@ func buildRdsDbSecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestRDSDBSecurityGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsDbSecurityGroups(), buildRdsDbSecurityGroups, client.TestOptions{})
+	client.AwsMockTestHelper(t, DbSecurityGroups(), buildRdsDbSecurityGroups, client.TestOptions{})
 }

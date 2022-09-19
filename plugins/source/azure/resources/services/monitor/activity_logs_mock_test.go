@@ -1,19 +1,27 @@
+// Auto generated code - DO NOT EDIT.
+
 package monitor
 
 import (
 	"context"
-	"regexp"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"regexp"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights"
 )
 
-// regexMatcher implements gomock.Matcher interface and checks that passed value is a string that matches regular expression in re.
+func TestMonitorActivityLogs(t *testing.T) {
+	client.MockTestHelper(t, ActivityLogs(), createActivityLogsMock)
+}
+
 type regexMatcher struct {
 	re *regexp.Regexp
 }
@@ -30,32 +38,22 @@ func (m regexMatcher) String() string {
 	return m.re.String()
 }
 
-func buildActivityLogs(t *testing.T, ctrl *gomock.Controller) services.Services {
-	svc := mocks.NewMockActivityLogClient(ctrl)
-
-	ed := insights.EventData{}
-	if err := faker.FakeData(&ed); err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-
-	filterRe := regexp.MustCompile(`eventTimestamp ge '\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)Z' and eventTimestamp le '\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)Z'`)
-	svc.EXPECT().List(gomock.Any(), regexMatcher{filterRe}, "").Return(
-		insights.NewEventDataCollectionPage(
-			insights.EventDataCollection{Value: &[]insights.EventData{ed}}, func(ctx context.Context, collection insights.EventDataCollection) (insights.EventDataCollection, error) {
-				return insights.EventDataCollection{}, nil
-			},
-		),
-		nil,
-	)
-
+func createActivityLogsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockMonitorActivityLogsClient(ctrl)
 	s := services.Services{
 		Monitor: services.MonitorClient{
-			ActivityLogs: svc,
+			ActivityLogs: mockClient,
 		},
 	}
-	return s
-}
 
-func TestActivityLogs(t *testing.T) {
-	client.AzureMockTestHelper(t, MonitorActivityLogs(), buildActivityLogs, client.TestOptions{})
+	data := insights.EventData{}
+	require.Nil(t, faker.FakeObject(&data))
+
+	result := insights.NewEventDataCollectionPage(insights.EventDataCollection{Value: &[]insights.EventData{data}}, func(ctx context.Context, result insights.EventDataCollection) (insights.EventDataCollection, error) {
+		return insights.EventDataCollection{}, nil
+	})
+
+	filterRe := regexp.MustCompile(`eventTimestamp ge '\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)Z' and eventTimestamp le '\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(\.\d+)Z'`)
+	mockClient.EXPECT().List(gomock.Any(), regexMatcher{filterRe}, "").Return(result, nil)
+	return s
 }

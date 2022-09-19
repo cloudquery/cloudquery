@@ -76,5 +76,5 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestCognitoUserPools(t *testing.T) {
-	client.AwsMockTestHelper(t, CognitoUserPools(), buildCognitoUserPools, client.TestOptions{})
+	client.AwsMockTestHelper(t, UserPools(), buildCognitoUserPools, client.TestOptions{})
 }

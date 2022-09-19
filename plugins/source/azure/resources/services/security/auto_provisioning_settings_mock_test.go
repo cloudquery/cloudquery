@@ -1,37 +1,40 @@
+// Auto generated code - DO NOT EDIT.
+
 package security
 
 import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security"
 )
 
-func buildSecurityAutoProvisioningSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	m := mocks.NewMockSecurityAutoProvisioningSettingsClient(ctrl)
-
-	var setting security.AutoProvisioningSetting
-	if err := faker.FakeData(&setting); err != nil {
-		t.Fatal(err)
-	}
-
-	result := security.NewAutoProvisioningSettingListPage(
-		security.AutoProvisioningSettingList{Value: &[]security.AutoProvisioningSetting{setting}},
-		func(context.Context, security.AutoProvisioningSettingList) (security.AutoProvisioningSettingList, error) {
-			return security.AutoProvisioningSettingList{}, nil
-		},
-	)
-	m.EXPECT().List(gomock.Any()).Return(result, nil)
-	return services.Services{
-		Security: services.SecurityClient{AutoProvisioningSettings: m},
-	}
+func TestSecurityAutoProvisioningSettings(t *testing.T) {
+	client.MockTestHelper(t, AutoProvisioningSettings(), createAutoProvisioningSettingsMock)
 }
 
-func TestSecurityAutoProvisioningSettings(t *testing.T) {
-	client.AzureMockTestHelper(t, SecurityAutoProvisioningSettings(), buildSecurityAutoProvisioningSettingsMock, client.TestOptions{})
+func createAutoProvisioningSettingsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockSecurityAutoProvisioningSettingsClient(ctrl)
+	s := services.Services{
+		Security: services.SecurityClient{
+			AutoProvisioningSettings: mockClient,
+		},
+	}
+
+	data := security.AutoProvisioningSetting{}
+	require.Nil(t, faker.FakeObject(&data))
+
+	result := security.NewAutoProvisioningSettingListPage(security.AutoProvisioningSettingList{Value: &[]security.AutoProvisioningSetting{data}}, func(ctx context.Context, result security.AutoProvisioningSettingList) (security.AutoProvisioningSettingList, error) {
+		return security.AutoProvisioningSettingList{}, nil
+	})
+
+	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
+	return s
 }

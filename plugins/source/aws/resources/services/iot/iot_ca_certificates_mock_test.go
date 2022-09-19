@@ -45,5 +45,5 @@ func buildIotCaCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 }
 
 func TestIotCaCertificates(t *testing.T) {
-	client.AwsMockTestHelper(t, IotCaCertificates(), buildIotCaCertificatesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, CaCertificates(), buildIotCaCertificatesMock, client.TestOptions{})
 }

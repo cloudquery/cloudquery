@@ -6,14 +6,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eks"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEksClient(ctrl)
 	l := eks.DescribeClusterOutput{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,5 +30,5 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestEksClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, EksClusters(), buildEksClusters, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildEksClusters, client.TestOptions{})
 }

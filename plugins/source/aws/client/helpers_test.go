@@ -11,12 +11,13 @@ import (
 	ttypes "github.com/aws/aws-sdk-go-v2/service/acm/types"
 	"github.com/aws/aws-sdk-go-v2/service/apigateway/types"
 	"github.com/aws/smithy-go"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestResolveARN(t *testing.T) {
+	// t *Table, parent *Resource, fetchTime time.Time, item interface{}
 	tests := []struct {
 		name       string
 		columnName string
@@ -33,7 +34,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.PostgresDialect{}, &schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil, time.Now()),
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, time.Now(), types.RestApi{Id: aws.String("myid")}),
 			"arn:aws:apigateway:region::restapis/myid",
 			false,
 		},
@@ -44,7 +45,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return []string{"", "restapis", *resource.Item.(types.RestApi).Id}, nil
 			},
-			schema.NewResourceData(&schema.PostgresDialect{}, &schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil, time.Now()),
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, time.Now(), types.RestApi{Id: aws.String("myid")}),
 			"arn:aws:apigateway:region::/restapis/myid",
 			false,
 		},
@@ -55,7 +56,7 @@ func TestResolveARN(t *testing.T) {
 			func(resource *schema.Resource) ([]string, error) {
 				return nil, errors.New("test")
 			},
-			schema.NewResourceData(&schema.PostgresDialect{}, &schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, types.RestApi{Id: aws.String("myid")}, nil, time.Now()),
+			schema.NewResourceData(&schema.Table{Columns: []schema.Column{{Name: "myarn"}}}, nil, time.Now(), types.RestApi{Id: aws.String("myid")}),
 			nil,
 			true,
 		},

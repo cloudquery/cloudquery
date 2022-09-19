@@ -43,5 +43,5 @@ func buildEMRClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestEMRBlockPublicAccessConfigs(t *testing.T) {
-	client.AwsMockTestHelper(t, EmrBlockPublicAccessConfigs(), buildEMRClient, client.TestOptions{})
+	client.AwsMockTestHelper(t, BlockPublicAccessConfigs(), buildEMRClient, client.TestOptions{})
 }

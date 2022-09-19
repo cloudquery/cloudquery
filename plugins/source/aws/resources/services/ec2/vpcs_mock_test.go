@@ -27,5 +27,5 @@ func buildEc2Vpcs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 }
 func TestEc2Vpcs(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2Vpcs(), buildEc2Vpcs, client.TestOptions{})
+	client.AwsMockTestHelper(t, Vpcs(), buildEc2Vpcs, client.TestOptions{})
 }

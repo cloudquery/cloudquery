@@ -37,5 +37,5 @@ func buildRDSEventSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Se
 }
 
 func TestRDSEventSubscriptions(t *testing.T) {
-	client.AwsMockTestHelper(t, RdsEventSubscriptions(), buildRDSEventSubscriptions, client.TestOptions{})
+	client.AwsMockTestHelper(t, EventSubscriptions(), buildRDSEventSubscriptions, client.TestOptions{})
 }

@@ -39,5 +39,5 @@ func buildWAFRulesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestWafRules(t *testing.T) {
-	client.AwsMockTestHelper(t, WafRules(), buildWAFRulesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Rules(), buildWAFRulesMock, client.TestOptions{})
 }

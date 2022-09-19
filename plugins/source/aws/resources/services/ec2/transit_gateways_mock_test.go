@@ -82,5 +82,5 @@ func buildEc2TransitGateways(t *testing.T, ctrl *gomock.Controller) client.Servi
 }
 
 func TestEc2TransitGateways(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2TransitGateways(), buildEc2TransitGateways, client.TestOptions{})
+	client.AwsMockTestHelper(t, TransitGateways(), buildEc2TransitGateways, client.TestOptions{})
 }
