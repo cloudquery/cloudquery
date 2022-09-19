@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/codegen/recipes"
-	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/droplets"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/spaces"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -12,11 +11,7 @@ import (
 
 var Resources = []*recipes.Resource{
 	{
-		Service:      "account",
-		Template:     "resource_get",
-		MockTemplate: "resource_get_mock",
-		Struct:       godo.Account{},
-		ChildTable:   false,
+		Service: "account",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "uuid",
@@ -28,11 +23,7 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"UUID"},
 	},
 	{
-		Service:      "cdn",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       godo.CDN{},
-		ChildTable:   false,
+		Service: "cdn",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -44,14 +35,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:      "billing_history",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		ResponsePath: ".BillingHistory",
-		Struct:       godo.BillingHistoryEntry{},
-		MockStruct:   godo.BillingHistory{},
-		ChildTable:   false,
-		MockWrapper:  true,
+		Service: "billing_history",
+		Struct:  godo.BillingHistoryEntry{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "invoice_id",
@@ -63,12 +48,9 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"InvoiceID"},
 	},
 	{
-		Service:      "monitoring",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		SubService:   "alert_policies",
-		Struct:       godo.AlertPolicy{},
-		ChildTable:   false,
+		Service:    "monitoring",
+		SubService: "alert_policies",
+		Struct:     godo.AlertPolicy{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "uuid",
@@ -81,18 +63,10 @@ var Resources = []*recipes.Resource{
 	},
 
 	{
-		Service:      "balance",
-		Template:     "resource_get",
-		MockTemplate: "resource_get_mock",
-		Struct:       godo.Balance{},
-		ChildTable:   false,
+		Service: "balance",
 	},
 	{
-		Service:      "certificates",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       godo.Certificate{},
-		ChildTable:   false,
+		Service: "certificates",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -104,12 +78,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:      "databases",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       godo.Database{},
-		Relations:    []string{"FirewallRules()", "Replicas()", "Backups()"},
-		ChildTable:   false,
+		Service:   "databases",
+		Relations: []string{"FirewallRules()", "Replicas()", "Backups()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -121,35 +91,19 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:      "databases",
-		SubService:   "backups",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_child_mock",
-		Struct:       godo.DatabaseBackup{},
-		ParentStruct: godo.Database{},
-		ChildTable:   true,
+		Service:    "databases",
+		SubService: "backups",
 	},
 	{
-		Service:      "databases",
-		SubService:   "replicas",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_child_mock",
-		Struct:       godo.DatabaseReplica{},
-		ParentStruct: godo.Database{},
-		ChildTable:   true,
+		Service:    "databases",
+		SubService: "replicas",
 	},
 	{
-		Service:      "databases",
-		SubService:   "firewall_rules",
-		Template:     "resource_get",
-		MockTemplate: "resource_get_child_mock",
-		Struct:       godo.DatabaseFirewallRule{},
-		ParentStruct: godo.Database{},
-		ChildTable:   true,
+		Service:    "databases",
+		SubService: "firewall_rules",
 	},
 	{
 		Service:   "domains",
-		Template:  "resource_list",
 		Struct:    godo.Domain{},
 		Relations: []string{"Records()"},
 		ExtraColumns: []codegen.ColumnDefinition{
@@ -163,13 +117,9 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"Name"},
 	},
 	{
-		Service:      "domains",
-		SubService:   "records",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_child_mock",
-		Args:         ", p.Name",
-		Struct:       godo.DomainRecord{},
-		ParentStruct: godo.Domain{},
+		Service:    "domains",
+		SubService: "records",
+		Struct:     godo.DomainRecord{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -182,7 +132,6 @@ var Resources = []*recipes.Resource{
 	},
 	{
 		Service:   "droplets",
-		Template:  "resource_list",
 		Struct:    godo.Droplet{},
 		Relations: []string{"Neighbors()"},
 		ExtraColumns: []codegen.ColumnDefinition{
@@ -211,12 +160,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"BackupIDs", "SnapshotIDs", "VolumeIDs", "ID"},
 	},
 	{
-		Service:      "droplets",
-		SubService:   "neighbors",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_child_mock",
-		Struct:       &droplets.NeighborWrapper{},
-		ParentStruct: &godo.Droplet{},
+		Service:    "droplets",
+		SubService: "neighbors",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "neighbor_id",
@@ -228,9 +173,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"NeighborId"},
 	},
 	{
-		Service:  "firewalls",
-		Template: "resource_list",
-		Struct:   godo.Firewall{},
+		Service: "firewalls",
+		Struct:  godo.Firewall{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "droplet_ids",
@@ -248,9 +192,8 @@ var Resources = []*recipes.Resource{
 	},
 
 	{
-		Service:  "floating_ips",
-		Template: "resource_list",
-		Struct:   godo.FloatingIP{},
+		Service: "floating_ips",
+		Struct:  godo.FloatingIP{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "ip",
@@ -262,9 +205,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"IP"},
 	},
 	{
-		Service:  "images",
-		Template: "resource_list",
-		Struct:   godo.Image{},
+		Service: "images",
+		Struct:  godo.Image{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -276,9 +218,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:  "keys",
-		Template: "resource_list",
-		Struct:   godo.Key{},
+		Service: "keys",
+		Struct:  godo.Key{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -291,7 +232,6 @@ var Resources = []*recipes.Resource{
 	},
 	{
 		Service:   "projects",
-		Template:  "resource_list",
 		Struct:    godo.Project{},
 		Relations: []string{"Resources()"},
 		ExtraColumns: []codegen.ColumnDefinition{
@@ -305,13 +245,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:      "projects",
-		SubService:   "resources",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_child_mock",
-		Struct:       godo.ProjectResource{},
-		ParentStruct: godo.Project{},
-		ChildTable:   true,
+		Service:    "projects",
+		SubService: "resources",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "urn",
@@ -323,12 +258,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"URN"},
 	},
 	{
-		Service:      "registry",
-		Template:     "resource_get",
-		MockTemplate: "resource_get_mock",
-		Struct:       &godo.Registry{},
-		ChildTable:   false,
-		Relations:    []string{"Repositories()"},
+		Service:   "registry",
+		Relations: []string{"Repositories()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
@@ -340,14 +271,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"Name"},
 	},
 	{
-		Service:      "registry",
-		SubService:   "repositories",
-		Args:         ", p.Name",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_child_mock",
-		Struct:       &godo.Repository{},
-		ParentStruct: &godo.Registry{},
-		ChildTable:   true,
+		Service:    "registry",
+		SubService: "repositories",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
@@ -359,16 +284,10 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"Name"},
 	},
 	{
-		Service:      "sizes",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       godo.Size{},
+		Service: "sizes",
 	},
 	{
-		Service:      "snapshots",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       godo.Snapshot{},
+		Service: "snapshots",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -381,19 +300,15 @@ var Resources = []*recipes.Resource{
 	},
 	{
 		Service:   "spaces",
-		Template:  "resource_list",
 		Struct:    spaces.WrappedBucket{},
 		Multiplex: "client.SpacesRegionMultiplex",
 		Imports:   []string{"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"},
 		Relations: []string{"Cors()"},
 	},
 	{
-		Service:      "spaces",
-		SubService:   "cors",
-		Template:     "resource_list",
-		Struct:       types.CORSRule{},
-		ParentStruct: spaces.WrappedBucket{},
-		ChildTable:   true,
+		Service:    "spaces",
+		SubService: "cors",
+		Struct:     types.CORSRule{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -405,11 +320,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:      "storage",
-		SubService:   "volumes",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       godo.Volume{},
+		Service:    "storage",
+		SubService: "volumes",
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -426,11 +338,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"DropletIDs", "ID"},
 	},
 	{
-		Service:      "vpcs",
-		Template:     "resource_list",
-		MockTemplate: "resource_list_mock",
-		Struct:       &godo.VPC{},
-		Relations:    []string{"Members()"},
+		Service:   "vpcs",
+		Relations: []string{"Members()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -442,13 +351,9 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:      "vpcs",
-		SubService:   "members",
-		Args:         ", p.ID, nil",
-		Template:     "resource_list",
-		Struct:       &godo.VPCMember{},
-		ParentStruct: &godo.VPC{},
-		ChildTable:   true,
+		Service:    "vpcs",
+		SubService: "members",
+		Struct:     &godo.VPCMember{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "urn",
