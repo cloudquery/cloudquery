@@ -37,7 +37,6 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest]
         workdir: [cli]
-        postgres: ['11']
       fail-fast: false
     steps:
       - name: Check out code into the Go module directory
@@ -59,11 +58,10 @@ jobs:
       - name: Get dependencies
         working-directory: ${{ matrix.workdir }}
         run: go get -v -t -d ./...
-      - uses: docker-practice/actions-setup-docker@50400dd6e7c92d4a9f5a3cb9162b21e8a041aeec
-        if: matrix.os != 'windows-latest'
+      # Install postgres
+      - uses: ankane/setup-postgres@v1
       - name: Test
         run: |
-          docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres:${{ matrix.postgres }}
           go build
           go test -v ./...
         working-directory: ${{ matrix.workdir }}
