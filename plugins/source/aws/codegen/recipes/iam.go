@@ -27,6 +27,26 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
+			SubService: "credential_reports",
+			Struct:     &iamService.CredentialReportEntry{},
+			SkipFields: []string{"Arn", "UserCreationTime"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Arn")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "user_creation_time",
+					Type:     schema.TypeTimestamp,
+					Resolver: `schema.PathResolver("UserCreationTime")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+			Relations: []string{},
+		},
+		{
 			SubService: "groups",
 			Struct:     &types.Group{},
 			SkipFields: []string{"GroupId"},
@@ -226,15 +246,25 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService:           "users",
-			Struct:               &iamService.UserWrapper{},
-			SkipFields:           []string{"Arn", "Tags"},
-			PostResourceResolver: `postIamUserResolver`,
+			SubService: "users",
+			Struct:     &types.User{},
+			SkipFields: []string{"Arn", "AccountId", "Id", "Tags"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "arn",
 					Type:     schema.TypeString,
 					Resolver: `schema.PathResolver("Arn")`,
+				},
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("AccountId")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Id")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 				{
