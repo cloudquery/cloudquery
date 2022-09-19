@@ -8,6 +8,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -415,9 +416,21 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Config, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
+	maxAttempts := awsConfig.MaxRetries
+	if maxAttempts == 0 {
+		maxAttempts = 10
+	}
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion(defaultRegion),
-		config.WithRetryer(newRetryer(logger, awsConfig.MaxRetries, awsConfig.MaxBackoff)),
+		// https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/retries-timeouts/
+		config.WithRetryer(func() aws.Retryer {
+			// return retry.NewAdaptiveMode()
+			return retry.NewStandard(func(so *retry.StandardOptions) {
+				so.MaxAttempts = maxAttempts
+				so.RateLimiter = &NoRateLimiter{}
+			})
+			// return retry.AddWithMaxAttempts(retry.NewStandard(), 5)
+		}),
 	}
 
 	if account.DefaultRegion != "" {
@@ -457,7 +470,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 	}
 
 	if awsConfig.AWSDebug {
-		awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
+		awsCfg.ClientLogMode =  aws.LogRetries
 		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.AccountName).Logger()}
 	}
 
@@ -683,9 +696,12 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 }
 
 func (a AwsLogger) Logf(classification logging.Classification, format string, v ...interface{}) {
-	if classification == logging.Warn {
-		a.l.Warn().Msg(fmt.Sprintf(format, v...))
-	} else {
-		a.l.Debug().Msg(fmt.Sprintf(format, v...))
+	switch classification {
+		case logging.Debug:
+			a.l.Debug().Msgf(format, v...)
+		case logging.Warn:
+			a.l.Warn().Msgf(format, v...)
+		default:
+			a.l.Debug().Msgf(format, v...)
 	}
 }
