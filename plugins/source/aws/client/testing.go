@@ -14,8 +14,7 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type TestOptions struct {
-}
+type TestOptions struct{}
 
 func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, _ TestOptions) {
 	table.IgnoreInTests = false

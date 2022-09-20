@@ -63,8 +63,3 @@ install-tools:
 .PHONY: install-hooks
 install-hooks:
 	pre-commit install
-
-# Generate code
-.PHONY: codegen
-install-hooks:
-	pre-commit install
