@@ -180,15 +180,16 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	return columns
 }
 
-func valueToSchemaType(v reflect.Type) (schema.ValueType, error) {
+func valueToSchemaType(v reflect.Type) *schema.ValueType {
 	time := date.Time{}
 	switch v {
 	case reflect.TypeOf(time):
 	case reflect.TypeOf(&time):
-		return schema.TypeTimestamp, nil
+		timestamp := schema.TypeTimestamp
+		return &timestamp
 	}
 
-	return schema.TypeString, fmt.Errorf("unsupported type %s", v.Kind())
+	return nil
 }
 
 func getTableName(azureService, azureSubService string) string {
