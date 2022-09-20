@@ -192,7 +192,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec *specs.So
 		return "", fmt.Errorf("failed to create plugin directory %s: %w", downloadPaths.destDir, err)
 	}
 
-	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", downloadPaths.url, downloadPaths.destFile)
+	fmt.Printf("Downloading plugin from: %s to: %s\n", downloadPaths.url, downloadPaths.zipPath)
 	if err := downloadFile(downloadPaths.zip, downloadPaths.url); err != nil {
 		return "", fmt.Errorf("failed to download plugin: %w", err)
 	}
