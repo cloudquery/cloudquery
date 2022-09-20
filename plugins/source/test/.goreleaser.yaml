@@ -1,5 +1,5 @@
 variables:
-  component: source/gcp
+  component: source/test
 
 project_name: plugins/source/test
 

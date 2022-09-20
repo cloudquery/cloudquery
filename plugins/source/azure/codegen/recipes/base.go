@@ -56,6 +56,7 @@ type template struct {
 
 type resourceDefinition struct {
 	customColumns            codegen.ColumnDefinitions
+	tableName                string
 	azureStruct              interface{}
 	skipFields               []string
 	includeColumns           string
@@ -179,14 +180,17 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	return columns
 }
 
-func getTableName(azureService, azureSubService string) string {
+func getTableName(azureService, azureSubService string, override string) string {
+	if override != "" {
+		return fmt.Sprintf("%s_%s", pluginName, override)
+	}
 	return fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService))
 }
 
 func initTable(serviceNameOverride string, definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
 	skipFields := append(definition.skipFields, defaultSkipFields...)
 	table, err := codegen.NewTableFromStruct(
-		getTableName(azureService, azureSubService),
+		getTableName(azureService, azureSubService, definition.tableName),
 		definition.azureStruct,
 		codegen.WithSkipFields(skipFields),
 		codegen.WithUnwrapAllEmbeddedStructs(),                  // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns

@@ -126,9 +126,11 @@ func Storage() []Resource {
 					azureStruct:  &storage.Account{},
 					listFunction: "List",
 					helpers:      []string{fetchStorageAccountBlobLoggingSettings, fetchStorageAccountQueueLoggingSettings, isQueueSupported, isBlobSupported},
+					skipFields:   []string{"EnableNfsV3"},
 					customColumns: codegen.ColumnDefinitions{
 						codegen.ColumnDefinition{Name: "blob_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountBlobLoggingSettings"},
 						codegen.ColumnDefinition{Name: "queue_logging_settings", Type: schema.TypeJSON, Resolver: "fetchStorageAccountQueueLoggingSettings"},
+						codegen.ColumnDefinition{Name: "is_nfs_v3_enabled", Type: schema.TypeBool, Resolver: `schema.PathResolver("EnableNfsV3")`},
 					},
 					relations: accountRelations,
 					mockListFunctionArgsInit: []string{
