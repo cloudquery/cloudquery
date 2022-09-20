@@ -49,6 +49,14 @@ type PluginManager struct {
 
 type PluginManagerOption func(*PluginManager)
 
+type downloadPaths struct {
+	destDir     string
+	destFile    string
+	zip         string
+	binaryInZip string
+	url         string
+}
+
 func (p *DestinationPlugin) Close() error {
 	if p.conn != nil {
 		return p.conn.Close()
@@ -128,21 +136,21 @@ func (p *PluginManager) DownloadSource(ctx context.Context, spec *specs.Source) 
 	}
 }
 
-func binarySuffix() string {
+func getBinarySuffix() string {
 	if runtime.GOOS == "windows" {
 		return ".exe"
 	}
 	return ""
 }
 
-func (p *PluginManager) getPaths(org string, repo string, registry string, version string) (destDir string, destPath string, zipPath string, binaryPathInZip string, downloadURL string) {
+func (p *PluginManager) getDownloadPaths(org string, repo string, registry string, version string) downloadPaths {
 	pluginName := fmt.Sprintf("cq-source-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
-	destDir = filepath.Join(p.directory, "plugins", registry, org, repo, version)
-	binarySuffix := binarySuffix()
-	destPath = filepath.Join(destDir, pluginName+binarySuffix)
-	zipPath = filepath.Join(destDir, pluginName+".zip")
-	binaryPathInZip = "plugins/source/" + repo + binarySuffix
-	downloadURL = fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins/source/%s/%s/%s_%s_%s.zip", repo, version, repo, runtime.GOOS, runtime.GOARCH)
+	destDir := filepath.Join(p.directory, "plugins", registry, org, repo, version)
+	binarySuffix := getBinarySuffix()
+	destFile := filepath.Join(destDir, pluginName+binarySuffix)
+	zipPath := filepath.Join(destDir, pluginName+".zip")
+	binaryPathInZip := "plugins/source/" + repo + binarySuffix
+	downloadURL := fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins/source/%s/%s/%s_%s_%s.zip", repo, version, repo, runtime.GOOS, runtime.GOARCH)
 	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
 	// For example:
 	// https://github.com/cloudquery/cloudquery/releases/download/plugins-source-test-v1.1.0/test_darwin_amd64.zip
@@ -152,7 +160,13 @@ func (p *PluginManager) getPaths(org string, repo string, registry string, versi
 		binaryPathInZip = "cq-source-" + repo + binarySuffix
 	}
 
-	return destDir, destPath, zipPath, binaryPathInZip, downloadURL
+	return downloadPaths{
+		destDir:     destDir,
+		destFile:    destFile,
+		zip:         zipPath,
+		binaryInZip: binaryPathInZip,
+		url:         downloadURL,
+	}
 }
 
 func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec *specs.Source) (string, error) {
@@ -167,32 +181,32 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec *specs.So
 		}
 	}
 
-	destDir, destPath, zipPath, binaryPathInZip, downloadURL := p.getPaths(org, repo, "github", spec.Version)
-	if _, err := os.Stat(destPath); err == nil {
-		fmt.Printf("Plugin already exists at %s. Skipping download.\n", destPath)
-		p.logger.Info().Str("path", destPath).Msg("Plugin already exists. Skipping download.")
-		return destPath, nil
+	downloadPaths := p.getDownloadPaths(org, repo, "github", spec.Version)
+	if _, err := os.Stat(downloadPaths.destFile); err == nil {
+		fmt.Printf("Plugin already exists at %s. Skipping download.\n", downloadPaths.destFile)
+		p.logger.Info().Str("path", downloadPaths.destFile).Msg("Plugin already exists. Skipping download.")
+		return downloadPaths.destFile, nil
 	}
 
-	if err := os.MkdirAll(destDir, 0755); err != nil {
-		return "", fmt.Errorf("failed to create plugin directory %s: %w", destDir, err)
+	if err := os.MkdirAll(downloadPaths.destDir, 0755); err != nil {
+		return "", fmt.Errorf("failed to create plugin directory %s: %w", downloadPaths.destDir, err)
 	}
 
-	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", downloadURL, destPath)
-	if err := downloadFile(zipPath, downloadURL); err != nil {
+	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", downloadPaths.url, downloadPaths.destFile)
+	if err := downloadFile(downloadPaths.zip, downloadPaths.url); err != nil {
 		return "", fmt.Errorf("failed to download plugin: %w", err)
 	}
-	archive, err := zip.OpenReader(zipPath)
+	archive, err := zip.OpenReader(downloadPaths.zip)
 	if err != nil {
 		return "", fmt.Errorf("failed to open plugin archive: %w", err)
 	}
-	fileInArchive, err := archive.Open(binaryPathInZip)
+	fileInArchive, err := archive.Open(downloadPaths.binaryInZip)
 	if err != nil {
 		return "", fmt.Errorf("failed to open plugin archive plugins/source/%s: %w", repo, err)
 	}
-	out, err := os.OpenFile(destPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0744)
+	out, err := os.OpenFile(downloadPaths.destFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0744)
 	if err != nil {
-		return "", fmt.Errorf("failed to create file %s: %w", destPath, err)
+		return "", fmt.Errorf("failed to create file %s: %w", downloadPaths.destFile, err)
 	}
 	_, err = io.Copy(out, fileInArchive)
 	if err != nil {
@@ -202,7 +216,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec *specs.So
 	if err != nil {
 		return "", fmt.Errorf("failed to close file: %w", err)
 	}
-	return destPath, nil
+	return downloadPaths.destFile, nil
 }
 
 // NewDestination Plugin downloads the plugin, spanws the process (if needed)
