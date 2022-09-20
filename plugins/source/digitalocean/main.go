@@ -6,7 +6,5 @@ import (
 )
 
 func main() {
-	serve.Serve(serve.Options{
-		SourcePlugin: plugin.Plugin(),
-	})
+	serve.Source(plugin.Plugin()) // todo add withSentryDSN
 }
