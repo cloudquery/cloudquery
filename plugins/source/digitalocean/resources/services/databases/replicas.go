@@ -8,7 +8,7 @@ import (
 
 func Replicas() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_databases_replicas",
+		Name:     "digitalocean_database_replicas",
 		Resolver: fetchDatabasesReplicas,
 		Columns: []schema.Column{
 			{

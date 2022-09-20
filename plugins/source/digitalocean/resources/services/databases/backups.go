@@ -8,7 +8,7 @@ import (
 
 func Backups() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_databases_backups",
+		Name:     "digitalocean_database_backups",
 		Resolver: fetchDatabasesBackups,
 		Columns: []schema.Column{
 			{

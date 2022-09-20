@@ -8,7 +8,7 @@ import (
 
 func Resources() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_projects_resources",
+		Name:     "digitalocean_project_resources",
 		Resolver: fetchProjectsResources,
 		Columns: []schema.Column{
 			{

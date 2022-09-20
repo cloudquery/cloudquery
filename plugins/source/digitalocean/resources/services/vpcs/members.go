@@ -8,7 +8,7 @@ import (
 
 func Members() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_vpcs_members",
+		Name:     "digitalocean_vpc_members",
 		Resolver: fetchVpcsMembers,
 		Columns: []schema.Column{
 			{

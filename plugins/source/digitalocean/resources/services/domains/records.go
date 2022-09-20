@@ -8,7 +8,7 @@ import (
 
 func Records() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_domains_records",
+		Name:     "digitalocean_domain_records",
 		Resolver: fetchDomainsRecords,
 		Columns: []schema.Column{
 			{

@@ -8,7 +8,7 @@ import (
 
 func Repositories() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_registries_repositories",
+		Name:     "digitalocean_registry_repositories",
 		Resolver: fetchRegistriesRepositories,
 		Columns: []schema.Column{
 			{

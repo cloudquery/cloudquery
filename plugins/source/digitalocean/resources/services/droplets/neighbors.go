@@ -8,7 +8,7 @@ import (
 
 func Neighbors() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_droplets_neighbors",
+		Name:     "digitalocean_droplet_neighbors",
 		Resolver: fetchDropletsNeighbors,
 		Columns: []schema.Column{
 			{

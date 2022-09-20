@@ -8,7 +8,7 @@ import (
 
 func FirewallRules() *schema.Table {
 	return &schema.Table{
-		Name:     "digitalocean_databases_firewall_rules",
+		Name:     "digitalocean_database_firewall_rules",
 		Resolver: fetchDatabasesFirewallRules,
 		Columns: []schema.Column{
 			{

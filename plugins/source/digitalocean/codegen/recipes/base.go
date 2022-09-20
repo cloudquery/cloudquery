@@ -4,14 +4,16 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/iancoleman/strcase"
 	"go/format"
 	"os"
 	"path"
 	"runtime"
 	"strings"
 	"text/template"
+
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/gertd/go-pluralize"
+	"github.com/iancoleman/strcase"
 )
 
 //go:embed templates/*.go.tpl
@@ -38,6 +40,8 @@ type Resource struct {
 	ExtraColumns []codegen.ColumnDefinition
 	// PostResolver name of post resolver function
 	PostResolver string
+	// TableName name of the table
+	TableName string
 }
 
 func (r *Resource) Generate() error {
@@ -53,14 +57,17 @@ func (r *Resource) Generate() error {
 		codegen.WithExtraColumns(r.ExtraColumns),
 	}
 
-	tableName := fmt.Sprintf("digitalocean_%s_%s", r.Service, r.SubService)
-	if r.SubService == "" {
-		r.SubService = r.Service
-		tableName = fmt.Sprintf("digitalocean_%s", r.Service)
+	plural := pluralize.NewClient()
+	if r.TableName == "" {
+		r.TableName = fmt.Sprintf("digitalocean_%s_%s", plural.Singular(r.Service), r.SubService)
+		if r.SubService == "" {
+			r.SubService = r.Service
+			r.TableName = fmt.Sprintf("digitalocean_%s", r.Service)
+		}
 	}
 
 	r.Table, err = codegen.NewTableFromStruct(
-		tableName,
+		r.TableName,
 		r.Struct,
 		opts...,
 	)
