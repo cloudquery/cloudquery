@@ -9,10 +9,9 @@ import (
 
 func Vaults() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_backup_vaults",
-		Resolver:             fetchBackupVaults,
-		PostResourceResolver: resolveVaultNotifications,
-		Multiplex:            client.ServiceAccountRegionMultiplexer("backup"),
+		Name:      "aws_backup_vaults",
+		Resolver:  fetchBackupVaults,
+		Multiplex: client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -36,6 +35,11 @@ func Vaults() *schema.Table {
 				Name:     "access_policy",
 				Type:     schema.TypeJSON,
 				Resolver: resolveVaultAccessPolicy,
+			},
+			{
+				Name:     "notifications",
+				Type:     schema.TypeJSON,
+				Resolver: resolveVaultNotifications,
 			},
 			{
 				Name:     "tags",

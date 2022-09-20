@@ -118,10 +118,7 @@ func resolveCloudTrailStatus(ctx context.Context, meta schema.ClientMeta, resour
 	if err != nil {
 		return err
 	}
-	if err := resource.Set("status", response); err != nil {
-		return err
-	}
-	return nil
+	return resource.Set("status", response)
 }
 
 func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
