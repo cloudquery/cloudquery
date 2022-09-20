@@ -134,7 +134,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	// providerConfig := config.(*Config)
 	var doSpec Spec
 	if err := s.UnmarshalSpec(&doSpec); err != nil {
-		return nil, errors.WithStack(fmt.Errorf("failed to unmarshal gcp spec: %w", err))
+		return nil, errors.WithStack(fmt.Errorf("failed to unmarshal digitalocean spec: %w", err))
 	}
 
 	if doSpec.Token == "" {

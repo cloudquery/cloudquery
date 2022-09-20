@@ -22,7 +22,7 @@ type Resource struct {
 	Table *codegen.TableDefinition
 	// Struct that will be used to generate the cloudquery table
 	Struct interface{}
-	// Service is the name of the gcp service the struct/api is residing
+	// Service is the name of the digitalocean service the struct/api is residing
 	Service string
 	// SubService is the name of the subservice
 	SubService string
