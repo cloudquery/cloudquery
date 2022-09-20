@@ -92,7 +92,7 @@ func BackendServices() *schema.Table {
 				Resolver: schema.PathResolver("EdgeSecurityPolicy"),
 			},
 			{
-				Name:     "enable_c_d_n",
+				Name:     "enable_cdn",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableCDN"),
 			},

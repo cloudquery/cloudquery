@@ -52,7 +52,7 @@ func Networks() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "enable_ula_internal_ipv_6",
+				Name:     "enable_ula_internal_ipv6",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableUlaInternalIpv6"),
 			},
@@ -72,7 +72,7 @@ func Networks() *schema.Table {
 				Resolver: schema.PathResolver("Id"),
 			},
 			{
-				Name:     "internal_ipv_6_range",
+				Name:     "internal_ipv6_range",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("InternalIpv6Range"),
 			},

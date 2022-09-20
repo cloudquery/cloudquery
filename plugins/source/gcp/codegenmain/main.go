@@ -147,11 +147,17 @@ func generateResource(r codegen.Resource, mock bool) {
 		extraColumns = append([]sdkgen.ColumnDefinition{codegen.ProjectIdColumn}, extraColumns...)
 	}
 
+	opts := []sdkgen.TableOptions{sdkgen.WithSkipFields(r.SkipFields),
+		sdkgen.WithExtraColumns(extraColumns)}
+
+	if r.NameTransformer != nil {
+		opts = append(opts, sdkgen.WithNameTransformer(r.NameTransformer))
+	}
+
 	r.Table, err = sdkgen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
 		r.Struct,
-		sdkgen.WithSkipFields(r.SkipFields),
-		sdkgen.WithExtraColumns(extraColumns),
+		opts...,
 	)
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to create table for %s: %w", r.StructName, err))

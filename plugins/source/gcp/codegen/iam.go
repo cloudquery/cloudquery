@@ -42,7 +42,8 @@ var iamResources = []*Resource{
 				Resolver: `schema.PathResolver("UniqueId")`,
 			},
 		},
-		SkipFields: []string{"ProjectId", "NullFields", "ForceSendFields"},
+		SkipFields:      []string{"ProjectId", "NullFields", "ForceSendFields"},
+		NameTransformer: BuildCustomTransformer(map[string]string{"oauth_2": "oauth2"}),
 	},
 }
 

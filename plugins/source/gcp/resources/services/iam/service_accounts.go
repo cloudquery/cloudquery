@@ -57,7 +57,7 @@ func ServiceAccounts() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "oauth_2_client_id",
+				Name:     "oauth2_client_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Oauth2ClientId"),
 			},
