@@ -26,7 +26,7 @@ func UserGroups() *schema.Table {
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("user_id"),
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "arn",
