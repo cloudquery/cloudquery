@@ -17,6 +17,19 @@ func Users() *schema.Table {
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Arn"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("UserId"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSAccount,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -35,11 +48,6 @@ func Users() *schema.Table {
 				Name:     "path",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Path"),
-			},
-			{
-				Name:     "user_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("UserId"),
 			},
 			{
 				Name:     "user_name",

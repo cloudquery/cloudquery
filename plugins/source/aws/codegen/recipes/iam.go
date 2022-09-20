@@ -248,7 +248,7 @@ func IAMResources() []*Resource {
 		{
 			SubService: "users",
 			Struct:     &types.User{},
-			SkipFields: []string{"Arn", "AccountId", "Id", "Tags"},
+			SkipFields: []string{"Arn", "AccountId", "UserId", "Tags"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "arn",
@@ -256,15 +256,15 @@ func IAMResources() []*Resource {
 					Resolver: `schema.PathResolver("Arn")`,
 				},
 				{
-					Name:     "account_id",
+					Name:     "id",
 					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("AccountId")`,
+					Resolver: `schema.PathResolver("UserId")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 				{
-					Name:     "id",
+					Name:     "account_id",
 					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("Id")`,
+					Resolver: `client.ResolveAWSAccount`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 				{
@@ -296,7 +296,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 				}...),
 		},
@@ -315,7 +315,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 				}...),
 		},
@@ -334,7 +334,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 				}...),
 		},
@@ -353,7 +353,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 					{
 						Name:     "policy_document",
