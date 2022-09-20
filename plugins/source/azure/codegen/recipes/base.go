@@ -180,9 +180,9 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	return columns
 }
 
-func valueToSchemaType(v reflect.Type) *schema.ValueType {
+func valueTypeOverride(f reflect.StructField) *schema.ValueType {
 	time := date.Time{}
-	switch v {
+	switch f.Type {
 	case reflect.TypeOf(time):
 	case reflect.TypeOf(&time):
 		timestamp := schema.TypeTimestamp
@@ -204,7 +204,7 @@ func initTable(serviceNameOverride string, definition resourceDefinition, azureS
 		codegen.WithSkipFields(skipFields),
 		codegen.WithUnwrapAllEmbeddedStructs(),                  // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
 		codegen.WithUnwrapFieldsStructs([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
-		codegen.WithValueToSchemaType(valueToSchemaType),
+		codegen.WithValueTypeOverride(valueTypeOverride),
 	)
 	if err != nil {
 		log.Fatal(err)
