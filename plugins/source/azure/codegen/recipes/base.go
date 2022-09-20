@@ -180,16 +180,15 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	return columns
 }
 
-func valueTypeOverride(f reflect.StructField) *schema.ValueType {
+func valueTypeOverride(f reflect.StructField) (*schema.ValueType, error) {
 	time := date.Time{}
 	switch f.Type {
-	case reflect.TypeOf(time):
-	case reflect.TypeOf(&time):
+	case reflect.TypeOf(time), reflect.TypeOf(&time):
 		timestamp := schema.TypeTimestamp
-		return &timestamp
+		return &timestamp, nil
 	}
 
-	return nil
+	return nil, nil
 }
 
 func getTableName(azureService, azureSubService string) string {
