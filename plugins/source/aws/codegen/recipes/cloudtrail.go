@@ -61,7 +61,7 @@ func CloudtrailResources() []*Resource {
 	// set default values
 	for _, r := range resources {
 		r.Service = "cloudtrail"
-		r.Multiplex = `client.AccountMultiplex`
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("cloudtrail")`
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
 			r.UnwrapEmbeddedStructs = true
