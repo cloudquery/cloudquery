@@ -32,10 +32,6 @@ branchProtectionRules:
     - Unit Tests (plugins/source/digitalocean)
     - Build (plugins/source/digitalocean)
 
-    - Linter (plugins/source/fuzz)
-    - Unit Tests (plugins/source/fuzz)
-    - Build (plugins/source/fuzz)
-
     - Linter (plugins/source/gcp)
     - Unit Tests (plugins/source/gcp)
     - Build (plugins/source/gcp)
