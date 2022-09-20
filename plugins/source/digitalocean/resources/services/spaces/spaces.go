@@ -10,10 +10,16 @@ import (
 
 func Spaces() *schema.Table {
 	return &schema.Table{
-		Name:      "digitalocean_spaces",
-		Resolver:  fetchSpacesSpaces,
-		Multiplex: client.SpacesRegionMultiplex,
+		Name:                 "digitalocean_spaces",
+		Resolver:             fetchSpacesSpaces,
+		PostResourceResolver: resolveSpaceAttributes,
+		Multiplex:            client.SpacesRegionMultiplex,
 		Columns: []schema.Column{
+			{
+				Name:     "acls",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ACLs"),
+			},
 			{
 				Name:     "bucket",
 				Type:     schema.TypeJSON,
@@ -28,11 +34,6 @@ func Spaces() *schema.Table {
 				Name:     "public",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Public"),
-			},
-			{
-				Name:     "ac_ls",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ACLs"),
 			},
 		},
 

@@ -35,7 +35,7 @@ func Volumes() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "size_giga_bytes",
+				Name:     "size_gigabytes",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("SizeGigaBytes"),
 			},

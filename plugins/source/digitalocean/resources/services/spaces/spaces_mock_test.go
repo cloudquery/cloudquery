@@ -25,6 +25,12 @@ func createSpaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}
 	m.EXPECT().GetBucketCors(gomock.Any(), gomock.Any(), gomock.Any()).Return(cors, nil)
 
+	var acl *s3.GetBucketAclOutput
+	if err := faker.FakeData(&acl); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().GetBucketAcl(gomock.Any(), gomock.Any(), gomock.Any()).Return(acl, nil)
+
 	return client.Services{
 		Spaces: m,
 	}

@@ -50,7 +50,7 @@ func Firewalls() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:     "created",
+				Name:     "created_at",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Created"),
 			},

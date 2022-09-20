@@ -35,6 +35,26 @@ func (m *MockSpacesService) EXPECT() *MockSpacesServiceMockRecorder {
 	return m.recorder
 }
 
+// GetBucketAcl mocks base method.
+func (m *MockSpacesService) GetBucketAcl(arg0 context.Context, arg1 *s3.GetBucketAclInput, arg2 ...func(*s3.Options)) (*s3.GetBucketAclOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetBucketAcl", varargs...)
+	ret0, _ := ret[0].(*s3.GetBucketAclOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetBucketAcl indicates an expected call of GetBucketAcl.
+func (mr *MockSpacesServiceMockRecorder) GetBucketAcl(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketAcl", reflect.TypeOf((*MockSpacesService)(nil).GetBucketAcl), varargs...)
+}
+
 // GetBucketCors mocks base method.
 func (m *MockSpacesService) GetBucketCors(arg0 context.Context, arg1 *s3.GetBucketCorsInput, arg2 ...func(*s3.Options)) (*s3.GetBucketCorsOutput, error) {
 	m.ctrl.T.Helper()

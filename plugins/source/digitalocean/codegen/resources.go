@@ -313,11 +313,20 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"ID"},
 	},
 	{
-		Service:   "spaces",
-		Struct:    spaces.WrappedBucket{},
-		Multiplex: "client.SpacesRegionMultiplex",
-		Imports:   []string{"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"},
-		Relations: []string{"Cors()"},
+		Service:      "spaces",
+		Struct:       spaces.WrappedBucket{},
+		PostResolver: "resolveSpaceAttributes",
+		Multiplex:    "client.SpacesRegionMultiplex",
+		Imports:      []string{"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"},
+		Relations:    []string{"Cors()"},
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "acls",
+				Type:     schema.TypeJSON,
+				Resolver: `schema.PathResolver("ACLs")`,
+			},
+		},
+		SkipFields: []string{"ACLs"},
 	},
 	{
 		Service:    "spaces",

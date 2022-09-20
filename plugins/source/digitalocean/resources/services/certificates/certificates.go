@@ -40,7 +40,7 @@ func Certificates() *schema.Table {
 				Resolver: schema.PathResolver("SHA1Fingerprint"),
 			},
 			{
-				Name:     "created",
+				Name:     "created_at",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Created"),
 			},

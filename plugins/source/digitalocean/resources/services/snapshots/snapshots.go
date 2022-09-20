@@ -45,12 +45,12 @@ func Snapshots() *schema.Table {
 				Resolver: schema.PathResolver("MinDiskSize"),
 			},
 			{
-				Name:     "size_giga_bytes",
+				Name:     "size_gigabytes",
 				Type:     schema.TypeFloat,
 				Resolver: schema.PathResolver("SizeGigaBytes"),
 			},
 			{
-				Name:     "created",
+				Name:     "created_at",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Created"),
 			},

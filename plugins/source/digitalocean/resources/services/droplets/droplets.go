@@ -100,7 +100,7 @@ func Droplets() *schema.Table {
 				Resolver: schema.PathResolver("Networks"),
 			},
 			{
-				Name:     "created",
+				Name:     "created_at",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Created"),
 			},
@@ -115,7 +115,7 @@ func Droplets() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
-				Name:     "vpcuuid",
+				Name:     "vpc_uuid",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VPCUUID"),
 			},

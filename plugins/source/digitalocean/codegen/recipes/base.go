@@ -36,6 +36,8 @@ type Resource struct {
 	SkipFields []string
 	// Columns override, override generated columns
 	ExtraColumns []codegen.ColumnDefinition
+	// PostResolver name of post resolver function
+	PostResolver string
 }
 
 func (r *Resource) Generate() error {
@@ -72,6 +74,10 @@ func (r *Resource) Generate() error {
 
 	if r.Relations != nil {
 		r.Table.Relations = r.Relations
+	}
+
+	if r.PostResolver != "" {
+		r.Table.PostResourceResolver = r.PostResolver
 	}
 
 	tpl, err := template.New("resource.go.tpl").Funcs(template.FuncMap{

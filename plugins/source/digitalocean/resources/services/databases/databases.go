@@ -25,12 +25,12 @@ func Databases() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "engine_slug",
+				Name:     "engine",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("EngineSlug"),
 			},
 			{
-				Name:     "version_slug",
+				Name:     "version",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VersionSlug"),
 			},
@@ -55,7 +55,7 @@ func Databases() *schema.Table {
 				Resolver: schema.PathResolver("NumNodes"),
 			},
 			{
-				Name:     "size_slug",
+				Name:     "size",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SizeSlug"),
 			},
@@ -65,7 +65,7 @@ func Databases() *schema.Table {
 				Resolver: schema.PathResolver("DBNames"),
 			},
 			{
-				Name:     "region_slug",
+				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RegionSlug"),
 			},

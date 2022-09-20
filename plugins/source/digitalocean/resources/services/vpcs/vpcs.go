@@ -40,7 +40,7 @@ func Vpcs() *schema.Table {
 				Resolver: schema.PathResolver("IPRange"),
 			},
 			{
-				Name:     "region_slug",
+				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RegionSlug"),
 			},
