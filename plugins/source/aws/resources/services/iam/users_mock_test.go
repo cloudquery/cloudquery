@@ -2,15 +2,12 @@ package iam
 
 import (
 	"testing"
-	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	iamTypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
-	"github.com/gocarina/gocsv"
 	"github.com/golang/mock/gomock"
 )
 
@@ -48,23 +45,10 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		t.Fatal(err)
 	}
 
-	ru := reportUser{}
-	err = faker.FakeData(&ru)
-	if err != nil {
-		t.Fatal(err)
-	}
-	ru.ARN = aws.ToString(u.Arn)
-	ru.PasswordStatus = "true"
-	ru.PasswordNextRotation = time.Now().Format(time.RFC3339)
-	ru.PasswordLastChanged = time.Now().Format(time.RFC3339)
-	ru.AccessKey1LastRotated = time.Now().Format(time.RFC3339)
-	ru.AccessKey2LastRotated = time.Now().Format(time.RFC3339)
-	ru.Cert1LastRotated = time.Now().Format(time.RFC3339)
-	ru.Cert2LastRotated = time.Now().Format(time.RFC3339)
-	content, err := gocsv.MarshalBytes([]reportUser{ru})
-	if err != nil {
-		t.Fatal(err)
-	}
+	m.EXPECT().ListUsers(gomock.Any(), gomock.Any()).Return(
+		&iam.ListUsersOutput{
+			Users: []iamTypes.User{u},
+		}, nil)
 	m.EXPECT().GetUser(gomock.Any(), gomock.Any()).Return(
 		&iam.GetUserOutput{
 			User: &u,
@@ -83,11 +67,6 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any()).Return(
 		&akl, nil)
-
-	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any()).Return(
-		&iam.GetCredentialReportOutput{
-			Content: content,
-		}, nil)
 
 	//list user inline policies
 	var l []string

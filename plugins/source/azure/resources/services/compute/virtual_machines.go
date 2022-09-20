@@ -116,7 +116,7 @@ func VirtualMachines() *schema.Table {
 				Resolver: schema.PathResolver("LicenseType"),
 			},
 			{
-				Name:     "vmid",
+				Name:     "vm_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VMID"),
 			},

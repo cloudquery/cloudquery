@@ -34,7 +34,7 @@ spec:
   destinations: ["postgresql"]
 
   ## Approximate cap on number of requests to perform concurrently. Optional.
-  # max_goroutines: 5
+  # concurrency: 5
 
   # Plugin-specific configuration.
   spec:
