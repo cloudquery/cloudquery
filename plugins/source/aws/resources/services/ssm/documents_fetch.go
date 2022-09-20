@@ -2,7 +2,6 @@ package ssm
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
@@ -39,7 +38,7 @@ func fetchSsmDocuments(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 
-func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) (exitErr error) {
+func resolveDocumentPermission(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) (exitErr error) {
 	d := resource.Item.(*types.DocumentDescription)
 	cl := meta.(*client.Client)
 	svc := cl.Services().SSM
@@ -48,28 +47,19 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 		Name:           d.Name,
 		PermissionType: types.DocumentPermissionTypeShare,
 	}
-	var accountIDs []string
-	var infoList []types.AccountSharingInfo
+	var permissions []*ssm.DescribeDocumentPermissionOutput
 	for {
 		output, err := svc.DescribeDocumentPermission(ctx, &input)
 		if err != nil {
 			return err
 		}
-		accountIDs = append(accountIDs, output.AccountIds...)
-		infoList = append(infoList, output.AccountSharingInfoList...)
+		permissions = append(permissions, output)
 		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		input.NextToken = output.NextToken
 	}
-	if err := resource.Set("account_ids", accountIDs); err != nil {
-		return err
-	}
-	b, err := json.Marshal(infoList)
-	if err != nil {
-		return err
-	}
-	return resource.Set("account_sharing_info_list", b)
+	return resource.Set(col.Name, permissions)
 }
 
 func resolveDocumentARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
