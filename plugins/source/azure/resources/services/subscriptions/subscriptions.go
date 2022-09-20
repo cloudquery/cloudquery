@@ -11,7 +11,7 @@ import (
 
 func Subscriptions() *schema.Table {
 	return &schema.Table{
-		Name:      "azure_subscriptions_subscriptions",
+		Name:      "azure_subscriptions",
 		Resolver:  fetchSubscriptionsSubscriptions,
 		Multiplex: client.SubscriptionMultiplex,
 		Columns: []schema.Column{
