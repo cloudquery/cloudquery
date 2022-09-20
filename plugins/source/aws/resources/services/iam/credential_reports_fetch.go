@@ -3,6 +3,7 @@ package iam
 import (
 	"context"
 	"errors"
+	"github.com/thoas/go-funk"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -13,28 +14,46 @@ import (
 )
 
 type CredentialReportEntry struct {
-	User                      string    `csv:"user"`
-	Arn                       string    `csv:"arn"`
-	UserCreationTime          time.Time `csv:"user_creation_time"`
-	PasswordStatus            string    `csv:"password_enabled"`
-	PasswordLastChanged       string    `csv:"password_last_changed"`
-	PasswordNextRotation      string    `csv:"password_next_rotation"`
-	MfaActive                 bool      `csv:"mfa_active"`
-	AccessKey1Active          bool      `csv:"access_key_1_active"`
-	AccessKey2Active          bool      `csv:"access_key_2_active"`
-	AccessKey1LastRotated     string    `csv:"access_key_1_last_rotated"`
-	AccessKey2LastRotated     string    `csv:"access_key_2_last_rotated"`
-	Cert1Active               bool      `csv:"cert_1_active"`
-	Cert2Active               bool      `csv:"cert_2_active"`
-	Cert1LastRotated          string    `csv:"cert_1_last_rotated"`
-	Cert2LastRotated          string    `csv:"cert_2_last_rotated"`
-	AccessKey1LastUsedDate    time.Time `csv:"access_key_1_last_used_date"`
-	AccessKey1LastUsedRegion  string    `csv:"access_key_1_last_used_region"`
-	AccessKey1LastUsedService string    `csv:"access_key_1_last_used_service"`
-	AccessKey2LastUsedDate    time.Time `csv:"access_key_2_last_used_date"`
-	AccessKey2LastUsedRegion  string    `csv:"access_key_2_last_used_region"`
-	AccessKey2LastUsedService string    `csv:"access_key_2_last_used_service"`
-	PasswordLastUsed          string    `csv:"password_last_used"`
+	User                      string   `csv:"user"`
+	Arn                       string   `csv:"arn"`
+	UserCreationTime          DateTime `csv:"user_creation_time"`
+	PasswordStatus            string   `csv:"password_enabled"`
+	PasswordLastChanged       DateTime `csv:"password_last_changed"`
+	PasswordNextRotation      DateTime `csv:"password_next_rotation"`
+	MfaActive                 bool     `csv:"mfa_active"`
+	AccessKey1Active          bool     `csv:"access_key_1_active"`
+	AccessKey2Active          bool     `csv:"access_key_2_active"`
+	AccessKey1LastRotated     DateTime `csv:"access_key_1_last_rotated"`
+	AccessKey2LastRotated     DateTime `csv:"access_key_2_last_rotated"`
+	Cert1Active               bool     `csv:"cert_1_active"`
+	Cert2Active               bool     `csv:"cert_2_active"`
+	Cert1LastRotated          DateTime `csv:"cert_1_last_rotated"`
+	Cert2LastRotated          DateTime `csv:"cert_2_last_rotated"`
+	AccessKey1LastUsedDate    DateTime `csv:"access_key_1_last_used_date"`
+	AccessKey1LastUsedRegion  string   `csv:"access_key_1_last_used_region"`
+	AccessKey1LastUsedService string   `csv:"access_key_1_last_used_service"`
+	AccessKey2LastUsedDate    DateTime `csv:"access_key_2_last_used_date"`
+	AccessKey2LastUsedRegion  string   `csv:"access_key_2_last_used_region"`
+	AccessKey2LastUsedService string   `csv:"access_key_2_last_used_service"`
+	PasswordLastUsed          DateTime `csv:"password_last_used"`
+}
+
+type DateTime struct {
+	*time.Time
+}
+
+func (d *DateTime) UnmarshalCSV(val string) (err error) {
+	switch val {
+	case "N/A", "not_supported":
+		d.Time = nil
+		return nil
+	}
+	t, err := time.Parse(time.RFC3339, val)
+	if err != nil {
+		return err
+	}
+	d.Time = &t
+	return nil
 }
 
 func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
@@ -81,5 +100,12 @@ func fetchIamCredentialReports(ctx context.Context, meta schema.ClientMeta, _ *s
 		default:
 			return err
 		}
+	}
+}
+func timestampPathResolver(path string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		t := funk.Get(r.Item, path, funk.WithAllowZero())
+		dt := t.(DateTime)
+		return r.Set(c.Name, dt.Time)
 	}
 }
