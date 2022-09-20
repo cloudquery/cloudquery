@@ -44,7 +44,6 @@ func WAFv2Resources() []*Resource {
 		{
 			SubService:           "managed_rule_groups",
 			Struct:               &types.ManagedRuleGroupSummary{},
-			PostResourceResolver: "resolveDescribeManagedRuleGroup",
 			SkipFields:           []string{"Scope"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -64,6 +63,11 @@ func WAFv2Resources() []*Resource {
 					Type:     schema.TypeString,
 					Resolver: "client.ResolveWAFScope",
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "properties",
+					Type:     schema.TypeJSON,
+					Resolver: "resolveManageRuleGroupProperties",
 				},
 			},
 		},
