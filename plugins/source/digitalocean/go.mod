@@ -16,7 +16,6 @@ require (
 	github.com/iancoleman/strcase v0.2.0
 	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.28.0
-	golang.org/x/text v0.3.7
 )
 
 require (
@@ -59,6 +58,7 @@ require (
 	golang.org/x/oauth2 v0.0.0-20220411215720-9780585627b5 // indirect
 	golang.org/x/sync v0.0.0-20220907140024-f12130a52804 // indirect
 	golang.org/x/sys v0.0.0-20220731174439-a90be440212d // indirect
+	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20220801145646-83ce21fca29f // indirect
 	google.golang.org/grpc v1.49.0 // indirect

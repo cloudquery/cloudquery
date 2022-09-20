@@ -15,6 +15,9 @@ func Sizes() *schema.Table {
 				Name:     "slug",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Slug"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "memory",

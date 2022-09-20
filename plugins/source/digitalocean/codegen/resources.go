@@ -298,6 +298,15 @@ var Resources = []*recipes.Resource{
 	{
 		Service: "sizes",
 		Struct:  godo.Size{},
+		ExtraColumns: []codegen.ColumnDefinition{
+			{
+				Name:     "slug",
+				Type:     schema.TypeString,
+				Resolver: `schema.PathResolver("Slug")`,
+				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+			},
+		},
+		SkipFields: []string{"Slug"},
 	},
 	{
 		Service: "snapshots",
