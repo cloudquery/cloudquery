@@ -33,17 +33,17 @@ func topics() *schema.Table {
 			},
 			{
 				Name:     "created_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
 				Name:     "updated_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 			{
 				Name:     "accessed_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("AccessedAt"),
 			},
 			{
