@@ -6230,6 +6230,12 @@
             "cn-northwest-1": {}
           }
         },
+        "rbin": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "rds": {
           "regions": {
             "cn-north-1": {},
@@ -7780,6 +7786,14 @@
         },
         "ram": {
           "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "rbin": {
+          "regions": {
+            "fips-us-gov-east-1": {},
+            "fips-us-gov-west-1": {},
             "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
