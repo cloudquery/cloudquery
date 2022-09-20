@@ -22,14 +22,17 @@ func CredentialReports() *schema.Table {
 				},
 			},
 			{
-				Name:     "user",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("User"),
-			},
-			{
 				Name:     "user_creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UserCreationTime"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "user",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("User"),
 			},
 			{
 				Name:     "password_status",

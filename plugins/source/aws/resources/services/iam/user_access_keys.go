@@ -27,7 +27,7 @@ func UserAccessKeys() *schema.Table {
 			{
 				Name:     "user_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("user_id"),
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "access_key_id",
