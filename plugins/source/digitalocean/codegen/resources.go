@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/codegen/recipes"
+	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/droplets"
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/resources/services/spaces"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -11,7 +12,8 @@ import (
 
 var Resources = []*recipes.Resource{
 	{
-		Service: "account",
+		Service: "accounts",
+		Struct:  godo.Account{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "uuid",
@@ -23,7 +25,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"UUID"},
 	},
 	{
-		Service: "cdn",
+		Service: "cdns",
+		Struct:  godo.CDN{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -61,12 +64,13 @@ var Resources = []*recipes.Resource{
 		},
 		SkipFields: []string{"UUID"},
 	},
-
 	{
-		Service: "balance",
+		Service: "balances",
+		Struct:  godo.Balance{},
 	},
 	{
 		Service: "certificates",
+		Struct:  godo.Certificate{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -79,6 +83,7 @@ var Resources = []*recipes.Resource{
 	},
 	{
 		Service:   "databases",
+		Struct:    godo.Database{},
 		Relations: []string{"FirewallRules()", "Replicas()", "Backups()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -92,15 +97,18 @@ var Resources = []*recipes.Resource{
 	},
 	{
 		Service:    "databases",
+		Struct:     godo.DatabaseBackup{},
 		SubService: "backups",
 	},
 	{
 		Service:    "databases",
 		SubService: "replicas",
+		Struct:     godo.DatabaseReplica{},
 	},
 	{
 		Service:    "databases",
 		SubService: "firewall_rules",
+		Struct:     godo.DatabaseFirewallRule{},
 	},
 	{
 		Service:   "domains",
@@ -162,6 +170,7 @@ var Resources = []*recipes.Resource{
 	{
 		Service:    "droplets",
 		SubService: "neighbors",
+		Struct:     &droplets.NeighborWrapper{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "neighbor_id",
@@ -247,6 +256,7 @@ var Resources = []*recipes.Resource{
 	{
 		Service:    "projects",
 		SubService: "resources",
+		Struct:     godo.ProjectResource{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "urn",
@@ -258,7 +268,8 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"URN"},
 	},
 	{
-		Service:   "registry",
+		Service:   "registries",
+		Struct:    &godo.Registry{},
 		Relations: []string{"Repositories()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
@@ -271,8 +282,9 @@ var Resources = []*recipes.Resource{
 		SkipFields: []string{"Name"},
 	},
 	{
-		Service:    "registry",
+		Service:    "registries",
 		SubService: "repositories",
+		Struct:     &godo.Repository{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
@@ -285,9 +297,11 @@ var Resources = []*recipes.Resource{
 	},
 	{
 		Service: "sizes",
+		Struct:  godo.Size{},
 	},
 	{
 		Service: "snapshots",
+		Struct:  godo.Snapshot{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -322,6 +336,7 @@ var Resources = []*recipes.Resource{
 	{
 		Service:    "storage",
 		SubService: "volumes",
+		Struct:     godo.Volume{},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "id",
@@ -339,6 +354,7 @@ var Resources = []*recipes.Resource{
 	},
 	{
 		Service:   "vpcs",
+		Struct:    &godo.VPC{},
 		Relations: []string{"Members()"},
 		ExtraColumns: []codegen.ColumnDefinition{
 			{
