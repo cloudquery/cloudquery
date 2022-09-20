@@ -15,7 +15,6 @@ func CloudtrailResources() []*Resource {
 			SubService:           "trails",
 			Struct:               &types.Trail{},
 			SkipFields:           []string{"TrailARN"},
-			PostResourceResolver: `postCloudtrailTrailResolver`,
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -32,6 +31,11 @@ func CloudtrailResources() []*Resource {
 					Type:     schema.TypeString,
 					Resolver: `schema.PathResolver("TrailARN")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "status",
+					Type:     schema.TypeJSON,
+					Resolver: `resolveCloudTrailStatus`,
 				},
 			},
 			Relations: []string{

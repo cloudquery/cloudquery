@@ -9,10 +9,9 @@ import (
 
 func Trails() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_cloudtrail_trails",
-		Resolver:             fetchCloudtrailTrails,
-		PostResourceResolver: postCloudtrailTrailResolver,
-		Multiplex:            client.AccountMultiplex,
+		Name:      "aws_cloudtrail_trails",
+		Resolver:  fetchCloudtrailTrails,
+		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -31,6 +30,11 @@ func Trails() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeJSON,
+				Resolver: resolveCloudTrailStatus,
 			},
 			{
 				Name:     "cloud_watch_logs_log_group_arn",

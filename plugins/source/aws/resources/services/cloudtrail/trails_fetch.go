@@ -107,7 +107,7 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 	return nil
 }
 
-func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func resolveCloudTrailStatus(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Cloudtrail
 	r := resource.Item.(CloudTrailWrapper)
@@ -118,37 +118,10 @@ func postCloudtrailTrailResolver(ctx context.Context, meta schema.ClientMeta, re
 	if err != nil {
 		return err
 	}
-	if err := resource.Set("is_logging", response.IsLogging); err != nil {
+	if err := resource.Set("status", response); err != nil {
 		return err
 	}
-	if err := resource.Set("latest_cloud_watch_logs_delivery_error", response.LatestCloudWatchLogsDeliveryError); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_cloud_watch_logs_delivery_time", response.LatestCloudWatchLogsDeliveryTime); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_delivery_error", response.LatestDeliveryError); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_delivery_time", response.LatestDeliveryTime); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_digest_delivery_error", response.LatestDigestDeliveryError); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_digest_delivery_time", response.LatestDigestDeliveryTime); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_notification_error", response.LatestNotificationError); err != nil {
-		return err
-	}
-	if err := resource.Set("latest_notification_time", response.LatestNotificationTime); err != nil {
-		return err
-	}
-	if err := resource.Set("start_logging_time", response.StartLoggingTime); err != nil {
-		return err
-	}
-	return resource.Set("stop_logging_time", response.StopLoggingTime)
+	return nil
 }
 
 func resolveCloudtrailTrailCloudwatchLogsLogGroupName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
