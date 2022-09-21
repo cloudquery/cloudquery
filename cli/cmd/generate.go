@@ -77,9 +77,6 @@ func getSourceSpec(path string, registry specs.Registry) specs.Source {
 		version := "latest"
 		if len(versionParts) > 1 {
 			version = versionParts[1]
-			if !strings.HasPrefix(version, "v") {
-				version = "v" + version
-			}
 		}
 		return specs.Source{
 			Name:     name,
