@@ -39,6 +39,26 @@ func ManagedRuleGroups() *schema.Table {
 				},
 			},
 			{
+				Name: "available_labels",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "consumed_labels",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "capacity",
+				Type: schema.TypeInt,
+			},
+			{
+				Name: "label_namespace",
+				Type: schema.TypeString,
+			},
+			{
+				Name: "rules",
+				Type: schema.TypeJSON,
+			},
+			{
 				Name:     "description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Description"),
