@@ -52,12 +52,12 @@ func StreamingJobs() *schema.Table {
 			},
 			{
 				Name:     "output_start_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("OutputStartTime"),
 			},
 			{
 				Name:     "last_output_event_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastOutputEventTime"),
 			},
 			{
@@ -92,7 +92,7 @@ func StreamingJobs() *schema.Table {
 			},
 			{
 				Name:     "created_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedDate"),
 			},
 			{
