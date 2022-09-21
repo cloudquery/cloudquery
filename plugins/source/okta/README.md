@@ -5,7 +5,7 @@ The CloudQuery Okta plugin extracts Okta resources configurations.
 ## Install
 
 ```bash
-cloudquery generate source okta
+cloudquery gen source okta
 ```
 
 ## Authentication
