@@ -63,7 +63,7 @@ func Buckets() *schema.Table {
 			},
 			{
 				Name:     "policy",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Policy"),
 			},
 			{
@@ -98,7 +98,7 @@ func Buckets() *schema.Table {
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
