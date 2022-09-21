@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/briandowns/spinner v1.19.0
-	github.com/cloudquery/plugin-sdk v0.7.4
+	github.com/cloudquery/plugin-sdk v0.7.9
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/google/go-cmp v0.5.9
 	github.com/jackc/pgtype v1.12.0
