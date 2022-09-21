@@ -100,12 +100,12 @@ func StoreAccounts() *schema.Table {
 			},
 			{
 				Name:     "creation_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
 				Name:     "last_modified_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastModifiedTime"),
 			},
 			{
