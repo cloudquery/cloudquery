@@ -1,5 +1,5 @@
 WITH secured_vms AS (SELECT _cq_id
-                     FROM azure_compute_virtual_machines, json_array_elements(resources) AS res
+                     FROM azure_compute_virtual_machines, jsonb_array_elements(resources) AS res
                      WHERE res->>'type' IN ('MicrosoftMonitoringAgent', 'OmsAgentForLinux')
                        AND res->>'publisher' = 'Microsoft.EnterpriseCloud.Monitoring'
                        AND res->>'provisioningState' = 'Succeeded'

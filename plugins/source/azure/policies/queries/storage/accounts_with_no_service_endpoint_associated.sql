@@ -1,6 +1,6 @@
 WITH secured_accounts AS (SELECT a._cq_id
-                          FROM azure_storage_accounts a, json_array_elements(a.network_rule_set->'virtualNetworkRules') AS vnet
-                          WHERE a.network_rule_set->>'defaultAction' = 'Deny'
+                          FROM azure_storage_accounts a, jsonb_array_elements(a.network_acls->'virtualNetworkRules') AS vnet
+                          WHERE a.network_acls->>'defaultAction' = 'Deny'
                             AND vnet->>'id' IS NOT NULL
                             AND vnet->>'state' = 'succeeded')
 insert into azure_policy_results

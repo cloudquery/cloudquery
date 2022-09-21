@@ -1,6 +1,6 @@
 WITH valid_accounts AS (
   SELECT id
-  FROM azure_cosmosdb_accounts, json_array_elements(virtual_network_rules) AS rule
+  FROM azure_cosmosdb_accounts, jsonb_array_elements(virtual_network_rules) AS rule
   WHERE rule ->> 'id' IS NOT NULL
 ) -- TODO check
 insert into azure_policy_results

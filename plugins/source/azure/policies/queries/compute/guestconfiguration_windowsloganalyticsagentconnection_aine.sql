@@ -1,7 +1,7 @@
 WITH installed AS (
 	SELECT
 		DISTINCT _cq_id
-    FROM azure_compute_virtual_machines, json_array_elements(resources) AS res
+    FROM azure_compute_virtual_machines, jsonb_array_elements(resources) AS res
 	WHERE
 		res->>'publisher' = 'Microsoft.EnterpriseCloud.Monitoring'
 		AND res->>'type' IN ( 'MicrosoftMonitoringAgent', 'OmsAgentForLinux' )
@@ -15,7 +15,7 @@ SELECT
   :'check_id',
   'Audit Windows machines on which the Log Analytics agent is not connected as expected',
   azure_compute_virtual_machines.subscription_id,
-  azure_compute_virtual_machines.vmid,
+  azure_compute_virtual_machines.vm_id AS id,
   case
     when azure_compute_virtual_machines.storage_profile -> 'osDisk' ->> 'osType' = 'Windows'
       AND installed._cq_id IS NULL

@@ -1,10 +1,10 @@
 WITH subs AS (
-    SELECT subscription_id, json_array_elements(subnets) AS subnet, provisioning_state
+    SELECT subscription_id, jsonb_array_elements(subnets) AS subnet, provisioning_state
     FROM azure_network_virtual_networks
 ),
 secured_vaults AS (SELECT v._cq_id, nvr->>'id' AS subnet_id
                         FROM azure_keyvault_vaults v,
-                             json_array_elements(v.properties_network_acls->'virtualNetworkRules') AS nvr
+                             jsonb_array_elements(v.properties_network_acls->'virtualNetworkRules') AS nvr
                                  LEFT JOIN subs
                                            ON nvr->>'id' = subs.subnet->>'id'
                         WHERE v.properties_network_acls->>'defaultAction' = 'Deny'

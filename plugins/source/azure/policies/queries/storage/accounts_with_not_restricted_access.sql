@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when network_rule_set->>'defaultAction' IS DISTINCT FROM 'Deny'
+    when network_acls->>'defaultAction' IS DISTINCT FROM 'Deny'
       then 'fail' else 'pass'
   end
 FROM azure_storage_accounts

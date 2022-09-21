@@ -11,8 +11,8 @@ WITH alert_condition AS (
 		AND _cq_id IN (
 		SELECT op._cq_id
 		FROM
-			azure_monitor_activity_log_alerts op, json_array_elements(op.condition) AS opcond,
-			azure_monitor_activity_log_alerts cat, json_array_elements(cat.condition) AS catcond
+			azure_monitor_activity_log_alerts op, jsonb_array_elements(op.condition) AS opcond,
+			azure_monitor_activity_log_alerts cat, jsonb_array_elements(cat.condition) AS catcond
 		WHERE
 			    -- TODO check
 			catcond->>'equals' = 'Administrative'
@@ -29,13 +29,13 @@ SELECT
   :'framework',
   :'check_id',
   'An activity log alert should exist for specific Administrative operations',
-	azure_subscriptions_subscriptions.subscription_id,
-	azure_subscriptions_subscriptions.subscription_id
+	azure_subscriptions.subscription_id,
+	azure_subscriptions.subscription_id
 FROM
-	azure_subscriptions_subscriptions
-	LEFT JOIN alert_condition A ON azure_subscriptions_subscriptions.subscription_id = A.subscription_id
+	azure_subscriptions
+	LEFT JOIN alert_condition A ON azure_subscriptions.subscription_id = A.subscription_id
 WHERE
 	A.subscription_id IS NULL
 GROUP BY
-	azure_subscriptions_subscriptions.subscription_id,
+	azure_subscriptions.subscription_id,
 	display_name;

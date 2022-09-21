@@ -1,5 +1,5 @@
 WITH subs AS (
-    SELECT subscription_id, json_array_elements(subnets) AS subnet
+    SELECT subscription_id, jsonb_array_elements(subnets) AS subnet
     FROM azure_network_virtual_networks
 )
 insert into azure_policy_results

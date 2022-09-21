@@ -4,7 +4,7 @@ WITH network_security_groups AS (
 		azure_network_interfaces.id AS network_interface_id
 	FROM
 		azure_network_security_groups,
-		JSON_ARRAY_ELEMENTS(azure_network_security_groups.security_rules) AS sr,
+		JSONB_ARRAY_ELEMENTS(azure_network_security_groups.security_rules) AS sr,
 		azure_network_interfaces
 	WHERE
 		azure_network_interfaces.resource_guid = azure_network_security_groups.resource_guid
@@ -12,7 +12,7 @@ WITH network_security_groups AS (
 		AND sr->>'direction' = 'Inbound'
 		AND sr->>'protocol' IN ( 'TCP', '*' )
 		AND (
-            array(select json_array_elements_text(sr->'sourceAddressPrefixes')) && ARRAY [ '*', '0.0.0.0', '0.0.0.0/0', 'Internet', '<nw>/0', '/0' ] -- TODO CHECK
+            array(select jsonb_array_elements_text(sr->'sourceAddressPrefixes')) && ARRAY [ '*', '0.0.0.0', '0.0.0.0/0', 'Internet', '<nw>/0', '/0' ] -- TODO CHECK
 			OR sr->>'sourceAddressPrefix' IN ( '*', '0.0.0.0', '0.0.0.0/0', 'Internet', '<nw>/0', '/0' )
 		)
 	)
@@ -30,5 +30,5 @@ SELECT
   end
 FROM
 	azure_compute_virtual_machines machines,
-	json_array_elements ( machines.network_profile->'networkInterfaces' ) AS interface
+	jsonb_array_elements ( machines.network_profile->'networkInterfaces' ) AS interface
 	LEFT JOIN network_security_groups ON interface->>'id' = network_security_groups.network_interface_id -- TODO check match

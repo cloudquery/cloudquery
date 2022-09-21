@@ -1,6 +1,6 @@
 WITH
     settings_with_logs AS (
-        SELECT "ResourceURI" AS resource_uri, storage_account_id, JSON_ARRAY_ELEMENTS(logs) AS logs FROM azure_monitor_diagnostic_settings
+        SELECT resource_uri, storage_account_id, JSONB_ARRAY_ELEMENTS(logs) AS logs FROM azure_monitor_diagnostic_settings
     ),
 logging_enabled AS (
   SELECT DISTINCT a._cq_id

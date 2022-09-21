@@ -4,15 +4,15 @@ SELECT
   :'framework',
   :'check_id',
   'Auditing on SQL server should be enabled',
-  azure_subscriptions_subscriptions.id,
-	azure_subscriptions_subscriptions.display_name AS subscription_name,
+  azure_subscriptions.id,
+	azure_subscriptions.display_name AS subscription_name,
 	case
     when azure_sql_server_blob_auditing_policies.sql_server_id = azure_sql_servers._cq_id
-	    AND azure_subscriptions_subscriptions.subscription_id = azure_sql_servers.subscription_id
+	    AND azure_subscriptions.subscription_id = azure_sql_servers.subscription_id
 	    AND azure_sql_server_blob_auditing_policies.state = 'Disabled'
     then 'fail' else 'pass'
   end
 FROM
     azure_sql_server_blob_auditing_policies,
 	azure_sql_servers,
-	azure_subscriptions_subscriptions
+	azure_subscriptions

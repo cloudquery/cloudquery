@@ -7,7 +7,7 @@ SELECT
   subscription_id,
   id,
   case
-    when array(select json_array_elements_text(site_config -> 'cors' -> 'allowedOrigins')) && ARRAY['*']
+    when array(select jsonb_array_elements_text(site_config -> 'cors' -> 'allowedOrigins')) && ARRAY['*']
       AND kind LIKE 'functionapp%'
     then 'fail' else 'pass'
   end
