@@ -65,6 +65,26 @@ func WAFv2Resources() []*Resource {
 					Resolver: "client.ResolveWAFScope",
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
+				{
+					Name: "available_labels",
+					Type: schema.TypeStringArray,
+				},
+				{
+					Name: "consumed_labels",
+					Type: schema.TypeStringArray,
+				},
+				{
+					Name: "capacity",
+					Type: schema.TypeInt,
+				},
+				{
+					Name: "label_namespace",
+					Type: schema.TypeString,
+				},
+				{
+					Name: "rules",
+					Type: schema.TypeJSON,
+				},
 			},
 		},
 		{

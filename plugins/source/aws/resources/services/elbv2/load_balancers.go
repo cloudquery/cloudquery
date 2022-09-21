@@ -24,9 +24,10 @@ func LoadBalancers() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "web_acl_arn",
-				Type:     schema.TypeString,
-				Resolver: resolveElbv2loadBalancerWebACLArn,
+				Name:          "web_acl_arn",
+				Type:          schema.TypeString,
+				Resolver:      resolveElbv2loadBalancerWebACLArn,
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "tags",

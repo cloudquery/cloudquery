@@ -2,8 +2,6 @@ package ssm
 
 import (
 	"context"
-	"encoding/json"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ssm"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
@@ -65,11 +63,7 @@ func ssmDocumentPostResolver(ctx context.Context, meta schema.ClientMeta, resour
 	if err := resource.Set("account_ids", accountIDs); err != nil {
 		return err
 	}
-	b, err := json.Marshal(infoList)
-	if err != nil {
-		return err
-	}
-	return resource.Set("account_sharing_info_list", b)
+	return resource.Set("account_sharing_info", infoList)
 }
 
 func resolveDocumentARN(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
