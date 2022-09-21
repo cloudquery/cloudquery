@@ -25,6 +25,7 @@ var secretmanagerResources = []*Resource{
 				Resolver: `schema.PathResolver("Name")`,
 			},
 		},
+		SkipFields: []string{"Expiration"},
 	},
 }
 
