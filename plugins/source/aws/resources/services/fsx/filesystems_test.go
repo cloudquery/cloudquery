@@ -16,7 +16,10 @@ func buildFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var f types.FileSystem
-	faker.FakeObject(&f, faker.WithMaxDepth(5))
+	err := faker.FakeObject(&f, faker.WithMaxDepth(5))
+	if err != nil {
+		t.Fatalf("FakeObject returned error: %v", err)
+	}
 	f.FileSystemType = types.FileSystemTypeLustre
 	f.Lifecycle = types.FileSystemLifecycleAvailable
 	f.StorageType = types.StorageTypeHdd

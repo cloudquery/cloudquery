@@ -16,7 +16,10 @@ func buildSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var s types.Snapshot
-	faker.FakeObject(&s)
+	err := faker.FakeObject(&s)
+	if err != nil {
+		t.Fatalf("FakeObject returned error: %v", err)
+	}
 	s.Lifecycle = types.SnapshotLifecycleAvailable
 	m.EXPECT().DescribeSnapshots(
 		gomock.Any(),
