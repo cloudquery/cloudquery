@@ -101,7 +101,6 @@ type Client struct {
 	logger          zerolog.Logger
 	// this is set by table clientList
 	AccountID            string
-	GlobalRegion         string
 	Region               string
 	AutoscalingNamespace string
 	WAFScope             wafv2types.Scope
@@ -478,7 +477,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 	}
 
 	client := NewAwsClient(logger)
-	client.GlobalRegion = awsConfig.GlobalRegion
 	var adminAccountSts AssumeRoleAPIClient
 	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
 		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple provider blocks")
