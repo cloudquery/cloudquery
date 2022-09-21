@@ -23,6 +23,7 @@ func Subscriptions() []Resource {
 				{
 					azureStruct:    &armsubscriptions.Subscription{},
 					mockListResult: "ClientListResponse",
+					tableName:      "subscriptions",
 				},
 				{
 					azureStruct:        &armsubscriptions.TenantIDDescription{},
