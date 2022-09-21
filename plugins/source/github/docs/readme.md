@@ -1,6 +1,6 @@
 # GitHub Plugin
 
-The CloudQuery GitHub plugin extracts your GitHub information.
+The CloudQuery GitHub plugin extracts your GitHub information, normalizes them and stores them in into any of CloudQuery destination plugins.
 
 ## Install
 

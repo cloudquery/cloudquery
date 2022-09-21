@@ -1,6 +1,6 @@
 # Terraform Plugin
 
-The CloudQuery Terraform plugin extracts terraform state.
+The CloudQuery Terraform plugin extracts terraform state, normalizes it and stores it in into any of CloudQuery destination plugins.
 
 ## Install
 

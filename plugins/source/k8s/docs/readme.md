@@ -1,14 +1,14 @@
-## Kubernetes Plugin
+# Kubernetes Plugin
 
-The CloudQuery K8S provider pulls configuration out of Kubernetes, normalizes them and stores them in PostgreSQL database.
+The CloudQuery K8S provider pulls configuration out of Kubernetes, normalizes it and stores it in into any of CloudQuery destination plugins.
 
-### Install
+## Install
 
 ```bash
 cloudquery init k8s
 ```
 
-### Authentication
+## Authentication
 
 Similar to how `kubectl` works, `cloudquery` depends on a Kubernetes configuration file to connect to a Kubernetes cluster and `fetch` its information. By default, `cloudquery` uses the default Kubernetes configuration
 file (`~/.kube/config`). You can also specify a different configuration by setting the `KUBECONFIG` environment variable before running `cloudquery fetch`.
@@ -17,7 +17,7 @@ file (`~/.kube/config`). You can also specify a different configuration by setti
 export KUBECONFIG=<PATH_TO_YOUR_CONFIG_FILE>
 ```
 
-### Configuration
+## Configuration
 
 By default cloudquery fetches data from default context of the Kubernetes config. Context to fetch can be selected by setting contexts variable of provider's `configuration` block in `config.hcl`.
 Example of context selection:

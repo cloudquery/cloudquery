@@ -1,6 +1,6 @@
 # AWS Plugin
 
-The CloudQuery AWS provider extracts and transforms your AWS cloud assets configuration into any of CloudQuery supported desintations.
+The CloudQuery AWS provider extracts and transforms your AWS cloud assets configuration into any of CloudQuery destination plugins.
 
 ## Install
 
@@ -119,7 +119,7 @@ spec:
 
 By default, CloudQuery will fetch all configuration from **all** supported resources in **all** commercial regions in the **default** account. You can change this behavior with the following arguments:
 
-#### Arguments for AWS Provider block
+### Arguments for AWS Provider block
 
 - `accounts` **(Optional, Repeated)** - Specify multiple accounts to fetch data from them concurrently and then query across accounts. The default configured account should be able [AssumeRole](https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html) to the specified accounts. You can have multiple `accounts` blocks.
 - `regions` **(Optional)** - limit fetching to specific regions. You can specify all regions by using the `*` character as the only argument in the array
@@ -247,7 +247,7 @@ spec:
         role_arn: <YOUR_ROLE_ARN_2>
 ```
 
-#### Arguments for Accounts block
+### Arguments for Accounts block
 
 - `role_arn` **(Optional)** - The role that CloudQuery will use to perform the fetch
 - `local_profile` **(Optional)** - Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for the account
@@ -297,33 +297,5 @@ WHERE block_public_acls IS NOT TRUE
     OR restrict_public_buckets IS NOT TRUE
 
 ```
-
-## Building the Provider
-
-```bash
-make build
-```
-
-Running Provider locally:
-
-1. Clone repository to local machine
-
-2. [Optional] Start a local database:
-   ```bash
-   make pg-start
-   ```
-3. [Optional] Configure the `cloudquery.yml`
-   ```bash
-   make os=Linux arch=arm64 install
-   ./cloudquery init aws
-   ```
-4. Start the provider in a different tab/session
-   ```bash
-   make run
-   ```
-5. Execute CloudQuery Fetch using the locally built provider
-   ```bash
-   make fetch
-   ```
 
 More information can be found in the [CloudQuery documentation](https://docs.cloudquery.io/docs/developers/debugging)

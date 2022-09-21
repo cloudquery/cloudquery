@@ -1,6 +1,6 @@
 # Heroku Plugin
 
-The CloudQuery Heroku plugin extracts and loads your Heroku data into PostgreSQL.
+The CloudQuery Heroku plugin extracts and loads your Heroku data into PostgreSQL, normalizes them and stores them in into any of CloudQuery destination plugins.
 
 ## Install
 
