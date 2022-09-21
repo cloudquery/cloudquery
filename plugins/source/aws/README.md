@@ -233,6 +233,7 @@ kind: source
 spec:
   name: aws
   tables: "*"
+  destinations: ["postgresql"]
   spec:
     accounts:
       - id: <AccountID_Alias_1>
