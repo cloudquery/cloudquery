@@ -63,21 +63,42 @@ func runGenerate(cmd *cobra.Command, args []string) error {
 	}
 }
 
-func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, registry specs.Registry, outputFile string) error {
-	if registry == specs.RegistryGithub && !strings.Contains(path, "/") {
-		path = "cloudquery/" + path
-	}
-	version := "latest"
-	if strings.Contains(path, "@") {
-		version = strings.Split(path, "@")[1]
+func getSourceSpec(path string, registry specs.Registry) specs.Source {
+	if registry == specs.RegistryGithub {
+		if !strings.Contains(path, "/") {
+			path = "cloudquery/" + path
+		}
+
+		nameParts := strings.Split(path, "/")
+		versionParts := strings.Split(nameParts[1], "@")
+
+		org := nameParts[0]
+		name := versionParts[0]
+		version := "latest"
+		if len(versionParts) > 1 {
+			version = versionParts[1]
+			if !strings.HasPrefix(version, "v") {
+				version = "v" + version
+			}
+		}
+		return specs.Source{
+			Name:     name,
+			Path:     fmt.Sprintf("%s/%s", org, name),
+			Registry: registry,
+			Version:  version,
+		}
 	}
 
-	sourceSpec := specs.Source{
+	return specs.Source{
 		Name:     path,
 		Path:     path,
 		Registry: registry,
-		Version:  version,
+		Version:  "latest",
 	}
+}
+
+func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, registry specs.Registry, outputFile string) error {
+	sourceSpec := getSourceSpec(path, registry)
 	sourceSpec.SetDefaults()
 
 	plugin, err := pm.NewSourcePlugin(cmd.Context(), &sourceSpec)
