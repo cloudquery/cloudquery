@@ -8,10 +8,9 @@ from environment variables. This allows you to keep sensitive data (like passwor
 And use it inside `gcp.yml`:
 
 ```yaml
-kind: destination
+kind: "destination"
 spec:
-  name: postgresql
-  tables: [""]
+  name: "postgresql"
   spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```
