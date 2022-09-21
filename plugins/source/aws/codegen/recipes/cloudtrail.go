@@ -12,15 +12,10 @@ import (
 func CloudtrailResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:           "trails",
-			Struct:               &types.Trail{},
-			SkipFields:           []string{"TrailARN"},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSAccount`,
-				},
+			SubService: "trails",
+			Struct:     &types.Trail{},
+			SkipFields: []string{"TrailARN"},
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{
 				{
 					Name:     "cloudwatch_logs_log_group_name",
 					Type:     schema.TypeString,
@@ -37,7 +32,7 @@ func CloudtrailResources() []*Resource {
 					Type:     schema.TypeJSON,
 					Resolver: `resolveCloudTrailStatus`,
 				},
-			},
+			}...),
 			Relations: []string{
 				"TrailEventSelectors()",
 			},
@@ -47,7 +42,7 @@ func CloudtrailResources() []*Resource {
 			Struct:     &types.EventSelector{},
 			SkipFields: []string{},
 			ExtraColumns: append(
-				defaultAccountColumns,
+				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "trail_arn",

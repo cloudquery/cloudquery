@@ -19,6 +19,11 @@ func Trails() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
+			},
+			{
 				Name:     "cloudwatch_logs_log_group_name",
 				Type:     schema.TypeString,
 				Resolver: resolveCloudtrailTrailCloudwatchLogsLogGroupName,

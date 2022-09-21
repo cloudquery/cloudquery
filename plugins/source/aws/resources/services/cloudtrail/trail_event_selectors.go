@@ -19,6 +19,11 @@ func TrailEventSelectors() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
+			},
+			{
 				Name:     "trail_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("arn"),
