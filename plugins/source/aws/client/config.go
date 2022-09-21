@@ -29,5 +29,4 @@ type Config struct {
 	AWSDebug     bool      `json:"aws_debug,omitempty"`
 	MaxRetries   int       `json:"max_retries,omitempty" default:"10"`
 	MaxBackoff   int       `json:"max_backoff,omitempty" default:"30"`
-	GlobalRegion string    `json:"global_region,omitempty" default:"us-east-1"`
 }
