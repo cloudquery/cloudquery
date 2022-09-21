@@ -35,13 +35,6 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 			})
 
 			if err != nil {
-				if c.IsNotFoundError(err) || c.IsAccessDeniedError(err) {
-					c.Logger().Warn().Err(err).Msg("Failed to get function")
-					res <- &lambda.GetFunctionOutput{
-						Configuration: &f,
-					}
-					continue
-				}
 				return err
 			}
 			res <- funcResponse
@@ -67,9 +60,6 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 		FunctionName: r.Configuration.FunctionName,
 	})
 	if err != nil {
-		if client.IsAWSError(err, "ResourceNotFoundException") {
-			return nil
-		}
 		return err
 	}
 
@@ -108,9 +98,6 @@ func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta,
 		CodeSigningConfigArn: functionSigning.CodeSigningConfigArn,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	if signing.CodeSigningConfig == nil {
@@ -134,9 +121,6 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 	for {
 		output, err := svc.ListFunctionEventInvokeConfigs(ctx, &config)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- output.FunctionEventInvokeConfigs
@@ -165,9 +149,6 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			return err
 		}
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		aliases := make([]AliasWrapper, 0, len(output.Aliases))
@@ -177,7 +158,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 				FunctionName: p.Configuration.FunctionName,
 				Qualifier:    alias.Name,
 			})
-			if err != nil && !c.IsNotFoundError(err) {
+			if err != nil{
 				return err
 			}
 			aliases = append(aliases, AliasWrapper{&alias, urlConfig})
@@ -205,9 +186,6 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 	for {
 		output, err := svc.ListVersionsByFunction(ctx, &config)
 		if err != nil {
-			if meta.(*client.Client).IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- output.Versions
@@ -234,9 +212,6 @@ func fetchLambdaFunctionConcurrencyConfigs(ctx context.Context, meta schema.Clie
 	for {
 		output, err := svc.ListProvisionedConcurrencyConfigs(ctx, &config)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- output.ProvisionedConcurrencyConfigs
@@ -262,9 +237,6 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 	for {
 		output, err := svc.ListEventSourceMappings(ctx, &config)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- output.EventSourceMappings

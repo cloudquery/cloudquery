@@ -55,9 +55,6 @@ func subscriptionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan
 
 	attrs, err := svc.GetSubscriptionAttributes(ctx, &sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}

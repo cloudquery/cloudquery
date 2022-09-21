@@ -62,9 +62,6 @@ func streamDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<
 		StreamName: aws.String(streamName),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}

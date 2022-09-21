@@ -39,9 +39,6 @@ func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *s
 		ResourceArn: aws.String(jobARN(cl, aws.ToString(resource.Item.(types.Job).Name))),
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, result.Tags)

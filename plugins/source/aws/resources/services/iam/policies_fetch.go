@@ -33,10 +33,6 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	svc := cl.Services().IAM
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			meta.Logger().Debug().Err(err).Msg("ListPolicyTags: Policy does not exist")
-			return nil
-		}
 		return err
 	}
 	return resource.Set("tags", client.TagsToMap(response.Tags))

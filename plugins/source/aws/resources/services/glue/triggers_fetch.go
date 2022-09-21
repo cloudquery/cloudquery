@@ -25,9 +25,6 @@ func resolveGlueTriggerTags(ctx context.Context, meta schema.ClientMeta, resourc
 		ResourceArn: aws.String(triggerARN(cl, aws.ToString(resource.Item.(types.Trigger).Name))),
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, result.Tags)
@@ -67,9 +64,6 @@ func triggerDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan
 		Name: &name,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}

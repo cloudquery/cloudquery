@@ -2,13 +2,10 @@ package athena
 
 import (
 	"context"
-	"errors"
-	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -31,9 +28,6 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		client.TagsIntoMap(result.Tags, tags)
@@ -60,9 +54,6 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 				StatementName: d.StatementName,
 			})
 			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			res <- *dc.PreparedStatement
@@ -90,9 +81,6 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 				QueryExecutionId: aws.String(d),
 			})
 			if err != nil {
-				if c.IsNotFoundError(err) || isQueryExecutionNotFound(err) {
-					continue
-				}
 				return err
 			}
 			res <- *dc.QueryExecution
@@ -120,9 +108,6 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 				NamedQueryId: aws.String(d),
 			})
 			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			res <- *dc.NamedQuery
@@ -171,9 +156,6 @@ func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan ch
 		WorkGroup: wg.Name,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}
@@ -181,11 +163,4 @@ func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan ch
 }
 func createWorkGroupArn(cl *client.Client, groupName string) string {
 	return cl.ARN(client.Athena, "workgroup", groupName)
-}
-func isQueryExecutionNotFound(err error) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	return ae.ErrorCode() == "InvalidRequestException" && strings.Contains(ae.ErrorMessage(), "was not found")
 }

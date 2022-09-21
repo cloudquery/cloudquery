@@ -4,16 +4,13 @@ import (
 	"context"
 	"embed"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"reflect"
-	"regexp"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/semaphore"
 )
@@ -77,24 +74,6 @@ var (
 	supportedServiceRegion     *SupportedServiceRegionsData
 )
 
-var notFoundErrorSubstrings = []string{
-	"InvalidAMIID.Unavailable",
-	"NonExistentQueue",
-	"NoSuch",
-	"NotFound",
-	"ResourceNotFoundException",
-	"WAFNonexistentItemException",
-	"NoSuchResource",
-}
-
-var accessDeniedErrorStrings = map[string]struct{}{
-	"AuthorizationError":              {},
-	"AccessDenied":                    {},
-	"AccessDeniedException":           {},
-	"InsufficientPrivilegesException": {},
-	"UnauthorizedOperation":           {},
-	"Unauthorized":                    {},
-}
 
 func readSupportedServiceRegions() *SupportedServiceRegionsData {
 	f, err := supportedServiceRegionFile.Open(PartitionServiceRegionFile)
@@ -192,47 +171,6 @@ func RegionsPartition(region string) (string, bool) {
 	return prt, true
 }
 
-func IgnoreAccessDeniedServiceDisabled(err error) bool {
-	var ae smithy.APIError
-	if errors.As(err, &ae) {
-		switch ae.ErrorCode() {
-		case "UnrecognizedClientException":
-			return strings.Contains(ae.Error(), "The security token included in the request is invalid")
-		case "AWSOrganizationsNotInUseException":
-			return true
-		case "OptInRequired", "SubscriptionRequiredException", "InvalidClientTokenId":
-			return true
-		}
-	}
-	return isAccessDeniedError(err)
-}
-
-func IgnoreCommonErrors(err error) bool {
-	if IgnoreAccessDeniedServiceDisabled(err) || IgnoreNotAvailableRegion(err) || IgnoreWithInvalidAction(err) || isNotFoundError(err) {
-		return true
-	}
-	return false
-}
-
-func IgnoreWithInvalidAction(err error) bool {
-	var ae smithy.APIError
-	if errors.As(err, &ae) {
-		if ae.ErrorCode() == "InvalidAction" {
-			return true
-		}
-	}
-	return false
-}
-
-func IgnoreNotAvailableRegion(err error) bool {
-	var ae smithy.APIError
-	if errors.As(err, &ae) {
-		if ae.ErrorCode() == "InvalidRequestException" && strings.Contains(ae.ErrorMessage(), "not available in the current Region") {
-			return true
-		}
-	}
-	return false
-}
 
 // makeARN creates an ARN using supplied service name, partition, account id, region name and resource id parts.
 // Resource id parts are concatenated using forward slash (/).
@@ -293,75 +231,7 @@ func ResolveARNGlobal(service AWSService, resourceID func(resource *schema.Resou
 	return resolveARN(service, resourceID, false, false)
 }
 
-// IsNotFoundError checks if api error should be ignored
-func (c *Client) IsNotFoundError(err error) bool {
-	if isNotFoundError(err) {
-		c.logger.Warn().Err(err).Msg("API returned \"NotFound\" error ignoring it...")
-		return true
-	}
-	return false
-}
 
-func isNotFoundError(err error) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	errorCode := ae.ErrorCode()
-	for _, s := range notFoundErrorSubstrings {
-		if strings.Contains(errorCode, s) {
-			return true
-		}
-	}
-	return false
-}
-
-// IsAccessDeniedError checks if api error should be classified as a permissions issue
-func (c *Client) IsAccessDeniedError(err error) bool {
-	if isAccessDeniedError(err) {
-		c.logger.Warn().Err(err).Msg("API returned an Access Denied error, ignoring it and continuing...")
-		return true
-	}
-	return false
-}
-
-func isAccessDeniedError(err error) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	_, ok := accessDeniedErrorStrings[ae.ErrorCode()]
-	return ok
-}
-
-func IsInvalidParameterValueError(err error) bool {
-	var apiErr smithy.APIError
-	return errors.As(err, &apiErr) && apiErr.ErrorCode() == "InvalidParameterValue"
-}
-
-func IsAWSError(err error, code ...string) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	for _, c := range code {
-		if strings.Contains(ae.ErrorCode(), c) {
-			return true
-		}
-	}
-	return false
-}
-
-func IsErrorRegex(err error, code string, messageRegex *regexp.Regexp) bool {
-	var ae smithy.APIError
-	if !errors.As(err, &ae) {
-		return false
-	}
-	if ae.ErrorCode() == code && messageRegex.MatchString(ae.ErrorMessage()) {
-		return true
-	}
-	return false
-}
 
 // TagsIntoMap expects []T (usually "[]Tag") where T has "Key" and "Value" fields (of type string or *string) and writes them into the given map
 func TagsIntoMap(tagSlice interface{}, dst map[string]string) {

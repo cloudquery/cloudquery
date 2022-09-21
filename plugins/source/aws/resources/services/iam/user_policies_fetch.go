@@ -20,9 +20,6 @@ func fetchIamUserPolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.ListUserPolicies(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		for _, p := range output.PolicyNames {

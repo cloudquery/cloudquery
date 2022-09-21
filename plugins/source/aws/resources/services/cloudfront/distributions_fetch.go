@@ -47,9 +47,6 @@ func resolveCloudfrontDistributionTags(ctx context.Context, meta schema.ClientMe
 		Resource: distribution.ARN,
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, client.TagsToMap(response.Tags.Items))

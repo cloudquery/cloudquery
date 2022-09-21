@@ -28,9 +28,6 @@ func resolveAthenaDataCatalogTags(ctx context.Context, meta schema.ClientMeta, r
 	for {
 		result, err := svc.ListTagsForResource(ctx, &params)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		client.TagsIntoMap(result.Tags, tags)
@@ -116,9 +113,6 @@ func dataCatalogDetail(ctx context.Context, meta schema.ClientMeta, resultsChan 
 		// relations can be fetched by its name
 		if *catalogSummary.CatalogName == "AwsDataCatalog" {
 			resultsChan <- types.DataCatalog{Name: catalogSummary.CatalogName, Type: catalogSummary.Type}
-			return
-		}
-		if c.IsNotFoundError(err) {
 			return
 		}
 		errorChan <- err

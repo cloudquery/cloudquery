@@ -26,9 +26,6 @@ func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resourc
 	for {
 		response, err := svc.ListAttachedRolePolicies(ctx, &input)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		for _, p := range response.AttachedPolicies {
@@ -67,9 +64,6 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 	for {
 		output, err := svc.ListRolePolicies(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		for _, p := range output.PolicyNames {
@@ -125,16 +119,12 @@ func listRoles(ctx context.Context, meta schema.ClientMeta, detailChan chan<- in
 	return nil
 }
 func roleDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
-	c := meta.(*client.Client)
 	role := listInfo.(types.Role)
 	svc := meta.(*client.Client).Services().IAM
 	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
 		RoleName: role.RoleName,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}

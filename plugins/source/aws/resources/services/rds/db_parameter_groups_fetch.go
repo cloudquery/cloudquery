@@ -36,10 +36,6 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 	for {
 		output, err := svc.DescribeDBParameters(ctx, &input)
 		if err != nil {
-			if client.IsAWSError(err, "DBParameterGroupNotFound") {
-				cl.Logger().Warn().Err(err).Msg("received DBParameterGroupNotFound on DescribeDBParameters")
-				return nil
-			}
 			return err
 		}
 		res <- output.Parameters

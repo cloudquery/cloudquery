@@ -68,9 +68,6 @@ func resourceGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsCha
 		Group: groupArn,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}

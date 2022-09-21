@@ -31,9 +31,6 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 		for _, lb := range loadBalancers {
 			loadBalancerAttributes, err := svc.DescribeLoadBalancerAttributes(ctx, &elbv1.DescribeLoadBalancerAttributesInput{LoadBalancerName: lb.LoadBalancerName})
 			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 

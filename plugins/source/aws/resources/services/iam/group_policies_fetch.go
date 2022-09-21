@@ -22,9 +22,6 @@ func fetchIamGroupPolicies(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		output, err := svc.ListGroupPolicies(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 

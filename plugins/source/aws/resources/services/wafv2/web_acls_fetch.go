@@ -46,11 +46,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 				options.Region = c.Region
 			})
 			if err != nil {
-				if client.IsAWSError(err, "WAFNonexistentItemException") {
-					c.Logger().Debug().Err(err).Msg("Logging configuration not found for")
-				} else {
-					c.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed with error")
-				}
+				return err
 			}
 
 			var webAclLoggingConfiguration *types.LoggingConfiguration

@@ -28,9 +28,6 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			}
 			out, err := svc.GetQueueAttributes(ctx, &input)
 			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 

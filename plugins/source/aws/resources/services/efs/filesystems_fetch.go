@@ -37,9 +37,6 @@ func ResolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	svc := cl.Services().EFS
 	response, err := svc.DescribeBackupPolicy(ctx, &config)
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return resource.Set(c.Name, types.StatusDisabled)
-		}
 		return err
 	}
 	if response.BackupPolicy == nil {

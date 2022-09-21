@@ -22,9 +22,6 @@ func fetchTransferServers(ctx context.Context, meta schema.ClientMeta, parent *s
 		for _, server := range result.Servers {
 			desc, err := svc.DescribeServer(ctx, &transfer.DescribeServerInput{ServerId: server.ServerId})
 			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			if desc.Server != nil {
@@ -47,9 +44,6 @@ func resolveServersTags(ctx context.Context, meta schema.ClientMeta, resource *s
 	for {
 		result, err := svc.ListTagsForResource(ctx, &input)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				continue
-			}
 			return err
 		}
 		client.TagsIntoMap(result.Tags, tags)

@@ -24,9 +24,6 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 		for i := range output.TableNames {
 			response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &output.TableNames[i]})
 			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			res <- response.Table
@@ -49,9 +46,6 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 		ResourceArn: table.TableArn,
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, client.TagsToMap(response.Tags))
@@ -71,9 +65,6 @@ func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.Clie
 		TableName: par.TableName,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 
@@ -92,9 +83,6 @@ func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.Client
 		TableName: par.TableName,
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 

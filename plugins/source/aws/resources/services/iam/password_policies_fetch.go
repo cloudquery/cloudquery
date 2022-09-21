@@ -20,10 +20,6 @@ func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().IAM
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			res <- PasswordPolicyWrapper{types.PasswordPolicy{}, false}
-			return nil
-		}
 		return err
 	}
 	res <- PasswordPolicyWrapper{*response.PasswordPolicy, true}

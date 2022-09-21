@@ -22,9 +22,6 @@ func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *sch
 		for _, name := range result.Workflows {
 			w, err := svc.GetWorkflow(ctx, &glue.GetWorkflowInput{Name: aws.String(name)})
 			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			if w.Workflow != nil {
@@ -50,9 +47,6 @@ func resolveGlueWorkflowTags(ctx context.Context, meta schema.ClientMeta, resour
 		ResourceArn: aws.String(workflowARN(cl, aws.ToString(resource.Item.(types.Workflow).Name))),
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, result.Tags)

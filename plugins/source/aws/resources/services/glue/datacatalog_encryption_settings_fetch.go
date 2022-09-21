@@ -13,9 +13,6 @@ func fetchGlueDatacatalogEncryptionSettings(ctx context.Context, meta schema.Cli
 	svc := cl.Services().Glue
 	result, err := svc.GetDataCatalogEncryptionSettings(ctx, &glue.GetDataCatalogEncryptionSettingsInput{})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	res <- result.DataCatalogEncryptionSettings

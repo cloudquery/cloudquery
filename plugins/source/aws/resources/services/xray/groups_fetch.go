@@ -28,9 +28,6 @@ func resolveXrayGroupTags(ctx context.Context, meta schema.ClientMeta, resource 
 
 	output, err := svc.ListTagsForResource(ctx, &params)
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 

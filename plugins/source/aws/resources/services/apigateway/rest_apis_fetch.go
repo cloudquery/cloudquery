@@ -37,9 +37,6 @@ func fetchApigatewayRestApiAuthorizers(ctx context.Context, meta schema.ClientMe
 	for {
 		response, err := svc.GetAuthorizers(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -65,9 +62,6 @@ func fetchApigatewayRestApiDeployments(ctx context.Context, meta schema.ClientMe
 	for p := apigateway.NewGetDeploymentsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -89,9 +83,6 @@ func fetchApigatewayRestApiDocumentationParts(ctx context.Context, meta schema.C
 	for {
 		response, err := svc.GetDocumentationParts(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -117,9 +108,6 @@ func fetchApigatewayRestApiDocumentationVersions(ctx context.Context, meta schem
 	for {
 		response, err := svc.GetDocumentationVersions(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -145,9 +133,6 @@ func fetchApigatewayRestApiGatewayResponses(ctx context.Context, meta schema.Cli
 	for {
 		response, err := svc.GetGatewayResponses(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -173,9 +158,6 @@ func fetchApigatewayRestApiModels(ctx context.Context, meta schema.ClientMeta, p
 	for p := apigateway.NewGetModelsPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -206,16 +188,6 @@ func resolveApigatewayRestAPIModelModelTemplate(ctx context.Context, meta schema
 
 	response, err := svc.GetModelTemplate(ctx, &config)
 	if err != nil {
-		if client.IsAWSError(err, "BadRequestException") {
-			// This is an application level error and the user has nothing to do with that.
-			// https://github.com/cloudquery/cq-provider-aws/pull/567#discussion_r827095787
-			// The suer will be able to find incorrect configured models via
-			// select * from aws_apigateway_rest_api_models where model_template is nil
-			return nil
-		}
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, response.Value)
@@ -228,9 +200,6 @@ func fetchApigatewayRestApiRequestValidators(ctx context.Context, meta schema.Cl
 	for {
 		response, err := svc.GetRequestValidators(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -256,9 +225,6 @@ func fetchApigatewayRestApiResources(ctx context.Context, meta schema.ClientMeta
 	for p := apigateway.NewGetResourcesPaginator(svc, &config); p.HasMorePages(); {
 		response, err := p.NextPage(ctx)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Items
@@ -280,9 +246,6 @@ func fetchApigatewayRestApiStages(ctx context.Context, meta schema.ClientMeta, p
 
 	response, err := svc.GetStages(ctx, &config)
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	res <- response.Item

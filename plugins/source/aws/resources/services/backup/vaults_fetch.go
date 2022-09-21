@@ -70,9 +70,6 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 		},
 	)
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	if result.Policy == nil {
@@ -155,14 +152,6 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 			o.Region = cl.Region
 		})
 		if err != nil {
-			if client.IsAWSError(err, "ERROR_2603") {
-				// ignoring "ERROR_2603: Cannot find recovery point."
-				return nil
-			}
-			if resourceARN.Service == string(client.DynamoDBService) && client.IsAWSError(err, "ERROR_3930") {
-				// advanced backup features are not enabled for dynamodb
-				return nil
-			}
 			return err
 		}
 

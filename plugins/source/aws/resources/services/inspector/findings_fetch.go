@@ -21,9 +21,6 @@ func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent 
 		if len(response.FindingArns) > 0 {
 			out, err := svc.DescribeFindings(ctx, &inspector.DescribeFindingsInput{FindingArns: response.FindingArns})
 			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			res <- out.Findings

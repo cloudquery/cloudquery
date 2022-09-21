@@ -38,17 +38,12 @@ func listUsers(ctx context.Context, meta schema.ClientMeta, detailChan chan<- in
 }
 
 func fetchUserDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
-	c := meta.(*client.Client)
-
 	listUser := listInfo.(types.User)
 	svc := meta.(*client.Client).Services().IAM
 	userDetail, err := svc.GetUser(ctx, &iam.GetUserInput{
 		UserName: aws.String(*listUser.UserName),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}

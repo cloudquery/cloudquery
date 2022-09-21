@@ -54,7 +54,7 @@ func fetchCacheReset(ctx context.Context, res chan<- interface{}, c *client.Clie
 		// Set region to default global region
 		options.Region = "us-east-1"
 	})
-	if err != nil && !c.IsNotFoundError(err) {
+	if err != nil {
 		return err
 	}
 	res <- DistributionWrapper{&d, resetResp}

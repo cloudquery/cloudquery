@@ -22,9 +22,6 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		for _, topic := range output.Topics {
 			attrs, err := svc.GetTopicAttributes(ctx, &sns.GetTopicAttributesInput{TopicArn: topic.TopicArn})
 			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			t := Topic{Arn: topic.TopicArn}

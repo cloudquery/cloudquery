@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -213,10 +215,6 @@ const (
 	cloudfrontScopeRegion      = defaultRegion
 )
 
-var errInvalidRegion = fmt.Errorf("region wildcard \"*\" is only supported as first argument")
-var errUnknownRegion = func(region string) error {
-	return fmt.Errorf("unknown region: %q", region)
-}
 
 func (s *ServicesManager) ServicesByPartitionAccountAndRegion(partition, accountId, region string) *Services {
 	if region == "" {
@@ -373,50 +371,45 @@ func verifyRegions(regions []string) error {
 		return err
 	}
 
+	for _, region := range regions {
+		if region != "*" && !availableRegions[region] {
+			return fmt.Errorf("unsupported region %s", region)
+		}
+	}
+
 	// validate regions values
 	var hasWildcard bool
 	for i, region := range regions {
+		if region == "*" && hasWildcard {
+			return fmt.Errorf("region * can appear only once")
+		}
 		if region == "*" {
+			if i != 0 {
+				return fmt.Errorf("region * must be the first value")
+			}
 			hasWildcard = true
-		}
-		if i != 0 && region == "*" {
-			return errInvalidRegion
-		}
-		if i > 0 && hasWildcard {
-			return errInvalidRegion
-		}
-		regionExist := availableRegions[region]
-		if !hasWildcard && !regionExist {
-			return errUnknownRegion(region)
 		}
 	}
 	return nil
 }
-func isAllRegions(regions []string) bool {
-	// if regions array is not valid return false
-	err := verifyRegions(regions)
-	if err != nil {
-		return false
-	}
 
-	wildcardAllRegions := false
-	if (len(regions) == 1 && regions[0] == "*") || (len(regions) == 0) {
-		wildcardAllRegions = true
-	}
-	return wildcardAllRegions
-}
 
 func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentityOutput, error) {
 	svc := sts.NewFromConfig(awsCfg)
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Config, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsClient(ctx context.Context, logger zerolog.Logger, spec *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion(defaultRegion),
-		config.WithRetryer(newRetryer(logger, awsConfig.MaxRetries, awsConfig.MaxBackoff)),
+		config.WithRetryer(func() aws.Retryer {
+			return retry.NewStandard(func(o *retry.StandardOptions) {
+				o.MaxAttempts = spec.MaxAttempts
+				o.MaxBackoff = time.Duration(spec.MaxBackoff) * time.Second
+			})
+		}),
 	}
 
 	if account.DefaultRegion != "" {
@@ -435,29 +428,29 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 		return awsCfg, err
 	}
 
-	if account.RoleARN != "" {
+	if account.AssumeRoleARN != "" {
 		opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
-		if account.ExternalID != "" {
+		if account.AssumeRoleExternalID != "" {
 			opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
-				opts.ExternalID = &account.ExternalID
+				opts.ExternalID = &account.AssumeRoleExternalID
 			})
 		}
-		if account.RoleSessionName != "" {
+		if account.AssumeRoleSessionName != "" {
 			opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
-				opts.RoleSessionName = account.RoleSessionName
+				opts.RoleSessionName = account.AssumeRoleSessionName
 			})
 		}
 		if stsClient == nil {
 			stsClient = sts.NewFromConfig(awsCfg)
 		}
-		provider := stscreds.NewAssumeRoleProvider(stsClient, account.RoleARN, opts...)
+		provider := stscreds.NewAssumeRoleProvider(stsClient, account.AssumeRoleARN, opts...)
 
 		awsCfg.Credentials = aws.NewCredentialsCache(provider)
 	}
 
-	if awsConfig.AWSDebug {
+	if spec.Debug {
 		awsCfg.ClientLogMode = aws.LogRequest | aws.LogResponse | aws.LogRetries
-		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.AccountName).Logger()}
+		awsCfg.Logger = AwsLogger{logger.With().Str("accountName", account.Name).Logger()}
 	}
 
 	// Test out retrieving credentials
@@ -469,60 +462,49 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 	return awsCfg, err
 }
 
-func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-	var awsConfig Config
-	err := spec.UnmarshalSpec(&awsConfig)
+func Configure(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source) (schema.ClientMeta, error) {
+	var spec Spec
+	err := sourceSpec.UnmarshalSpec(&spec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
+	spec.SetDefault()
 
 	client := NewAwsClient(logger)
 	var adminAccountSts AssumeRoleAPIClient
-	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
-		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple provider blocks")
+	if spec.Organization != nil && len(spec.Accounts) > 0 {
+		return nil, fmt.Errorf("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple aws plugins")
 	}
-	if awsConfig.Organization != nil {
+	if spec.Organization != nil {
 		var err error
-		awsConfig.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &awsConfig)
+		spec.Accounts, adminAccountSts, err = loadOrgAccounts(ctx, logger, &spec)
 		if err != nil {
 			logger.Error().Err(err).Msg("error getting child accounts")
 			return nil, err
 		}
 	}
-	if len(awsConfig.Accounts) == 0 {
-		awsConfig.Accounts = append(awsConfig.Accounts, Account{
-			ID: defaultVar,
+	if len(spec.Accounts) == 0 {
+		spec.Accounts = append(spec.Accounts, Account{
+			Name: defaultVar,
 		})
 	}
 
-	for _, account := range awsConfig.Accounts {
-		if account.AccountName == "" {
-			account.AccountName = account.ID
-		}
-
+	for _, account := range spec.Accounts {
 		localRegions := account.Regions
 		if len(localRegions) == 0 {
-			localRegions = awsConfig.Regions
+			localRegions = spec.Regions
 		}
 
 		if err := verifyRegions(localRegions); err != nil {
 			return nil, err
 		}
 
-		if isAllRegions(localRegions) {
-			logger.Info().Msg("All regions specified in `cloudquery.yml`. Assuming all regions")
-		}
-
-		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)
+		awsCfg, err := configureAwsClient(ctx, logger, &spec, account, adminAccountSts)
 		if err != nil {
-			if account.source == "org" {
-				logger.Warn().Msg("unable to assume role in account")
-				continue
-			}
 			var ae smithy.APIError
 			if errors.As(err, &ae) {
 				if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-					// log warning here
+					logger.Error().Err(err).Msg("unable to assume role in account")
 					continue
 				}
 			}
@@ -539,14 +521,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 				if account.DefaultRegion != "" {
 					o.Region = account.DefaultRegion
 				}
-
-				if len(localRegions) > 0 && !isAllRegions(localRegions) {
-					o.Region = localRegions[0]
-				}
 			})
 		if err != nil {
-			// log warning here
-			// diags = diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			logger.Error().Err(err).Msg("failed to find disabled regions for account")
 			continue
 		}
 		account.Regions = filterDisabledRegions(localRegions, res.Regions)
@@ -666,7 +643,7 @@ func filterDisabledRegions(regions []string, enabledRegions []types.Region) []st
 	var filteredRegions []string
 	// Our list of regions might not always be the latest and most up to date list
 	// if a user specifies all regions via a "*" then they should get the most broad list possible
-	if isAllRegions(regions) {
+	if len(regions) == 1 && regions[0] == "*" {
 		for region := range regionsMap {
 			filteredRegions = append(filteredRegions, region)
 		}

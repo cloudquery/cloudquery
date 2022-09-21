@@ -68,9 +68,6 @@ func resolveElbv2loadBalancerTags(ctx context.Context, meta schema.ClientMeta, r
 		o.Region = region
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	if len(tagsOutput.TagDescriptions) == 0 {

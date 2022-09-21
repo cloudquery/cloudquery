@@ -24,9 +24,6 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 				o.Region = c.Region
 			})
 			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			ledgers = append(ledgers, response)

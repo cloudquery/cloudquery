@@ -14,9 +14,6 @@ func fetchShieldSubscriptions(ctx context.Context, meta schema.ClientMeta, paren
 	config := shield.DescribeSubscriptionInput{}
 	output, err := svc.DescribeSubscription(ctx, &config)
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	res <- output.Subscription

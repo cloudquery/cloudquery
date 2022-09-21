@@ -62,9 +62,6 @@ func deliveryStreamDetail(ctx context.Context, meta schema.ClientMeta, resultsCh
 		DeliveryStreamName: aws.String(streamName),
 	})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
 		errorChan <- err
 		return
 	}

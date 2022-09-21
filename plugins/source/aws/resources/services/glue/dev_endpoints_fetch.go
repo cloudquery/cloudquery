@@ -17,9 +17,6 @@ func fetchGlueDevEndpoints(ctx context.Context, meta schema.ClientMeta, parent *
 	for {
 		result, err := svc.GetDevEndpoints(ctx, &input)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- result.DevEndpoints
@@ -42,9 +39,6 @@ func resolveGlueDevEndpointTags(ctx context.Context, meta schema.ClientMeta, res
 		ResourceArn: aws.String(devEndpointARN(cl, aws.ToString(resource.Item.(types.DevEndpoint).EndpointName))),
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, result.Tags)

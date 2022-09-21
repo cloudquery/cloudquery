@@ -35,9 +35,6 @@ func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resour
 		ResourceArn: r.RegistryArn,
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, result.Tags)
@@ -58,9 +55,6 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 		for _, item := range result.Schemas {
 			s, err := svc.GetSchema(ctx, &glue.GetSchemaInput{SchemaId: &types.SchemaId{SchemaArn: item.SchemaArn}})
 			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			res <- s
@@ -80,9 +74,6 @@ func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, 
 		ResourceArn: s.SchemaArn,
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, result.Tags)
@@ -108,9 +99,6 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 				SchemaVersionId: item.SchemaVersionId,
 			})
 			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
 				return err
 			}
 			res <- s
@@ -133,9 +121,6 @@ func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.C
 	for {
 		result, err := svc.QuerySchemaVersionMetadata(ctx, input)
 		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 

@@ -17,9 +17,6 @@ func fetchShieldProtections(ctx context.Context, meta schema.ClientMeta, parent 
 	for {
 		output, err := svc.ListProtections(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- output.Protections
@@ -42,9 +39,6 @@ func resolveShieldProtectionTags(ctx context.Context, meta schema.ClientMeta, re
 		o.Region = cli.Region
 	})
 	if err != nil {
-		if cli.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 

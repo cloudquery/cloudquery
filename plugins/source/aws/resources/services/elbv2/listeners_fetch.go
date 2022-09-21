@@ -25,9 +25,6 @@ func fetchElbv2Listeners(ctx context.Context, meta schema.ClientMeta, parent *sc
 	for {
 		response, err := svc.DescribeListeners(ctx, &config)
 		if err != nil {
-			if c.IsNotFoundError(err) {
-				return nil
-			}
 			return err
 		}
 		res <- response.Listeners
@@ -75,10 +72,6 @@ func fetchElbv2ListenerCertificates(ctx context.Context, meta schema.ClientMeta,
 			options.Region = region
 		})
 		if err != nil {
-			if client.IsErrorRegex(err, "ValidationError", notSupportedGatewayLB) {
-				c.Logger().Debug().Msg("ELBv2: DescribeListenerCertificates not supported for Gateway Load Balancers")
-				return nil
-			}
 			return err
 		}
 		res <- response.Certificates

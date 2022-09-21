@@ -28,9 +28,6 @@ func resolveXraySamplingRuleTags(ctx context.Context, meta schema.ClientMeta, re
 
 	output, err := svc.ListTagsForResource(ctx, &params)
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 

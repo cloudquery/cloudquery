@@ -36,7 +36,7 @@ func Test_Org_Configure(t *testing.T) {
 		ous                   []string
 		accounts              []Account
 		err                   error
-		config                *Config
+		config                *Spec
 	}{
 		{
 			listAccounts: func(ctx context.Context, params *organizations.ListAccountsInput, optFns ...func(*organizations.Options)) (*organizations.ListAccountsOutput, error) {
@@ -46,7 +46,7 @@ func Test_Org_Configure(t *testing.T) {
 			},
 			accounts: []Account{},
 			err:      nil,
-			config: &Config{
+			config: &Spec{
 				Organization: &AwsOrg{},
 			},
 		},
@@ -61,7 +61,7 @@ func Test_Org_Configure(t *testing.T) {
 					},
 				}, nil
 			},
-			config: &Config{
+			config: &Spec{
 				Organization: &AwsOrg{
 					OrganizationUnits:    []string{"test-ou"},
 					ChildAccountRoleName: "test",
@@ -70,10 +70,10 @@ func Test_Org_Configure(t *testing.T) {
 			},
 			accounts: []Account{
 				{
-					ID:              "012345678910",
-					RoleARN:         "arn:aws:iam::012345678910:role/test",
-					RoleSessionName: "",
-					ExternalID:      "",
+					Name:              "012345678910",
+					AssumeRoleARN:         "arn:aws:iam::012345678910:role/test",
+					AssumeRoleSessionName: "",
+					AssumeRoleExternalID:      "",
 					LocalProfile:    "",
 					Regions:         []string{},
 					source:          "org",

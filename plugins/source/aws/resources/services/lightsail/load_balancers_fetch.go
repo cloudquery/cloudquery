@@ -36,9 +36,6 @@ func fetchLightsailLoadBalancerTlsCertificates(ctx context.Context, meta schema.
 	svc := c.Services().Lightsail
 	response, err := svc.GetLoadBalancerTlsCertificates(ctx, &input)
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	res <- response.TlsCertificates

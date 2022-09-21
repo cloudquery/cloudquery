@@ -41,9 +41,6 @@ func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, res
 		ResourceArn: aws.String(mlTransformARN(cl, &r)),
 	})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
 		return err
 	}
 	return resource.Set(c.Name, result.Tags)

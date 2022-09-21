@@ -21,9 +21,9 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	t.Helper()
 	ctrl := gomock.NewController(t)
 
-	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-		var awsSpec Config
-		if err := spec.UnmarshalSpec(&awsSpec); err != nil {
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, sourceSpec specs.Source) (schema.ClientMeta, error) {
+		var spec Spec
+		if err := sourceSpec.UnmarshalSpec(&spec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal aws spec: %w", err)
 		}
 		l := zerolog.New(zerolog.NewTestWriter(t)).Output(
