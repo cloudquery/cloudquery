@@ -35,6 +35,22 @@ func (m *MockTeamsService) EXPECT() *MockTeamsServiceMockRecorder {
 	return m.recorder
 }
 
+// GetTeamMembershipBySlug mocks base method.
+func (m *MockTeamsService) GetTeamMembershipBySlug(arg0 context.Context, arg1, arg2, arg3 string) (*github.Membership, *github.Response, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetTeamMembershipBySlug", arg0, arg1, arg2, arg3)
+	ret0, _ := ret[0].(*github.Membership)
+	ret1, _ := ret[1].(*github.Response)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetTeamMembershipBySlug indicates an expected call of GetTeamMembershipBySlug.
+func (mr *MockTeamsServiceMockRecorder) GetTeamMembershipBySlug(arg0, arg1, arg2, arg3 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTeamMembershipBySlug", reflect.TypeOf((*MockTeamsService)(nil).GetTeamMembershipBySlug), arg0, arg1, arg2, arg3)
+}
+
 // ListExternalGroups mocks base method.
 func (m *MockTeamsService) ListExternalGroups(arg0 context.Context, arg1 string, arg2 *github.ListExternalGroupsOptions) (*github.ExternalGroupList, *github.Response, error) {
 	m.ctrl.T.Helper()

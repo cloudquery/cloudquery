@@ -1,7 +1,5 @@
-const util = require("util");
 const path = require("path");
 const { promises: fs } = require("fs");
-const execa = require("execa");
 
 const PLUGINS_DATA = {
   aws: { name: "AWS" },
@@ -128,28 +126,11 @@ const generatePluginsIndexPage = async () => {
   await fs.writeFile(page.path, page.content, { encoding: "utf8" });
 };
 
-const isNewSDK = async (sourcePlugin) => {
-  const goMod = await fs.readFile(`${sourcePlugin}/go.mod`, "utf8");
-  return goMod.includes("cloudquery/plugin-sdk");
-};
-
-const generateTablesDir = async (sourcePlugin, tablesDir) => {
-  if (await isNewSDK(sourcePlugin)) {
-    const process = execa.command("go run main.go doc " + tablesDir, {
-      cwd: sourcePlugin,
-    });
-    process.stdout.pipe(process.stdout);
-    await process;
-  } else {
-    await fs.cp(`${sourcePlugin}/docs/tables`, tablesDir, { recursive: true });
-  }
-};
-
 const generatePluginTablePages = async (plugin) => {
   const sourcePlugin = `${PLUGINS_SOURCE}/${plugin.id}`;
   const tablesDir = `${PLUGINS_PATH}/${plugin.id}/tables`;
   await fs.mkdir(tablesDir, { recursive: true });
-  await generateTablesDir(sourcePlugin, tablesDir);
+  await fs.cp(`${sourcePlugin}/docs/tables`, tablesDir, { recursive: true });
   const tablesIndexPath = `${PLUGINS_PATH}/${plugin.id}/tables.mdx`;
   const tablesList = (await fs.readdir(tablesDir, { withFileTypes: true }))
     .filter((dirent) => dirent.isFile() && dirent.name.endsWith(".md"))

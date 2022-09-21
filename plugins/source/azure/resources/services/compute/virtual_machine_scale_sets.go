@@ -56,11 +56,6 @@ func VirtualMachineScaleSets() *schema.Table {
 				Resolver: schema.PathResolver("Overprovision"),
 			},
 			{
-				Name:     "do_not_run_extensions_on_overprovisioned_v_ms",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("DoNotRunExtensionsOnOverprovisionedVMs"),
-			},
-			{
 				Name:     "unique_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("UniqueID"),
@@ -147,6 +142,11 @@ func VirtualMachineScaleSets() *schema.Table {
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "do_not_run_extensions_on_overprovisioned_vms",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver(`DoNotRunExtensionsOnOverprovisionedVMs`),
 			},
 		},
 	}

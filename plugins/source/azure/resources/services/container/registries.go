@@ -32,7 +32,7 @@ func Registries() *schema.Table {
 			},
 			{
 				Name:     "creation_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationDate"),
 			},
 			{

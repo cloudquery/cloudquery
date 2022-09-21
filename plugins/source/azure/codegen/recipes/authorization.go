@@ -2,6 +2,8 @@ package recipes
 
 import (
 	"github.com/Azure/azure-sdk-for-go/services/authorization/mgmt/2015-07-01/authorization"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func Authorization() []Resource {
@@ -30,6 +32,8 @@ func Authorization() []Resource {
 					listFunction:         "List",
 					listFunctionArgs:     []string{"client.ScopeSubscription(meta.(*client.Client).SubscriptionId)", `""`},
 					mockListFunctionArgs: []string{"gomock.Any()", `""`},
+					skipFields:           []string{"RoleType"},
+					customColumns:        []codegen.ColumnDefinition{{Name: "role_type", Type: schema.TypeString, Resolver: `schema.PathResolver("RoleType")`}},
 				},
 			},
 		},

@@ -27,6 +27,26 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
+			SubService: "credential_reports",
+			Struct:     &iamService.CredentialReportEntry{},
+			SkipFields: []string{"Arn", "UserCreationTime"},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("Arn")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "user_creation_time",
+					Type:     schema.TypeTimestamp,
+					Resolver: `schema.PathResolver("UserCreationTime")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+			Relations: []string{},
+		},
+		{
 			SubService: "groups",
 			Struct:     &types.Group{},
 			SkipFields: []string{"GroupId"},
@@ -226,15 +246,25 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService:           "users",
-			Struct:               &iamService.UserWrapper{},
-			SkipFields:           []string{"Arn", "Tags"},
-			PostResourceResolver: `postIamUserResolver`,
+			SubService: "users",
+			Struct:     &types.User{},
+			SkipFields: []string{"Arn", "AccountId", "UserId", "Tags"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "arn",
 					Type:     schema.TypeString,
 					Resolver: `schema.PathResolver("Arn")`,
+				},
+				{
+					Name:     "id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("UserId")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSAccount`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 				{
@@ -266,7 +296,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 				}...),
 		},
@@ -285,7 +315,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 				}...),
 		},
@@ -304,7 +334,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 				}...),
 		},
@@ -323,7 +353,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("user_id")`,
+						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
 					{
 						Name:     "policy_document",

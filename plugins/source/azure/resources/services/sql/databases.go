@@ -78,7 +78,7 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "creation_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationDate"),
 			},
 			{
@@ -103,12 +103,12 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "restore_point_in_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("RestorePointInTime"),
 			},
 			{
 				Name:     "source_database_deletion_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SourceDatabaseDeletionDate"),
 			},
 			{
@@ -153,7 +153,7 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "earliest_restore_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("EarliestRestoreDate"),
 			},
 			{
@@ -193,12 +193,12 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "paused_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("PausedDate"),
 			},
 			{
 				Name:     "resumed_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ResumedDate"),
 			},
 			{

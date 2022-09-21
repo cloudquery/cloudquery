@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/okta
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.6.4
+	github.com/cloudquery/plugin-sdk v0.7.9
 	github.com/okta/okta-sdk-golang/v2 v2.13.0
 	github.com/rs/zerolog v1.28.0
 )
