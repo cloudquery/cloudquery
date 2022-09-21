@@ -2,10 +2,11 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"reflect"
+	"strings"
 )
 
 func S3Resources() []*Resource {
@@ -13,7 +14,7 @@ func S3Resources() []*Resource {
 
 		{
 			SubService: "accounts",
-			Struct:     &s3controlTypes.PublicAccessBlockConfiguration{},
+			Struct:     &s3.PublicAccessBlockConfigurationWrapper{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -107,6 +108,10 @@ func S3Resources() []*Resource {
 	for _, r := range resources {
 		r.Service = "s3"
 		r.Multiplex = "client.AccountMultiplex"
+		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
+		if strings.Contains(structName, "Wrapper") {
+			r.UnwrapEmbeddedStructs = true
+		}
 	}
 	return resources
 }
