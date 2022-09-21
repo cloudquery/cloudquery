@@ -2,13 +2,14 @@ package iam
 
 import (
 	"context"
+	"sync"
+	"testing"
+
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
-	"sync"
-	"testing"
 )
 
 var exampleReport = `user,arn,user_creation_time,password_enabled,password_last_used,password_last_changed,password_next_rotation,mfa_active,access_key_1_active,access_key_1_last_rotated,access_key_1_last_used_date,access_key_1_last_used_region,access_key_1_last_used_service,access_key_2_active,access_key_2_last_rotated,access_key_2_last_used_date,access_key_2_last_used_region,access_key_2_last_used_service,cert_1_active,cert_1_last_rotated,cert_2_active,cert_2_last_rotated
@@ -19,7 +20,7 @@ var exampleReportWithNilValues = `user,arn,user_creation_time,password_enabled,p
 user-cli,arn:aws:iam::123456789012:user/user-cli,2022-07-18T09:03:38+00:00,false,N/A,N/A,N/A,false,true,2022-08-01T13:51:50+00:00,2022-08-05T08:49:00+00:00,ap-northeast-3,glue,true,2022-08-29T08:39:55+00:00,2022-09-01T15:41:00+00:00,us-east-1,logs,false,N/A,false,N/A
 user-readonly,arn:aws:iam::123456789012:user/user-readonly,2022-08-31T11:10:33+00:00,false,N/A,N/A,N/A,false,true,2022-08-31T11:10:34+00:00,2022-08-31T11:23:00+00:00,us-east-1,iam,false,N/A,N/A,N/A,N/A,false,N/A,false,N/A`
 
-func buildCredentialReports(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCredentialReports(_ *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
@@ -31,7 +32,7 @@ func buildCredentialReports(t *testing.T, ctrl *gomock.Controller) client.Servic
 	}
 }
 
-func buildCredentialReportsWithNilValues(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCredentialReportsWithNilValues(ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
@@ -51,7 +52,7 @@ func testCredentialReportsWithNilValues(t *testing.T) {
 	t.Run("test with nil values", func(t *testing.T) {
 		ctx := context.Background()
 		ctrl := gomock.NewController(t)
-		services := buildCredentialReportsWithNilValues(t, ctrl)
+		services := buildCredentialReportsWithNilValues(ctrl)
 		cl := client.NewAwsClient(zerolog.Logger{})
 		cl.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", "us-east-1", services)
 		cl.Partition = "aws"
@@ -71,7 +72,10 @@ func testCredentialReportsWithNilValues(t *testing.T) {
 			}
 			wg.Done()
 		}()
-		fetchIamCredentialReports(ctx, &cl, nil, res)
+		err := fetchIamCredentialReports(ctx, &cl, nil, res)
+		if err != nil {
+			t.Fatalf("unexpected error calling fetchIamCredentialReports: %v", err)
+		}
 		close(res)
 		wg.Wait()
 	})

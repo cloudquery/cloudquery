@@ -3,7 +3,6 @@ package iam
 import (
 	"context"
 	"errors"
-	"github.com/thoas/go-funk"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -11,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gocarina/gocsv"
+	"github.com/thoas/go-funk"
 )
 
 type CredentialReportEntry struct {
