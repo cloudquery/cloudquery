@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.10.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.10.0-pre.0...plugins/source/gcp/v0.10.1-pre.0) (2022-09-21)
+
+
+### Bug Fixes
+
+* Naming fixes in gcp plugin ([#1903](https://github.com/cloudquery/cloudquery/issues/1903)) ([eb6ec00](https://github.com/cloudquery/cloudquery/commit/eb6ec00842a17ad65fa2c67b5ab3a3e65c8e0d71))
+
 ## [0.10.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp-v0.9.8-pre.0...plugins/source/gcp/v0.10.0-pre.0) (2022-09-21)
 
 
