@@ -5,7 +5,7 @@ The CloudQuery Cloudflare plugin pulls configuration out of Cloudflare resources
 ### Install
 
 ```bash
-cloudquery generate source cloudflare
+cloudquery gen source cloudflare
 ```
 
 This will generate a `cloudflare.yml` file containing example configuration.
