@@ -24,12 +24,12 @@
 --
 -- INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
 -- WITH project_policy_audit_configs AS (SELECT project_id,
---                                              json_array_elements(p.policy -> 'auditConfigs') AS audit_config
+--                                              jsonb_array_elements(p.policy -> 'auditConfigs') AS audit_config
 --                                       FROM gcp_resourcemanager_projects p),
 --      log_types AS (SELECT project_id,
 --                           audit_config ->> 'service'                                                    AS "service",
---                           json_array_elements(audit_config -> 'auditLogConfigs') ->> 'logType'         AS logs,
---                           json_array_elements(audit_config -> 'auditLogConfigs') ->> 'exemptedMembers' AS exempted
+--                           jsonb_array_elements(audit_config -> 'auditLogConfigs') ->> 'logType'         AS logs,
+--                           jsonb_array_elements(audit_config -> 'auditLogConfigs') ->> 'exemptedMembers' AS exempted
 --                    FROM project_policy_audit_configs)
 -- SELECT service                                                                                                               AS resource_id,
 --        :'execution_time'::timestamp                                                                                          AS execution_time,

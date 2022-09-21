@@ -20,4 +20,4 @@ SELECT DISTINCT gdmz.id                                                         
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                 AS status
-FROM gcp_dns_managed_zones gdmz, JSON_ARRAY_ELEMENTS(gdmz.dnssec_config->'defaultKeySpecs') AS gdmzdcdks;
+FROM gcp_dns_managed_zones gdmz, JSONB_ARRAY_ELEMENTS(gdmz.dnssec_config->'defaultKeySpecs') AS gdmzdcdks;

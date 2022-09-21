@@ -1,7 +1,7 @@
 -- CREATE OR REPLACE VIEW gcp_project_policy_members AS
 -- WITH project_policy_roles AS (
 --     SELECT project_id,
---         json_array_elements(p.policy -> 'bindings') AS binding
+--         jsonb_array_elements(p.policy -> 'bindings') AS binding
 --     FROM gcp_resourcemanager_projects p
 -- ),
 -- role_members AS (

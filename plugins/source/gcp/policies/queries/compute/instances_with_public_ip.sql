@@ -27,6 +27,6 @@ SELECT DISTINCT gci.id                                                          
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                    AS status
-FROM gcp_compute_instances gci, JSON_ARRAY_ELEMENTS(gci.network_interfaces) AS ni
-LEFT JOIN JSON_ARRAY_ELEMENTS(ni->'access_configs') AS ac4 ON TRUE
-LEFT JOIN JSON_ARRAY_ELEMENTS(ni->'ipv6_access_configs') AS ac6 ON TRUE
+FROM gcp_compute_instances gci, JSONB_ARRAY_ELEMENTS(gci.network_interfaces) AS ni
+LEFT JOIN JSONB_ARRAY_ELEMENTS(ni->'access_configs') AS ac4 ON TRUE
+LEFT JOIN JSONB_ARRAY_ELEMENTS(ni->'ipv6_access_configs') AS ac6 ON TRUE

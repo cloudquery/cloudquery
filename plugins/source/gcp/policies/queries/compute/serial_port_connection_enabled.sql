@@ -16,4 +16,4 @@ SELECT "name"                                                                   
                THEN 'fail'
            ELSE 'pass'
            END                                                                          AS status
-FROM gcp_compute_instances gci, JSON_ARRAY_ELEMENTS(gci.metadata->'items') gcmi;
+FROM gcp_compute_instances gci, JSONB_ARRAY_ELEMENTS(gci.metadata->'items') gcmi;

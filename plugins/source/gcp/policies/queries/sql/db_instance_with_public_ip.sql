@@ -20,4 +20,4 @@ SELECT DISTINCT gsi.name                                                        
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                       AS status
-FROM gcp_sql_instances gsi, JSON_ARRAY_ELEMENTS(gsi.ip_addresses) AS gsiia;
+FROM gcp_sql_instances gsi, JSONB_ARRAY_ELEMENTS(gsi.ip_addresses) AS gsiia;

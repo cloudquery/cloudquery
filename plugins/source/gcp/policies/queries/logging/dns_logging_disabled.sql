@@ -20,5 +20,5 @@ SELECT DISTINCT gcn.id                                                          
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                     AS status
-FROM gcp_dns_policies gdp, JSON_ARRAY_ELEMENTS(gdp.networks) AS gdpn
+FROM gcp_dns_policies gdp, JSONB_ARRAY_ELEMENTS(gdp.networks) AS gdpn
     JOIN gcp_compute_networks gcn ON gcn.self_link = REPLACE(gdpn->>'networkUrl', 'compute.googleapis', 'www.googleapis')

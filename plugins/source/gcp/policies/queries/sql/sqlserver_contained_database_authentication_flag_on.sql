@@ -21,4 +21,4 @@ SELECT gsi.name                                                                 
                THEN 'fail'
            ELSE 'pass'
            END                                                                                                                                        AS status
-FROM gcp_sql_instances gsi LEFT JOIN JSON_ARRAY_ELEMENTS(gsi.settings->'databaseFlags') AS f ON f->>'name'='contained database authentication';
+FROM gcp_sql_instances gsi LEFT JOIN JSONB_ARRAY_ELEMENTS(gsi.settings->'databaseFlags') AS f ON f->>'name'='contained database authentication';

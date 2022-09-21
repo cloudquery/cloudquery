@@ -26,4 +26,4 @@ SELECT DISTINCT d.id                                                            
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                AS status
-FROM gcp_bigquery_datasets d, JSON_ARRAY_ELEMENTS(d.access) AS a;
+FROM gcp_bigquery_datasets d, JSONB_ARRAY_ELEMENTS(d.access) AS a;

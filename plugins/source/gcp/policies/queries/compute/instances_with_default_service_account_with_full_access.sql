@@ -20,8 +20,8 @@ SELECT DISTINCT gci.name                                                        
                             gcisa->>'email' = (SELECT default_service_account
                                                FROM gcp_compute_projects
                                                WHERE project_id = gci.project_id)
-                            AND ARRAY['https://www.googleapis.com/auth/cloud-platform'] <@ ARRAY(SELECT JSON_ARRAY_ELEMENTS_TEXT(gcisa->'scopes'))
+                            AND ARRAY['https://www.googleapis.com/auth/cloud-platform'] <@ ARRAY(SELECT JSONB_ARRAY_ELEMENTS_TEXT(gcisa->'scopes'))
                         THEN 'fail'
                     ELSE 'pass'
                     END                                                                                                                      AS status
-FROM gcp_compute_instances gci, JSON_ARRAY_ELEMENTS(gci.service_accounts) gcisa;
+FROM gcp_compute_instances gci, JSONB_ARRAY_ELEMENTS(gci.service_accounts) gcisa;

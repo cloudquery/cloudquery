@@ -19,4 +19,4 @@ SELECT "name"                                                AS resource_id,
            ELSE 'pass'
            END                                               AS status
 FROM gcp_compute_projects
-    LEFT JOIN JSON_ARRAY_ELEMENTS(common_instance_metadata->'items') cimd ON cimd->>'key' = 'enable-oslogin';
+    LEFT JOIN JSONB_ARRAY_ELEMENTS(common_instance_metadata->'items') cimd ON cimd->>'key' = 'enable-oslogin';

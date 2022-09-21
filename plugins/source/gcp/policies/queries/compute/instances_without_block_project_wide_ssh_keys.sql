@@ -19,4 +19,4 @@ SELECT gci.name                                                                 
            ELSE 'pass'
            END                                                                          AS status
 FROM gcp_compute_instances gci
-    LEFT JOIN JSON_ARRAY_ELEMENTS(gci.metadata->'items') gcmi ON gcmi->>'key' = 'block-project-ssh-keys';
+    LEFT JOIN JSONB_ARRAY_ELEMENTS(gci.metadata->'items') gcmi ON gcmi->>'key' = 'block-project-ssh-keys';
