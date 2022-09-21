@@ -1,5 +1,5 @@
 {
-  "cli": "0.32.12-pre.0",
+  "cli": "0.33.0-pre.0",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "0.13.24-pre.0",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -13,7 +13,7 @@
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "0.1.10-pre.0",
   "plugins/source/github+FILLER": "0.0.0",
-  "plugins/source/heroku": "0.0.1-pre.0",
+  "plugins/source/heroku": "0.1.0-pre.0",
   "plugins/source/heroku+FILLER": "0.0.0",
   "plugins/source/k8s": "0.6.4-pre.0",
   "plugins/source/k8s+FILLER": "0.0.0",
