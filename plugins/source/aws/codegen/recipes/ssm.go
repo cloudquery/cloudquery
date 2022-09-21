@@ -31,14 +31,6 @@ func SSMResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `client.ResolveTags`,
 					},
-					{
-						Name: "account_ids",
-						Type: schema.TypeStringArray,
-					},
-					{
-						Name: "account_sharing_info",
-						Type: schema.TypeJSON,
-					},
 				}...),
 		},
 

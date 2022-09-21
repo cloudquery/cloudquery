@@ -79,9 +79,9 @@ func BackupResources() []*Resource {
 			},
 		},
 		{
-			SubService:           "vaults",
-			Struct:               &types.BackupVaultListMember{},
-			SkipFields:           []string{"BackupVaultArn"},
+			SubService: "vaults",
+			Struct:     &types.BackupVaultListMember{},
+			SkipFields: []string{"BackupVaultArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -107,14 +107,6 @@ func BackupResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveVaultTags`,
-					},
-					{
-						Name: "notification_events",
-						Type: schema.TypeStringArray,
-					},
-					{
-						Name: "notification_sns_topic_arn",
-						Type: schema.TypeString,
 					},
 				}...),
 			Relations: []string{

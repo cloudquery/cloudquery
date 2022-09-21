@@ -49,14 +49,6 @@ func Vaults() *schema.Table {
 				Resolver: resolveVaultTags,
 			},
 			{
-				Name: "notification_events",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "notification_sns_topic_arn",
-				Type: schema.TypeString,
-			},
-			{
 				Name:     "backup_vault_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("BackupVaultName"),

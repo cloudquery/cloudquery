@@ -42,14 +42,6 @@ func Documents() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
-				Name: "account_ids",
-				Type: schema.TypeStringArray,
-			},
-			{
-				Name: "account_sharing_info",
-				Type: schema.TypeJSON,
-			},
-			{
 				Name:     "approved_version",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ApprovedVersion"),
