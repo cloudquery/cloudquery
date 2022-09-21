@@ -20,17 +20,18 @@ A token can be generated using the Heroku CLI.
 
  1. **Install the Heroku CLI**: Follow the [official instructions](https://devcenter.heroku.com/articles/heroku-cli) to install the Heroku CLI.
  2. **Generate an OAuth token**: With the Heroku CLI installed, use your terminal to run:
-    ```
-    heroku authorizations:create --short --description="CloudQuery token" --scope="read,identity"
-    ```
-    
-    (For additional options for this command, such as expiry, see the [Heroku CLI commands documentation](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-authorizations-create))
-    
-    Copy the token value into your `heroku.yml` file:
-    
-    ```
-    token: <Token HERE>
-    ```
+
+```bash
+heroku authorizations:create --short --description="CloudQuery token" --scope="read,identity"
+```
+
+(For additional options for this command, such as expiry, see the [Heroku CLI commands documentation](https://devcenter.heroku.com/articles/heroku-cli-commands#heroku-authorizations-create))
+
+Copy the token value into your `heroku.yml` file:
+
+```bash
+token: <Token HERE>
+```
 
 ### Option 2: Generate a token with the Heroku API
 
@@ -44,20 +45,21 @@ Following the principle of least privilege, it is recommended to grant it read-o
 parameter suggested above achieves this. 
 
 However, certain Heroku resources require a `global` scope, even for reading. At the time of writing, these resources are:
- - `app_webhook_deliveries`
- - `app_webhook_events`
- - `app_webhooks`
- - `credits`
- - `invoices`
- - `keys`
- - `oauth_authorizations`
- - `oauth_clients`
- - `permission_entities`
- - `team_features`
- - `team_invitations`
- - `team_invoices`
- - `team_members`
- - `team_spaces`
+
+- `app_webhook_deliveries`
+- `app_webhook_events`
+- `app_webhooks`
+- `credits`
+- `invoices`
+- `keys`
+- `oauth_authorizations`
+- `oauth_clients`
+- `permission_entities`
+- `team_features`
+- `team_invitations`
+- `team_invoices`
+- `team_members`
+- `team_spaces`
 
 If you are interested in fetching any of these resources, a `global` scope will be necessary. See the Heroku documentation for [more information about OAuth scopes on Heroku](https://devcenter.heroku.com/articles/oauth#scopes).
 

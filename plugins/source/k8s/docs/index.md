@@ -18,6 +18,7 @@ export KUBECONFIG=<PATH_TO_YOUR_CONFIG_FILE>
 ```
 
 ### Configuration
+
 By default cloudquery fetches data from default context of the Kubernetes config. Context to fetch can be selected by setting contexts variable of provider's `configuration` block in `config.hcl`.
 Example of context selection:
 
