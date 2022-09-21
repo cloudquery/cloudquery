@@ -14,6 +14,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.10.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp-v0.9.8-pre.0...plugins/source/gcp/v0.10.0-pre.0) (2022-09-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* CloudQuery V2. (#1463)
+
+### Features
+
+* Add website, docs and blog to our main repo ([#1159](https://github.com/cloudquery/cloudquery/issues/1159)) ([dd69948](https://github.com/cloudquery/cloudquery/commit/dd69948feced004497f127d284f2604de0354a1f))
+* CloudQuery V2. ([#1463](https://github.com/cloudquery/cloudquery/issues/1463)) ([d1799f3](https://github.com/cloudquery/cloudquery/commit/d1799f347d1387dcc2b9a4f05aa2f48999ed1090))
+* **gcp:** Remove Classify and IgnoreError ([#1757](https://github.com/cloudquery/cloudquery/issues/1757)) ([3d34ca5](https://github.com/cloudquery/cloudquery/commit/3d34ca526941b1579f5c6f4360c2d364bfe96cc2))
+* Generate auto-filled config ([#1764](https://github.com/cloudquery/cloudquery/issues/1764)) ([2255404](https://github.com/cloudquery/cloudquery/commit/2255404012afa97d38b64c11d2f66405dfa84c6f))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/sync digest to 7fc1605 ([#1652](https://github.com/cloudquery/cloudquery/issues/1652)) ([daafae1](https://github.com/cloudquery/cloudquery/commit/daafae1c60c14c90b70c3338a8ff6dc25ba84290))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.10 ([#1474](https://github.com/cloudquery/cloudquery/issues/1474)) ([b142e13](https://github.com/cloudquery/cloudquery/commit/b142e135172b1eed1abb2cbec85054ea7f66199d))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.11 ([#1491](https://github.com/cloudquery/cloudquery/issues/1491)) ([5140bef](https://github.com/cloudquery/cloudquery/commit/5140bef4aa7c50a97a604db1e92df75ead2893fc))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.12 ([#1503](https://github.com/cloudquery/cloudquery/issues/1503)) ([a740719](https://github.com/cloudquery/cloudquery/commit/a7407199c9617784a1834b9d0c42788e03301de5))
+* **deps:** Update module github.com/cloudquery/cq-gen to v0.0.9 ([#1286](https://github.com/cloudquery/cloudquery/issues/1286)) ([67ac422](https://github.com/cloudquery/cloudquery/commit/67ac422f392387e674cb70386e612befa5b455f0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.1.2 ([#1750](https://github.com/cloudquery/cloudquery/issues/1750)) ([fbe1b78](https://github.com/cloudquery/cloudquery/commit/fbe1b7835b0677a3d1c79bc10d95b991e2eb5129))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.2.4 ([#1761](https://github.com/cloudquery/cloudquery/issues/1761)) ([7a83a65](https://github.com/cloudquery/cloudquery/commit/7a83a65446119b5339f5f3a3759f7f160a3716b4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.2.5 ([#1769](https://github.com/cloudquery/cloudquery/issues/1769)) ([c9c8c05](https://github.com/cloudquery/cloudquery/commit/c9c8c05b97ae349d7a21deef1e524d8a180c512d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.2.6 ([#1770](https://github.com/cloudquery/cloudquery/issues/1770)) ([5bc205e](https://github.com/cloudquery/cloudquery/commit/5bc205ec7f4a7b2fa8a34793e8d746a43cbb03ed))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.2.7 ([#1783](https://github.com/cloudquery/cloudquery/issues/1783)) ([c291499](https://github.com/cloudquery/cloudquery/commit/c2914999f8607b6d313c346cc037829d21f84cfb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.2.8 ([#1784](https://github.com/cloudquery/cloudquery/issues/1784)) ([b64e2d1](https://github.com/cloudquery/cloudquery/commit/b64e2d18abfaeb6056b6a3aed56f8fdc07e7d535))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.2.9 ([#1785](https://github.com/cloudquery/cloudquery/issues/1785)) ([c6e8cb0](https://github.com/cloudquery/cloudquery/commit/c6e8cb03c5851f96fef09e11d8c8d34ac74a70fb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.4.0 ([#1786](https://github.com/cloudquery/cloudquery/issues/1786)) ([cba274b](https://github.com/cloudquery/cloudquery/commit/cba274b3dda610e06129b843ed0c1376f83f09bb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.4.1 ([#1787](https://github.com/cloudquery/cloudquery/issues/1787)) ([bad385c](https://github.com/cloudquery/cloudquery/commit/bad385c39bbed55a74894591f7cfdd092bcded55))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.4.2 ([#1789](https://github.com/cloudquery/cloudquery/issues/1789)) ([79a46a2](https://github.com/cloudquery/cloudquery/commit/79a46a2b4719d66df40db128f841e9c3640a9128))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.5.0 ([#1792](https://github.com/cloudquery/cloudquery/issues/1792)) ([0b4834e](https://github.com/cloudquery/cloudquery/commit/0b4834e38bb66d65bd6d44c84847d3538e264d2c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.5.2 ([#1793](https://github.com/cloudquery/cloudquery/issues/1793)) ([36fd6a1](https://github.com/cloudquery/cloudquery/commit/36fd6a18acd5c405bba8c1c52df294e056533ee0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.0 ([#1817](https://github.com/cloudquery/cloudquery/issues/1817)) ([bd68a9c](https://github.com/cloudquery/cloudquery/commit/bd68a9c8b691f7af4c956259a06eb18ac50b374a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.1 ([#1820](https://github.com/cloudquery/cloudquery/issues/1820)) ([2613e23](https://github.com/cloudquery/cloudquery/commit/2613e2374ea451e7bf031bda8ea26e895e65528c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.2 ([#1838](https://github.com/cloudquery/cloudquery/issues/1838)) ([5b16c59](https://github.com/cloudquery/cloudquery/commit/5b16c59dd415cf0a775dbc38cd62c99b97f04ea5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.3 ([#1858](https://github.com/cloudquery/cloudquery/issues/1858)) ([9e3ace7](https://github.com/cloudquery/cloudquery/commit/9e3ace775da2d600968ef4275e9e0013d4dfd825))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.4 ([#1862](https://github.com/cloudquery/cloudquery/issues/1862)) ([5d141cf](https://github.com/cloudquery/cloudquery/commit/5d141cf6006e26cf240ddf295dda53c16f7386a4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.1 ([#1865](https://github.com/cloudquery/cloudquery/issues/1865)) ([474bb70](https://github.com/cloudquery/cloudquery/commit/474bb7081b6e9b6ffc5ac949ed3a664f92083c82))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.2 ([#1872](https://github.com/cloudquery/cloudquery/issues/1872)) ([49ed26d](https://github.com/cloudquery/cloudquery/commit/49ed26d231c91ac1b5b00cc55d3d0a8a5a6306f7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.3 ([#1886](https://github.com/cloudquery/cloudquery/issues/1886)) ([7435d59](https://github.com/cloudquery/cloudquery/commit/7435d593e51ca829d3a328eebc9517e9cb2a4ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.4 ([#1889](https://github.com/cloudquery/cloudquery/issues/1889)) ([63a5362](https://github.com/cloudquery/cloudquery/commit/63a5362995aa680b291f2411d01e776e884896d4))
+* Enable GCP to find all Active Projects ([#1782](https://github.com/cloudquery/cloudquery/issues/1782)) ([5348ad4](https://github.com/cloudquery/cloudquery/commit/5348ad47379d06a5f30b868cb4889feeaa9cb5f5))
+
 ## [0.9.8](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.9.7...plugins/source/gcp/v0.9.8) (2022-09-01)
 
 
