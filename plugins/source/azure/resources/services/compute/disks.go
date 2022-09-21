@@ -47,7 +47,7 @@ func Disks() *schema.Table {
 			},
 			{
 				Name:     "time_created",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("TimeCreated"),
 			},
 			{

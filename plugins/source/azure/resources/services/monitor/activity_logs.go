@@ -127,12 +127,12 @@ func ActivityLogs() *schema.Table {
 			},
 			{
 				Name:     "event_timestamp",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("EventTimestamp"),
 			},
 			{
 				Name:     "submission_timestamp",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SubmissionTimestamp"),
 			},
 			{
