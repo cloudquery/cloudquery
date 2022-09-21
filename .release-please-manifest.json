@@ -1,7 +1,7 @@
 {
   "cli": "0.33.1-pre.0",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "0.14.0-pre.0",
+  "plugins/source/aws": "0.14.1-pre.0",
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/azure": "0.14.0-pre.0",
   "plugins/source/azure+FILLER": "0.0.0",
@@ -9,7 +9,7 @@
   "plugins/source/cloudflare+FILLER": "0.0.0",
   "plugins/source/digitalocean": "0.7.0-pre.0",
   "plugins/source/digitalocean+FILLER": "0.0.0",
-  "plugins/source/gcp": "0.10.0-pre.0",
+  "plugins/source/gcp": "0.10.1-pre.0",
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "0.1.11-pre.0",
   "plugins/source/github+FILLER": "0.0.0",
