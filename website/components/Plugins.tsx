@@ -6,8 +6,9 @@ export const Plugins = () => {
     <div className="grid grid-cols-1 mt-12 gap-x-6 gap-y-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12">
       {INTEGRATIONS.map(({ name, id, logo }) => (
         <a
-          href={`/plugins/${id}`}
+          href={`https://github.com/cloudquery/cloudquery/tree/main/plugins/source/${id}`}
           key={id}
+          target={"_blank"}
           className="group no-underline text-gray-600 group-hover:text-gray-900 dark:text-gray-300 dark:group-hover:text-gray-50"
         >
           <Feature
