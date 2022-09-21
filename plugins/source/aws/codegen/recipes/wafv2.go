@@ -42,9 +42,9 @@ func WAFv2Resources() []*Resource {
 			},
 		},
 		{
-			SubService:           "managed_rule_groups",
-			Struct:               &types.ManagedRuleGroupSummary{},
-			SkipFields:           []string{"Scope"},
+			SubService: "managed_rule_groups",
+			Struct:     &types.ManagedRuleGroupSummary{},
+			SkipFields: []string{"Scope"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",

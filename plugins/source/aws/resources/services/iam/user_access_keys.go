@@ -30,6 +30,14 @@ func UserAccessKeys() *schema.Table {
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
+				Name: "last_used",
+				Type: schema.TypeTimestamp,
+			},
+			{
+				Name: "last_used_service_name",
+				Type: schema.TypeString,
+			},
+			{
 				Name:     "access_key_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AccessKeyId"),

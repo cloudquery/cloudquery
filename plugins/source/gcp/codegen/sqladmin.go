@@ -20,6 +20,7 @@ var sqlResources = []*Resource{
 				Resolver: `schema.PathResolver("SelfLink")`,
 			},
 		},
+		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6"}),
 	},
 }
 

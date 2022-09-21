@@ -32,19 +32,29 @@ func Vaults() *schema.Table {
 				},
 			},
 			{
-				Name:     "access_policy",
-				Type:     schema.TypeJSON,
-				Resolver: resolveVaultAccessPolicy,
+				Name:          "access_policy",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveVaultAccessPolicy,
+				IgnoreInTests: true,
 			},
 			{
-				Name:     "notifications",
-				Type:     schema.TypeJSON,
-				Resolver: resolveVaultNotifications,
+				Name:          "notifications",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveVaultNotifications,
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: resolveVaultTags,
+			},
+			{
+				Name: "notification_events",
+				Type: schema.TypeStringArray,
+			},
+			{
+				Name: "notification_sns_topic_arn",
+				Type: schema.TypeString,
 			},
 			{
 				Name:     "backup_vault_name",

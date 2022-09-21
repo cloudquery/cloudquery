@@ -108,6 +108,14 @@ func BackupResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `resolveVaultTags`,
 					},
+					{
+						Name: "notification_events",
+						Type: schema.TypeStringArray,
+					},
+					{
+						Name: "notification_sns_topic_arn",
+						Type: schema.TypeString,
+					},
 				}...),
 			Relations: []string{
 				"VaultRecoveryPoints()",
