@@ -8,7 +8,6 @@ import (
 
 func SSMResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService: "documents",
 			Struct:     &types.DocumentDescription{},
@@ -23,20 +22,16 @@ func SSMResources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
+						Name:     "permissions",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveDocumentPermission`,
+					},
+					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `client.ResolveTags`,
 					},
-					{
-						Name: "account_ids",
-						Type: schema.TypeStringArray,
-					},
-					{
-						Name: "account_sharing_info",
-						Type: schema.TypeJSON,
-					},
 				}...),
-			PostResourceResolver: `ssmDocumentPostResolver`,
 		},
 
 		{

@@ -42,10 +42,9 @@ func WAFv2Resources() []*Resource {
 			},
 		},
 		{
-			SubService:           "managed_rule_groups",
-			Struct:               &types.ManagedRuleGroupSummary{},
-			PostResourceResolver: "resolveDescribeManagedRuleGroup",
-			SkipFields:           []string{"Scope"},
+			SubService: "managed_rule_groups",
+			Struct:     &types.ManagedRuleGroupSummary{},
+			SkipFields: []string{"Scope"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -66,24 +65,9 @@ func WAFv2Resources() []*Resource {
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 				{
-					Name: "available_labels",
-					Type: schema.TypeStringArray,
-				},
-				{
-					Name: "consumed_labels",
-					Type: schema.TypeStringArray,
-				},
-				{
-					Name: "capacity",
-					Type: schema.TypeInt,
-				},
-				{
-					Name: "label_namespace",
-					Type: schema.TypeString,
-				},
-				{
-					Name: "rules",
-					Type: schema.TypeJSON,
+					Name:     "properties",
+					Type:     schema.TypeJSON,
+					Resolver: "resolveManageRuleGroupProperties",
 				},
 			},
 		},
