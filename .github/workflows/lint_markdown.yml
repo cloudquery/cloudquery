@@ -2,6 +2,8 @@ name: Lint Markdown files
 
 on:
   pull_request:
+    branches:
+      - main
     paths:
       - ".github/workflow/lint_markdown.yml"
       - "*.md"
