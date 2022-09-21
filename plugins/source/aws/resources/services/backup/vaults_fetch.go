@@ -2,6 +2,7 @@ package backup
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -74,7 +75,16 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		return err
 	}
-	return resource.Set(c.Name, result.Policy)
+	if result.Policy == nil {
+		return nil
+	}
+
+	var p map[string]interface{}
+	err = json.Unmarshal([]byte(*result.Policy), &p)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, p)
 }
 
 func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {

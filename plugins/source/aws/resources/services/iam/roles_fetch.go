@@ -50,7 +50,12 @@ func resolveRolesAssumeRolePolicyDocument(ctx context.Context, meta schema.Clien
 	if err != nil {
 		return err
 	}
-	return resource.Set("assume_role_policy_document", decodedDocument)
+	var d map[string]interface{}
+	err = json.Unmarshal([]byte(decodedDocument), &d)
+	if err != nil {
+		return err
+	}
+	return resource.Set("assume_role_policy_document", d)
 }
 func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)

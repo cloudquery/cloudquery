@@ -2,7 +2,6 @@ package rds
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -59,9 +58,5 @@ func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta,
 		return nil
 	}
 
-	b, err := json.Marshal(out.DBSnapshotAttributesResult.DBSnapshotAttributes)
-	if err != nil {
-		return err
-	}
-	return resource.Set(column.Name, b)
+	return resource.Set(column.Name, out.DBSnapshotAttributesResult.DBSnapshotAttributes)
 }
