@@ -32,7 +32,7 @@ func Networks() *schema.Table {
 				},
 			},
 			{
-				Name:     "i_pv_4_range",
+				Name:     "ipv4_range",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IPv4Range"),
 			},
@@ -62,7 +62,7 @@ func Networks() *schema.Table {
 				Resolver: schema.PathResolver("FirewallPolicy"),
 			},
 			{
-				Name:     "gateway_i_pv_4",
+				Name:     "gateway_ipv4",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GatewayIPv4"),
 			},

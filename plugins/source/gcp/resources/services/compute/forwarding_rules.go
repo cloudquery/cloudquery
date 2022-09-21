@@ -32,12 +32,12 @@ func ForwardingRules() *schema.Table {
 				},
 			},
 			{
-				Name:     "i_p_address",
+				Name:     "ip_address",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IPAddress"),
 			},
 			{
-				Name:     "i_p_protocol",
+				Name:     "ip_protocol",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IPProtocol"),
 			},

@@ -97,7 +97,7 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("IpAddresses"),
 			},
 			{
-				Name:     "ipv_6_address",
+				Name:     "ipv6_address",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Ipv6Address"),
 			},
