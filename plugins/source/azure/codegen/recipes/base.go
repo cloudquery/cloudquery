@@ -8,7 +8,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gertd/go-pluralize"
@@ -180,17 +179,6 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	return columns
 }
 
-func valueTypeOverride(f reflect.StructField) (*schema.ValueType, error) {
-	time := date.Time{}
-	switch f.Type {
-	case reflect.TypeOf(time), reflect.TypeOf(&time):
-		timestamp := schema.TypeTimestamp
-		return &timestamp, nil
-	}
-
-	return nil, nil
-}
-
 func getTableName(azureService, azureSubService string) string {
 	return fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService))
 }
@@ -203,7 +191,6 @@ func initTable(serviceNameOverride string, definition resourceDefinition, azureS
 		codegen.WithSkipFields(skipFields),
 		codegen.WithUnwrapAllEmbeddedStructs(),                  // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
 		codegen.WithUnwrapFieldsStructs([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
-		codegen.WithValueTypeOverride(valueTypeOverride),
 	)
 	if err != nil {
 		log.Fatal(err)
