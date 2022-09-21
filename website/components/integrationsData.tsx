@@ -8,6 +8,7 @@ import KubernetesLogo from "./logos/integrations/KubernetesLogo";
 import OktaLogo from "./logos/integrations/OktaLogo";
 import TerraformLogo from "./logos/integrations/TerraformLogo";
 import YandexCloudLogo from "./logos/integrations/YandexCloudLogo";
+import HerokuLogo from "./logos/integrations/HerokuLogo";
 
 const getPluginURL = (id: string) =>
   `https://github.com/cloudquery/cloudquery/tree/${
@@ -50,6 +51,12 @@ export const INTEGRATIONS = [
     logo: <GithubLogo />,
     id: "github",
     href: getPluginURL("github"),
+  },
+  {
+    name: "Heroku",
+    logo: <HerokuLogo />,
+    id: "heroku",
+    href: getPluginURL("heroku"),
   },
   {
     name: "Kubernetes",
