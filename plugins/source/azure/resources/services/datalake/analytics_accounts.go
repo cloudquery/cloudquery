@@ -104,6 +104,11 @@ func AnalyticsAccounts() *schema.Table {
 				Resolver: schema.PathResolver("QueryStoreRetention"),
 			},
 			{
+				Name:     "account_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("AccountID"),
+			},
+			{
 				Name:     "provisioning_state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ProvisioningState"),

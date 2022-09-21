@@ -206,6 +206,11 @@ func Apps() *schema.Table {
 				Resolver: schema.PathResolver("RedundancyMode"),
 			},
 			{
+				Name:     "in_progress_operation_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("InProgressOperationID"),
+			},
+			{
 				Name:     "storage_account_required",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("StorageAccountRequired"),

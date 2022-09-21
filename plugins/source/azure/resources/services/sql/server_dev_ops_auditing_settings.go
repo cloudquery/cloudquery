@@ -52,6 +52,11 @@ func serverDevOpsAuditingSettings() *schema.Table {
 				Resolver: schema.PathResolver("StorageAccountAccessKey"),
 			},
 			{
+				Name:     "storage_account_subscription_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("StorageAccountSubscriptionID"),
+			},
+			{
 				Name:     "id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ID"),
