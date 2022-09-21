@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - ".github/workflow/lint_markdown.yml"
-      - "*.md"
+      - "**.md"
 
 jobs:
   lint-grammar:
