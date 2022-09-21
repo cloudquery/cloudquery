@@ -95,11 +95,9 @@ spec:
   tables: ["*"]
   destinations: ["postgresql"]
   spec:
-    # configuration:
+    ## Optional. if you not specified, CloudQuery tries to access all subscriptions available to tenant
     # subscriptions:
-    # Optional: If you only want to fetch data from a single or multiple subscriptions, you can specify it here.
-    # - "<subscription_1>"
-    # - "<subscription_2>"
+    #  - "<YOUR_SUBSCRIPTION_ID_HERE>"
 ```
 
 By default, CloudQuery will fetch all configurations from **all** resources in **all** subscriptions. You can change this behaviour with the following arguments:
