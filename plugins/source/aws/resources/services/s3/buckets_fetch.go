@@ -3,6 +3,7 @@ package s3
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"sync"
 	"time"
 
@@ -28,14 +29,14 @@ type WrappedBucket struct {
 	Region                string
 	LoggingTargetBucket   *string
 	LoggingTargetPrefix   *string
-	Policy                *string
+	Policy                map[string]interface{}
 	VersioningStatus      types.BucketVersioningStatus
 	VersioningMfaDelete   types.MFADeleteStatus
 	BlockPublicAcls       bool
 	BlockPublicPolicy     bool
 	IgnorePublicAcls      bool
 	RestrictPublicBuckets bool
-	Tags                  *string
+	Tags                  map[string]*string
 	OwnershipControls     []string
 }
 
@@ -276,10 +277,15 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 		}
 		return err
 	}
-	if policyOutput == nil {
+	if policyOutput == nil || policyOutput.Policy == nil {
 		return nil
 	}
-	resource.Policy = policyOutput.Policy
+	var p map[string]interface{}
+	err = json.Unmarshal([]byte(*policyOutput.Policy), &p)
+	if err != nil {
+		return fmt.Errorf("failed to unmarshal JSON policy: %v", err)
+	}
+	resource.Policy = p
 	return nil
 }
 
@@ -375,13 +381,7 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 	for _, t := range taggingOutput.TagSet {
 		tags[*t.Key] = t.Value
 	}
-
-	b, err := json.Marshal(tags)
-	if err != nil {
-		return err
-	}
-	t := string(b)
-	resource.Tags = &t
+	resource.Tags = tags
 	return nil
 }
 
