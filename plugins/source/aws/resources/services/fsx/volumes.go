@@ -37,9 +37,10 @@ func Volumes() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
-				Name:     "administrative_actions",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AdministrativeActions"),
+				Name:          "administrative_actions",
+				Type:          schema.TypeJSON,
+				Resolver:      schema.PathResolver("AdministrativeActions"),
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "creation_time",

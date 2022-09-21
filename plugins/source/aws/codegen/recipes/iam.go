@@ -355,6 +355,14 @@ func IAMResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("id")`,
 					},
+					{
+						Name: "last_used",
+						Type: schema.TypeTimestamp,
+					},
+					{
+						Name: "last_used_service_name",
+						Type: schema.TypeString,
+					},
 				}...),
 		},
 		{

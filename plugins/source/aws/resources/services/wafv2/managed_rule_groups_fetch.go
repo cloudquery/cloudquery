@@ -2,8 +2,6 @@ package wafv2
 
 import (
 	"context"
-	"encoding/json"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
@@ -75,11 +73,7 @@ func resolveDescribeManagedRuleGroup(ctx context.Context, meta schema.ClientMeta
 	}
 	// Rules
 	if len(descrManagedRuleGroup.Rules) > 0 {
-		data, err := json.Marshal(descrManagedRuleGroup.Rules)
-		if err != nil {
-			return err
-		}
-		if err := resource.Set("rules", data); err != nil {
+		if err := resource.Set("rules", descrManagedRuleGroup.Rules); err != nil {
 			return err
 		}
 	}
