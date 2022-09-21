@@ -38,17 +38,17 @@ func managedDatabases() *schema.Table {
 			},
 			{
 				Name:     "creation_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationDate"),
 			},
 			{
 				Name:     "earliest_restore_point",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("EarliestRestorePoint"),
 			},
 			{
 				Name:     "restore_point_in_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("RestorePointInTime"),
 			},
 			{
