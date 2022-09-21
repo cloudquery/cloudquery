@@ -122,7 +122,7 @@ func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, regis
 	}
 	err = writeSource(configPath, sourceSpec)
 	if err != nil {
-		return fmt.Errorf("failed to write file: %w", err)
+		return fmt.Errorf("failed to write source to file: %w", err)
 	}
 	fmt.Println("Source plugin config successfully written to " + configPath)
 	return nil
@@ -166,7 +166,7 @@ func genDestination(cmd *cobra.Command, path string, pm *plugins.PluginManager, 
 	}
 	err = writeDestination(configPath, destSpec)
 	if err != nil {
-		return fmt.Errorf("failed to write file: %w", err)
+		return fmt.Errorf("failed to write destination to file: %w", err)
 	}
 	fmt.Println("Destination plugin config successfully written to " + configPath)
 	return nil
