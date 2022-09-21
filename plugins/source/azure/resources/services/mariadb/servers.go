@@ -52,7 +52,7 @@ func Servers() *schema.Table {
 			},
 			{
 				Name:     "earliest_restore_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("EarliestRestoreDate"),
 			},
 			{
