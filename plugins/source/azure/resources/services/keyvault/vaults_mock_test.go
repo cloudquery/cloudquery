@@ -24,8 +24,9 @@ func createVaultsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
 	mockClient := mocks.NewMockKeyVaultVaultsClient(ctrl)
 	s := services.Services{
 		KeyVault: services.KeyVaultClient{
-			Vaults: mockClient,
-			Keys:   createKeysMock(t, ctrl).KeyVault.Keys,
+			Vaults:  mockClient,
+			Keys:    createKeysMock(t, ctrl).KeyVault.Keys,
+			Secrets: createSecretsMock(t, ctrl).KeyVault.Secrets,
 		},
 	}
 
