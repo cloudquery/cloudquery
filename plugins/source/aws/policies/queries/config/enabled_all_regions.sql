@@ -7,8 +7,8 @@ select
     account_id,
     arn as resource_id,
     case when
-      recording_group_include_global_resource_types IS NOT TRUE
-      OR recording_group_all_supported IS NOT TRUE
+      (recording_group->>'IncludeGlobalResourceTypes')::boolean IS NOT TRUE
+      OR (recording_group->>'AllSupported')::boolean IS NOT TRUE
       OR status_recording IS NOT TRUE
       OR status_last_status IS DISTINCT FROM 'SUCCESS'
     then 'fail'

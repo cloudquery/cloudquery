@@ -7,10 +7,8 @@ select
     account_id,
     arn as resource_id,
     case when
-            (
-                source_type = 'GITHUB' or source_type = 'BITBUCKET'
-            ) and source_auth_type != 'OAUTH'
-            then 'fail'
-        else 'pass'
+        source->>'Type' IN ('GITHUB', 'BITBUCKET') AND source->'Auth'->>'Type' != 'OAUTH'
+      then 'fail'
+      else 'pass'
     end as status
 from aws_codebuild_projects

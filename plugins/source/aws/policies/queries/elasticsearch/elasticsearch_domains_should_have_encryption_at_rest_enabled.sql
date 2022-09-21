@@ -7,7 +7,7 @@ select
   account_id,
   arn as resource_id,
   case when
-    encryption_at_rest_enabled is not true
+        (encryption_at_rest_options->>'Enabled')::boolean is not true
     then 'fail'
     else 'pass'
   end as status

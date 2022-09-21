@@ -11,4 +11,4 @@ select
         else 'pass'
     end as status
 from aws_cloudtrail_trails t
-inner join aws_s3_buckets b on t.s3_bucket_name = b.name
+inner join aws_s3_buckets b on t.s_3_bucket_name = b.name

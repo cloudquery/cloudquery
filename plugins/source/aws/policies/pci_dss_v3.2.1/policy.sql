@@ -45,9 +45,9 @@ END AS "execution_time"  \gset
 \echo "Creating view_aws_log_metric_filter_and_alarm"
 \ir ../views/log_metric_filter_and_alarm.sql
 
-\set check_id 'cloudwatch.1'
-\echo "Executing check cloudwatch.1"
-\ir ../queries/cloudwatch/alarm_root_account.sql
+-- \set check_id 'cloudwatch.1'
+-- \echo "Executing check cloudwatch.1"
+-- \ir ../queries/cloudwatch/alarm_root_account.sql
 
 \set check_id 'dms.1'
 \echo "Executing check dms.1"

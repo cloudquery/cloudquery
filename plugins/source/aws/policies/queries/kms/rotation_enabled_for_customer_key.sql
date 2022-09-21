@@ -7,7 +7,7 @@ select
   account_id,
   arn,
   case when
-    rotation_enabled is FALSE and manager = 'CUSTOMER'
+    rotation_enabled is FALSE and key_manager = 'CUSTOMER'
     then 'fail'
     else 'pass'
   end
