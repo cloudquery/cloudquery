@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.7.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta-v0.6.6-pre.0...plugins/source/okta/v0.7.0-pre.0) (2022-09-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Migrate Okta plugin to v2 (#1781)
+
+### Features
+
+* Add Sentry DSN ([#1818](https://github.com/cloudquery/cloudquery/issues/1818)) ([f19625c](https://github.com/cloudquery/cloudquery/commit/f19625c6c32df1b8ba4d83bd73a9ae5e37468d7f))
+* Migrate Okta plugin to v2 ([#1781](https://github.com/cloudquery/cloudquery/issues/1781)) ([0d9ba16](https://github.com/cloudquery/cloudquery/commit/0d9ba1688bcaaa6e1e30611feb9b377067282031))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.0 ([#1817](https://github.com/cloudquery/cloudquery/issues/1817)) ([bd68a9c](https://github.com/cloudquery/cloudquery/commit/bd68a9c8b691f7af4c956259a06eb18ac50b374a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.1 ([#1820](https://github.com/cloudquery/cloudquery/issues/1820)) ([2613e23](https://github.com/cloudquery/cloudquery/commit/2613e2374ea451e7bf031bda8ea26e895e65528c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.2 ([#1838](https://github.com/cloudquery/cloudquery/issues/1838)) ([5b16c59](https://github.com/cloudquery/cloudquery/commit/5b16c59dd415cf0a775dbc38cd62c99b97f04ea5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.3 ([#1858](https://github.com/cloudquery/cloudquery/issues/1858)) ([9e3ace7](https://github.com/cloudquery/cloudquery/commit/9e3ace775da2d600968ef4275e9e0013d4dfd825))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.4 ([#1862](https://github.com/cloudquery/cloudquery/issues/1862)) ([5d141cf](https://github.com/cloudquery/cloudquery/commit/5d141cf6006e26cf240ddf295dda53c16f7386a4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.2 ([#1872](https://github.com/cloudquery/cloudquery/issues/1872)) ([49ed26d](https://github.com/cloudquery/cloudquery/commit/49ed26d231c91ac1b5b00cc55d3d0a8a5a6306f7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.3 ([#1886](https://github.com/cloudquery/cloudquery/issues/1886)) ([7435d59](https://github.com/cloudquery/cloudquery/commit/7435d593e51ca829d3a328eebc9517e9cb2a4ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.4 ([#1889](https://github.com/cloudquery/cloudquery/issues/1889)) ([63a5362](https://github.com/cloudquery/cloudquery/commit/63a5362995aa680b291f2411d01e776e884896d4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.9 ([#1891](https://github.com/cloudquery/cloudquery/issues/1891)) ([3469f20](https://github.com/cloudquery/cloudquery/commit/3469f20e76e9dcbf48b9c6e3e7c0c2224c5b8ad3))
+* Provide `Version` in all providers ([#1729](https://github.com/cloudquery/cloudquery/issues/1729)) ([f82318e](https://github.com/cloudquery/cloudquery/commit/f82318e22670c46ecdfa7861bc716046969a9e14))
+* Unify plugin package structure ([#1735](https://github.com/cloudquery/cloudquery/issues/1735)) ([897d8f4](https://github.com/cloudquery/cloudquery/commit/897d8f4d31d78fb078fb1e57108bd30e437ddee4))
+* Update Okta docs ([#1572](https://github.com/cloudquery/cloudquery/issues/1572)) ([ae85abe](https://github.com/cloudquery/cloudquery/commit/ae85abe90a064b4c2e381774093fe753e6661f35))
+
 ## [0.6.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta/v0.6.5...plugins/source/okta/v0.6.6) (2022-09-06)
 
 

@@ -409,7 +409,7 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	case schema.TypeTimestamp:
 		return "timestamp without time zone", nil
 	case schema.TypeJSON:
-		return "json", nil
+		return "jsonb", nil
 	case schema.TypeUUIDArray:
 		return "uuid[]", nil
 	case schema.TypeInetArray:
