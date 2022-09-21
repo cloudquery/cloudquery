@@ -49,6 +49,11 @@ func Vaults() *schema.Table {
 				Resolver: schema.PathResolver("Tags"),
 			},
 			{
+				Name:     "properties_tenant_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("Properties.TenantID"),
+			},
+			{
 				Name:     "properties_sku",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Properties.Sku"),
@@ -117,6 +122,7 @@ func Vaults() *schema.Table {
 
 		Relations: []*schema.Table{
 			keys(),
+			secrets(),
 		},
 	}
 }
