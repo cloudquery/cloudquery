@@ -12,4 +12,4 @@ select
     then 'fail'
     else 'pass'
   end as status
-from aws_elbv2_listeners, JSON_ARRAY_ELEMENTS(default_actions) AS da
+from aws_elbv2_listeners, JSONB_ARRAY_ELEMENTS(default_actions) AS da

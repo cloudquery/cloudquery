@@ -7,6 +7,6 @@ select
     account_id,
     arn as resource_id,
     case when
-        direct_internet_access is TRUE
+        direct_internet_access = 'Enabled'
     then 'fail' else 'pass' end as status
 from aws_sagemaker_notebook_instances

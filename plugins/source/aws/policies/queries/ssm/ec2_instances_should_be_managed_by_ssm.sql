@@ -11,4 +11,4 @@ select
     then 'fail' else 'pass' end as status
 from
     aws_ec2_instances
-left outer join aws_ssm_instances on aws_ec2_instances.id = aws_ssm_instances.instance_id
+left outer join aws_ssm_instances on aws_ec2_instances.instance_id = aws_ssm_instances.instance_id

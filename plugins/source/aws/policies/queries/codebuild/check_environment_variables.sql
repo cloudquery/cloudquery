@@ -16,4 +16,4 @@ select distinct
             then 'fail'
         else 'pass'
     end as status
-from aws_codebuild_projects, JSON_ARRAY_ELEMENTS(environment->'EnvironmentVariables') as e
+from aws_codebuild_projects, JSONB_ARRAY_ELEMENTS(environment->'EnvironmentVariables') as e
