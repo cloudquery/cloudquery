@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-type S3AccountConfig struct {
+type PublicAccessBlockConfigurationWrapper struct {
 	s3controlTypes.PublicAccessBlockConfiguration
 	ConfigExists bool
 }
@@ -30,9 +30,9 @@ func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 		if !errors.As(err, &nspabc) {
 			return err
 		}
-		res <- S3AccountConfig{s3controlTypes.PublicAccessBlockConfiguration{}, false}
+		res <- PublicAccessBlockConfigurationWrapper{s3controlTypes.PublicAccessBlockConfiguration{}, false}
 	} else {
-		res <- S3AccountConfig{*resp.PublicAccessBlockConfiguration, true}
+		res <- PublicAccessBlockConfigurationWrapper{*resp.PublicAccessBlockConfiguration, true}
 	}
 
 	return nil
