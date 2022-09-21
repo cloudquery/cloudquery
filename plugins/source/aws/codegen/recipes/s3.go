@@ -28,7 +28,7 @@ func S3Resources() []*Resource {
 		{
 			SubService: "buckets",
 			Struct:     &s3.WrappedBucket{},
-			SkipFields: []string{""},
+			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -55,7 +55,7 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
+						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
 					},
 				}...),
@@ -69,7 +69,7 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
+						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
 					},
 				}...),
@@ -83,7 +83,7 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
+						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
 					},
 				}...),
@@ -97,7 +97,7 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
+						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
 					},
 				}...),
