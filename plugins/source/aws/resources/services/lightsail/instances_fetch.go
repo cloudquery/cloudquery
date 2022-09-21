@@ -2,8 +2,6 @@ package lightsail
 
 import (
 	"context"
-	"encoding/json"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
@@ -38,11 +36,7 @@ func resolveLightsailInstanceAccessDetails(ctx context.Context, meta schema.Clie
 	if err != nil {
 		return err
 	}
-	j, err := json.Marshal(output.AccessDetails)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, j)
+	return resource.Set(c.Name, output.AccessDetails)
 }
 func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	r := parent.Item.(types.Instance)
