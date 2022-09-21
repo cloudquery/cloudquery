@@ -82,7 +82,7 @@ func Apps() *schema.Table {
 			},
 			{
 				Name:     "last_modified_time_utc",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastModifiedTimeUtc"),
 			},
 			{
@@ -162,7 +162,7 @@ func Apps() *schema.Table {
 			},
 			{
 				Name:     "suspended_till",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SuspendedTill"),
 			},
 			{

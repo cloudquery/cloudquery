@@ -26,9 +26,9 @@ func ThrottleWrapper(ctx context.Context, client *Client, doFunc retry.Retryable
 	err := retry.Do(
 		doFunc,
 		retry.OnRetry(func(n uint, err error) {
-			client.Logger().Warn("API Rate limit exceeded. Request will be executed again after throttling delay", "retry", n)
+			client.Logger().Warn().Uint("retry", n).Msg("API Rate limit exceeded. Request will be executed again after throttling delay")
 			rate := client.DoClient.GetRate()
-			client.Logger().Debug("Current API rate limits", "limit", rate.Limit, "remaining", rate.Remaining, "reset", rate.Reset.Time)
+			client.Logger().Debug().Int("limit", rate.Limit).Int("remaining", rate.Remaining).Time("reset", rate.Reset.Time).Msg("Current API rate limits")
 		}),
 		retry.RetryIf(IsLimitReached),
 		retry.Attempts(MAX_RETRIES),

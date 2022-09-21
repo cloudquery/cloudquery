@@ -13,6 +13,6 @@ jobs:
     steps:
     - uses: github/issue-labeler@v2.5
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: ${{ secrets.GH_CQ_BOT }}
         configuration-path: .github/issue_labeler.yml
         enable-versioned-regex: 0

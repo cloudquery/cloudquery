@@ -64,7 +64,7 @@ func Accounts() *schema.Table {
 			},
 			{
 				Name:     "last_geo_failover_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastGeoFailoverTime"),
 			},
 			{
@@ -79,7 +79,7 @@ func Accounts() *schema.Table {
 			},
 			{
 				Name:     "creation_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
@@ -108,12 +108,12 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("AzureFilesIdentityBasedAuthentication"),
 			},
 			{
-				Name:     "enable_https_traffic_only",
+				Name:     "supports_https_traffic_only",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableHTTPSTrafficOnly"),
 			},
 			{
-				Name:     "network_rule_set",
+				Name:     "network_acls",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("NetworkRuleSet"),
 			},
@@ -168,11 +168,6 @@ func Accounts() *schema.Table {
 				Resolver: schema.PathResolver("AllowSharedKeyAccess"),
 			},
 			{
-				Name:     "enable_nfs_v_3",
-				Type:     schema.TypeBool,
-				Resolver: schema.PathResolver("EnableNfsV3"),
-			},
-			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Tags"),
@@ -209,6 +204,11 @@ func Accounts() *schema.Table {
 				Name:     "queue_logging_settings",
 				Type:     schema.TypeJSON,
 				Resolver: fetchStorageAccountQueueLoggingSettings,
+			},
+			{
+				Name:     "is_nfs_v3_enabled",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("EnableNfsV3"),
 			},
 		},
 

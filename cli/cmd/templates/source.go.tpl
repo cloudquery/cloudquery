@@ -19,10 +19,10 @@ spec:
   # skip_tables: []
 
   # Names of destination plugins to sync to.
-  destinations: []
+  destinations: ["postgresql"]
 
   ## Approximate cap on number of requests to perform concurrently. Optional.
-  # max_goroutines: {{or .MaxGoRoutines 5 }}
+  # concurrency: {{or .Concurrency 5 }}
 
   # Plugin-specific configuration.
   spec:

@@ -49,11 +49,11 @@ func fetchCloudtrailTrails(ctx context.Context, meta schema.ClientMeta, parent *
 			// We skip, and not fetch the trail tags
 			arnParts, err := arn.Parse(*h.TrailARN)
 			if err != nil {
-				log.Warn().Str("arn", *h.TrailARN).Msg("cloud not parse cloudtrail ARN")
+				log.Warn().Str("arn", *h.TrailARN).Msg("could not parse cloudtrail ARN")
 				continue
 			}
 			if aws.ToBool(h.IsOrganizationTrail) && c.AccountID != arnParts.AccountID {
-				log.Warn().Str("arn", *h.TrailARN).Msg("the trail is an organization level trail, cloud not fetch tags")
+				log.Warn().Str("arn", *h.TrailARN).Msg("the trail is an organization-level trail, could not fetch tags")
 				continue
 			}
 

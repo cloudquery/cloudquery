@@ -10,33 +10,31 @@ aws_debug: false
 #regions:
 #- us-east-1
 #- us-west-2
-## Optional. Region to use as global region. Defaults to us-east-1.
-# global_region: us-east-1
 
 # Optional, Repeated. Add an entry for every account you want to assume-role into and fetch data from.
 accounts:
 - id: < UNIQUE_ACCOUNT_IDENTIFIER >
-#  # Optional account name to use in logs. Defaults to account id.
-#  account_name: < ACCOUNT_NAME >
-#  # Optional. Local Profile is the named profile in your shared configuration file (usually ~/.aws/config)
-#  # that you want to use for the account.
-#  local_profile: < NAMED_PROFILE >
-#  # Optional. Role ARN we want to assume when accessing this account
-#  role_arn: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>
-#  # Optional. Specify the name of the session
-#  role_session_name: < ROLE_SESSION_NAME >
-#  # Optional. Specify the ExternalID if required for trust policy
-#  external_id: < EXTERNAL_ID >
-#  # Optional. This sets the Default Region for the AWS SDK.
-#  # If you are assuming a role in a partition other than the AWS commercial region,
-#  # it is important that this attribute is set.
-#  default_region: < DEFAULT_REGION >
-#  # Optional. Sync only specified regions. Default assumes all regions.
-#  # This per-account setting overrides the global `regions` setting, if any.
-#  regions:
-#    - us-east-1
-#    - us-west-2
-#    # - ...
+  ## Optional account name to use in logs. Defaults to account id.
+  #account_name: < ACCOUNT_NAME >
+  ## Optional. Local Profile is the named profile in your shared configuration file (usually ~/.aws/config)
+  ## that you want to use for the account.
+  #local_profile: < NAMED_PROFILE >
+  ## Optional. Role ARN we want to assume when accessing this account
+  #role_arn: arn:aws:iam::<ACCOUNT_ID>:role/<ROLE_NAME>
+  ## Optional. Specify the name of the session
+  #role_session_name: < ROLE_SESSION_NAME >
+  ## Optional. Specify the ExternalID if required for trust policy
+  #external_id: < EXTERNAL_ID >
+  ## Optional. This sets the Default Region for the AWS SDK.
+  ## If you are assuming a role in a partition other than the AWS commercial region,
+  ## it is important that this attribute is set.
+  #default_region: < DEFAULT_REGION >
+  ## Optional. Sync only specified regions. Default assumes all regions.
+  ## This per-account setting overrides the global `regions` setting, if any.
+  #regions:
+  #  - us-east-1
+  #  - us-west-2
+  #  # - ...
 
 ## Optional. CloudQuery supports discovery of AWS Accounts via AWS Organizations. This means that as Accounts get added
 ## or removed from your organization, CloudQuery will be able to handle new or removed accounts without any configuration
