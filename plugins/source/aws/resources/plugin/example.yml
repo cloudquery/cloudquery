@@ -10,8 +10,6 @@ aws_debug: false
 #regions:
 #- us-east-1
 #- us-west-2
-## Optional. Region to use as global region. Defaults to us-east-1.
-# global_region: us-east-1
 
 # Optional, Repeated. Add an entry for every account you want to assume-role into and fetch data from.
 accounts:
