@@ -39,7 +39,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct:  &pb.BackendServiceAggregatedList{},
 		ListFunction:    (&compute.BackendServicesClient{}).AggregatedList,
 		OutputField:     "Value.BackendServices",
-		NameTransformer: BuildCustomTransformer(map[string]string{"c_d_n": "cdn"}),
+		NameTransformer: CreateReplaceTransformer(map[string]string{"c_d_n": "cdn"}),
 	},
 	{
 		SubService:     "disk_types",
@@ -76,7 +76,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct:  &pb.InstanceAggregatedList{},
 		ListFunction:    (&compute.InstancesClient{}).AggregatedList,
 		OutputField:     "Value.Instances",
-		NameTransformer: BuildCustomTransformer(map[string]string{"ipv_6": "ipv6"}),
+		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6"}),
 	},
 	{
 		SubService:     "ssl_certificates",
@@ -95,7 +95,7 @@ var computeResourcesAggList = []*Resource{
 		ResponseStruct:  &pb.SubnetworkAggregatedList{},
 		ListFunction:    (&compute.SubnetworksClient{}).AggregatedList,
 		OutputField:     "Value.Subnetworks",
-		NameTransformer: BuildCustomTransformer(map[string]string{"ipv_6": "ipv6", "i_pv_4": "ipv4"}),
+		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6", "i_pv_4": "ipv4"}),
 	},
 	{
 		SubService:     "target_http_proxies",
@@ -159,7 +159,7 @@ var computeResourcesList = []*Resource{
 		RequestStruct:   &pb.ListNetworksRequest{},
 		ResponseStruct:  &pb.NetworkList{},
 		ListFunction:    (&compute.NetworksClient{}).List,
-		NameTransformer: BuildCustomTransformer(map[string]string{"ipv_6": "ipv6"}),
+		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6"}),
 	},
 	{
 		SubService:     "ssl_policies",

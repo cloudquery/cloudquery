@@ -93,7 +93,7 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 	Resolver: "client.ResolveProject",
 }
 
-func BuildCustomTransformer(replace map[string]string) func(field reflect.StructField) string {
+func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) string {
 	return func(field reflect.StructField) string {
 		name := DefaultTransformer(field)
 		for k, v := range replace {
