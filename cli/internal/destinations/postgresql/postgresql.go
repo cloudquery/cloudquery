@@ -296,7 +296,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 // This is the responsibility of the CLI of the client to lock before running migration
 func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	for _, table := range tables {
-		p.logger.Info().Strs("tables", tables.TableNames()).Msg("Migrating table")
+		p.logger.Info().Strs("table", tables.Name).Msg("Migrating table")
 		if len(table.Columns) == 0 {
 			p.logger.Info().Str("table", table.Name).Msg("Table with not columns, skiping")
 			continue
