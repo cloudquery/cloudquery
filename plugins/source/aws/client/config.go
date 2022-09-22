@@ -27,6 +27,6 @@ type Config struct {
 	Accounts     []Account `json:"accounts"`
 	Organization *AwsOrg   `json:"org"`
 	AWSDebug     bool      `json:"aws_debug,omitempty"`
-	MaxRetries   int       `json:"max_retries,omitempty" default:"10"`
-	MaxBackoff   int       `json:"max_backoff,omitempty" default:"30"`
+	MaxRetries   int       `json:"max_retries,omitempty"`
+	MaxBackoff   int       `json:"max_backoff,omitempty"`
 }
