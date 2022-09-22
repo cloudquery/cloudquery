@@ -61,7 +61,7 @@ func AccessAnalyzerResources() []*Resource {
 	}
 
 	for _, r := range resources {
-		r.Service = "accessanalyzer"
+		r.Service = "access_analyzer"
 	}
 	return resources
 }
