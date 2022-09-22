@@ -2,27 +2,44 @@
 # Schema Changes from v1 to v2 
 ## aws_access_analyzer_analyzer_archive_rules
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_access_analyzer_analyzer_finding_sources
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_access_analyzer_analyzer_findings
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_access_analyzer_analyzers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_accessanalyzer_analyzer_archive_rules
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_accessanalyzer_analyzer_findings
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_accessanalyzer_analyzers
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_accounts
 This table was removed.
+Renamed to aws_iam_accounts.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_acm_certificates
 | Name          | Type          | Status | Comment
@@ -202,6 +219,8 @@ This table was removed.
  
 ## aws_apigateway_usage_plan_api_stages
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_apigateway_usage_plan_keys
 | Name          | Type          | Status | Comment
@@ -345,6 +364,8 @@ This table was removed.
  
 ## aws_apigatewayv2_domain_name_configurations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_apigatewayv2_domain_name_rest_api_mappings
 | Name          | Type          | Status | Comment
@@ -388,6 +409,8 @@ This table was removed.
  
 ## aws_appsync_graphql_api_additional_authentication_providers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_appsync_graphql_apis
 | Name          | Type          | Status | Comment
@@ -418,9 +441,13 @@ This table was removed.
  
 ## aws_athena_data_catalog_database_table_columns
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_athena_data_catalog_database_table_partition_keys
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_athena_data_catalog_database_tables
 | Name          | Type          | Status | Comment
@@ -532,6 +559,8 @@ This table was removed.
  
 ## aws_autoscaling_group_instances
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_autoscaling_group_lifecycle_hooks
 | Name          | Type          | Status | Comment
@@ -579,6 +608,8 @@ This table was removed.
  
 ## aws_autoscaling_group_tags
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_autoscaling_groups
 | Name          | Type          | Status | Comment
@@ -612,6 +643,8 @@ This table was removed.
  
 ## aws_autoscaling_launch_configuration_block_device_mappings
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_autoscaling_launch_configurations
 | Name          | Type          | Status | Comment
@@ -646,6 +679,8 @@ This table was removed.
  
 ## aws_backup_plan_rules
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_backup_plan_selections
 | Name          | Type          | Status | Comment
@@ -720,6 +755,8 @@ This table was removed.
  
 ## aws_cloudformation_stack_outputs
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudformation_stack_resources
 | Name          | Type          | Status | Comment
@@ -783,21 +820,33 @@ This table was removed.
  
 ## aws_cloudfront_distribution_cache_behavior_lambda_functions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudfront_distribution_cache_behaviors
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudfront_distribution_custom_error_responses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudfront_distribution_default_cache_behavior_functions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudfront_distribution_origin_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudfront_distribution_origins
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudfront_distributions
 | Name          | Type          | Status | Comment
@@ -889,6 +938,8 @@ This table was removed.
  
 ## aws_cloudwatch_alarm_metrics
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudwatch_alarms
 | Name          | Type          | Status | Comment
@@ -911,9 +962,13 @@ This table was removed.
  
 ## aws_cloudwatchlogs_filter_metric_transformations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudwatchlogs_filters
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cloudwatchlogs_log_groups
 | Name          | Type          | Status | Comment
@@ -923,18 +978,28 @@ This table was removed.
  
 ## aws_cloudwatchlogs_metric_filters
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codebuild_project_environment_variables
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codebuild_project_file_system_locations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codebuild_project_secondary_artifacts
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codebuild_project_secondary_sources
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codebuild_projects
 | Name          | Type          | Status | Comment
@@ -1017,9 +1082,13 @@ This table was removed.
  
 ## aws_codepipeline_pipeline_stage_actions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codepipeline_pipeline_stages
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codepipeline_pipelines
 | Name          | Type          | Status | Comment
@@ -1042,6 +1111,8 @@ This table was removed.
  
 ## aws_codepipeline_webhook_filters
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_codepipeline_webhooks
 | Name          | Type          | Status | Comment
@@ -1058,6 +1129,8 @@ This table was removed.
  
 ## aws_cognito_identity_pool_cognito_identity_providers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cognito_identity_pools
 | Name          | Type          | Status | Comment
@@ -1081,6 +1154,8 @@ This table was removed.
  
 ## aws_cognito_user_pool_schema_attributes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_cognito_user_pools
 | Name          | Type          | Status | Comment
@@ -1180,6 +1255,8 @@ This table was removed.
  
 ## aws_dax_cluster_nodes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_dax_clusters
 | Name          | Type          | Status | Comment
@@ -1208,6 +1285,8 @@ This table was removed.
  
 ## aws_directconnect_connection_mac_sec_keys
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_directconnect_connections
 | Name          | Type          | Status | Comment
@@ -1266,6 +1345,8 @@ This table was removed.
  
 ## aws_directconnect_lag_mac_sec_keys
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_directconnect_lags
 | Name          | Type          | Status | Comment
@@ -1296,6 +1377,8 @@ This table was removed.
  
 ## aws_directconnect_virtual_interface_bgp_peers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_directconnect_virtual_interfaces
 | Name          | Type          | Status | Comment
@@ -1314,9 +1397,13 @@ This table was removed.
  
 ## aws_dms_replication_instance_replication_subnet_group_subnets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_dms_replication_instance_vpc_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_dms_replication_instances
 | Name          | Type          | Status | Comment
@@ -1366,9 +1453,13 @@ This table was removed.
  
 ## aws_dynamodb_table_global_secondary_indexes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_dynamodb_table_local_secondary_indexes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_dynamodb_table_replica_auto_scalings
 | Name          | Type          | Status | Comment
@@ -1386,6 +1477,8 @@ This table was removed.
  
 ## aws_dynamodb_table_replicas
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_dynamodb_tables
 | Name          | Type          | Status | Comment
@@ -1446,6 +1539,8 @@ This table was removed.
  
 ## aws_ec2_ebs_volume_attachments
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_ebs_volumes
 | Name          | Type          | Status | Comment
@@ -1492,9 +1587,13 @@ This table was removed.
  
 ## aws_ec2_host_available_instance_capacity
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_host_instances
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_hosts
 | Name          | Type          | Status | Comment
@@ -1518,6 +1617,8 @@ This table was removed.
  
 ## aws_ec2_image_block_device_mappings
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_images
 | Name          | Type          | Status | Comment
@@ -1538,33 +1639,53 @@ This table was removed.
  
 ## aws_ec2_instance_block_device_mappings
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_elastic_gpu_associations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_elastic_inference_accelerator_associations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_network_interface_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_network_interface_ipv6_addresses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_network_interface_private_ip_addresses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_network_interfaces
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_product_codes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_status_events
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_statuses
 | Name          | Type          | Status | Comment
@@ -1583,18 +1704,28 @@ This table was removed.
  
 ## aws_ec2_instance_type_fpga_info_fpgas
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_type_gpu_info_gpus
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_type_inference_accelerator_info_accelerators
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_type_instance_storage_info_disks
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_type_network_info_network_cards
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_instance_types
 | Name          | Type          | Status | Comment
@@ -1710,6 +1841,8 @@ This table was removed.
  
 ## aws_ec2_internet_gateway_attachments
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_internet_gateways
 | Name          | Type          | Status | Comment
@@ -1729,6 +1862,8 @@ This table was removed.
  
 ## aws_ec2_nat_gateway_addresses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_nat_gateways
 | Name          | Type          | Status | Comment
@@ -1748,9 +1883,13 @@ This table was removed.
  
 ## aws_ec2_network_acl_associations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_network_acl_entries
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_network_acls
 | Name          | Type          | Status | Comment
@@ -1764,6 +1903,8 @@ This table was removed.
  
 ## aws_ec2_network_interface_private_ip_addresses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_network_interfaces
 | Name          | Type          | Status | Comment
@@ -1811,12 +1952,18 @@ This table was removed.
  
 ## aws_ec2_route_table_associations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_route_table_propagating_vgws
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_route_table_routes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_route_tables
 | Name          | Type          | Status | Comment
@@ -1831,15 +1978,23 @@ This table was removed.
  
 ## aws_ec2_security_group_ip_permission_ip_ranges
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_security_group_ip_permission_prefix_list_ids
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_security_group_ip_permission_user_id_group_pairs
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_security_group_ip_permissions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_security_groups
 | Name          | Type          | Status | Comment
@@ -1853,6 +2008,8 @@ This table was removed.
  
 ## aws_ec2_subnet_ipv6_cidr_block_association_sets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_subnets
 | Name          | Type          | Status | Comment
@@ -1971,15 +2128,23 @@ This table was removed.
  
 ## aws_ec2_vpc_attachment
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_vpc_cidr_block_association_sets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_vpc_endpoint_dns_entries
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_vpc_endpoint_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_vpc_endpoint_service_configurations
 | Name          | Type          | Status | Comment
@@ -2022,6 +2187,8 @@ This table was removed.
  
 ## aws_ec2_vpc_ipv6_cidr_block_association_sets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ec2_vpc_peering_connections
 | Name          | Type          | Status | Comment
@@ -2105,21 +2272,33 @@ This table was removed.
  
 ## aws_ecs_cluster_attachments
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_container_instance_attachments
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_container_instance_attributes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_container_instance_health_status_details
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_container_instance_registered_resources
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_container_instance_remaining_resources
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_container_instances
 | Name          | Type          | Status | Comment
@@ -2147,24 +2326,38 @@ This table was removed.
  
 ## aws_ecs_cluster_service_deployments
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_service_events
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_service_load_balancers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_service_service_registries
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_service_task_set_load_balancers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_service_task_set_service_registries
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_service_task_sets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_services
 | Name          | Type          | Status | Comment
@@ -2199,9 +2392,13 @@ This table was removed.
  
 ## aws_ecs_cluster_task_attachments
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_task_containers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_cluster_tasks
 | Name          | Type          | Status | Comment
@@ -2239,9 +2436,13 @@ This table was removed.
  
 ## aws_ecs_task_definition_container_definitions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_task_definition_volumes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ecs_task_definitions
 | Name          | Type          | Status | Comment
@@ -2280,9 +2481,13 @@ This table was removed.
  
 ## aws_eks_cluster_encryption_configs
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_eks_cluster_loggings
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_eks_clusters
 | Name          | Type          | Status | Comment
@@ -2309,15 +2514,23 @@ This table was removed.
  
 ## aws_elasticache_cluster_cache_nodes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_cluster_cache_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_cluster_log_delivery_configurations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_cluster_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_clusters
 | Name          | Type          | Status | Comment
@@ -2359,9 +2572,13 @@ This table was removed.
  
 ## aws_elasticache_global_replication_group_global_node_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_global_replication_group_members
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_global_replication_groups
 | Name          | Type          | Status | Comment
@@ -2374,6 +2591,8 @@ This table was removed.
  
 ## aws_elasticache_parameter_group_parameters
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_parameter_groups
 | Name          | Type          | Status | Comment
@@ -2383,12 +2602,18 @@ This table was removed.
  
 ## aws_elasticache_replication_group_log_delivery_configurations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_replication_group_node_group_members
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_replication_group_node_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_replication_groups
 | Name          | Type          | Status | Comment
@@ -2413,6 +2638,8 @@ This table was removed.
  
 ## aws_elasticache_reserved_cache_node_recurring_charges
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_reserved_cache_nodes
 | Name          | Type          | Status | Comment
@@ -2427,6 +2654,8 @@ This table was removed.
  
 ## aws_elasticache_reserved_cache_nodes_offering_recurring_charges
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_reserved_cache_nodes_offerings
 | Name          | Type          | Status | Comment
@@ -2463,6 +2692,8 @@ This table was removed.
  
 ## aws_elasticache_snapshot_node_snapshots
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_snapshots
 | Name          | Type          | Status | Comment
@@ -2473,6 +2704,8 @@ This table was removed.
  
 ## aws_elasticache_subnet_group_subnets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticache_subnet_groups
 | Name          | Type          | Status | Comment
@@ -2546,6 +2779,8 @@ This table was removed.
  
 ## aws_elasticbeanstalk_configuration_setting_options
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticbeanstalk_configuration_settings
 | Name          | Type          | Status | Comment
@@ -2560,6 +2795,8 @@ This table was removed.
  
 ## aws_elasticbeanstalk_environment_links
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elasticbeanstalk_environments
 | Name          | Type          | Status | Comment
@@ -2651,9 +2888,13 @@ This table was removed.
  
 ## aws_elbv1_load_balancer_backend_server_descriptions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv1_load_balancer_listeners
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv1_load_balancer_policies
 | Name          | Type          | Status | Comment
@@ -2669,9 +2910,13 @@ This table was removed.
  
 ## aws_elbv1_load_balancer_policies_app_cookie_stickiness
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv1_load_balancer_policies_lb_cookie_stickiness
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv1_load_balancers
 | Name          | Type          | Status | Comment
@@ -2717,9 +2962,13 @@ This table was removed.
  
 ## aws_elbv2_listener_default_action_forward_config_target_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv2_listener_default_actions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv2_listeners
 | Name          | Type          | Status | Comment
@@ -2757,9 +3006,13 @@ This table was removed.
  
 ## aws_elbv2_load_balancer_availability_zone_addresses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv2_load_balancer_availability_zones
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_elbv2_load_balancers
 | Name          | Type          | Status | Comment
@@ -2812,6 +3065,8 @@ This table was removed.
  
 ## aws_emr_block_public_access_config_port_ranges
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_emr_block_public_access_configs
 | Name          | Type          | Status | Comment
@@ -2880,21 +3135,33 @@ This table was removed.
  
 ## aws_firehose_delivery_stream_elasticsearch_destination
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_firehose_delivery_stream_extended_s3_destination
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_firehose_delivery_stream_http_destination
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_firehose_delivery_stream_open_search_destination
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_firehose_delivery_stream_redshift_destination
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_firehose_delivery_stream_splunk_destination
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_firehose_delivery_streams
 | Name          | Type          | Status | Comment
@@ -2940,33 +3207,53 @@ This table was removed.
  
 ## aws_fsx_data_repo_associations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_data_repo_tasks
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_data_repository_associations
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_data_repository_tasks
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_file_systems
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_filesystem_lustre_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_filesystem_ontap_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_filesystem_open_zfs_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_filesystem_windows_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_filesystems
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_snapshots
 | Name          | Type          | Status | Comment
@@ -2979,15 +3266,23 @@ This table was removed.
  
 ## aws_fsx_storage_virtual_machines
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_storage_vms
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_volume_ontap_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_volume_open_zfs_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_fsx_volumes
 | Name          | Type          | Status | Comment
@@ -3052,21 +3347,33 @@ This table was removed.
  
 ## aws_glue_crawler_targets_catalog_targets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_crawler_targets_delta_targets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_crawler_targets_dynamo_db_targets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_crawler_targets_jdbc_targets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_crawler_targets_mongo_db_targets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_crawler_targets_s3_targets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_crawlers
 | Name          | Type          | Status | Comment
@@ -3097,6 +3404,8 @@ This table was removed.
  
 ## aws_glue_database_table_columns
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_database_table_indexes
 | Name          | Type          | Status | Comment
@@ -3111,6 +3420,8 @@ This table was removed.
  
 ## aws_glue_database_table_partition_keys
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_database_tables
 | Name          | Type          | Status | Comment
@@ -3208,6 +3519,8 @@ This table was removed.
  
 ## aws_glue_ml_transform_input_record_tables
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_ml_transform_task_runs
 | Name          | Type          | Status | Comment
@@ -3289,6 +3602,8 @@ This table was removed.
  
 ## aws_glue_security_configuration_s3_encryption
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_security_configurations
 | Name          | Type          | Status | Comment
@@ -3303,9 +3618,13 @@ This table was removed.
  
 ## aws_glue_trigger_actions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_trigger_predicate_conditions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_glue_triggers
 | Name          | Type          | Status | Comment
@@ -3374,9 +3693,13 @@ This table was removed.
  
 ## aws_iam_accounts
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_iam_credential_reports
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_iam_group_policies
 | Name          | Type          | Status | Comment
@@ -3426,6 +3749,8 @@ This table was newly added.
  
 ## aws_iam_policy_versions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_iam_role_policies
 | Name          | Type          | Status | Comment
@@ -3546,6 +3871,8 @@ This table was removed.
  
 ## aws_inspector2_finding_resources
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_inspector2_findings
 | Name          | Type          | Status | Comment
@@ -3620,6 +3947,8 @@ This table was removed.
  
 ## aws_iot_jobs
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_iot_policies
 | Name          | Type          | Status | Comment
@@ -3636,9 +3965,13 @@ This table was newly added.
  
 ## aws_iot_security_profiles
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_iot_stream_files
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_iot_streams
 | Name          | Type          | Status | Comment
@@ -3697,6 +4030,8 @@ This table was removed.
  
 ## aws_iot_topic_rule_actions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_iot_topic_rules
 | Name          | Type          | Status | Comment
@@ -3800,6 +4135,8 @@ This table was removed.
  
 ## aws_kinesis_stream_enhanced_monitoring
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_kinesis_streams
 | Name          | Type          | Status | Comment
@@ -3898,15 +4235,23 @@ This table was removed.
  
 ## aws_lambda_function_file_system_configs
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lambda_function_layers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lambda_function_version_file_system_configs
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lambda_function_version_layers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lambda_function_versions
 | Name          | Type          | Status | Comment
@@ -4099,9 +4444,13 @@ This table was removed.
  
 ## aws_lightsail_certificate_domain_validation_records
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_certificate_renewal_summary_domain_validation_records
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_certificates
 | Name          | Type          | Status | Comment
@@ -4204,6 +4553,8 @@ This table was removed.
  
 ## aws_lightsail_database_pending_maintenance_actions
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_database_snapshots
 | Name          | Type          | Status | Comment
@@ -4231,6 +4582,8 @@ This table was removed.
  
 ## aws_lightsail_disk_add_ons
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_disk_snapshot
 | Name          | Type          | Status | Comment
@@ -4274,15 +4627,23 @@ This table was removed.
  
 ## aws_lightsail_instance_add_ons
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_instance_hardware_disk_add_ons
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_instance_hardware_disks
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_instance_networking_ports
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_instance_port_states
 | Name          | Type          | Status | Comment
@@ -4298,9 +4659,13 @@ This table was removed.
  
 ## aws_lightsail_instance_snapshot_from_attached_disk_add_ons
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_instance_snapshot_from_attached_disks
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_instance_snapshots
 | Name          | Type          | Status | Comment
@@ -4333,9 +4698,13 @@ This table was removed.
  
 ## aws_lightsail_load_balancer_instance_health_summary
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_load_balancer_tls_certificate_summaries
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_lightsail_load_balancer_tls_certificates
 | Name          | Type          | Status | Comment
@@ -4472,15 +4841,23 @@ This table was removed.
  
 ## aws_rds_cluster_associated_roles
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_cluster_db_cluster_members
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_cluster_domain_memberships
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_cluster_parameter_group_parameters
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_cluster_parameter_groups
 | Name          | Type          | Status | Comment
@@ -4494,6 +4871,8 @@ This table was newly added.
  
 ## aws_rds_cluster_parameters
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_cluster_snapshots
 | Name          | Type          | Status | Comment
@@ -4507,6 +4886,8 @@ This table was removed.
  
 ## aws_rds_cluster_vpc_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_clusters
 | Name          | Type          | Status | Comment
@@ -4552,6 +4933,8 @@ This table was removed.
  
 ## aws_rds_db_parameter_group_db_parameters
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_db_parameter_groups
 | Name          | Type          | Status | Comment
@@ -4565,6 +4948,8 @@ This table was newly added.
  
 ## aws_rds_db_parameters
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_db_security_groups
 | Name          | Type          | Status | Comment
@@ -4599,27 +4984,43 @@ This table was removed.
  
 ## aws_rds_instance_associated_roles
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instance_db_instance_automated_backups_replications
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instance_db_parameter_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instance_db_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instance_db_subnet_group_subnets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instance_domain_memberships
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instance_option_group_memberships
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instance_vpc_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_instances
 | Name          | Type          | Status | Comment
@@ -4695,6 +5096,8 @@ This table was removed.
  
 ## aws_rds_subnet_group_subnets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_rds_subnet_groups
 | Name          | Type          | Status | Comment
@@ -4712,33 +5115,53 @@ This table was removed.
  
 ## aws_redshift_cluster_deferred_maintenance_windows
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_endpoint_vpc_endpoint_network_interfaces
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_endpoint_vpc_endpoints
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_iam_roles
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_nodes
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_parameter_group_status_lists
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_parameter_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_parameters
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_cluster_vpc_security_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_clusters
 | Name          | Type          | Status | Comment
@@ -4811,6 +5234,8 @@ This table was removed.
  
 ## aws_redshift_snapshot_accounts_with_restore_access
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_snapshots
 | Name          | Type          | Status | Comment
@@ -4837,6 +5262,8 @@ This table was removed.
  
 ## aws_redshift_subnet_group_subnets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_redshift_subnet_groups
 | Name          | Type          | Status | Comment
@@ -4869,9 +5296,13 @@ This table was removed.
  
 ## aws_route53_delegation_sets
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_route53_domain_nameservers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_route53_domains
 | Name          | Type          | Status | Comment
@@ -5003,6 +5434,8 @@ This table was removed.
  
 ## aws_route53_hosted_zone_vpc_association_authorizations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_route53_hosted_zones
 | Name          | Type          | Status | Comment
@@ -5020,6 +5453,8 @@ This table was removed.
  
 ## aws_route53_reusable_delegation_sets
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_route53_traffic_policies
 | Name          | Type          | Status | Comment
@@ -5042,9 +5477,13 @@ This table was removed.
  
 ## aws_s3_account_config
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_s3_accounts
 This table was newly added.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_s3_bucket_cors_rules
 | Name          | Type          | Status | Comment
@@ -5103,6 +5542,8 @@ This table was newly added.
  
 ## aws_s3_bucket_replication_rules
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_s3_buckets
 | Name          | Type          | Status | Comment
@@ -5113,6 +5554,8 @@ This table was removed.
  
 ## aws_sagemaker_endpoint_configuration_production_variants
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_endpoint_configurations
 | Name          | Type          | Status | Comment
@@ -5127,9 +5570,13 @@ This table was removed.
  
 ## aws_sagemaker_model_containers
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_model_vpc_config
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_models
 | Name          | Type          | Status | Comment
@@ -5161,24 +5608,38 @@ This table was removed.
  
 ## aws_sagemaker_training_job_algorithm_specification
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_training_job_debug_hook_config
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_training_job_debug_rule_configurations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_training_job_debug_rule_evaluation_statuses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_training_job_input_data_config
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_training_job_profiler_rule_configurations
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_training_job_profiler_rule_evaluation_statuses
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_sagemaker_training_jobs
 | Name          | Type          | Status | Comment
@@ -5219,9 +5680,13 @@ This table was removed.
  
 ## aws_shield_attack_properties
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_shield_attack_sub_resources
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_shield_attacks
 | Name          | Type          | Status | Comment
@@ -5328,6 +5793,8 @@ This table was removed.
  
 ## aws_ssm_parameter_policies
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_ssm_parameters
 | Name          | Type          | Status | Comment
@@ -5338,6 +5805,8 @@ This table was removed.
  
 ## aws_transfer_server_workflow_details_on_upload
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_transfer_servers
 | Name          | Type          | Status | Comment
@@ -5373,6 +5842,8 @@ This table was removed.
  
 ## aws_waf_rule_predicates
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_waf_rules
 | Name          | Type          | Status | Comment
@@ -5391,9 +5862,13 @@ This table was removed.
  
 ## aws_waf_web_acl_logging_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_waf_web_acl_rules
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_waf_web_acls
 | Name          | Type          | Status | Comment
@@ -5408,6 +5883,8 @@ This table was removed.
  
 ## aws_wafregional_rate_based_rule_match_predicates
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_wafregional_rate_based_rules
 | Name          | Type          | Status | Comment
@@ -5428,6 +5905,8 @@ This table was removed.
  
 ## aws_wafregional_rule_predicates
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_wafregional_rules
 | Name          | Type          | Status | Comment
@@ -5440,6 +5919,8 @@ This table was removed.
  
 ## aws_wafregional_web_acl_rules
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_wafregional_web_acls
 | Name          | Type          | Status | Comment
@@ -5495,15 +5976,23 @@ This table was removed.
  
 ## aws_wafv2_web_acl_logging_configuration
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_wafv2_web_acl_post_process_firewall_manager_rule_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_wafv2_web_acl_pre_process_firewall_manager_rule_groups
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_wafv2_web_acl_rules
 This table was removed.
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
  
 ## aws_wafv2_web_acls
 | Name          | Type          | Status | Comment
