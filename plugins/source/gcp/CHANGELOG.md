@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.10.2-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.10.1-pre.0...plugins/source/gcp/v0.10.2-pre.0) (2022-09-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.12 ([#1916](https://github.com/cloudquery/cloudquery/issues/1916)) ([27d8153](https://github.com/cloudquery/cloudquery/commit/27d81534baaa1312a6bd87294d298dd8b5348a79))
+* Used DefaultTransformer from plugin-sdk for name transformations ([#1943](https://github.com/cloudquery/cloudquery/issues/1943)) ([716ff8e](https://github.com/cloudquery/cloudquery/commit/716ff8e498d2c50bc31d72d764f7498879b70acc))
+
 ## [0.10.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/gcp/v0.10.0-pre.0...plugins/source/gcp/v0.10.1-pre.0) (2022-09-21)
 
 

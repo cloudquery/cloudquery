@@ -28,7 +28,7 @@ func Hooks() []*Resource {
 			Multiplex:  "", // we skip multiplexing here as it's a relation
 			Struct:     new(github.HookDelivery),
 			TableName:  "hook_deliveries",
-			SkipFields: append(skipID, deliveredAt),
+			SkipFields: append(skipID, deliveredAt, "Request", "Response"),
 			ExtraColumns: append(orgColumns, idColumn,
 				codegen.ColumnDefinition{
 					Name:        "hook_id",
@@ -36,6 +36,16 @@ func Hooks() []*Resource {
 					Resolver:    `client.ResolveParentColumn("ID")`,
 					Description: "Hook ID",
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				codegen.ColumnDefinition{
+					Name:     "request",
+					Type:     schema.TypeString,
+					Resolver: `resolveRequest`,
+				},
+				codegen.ColumnDefinition{
+					Name:     "response",
+					Type:     schema.TypeString,
+					Resolver: `resolveResponse`,
 				},
 				timestampField("delivered_at", deliveredAt)),
 		},
