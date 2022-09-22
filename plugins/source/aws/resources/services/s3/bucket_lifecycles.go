@@ -20,7 +20,7 @@ func BucketLifecycles() *schema.Table {
 			},
 			{
 				Name:     "bucket_arn",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{

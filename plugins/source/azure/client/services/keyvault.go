@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVaultVaultsClient,KeyVaultManagedHsmsClient,KeyVaultKeysClient
+//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVaultVaultsClient,KeyVaultManagedHsmsClient,KeyVaultKeysClient,KeyVaultSecretsClient
 package services
 
 import (
@@ -15,6 +15,7 @@ type KeyVaultClient struct {
 	Keys        KeyVaultKeysClient
 	Vaults      KeyVaultVaultsClient
 	ManagedHsms KeyVaultManagedHsmsClient
+	Secrets     KeyVaultSecretsClient
 }
 
 type KeyVaultVaultsClient interface {
@@ -23,6 +24,10 @@ type KeyVaultVaultsClient interface {
 
 type KeyVaultKeysClient interface {
 	GetKeys(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.KeyListResultPage, err error)
+}
+
+type KeyVaultSecretsClient interface {
+	GetSecrets(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.SecretListResultPage, err error)
 }
 
 type KeyVaultManagedHsmsClient interface {
@@ -51,6 +56,7 @@ func NewKeyVaultClient(subscriptionId string, auth autorest.Authorizer) (KeyVaul
 	return KeyVaultClient{
 		Vaults:      vaultSvc,
 		Keys:        kv71,
+		Secrets:     kv71,
 		ManagedHsms: vhsm,
 	}, nil
 }

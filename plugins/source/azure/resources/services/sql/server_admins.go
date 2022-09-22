@@ -37,6 +37,16 @@ func serverAdmins() *schema.Table {
 				Resolver: schema.PathResolver("Login"),
 			},
 			{
+				Name:     "sid",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("Sid"),
+			},
+			{
+				Name:     "tenant_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("TenantID"),
+			},
+			{
 				Name:     "azure_ad_only_authentication",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AzureADOnlyAuthentication"),

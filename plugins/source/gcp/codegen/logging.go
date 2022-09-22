@@ -43,6 +43,7 @@ var loggingResources = []*Resource{
 				Resolver: `schema.PathResolver("Name")`,
 			},
 		},
+		SkipFields: []string{"Options"},
 	},
 }
 

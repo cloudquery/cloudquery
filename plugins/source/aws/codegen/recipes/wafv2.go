@@ -2,8 +2,11 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"reflect"
+	"strings"
 )
 
 func WAFv2Resources() []*Resource {
@@ -42,10 +45,9 @@ func WAFv2Resources() []*Resource {
 			},
 		},
 		{
-			SubService:           "managed_rule_groups",
-			Struct:               &types.ManagedRuleGroupSummary{},
-			PostResourceResolver: "resolveDescribeManagedRuleGroup",
-			SkipFields:           []string{"Scope"},
+			SubService: "managed_rule_groups",
+			Struct:     &types.ManagedRuleGroupSummary{},
+			SkipFields: []string{"Scope"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -64,6 +66,11 @@ func WAFv2Resources() []*Resource {
 					Type:     schema.TypeString,
 					Resolver: "client.ResolveWAFScope",
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "properties",
+					Type:     schema.TypeJSON,
+					Resolver: "resolveManageRuleGroupProperties",
 				},
 			},
 		},
@@ -130,7 +137,7 @@ func WAFv2Resources() []*Resource {
 		},
 		{
 			SubService: "web_acls",
-			Struct:     &types.WebACL{},
+			Struct:     &wafv2.WebACLWrapper{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -167,6 +174,10 @@ func WAFv2Resources() []*Resource {
 	for _, r := range resources {
 		r.Service = "wafv2"
 		r.Multiplex = `client.ServiceAccountRegionScopeMultiplexer("waf-regional")`
+		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
+		if strings.Contains(structName, "Wrapper") {
+			r.UnwrapEmbeddedStructs = true
+		}
 	}
 	return resources
 }

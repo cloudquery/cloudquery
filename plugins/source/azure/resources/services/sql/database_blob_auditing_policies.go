@@ -57,6 +57,11 @@ func databaseBlobAuditingPolicies() *schema.Table {
 				Resolver: schema.PathResolver("AuditActionsAndGroups"),
 			},
 			{
+				Name:     "storage_account_subscription_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("StorageAccountSubscriptionID"),
+			},
+			{
 				Name:     "is_storage_secondary_key_in_use",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("IsStorageSecondaryKeyInUse"),

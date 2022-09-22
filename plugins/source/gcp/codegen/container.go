@@ -26,6 +26,7 @@ var containerResources = []*Resource{
 				Options: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
+		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_4": "ipv4"}),
 	},
 }
 

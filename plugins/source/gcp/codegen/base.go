@@ -1,6 +1,9 @@
 package codegen
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -78,12 +81,27 @@ type Resource struct {
 	SkipFetch bool
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string
-	// Columns override, override generated columns
+	// ExtraColumns override, override generated columns
 	ExtraColumns []codegen.ColumnDefinition
+	// NameTransformer custom name transformer for resource
+	NameTransformer func(field reflect.StructField) (string, error)
 }
 
 var ProjectIdColumn = codegen.ColumnDefinition{
 	Name:     "project_id",
 	Type:     schema.TypeString,
 	Resolver: "client.ResolveProject",
+}
+
+func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := codegen.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
+		for k, v := range replace {
+			name = strings.ReplaceAll(name, k, v)
+		}
+		return name, nil
+	}
 }

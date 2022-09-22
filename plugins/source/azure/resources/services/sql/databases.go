@@ -77,6 +77,11 @@ func databases() *schema.Table {
 				Resolver: schema.PathResolver("Status"),
 			},
 			{
+				Name:     "database_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("DatabaseID"),
+			},
+			{
 				Name:     "creation_date",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationDate"),

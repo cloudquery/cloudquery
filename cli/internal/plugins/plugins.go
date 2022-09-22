@@ -284,15 +284,12 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec *specs.Source)
 
 	go func() {
 		scanner := bufio.NewScanner(reader)
-		fmt.Println("starting reading")
 		for scanner.Scan() {
-			fmt.Println("read line")
 			var structuredLogLine map[string]interface{}
 			b := scanner.Bytes()
 			if err := json.Unmarshal(b, &structuredLogLine); err != nil {
 				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
 			} else {
-				fmt.Printf("%v", structuredLogLine)
 				jsonToLog(&pl, structuredLogLine, p.logger)
 			}
 		}

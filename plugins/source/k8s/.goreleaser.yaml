@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/k8s
 
 monorepo:
-  tag_prefix: plugins/source/k8s/
+  tag_prefix: plugins-source-k8s-
   dir: plugins/source/k8s
 
 includes:

@@ -11,12 +11,17 @@ func TrailEventSelectors() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_cloudtrail_trail_event_selectors",
 		Resolver:  fetchCloudtrailTrailEventSelectors,
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.ServiceAccountRegionMultiplexer("cloudtrail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
 			},
 			{
 				Name:     "trail_arn",
