@@ -17,6 +17,7 @@ var functionsResources = []*Resource{
 		RequestStructFields: `Parent: "projects/" + c.ProjectId + "/locations/-",`,
 		UnimplementedServer: &pb.UnimplementedCloudFunctionsServiceServer{},
 		FakerFieldsToIgnore: []string{"SourceCode", "Trigger"},
+		SkipFields:          []string{"SourceCode", "Trigger"},
 	},
 }
 

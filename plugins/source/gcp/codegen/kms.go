@@ -21,6 +21,7 @@ var kmsResources = []*Resource{
 		ChildTable:          true,
 		SkipMock:            true,
 		SkipFetch:           true,
+		SkipFields:          []string{"RotationSchedule"},
 	},
 	{
 		SubService:          "keyrings",
