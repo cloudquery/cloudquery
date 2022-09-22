@@ -5,7 +5,7 @@ select
     :'check_id' as check_id,
     'EC2 instances should not have a public IP address' as title,
     account_id,
-    id as resource_id,
+    instance_id as resource_id,
     case when
         public_ip_address is not null
         then 'fail'

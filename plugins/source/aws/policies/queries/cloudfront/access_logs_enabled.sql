@@ -7,7 +7,7 @@ select
     account_id,
     arn as resource_id,
     case
-        when logging_enabled = true then 'fail'
+        when (distribution_config->'Logging'->>'Enabled')::boolean is distinct from true then 'fail'
         else 'pass'
     end as status
 from aws_cloudfront_distributions

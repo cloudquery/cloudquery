@@ -7,8 +7,8 @@ select
     account_id,
     arn as resource_id,
     case
-        when NOT '{PRIVATE}' = endpoint_configuration_types then 'fail'
+        when NOT '{PRIVATE}' = t then 'fail'
         else 'pass'
         end as status
 from
-    aws_apigateway_rest_apis
+    aws_apigateway_rest_apis, jsonb_array_elements_text(endpoint_configuration->'types') as t

@@ -6,5 +6,5 @@ select
     'AWS KMS keys should not be unintentionally deleted' as title,
     account_id,
     arn as resource_id,
-    case when key_state = 'PendingDeletion' and manager = 'CUSTOMER' then 'fail' else 'pass' end as status
+    case when key_state = 'PendingDeletion' and key_manager = 'CUSTOMER' then 'fail' else 'pass' end as status
 from aws_kms_keys

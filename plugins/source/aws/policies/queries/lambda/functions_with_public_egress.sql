@@ -8,28 +8,17 @@ select distinct
     arn AS resource_id,
     'fail' AS status -- TODO FIXME
 from aws_lambda_functions,
-    UNNEST(vpc_config_security_group_ids) as sgs,
-    UNNEST(vpc_config_subnet_ids) as sns
+    JSONB_ARRAY_ELEMENTS_TEXT(configuration->'VpcConfig'->'SecurityGroupIds') as sgs,
+     JSONB_ARRAY_ELEMENTS_TEXT(configuration->'VpcConfig'->' SubnetIds') as sns
 where sns in
     --  Find all subnets that include a route table that inclues a catchall route
-    (select subnet_id
-        from public.aws_ec2_route_tables
-        inner join
-            aws_ec2_route_table_associations on
-                aws_ec2_route_table_associations.route_table_cq_id = aws_ec2_route_tables.cq_id
-        where aws_ec2_route_tables.cq_id in
-            --  Find all routes in any route table that contains a route to 0.0.0.0/0 or ::/0
-            (select route_table_cq_id
-                from public.aws_ec2_route_table_routes
-                where destination_cidr_block = '0.0.0.0/0'
-                    or destination_ipv6_cidr_block = '::/0'))
+    (select a->>'SubnetId'
+        from public.aws_ec2_route_tables, jsonb_array_elements(associations) a, jsonb_array_elements(routes) r
+        where r->>'DestinationCidrBlock' = '0.0.0.0/0' OR r->>'DestinationIpv6CidrBlock' = '::/0'
+    )
     and sgs in
     -- 	Find all functions that have egress rule that allows access to all ip addresses
-    (select group_id
-        from aws_ec2_instance_security_groups
-        inner join view_aws_security_group_egress_rules on group_id = id
-        where (ip = '0.0.0.0/0'
-                or ip = '::/0') )
+    (select id from view_aws_security_group_egress_rules where ip = '0.0.0.0/0' or ip6 = '::/0')
 union
 -- Find all Lambda functions that do not run in a VPC
 select distinct
@@ -41,7 +30,6 @@ select distinct
     arn AS resource_id,
     'fail' AS status -- TODO FIXME
 from aws_lambda_functions
-where vpc_config_vpc_id is null
-    or vpc_config_vpc_id = ''
+where configuration->'VpcConfig'->>'VpcId' is null
 
 -- Note: We do not restrict the search to specific Runtimes
