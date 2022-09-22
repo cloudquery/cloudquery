@@ -1,7 +1,7 @@
 project_name: cli
 
 monorepo:
-  tag_prefix: cli/
+  tag_prefix: cli-
   dir: cli
 
 includes:
