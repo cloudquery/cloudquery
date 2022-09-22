@@ -1,8 +1,6 @@
 package plugin
 
 import (
-	_ "embed"
-
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/authorization"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/batch"

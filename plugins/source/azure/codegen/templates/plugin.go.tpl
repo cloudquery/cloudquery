@@ -5,7 +5,6 @@ import (
 	{{range .Packages}}"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/{{.}}"
     {{end}}"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
-	_ "embed"
 )
 
 var (

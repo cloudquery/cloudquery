@@ -1,8 +1,6 @@
 package plugin
 
 import (
-	_ "embed"
-
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/plugins"
 )
