@@ -17,7 +17,7 @@ jobs:
           tag=${{ github.ref_name }}
           plugin_type=$(echo $tag | cut -d- -f2)
           plugin_name=$(echo $tag | cut -d- -f3)
-          plugin_version=$(echo $tag | cut -d- -f4)
+          plugin_version=$(echo $tag | cut -d- -f4-)
           echo ::set-output name=plugin_name::${plugin_name}
           echo ::set-output name=plugin_type::${plugin_type}
           echo ::set-output name=plugin_version::${plugin_version}
