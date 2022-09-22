@@ -112,6 +112,11 @@ func Disks() *schema.Table {
 				Resolver: schema.PathResolver("Options"),
 			},
 			{
+				Name:     "params",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Params"),
+			},
+			{
 				Name:     "physical_block_size_bytes",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("PhysicalBlockSizeBytes"),
