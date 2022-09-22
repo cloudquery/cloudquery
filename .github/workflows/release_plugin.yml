@@ -15,11 +15,9 @@ jobs:
         id: split
         run: |
           tag=${{ github.ref_name }}
-          plugin_dir=${tag%%-v*}
           plugin_type=$(echo $tag | cut -d- -f2)
           plugin_name=$(echo $tag | cut -d- -f3)
           plugin_version=$(echo $tag | cut -d- -f4)
-          echo ::set-output name=plugin_dir::${plugin_dir}
           echo ::set-output name=plugin_name::${plugin_name}
           echo ::set-output name=plugin_type::${plugin_type}
           echo ::set-output name=plugin_version::${plugin_version}
@@ -44,7 +42,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugin_dir}}/.goreleaser.yaml
+        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -54,7 +52,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --rm-dist -f ./${{steps.split.outputs.plugin_dir}}.goreleaser.yaml
+        run: goreleaser release --rm-dist -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
