@@ -154,7 +154,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "openid_connect_identity_providers",
-			Struct:     &types.OpenIDConnectProviderListEntry{},
+			Struct:     &iamService.IamOpenIdIdentityProviderWrapper{},
 			SkipFields: []string{"Arn", "Tags"},
 			ExtraColumns: append(
 				defaultAccountColumns,
