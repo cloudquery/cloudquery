@@ -15,17 +15,59 @@ This table was removed.
 ## aws_accessanalyzer_analyzer_archive_rules
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|analyzer_arn|text|added|
+|created_at|timestamp without time zone|added|
+|filter|jsonb|added|
+|rule_name|text|added|
+|updated_at|timestamp without time zone|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_accessanalyzer_analyzer_findings
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|arn|text|added|
+|analyzer_arn|text|added|
+|analyzed_at|timestamp without time zone|added|
+|condition|jsonb|added|
+|created_at|timestamp without time zone|added|
+|id|text|added|
+|resource_owner_account|text|added|
+|resource_type|text|added|
+|status|text|added|
+|updated_at|timestamp without time zone|added|
+|action|text[]|added|
+|error|text|added|
+|is_public|boolean|added|
+|principal|jsonb|added|
+|resource|text|added|
+|sources|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_accessanalyzer_analyzers
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|arn|text|added|
+|created_at|timestamp without time zone|added|
+|name|text|added|
+|status|text|added|
+|type|text|added|
+|last_resource_analyzed|text|added|
+|last_resource_analyzed_at|timestamp without time zone|added|
+|status_reason|jsonb|added|
+|tags|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_accounts
 Renamed to aws_iam_accounts. 
@@ -930,7 +972,17 @@ This table was removed.
 ## aws_cloudwatchlogs_metric_filters
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|arn|text|added|
+|creation_time|bigint|added|
+|filter_name|text|added|
+|filter_pattern|text|added|
+|log_group_name|text|added|
+|metric_transformations|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_codebuild_project_environment_variables
 This table was removed. 
@@ -2955,17 +3007,75 @@ This table was removed.
 ## aws_fsx_data_repository_associations
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|arn|text|added|
+|tags|jsonb|added|
+|association_id|text|added|
+|batch_import_meta_data_on_create|boolean|added|
+|creation_time|timestamp without time zone|added|
+|data_repository_path|text|added|
+|failure_details|jsonb|added|
+|file_system_id|text|added|
+|file_system_path|text|added|
+|imported_file_chunk_size|bigint|added|
+|lifecycle|text|added|
+|s_3|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_fsx_data_repository_tasks
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|arn|text|added|
+|tags|jsonb|added|
+|creation_time|timestamp without time zone|added|
+|file_system_id|text|added|
+|lifecycle|text|added|
+|task_id|text|added|
+|type|text|added|
+|end_time|timestamp without time zone|added|
+|failure_details|jsonb|added|
+|paths|text[]|added|
+|report|jsonb|added|
+|start_time|timestamp without time zone|added|
+|status|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_fsx_file_systems
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|arn|text|added|
+|tags|jsonb|added|
+|administrative_actions|jsonb|added|
+|creation_time|timestamp without time zone|added|
+|dns_name|text|added|
+|failure_details|jsonb|added|
+|file_system_id|text|added|
+|file_system_type|text|added|
+|file_system_type_version|text|added|
+|kms_key_id|text|added|
+|lifecycle|text|added|
+|lustre_configuration|jsonb|added|
+|network_interface_ids|text[]|added|
+|ontap_configuration|jsonb|added|
+|open_zfs_configuration|jsonb|added|
+|owner_id|text|added|
+|storage_capacity|bigint|added|
+|storage_type|text|added|
+|subnet_ids|text[]|added|
+|vpc_id|text|added|
+|windows_configuration|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_fsx_filesystem_lustre_configuration
 This table was removed. 
@@ -2994,7 +3104,24 @@ This table was removed.
 ## aws_fsx_storage_virtual_machines
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|arn|text|added|
+|tags|jsonb|added|
+|active_directory_configuration|jsonb|added|
+|creation_time|timestamp without time zone|added|
+|endpoints|jsonb|added|
+|file_system_id|text|added|
+|lifecycle|text|added|
+|lifecycle_transition_reason|jsonb|added|
+|name|text|added|
+|root_volume_security_style|text|added|
+|storage_virtual_machine_id|text|added|
+|subtype|text|added|
+|uuid|text|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_fsx_storage_vms
 This table was removed. 
@@ -3391,12 +3518,66 @@ This table was removed.
 ## aws_iam_accounts
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|users|bigint|added|
+|users_quota|bigint|added|
+|groups|bigint|added|
+|groups_quota|bigint|added|
+|server_certificates|bigint|added|
+|server_certificates_quota|bigint|added|
+|user_policy_size_quota|bigint|added|
+|group_policy_size_quota|bigint|added|
+|groups_per_user_quota|bigint|added|
+|signing_certificates_per_user_quota|bigint|added|
+|access_keys_per_user_quota|bigint|added|
+|mfa_devices|bigint|added|
+|mfa_devices_in_use|bigint|added|
+|account_mfa_enabled|boolean|added|
+|account_access_keys_present|boolean|added|
+|account_signing_certificates_present|boolean|added|
+|attached_policies_per_group_quota|bigint|added|
+|attached_policies_per_role_quota|bigint|added|
+|attached_policies_per_user_quota|bigint|added|
+|policies|bigint|added|
+|policies_quota|bigint|added|
+|policy_size_quota|bigint|added|
+|policy_versions_in_use|bigint|added|
+|policy_versions_in_use_quota|bigint|added|
+|versions_per_policy_quota|bigint|added|
+|global_endpoint_token_version|bigint|added|
+|aliases|text[]|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_iam_credential_reports
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|arn|text|added|
+|user_creation_time|timestamp without time zone|added|
+|password_last_changed|timestamp without time zone|added|
+|password_next_rotation|timestamp without time zone|added|
+|access_key_1_last_rotated|timestamp without time zone|added|
+|access_key_2_last_rotated|timestamp without time zone|added|
+|cert_1_last_rotated|timestamp without time zone|added|
+|cert_2_last_rotated|timestamp without time zone|added|
+|access_key_1_last_used_date|timestamp without time zone|added|
+|access_key_2_last_used_date|timestamp without time zone|added|
+|password_last_used|timestamp without time zone|added|
+|user|text|added|
+|password_status|text|added|
+|mfa_active|boolean|added|
+|access_key_1_active|boolean|added|
+|access_key_2_active|boolean|added|
+|cert_1_active|boolean|added|
+|cert_2_active|boolean|added|
+|access_key_1_last_used_region|text|added|
+|access_key_1_last_used_service|text|added|
+|access_key_2_last_used_region|text|added|
+|access_key_2_last_used_service|text|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_iam_group_policies
 | Name          | Type          | Status | Comment
@@ -3641,7 +3822,34 @@ This table was removed.
 ## aws_iot_jobs
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|tags|jsonb|added|
+|arn|text|added|
+|abort_config|jsonb|added|
+|comment|text|added|
+|completed_at|timestamp without time zone|added|
+|created_at|timestamp without time zone|added|
+|description|text|added|
+|document_parameters|jsonb|added|
+|force_canceled|boolean|added|
+|is_concurrent|boolean|added|
+|job_executions_retry_config|jsonb|added|
+|job_executions_rollout_config|jsonb|added|
+|job_id|text|added|
+|job_process_details|jsonb|added|
+|job_template_arn|text|added|
+|last_updated_at|timestamp without time zone|added|
+|namespace_id|text|added|
+|presigned_url_config|jsonb|added|
+|reason_code|text|added|
+|status|text|added|
+|target_selection|text|added|
+|targets|text[]|added|
+|timeout_config|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_iot_policies
 | Name          | Type          | Status | Comment
@@ -3659,7 +3867,24 @@ This table was newly added.
 ## aws_iot_security_profiles
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|targets|text[]|added|
+|tags|jsonb|added|
+|arn|text|added|
+|additional_metrics_to_retain|text[]|added|
+|additional_metrics_to_retain_v_2|jsonb|added|
+|alert_targets|jsonb|added|
+|behaviors|jsonb|added|
+|creation_date|timestamp without time zone|added|
+|last_modified_date|timestamp without time zone|added|
+|security_profile_description|text|added|
+|security_profile_name|text|added|
+|version|bigint|added|
+|result_metadata|jsonb|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_iot_stream_files
 This table was removed. 
@@ -4506,7 +4731,23 @@ This table was removed.
 ## aws_rds_cluster_parameter_group_parameters
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|cluster_parameter_group_arn|text|added|
+|allowed_values|text|added|
+|apply_method|text|added|
+|apply_type|text|added|
+|data_type|text|added|
+|description|text|added|
+|is_modifiable|boolean|added|
+|minimum_engine_version|text|added|
+|parameter_name|text|added|
+|parameter_value|text|added|
+|source|text|added|
+|supported_engine_modes|text[]|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_rds_cluster_parameter_groups
 | Name          | Type          | Status | Comment
@@ -4579,7 +4820,23 @@ This table was removed.
 ## aws_rds_db_parameter_group_db_parameters
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|region|text|added|
+|db_parameter_group_arn|text|added|
+|allowed_values|text|added|
+|apply_method|text|added|
+|apply_type|text|added|
+|data_type|text|added|
+|description|text|added|
+|is_modifiable|boolean|added|
+|minimum_engine_version|text|added|
+|parameter_name|text|added|
+|parameter_value|text|added|
+|source|text|added|
+|supported_engine_modes|text[]|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_rds_db_parameter_groups
 | Name          | Type          | Status | Comment
@@ -4898,7 +5155,14 @@ This table was removed.
 ## aws_route53_delegation_sets
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|arn|text|added|
+|name_servers|text[]|added|
+|caller_reference|text|added|
+|id|text|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_route53_domain_nameservers
 This table was removed. 
@@ -5076,7 +5340,15 @@ This table was removed.
 ## aws_s3_accounts
 This table was newly added.
 | Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | --------------- 
+| ------------- | ------------- | --------------- | ---------------
+|account_id|text|added|
+|block_public_acls|boolean|added|
+|block_public_policy|boolean|added|
+|ignore_public_acls|boolean|added|
+|restrict_public_buckets|boolean|added|
+|config_exists|boolean|added|
+|_cq_id|uuid|added|
+|_cq_fetch_time|timestamp without time zone|added| 
  
 ## aws_s3_bucket_cors_rules
 | Name          | Type          | Status | Comment
