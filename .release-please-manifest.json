@@ -19,7 +19,7 @@
   "plugins/source/k8s+FILLER": "0.0.0",
   "plugins/source/okta": "0.7.1-pre.0",
   "plugins/source/okta+FILLER": "0.0.0",
-  "plugins/source/terraform": "0.6.0-pre.0",
+  "plugins/source/terraform": "0.6.1-pre.0",
   "plugins/source/terraform+FILLER": "0.0.0",
   "plugins/source/test": "1.1.4",
   "plugins/source/test+FILLER": "0.0.0"
