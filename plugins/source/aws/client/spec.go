@@ -26,7 +26,7 @@ type Spec struct {
 	Accounts     []Account `json:"accounts,omitempty"`
 	Organization *AwsOrg   `json:"org,omitempty"`
 	Debug        bool      `json:"debug,omitempty"`
-	MaxAttempts  int       `json:"max_attemps,omitempty"`
+	MaxAttempts  int       `json:"max_attempts,omitempty"`
 	MaxBackoff   int       `json:"max_backoff,omitempty"`
 }
 
