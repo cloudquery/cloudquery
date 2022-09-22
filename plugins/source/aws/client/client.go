@@ -416,7 +416,11 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 	var awsCfg aws.Config
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion(defaultRegion),
-		config.WithRetryer(newRetryer(logger, awsConfig.MaxRetries, awsConfig.MaxBackoff)),
+	}
+
+	// use custom retryer if it is defined in provider config
+	if awsConfig.MaxRetries != nil && awsConfig.MaxBackoff != nil {
+		configFns = append(configFns, config.WithRetryer(newRetryer(logger, *awsConfig.MaxRetries, *awsConfig.MaxBackoff)))
 	}
 
 	if account.DefaultRegion != "" {
