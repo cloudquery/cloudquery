@@ -187,7 +187,7 @@ func IAMResources() []*Resource {
 		{
 			SubService: "policies",
 			Struct:     &types.ManagedPolicyDetail{},
-			SkipFields: []string{"PolicyId", "Tags"},
+			SkipFields: []string{"PolicyId", "Tags", "PolicyVersionList"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -205,6 +205,11 @@ func IAMResources() []*Resource {
 					Name:     "tags",
 					Type:     schema.TypeJSON,
 					Resolver: `resolveIamPolicyTags`,
+				},
+				{
+					Name:     "policy_version_list",
+					Type:     schema.TypeJSON,
+					Resolver: `resolveIamPolicyVersionList`,
 				},
 			},
 		},

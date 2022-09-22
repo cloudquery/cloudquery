@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -9,6 +10,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
+
+type PolicyVersionWrapper struct {
+	types.PolicyVersion
+	DecodedDocument *string
+}
 
 func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.GetAccountAuthorizationDetailsInput
@@ -40,4 +46,19 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 		return err
 	}
 	return resource.Set("tags", client.TagsToMap(response.Tags))
+}
+
+func resolveIamPolicyVersionList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	r := resource.Item.(types.ManagedPolicyDetail)
+	data := make([]PolicyVersionWrapper, len(r.PolicyVersionList))
+	for i := range r.PolicyVersionList {
+		w := PolicyVersionWrapper{
+			PolicyVersion: r.PolicyVersionList[i],
+		}
+		if v, err := url.PathUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
+			w.DecodedDocument = &v
+		}
+		data[i] = w
+	}
+	return resource.Set(c.Name, data)
 }
