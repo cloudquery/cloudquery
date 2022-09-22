@@ -926,10 +926,6 @@ This table was removed.
 |latest_digest_delivery_time|timestamp without time zone|removed|
 |latest_notification_error|text|removed|
 |latest_notification_time|timestamp without time zone|removed|
-|s3_bucket_name|text|removed|
-|s3_key_prefix|text|removed|
-|s_3_bucket_name|text|added|
-|s_3_key_prefix|text|added|
 |start_logging_time|timestamp without time zone|removed|
 |status|jsonb|added|
 |stop_logging_time|timestamp without time zone|removed|
@@ -1232,11 +1228,7 @@ This table was removed.
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|conformance_pack_input_parameters|jsonb|removed|
-|delivery_s3_bucket|text|removed|
-|delivery_s3_key_prefix|text|removed|
-|delivery_s_3_bucket|text|added|
-|delivery_s_3_key_prefix|text|added| 
+|conformance_pack_input_parameters|jsonb|removed| 
  
 ## aws_dax_cluster_nodes
 This table was removed. 
@@ -1275,8 +1267,6 @@ This table was removed.
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |aws_device|text|added|
-|aws_device_v2|text|removed|
-|aws_device_v_2|text|added|
 |aws_logical_device_id|text|added|
 |connection_name|text|added|
 |mac_sec_keys|jsonb|added|
@@ -1333,8 +1323,6 @@ This table was removed.
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |aws_device|text|added|
-|aws_device_v2|text|removed|
-|aws_device_v_2|text|added|
 |aws_logical_device_id|text|added|
 |connection_ids|text[]|removed|
 |connections|jsonb|added|
@@ -1363,8 +1351,6 @@ This table was removed.
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |asn|bigint|updated|Type changed from integer to bigint
-|aws_device_v2|text|removed|
-|aws_device_v_2|text|added|
 |aws_logical_device_id|text|added|
 |bgp_peers|jsonb|added|
 |mtu|bigint|updated|Type changed from integer to bigint
@@ -1534,12 +1520,8 @@ This table was removed.
 |_cq_id|uuid|added|
 |carrier_ip|text|updated|Type changed from inet to text
 |customer_owned_ip|text|updated|Type changed from inet to text
-|customer_owned_ipv4_pool|text|removed|
-|customer_owned_ipv_4_pool|text|added|
 |private_ip_address|text|updated|Type changed from inet to text
-|public_ip|text|updated|Type changed from inet to text
-|public_ipv4_pool|text|removed|
-|public_ipv_4_pool|text|added| 
+|public_ip|text|updated|Type changed from inet to text 
  
 ## aws_ec2_flow_logs
 | Name          | Type          | Status | Comment
@@ -1732,7 +1714,7 @@ This table was removed.
 |iam_instance_profile_id|text|removed|
 |id|text|removed|
 |instance_id|text|added|
-|ipv_6_address|text|added|
+|ipv6_address|text|added|
 |licenses|jsonb|updated|Type changed from text[] to jsonb
 |maintenance_options|jsonb|added|
 |metadata_options|jsonb|added|
@@ -1848,16 +1830,9 @@ This table was removed.
 |attachment_network_card_index|integer|removed|
 |attachment_status|text|removed|
 |id|text|removed|
-|ipv4_prefixes|text[]|removed|
-|ipv6_address|text|removed|
-|ipv6_addresses|text[]|removed|
-|ipv6_native|boolean|removed|
-|ipv6_prefixes|text[]|removed|
-|ipv_4_prefixes|jsonb|added|
-|ipv_6_address|text|added|
-|ipv_6_addresses|jsonb|added|
-|ipv_6_native|boolean|added|
-|ipv_6_prefixes|jsonb|added|
+|ipv4_prefixes|jsonb|updated|Type changed from text[] to jsonb
+|ipv6_addresses|jsonb|updated|Type changed from text[] to jsonb
+|ipv6_prefixes|jsonb|updated|Type changed from text[] to jsonb
 |network_interface_id|text|added|
 |private_ip_addresses|jsonb|added|
 |tag_set|jsonb|added|
@@ -1919,16 +1894,12 @@ This table was removed.
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|assign_ipv6_address_on_creation|boolean|removed|
-|assign_ipv_6_address_on_creation|boolean|added|
 |available_ip_address_count|bigint|updated|Type changed from integer to bigint
-|customer_owned_ipv4_pool|text|removed|
-|customer_owned_ipv_4_pool|text|added|
-|enable_dns_64|boolean|added|
+|enable_dns64|boolean|added|
 |enable_lni_at_device_index|bigint|added|
 |id|text|removed|
-|ipv_6_cidr_block_association_set|jsonb|added|
-|ipv_6_native|boolean|added|
+|ipv6_cidr_block_association_set|jsonb|added|
+|ipv6_native|boolean|added|
 |private_dns_name_options_on_launch|jsonb|added|
 |subnet_arn|text|added|
 |subnet_id|text|added| 
@@ -2121,7 +2092,7 @@ This table was removed.
 |_cq_id|uuid|added|
 |cidr_block_association_set|jsonb|added|
 |id|text|removed|
-|ipv_6_cidr_block_association_set|jsonb|added|
+|ipv6_cidr_block_association_set|jsonb|added|
 |vpc_id|text|added| 
  
 ## aws_ec2_vpn_gateways
@@ -2191,8 +2162,6 @@ This table was removed.
 |attributes|jsonb|added|
 |cluster_arn|text|added|
 |cluster_cq_id|uuid|removed|
-|ec2_instance_id|text|removed|
-|ec_2_instance_id|text|added|
 |health_status|jsonb|added|
 |health_status_overall_status|text|removed|
 |pending_tasks_count|bigint|updated|Type changed from integer to bigint
@@ -2827,8 +2796,6 @@ This table was removed.
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |availability_zones|jsonb|added|
-|customer_owned_ipv4_pool|text|removed|
-|customer_owned_ipv_4_pool|text|added|
 |load_balancer_name|text|added|
 |name|text|removed|
 |state|jsonb|added|
@@ -2905,7 +2872,7 @@ This table was removed.
 |ec2_instance_attribute_requested_subnet_ids|text[]|removed|
 |ec2_instance_attribute_service_access_security_group|text|removed|
 |ec2_instance_attribute_subnet_id|text|removed|
-|ec_2_instance_attributes|jsonb|added|
+|ec2_instance_attributes|jsonb|added|
 |end_date_time|timestamp without time zone|removed|
 |kerberos_ad_domain_join_password|text|removed|
 |kerberos_ad_domain_join_user|text|removed|
@@ -3021,7 +2988,7 @@ This table was newly added.
 |file_system_path|text|added|
 |imported_file_chunk_size|bigint|added|
 |lifecycle|text|added|
-|s_3|jsonb|added|
+|s3|jsonb|added|
 |_cq_id|uuid|added|
 |_cq_fetch_time|timestamp without time zone|added| 
  
@@ -3313,10 +3280,6 @@ This table was removed.
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |endpoint_name|text|added|
-|extra_jars_s3_path|text|removed|
-|extra_jars_s_3_path|text|added|
-|extra_python_libs_s3_path|text|removed|
-|extra_python_libs_s_3_path|text|added|
 |name|text|removed| 
  
 ## aws_glue_job_runs
@@ -3568,14 +3531,14 @@ This table was newly added.
 |user|text|added|
 |password_status|text|added|
 |mfa_active|boolean|added|
-|access_key_1_active|boolean|added|
-|access_key_2_active|boolean|added|
-|cert_1_active|boolean|added|
-|cert_2_active|boolean|added|
-|access_key_1_last_used_region|text|added|
-|access_key_1_last_used_service|text|added|
-|access_key_2_last_used_region|text|added|
-|access_key_2_last_used_service|text|added|
+|access_key1_active|boolean|added|
+|access_key2_active|boolean|added|
+|cert1_active|boolean|added|
+|cert2_active|boolean|added|
+|access_key1_last_used_region|text|added|
+|access_key1_last_used_service|text|added|
+|access_key2_last_used_region|text|added|
+|access_key2_last_used_service|text|added|
 |_cq_id|uuid|added|
 |_cq_fetch_time|timestamp without time zone|added| 
  
@@ -3732,8 +3695,7 @@ This table was removed.
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|base32_string_seed|bytea|removed|
-|base_32_string_seed|bigint[]|added|
+|base32_string_seed|bigint[]|updated|Type changed from bytea to bigint[]
 |qr_code_png|bigint[]|updated|Type changed from bytea to bigint[]
 |user|jsonb|added|
 |user_arn|text|removed|
@@ -3874,7 +3836,7 @@ This table was newly added.
 |tags|jsonb|added|
 |arn|text|added|
 |additional_metrics_to_retain|text[]|added|
-|additional_metrics_to_retain_v_2|jsonb|added|
+|additional_metrics_to_retain_v2|jsonb|added|
 |alert_targets|jsonb|added|
 |behaviors|jsonb|added|
 |creation_date|timestamp without time zone|added|
@@ -4163,8 +4125,6 @@ This table was removed.
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |account_id|text|added|
-|code_sha256|text|removed|
-|code_sha_256|text|added|
 |dead_letter_config|jsonb|added|
 |dead_letter_config_target_arn|text|removed|
 |environment|jsonb|added|
@@ -4541,8 +4501,6 @@ This table was removed.
 |account_id|text|added|
 |instance_arn|text|added|
 |instance_cq_id|uuid|removed|
-|ipv6_cidrs|text[]|removed|
-|ipv_6_cidrs|text[]|added|
 |region|text|added| 
  
 ## aws_lightsail_instance_snapshot_from_attached_disk_add_ons
@@ -4569,8 +4527,6 @@ This table was removed.
 |hardware|jsonb|added|
 |hardware_cpu_count|bigint|removed|
 |hardware_ram_size_in_gb|float|removed|
-|ipv6_addresses|text[]|removed|
-|ipv_6_addresses|text[]|added|
 |location|jsonb|added|
 |location_availability_zone|text|removed|
 |location_region_name|text|removed|
@@ -4700,7 +4656,7 @@ This table was removed.
 |object_encryption_type|text|removed|
 |prefix|text|removed|
 |region|text|added|
-|s_3_export_configuration|jsonb|added| 
+|s3_export_configuration|jsonb|added| 
  
 ## aws_qldb_ledgers
 | Name          | Type          | Status | Comment
@@ -4812,7 +4768,7 @@ This table was removed.
 |scaling_configuration_info_min_capacity|integer|removed|
 |scaling_configuration_info_seconds_until_auto_pause|integer|removed|
 |scaling_configuration_info_timeout_action|text|removed|
-|serverless_v_2_scaling_configuration|jsonb|added|
+|serverless_v2_scaling_configuration|jsonb|added|
 |storage_type|text|added|
 |tag_list|jsonb|added|
 |vpc_security_groups|jsonb|added| 
@@ -4859,8 +4815,6 @@ This table was removed.
 |db_security_group_description|text|added|
 |db_security_group_name|text|added|
 |description|text|removed|
-|ec2_security_groups|jsonb|removed|
-|ec_2_security_groups|jsonb|added|
 |name|text|removed| 
  
 ## aws_rds_db_snapshots
@@ -5600,9 +5554,7 @@ This table was removed.
 |account_sharing_info_list|jsonb|removed|
 |category|text[]|added|
 |category_enum|text[]|added|
-|permissions|jsonb|added|
-|sha1|text|removed|
-|sha_1|text|added| 
+|permissions|jsonb|added| 
  
 ## aws_ssm_instance_compliance_items
 | Name          | Type          | Status | Comment
