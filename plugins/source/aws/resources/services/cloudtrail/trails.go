@@ -97,12 +97,12 @@ func Trails() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "s_3_bucket_name",
+				Name:     "s3_bucket_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("S3BucketName"),
 			},
 			{
-				Name:     "s_3_key_prefix",
+				Name:     "s3_key_prefix",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("S3KeyPrefix"),
 			},

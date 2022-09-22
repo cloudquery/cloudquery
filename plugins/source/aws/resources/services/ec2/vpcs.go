@@ -52,7 +52,7 @@ func Vpcs() *schema.Table {
 				Resolver: schema.PathResolver("InstanceTenancy"),
 			},
 			{
-				Name:     "ipv_6_cidr_block_association_set",
+				Name:     "ipv6_cidr_block_association_set",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ipv6CidrBlockAssociationSet"),
 			},

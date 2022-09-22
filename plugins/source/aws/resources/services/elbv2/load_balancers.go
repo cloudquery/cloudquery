@@ -58,7 +58,7 @@ func LoadBalancers() *schema.Table {
 				Resolver: schema.PathResolver("CreatedTime"),
 			},
 			{
-				Name:     "customer_owned_ipv_4_pool",
+				Name:     "customer_owned_ipv4_pool",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CustomerOwnedIpv4Pool"),
 			},
