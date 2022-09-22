@@ -94,17 +94,17 @@ func getSourceSpec(path string, registry specs.Registry) specs.Source {
 	}
 }
 
-func getDocsLink(registry specs.Registry, path string, name string) *string {
+func getDocsLink(registry specs.Registry, path string, name string) string {
 	if registry == specs.RegistryGithub && strings.HasPrefix(path, "cloudquery/") {
 		docsPath := fmt.Sprintf("# Check documentation here: https://github.com/cloudquery/cloudquery/tree/main/plugins/source/%s", name)
-		return &docsPath
+		return docsPath
 	}
 	if registry == specs.RegistryGithub {
 		docsPath := fmt.Sprintf("# Check documentation here: https://github.com/%s", path)
-		return &docsPath
+		return docsPath
 	}
 
-	return nil
+	return ""
 }
 
 func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, registry specs.Registry, outputFile string) error {
