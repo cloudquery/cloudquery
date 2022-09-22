@@ -6,7 +6,7 @@ The GCP Source plugin for CloudQuery extracts configuration from a variety of GC
 
 - [Tables](./docs/tables/README.md)
 - [Homepage](https://cloudquery.io)
-- [Documentation](https://docs.cloudquery.io)
+- [Documentation](https://cloudquery.io/docs)
 - [Discord](https://cloudquery.io/discord)
 
 ## Install
