@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/gcp
 
 monorepo:
-  tag_prefix: plugins/source/gcp/
+  tag_prefix: plugins-source-gcp-
   dir: plugins/source/gcp
 
 includes:

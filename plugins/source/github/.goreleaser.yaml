@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/github
 
 monorepo:
-  tag_prefix: plugins/source/github/
+  tag_prefix: plugins-source-github-
   dir: plugins/source/github
 
 includes:
