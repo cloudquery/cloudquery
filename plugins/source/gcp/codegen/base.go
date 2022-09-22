@@ -1,11 +1,11 @@
 package codegen
 
 import (
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/iancoleman/strcase"
 	"reflect"
 	"strings"
+
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type Resource struct {
@@ -84,7 +84,7 @@ type Resource struct {
 	// ExtraColumns override, override generated columns
 	ExtraColumns []codegen.ColumnDefinition
 	// NameTransformer custom name transformer for resource
-	NameTransformer func(field reflect.StructField) string
+	NameTransformer func(field reflect.StructField) (string, error)
 }
 
 var ProjectIdColumn = codegen.ColumnDefinition{
@@ -93,25 +93,15 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 	Resolver: "client.ResolveProject",
 }
 
-func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) string {
-	return func(field reflect.StructField) string {
-		name := DefaultTransformer(field)
+func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
+	return func(field reflect.StructField) (string, error) {
+		name, err := codegen.DefaultNameTransformer(field)
+		if err != nil {
+			return "", err
+		}
 		for k, v := range replace {
 			name = strings.ReplaceAll(name, k, v)
 		}
-		return name
+		return name, nil
 	}
-}
-
-// todo use default transformer from pligin-sdk
-func DefaultTransformer(field reflect.StructField) string {
-	name := field.Name
-	if jsonTag := strings.Split(field.Tag.Get("json"), ",")[0]; len(jsonTag) > 0 {
-		// return empty string if the field is not related api response
-		if jsonTag == "-" {
-			return ""
-		}
-		name = jsonTag
-	}
-	return strcase.ToSnake(name)
 }
