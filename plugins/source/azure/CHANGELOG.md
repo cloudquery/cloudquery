@@ -18,6 +18,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.14.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.14.0-pre.0...plugins/source/azure/v0.14.1-pre.0) (2022-09-22)
+
+
+### Bug Fixes
+
+* Add missing `azure_keyvault_secrets` tables ([#1937](https://github.com/cloudquery/cloudquery/issues/1937)) ([491aa66](https://github.com/cloudquery/cloudquery/commit/491aa6665d973a29bd8d95042df1d5082edb3770))
+* Update Azure codegen ([#1936](https://github.com/cloudquery/cloudquery/issues/1936)) ([4b739db](https://github.com/cloudquery/cloudquery/commit/4b739db73b21a54320a49dc7c421b6eeb92a6a4a))
+
 ## [0.14.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure-v0.13.4-pre.0...plugins/source/azure/v0.14.0-pre.0) (2022-09-21)
 
 
