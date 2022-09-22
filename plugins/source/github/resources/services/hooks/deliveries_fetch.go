@@ -27,3 +27,13 @@ func fetchDeliveries(ctx context.Context, meta schema.ClientMeta, parent *schema
 		}
 	}
 }
+
+func resolveRequest(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	delivery := resource.Item.(*github.HookDelivery)
+	return resource.Set(c.Name, delivery.Request.String())
+}
+
+func resolveResponse(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	delivery := resource.Item.(*github.HookDelivery)
+	return resource.Set(c.Name, delivery.Response.String())
+}
