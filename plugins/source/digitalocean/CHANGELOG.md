@@ -13,6 +13,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.8.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v0.7.1-pre.0...plugins-source-digitalocean-v0.8.0-pre.0) (2022-09-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Migrate DigitalOcean plugin to v2 (#1794)
+
+### Features
+
+* Add Sentry DSN ([#1913](https://github.com/cloudquery/cloudquery/issues/1913)) ([5cc036e](https://github.com/cloudquery/cloudquery/commit/5cc036e956cb9dc92832783e15088c8249fe2941))
+* Added throttling for digitalocean API calls ([#1546](https://github.com/cloudquery/cloudquery/issues/1546)) ([bb40b59](https://github.com/cloudquery/cloudquery/commit/bb40b5951978918f2b9332063ff251652df55754))
+* Migrate DigitalOcean plugin to v2 ([#1794](https://github.com/cloudquery/cloudquery/issues/1794)) ([e556185](https://github.com/cloudquery/cloudquery/commit/e5561853c092adb0ed73139aee18ca3b3671b27d))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.12 ([#1916](https://github.com/cloudquery/cloudquery/issues/1916)) ([27d8153](https://github.com/cloudquery/cloudquery/commit/27d81534baaa1312a6bd87294d298dd8b5348a79))
+* **deps:** Update Terraform tls to v4.0.2 ([#1653](https://github.com/cloudquery/cloudquery/issues/1653)) ([8f3bbeb](https://github.com/cloudquery/cloudquery/commit/8f3bbeba64723c6744ae0f9db747261668f6a087))
+
 ## [0.7.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/digitalocean/v0.7.0-pre.0...plugins/source/digitalocean/v0.7.1-pre.0) (2022-09-22)
 
 
