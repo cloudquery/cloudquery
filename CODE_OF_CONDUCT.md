@@ -1,2 +1,3 @@
-## Community Code of Conduct
-cloudquery adopts the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md).
+# Community Code of Conduct
+
+CloudQuery adopts the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md).
