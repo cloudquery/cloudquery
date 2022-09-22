@@ -26,6 +26,8 @@ archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: zip
     id: zip
+    files:
+      - policies/**
 checksum:
   name_template: "checksums.txt"
   ids:
