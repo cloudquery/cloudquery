@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/aws
 
 monorepo:
-  tag_prefix: plugins/source/aws/
+  tag_prefix: plugins-source-aws-
   dir: plugins/source/aws
 
 includes:

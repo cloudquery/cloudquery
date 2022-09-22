@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/cloudflare
 
 monorepo:
-  tag_prefix: plugins/source/cloudflare/
+  tag_prefix: plugins-source-cloudflare-
   dir: plugins/source/cloudflare
 
 includes:

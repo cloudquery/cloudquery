@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/azure
 
 monorepo:
-  tag_prefix: plugins/source/azure/
+  tag_prefix: plugins-source-azure-
   dir: plugins/source/azure
 
 includes:

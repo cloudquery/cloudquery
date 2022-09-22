@@ -16,7 +16,7 @@ spec:
   name: "test"
 
   # Version of the plugin to use.
-  version: "v1.1.4"
+  version: "v1.1.5"
 
   # Registry to use (one of "github", "local" or "grpc").
   registry: "github"

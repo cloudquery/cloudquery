@@ -10,11 +10,11 @@ import (
 
 func TestClient_GetLatestPluginRelease(t *testing.T) {
 	cloudQueryServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/v1/source-aws.json" {
+		if r.URL.Path != "/v2/source-aws.json" {
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
-		fmt.Fprintf(w, `{"latest":"plugins/source/test/v1.2.3"}`)
+		fmt.Fprintf(w, `{"latest":"plugins-source-aws-v1.2.3"}`)
 	}))
 	defer cloudQueryServer.Close()
 
@@ -51,11 +51,11 @@ func TestClient_GetLatestPluginRelease(t *testing.T) {
 
 func TestClient_GetLatestCLIRelease(t *testing.T) {
 	cloudQueryServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/v1/cli.json" {
+		if r.URL.Path != "/v2/cli.json" {
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
-		fmt.Fprintf(w, `{"latest":"cli/v1.2.3"}`)
+		fmt.Fprintf(w, `{"latest":"cli-v1.2.3"}`)
 	}))
 	defer cloudQueryServer.Close()
 

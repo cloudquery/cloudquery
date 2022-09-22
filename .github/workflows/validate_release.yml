@@ -16,7 +16,9 @@ jobs:
         id: component
         run: |
           source_branch=${{github.head_ref}}
-          echo ::set-output name=name::${source_branch##*-}
+          component_name=${source_branch##*--}
+          component_dir=${component_name//\-/\/}
+          echo ::set-output name=name::${component_dir}
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
         uses: actions/checkout@v3

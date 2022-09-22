@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/okta
 
 monorepo:
-  tag_prefix: plugins/source/okta/
+  tag_prefix: plugins-source-okta-
   dir: plugins/source/okta
 
 includes:
