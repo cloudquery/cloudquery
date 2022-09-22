@@ -4,6 +4,19 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.33.3-pre.0](https://github.com/cloudquery/cloudquery/compare/cli/v0.33.2-pre.0...cli/v0.33.3-pre.0) (2022-09-22)
+
+
+### Features
+
+* **cli:** Disable sentry in development ([#1939](https://github.com/cloudquery/cloudquery/issues/1939)) ([e2c417e](https://github.com/cloudquery/cloudquery/commit/e2c417e42e018f1e6e6bbc2b6fe9ace0c990b30c))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.12 ([#1916](https://github.com/cloudquery/cloudquery/issues/1916)) ([27d8153](https://github.com/cloudquery/cloudquery/commit/27d81534baaa1312a6bd87294d298dd8b5348a79))
+* **pg:** Fix PKs recreation when nothing changed ([#1938](https://github.com/cloudquery/cloudquery/issues/1938)) ([5db7baa](https://github.com/cloudquery/cloudquery/commit/5db7baa929186e71debfd0cdc5ec4477f42098a3))
+
 ## [0.33.2-pre.0](https://github.com/cloudquery/cloudquery/compare/cli/v0.33.1-pre.0...cli/v0.33.2-pre.0) (2022-09-21)
 
 
