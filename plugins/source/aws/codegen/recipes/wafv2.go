@@ -2,8 +2,11 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
+	"reflect"
+	"strings"
 )
 
 func WAFv2Resources() []*Resource {
@@ -134,7 +137,7 @@ func WAFv2Resources() []*Resource {
 		},
 		{
 			SubService: "web_acls",
-			Struct:     &types.WebACL{},
+			Struct:     &wafv2.WebACLWrapper{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -171,6 +174,10 @@ func WAFv2Resources() []*Resource {
 	for _, r := range resources {
 		r.Service = "wafv2"
 		r.Multiplex = `client.ServiceAccountRegionScopeMultiplexer("waf-regional")`
+		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
+		if strings.Contains(structName, "Wrapper") {
+			r.UnwrapEmbeddedStructs = true
+		}
 	}
 	return resources
 }

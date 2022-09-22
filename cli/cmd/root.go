@@ -72,33 +72,32 @@ func NewCmdRoot() *cobra.Command {
 
 			mw := io.MultiWriter(writers...)
 			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
-			err = sentry.Init(sentry.ClientOptions{
-				Debug:   false,
-				Dsn:     sentryDsn,
-				Release: "cloudquery@" + Version,
-				// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
-				Integrations: func(integrations []sentry.Integration) []sentry.Integration {
-					var filteredIntegrations []sentry.Integration
-					for _, integration := range integrations {
-						if integration.Name() == "Modules" {
-							continue
+			if sentryDsn != "" && Version != "development" {
+				if err := sentry.Init(sentry.ClientOptions{
+					Debug:   false,
+					Dsn:     sentryDsn,
+					Release: "cloudquery@" + Version,
+					// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
+					Integrations: func(integrations []sentry.Integration) []sentry.Integration {
+						var filteredIntegrations []sentry.Integration
+						for _, integration := range integrations {
+							if integration.Name() == "Modules" {
+								continue
+							}
+							filteredIntegrations = append(filteredIntegrations, integration)
 						}
-						filteredIntegrations = append(filteredIntegrations, integration)
-					}
-					return filteredIntegrations
-				},
-			})
-			if err != nil {
-				log.Error().Err(err).Msg("error initializing sentry")
+						return filteredIntegrations
+					},
+				}); err != nil {
+					return err
+				}
 			}
-
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			if logFile != nil {
 				logFile.Close()
 			}
-			// analytics.Close()
 		},
 	}
 

@@ -106,6 +106,11 @@ func WebAcls() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Rules"),
 			},
+			{
+				Name:     "logging_configuration",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LoggingConfiguration"),
+			},
 		},
 	}
 }
