@@ -207,8 +207,8 @@ func initTable(serviceNameOverride string, definition resourceDefinition, azureS
 		getTableName(azureService, azureSubService, definition.tableName),
 		definition.azureStruct,
 		codegen.WithSkipFields(skipFields),
-		codegen.WithUnwrapAllEmbeddedStructs(),                  // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
-		codegen.WithUnwrapFieldsStructs([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
+		codegen.WithUnwrapAllEmbeddedStructs(),                 // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
+		codegen.WithUnwrapStructFields([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
 		codegen.WithTypeTransformer(timeStampTransformer),
 	)
 	if err != nil {

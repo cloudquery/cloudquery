@@ -82,7 +82,7 @@ func DataRepositoryAssociations() *schema.Table {
 				Resolver: schema.PathResolver("Lifecycle"),
 			},
 			{
-				Name:     "s_3",
+				Name:     "s3",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("S3"),
 			},

@@ -162,7 +162,7 @@ func Documents() *schema.Table {
 				Resolver: schema.PathResolver("SchemaVersion"),
 			},
 			{
-				Name:     "sha_1",
+				Name:     "sha1",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Sha1"),
 			},

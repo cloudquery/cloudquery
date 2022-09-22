@@ -7,13 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-const exampleConfig = `
-# Optional. Okta Token to access API, you can set this with OKTA_API_TOKEN env variable
-# token: "<YOUR_OKTA_TOKEN>"
-# Required. You okta domain name
-# domain: "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
-`
-
 var (
 	Version = "Development"
 )
@@ -26,6 +19,5 @@ func Plugin() *plugins.SourcePlugin {
 			services.Users(),
 		},
 		client.Configure,
-		plugins.WithSourceExampleConfig(exampleConfig),
 	)
 }

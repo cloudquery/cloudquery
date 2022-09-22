@@ -38,9 +38,7 @@ spec:
 
   # Plugin-specific configuration.
   spec:
-    
-    # This is an example config file for the test plugin.
-    account_ids: []
+    # Check documentation here: https://github.com/cloudquery/cloudquery/tree/main/plugins/source/test
 `
 
 const wantDestinationConfig = `
@@ -63,8 +61,7 @@ spec:
 
   # Plugin-specific configuration.
   spec:
-    
-    connection_string: "postgresql://user:password@localhost:5432/dbname"
+    connection_string: "postgresql://postgres:pass@localhost:5432/postgres"
 `
 
 func TestGenerate(t *testing.T) {
@@ -96,11 +93,6 @@ func TestGenerate(t *testing.T) {
 	})
 
 	t.Run("generate destination", func(t *testing.T) {
-		// TODO: Change this to use a test destination plugin when we have one.
-		//       For now, this test can be manually run against the postgresql
-		//       plugin by commenting out this skip line.
-		t.Skip()
-
 		output := path.Join(tmpdir, "test-destination.yml")
 		cmd := NewCmdRoot()
 		cmd.SetArgs([]string{"generate", "destination", "postgresql", "--output", output})
