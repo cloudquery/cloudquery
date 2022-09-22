@@ -44,7 +44,7 @@ func Eips() *schema.Table {
 				Resolver: schema.PathResolver("CustomerOwnedIp"),
 			},
 			{
-				Name:     "customer_owned_ipv_4_pool",
+				Name:     "customer_owned_ipv4_pool",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CustomerOwnedIpv4Pool"),
 			},
@@ -84,7 +84,7 @@ func Eips() *schema.Table {
 				Resolver: schema.PathResolver("PublicIp"),
 			},
 			{
-				Name:     "public_ipv_4_pool",
+				Name:     "public_ipv4_pool",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PublicIpv4Pool"),
 			},
