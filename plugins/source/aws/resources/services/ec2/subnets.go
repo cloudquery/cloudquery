@@ -32,7 +32,7 @@ func Subnets() *schema.Table {
 				},
 			},
 			{
-				Name:     "assign_ipv_6_address_on_creation",
+				Name:     "assign_ipv6_address_on_creation",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AssignIpv6AddressOnCreation"),
 			},
@@ -57,7 +57,7 @@ func Subnets() *schema.Table {
 				Resolver: schema.PathResolver("CidrBlock"),
 			},
 			{
-				Name:     "customer_owned_ipv_4_pool",
+				Name:     "customer_owned_ipv4_pool",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CustomerOwnedIpv4Pool"),
 			},
@@ -67,7 +67,7 @@ func Subnets() *schema.Table {
 				Resolver: schema.PathResolver("DefaultForAz"),
 			},
 			{
-				Name:     "enable_dns_64",
+				Name:     "enable_dns64",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableDns64"),
 			},
@@ -77,12 +77,12 @@ func Subnets() *schema.Table {
 				Resolver: schema.PathResolver("EnableLniAtDeviceIndex"),
 			},
 			{
-				Name:     "ipv_6_cidr_block_association_set",
+				Name:     "ipv6_cidr_block_association_set",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ipv6CidrBlockAssociationSet"),
 			},
 			{
-				Name:     "ipv_6_native",
+				Name:     "ipv6_native",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Ipv6Native"),
 			},

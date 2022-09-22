@@ -80,6 +80,11 @@ func Policies() *schema.Table {
 				Resolver: schema.PathResolver("PolicyName"),
 			},
 			{
+				Name:     "policy_version_list",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("PolicyVersionList"),
+			},
+			{
 				Name:     "update_date",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdateDate"),

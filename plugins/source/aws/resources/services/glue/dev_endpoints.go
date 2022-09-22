@@ -57,12 +57,12 @@ func DevEndpoints() *schema.Table {
 				Resolver: schema.PathResolver("EndpointName"),
 			},
 			{
-				Name:     "extra_jars_s_3_path",
+				Name:     "extra_jars_s3_path",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ExtraJarsS3Path"),
 			},
 			{
-				Name:     "extra_python_libs_s_3_path",
+				Name:     "extra_python_libs_s3_path",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ExtraPythonLibsS3Path"),
 			},
