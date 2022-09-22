@@ -27,7 +27,7 @@ func ApplicationAutoScalingResources() []*Resource {
 
 	for _, r := range resources {
 		r.Service = "applicationautoscaling"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("application-autoscaling")`
+		r.Multiplex = `client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling")`
 	}
 	return resources
 }
