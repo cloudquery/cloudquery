@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gertd/go-pluralize"
@@ -189,8 +190,11 @@ func getTableName(azureService, azureSubService string, override string) string 
 }
 
 func timeStampTransformer(field reflect.StructField) (schema.ValueType, error) {
+	dateTime := date.Time{}
 	uuid := uuid.UUID{}
 	switch field.Type {
+	case reflect.TypeOf(dateTime), reflect.TypeOf(&dateTime):
+		return schema.TypeTimestamp, nil
 	case reflect.TypeOf(uuid), reflect.TypeOf(&uuid):
 		return schema.TypeUUID, nil
 	}

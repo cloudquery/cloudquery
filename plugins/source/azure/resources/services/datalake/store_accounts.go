@@ -89,6 +89,11 @@ func StoreAccounts() *schema.Table {
 				Resolver: schema.PathResolver("CurrentTier"),
 			},
 			{
+				Name:     "account_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("AccountID"),
+			},
+			{
 				Name:     "provisioning_state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ProvisioningState"),
