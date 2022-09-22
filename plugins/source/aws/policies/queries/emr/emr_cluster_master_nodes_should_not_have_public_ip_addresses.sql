@@ -11,4 +11,4 @@ select
 from
     aws_emr_clusters
 left outer join aws_ec2_subnets
-    on aws_emr_clusters.ec_2_instance_attributes->>'Ec2SubnetId' = aws_ec2_subnets.subnet_id
+    on aws_emr_clusters.ec2_instance_attributes->>'Ec2SubnetId' = aws_ec2_subnets.subnet_id
