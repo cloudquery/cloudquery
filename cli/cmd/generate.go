@@ -94,6 +94,19 @@ func getSourceSpec(path string, registry specs.Registry) specs.Source {
 	}
 }
 
+func getDocsLink(registry specs.Registry, path string, name string) string {
+	if registry == specs.RegistryGithub && strings.HasPrefix(path, "cloudquery/") {
+		docsPath := fmt.Sprintf("# Check documentation here: https://github.com/cloudquery/cloudquery/tree/main/plugins/source/%s", name)
+		return docsPath
+	}
+	if registry == specs.RegistryGithub {
+		docsPath := fmt.Sprintf("# Check documentation here: https://github.com/%s", path)
+		return docsPath
+	}
+
+	return ""
+}
+
 func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, registry specs.Registry, outputFile string) error {
 	sourceSpec := getSourceSpec(path, registry)
 	sourceSpec.SetDefaults()
@@ -110,11 +123,8 @@ func genSource(cmd *cobra.Command, path string, pm *plugins.PluginManager, regis
 		return fmt.Errorf("failed to get plugin name: %w", err)
 	}
 	sourceSpec.Name = name
-	cfg, err := client.ExampleConfig(cmd.Context())
-	if err != nil {
-		return fmt.Errorf("failed to get example config: %w", err)
-	}
-	sourceSpec.Spec = cfg
+
+	sourceSpec.Spec = getDocsLink(registry, sourceSpec.Path, sourceSpec.Name)
 
 	configPath := outputFile
 	if configPath == "" {
@@ -148,17 +158,13 @@ func genDestination(cmd *cobra.Command, path string, pm *plugins.PluginManager, 
 	}
 	destSpec.Name = name
 
+	destSpec.Spec = `connection_string: "postgresql://postgres:pass@localhost:5432/postgres"`
+
 	version, err := client.Version(cmd.Context())
 	if err != nil {
 		return fmt.Errorf("failed to get plugin name: %w", err)
 	}
 	destSpec.Version = version
-
-	cfg, err := client.GetExampleConfig(cmd.Context())
-	if err != nil {
-		return fmt.Errorf("failed to get example config: %w", err)
-	}
-	destSpec.Spec = cfg
 
 	configPath := outputFile
 	if configPath == "" {

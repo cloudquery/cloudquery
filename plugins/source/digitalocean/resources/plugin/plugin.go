@@ -1,16 +1,12 @@
 package plugin
 
 import (
-	_ "embed"
-
 	"github.com/cloudquery/cloudquery/plugins/source/digitalocean/client"
 	"github.com/cloudquery/plugin-sdk/plugins"
 )
 
 var (
 	Version = "development"
-	//go:embed example.yml
-	exampleConfig string
 )
 
 func Plugin() *plugins.SourcePlugin {
@@ -21,7 +17,5 @@ func Plugin() *plugins.SourcePlugin {
 		Version,
 		allTables,
 		client.New,
-		plugins.WithSourceExampleConfig(exampleConfig),
-		//plugins.WithClassifyError(client.ClassifyError),
 	)
 }

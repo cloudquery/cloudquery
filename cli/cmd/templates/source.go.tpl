@@ -26,4 +26,5 @@ spec:
 
   # Plugin-specific configuration.
   spec:
-{{indent .Spec 4}}
+{{ if .Spec }}{{indent .Spec 4}}
+{{ end }}
