@@ -129,17 +129,17 @@ func Members() *schema.Table {
 			},
 			{
 				Name:     "created_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
 				Name:     "updated_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 			{
 				Name:     "suspended_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SuspendedAt"),
 			},
 			{

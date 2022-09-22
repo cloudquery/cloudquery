@@ -52,6 +52,11 @@ func BackendServices() *schema.Table {
 				Resolver: schema.PathResolver("CircuitBreakers"),
 			},
 			{
+				Name:     "compression_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CompressionMode"),
+			},
+			{
 				Name:     "connection_draining",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ConnectionDraining"),

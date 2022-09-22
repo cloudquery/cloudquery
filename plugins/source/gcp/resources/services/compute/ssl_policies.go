@@ -82,6 +82,11 @@ func SslPolicies() *schema.Table {
 				Resolver: schema.PathResolver("Profile"),
 			},
 			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Region"),
+			},
+			{
 				Name:     "warnings",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Warnings"),

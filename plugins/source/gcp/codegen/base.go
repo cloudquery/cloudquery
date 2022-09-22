@@ -1,10 +1,11 @@
 package codegen
 
 import (
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"reflect"
 	"strings"
+
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 type Resource struct {
@@ -94,7 +95,7 @@ var ProjectIdColumn = codegen.ColumnDefinition{
 
 func CreateReplaceTransformer(replace map[string]string) func(field reflect.StructField) (string, error) {
 	return func(field reflect.StructField) (string, error) {
-		name, err := codegen.DefaultTransformer(field)
+		name, err := codegen.DefaultNameTransformer(field)
 		if err != nil {
 			return "", err
 		}
