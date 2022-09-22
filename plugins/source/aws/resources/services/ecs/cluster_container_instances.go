@@ -64,7 +64,7 @@ func ClusterContainerInstances() *schema.Table {
 				Resolver: schema.PathResolver("ContainerInstanceArn"),
 			},
 			{
-				Name:     "ec_2_instance_id",
+				Name:     "ec2_instance_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Ec2InstanceId"),
 			},

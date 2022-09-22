@@ -67,7 +67,7 @@ func VirtualInterfaces() *schema.Table {
 				Resolver: schema.PathResolver("AuthKey"),
 			},
 			{
-				Name:     "aws_device_v_2",
+				Name:     "aws_device_v2",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AwsDeviceV2"),
 			},
