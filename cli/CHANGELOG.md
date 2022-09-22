@@ -4,6 +4,13 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [0.33.4-pre.0](https://github.com/cloudquery/cloudquery/compare/cli/v0.33.3-pre.0...cli-v0.33.4-pre.0) (2022-09-22)
+
+
+### Features
+
+* Use new tag format to download plugins ([#1985](https://github.com/cloudquery/cloudquery/issues/1985)) ([583f54e](https://github.com/cloudquery/cloudquery/commit/583f54ea3ecb8f96b6f76498ddca29770c691831))
+
 ## [0.33.3-pre.0](https://github.com/cloudquery/cloudquery/compare/cli/v0.33.2-pre.0...cli/v0.33.3-pre.0) (2022-09-22)
 
 
