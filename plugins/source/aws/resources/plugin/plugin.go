@@ -9,9 +9,6 @@ import (
 
 var (
 	Version = "Development"
-
-	//go:embed example.yml
-	exampleConfig string
 )
 
 func AWS() *plugins.SourcePlugin {
@@ -20,6 +17,5 @@ func AWS() *plugins.SourcePlugin {
 		Version,
 		tables(),
 		client.Configure,
-		plugins.WithSourceExampleConfig(exampleConfig),
 	)
 }

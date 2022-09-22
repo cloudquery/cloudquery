@@ -9,8 +9,6 @@ import (
 
 var (
 	Version = "development"
-	//go:embed example.yml
-	exampleConfig string
 )
 
 func Plugin() *plugins.SourcePlugin {
@@ -21,7 +19,5 @@ func Plugin() *plugins.SourcePlugin {
 		Version,
 		allTables,
 		client.New,
-		plugins.WithSourceExampleConfig(exampleConfig),
-		//plugins.WithClassifyError(client.ClassifyError),
 	)
 }

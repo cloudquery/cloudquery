@@ -10,8 +10,6 @@ import (
 
 var (
 	Version = "Development"
-	//go:embed example.yml
-	exampleConfig string
 )
 
 func Plugin() *plugins.SourcePlugin {
@@ -23,6 +21,5 @@ func Plugin() *plugins.SourcePlugin {
             {{end}}
 		},
 		client.New,
-		plugins.WithSourceExampleConfig(exampleConfig),
 	)
 }

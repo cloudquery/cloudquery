@@ -17,6 +17,5 @@ func Plugin() *plugins.SourcePlugin {
 		Version,
 		allTables,
 		client.Configure,
-		plugins.WithSourceExampleConfig(client.ExampleSpec()),
 	)
 }
