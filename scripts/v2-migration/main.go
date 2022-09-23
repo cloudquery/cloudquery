@@ -103,8 +103,15 @@ func compareTables(v1, v2 []Table) []Table {
 			t1.Status = "removed"
 			replacement, foundReplacement := findLikelyTableReplacement(t1, v2)
 			if foundReplacement {
-				t1.Status = "moved"
+				t1.Status = replacement.Status
 				t1.Comment = replacement.Comment
+			}
+			if t1.Status == "renamed" {
+				other := v2Map[replacement.Name]
+				other.Status = "renamed"
+				other.Comment = fmt.Sprintf("Renamed from [%s](%s)", t1.Name, t1.Name)
+				other.Columns = compareColumns(t1, other)
+				v2Map[replacement.Name] = other
 			}
 
 			comparison[name] = t1
@@ -115,11 +122,13 @@ func compareTables(v1, v2 []Table) []Table {
 		_, found := v1Map[name]
 		if found {
 			continue
-		} else {
+		} else if t2.Status == "" {
 			t2.Status = "added"
 			for c := range t2.Columns {
 				t2.Columns[c].Status = "added"
 			}
+			comparison[name] = t2
+		} else {
 			comparison[name] = t2
 		}
 	}
@@ -138,6 +147,16 @@ func compareTables(v1, v2 []Table) []Table {
 }
 
 func findLikelyTableReplacement(removed Table, newTables []Table) (replacement Table, found bool) {
+	if v, ok := RenamedTables[removed.Name]; ok {
+		for _, nt := range newTables {
+			if nt.Name != v {
+				continue
+			}
+			nt.Status = "renamed"
+			nt.Comment = fmt.Sprintf("Renamed to [%s](#%s)", nt.Name, nt.Name)
+			return nt, true
+		}
+	}
 	plural := pluralize.NewClient()
 	normalize := func(s string) string {
 		return strings.ReplaceAll(s, "_", "")
@@ -156,10 +175,12 @@ func findLikelyTableReplacement(removed Table, newTables []Table) (replacement T
 
 		if normalizedName == normalize(t.Name) {
 			replacement = t
+			replacement.Status = "renamed"
 			replacement.Comment = fmt.Sprintf("Renamed to [%s](#%s)", replacement.Name, replacement.Name)
 			found = true
 		} else if strings.HasPrefix(normalizedName, normalize(singular)) && (!found || len(replacement.Name) > len(t.Name)) {
 			replacement = t
+			replacement.Status = "moved"
 			replacement.Comment = fmt.Sprintf("Moved to JSON column on [%s](#%s)", replacement.Name, replacement.Name)
 			found = true
 		}

@@ -2,7 +2,7 @@
 This guide summarizes schema changes from CloudQuery v1 to v2. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v2. 🚀
 
-Last updated on Fri Sep 23 10:13:52 BST 2022.
+Last updated Fri Sep 23 11:09:59 BST 2022.
 
 ## aws_access_analyzer_analyzer_archive_rules
 Moved to JSON column on [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
@@ -62,26 +62,11 @@ This table was newly added.
 |_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_accessanalyzer_analyzers
-This table was newly added.
+Renamed from [aws_access_analyzer_analyzers](aws_access_analyzer_analyzers)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|account_id|text|added|
-|region|text|added|
-|arn|text|added|
-|created_at|timestamp without time zone|added|
-|name|text|added|
-|status|text|added|
-|type|text|added|
-|last_resource_analyzed|text|added|
-|last_resource_analyzed_at|timestamp without time zone|added|
-|status_reason|jsonb|added|
-|tags|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_accounts
-This table was removed.
+Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 
 ## aws_acm_certificates
@@ -3309,35 +3294,8 @@ This table was newly added.
 |_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_fsx_file_systems
-This table was newly added.
+Renamed from [aws_fsx_filesystems](aws_fsx_filesystems)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|account_id|text|added|
-|region|text|added|
-|arn|text|added|
-|tags|jsonb|added|
-|administrative_actions|jsonb|added|
-|creation_time|timestamp without time zone|added|
-|dns_name|text|added|
-|failure_details|jsonb|added|
-|file_system_id|text|added|
-|file_system_type|text|added|
-|file_system_type_version|text|added|
-|kms_key_id|text|added|
-|lifecycle|text|added|
-|lustre_configuration|jsonb|added|
-|network_interface_ids|text[]|added|
-|ontap_configuration|jsonb|added|
-|open_zfs_configuration|jsonb|added|
-|owner_id|text|added|
-|storage_capacity|bigint|added|
-|storage_type|text|added|
-|subnet_ids|text[]|added|
-|vpc_id|text|added|
-|windows_configuration|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_fsx_filesystem_lustre_configuration
 Moved to JSON column on [aws_fsx_file_systems](#aws_fsx_file_systems)
@@ -3817,40 +3775,8 @@ Moved to JSON column on [aws_glue_triggers](#aws_glue_triggers)
 |updated_at|text|updated|Type changed from timestamp without time zone to text
 
 ## aws_iam_accounts
-This table was newly added.
+Renamed from [aws_accounts](aws_accounts)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|account_id|text|added|
-|users|bigint|added|
-|users_quota|bigint|added|
-|groups|bigint|added|
-|groups_quota|bigint|added|
-|server_certificates|bigint|added|
-|server_certificates_quota|bigint|added|
-|user_policy_size_quota|bigint|added|
-|group_policy_size_quota|bigint|added|
-|groups_per_user_quota|bigint|added|
-|signing_certificates_per_user_quota|bigint|added|
-|access_keys_per_user_quota|bigint|added|
-|mfa_devices|bigint|added|
-|mfa_devices_in_use|bigint|added|
-|account_mfa_enabled|boolean|added|
-|account_access_keys_present|boolean|added|
-|account_signing_certificates_present|boolean|added|
-|attached_policies_per_group_quota|bigint|added|
-|attached_policies_per_role_quota|bigint|added|
-|attached_policies_per_user_quota|bigint|added|
-|policies|bigint|added|
-|policies_quota|bigint|added|
-|policy_size_quota|bigint|added|
-|policy_versions_in_use|bigint|added|
-|policy_versions_in_use_quota|bigint|added|
-|versions_per_policy_quota|bigint|added|
-|global_endpoint_token_version|bigint|added|
-|aliases|text[]|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_iam_credential_reports
 This table was newly added.
