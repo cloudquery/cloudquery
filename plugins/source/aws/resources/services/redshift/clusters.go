@@ -303,6 +303,7 @@ func Clusters() *schema.Table {
 
 		Relations: []*schema.Table{
 			Snapshots(),
+			ClusterParameters(),
 		},
 	}
 }
