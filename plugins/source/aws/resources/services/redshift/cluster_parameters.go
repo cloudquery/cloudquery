@@ -71,11 +71,6 @@ func ClusterParameters() *schema.Table {
 				Resolver: schema.PathResolver("MinimumEngineVersion"),
 			},
 			{
-				Name:     "parameter_name",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ParameterName"),
-			},
-			{
 				Name:     "parameter_value",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ParameterValue"),

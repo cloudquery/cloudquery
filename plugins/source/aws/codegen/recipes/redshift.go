@@ -44,6 +44,7 @@ func RedshiftResources() []*Resource {
 		{
 			SubService: "cluster_parameters",
 			Struct:     &types.Parameter{},
+			SkipFields: []string{"ParameterName"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
