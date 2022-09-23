@@ -50,7 +50,7 @@ from
     aws_s3_buckets
 left join
     aws_s3_bucket_grants on
-        aws_s3_buckets.arn = aws_s3_bucket_grants.bucket_arn::text -- TODO remove ::text
+        aws_s3_buckets.arn = aws_s3_bucket_grants.bucket_arn
 -- Find all statements that could give public allow access 
 -- Statements that give public access have 1) Effect == Allow 2) One of the following principal:
 --       Principal = {"AWS": "*"}

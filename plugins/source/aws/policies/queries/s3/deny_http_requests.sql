@@ -18,12 +18,12 @@ where
                      statements -> 'Principal' as principals
               from aws_s3_buckets,
                    jsonb_array_elements(
-                           case jsonb_typeof(policy::jsonb -> 'Statement')
+                           case jsonb_typeof(policy -> 'Statement')
                                when
                                    'string' then jsonb_build_array(
-                                       policy::jsonb ->> 'Statement'
+                                       policy ->> 'Statement'
                                    )
-                               when 'array' then policy::jsonb -> 'Statement'
+                               when 'array' then policy -> 'Statement'
                                end
                        ) as statements
               where statements -> 'Effect' = '"Deny"') as foo,

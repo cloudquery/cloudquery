@@ -7,8 +7,8 @@ select
     aws_iam_accounts.account_id,
     aws_iam_accounts.account_id AS resource_id,
     case when
-/*        config_exists is not TRUE -- TODO FIXME
-        or*/ block_public_acls is not TRUE
+        config_exists is not TRUE
+        or block_public_acls is not TRUE
         or block_public_policy is not TRUE
         or ignore_public_acls is not TRUE
         or restrict_public_buckets is not TRUE
