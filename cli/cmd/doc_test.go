@@ -12,7 +12,6 @@ var docFiles = []string{
 	"cloudquery_completion_fish.md",
 	"cloudquery_completion_powershell.md",
 	"cloudquery_completion_zsh.md",
-	"cloudquery_generate.md",
 	"cloudquery_sync.md",
 }
 
