@@ -190,7 +190,6 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec *specs.So
 
 	downloadPaths := p.getDownloadPaths(org, name, "github", spec.Version)
 	if _, err := os.Stat(downloadPaths.destFile); err == nil {
-		fmt.Printf("Plugin already exists at %s. Skipping download.\n", downloadPaths.destFile)
 		p.logger.Info().Str("path", downloadPaths.destFile).Msg("Plugin already exists. Skipping download.")
 		return downloadPaths.destFile, nil
 	}
