@@ -50,7 +50,12 @@ func RedshiftResources() []*Resource {
 					Description: "The Amazon Resource Name (ARN) for the resource.",
 					Type:        schema.TypeString,
 					Resolver:    `resolveClusterArn()`,
-					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "parameter_name",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("ParameterName")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
 			},
 		},
