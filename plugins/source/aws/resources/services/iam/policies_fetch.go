@@ -49,7 +49,7 @@ func resolveIamPolicyVersionList(ctx context.Context, meta schema.ClientMeta, re
 		if v, err := url.PathUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
 			r.PolicyVersionList[i].Document = &v
 		} else {
-			meta.Logger().Warn().Err(err).Msg("Failed to unescape policy document, leaving as-is")
+			meta.Logger().Warn().Err(err).Str("policy_id", aws.ToString(r.PolicyId)).Msg("Failed to unescape policy document, leaving as-is")
 		}
 	}
 	return resource.Set(c.Name, r.PolicyVersionList)
