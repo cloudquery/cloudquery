@@ -2,8 +2,9 @@ package convert
 
 import (
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"strings"
+
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func SchemaTypeToPg(t schema.ValueType) (string, error) {

@@ -5,15 +5,16 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"github.com/cloudquery/cloudquery/scripts/v2-migration/internal/convert"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/gertd/go-pluralize"
 	"os"
 	"path"
 	"sort"
 	"strings"
 	"text/template"
 	"time"
+
+	"github.com/cloudquery/cloudquery/scripts/v2-migration/internal/convert"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/gertd/go-pluralize"
 )
 
 var (
@@ -120,15 +121,16 @@ func compareTables(v1, v2 []Table) []Table {
 
 	for name, t2 := range v2Map {
 		_, found := v1Map[name]
-		if found {
+		switch {
+		case found:
 			continue
-		} else if t2.Status == "" {
+		case t2.Status == "":
 			t2.Status = "added"
 			for c := range t2.Columns {
 				t2.Columns[c].Status = "added"
 			}
 			comparison[name] = t2
-		} else {
+		default:
 			comparison[name] = t2
 		}
 	}
@@ -211,10 +213,9 @@ func compareColumns(t1, t2 Table) []Column {
 		_, found := v1Map[name]
 		if found {
 			continue
-		} else {
-			c2.Status = "added"
-			comparison[name] = c2
 		}
+		c2.Status = "added"
+		comparison[name] = c2
 	}
 
 	cols := make([]Column, 0, len(comparison))
