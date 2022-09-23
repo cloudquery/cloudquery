@@ -186,7 +186,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "policies",
-			Struct:     &types.Policy{},
+			Struct:     &types.ManagedPolicyDetail{},
 			SkipFields: []string{"PolicyId", "Tags"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{

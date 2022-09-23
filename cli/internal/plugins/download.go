@@ -30,7 +30,7 @@ func downloadFile(filepath string, url string) (err error) {
 	}
 	bar := progressbar.DefaultBytes(
 		resp.ContentLength,
-		"downloading",
+		"Downloading",
 	)
 	// Writer the body to file
 	_, err = io.Copy(io.MultiWriter(out, bar), resp.Body)

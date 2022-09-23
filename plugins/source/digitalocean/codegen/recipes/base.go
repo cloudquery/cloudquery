@@ -52,7 +52,7 @@ func (r *Resource) Generate() error {
 	dir := path.Dir(filename)
 
 	var err error
-	opts := []codegen.TableOptions{
+	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
 	}
