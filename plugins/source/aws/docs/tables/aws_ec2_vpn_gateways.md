@@ -1,15 +1,21 @@
-
 # Table: aws_ec2_vpn_gateways
 
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text||
-|region|text||
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|amazon_side_asn|bigint||
-|availability_zone|text||
-|state|text||
-|tags|jsonb||
-|type|text||
-|id|text||
+| Name          | Type          |
+| ------------- | ------------- |
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|amazon_side_asn|Int|
+|availability_zone|String|
+|state|String|
+|tags|JSON|
+|type|String|
+|vpc_attachments|JSON|
+|vpn_gateway_id|String|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|
