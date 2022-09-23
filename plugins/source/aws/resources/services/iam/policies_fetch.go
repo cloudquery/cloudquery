@@ -11,11 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-type PolicyVersionWrapper struct {
-	types.PolicyVersion
-	DecodedDocument *string
-}
-
 func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config iam.GetAccountAuthorizationDetailsInput
 	svc := meta.(*client.Client).Services().IAM
@@ -50,15 +45,12 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 
 func resolveIamPolicyVersionList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.ManagedPolicyDetail)
-	data := make([]PolicyVersionWrapper, len(r.PolicyVersionList))
 	for i := range r.PolicyVersionList {
-		w := PolicyVersionWrapper{
-			PolicyVersion: r.PolicyVersionList[i],
-		}
 		if v, err := url.PathUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
-			w.DecodedDocument = &v
+			r.PolicyVersionList[i].Document = &v
+		} else {
+			meta.Logger().Warn().Err(err).Msg("Failed to unescape policy document, leaving as-is")
 		}
-		data[i] = w
 	}
-	return resource.Set(c.Name, data)
+	return resource.Set(c.Name, r.PolicyVersionList)
 }
