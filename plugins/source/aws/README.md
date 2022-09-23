@@ -73,10 +73,9 @@ export AWS_PROFILE=myprofile
 or, configure your desired profile in the `local_profile` field:
 
 ```yaml title="aws.yml"
-...
-    accounts:
-      id: <account_alias>
-      local_profile: myprofile
+accounts:
+  id: <account_alias>
+  local_profile: myprofile
 ```
 
 ### IAM Roles for AWS Compute Resources
