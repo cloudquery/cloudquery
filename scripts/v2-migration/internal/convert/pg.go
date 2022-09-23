@@ -2,11 +2,11 @@ package convert
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/cloudquery/plugin-sdk/schema"
+	"strings"
 )
 
+// SchemaTypeToPg copied from cli/internal/destinations/postgresql
 func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	switch t {
 	case schema.TypeBool:
@@ -46,46 +46,10 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	}
 }
 
-// ValueTypeFromString this function is mainly used by https://github.com/cloudquery/cq-gen
+// ValueTypeFromString uses plugin-sdk, but with fix for typo in inetarray
 func ValueTypeFromString(s string) schema.ValueType {
-	switch strings.TrimPrefix(strings.ToLower(s), "type") {
-	case "bool":
-		return schema.TypeBool
-	case "int", "bigint", "smallint":
-		return schema.TypeInt
-	case "float":
-		return schema.TypeFloat
-	case "uuid":
-		return schema.TypeUUID
-	case "string":
-		return schema.TypeString
-	case "json":
-		return schema.TypeJSON
-	case "intarray":
-		return schema.TypeIntArray
-	case "stringarray":
-		return schema.TypeStringArray
-	case "bytearray":
-		return schema.TypeByteArray
-	case "timestamp":
-		return schema.TypeTimestamp
-	case "uuidarray":
-		return schema.TypeUUIDArray
-	case "inet":
-		return schema.TypeInet
-	case "inetarray":
+	if strings.TrimPrefix(strings.ToLower(s), "type") == "inetarray" {
 		return schema.TypeInetArray
-	case "macaddr":
-		return schema.TypeMacAddr
-	case "macaddrarray":
-		return schema.TypeMacAddrArray
-	case "cidr":
-		return schema.TypeCIDR
-	case "cidrarray":
-		return schema.TypeCIDRArray
-	case "invalid":
-		return schema.TypeInvalid
-	default:
-		return schema.TypeInvalid
 	}
+	return schema.ValueTypeFromString(s)
 }
