@@ -1,7 +1,14 @@
-
 # Table: aws_lambda_runtimes
-All known values for Runtime
+
+
+The primary key for this table is **name**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|name|text|Runtime name|
+| Name          | Type          |
+| ------------- | ------------- |
+|account_id|String|
+|region|String|
+|name (PK)|String|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|

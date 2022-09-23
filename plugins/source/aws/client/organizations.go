@@ -12,7 +12,7 @@ import (
 )
 
 // Parses org configuration and grabs the appropriate accounts
-func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsConfig *Config) ([]Account, AssumeRoleAPIClient, error) {
+func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsConfig *Spec) ([]Account, AssumeRoleAPIClient, error) {
 	// If user doesn't specify any configs for admin account instantiate default values
 	if awsConfig.Organization.AdminAccount == nil {
 		awsConfig.Organization.AdminAccount = &Account{
@@ -39,7 +39,7 @@ func loadOrgAccounts(ctx context.Context, logger zerolog.Logger, awsConfig *Conf
 }
 
 // Load accounts from the appropriate endpoint as well as normalizing response
-func loadAccounts(ctx context.Context, awsConfig *Config, accountsApi OrganizationsClient) ([]Account, error) {
+func loadAccounts(ctx context.Context, awsConfig *Spec, accountsApi OrganizationsClient) ([]Account, error) {
 	var rawAccounts []orgTypes.Account
 	var err error
 	if len(awsConfig.Organization.OrganizationUnits) > 0 {
