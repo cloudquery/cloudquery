@@ -134,7 +134,7 @@ func NewCmdRoot() *cobra.Command {
 	}
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	cmd.AddCommand(NewCmdGenerate(), NewCmdSync(), newCmdDoc())
+	cmd.AddCommand(NewCmdSync(), newCmdDoc())
 	cmd.DisableAutoGenTag = true
 	return cmd
 }
