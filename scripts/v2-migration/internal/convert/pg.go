@@ -2,8 +2,9 @@ package convert
 
 import (
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"strings"
+
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 // SchemaTypeToPg copied from cli/internal/destinations/postgresql
