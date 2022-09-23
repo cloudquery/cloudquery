@@ -14,10 +14,28 @@ func ClusterParameters() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{
 			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
+			},
+			{
 				Name:        "cluster_arn",
 				Type:        schema.TypeString,
 				Resolver:    resolveClusterArn(),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "parameter_name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ParameterName"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

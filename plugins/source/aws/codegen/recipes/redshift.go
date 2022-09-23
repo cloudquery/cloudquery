@@ -44,20 +44,23 @@ func RedshiftResources() []*Resource {
 		{
 			SubService: "cluster_parameters",
 			Struct:     &types.Parameter{},
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:        "cluster_arn",
-					Description: "The Amazon Resource Name (ARN) for the resource.",
-					Type:        schema.TypeString,
-					Resolver:    `resolveClusterArn()`,
-				},
-				{
-					Name:     "parameter_name",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("ParameterName")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:        "cluster_arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver:    `resolveClusterArn()`,
+						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "parameter_name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ParameterName")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 
 		{
