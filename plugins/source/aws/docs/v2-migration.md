@@ -1,19 +1,28 @@
+# Schema Changes from v1 to v2
+This guide summarizes schema changes from CloudQuery v1 to v2. It is automatically generated and
+not guaranteed to be complete. It is mostly intended to serve as a starting point and reference when migrating to v2.
 
-# Schema Changes from v1 to v2 
+Last updated on Fri Sep 23 10:09:48 BST 2022.
+
 ## aws_access_analyzer_analyzer_archive_rules
-This table was removed. 
- 
+Moved to JSON column on [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
+
+
 ## aws_access_analyzer_analyzer_finding_sources
-This table was removed. 
- 
+Moved to JSON column on [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
+
+
 ## aws_access_analyzer_analyzer_findings
-This table was removed. 
- 
+Moved to JSON column on [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
+
+
 ## aws_access_analyzer_analyzers
-This table was removed. 
- 
+Renamed to [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
+
+
 ## aws_accessanalyzer_analyzer_archive_rules
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -24,10 +33,11 @@ This table was newly added.
 |rule_name|text|added|
 |updated_at|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_accessanalyzer_analyzer_findings
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -49,10 +59,11 @@ This table was newly added.
 |resource|text|added|
 |sources|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_accessanalyzer_analyzers
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -67,12 +78,14 @@ This table was newly added.
 |status_reason|jsonb|added|
 |tags|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_accounts
-Renamed to aws_iam_accounts. 
- 
+This table was removed.
+
+
 ## aws_acm_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -84,23 +97,26 @@ Renamed to aws_iam_accounts.
 |renewal_summary_domain_validation_options|jsonb|removed|
 |renewal_summary_failure_reason|text|removed|
 |renewal_summary_status|text|removed|
-|renewal_summary_updated_at|timestamp without time zone|removed| 
- 
+|renewal_summary_updated_at|timestamp without time zone|removed|
+
 ## aws_apigateway_api_keys
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_apigateway_client_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |client_certificate_id|text|added|
-|id|text|removed| 
- 
+|id|text|removed|
+
 ## aws_apigateway_domain_name_base_path_mappings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -109,9 +125,10 @@ Renamed to aws_iam_accounts.
 |domain_name|text|removed|
 |domain_name_arn|text|added|
 |domain_name_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigateway_domain_names
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -122,9 +139,10 @@ Renamed to aws_iam_accounts.
 |mutual_tls_authentication|jsonb|added|
 |mutual_tls_authentication_truststore_uri|text|removed|
 |mutual_tls_authentication_truststore_version|text|removed|
-|mutual_tls_authentication_truststore_warnings|text[]|removed| 
- 
+|mutual_tls_authentication_truststore_warnings|text[]|removed|
+
 ## aws_apigateway_rest_api_authorizers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -135,9 +153,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_deployments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -146,9 +165,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_documentation_parts
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -163,9 +183,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_documentation_versions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -174,9 +195,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_gateway_responses
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -185,9 +207,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_models
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -196,9 +219,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_request_validators
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -207,9 +231,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_resources
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -218,9 +243,10 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_api_stages
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -237,21 +263,24 @@ Renamed to aws_iam_accounts.
 |region|text|added|
 |rest_api_arn|text|added|
 |rest_api_cq_id|uuid|removed|
-|rest_api_id|text|removed| 
- 
+|rest_api_id|text|removed|
+
 ## aws_apigateway_rest_apis
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |endpoint_configuration|jsonb|added|
 |endpoint_configuration_types|text[]|removed|
-|endpoint_configuration_vpc_endpoint_ids|text[]|removed| 
- 
+|endpoint_configuration_vpc_endpoint_ids|text[]|removed|
+
 ## aws_apigateway_usage_plan_api_stages
-This table was removed. 
- 
+Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans)
+
+
 ## aws_apigateway_usage_plan_keys
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -260,9 +289,10 @@ This table was removed.
 |region|text|added|
 |usage_plan_arn|text|added|
 |usage_plan_cq_id|uuid|removed|
-|usage_plan_id|text|removed| 
- 
+|usage_plan_id|text|removed|
+
 ## aws_apigateway_usage_plans
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -274,15 +304,17 @@ This table was removed.
 |quota_period|text|removed|
 |throttle|jsonb|added|
 |throttle_burst_limit|bigint|removed|
-|throttle_rate_limit|float|removed| 
- 
+|throttle_rate_limit|float|removed|
+
 ## aws_apigateway_vpc_links
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_apigatewayv2_api_authorizers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -294,9 +326,10 @@ This table was removed.
 |jwt_configuration|jsonb|added|
 |jwt_configuration_audience|text[]|removed|
 |jwt_configuration_issuer|text|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigatewayv2_api_deployments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -304,9 +337,10 @@ This table was removed.
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigatewayv2_api_integration_responses
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -314,9 +348,10 @@ This table was removed.
 |account_id|text|added|
 |api_integration_arn|text|added|
 |api_integration_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigatewayv2_api_integrations
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -327,9 +362,10 @@ This table was removed.
 |region|text|added|
 |timeout_in_millis|bigint|updated|Type changed from integer to bigint
 |tls_config|jsonb|added|
-|tls_config_server_name_to_verify|text|removed| 
- 
+|tls_config_server_name_to_verify|text|removed|
+
 ## aws_apigatewayv2_api_models
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -337,9 +373,10 @@ This table was removed.
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigatewayv2_api_route_responses
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -347,9 +384,10 @@ This table was removed.
 |account_id|text|added|
 |api_route_arn|text|added|
 |api_route_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigatewayv2_api_routes
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -357,9 +395,10 @@ This table was removed.
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigatewayv2_api_stages
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -376,9 +415,10 @@ This table was removed.
 |route_settings_detailed_metrics_enabled|boolean|removed|
 |route_settings_logging_level|text|removed|
 |route_settings_throttling_burst_limit|integer|removed|
-|route_settings_throttling_rate_limit|float|removed| 
- 
+|route_settings_throttling_rate_limit|float|removed|
+
 ## aws_apigatewayv2_apis
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -389,12 +429,14 @@ This table was removed.
 |cors_configuration_allow_methods|text[]|removed|
 |cors_configuration_allow_origins|text[]|removed|
 |cors_configuration_expose_headers|text[]|removed|
-|cors_configuration_max_age|integer|removed| 
- 
+|cors_configuration_max_age|integer|removed|
+
 ## aws_apigatewayv2_domain_name_configurations
-This table was removed. 
- 
+Moved to JSON column on [aws_apigatewayv2_domain_names](#aws_apigatewayv2_domain_names)
+
+
 ## aws_apigatewayv2_domain_name_rest_api_mappings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -402,9 +444,10 @@ This table was removed.
 |account_id|text|added|
 |domain_name_arn|text|added|
 |domain_name_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_apigatewayv2_domain_names
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -413,17 +456,19 @@ This table was removed.
 |mutual_tls_authentication|jsonb|added|
 |mutual_tls_authentication_truststore_uri|text|removed|
 |mutual_tls_authentication_truststore_version|text|removed|
-|mutual_tls_authentication_truststore_warnings|text[]|removed| 
- 
+|mutual_tls_authentication_truststore_warnings|text[]|removed|
+
 ## aws_apigatewayv2_vpc_links
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
-|vpc_link_id|text|added| 
- 
+|vpc_link_id|text|added|
+
 ## aws_applicationautoscaling_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -432,12 +477,14 @@ This table was removed.
 |namespace|text|removed|
 |policy_name|text|added|
 |policy_type|text|added|
-|type|text|removed| 
- 
+|type|text|removed|
+
 ## aws_appsync_graphql_api_additional_authentication_providers
-This table was removed. 
- 
+Moved to JSON column on [aws_appsync_graphql_apis](#aws_appsync_graphql_apis)
+
+
 ## aws_appsync_graphql_apis
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -462,15 +509,18 @@ This table was removed.
 |user_pool_config_app_id_client_regex|text|removed|
 |user_pool_config_aws_region|text|removed|
 |user_pool_config_default_action|text|removed|
-|user_pool_config_user_pool_id|text|removed| 
- 
+|user_pool_config_user_pool_id|text|removed|
+
 ## aws_athena_data_catalog_database_table_columns
-This table was removed. 
- 
+Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
+
+
 ## aws_athena_data_catalog_database_table_partition_keys
-This table was removed. 
- 
+Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
+
+
 ## aws_athena_data_catalog_database_tables
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -481,9 +531,10 @@ This table was removed.
 |data_catalog_database_cq_id|uuid|removed|
 |data_catalog_database_name|text|added|
 |partition_keys|jsonb|added|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_athena_data_catalog_databases
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -491,15 +542,17 @@ This table was removed.
 |account_id|text|added|
 |data_catalog_arn|text|added|
 |data_catalog_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_athena_data_catalogs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_athena_work_group_named_queries
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -507,9 +560,10 @@ This table was removed.
 |account_id|text|added|
 |region|text|added|
 |work_group_arn|text|added|
-|work_group_cq_id|uuid|removed| 
- 
+|work_group_cq_id|uuid|removed|
+
 ## aws_athena_work_group_prepared_statements
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -517,9 +571,10 @@ This table was removed.
 |account_id|text|added|
 |region|text|added|
 |work_group_arn|text|added|
-|work_group_cq_id|uuid|removed| 
- 
+|work_group_cq_id|uuid|removed|
+
 ## aws_athena_work_group_query_executions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -558,9 +613,10 @@ This table was removed.
 |submission_date_time|timestamp without time zone|removed|
 |total_execution_time_in_millis|bigint|removed|
 |work_group_arn|text|added|
-|work_group_cq_id|uuid|removed| 
- 
+|work_group_cq_id|uuid|removed|
+
 ## aws_athena_work_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -576,12 +632,14 @@ This table was removed.
 |output_location|text|removed|
 |publish_cloud_watch_metrics_enabled|boolean|removed|
 |requester_pays_enabled|boolean|removed|
-|selected_engine_version|text|removed| 
- 
+|selected_engine_version|text|removed|
+
 ## aws_autoscaling_group_instances
-This table was removed. 
- 
+Moved to JSON column on [aws_autoscaling_groups](#aws_autoscaling_groups)
+
+
 ## aws_autoscaling_group_lifecycle_hooks
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -591,9 +649,10 @@ This table was removed.
 |group_arn|text|added|
 |group_cq_id|uuid|removed|
 |heartbeat_timeout|bigint|updated|Type changed from integer to bigint
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_autoscaling_group_scaling_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -623,12 +682,14 @@ This table was removed.
 |target_tracking_configuration_predefined_metric_resource_label|text|removed|
 |target_tracking_configuration_predefined_metric_type|text|removed|
 |target_tracking_configuration_target_value|float|removed|
-|type|text|removed| 
- 
+|type|text|removed|
+
 ## aws_autoscaling_group_tags
-This table was removed. 
- 
+Moved to JSON column on [aws_autoscaling_groups](#aws_autoscaling_groups)
+
+
 ## aws_autoscaling_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -656,12 +717,14 @@ This table was removed.
 |target_group_ar_ns|text[]|added|
 |target_group_arns|text[]|removed|
 |warm_pool_configuration|jsonb|added|
-|warm_pool_size|bigint|added| 
- 
+|warm_pool_size|bigint|added|
+
 ## aws_autoscaling_launch_configuration_block_device_mappings
-This table was removed. 
- 
+Moved to JSON column on [aws_autoscaling_launch_configurations](#aws_autoscaling_launch_configurations)
+
+
 ## aws_autoscaling_launch_configurations
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -672,9 +735,10 @@ This table was removed.
 |metadata_options|jsonb|added|
 |metadata_options_http_endpoint|text|removed|
 |metadata_options_http_put_response_hop_limit|integer|removed|
-|metadata_options_http_tokens|text|removed| 
- 
+|metadata_options_http_tokens|text|removed|
+
 ## aws_autoscaling_scheduled_actions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -683,19 +747,22 @@ This table was removed.
 |max_size|bigint|updated|Type changed from integer to bigint
 |min_size|bigint|updated|Type changed from integer to bigint
 |name|text|removed|
-|scheduled_action_name|text|added| 
- 
+|scheduled_action_name|text|added|
+
 ## aws_backup_global_settings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_backup_plan_rules
-This table was removed. 
- 
+Moved to JSON column on [aws_backup_plans](#aws_backup_plans)
+
+
 ## aws_backup_plan_selections
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -712,9 +779,10 @@ This table was removed.
 |region|text|added|
 |resources|text[]|removed|
 |result_metadata|jsonb|added|
-|selection_name|text|removed| 
- 
+|selection_name|text|removed|
+
 ## aws_backup_plans
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -724,16 +792,18 @@ This table was removed.
 |deletion_date|timestamp without time zone|added|
 |id|text|removed|
 |name|text|removed|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_backup_region_settings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_backup_vault_recovery_points
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -753,9 +823,10 @@ This table was removed.
 |recovery_point_arn|text|added|
 |region|text|added|
 |vault_arn|text|added|
-|vault_cq_id|uuid|removed| 
- 
+|vault_cq_id|uuid|removed|
+
 ## aws_backup_vaults
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -764,12 +835,14 @@ This table was removed.
 |name|text|removed|
 |notification_events|text[]|removed|
 |notification_sns_topic_arn|text|removed|
-|notifications|jsonb|added| 
- 
+|notifications|jsonb|added|
+
 ## aws_cloudformation_stack_outputs
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudformation_stacks](#aws_cloudformation_stacks)
+
+
 ## aws_cloudformation_stack_resources
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -782,9 +855,10 @@ This table was removed.
 |module_info_type_hierarchy|text|removed|
 |region|text|added|
 |stack_cq_id|uuid|removed|
-|stack_resource_drift_status|text|removed| 
- 
+|stack_resource_drift_status|text|removed|
+
 ## aws_cloudformation_stacks
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -802,9 +876,10 @@ This table was removed.
 |stack_name|text|added|
 |stack_status|text|added|
 |status|text|removed|
-|timeout_in_minutes|bigint|updated|Type changed from integer to bigint 
- 
+|timeout_in_minutes|bigint|updated|Type changed from integer to bigint
+
 ## aws_cloudfront_cache_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -827,27 +902,34 @@ This table was removed.
 |name|text|removed|
 |query_strings|text[]|removed|
 |query_strings_behavior|text|removed|
-|query_strings_quantity|integer|removed| 
- 
+|query_strings_quantity|integer|removed|
+
 ## aws_cloudfront_distribution_cache_behavior_lambda_functions
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distributions)
+
+
 ## aws_cloudfront_distribution_cache_behaviors
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distributions)
+
+
 ## aws_cloudfront_distribution_custom_error_responses
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distributions)
+
+
 ## aws_cloudfront_distribution_default_cache_behavior_functions
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distributions)
+
+
 ## aws_cloudfront_distribution_origin_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distributions)
+
+
 ## aws_cloudfront_distribution_origins
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distributions)
+
+
 ## aws_cloudfront_distributions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -899,9 +981,10 @@ This table was removed.
 |viewer_certificate_minimum_protocol_version|text|removed|
 |viewer_certificate_source|text|removed|
 |viewer_certificate_ssl_support_method|text|removed|
-|web_acl_id|text|removed| 
- 
+|web_acl_id|text|removed|
+
 ## aws_cloudtrail_trail_event_selectors
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -909,9 +992,10 @@ This table was removed.
 |account_id|text|added|
 |data_resources|jsonb|added|
 |region|text|added|
-|trail_cq_id|uuid|removed| 
- 
+|trail_cq_id|uuid|removed|
+
 ## aws_cloudtrail_trails
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -929,12 +1013,14 @@ This table was removed.
 |start_logging_time|timestamp without time zone|removed|
 |status|jsonb|added|
 |stop_logging_time|timestamp without time zone|removed|
-|tags|jsonb|removed| 
- 
+|tags|jsonb|removed|
+
 ## aws_cloudwatch_alarm_metrics
-This table was removed. 
- 
+Moved to JSON column on [aws_cloudwatch_alarms](#aws_cloudwatch_alarms)
+
+
 ## aws_cloudwatch_alarms
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -951,22 +1037,26 @@ This table was removed.
 |metrics|jsonb|added|
 |name|text|removed|
 |period|bigint|updated|Type changed from integer to bigint
-|threshold|real|updated|Type changed from float to real 
- 
+|threshold|real|updated|Type changed from float to real
+
 ## aws_cloudwatchlogs_filter_metric_transformations
-This table was removed. 
- 
+This table was removed.
+
+
 ## aws_cloudwatchlogs_filters
-This table was removed. 
- 
+This table was removed.
+
+
 ## aws_cloudwatchlogs_log_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_cloudwatchlogs_metric_filters
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -978,21 +1068,26 @@ This table was newly added.
 |log_group_name|text|added|
 |metric_transformations|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_codebuild_project_environment_variables
-This table was removed. 
- 
+Moved to JSON column on [aws_codebuild_projects](#aws_codebuild_projects)
+
+
 ## aws_codebuild_project_file_system_locations
-This table was removed. 
- 
+Moved to JSON column on [aws_codebuild_projects](#aws_codebuild_projects)
+
+
 ## aws_codebuild_project_secondary_artifacts
-This table was removed. 
- 
+Moved to JSON column on [aws_codebuild_projects](#aws_codebuild_projects)
+
+
 ## aws_codebuild_project_secondary_sources
-This table was removed. 
- 
+Moved to JSON column on [aws_codebuild_projects](#aws_codebuild_projects)
+
+
 ## aws_codebuild_projects
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1069,15 +1164,18 @@ This table was removed.
 |webhook_last_modified_secret|timestamp without time zone|removed|
 |webhook_payload_url|text|removed|
 |webhook_secret|text|removed|
-|webhook_url|text|removed| 
- 
+|webhook_url|text|removed|
+
 ## aws_codepipeline_pipeline_stage_actions
-This table was removed. 
- 
+Moved to JSON column on [aws_codepipeline_pipelines](#aws_codepipeline_pipelines)
+
+
 ## aws_codepipeline_pipeline_stages
-This table was removed. 
- 
+Moved to JSON column on [aws_codepipeline_pipelines](#aws_codepipeline_pipelines)
+
+
 ## aws_codepipeline_pipelines
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1094,12 +1192,14 @@ This table was removed.
 |role_arn|text|removed|
 |tags|text|updated|Type changed from jsonb to text
 |updated|timestamp without time zone|removed|
-|version|bigint|removed| 
- 
+|version|bigint|removed|
+
 ## aws_codepipeline_webhook_filters
-This table was removed. 
- 
+Moved to JSON column on [aws_codepipeline_webhooks](#aws_codepipeline_webhooks)
+
+
 ## aws_codepipeline_webhooks
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1110,12 +1210,14 @@ This table was removed.
 |definition|jsonb|added|
 |name|text|removed|
 |target_action|text|removed|
-|target_pipeline|text|removed| 
- 
+|target_pipeline|text|removed|
+
 ## aws_cognito_identity_pool_cognito_identity_providers
-This table was removed. 
- 
+Moved to JSON column on [aws_cognito_identity_pools](#aws_cognito_identity_pools)
+
+
 ## aws_cognito_identity_pools
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1125,20 +1227,23 @@ This table was removed.
 |open_id_connect_provider_arns|text[]|removed|
 |result_metadata|jsonb|added|
 |saml_provider_ar_ns|text[]|added|
-|saml_provider_arns|text[]|removed| 
- 
+|saml_provider_arns|text[]|removed|
+
 ## aws_cognito_user_pool_identity_providers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |user_pool_arn|text|added|
-|user_pool_cq_id|uuid|removed| 
- 
+|user_pool_cq_id|uuid|removed|
+
 ## aws_cognito_user_pool_schema_attributes
-This table was removed. 
- 
+Moved to JSON column on [aws_cognito_user_pools](#aws_cognito_user_pools)
+
+
 ## aws_cognito_user_pools
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1197,9 +1302,10 @@ This table was removed.
 |verification_message_template_email_message_by_link|text|removed|
 |verification_message_template_email_subject|text|removed|
 |verification_message_template_email_subject_by_link|text|removed|
-|verification_message_template_sms_message|text|removed| 
- 
+|verification_message_template_sms_message|text|removed|
+
 ## aws_config_configuration_recorders
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1207,9 +1313,10 @@ This table was removed.
 |recording_group|jsonb|added|
 |recording_group_all_supported|boolean|removed|
 |recording_group_include_global_resource_types|boolean|removed|
-|recording_group_resource_types|text[]|removed| 
- 
+|recording_group_resource_types|text[]|removed|
+
 ## aws_config_conformance_pack_rule_compliances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1221,19 +1328,22 @@ This table was removed.
 |ordering_timestamp|timestamp without time zone|removed|
 |region|text|added|
 |resource_id|text|removed|
-|resource_type|text|removed| 
- 
+|resource_type|text|removed|
+
 ## aws_config_conformance_packs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|conformance_pack_input_parameters|jsonb|removed| 
- 
+|conformance_pack_input_parameters|jsonb|removed|
+
 ## aws_dax_cluster_nodes
-This table was removed. 
- 
+Moved to JSON column on [aws_dax_clusters](#aws_dax_clusters)
+
+
 ## aws_dax_clusters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1256,12 +1366,14 @@ This table was removed.
 |sse_description|jsonb|added|
 |sse_description_status|text|removed|
 |tags|text|updated|Type changed from jsonb to text
-|total_nodes|bigint|updated|Type changed from integer to bigint 
- 
+|total_nodes|bigint|updated|Type changed from integer to bigint
+
 ## aws_directconnect_connection_mac_sec_keys
-This table was removed. 
- 
+Moved to JSON column on [aws_directconnect_connections](#aws_directconnect_connections)
+
+
 ## aws_directconnect_connections
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1271,9 +1383,10 @@ This table was removed.
 |connection_name|text|added|
 |mac_sec_keys|jsonb|added|
 |name|text|removed|
-|vlan|bigint|updated|Type changed from integer to bigint 
- 
+|vlan|bigint|updated|Type changed from integer to bigint
+
 ## aws_directconnect_gateway_associations
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1290,9 +1403,10 @@ This table was removed.
 |gateway_cq_id|uuid|removed|
 |region|text|added|
 |resource_id|text|removed|
-|virtual_gateway_region|text|added| 
- 
+|virtual_gateway_region|text|added|
+
 ## aws_directconnect_gateway_attachments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1301,9 +1415,10 @@ This table was removed.
 |direct_connect_gateway_id|text|added|
 |gateway_arn|text|added|
 |gateway_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_directconnect_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1312,12 +1427,14 @@ This table was removed.
 |direct_connect_gateway_state|text|added|
 |name|text|removed|
 |region|text|added|
-|state|text|removed| 
- 
+|state|text|removed|
+
 ## aws_directconnect_lag_mac_sec_keys
-This table was removed. 
- 
+Moved to JSON column on [aws_directconnect_lags](#aws_directconnect_lags)
+
+
 ## aws_directconnect_lags
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1332,20 +1449,23 @@ This table was removed.
 |minimum_links|bigint|updated|Type changed from integer to bigint
 |name|text|removed|
 |number_of_connections|bigint|updated|Type changed from integer to bigint
-|state|text|removed| 
- 
+|state|text|removed|
+
 ## aws_directconnect_virtual_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |state|text|removed|
-|virtual_gateway_state|text|added| 
- 
+|virtual_gateway_state|text|added|
+
 ## aws_directconnect_virtual_interface_bgp_peers
-This table was removed. 
- 
+Moved to JSON column on [aws_directconnect_virtual_interfaces](#aws_directconnect_virtual_interfaces)
+
+
 ## aws_directconnect_virtual_interfaces
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1356,15 +1476,18 @@ This table was removed.
 |mtu|bigint|updated|Type changed from integer to bigint
 |route_filter_prefixes|jsonb|updated|Type changed from text[] to jsonb
 |site_link_enabled|boolean|added|
-|vlan|bigint|updated|Type changed from integer to bigint 
- 
+|vlan|bigint|updated|Type changed from integer to bigint
+
 ## aws_dms_replication_instance_replication_subnet_group_subnets
-This table was removed. 
- 
+Moved to JSON column on [aws_dms_replication_instances](#aws_dms_replication_instances)
+
+
 ## aws_dms_replication_instance_vpc_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_dms_replication_instances](#aws_dms_replication_instances)
+
+
 ## aws_dms_replication_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1394,9 +1517,10 @@ This table was removed.
 |replication_subnet_group_subnet_group_status|text|removed|
 |replication_subnet_group_vpc_id|text|removed|
 |status|text|removed|
-|vpc_security_groups|jsonb|added| 
- 
+|vpc_security_groups|jsonb|added|
+
 ## aws_dynamodb_table_continuous_backups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1408,15 +1532,18 @@ This table was removed.
 |point_in_time_recovery_status|text|removed|
 |region|text|added|
 |table_arn|text|added|
-|table_cq_id|uuid|removed| 
- 
+|table_cq_id|uuid|removed|
+
 ## aws_dynamodb_table_global_secondary_indexes
-This table was removed. 
- 
+Moved to JSON column on [aws_dynamodb_tables](#aws_dynamodb_tables)
+
+
 ## aws_dynamodb_table_local_secondary_indexes
-This table was removed. 
- 
+Moved to JSON column on [aws_dynamodb_tables](#aws_dynamodb_tables)
+
+
 ## aws_dynamodb_table_replica_auto_scalings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1428,12 +1555,14 @@ This table was removed.
 |replica_provisioned_write_capacity_auto_scaling_settings|jsonb|added|
 |table_arn|text|added|
 |table_cq_id|uuid|removed|
-|write_capacity|jsonb|removed| 
- 
+|write_capacity|jsonb|removed|
+
 ## aws_dynamodb_table_replicas
-This table was removed. 
- 
+Moved to JSON column on [aws_dynamodb_tables](#aws_dynamodb_tables)
+
+
 ## aws_dynamodb_tables
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1462,23 +1591,26 @@ This table was removed.
 |table_id|text|added|
 |table_name|text|added|
 |table_size_bytes|bigint|added|
-|table_status|text|added| 
- 
+|table_status|text|added|
+
 ## aws_ec2_byoip_cidrs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_ec2_customer_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |customer_gateway_id|text|added|
-|id|text|removed| 
- 
+|id|text|removed|
+
 ## aws_ec2_ebs_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1488,12 +1620,14 @@ This table was removed.
 |create_volume_permissions|jsonb|removed|
 |restore_expiry_time|timestamp without time zone|added|
 |storage_tier|text|added|
-|volume_size|bigint|updated|Type changed from integer to bigint 
- 
+|volume_size|bigint|updated|Type changed from integer to bigint
+
 ## aws_ec2_ebs_volume_attachments
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_ebs_volumes](#aws_ec2_ebs_volumes)
+
+
 ## aws_ec2_ebs_volumes
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1503,17 +1637,19 @@ This table was removed.
 |iops|bigint|updated|Type changed from integer to bigint
 |size|bigint|updated|Type changed from integer to bigint
 |throughput|bigint|updated|Type changed from integer to bigint
-|volume_id|text|added| 
- 
+|volume_id|text|added|
+
 ## aws_ec2_egress_only_internet_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |egress_only_internet_gateway_id|text|added|
-|id|text|removed| 
- 
+|id|text|removed|
+
 ## aws_ec2_eips
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1521,24 +1657,28 @@ This table was removed.
 |carrier_ip|text|updated|Type changed from inet to text
 |customer_owned_ip|text|updated|Type changed from inet to text
 |private_ip_address|text|updated|Type changed from inet to text
-|public_ip|text|updated|Type changed from inet to text 
- 
+|public_ip|text|updated|Type changed from inet to text
+
 ## aws_ec2_flow_logs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |destination_options|jsonb|added|
 |id|text|removed|
-|max_aggregation_interval|bigint|updated|Type changed from integer to bigint 
- 
+|max_aggregation_interval|bigint|updated|Type changed from integer to bigint
+
 ## aws_ec2_host_available_instance_capacity
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_hosts](#aws_ec2_hosts)
+
+
 ## aws_ec2_host_instances
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_hosts](#aws_ec2_hosts)
+
+
 ## aws_ec2_hosts
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1556,12 +1696,14 @@ This table was removed.
 |outpost_arn|text|added|
 |reservation_id|text|removed|
 |sockets|integer|removed|
-|total_vcpus|integer|removed| 
- 
+|total_vcpus|integer|removed|
+
 ## aws_ec2_image_block_device_mappings
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_images](#aws_ec2_images)
+
+
 ## aws_ec2_images
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1576,39 +1718,50 @@ This table was removed.
 |state_reason|jsonb|added|
 |state_reason_code|text|removed|
 |state_reason_message|text|removed|
-|tpm_support|text|added| 
- 
+|tpm_support|text|added|
+
 ## aws_ec2_instance_block_device_mappings
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_elastic_gpu_associations
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_elastic_inference_accelerator_associations
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_network_interface_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_network_interface_ipv6_addresses
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_network_interface_private_ip_addresses
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_network_interfaces
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_product_codes
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_status_events
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_statuses
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1621,24 +1774,30 @@ This table was removed.
 |instance_status|jsonb|added|
 |status|text|removed|
 |system_status|jsonb|updated|Type changed from text to jsonb
-|system_status_details|jsonb|removed| 
- 
+|system_status_details|jsonb|removed|
+
 ## aws_ec2_instance_type_fpga_info_fpgas
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_type_gpu_info_gpus
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_type_inference_accelerator_info_accelerators
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_type_instance_storage_info_disks
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_type_network_info_network_cards
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
+
+
 ## aws_ec2_instance_types
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1687,9 +1846,10 @@ This table was removed.
 |v_cpu_info_default_threads_per_core|bigint|removed|
 |v_cpu_info_default_v_cpus|bigint|removed|
 |v_cpu_info_valid_cores|integer[]|removed|
-|v_cpu_info_valid_threads_per_core|integer[]|removed| 
- 
+|v_cpu_info_valid_threads_per_core|integer[]|removed|
+
 ## aws_ec2_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1748,31 +1908,36 @@ This table was removed.
 |state_transition_reason_time|timestamp without time zone|removed|
 |tpm_support|text|added|
 |usage_operation|text|added|
-|usage_operation_update_time|timestamp without time zone|added| 
- 
+|usage_operation_update_time|timestamp without time zone|added|
+
 ## aws_ec2_internet_gateway_attachments
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_internet_gateways](#aws_ec2_internet_gateways)
+
+
 ## aws_ec2_internet_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |attachments|jsonb|added|
 |id|text|removed|
-|internet_gateway_id|text|added| 
- 
+|internet_gateway_id|text|added|
+
 ## aws_ec2_key_pairs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|public_key|text|added| 
- 
+|public_key|text|added|
+
 ## aws_ec2_nat_gateway_addresses
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_nat_gateways](#aws_ec2_nat_gateways)
+
+
 ## aws_ec2_nat_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1786,15 +1951,18 @@ This table was removed.
 |provisioned_bandwidth_provisioned|text|removed|
 |provisioned_bandwidth_request_time|timestamp without time zone|removed|
 |provisioned_bandwidth_requested|text|removed|
-|provisioned_bandwidth_status|text|removed| 
- 
+|provisioned_bandwidth_status|text|removed|
+
 ## aws_ec2_network_acl_associations
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_network_acls](#aws_ec2_network_acls)
+
+
 ## aws_ec2_network_acl_entries
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_network_acls](#aws_ec2_network_acls)
+
+
 ## aws_ec2_network_acls
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1802,12 +1970,14 @@ This table was removed.
 |associations|jsonb|added|
 |entries|jsonb|added|
 |id|text|removed|
-|network_acl_id|text|added| 
- 
+|network_acl_id|text|added|
+
 ## aws_ec2_network_interface_private_ip_addresses
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_network_interfaces](#aws_ec2_network_interfaces)
+
+
 ## aws_ec2_network_interfaces
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1836,24 +2006,29 @@ This table was removed.
 |network_interface_id|text|added|
 |private_ip_addresses|jsonb|added|
 |tag_set|jsonb|added|
-|tags|jsonb|removed| 
- 
+|tags|jsonb|removed|
+
 ## aws_ec2_regional_config
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_ec2_route_table_associations
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_route_tables](#aws_ec2_route_tables)
+
+
 ## aws_ec2_route_table_propagating_vgws
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_route_tables](#aws_ec2_route_tables)
+
+
 ## aws_ec2_route_table_routes
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_route_tables](#aws_ec2_route_tables)
+
+
 ## aws_ec2_route_tables
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1862,21 +2037,26 @@ This table was removed.
 |id|text|removed|
 |propagating_vgws|jsonb|added|
 |route_table_id|text|added|
-|routes|jsonb|added| 
- 
+|routes|jsonb|added|
+
 ## aws_ec2_security_group_ip_permission_ip_ranges
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_security_groups](#aws_ec2_security_groups)
+
+
 ## aws_ec2_security_group_ip_permission_prefix_list_ids
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_security_groups](#aws_ec2_security_groups)
+
+
 ## aws_ec2_security_group_ip_permission_user_id_group_pairs
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_security_groups](#aws_ec2_security_groups)
+
+
 ## aws_ec2_security_group_ip_permissions
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_security_groups](#aws_ec2_security_groups)
+
+
 ## aws_ec2_security_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1884,12 +2064,14 @@ This table was removed.
 |group_id|text|added|
 |id|text|removed|
 |ip_permissions|jsonb|added|
-|ip_permissions_egress|jsonb|added| 
- 
+|ip_permissions_egress|jsonb|added|
+
 ## aws_ec2_subnet_ipv6_cidr_block_association_sets
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
+
+
 ## aws_ec2_subnets
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1902,9 +2084,10 @@ This table was removed.
 |ipv6_native|boolean|added|
 |private_dns_name_options_on_launch|jsonb|added|
 |subnet_arn|text|added|
-|subnet_id|text|added| 
- 
+|subnet_id|text|added|
+
 ## aws_ec2_transit_gateway_attachments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1917,9 +2100,10 @@ This table was removed.
 |transit_gateway_arn|text|added|
 |transit_gateway_attachment_id|text|added|
 |transit_gateway_cq_id|uuid|removed|
-|transit_gateway_id|text|added| 
- 
+|transit_gateway_id|text|added|
+
 ## aws_ec2_transit_gateway_multicast_domains
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1932,9 +2116,10 @@ This table was removed.
 |static_sources_support|text|removed|
 |transit_gateway_arn|text|added|
 |transit_gateway_cq_id|uuid|removed|
-|transit_gateway_id|text|added| 
- 
+|transit_gateway_id|text|added|
+
 ## aws_ec2_transit_gateway_peering_attachments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1953,9 +2138,10 @@ This table was removed.
 |status_code|text|removed|
 |status_message|text|removed|
 |transit_gateway_arn|text|added|
-|transit_gateway_cq_id|uuid|removed| 
- 
+|transit_gateway_cq_id|uuid|removed|
+
 ## aws_ec2_transit_gateway_route_tables
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1964,9 +2150,10 @@ This table was removed.
 |region|text|added|
 |transit_gateway_arn|text|added|
 |transit_gateway_cq_id|uuid|removed|
-|transit_gateway_id|text|added| 
- 
+|transit_gateway_id|text|added|
+
 ## aws_ec2_transit_gateway_vpc_attachments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1980,9 +2167,10 @@ This table was removed.
 |subnet_ids|text[]|added|
 |transit_gateway_arn|text|added|
 |transit_gateway_cq_id|uuid|removed|
-|transit_gateway_id|text|added| 
- 
+|transit_gateway_id|text|added|
+
 ## aws_ec2_transit_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -1998,21 +2186,26 @@ This table was removed.
 |propagation_default_route_table_id|text|removed|
 |region|text|removed|
 |transit_gateway_cidr_blocks|text[]|removed|
-|vpn_ecmp_support|text|removed| 
- 
+|vpn_ecmp_support|text|removed|
+
 ## aws_ec2_vpc_attachment
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
+
+
 ## aws_ec2_vpc_cidr_block_association_sets
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
+
+
 ## aws_ec2_vpc_endpoint_dns_entries
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
+
+
 ## aws_ec2_vpc_endpoint_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
+
+
 ## aws_ec2_vpc_endpoint_service_configurations
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2023,9 +2216,10 @@ This table was removed.
 |private_dns_name_configuration_type|text|removed|
 |private_dns_name_configuration_value|text|removed|
 |service_type|jsonb|updated|Type changed from text[] to jsonb
-|supported_ip_address_types|text[]|added| 
- 
+|supported_ip_address_types|text[]|added|
+
 ## aws_ec2_vpc_endpoint_services
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2034,9 +2228,10 @@ This table was removed.
 |private_dns_names|jsonb|updated|Type changed from text[] to jsonb
 |service_id|text|added|
 |service_type|jsonb|updated|Type changed from text[] to jsonb
-|supported_ip_address_types|text[]|added| 
- 
+|supported_ip_address_types|text[]|added|
+
 ## aws_ec2_vpc_endpoints
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2049,12 +2244,14 @@ This table was removed.
 |last_error|jsonb|added|
 |last_error_code|text|removed|
 |last_error_message|text|removed|
-|vpc_endpoint_id|text|added| 
- 
+|vpc_endpoint_id|text|added|
+
 ## aws_ec2_vpc_ipv6_cidr_block_association_sets
-This table was removed. 
- 
+Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
+
+
 ## aws_ec2_vpc_peering_connections
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2083,9 +2280,10 @@ This table was removed.
 |status|jsonb|added|
 |status_code|text|removed|
 |status_message|text|removed|
-|vpc_peering_connection_id|text|added| 
- 
+|vpc_peering_connection_id|text|added|
+
 ## aws_ec2_vpcs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2093,18 +2291,20 @@ This table was removed.
 |cidr_block_association_set|jsonb|added|
 |id|text|removed|
 |ipv6_cidr_block_association_set|jsonb|added|
-|vpc_id|text|added| 
- 
+|vpc_id|text|added|
+
 ## aws_ec2_vpn_gateways
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
 |vpc_attachments|jsonb|added|
-|vpn_gateway_id|text|added| 
- 
+|vpn_gateway_id|text|added|
+
 ## aws_ecr_repositories
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2118,9 +2318,10 @@ This table was removed.
 |repository_name|text|added|
 |repository_uri|text|added|
 |tags|text|updated|Type changed from jsonb to text
-|uri|text|removed| 
- 
+|uri|text|removed|
+
 ## aws_ecr_repository_images
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2132,27 +2333,34 @@ This table was removed.
 |image_scan_findings_summary_vulnerability_source_updated_at|timestamp without time zone|removed|
 |image_scan_status|jsonb|updated|Type changed from text to jsonb
 |image_scan_status_description|text|removed|
-|repository_cq_id|uuid|removed| 
- 
+|repository_cq_id|uuid|removed|
+
 ## aws_ecs_cluster_attachments
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_container_instance_attachments
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_container_instance_attributes
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_container_instance_health_status_details
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_container_instance_registered_resources
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_container_instance_remaining_resources
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_container_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2172,30 +2380,38 @@ This table was removed.
 |version_info|jsonb|added|
 |version_info_agent_hash|text|removed|
 |version_info_agent_version|text|removed|
-|version_info_docker_version|text|removed| 
- 
+|version_info_docker_version|text|removed|
+
 ## aws_ecs_cluster_service_deployments
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_service_events
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_service_load_balancers
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_service_service_registries
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_service_task_set_load_balancers
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_service_task_set_service_registries
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_service_task_sets
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_services
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2224,15 +2440,18 @@ This table was removed.
 |running_count|bigint|updated|Type changed from integer to bigint
 |service_name|text|added|
 |service_registries|jsonb|added|
-|task_sets|jsonb|added| 
- 
+|task_sets|jsonb|added|
+
 ## aws_ecs_cluster_task_attachments
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_task_containers
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
+
+
 ## aws_ecs_cluster_tasks
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2243,9 +2462,10 @@ This table was removed.
 |containers|jsonb|added|
 |ephemeral_storage|jsonb|added|
 |ephemeral_storage_size_in_gib|integer|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_ecs_clusters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2264,15 +2484,18 @@ This table was removed.
 |name|text|removed|
 |pending_tasks_count|bigint|updated|Type changed from integer to bigint
 |registered_container_instances_count|bigint|updated|Type changed from integer to bigint
-|running_tasks_count|bigint|updated|Type changed from integer to bigint 
- 
+|running_tasks_count|bigint|updated|Type changed from integer to bigint
+
 ## aws_ecs_task_definition_container_definitions
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_task_definitions](#aws_ecs_task_definitions)
+
+
 ## aws_ecs_task_definition_volumes
-This table was removed. 
- 
+Moved to JSON column on [aws_ecs_task_definitions](#aws_ecs_task_definitions)
+
+
 ## aws_ecs_task_definitions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2290,9 +2513,10 @@ This table was removed.
 |runtime_platform_cpu_architecture|text|removed|
 |runtime_platform_os_family|text|removed|
 |task_definition_arn|text|added|
-|volumes|jsonb|added| 
- 
+|volumes|jsonb|added|
+
 ## aws_efs_filesystems
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2305,15 +2529,18 @@ This table was removed.
 |size_in_bytes_timestamp|timestamp without time zone|removed|
 |size_in_bytes_value|bigint|removed|
 |size_in_bytes_value_in_ia|bigint|removed|
-|size_in_bytes_value_in_standard|bigint|removed| 
- 
+|size_in_bytes_value_in_standard|bigint|removed|
+
 ## aws_eks_cluster_encryption_configs
-This table was removed. 
- 
+Moved to JSON column on [aws_eks_clusters](#aws_eks_clusters)
+
+
 ## aws_eks_cluster_loggings
-This table was removed. 
- 
+Moved to JSON column on [aws_eks_clusters](#aws_eks_clusters)
+
+
 ## aws_eks_clusters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2334,21 +2561,26 @@ This table was removed.
 |resources_vpc_config_public_access_cidrs|text[]|removed|
 |resources_vpc_config_security_group_ids|text[]|removed|
 |resources_vpc_config_subnet_ids|text[]|removed|
-|resources_vpc_config_vpc_id|text|removed| 
- 
+|resources_vpc_config_vpc_id|text|removed|
+
 ## aws_elasticache_cluster_cache_nodes
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_clusters](#aws_elasticache_clusters)
+
+
 ## aws_elasticache_cluster_cache_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_clusters](#aws_elasticache_clusters)
+
+
 ## aws_elasticache_cluster_log_delivery_configurations
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_clusters](#aws_elasticache_clusters)
+
+
 ## aws_elasticache_cluster_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_clusters](#aws_elasticache_clusters)
+
+
 ## aws_elasticache_clusters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2378,48 +2610,58 @@ This table was removed.
 |pending_modified_values|jsonb|added|
 |pending_num_cache_nodes|bigint|removed|
 |security_groups|jsonb|added|
-|status|text|removed| 
- 
+|status|text|removed|
+
 ## aws_elasticache_engine_versions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_elasticache_global_replication_group_global_node_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_global_replication_groups](#aws_elasticache_global_replication_groups)
+
+
 ## aws_elasticache_global_replication_group_members
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_global_replication_groups](#aws_elasticache_global_replication_groups)
+
+
 ## aws_elasticache_global_replication_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |global_node_groups|jsonb|added|
 |members|jsonb|added|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_elasticache_parameter_group_parameters
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_parameter_groups](#aws_elasticache_parameter_groups)
+
+
 ## aws_elasticache_parameter_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_elasticache_replication_group_log_delivery_configurations
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_replication_groups](#aws_elasticache_replication_groups)
+
+
 ## aws_elasticache_replication_group_node_group_members
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_replication_groups](#aws_elasticache_replication_groups)
+
+
 ## aws_elasticache_replication_group_node_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_replication_groups](#aws_elasticache_replication_groups)
+
+
 ## aws_elasticache_replication_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2438,12 +2680,14 @@ This table was removed.
 |pending_primary_cluster_id|text|removed|
 |pending_resharding_slot_migration_progress_percentage|float|removed|
 |pending_user_group_ids_to_add|text[]|removed|
-|pending_user_group_ids_to_remove|text[]|removed| 
- 
+|pending_user_group_ids_to_remove|text[]|removed|
+
 ## aws_elasticache_reserved_cache_node_recurring_charges
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_reserved_cache_nodes](#aws_elasticache_reserved_cache_nodes)
+
+
 ## aws_elasticache_reserved_cache_nodes
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2452,12 +2696,14 @@ This table was removed.
 |fixed_price|real|updated|Type changed from float to real
 |recurring_charges|jsonb|added|
 |reservation_arn|text|removed|
-|usage_price|real|updated|Type changed from float to real 
- 
+|usage_price|real|updated|Type changed from float to real
+
 ## aws_elasticache_reserved_cache_nodes_offering_recurring_charges
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_reserved_cache_nodes](#aws_elasticache_reserved_cache_nodes)
+
+
 ## aws_elasticache_reserved_cache_nodes_offerings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2465,9 +2711,10 @@ This table was removed.
 |arn|text|added|
 |fixed_price|real|updated|Type changed from float to real
 |recurring_charges|jsonb|added|
-|usage_price|real|updated|Type changed from float to real 
- 
+|usage_price|real|updated|Type changed from float to real
+
 ## aws_elasticache_service_updates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2488,47 +2735,54 @@ This table was removed.
 |service_update_type|text|added|
 |severity|text|removed|
 |status|text|removed|
-|type|text|removed| 
- 
+|type|text|removed|
+
 ## aws_elasticache_snapshot_node_snapshots
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_snapshots](#aws_elasticache_snapshots)
+
+
 ## aws_elasticache_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|node_snapshots|jsonb|added| 
- 
+|node_snapshots|jsonb|added|
+
 ## aws_elasticache_subnet_group_subnets
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticache_subnet_groups](#aws_elasticache_subnet_groups)
+
+
 ## aws_elasticache_subnet_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|subnets|jsonb|added| 
- 
+|subnets|jsonb|added|
+
 ## aws_elasticache_user_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |pending_changes|jsonb|added|
 |pending_user_ids_to_add|text[]|removed|
-|pending_user_ids_to_remove|text[]|removed| 
- 
+|pending_user_ids_to_remove|text[]|removed|
+
 ## aws_elasticache_users
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |authentication|jsonb|added|
 |authentication_password_count|bigint|removed|
-|authentication_type|text|removed| 
- 
+|authentication_type|text|removed|
+
 ## aws_elasticbeanstalk_application_versions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2539,9 +2793,10 @@ This table was removed.
 |source_bundle_s3_key|text|removed|
 |source_location|text|removed|
 |source_repository|text|removed|
-|source_type|text|removed| 
- 
+|source_type|text|removed|
+
 ## aws_elasticbeanstalk_applications
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2555,9 +2810,10 @@ This table was removed.
 |max_count_rule_max_count|integer|removed|
 |name|text|removed|
 |resource_lifecycle_config|jsonb|added|
-|resource_lifecycle_config_service_role|text|removed| 
- 
+|resource_lifecycle_config_service_role|text|removed|
+
 ## aws_elasticbeanstalk_configuration_options
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2571,12 +2827,14 @@ This table was removed.
 |regex|jsonb|added|
 |regex_label|text|removed|
 |regex_pattern|text|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_elasticbeanstalk_configuration_setting_options
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticbeanstalk_configuration_settings](#aws_elasticbeanstalk_configuration_settings)
+
+
 ## aws_elasticbeanstalk_configuration_settings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2585,12 +2843,14 @@ This table was removed.
 |environment_cq_id|uuid|removed|
 |environment_id|text|added|
 |option_settings|jsonb|added|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_elasticbeanstalk_environment_links
-This table was removed. 
- 
+Moved to JSON column on [aws_elasticbeanstalk_environments](#aws_elasticbeanstalk_environments)
+
+
 ## aws_elasticbeanstalk_environments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2606,9 +2866,10 @@ This table was removed.
 |tier|jsonb|added|
 |tier_name|text|removed|
 |tier_type|text|removed|
-|tier_version|text|removed| 
- 
+|tier_version|text|removed|
+
 ## aws_elasticsearch_domains
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2676,15 +2937,18 @@ This table was removed.
 |vpc_options|jsonb|added|
 |vpc_security_group_ids|text[]|removed|
 |vpc_subnet_ids|text[]|removed|
-|vpc_vpc_id|text|removed| 
- 
+|vpc_vpc_id|text|removed|
+
 ## aws_elbv1_load_balancer_backend_server_descriptions
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv1_load_balancers](#aws_elbv1_load_balancers)
+
+
 ## aws_elbv1_load_balancer_listeners
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv1_load_balancers](#aws_elbv1_load_balancers)
+
+
 ## aws_elbv1_load_balancer_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2694,15 +2958,18 @@ This table was removed.
 |load_balancer_arn|text|added|
 |load_balancer_cq_id|uuid|removed|
 |load_balancer_name|text|added|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_elbv1_load_balancer_policies_app_cookie_stickiness
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv1_load_balancers](#aws_elbv1_load_balancers)
+
+
 ## aws_elbv1_load_balancer_policies_lb_cookie_stickiness
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv1_load_balancers](#aws_elbv1_load_balancers)
+
+
 ## aws_elbv1_load_balancers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2732,9 +2999,10 @@ This table was removed.
 |policies|jsonb|added|
 |source_security_group|jsonb|added|
 |source_security_group_name|text|removed|
-|source_security_group_owner_alias|text|removed| 
- 
+|source_security_group_owner_alias|text|removed|
+
 ## aws_elbv2_listener_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2742,15 +3010,18 @@ This table was removed.
 |account_id|text|added|
 |listener_arn|text|added|
 |listener_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_elbv2_listener_default_action_forward_config_target_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv2_listeners](#aws_elbv2_listeners)
+
+
 ## aws_elbv2_listener_default_actions
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv2_listeners](#aws_elbv2_listeners)
+
+
 ## aws_elbv2_listeners
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2758,9 +3029,10 @@ This table was removed.
 |certificates|jsonb|added|
 |default_actions|jsonb|added|
 |load_balancer_cq_id|uuid|removed|
-|port|bigint|updated|Type changed from integer to bigint 
- 
+|port|bigint|updated|Type changed from integer to bigint
+
 ## aws_elbv2_load_balancer_attributes
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2782,15 +3054,18 @@ This table was removed.
 |routing_http_xamzntls_enabled|boolean|removed|
 |routing_http_xff_client_port|boolean|removed|
 |value|text|added|
-|waf_fail_open|boolean|removed| 
- 
+|waf_fail_open|boolean|removed|
+
 ## aws_elbv2_load_balancer_availability_zone_addresses
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv2_load_balancers](#aws_elbv2_load_balancers)
+
+
 ## aws_elbv2_load_balancer_availability_zones
-This table was removed. 
- 
+Moved to JSON column on [aws_elbv2_load_balancers](#aws_elbv2_load_balancers)
+
+
 ## aws_elbv2_load_balancers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2800,9 +3075,10 @@ This table was removed.
 |name|text|removed|
 |state|jsonb|added|
 |state_code|text|removed|
-|state_reason|text|removed| 
- 
+|state_reason|text|removed|
+
 ## aws_elbv2_target_group_target_health_descriptions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2818,9 +3094,10 @@ This table was removed.
 |target_health_reason|text|removed|
 |target_health_state|text|removed|
 |target_id|text|removed|
-|target_port|integer|removed| 
- 
+|target_port|integer|removed|
+
 ## aws_elbv2_target_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2835,12 +3112,14 @@ This table was removed.
 |name|text|removed|
 |port|bigint|updated|Type changed from integer to bigint
 |target_group_name|text|added|
-|unhealthy_threshold_count|bigint|updated|Type changed from integer to bigint 
- 
+|unhealthy_threshold_count|bigint|updated|Type changed from integer to bigint
+
 ## aws_emr_block_public_access_config_port_ranges
-This table was removed. 
- 
+Moved to JSON column on [aws_emr_block_public_access_configs](#aws_emr_block_public_access_configs)
+
+
 ## aws_emr_block_public_access_configs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2852,9 +3131,10 @@ This table was removed.
 |configurations|jsonb|removed|
 |created_by_arn|text|removed|
 |creation_date_time|timestamp without time zone|removed|
-|properties|jsonb|removed| 
- 
+|properties|jsonb|removed|
+
 ## aws_emr_clusters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2887,9 +3167,10 @@ This table was removed.
 |state_change_reason_code|text|removed|
 |state_change_reason_message|text|removed|
 |status|jsonb|added|
-|step_concurrency_level|bigint|updated|Type changed from integer to bigint 
- 
+|step_concurrency_level|bigint|updated|Type changed from integer to bigint
+
 ## aws_eventbridge_event_bus_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2897,33 +3178,41 @@ This table was removed.
 |account_id|text|added|
 |event_bus_arn|text|added|
 |event_bus_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_eventbridge_event_buses
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_firehose_delivery_stream_elasticsearch_destination
-This table was removed. 
- 
+Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_streams)
+
+
 ## aws_firehose_delivery_stream_extended_s3_destination
-This table was removed. 
- 
+Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_streams)
+
+
 ## aws_firehose_delivery_stream_http_destination
-This table was removed. 
- 
+Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_streams)
+
+
 ## aws_firehose_delivery_stream_open_search_destination
-This table was removed. 
- 
+Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_streams)
+
+
 ## aws_firehose_delivery_stream_redshift_destination
-This table was removed. 
- 
+Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_streams)
+
+
 ## aws_firehose_delivery_stream_splunk_destination
-This table was removed. 
- 
+Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_streams)
+
+
 ## aws_firehose_delivery_streams
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2943,9 +3232,10 @@ This table was removed.
 |source|jsonb|added|
 |source_kinesis_stream_delivery_start_timestamp|timestamp without time zone|removed|
 |source_kinesis_stream_kinesis_stream_arn|text|removed|
-|source_kinesis_stream_role_arn|text|removed| 
- 
+|source_kinesis_stream_role_arn|text|removed|
+
 ## aws_fsx_backups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -2963,16 +3253,19 @@ This table was removed.
 |resource_type|text|added|
 |source_backup_id|text|added|
 |source_backup_region|text|added|
-|volume|jsonb|added| 
- 
+|volume|jsonb|added|
+
 ## aws_fsx_data_repo_associations
-This table was removed. 
- 
+This table was removed.
+
+
 ## aws_fsx_data_repo_tasks
-This table was removed. 
- 
+This table was removed.
+
+
 ## aws_fsx_data_repository_associations
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -2990,10 +3283,11 @@ This table was newly added.
 |lifecycle|text|added|
 |s3|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_fsx_data_repository_tasks
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -3012,10 +3306,11 @@ This table was newly added.
 |start_time|timestamp without time zone|added|
 |status|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_fsx_file_systems
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -3042,34 +3337,41 @@ This table was newly added.
 |vpc_id|text|added|
 |windows_configuration|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_fsx_filesystem_lustre_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_fsx_file_systems](#aws_fsx_file_systems)
+
+
 ## aws_fsx_filesystem_ontap_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_fsx_file_systems](#aws_fsx_file_systems)
+
+
 ## aws_fsx_filesystem_open_zfs_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_fsx_file_systems](#aws_fsx_file_systems)
+
+
 ## aws_fsx_filesystem_windows_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_fsx_file_systems](#aws_fsx_file_systems)
+
+
 ## aws_fsx_filesystems
-This table was removed. 
- 
+Renamed to [aws_fsx_file_systems](#aws_fsx_file_systems)
+
+
 ## aws_fsx_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |administrative_actions|jsonb|added|
 |lifecycle_transition_reason|jsonb|added|
-|lifecycle_transition_reason_message|text|removed| 
- 
+|lifecycle_transition_reason_message|text|removed|
+
 ## aws_fsx_storage_virtual_machines
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -3088,18 +3390,22 @@ This table was newly added.
 |subtype|text|added|
 |uuid|text|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_fsx_storage_vms
-This table was removed. 
- 
+This table was removed.
+
+
 ## aws_fsx_volume_ontap_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_fsx_volumes](#aws_fsx_volumes)
+
+
 ## aws_fsx_volume_open_zfs_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_fsx_volumes](#aws_fsx_volumes)
+
+
 ## aws_fsx_volumes
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3110,9 +3416,10 @@ This table was removed.
 |lifecycle_transition_reason_message|text|removed|
 |ontap_configuration|jsonb|added|
 |open_zfs_configuration|jsonb|added|
-|volume_id|text|added| 
- 
+|volume_id|text|added|
+
 ## aws_glue_classifiers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3148,9 +3455,10 @@ This table was removed.
 |xml_classifier_last_updated|timestamp without time zone|removed|
 |xml_classifier_name|text|removed|
 |xml_classifier_row_tag|text|removed|
-|xml_classifier_version|bigint|removed| 
- 
+|xml_classifier_version|bigint|removed|
+
 ## aws_glue_connections
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3158,27 +3466,34 @@ This table was removed.
 |availability_zone|text|removed|
 |physical_connection_requirements|jsonb|added|
 |security_group_id_list|text[]|removed|
-|subnet_id|text|removed| 
- 
+|subnet_id|text|removed|
+
 ## aws_glue_crawler_targets_catalog_targets
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_crawlers](#aws_glue_crawlers)
+
+
 ## aws_glue_crawler_targets_delta_targets
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_crawlers](#aws_glue_crawlers)
+
+
 ## aws_glue_crawler_targets_dynamo_db_targets
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_crawlers](#aws_glue_crawlers)
+
+
 ## aws_glue_crawler_targets_jdbc_targets
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_crawlers](#aws_glue_crawlers)
+
+
 ## aws_glue_crawler_targets_mongo_db_targets
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_crawlers](#aws_glue_crawlers)
+
+
 ## aws_glue_crawler_targets_s3_targets
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_crawlers](#aws_glue_crawlers)
+
+
 ## aws_glue_crawlers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3203,12 +3518,14 @@ This table was removed.
 |schema_change_policy|jsonb|added|
 |schema_change_policy_delete_behavior|text|removed|
 |schema_change_policy_update_behavior|text|removed|
-|targets|jsonb|added| 
- 
+|targets|jsonb|added|
+
 ## aws_glue_database_table_columns
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
+
+
 ## aws_glue_database_table_indexes
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3217,12 +3534,14 @@ This table was removed.
 |database_arn|text|added|
 |database_table_cq_id|uuid|removed|
 |database_table_name|text|added|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_glue_database_table_partition_keys
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
+
+
 ## aws_glue_database_tables
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3251,18 +3570,20 @@ This table was removed.
 |target_table|jsonb|added|
 |target_table_catalog_id|text|removed|
 |target_table_database_name|text|removed|
-|target_table_name|text|removed| 
- 
+|target_table_name|text|removed|
+
 ## aws_glue_databases
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |target_database|jsonb|added|
 |target_database_catalog_id|text|removed|
-|target_database_name|text|removed| 
- 
+|target_database_name|text|removed|
+
 ## aws_glue_datacatalog_encryption_settings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3272,17 +3593,19 @@ This table was removed.
 |encryption_at_rest|jsonb|added|
 |encryption_at_rest_catalog_encryption_mode|text|removed|
 |encryption_at_rest_sse_aws_kms_key_id|text|removed|
-|return_connection_password_encrypted|boolean|removed| 
- 
+|return_connection_password_encrypted|boolean|removed|
+
 ## aws_glue_dev_endpoints
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |endpoint_name|text|added|
-|name|text|removed| 
- 
+|name|text|removed|
+
 ## aws_glue_job_runs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3294,9 +3617,10 @@ This table was removed.
 |max_capacity|real|updated|Type changed from float to real
 |notification_property|jsonb|added|
 |notification_property_notify_delay_after|bigint|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_glue_jobs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3310,12 +3634,14 @@ This table was removed.
 |execution_property_max_concurrent_runs|bigint|removed|
 |max_capacity|real|updated|Type changed from float to real
 |notification_property|jsonb|added|
-|notification_property_notify_delay_after|bigint|removed| 
- 
+|notification_property_notify_delay_after|bigint|removed|
+
 ## aws_glue_ml_transform_input_record_tables
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_ml_transforms](#aws_glue_ml_transforms)
+
+
 ## aws_glue_ml_transform_task_runs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3334,9 +3660,10 @@ This table was removed.
 |properties|jsonb|added|
 |region|text|added|
 |task_run_id|text|added|
-|task_type|text|removed| 
- 
+|task_type|text|removed|
+
 ## aws_glue_ml_transforms
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3362,15 +3689,17 @@ This table was removed.
 |transform_encryption_ml_user_data_encryption_kms_key_id|text|removed|
 |transform_encryption_task_run_security_configuration_name|text|removed|
 |transform_encryption_user_data_encryption_mode|text|removed|
-|transform_id|text|added| 
- 
+|transform_id|text|added|
+
 ## aws_glue_registries
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_glue_registry_schema_versions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3381,9 +3710,10 @@ This table was removed.
 |registry_schema_arn|text|added|
 |registry_schema_cq_id|uuid|removed|
 |result_metadata|jsonb|added|
-|schema_version_id|text|added| 
- 
+|schema_version_id|text|added|
+
 ## aws_glue_registry_schemas
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3391,12 +3721,14 @@ This table was removed.
 |account_id|text|added|
 |region|text|added|
 |registry_cq_id|uuid|removed|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_glue_security_configuration_s3_encryption
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_security_configurations](#aws_glue_security_configurations)
+
+
 ## aws_glue_security_configurations
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3405,15 +3737,18 @@ This table was removed.
 |cloud_watch_encryption_mode|text|removed|
 |encryption_configuration|jsonb|added|
 |job_bookmarks_encryption_kms_key_arn|text|removed|
-|job_bookmarks_encryption_mode|text|removed| 
- 
+|job_bookmarks_encryption_mode|text|removed|
+
 ## aws_glue_trigger_actions
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_triggers](#aws_glue_triggers)
+
+
 ## aws_glue_trigger_predicate_conditions
-This table was removed. 
- 
+Moved to JSON column on [aws_glue_triggers](#aws_glue_triggers)
+
+
 ## aws_glue_triggers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3423,9 +3758,10 @@ This table was removed.
 |event_batching_condition_size|bigint|removed|
 |event_batching_condition_window|bigint|removed|
 |predicate|jsonb|added|
-|predicate_logical|text|removed| 
- 
+|predicate_logical|text|removed|
+
 ## aws_glue_workflows
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3450,9 +3786,10 @@ This table was removed.
 |last_run_statistics_total_actions|bigint|removed|
 |last_run_status|text|removed|
 |last_run_workflow_run_id|text|removed|
-|last_run_workflow_run_properties|jsonb|removed| 
- 
+|last_run_workflow_run_properties|jsonb|removed|
+
 ## aws_guardduty_detector_members
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3462,9 +3799,10 @@ This table was removed.
 |detector_cq_id|uuid|removed|
 |invited_at|text|updated|Type changed from timestamp without time zone to text
 |region|text|added|
-|updated_at|text|updated|Type changed from timestamp without time zone to text 
- 
+|updated_at|text|updated|Type changed from timestamp without time zone to text
+
 ## aws_guardduty_detectors
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3476,10 +3814,11 @@ This table was removed.
 |data_sources_flow_logs_status|text|removed|
 |data_sources_s3_logs_status|text|removed|
 |result_metadata|jsonb|added|
-|updated_at|text|updated|Type changed from timestamp without time zone to text 
- 
+|updated_at|text|updated|Type changed from timestamp without time zone to text
+
 ## aws_iam_accounts
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -3511,10 +3850,11 @@ This table was newly added.
 |global_endpoint_token_version|bigint|added|
 |aliases|text[]|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_iam_credential_reports
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |arn|text|added|
@@ -3540,26 +3880,29 @@ This table was newly added.
 |access_key2_last_used_region|text|added|
 |access_key2_last_used_service|text|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_iam_group_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |group_arn|text|added|
 |group_cq_id|uuid|removed|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_iam_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |group_name|text|added|
-|name|text|removed| 
- 
+|name|text|removed|
+
 ## aws_iam_openid_connect_identity_providers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3567,18 +3910,20 @@ This table was newly added.
 |client_id_list|text[]|removed|
 |create_date|timestamp without time zone|removed|
 |thumbprint_list|text[]|removed|
-|url|text|removed| 
- 
+|url|text|removed|
+
 ## aws_iam_password_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |max_password_age|bigint|updated|Type changed from integer to bigint
 |minimum_password_length|bigint|updated|Type changed from integer to bigint
-|password_reuse_prevention|bigint|updated|Type changed from integer to bigint 
- 
+|password_reuse_prevention|bigint|updated|Type changed from integer to bigint
+
 ## aws_iam_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3586,12 +3931,14 @@ This table was newly added.
 |attachment_count|bigint|updated|Type changed from integer to bigint
 |name|text|removed|
 |permissions_boundary_usage_count|bigint|updated|Type changed from integer to bigint
-|policy_name|text|added| 
- 
+|policy_name|text|added|
+
 ## aws_iam_policy_versions
-This table was removed. 
- 
+Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
+
+
 ## aws_iam_role_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3599,9 +3946,10 @@ This table was removed.
 |account_id|text|added|
 |result_metadata|jsonb|added|
 |role_arn|text|added|
-|role_cq_id|uuid|removed| 
- 
+|role_cq_id|uuid|removed|
+
 ## aws_iam_roles
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3611,24 +3959,27 @@ This table was removed.
 |permissions_boundary_type|text|removed|
 |role_last_used|jsonb|added|
 |role_last_used_last_used_date|timestamp without time zone|removed|
-|role_last_used_region|text|removed| 
- 
+|role_last_used_region|text|removed|
+
 ## aws_iam_saml_identity_providers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|saml_metadata_document|text|removed| 
- 
+|saml_metadata_document|text|removed|
+
 ## aws_iam_server_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |name|text|removed|
-|server_certificate_name|text|added| 
- 
+|server_certificate_name|text|added|
+
 ## aws_iam_user_access_keys
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3636,18 +3987,20 @@ This table was removed.
 |account_id|text|added|
 |user_arn|text|added|
 |user_cq_id|uuid|removed|
-|user_name|text|added| 
- 
+|user_name|text|added|
+
 ## aws_iam_user_attached_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |account_id|text|added|
 |user_arn|text|added|
-|user_cq_id|uuid|removed| 
- 
+|user_cq_id|uuid|removed|
+
 ## aws_iam_user_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3656,18 +4009,20 @@ This table was removed.
 |arn|text|added|
 |group_arn|text|removed|
 |user_arn|text|added|
-|user_cq_id|uuid|removed| 
- 
+|user_cq_id|uuid|removed|
+
 ## aws_iam_user_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |result_metadata|jsonb|added|
 |user_arn|text|added|
-|user_cq_id|uuid|removed| 
- 
+|user_cq_id|uuid|removed|
+
 ## aws_iam_users
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3688,9 +4043,10 @@ This table was removed.
 |permissions_boundary|jsonb|added|
 |permissions_boundary_arn|text|removed|
 |permissions_boundary_type|text|removed|
-|user_id|text|removed| 
- 
+|user_id|text|removed|
+
 ## aws_iam_virtual_mfa_devices
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3705,12 +4061,14 @@ This table was removed.
 |user_password_last_used|timestamp without time zone|removed|
 |user_path|text|removed|
 |user_permissions_boundary_permissions_boundary_arn|text|removed|
-|user_permissions_boundary_permissions_boundary_type|text|removed| 
- 
+|user_permissions_boundary_permissions_boundary_type|text|removed|
+
 ## aws_inspector2_finding_resources
-This table was removed. 
- 
+Moved to JSON column on [aws_inspector2_findings](#aws_inspector2_findings)
+
+
 ## aws_inspector2_findings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3721,16 +4079,18 @@ This table was removed.
 |remediation|jsonb|added|
 |remediation_recommendation_text|text|removed|
 |remediation_recommendation_url|text|removed|
-|resources|jsonb|added| 
- 
+|resources|jsonb|added|
+
 ## aws_inspector_findings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|numeric_severity|real|updated|Type changed from float to real 
- 
+|numeric_severity|real|updated|Type changed from float to real
+
 ## aws_iot_billing_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3743,9 +4103,10 @@ This table was removed.
 |description|text|removed|
 |id|text|removed|
 |name|text|removed|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_iot_ca_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3757,9 +4118,10 @@ This table was removed.
 |pem|text|removed|
 |validity|jsonb|added|
 |validity_not_after|timestamp without time zone|removed|
-|validity_not_before|timestamp without time zone|removed| 
- 
+|validity_not_before|timestamp without time zone|removed|
+
 ## aws_iot_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3779,10 +4141,11 @@ This table was removed.
 |transfer_data_transfer_message|text|removed|
 |validity|jsonb|added|
 |validity_not_after|timestamp without time zone|removed|
-|validity_not_before|timestamp without time zone|removed| 
- 
+|validity_not_before|timestamp without time zone|removed|
+
 ## aws_iot_jobs
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -3811,9 +4174,10 @@ This table was newly added.
 |targets|text[]|added|
 |timeout_config|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_iot_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3824,10 +4188,11 @@ This table was newly added.
 |generation_id|text|removed|
 |last_modified_date|timestamp without time zone|removed|
 |name|text|removed|
-|policy_name|text|added| 
- 
+|policy_name|text|added|
+
 ## aws_iot_security_profiles
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -3846,12 +4211,14 @@ This table was newly added.
 |version|bigint|added|
 |result_metadata|jsonb|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_iot_stream_files
-This table was removed. 
- 
+Moved to JSON column on [aws_iot_streams](#aws_iot_streams)
+
+
 ## aws_iot_streams
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3860,9 +4227,10 @@ This table was removed.
 |id|text|removed|
 |stream_id|text|added|
 |stream_version|bigint|added|
-|version|integer|removed| 
- 
+|version|integer|removed|
+
 ## aws_iot_thing_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3879,9 +4247,10 @@ This table was removed.
 |thing_group_id|text|added|
 |thing_group_metadata|jsonb|added|
 |thing_group_name|text|added|
-|thing_group_properties|jsonb|added| 
- 
+|thing_group_properties|jsonb|added|
+
 ## aws_iot_thing_types
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3894,9 +4263,10 @@ This table was removed.
 |searchable_attributes|text[]|removed|
 |thing_type_metadata|jsonb|added|
 |thing_type_name|text|added|
-|thing_type_properties|jsonb|added| 
- 
+|thing_type_properties|jsonb|added|
+
 ## aws_iot_things
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -3904,12 +4274,14 @@ This table was removed.
 |name|text|removed|
 |thing_name|text|added|
 |thing_type_name|text|added|
-|type_name|text|removed| 
- 
+|type_name|text|removed|
+
 ## aws_iot_topic_rule_actions
-This table was removed. 
- 
+Moved to JSON column on [aws_iot_topic_rules](#aws_iot_topic_rules)
+
+
 ## aws_iot_topic_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4007,12 +4379,14 @@ This table was removed.
 |rule|jsonb|added|
 |rule_disabled|boolean|removed|
 |rule_name|text|removed|
-|sql|text|removed| 
- 
+|sql|text|removed|
+
 ## aws_kinesis_stream_enhanced_monitoring
-This table was removed. 
- 
+Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
+
+
 ## aws_kinesis_streams
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4020,9 +4394,10 @@ This table was removed.
 |enhanced_monitoring|jsonb|added|
 |stream_arn|text|removed|
 |stream_mode_details|jsonb|added|
-|stream_mode_details_stream_mode|text|removed| 
- 
+|stream_mode_details_stream_mode|text|removed|
+
 ## aws_kms_keys
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4036,9 +4411,10 @@ This table was removed.
 |multi_region_key_type|text|removed|
 |pending_deletion_window_in_days|bigint|updated|Type changed from integer to bigint
 |primary_key_arn|text|removed|
-|primary_key_region|text|removed| 
- 
+|primary_key_region|text|removed|
+
 ## aws_lambda_function_aliases
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4056,9 +4432,10 @@ This table was removed.
 |url_config_creation_time|timestamp without time zone|removed|
 |url_config_function_arn|text|removed|
 |url_config_function_url|text|removed|
-|url_config_last_modified_time|timestamp without time zone|removed| 
- 
+|url_config_last_modified_time|timestamp without time zone|removed|
+
 ## aws_lambda_function_concurrency_configs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4069,9 +4446,10 @@ This table was removed.
 |function_cq_id|uuid|removed|
 |last_modified|text|updated|Type changed from timestamp without time zone to text
 |region|text|added|
-|requested_provisioned_concurrent_executions|bigint|updated|Type changed from integer to bigint 
- 
+|requested_provisioned_concurrent_executions|bigint|updated|Type changed from integer to bigint
+
 ## aws_lambda_function_event_invoke_configs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4083,9 +4461,10 @@ This table was removed.
 |maximum_retry_attempts|bigint|updated|Type changed from integer to bigint
 |on_failure_destination|text|removed|
 |on_success_destination|text|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lambda_function_event_source_mappings
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4105,21 +4484,26 @@ This table was removed.
 |region|text|added|
 |self_managed_event_source|jsonb|added|
 |self_managed_event_source_endpoints|jsonb|removed|
-|tumbling_window_in_seconds|bigint|updated|Type changed from integer to bigint 
- 
+|tumbling_window_in_seconds|bigint|updated|Type changed from integer to bigint
+
 ## aws_lambda_function_file_system_configs
-This table was removed. 
- 
+Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
+
+
 ## aws_lambda_function_layers
-This table was removed. 
- 
+Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
+
+
 ## aws_lambda_function_version_file_system_configs
-This table was removed. 
- 
+Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
+
+
 ## aws_lambda_function_version_layers
-This table was removed. 
- 
+Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
+
+
 ## aws_lambda_function_versions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4151,9 +4535,10 @@ This table was removed.
 |vpc_config|jsonb|added|
 |vpc_config_security_group_ids|text[]|removed|
 |vpc_config_subnet_ids|text[]|removed|
-|vpc_config_vpc_id|text|removed| 
- 
+|vpc_config_vpc_id|text|removed|
+
 ## aws_lambda_functions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4210,9 +4595,10 @@ This table was removed.
 |version|text|removed|
 |vpc_config_security_group_ids|text[]|removed|
 |vpc_config_subnet_ids|text[]|removed|
-|vpc_config_vpc_id|text|removed| 
- 
+|vpc_config_vpc_id|text|removed|
+
 ## aws_lambda_layer_version_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4221,9 +4607,10 @@ This table was removed.
 |layer_version_arn|text|added|
 |layer_version_cq_id|uuid|removed|
 |region|text|added|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_lambda_layer_versions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4235,9 +4622,10 @@ This table was removed.
 |layer_arn|text|added|
 |layer_cq_id|uuid|removed|
 |layer_version_arn|text|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lambda_layers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4250,17 +4638,19 @@ This table was removed.
 |latest_matching_version_license_info|text|removed|
 |layer_arn|text|added|
 |layer_name|text|added|
-|name|text|removed| 
- 
+|name|text|removed|
+
 ## aws_lambda_runtimes
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |account_id|text|added|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_alarms
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4271,9 +4661,10 @@ This table was removed.
 |monitored_resource_info_arn|text|removed|
 |monitored_resource_name|text|removed|
 |monitored_resource_resource_type|text|removed|
-|threshold|real|updated|Type changed from float to real 
- 
+|threshold|real|updated|Type changed from float to real
+
 ## aws_lightsail_bucket_access_keys
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4285,9 +4676,10 @@ This table was removed.
 |last_used_date|timestamp without time zone|removed|
 |last_used_region|text|removed|
 |last_used_service_name|text|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_buckets
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4304,15 +4696,18 @@ This table was removed.
 |location_region_name|text|removed|
 |state|jsonb|added|
 |state_code|text|removed|
-|state_message|text|removed| 
- 
+|state_message|text|removed|
+
 ## aws_lightsail_certificate_domain_validation_records
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates)
+
+
 ## aws_lightsail_certificate_renewal_summary_domain_validation_records
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates)
+
+
 ## aws_lightsail_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4321,9 +4716,10 @@ This table was removed.
 |renewal_summary|jsonb|added|
 |renewal_summary_reason|text|removed|
 |renewal_summary_status|text|removed|
-|renewal_summary_updated_at|timestamp without time zone|removed| 
- 
+|renewal_summary_updated_at|timestamp without time zone|removed|
+
 ## aws_lightsail_container_service_deployments
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4335,9 +4731,10 @@ This table was removed.
 |public_endpoint_container_name|text|removed|
 |public_endpoint_container_port|bigint|removed|
 |public_endpoint_health_check|jsonb|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_container_service_images
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4345,9 +4742,10 @@ This table was removed.
 |account_id|text|added|
 |container_service_arn|text|added|
 |container_service_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_container_services
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4375,9 +4773,10 @@ This table was removed.
 |private_registry_access_ecr_image_puller_role_principal_arn|text|removed|
 |state_detail|jsonb|added|
 |state_detail_code|text|removed|
-|state_detail_message|text|removed| 
- 
+|state_detail_message|text|removed|
+
 ## aws_lightsail_database_events
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4385,9 +4784,10 @@ This table was removed.
 |account_id|text|added|
 |database_arn|text|added|
 |database_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_database_log_events
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4395,9 +4795,10 @@ This table was removed.
 |account_id|text|added|
 |database_arn|text|added|
 |database_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_database_parameters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4409,20 +4810,23 @@ This table was removed.
 |parameter_name|text|added|
 |parameter_value|text|added|
 |region|text|added|
-|value|text|removed| 
- 
+|value|text|removed|
+
 ## aws_lightsail_database_pending_maintenance_actions
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_databases](#aws_lightsail_databases)
+
+
 ## aws_lightsail_database_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |availability_zone|text|removed|
-|location|jsonb|added| 
- 
+|location|jsonb|added|
+
 ## aws_lightsail_databases
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4436,12 +4840,14 @@ This table was removed.
 |master_endpoint|jsonb|added|
 |master_endpoint_address|text|removed|
 |master_endpoint_port|bigint|removed|
-|pending_maintenance_actions|jsonb|added| 
- 
+|pending_maintenance_actions|jsonb|added|
+
 ## aws_lightsail_disk_add_ons
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_disks](#aws_lightsail_disks)
+
+
 ## aws_lightsail_disk_snapshot
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4452,9 +4858,10 @@ This table was removed.
 |location|jsonb|added|
 |location_availability_zone|text|removed|
 |location_region_name|text|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_disks
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4462,9 +4869,10 @@ This table was removed.
 |add_ons|jsonb|added|
 |location|jsonb|added|
 |location_availability_zone|text|removed|
-|location_region_name|text|removed| 
- 
+|location_region_name|text|removed|
+
 ## aws_lightsail_distributions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4479,21 +4887,26 @@ This table was removed.
 |origin_name|text|removed|
 |origin_protocol_policy|text|removed|
 |origin_region_name|text|removed|
-|origin_resource_type|text|removed| 
- 
+|origin_resource_type|text|removed|
+
 ## aws_lightsail_instance_add_ons
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
+
+
 ## aws_lightsail_instance_hardware_disk_add_ons
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
+
+
 ## aws_lightsail_instance_hardware_disks
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
+
+
 ## aws_lightsail_instance_networking_ports
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
+
+
 ## aws_lightsail_instance_port_states
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4501,24 +4914,28 @@ This table was removed.
 |account_id|text|added|
 |instance_arn|text|added|
 |instance_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_lightsail_instance_snapshot_from_attached_disk_add_ons
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
+
+
 ## aws_lightsail_instance_snapshot_from_attached_disks
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
+
+
 ## aws_lightsail_instance_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |availability_zone|text|removed|
 |from_attached_disks|jsonb|added|
-|location|jsonb|added| 
- 
+|location|jsonb|added|
+
 ## aws_lightsail_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4534,15 +4951,18 @@ This table was removed.
 |networking_monthly_transfer_gb_per_month_allocated|bigint|removed|
 |state|jsonb|added|
 |state_code|bigint|removed|
-|state_name|text|removed| 
- 
+|state_name|text|removed|
+
 ## aws_lightsail_load_balancer_instance_health_summary
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balancers)
+
+
 ## aws_lightsail_load_balancer_tls_certificate_summaries
-This table was removed. 
- 
+Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balancers)
+
+
 ## aws_lightsail_load_balancer_tls_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4556,9 +4976,10 @@ This table was removed.
 |region_name|text|removed|
 |renewal_summary|jsonb|added|
 |renewal_summary_domain_validation_options|jsonb|removed|
-|renewal_summary_renewal_status|text|removed| 
- 
+|renewal_summary_renewal_status|text|removed|
+
 ## aws_lightsail_load_balancers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4567,17 +4988,19 @@ This table was removed.
 |instance_health_summary|jsonb|added|
 |location|jsonb|added|
 |public_ports|bigint[]|updated|Type changed from integer[] to bigint[]
-|tls_certificate_summaries|jsonb|added| 
- 
+|tls_certificate_summaries|jsonb|added|
+
 ## aws_lightsail_static_ips
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |availability_zone|text|removed|
-|location|jsonb|added| 
- 
+|location|jsonb|added|
+
 ## aws_mq_broker_configuration_revisions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4586,9 +5009,10 @@ This table was removed.
 |broker_configuration_arn|text|added|
 |broker_configuration_cq_id|uuid|removed|
 |region|text|added|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_mq_broker_configurations
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4597,9 +5021,10 @@ This table was removed.
 |broker_cq_id|uuid|removed|
 |latest_revision|jsonb|updated|Type changed from integer to jsonb
 |latest_revision_created|timestamp without time zone|removed|
-|latest_revision_description|text|removed| 
- 
+|latest_revision_description|text|removed|
+
 ## aws_mq_broker_users
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4607,9 +5032,10 @@ This table was removed.
 |broker_arn|text|added|
 |broker_cq_id|uuid|removed|
 |broker_id|text|added|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_mq_brokers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4622,15 +5048,17 @@ This table was removed.
 |encryption_options_use_aws_owned_key|boolean|removed|
 |id|text|removed|
 |result_metadata|jsonb|added|
-|users|jsonb|added| 
- 
+|users|jsonb|added|
+
 ## aws_organizations_accounts
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_qldb_ledger_journal_kinesis_streams
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4641,9 +5069,10 @@ This table was removed.
 |ledger_arn|text|added|
 |ledger_cq_id|uuid|removed|
 |region|text|added|
-|stream_arn|text|removed| 
- 
+|stream_arn|text|removed|
+
 ## aws_qldb_ledger_journal_s3_exports
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4656,9 +5085,10 @@ This table was removed.
 |object_encryption_type|text|removed|
 |prefix|text|removed|
 |region|text|added|
-|s3_export_configuration|jsonb|added| 
- 
+|s3_export_configuration|jsonb|added|
+
 ## aws_qldb_ledgers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4667,25 +5097,30 @@ This table was removed.
 |encryption_status|text|removed|
 |inaccessible_kms_key_date_time|timestamp without time zone|removed|
 |kms_key_arn|text|removed|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_rds_certificates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_rds_cluster_associated_roles
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
+
+
 ## aws_rds_cluster_db_cluster_members
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
+
+
 ## aws_rds_cluster_domain_memberships
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
+
+
 ## aws_rds_cluster_parameter_group_parameters
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -4703,9 +5138,10 @@ This table was newly added.
 |source|text|added|
 |supported_engine_modes|text[]|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_rds_cluster_parameter_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4713,12 +5149,14 @@ This table was newly added.
 |db_cluster_parameter_group_name|text|added|
 |db_parameter_group_family|text|added|
 |family|text|removed|
-|name|text|removed| 
- 
+|name|text|removed|
+
 ## aws_rds_cluster_parameters
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
+
+
 ## aws_rds_cluster_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4726,12 +5164,14 @@ This table was removed.
 |allocated_storage|bigint|updated|Type changed from integer to bigint
 |percent_progress|bigint|updated|Type changed from integer to bigint
 |port|bigint|updated|Type changed from integer to bigint
-|tag_list|jsonb|added| 
- 
+|tag_list|jsonb|added|
+
 ## aws_rds_cluster_vpc_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
+
+
 ## aws_rds_clusters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4771,10 +5211,11 @@ This table was removed.
 |serverless_v2_scaling_configuration|jsonb|added|
 |storage_type|text|added|
 |tag_list|jsonb|added|
-|vpc_security_groups|jsonb|added| 
- 
+|vpc_security_groups|jsonb|added|
+
 ## aws_rds_db_parameter_group_db_parameters
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -4792,9 +5233,10 @@ This table was newly added.
 |source|text|added|
 |supported_engine_modes|text[]|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_rds_db_parameter_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4802,12 +5244,14 @@ This table was newly added.
 |db_parameter_group_family|text|added|
 |db_parameter_group_name|text|added|
 |family|text|removed|
-|name|text|removed| 
- 
+|name|text|removed|
+
 ## aws_rds_db_parameters
-This table was removed. 
- 
+This table was removed.
+
+
 ## aws_rds_db_security_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4815,9 +5259,10 @@ This table was removed.
 |db_security_group_description|text|added|
 |db_security_group_name|text|added|
 |description|text|removed|
-|name|text|removed| 
- 
+|name|text|removed|
+
 ## aws_rds_db_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4828,39 +5273,49 @@ This table was removed.
 |percent_progress|bigint|updated|Type changed from integer to bigint
 |port|bigint|updated|Type changed from integer to bigint
 |snapshot_target|text|added|
-|tag_list|jsonb|added| 
- 
+|tag_list|jsonb|added|
+
 ## aws_rds_event_subscriptions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_rds_instance_associated_roles
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instance_db_instance_automated_backups_replications
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instance_db_parameter_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instance_db_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instance_db_subnet_group_subnets
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instance_domain_memberships
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instance_option_group_memberships
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instance_vpc_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
+
+
 ## aws_rds_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4930,12 +5385,14 @@ This table was removed.
 |subnet_group_vpc_id|text|removed|
 |tag_list|jsonb|added|
 |user_instance_id|text|removed|
-|vpc_security_groups|jsonb|added| 
- 
+|vpc_security_groups|jsonb|added|
+
 ## aws_rds_subnet_group_subnets
-This table was removed. 
- 
+Moved to JSON column on [aws_rds_subnet_groups](#aws_rds_subnet_groups)
+
+
 ## aws_rds_subnet_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -4947,39 +5404,50 @@ This table was removed.
 |status|text|removed|
 |subnet_group_status|text|added|
 |subnets|jsonb|added|
-|supported_network_types|text[]|added| 
- 
+|supported_network_types|text[]|added|
+
 ## aws_redshift_cluster_deferred_maintenance_windows
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_endpoint_vpc_endpoint_network_interfaces
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_endpoint_vpc_endpoints
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_iam_roles
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_nodes
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_parameter_group_status_lists
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_parameter_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_parameters
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_cluster_vpc_security_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
+
+
 ## aws_redshift_clusters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5038,20 +5506,23 @@ This table was removed.
 |restore_status_estimated_time_to_completion_in_seconds|bigint|removed|
 |restore_status_progress_in_mega_bytes|bigint|removed|
 |restore_status_snapshot_size_in_mega_bytes|bigint|removed|
-|vpc_security_groups|jsonb|added| 
- 
+|vpc_security_groups|jsonb|added|
+
 ## aws_redshift_event_subscriptions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |cust_subscription_id|text|added|
-|id|text|removed| 
- 
+|id|text|removed|
+
 ## aws_redshift_snapshot_accounts_with_restore_access
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_snapshots](#aws_redshift_snapshots)
+
+
 ## aws_redshift_snapshots
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5072,25 +5543,29 @@ This table was removed.
 |number_of_nodes|bigint|updated|Type changed from integer to bigint
 |port|bigint|updated|Type changed from integer to bigint
 |region|text|added|
-|total_backup_size_in_mega_bytes|real|updated|Type changed from float to real 
- 
+|total_backup_size_in_mega_bytes|real|updated|Type changed from float to real
+
 ## aws_redshift_subnet_group_subnets
-This table was removed. 
- 
+Moved to JSON column on [aws_redshift_subnet_groups](#aws_redshift_subnet_groups)
+
+
 ## aws_redshift_subnet_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|subnets|jsonb|added| 
- 
+|subnets|jsonb|added|
+
 ## aws_regions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_resourcegroups_resource_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5104,10 +5579,11 @@ This table was removed.
 |query|text|added|
 |resource_query|text|removed|
 |resource_query_type|text|removed|
-|type|text|added| 
- 
+|type|text|added|
+
 ## aws_route53_delegation_sets
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -5116,12 +5592,14 @@ This table was newly added.
 |caller_reference|text|added|
 |id|text|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_route53_domain_nameservers
-This table was removed. 
- 
+Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
+
+
 ## aws_route53_domains
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5172,9 +5650,10 @@ This table was removed.
 |tech_contact_phone_number|text|removed|
 |tech_contact_state|text|removed|
 |tech_contact_type|text|removed|
-|tech_contact_zip_code|text|removed| 
- 
+|tech_contact_zip_code|text|removed|
+
 ## aws_route53_health_checks
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5208,9 +5687,10 @@ This table was removed.
 |request_interval|integer|removed|
 |resource_path|text|removed|
 |search_string|text|removed|
-|type|text|removed| 
- 
+|type|text|removed|
+
 ## aws_route53_hosted_zone_query_logging_configs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5218,9 +5698,10 @@ This table was removed.
 |account_id|text|added|
 |hosted_zone_arn|text|added|
 |hosted_zone_cq_id|uuid|removed|
-|hosted_zone_id|text|added| 
- 
+|hosted_zone_id|text|added|
+
 ## aws_route53_hosted_zone_resource_record_sets
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5236,9 +5717,10 @@ This table was removed.
 |geo_location_subdivision_code|text|removed|
 |hosted_zone_arn|text|added|
 |hosted_zone_cq_id|uuid|removed|
-|resource_records|jsonb|updated|Type changed from text[] to jsonb 
- 
+|resource_records|jsonb|updated|Type changed from text[] to jsonb
+
 ## aws_route53_hosted_zone_traffic_policy_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5247,12 +5729,14 @@ This table was removed.
 |hosted_zone_arn|text|added|
 |hosted_zone_cq_id|uuid|removed|
 |hosted_zone_id|text|added|
-|traffic_policy_version|bigint|updated|Type changed from integer to bigint 
- 
+|traffic_policy_version|bigint|updated|Type changed from integer to bigint
+
 ## aws_route53_hosted_zone_vpc_association_authorizations
-This table was removed. 
- 
+Moved to JSON column on [aws_route53_hosted_zones](#aws_route53_hosted_zones)
+
+
 ## aws_route53_hosted_zones
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5264,20 +5748,23 @@ This table was removed.
 |linked_service|jsonb|added|
 |linked_service_description|text|removed|
 |linked_service_principal|text|removed|
-|tags|jsonb|removed| 
- 
+|tags|jsonb|removed|
+
 ## aws_route53_reusable_delegation_sets
-This table was removed. 
- 
+This table was removed.
+
+
 ## aws_route53_traffic_policies
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |latest_version|bigint|updated|Type changed from integer to bigint
-|traffic_policy_count|bigint|updated|Type changed from integer to bigint 
- 
+|traffic_policy_count|bigint|updated|Type changed from integer to bigint
+
 ## aws_route53_traffic_policy_versions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5286,13 +5773,15 @@ This table was removed.
 |document|text|updated|Type changed from jsonb to text
 |traffic_policy_arn|text|added|
 |traffic_policy_cq_id|uuid|removed|
-|version|bigint|updated|Type changed from integer to bigint 
- 
+|version|bigint|updated|Type changed from integer to bigint
+
 ## aws_s3_account_config
-This table was removed. 
- 
+Moved to JSON column on [aws_s3_accounts](#aws_s3_accounts)
+
+
 ## aws_s3_accounts
 This table was newly added.
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |account_id|text|added|
@@ -5302,9 +5791,10 @@ This table was newly added.
 |restrict_public_buckets|boolean|added|
 |config_exists|boolean|added|
 |_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added| 
- 
+|_cq_fetch_time|timestamp without time zone|added|
+
 ## aws_s3_bucket_cors_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5312,9 +5802,10 @@ This table was newly added.
 |account_id|text|added|
 |bucket_arn|text|added|
 |bucket_cq_id|uuid|removed|
-|max_age_seconds|bigint|updated|Type changed from integer to bigint 
- 
+|max_age_seconds|bigint|updated|Type changed from integer to bigint
+
 ## aws_s3_bucket_encryption_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5324,9 +5815,10 @@ This table was newly added.
 |bucket_arn|text|added|
 |bucket_cq_id|uuid|removed|
 |kms_master_key_id|text|removed|
-|sse_algorithm|text|removed| 
- 
+|sse_algorithm|text|removed|
+
 ## aws_s3_bucket_grants
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5339,9 +5831,10 @@ This table was newly added.
 |grantee|jsonb|added|
 |grantee_id|text|removed|
 |type|text|removed|
-|uri|text|removed| 
- 
+|uri|text|removed|
+
 ## aws_s3_bucket_lifecycles
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5357,22 +5850,26 @@ This table was newly added.
 |expiration_expired_object_delete_marker|boolean|removed|
 |filter|jsonb|removed|
 |noncurrent_version_expiration|jsonb|added|
-|noncurrent_version_expiration_days|integer|removed| 
- 
+|noncurrent_version_expiration_days|integer|removed|
+
 ## aws_s3_bucket_replication_rules
-This table was removed. 
- 
+Moved to JSON column on [aws_s3_buckets](#aws_s3_buckets)
+
+
 ## aws_s3_buckets
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|replication_rules|jsonb|added| 
- 
+|replication_rules|jsonb|added|
+
 ## aws_sagemaker_endpoint_configuration_production_variants
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_endpoint_configurations](#aws_sagemaker_endpoint_configurations)
+
+
 ## aws_sagemaker_endpoint_configurations
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5381,15 +5878,18 @@ This table was removed.
 |endpoint_config_name|text|added|
 |name|text|removed|
 |production_variants|jsonb|added|
-|result_metadata|jsonb|added| 
- 
+|result_metadata|jsonb|added|
+
 ## aws_sagemaker_model_containers
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_models](#aws_sagemaker_models)
+
+
 ## aws_sagemaker_model_vpc_config
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_models](#aws_sagemaker_models)
+
+
 ## aws_sagemaker_models
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5398,9 +5898,10 @@ This table was removed.
 |model_name|text|added|
 |name|text|removed|
 |result_metadata|jsonb|added|
-|vpc_config|jsonb|added| 
- 
+|vpc_config|jsonb|added|
+
 ## aws_sagemaker_notebook_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5415,30 +5916,38 @@ This table was removed.
 |role_arn|text|added|
 |root_access|text|added|
 |security_groups|text[]|updated|Type changed from jsonb to text[]
-|volume_size_in_gb|bigint|updated|Type changed from integer to bigint 
- 
+|volume_size_in_gb|bigint|updated|Type changed from integer to bigint
+
 ## aws_sagemaker_training_job_algorithm_specification
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jobs)
+
+
 ## aws_sagemaker_training_job_debug_hook_config
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jobs)
+
+
 ## aws_sagemaker_training_job_debug_rule_configurations
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jobs)
+
+
 ## aws_sagemaker_training_job_debug_rule_evaluation_statuses
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jobs)
+
+
 ## aws_sagemaker_training_job_input_data_config
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jobs)
+
+
 ## aws_sagemaker_training_job_profiler_rule_configurations
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jobs)
+
+
 ## aws_sagemaker_training_job_profiler_rule_evaluation_statuses
-This table was removed. 
- 
+Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jobs)
+
+
 ## aws_sagemaker_training_jobs
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5455,9 +5964,10 @@ This table was removed.
 |result_metadata|jsonb|added|
 |retry_strategy|jsonb|added|
 |training_job_name|text|added|
-|training_time_in_seconds|bigint|updated|Type changed from integer to bigint 
- 
+|training_time_in_seconds|bigint|updated|Type changed from integer to bigint
+
 ## aws_secretsmanager_secrets
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5465,49 +5975,56 @@ This table was removed.
 |rotation_rules|jsonb|added|
 |rotation_rules_automatically_after_days|bigint|removed|
 |secret_versions_to_stages|jsonb|removed|
-|version_ids_to_stages|jsonb|added| 
- 
+|version_ids_to_stages|jsonb|added|
+
 ## aws_ses_templates
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |name|text|removed|
-|template_name|text|added| 
- 
+|template_name|text|added|
+
 ## aws_shield_attack_properties
-This table was removed. 
- 
+Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
+
+
 ## aws_shield_attack_sub_resources
-This table was removed. 
- 
+Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
+
+
 ## aws_shield_attacks
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |attack_properties|jsonb|added|
 |mitigations|jsonb|updated|Type changed from text[] to jsonb
-|sub_resources|jsonb|added| 
- 
+|sub_resources|jsonb|added|
+
 ## aws_shield_protection_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
-|protection_group_id|text|added| 
- 
+|protection_group_id|text|added|
+
 ## aws_shield_protections
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |application_automatic_response_configuration_status|text|removed|
 |application_layer_automatic_response_configuration|jsonb|added|
-|region|text|removed| 
- 
+|region|text|removed|
+
 ## aws_shield_subscriptions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5516,36 +6033,40 @@ This table was removed.
 |protection_group_limits_arbitrary_pattern_limits_max_members|integer|removed|
 |protection_group_limits_max_protection_groups|integer|removed|
 |subscription_limits|jsonb|added|
-|time_commitment_in_seconds|bigint|updated|Type changed from integer to bigint 
- 
+|time_commitment_in_seconds|bigint|updated|Type changed from integer to bigint
+
 ## aws_sns_subscriptions
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |delivery_policy|text|updated|Type changed from jsonb to text
 |effective_delivery_policy|text|updated|Type changed from jsonb to text
-|filter_policy|text|updated|Type changed from jsonb to text 
- 
+|filter_policy|text|updated|Type changed from jsonb to text
+
 ## aws_sns_topics
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |delivery_policy|text|updated|Type changed from jsonb to text
 |effective_delivery_policy|text|updated|Type changed from jsonb to text
-|policy|text|updated|Type changed from jsonb to text 
- 
+|policy|text|updated|Type changed from jsonb to text
+
 ## aws_sqs_queues
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |policy|text|updated|Type changed from jsonb to text
 |redrive_allow_policy|text|updated|Type changed from jsonb to text
-|redrive_policy|text|updated|Type changed from jsonb to text 
- 
+|redrive_policy|text|updated|Type changed from jsonb to text
+
 ## aws_ssm_documents
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5554,9 +6075,10 @@ This table was removed.
 |account_sharing_info_list|jsonb|removed|
 |category|text[]|added|
 |category_enum|text[]|added|
-|permissions|jsonb|added| 
- 
+|permissions|jsonb|added|
+
 ## aws_ssm_instance_compliance_items
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5568,9 +6090,10 @@ This table was removed.
 |execution_summary_execution_type|text|removed|
 |instance_arn|text|added|
 |instance_cq_id|uuid|removed|
-|region|text|added| 
- 
+|region|text|added|
+
 ## aws_ssm_instances
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5580,22 +6103,26 @@ This table was removed.
 |association_overview_detailed_status|text|removed|
 |ip_address|text|updated|Type changed from inet to text
 |source_id|text|added|
-|source_type|text|added| 
- 
+|source_type|text|added|
+
 ## aws_ssm_parameter_policies
-This table was removed. 
- 
+Moved to JSON column on [aws_ssm_parameters](#aws_ssm_parameters)
+
+
 ## aws_ssm_parameters
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|policies|jsonb|added| 
- 
+|policies|jsonb|added|
+
 ## aws_transfer_server_workflow_details_on_upload
-This table was removed. 
- 
+Moved to JSON column on [aws_transfer_servers](#aws_transfer_servers)
+
+
 ## aws_transfer_servers
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5616,42 +6143,49 @@ This table was removed.
 |protocol_details_passive_ip|text|removed|
 |protocol_details_set_stat_option|text|removed|
 |protocol_details_tls_session_resumption_mode|text|removed|
-|workflow_details|jsonb|added| 
- 
+|workflow_details|jsonb|added|
+
 ## aws_waf_rule_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
 |metric_name|text|removed|
-|rule_group_id|text|added| 
- 
+|rule_group_id|text|added|
+
 ## aws_waf_rule_predicates
-This table was removed. 
- 
+Moved to JSON column on [aws_waf_rules](#aws_waf_rules)
+
+
 ## aws_waf_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
 |metric_name|text|removed|
-|rule_id|text|added| 
- 
+|rule_id|text|added|
+
 ## aws_waf_subscribed_rule_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_waf_web_acl_logging_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_waf_web_acls](#aws_waf_web_acls)
+
+
 ## aws_waf_web_acl_rules
-This table was removed. 
- 
+Moved to JSON column on [aws_waf_web_acls](#aws_waf_web_acls)
+
+
 ## aws_waf_web_acls
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5660,44 +6194,51 @@ This table was removed.
 |id|text|removed|
 |logging_configuration|jsonb|updated|Type changed from text[] to jsonb
 |metric_name|text|removed|
-|web_acl_id|text|added| 
- 
+|web_acl_id|text|added|
+
 ## aws_wafregional_rate_based_rule_match_predicates
-This table was removed. 
- 
+Moved to JSON column on [aws_wafregional_rate_based_rules](#aws_wafregional_rate_based_rules)
+
+
 ## aws_wafregional_rate_based_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
 |match_predicates|jsonb|added|
-|rule_id|text|added| 
- 
+|rule_id|text|added|
+
 ## aws_wafregional_rule_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
-|rule_group_id|text|added| 
- 
+|rule_group_id|text|added|
+
 ## aws_wafregional_rule_predicates
-This table was removed. 
- 
+Moved to JSON column on [aws_wafregional_rules](#aws_wafregional_rules)
+
+
 ## aws_wafregional_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |id|text|removed|
 |predicates|jsonb|added|
-|rule_id|text|added| 
- 
+|rule_id|text|added|
+
 ## aws_wafregional_web_acl_rules
-This table was removed. 
- 
+Moved to JSON column on [aws_wafregional_web_acls](#aws_wafregional_web_acls)
+
+
 ## aws_wafregional_web_acls
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5705,17 +6246,19 @@ This table was removed.
 |default_action|jsonb|updated|Type changed from text to jsonb
 |id|text|removed|
 |rules|jsonb|added|
-|web_acl_id|text|added| 
- 
+|web_acl_id|text|added|
+
 ## aws_wafv2_ipsets
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |addresses|inet[]|updated|Type changed from cidr[] to inet[]
-|scope|text|removed| 
- 
+|scope|text|removed|
+
 ## aws_wafv2_managed_rule_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5726,17 +6269,19 @@ This table was removed.
 |label_namespace|text|removed|
 |properties|jsonb|added|
 |rules|jsonb|removed|
-|versioning_supported|boolean|added| 
- 
+|versioning_supported|boolean|added|
+
 ## aws_wafv2_regex_pattern_sets
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |regular_expression_list|jsonb|updated|Type changed from text[] to jsonb
-|scope|text|removed| 
- 
+|scope|text|removed|
+
 ## aws_wafv2_rule_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5747,21 +6292,26 @@ This table was removed.
 |visibility_config|jsonb|added|
 |visibility_config_cloud_watch_metrics_enabled|boolean|removed|
 |visibility_config_metric_name|text|removed|
-|visibility_config_sampled_requests_enabled|boolean|removed| 
- 
+|visibility_config_sampled_requests_enabled|boolean|removed|
+
 ## aws_wafv2_web_acl_logging_configuration
-This table was removed. 
- 
+Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
+
+
 ## aws_wafv2_web_acl_post_process_firewall_manager_rule_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
+
+
 ## aws_wafv2_web_acl_pre_process_firewall_manager_rule_groups
-This table was removed. 
- 
+Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
+
+
 ## aws_wafv2_web_acl_rules
-This table was removed. 
- 
+Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
+
+
 ## aws_wafv2_web_acls
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5775,9 +6325,10 @@ This table was removed.
 |visibility_config|jsonb|added|
 |visibility_config_cloud_watch_metrics_enabled|boolean|removed|
 |visibility_config_metric_name|text|removed|
-|visibility_config_sampled_requests_enabled|boolean|removed| 
- 
+|visibility_config_sampled_requests_enabled|boolean|removed|
+
 ## aws_workspaces_directories
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5810,9 +6361,10 @@ This table was removed.
 |type|text|removed|
 |user_enabled_as_local_administrator|boolean|removed|
 |workspace_access_properties|jsonb|added|
-|workspace_creation_properties|jsonb|added| 
- 
+|workspace_creation_properties|jsonb|added|
+
 ## aws_workspaces_workspaces
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5825,24 +6377,27 @@ This table was removed.
 |running_mode_auto_stop_timeout_in_minutes|integer|removed|
 |user_volume_size_gib|integer|removed|
 |workspace_id|text|added|
-|workspace_properties|jsonb|added| 
- 
+|workspace_properties|jsonb|added|
+
 ## aws_xray_encryption_config
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
-|_cq_id|uuid|added| 
- 
+|_cq_id|uuid|added|
+
 ## aws_xray_groups
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |insights_configuration|jsonb|added|
 |insights_enabled|boolean|removed|
-|notifications_enabled|boolean|removed| 
- 
+|notifications_enabled|boolean|removed|
+
 ## aws_xray_sampling_rules
+
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
@@ -5860,5 +6415,4 @@ This table was removed.
 |service_name|text|removed|
 |service_type|text|removed|
 |url_path|text|removed|
-|version|bigint|removed| 
-
+|version|bigint|removed|
