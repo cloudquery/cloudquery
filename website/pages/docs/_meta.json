@@ -1,7 +1,6 @@
 {
   "index": "Introduction",
   "quickstart": "Quickstart",
-  "getting-started": "Getting Started",
   "core-concepts": "Core Concepts",
   "advanced-topics": "Advanced Topics",
   "tutorials": "Tutorials",
@@ -9,11 +8,7 @@
   "deployment": "Deployment",
   "developers": "Developers",
   "cq-vs-others": "CloudQuery vs Others",
-  "plugins": {
-    "title": "Plugins",
-    "href": "https://www.cloudquery.io/plugins",
-    "newWindow": true
-  },
+  "plugins": "Plugins",
   "faq": "FAQ",
   "troubleshooting": "Troubleshooting",
   "changelog": {
