@@ -5,22 +5,15 @@ The GCP Source plugin for CloudQuery extracts configuration from a variety of GC
 ## Links
 
 - [Tables](./docs/tables/README.md)
-- [Homepage](https://cloudquery.io)
-- [Documentation](https://cloudquery.io/docs)
-- [Discord](https://cloudquery.io/discord)
-
-## Install
-
-```bash
-cloudquery gen source gcp
-```
+- [Configuration Reference](./docs/configuration.md)
+- [Contributing Guide](./CONTRIBUTING.md)
 
 ## Libraries in Use
 
 - https://cloud.google.com/go/docs/reference
 - https://github.com/googleapis/google-api-go-client
 
-### Authentication
+## Authentication
 
 The GCP plugin authenticates using your [Application Default Credentials](https://cloud.google.com/sdk/gcloud/reference/auth/application-default). Available options are all the same options described [here](https://cloud.google.com/docs/authentication/provide-credentials-adc) in detail:
 
@@ -45,28 +38,9 @@ On-premises or another cloud provider
 - The suggested way is to use [Workload identity federation](https://cloud.google.com/iam/docs/workload-identity-federation)
 - If not available you can always use service account keys and export the location of the key via `GOOGLE_APPLICATION_CREDENTIALS`. **Highly not recommended as long lived keys are a security risk**
 
-### Configuration
+## Query Examples:
 
-Following are the options available for the gcp plugin
-
-```yaml
-spec:
-  # Optional. If not specified either using all projects accessible.
-  # project_ids:
-  # - "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
-  # Optional. ServiceAccountKeyJSON passed as value instead of a file path
-  # service_account_key_json: "<YOUR_JSON_SERVICE_ACCOUNT_KEY_DATA>"
-  # Can also use env variable
-  # service_account_key_json: ${MY_ENV_VAR}
-```
-
-By default cloudquery will fetch all configurations from **all** resources in **all** regions in the **default** project. You can customize this behaviour with the following arguments:
-
-- `project_ids` - Specify multiple projects that you want to sync from.
-
-### Query Examples:
-
-#### Find all buckets without uniform bucket-level access
+### Find all buckets without uniform bucket-level access
 
 ```sql
 select project_id, name from gcp_storage_buckets where uniform_bucket_level_access->>'Enabled' = 'true';

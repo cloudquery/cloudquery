@@ -1,4 +1,4 @@
-# Table: gcp_logging_sinks
+# Table: gcp_secretmanager_secrets
 
 
 The primary key for this table is **name**.
@@ -9,15 +9,12 @@ The primary key for this table is **name**.
 | ------------- | ------------- |
 |project_id|String|
 |name (PK)|String|
-|destination|String|
-|filter|String|
-|description|String|
-|disabled|Bool|
-|exclusions|JSON|
-|output_version_format|Int|
-|writer_identity|String|
-|include_children|Bool|
+|replication|JSON|
 |create_time|JSON|
-|update_time|JSON|
+|labels|JSON|
+|topics|JSON|
+|etag|String|
+|rotation|JSON|
+|version_aliases|JSON|
 |_cq_id|UUID|
 |_cq_fetch_time|Timestamp|
