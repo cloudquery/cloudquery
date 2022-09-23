@@ -147,7 +147,7 @@ func generateResource(r codegen.Resource, mock bool) {
 		extraColumns = append([]sdkgen.ColumnDefinition{codegen.ProjectIdColumn}, extraColumns...)
 	}
 
-	opts := []sdkgen.TableOptions{sdkgen.WithSkipFields(r.SkipFields),
+	opts := []sdkgen.TableOption{sdkgen.WithSkipFields(r.SkipFields),
 		sdkgen.WithExtraColumns(extraColumns)}
 
 	if r.NameTransformer != nil {
