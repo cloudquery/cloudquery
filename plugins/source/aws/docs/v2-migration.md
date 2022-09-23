@@ -1,8 +1,8 @@
 # Schema Changes from v1 to v2
 This guide summarizes schema changes from CloudQuery v1 to v2. It is automatically generated and
-not guaranteed to be complete. It is mostly intended to serve as a starting point and reference when migrating to v2.
+not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v2. 🚀
 
-Last updated on Fri Sep 23 10:09:48 BST 2022.
+Last updated on Fri Sep 23 10:13:52 BST 2022.
 
 ## aws_access_analyzer_analyzer_archive_rules
 Moved to JSON column on [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
