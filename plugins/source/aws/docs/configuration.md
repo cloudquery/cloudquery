@@ -2,23 +2,23 @@
 
 ## AWS Spec
 
-This is the top level spec used by AWS source plugin.
+This is the top level spec used by the AWS source plugin.
 
 - `regions` ([]string) (default: Empty. Will use all enabled regions)
 
   Regions to use.
 
-- `accounts` ([][account](#account)) (default: current account)
+- `accounts` ([][Account](#account)) (default: current account)
 
-  All accounts to fetch information from
+  List of all accounts to fetch information from
 
 - `organization` ([Organization](#organization)) (default: not used)
 
-  In AWS organization mode will source all accounts underneath automatically
+  In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
 - `debug` (bool) (default: false)
 
-  If true will log AWS debug logs including retries and other requests/response metadata
+  If true, will log AWS debug logs, including retries and other request/response metadata
 
 ## Account
 
@@ -43,3 +43,33 @@ This is used to specify one or more accounts to extract information from.
 - `external_id` (string)
 
   If specified will use this when assuming role to `role_arn`
+
+## Organization
+
+- `organization_units` ([]string)
+
+  List of Organizational Units that CloudQuery should use to source accounts from
+
+- `admin_account` ([Account](#account))
+
+  Configuration for how to grab credentials from an Admin account
+
+- `member_trusted_principal` ([Account](#account))
+
+  Configuration for how to specify the principle to use in order to assume a role in the member accounts
+
+- `member_role_name` (string) (**required**)
+
+  Role name that CloudQuery should use to assume a role in the member account from the admin account. Note: This is not a full ARN, it is just the name
+
+- `member_role_session_name` (string)
+
+  Override the default Session name.
+
+- `member_external_id` (string)
+
+  Specify an ExternalID for use in the trust policy
+
+- `member_regions` ([]string)
+
+  Limit fetching resources within this specific account to only these regions. This will override any regions specified in the provider block. You can specify all regions by using the `*` character as the only argument in the array

@@ -20,7 +20,7 @@ func fetchRedshiftClusters(ctx context.Context, meta schema.ClientMeta, parent *
 		if err != nil {
 			return err
 		}
-		res <- response.Clusters
+		res <- response.Clusters[0]
 		if aws.ToString(response.Marker) == "" {
 			break
 		}

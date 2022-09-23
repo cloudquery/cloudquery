@@ -100,22 +100,23 @@ org:
 CloudQuery can fetch from multiple accounts in parallel by using AssumeRole (You will need to use credentials that can AssumeRole to all other specified account. Following is an example configuration:
 
 ```yaml
-providers:
-  - name: aws
-    resources:
-      - "*"
-    configuration:
-      accounts:
-        - id: <AccountID_Alias_1>
-          role_arn: <YOUR_ROLE_ARN_1>
-          // Optional. Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for this specific account
-          local_profile: <NAMED_PROFILE>
-          // Optional. Specify the Role Session name
-          role_session_name: ""
-        - id: <AccountID_Alias_2>
-          local_profile: provider
-          // Optional. Role ARN we want to assume when accessing this account
-          role_arn: <YOUR_ROLE_ARN_2>
+kind: "source"
+spec:
+  name: aws
+  resources:
+    - "*"
+  configuration:
+    accounts:
+      - id: <AccountID_Alias_1>
+        role_arn: <YOUR_ROLE_ARN_1>
+        # Optional. Local Profile is the named profile in your shared configuration file (usually `~/.aws/config`) that you want to use for this specific account
+        local_profile: <NAMED_PROFILE>
+        # Optional. Specify the Role Session name
+        role_session_name: ""
+      - id: <AccountID_Alias_2>
+        local_profile: provider
+        # Optional. Role ARN we want to assume when accessing this account
+        role_arn: <YOUR_ROLE_ARN_2>
 ```
 
 #### Arguments for Accounts block
