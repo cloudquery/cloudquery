@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 module github.com/cloudquery/plugins/destinations/postgresql
 
 go 1.19
@@ -55,7 +56,12 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 =======
+=======
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 module github.com/cloudquery/cloudquery/plugins/destination/postgresql
+=======
+module github.com/cloudquery/plugins/destinations/postgresql
+>>>>>>> a9ed9b1eb (feat(postgresql): Move to standalone plugin)
 
 go 1.19
 >>>>>>> 85d9a9cf8 (chore(release): Add postgres sql stub plugin (#2049))

@@ -1,6 +1,6 @@
-// pluginmanager takes care of the lifecycle of plugins,
-// including downloading, upgrading, spawning and closing. 
-// Currently we use GitHub releases as our plugin store.
+// pluginmanager take care of lifecycle of plugins.
+// Including: downloading, upgrading, spawning, closing
+// Currently we use github releases as our plugin store.
 package plugins
 
 import (
@@ -64,6 +64,7 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	return p
 }
 
+<<<<<<< HEAD
 func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Registry, path string, version string) (*SourcePlugin, error) {
 	pl := SourcePlugin{}
 	var pluginPath string
@@ -73,20 +74,42 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 		conn, err := grpc.Dial(path, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			return nil, fmt.Errorf("failed to dial grpc source plugin at %s: %w", path, err)
+=======
+func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) (*SourcePlugin, error) {
+	pl := SourcePlugin{}
+	var pluginPath string
+	switch spec.Registry {
+	case specs.RegistryGrpc:
+		// This is a special case as we dont spawn any process
+		conn, err := grpc.Dial(spec.Path, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err != nil {
+			return nil, fmt.Errorf("failed to dial grpc target %s: %w", spec.Path, err)
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 		}
 		pl.conn = conn
 		pl.client = clients.NewSourceClient(conn)
 		return &pl, nil
 	case specs.RegistryLocal:
+<<<<<<< HEAD
 		pluginPath = path
 	case specs.RegistryGithub:
 		var err error
 		pluginPath, err = p.downloadPluginFromGitHub(ctx, path, version, PluginTypeSource)
+=======
+		pluginPath = spec.Path
+	case specs.RegistryGithub:
+		var err error
+		pluginPath, err = p.downloadPluginFromGitHub(ctx, spec.Path, spec.Version, PluginTypeSource)
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 		if err != nil {
 			return nil, err
 		}
 	default:
+<<<<<<< HEAD
 		return nil, fmt.Errorf("unknown registry: %s", registry)
+=======
+		return nil, fmt.Errorf("unknown registry: %s", spec.Registry)
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 	}
 	grpcTarget := generateRandomUnixSocketName()
 	// spawn the plugin first and then connect
@@ -102,8 +125,13 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 	}
 	go func() {
 		if err := cmd.Wait(); err != nil {
+<<<<<<< HEAD
 			fmt.Printf("plugin %s exited with error: %v\n", path, err)
 			p.logger.Error().Err(err).Str("plugin", path).Msg("plugin exited")
+=======
+			fmt.Printf("plugin %s exited with error: %v\n", spec.Path, err)
+			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("plugin exited")
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 		}
 	}()
 	pl.cmd = cmd
@@ -133,6 +161,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 	return &pl, nil
 }
 
+<<<<<<< HEAD
 func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs.Registry, path string, version string) (*DestinationPlugin, error) {
 	pl := DestinationPlugin{}
 	var pluginPath string
@@ -142,20 +171,42 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 		conn, err := grpc.Dial(path, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			return nil, fmt.Errorf("failed to dial grpc to destination at %s: %w", path, err)
+=======
+func (p *PluginManager) NewDestinationPlugin(ctx context.Context, spec specs.Destination) (*DestinationPlugin, error) {
+	pl := DestinationPlugin{}
+	var pluginPath string
+	switch spec.Registry {
+	case specs.RegistryGrpc:
+		// This is a special case as we dont spawn any process
+		conn, err := grpc.Dial(spec.Path, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err != nil {
+			return nil, fmt.Errorf("failed to dial grpc target %s: %w", spec.Path, err)
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 		}
 		pl.conn = conn
 		pl.client = clients.NewDestinationClient(conn)
 		return &pl, nil
 	case specs.RegistryLocal:
+<<<<<<< HEAD
 		pluginPath = path
 	case specs.RegistryGithub:
 		var err error
 		pluginPath, err = p.downloadPluginFromGitHub(ctx, path, version, PluginTypeDestination)
+=======
+		pluginPath = spec.Path
+	case specs.RegistryGithub:
+		var err error
+		pluginPath, err = p.downloadPluginFromGitHub(ctx, spec.Path, spec.Version, PluginTypeDestination)
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 		if err != nil {
 			return nil, err
 		}
 	default:
+<<<<<<< HEAD
 		return nil, fmt.Errorf("unknown registry: %s", registry)
+=======
+		return nil, fmt.Errorf("unknown registry: %s", spec.Registry)
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 	}
 	grpcTarget := generateRandomUnixSocketName()
 	// spawn the plugin first and then connect
@@ -171,8 +222,13 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 	}
 	go func() {
 		if err := cmd.Wait(); err != nil {
+<<<<<<< HEAD
 			fmt.Printf("destination plugin %s exited with error: %v\n", path, err)
 			p.logger.Error().Err(err).Str("plugin", path).Msg("destination plugin exited")
+=======
+			fmt.Printf("destination plugin %s exited with error: %v\n", spec.Path, err)
+			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("destination plugin exited")
+>>>>>>> d16a1fc8b (feat(postgresql): Move to standalone plugin)
 		}
 	}()
 	pl.cmd = cmd
