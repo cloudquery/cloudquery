@@ -6,14 +6,10 @@ require (
 	github.com/briandowns/spinner v1.19.0
 	github.com/cloudquery/plugin-sdk v0.8.1
 	github.com/getsentry/sentry-go v0.13.0
-	github.com/google/go-cmp v0.5.9
-	github.com/jackc/pgtype v1.12.0
-	github.com/jackc/pgx/v4 v4.17.0
 	github.com/rs/zerolog v1.28.0
 	github.com/schollz/progressbar/v3 v3.9.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
-	github.com/vgarvardt/pgx-google-uuid/v4 v4.0.0
 	golang.org/x/sync v0.0.0-20220907140024-f12130a52804
 	google.golang.org/grpc v1.49.0
 )
@@ -31,13 +27,6 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
-	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
-	github.com/jackc/pgconn v1.13.0 // indirect
-	github.com/jackc/pgio v1.0.0 // indirect
-	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgproto3/v2 v2.3.1 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20200714003250-2b9c44734f2b // indirect
-	github.com/jackc/puddle v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
