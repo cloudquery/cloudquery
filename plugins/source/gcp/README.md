@@ -36,7 +36,7 @@ Google Cloud containerized environment:
 On-premises or another cloud provider
 
 - The suggested way is to use [Workload identity federation](https://cloud.google.com/iam/docs/workload-identity-federation)
-- If not available you can always use service account keys and export the location of the key via `GOOGLE_APPLICATION_CREDENTIALS`. **Highly not recommended as long lived keys are a security risk**
+- If not available you can always use service account keys and export the location of the key via `GOOGLE_APPLICATION_CREDENTIALS`. **Highly not recommended as long-lived keys are a security risk**
 
 ## Query Examples:
 

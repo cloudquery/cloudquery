@@ -1,10 +1,10 @@
 # CloudQuery Azure Source Plugin
 
-The CloudQuery Azure source plugin extracts information from many of the supported service by Microsoft Azure.
+The CloudQuery Azure source plugin extracts information from many of the supported services by Microsoft Azure.
 
 ## Links
 
-- [Configuration](./docs/configuraiton.md)
+- [Configuration](./docs/configuration.md)
 - [Tables](./docs/tables/README.md)
 - [Contributing Guide](./CONTRIBUTING.md)
 
