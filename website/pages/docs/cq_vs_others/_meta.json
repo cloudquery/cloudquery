@@ -1,7 +1,0 @@
-{
-  "overview": "Overview",
-  "aws_config": "CloudQuery vs AWS Config",
-  "google_cloud_asset_inventory": "CloudQuery vs Google Cloud Asset Inventory",
-  "cspms": "CloudQuery vs CSPMs (Cloud Security Posture Management)",
-  "steampipe": "CloudQuery vs Steampipe"
-}
