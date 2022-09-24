@@ -6,6 +6,8 @@ This is a list of all official and community plugins
 
 Documentation, configuration and available tables for every plugin are available in the relevant GitHub repo.
 
+Official source plugins follow [release stages](./source_plugins_release_stages).
+
 | **Name**                                                                                       | Stage |
 | ---------------------------------------------------------------------------------------------- | ----- |
 | [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws)                   | Alpha |
