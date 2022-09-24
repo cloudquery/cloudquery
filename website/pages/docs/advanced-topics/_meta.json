@@ -3,6 +3,5 @@
   "proxy-configuration": "Proxy Configuration",
   "docker": "Docker",
   "security": "Security",
-  "rate-limiting": "Rate Limiting",
-  "best-practices": "Best Practices"
+  "rate-limiting": "Rate Limiting"
 }

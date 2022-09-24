@@ -5,7 +5,7 @@ from environment variables. This allows you to keep sensitive data (like passwor
 
 ## Example
 
-And use it inside `gcp.yml`:
+And use it inside `postgresql.yml`:
 
 ```yaml
 kind: "destination"
