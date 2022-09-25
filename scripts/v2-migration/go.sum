@@ -1,6 +1,6 @@
 github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=
-github.com/cloudquery/plugin-sdk v0.7.13 h1:iW3SINiRqaIotwGpbgHq9LKx47hl0Ccf4l+QezJSFI0=
-github.com/cloudquery/plugin-sdk v0.7.13/go.mod h1:SGHJV+4JE3sN9+VB7Lb185kGJDE2q7oxVrp3Cww769k=
+github.com/cloudquery/plugin-sdk v0.8.2 h1:U6HOJ8StwWfuKihi3jxnMB9RAl0RDeCQLnPCjN9LVpU=
+github.com/cloudquery/plugin-sdk v0.8.2/go.mod h1:SGHJV+4JE3sN9+VB7Lb185kGJDE2q7oxVrp3Cww769k=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
