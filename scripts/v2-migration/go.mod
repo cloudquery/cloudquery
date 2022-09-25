@@ -2,10 +2,12 @@ module github.com/cloudquery/cloudquery/scripts/v2-migration
 
 go 1.19
 
-require github.com/cloudquery/plugin-sdk v0.7.13
+require (
+	github.com/cloudquery/plugin-sdk v0.8.2
+	github.com/gertd/go-pluralize v0.2.1
+)
 
 require (
-	github.com/gertd/go-pluralize v0.2.1 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/gofrs/uuid v4.3.0+incompatible // indirect
 	github.com/google/uuid v1.3.0 // indirect

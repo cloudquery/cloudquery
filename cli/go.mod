@@ -4,7 +4,11 @@ go 1.19
 
 require (
 	github.com/briandowns/spinner v1.19.0
+<<<<<<< HEAD
 	github.com/cloudquery/plugin-sdk v0.9.0
+=======
+	github.com/cloudquery/plugin-sdk v0.8.2
+>>>>>>> 9b69b4685 (fix(deps): Update module github.com/cloudquery/plugin-sdk to v0.8.2 (#2044))
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/rs/zerolog v1.28.0
 	github.com/schollz/progressbar/v3 v3.9.0
