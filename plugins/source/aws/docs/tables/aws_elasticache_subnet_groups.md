@@ -1,12 +1,18 @@
-
 # Table: aws_elasticache_subnet_groups
-Contains information about cache subnet groups
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|The ARN (Amazon Resource Name) of the cache subnet group.|
-|cache_subnet_group_description|text|The description of the cache subnet group.|
-|cache_subnet_group_name|text|The name of the cache subnet group.|
-|vpc_id|text|The Amazon Virtual Private Cloud identifier (VPC ID) of the cache subnet group.|
+| Name          | Type          |
+| ------------- | ------------- |
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|cache_subnet_group_description|String|
+|cache_subnet_group_name|String|
+|subnets|JSON|
+|vpc_id|String|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|

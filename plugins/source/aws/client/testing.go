@@ -22,7 +22,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	ctrl := gomock.NewController(t)
 
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-		var awsSpec Config
+		var awsSpec Spec
 		if err := spec.UnmarshalSpec(&awsSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal aws spec: %w", err)
 		}

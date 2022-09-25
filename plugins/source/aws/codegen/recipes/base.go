@@ -7,6 +7,8 @@ import (
 	"go/format"
 	"os"
 	"path"
+	"reflect"
+	"regexp"
 	"runtime"
 	"strings"
 	"text/template"
@@ -54,6 +56,22 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 	},
 }
 
+func awsNameTransformer(f reflect.StructField) (string, error) {
+	name, err := codegen.DefaultNameTransformer(f)
+	if err != nil {
+		return name, err
+	}
+	// replace occurrences with <underscore-number> with <number>
+
+	// (this is codegen, no need to hyper-optimize by pre-compiling regular expressions)
+	r, err := regexp.Compile(`_(\d+)`)
+	if err != nil {
+		return "", err
+	}
+
+	return r.ReplaceAllString(name, `$1`), nil
+}
+
 func (r *Resource) Generate() error {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -62,9 +80,10 @@ func (r *Resource) Generate() error {
 	dir := path.Dir(filename)
 
 	var err error
-	opts := []codegen.TableOptions{
+	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
+		codegen.WithNameTransformer(awsNameTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
