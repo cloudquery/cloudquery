@@ -20,8 +20,6 @@
       "component": "plugins-destination-postgresql"
     }
   },
-  "bump-minor-pre-major": true,
-  "bump-patch-for-minor-pre-major": true,
   "tag-separator": "-",
   "separate-pull-requests": true,
   "pull-request-title-pattern": "chore${scope}: Release${component} v${version}"
