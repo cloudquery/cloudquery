@@ -64,29 +64,29 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	return p
 }
 
-func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) (*SourcePlugin, error) {
+func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Registry, path string, version string) (*SourcePlugin, error) {
 	pl := SourcePlugin{}
 	var pluginPath string
-	switch spec.Registry {
+	switch registry {
 	case specs.RegistryGrpc:
 		// This is a special case as we dont spawn any process
-		conn, err := grpc.Dial(spec.Path, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(path, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			return nil, fmt.Errorf("failed to dial grpc target %s: %w", spec.Path, err)
+			return nil, fmt.Errorf("failed to dial grpc source plugin at %s: %w", path, err)
 		}
 		pl.conn = conn
 		pl.client = clients.NewSourceClient(conn)
 		return &pl, nil
 	case specs.RegistryLocal:
-		pluginPath = spec.Path
+		pluginPath = path
 	case specs.RegistryGithub:
 		var err error
-		pluginPath, err = p.downloadPluginFromGitHub(ctx, spec.Path, spec.Version, PluginTypeSource)
+		pluginPath, err = p.downloadPluginFromGitHub(ctx, path, version, PluginTypeSource)
 		if err != nil {
 			return nil, err
 		}
 	default:
-		return nil, fmt.Errorf("unknown registry: %s", spec.Registry)
+		return nil, fmt.Errorf("unknown registry: %s", registry)
 	}
 	grpcTarget := generateRandomUnixSocketName()
 	// spawn the plugin first and then connect
@@ -102,8 +102,8 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 	}
 	go func() {
 		if err := cmd.Wait(); err != nil {
-			fmt.Printf("plugin %s exited with error: %v\n", spec.Path, err)
-			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("plugin exited")
+			fmt.Printf("plugin %s exited with error: %v\n", path, err)
+			p.logger.Error().Err(err).Str("plugin", path).Msg("plugin exited")
 		}
 	}()
 	pl.cmd = cmd
@@ -133,29 +133,29 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 	return &pl, nil
 }
 
-func (p *PluginManager) NewDestinationPlugin(ctx context.Context, spec specs.Destination) (*DestinationPlugin, error) {
+func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs.Registry, path string, version string) (*DestinationPlugin, error) {
 	pl := DestinationPlugin{}
 	var pluginPath string
-	switch spec.Registry {
+	switch registry {
 	case specs.RegistryGrpc:
 		// This is a special case as we dont spawn any process
-		conn, err := grpc.Dial(spec.Path, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(path, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			return nil, fmt.Errorf("failed to dial grpc target %s: %w", spec.Path, err)
+			return nil, fmt.Errorf("failed to dial grpc to destination at %s: %w", path, err)
 		}
 		pl.conn = conn
 		pl.client = clients.NewDestinationClient(conn)
 		return &pl, nil
 	case specs.RegistryLocal:
-		pluginPath = spec.Path
+		pluginPath = path
 	case specs.RegistryGithub:
 		var err error
-		pluginPath, err = p.downloadPluginFromGitHub(ctx, spec.Path, spec.Version, PluginTypeDestination)
+		pluginPath, err = p.downloadPluginFromGitHub(ctx, path, version, PluginTypeDestination)
 		if err != nil {
 			return nil, err
 		}
 	default:
-		return nil, fmt.Errorf("unknown registry: %s", spec.Registry)
+		return nil, fmt.Errorf("unknown registry: %s", registry)
 	}
 	grpcTarget := generateRandomUnixSocketName()
 	// spawn the plugin first and then connect
@@ -171,8 +171,8 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, spec specs.Des
 	}
 	go func() {
 		if err := cmd.Wait(); err != nil {
-			fmt.Printf("destination plugin %s exited with error: %v\n", spec.Path, err)
-			p.logger.Error().Err(err).Str("plugin", spec.Path).Msg("destination plugin exited")
+			fmt.Printf("destination plugin %s exited with error: %v\n", path, err)
+			p.logger.Error().Err(err).Str("plugin", path).Msg("destination plugin exited")
 		}
 	}()
 	pl.cmd = cmd
