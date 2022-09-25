@@ -1,6 +1,6 @@
 # CloudQuery PostgreSQL Destination Plugin
 
-This destination plugin let's you sync data from any CloudQuery source to any PostgreSQL compatible database.
+This destination plugin let's you sync data from a CloudQuery source to a PostgreSQL compatible database.
 
 Known supported databases:
 
