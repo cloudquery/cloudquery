@@ -59,3 +59,7 @@ branchProtectionRules:
     - Linter (plugins/source/test)
     - Unit Tests (plugins/source/test)
     - Build (plugins/source/test)
+
+    - Linter (plugins/destination/postgresql)
+    - Unit Tests (plugins/destination/postgresql)
+    - Build (plugins/destination/postgresql)
