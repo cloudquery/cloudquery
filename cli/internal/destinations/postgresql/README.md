@@ -8,7 +8,7 @@ Known supported databases:
 
 ## PostgreSQL Spec
 
-This is the top level spec used by PostgreSQL Destination Plugin.
+This is the top level spec used by the PostgreSQL destination Plugin.
 
 - `connection_string` (string) (required)
 
