@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"os"
 	"path"
+	"time"
 )
 
 var unixSocketDir = os.TempDir()
@@ -13,6 +14,7 @@ var unixSocketDir = os.TempDir()
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func randSeq(n int) string {
+	rand.Seed(time.Now().UnixNano())
 	b := make([]rune, n)
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]

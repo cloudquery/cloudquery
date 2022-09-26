@@ -1,6 +1,6 @@
-// pluginmanager take care of lifecycle of plugins.
-// Including: downloading, upgrading, spawning, closing
-// Currently we use github releases as our plugin store.
+// pluginmanager takes care of the lifecycle of plugins,
+// including downloading, upgrading, spawning and closing.
+// Currently we use GitHub releases as our plugin store.
 package plugins
 
 import (
@@ -16,6 +16,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -89,6 +90,8 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 		return nil, fmt.Errorf("unknown registry: %s", registry)
 	}
 	grpcTarget := generateRandomUnixSocketName()
+	// /var/folders/dc/n_792d3j1jvg6n3pv65340qm0000gn/T/cq-XVlBzgbaiCMRAjWw.sock
+	// /var/folders/dc/n_792d3j1jvg6n3pv65340qm0000gn/T/cq-XVlBzgbaiCMRAjWw.sock
 	// spawn the plugin first and then connect
 	cmd := exec.CommandContext(ctx, pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
 		"--log-level", p.logger.GetLevel().String(), "--log-format", "json")
@@ -121,7 +124,17 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 		}
 	}()
 
-	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	var conn *grpc.ClientConn
+	i := 0
+	for i < 3 {
+		time.Sleep(1 * time.Second)
+		conn, err = grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err == nil {
+			break
+		}
+		i++
+	}
+
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
 			fmt.Println("failed to kill plugin", err)
@@ -189,11 +202,22 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 			}
 		}
 	}()
+	var conn *grpc.ClientConn
+	i := 0
+	// panic("what")
+	for i < 3 {
+		conn, err = grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err == nil {
+			break
+		}
+		i++
+		time.Sleep(2 * time.Second)
+	}
 
-	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
+		fmt.Println("failed to connect to destination plugin", err)
 		if err := cmd.Process.Kill(); err != nil {
-			fmt.Println("failed to kill plugin", err)
+			fmt.Println("failed to kill destination plugin", err)
 		}
 		return &pl, err
 	}
@@ -266,3 +290,12 @@ func (pm *PluginManager) downloadPluginFromGitHub(ctx context.Context, remotePat
 	return pluginPath, nil
 }
 
+
+func sleepContext(ctx context.Context, delay time.Duration) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case <-time.After(delay):
+		return nil
+	}
+}
