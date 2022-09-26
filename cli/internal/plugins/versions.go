@@ -24,7 +24,6 @@ const (
 	CloudQueryBaseURL = "https://versions.cloudquery.io"
 )
 
-
 // GetLatestPluginRelease returns the latest release version string for the given organization, plugin type
 // and plugin.
 func GetLatestPluginRelease(ctx context.Context, org, name string, typ PluginType) (string, error) {

@@ -28,34 +28,33 @@ import (
 type PluginType string
 
 const (
-	PluginTypeSource PluginType = "source"
+	PluginTypeSource      PluginType = "source"
 	PluginTypeDestination PluginType = "destination"
 )
 
 type PluginManager struct {
-	logger         zerolog.Logger
-	directory      string
+	logger    zerolog.Logger
+	directory string
 }
 
 type PluginManagerOption func(*PluginManager)
 
-
 func WithLogger(logger zerolog.Logger) func(*PluginManager) {
-	return func(p *PluginManager) {
-		p.logger = logger
+	return func(pm *PluginManager) {
+		pm.logger = logger
 	}
 }
 
 func WithDirectory(directory string) func(*PluginManager) {
-	return func(p *PluginManager) {
-		p.directory = directory
+	return func(pm *PluginManager) {
+		pm.directory = directory
 	}
 }
 
 func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	p := &PluginManager{
-		logger:         log.Logger,
-		directory:      "./.cq",
+		logger:    log.Logger,
+		directory: "./.cq",
 	}
 	// initialize all plugins registry
 	for _, opt := range opts {
@@ -64,24 +63,23 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 	return p
 }
 
-func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Registry, path string, version string) (*SourcePlugin, error) {
+func (pm *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Registry, pluginPath string, version string) (*SourcePlugin, error) {
 	pl := SourcePlugin{}
-	var pluginPath string
 	switch registry {
 	case specs.RegistryGrpc:
 		// This is a special case as we dont spawn any process
-		conn, err := grpc.Dial(path, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(pluginPath, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			return nil, fmt.Errorf("failed to dial grpc source plugin at %s: %w", path, err)
+			return nil, fmt.Errorf("failed to dial grpc source plugin at %s: %w", pluginPath, err)
 		}
 		pl.conn = conn
 		pl.client = clients.NewSourceClient(conn)
 		return &pl, nil
 	case specs.RegistryLocal:
-		pluginPath = path
+		// Do nothing
 	case specs.RegistryGithub:
 		var err error
-		pluginPath, err = p.downloadPluginFromGitHub(ctx, path, version, PluginTypeSource)
+		pluginPath, err = pm.downloadPluginFromGitHub(ctx, pluginPath, version, PluginTypeSource)
 		if err != nil {
 			return nil, err
 		}
@@ -91,7 +89,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 	grpcTarget := generateRandomUnixSocketName()
 	// spawn the plugin first and then connect
 	cmd := exec.CommandContext(ctx, pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
-		"--log-level", p.logger.GetLevel().String(), "--log-format", "json")
+		"--log-level", pm.logger.GetLevel().String(), "--log-format", "json")
 	reader, err := cmd.StdoutPipe()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get stdout pipe: %w", err)
@@ -102,8 +100,8 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 	}
 	go func() {
 		if err := cmd.Wait(); err != nil {
-			fmt.Printf("plugin %s exited with error: %v\n", path, err)
-			p.logger.Error().Err(err).Str("plugin", path).Msg("plugin exited")
+			fmt.Printf("plugin %s exited with error: %v\n", pluginPath, err)
+			pm.logger.Error().Err(err).Str("plugin", pluginPath).Msg("plugin exited")
 		}
 	}()
 	pl.cmd = cmd
@@ -114,13 +112,13 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 			var structuredLogLine map[string]interface{}
 			b := scanner.Bytes()
 			if err := json.Unmarshal(b, &structuredLogLine); err != nil {
-				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
+				pm.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
 			} else {
-				pl.jsonToLog(structuredLogLine, p.logger)
+				pl.jsonToLog(structuredLogLine, pm.logger)
 			}
 		}
 	}()
-	
+
 	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
@@ -133,24 +131,24 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 	return &pl, nil
 }
 
-func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs.Registry, path string, version string) (*DestinationPlugin, error) {
+func (pm *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs.Registry, pluginPath string, version string) (*DestinationPlugin, error) {
 	pl := DestinationPlugin{}
-	var pluginPath string
 	switch registry {
 	case specs.RegistryGrpc:
 		// This is a special case as we dont spawn any process
-		conn, err := grpc.Dial(path, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(pluginPath, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			return nil, fmt.Errorf("failed to dial grpc to destination at %s: %w", path, err)
+			return nil, fmt.Errorf("failed to dial grpc to destination at %s: %w", pluginPath, err)
 		}
 		pl.conn = conn
 		pl.client = clients.NewDestinationClient(conn)
 		return &pl, nil
 	case specs.RegistryLocal:
-		pluginPath = path
+		// pluginPath = pluginPath
+		// Do nothing
 	case specs.RegistryGithub:
 		var err error
-		pluginPath, err = p.downloadPluginFromGitHub(ctx, path, version, PluginTypeDestination)
+		pluginPath, err = pm.downloadPluginFromGitHub(ctx, pluginPath, version, PluginTypeDestination)
 		if err != nil {
 			return nil, err
 		}
@@ -160,7 +158,7 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 	grpcTarget := generateRandomUnixSocketName()
 	// spawn the plugin first and then connect
 	cmd := exec.CommandContext(ctx, pluginPath, "serve", "--network", "unix", "--address", grpcTarget,
-		"--log-level", p.logger.GetLevel().String(), "--log-format", "json")
+		"--log-level", pm.logger.GetLevel().String(), "--log-format", "json")
 	reader, err := cmd.StdoutPipe()
 	if err != nil {
 		return nil, fmt.Errorf("failed to get stdout pipe: %w", err)
@@ -171,8 +169,8 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 	}
 	go func() {
 		if err := cmd.Wait(); err != nil {
-			fmt.Printf("destination plugin %s exited with error: %v\n", path, err)
-			p.logger.Error().Err(err).Str("plugin", path).Msg("destination plugin exited")
+			fmt.Printf("destination plugin %s exited with error: %v\n", pluginPath, err)
+			pm.logger.Error().Err(err).Str("plugin", pluginPath).Msg("destination plugin exited")
 		}
 	}()
 	pl.cmd = cmd
@@ -183,9 +181,9 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 			var structuredLogLine map[string]interface{}
 			b := scanner.Bytes()
 			if err := json.Unmarshal(b, &structuredLogLine); err != nil {
-				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
+				pm.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
 			} else {
-				destJsonToLog( structuredLogLine, p.logger)
+				destJsonToLog(structuredLogLine, pm.logger)
 			}
 		}
 	}()
@@ -202,7 +200,7 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 	return &pl, nil
 }
 
-func (pm *PluginManager) downloadPluginFromGitHub(ctx context.Context, remotePath string, version string, typ PluginType ) (string, error) {
+func (pm *PluginManager) downloadPluginFromGitHub(ctx context.Context, remotePath string, version string, typ PluginType) (string, error) {
 	var err error
 	pathSplit := strings.Split(remotePath, "/")
 	org, name := pathSplit[0], pathSplit[1]
@@ -265,4 +263,3 @@ func (pm *PluginManager) downloadPluginFromGitHub(ctx context.Context, remotePat
 	}
 	return pluginPath, nil
 }
-

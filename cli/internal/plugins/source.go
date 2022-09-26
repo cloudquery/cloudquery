@@ -17,7 +17,6 @@ type SourcePlugin struct {
 	warnings int
 }
 
-
 func (p *SourcePlugin) jsonToLog(msg map[string]interface{}, l zerolog.Logger) {
 	switch msg["level"] {
 	case "trace":
@@ -62,5 +61,3 @@ func (p *SourcePlugin) Close() error {
 func (p *SourcePlugin) GetClient() *clients.SourceClient {
 	return p.client
 }
-
-

@@ -36,12 +36,11 @@ var getSourceClientTestCases = []specs.Source{
 	},
 }
 
-
 func TestPluginManagerGetSourceClient(t *testing.T) {
 	ctx := context.Background()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
 	for _, tc := range getSourceClientTestCases {
-		t.Run(tc.Path + "_" + tc.Version, func(t *testing.T) {
+		t.Run(tc.Path+"_"+tc.Version, func(t *testing.T) {
 			dirName := t.TempDir()
 			pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
 			pl, err := pm.NewSourcePlugin(ctx, tc.Registry, tc.Path, tc.Version)
@@ -60,7 +59,6 @@ func TestPluginManagerGetSourceClient(t *testing.T) {
 		})
 	}
 }
-
 
 var getDestinationClientTestCases = []specs.Source{
 	{
@@ -89,12 +87,11 @@ var getDestinationClientTestCases = []specs.Source{
 	},
 }
 
-
 func TestPluginManagerGetDestinationClient(t *testing.T) {
 	ctx := context.Background()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
 	for _, tc := range getDestinationClientTestCases {
-		t.Run(tc.Path + "_" + tc.Version, func(t *testing.T) {
+		t.Run(tc.Path+"_"+tc.Version, func(t *testing.T) {
 			dirName := t.TempDir()
 			pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
 			pl, err := pm.NewDestinationPlugin(ctx, tc.Registry, tc.Path, tc.Version)

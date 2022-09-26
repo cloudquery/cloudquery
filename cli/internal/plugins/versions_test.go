@@ -6,7 +6,6 @@ import (
 	"testing"
 )
 
-
 func TestGetLatestCQPluginRelease(t *testing.T) {
 	ctx := context.Background()
 	version, err := getLatestCQPluginRelease(ctx, "test", PluginTypeSource)
