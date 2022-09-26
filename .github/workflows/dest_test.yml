@@ -19,7 +19,8 @@ jobs:
           POSTGRES_PASSWORD: pass
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: pass
+        ports:
+          - 5432:5432
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
