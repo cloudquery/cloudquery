@@ -1,12 +1,17 @@
-
 # Table: azure_security_settings
-Setting the kind of the security setting
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|kind|text|Possible values include: 'KindSetting', 'KindDataExportSettings'|
-|id|text|Resource Id|
-|name|text|Resource name|
-|resource_type|text|Resource type|
-|enabled|boolean|Export setting enabled flag|
+| Name          | Type          |
+| ------------- | ------------- |
+|subscription_id|String|
+|kind|String|
+|id (PK)|String|
+|name|String|
+|type|String|
+|enabled|Bool|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|

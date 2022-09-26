@@ -67,7 +67,7 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("EbsRootVolumeSize"),
 			},
 			{
-				Name:     "ec_2_instance_attributes",
+				Name:     "ec2_instance_attributes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ec2InstanceAttributes"),
 			},

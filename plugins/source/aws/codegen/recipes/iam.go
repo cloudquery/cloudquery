@@ -154,7 +154,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "openid_connect_identity_providers",
-			Struct:     &types.OpenIDConnectProviderListEntry{},
+			Struct:     &iamService.IamOpenIdIdentityProviderWrapper{},
 			SkipFields: []string{"Arn", "Tags"},
 			ExtraColumns: append(
 				defaultAccountColumns,
@@ -186,8 +186,8 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "policies",
-			Struct:     &types.Policy{},
-			SkipFields: []string{"PolicyId", "Tags"},
+			Struct:     &types.ManagedPolicyDetail{},
+			SkipFields: []string{"PolicyId", "Tags", "PolicyVersionList"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -205,6 +205,11 @@ func IAMResources() []*Resource {
 					Name:     "tags",
 					Type:     schema.TypeJSON,
 					Resolver: `resolveIamPolicyTags`,
+				},
+				{
+					Name:     "policy_version_list",
+					Type:     schema.TypeJSON,
+					Resolver: `resolveIamPolicyVersionList`,
 				},
 			},
 		},

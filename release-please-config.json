@@ -15,10 +15,11 @@
     "plugins/source/k8s": { "component": "plugins-source-k8s" },
     "plugins/source/okta": { "component": "plugins-source-okta" },
     "plugins/source/test": { "component": "plugins-source-test" },
-    "plugins/source/terraform": { "component": "plugins-source-terraform" }
+    "plugins/source/terraform": { "component": "plugins-source-terraform" },
+    "plugins/destination/postgresql": {
+      "component": "plugins-destination-postgresql"
+    }
   },
-  "bump-minor-pre-major": true,
-  "bump-patch-for-minor-pre-major": true,
   "tag-separator": "-",
   "separate-pull-requests": true,
   "pull-request-title-pattern": "chore${scope}: Release${component} v${version}"

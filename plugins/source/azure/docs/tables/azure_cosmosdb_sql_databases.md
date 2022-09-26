@@ -1,20 +1,22 @@
-
 # Table: azure_cosmosdb_sql_databases
-Azure Cosmos DB SQL database.
+
+
+The primary key for this table is **id**.
+
+## Relations
+This table depends on [`azure_cosmosdb_accounts`](azure_cosmosdb_accounts.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|database_id|text|Name of the Cosmos DB SQL database|
-|database_rid|text|A system generated property|
-|database_ts|float|A system generated property that denotes the last updated timestamp of the resource.|
-|database_etag|text|A system generated property representing the resource etag required for optimistic concurrency control.|
-|database_colls|text|A system generated property that specified the addressable path of the collections resource.|
-|database_users|text|A system generated property that specifies the addressable path of the users resource.|
-|sql_database_get_properties_throughput|integer|Value of the Cosmos DB resource throughput or autoscaleSettings|
-|autoscale_settings_max_throughput|integer|Represents maximum throughput, the resource can scale up to.|
-|id|text|The unique resource identifier of the ARM resource.|
-|name|text|The name of the ARM resource.|
-|type|text|The type of Azure resource.|
-|location|text|The location of the resource group to which the resource belongs.|
-|tags|jsonb|Resource tags.|
+| Name          | Type          |
+| ------------- | ------------- |
+|subscription_id|String|
+|cosmosdb_account_id|UUID|
+|resource|JSON|
+|options|JSON|
+|id (PK)|String|
+|name|String|
+|type|String|
+|location|String|
+|tags|JSON|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|

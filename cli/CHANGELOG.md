@@ -4,6 +4,33 @@ All notable changes to CloudQuery will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.0.0-pre.0](https://github.com/cloudquery/cloudquery/compare/cli-v0.33.4-pre.0...cli-v1.0.0-pre.0) (2022-09-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **cli:** Remove gen command (#2022)
+
+### Features
+
+* **cli:** Remove gen command ([#2022](https://github.com/cloudquery/cloudquery/issues/2022)) ([83a32dd](https://github.com/cloudquery/cloudquery/commit/83a32ddb6d2973c2235975cf437862fed40371a0))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.0 ([#1997](https://github.com/cloudquery/cloudquery/issues/1997)) ([4fa40da](https://github.com/cloudquery/cloudquery/commit/4fa40da04b427f864d2dc11f133e5c83e53ce4b6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.1 ([#2024](https://github.com/cloudquery/cloudquery/issues/2024)) ([8f88de4](https://github.com/cloudquery/cloudquery/commit/8f88de4b4eaeabae7369ba309e765a252392ee8c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.2 ([#2044](https://github.com/cloudquery/cloudquery/issues/2044)) ([9b69b46](https://github.com/cloudquery/cloudquery/commit/9b69b468536521b20b77ec1fc180fc85aeeba376))
+* Don't print skip download message to console ([#2008](https://github.com/cloudquery/cloudquery/issues/2008)) ([a947d44](https://github.com/cloudquery/cloudquery/commit/a947d44172a657f3d730b31d3baa9eddce703601))
+* Use uppercase downloading during progress ([#2006](https://github.com/cloudquery/cloudquery/issues/2006)) ([e6a7a44](https://github.com/cloudquery/cloudquery/commit/e6a7a4465b20a696fa4b773c9beb5481993213aa))
+
+## [0.33.4-pre.0](https://github.com/cloudquery/cloudquery/compare/cli/v0.33.3-pre.0...cli-v0.33.4-pre.0) (2022-09-22)
+
+
+### Features
+
+* Use new tag format to download plugins ([#1985](https://github.com/cloudquery/cloudquery/issues/1985)) ([583f54e](https://github.com/cloudquery/cloudquery/commit/583f54ea3ecb8f96b6f76498ddca29770c691831))
+
 ## [0.33.3-pre.0](https://github.com/cloudquery/cloudquery/compare/cli/v0.33.2-pre.0...cli/v0.33.3-pre.0) (2022-09-22)
 
 

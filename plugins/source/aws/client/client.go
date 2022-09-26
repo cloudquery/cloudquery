@@ -411,7 +411,7 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Config, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
 	configFns := []func(*config.LoadOptions) error{
@@ -474,7 +474,7 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-	var awsConfig Config
+	var awsConfig Spec
 	err := spec.UnmarshalSpec(&awsConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
