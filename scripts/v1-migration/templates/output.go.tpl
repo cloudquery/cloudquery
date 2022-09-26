@@ -1,6 +1,6 @@
-# Schema Changes from v1 to v2
-This guide summarizes schema changes from CloudQuery v1 to v2. It is automatically generated and
-not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v2.
+# Schema Changes from v0 to v1
+This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
+not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
 Last updated {{$.Date}}.
 {{range $table := $.Tables }}
