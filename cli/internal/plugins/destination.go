@@ -30,9 +30,6 @@ func (p *DestinationPlugin) GetClient() *clients.DestinationClient {
 	return p.client
 }
 
-
-
-
 func destJsonToLog(msg map[string]interface{}, l zerolog.Logger) {
 	switch msg["level"] {
 	case "trace":
