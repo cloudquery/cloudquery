@@ -18,6 +18,9 @@
     "plugins/source/terraform": { "component": "plugins-source-terraform" },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
+    },
+    "plugins/destination/test": {
+      "component": "plugins-destination-test"
     }
   },
   "tag-separator": "-",
