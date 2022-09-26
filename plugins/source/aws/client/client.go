@@ -421,6 +421,9 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	// use custom retryer if it is defined in provider config
 	if awsConfig.MaxRetries != nil && awsConfig.MaxBackoff != nil {
 		configFns = append(configFns, config.WithRetryer(newRetryer(logger, *awsConfig.MaxRetries, *awsConfig.MaxBackoff)))
+	} else {
+		// set default retryer
+		configFns = append(configFns, config.WithRetryer(newRetryer(logger, 10, 30)))
 	}
 
 	if account.DefaultRegion != "" {
