@@ -1,8 +1,8 @@
-# Schema Changes from v1 to v2
-This guide summarizes schema changes from CloudQuery v1 to v2. It is automatically generated and
-not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v2.
+# Schema Changes from v0 to v1
+This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
+not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated Fri Sep 23 11:28:39 BST 2022.
+Last updated 2022-09-26.
 
 ## aws_access_analyzer_analyzer_archive_rules
 Moved to JSON column on [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
@@ -3833,10 +3833,7 @@ This table was newly added.
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|client_id_list|text[]|removed|
-|create_date|timestamp without time zone|removed|
-|thumbprint_list|text[]|removed|
-|url|text|removed|
+|result_metadata|jsonb|added|
 
 ## aws_iam_password_policies
 
@@ -3858,6 +3855,7 @@ This table was newly added.
 |name|text|removed|
 |permissions_boundary_usage_count|bigint|updated|Type changed from integer to bigint
 |policy_name|text|added|
+|policy_version_list|jsonb|added|
 
 ## aws_iam_policy_versions
 Moved to JSON column on [aws_iam_policies](#aws_iam_policies)

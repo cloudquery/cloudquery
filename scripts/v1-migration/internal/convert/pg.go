@@ -51,6 +51,8 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 func ValueTypeFromString(s string) schema.ValueType {
 	if strings.TrimPrefix(strings.ToLower(s), "type") == "inetarray" {
 		return schema.TypeInetArray
+	} else if strings.TrimPrefix(strings.ToLower(s), "type") == "timestamp without timezone" {
+		return schema.TypeTimestamp
 	}
 	return schema.ValueTypeFromString(s)
 }

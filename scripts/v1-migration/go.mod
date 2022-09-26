@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/scripts/v2-migration
+module github.com/cloudquery/cloudquery/scripts/v1-migration
 
 go 1.19
 
