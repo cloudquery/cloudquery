@@ -12,15 +12,15 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/cloudquery/cloudquery/scripts/v2-migration/internal/convert"
+	"github.com/cloudquery/cloudquery/scripts/v1-migration/internal/convert"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gertd/go-pluralize"
 )
 
 var (
 	outputFile   string
+	v0TablesPath string
 	v1TablesPath string
-	v2TablesPath string
 )
 
 //go:embed templates/output.go.tpl
@@ -90,37 +90,37 @@ func readColumns(file string) []Column {
 	return cols
 }
 
-func compareTables(v1, v2 []Table) []Table {
+func compareTables(v0, v1 []Table) []Table {
 	comparison := make(map[string]Table, 0)
+	v0Map := tablesToMap(v0)
 	v1Map := tablesToMap(v1)
-	v2Map := tablesToMap(v2)
-	for name, t1 := range v1Map {
-		t2, found := v2Map[name]
+	for name, t1 := range v0Map {
+		t2, found := v1Map[name]
 		if found {
 			t1.Status = "updated"
 			t1.Columns = compareColumns(t1, t2)
 			comparison[name] = t1
 		} else {
 			t1.Status = "removed"
-			replacement, foundReplacement := findLikelyTableReplacement(t1, v2)
+			replacement, foundReplacement := findLikelyTableReplacement(t1, v1)
 			if foundReplacement {
 				t1.Status = replacement.Status
 				t1.Comment = replacement.Comment
 			}
 			if t1.Status == "renamed" {
-				other := v2Map[replacement.Name]
+				other := v1Map[replacement.Name]
 				other.Status = "renamed"
 				other.Comment = fmt.Sprintf("Renamed from [%s](%s)", t1.Name, t1.Name)
 				other.Columns = compareColumns(t1, other)
-				v2Map[replacement.Name] = other
+				v1Map[replacement.Name] = other
 			}
 
 			comparison[name] = t1
 		}
 	}
 
-	for name, t2 := range v2Map {
-		_, found := v1Map[name]
+	for name, t2 := range v1Map {
+		_, found := v0Map[name]
 		switch {
 		case found:
 			continue
@@ -192,10 +192,10 @@ func findLikelyTableReplacement(removed Table, newTables []Table) (replacement T
 
 func compareColumns(t1, t2 Table) []Column {
 	comparison := make(map[string]Column, 0)
-	v1Map := columnsToMap(t1.Columns)
-	v2Map := columnsToMap(t2.Columns)
-	for name, c1 := range v1Map {
-		c2, found := v2Map[name]
+	v0Map := columnsToMap(t1.Columns)
+	v1Map := columnsToMap(t2.Columns)
+	for name, c1 := range v0Map {
+		c2, found := v1Map[name]
 		if found {
 			if c1.Type != c2.Type {
 				c1.Status = "updated"
@@ -209,8 +209,8 @@ func compareColumns(t1, t2 Table) []Column {
 		}
 	}
 
-	for name, c2 := range v2Map {
-		_, found := v1Map[name]
+	for name, c2 := range v1Map {
+		_, found := v0Map[name]
 		if found {
 			continue
 		}
@@ -244,7 +244,7 @@ func columnsToMap(columns []Column) map[string]Column {
 	return m
 }
 
-func v2TypeToPostgres(t string) string {
+func v1TypeToPostgres(t string) string {
 	vt := convert.ValueTypeFromString(t)
 	if vt == schema.TypeInvalid {
 		panic("unknown type: " + t)
@@ -256,10 +256,10 @@ func v2TypeToPostgres(t string) string {
 	return v
 }
 
-func normalizeV2Types(tables []Table) []Table {
+func normalizeV1Types(tables []Table) []Table {
 	for i := range tables {
 		for u := range tables[i].Columns {
-			tables[i].Columns[u].Type = v2TypeToPostgres(tables[i].Columns[u].Type)
+			tables[i].Columns[u].Type = v1TypeToPostgres(tables[i].Columns[u].Type)
 		}
 	}
 	return tables
@@ -267,15 +267,15 @@ func normalizeV2Types(tables []Table) []Table {
 
 func main() {
 	flag.StringVar(&outputFile, "o", "", "markdown file to write results to")
-	flag.StringVar(&v1TablesPath, "v1", "plugins/source/aws/docs/tables", "path to v1 table docs")
-	flag.StringVar(&v2TablesPath, "v2", "plugins/source/aws/docs/tables-v2", "path to v2 table docs") // generate this using `go run main.go doc docs/tables-v2`
+	flag.StringVar(&v0TablesPath, "v0", "plugins/source/aws/docs/tables", "path to v0 table docs")
+	flag.StringVar(&v1TablesPath, "v1", "plugins/source/aws/docs/tables-v1", "path to v1 table docs") // generate this using `go run main.go doc docs/tables-v1`
 	flag.Parse()
 
+	v0Tables := readTables(v0TablesPath)
 	v1Tables := readTables(v1TablesPath)
-	v2Tables := readTables(v2TablesPath)
-	v2Tables = normalizeV2Types(v2Tables)
+	v1Tables = normalizeV1Types(v1Tables)
 
-	comparison := compareTables(v1Tables, v2Tables)
+	comparison := compareTables(v0Tables, v1Tables)
 	tpl, err := template.New("").Parse(outputTemplate)
 	if err != nil {
 		panic(err)
@@ -283,7 +283,7 @@ func main() {
 
 	data := map[string]interface{}{
 		"Tables": comparison,
-		"Date":   time.Now().Format(time.UnixDate),
+		"Date":   time.Now().Format("2006-01-02"),
 	}
 	var b bytes.Buffer
 	if err := tpl.Execute(&b, data); err != nil {
