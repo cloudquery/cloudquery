@@ -18,6 +18,8 @@ okta:
   - plugins/source/okta/**/*
 terraform:
   - plugins/source/terraform/**/*
+postgresql:
+  - plugins/destination/postgresql/**/*
 website:
   - website/**/*
 cli:

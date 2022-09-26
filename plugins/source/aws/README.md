@@ -1,6 +1,6 @@
 # AWS Source Plugin
 
-The AWS Source plugin extract information from many of the supported services by Amazon Web Services (AWS).
+The AWS Source plugin extracts information from many of the supported services by Amazon Web Services (AWS).
 
 ## Links
 
@@ -11,7 +11,7 @@ The AWS Source plugin extract information from many of the supported services by
 
 ## Authentication
 
-The AWS source plugin need to be authenticated with your account/s in order to sync information from your cloud setup.
+The AWS source plugin needs to be authenticated with your account/s in order to sync information from your cloud setup.
 
 The plugin requires only _read_ permissions (we will never make any changes to your cloud setup), so, following the principle of least privilege, it's recommended to grant it read-only permissions.
 
@@ -86,19 +86,19 @@ For more information on configuring IAM, see the AWS docs [here](https://docs.aw
 
 ## Query Examples
 
-### Find all public facing load balancers
+### Find all public-facing load balancers
 
 ```sql
 SELECT * FROM aws_elbv2_load_balancers WHERE scheme = 'internet-facing';
 ```
 
-### Find all non encrypted RDS instances
+### Find all unencrypted RDS instances
 
 ```sql
 SELECT * FROM aws_rds_clusters WHERE storage_encrypted IS FALSE;
 ```
 
-### Find all s3 buckets that are able to be public
+### Find all S3 buckets that are permitted to be public
 
 ```sql
 SELECT arn, region
@@ -107,5 +107,4 @@ WHERE block_public_acls IS NOT TRUE
     OR block_public_policy IS NOT TRUE
     OR ignore_public_acls IS NOT TRUE
     OR restrict_public_buckets IS NOT TRUE
-
 ```
