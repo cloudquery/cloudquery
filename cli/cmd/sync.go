@@ -123,7 +123,7 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 	format := " Syncing (%d resources) %s"
 	s.Suffix = fmt.Sprintf(format, 0, time.Duration(0))
 	s.Start()
-	var failedWrites uint64 = 0
+	failedWrites := uint64(0)
 	totalResources := 0
 	for i, destination := range sourceSpec.Destinations {
 		i := i
