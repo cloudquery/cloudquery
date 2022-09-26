@@ -1,5 +1,5 @@
 ---
-title: CloudQuery V2 Release
+title: CloudQuery V1 Release
 tag: announcement
 date: 2022/09/24
 description: >-
@@ -11,7 +11,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 <BlogHeader/>
 
-Today is an exciting day for us at CloudQuery. For the last three months, we have been working on a completely new version of CloudQuery: with all the learnings and feedback from our amazing users over the past year. And today we are announcing its release! In this post, I will walk through the major features, architecture changes and upcoming work.
+Today is an exciting day for us at CloudQuery. For the last three months, we have been working on a completely new version of CloudQuery: with all the learnings and feedback from our amazing users over the past year. And today we are announcing its release (we are zero based so it's v1 even though it's second version :) )! In this post, I will walk through the major features, architecture changes and upcoming work.
 
 Quick Recap: If you are unfamiliar with CloudQuery and why we are bringing the best of data engineering to infrastructure and security teams - check out our post from the recent series A [announcement](https://www.cloudquery.io/blog/cloudquery-raises-15m-series-a#story-time).
 
@@ -52,7 +52,7 @@ A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/p
 
 As data integration platform users build their own views and queries on top so we want to make the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
 
-For this New official destination plugins support [auto migrations](https://v2.cloudquery.io/docs/core-concepts/migrations) and [release stages](https://v2.cloudquery.io/docs/plugins/source_plugins_release_stages)
+For this New official destination plugins support [auto migrations](https://v1.cloudquery.io/docs/core-concepts/migrations) and [release stages](https://v1.cloudquery.io/docs/plugins/source_plugins_release_stages)
 
 ## Monorepo
 
