@@ -1,6 +1,7 @@
 package plugins
 
 import (
+	"fmt"
 	"os/exec"
 
 	"github.com/cloudquery/plugin-sdk/clients"
@@ -12,12 +13,13 @@ type DestinationPlugin struct {
 	cmd    *exec.Cmd
 	conn   *grpc.ClientConn
 	client *clients.DestinationClient
-	targetGrpc string
 }
 
 func (p *DestinationPlugin) Close() error {
 	if p.conn != nil {
-		return p.conn.Close()
+		if err := p.conn.Close(); err != nil {
+			fmt.Println(err)
+		}
 	}
 	if p.cmd != nil && p.cmd.Process != nil {
 		if err := p.cmd.Process.Kill(); err != nil {

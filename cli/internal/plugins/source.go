@@ -1,6 +1,7 @@
 package plugins
 
 import (
+	"fmt"
 	"os/exec"
 
 	"github.com/cloudquery/plugin-sdk/clients"
@@ -46,7 +47,9 @@ func (p *SourcePlugin) Warnings() int {
 
 func (p *SourcePlugin) Close() error {
 	if p.conn != nil {
-		p.conn.Close()
+		if err := p.conn.Close(); err != nil {
+			fmt.Println(err)
+		}
 	}
 	if p.cmd != nil && p.cmd.Process != nil {
 		if err := p.cmd.Process.Kill(); err != nil {

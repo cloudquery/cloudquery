@@ -16,7 +16,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -122,8 +121,7 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 		}
 	}()
 	
-	time.Sleep(2 * time.Second)
-	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
 			fmt.Println("failed to kill plugin", err)
@@ -195,7 +193,7 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, registry specs
 	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
-			fmt.Println("failed to kill plugin", err)
+			fmt.Println("failed to kill destination plugin", err)
 		}
 		return &pl, err
 	}
