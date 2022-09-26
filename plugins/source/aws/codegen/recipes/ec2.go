@@ -58,7 +58,7 @@ func EC2Resources() []*Resource {
 					},
 					{
 						Name:     "attribute",
-						Type:     schema.TypeString,
+						Type:     schema.TypeJSON,
 						Resolver: "resolveEbsSnapshotAttribute",
 					},
 				}...),
