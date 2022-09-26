@@ -2898,6 +2898,12 @@
             "us-west-2": {}
           }
         },
+        "iotfleetwise": {
+          "regions": {
+            "eu-central-1": {},
+            "us-east-1": {}
+          }
+        },
         "iotsecuredtunneling": {
           "regions": {
             "ap-east-1": {},
