@@ -1,5 +1,5 @@
 // pluginmanager takes care of the lifecycle of plugins,
-// including downloading, upgrading, spawning and closing. 
+// including downloading, upgrading, spawning and closing.
 // Currently we use GitHub releases as our plugin store.
 package plugins
 
@@ -16,6 +16,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -120,8 +121,9 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, registry specs.Regi
 			}
 		}
 	}()
-
-	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	
+	time.Sleep(2 * time.Second)
+	conn, err := grpc.DialContext(ctx, "unix://"+grpcTarget, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		if err := cmd.Process.Kill(); err != nil {
 			fmt.Println("failed to kill plugin", err)

@@ -12,6 +12,7 @@ type DestinationPlugin struct {
 	cmd    *exec.Cmd
 	conn   *grpc.ClientConn
 	client *clients.DestinationClient
+	targetGrpc string
 }
 
 func (p *DestinationPlugin) Close() error {
