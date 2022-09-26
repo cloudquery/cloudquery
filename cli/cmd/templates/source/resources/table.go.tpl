@@ -1,7 +1,8 @@
 package resources
 
 import (
-	"github.com/{{.Org}}/cq-source-{{.Name}}/client"
+	"context"
+	"fmt"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
