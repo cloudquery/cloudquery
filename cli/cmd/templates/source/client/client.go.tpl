@@ -5,7 +5,7 @@ type Client struct {
 }
 
 func (c *Client) Logger() *zerolog.Logger {
-  return &logger
+  return &c.logger
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
