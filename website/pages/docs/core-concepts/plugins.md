@@ -27,7 +27,7 @@ spec:
   name: SOURCE_PLUGIN_NAME
 
   ## Optional. Default: latest. It is highly recommended to pin to a specific version in production.
-  # verison: latest
+  # version: latest
 
   ## Optional. Default: github. Available: local, grpc.
   ## By default it will search for plugins hosted on github.
