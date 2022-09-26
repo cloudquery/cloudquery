@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v0.1.0...plugins-destination-postgresql-v0.2.0) (2022-09-26)
+
+
+### Features
+
+* Move to standalone postgresql plugin ([#2074](https://github.com/cloudquery/cloudquery/issues/2074)) ([a0de6d3](https://github.com/cloudquery/cloudquery/commit/a0de6d3dfc0f43aad9b465c469b92a96121db0a1))
+
 ## [0.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v0.0.1...plugins-destination-postgresql-v0.1.0) (2022-09-25)
 
 
