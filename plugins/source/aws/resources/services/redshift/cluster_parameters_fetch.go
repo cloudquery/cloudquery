@@ -2,6 +2,7 @@ package redshift
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -11,26 +12,30 @@ import (
 )
 
 func fetchRedshiftClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cluster := parent.Item.(types.Cluster)
+	group := parent.Item.(types.ClusterParameterGroupStatus)
 	c := meta.(*client.Client)
 	svc := c.Services().Redshift
 
-	for _, parameterGroup := range cluster.ClusterParameterGroups {
-		config := redshift.DescribeClusterParametersInput{
-			ParameterGroupName: parameterGroup.ParameterGroupName,
+	config := redshift.DescribeClusterParametersInput{
+		ParameterGroupName: group.ParameterGroupName,
+	}
+	for {
+		response, err := svc.DescribeClusterParameters(ctx, &config)
+		if err != nil {
+			return err
 		}
-		for {
-			response, err := svc.DescribeClusterParameters(ctx, &config)
-			if err != nil {
-				return err
-			}
-			res <- response.Parameters
-			if aws.ToString(response.Marker) == "" {
-				break
-			}
-			config.Marker = response.Marker
+		res <- response.Parameters
+		if aws.ToString(response.Marker) == "" {
+			break
 		}
+		config.Marker = response.Marker
 	}
 
 	return nil
+}
+
+func resolveClusterArnFromParent() schema.ColumnResolver {
+	return client.ResolveARN(client.RedshiftService, func(resource *schema.Resource) ([]string, error) {
+		return []string{fmt.Sprintf("cluster:%s", *resource.Parent.Item.(types.Cluster).ClusterIdentifier)}, nil
+	})
 }

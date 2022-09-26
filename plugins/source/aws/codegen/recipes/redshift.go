@@ -12,7 +12,7 @@ func RedshiftResources() []*Resource {
 		{
 			SubService: "clusters",
 			Struct:     &types.Cluster{},
-			SkipFields: []string{"Tags"},
+			SkipFields: []string{"ClusterParameterGroups", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -38,6 +38,31 @@ func RedshiftResources() []*Resource {
 				}...),
 			Relations: []string{
 				"Snapshots()",
+				"ClusterParameterGroups()",
+			},
+		},
+		{
+			SubService: "cluster_parameter_groups",
+			Struct:     &types.ClusterParameterGroupStatus{},
+			SkipFields: []string{"ParameterGroupName"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:        "cluster_arn",
+						Description: "The Amazon Resource Name (ARN) for the resource.",
+						Type:        schema.TypeString,
+						Resolver:    `resolveClusterArn()`,
+						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "parameter_group_name",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("ParameterGroupName")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+			Relations: []string{
 				"ClusterParameters()",
 			},
 		},
@@ -52,7 +77,7 @@ func RedshiftResources() []*Resource {
 						Name:        "cluster_arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver:    `resolveClusterArn()`,
+						Resolver:    `resolveClusterArnFromParent()`,
 						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
