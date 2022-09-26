@@ -230,7 +230,7 @@ func (pm *PluginManager) downloadPluginFromGitHub(ctx context.Context, remotePat
 		return "", fmt.Errorf("failed to create plugin directory %s: %w", downloadDir, err)
 	}
 
-	err = downloadFile(pluginZipPath, downloadUrl)
+	err = downloadFile(pluginZipPath, downloadUrl, "Downloading " + string(typ) + " plugin " + name + " version " + version)
 	if err != nil {
 		return "", fmt.Errorf("failed to download plugin: %w", err)
 	}

@@ -3,12 +3,11 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"time"
 
-	"github.com/briandowns/spinner"
 	"github.com/cloudquery/cloudquery/cli/internal/plugins"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
 )
@@ -118,11 +117,13 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 		return nil
 	})
 
-	s := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
-	startTime := time.Now()
-	format := " Syncing (%d resources) %s"
-	s.Suffix = fmt.Sprintf(format, 0, time.Duration(0))
-	s.Start()
+	bar := progressbar.NewOptions(-1,
+		progressbar.OptionSetDescription("Syncing resources..."),
+		progressbar.OptionSetItsString("resources/sec"),
+		progressbar.OptionShowIts(),
+		progressbar.OptionSetElapsedTime(true),
+		progressbar.OptionShowCount(),
+	)
 	failedWrites := uint64(0)
 	totalResources := 0
 	for i, destination := range sourceSpec.Destinations {
@@ -142,7 +143,7 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 	g.Go(func() error {
 		for resource := range resources {
 			totalResources++
-			s.Suffix = fmt.Sprintf(format, totalResources, time.Since(startTime).Truncate(time.Second))
+			bar.Add(1)
 			for i := range destSubscriptions {
 				select {
 				case <-ctx.Done():
@@ -158,10 +159,10 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 	})
 
 	if err := g.Wait(); err != nil {
-		s.Stop()
+		bar.Finish()
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
-	s.Stop()
+	bar.Finish()
 	fmt.Println("Fetch completed successfully.")
 	fmt.Printf("Summary: Resources: %d, Failed Writes: %d, Fetch Errors: %d, Fetch Warnings: %d\n",
 		totalResources, failedWrites, sourcePlugin.Errors(), sourcePlugin.Warnings())

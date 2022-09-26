@@ -3,7 +3,6 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/briandowns/spinner v1.19.0
 	github.com/cloudquery/plugin-sdk v0.9.0
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/rs/zerolog v1.28.0
@@ -16,7 +15,6 @@ require (
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gofrs/uuid v4.3.0+incompatible // indirect
