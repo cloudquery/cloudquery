@@ -6,18 +6,18 @@ CloudQuery has a pluggable architecture and uses the [gRPC](https://grpc.io/docs
 
 ![cloudquery high-level architecture](/images/cloudquery-architecture.png)
 
-## CloudQuery Core Responsibilities
+## CloudQuery CLI Responsibilities
 
 - Main entry point and CLI for the user.
 - Reading CloudQuery configuration.
-- Downloading, verifying, and running providers.
-- Running policy packs.
+- Downloading, verifying, and running sync from source to destination plugins
 
 ## CloudQuery Plugin Responsibilities
 
-- Intended to be run only by cloudquery-core.
-- Communicates with cloudquery-core over gRPC to receive commands and actions.
-- Initialization, authentication, and fetching data via third-party cloud/SaaS API.
+- Intended to be run only by CloudQuery CLI.
+- Communicates with CloudQuery CLI over gRPC to receive commands and actions.
+- Source Plugins: Initialization, authentication, and fetching data via third-party cloud/SaaS API.
+- Desintation Plugins: Authentication, Database migrations, Data Insertion.
 
 ## SDK
 
