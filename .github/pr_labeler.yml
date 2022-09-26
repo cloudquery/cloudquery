@@ -1,0 +1,26 @@
+aws:
+  - plugins/source/aws/**/*
+azure:
+  - plugins/source/azure/**/*
+cloudflare:
+  - plugins/source/cloudflare/**/*
+digitalocean:
+  - plugins/source/digitalocean/**/*
+fuzz:
+  - plugins/source/fuzz/**/*
+gcp:
+  - plugins/source/gcp/**/*
+github:
+  - plugins/source/github/**/*
+k8s:
+  - plugins/source/k8s/**/*
+okta:
+  - plugins/source/okta/**/*
+terraform:
+  - plugins/source/terraform/**/*
+postgresql:
+  - plugins/destination/postgresql/**/*
+website:
+  - website/**/*
+cli:
+  - cli/**/*

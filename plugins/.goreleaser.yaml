@@ -9,7 +9,7 @@ builds:
       - CGO_ENABLED=0
       - GO111MODULE=on
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/provider.Version={{.Version}}
+      - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
       - windows
       - linux
@@ -26,6 +26,8 @@ archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: zip
     id: zip
+    files:
+      - policies/**
 checksum:
   name_template: "checksums.txt"
   ids:

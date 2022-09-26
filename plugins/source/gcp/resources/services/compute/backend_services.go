@@ -25,6 +25,13 @@ func BackendServices() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "affinity_cookie_ttl_sec",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AffinityCookieTtlSec"),
@@ -43,6 +50,11 @@ func BackendServices() *schema.Table {
 				Name:     "circuit_breakers",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("CircuitBreakers"),
+			},
+			{
+				Name:     "compression_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CompressionMode"),
 			},
 			{
 				Name:     "connection_draining",
@@ -188,13 +200,6 @@ func BackendServices() *schema.Table {
 				Name:     "security_settings",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SecuritySettings"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "service_bindings",

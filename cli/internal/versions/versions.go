@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -58,7 +58,7 @@ func (c *Client) GetLatestPluginRelease(ctx context.Context, org, pluginType, pl
 }
 
 func (c *Client) readCLIManifest(ctx context.Context) (string, error) {
-	url := fmt.Sprintf(c.cloudQueryBaseURL + "/v1/cli.json")
+	url := fmt.Sprintf(c.cloudQueryBaseURL + "/v2/cli.json")
 	b, err := c.doRequest(ctx, url)
 	if err != nil {
 		return "", fmt.Errorf("reading manifest for cli: %w", err)
@@ -72,7 +72,7 @@ func (c *Client) readCLIManifest(ctx context.Context) (string, error) {
 }
 
 func (c *Client) readManifest(ctx context.Context, name string) (string, error) {
-	url := fmt.Sprintf(c.cloudQueryBaseURL+"/v1/%s-%s.json", "source", name)
+	url := fmt.Sprintf(c.cloudQueryBaseURL+"/v2/%s-%s.json", "source", name)
 	b, err := c.doRequest(ctx, url)
 	if err != nil {
 		return "", fmt.Errorf("reading manifest for %v: %w", name, err)
@@ -85,10 +85,10 @@ func (c *Client) readManifest(ctx context.Context, name string) (string, error) 
 	return extractVersionFromTag(mr.Latest), nil
 }
 
-// extractVersionFromTag takes a tag of the form "plugins/source/test/v0.1.21" and returns
+// extractVersionFromTag takes a tag of the form "plugins-source-test-v0.1.21" and returns
 // the version, i.e. "v0.1.21"
 func extractVersionFromTag(tag string) string {
-	parts := strings.Split(tag, "/")
+	parts := strings.Split(tag, "-")
 	return parts[len(parts)-1]
 }
 
@@ -120,7 +120,7 @@ func (c *Client) doRequest(ctx context.Context, url string) ([]byte, error) {
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("status code %v (%v)", resp.StatusCode, resp.Status)
 	}
-	b, err := ioutil.ReadAll(resp.Body)
+	b, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("reading response body: %w", err)
 	}

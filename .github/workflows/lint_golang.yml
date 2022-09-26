@@ -37,18 +37,18 @@ jobs:
       - uses: actions/setup-go@v3
         if: steps.changed-files.outputs.any_changed == 'true'
         with:
-          go-version: 1.18
+          go-version: 1.19.1
       # Plugins and CLI have different linting configurations
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         if: steps.changed-files.outputs.any_changed == 'true' && matrix.workdir == 'cli'
         with:
-          version: v1.47.3
+          version: v1.49.0
           working-directory: ${{ matrix.workdir }}
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         if: steps.changed-files.outputs.any_changed == 'true' && matrix.workdir != 'cli'
         with:
-          version: v1.47.3
+          version: v1.49.0
           working-directory: ${{ matrix.workdir }}
           args: "--config ${GITHUB_WORKSPACE}/plugins/.golangci.yml" 

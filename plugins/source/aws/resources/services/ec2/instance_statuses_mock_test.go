@@ -27,5 +27,5 @@ func buildEc2InstanceStatuses(t *testing.T, ctrl *gomock.Controller) client.Serv
 	}
 }
 func TestEc2InstanceStatuses(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2InstanceStatuses(), buildEc2InstanceStatuses, client.TestOptions{})
+	client.AwsMockTestHelper(t, InstanceStatuses(), buildEc2InstanceStatuses, client.TestOptions{})
 }

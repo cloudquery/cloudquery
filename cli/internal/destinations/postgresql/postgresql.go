@@ -45,7 +45,7 @@ type pgTableColumns struct {
 
 // https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
 const sqlSelectPrimaryKeys = `
-SELECT a.attname FROM pg_index i       
+SELECT a.attname as pkey FROM pg_index i       
 JOIN   pg_attribute a ON a.attrelid = i.indrelid
   AND a.attnum = ANY(i.indkey)
 WHERE  i.indrelid = $1::regclass
@@ -179,6 +179,7 @@ func (p *Client) getPgTableColumns(ctx context.Context, tableName string) (*pgTa
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 	for rows.Next() {
 		var name string
 		var typ string
@@ -189,6 +190,9 @@ func (p *Client) getPgTableColumns(ctx context.Context, tableName string) (*pgTa
 			name: strings.ToLower(name),
 			typ:  strings.ToLower(typ),
 		})
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 	return &tc, nil
 }
@@ -201,12 +205,16 @@ func (p *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (*
 	if err != nil {
 		return nil, err
 	}
+	defer rows.Close()
 	for rows.Next() {
 		var column string
 		if err := rows.Scan(&column); err != nil {
 			return nil, err
 		}
 		pks.columns = append(pks.columns, strings.ToLower(column))
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 	return &pks, nil
 }
@@ -234,7 +242,8 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		}
 		pgColumn := pgColumns.getPgColumn(c.Name)
 
-		if pgColumn == nil {
+		switch {
+		case pgColumn == nil:
 			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column doesn't exist, creating")
 
 			sql := "alter table " + tableName + " add column " + columnName + " " + columnType
@@ -244,7 +253,7 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			if _, err := p.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", c.Name, table.Name, err)
 			}
-		} else if pgColumn.typ != columnType {
+		case pgColumn.typ != columnType:
 			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Str("old_type", pgColumn.typ).Str("new_type", columnType).Msg("Column exist but type is different, re-creating")
 			// column exists but type is different
 
@@ -261,11 +270,10 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			if _, err := p.conn.Exec(ctx, sql); err != nil {
 				return fmt.Errorf("failed to add column %s on table %s: %w", c.Name, table.Name, err)
 			}
-		} else {
+		default:
 			// column exists and type is the same but constraint might differ
-			p.logger.Info().Str("table", table.Name).Str("column", c.Name).Str("type", c.Type.String()).Msg("Column exists with the same type")
-			if pgPKs.columnExist(columnName) != c.CreationOptions.PrimaryKey {
-				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Msg("Column exist with different primary keys")
+			if pgPKs.columnExist(c.Name) != c.CreationOptions.PrimaryKey {
+				p.logger.Info().Str("table", table.Name).Str("column", c.Name).Bool("pk", c.CreationOptions.PrimaryKey).Msg("Column exist with different primary keys")
 				reCreatePrimaryKeys = true
 			}
 		}
@@ -287,8 +295,8 @@ func (p *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 // This is the responsibility of the CLI of the client to lock before running migration
 func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
-	p.logger.Info().Strs("tables", tables.TableNames()).Msg("Migrating tables")
 	for _, table := range tables {
+		p.logger.Info().Str("table", table.Name).Msg("Migrating table")
 		if len(table.Columns) == 0 {
 			p.logger.Info().Str("table", table.Name).Msg("Table with not columns, skiping")
 			continue
@@ -298,12 +306,12 @@ func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 		}
 		if tableExist == 0 {
-			p.logger.Info().Str("table", table.Name).Msg("Table exists, creating")
+			p.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist creating")
 			if err := p.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
 		} else {
-			p.logger.Info().Str("table", table.Name).Msg("Table doesn't exist, auto-migrating")
+			p.logger.Info().Str("table", table.Name).Msg("Table exist, auto-migrating")
 			if err := p.autoMigrateTable(ctx, table); err != nil {
 				return err
 			}
@@ -336,7 +344,7 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 			sb.WriteString(") values (")
 		}
 	}
-	for i, _ := range values {
+	for i := range values {
 		sb.WriteString(fmt.Sprintf("$%d", i+1))
 		if i < len(values)-1 {
 			sb.WriteString(",")
@@ -365,7 +373,6 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 }
 
 func (p *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
-	p.logger.Info().Str("table", table).Msg("Writing data")
 	sql, values := upsert(table, data)
 	_, err := p.conn.Exec(ctx, sql, values...)
 	if err != nil {
@@ -376,7 +383,7 @@ func (p *Client) Write(ctx context.Context, table string, data map[string]interf
 
 func (*Client) ExampleConfig() string {
 	return `
-connection_string: "postgresql://user:password@localhost:5432/dbname"
+connection_string: "postgresql://postgres:pass@localhost:5432/postgres"
 `
 }
 
@@ -408,7 +415,7 @@ func SchemaTypeToPg(t schema.ValueType) (string, error) {
 	case schema.TypeTimestamp:
 		return "timestamp without time zone", nil
 	case schema.TypeJSON:
-		return "json", nil
+		return "jsonb", nil
 	case schema.TypeUUIDArray:
 		return "uuid[]", nil
 	case schema.TypeInetArray:

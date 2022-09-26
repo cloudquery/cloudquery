@@ -25,6 +25,13 @@ func SslPolicies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "creation_timestamp",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CreationTimestamp"),
@@ -75,11 +82,9 @@ func SslPolicies() *schema.Table {
 				Resolver: schema.PathResolver("Profile"),
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Region"),
 			},
 			{
 				Name:     "warnings",

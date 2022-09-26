@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
-type MariaDB struct {
+type MariaDBClient struct {
 	Configurations MariaDBConfigurationsClient
 	Servers        MariaDBServersClient
 }
@@ -21,12 +21,12 @@ type MariaDBConfigurationsClient interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ConfigurationListResult, err error)
 }
 
-func NewMariaDBClient(subscriptionId string, auth autorest.Authorizer) MariaDB {
+func NewMariaDBClient(subscriptionId string, auth autorest.Authorizer) MariaDBClient {
 	configs := mariadb.NewConfigurationsClient(subscriptionId)
 	configs.Authorizer = auth
 	servers := mariadb.NewServersClient(subscriptionId)
 	servers.Authorizer = auth
-	return MariaDB{
+	return MariaDBClient{
 		Configurations: configs,
 		Servers:        servers,
 	}

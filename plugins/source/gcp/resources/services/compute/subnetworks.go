@@ -25,6 +25,13 @@ func Subnetworks() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "creation_timestamp",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CreationTimestamp"),
@@ -40,7 +47,7 @@ func Subnetworks() *schema.Table {
 				Resolver: schema.PathResolver("EnableFlowLogs"),
 			},
 			{
-				Name:     "external_ipv_6_prefix",
+				Name:     "external_ipv6_prefix",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ExternalIpv6Prefix"),
 			},
@@ -60,7 +67,7 @@ func Subnetworks() *schema.Table {
 				Resolver: schema.PathResolver("Id"),
 			},
 			{
-				Name:     "internal_ipv_6_prefix",
+				Name:     "internal_ipv6_prefix",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("InternalIpv6Prefix"),
 			},
@@ -70,12 +77,12 @@ func Subnetworks() *schema.Table {
 				Resolver: schema.PathResolver("IpCidrRange"),
 			},
 			{
-				Name:     "ipv_6_access_type",
+				Name:     "ipv6_access_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Ipv6AccessType"),
 			},
 			{
-				Name:     "ipv_6_cidr_range",
+				Name:     "ipv6_cidr_range",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Ipv6CidrRange"),
 			},
@@ -105,7 +112,7 @@ func Subnetworks() *schema.Table {
 				Resolver: schema.PathResolver("PrivateIpGoogleAccess"),
 			},
 			{
-				Name:     "private_ipv_6_google_access",
+				Name:     "private_ipv6_google_access",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PrivateIpv6GoogleAccess"),
 			},
@@ -128,13 +135,6 @@ func Subnetworks() *schema.Table {
 				Name:     "secondary_ip_ranges",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SecondaryIpRanges"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "stack_type",

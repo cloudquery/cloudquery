@@ -14,12 +14,10 @@ import (
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	kmsold "google.golang.org/api/cloudkms/v1"
+	"google.golang.org/api/option"
+	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
-
-	"google.golang.org/api/option"
 )
 
 func createKeyrings() (*client.Services, error) {
@@ -36,12 +34,6 @@ func createKeyrings() (*client.Services, error) {
 			panic(err)
 		}
 	}()
-
-	item := kmsold.ListCryptoKeysResponse{}
-	if err := faker.FakeObject(&item); err != nil {
-		return nil, fmt.Errorf("failed to fake data: %w", err)
-	}
-	item.NextPageToken = ""
 
 	mux := httprouter.New()
 	mux.GET("/v1/projects/testProject/locations", func(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -91,8 +83,17 @@ type fakeKeyringsServer struct {
 	pb.UnimplementedKeyManagementServiceServer
 }
 
-func (f *fakeKeyringsServer) ListKeyRings(context.Context, *pb.ListKeyRingsRequest) (*pb.ListKeyRingsResponse, error) {
+func (*fakeKeyringsServer) ListKeyRings(context.Context, *pb.ListKeyRingsRequest) (*pb.ListKeyRingsResponse, error) {
 	resp := pb.ListKeyRingsResponse{}
+	if err := faker.FakeObject(&resp); err != nil {
+		return nil, fmt.Errorf("failed to fake data: %w", err)
+	}
+	resp.NextPageToken = ""
+	return &resp, nil
+}
+
+func (*fakeKeyringsServer) ListCryptoKeys(context.Context, *pb.ListCryptoKeysRequest) (*pb.ListCryptoKeysResponse, error) {
+	resp := pb.ListCryptoKeysResponse{}
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}

@@ -3,9 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"os"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -17,7 +15,6 @@ import (
 type Client struct {
 	// plugin   *plugins.SourcePlugin
 	projects []string
-	backoff  BackoffSettings
 	// All gcp services initialized by client
 	Services *Services
 	// this is set by table client multiplexer
@@ -25,11 +22,6 @@ type Client struct {
 	// Logger
 	logger zerolog.Logger
 }
-
-const (
-	defaultProjectIdName = "<CHANGE_THIS_TO_YOUR_PROJECT_ID>"
-	serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
-)
 
 //revive:disable:modifies-value-receiver
 
@@ -44,10 +36,6 @@ func isValidJson(content []byte) error {
 	var v map[string]interface{}
 	err := json.Unmarshal(content, &v)
 	if err != nil {
-		var syntaxError *json.SyntaxError
-		if errors.As(err, &syntaxError) {
-			return fmt.Errorf("the environment variable %s should contain valid JSON object. %w", serviceAccountEnvKey, err)
-		}
 		return err
 	}
 	return nil
@@ -71,15 +59,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	projects := gcpSpec.ProjectIDs
 
 	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
-	if len(serviceAccountKeyJSON) == 0 {
-		serviceAccountKeyJSON = []byte(os.Getenv(serviceAccountEnvKey))
-	}
 
 	// Add a fake request reason because it is not possible to pass nil options
 	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
 	if len(serviceAccountKeyJSON) != 0 {
 		if err := isValidJson(serviceAccountKeyJSON); err != nil {
-			return nil, fmt.Errorf("invalid service account key JSON: %w", err)
+			return nil, fmt.Errorf("invalid json at service_account_key_json: %w", err)
 		}
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}
@@ -102,7 +87,6 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	c.logger.Debug().Strs("projects", projects).Msg("Found projects")
 
 	c.projects = projects
-	c.backoff = gcpSpec.Backoff()
 	if len(projects) == 1 {
 		c.ProjectId = projects[0]
 	}
@@ -114,25 +98,20 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
 	var (
 		projects []string
-		inactive int
 	)
 	service, err := crmv1.NewService(ctx, options...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
 
-	call := service.Projects.List().Context(ctx)
+	call := service.Projects.List().Filter("lifecycleState=ACTIVE").Context(ctx)
 	for {
 		output, err := call.Do()
 		if err != nil {
 			return nil, err
 		}
 		for _, project := range output.Projects {
-			if project.LifecycleState == "ACTIVE" {
-				projects = append(projects, project.ProjectId)
-			} else {
-				inactive++
-			}
+			projects = append(projects, project.ProjectId)
 		}
 		if output.NextPageToken == "" {
 			break
@@ -141,10 +120,7 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 	}
 
 	if len(projects) == 0 {
-		if inactive > 0 {
-			return nil, fmt.Errorf("project listing failed: no active projects")
-		}
-		return nil, fmt.Errorf("project listing failed")
+		return nil, fmt.Errorf("no active projects")
 	}
 
 	return projects, nil

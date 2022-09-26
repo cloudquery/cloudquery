@@ -1,15 +1,14 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/provider"
-	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/cloudquery/cloudquery/plugins/source/okta/plugin"
+	"github.com/cloudquery/plugin-sdk/serve"
 )
 
+const sentryDSN = "https://e43b6becdda446e6aedb4539cbc7cc83@o1396617.ingest.sentry.io/6747629"
+
 func main() {
-	serve.Serve(&serve.Options{
-		Name:                "okta",
-		Provider:            provider.Provider(),
-		Logger:              nil,
-		NoLogOutputOverride: false,
-	})
+	serve.Source(plugin.Plugin(),
+		serve.WithSourceSentryDSN(sentryDSN),
+	)
 }

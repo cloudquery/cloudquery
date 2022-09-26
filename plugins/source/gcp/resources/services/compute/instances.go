@@ -25,6 +25,13 @@ func Instances() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "advanced_machine_features",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AdvancedMachineFeatures"),
@@ -160,7 +167,7 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("Params"),
 			},
 			{
-				Name:     "private_ipv_6_google_access",
+				Name:     "private_ipv6_google_access",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PrivateIpv6GoogleAccess"),
 			},
@@ -183,13 +190,6 @@ func Instances() *schema.Table {
 				Name:     "scheduling",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Scheduling"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "service_accounts",

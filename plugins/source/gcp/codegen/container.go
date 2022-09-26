@@ -19,13 +19,14 @@ var containerResources = []*Resource{
 		UnimplementedServer: &pb.UnimplementedClusterManagerServer{},
 		SkipFetch:           true,
 		SkipMock:            true,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:    "self_link",
 				Type:    schema.TypeString,
 				Options: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
+		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_4": "ipv4"}),
 	},
 }
 

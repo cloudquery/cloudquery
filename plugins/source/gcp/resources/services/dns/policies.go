@@ -19,6 +19,14 @@ func Policies() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name:     "id",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("Id"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "alternative_name_server_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AlternativeNameServerConfig"),
@@ -39,14 +47,6 @@ func Policies() *schema.Table {
 				Resolver: schema.PathResolver("EnableLogging"),
 			},
 			{
-				Name:     "id",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Id"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "kind",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Kind"),
@@ -60,21 +60,6 @@ func Policies() *schema.Table {
 				Name:     "networks",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Networks"),
-			},
-			{
-				Name:     "server_response",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServerResponse"),
-			},
-			{
-				Name:     "force_send_fields",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("ForceSendFields"),
-			},
-			{
-				Name:     "null_fields",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("NullFields"),
 			},
 		},
 	}

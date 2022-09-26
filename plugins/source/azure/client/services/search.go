@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/search.go -package=mocks . SearchServiceClient
+//go:generate mockgen -destination=./mocks/search.go -package=mocks . SearchServicesClient
 package services
 
 import (
@@ -10,10 +10,10 @@ import (
 )
 
 type SearchClient struct {
-	Service SearchServiceClient
+	Services SearchServicesClient
 }
 
-type SearchServiceClient interface {
+type SearchServicesClient interface {
 	ListBySubscription(ctx context.Context, clientRequestID *uuid.UUID) (result search.ServiceListResultPage, err error)
 }
 
@@ -22,6 +22,6 @@ func NewSearchClient(subscriptionId string, auth autorest.Authorizer) SearchClie
 	cl.Authorizer = auth
 
 	return SearchClient{
-		Service: cl,
+		Services: cl,
 	}
 }

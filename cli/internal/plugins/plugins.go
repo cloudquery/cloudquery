@@ -7,6 +7,7 @@ package plugins
 import (
 	"archive/zip"
 	"bufio"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -15,8 +16,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
-
-	"context"
 
 	"github.com/cloudquery/cloudquery/cli/internal/destinations/postgresql"
 	"github.com/cloudquery/cloudquery/cli/internal/versions"
@@ -49,6 +48,14 @@ type PluginManager struct {
 }
 
 type PluginManagerOption func(*PluginManager)
+
+type downloadPaths struct {
+	destDir     string
+	destFile    string
+	zip         string
+	binaryInZip string
+	urls        []string
+}
 
 func (p *DestinationPlugin) Close() error {
 	if p.conn != nil {
@@ -116,7 +123,7 @@ func NewPluginManager(opts ...PluginManagerOption) *PluginManager {
 }
 
 // DownloadSource downloads a plugin from the specified registry and return the path to plugin
-func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.Source) (string, error) {
+func (p *PluginManager) DownloadSource(ctx context.Context, spec *specs.Source) (string, error) {
 	switch spec.Registry {
 	case specs.RegistryLocal, specs.RegistryGrpc:
 		fmt.Printf("Skipping plugin download. registry: %s, path: %s\n", spec.Registry, spec.Path)
@@ -129,56 +136,91 @@ func (p *PluginManager) DownloadSource(ctx context.Context, spec specs.Source) (
 	}
 }
 
-func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Source) (string, error) {
+func getBinarySuffix() string {
+	if runtime.GOOS == "windows" {
+		return ".exe"
+	}
+	return ""
+}
+
+func (p *PluginManager) getDownloadPaths(org string, name string, registry string, version string) downloadPaths {
+	pluginName := fmt.Sprintf("cq-source-%s_%s_%s", name, runtime.GOOS, runtime.GOARCH)
+	destDir := filepath.Join(p.directory, "plugins", registry, org, name, version)
+	binarySuffix := getBinarySuffix()
+	destFile := filepath.Join(destDir, pluginName+binarySuffix)
+	zipPath := filepath.Join(destDir, pluginName+".zip")
+	binaryPathInZip := "plugins/source/" + name + binarySuffix
+	downloadURLs := []string{
+		// new tags format e.g. https://github.com/cloudquery/cloudquery/releases/download/plugins-source-test-v1.1.5/test_linux_amd64
+		fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins-source-%s-%s/%s_%s_%s.zip", name, version, name, runtime.GOOS, runtime.GOARCH),
+		// old tags format e.g. https://github.com/cloudquery/cloudquery/releases/download/plugins/source/test/v1.1.4/test_linux_amd64
+		fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins/source/%s/%s/%s_%s_%s.zip", name, version, name, runtime.GOOS, runtime.GOARCH),
+	}
+	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
+	// For example:
+	// https://github.com/cloudquery/cloudquery/releases/download/plugins-source-test-v1.1.0/test_darwin_amd64.zip
+	if org != "cloudquery" {
+		// https://github.com/yevgenypats/cq-source-test/releases/download/v1.0.0/cq-source-test_linux_amd64.zip
+		downloadURLs = []string{
+			fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, name, version, name, runtime.GOOS, runtime.GOARCH),
+		}
+		binaryPathInZip = "cq-source-" + name + binarySuffix
+	}
+
+	return downloadPaths{
+		destDir:     destDir,
+		destFile:    destFile,
+		zip:         zipPath,
+		binaryInZip: binaryPathInZip,
+		urls:        downloadURLs,
+	}
+}
+
+func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec *specs.Source) (string, error) {
 	var err error
 	pathSplit := strings.Split(spec.Path, "/")
-	org, repo := pathSplit[0], pathSplit[1]
+	org, name := pathSplit[0], pathSplit[1]
 	if spec.Version == "latest" || spec.Version == "" {
 		// if version is latest, we need to get the version number from github
-		spec.Version, err = p.versionsClient.GetLatestPluginRelease(ctx, org, "source", repo)
+		spec.Version, err = p.versionsClient.GetLatestPluginRelease(ctx, org, "source", name)
 		if err != nil {
 			return "", err
 		}
 	}
 
-	pluginName := fmt.Sprintf("cq-source-%s_%s_%s", repo, runtime.GOOS, runtime.GOARCH)
-	dirPath := filepath.Join(p.directory, "plugins", spec.Registry.String(), org, repo, spec.Version)
-	pluginPath := filepath.Join(dirPath, pluginName)
-	if _, err := os.Stat(pluginPath); err == nil {
-		fmt.Printf("Plugin already exists at %s. Skipping download.\n", pluginPath)
-		p.logger.Info().Str("path", pluginPath).Msg("Plugin already exists. Skipping download.")
-		return pluginPath, nil
+	downloadPaths := p.getDownloadPaths(org, name, "github", spec.Version)
+	if _, err := os.Stat(downloadPaths.destFile); err == nil {
+		p.logger.Info().Str("path", downloadPaths.destFile).Msg("Plugin already exists. Skipping download.")
+		return downloadPaths.destFile, nil
 	}
 
-	if err := os.MkdirAll(dirPath, 0755); err != nil {
-		return "", fmt.Errorf("failed to create plugin directory %s: %w", dirPath, err)
-	}
-	// we use convention over configuration and we use github as our registry. Similar to how terraform and homebrew work.
-	// For example:
-	// https://github.com/cloudquery/cloudquery/releases/download/plugins-source-test-v1.1.0/test_darwin_amd64.zip
-	pluginUrl := fmt.Sprintf("https://github.com/cloudquery/cloudquery/releases/download/plugins/source/%s/%s/%s_%s_%s.zip", repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
-	archivePath := "plugins/source/" + repo
-	if org != "cloudquery" {
-		// https://github.com/yevgenypats/cq-source-test/releases/download/v1.0.0/cq-source-test_linux_amd64.zip
-		pluginUrl = fmt.Sprintf("https://github.com/%s/cq-source-%s/releases/download/%s/cq-source-%s_%s_%s.zip", org, repo, spec.Version, repo, runtime.GOOS, runtime.GOARCH)
-		archivePath = "cq-source-" + repo
+	if err := os.MkdirAll(downloadPaths.destDir, 0755); err != nil {
+		return "", fmt.Errorf("failed to create plugin directory %s: %w", downloadPaths.destDir, err)
 	}
 
-	fmt.Printf("Downloading plugin from: %s to: %s.zip \n", pluginUrl, pluginPath)
-	if err := downloadFile(pluginPath+".zip", pluginUrl); err != nil {
+	for _, url := range downloadPaths.urls {
+		fmt.Printf("Downloading plugin from: %s to: %s\n", url, downloadPaths.zip)
+		err = downloadFile(downloadPaths.zip, url)
+		if err == nil {
+			break
+		}
+	}
+
+	if err != nil {
 		return "", fmt.Errorf("failed to download plugin: %w", err)
 	}
-	archive, err := zip.OpenReader(pluginPath + ".zip")
+
+	archive, err := zip.OpenReader(downloadPaths.zip)
 	if err != nil {
 		return "", fmt.Errorf("failed to open plugin archive: %w", err)
 	}
-	fileInArchive, err := archive.Open(archivePath)
+	fileInArchive, err := archive.Open(downloadPaths.binaryInZip)
 	if err != nil {
-		return "", fmt.Errorf("failed to open plugin archive plugins/source/%s: %w", repo, err)
+		return "", fmt.Errorf("failed to open plugin archive plugins/source/%s: %w", name, err)
 	}
-	out, err := os.OpenFile(pluginPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0744)
+	out, err := os.OpenFile(downloadPaths.destFile, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0744)
 	if err != nil {
-		return "", fmt.Errorf("failed to create file %s: %w", pluginPath, err)
+		return "", fmt.Errorf("failed to create file %s: %w", downloadPaths.destFile, err)
 	}
 	_, err = io.Copy(out, fileInArchive)
 	if err != nil {
@@ -188,7 +230,7 @@ func (p *PluginManager) downloadSourceGitHub(ctx context.Context, spec specs.Sou
 	if err != nil {
 		return "", fmt.Errorf("failed to close file: %w", err)
 	}
-	return pluginPath, nil
+	return downloadPaths.destFile, nil
 }
 
 // NewDestination Plugin downloads the plugin, spanws the process (if needed)
@@ -205,7 +247,7 @@ func (p *PluginManager) NewDestinationPlugin(ctx context.Context, spec specs.Des
 	}
 }
 
-func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) (*SourcePlugin, error) {
+func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec *specs.Source) (*SourcePlugin, error) {
 	pl := SourcePlugin{}
 	// var grpcTarget string
 	var pluginPath string
@@ -256,15 +298,12 @@ func (p *PluginManager) NewSourcePlugin(ctx context.Context, spec specs.Source) 
 
 	go func() {
 		scanner := bufio.NewScanner(reader)
-		fmt.Println("starting reading")
 		for scanner.Scan() {
-			fmt.Println("read line")
 			var structuredLogLine map[string]interface{}
 			b := scanner.Bytes()
 			if err := json.Unmarshal(b, &structuredLogLine); err != nil {
 				p.logger.Err(err).Str("line", string(b)).Msg("failed to unmarshal log line from plugin")
 			} else {
-				fmt.Printf("%v", structuredLogLine)
 				jsonToLog(&pl, structuredLogLine, p.logger)
 			}
 		}

@@ -34,5 +34,5 @@ func buildApplicationAutoscalingPoliciesMock(t *testing.T, ctrl *gomock.Controll
 func TestApplicationAutoscalingPolicies(t *testing.T) {
 	client.AllNamespaces = []string{"test-namespace"} // Just one
 
-	client.AwsMockTestHelper(t, ApplicationautoscalingPolicies(), buildApplicationAutoscalingPoliciesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Policies(), buildApplicationAutoscalingPoliciesMock, client.TestOptions{})
 }

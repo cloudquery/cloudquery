@@ -19,6 +19,14 @@ func Instances() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name:     "self_link",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SelfLink"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "available_maintenance_versions",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("AvailableMaintenanceVersions"),
@@ -89,7 +97,7 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("IpAddresses"),
 			},
 			{
-				Name:     "ipv_6_address",
+				Name:     "ipv6_address",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Ipv6Address"),
 			},
@@ -169,14 +177,6 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("SecondaryGceZone"),
 			},
 			{
-				Name:     "self_link",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("SelfLink"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "server_ca_cert",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ServerCaCert"),
@@ -200,21 +200,6 @@ func Instances() *schema.Table {
 				Name:     "suspension_reason",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("SuspensionReason"),
-			},
-			{
-				Name:     "server_response",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServerResponse"),
-			},
-			{
-				Name:     "force_send_fields",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("ForceSendFields"),
-			},
-			{
-				Name:     "null_fields",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("NullFields"),
 			},
 		},
 	}

@@ -46,5 +46,5 @@ func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services 
 }
 
 func TestRoute53Domains(t *testing.T) {
-	client.AwsMockTestHelper(t, Route53Domains(), buildRoute53Domains, client.TestOptions{})
+	client.AwsMockTestHelper(t, Domains(), buildRoute53Domains, client.TestOptions{})
 }

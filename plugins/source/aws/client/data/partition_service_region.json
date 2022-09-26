@@ -1431,6 +1431,8 @@
           "regions": {
             "ap-southeast-2": {},
             "eu-west-2": {},
+            "fips-us-east-1": {},
+            "fips-us-west-2": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -1676,16 +1678,23 @@
         "devops-guru": {
           "regions": {
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
             "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
             "fips-us-east-1": {},
             "fips-us-east-2": {},
             "fips-us-west-2": {},
+            "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
+            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -1818,6 +1827,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -2270,10 +2280,17 @@
         "emr-serverless": {
           "regions": {
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "eu-central-1": {},
             "eu-west-1": {},
             "fips-us-east-1": {},
+            "fips-us-east-2": {},
             "fips-us-west-2": {},
+            "sa-east-1": {},
             "us-east-1": {},
+            "us-east-2": {},
             "us-west-2": {}
           }
         },
@@ -2496,41 +2513,27 @@
         },
         "fsx": {
           "regions": {
-            "af-south-1": {},
-            "ap-east-1": {},
             "ap-northeast-1": {},
-            "ap-northeast-2": {},
-            "ap-northeast-3": {},
-            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ca-central-1": {},
             "eu-central-1": {},
-            "eu-north-1": {},
-            "eu-south-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
-            "eu-west-3": {},
             "fips-ca-central-1": {},
             "fips-prod-ca-central-1": {},
             "fips-prod-us-east-1": {},
             "fips-prod-us-east-2": {},
-            "fips-prod-us-west-1": {},
             "fips-prod-us-west-2": {},
             "fips-us-east-1": {},
             "fips-us-east-2": {},
-            "fips-us-west-1": {},
             "fips-us-west-2": {},
-            "me-south-1": {},
             "prod-ca-central-1": {},
             "prod-us-east-1": {},
             "prod-us-east-2": {},
-            "prod-us-west-1": {},
             "prod-us-west-2": {},
-            "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
-            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -2983,6 +2986,10 @@
         },
         "ivschat": {
           "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "eu-central-1": {},
             "eu-west-1": {},
             "us-east-1": {},
             "us-west-2": {}
@@ -3942,6 +3949,22 @@
             "us-west-2": {}
           }
         },
+        "participant.connect": {
+          "regions": {
+            "af-south-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-west-2": {},
+            "fips-us-east-1": {},
+            "fips-us-west-2": {},
+            "us-east-1": {},
+            "us-west-2": {}
+          }
+        },
         "personalize": {
           "regions": {
             "ap-northeast-1": {},
@@ -4163,6 +4186,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -4394,6 +4418,7 @@
         },
         "rolesanywhere": {
           "regions": {
+            "af-south-1": {},
             "ap-east-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
@@ -4401,9 +4426,11 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
+            "eu-south-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -4938,6 +4965,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -5625,6 +5653,7 @@
         },
         "workspaces": {
           "regions": {
+            "af-south-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
             "ap-south-1": {},
@@ -6211,6 +6240,12 @@
           }
         },
         "ram": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
+        "rbin": {
           "regions": {
             "cn-north-1": {},
             "cn-northwest-1": {}
@@ -7652,6 +7687,11 @@
             "us-gov-west-1": {}
           }
         },
+        "managedblockchain": {
+          "regions": {
+            "us-gov-west-1": {}
+          }
+        },
         "mediaconvert": {
           "regions": {
             "us-gov-west-1": {}
@@ -7730,6 +7770,11 @@
             "us-gov-west-1": {}
           }
         },
+        "participant.connect": {
+          "regions": {
+            "us-gov-west-1": {}
+          }
+        },
         "pinpoint": {
           "regions": {
             "fips-us-gov-west-1": {},
@@ -7756,6 +7801,14 @@
         },
         "ram": {
           "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "rbin": {
+          "regions": {
+            "fips-us-gov-east-1": {},
+            "fips-us-gov-west-1": {},
             "us-gov-east-1": {},
             "us-gov-west-1": {}
           }

@@ -36,5 +36,5 @@ func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) clien
 }
 
 func TestIamOpenidConnectIdentityProviders(t *testing.T) {
-	client.AwsMockTestHelper(t, IamOpenidConnectIdentityProviders(), buildIamOpenIDConnectProviders, client.TestOptions{})
+	client.AwsMockTestHelper(t, OpenidConnectIdentityProviders(), buildIamOpenIDConnectProviders, client.TestOptions{})
 }

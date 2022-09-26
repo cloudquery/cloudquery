@@ -13,8 +13,7 @@ var iamResources = []*Resource{
 		Struct:       &iam.Role{},
 		NewFunction:  iam.NewProjectsRolesService,
 		ListFunction: (&iam.ProjectsRolesService{}).List,
-		// ListFunction: ,
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "project_id",
 				Type:     schema.TypeString,
@@ -27,7 +26,6 @@ var iamResources = []*Resource{
 				Options: schema.ColumnCreationOptions{PrimaryKey: true},
 			},
 		},
-		SkipFields: []string{"ServerResponse", "NullFields", "ForceSendFields"},
 	},
 	{
 		SubService:   "service_accounts",
@@ -35,7 +33,7 @@ var iamResources = []*Resource{
 		NewFunction:  iam.NewProjectsServiceAccountsService,
 		ListFunction: (&iam.ProjectsServiceAccountsService{}).List,
 		OutputField:  "Accounts",
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "unique_id",
 				Type:     schema.TypeString,
@@ -43,7 +41,8 @@ var iamResources = []*Resource{
 				Resolver: `schema.PathResolver("UniqueId")`,
 			},
 		},
-		SkipFields: []string{"ProjectId", "NullFields", "ForceSendFields"},
+		SkipFields:      []string{"ProjectId"},
+		NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
 	},
 }
 

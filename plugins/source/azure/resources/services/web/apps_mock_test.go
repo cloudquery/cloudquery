@@ -1,75 +1,55 @@
+// Auto generated code - DO NOT EDIT.
+
 package web
 
 import (
-	"bytes"
 	"context"
-	"encoding/xml"
-	"io/ioutil"
-	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
-	"github.com/Azure/go-autorest/autorest"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client/services/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+
+	"github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web"
 )
 
-func buildWebAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
-	apps := mocks.NewMockAppsClient(ctrl)
-	s := services.Services{
-		Web: services.WebClient{
-			Apps: apps,
-		},
-	}
-
-	site := web.Site{}
-	err := faker.FakeData(&site)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-
-	ip := faker.IPv4()
-	(*site.SiteProperties.SiteConfig.ScmIPSecurityRestrictions)[0].SubnetMask = &ip
-	page := web.NewAppCollectionPage(web.AppCollection{Value: &[]web.Site{site}}, func(ctx context.Context, collection web.AppCollection) (web.AppCollection, error) {
-		return web.AppCollection{}, nil
-	})
-	apps.EXPECT().List(gomock.Any()).Return(page, nil)
-	var vi web.VnetInfo
-	require.NoError(t, faker.FakeDataSkipFields(&vi, []string{"Routes"}))
-	apps.EXPECT().GetVnetConnection(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(vi, nil)
-
-	pp := PublishData{
-		PublishData: []PublishProfile{
-			{
-				PublishUrl: "test",
-				UserName:   "test",
-				UserPWD:    "test"},
-		},
-	}
-
-	data, err := xml.Marshal([]PublishData{pp})
-	if err != nil {
-		t.Errorf("failed building xml %s", err)
-	}
-
-	value := ioutil.NopCloser(bytes.NewReader(data)) // r type is io.ReadCloser
-	response := web.ReadCloser{Response: autorest.Response{Response: &http.Response{Body: value}}}
-	apps.EXPECT().ListPublishingProfileXMLWithSecrets(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(response, nil)
-
-	auth := web.SiteAuthSettings{}
-	err = faker.FakeData(&auth)
-	if err != nil {
-		t.Errorf("failed building mock %s", err)
-	}
-	apps.EXPECT().GetAuthSettings(gomock.Any(), gomock.Any(), gomock.Any()).Return(auth, nil)
-
-	return s
+func TestWebApps(t *testing.T) {
+	client.MockTestHelper(t, Apps(), createAppsMock)
 }
 
-func TestWebApps(t *testing.T) {
-	client.AzureMockTestHelper(t, WebApps(), buildWebAppsMock, client.TestOptions{})
+func createAppsMock(t *testing.T, ctrl *gomock.Controller) services.Services {
+	mockClient := mocks.NewMockWebAppsClient(ctrl)
+	s := services.Services{
+		Web: services.WebClient{
+			Apps:               mockClient,
+			SiteAuthSettings:   createSiteAuthSettingsMock(t, ctrl).Web.SiteAuthSettings,
+			VnetConnections:    createVnetConnectionsMock(t, ctrl).Web.VnetConnections,
+			PublishingProfiles: createPublishingProfilesMock(t, ctrl).Web.PublishingProfiles,
+		},
+	}
+
+	data := web.Site{}
+	require.Nil(t, faker.FakeObject(&data))
+
+	// Ensure name and ID are consistent so we can reference it in other mock
+	name := "test"
+	data.Name = &name
+
+	// Use correct Azure ID format
+	id := "/subscriptions/test/resourceGroups/test/providers/test/test/test"
+	data.ID = &id
+
+	result := web.NewAppCollectionPage(web.AppCollection{Value: &[]web.Site{data}}, func(ctx context.Context, result web.AppCollection) (web.AppCollection, error) {
+		return web.AppCollection{}, nil
+	})
+
+	vnetName := "test"
+	result.Values()[0].SiteConfig.VnetName = &vnetName
+	resourceGroup := "test"
+	result.Values()[0].ResourceGroup = &resourceGroup
+	mockClient.EXPECT().List(gomock.Any()).Return(result, nil)
+	return s
 }

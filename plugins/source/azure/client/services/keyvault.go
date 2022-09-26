@@ -1,4 +1,4 @@
-//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVault71Client,VaultClient,KeyVaultManagedHSMClient,KeysClient
+//go:generate mockgen -destination=./mocks/keyvault.go -package=mocks . KeyVaultVaultsClient,KeyVaultManagedHsmsClient,KeyVaultKeysClient,KeyVaultSecretsClient
 package services
 
 import (
@@ -12,29 +12,25 @@ import (
 )
 
 type KeyVaultClient struct {
-	KeyVault71 KeyVault71Client
-	Vaults     VaultClient
-	ManagedHSM KeyVaultManagedHSMClient
+	Keys        KeyVaultKeysClient
+	Vaults      KeyVaultVaultsClient
+	ManagedHsms KeyVaultManagedHsmsClient
+	Secrets     KeyVaultSecretsClient
 }
 
-type VaultClient interface {
+type KeyVaultVaultsClient interface {
 	ListBySubscription(ctx context.Context, top *int32) (result keyvault.VaultListResultPage, err error)
 }
 
-type KeysClient interface {
-	// List lists the keys in the specified key vault.
-	// Parameters:
-	// resourceGroupName - the name of the resource group which contains the specified key vault.
-	// vaultName - the name of the vault which contains the keys to be retrieved.
-	List(ctx context.Context, resourceGroupName string, vaultName string) (result keyvault.KeyListResultPage, err error)
+type KeyVaultKeysClient interface {
+	GetKeys(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.KeyListResultPage, err error)
 }
 
-type KeyVault71Client interface {
-	GetKeys(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.KeyListResultPage, err error)
+type KeyVaultSecretsClient interface {
 	GetSecrets(ctx context.Context, vaultBaseURL string, maxresults *int32) (result keyvault71.SecretListResultPage, err error)
 }
 
-type KeyVaultManagedHSMClient interface {
+type KeyVaultManagedHsmsClient interface {
 	ListBySubscription(ctx context.Context, top *int32) (result hsm.ManagedHsmListResultPage, err error)
 }
 
@@ -58,8 +54,9 @@ func NewKeyVaultClient(subscriptionId string, auth autorest.Authorizer) (KeyVaul
 	vhsm.Authorizer = auth
 
 	return KeyVaultClient{
-		Vaults:     vaultSvc,
-		KeyVault71: kv71,
-		ManagedHSM: vhsm,
+		Vaults:      vaultSvc,
+		Keys:        kv71,
+		Secrets:     kv71,
+		ManagedHsms: vhsm,
 	}, nil
 }

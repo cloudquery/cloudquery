@@ -25,6 +25,13 @@ func Disks() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "architecture",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Architecture"),
@@ -105,6 +112,11 @@ func Disks() *schema.Table {
 				Resolver: schema.PathResolver("Options"),
 			},
 			{
+				Name:     "params",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Params"),
+			},
+			{
 				Name:     "physical_block_size_bytes",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("PhysicalBlockSizeBytes"),
@@ -133,13 +145,6 @@ func Disks() *schema.Table {
 				Name:     "satisfies_pzs",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("SatisfiesPzs"),
-			},
-			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "size_gb",

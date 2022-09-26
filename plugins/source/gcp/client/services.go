@@ -93,7 +93,6 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 	svcs.FunctionsCloudFunctionsClient, err = functions.NewCloudFunctionsClient(ctx, options...)
-	// cloudFunctionsSvc, err := cloudfunctions.NewService(ctx, options...)
 	if err != nil {
 		return nil, err
 	}
@@ -183,8 +182,7 @@ func initServices(ctx context.Context, options []option.ClientOption) (*Services
 		return nil, err
 	}
 
-	svcs.ContainerClusterManagerClient, err = container.NewClusterManagerClient(ctx)
-	// containerSvc, err := container.NewService(ctx, options...)
+	svcs.ContainerClusterManagerClient, err = container.NewClusterManagerClient(ctx, options...)
 	if err != nil {
 		return nil, err
 	}

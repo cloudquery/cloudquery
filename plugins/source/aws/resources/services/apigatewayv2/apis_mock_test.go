@@ -118,5 +118,5 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 }
 
 func TestApigatewayv2Apis(t *testing.T) {
-	client.AwsMockTestHelper(t, Apigatewayv2Apis(), buildApigatewayv2Apis, client.TestOptions{})
+	client.AwsMockTestHelper(t, Apis(), buildApigatewayv2Apis, client.TestOptions{})
 }

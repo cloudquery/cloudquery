@@ -17,7 +17,7 @@ var loggingResources = []*Resource{
 		RegisterServer:      pb.RegisterMetricsServiceV2Server,
 		ListFunction:        (&pb.UnimplementedMetricsServiceV2Server{}).ListLogMetrics,
 		UnimplementedServer: &pb.UnimplementedMetricsServiceV2Server{},
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
 				Type:     schema.TypeString,
@@ -35,7 +35,7 @@ var loggingResources = []*Resource{
 		RegisterServer:      pb.RegisterConfigServiceV2Server,
 		ListFunction:        (&pb.UnimplementedConfigServiceV2Server{}).ListSinks,
 		UnimplementedServer: &pb.UnimplementedConfigServiceV2Server{},
-		OverrideColumns: []codegen.ColumnDefinition{
+		ExtraColumns: []codegen.ColumnDefinition{
 			{
 				Name:     "name",
 				Type:     schema.TypeString,
@@ -43,6 +43,7 @@ var loggingResources = []*Resource{
 				Resolver: `schema.PathResolver("Name")`,
 			},
 		},
+		SkipFields: []string{"Options"},
 	},
 }
 

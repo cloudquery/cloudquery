@@ -19,6 +19,13 @@ func Clusters() *schema.Table {
 				Resolver: client.ResolveProject,
 			},
 			{
+				Name: "self_link",
+				Type: schema.TypeString,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
@@ -59,7 +66,7 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("Network"),
 			},
 			{
-				Name:     "cluster_ipv_4_cidr",
+				Name:     "cluster_ipv4_cidr",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ClusterIpv4Cidr"),
 			},
@@ -204,13 +211,6 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("IdentityServiceConfig"),
 			},
 			{
-				Name: "self_link",
-				Type: schema.TypeString,
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
-			},
-			{
 				Name:     "zone",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Zone"),
@@ -251,12 +251,12 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("StatusMessage"),
 			},
 			{
-				Name:     "node_ipv_4_cidr_size",
+				Name:     "node_ipv4_cidr_size",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("NodeIpv4CidrSize"),
 			},
 			{
-				Name:     "services_ipv_4_cidr",
+				Name:     "services_ipv4_cidr",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ServicesIpv4Cidr"),
 			},
@@ -286,7 +286,7 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("EnableTpu"),
 			},
 			{
-				Name:     "tpu_ipv_4_cidr_block",
+				Name:     "tpu_ipv4_cidr_block",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("TpuIpv4CidrBlock"),
 			},

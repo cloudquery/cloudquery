@@ -37,5 +37,5 @@ func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestIotThingTypes(t *testing.T) {
-	client.AwsMockTestHelper(t, IotThingTypes(), buildIotThingTypesMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, ThingTypes(), buildIotThingTypesMock, client.TestOptions{})
 }

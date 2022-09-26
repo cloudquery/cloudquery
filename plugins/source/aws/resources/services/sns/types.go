@@ -1,12 +1,17 @@
 package sns
 
-import (
-	"github.com/aws/aws-sdk-go-v2/service/sns/types"
-)
-
 // Amazon SNS subscription.
 type Subscription struct {
-	types.Subscription
+	// The subscription's endpoint (format depends on the protocol).
+	Endpoint *string
+	// The subscription's owner.
+	Owner *string
+	// The subscription's protocol.
+	Protocol *string
+	// The subscription's ARN.
+	SubscriptionArn *string
+	// The ARN of the subscription's topic.
+	TopicArn *string
 	// True if the subscription confirmation request was authenticated.
 	ConfirmationWasAuthenticated *bool
 	// The JSON serialization of the subscription's delivery policy.

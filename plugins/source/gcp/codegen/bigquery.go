@@ -31,7 +31,6 @@ func BigqueryResources() []*Resource {
 	for _, resource := range resources {
 		resource.Service = "bigquery"
 		resource.Template = "newapi_list"
-		resource.SkipFields = []string{"ServerResponse", "NullFields", "ForceSendFields"}
 	}
 
 	return resources

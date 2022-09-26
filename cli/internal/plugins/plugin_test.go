@@ -3,7 +3,6 @@ package plugins
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -41,7 +40,7 @@ var getSourceClientTestCases = []specs.Source{
 func TestPluginManagerDownloadSource(t *testing.T) {
 	ctx := context.Background()
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
-	dirName, err := ioutil.TempDir(os.TempDir(), "cq-plugins")
+	dirName, err := os.MkdirTemp(os.TempDir(), "cq-plugins")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +49,7 @@ func TestPluginManagerDownloadSource(t *testing.T) {
 	// this test is mainly a smoke test as we test all permutations in GetSourceClientTest
 	// which calls to download anyways.
 	pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
-	if _, err := pm.DownloadSource(ctx, specs.Source{
+	if _, err := pm.DownloadSource(ctx, &specs.Source{
 		Name:     "test",
 		Registry: specs.RegistryGithub,
 		Path:     "cloudquery/test",
@@ -65,13 +64,13 @@ func TestPluginManagerGetSourceClient(t *testing.T) {
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr}).Level(zerolog.DebugLevel)
 	for _, tc := range getSourceClientTestCases {
 		t.Run(fmt.Sprintf("%s@%s", tc.Path, tc.Version), func(t *testing.T) {
-			dirName, err := ioutil.TempDir(os.TempDir(), "cq-plugins")
+			dirName, err := os.MkdirTemp(os.TempDir(), "cq-plugins")
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer os.RemoveAll(dirName)
 			pm := NewPluginManager(WithDirectory(dirName), WithLogger(l))
-			pl, err := pm.NewSourcePlugin(ctx, specs.Source{
+			pl, err := pm.NewSourcePlugin(ctx, &specs.Source{
 				Name:     tc.Name,
 				Registry: tc.Registry,
 				Path:     tc.Path,

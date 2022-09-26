@@ -1,10 +1,10 @@
 variables:
-  component: source/gcp
+  component: source/test
 
 project_name: plugins/source/test
 
 monorepo:
-  tag_prefix: plugins/source/test/
+  tag_prefix: plugins-source-test-
   dir: plugins/source/test
 
 includes:

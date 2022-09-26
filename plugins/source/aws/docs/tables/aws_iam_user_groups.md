@@ -1,13 +1,21 @@
-
 # Table: aws_iam_user_groups
 
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_iam_users`](aws_iam_users.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|user_cq_id|uuid|Unique CloudQuery ID of aws_iam_users table (FK)|
-|user_id|text|The stable and unique string identifying the user|
-|group_arn|text|The Amazon Resource Name (ARN) specifying the group|
-|create_date|timestamp without time zone|The date and time, in ISO 8601 date-time format, when the group was created|
-|group_id|text|The stable and unique string identifying the group|
-|group_name|text|The friendly name that identifies the group|
-|path|text|The path to the group|
+| Name          | Type          |
+| ------------- | ------------- |
+|account_id|String|
+|user_arn|String|
+|user_id|String|
+|arn|String|
+|create_date|Timestamp|
+|group_id|String|
+|group_name|String|
+|path|String|
+|_cq_id (PK)|UUID|
+|_cq_fetch_time|Timestamp|

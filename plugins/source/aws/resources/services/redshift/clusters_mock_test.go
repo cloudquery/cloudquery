@@ -25,7 +25,7 @@ func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		t.Fatal(err)
 	}
 	logging := redshift.DescribeLoggingStatusOutput{}
-	err = faker.FakeData(&p)
+	err = faker.FakeData(&logging)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -84,9 +84,9 @@ func buildRedshiftSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client
 }
 
 func TestRedshiftClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, RedshiftClusters(), buildRedshiftClustersMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildRedshiftClustersMock, client.TestOptions{})
 }
 
 func TestRedshiftSubnetGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, RedshiftSubnetGroups(), buildRedshiftSubnetGroupsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, SubnetGroups(), buildRedshiftSubnetGroupsMock, client.TestOptions{})
 }

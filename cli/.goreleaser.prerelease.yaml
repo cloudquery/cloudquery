@@ -1,7 +1,7 @@
 project_name: cli
 
 monorepo:
-  tag_prefix: cli/
+  tag_prefix: cli-
   dir: cli
 
 before:
@@ -17,7 +17,7 @@ builds:
       - GO111MODULE=on
     main: ./main.go
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/cli/pkg/core.Version={{.Version}} -X github.com/cloudquery/cloudquery/cli/cmd.Commit={{.Commit}} -X github.com/cloudquery/cloudquery/cli/cmd.Date={{.Date}} -X github.com/cloudquery/cloudquery/cli/cmd.APIKey=28iMwucm5GXsoevNGSfDl1LC6zV
+      - -s -w -X github.com/cloudquery/cloudquery/cli/cmd.Version={{.Version}}
     goos:
       - windows
       - linux

@@ -31,5 +31,5 @@ func buildStorageVmsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 }
 
 func TestStorageVms(t *testing.T) {
-	client.AwsMockTestHelper(t, StorageVms(), buildStorageVmsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, StorageVirtualMachines(), buildStorageVmsMock, client.TestOptions{})
 }

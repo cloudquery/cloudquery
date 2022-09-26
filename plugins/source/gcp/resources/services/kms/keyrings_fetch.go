@@ -14,7 +14,7 @@ import (
 
 func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	locations, err := getAllKmsLocations(ctx, c)
+	locations, err := getAllKmsLocations(c)
 	if err != nil {
 		return errors.WithStack(fmt.Errorf("failed to get kms locations. %w", err))
 	}
@@ -37,7 +37,7 @@ func fetchKeyrings(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	return nil
 }
 
-func getAllKmsLocations(ctx context.Context, c *client.Client) ([]*cloudkms.Location, error) {
+func getAllKmsLocations(c *client.Client) ([]*cloudkms.Location, error) {
 	var locations []*cloudkms.Location
 	call := c.Services.KmsoldService.Projects.Locations.List("projects/" + c.ProjectId)
 	nextPageToken := ""
