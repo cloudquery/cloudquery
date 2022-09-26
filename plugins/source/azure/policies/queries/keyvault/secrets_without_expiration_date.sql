@@ -6,7 +6,7 @@ SELECT :'execution_time'                                                   AS ex
        akv.subscription_id                                                 AS subscription_id,
        akv.id                                                              AS resource_id,
        CASE
-           WHEN (attributes->>'enabled')::boolean != TRUE OR (attributes->>'expires') IS NULL THEN 'fail'
+           WHEN (attributes->>'enabled')::boolean != TRUE OR (attributes->>'exp') IS NULL THEN 'fail'
            ELSE 'pass'
            END                                                             AS status
 FROM azure_keyvault_vaults akv
