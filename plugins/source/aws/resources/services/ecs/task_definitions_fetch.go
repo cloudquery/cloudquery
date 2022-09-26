@@ -2,6 +2,7 @@ package ecs
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
@@ -9,11 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type TaskDefinitionWrapper struct {
-	*types.TaskDefinition
-	Tags []types.Tag
-}
 
 func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	return client.ListAndDetailResolver(ctx, meta, res, listEcsTaskDefinitions, ecsTaskDefinitionDetail)
@@ -34,7 +30,7 @@ func ecsTaskDefinitionDetail(ctx context.Context, meta schema.ClientMeta, result
 	if describeTaskDefinitionOutput.TaskDefinition == nil {
 		return
 	}
-	resultsChan <- TaskDefinitionWrapper{
+	resultsChan <- models.TaskDefinitionWrapper{
 		TaskDefinition: describeTaskDefinitionOutput.TaskDefinition,
 		Tags:           describeTaskDefinitionOutput.Tags,
 	}
@@ -63,7 +59,7 @@ func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, res cha
 }
 
 func resolveEcsTaskDefinitionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(TaskDefinitionWrapper)
+	r := resource.Item.(models.TaskDefinitionWrapper)
 	j := map[string]string{}
 	for _, a := range r.Tags {
 		if a.Key == nil {

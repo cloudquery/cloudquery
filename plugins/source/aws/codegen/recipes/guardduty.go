@@ -1,11 +1,11 @@
 package recipes
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
 	"reflect"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -14,7 +14,7 @@ func GuarddutyResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "detectors",
-			Struct:     &guardduty.DetectorWrapper{},
+			Struct:     &models.DetectorWrapper{},
 			SkipFields: []string{"Id"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{

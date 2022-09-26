@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
-	lambdaService "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -68,7 +68,7 @@ func LambdaResources() []*Resource {
 		},
 		{
 			SubService: "function_aliases",
-			Struct:     &lambdaService.AliasWrapper{},
+			Struct:     &models.AliasWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -183,7 +183,7 @@ func LambdaResources() []*Resource {
 		},
 		{
 			SubService: "runtimes",
-			Struct:     &lambdaService.RuntimeWrapper{},
+			Struct:     &models.RuntimeWrapper{},
 			SkipFields: []string{"Name"},
 			ExtraColumns: append(
 				defaultRegionalColumns,

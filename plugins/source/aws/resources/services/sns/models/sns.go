@@ -1,4 +1,4 @@
-package sns
+package models
 
 // Amazon SNS subscription.
 type Subscription struct {

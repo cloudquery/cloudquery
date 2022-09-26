@@ -2,6 +2,7 @@ package lightsail
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -113,7 +114,7 @@ func fetchLogEvents(ctx context.Context, res chan<- interface{}, c *client.Clien
 			return err
 		}
 		for _, e := range response.ResourceLogEvents {
-			res <- LogEventWrapper{
+			res <- models.LogEventWrapper{
 				LogEvent:      e,
 				LogStreamName: stream,
 			}

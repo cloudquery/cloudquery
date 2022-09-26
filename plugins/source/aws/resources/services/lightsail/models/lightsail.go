@@ -1,4 +1,4 @@
-package lightsail
+package models
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
@@ -15,5 +15,3 @@ type DistributionWrapper struct {
 	*types.LightsailDistribution
 	LatestCacheReset *lightsail.GetDistributionLatestCacheResetOutput
 }
-
-const MaxGoroutines = 10

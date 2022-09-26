@@ -2,6 +2,7 @@ package lightsail
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
@@ -57,6 +58,6 @@ func fetchCacheReset(ctx context.Context, res chan<- interface{}, c *client.Clie
 	if err != nil && !c.IsNotFoundError(err) {
 		return err
 	}
-	res <- DistributionWrapper{&d, resetResp}
+	res <- models.DistributionWrapper{&d, resetResp}
 	return nil
 }

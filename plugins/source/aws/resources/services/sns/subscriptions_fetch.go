@@ -2,6 +2,7 @@ package sns
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -40,7 +41,7 @@ func subscriptionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	item := summary.(types.Subscription)
-	s := Subscription{
+	s := models.Subscription{
 		SubscriptionArn: item.SubscriptionArn,
 		Owner:           item.Owner,
 		Protocol:        item.Protocol,

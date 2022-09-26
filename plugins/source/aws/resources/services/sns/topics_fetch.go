@@ -2,6 +2,7 @@ package sns
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -27,7 +28,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 				}
 				return err
 			}
-			t := Topic{Arn: topic.TopicArn}
+			t := models.Topic{Arn: topic.TopicArn}
 			dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &t})
 			if err != nil {
 				return err
@@ -47,7 +48,7 @@ func fetchSnsTopics(ctx context.Context, meta schema.ClientMeta, parent *schema.
 }
 
 func resolveSnsTopicTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	topic := resource.Item.(Topic)
+	topic := resource.Item.(models.Topic)
 	cl := meta.(*client.Client)
 	svc := cl.Services().SNS
 	tagParams := sns.ListTagsForResourceInput{

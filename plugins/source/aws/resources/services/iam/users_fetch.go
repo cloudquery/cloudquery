@@ -2,6 +2,7 @@ package iam
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -10,11 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type AccessKeyWrapper struct {
-	types.AccessKeyMetadata
-	LastRotated time.Time
-}
 
 func fetchIamUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	return client.ListAndDetailResolver(ctx, meta, res, listUsers, fetchUserDetail)
@@ -85,25 +81,25 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 			return err
 		}
 
-		keys := make([]AccessKeyWrapper, len(output.AccessKeyMetadata))
+		keys := make([]models.AccessKeyWrapper, len(output.AccessKeyMetadata))
 		for i, key := range output.AccessKeyMetadata {
 			switch i {
 			case 0:
 				rotated := parent.Get("access_key_1_last_rotated")
 				if rotated != nil {
-					keys[i] = AccessKeyWrapper{key, rotated.(time.Time)}
+					keys[i] = models.AccessKeyWrapper{key, rotated.(time.Time)}
 				} else {
-					keys[i] = AccessKeyWrapper{key, *key.CreateDate}
+					keys[i] = models.AccessKeyWrapper{key, *key.CreateDate}
 				}
 			case 1:
 				rotated := parent.Get("access_key_2_last_rotated")
 				if rotated != nil {
-					keys[i] = AccessKeyWrapper{key, rotated.(time.Time)}
+					keys[i] = models.AccessKeyWrapper{key, rotated.(time.Time)}
 				} else {
-					keys[i] = AccessKeyWrapper{key, *key.CreateDate}
+					keys[i] = models.AccessKeyWrapper{key, *key.CreateDate}
 				}
 			default:
-				keys[i] = AccessKeyWrapper{key, time.Time{}}
+				keys[i] = models.AccessKeyWrapper{key, time.Time{}}
 			}
 		}
 		res <- keys
@@ -116,7 +112,7 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 }
 
 func postIamUserAccessKeyResolver(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
-	r := resource.Item.(AccessKeyWrapper)
+	r := resource.Item.(models.AccessKeyWrapper)
 	if r.AccessKeyId == nil {
 		return nil
 	}

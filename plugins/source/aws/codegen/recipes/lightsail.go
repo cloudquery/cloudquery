@@ -2,7 +2,7 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -187,7 +187,7 @@ func LightsailResources() []*Resource {
 		},
 		{
 			SubService: "database_log_events",
-			Struct:     &lightsail.LogEventWrapper{},
+			Struct:     &models.LogEventWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -242,7 +242,7 @@ func LightsailResources() []*Resource {
 		},
 		{
 			SubService: "distributions",
-			Struct:     &lightsail.DistributionWrapper{},
+			Struct:     &models.DistributionWrapper{},
 			SkipFields: []string{"Arn", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,

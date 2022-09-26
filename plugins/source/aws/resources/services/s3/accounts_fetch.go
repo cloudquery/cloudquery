@@ -2,6 +2,7 @@ package s3
 
 import (
 	"context"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
@@ -10,11 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 )
-
-type PublicAccessBlockConfigurationWrapper struct {
-	s3controlTypes.PublicAccessBlockConfiguration
-	ConfigExists bool
-}
 
 func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -30,9 +26,9 @@ func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 		if !errors.As(err, &nspabc) {
 			return err
 		}
-		res <- PublicAccessBlockConfigurationWrapper{s3controlTypes.PublicAccessBlockConfiguration{}, false}
+		res <- models.PublicAccessBlockConfigurationWrapper{s3controlTypes.PublicAccessBlockConfiguration{}, false}
 	} else {
-		res <- PublicAccessBlockConfigurationWrapper{*resp.PublicAccessBlockConfiguration, true}
+		res <- models.PublicAccessBlockConfigurationWrapper{*resp.PublicAccessBlockConfiguration, true}
 	}
 
 	return nil

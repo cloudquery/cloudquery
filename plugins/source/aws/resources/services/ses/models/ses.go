@@ -1,4 +1,4 @@
-package ses
+package models
 
 import (
 	"time"
