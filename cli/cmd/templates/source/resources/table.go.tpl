@@ -13,7 +13,7 @@ func SampleTable() *schema.Table {
 		Columns: []schema.Column{
       {
         Name: "column",
-        Type: schema.String,
+        Type: schema.TypeString,
       },
     },
   }
