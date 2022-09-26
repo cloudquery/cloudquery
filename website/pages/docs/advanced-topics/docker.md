@@ -46,7 +46,7 @@ Depending on your operating system, the built components maybe different between
 
 </Callout>
 
-## Fetching data
+## Syncing data
 
 For the specifics of how `cloudquery sync` works, and what additional flags it uses please consult the [command page](/docs/cli/commands/cloudquery_sync). The command will check the `cloudquery.yml` provided and proceed to download any providers defined, uploading the schema to the database, and retrieving the service data from the provider. An example of this command using it with AWS would be:
 
