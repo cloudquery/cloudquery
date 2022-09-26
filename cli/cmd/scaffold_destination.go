@@ -11,7 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-//go:embed templates/*
+//go:embed templates/destination/*
 var destinationFS embed.FS
 
 const (

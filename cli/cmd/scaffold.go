@@ -13,6 +13,6 @@ func newCmdScaffold() *cobra.Command {
 		Use:   "scaffold",
 		Short: scaffoldShort,
 	}
-	cmd.AddCommand(newCmdScaffoldDestination())
+	cmd.AddCommand(newCmdScaffoldSource(), newCmdScaffoldDestination())
 	return cmd
 }
