@@ -2,7 +2,6 @@ package redshift
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
@@ -32,10 +31,4 @@ func fetchRedshiftClusterParameters(ctx context.Context, meta schema.ClientMeta,
 	}
 
 	return nil
-}
-
-func resolveClusterArnFromParent() schema.ColumnResolver {
-	return client.ResolveARN(client.RedshiftService, func(resource *schema.Resource) ([]string, error) {
-		return []string{fmt.Sprintf("cluster:%s", *resource.Parent.Item.(types.Cluster).ClusterIdentifier)}, nil
-	})
 }
