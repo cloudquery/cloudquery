@@ -143,7 +143,7 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 	g.Go(func() error {
 		for resource := range resources {
 			totalResources++
-			bar.Add(1)
+			_ = bar.Add(1)
 			for i := range destSubscriptions {
 				select {
 				case <-ctx.Done():
@@ -159,10 +159,10 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 	})
 
 	if err := g.Wait(); err != nil {
-		bar.Finish()
+		_ = bar.Finish()
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
-	bar.Finish()
+	_ = bar.Finish()
 	fmt.Println("Fetch completed successfully.")
 	fmt.Printf("Summary: Resources: %d, Failed Writes: %d, Fetch Errors: %d, Fetch Warnings: %d\n",
 		totalResources, failedWrites, sourcePlugin.Errors(), sourcePlugin.Warnings())
