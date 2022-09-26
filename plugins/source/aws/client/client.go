@@ -418,13 +418,15 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 		config.WithDefaultRegion(defaultRegion),
 	}
 
-	// use custom retryer if it is defined in provider config
-	if awsConfig.MaxRetries != nil && awsConfig.MaxBackoff != nil {
-		configFns = append(configFns, config.WithRetryer(newRetryer(logger, *awsConfig.MaxRetries, *awsConfig.MaxBackoff)))
-	} else {
-		// set default retryer
-		configFns = append(configFns, config.WithRetryer(newRetryer(logger, 10, 30)))
+	maxRetries := 10
+	if awsConfig.MaxRetries != nil {
+		maxRetries = *awsConfig.MaxRetries
 	}
+	maxBackoff := 30
+	if awsConfig.MaxBackoff != nil {
+		maxBackoff = *awsConfig.MaxBackoff
+	}
+	configFns = append(configFns, config.WithRetryer(newRetryer(logger, maxRetries, maxBackoff)))
 
 	if account.DefaultRegion != "" {
 		// According to the docs: If multiple WithDefaultRegion calls are made, the last call overrides the previous call values
