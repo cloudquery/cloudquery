@@ -1,6 +1,6 @@
-// pluginmanager take care of lifecycle of plugins.
-// Including: downloading, upgrading, spawning, closing
-// Currently we use github releases as our plugin store.
+// pluginmanager takes care of the lifecycle of plugins,
+// including downloading, upgrading, spawning and closing. 
+// Currently we use GitHub releases as our plugin store.
 package plugins
 
 import (
