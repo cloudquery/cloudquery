@@ -95,11 +95,6 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("ClusterNodes"),
 			},
 			{
-				Name:     "cluster_parameter_groups",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ClusterParameterGroups"),
-			},
-			{
 				Name:     "cluster_public_key",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ClusterPublicKey"),
@@ -303,6 +298,7 @@ func Clusters() *schema.Table {
 
 		Relations: []*schema.Table{
 			Snapshots(),
+			ClusterParameterGroups(),
 		},
 	}
 }
