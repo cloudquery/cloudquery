@@ -157,6 +157,12 @@ func EC2Resources() []*Resource {
 						Resolver: "resolveInstanceArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:          "state_transition_reason_time",
+						Type:          schema.TypeTimestamp,
+						Resolver:      "resolveEc2InstanceStateTransitionReasonTime",
+						IgnoreInTests: true,
+					},
 				}...),
 		},
 		{
