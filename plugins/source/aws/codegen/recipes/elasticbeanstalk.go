@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -87,7 +87,7 @@ func ElasticbeanstalkResources() []*Resource {
 		},
 		{
 			SubService: "configuration_settings",
-			Struct:     &elasticbeanstalk.ConfigurationSettingsDescriptionWrapper{},
+			Struct:     &models.ConfigurationSettingsDescriptionWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -101,7 +101,7 @@ func ElasticbeanstalkResources() []*Resource {
 		},
 		{
 			SubService: "configuration_options",
-			Struct:     &elasticbeanstalk.ConfigurationOptionDescriptionWrapper{},
+			Struct:     &models.ConfigurationOptionDescriptionWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,

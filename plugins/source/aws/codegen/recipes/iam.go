@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	iamService "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -15,7 +15,7 @@ func IAMResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "accounts",
-			Struct:     &iamService.Account{},
+			Struct:     &models.Account{},
 			SkipFields: []string{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -28,7 +28,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "credential_reports",
-			Struct:     &iamService.CredentialReportEntry{},
+			Struct:     &models.CredentialReportEntry{},
 			SkipFields: []string{
 				"Arn",
 				"UserCreationTime",
@@ -154,7 +154,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "openid_connect_identity_providers",
-			Struct:     &iamService.IamOpenIdIdentityProviderWrapper{},
+			Struct:     &models.IamOpenIdIdentityProviderWrapper{},
 			SkipFields: []string{"Arn", "Tags"},
 			ExtraColumns: append(
 				defaultAccountColumns,
@@ -173,7 +173,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "password_policies",
-			Struct:     &iamService.PasswordPolicyWrapper{},
+			Struct:     &models.PasswordPolicyWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -344,7 +344,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService:           "user_access_keys",
-			Struct:               &iamService.AccessKeyWrapper{},
+			Struct:               &models.AccessKeyWrapper{},
 			SkipFields:           []string{},
 			PostResourceResolver: `postIamUserAccessKeyResolver`,
 			ExtraColumns: append(

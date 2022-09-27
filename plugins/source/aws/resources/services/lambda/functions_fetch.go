@@ -6,15 +6,10 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
-	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type AliasWrapper struct {
-	*types.AliasConfiguration
-	UrlConfig *lambda.GetFunctionUrlConfigOutput
-}
 
 func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var input lambda.ListFunctionsInput
@@ -170,7 +165,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			}
 			return err
 		}
-		aliases := make([]AliasWrapper, 0, len(output.Aliases))
+		aliases := make([]models.AliasWrapper, 0, len(output.Aliases))
 		for _, a := range output.Aliases {
 			alias := a
 			urlConfig, err := svc.GetFunctionUrlConfig(ctx, &lambda.GetFunctionUrlConfigInput{
@@ -180,7 +175,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			if err != nil && !c.IsNotFoundError(err) {
 				return err
 			}
-			aliases = append(aliases, AliasWrapper{&alias, urlConfig})
+			aliases = append(aliases, models.AliasWrapper{AliasConfiguration: &alias, UrlConfig: urlConfig})
 		}
 		res <- aliases
 		if output.NextMarker == nil {

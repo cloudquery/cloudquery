@@ -7,18 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type ConfigurationOptionDescriptionWrapper struct {
-	types.ConfigurationOptionDescription
-	ApplicationArn string
-}
-
-type ConfigurationSettingsDescriptionWrapper struct {
-	types.ConfigurationSettingsDescription
-	ApplicationArn string
-}
 
 func fetchElasticbeanstalkEnvironments(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config elasticbeanstalk.DescribeEnvironmentsInput
@@ -93,8 +84,8 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 	}
 
 	for _, option := range output.Options {
-		res <- ConfigurationOptionDescriptionWrapper{
-			option, c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
+		res <- models.ConfigurationOptionDescriptionWrapper{
+			ConfigurationOptionDescription: option, ApplicationArn: c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
 		}
 	}
 
@@ -122,8 +113,8 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 	}
 
 	for _, option := range output.ConfigurationSettings {
-		res <- ConfigurationSettingsDescriptionWrapper{
-			option, c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
+		res <- models.ConfigurationSettingsDescriptionWrapper{
+			ConfigurationSettingsDescription: option, ApplicationArn: c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
 		}
 	}
 
