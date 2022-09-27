@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )
@@ -57,6 +58,6 @@ func fetchCacheReset(ctx context.Context, res chan<- interface{}, c *client.Clie
 	if err != nil && !c.IsNotFoundError(err) {
 		return err
 	}
-	res <- DistributionWrapper{&d, resetResp}
+	res <- models.DistributionWrapper{LightsailDistribution: &d, LatestCacheReset: resetResp}
 	return nil
 }

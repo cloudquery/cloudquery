@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -101,7 +101,7 @@ func ECSResources() []*Resource {
 		},
 		{
 			SubService: "task_definitions",
-			Struct:     &ecs.TaskDefinitionWrapper{},
+			Struct:     &models.TaskDefinitionWrapper{},
 			SkipFields: []string{"Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,

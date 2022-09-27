@@ -1,4 +1,4 @@
-package sqs
+package models
 
 // Amazon Simple Queue Service.
 type Queue struct {

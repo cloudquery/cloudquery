@@ -5,13 +5,9 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type IamOpenIdIdentityProviderWrapper struct {
-	*iam.GetOpenIDConnectProviderOutput
-	Arn string
-}
 
 func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	svc := meta.(*client.Client).Services().IAM
@@ -25,7 +21,7 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 		if err != nil {
 			return err
 		}
-		res <- IamOpenIdIdentityProviderWrapper{providerResponse, *p.Arn}
+		res <- models.IamOpenIdIdentityProviderWrapper{GetOpenIDConnectProviderOutput: providerResponse, Arn: *p.Arn}
 	}
 	return nil
 }
