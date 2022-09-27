@@ -87,19 +87,19 @@ func fetchIamUserAccessKeys(ctx context.Context, meta schema.ClientMeta, parent 
 			case 0:
 				rotated := parent.Get("access_key_1_last_rotated")
 				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{key, rotated.(time.Time)}
+					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
 				} else {
-					keys[i] = models.AccessKeyWrapper{key, *key.CreateDate}
+					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 				}
 			case 1:
 				rotated := parent.Get("access_key_2_last_rotated")
 				if rotated != nil {
-					keys[i] = models.AccessKeyWrapper{key, rotated.(time.Time)}
+					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: rotated.(time.Time)}
 				} else {
-					keys[i] = models.AccessKeyWrapper{key, *key.CreateDate}
+					keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key, LastRotated: *key.CreateDate}
 				}
 			default:
-				keys[i] = models.AccessKeyWrapper{key, time.Time{}}
+				keys[i] = models.AccessKeyWrapper{AccessKeyMetadata: key}
 			}
 		}
 		res <- keys

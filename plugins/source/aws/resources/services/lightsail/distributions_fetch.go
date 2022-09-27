@@ -58,6 +58,6 @@ func fetchCacheReset(ctx context.Context, res chan<- interface{}, c *client.Clie
 	if err != nil && !c.IsNotFoundError(err) {
 		return err
 	}
-	res <- models.DistributionWrapper{&d, resetResp}
+	res <- models.DistributionWrapper{LightsailDistribution: &d, LatestCacheReset: resetResp}
 	return nil
 }

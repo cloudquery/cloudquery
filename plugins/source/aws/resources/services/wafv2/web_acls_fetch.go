@@ -55,8 +55,8 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 			}
 
 			res <- &models.WebACLWrapper{
-				webAclOutput.WebACL,
-				webAclLoggingConfiguration,
+				WebACL:               webAclOutput.WebACL,
+				LoggingConfiguration: webAclLoggingConfiguration,
 			}
 		}
 

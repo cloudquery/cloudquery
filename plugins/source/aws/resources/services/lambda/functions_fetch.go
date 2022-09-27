@@ -175,7 +175,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			if err != nil && !c.IsNotFoundError(err) {
 				return err
 			}
-			aliases = append(aliases, models.AliasWrapper{&alias, urlConfig})
+			aliases = append(aliases, models.AliasWrapper{AliasConfiguration: &alias, UrlConfig: urlConfig})
 		}
 		res <- aliases
 		if output.NextMarker == nil {

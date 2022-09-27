@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
-	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -17,11 +16,11 @@ func fetchIamPasswordPolicies(ctx context.Context, meta schema.ClientMeta, paren
 	response, err := svc.GetAccountPasswordPolicy(ctx, &config)
 	if err != nil {
 		if c.IsNotFoundError(err) {
-			res <- models.PasswordPolicyWrapper{types.PasswordPolicy{}, false}
+			res <- models.PasswordPolicyWrapper{PolicyExists: false}
 			return nil
 		}
 		return err
 	}
-	res <- models.PasswordPolicyWrapper{*response.PasswordPolicy, true}
+	res <- models.PasswordPolicyWrapper{PasswordPolicy: *response.PasswordPolicy, PolicyExists: true}
 	return nil
 }

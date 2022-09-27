@@ -26,9 +26,9 @@ func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 		if !errors.As(err, &nspabc) {
 			return err
 		}
-		res <- models.PublicAccessBlockConfigurationWrapper{s3controlTypes.PublicAccessBlockConfiguration{}, false}
+		res <- models.PublicAccessBlockConfigurationWrapper{ConfigExists: false}
 	} else {
-		res <- models.PublicAccessBlockConfigurationWrapper{*resp.PublicAccessBlockConfiguration, true}
+		res <- models.PublicAccessBlockConfigurationWrapper{PublicAccessBlockConfiguration: *resp.PublicAccessBlockConfiguration, ConfigExists: true}
 	}
 
 	return nil

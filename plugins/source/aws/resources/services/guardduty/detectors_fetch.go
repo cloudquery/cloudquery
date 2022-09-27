@@ -26,7 +26,7 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 			if err != nil {
 				return err
 			}
-			res <- models.DetectorWrapper{d, dId}
+			res <- models.DetectorWrapper{GetDetectorOutput: d, Id: dId}
 		}
 		if output.NextToken == nil {
 			return nil

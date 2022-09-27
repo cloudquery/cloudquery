@@ -21,7 +21,7 @@ func fetchIamOpenidConnectIdentityProviders(ctx context.Context, meta schema.Cli
 		if err != nil {
 			return err
 		}
-		res <- models.IamOpenIdIdentityProviderWrapper{providerResponse, *p.Arn}
+		res <- models.IamOpenIdIdentityProviderWrapper{GetOpenIDConnectProviderOutput: providerResponse, Arn: *p.Arn}
 	}
 	return nil
 }

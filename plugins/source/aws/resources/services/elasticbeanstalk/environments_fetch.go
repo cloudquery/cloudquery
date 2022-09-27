@@ -85,7 +85,7 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 
 	for _, option := range output.Options {
 		res <- models.ConfigurationOptionDescriptionWrapper{
-			option, c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
+			ConfigurationOptionDescription: option, ApplicationArn: c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
 		}
 	}
 
@@ -114,7 +114,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 
 	for _, option := range output.ConfigurationSettings {
 		res <- models.ConfigurationSettingsDescriptionWrapper{
-			option, c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
+			ConfigurationSettingsDescription: option, ApplicationArn: c.ARN("elasticbeanstalk", "application", *p.ApplicationName),
 		}
 	}
 
