@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
+	"regexp"
 )
 
 type manifestResponse struct {
@@ -23,6 +23,8 @@ const (
 	GithubBaseURL     = "https://github.com"
 	CloudQueryBaseURL = "https://versions.cloudquery.io"
 )
+
+var reVersionFromTag = regexp.MustCompile(`v\d+\.\d+.\d+(\-[\w\.\-]+)?$`)
 
 // GetLatestPluginRelease returns the latest release version string for the given organization, plugin type
 // and plugin.
@@ -61,11 +63,14 @@ func getLatestCQPluginRelease(ctx context.Context, name string, typ PluginType) 
 	return extractVersionFromTag(mr.Latest), nil
 }
 
-// extractVersionFromTag takes a tag of the form "plugins-source-test-v0.1.21" and returns
-// the version, i.e. "v0.1.21"
+// extractVersionFromTag takes a tag of the form "plugins-source-test-v0.1.21" or "cli-v1.1.0-pre.1" and returns
+// the version, i.e. "v0.1.21" or "v1.1.0-pre.1"
 func extractVersionFromTag(tag string) string {
-	parts := strings.Split(tag, "-")
-	return parts[len(parts)-1]
+	m := reVersionFromTag.FindStringSubmatch(tag)
+	if len(m) == 0 {
+		return ""
+	}
+	return m[0]
 }
 
 func getLatestCommunityPluginRelease(ctx context.Context, org, name string, typ PluginType) (string, error) {
