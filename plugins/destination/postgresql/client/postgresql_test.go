@@ -1,4 +1,4 @@
-package postgresql
+package client
 
 import (
 	"context"
@@ -100,7 +100,8 @@ func TestPostgreSqlCreateTables(t *testing.T) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	ctx := context.Background()
-	c := NewClient(l)
+	c := New()
+	c.SetLogger(l)
 	if err := c.Initialize(ctx,
 		specs.Destination{
 			Spec: &PostgreSqlSpec{

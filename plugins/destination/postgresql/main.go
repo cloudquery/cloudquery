@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client"
+	"github.com/cloudquery/plugin-sdk/serve"
+)
 
 func main() {
-	fmt.Println("Not implemented yet!")
+	serve.Destination(client.New())
 }

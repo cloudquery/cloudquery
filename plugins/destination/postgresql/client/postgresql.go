@@ -1,4 +1,4 @@
-package postgresql
+package client
 
 import (
 	"context"
@@ -12,7 +12,12 @@ import (
 	"github.com/jackc/pgx/v4/log/zerologadapter"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
+)
+
+var (
+	Version = "Development"
 )
 
 type PostgreSqlSpec struct {
@@ -62,9 +67,9 @@ const sqlDropTable = "drop table if exists "
 
 const isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1"
 
-func NewClient(logger zerolog.Logger) *Client {
+func New() *Client {
 	return &Client{
-		logger: logger.With().Str("module", "pg-dest").Logger(),
+		logger: log.With().Str("module", "pg-dest").Logger(),
 	}
 }
 
@@ -73,8 +78,7 @@ func (*Client) Name() string {
 }
 
 func (*Client) Version() string {
-	// change it with builtin-cliversion
-	return "v0.0.1"
+	return Version
 }
 
 func (p *Client) SetLogger(logger zerolog.Logger) {

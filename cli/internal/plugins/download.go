@@ -9,7 +9,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func downloadFile(filepath string, url string) (err error) {
+func downloadFile(filepath, url, description string) (err error) {
 	// Create the file
 	out, err := os.Create(filepath)
 	if err != nil {
@@ -30,7 +30,7 @@ func downloadFile(filepath string, url string) (err error) {
 	}
 	bar := progressbar.DefaultBytes(
 		resp.ContentLength,
-		"Downloading",
+		description,
 	)
 	// Writer the body to file
 	_, err = io.Copy(io.MultiWriter(out, bar), resp.Body)

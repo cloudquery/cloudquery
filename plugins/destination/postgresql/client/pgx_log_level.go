@@ -1,4 +1,4 @@
-package postgresql
+package client
 
 import (
 	"bytes"
