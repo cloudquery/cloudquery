@@ -102,10 +102,16 @@ func ECSResources() []*Resource {
 		{
 			SubService: "task_definitions",
 			Struct:     &models.TaskDefinitionWrapper{},
-			SkipFields: []string{"Tags"},
+			SkipFields: []string{"TaskDefinitionArn", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("TaskDefinitionArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,

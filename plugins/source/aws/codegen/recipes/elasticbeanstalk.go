@@ -50,13 +50,18 @@ func ElasticbeanstalkResources() []*Resource {
 		{
 			SubService: "environments",
 			Struct:     &types.EnvironmentDescription{},
-			SkipFields: []string{"EnvironmentId"},
+			SkipFields: []string{"EnvironmentId", "EnvironmentArn"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
 					Type:     schema.TypeString,
 					Resolver: `client.ResolveAWSAccount`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("EnvironmentArn")`,
 				},
 				{
 					Name:     "region",

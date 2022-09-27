@@ -69,7 +69,7 @@ func LambdaResources() []*Resource {
 		{
 			SubService: "function_aliases",
 			Struct:     &models.AliasWrapper{},
-			SkipFields: []string{},
+			SkipFields: []string{"AliasArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -77,6 +77,12 @@ func LambdaResources() []*Resource {
 						Name:     "function_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("AliasArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 		},
