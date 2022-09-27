@@ -1,8 +1,9 @@
 package models
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"time"
+
+	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 )
 
 type ConformancePackComplianceWrapper struct {

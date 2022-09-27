@@ -3,11 +3,11 @@ package lambda
 import (
 	"context"
 	"encoding/json"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 

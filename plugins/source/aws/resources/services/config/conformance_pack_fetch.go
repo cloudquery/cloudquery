@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 	"errors"
+
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/aws/smithy-go"

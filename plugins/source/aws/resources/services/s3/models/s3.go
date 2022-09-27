@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
-	"time"
 )
 
 type PublicAccessBlockConfigurationWrapper struct {

@@ -1,12 +1,13 @@
 package recipes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"reflect"
-	"strings"
 )
 
 func S3Resources() []*Resource {

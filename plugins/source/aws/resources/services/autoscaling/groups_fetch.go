@@ -3,7 +3,6 @@ package autoscaling
 import (
 	"context"
 	"errors"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling/models"
 	"regexp"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -11,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 

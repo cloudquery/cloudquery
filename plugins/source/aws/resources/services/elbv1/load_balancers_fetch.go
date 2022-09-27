@@ -2,12 +2,12 @@ package elbv1
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 

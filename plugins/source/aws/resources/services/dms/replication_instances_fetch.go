@@ -2,10 +2,10 @@ package dms
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms/models"
 
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 

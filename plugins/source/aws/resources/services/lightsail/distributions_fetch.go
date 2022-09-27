@@ -2,12 +2,12 @@ package lightsail
 
 import (
 	"context"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"golang.org/x/sync/errgroup"
 )

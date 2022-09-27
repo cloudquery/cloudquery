@@ -1,11 +1,12 @@
 package recipes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"reflect"
-	"strings"
 )
 
 func ResourceGroupsResources() []*Resource {

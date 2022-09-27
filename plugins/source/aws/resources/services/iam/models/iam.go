@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	"time"
 )
 
 type AccessKeyWrapper struct {

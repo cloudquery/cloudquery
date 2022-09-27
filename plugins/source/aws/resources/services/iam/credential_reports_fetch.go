@@ -3,12 +3,12 @@ package iam
 import (
 	"context"
 	"errors"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gocarina/gocsv"
 	"github.com/thoas/go-funk"
