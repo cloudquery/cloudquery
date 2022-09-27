@@ -14,19 +14,7 @@ var getSourceClientTestCases = []specs.Source{
 		Name:     "test",
 		Registry: specs.RegistryGithub,
 		Path:     "cloudquery/test",
-		Version:  "latest",
-	},
-	{
-		Name:     "test",
-		Registry: specs.RegistryGithub,
-		Path:     "cloudquery/test",
 		Version:  "v1.1.5",
-	},
-	{
-		Name:     "test",
-		Registry: specs.RegistryGithub,
-		Path:     "yevgenypats/test",
-		Version:  "latest",
 	},
 	{
 		Name:     "test",
@@ -65,19 +53,7 @@ var getDestinationClientTestCases = []specs.Source{
 		Name:     "test",
 		Registry: specs.RegistryGithub,
 		Path:     "cloudquery/test",
-		Version:  "latest",
-	},
-	{
-		Name:     "test",
-		Registry: specs.RegistryGithub,
-		Path:     "cloudquery/test",
 		Version:  "v1.1.0",
-	},
-	{
-		Name:     "test",
-		Registry: specs.RegistryGithub,
-		Path:     "yevgenypats/test",
-		Version:  "latest",
 	},
 	{
 		Name:     "test",
