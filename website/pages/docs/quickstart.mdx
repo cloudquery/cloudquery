@@ -6,7 +6,7 @@ import DownloadSection from '../../components/mdx/_getting-started-download-sect
 
 # Quickstart
 
-Follow the steps below to start syncing data from CloudQuery supported source plugins to one or more destination plugins.
+Follow the steps below to start syncing data from CloudQuery [source plugins](./plugins/sources) to [destination plugins](./plugins/destinations).
 
 ## Download CloudQuery CLI
 
@@ -14,9 +14,9 @@ Follow the steps below to start syncing data from CloudQuery supported source pl
 
 ## Configure Destination Plugin
 
-Destination plugins defines where you will be syncing you data to (You can find list of available destinations [here](./plugins/destinations)).
+Destination plugin defines where you will be syncing your data to (See: [available destinations](./plugins/destinations)).
 
-For example, let's configure the [PostgreSQL](https://github.com/cloudquery/cloudquery/tree/main/cli/internal/destinations/postgresql) destination plugin.
+For example, let's configure the [PostgreSQL](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql) destination plugin.
 
 ```yaml
 kind: destination
@@ -40,7 +40,7 @@ spec:
 
 ## Configure Source Plugin
 
-Source plugins defines the plugins and APIs you want to sync from (You can find list of available sources [here](./plugins/sources)).
+Source plugin define the APIs you want to sync from (See [available sources](./plugins/sources)).
 
 For example, let's configure [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
 

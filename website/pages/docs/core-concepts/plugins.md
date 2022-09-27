@@ -2,8 +2,8 @@
 
 CloudQuery has a pluggable architecture and relies on two types of plugins:
 
-- **Source plugins** - Responsible for extracting and transforming configuration from cloud-providers, SaaS apps, and other APIs (Full List available [here](../plugins/sources)).
-- **Destination plugins** - Responsible for writing the data from the source plugins to various destinations suchs as databases, message queues and storage (Full list available [here](../plugins/destinations)).
+- **Source plugin** - Responsible for extracting and transforming configuration from cloud-providers, SaaS apps, and other APIs ([Availble source plugins](../plugins/sources)).
+- **Destination plugin** - Responsible for writing the data from the source plugins to various destinations such as databases, message queues and storage (Full list available [here](../plugins/destinations)).
 
 All plugins are split to official (maintained by CloudQuery) and community (maintained by memebers of the community in their own repositories).
 
@@ -13,7 +13,7 @@ The core responsibilities of a source plugin:
 
 - Define the schema (tables).
 - Authenticate with the supported APIs, SaaS services and/or cloud providers.
-- Extract all data from the supported APIs and transform them into the defined schema.
+- Extracting data from the supported APIs and transform them into the defined schema.
 - Send the data as JSON to the CLI for further processing and storage at the defined destination plugins.
 
 ### Configuration
