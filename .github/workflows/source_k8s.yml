@@ -1,13 +1,13 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin K8S Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
+      - "plugins/source/k8s/**"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/k8s
 
 jobs:
   build_lint_and_test:

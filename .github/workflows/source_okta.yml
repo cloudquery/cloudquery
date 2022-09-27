@@ -1,13 +1,13 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin Okta Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
+      - "plugins/source/okta/**"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/okta
 
 jobs:
   build_lint_and_test:

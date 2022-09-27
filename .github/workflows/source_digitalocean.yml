@@ -1,13 +1,13 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin DigitalOcean Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
+      - "plugins/source/digitalocean/**"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/digitalocean
 
 jobs:
   build_lint_and_test:

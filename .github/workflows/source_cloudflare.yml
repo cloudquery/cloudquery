@@ -1,13 +1,13 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin Cloudflare Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
+      - "plugins/source/cloudflare/**"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/cloudflare
 
 jobs:
   build_lint_and_test:

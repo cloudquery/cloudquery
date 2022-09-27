@@ -1,13 +1,13 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin GCP Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
+      - "plugins/source/gcp/**"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/gcp
 
 jobs:
   build_lint_and_test:

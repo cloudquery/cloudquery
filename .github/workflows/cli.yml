@@ -1,13 +1,13 @@
-name: Destination Plugin Test Workflow
+name: CLI Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
+      - "cli/**"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./cli
 
 jobs:
   build_lint_and_test:
@@ -23,7 +23,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.49.0
-          args: "--config ${GITHUB_WORKSPACE}/plugins/.golangci.yml"
+          args: "--config ${GITHUB_WORKSPACE}/cli/.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build

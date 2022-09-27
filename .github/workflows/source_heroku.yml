@@ -1,13 +1,13 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin Heroku Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
+      - "plugins/source/heroku/**"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/heroku
 
 jobs:
   build_lint_and_test:
