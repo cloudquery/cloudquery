@@ -13,18 +13,21 @@ import (
 )
 
 const (
-	fetchShort   = "Sync resources from configured source plugins to destination"
-	fetchExample = `# Sync configured providers to PostgreSQL as configured in cloudquery.yml
-	cloudquery sync ./directory`
+	fetchShort   = "Sync resources from configured source plugins to destinations"
+	fetchExample = `# Sync resources from configuration in a directory
+cloudquery sync ./directory
+# Sync resources from directories and files
+cloudquery sync ./directory ./aws.yml ./pg.yml
+`
 )
 
 func NewCmdSync() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "sync [directory]",
+		Use:     "sync [file or directories...]",
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
-		Args:    cobra.MaximumNArgs(1),
+		Args:    cobra.MinimumNArgs(1),
 		RunE:    sync,
 	}
 	return cmd
@@ -37,29 +40,25 @@ func sync(cmd *cobra.Command, args []string) error {
 		directory = args[0]
 	}
 	fmt.Println("Loading specs from directory: ", directory)
-	specReader, err := specs.NewSpecReader(directory)
+	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
 		return fmt.Errorf("failed to load specs from directory %s: %w", directory, err)
 	}
 
-	if len(specReader.GetSources()) == 0 {
-		return fmt.Errorf("no sources found in directory: %s", directory)
-	}
-
 	pm := plugins.NewPluginManager()
-	for _, sourceSpec := range specReader.GetSources() {
+	for _, sourceSpec := range specReader.Sources {
 		if len(sourceSpec.Destinations) == 0 {
 			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
 		}
 		var destinationsSpecs []specs.Destination
 		for _, destination := range sourceSpec.Destinations {
-			spec := specReader.GetDestinationByName(destination)
+			spec := specReader.Destinations[destination]
 			if spec == nil {
 				return fmt.Errorf("failed to find destination %s in source %s", destination, sourceSpec.Name)
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, pm, sourceSpec, destinationsSpecs); err != nil {
+		if err := syncConnection(ctx, pm, *sourceSpec, destinationsSpecs); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 	}
