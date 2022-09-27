@@ -18,6 +18,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 As AWS [outlined at their 2022 Re:Inforce Security Conference](https://www.youtube.com/watch?v=PPunA7tPMyk&t=3062s) and [mentioned by Werner Vogels at an AWS Summit in 2019](https://youtu.be/vWfkbGF6fiA?t=4339), *encrypt everything* and *encrypt like everyone is [watching]*.  
 
 ![**AWS Summit Series 2019 - Santa Clara: Keynote featuring Werner Vogels**](/images/blog/aws-encryption-and-multi-account-access/encrypt-like-watching.png)
+*AWS Summit Series 2019 - Santa Clara: Keynote featuring Werner Vogels*
 
 In this blog post, we’ll focus on how to encrypt everything in multi-account AWS environments and how to make encryption decisions with your unique environment and data security needs in mind.
 
