@@ -59,7 +59,7 @@ func AutoscalingResources() []*Resource {
 		{
 			SubService: "group_scaling_policies",
 			Struct:     &types.ScalingPolicy{},
-			SkipFields: []string{},
+			SkipFields: []string{"PolicyARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -67,6 +67,12 @@ func AutoscalingResources() []*Resource {
 						Name:     "group_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("PolicyARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 		},
