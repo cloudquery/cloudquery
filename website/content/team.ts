@@ -6,7 +6,7 @@ const CLOUDQUERY_TEAM = {
     image_url: "/images/people/benjamin.jpg",
   },
   jsonkao: {
-    name: "Jason Kao"
+    name: "Jason Kao",
     url: "https://www.linkedin.com/in/kaojason/",
     twitterUsername: "",
     image_url: "/images/people/jason.png",
