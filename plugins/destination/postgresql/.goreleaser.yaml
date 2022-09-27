@@ -1,0 +1,13 @@
+variables:
+  component: destination/postgresql
+
+project_name: plugins/destination/postgresql
+
+monorepo:
+  tag_prefix: plugins-destination-postgresql-
+  dir: plugins/destination/postgresql
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

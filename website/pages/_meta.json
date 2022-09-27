@@ -19,9 +19,9 @@
       "typesetting": "article"
     }
   },
-  "plugins": { 
+  "plugins": {
     "title": "Plugins",
-    "href": "https://cloudquery.io/docs/plugins/sources"
+    "href": "/docs/plugins/source"
   },
   "confirm": {
     "title": "Confirm",
