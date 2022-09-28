@@ -10,7 +10,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|attribute|String|
+|attribute|JSON|
 |data_encryption_key_id|String|
 |description|String|
 |encrypted|Bool|

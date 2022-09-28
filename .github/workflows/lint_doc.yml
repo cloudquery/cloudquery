@@ -26,7 +26,7 @@ jobs:
             const { include: modules } = JSON.parse(MODULES)
             const withDocs = (await Promise.all(modules.map(async (module) => {
               try {
-                await fs.access(`./${module.workdir}/docs/docs.go`, fs.F_OK)
+                await fs.access(`./${module.workdir}/docs/tables`, fs.F_OK)
                 return module
               } catch (e) {
                 return
@@ -34,7 +34,7 @@ jobs:
             }))).filter(Boolean)
             return { include: withDocs }
   lint_doc:
-    name: Lint Provider Doc
+    name: Lint Plugin Docs
     needs: resolve-modules
     runs-on: ubuntu-latest
     strategy:
@@ -74,7 +74,7 @@ jobs:
       - name: build-docs
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
-          go run ./docs/docs.go
+          go run main.go doc docs/tables
         working-directory: ${{ matrix.workdir }}
       - name: Fail if docs are changed
         if: steps.changed-files.outputs.any_changed == 'true'

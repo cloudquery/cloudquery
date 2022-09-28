@@ -1,23 +1,33 @@
-
 # Table: github_teams
-Team represents a team within a GitHub organization
+
+
+The composite primary key for this table is (**org**, **id**).
+
+## Relations
+The following tables depend on `github_teams`:
+  - [`github_team_members`](github_team_members.md)
+  - [`github_team_repositories`](github_team_repositories.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|org|text|The Github Organization of the resource.|
-|id|bigint||
-|node_id|text||
-|name|text||
-|description|text||
-|url|text||
-|slug|text||
-|permission|text|Permission specifies the default permission for repositories owned by the team.|
-|permissions|jsonb|Permissions identifies the permissions that a team has on a given repository|
-|privacy|text|Privacy identifies the level of privacy this team should have. Possible values are:     secret - only visible to organization owners and members of this team     closed - visible to all members of this organization Default is "secret".|
-|members_count|bigint||
-|repos_count|bigint||
-|html_url|text||
-|members_url|text||
-|repositories_url|text||
-|parent|bigint||
-|ldapdn|text|LDAPDN is only available in GitHub Enterprise and when the team membership is synchronized with LDAP.|
+| Name          | Type          |
+| ------------- | ------------- |
+|org (PK)|String|
+|id (PK)|Int|
+|node_id|String|
+|name|String|
+|description|String|
+|url|String|
+|slug|String|
+|permission|String|
+|permissions|JSON|
+|privacy|String|
+|members_count|Int|
+|repos_count|Int|
+|organization|JSON|
+|html_url|String|
+|members_url|String|
+|repositories_url|String|
+|parent|JSON|
+|ldap_dn|String|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|

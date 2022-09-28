@@ -1,0 +1,21 @@
+# Table: aws_redshift_cluster_parameter_groups
+
+
+The composite primary key for this table is (**cluster_arn**, **parameter_group_name**).
+
+## Relations
+This table depends on [`aws_redshift_clusters`](aws_redshift_clusters.md).
+The following tables depend on `aws_redshift_cluster_parameter_groups`:
+  - [`aws_redshift_cluster_parameters`](aws_redshift_cluster_parameters.md)
+
+## Columns
+| Name          | Type          |
+| ------------- | ------------- |
+|account_id|String|
+|region|String|
+|cluster_arn (PK)|String|
+|parameter_group_name (PK)|String|
+|cluster_parameter_status_list|JSON|
+|parameter_apply_status|String|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|
