@@ -24,7 +24,7 @@ In this blog post, we’ll focus on how to encrypt everything in multi-account A
 
 In follow-up blog posts of this series on encryption, we’ll follow up with information on how CloudQuery can help shortly after the release of CloudQuery v1 and other blog posts deep-diving into encryption and data security in cloud.
 
-## Multi-Account Access in AWS
+## Multi-Account Access and Encryption in AWS
 
 For symmetric encryption, AWS offers [2 primary services](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html): **[AWS Key Management Service (KMS)](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html) and [CloudHSM](https://aws.amazon.com/cloudhsm/)**. When AWS KMS was [first announced in 2014](https://aws.amazon.com/blogs/aws/new-key-management-service/), it was launched to support encrypting data at rest for S3, EBS, and Redshift. Now, KMS supports multiple different types of keys including symmetric encryption keys, asymmetric keys for encryption or signing, and HMAC keys to generate and verify HMAC tags. [KMS now supports many more services](https://aws.amazon.com/kms/features/#AWS_Service_Integration).  Some of those services are available for direct access from other AWS accounts, such as S3, SQS, Secrets Manager, and more.
 
@@ -45,7 +45,7 @@ We’re going to enrich that table with more detail regarding multi-account acce
 | AWS Managed Key | No | Yes | No | Yes | Required | Per-use fee |
 | AWS Owned Key | Varies | No | No | No | Varies | Varies |
 
-### Multi-Account Access in AWS
+### Example Scenario for Multi-Account Access in AWS
 
 In advanced use cases, enterprise cloud workloads may be split up by infrastructure or by project.  For example, one account may host data such as a data lake account and another account may host compute resources.  In these multi-account AWS environments, cross-account access to resources can be necessary to reduce complexity and to reduce the need for data and resource duplication.
 
@@ -251,9 +251,9 @@ In our cross-account example above, if an AWS Managed KMS Key is used, cross-acc
 ## Conclusion
 
 - For resources that may be shared across multiple accounts, use Customer Managed KMS Keys.  For most use cases, CloudQuery recommends using AWS-provided key material as AWS KMS supports automatic key rotation for symmetric encryption KMS keys with key material that AWS KMS creates.
-- For resources that require encryption with FIPS 140-2 Level 3 or with key material that is subject to a secondary, independent audit path and cannot be stored in a shared environment, CloudQuery recommends either using CloudHSM directly or AWS KMS with a custom key store backed by AWS CloudHSM clusters.
+- For resources that require encryption with FIPS 140-2 Level 3, has specific audit requirements, or cannot be stored in a shared environment, CloudQuery recommends either using CloudHSM directly or AWS KMS with a custom key store backed by AWS CloudHSM clusters.
 
-We will follow this post shortly with more encryption blog posts in the series.  Up next will be a post explaining how CloudQuery can help determine encryption posture of your cloud environments.  We’ll publish that post shortly after the release of CloudQuery v1.
+We will follow this post shortly with more encryption blog posts in the series.  Up next will be a post explaining how CloudQuery can help determine the encryption and data security posture of your cloud environments.  We’ll publish that post shortly after the release of CloudQuery v1.
 
 If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about CloudQuery or cloud security - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!
 
