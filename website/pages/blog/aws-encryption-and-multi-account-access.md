@@ -122,7 +122,7 @@ In this case, due to the key being an AWS Managed KMS Key, we’re unable to acc
 }
 ```
 
-Let’s take a deeper look at this key policy and what this statement does.  Since they’re both Allow statements, these 2 statements function as a logical or statement for access.  This Key Policy has 2 main statements:
+Let’s take a deeper look at this key policy and what this statement does.  Since they’re both Allow statements, these 2 statements function as a logical **or** statement for access.  This Key Policy has 2 main statements:
 
 - “Allow access through S3 for all principals in the account that are authorized to use S3”
 
