@@ -53,7 +53,8 @@ With cross-account access to resources, encryption also plays a role in how cros
 
 We’ll walk through a setup where cross-account access may be desired.
 
-![Cross-Account Access in AWS to an Encrypted S3 Bucket](/images/blog/aws-encryption-and-multi-account-access/cross-account-diagrampng)
+![Cross-Account Access in AWS to an Encrypted S3 Bucket](/images/blog/aws-encryption-and-multi-account-access/cross-account-diagram.png)
+*Cross-Account Access in AWS to an Encrypted S3 Bucket*
 
 Cross-Account Access in AWS to an Encrypted S3 Bucket
 
@@ -64,3 +65,217 @@ In this example, we’ll use the example where an IAM role in a Compute AWS Acco
 - KMS Key with a Key Policy in the Data AWS Account that grants access to the IAM Role from the Compute AWS Account.
 
 Let’s revisit the encryption key table that we expanded upon earlier in this post with the additional column for multi-account access.  What happens when we try to use an AWS-managed KMS Key for this cross-account use case?  Note - this is different than the Amazon S3-managed key (SSE-S3) option, which if there’s interest, we’ll do a deep dive into the encryption and security settings available for AWS S3 including S3-managed keys, bucket keys, and more.
+
+![AWS Managed key: aws/s3](/images/blog/aws-encryption-and-multi-account-access/aws-managed-key-s3.png)
+*AWS Managed key: aws/s3*
+
+We’ll modify the encryption setting for the S3 bucket in the example data AWS Account to use the aws/s3 AWS managed KMS key and then upload a new object which will use that aws/s3 encryption setting and encrypt the object with the aws/s3 AWS managed KMS key.
+
+![AWS Default Encryption Settings for S3 Bucket](/images/blog/aws-encryption-and-multi-account-access/s3-default-encryption.png)
+*AWS Default Encryption Settings for S3 Bucket*
+
+Now, after ensuring that we’ve properly configured the IAM policies attached to the IAM role in the example compute AWS account and the S3 bucket policy attached to the bucket in the data AWS account to permit for access for the IAM role to the S3 bucket and objects, we’ll try to retrieve this new object encrypted with the aws/s3 AWS managed key.  We get an AccessDenied error with the additional context that either the key doesn’t exist or we’re not allowed to access the key.
+
+![AccessDenied error for cross-account S3 GetObject](/images/blog/aws-encryption-and-multi-account-access/not-allowed-to-access-key.png)
+*AccessDenied error for cross-account S3 GetObject*
+
+In this case, due to the key being an AWS Managed KMS Key, we’re unable to access the KMS Key due to the following KMS Key Policy.
+
+```json
+{
+    "Version": "2012-10-17",
+    "Id": "auto-s3-2",
+    "Statement": [
+        {
+            "Sid": "Allow access through S3 for all principals in the account that are authorized to use S3",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "kms:CallerAccount": "123412341234",
+                    "kms:ViaService": "s3.us-east-1.amazonaws.com"
+                }
+            }
+        },
+        {
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123412341234:root"
+            },
+            "Action": [
+                "kms:Describe*",
+                "kms:Get*",
+                "kms:List*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+Let’s take a deeper look at this key policy and what this statement does.  Since they’re both Allow statements, these 2 statements function as a logical or statement for access.  This Key Policy has 2 main statements:
+
+- “Allow access through S3 for all principals in the account that are authorized to use S3”
+
+```json
+{
+            "Sid": "Allow access through S3 for all principals in the account that are authorized to use S3",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "kms:CallerAccount": "123412341234",
+                    "kms:ViaService": "s3.us-east-1.amazonaws.com"
+                }
+            }
+        },
+```
+
+There are 2 main conditions on this statement that limit the access to this key, despite the “AWS”: “*” Principal block.
+
+- “kms:CallerAccount”: “123412341234”
+- “kms:ViaService”: “s3.us-east-1.amazonaws.com”
+
+By combining the kms:CallerAccount condition with a Principal element that specifies all AWS identities, this statement specifies all identities in an AWS account, in this case the account 123412341234.  The kms:ViaService then limits the usage of an AWS KMS Key to requests from a specified AWS service, in this case “s3.us-east-1.amazonaws.com.”  Thus, this key can only be used by all identities in the 123412341234 account with requests from “s3.us-east-1.amazonaws.com.”
+
+- “Allow direct access to key metadata to the account”
+
+```json
+{
+            "Sid": "Allow direct access to key metadata to the account",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123412341234:root"
+            },
+            "Action": [
+                "kms:Describe*",
+                "kms:Get*",
+                "kms:List*"
+            ],
+            "Resource": "*"
+        }
+```
+
+With the Principal in this statement being “AWS”: “arn:aws:iam::123412341234:root”, the account principal, the statement doesn’t give any IAM users or roles permissions to use the KMS key.  Instead, this allows for delegation of permissions.  Thus, if an IAM role or user has the above permissions to Describe, Get, and List the key, the IAM role or user can Describe,Get, and List the key.  This is because key policies require explicit permissions on the key policy (different from other resource policies) to grant permissions.  This allows for the key metedata access to be managed via IAM policies.
+
+These 2 statements combined do not permit for our cross-account access example, which is a request that originates outside of the 123412341234 account.  Thus, our request is denied access to the KMS key as shown in the AccessDenied error message.  Furthermore, we’re unable to modify the key policy for AWS provided Managed KMS Keys.
+
+Due to the nature and setup of the AWS provided AWS Managed KMS Keys, which are created, managed, and used on the customer’s behalf by an [AWS service integrated by AWS KMS](https://aws.amazon.com/kms/features/#AWS_Service_Integration), we do not recommend using these keys for resources used in cross-account workloads.  Customers are unable to change the properties of AWS managed keys, create KMS key grants, rotate them, change their key policies, or schedule them for deletion.  Direct access to the AWS Managed KMS Key via grants or KMS Key policies from outside the account hosting the KMS key is not possible.  Instead, indirect access such as cross-account role assumption into the account would need to be used. 
+
+### KMS Key Access
+
+Access for both usage and management of KMS Keys can be governed by a couple different mechanisms.  At a high level, there are IAM Policies, KMS Key Grants, and KMS Key Policies (Resource-Based Policies) where a combination of them could grant access.  We will do a deep dive into these concepts and complexities in a later post.
+
+```json
+{
+    "Id": "cloudquery-sample-cmk-policy",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Enable IAM User Permissions",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123412341234:root"
+            },
+            "Action": "kms:*",
+            "Resource": "*"
+        },
+        {
+            "Sid": "Allow use of the key",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123412341234:role/cloudquery-role"
+            },
+            "Action": [
+                "kms:Encrypt",
+                "kms:Decrypt",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:DescribeKey"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "Allow attachment of persistent resources",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::123412341234:role/cloudquery-role"
+            },
+            "Action": [
+                "kms:CreateGrant",
+                "kms:ListGrants",
+                "kms:RevokeGrant"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "kms:GrantIsForAWSResource": "true"
+                }
+            }
+        }
+    ]
+}
+```
+
+For the [Sample KMS Key Policy](https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html) above, there are decisions made by AWS to reduce the risk of the key becoming unmanageable, add specific management abilities to IAM entities within the account, and gives the AWS account full access to this KMS key.  In a later post, we’ll cover specific recommendations and techniques to balance security and manageability of KMS Keys and policies.
+
+Despite KMS Key Policies being a specific type of resource policy, KMS Key policies function slightly differently than the typical resource policy.  For typical resource policies, Identity-based policies and resource-based policies are both permissions policies and are evaluated together within a single AWS account.  With KMS, the KMS key policy **must** grant access for access to work, even if the corresponding permissions are on identity policies.
+
+With Cross-Account Access, there are a couple mechanisms to grant access to a KMS Key and the encrypted resources.
+
+- Direct IAM Access via IAM Policies such as a KMS Key Policy and Identity-based Policies.
+- Indirect IAM Access via Services (Deputized Access)
+- IAM access via IAM entities within the same account (role assumption or other access).
+
+In our cross-account example above, if an AWS Managed KMS Key is used, cross-account access would have to be granted via IAM Access via other IAM entities via cross-account role assumption and not direct access via the KMS key policy.
+
+## Conclusion
+
+- For resources that may be shared across multiple accounts, use Customer Managed KMS Keys.  For most use cases, CloudQuery recommends using AWS-provided key material.
+
+We will follow this post shortly with more encryption blog posts in the series.  Up next will be a post explaining how CloudQuery can help determine encryption posture of your cloud environments.  We’ll publish that post shortly after the new release of CloudQuery v2.
+
+If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about CloudQuery or cloud security - email us at security@cloudquery.io!  
+
+## References
+
+[AWS Cryptographic Services and Tools](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html)
+
+[AWS Key Management Service Developer Guide: AWS KMS Concepts](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
+
+[AWS Key Management Service Developer Guide: AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html)
+
+[AWS Key Management Service: How AWS Services use AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html)
+
+[AWS Security Pillar AWS Well-Architected Framework: Protecting Data at Rest](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/protecting-data-at-rest.html)
+
+[AWS Organizations User Guide: Managing the AWS Accounts in your Organization](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts.html)
+
+[AWS Organizations: Establishing Your Best Practice AWS Environment](https://aws.amazon.com/organizations/getting-started/best-practices/)
+
+[AWS Whitepaper: Organizing your AWS Environment Using Multiple Accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html)
+
+[AWS Key Management Service Developer Guide: Condition Keys for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html)
+
+[[ABSTRACT and Outline] Encryption in AWS and Access](https://www.notion.so/ABSTRACT-and-Outline-Encryption-in-AWS-and-Access-c29d9660f3524c1292fa31f3ae85e763)
