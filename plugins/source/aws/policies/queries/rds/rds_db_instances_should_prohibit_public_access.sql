@@ -6,5 +6,5 @@ select
     'RDS DB instances should prohibit public access, determined by the PubliclyAccessible configuration' as title,
     account_id,
     arn AS resource_id,
-    case when publicly_accessible is not TRUE then 'fail' else 'pass' end as status
+    case when publicly_accessible is TRUE then 'fail' else 'pass' end as status
 from aws_rds_instances

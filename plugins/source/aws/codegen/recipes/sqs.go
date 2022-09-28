@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -11,7 +11,7 @@ func SQSResources() []*Resource {
 
 		{
 			SubService: "queues",
-			Struct:     &sqs.Queue{},
+			Struct:     &models.Queue{},
 			SkipFields: []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,

@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -29,7 +29,7 @@ func AutoscalingResources() []*Resource {
 		},
 		{
 			SubService: "groups",
-			Struct:     &autoscaling.AutoScalingGroupWrapper{},
+			Struct:     &models.AutoScalingGroupWrapper{},
 			SkipFields: []string{"AutoScalingGroupARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -59,7 +59,7 @@ func AutoscalingResources() []*Resource {
 		{
 			SubService: "group_scaling_policies",
 			Struct:     &types.ScalingPolicy{},
-			SkipFields: []string{},
+			SkipFields: []string{"PolicyARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -67,6 +67,12 @@ func AutoscalingResources() []*Resource {
 						Name:     "group_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("PolicyARN")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 		},

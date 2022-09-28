@@ -1,7 +1,0 @@
-kind: source
-spec:
-  name: test
-  max_goroutines: 10000000
-  tables: ["*"]
-  destinations:
-    - postgresql

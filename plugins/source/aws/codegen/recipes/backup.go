@@ -116,7 +116,7 @@ func BackupResources() []*Resource {
 		{
 			SubService: "vault_recovery_points",
 			Struct:     &types.RecoveryPointByBackupVault{},
-			SkipFields: []string{},
+			SkipFields: []string{"RecoveryPointArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -124,6 +124,12 @@ func BackupResources() []*Resource {
 						Name:     "vault_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("RecoveryPointArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
 						Name:     "tags",

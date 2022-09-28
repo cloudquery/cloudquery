@@ -58,7 +58,7 @@ func EC2Resources() []*Resource {
 					},
 					{
 						Name:     "attribute",
-						Type:     schema.TypeString,
+						Type:     schema.TypeJSON,
 						Resolver: "resolveEbsSnapshotAttribute",
 					},
 				}...),
@@ -156,6 +156,12 @@ func EC2Resources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: "resolveInstanceArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:          "state_transition_reason_time",
+						Type:          schema.TypeTimestamp,
+						Resolver:      "resolveEc2InstanceStateTransitionReasonTime",
+						IgnoreInTests: true,
 					},
 				}...),
 		},

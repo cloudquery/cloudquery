@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
-	elbv1Service "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -14,7 +14,7 @@ func ELBv1Resources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "load_balancers",
-			Struct:     &elbv1Service.ELBv1LoadBalancerWrapper{},
+			Struct:     &models.ELBv1LoadBalancerWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,

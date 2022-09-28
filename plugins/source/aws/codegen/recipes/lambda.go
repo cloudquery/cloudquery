@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
-	lambdaService "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -68,8 +68,8 @@ func LambdaResources() []*Resource {
 		},
 		{
 			SubService: "function_aliases",
-			Struct:     &lambdaService.AliasWrapper{},
-			SkipFields: []string{},
+			Struct:     &models.AliasWrapper{},
+			SkipFields: []string{"AliasArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -77,6 +77,12 @@ func LambdaResources() []*Resource {
 						Name:     "function_arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("AliasArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 		},
@@ -183,7 +189,7 @@ func LambdaResources() []*Resource {
 		},
 		{
 			SubService: "runtimes",
-			Struct:     &lambdaService.RuntimeWrapper{},
+			Struct:     &models.RuntimeWrapper{},
 			SkipFields: []string{"Name"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
