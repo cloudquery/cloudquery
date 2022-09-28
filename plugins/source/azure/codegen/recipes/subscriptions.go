@@ -21,9 +21,10 @@ func Subscriptions() []Resource {
 			},
 			definitions: []resourceDefinition{
 				{
-					azureStruct:    &armsubscriptions.Subscription{},
-					mockListResult: "ClientListResponse",
-					tableName:      "subscriptions",
+					azureStruct:        &armsubscriptions.Subscription{},
+					mockListResult:     "ClientListResponse",
+					tableName:          "subscriptions",
+					singleSubscription: true,
 				},
 				{
 					azureStruct:        &armsubscriptions.TenantIDDescription{},
