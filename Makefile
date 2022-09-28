@@ -30,3 +30,8 @@ install-tools:
 .PHONY: install-hooks
 install-hooks:
 	pre-commit install
+
+# Regenerate docs for all plugins
+.PHONY: update-docs
+update-docs:
+	./scripts/update-docs.sh

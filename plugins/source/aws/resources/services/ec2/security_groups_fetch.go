@@ -61,6 +61,7 @@ func Ec2SecurityGroups() *schema.Table {
 				Name:        "owner_id",
 				Description: "The AWS account ID of the owner of the security group.",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("OwnerId"),
 			},
 			{
 				Name:        "tags",

@@ -1,19 +1,27 @@
-
 # Table: github_hooks
-Hook represents a GitHub (web and service) hook for a repository.
+
+
+The composite primary key for this table is (**org**, **id**).
+
+## Relations
+The following tables depend on `github_hooks`:
+  - [`github_hook_deliveries`](github_hook_deliveries.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|org|text|The Github Organization of the resource.|
-|created_at|timestamp without time zone||
-|updated_at|timestamp without time zone||
-|url|text||
-|id|bigint||
-|type|text||
-|name|text||
-|test_url|text||
-|ping_url|text||
-|last_response|jsonb||
-|config|jsonb|Only the following fields are used when creating a hook. Config is required.|
-|events|text[]||
-|active|boolean||
+| Name          | Type          |
+| ------------- | ------------- |
+|org (PK)|String|
+|id (PK)|Int|
+|created_at|Timestamp|
+|updated_at|Timestamp|
+|url|String|
+|type|String|
+|name|String|
+|test_url|String|
+|ping_url|String|
+|last_response|JSON|
+|config|JSON|
+|events|StringArray|
+|active|Bool|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|
