@@ -24,7 +24,7 @@ In this blog post, we’ll focus on how to encrypt everything in multi-account A
 
 In follow-up blog posts of this series on encryption, we’ll follow up with information on how CloudQuery can help shortly after the release of CloudQuery v1 and other blog posts deep-diving into encryption and data security in cloud.
 
-## Multi Account Access in AWS
+## Multi-Account Access in AWS
 
 For symmetric encryption, AWS offers [2 primary services](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html): **[AWS Key Management Service (KMS)](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html) and [CloudHSM](https://aws.amazon.com/cloudhsm/)**. When AWS KMS was [first announced in 2014](https://aws.amazon.com/blogs/aws/new-key-management-service/), it was launched to support encrypting data at rest for S3, EBS, and Redshift. Now, KMS supports multiple different types of keys including symmetric encryption keys, asymmetric keys for encryption or signing, and HMAC keys to generate and verify HMAC tags. [KMS now supports many more services](https://aws.amazon.com/kms/features/#AWS_Service_Integration).  Some of those services are available for direct access from other AWS accounts, such as S3, SQS, Secrets Manager, and more.
 
