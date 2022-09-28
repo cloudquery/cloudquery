@@ -56,8 +56,6 @@ We’ll walk through a setup where cross-account access may be desired.
 ![Cross-Account Access in AWS to an Encrypted S3 Bucket](/images/blog/aws-encryption-and-multi-account-access/cross-account-diagram.png)
 *Cross-Account Access in AWS to an Encrypted S3 Bucket*
 
-Cross-Account Access in AWS to an Encrypted S3 Bucket
-
 In this example, we’ll use the example where an IAM role in a Compute AWS Account needs access to an encrypted S3 bucket in the Data AWS Account.  One method to grant access is to configure the following components if we’re using a customer managed KMS Key:
 
 - IAM Role in the Compute AWS Account with corresponding policies that grant access to the S3 Bucket, Objects, and KMS Key in the Data AWS Account.
@@ -261,21 +259,9 @@ If you have comments, feedback on this post, follow-up topics you’d like to se
 ## References
 
 [AWS Cryptographic Services and Tools](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html)
-
 [AWS Key Management Service Developer Guide: AWS KMS Concepts](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
-
 [AWS Key Management Service Developer Guide: AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html)
-
 [AWS Key Management Service: How AWS Services use AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html)
-
-[AWS Security Pillar AWS Well-Architected Framework: Protecting Data at Rest](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/protecting-data-at-rest.html)
-
-[AWS Organizations User Guide: Managing the AWS Accounts in your Organization](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_accounts.html)
-
 [AWS Organizations: Establishing Your Best Practice AWS Environment](https://aws.amazon.com/organizations/getting-started/best-practices/)
-
 [AWS Whitepaper: Organizing your AWS Environment Using Multiple Accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html)
-
 [AWS Key Management Service Developer Guide: Condition Keys for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html)
-
-[[ABSTRACT and Outline] Encryption in AWS and Access](https://www.notion.so/ABSTRACT-and-Outline-Encryption-in-AWS-and-Access-c29d9660f3524c1292fa31f3ae85e763)
