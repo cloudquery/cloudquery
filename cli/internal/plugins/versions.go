@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"regexp"
+	"strings"
 )
 
 type manifestResponse struct {
@@ -23,8 +23,6 @@ const (
 	GithubBaseURL     = "https://github.com"
 	CloudQueryBaseURL = "https://versions.cloudquery.io"
 )
-
-var reVersionFromTag = regexp.MustCompile(`v\d+\.\d+.\d+(\-[\w\.\-]+)?$`)
 
 // GetLatestPluginRelease returns the latest release version string for the given organization, plugin type
 // and plugin.
@@ -46,7 +44,11 @@ func GetLatestCLIRelease(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
 	}
-	return extractVersionFromTag(mr.Latest), nil
+	return extractCLIVersionFromTag(mr.Latest), nil
+}
+
+func extractCLIVersionFromTag(tag string) string {
+	return strings.TrimPrefix(tag, "cli-")
 }
 
 func getLatestCQPluginRelease(ctx context.Context, name string, typ PluginType) (string, error) {
@@ -60,17 +62,11 @@ func getLatestCQPluginRelease(ctx context.Context, name string, typ PluginType) 
 	if err != nil {
 		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
 	}
-	return extractVersionFromTag(mr.Latest), nil
+	return extractPluginVersionFromTag(mr.Latest, name, typ), nil
 }
 
-// extractVersionFromTag takes a tag of the form "plugins-source-test-v0.1.21" or "cli-v1.1.0-pre.1" and returns
-// the version, i.e. "v0.1.21" or "v1.1.0-pre.1"
-func extractVersionFromTag(tag string) string {
-	m := reVersionFromTag.FindStringSubmatch(tag)
-	if len(m) == 0 {
-		return ""
-	}
-	return m[0]
+func extractPluginVersionFromTag(tag, name string, typ PluginType) string {
+	return strings.TrimPrefix(tag, fmt.Sprintf("plugins-%s-%s-", string(typ), name))
 }
 
 func getLatestCommunityPluginRelease(ctx context.Context, org, name string, typ PluginType) (string, error) {
