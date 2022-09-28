@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "plugins/destination/postgresql/**"
+  push:
+    branches:
+      - main
 
 defaults:
   run:
     working-directory: ./plugins/destination/postgresql
 
 jobs:
-  build_lint_and_test:
+  plugins-destination-postgresql:
+    name: "plugins/destination/postgresql"
+    runs-on: ubuntu-latest
     services:
       # Label used to access the service container
       postgres:

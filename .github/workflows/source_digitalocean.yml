@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "plugins/source/digitalocean/**"
+  push:
+    branches:
+      - main
 
 defaults:
   run:
     working-directory: ./plugins/source/digitalocean
 
 jobs:
-  build_lint_and_test:
+  plugins-destination-digitalocean:
+    name: "plugins/source/digitalocean"
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3

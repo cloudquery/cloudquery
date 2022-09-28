@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "plugins/destination/test/**"
+  push:
+    branches:
+      - main
 
 defaults:
   run:
     working-directory: ./plugins/destination/test
 
 jobs:
-  build_lint_and_test:
+  plugins-destination-test:
+    name: "plugins/destination/test"
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3

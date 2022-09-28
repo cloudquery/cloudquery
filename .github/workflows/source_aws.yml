@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "plugins/source/aws/**"
+  push:
+    branches:
+      - main
 
 defaults:
   run:
     working-directory: ./plugins/source/aws
 
 jobs:
-  build_lint_and_test:
+  plugins-destination-aws:
+    name: "plugins/source/aws"
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3

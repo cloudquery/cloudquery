@@ -1,0 +1,73 @@
+name: Wait for all required workflows to pass
+
+on: [pull_request, push]
+
+jobs:
+  wait_for_required_workflows:
+    name: wait-for-required-workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2 # OR "2" -> To retrieve the preceding commit.
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v31
+        with:
+          dir_names: true
+      - uses: actions/github-script@v6
+        env:
+          DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
+          REF: ${{ github.ref }}
+        with:
+          script: |
+            const { REF, DIRS } = process.env
+            let now = new Date().getTime()
+            const deadline = now + 50 * 1000
+            let actions = ["cli",
+                           "plugins/source/aws",
+                           "plugins/source/azure",
+                           "plugins/source/cloudflare",
+                           "plugins/source/digitalocean",
+                           "plugins/source/gcp",
+                           "plugins/source/github",
+                           "plugins/source/heroku",
+                           "plugins/source/k8s",
+                           "plugins/source/okta",
+                           "plugins/source/terraform",
+                           "plugins/source/test",
+                           
+                           "plugins/destination/postgresql",
+                           "plugins/destination/test",
+                           ]
+            actions = actions.filter(item => DIRS.includes(item))
+            if (actions.length === 0) {
+              console.log("No actions to wait for")
+              return
+            }
+            while (now <= deadline) {
+              const result = await github.rest.checks.listForRef({
+                owner: 'cloudquery',
+                repo: 'cloudquery',
+                ref: context.sha,
+                status: 'completed',
+                per_page: 100
+              })
+              console.log(result)
+              result.data.check_runs.forEach(item => {
+                if (actions.includes(item.name)) {
+                  if (item.conclusion !== 'success') {
+                    throw new Error(`Check ${item.name} failed`)
+                  }
+                  actions = actions.filter(action => action !== item.name)
+                }
+              })
+              await new Promise(r => setTimeout(r, 1000));
+              now = new Date().getTime()
+            }
+            if (actions.length === 0) {
+              console.log("No actions to wait for")
+              return
+            } else {
+              throw new Error(`Timed out waiting for ${actions.join(', ')}`)
+            }

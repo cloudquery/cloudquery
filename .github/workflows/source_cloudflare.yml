@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "plugins/source/cloudflare/**"
+  push:
+    branches:
+      - main
 
 defaults:
   run:
     working-directory: ./plugins/source/cloudflare
 
 jobs:
-  build_lint_and_test:
+  plugins-destination-cloudflare:
+    name: "plugins/source/cloudflare"
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3

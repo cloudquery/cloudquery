@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "plugins/source/gcp/**"
+  push:
+    branches:
+      - main
 
 defaults:
   run:
     working-directory: ./plugins/source/gcp
 
 jobs:
-  build_lint_and_test:
+  plugins-destination-gcp:
+    name: "plugins/source/gcp"
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3

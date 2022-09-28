@@ -4,13 +4,18 @@ on:
   pull_request:
     paths:
       - "plugins/source/okta/**"
+  push:
+    branches:
+      - main
 
 defaults:
   run:
     working-directory: ./plugins/source/okta
 
 jobs:
-  build_lint_and_test:
+  plugins-destination-heroku:
+    name: "plugins/source/heroku"
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3

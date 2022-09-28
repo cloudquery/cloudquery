@@ -9,7 +9,7 @@ on:
 
 jobs:
   main:
-    name: Validate PR title
+    name: validate-pr-title
     runs-on: ubuntu-latest
     steps:
       # Please look up the latest version from
