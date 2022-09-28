@@ -253,7 +253,7 @@ In our cross-account example above, if an AWS Managed KMS Key is used, cross-acc
 - For resources that may be shared across multiple accounts, use Customer Managed KMS Keys.  For most use cases, CloudQuery recommends using AWS-provided key material as AWS KMS supports automatic key rotation for symmetric encryption KMS keys with key material that AWS KMS creates.
 - For resources that require encryption with FIPS 140-2 Level 3 or with key material that is subject to a secondary, independent audit path and cannot be stored in a shared environment, CloudQuery recommends either using CloudHSM directly or AWS KMS with a custom key store backed by AWS CloudHSM clusters.
 
-We will follow this post shortly with more encryption blog posts in the series.  Up next will be a post explaining how CloudQuery can help determine encryption posture of your cloud environments.  We’ll publish that post shortly after the new release of CloudQuery v1.
+We will follow this post shortly with more encryption blog posts in the series.  Up next will be a post explaining how CloudQuery can help determine encryption posture of your cloud environments.  We’ll publish that post shortly after the release of CloudQuery v1.
 
 If you have comments, feedback on this post, follow-up topics you’d like to see, or would like to talk about CloudQuery or cloud security - email us at security@cloudquery.io or come chat with us on [Discord](https://www.cloudquery.io/discord)!
 
