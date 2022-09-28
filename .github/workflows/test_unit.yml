@@ -1,4 +1,4 @@
-name: Unit Tests
+name: Test
 
 on:
   pull_request:
@@ -19,8 +19,8 @@ jobs:
         uses: actions/checkout@v3
       - id: set-matrix
         run: ./scripts/resolve-modules.sh
-  test_unit:
-    name: Unit Tests
+  test:
+    name: Test
     needs: resolve-modules
     strategy:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
@@ -60,7 +60,29 @@ jobs:
         working-directory: ${{ matrix.workdir }}
         run: go get -t -d ./...
 
+      # Plugins and CLI have different linting configurations
+      - name: Lint
+        uses: golangci/golangci-lint-action@v3
+        if: steps.changed-files.outputs.any_changed == 'true' && matrix.workdir == 'cli'
+        with:
+          version: v1.49.0
+          working-directory: ${{ matrix.workdir }}
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v3
+        if: steps.changed-files.outputs.any_changed == 'true' && matrix.workdir != 'cli'
+        with:
+          version: v1.49.0
+          working-directory: ${{ matrix.workdir }}
+          args: "--config ${GITHUB_WORKSPACE}/plugins/.golangci.yml" 
+
+
       - name: Test
         if: steps.changed-files.outputs.any_changed == 'true'
         run: go test ./...
+        working-directory: ${{ matrix.workdir }}
+
+      - name: Build
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: go build .
         working-directory: ${{ matrix.workdir }}
