@@ -6,6 +6,7 @@ The primary key for this table is **arn**.
 ## Relations
 The following tables depend on `aws_redshift_clusters`:
   - [`aws_redshift_snapshots`](aws_redshift_snapshots.md)
+  - [`aws_redshift_cluster_parameter_groups`](aws_redshift_cluster_parameter_groups.md)
 
 ## Columns
 | Name          | Type          |
@@ -25,7 +26,6 @@ The following tables depend on `aws_redshift_clusters`:
 |cluster_identifier|String|
 |cluster_namespace_arn|String|
 |cluster_nodes|JSON|
-|cluster_parameter_groups|JSON|
 |cluster_public_key|String|
 |cluster_revision_number|String|
 |cluster_security_groups|JSON|

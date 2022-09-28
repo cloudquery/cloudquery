@@ -1,7 +1,7 @@
 # Table: aws_ecs_task_definitions
 
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 
 ## Columns
@@ -9,6 +9,7 @@ The primary key for this table is **_cq_id**.
 | ------------- | ------------- |
 |account_id|String|
 |region|String|
+|arn (PK)|String|
 |tags|JSON|
 |compatibilities|StringArray|
 |container_definitions|JSON|
@@ -31,8 +32,7 @@ The primary key for this table is **_cq_id**.
 |revision|Int|
 |runtime_platform|JSON|
 |status|String|
-|task_definition_arn|String|
 |task_role_arn|String|
 |volumes|JSON|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_fetch_time|Timestamp|
