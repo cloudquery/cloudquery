@@ -23,7 +23,7 @@ func customDomains() *schema.Table {
 			{
 				Name:     "cdn_endpoint_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "host_name",

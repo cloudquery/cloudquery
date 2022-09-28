@@ -23,7 +23,7 @@ func configurations() *schema.Table {
 			{
 				Name:     "mariadb_server_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "value",

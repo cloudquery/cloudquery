@@ -24,7 +24,7 @@ func sQLDatabases() *schema.Table {
 			{
 				Name:     "cosmosdb_account_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "resource",

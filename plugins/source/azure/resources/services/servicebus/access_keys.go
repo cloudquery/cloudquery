@@ -24,7 +24,7 @@ func accessKeys() *schema.Table {
 			{
 				Name:     "servicebus_authorization_rule_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "primary_connection_string",

@@ -24,7 +24,7 @@ func virtualNetworkGateways() *schema.Table {
 			{
 				Name:     "network_virtual_network_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "extended_location",
