@@ -258,10 +258,12 @@ If you have comments, feedback on this post, follow-up topics you’d like to se
 
 ## References
 
-[AWS Cryptographic Services and Tools](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html)\
-[AWS Key Management Service Developer Guide: AWS KMS Concepts](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)\
-[AWS Key Management Service Developer Guide: AWS Key Management Service](https://docs.aws.amazon.com/kms/latest/developerguide/overview.html)\
-[AWS Key Management Service: How AWS Services use AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html)\
-[AWS Organizations: Establishing Your Best Practice AWS Environment](https://aws.amazon.com/organizations/getting-started/best-practices/)\
-[AWS Whitepaper: Organizing your AWS Environment Using Multiple Accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html)\
+[AWS Cryptographic Services and Tools](https://docs.aws.amazon.com/crypto/latest/userguide/awscryp-service-toplevel.html)
+
+[AWS Key Management Service Developer Guide: AWS KMS Concepts](https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html)
+
+[AWS Key Management Service: How AWS Services use AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html)
+
+[AWS Whitepaper: Organizing your AWS Environment Using Multiple Accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html)
+
 [AWS Key Management Service Developer Guide: Condition Keys for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html)
