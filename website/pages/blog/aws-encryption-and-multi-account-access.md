@@ -56,7 +56,7 @@ We’ll walk through a setup where cross-account access may be desired.
 ![Cross-Account Access in AWS to an Encrypted S3 Bucket](/images/blog/aws-encryption-and-multi-account-access/cross-account-diagram.png)
 *Cross-Account Access in AWS to an Encrypted S3 Bucket*
 
-In this example, we’ll use the example where an IAM role in a Compute AWS Account needs access to an encrypted S3 bucket in the Data AWS Account.  One method to grant access is to configure the following components if we’re using a customer managed KMS Key:
+As an example, we will look at an IAM role in a Compute AWS Account that needs access to an encrypted S3 bucket in the Data AWS Account.  One method to grant access is to configure the following components if we’re using a customer managed KMS Key:
 
 - IAM Role in the Compute AWS Account with corresponding policies that grant access to the S3 Bucket, Objects, and KMS Key in the Data AWS Account.
 - S3 Bucket with a bucket policy in the Data AWS Account that grants access to the IAM Role from the Compute AWS Account.
