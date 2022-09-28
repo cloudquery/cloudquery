@@ -41,6 +41,7 @@ func Ec2RegionalConfig() *schema.Table {
 				Name:        "ebs_default_kms_key_id",
 				Type:        schema.TypeString,
 				Description: "The Amazon Resource Name (ARN) of the default CMK for encryption by default.",
+				Resolver:    schema.PathResolver("EbsDefaultKmsKeyId"),
 			},
 		},
 	}
