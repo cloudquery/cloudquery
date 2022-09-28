@@ -25,7 +25,7 @@ spec:
   name: "postgresql"
 
   ## Optional. Default: "latest". We suggest pinning this to a specific version in production
-  # verison: "YOUR_VERSION"
+  # version: "YOUR_VERSION"
 
   ## Optional. Default: "overwrite". Available: "overwrite", "append". Not all modes are supported by all plugins
   ## make sure to check the plugin documentation for more details.
@@ -57,7 +57,7 @@ spec:
   # path: cloudquery/aws
 
   # Optional. Default: latest. We suggest to pin this in production
-  # verison: "YOUR_VERSION"
+  # version: "YOUR_VERSION"
 
   ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
   ## will reduce the amount of data synced and improve performance.
@@ -74,7 +74,7 @@ spec:
 
 Now you can start syncing the data from your source plugins to the specified destinations.
 
-You can sync the by specifing a directory with the configuration files or specify files directly
+You can sync the by specifying a directory with the configuration files or specify files directly
 
 ```bash
 cloudquery sync ./config_dir
