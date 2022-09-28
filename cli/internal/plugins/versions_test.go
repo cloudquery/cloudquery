@@ -46,6 +46,8 @@ func TestExtractVersionFromTag(t *testing.T) {
 	}{
 		{give: "plugins-source-test-v0.1.21", want: "v0.1.21"},
 		{give: "plugins-source-test-v0.1.21-pre.123", want: "v0.1.21-pre.123"},
+		{give: "plugins-source-my-test-plugin-v10.1.21", want: "v10.1.21"},
+		{give: "plugins-source-my-test-plugin-v10.1.21-pre.123", want: "v10.1.21-pre.123"},
 		{give: "cli-v1.1.0-pre.1", want: "v1.1.0-pre.1"},
 		{give: "cli-v123.145.234-pre.123", want: "v123.145.234-pre.123"},
 	}
