@@ -240,7 +240,7 @@ For the [Sample KMS Key Policy](https://docs.aws.amazon.com/kms/latest/developer
 
 Despite KMS Key Policies being a specific type of resource policy, KMS Key policies function slightly differently than the typical resource policy.  For typical resource policies, Identity-based policies and resource-based policies are both permissions policies and are evaluated together within a single AWS account.  With KMS, the KMS key policy **must** grant access for access to work, even if the corresponding permissions are on identity policies.
 
-With Cross-Account Access, there are a couple mechanisms to grant access to a KMS Key and the encrypted resources.
+With Cross-Account Access, there are a couple of mechanisms to grant access to a KMS Key and the encrypted resources.
 
 - Direct IAM Access via IAM Policies such as a KMS Key Policy and Identity-based Policies.
 - Indirect IAM Access via Services (Deputized Access)
