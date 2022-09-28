@@ -73,6 +73,7 @@ func WAFResources() []*Resource {
 					Description: "A unique identifier for a RuleGroup.",
 					Type:        schema.TypeString,
 					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+					Resolver:    `schema.PathResolver("RuleGroupId")`,
 				},
 			},
 		},
