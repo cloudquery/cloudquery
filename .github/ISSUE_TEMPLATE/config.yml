@@ -3,6 +3,3 @@ contact_links:
   - name: Ask a Question on Discord
     url: https://cloudquery.io/discord
     about: Ask questions and discuss with other community members.
-  - name: CloudQuery Providers Repositories
-    url: https://hub.cloudquery.io
-    about: If the feature request or bug reports is related to a specific provider please open this in the appropriate repository

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,7 +13,7 @@ func DMSResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "replication_instances",
-			Struct:     &dms.ReplicationInstanceWrapper{},
+			Struct:     &models.ReplicationInstanceWrapper{},
 			SkipFields: []string{"ReplicationInstanceArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,

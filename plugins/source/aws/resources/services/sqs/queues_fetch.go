@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sqs"
 	"github.com/aws/aws-sdk-go-v2/service/sqs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
@@ -34,7 +35,7 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 				return err
 			}
 
-			var q Queue
+			var q models.Queue
 			d, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &q})
 			if err != nil {
 				return err
@@ -55,7 +56,7 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().SQS
-	q := resource.Item.(Queue)
+	q := resource.Item.(models.Queue)
 	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL})
 	if err != nil {
 		return err

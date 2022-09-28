@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0-pre.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.0-pre.1...cli-v1.2.0-pre.1) (2022-09-27)
+
+
+### Features
+
+* Remove spinner ([#2089](https://github.com/cloudquery/cloudquery/issues/2089)) ([5915181](https://github.com/cloudquery/cloudquery/commit/5915181287d1ddb7a01b06c8ad8732050f1bd4e0))
+* Update SDK to v0.10.1 ([#2100](https://github.com/cloudquery/cloudquery/issues/2100)) ([d968032](https://github.com/cloudquery/cloudquery/commit/d9680327b600d0c52c1d18dacc09d2d825564b20))
+
 ## [1.1.0-pre.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.0-pre.0...cli-v1.1.0-pre.1) (2022-09-26)
 
 ### ⚠ BREAKING CHANGES
