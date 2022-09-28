@@ -17,4 +17,4 @@ This is the top level spec used by the PostgreSQL destination Plugin.
 - `pgx_log_level` (string) (optional, defaults to "error")
 
   Available: "error", "warn", "info", "debug", "trace"
-  define if and in which level to log [pgx](https://github.com/jackc/pgx) call.
+  define if and in which level to log [`pgx`](https://github.com/jackc/pgx) call.
