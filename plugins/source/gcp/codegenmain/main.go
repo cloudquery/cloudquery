@@ -14,14 +14,16 @@ import (
 	"text/template"
 
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/codegen"
 	"github.com/iancoleman/strcase"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-var resources = []*codegen.Resource{}
+var resources []*codegen.Resource
 
 func main() {
 	resources = append(resources, codegen.ComputeResources()...)
@@ -147,8 +149,28 @@ func generateResource(r codegen.Resource, mock bool) {
 		extraColumns = append([]sdkgen.ColumnDefinition{codegen.ProjectIdColumn}, extraColumns...)
 	}
 
-	opts := []sdkgen.TableOption{sdkgen.WithSkipFields(r.SkipFields),
-		sdkgen.WithExtraColumns(extraColumns)}
+	opts := []sdkgen.TableOption{
+		sdkgen.WithSkipFields(r.SkipFields),
+		sdkgen.WithExtraColumns(extraColumns),
+		sdkgen.WithTypeTransformer(func(field reflect.StructField) (schema.ValueType, error) {
+			switch reflect.New(field.Type).Elem().Interface().(type) {
+			case *timestamppb.Timestamp,
+				timestamppb.Timestamp:
+				return schema.TypeTimestamp, nil
+			default:
+				return schema.TypeInvalid, nil
+			}
+		}),
+		sdkgen.WithResolverTransformer(func(field reflect.StructField, path string) (string, error) {
+			switch reflect.New(field.Type).Elem().Interface().(type) {
+			case *timestamppb.Timestamp,
+				timestamppb.Timestamp:
+				return `client.ResolveProtoTimestamp("` + path + `")`, nil
+			default:
+				return "", nil
+			}
+		}),
+	}
 
 	if r.NameTransformer != nil {
 		opts = append(opts, sdkgen.WithNameTransformer(r.NameTransformer))
