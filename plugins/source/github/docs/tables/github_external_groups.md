@@ -1,10 +1,17 @@
-
 # Table: github_external_groups
-ExternalGroup represents an external group.
+
+
+The composite primary key for this table is (**org**, **group_id**).
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|org|text|The Github Organization of the resource.|
-|group_id|bigint||
-|group_name|text||
-|updated_at_time|timestamp without time zone||
+| Name          | Type          |
+| ------------- | ------------- |
+|org (PK)|String|
+|group_id (PK)|Int|
+|updated_at|Timestamp|
+|group_name|String|
+|teams|JSON|
+|members|JSON|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|
