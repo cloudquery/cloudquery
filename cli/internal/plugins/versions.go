@@ -44,11 +44,8 @@ func GetLatestCLIRelease(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
 	}
-	return extractCLIVersionFromTag(mr.Latest), nil
-}
-
-func extractCLIVersionFromTag(tag string) string {
-	return strings.TrimPrefix(tag, "cli-")
+	tag := strings.TrimPrefix(mr.Latest, "cli-")
+	return tag, nil
 }
 
 func getLatestCQPluginRelease(ctx context.Context, name string, typ PluginType) (string, error) {
@@ -62,11 +59,8 @@ func getLatestCQPluginRelease(ctx context.Context, name string, typ PluginType) 
 	if err != nil {
 		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
 	}
-	return extractPluginVersionFromTag(mr.Latest, name, typ), nil
-}
-
-func extractPluginVersionFromTag(tag, name string, typ PluginType) string {
-	return strings.TrimPrefix(tag, fmt.Sprintf("plugins-%s-%s-", string(typ), name))
+	version := strings.TrimPrefix(mr.Latest, fmt.Sprintf("plugins-%s-%s-", string(typ), name))
+	return version, nil
 }
 
 func getLatestCommunityPluginRelease(ctx context.Context, org, name string, typ PluginType) (string, error) {
