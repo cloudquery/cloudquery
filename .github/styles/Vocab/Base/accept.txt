@@ -107,3 +107,4 @@ Airbyte
 Callout
 Fargate
 gists
+unencrypted
