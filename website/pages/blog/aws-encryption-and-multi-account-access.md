@@ -175,7 +175,7 @@ By combining the kms:CallerAccount condition with a Principal element that speci
         }
 ```
 
-With the Principal in this statement being “AWS”: “arn:aws:iam::123412341234:root”, the account principal, the statement doesn’t give any IAM users or roles permissions to use the KMS key.  Instead, this allows for delegation of permissions.  Thus, if an IAM role or user has the above permissions to Describe, Get, and List the key, the IAM role or user can Describe,Get, and List the key.  This is because key policies require explicit permissions on the key policy (different from other resource policies) to grant permissions.  This allows for the key metedata access to be managed via IAM policies.
+With the Principal in this statement being “AWS”: “arn:aws:iam::123412341234:root”, the account principal, the statement doesn’t give any IAM users or roles permissions to use the KMS key.  Instead, this allows for delegation of permissions.  Thus, if an IAM role or user has the above permissions to Describe, Get, and List the key, the IAM role or user can Describe,Get, and List the key.  This is because key policies require explicit permissions on the key policy (different from other resource policies) to grant permissions.  This allows for the key metadata access to be managed via IAM policies.
 
 These 2 statements combined do not permit for our cross-account access example, which is a request that originates outside of the 123412341234 account.  Thus, our request is denied access to the KMS key as shown in the AccessDenied error message.  Furthermore, we’re unable to modify the key policy for AWS provided Managed KMS Keys.
 
