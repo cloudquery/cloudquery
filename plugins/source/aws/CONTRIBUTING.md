@@ -18,7 +18,7 @@ the AWS service is already supported but is missing resource(s), you may skip to
 
 ### Add a New Recipe File
 
-Below is the process to follow for adding a new recipe. 
+The process to follow for adding a new recipe is:
 
 1. Add a new file under [codegen/recipes](codegen/recipes) called `myservice.go`.
 2. Inside the new file, add a function called `MyServiceResources()` that returns `[]*Resource`.
@@ -37,9 +37,14 @@ following fields defined:
      `client.ServiceAccountRegionMultiplexer("my-service")` is usually the correct multiplexer to use. Look in
      [client/data/partition_service_region.json](client/data/partition_service_region.json) for the correct service name
      to use.
- 4. `Struct`
+ 4. `Struct`: This should be a pointer to the struct that will be synced to the destination. CloudQuery's
+     plugin-sdk code generation will read the fields of this struct and convert it to a `Table` instance with appropriate
+     column types.
+     
+     Deciding which struct to use is key. To find the right struct, explore the return types of the SDK functions provided
+     by the [AWS Go SDK](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2). 
 
-If all the resources share the same value for a field, as is usually the case for `Service` and `Multiplex`, our 
+If all the resources share the same value for a field (as is often the case for `Service` and `Multiplex`), our 
 convention is to set these properties in a loop after defining the slice, e.g.
 
 ```
