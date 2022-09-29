@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/source/k8s/**"
+      - ".github/workflows/source_k8s.yml"
   push:
     branches:
       - main
