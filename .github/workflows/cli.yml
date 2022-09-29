@@ -1,20 +1,18 @@
-name: Destination Plugin Test Workflow
+name: CLI Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
-  push:
-    branches:
-      - main
+      - "cli/**"
+      - ".github/workflows/cli.yml"
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./cli
 
 jobs:
-  plugins-destination-test:
-    name: "plugins/destination/test"
+  build-lint-and-test:
+    name: cli
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
@@ -22,7 +20,6 @@ jobs:
         with:
           go-version: 1.19.1
           cache: true
-          cache-dependency-path: plugins/destination/test/go.sum
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
@@ -30,7 +27,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.49.0
-          args: "--config ${GITHUB_WORKSPACE}/plugins/.golangci.yml"
+          args: "--config ${GITHUB_WORKSPACE}/cli/.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
