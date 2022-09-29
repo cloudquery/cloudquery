@@ -74,7 +74,7 @@ func ELBv2Resources() []*Resource {
 					{
 						Name:     "listener_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -88,7 +88,7 @@ func ELBv2Resources() []*Resource {
 					{
 						Name:     "load_balancer_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -125,7 +125,7 @@ func ELBv2Resources() []*Resource {
 					{
 						Name:     "target_group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

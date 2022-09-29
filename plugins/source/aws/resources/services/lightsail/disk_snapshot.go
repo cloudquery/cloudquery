@@ -26,7 +26,7 @@ func DiskSnapshot() *schema.Table {
 			{
 				Name:     "disk_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "tags",

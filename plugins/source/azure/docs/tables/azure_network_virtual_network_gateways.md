@@ -12,7 +12,7 @@ The following tables depend on `azure_network_virtual_network_gateways`:
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|network_virtual_network_id|UUID|
+|network_virtual_network_id|String|
 |extended_location|JSON|
 |ip_configurations|JSON|
 |gateway_type|String|

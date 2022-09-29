@@ -12,7 +12,7 @@ The following tables depend on `azure_cdn_rule_sets`:
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|cdn_profile_id|UUID|
+|cdn_profile_id|String|
 |provisioning_state|String|
 |deployment_status|String|
 |id (PK)|String|

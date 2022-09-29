@@ -23,8 +23,8 @@ func virtualNetworkRules() *schema.Table {
 			},
 			{
 				Name:     "sql_server_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "virtual_network_subnet_id",

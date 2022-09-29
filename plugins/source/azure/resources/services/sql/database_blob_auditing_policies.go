@@ -23,8 +23,8 @@ func databaseBlobAuditingPolicies() *schema.Table {
 			},
 			{
 				Name:     "sql_database_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "kind",

@@ -26,7 +26,7 @@ func UserPoolIdentityProviders() *schema.Table {
 			{
 				Name:     "user_pool_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "attribute_mapping",

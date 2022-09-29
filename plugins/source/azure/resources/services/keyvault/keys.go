@@ -23,8 +23,8 @@ func keys() *schema.Table {
 			},
 			{
 				Name:     "keyvault_vault_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "kid",

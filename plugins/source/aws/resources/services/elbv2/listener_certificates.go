@@ -26,7 +26,7 @@ func ListenerCertificates() *schema.Table {
 			{
 				Name:     "listener_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "certificate_arn",

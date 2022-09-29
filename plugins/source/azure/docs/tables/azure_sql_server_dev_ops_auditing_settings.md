@@ -10,7 +10,7 @@ This table depends on [`azure_sql_servers`](azure_sql_servers.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|sql_server_id|UUID|
+|sql_server_id|String|
 |system_data|JSON|
 |is_azure_monitor_target_enabled|Bool|
 |state|String|

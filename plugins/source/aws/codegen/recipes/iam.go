@@ -138,12 +138,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "group_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "policy_document",
@@ -260,7 +260,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "role_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "policy_document",
@@ -353,12 +353,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name: "last_used",
@@ -380,12 +380,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},
@@ -399,12 +399,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},
@@ -418,12 +418,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "policy_document",

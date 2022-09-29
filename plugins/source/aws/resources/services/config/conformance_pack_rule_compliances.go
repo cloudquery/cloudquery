@@ -26,7 +26,7 @@ func ConformancePackRuleCompliances() *schema.Table {
 			{
 				Name:     "conformance_pack_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "compliance_type",
