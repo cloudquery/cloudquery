@@ -17,7 +17,7 @@ require (
 	cloud.google.com/go/secretmanager v1.7.0
 	cloud.google.com/go/serviceusage v1.2.0
 	cloud.google.com/go/storage v1.27.0
-	github.com/cloudquery/plugin-sdk v0.10.2
+	github.com/cloudquery/plugin-sdk v0.11.0
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0
@@ -28,6 +28,7 @@ require (
 	google.golang.org/api v0.98.0
 	google.golang.org/genproto v0.0.0-20220927151529-dcaddaf36704
 	google.golang.org/grpc v1.49.0
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -68,7 +69,6 @@ require (
 	golang.org/x/tools v0.1.12 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

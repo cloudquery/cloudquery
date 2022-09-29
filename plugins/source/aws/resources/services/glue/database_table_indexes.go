@@ -26,7 +26,7 @@ func DatabaseTableIndexes() *schema.Table {
 			{
 				Name:     "database_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("database_arn"),
+				Resolver: schema.ParentColumnResolver("database_arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -34,7 +34,7 @@ func DatabaseTableIndexes() *schema.Table {
 			{
 				Name:     "database_table_name",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("name"),
+				Resolver: schema.ParentColumnResolver("name"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

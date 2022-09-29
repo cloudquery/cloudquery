@@ -24,7 +24,7 @@ func secrets() *schema.Table {
 			{
 				Name:     "keyvault_vault_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "id",

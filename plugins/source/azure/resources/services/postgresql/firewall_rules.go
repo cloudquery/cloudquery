@@ -23,7 +23,7 @@ func firewallRules() *schema.Table {
 			{
 				Name:     "postgresql_server_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "start_ip_address",

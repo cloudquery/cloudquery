@@ -24,7 +24,7 @@ func authorizationRules() *schema.Table {
 			{
 				Name:     "servicebus_topic_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "rights",

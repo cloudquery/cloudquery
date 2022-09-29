@@ -26,7 +26,7 @@ func WorkGroupPreparedStatements() *schema.Table {
 			{
 				Name:     "work_group_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "description",

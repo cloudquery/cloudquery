@@ -23,7 +23,7 @@ func endpoints() *schema.Table {
 			{
 				Name:     "cdn_profile_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "host_name",

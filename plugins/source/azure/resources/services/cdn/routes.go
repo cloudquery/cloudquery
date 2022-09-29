@@ -23,7 +23,7 @@ func routes() *schema.Table {
 			{
 				Name:     "cdn_endpoint_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "custom_domains",

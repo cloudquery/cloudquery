@@ -24,7 +24,7 @@ func managedDatabases() *schema.Table {
 			{
 				Name:     "sql_managed_instance_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "collation",
