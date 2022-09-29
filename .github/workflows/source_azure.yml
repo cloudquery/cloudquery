@@ -1,21 +1,21 @@
-name: Source Plugin AWS Workflow
+name: Source Plugin Azure Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/source/aws/**"
-      - ".github/workflows/source_aws.yml"
+      - "plugins/source/azure/**"
+      - ".github/workflows/source_azure.yml"
   push:
     branches:
       - main
 
 defaults:
   run:
-    working-directory: ./plugins/source/aws
+    working-directory: ./plugins/source/azure
 
 jobs:
-  plugins-destination-aws:
-    name: "plugins/source/aws"
+  plugins-destination-azure:
+    name: "plugins/source/azure"
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
@@ -29,7 +29,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.49.0
-          working-directory: plugins/source/aws
+          working-directory: plugins/source/azure
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
