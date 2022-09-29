@@ -6,12 +6,10 @@ import (
 
 var storageResources = []*Resource{
 	{
-		SubService:     "buckets",
-		Struct:         &storage.BucketAttrs{},
-		NewFunction:    storage.NewClient,
-		ResponseStruct: &storage.BucketAttrs{},
-		SkipFetch:      true,
-		SkipMock:       true,
+		SubService: "buckets",
+		Struct:     &storage.BucketAttrs{},
+		SkipFetch:  true,
+		SkipMock:   true,
 	},
 }
 
