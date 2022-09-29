@@ -8,9 +8,31 @@ There are three main steps to adding a new AWS resource:
  2. [Add a code generation recipe](#2-add-a-code-generation-recipe)
  3. [Writing the resolver function to fetch the resource using the AWS SDK](#3-setting-up-the-resource)
 
+As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) ensure API calls exist to 
+list/describe the desired resource, and make note of:
+
+- to which aws service the resource belongs
+- the schema of the returned object(s)
+
 ## 1. Add Interfaces for the AWS SDK Function(s) that Fetch the Resource
 
+### Before you Start
 
+Inside the root of this repository, run:
+
+```shell
+make install-tools
+```
+
+This will install `mockgen` and any other tools necessary to complete the process.
+
+### Create the Service Interface
+
+1. Create the service interface (or add new functions to an existing one) in [client/services.go](../../client/services.go)
+2. Add a `go:generate mockgen` comment if there isn't one already
+3. Inside the [client](client) directory, run `go generate` to generate mocks from the interfaces.
+4. Add the service to the `Services` struct in [client/client.go](client/client.go).
+5. Also add an instantiation for the service inside `func initServices` in [client/client.go](client/client.go).
 
 ## 2. Add a Code Generation Recipe
 
@@ -50,9 +72,10 @@ following fields defined:
      column types.
      
      Deciding which struct to use takes some practice. To find the right struct, explore the return types of the SDK functions provided
-     by the [AWS Go SDK](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2). Often there will be a `Get` or `Describe`
-     call that returns a `GetResourceOutput` (or similar) struct. Sometimes this Output struct can be used directly.
-     Other times, the Output struct will contain reference an inner type, which should then be used for defining the Resource.
+     by the [AWS Go SDK](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) (and that you created interface functions for in Step 1). 
+     Often there will be a `Get` or `Describe` call that returns a `GetResourceOutput` (or similar) struct. Sometimes 
+     this Output struct can be used directly. Other times, the Output struct will contain reference an inner type, which
+     should then be used for defining the Resource.
 
 #### All Available Resource Fields
 
@@ -63,7 +86,7 @@ which you may use as a further reference about what each field does.
 #### Common Fields
 
 If all the resources share the same value for a field (as is often the case for `Service` and `Multiplex`), our 
-convention is to set these properties in a loop after defining the slice, e.g.
+convention is to reduce boilerplate by setting these properties in a loop after defining the resources slice, e.g.
 
 ```go
 // set default values
@@ -75,7 +98,8 @@ for _, r := range resources {
 
 ### Run Code Generation
 
-With the recipe file added and some resources defined, you are ready to run codegen. Inside [codegen](codegen), run:
+With the recipe file added and some resources defined, you are ready to run codegen. Inside the [codegen](codegen) 
+directory, run:
 
 ```shell
 go run main.go
@@ -98,10 +122,17 @@ set up the resource. This involves two steps: refining the codegen recipe, and w
    following signature:
    ```go
    func fetchMyResource(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-   	// TODO: implement this
+       // TODO: implement this
    }
    ```
-   
+   You may use a type assertion on `meta` to obtain a reference to your interface functions, e.g.:
+   ```go
+   svc := meta.(*client.Client).Services().MyService
+   ```
+   With this in hand, complete the resolver function to fetch all resources. After resources are retrieved, send them
+   to the `res` channel for the SDK to deliver to all destinations. 
+
+We recommend looking at other resources similar to yours to get an idea of what needs to be done in this step.  
 
 #### Implementing Resolver Functions
 
@@ -109,3 +140,18 @@ A few important things to note when adding functions that call the AWS API:
 
 - If possible, always use an API call that allows you to fetch many resources at once
 - Take pagination into account. Use `Paginator`s if the AWS service supports it. Ensure you fetch **all** the resources.
+- Columns may also have their own resolver functions (not covered in this guide). This may be used for simple 
+  transformations or when additional calls can help add further context to the table.
+- Many resources require a `List` call, followed by a `Describe` call. Look for examples using `PreResourceResolver` 
+  to see the canonical way of implementing this. (In short: the table resolver function will call `List`, while
+  the `PreResourceResolver`, called once per resource, will call `Describe`)
+
+
+## General Tips
+
+- Keep transformations to a minimum. As far as possible, we aim to deliver an accurate reflection of what the AWS API provides.
+- We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns. 
+- For consistency, make sure the resource has an `ARN` stored in a column named `arn`. Sometimes this means using the 
+  AWS SDK to generate an ARN for the resource.
+- If you get stuck or need help, feel free to reach out on [Discord](https://www.cloudquery.io/discord). We are a 
+  friendly community and would love to help!
