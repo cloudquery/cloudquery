@@ -1,6 +1,9 @@
 name: Wait for all required workflows to pass
 
-on: [pull_request, push]
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   wait_for_required_workflows:
