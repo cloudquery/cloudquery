@@ -16,27 +16,7 @@ The core responsibilities of a source plugin:
 - Extracting data from the supported APIs and transform them into the defined schema.
 - Send the data as JSON to the CLI for further processing and storage at the defined destination plugins.
 
-### Configuration
-
-Following is all available configuration for source plugins:
-
-```yaml
-kind: source
-spec:
-  ## Required. name of the plugin (should match any name available in list of source plugins)
-  name: SOURCE_PLUGIN_NAME
-
-  ## Optional. Default: latest. It is highly recommended to pin to a specific version in production.
-  # version: latest
-
-  ## Optional. Default: github. Available: local, grpc.
-  ## By default it will search for plugins hosted on github.
-  # registry: github
-
-  ## Optional. Default: "cloudquery/SOURCE_PLUGIN_NAME".
-  ## For community plugin name and path will be the same i.e: ""
-  # path: cloudquery/SOURCE_PLUGIN_NAME
-```
+See [Configuration Reference](../reference/source_spec)
 
 ## Destination Plugin
 
@@ -45,3 +25,5 @@ The core responsibilities of a destination plugin:
 - Authenticate with the destination (such as database, message queue, storage).
 - Auto-migrate the schemas defined by the source plugins.
 - Save each incoming json object in the appropriate table.
+
+See [Configuration Reference](../reference/destination_spec)

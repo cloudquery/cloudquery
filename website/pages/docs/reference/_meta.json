@@ -1,3 +1,5 @@
 {
+  "source_spec": "Source Spec",
+  "destination_spec": "Destination Spec",
   "cli": "CLI"
 }
