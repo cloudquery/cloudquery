@@ -11,7 +11,7 @@ defaults:
     working-directory: ./cli
 
 jobs:
-  build_lint_and_test:
+  build-lint-and-test:
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
