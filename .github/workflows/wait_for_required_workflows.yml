@@ -15,16 +15,15 @@ jobs:
           fetch-depth: 2 # OR "2" -> To retrieve the preceding commit.
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v31
+        uses: tj-actions/changed-files@v28
         with:
           dir_names: true
       - uses: actions/github-script@v6
         env:
           DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
-          REF: ${{ github.ref }}
         with:
           script: |
-            const { REF, DIRS } = process.env
+            const { DIRS: dirs } = process.env
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 15
             let actions = ["cli",
@@ -43,7 +42,7 @@ jobs:
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
                            ]
-            actions = actions.filter(item => DIRS.includes(item))
+            actions = actions.filter(item => dirs.includes(item))
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
@@ -52,7 +51,7 @@ jobs:
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
                 repo: 'cloudquery',
-                ref: context.sha,
+                ref: context.payload.pull_request.head.sha,
                 status: 'completed',
                 per_page: 100
               })
@@ -65,12 +64,14 @@ jobs:
                   actions = actions.filter(action => action !== item.name)
                 }
               })
-              await new Promise(r => setTimeout(r, 1000));
+              if (actions.length === 0) {
+                console.log("Done waiting for actions")
+                return
+              }
+              
+              await new Promise(r => setTimeout(r, 5000));
               now = new Date().getTime()
             }
-            if (actions.length === 0) {
-              console.log("No actions to wait for")
-              return
-            } else {
-              throw new Error(`Timed out waiting for ${actions.join(', ')}`)
-            }
+            throw new Error(`Timed out waiting for ${actions.join(', ')}`)
+
+            
