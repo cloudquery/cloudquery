@@ -22,7 +22,7 @@ As AWS [outlined at their 2022 Re:Inforce Security Conference](https://www.youtu
 
 In this blog post, we’ll focus on how to encrypt everything in multi-account AWS environments and how to make encryption decisions with your unique environment and data security needs in mind.
 
-In follow-up blog posts of this series on encryption, we’ll follow up with information on how CloudQuery can help shortly after the release of CloudQuery v1 and other blog posts deep-diving into encryption and data security in cloud.
+In follow-up blog posts of this series on encryption, we’ll follow up with information on how CloudQuery can help, as well as further posts deep-diving into encryption and data security in the cloud.
 
 ## Multi-Account Access and Encryption in AWS
 
