@@ -416,8 +416,17 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *S
 	var awsCfg aws.Config
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion(defaultRegion),
-		config.WithRetryer(newRetryer(logger, awsConfig.MaxRetries, awsConfig.MaxBackoff)),
 	}
+
+	maxRetries := 10
+	if awsConfig.MaxRetries != nil {
+		maxRetries = *awsConfig.MaxRetries
+	}
+	maxBackoff := 30
+	if awsConfig.MaxBackoff != nil {
+		maxBackoff = *awsConfig.MaxBackoff
+	}
+	configFns = append(configFns, config.WithRetryer(newRetryer(logger, maxRetries, maxBackoff)))
 
 	if account.DefaultRegion != "" {
 		// According to the docs: If multiple WithDefaultRegion calls are made, the last call overrides the previous call values

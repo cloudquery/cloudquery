@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/mitchellh/mapstructure"
 )
@@ -40,7 +41,7 @@ func subscriptionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	item := summary.(types.Subscription)
-	s := Subscription{
+	s := models.Subscription{
 		SubscriptionArn: item.SubscriptionArn,
 		Owner:           item.Owner,
 		Protocol:        item.Protocol,

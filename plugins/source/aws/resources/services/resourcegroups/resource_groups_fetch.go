@@ -5,18 +5,19 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroups"
-	"github.com/aws/aws-sdk-go-v2/service/resourcegroups/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func fetchResourcegroupsResourceGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	return client.ListAndDetailResolver(ctx, meta, res, listResourceGroups, resourceGroupDetail)
 }
+
 func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().ResourceGroups
-	group := resource.Item.(ResourceGroupWrapper)
+	group := resource.Item.(models.ResourceGroupWrapper)
 	input := resourcegroups.GetTagsInput{
 		Arn: group.GroupArn,
 	}
@@ -27,16 +28,6 @@ func resolveResourcegroupsResourceGroupTags(ctx context.Context, meta schema.Cli
 		return err
 	}
 	return resource.Set(c.Name, output.Tags)
-}
-
-// ResourceGroupWrapper fields are extracted from types.Group and types.ResourceQuery
-// TODO: Use embedded structs once https://github.com/cloudquery/plugin-sdk/pull/75 is merged
-type ResourceGroupWrapper struct {
-	GroupArn    *string
-	Name        *string
-	Description *string
-	Query       *string
-	Type        types.QueryType
 }
 
 func listResourceGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
@@ -83,11 +74,8 @@ func resourceGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsCha
 		errorChan <- err
 		return
 	}
-	resultsChan <- ResourceGroupWrapper{
-		GroupArn:    groupResponse.Group.GroupArn,
-		Name:        groupResponse.Group.Name,
-		Description: groupResponse.Group.Description,
-		Query:       output.GroupQuery.ResourceQuery.Query,
-		Type:        output.GroupQuery.ResourceQuery.Type,
+	resultsChan <- models.ResourceGroupWrapper{
+		Group:         groupResponse.Group,
+		ResourceQuery: output.GroupQuery.ResourceQuery,
 	}
 }

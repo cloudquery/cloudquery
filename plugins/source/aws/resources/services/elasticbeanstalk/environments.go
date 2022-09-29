@@ -22,6 +22,11 @@ func Environments() *schema.Table {
 				},
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EnvironmentArn"),
+			},
+			{
 				Name:     "region",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSRegion,
@@ -78,11 +83,6 @@ func Environments() *schema.Table {
 				Name:     "endpoint_url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("EndpointURL"),
-			},
-			{
-				Name:     "environment_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EnvironmentArn"),
 			},
 			{
 				Name:     "environment_links",

@@ -24,7 +24,7 @@ func encryptionProtectors() *schema.Table {
 			{
 				Name:     "sql_server_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "kind",

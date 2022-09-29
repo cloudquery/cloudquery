@@ -1,12 +1,13 @@
 package recipes
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
-	"github.com/cloudquery/plugin-sdk/codegen"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"reflect"
 	"strings"
+
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
+	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func S3Resources() []*Resource {
@@ -14,7 +15,7 @@ func S3Resources() []*Resource {
 
 		{
 			SubService: "accounts",
-			Struct:     &s3.PublicAccessBlockConfigurationWrapper{},
+			Struct:     &models.PublicAccessBlockConfigurationWrapper{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -27,7 +28,7 @@ func S3Resources() []*Resource {
 		},
 		{
 			SubService: "buckets",
-			Struct:     &s3.WrappedBucket{},
+			Struct:     &models.WrappedBucket{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,

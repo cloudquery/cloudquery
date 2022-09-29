@@ -1,5 +1,5 @@
 # Table: aws_ec2_regional_config
-Ec2 Regional Config defines common default configuration for ec2 service
+
 
 The composite primary key for this table is (**account_id**, **region**).
 

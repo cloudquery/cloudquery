@@ -37,7 +37,7 @@ type Resource struct {
 	RequestStruct interface{}
 	// RequestStructName
 	RequestStructName string
-	// RequestStructFields is the snippet that fills in in the request struct
+	// RequestStructFields is the snippet that fills in the request struct
 	RequestStructFields string
 	// ResponseStruct
 	ResponseStruct interface{}
@@ -77,7 +77,7 @@ type Resource struct {
 	MockImports []string
 	// ProtobufImport path to protobuf struct for this resource/service
 	ProtobufImport string
-	// Dont generate fetch
+	// Don't generate fetch
 	SkipFetch bool
 	// SkipFields fields in go struct to skip when generating the table from the go struct
 	SkipFields []string

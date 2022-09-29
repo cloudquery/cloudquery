@@ -24,6 +24,14 @@ func TaskDefinitions() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("TaskDefinitionArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: resolveEcsTaskDefinitionTags,
@@ -132,11 +140,6 @@ func TaskDefinitions() *schema.Table {
 				Name:     "status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status"),
-			},
-			{
-				Name:     "task_definition_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("TaskDefinitionArn"),
 			},
 			{
 				Name:     "task_role_arn",

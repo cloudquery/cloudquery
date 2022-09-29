@@ -8,13 +8,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2"
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/wafv2/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type WebACLWrapper struct {
-	*types.WebACL
-	LoggingConfiguration *types.LoggingConfiguration
-}
 
 func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -58,9 +54,9 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 				webAclLoggingConfiguration = loggingConfigurationOutput.LoggingConfiguration
 			}
 
-			res <- &WebACLWrapper{
-				webAclOutput.WebACL,
-				webAclLoggingConfiguration,
+			res <- &models.WebACLWrapper{
+				WebACL:               webAclOutput.WebACL,
+				LoggingConfiguration: webAclLoggingConfiguration,
 			}
 		}
 
@@ -72,7 +68,7 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 	return nil
 }
 func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	webACL := resource.Item.(*WebACLWrapper)
+	webACL := resource.Item.(*models.WebACLWrapper)
 
 	cl := meta.(*client.Client)
 	service := cl.Services().WafV2
@@ -109,7 +105,7 @@ func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.Clien
 	return resource.Set(c.Name, resourceArns)
 }
 func resolveWebACLTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	webACL := resource.Item.(*WebACLWrapper)
+	webACL := resource.Item.(*models.WebACLWrapper)
 
 	cl := meta.(*client.Client)
 	service := cl.Services().WafV2

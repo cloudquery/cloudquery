@@ -24,6 +24,14 @@ func ResourceGroups() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("GroupArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: resolveResourcegroupsResourceGroupTags,

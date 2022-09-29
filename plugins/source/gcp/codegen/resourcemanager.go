@@ -2,6 +2,7 @@ package codegen
 
 import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	cloudresourcemanager "google.golang.org/api/cloudresourcemanager/v3"
 	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 )
 
@@ -17,17 +18,17 @@ var resourceManagerResources = []*Resource{
 		UnimplementedServer: &pb.UnimplementedFoldersServer{},
 	},
 	{
-		SubService:          "projects",
-		Struct:              &pb.Project{},
-		NewFunction:         resourcemanager.NewProjectsClient,
-		RequestStruct:       &pb.ListProjectsRequest{},
-		ResponseStruct:      &pb.ListProjectsResponse{},
-		RegisterServer:      pb.RegisterProjectsServer,
-		ListFunction:        (&pb.UnimplementedProjectsServer{}).ListProjects,
-		UnimplementedServer: &pb.UnimplementedProjectsServer{},
-		SkipFetch:           true,
-		SkipMock:            true,
-		SkipFields:          []string{"ProjectId"},
+		SubService: "projects",
+		Struct:     &pb.Project{},
+		SkipFetch:  true,
+		SkipMock:   true,
+		SkipFields: []string{"ProjectId"},
+	},
+	{
+		SubService: "project_policies",
+		Struct:     &cloudresourcemanager.Policy{},
+		SkipFetch:  true,
+		SkipMock:   true,
 	},
 }
 

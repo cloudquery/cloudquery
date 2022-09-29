@@ -12,6 +12,7 @@ The following tables depend on `aws_elasticbeanstalk_environments`:
 | Name          | Type          |
 | ------------- | ------------- |
 |account_id (PK)|String|
+|arn|String|
 |region|String|
 |tags|JSON|
 |id (PK)|String|
@@ -23,7 +24,6 @@ The following tables depend on `aws_elasticbeanstalk_environments`:
 |date_updated|Timestamp|
 |description|String|
 |endpoint_url|String|
-|environment_arn|String|
 |environment_links|JSON|
 |environment_name|String|
 |health|String|
