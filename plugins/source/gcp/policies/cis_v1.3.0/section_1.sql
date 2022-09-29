@@ -4,20 +4,21 @@
 \echo "Executing CIS V1.3.0 Section 1"
 \set check_id '1.1'
 \echo "Executing check 1.1"
-\echo "Ensure that corporate login credentials are used (Automated)"
+\echo "Ensure that Corporate Login Credentials are Used (Manual)"
 \echo "needs to list folders and organizations which is currently not supported" -- TODO
 -- MANUAL
 \set check_id '1.2'
 \echo "Executing check 1.2"
-\echo "Ensure that multi-factor authentication is enabled for all non-service accounts (Manual)"
+\echo "Ensure that Multi-Factor Authentication is 'Enabled' for All NonService Accounts (Manual)"
 \ir ../queries/manual.sql
 -- MANUAL
 \set check_id '1.3'
 \echo "Executing check 1.3"
-\echo "Ensure that Security Key Enforcement is enabled for all admin accounts (Manual)"
+\echo "Ensure that Security Key Enforcement is Enabled for All Admin Accounts (Manual)"
 \ir ../queries/manual.sql
 \set check_id '1.4'
 \echo "Executing check 1.4"
+\echo "Ensure That There Are Only GCP-Managed Service Account Keys for Each Service Account (Automated)"
 \ir ../queries/iam/managed_service_account_keys.sql
 \set check_id '1.5'
 \echo "Executing check 1.5"
