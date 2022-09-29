@@ -1,58 +1,76 @@
 # AWS Source Plugin Contribution Guide
 
-## Adding a new resource
+There are two main steps to adding a new AWS resource:
+ 1. Add a code generation recipe 
+ 2. Writing the resolver function to fetch the resource using the AWS SDK
 
-Some information can be found in the [docs for developing a new provider](https://docs.cloudquery.io/docs/developers/developing-new-provider).
+## Add a Code Generation Recipe
 
-As a prerequisite, in [aws-sdk-go-v2](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2) ensure API calls exist to list/describe the desired resource, and make note of:
+Every supported AWS service has a recipe file under [codegen/recipes](codegen/recipes). For example, all ECS resources
+are listed in [codegen/recipes/ecs.go](codegen/recipes/ecs.go). 
 
-- to which aws service the resource belongs
-- the schema of the returned object(s)
+In the following examples, we will use the fictional `MyService` AWS service as an example. We recommend 
+taking a look at a few examples in [codegen/recipes](codegen/recipes) first, as these steps will make more sense with 
+some examples in mind. 
+
+If you are adding a service that needs a new recipe, see [Add a New Recipe File](#add-a-new-recipe-file). Otherwise, if
+the AWS service is already supported but is missing resource(s), you may skip to [Add a Resource to a Recipe](#add-a-resource-to-a-recipe).
+
+### Add a New Recipe File
+
+Below is the process to follow for adding a new recipe. 
+
+1. Add a new file under [codegen/recipes](codegen/recipes) called `myservice.go`.
+2. Inside the new file, add a function called `MyServiceResources()` that returns `[]*Resource`.
+3. Call the function from [codegen/main.go](codegen/main.go) by adding
+   `resources = append(resources, recipes.MyServiceResources()...)`
+4. Define the list of resources to be generated and return it inside this function. See
+   [Add a Resource to a Recipe](#add-a-resource-to-a-recipe) for more details.
+
+### Add a Resource to a Recipe
+
+`MyServiceResources()` should return a slice of `*Resource` instances. Each resource should, at a minimum, have the 
+following fields defined:
+ 1. `Service`: This will become the table prefix, and will usually be the same as the filename you chose for the recipe.
+ 2. `SubService`: This will be the final part of the table name, e.g. `aws_myservice_subservice`
+ 3. `Multiplex`: Most AWS services have resources defined per account and region. In such cases, 
+     `client.ServiceAccountRegionMultiplexer("my-service")` is usually the correct multiplexer to use. Look in
+     [client/data/partition_service_region.json](client/data/partition_service_region.json) for the correct service name
+     to use.
+ 4. `Struct`
+
+If all the resources share the same value for a field, as is usually the case for `Service` and `Multiplex`, our 
+convention is to set these properties in a loop after defining the slice, e.g.
+
+```
+// set default values
+for _, r := range resources {
+    r.Service = "myservice"
+    r.Multiplex = `client.ServiceAccountRegionMultiplexer("my-service")`
+}
+```
+
+### Run Code Generation
+
+With the recipe file added and some resources defined, you are ready to run codegen. Inside [codegen](codegen), run:
+
+```shell
+go run main.go
+```
+
+This will update all resources and generate a new directory for your service under [resources/services](resources/services).
 
 ## Setting up the service
 
-If the service to which the resource belongs has not been used before in the AWS source plugin, there are a few steps that need to be done to configure it.
-
-1. Create the service interface in [client/services.go](../../client/services.go)
-   - Don't forget to add the new service interface name to the go:generate comment.
-1. Add the service to the `Services` struct in the [client/client.go](../../client/client.go)
-1. Init the service in the `initServices` function in [client/client.go](../../client/client.go)
-1. Run `go generate client/services.go` to create a mock for your new service. This will update [client/mocks/mock\_\<service\>.go](../../client/mocks) automatically
-
-> If you get an error about not being able to find `mockgen`, run `make install-tools` to install it. If it still fails, run `export PATH=${PATH}:`go env GOPATH`/bin` in you shell to set up your `PATH` environment properly
-
-> You might need to update an existing AWS client by running `go get github.com/aws/aws-sdk-go-v2/service/<service-name>@latest` and then `go mod tidy`
-
 ## Setting up the resource
-
-### Skeleton
-
-1. In [client/services.go](../../client/services.go), update the service interface and add the method(s) that you will be using to fetch the data from the aws sdk.
-1. Run `go generate client/services.go` to create a mock for your new methods. This will update [client/mocks/mock\_\<service\>.go](../../client/mocks) automatically.
-1. Create a file under [resources/services/\<service\>](../../resources/services) that follows the pattern of `<resource>.go`.
-1. In that file, create a function that returns a `*schema.Table`.
-1. In [resources/plugin/plugin.go](../../resources/plugin/plugin.go), add a mapping between the function you just created and the name of the resource that will be used in the config YML file.
-1. Add a test file at [resources/services/\<service\>/\<resource\>\_mock_test.go](../../resources/services). Follow other examples to create a test for the resource.
-1. Run `go run main.go docs ./docs/tables` to generate the documentation for the new resource.
 
 ### Implementation
 
-Now that the skeleton has been set up, you can start to actually implement the resource. This consists of two parts:
-
-1. Defining the schema
-1. Implementing resolver functions
-
 #### Defining the schema
-
-It is recommended that you look at a few existing resources as examples and also read through the comments on the source code for the [Table](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/table.go) and [Column](https://github.com/cloudquery/cq-provider-sdk/blob/main/provider/schema/column.go) implementations for details.
-
-For simple fields, the SDK can directly resolve them into `Column`s for you, so all you need to do is specify the `Name` and the `Type`.
-
-For complex fields or fields that require further API calls, you can define your own `Resolver` for the `Column`.
 
 #### Implementing Resolver Functions
 
 A few important things to note when adding functions that call the AWS API:
 
 - If possible, always use an API call that allows you to fetch many resources at once
-- Take pagination into account. Ensure you fetch **all** of the resources
+- Take pagination into account. Ensure you fetch **all** the resources. Prefer using Paginators if the resource supports it.
