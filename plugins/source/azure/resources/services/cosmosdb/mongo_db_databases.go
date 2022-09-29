@@ -24,7 +24,7 @@ func mongoDBDatabases() *schema.Table {
 			{
 				Name:     "cosmosdb_account_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "resource",

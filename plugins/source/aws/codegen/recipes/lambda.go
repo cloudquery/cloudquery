@@ -62,7 +62,7 @@ func LambdaResources() []*Resource {
 					{
 						Name:     "function_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -76,7 +76,7 @@ func LambdaResources() []*Resource {
 					{
 						Name:     "function_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "arn",
@@ -96,7 +96,7 @@ func LambdaResources() []*Resource {
 					{
 						Name:     "function_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -110,7 +110,7 @@ func LambdaResources() []*Resource {
 					{
 						Name:     "function_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -124,7 +124,7 @@ func LambdaResources() []*Resource {
 					{
 						Name:     "function_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -161,7 +161,7 @@ func LambdaResources() []*Resource {
 					{
 						Name:     "layer_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 			Relations: []string{
@@ -178,12 +178,12 @@ func LambdaResources() []*Resource {
 					{
 						Name:     "layer_version_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "layer_version",
 						Type:     schema.TypeInt,
-						Resolver: `schema.ParentResourceFieldResolver("version")`,
+						Resolver: `schema.ParentColumnResolver("version")`,
 					},
 				}...),
 		},

@@ -26,7 +26,7 @@ func RestApiDocumentationVersions() *schema.Table {
 			{
 				Name:     "rest_api_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "arn",

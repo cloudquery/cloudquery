@@ -23,7 +23,7 @@ func replications() *schema.Table {
 			{
 				Name:     "container_registry_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "provisioning_state",

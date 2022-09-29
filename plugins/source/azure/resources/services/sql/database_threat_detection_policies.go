@@ -24,7 +24,7 @@ func databaseThreatDetectionPolicies() *schema.Table {
 			{
 				Name:     "sql_database_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "location",

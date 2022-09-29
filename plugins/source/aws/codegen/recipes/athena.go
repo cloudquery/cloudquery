@@ -41,7 +41,7 @@ func AthenaResources() []*Resource {
 					{
 						Name:     "data_catalog_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
@@ -65,13 +65,13 @@ func AthenaResources() []*Resource {
 					{
 						Name:     "data_catalog_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("data_catalog_arn")`,
+						Resolver: `schema.ParentColumnResolver("data_catalog_arn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
 						Name:     "data_catalog_database_name",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("name")`,
+						Resolver: `schema.ParentColumnResolver("name")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
@@ -117,7 +117,7 @@ func AthenaResources() []*Resource {
 					{
 						Name:     "work_group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -131,7 +131,7 @@ func AthenaResources() []*Resource {
 					{
 						Name:     "work_group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -145,7 +145,7 @@ func AthenaResources() []*Resource {
 					{
 						Name:     "work_group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

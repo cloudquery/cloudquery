@@ -26,7 +26,7 @@ func ClusterParameters() *schema.Table {
 			{
 				Name:        "cluster_arn",
 				Type:        schema.TypeString,
-				Resolver:    schema.ParentResourceFieldResolver("cluster_arn"),
+				Resolver:    schema.ParentColumnResolver("cluster_arn"),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,

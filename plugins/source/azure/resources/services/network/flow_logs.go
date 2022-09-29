@@ -24,7 +24,7 @@ func flowLogs() *schema.Table {
 			{
 				Name:     "network_watcher_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "target_resource_id",
