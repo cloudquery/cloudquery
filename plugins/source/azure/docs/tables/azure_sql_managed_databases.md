@@ -13,7 +13,7 @@ The following tables depend on `azure_sql_managed_databases`:
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|sql_managed_instance_id|UUID|
+|sql_managed_instance_id|String|
 |collation|String|
 |status|String|
 |creation_date|Timestamp|

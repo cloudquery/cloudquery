@@ -10,7 +10,7 @@ This table depends on [`azure_logic_workflows`](azure_logic_workflows.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|logic_workflow_id|UUID|
+|logic_workflow_id|String|
 |storage_account_id|String|
 |service_bus_rule_id|String|
 |event_hub_authorization_rule_id|String|

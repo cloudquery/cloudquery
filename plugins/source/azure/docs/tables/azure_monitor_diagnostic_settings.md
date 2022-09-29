@@ -10,7 +10,7 @@ This table depends on [`azure_monitor_resources`](azure_monitor_resources.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|monitor_resource_id|UUID|
+|monitor_resource_id|String|
 |storage_account_id|String|
 |service_bus_rule_id|String|
 |event_hub_authorization_rule_id|String|

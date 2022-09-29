@@ -11,7 +11,7 @@ require (
 )
 
 require (
-	github.com/cloudquery/plugin-sdk v0.8.1
+	github.com/cloudquery/plugin-sdk v0.10.2
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
@@ -26,7 +26,6 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2 // indirect
-	github.com/iancoleman/strcase v0.2.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

@@ -165,8 +165,8 @@ func initColumns(table *codegen.TableDefinition, definition resourceDefinition) 
 	if definition.parent != "" {
 		columns = append(columns, codegen.ColumnDefinition{
 			Name:     definition.parent,
-			Type:     schema.TypeUUID,
-			Resolver: "schema.ParentIDResolver",
+			Type:     schema.TypeString,
+			Resolver: `schema.ParentResourceFieldResolver("id")`,
 		})
 	}
 

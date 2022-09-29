@@ -10,6 +10,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|state_transition_reason_time|Timestamp|
 |ami_launch_index|Int|
 |architecture|String|
 |block_device_mappings|JSON|

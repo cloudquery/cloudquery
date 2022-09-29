@@ -3,59 +3,12 @@ squashMergeAllowed: true
 mergeCommitAllowed: false
 deleteBranchOnMerge: true
 branchProtectionRules:
-- pattern: main
-  isAdminEnforced: false
-  requiredApprovingReviewCount: 1
-  requiresCodeOwnerReviews: false
-  requiresStrictStatusChecks: true
-  requiredStatusCheckContexts:
-    - Validate PR title
-    - release-dry-run
-
-    - Linter (cli)
-    - Unit Tests (cli)
-    - Build (cli)
-
-    - Linter (plugins/source/aws)
-    - Unit Tests (plugins/source/aws)
-    - Build (plugins/source/aws)
-
-    - Linter (plugins/source/azure)
-    - Unit Tests (plugins/source/azure)
-    - Build (plugins/source/azure)
-
-    - Linter (plugins/source/cloudflare)
-    - Unit Tests (plugins/source/cloudflare)
-    - Build (plugins/source/cloudflare)
-
-    - Linter (plugins/source/digitalocean)
-    - Unit Tests (plugins/source/digitalocean)
-    - Build (plugins/source/digitalocean)
-
-    - Linter (plugins/source/gcp)
-    - Unit Tests (plugins/source/gcp)
-    - Build (plugins/source/gcp)
-
-    - Linter (plugins/source/github)
-    - Unit Tests (plugins/source/github)
-    - Build (plugins/source/github)
-
-    - Linter (plugins/source/heroku)
-    - Unit Tests (plugins/source/heroku)
-    - Build (plugins/source/heroku)
-
-    - Linter (plugins/source/k8s)
-    - Unit Tests (plugins/source/k8s)
-    - Build (plugins/source/k8s)
-
-    - Linter (plugins/source/okta)
-    - Unit Tests (plugins/source/okta)
-    - Build (plugins/source/okta)
-
-    - Linter (plugins/source/terraform)
-    - Unit Tests (plugins/source/terraform)
-    - Build (plugins/source/terraform)
-
-    - Linter (plugins/source/test)
-    - Unit Tests (plugins/source/test)
-    - Build (plugins/source/test)
+  - pattern: main
+    isAdminEnforced: false
+    requiredApprovingReviewCount: 1
+    requiresCodeOwnerReviews: false
+    requiresStrictStatusChecks: true
+    requiredStatusCheckContexts:
+      - validate-pr-title
+      - release-dry-run
+      - wait-for-required-workflows

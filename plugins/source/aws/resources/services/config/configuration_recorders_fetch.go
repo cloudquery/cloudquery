@@ -2,24 +2,13 @@ package config
 
 import (
 	"context"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type ConfigurationRecorderWrapper struct {
-	types.ConfigurationRecorder
-	StatusLastErrorCode        *string
-	StatusLastErrorMessage     *string
-	StatusLastStartTime        *time.Time
-	StatusLastStatus           types.RecorderStatus
-	StatusLastStatusChangeTime *time.Time
-	StatusLastStopTime         *time.Time
-	StatusRecording            bool
-}
 
 func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -52,7 +41,7 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 			}
 			if *s.Name == *configurationRecorder.Name {
 				configurationRecorderStatus = s
-				res <- ConfigurationRecorderWrapper{
+				res <- models.ConfigurationRecorderWrapper{
 					ConfigurationRecorder:      configurationRecorder,
 					StatusLastErrorCode:        configurationRecorderStatus.LastErrorCode,
 					StatusLastErrorMessage:     configurationRecorderStatus.LastErrorMessage,
@@ -72,6 +61,6 @@ func fetchConfigConfigurationRecorders(ctx context.Context, meta schema.ClientMe
 
 func generateConfigRecorderArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	cfg := resource.Item.(ConfigurationRecorderWrapper)
+	cfg := resource.Item.(models.ConfigurationRecorderWrapper)
 	return resource.Set(c.Name, cl.ARN("config", "config-recorder", *cfg.Name))
 }

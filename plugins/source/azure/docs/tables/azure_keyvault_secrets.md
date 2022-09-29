@@ -10,7 +10,7 @@ This table depends on [`azure_keyvault_vaults`](azure_keyvault_vaults.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|keyvault_vault_id|UUID|
+|keyvault_vault_id|String|
 |id (PK)|String|
 |attributes|JSON|
 |tags|JSON|

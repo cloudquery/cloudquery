@@ -29,6 +29,14 @@ func GroupScalingPolicies() *schema.Table {
 				Resolver: schema.ParentResourceFieldResolver("arn"),
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("PolicyARN"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "adjustment_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AdjustmentType"),
@@ -72,11 +80,6 @@ func GroupScalingPolicies() *schema.Table {
 				Name:     "min_adjustment_step",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("MinAdjustmentStep"),
-			},
-			{
-				Name:     "policy_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PolicyARN"),
 			},
 			{
 				Name:     "policy_name",

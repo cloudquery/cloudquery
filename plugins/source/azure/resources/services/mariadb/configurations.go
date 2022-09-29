@@ -22,8 +22,8 @@ func configurations() *schema.Table {
 			},
 			{
 				Name:     "mariadb_server_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "value",

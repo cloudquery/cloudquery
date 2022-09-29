@@ -23,8 +23,8 @@ func virtualNetworkGatewayConnections() *schema.Table {
 			},
 			{
 				Name:     "network_virtual_network_gateway_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "authorization_key",

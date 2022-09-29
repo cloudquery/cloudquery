@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sns/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -11,7 +11,7 @@ func SNSResources() []*Resource {
 
 		{
 			SubService: "subscriptions",
-			Struct:     &sns.Subscription{},
+			Struct:     &models.Subscription{},
 			SkipFields: []string{"SubscriptionArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -27,7 +27,7 @@ func SNSResources() []*Resource {
 
 		{
 			SubService: "topics",
-			Struct:     &sns.Topic{},
+			Struct:     &models.Topic{},
 			SkipFields: []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,

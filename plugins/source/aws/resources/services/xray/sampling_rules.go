@@ -24,6 +24,14 @@ func SamplingRules() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("SamplingRule.RuleARN"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "tags",
 				Type:     schema.TypeJSON,
 				Resolver: resolveXraySamplingRuleTags,
