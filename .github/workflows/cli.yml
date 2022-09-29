@@ -26,7 +26,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.49.0
-          args: "--config ${GITHUB_WORKSPACE}/cli/.golangci.yml"
+          working-directory: cli
       - name: Get dependencies
         run: go get -t -d ./...
       - name: Build
