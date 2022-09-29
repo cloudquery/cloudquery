@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/destination/postgresql/**"
+      - ".github/workflows/dest_postgresql.yml"
   push:
     branches:
       - main
