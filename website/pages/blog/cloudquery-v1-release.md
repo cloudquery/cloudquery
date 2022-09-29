@@ -27,7 +27,7 @@ Now, any CloudQuery source plugins will get support of new destinations plugins 
 
 Destinations are also designed in the same pluggable (gRPC) way, so it will be easy to develop community plugins and official plugins separately without bloating CloudQuery CLI.
 
-Last, but not least, with the upcoming new destinations we also support two new modes of operation: `overwrite` and `append-only`. Where previously we only supported `overwrite` mode, now you can achiveve history-like capabilities for compliance and other use cases in conjuction with new destinations for data-lakes and data-warehouses where storage is cheap.
+Last, but not least, with the upcoming new destinations we also support two new modes of operation: `overwrite` and `append-only`. Where previously we only supported `overwrite` mode, now you can achiveve history-like capabilities for compliance and other use cases in conjunction with new destinations for data-lakes and data-warehouses where storage is cheap.
 
 ## Improved SDK
 

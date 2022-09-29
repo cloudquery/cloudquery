@@ -488,7 +488,7 @@ Yeah, it's a good question if you want to store them daily or just query directl
 
 **[00:45:12.170] - Alex DeBrie**
 
-Yeah, cool. What about the third idea? Currently, CloudQuery is a pull-based system. What about a more event-driven push-based system where if I create an ECT resource, maybe you guys hook into my Cloud Trail and immediately ingest that in? I imagine that takes a lot from the cloud providers to help you out there. But have you looked into more vent-driven and push-based updates?
+Yeah, cool. What about the third idea? Currently, CloudQuery is a pull-based system. What about a more event-driven push-based system where if I create an EC2 resource, maybe you guys hook into my Cloud Trail and immediately ingest that in? I imagine that takes a lot from the cloud providers to help you out there. But have you looked into more vent-driven and push-based updates?
 
 **[00:45:34.100] - Yevgeny Pats**
 
