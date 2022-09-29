@@ -10,7 +10,7 @@ This table depends on [`azure_storage_accounts`](azure_storage_accounts.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|storage_account_id|UUID|
+|storage_account_id|String|
 |cors|JSON|
 |default_service_version|String|
 |delete_retention_policy|JSON|

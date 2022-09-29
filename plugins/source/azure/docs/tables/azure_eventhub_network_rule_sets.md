@@ -10,7 +10,7 @@ This table depends on [`azure_eventhub_namespaces`](azure_eventhub_namespaces.md
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|eventhub_namespace_id|UUID|
+|eventhub_namespace_id|String|
 |trusted_service_access_enabled|Bool|
 |default_action|String|
 |virtual_network_rules|JSON|

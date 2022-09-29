@@ -10,7 +10,7 @@ This table depends on [`azure_cosmosdb_accounts`](azure_cosmosdb_accounts.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|cosmosdb_account_id|UUID|
+|cosmosdb_account_id|String|
 |resource|JSON|
 |options|JSON|
 |id (PK)|String|

@@ -8,7 +8,7 @@ The primary key for this table is **_cq_id**.
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|servicebus_authorization_rule_id|UUID|
+|servicebus_authorization_rule_id|String|
 |primary_connection_string|String|
 |secondary_connection_string|String|
 |alias_primary_connection_string|String|

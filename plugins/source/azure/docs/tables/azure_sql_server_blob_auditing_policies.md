@@ -10,7 +10,7 @@ This table depends on [`azure_sql_servers`](azure_sql_servers.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|sql_server_id|UUID|
+|sql_server_id|String|
 |state|String|
 |storage_endpoint|String|
 |storage_account_access_key|String|

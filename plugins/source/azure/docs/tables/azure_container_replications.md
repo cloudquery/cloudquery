@@ -10,7 +10,7 @@ This table depends on [`azure_container_registries`](azure_container_registries.
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|container_registry_id|UUID|
+|container_registry_id|String|
 |provisioning_state|String|
 |status|JSON|
 |id (PK)|String|

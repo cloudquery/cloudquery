@@ -10,7 +10,7 @@ This table depends on [`azure_web_apps`](azure_web_apps.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|web_app_id|UUID|
+|web_app_id|String|
 |enabled|Bool|
 |runtime_version|String|
 |unauthenticated_client_action|String|
