@@ -19,7 +19,7 @@ var createTablesTests = []*schema.Table{
 	},
 	{
 		Name: "simple_table",
-		Columns: schema.ColumnList{
+		Columns: []schema.Column{
 			{
 				Name: "id",
 				Type: schema.TypeUUID,
