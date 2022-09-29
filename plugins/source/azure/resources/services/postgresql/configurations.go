@@ -22,7 +22,7 @@ func configurations() *schema.Table {
 			},
 			{
 				Name:     "postgresql_server_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
