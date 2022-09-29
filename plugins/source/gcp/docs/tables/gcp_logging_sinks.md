@@ -17,7 +17,7 @@ The primary key for this table is **name**.
 |output_version_format|Int|
 |writer_identity|String|
 |include_children|Bool|
-|create_time|JSON|
-|update_time|JSON|
+|create_time|Timestamp|
+|update_time|Timestamp|
 |_cq_id|UUID|
 |_cq_fetch_time|Timestamp|

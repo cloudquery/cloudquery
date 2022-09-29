@@ -160,7 +160,7 @@ var computeResourcesList = []*Resource{
 		RequestStruct:   &pb.ListNetworksRequest{},
 		ResponseStruct:  &pb.NetworkList{},
 		ListFunction:    (&compute.NetworksClient{}).List,
-		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6", "i_pv_4": "ipv4"}),
+		NameTransformer: CreateReplaceTransformer(map[string]string{"ipv_6": "ipv6", "i_pv4": "ipv4"}),
 	},
 	{
 		SubService:     "ssl_policies",

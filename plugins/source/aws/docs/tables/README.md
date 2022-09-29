@@ -63,7 +63,7 @@
 |aws_ec2_nat_gateways||
 |aws_ec2_network_acls||
 |aws_ec2_network_interfaces||
-|aws_ec2_regional_config|Ec2 Regional Config defines common default configuration for ec2 service|
+|aws_ec2_regional_config||
 |aws_regions|Describes a Region.|
 |aws_ec2_route_tables||
 |aws_ec2_security_groups||

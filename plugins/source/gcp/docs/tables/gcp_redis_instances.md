@@ -19,7 +19,7 @@ The primary key for this table is **name**.
 |host|String|
 |port|Int|
 |current_location_id|String|
-|create_time|JSON|
+|create_time|Timestamp|
 |state|Int|
 |status_message|String|
 |redis_configs|JSON|

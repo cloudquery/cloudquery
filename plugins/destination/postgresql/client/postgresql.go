@@ -360,12 +360,10 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 	sb.WriteString(" on conflict on constraint ")
 	sb.WriteString(constraintName)
 	sb.WriteString(" do update set ")
-	for i, c := range columns {
-		sb.WriteString(c)
-		sb.WriteString("=")
-		sb.WriteString(table)
-		sb.WriteString(".")
-		sb.WriteString(c)
+	for i, column := range columns {
+		sb.WriteString(column)
+		sb.WriteString("=excluded.") // excluded references the new values
+		sb.WriteString(column)
 		if i < len(columns)-1 {
 			sb.WriteString(",")
 		} else {

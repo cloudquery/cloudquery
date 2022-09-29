@@ -1,9 +1,13 @@
-
 # Table: digitalocean_droplet_neighbors
-Droplets that are co-located on the same physical hardware
+
+
+The primary key for this table is **neighbor_id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|droplet_cq_id|uuid|Unique CloudQuery ID of digitalocean_droplets table (FK)|
-|droplet_id|bigint|Unique identifier of the droplet associated with the neighbor droplet.|
-|neighbor_id|bigint|Droplet neighbor identifier that exists on same the same physical hardware as the droplet.|
+| Name          | Type          |
+| ------------- | ------------- |
+|neighbor_id (PK)|Int|
+|droplet_id|Int|
+|_cq_id|UUID|
+|_cq_fetch_time|Timestamp|
