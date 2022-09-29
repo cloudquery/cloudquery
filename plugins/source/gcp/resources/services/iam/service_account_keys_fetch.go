@@ -11,9 +11,9 @@ import (
 
 func fetchServiceAccountKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	item := parent.Item.(*iam.ServiceAccount)
+	p := parent.Item.(*iam.ServiceAccount)
 
-	output, err := c.Services.Iam.Projects.ServiceAccounts.Keys.List(item.Name).Context(ctx).Do()
+	output, err := c.Services.Iam.Projects.ServiceAccounts.Keys.List(p.Name).Context(ctx).Do()
 	if err != nil {
 		return errors.WithStack(err)
 	}
