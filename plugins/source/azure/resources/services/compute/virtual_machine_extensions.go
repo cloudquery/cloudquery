@@ -24,7 +24,7 @@ func virtualMachineExtensions() *schema.Table {
 			{
 				Name:     "compute_virtual_machine_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "force_update_tag",
