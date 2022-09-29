@@ -8,18 +8,17 @@ Documentation, configuration and available tables for every plugin are available
 
 Official source plugins follow [release stages](./source_plugins_release_stages).
 
-| **Name**                                                                                       | Stage |
-| ---------------------------------------------------------------------------------------------- | ----- |
-| [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws)                   | Alpha |
-| [GCP](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp)                   | Alpha |
-| [Azure](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/azure)               | Alpha |
-| [Azure](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/azure)               | Alpha |
-| [DigitalOcean](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/digitalocean) | Alpha |
-| [GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/github)             | Alpha |
-| [Heroku](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/heroku)             | Alpha |
-| [k8s](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/k8s)                   | Alpha |
-| [okta](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/okta)                 | Alpha |
-| [terraform](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/terraform)       | Alpha |
+| **Name**                                                                                                 | Stage |
+|----------------------------------------------------------------------------------------------------------| ----- |
+| [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/README.md)                   | Alpha |
+| [GCP](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp/README.md)                   | Alpha |
+| [Azure](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/azure/README.md)               | Alpha |
+| [DigitalOcean](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/digitalocean/README.md) | Alpha |
+| [GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/github/README.md)             | Alpha |
+| [Heroku](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/heroku/README.md)             | Alpha |
+| [k8s](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/k8s/README.md)                   | Alpha |
+| [okta](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/okta/README.md)                 | Alpha |
+| [terraform](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/terraform/README.md)       | Alpha |
 
 ## Community
 
