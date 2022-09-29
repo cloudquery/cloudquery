@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "cli/**"
+      - ".github/workflows/cli.yml"
 
 defaults:
   run:
