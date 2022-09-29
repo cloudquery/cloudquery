@@ -37,9 +37,9 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version-file: ./plugins/destination/postgresql/go.mod
+          go-version-file: ./go.mod
           cache: true
-          cache-dependency-path: ./plugins/destination/postgresql/go.sum
+          cache-dependency-path: ./go.sum
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
