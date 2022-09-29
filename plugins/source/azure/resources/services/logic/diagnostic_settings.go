@@ -23,7 +23,7 @@ func diagnosticSettings() *schema.Table {
 			},
 			{
 				Name:     "logic_workflow_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

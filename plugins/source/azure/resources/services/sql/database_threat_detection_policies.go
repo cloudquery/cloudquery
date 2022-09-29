@@ -23,7 +23,7 @@ func databaseThreatDetectionPolicies() *schema.Table {
 			},
 			{
 				Name:     "sql_database_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

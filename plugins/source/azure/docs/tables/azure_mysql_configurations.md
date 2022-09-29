@@ -10,7 +10,7 @@ This table depends on [`azure_mysql_servers`](azure_mysql_servers.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|mysql_server_id|UUID|
+|mysql_server_id|String|
 |value|String|
 |description|String|
 |default_value|String|

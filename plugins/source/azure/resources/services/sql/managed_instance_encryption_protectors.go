@@ -23,7 +23,7 @@ func managedInstanceEncryptionProtectors() *schema.Table {
 			},
 			{
 				Name:     "sql_managed_instance_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

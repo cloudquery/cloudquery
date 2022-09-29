@@ -12,7 +12,7 @@ The following tables depend on `azure_servicebus_topics`:
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|servicebus_namespace_id|UUID|
+|servicebus_namespace_id|String|
 |size_in_bytes|Int|
 |created_at|Timestamp|
 |updated_at|Timestamp|

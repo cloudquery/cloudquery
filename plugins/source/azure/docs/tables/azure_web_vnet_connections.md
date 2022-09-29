@@ -10,7 +10,7 @@ This table depends on [`azure_web_apps`](azure_web_apps.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|web_app_id|UUID|
+|web_app_id|String|
 |vnet_resource_id|String|
 |cert_thumbprint|String|
 |cert_blob|String|

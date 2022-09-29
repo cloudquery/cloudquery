@@ -23,7 +23,7 @@ func secrets() *schema.Table {
 			},
 			{
 				Name:     "keyvault_vault_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

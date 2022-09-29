@@ -8,7 +8,7 @@ The primary key for this table is **id**.
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|network_virtual_network_gateway_id|UUID|
+|network_virtual_network_gateway_id|String|
 |authorization_key|String|
 |virtual_network_gateway_1|JSON|
 |virtual_network_gateway_2|JSON|

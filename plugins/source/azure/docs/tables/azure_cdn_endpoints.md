@@ -13,7 +13,7 @@ The following tables depend on `azure_cdn_endpoints`:
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|cdn_profile_id|UUID|
+|cdn_profile_id|String|
 |host_name|String|
 |origins|JSON|
 |origin_groups|JSON|
