@@ -26,7 +26,7 @@ jobs:
           script: |
             const { REF, DIRS } = process.env
             let now = new Date().getTime()
-            const deadline = now + 50 * 1000
+            const deadline = now + 60 * 1000 * 15
             let actions = ["cli",
                            "plugins/source/aws",
                            "plugins/source/azure",
