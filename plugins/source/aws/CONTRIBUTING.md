@@ -68,9 +68,11 @@ This will update all resources and generate a new directory for your service und
 
 #### Defining the schema
 
+
 #### Implementing Resolver Functions
 
 A few important things to note when adding functions that call the AWS API:
 
 - If possible, always use an API call that allows you to fetch many resources at once
 - Take pagination into account. Ensure you fetch **all** the resources. Prefer using Paginators if the resource supports it.
+- Take pagination into account. Ensure you fetch **all** of the resources

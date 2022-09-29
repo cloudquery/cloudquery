@@ -10,7 +10,7 @@ This table depends on [`azure_mariadb_servers`](azure_mariadb_servers.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|mariadb_server_id|UUID|
+|mariadb_server_id|String|
 |value|String|
 |description|String|
 |default_value|String|

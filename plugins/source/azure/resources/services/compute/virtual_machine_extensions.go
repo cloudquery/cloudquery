@@ -23,7 +23,7 @@ func virtualMachineExtensions() *schema.Table {
 			},
 			{
 				Name:     "compute_virtual_machine_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

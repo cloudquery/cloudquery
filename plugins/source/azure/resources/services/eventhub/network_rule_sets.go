@@ -23,7 +23,7 @@ func networkRuleSets() *schema.Table {
 			},
 			{
 				Name:     "eventhub_namespace_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

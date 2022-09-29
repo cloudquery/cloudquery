@@ -22,7 +22,7 @@ func securityPolicies() *schema.Table {
 			},
 			{
 				Name:     "cdn_profile_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

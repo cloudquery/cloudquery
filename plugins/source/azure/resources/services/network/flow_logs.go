@@ -23,7 +23,7 @@ func flowLogs() *schema.Table {
 			},
 			{
 				Name:     "network_watcher_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

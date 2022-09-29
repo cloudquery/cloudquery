@@ -2,6 +2,7 @@ package codegen
 
 import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"
+	cloudresourcemanager "google.golang.org/api/cloudresourcemanager/v3"
 	pb "google.golang.org/genproto/googleapis/cloud/resourcemanager/v3"
 )
 
@@ -22,6 +23,12 @@ var resourceManagerResources = []*Resource{
 		SkipFetch:  true,
 		SkipMock:   true,
 		SkipFields: []string{"ProjectId"},
+	},
+	{
+		SubService: "project_policies",
+		Struct:     &cloudresourcemanager.Policy{},
+		SkipFetch:  true,
+		SkipMock:   true,
 	},
 }
 

@@ -10,7 +10,7 @@ This table depends on [`azure_postgresql_servers`](azure_postgresql_servers.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|postgresql_server_id|UUID|
+|postgresql_server_id|String|
 |start_ip_address|String|
 |end_ip_address|String|
 |id (PK)|String|

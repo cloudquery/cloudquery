@@ -23,7 +23,7 @@ func blobServices() *schema.Table {
 			},
 			{
 				Name:     "storage_account_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
