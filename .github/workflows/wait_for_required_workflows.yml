@@ -18,6 +18,8 @@ jobs:
         uses: tj-actions/changed-files@v31
         with:
           dir_names: true
+          sha: ${{ github.event.pull_request.head.sha }}
+          base_sha: ${{ github.event.pull_request.base.sha }}
       - uses: actions/github-script@v6
         env:
           DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
