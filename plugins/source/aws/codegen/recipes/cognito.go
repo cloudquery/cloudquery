@@ -77,7 +77,7 @@ func CognitoResources() []*Resource {
 					{
 						Name:     "user_pool_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

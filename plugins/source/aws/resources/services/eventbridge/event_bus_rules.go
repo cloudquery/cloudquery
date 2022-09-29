@@ -26,7 +26,7 @@ func EventBusRules() *schema.Table {
 			{
 				Name:     "event_bus_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "tags",

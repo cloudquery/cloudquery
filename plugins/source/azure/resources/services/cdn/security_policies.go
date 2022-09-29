@@ -23,7 +23,7 @@ func securityPolicies() *schema.Table {
 			{
 				Name:     "cdn_profile_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "provisioning_state",

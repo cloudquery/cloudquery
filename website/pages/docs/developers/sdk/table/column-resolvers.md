@@ -41,8 +41,8 @@ Examples:
 
 // PathResolver resolves a field in the Resource.Item
 func PathResolver(path string) ColumnResolver
-// ParentResourceFieldResolver resolves a field from the parent's resource, the value is expected to be set, if name isn't set the field will be set to null
-func ParentResourceFieldResolver(name string) ColumnResolver
+// ParentColumnResolver resolves a field from the parent's resource, the value is expected to be set, if name isn't set the field will be set to null
+func ParentColumnResolver(name string) ColumnResolver
 // ParentPathResolver resolves a field from the parent
 func ParentPathResolver(path string) ColumnResolver
 // ParentIdResolver resolves the cq_id from the parent

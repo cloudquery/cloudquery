@@ -26,7 +26,7 @@ func ConfigurationOptions() *schema.Table {
 			{
 				Name:     "environment_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "change_severity",

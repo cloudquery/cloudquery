@@ -24,7 +24,7 @@ func networkRuleSets() *schema.Table {
 			{
 				Name:     "eventhub_namespace_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "trusted_service_access_enabled",

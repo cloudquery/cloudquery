@@ -102,7 +102,7 @@ func GlueResources() []*Resource {
 					{
 						Name:     "database_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
@@ -126,13 +126,13 @@ func GlueResources() []*Resource {
 					{
 						Name:     "database_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("database_arn")`,
+						Resolver: `schema.ParentColumnResolver("database_arn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
 						Name:     "database_table_name",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("name")`,
+						Resolver: `schema.ParentColumnResolver("name")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
@@ -214,7 +214,7 @@ func GlueResources() []*Resource {
 					{
 						Name:     "job_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -256,7 +256,7 @@ func GlueResources() []*Resource {
 					{
 						Name:     "ml_transform_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -315,7 +315,7 @@ func GlueResources() []*Resource {
 					{
 						Name:     "registry_schema_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "metadata",

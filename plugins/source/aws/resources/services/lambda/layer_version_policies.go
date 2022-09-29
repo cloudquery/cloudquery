@@ -26,12 +26,12 @@ func LayerVersionPolicies() *schema.Table {
 			{
 				Name:     "layer_version_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "layer_version",
 				Type:     schema.TypeInt,
-				Resolver: schema.ParentResourceFieldResolver("version"),
+				Resolver: schema.ParentColumnResolver("version"),
 			},
 			{
 				Name:     "policy",

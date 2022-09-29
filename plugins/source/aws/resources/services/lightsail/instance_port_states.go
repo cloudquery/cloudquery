@@ -26,7 +26,7 @@ func InstancePortStates() *schema.Table {
 			{
 				Name:     "instance_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "cidr_list_aliases",
