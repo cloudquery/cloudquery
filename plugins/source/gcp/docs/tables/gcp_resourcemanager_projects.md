@@ -12,9 +12,9 @@ The primary key for this table is **_cq_id**.
 |parent|String|
 |state|Int|
 |display_name|String|
-|create_time|JSON|
-|update_time|JSON|
-|delete_time|JSON|
+|create_time|Timestamp|
+|update_time|Timestamp|
+|delete_time|Timestamp|
 |etag|String|
 |labels|JSON|
 |_cq_id (PK)|UUID|

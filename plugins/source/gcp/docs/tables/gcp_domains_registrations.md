@@ -10,8 +10,8 @@ The primary key for this table is **_cq_id**.
 |project_id|String|
 |name|String|
 |domain_name|String|
-|create_time|JSON|
-|expire_time|JSON|
+|create_time|Timestamp|
+|expire_time|Timestamp|
 |state|Int|
 |issues|IntArray|
 |labels|JSON|
