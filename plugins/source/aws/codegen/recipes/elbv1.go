@@ -41,12 +41,12 @@ func ELBv1Resources() []*Resource {
 					{
 						Name:     "load_balancer_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "load_balancer_name",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("load_balancer_name")`,
+						Resolver: `schema.ParentColumnResolver("load_balancer_name")`,
 					},
 					{
 						Name:     "policy_attribute_descriptions",

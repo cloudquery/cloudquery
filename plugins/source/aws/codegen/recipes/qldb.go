@@ -43,7 +43,7 @@ func QLDBResources() []*Resource {
 					{
 						Name:     "ledger_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -57,7 +57,7 @@ func QLDBResources() []*Resource {
 					{
 						Name:     "ledger_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

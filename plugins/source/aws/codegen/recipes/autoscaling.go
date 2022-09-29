@@ -66,7 +66,7 @@ func AutoscalingResources() []*Resource {
 					{
 						Name:     "group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "arn",
@@ -86,7 +86,7 @@ func AutoscalingResources() []*Resource {
 					{
 						Name:     "group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

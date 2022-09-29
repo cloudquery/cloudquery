@@ -24,7 +24,7 @@ func publishingProfiles() *schema.Table {
 			{
 				Name:     "web_app_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "publish_url",

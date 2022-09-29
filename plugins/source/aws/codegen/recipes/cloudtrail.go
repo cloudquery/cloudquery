@@ -47,7 +47,7 @@ func CloudtrailResources() []*Resource {
 					{
 						Name:     "trail_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

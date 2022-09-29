@@ -12,9 +12,9 @@ func accountMembers() *schema.Table {
 		Resolver: fetchAccountMembers,
 		Columns: []schema.Column{
 			{
-				Name:     "account_cq_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "id",

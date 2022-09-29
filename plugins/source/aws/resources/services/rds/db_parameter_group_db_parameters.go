@@ -26,7 +26,7 @@ func DbParameterGroupDbParameters() *schema.Table {
 			{
 				Name:     "db_parameter_group_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "allowed_values",
