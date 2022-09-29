@@ -14,10 +14,10 @@ The primary key for this table is **_cq_id**.
 |generation|Int|
 |labels|JSON|
 |annotations|JSON|
-|create_time|JSON|
-|update_time|JSON|
-|delete_time|JSON|
-|expire_time|JSON|
+|create_time|Timestamp|
+|update_time|Timestamp|
+|delete_time|Timestamp|
+|expire_time|Timestamp|
 |creator|String|
 |last_modifier|String|
 |client|String|

@@ -34,13 +34,13 @@ func CryptoKeys() *schema.Table {
 			},
 			{
 				Name:     "create_time",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("CreateTime"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("CreateTime"),
 			},
 			{
 				Name:     "next_rotation_time",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("NextRotationTime"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("NextRotationTime"),
 			},
 			{
 				Name:     "version_template",

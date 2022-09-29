@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/thoas/go-funk"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
@@ -12,18 +12,6 @@ import (
 type OwnerReferences struct {
 	ResourceUID types.UID
 	v1.OwnerReference
-}
-
-const (
-	ContextFieldName = "context"
-	ContextFieldDesc = "Name of the context from k8s configuration."
-)
-
-var CommonContextField = schema.Column{
-	Name:        ContextFieldName,
-	Description: ContextFieldDesc,
-	Type:        schema.TypeString,
-	Resolver:    ResolveContext,
 }
 
 // ContextMultiplex returns a list of clients for each context from the cq config
@@ -44,7 +32,7 @@ func APIFilterContextMultiplex(path string) func(meta schema.ClientMeta) []schem
 		// in kubernetes version below 1.4 paths is nil
 		if client.paths != nil {
 			if _, ok := client.paths[path]; !ok {
-				client.Logger().Warn("The resource is not supported by current version of k8s", "path", path)
+				client.Logger().Warn().Str("path", path).Msg("The resource is not supported by current version of k8s")
 				return []schema.ClientMeta{}
 			}
 		}
@@ -57,34 +45,36 @@ func APIFilterContextMultiplex(path string) func(meta schema.ClientMeta) []schem
 	}
 }
 
-// DeleteContextFilter returns a delete filter that cleans up the data belonging to the k8s context.
-func DeleteContextFilter(meta schema.ClientMeta, _ *schema.Resource) []interface{} {
-	client := meta.(*Client)
-	return []interface{}{ContextFieldName, client.Context}
-}
-
 // ResolveContext is a resolver that fills the k8s context field.
 func ResolveContext(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 	client := meta.(*Client)
 	return r.Set(c.Name, client.Context)
 }
 
-func OwnerReferenceResolver(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	v := funk.Get(parent.Item, "ObjectMeta")
-	if v == nil {
-		return nil
-	}
-	objMeta := v.(v1.ObjectMeta)
-	if len(objMeta.OwnerReferences) == 0 {
-		return nil
-	}
-	refs := make([]OwnerReferences, len(objMeta.OwnerReferences))
-	for i, o := range objMeta.OwnerReferences {
-		refs[i] = OwnerReferences{
-			ResourceUID:    parent.Get("uid").(types.UID),
-			OwnerReference: o,
+// In k8s, IP Addresses may sometimes be empty-strings - but postgresql doesn't like that.
+// So, the resolver for ip-addresses should recognize that case and not set null instead.
+func StringToInetPathResolver(path string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		value := funk.Get(r.Item, path, funk.WithAllowZero())
+
+		stringValue, ok := value.(string)
+		if ok && stringValue != "" {
+			return r.Set(c.Name, value)
 		}
+		return r.Set(c.Name, nil)
 	}
-	res <- refs
-	return nil
+}
+
+// In k8s, IP Addresses may sometimes be empty-strings - but postgresql doesn't like that.
+// So, the resolver for ip-addresses should recognize that case and not set null instead.
+func StringToCidrPathResolver(path string) schema.ColumnResolver {
+	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+		value := funk.Get(r.Item, path, funk.WithAllowZero())
+
+		stringValue, ok := value.(string)
+		if ok && stringValue != "" {
+			return r.Set(c.Name, value)
+		}
+		return r.Set(c.Name, nil)
+	}
 }
