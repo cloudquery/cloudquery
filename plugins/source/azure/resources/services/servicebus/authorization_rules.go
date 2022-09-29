@@ -23,7 +23,7 @@ func authorizationRules() *schema.Table {
 			},
 			{
 				Name:     "servicebus_topic_id",
-				Type:     schema.TypeUUID,
+				Type:     schema.TypeString,
 				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{

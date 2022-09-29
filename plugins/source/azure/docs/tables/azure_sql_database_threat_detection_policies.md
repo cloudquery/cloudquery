@@ -8,7 +8,7 @@ The primary key for this table is **id**.
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|sql_database_id|UUID|
+|sql_database_id|String|
 |location|String|
 |kind|String|
 |state|String|

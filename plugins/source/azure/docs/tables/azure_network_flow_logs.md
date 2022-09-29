@@ -10,7 +10,7 @@ This table depends on [`azure_network_watchers`](azure_network_watchers.md).
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|network_watcher_id|UUID|
+|network_watcher_id|String|
 |target_resource_id|String|
 |target_resource_guid|String|
 |storage_id|String|
