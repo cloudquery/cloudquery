@@ -6,24 +6,25 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/pkg/errors"
-	"google.golang.org/api/iterator"
-	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
 func fetchCryptoKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
-	it := c.Services.KmsKeyManagementClient.ListCryptoKeys(ctx, &pb.ListCryptoKeysRequest{
-		Parent: parent.Data["name"].(string),
-	})
+	nextPageToken := ""
+	call := c.Services.KmsoldService.Projects.Locations.KeyRings.CryptoKeys.List(parent.Data["Name"].(string)).Context(ctx)
 	for {
-		resp, err := it.Next()
-		if err == iterator.Done {
-			break
-		}
+		call.PageToken(nextPageToken)
+		resp, err := call.Do()
 		if err != nil {
 			return errors.WithStack(err)
 		}
-		res <- resp
+		res <- resp.CryptoKeys
+
+		if resp.NextPageToken == "" {
+			break
+		}
+		nextPageToken = resp.NextPageToken
 	}
 	return nil
+
 }
