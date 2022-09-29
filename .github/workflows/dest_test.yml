@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/destination/test/**"
+      - ".github/workflows/dest_test.yml"
   push:
     branches:
       - main

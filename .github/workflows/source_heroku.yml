@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/source/heroku/**"
+      - ".github/workflows/source_heroku.yml"
   push:
     branches:
       - main

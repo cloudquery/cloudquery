@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/source/cloudflare/**"
+      - ".github/workflows/source_cloudflare.yml"
   push:
     branches:
       - main

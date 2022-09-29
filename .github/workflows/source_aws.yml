@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/source/aws/**"
+      - ".github/workflows/source_aws.yml"
   push:
     branches:
       - main

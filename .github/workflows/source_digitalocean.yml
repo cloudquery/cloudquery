@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/source/digitalocean/**"
+      - ".github/workflows/source_digitalocean.yml"
   push:
     branches:
       - main
