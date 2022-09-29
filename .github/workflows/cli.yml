@@ -12,6 +12,8 @@ defaults:
 
 jobs:
   build-lint-and-test:
+    name: cli
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
