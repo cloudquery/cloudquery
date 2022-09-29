@@ -114,7 +114,7 @@ func Route53Resources() []*Resource {
 					{
 						Name:     "hosted_zone_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -128,7 +128,7 @@ func Route53Resources() []*Resource {
 					{
 						Name:     "hosted_zone_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -148,7 +148,7 @@ func Route53Resources() []*Resource {
 					{
 						Name:     "hosted_zone_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -181,7 +181,7 @@ func Route53Resources() []*Resource {
 					{
 						Name:     "traffic_policy_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{

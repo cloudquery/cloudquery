@@ -24,7 +24,7 @@ func serverAdmins() *schema.Table {
 			{
 				Name:     "sql_server_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "administrator_type",

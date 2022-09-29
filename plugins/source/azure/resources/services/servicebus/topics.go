@@ -24,7 +24,7 @@ func topics() *schema.Table {
 			{
 				Name:     "servicebus_namespace_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "size_in_bytes",

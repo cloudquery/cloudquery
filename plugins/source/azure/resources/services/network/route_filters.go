@@ -31,7 +31,7 @@ func RouteFilters() *schema.Table {
 				Resolver: schema.PathResolver("Peerings"),
 			},
 			{
-				Name:     "ipv_6_peerings",
+				Name:     "ipv6_peerings",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ipv6Peerings"),
 			},

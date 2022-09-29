@@ -24,7 +24,7 @@ func instanceViews() *schema.Table {
 			{
 				Name:     "compute_virtual_machine_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "platform_update_domain",

@@ -26,7 +26,7 @@ func FunctionConcurrencyConfigs() *schema.Table {
 			{
 				Name:     "function_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "allocated_provisioned_concurrent_executions",

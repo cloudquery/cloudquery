@@ -23,7 +23,7 @@ func rules() *schema.Table {
 			{
 				Name:     "cdn_rule_set_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "order",

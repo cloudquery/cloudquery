@@ -23,7 +23,7 @@ func configurations() *schema.Table {
 			{
 				Name:     "mysql_server_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "value",

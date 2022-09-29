@@ -24,7 +24,7 @@ func blobServices() *schema.Table {
 			{
 				Name:     "storage_account_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "cors",
