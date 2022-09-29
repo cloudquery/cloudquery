@@ -2,6 +2,7 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -255,6 +256,24 @@ func EC2Resources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+		},
+		{
+			SubService: "regional_config",
+			Struct:     &models.RegionalConfig{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSAccount`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "region",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSRegion`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
 		},
 		{
 			SubService: "route_tables",

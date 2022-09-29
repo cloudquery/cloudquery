@@ -10,7 +10,7 @@ The primary key for this table is **name**.
 |project_id|String|
 |name (PK)|String|
 |replication|JSON|
-|create_time|JSON|
+|create_time|Timestamp|
 |labels|JSON|
 |topics|JSON|
 |etag|String|

@@ -24,7 +24,7 @@ func vnetConnections() *schema.Table {
 			{
 				Name:     "web_app_id",
 				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Resolver: schema.ParentResourceFieldResolver("id"),
 			},
 			{
 				Name:     "vnet_resource_id",

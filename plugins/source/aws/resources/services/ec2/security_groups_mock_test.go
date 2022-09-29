@@ -28,5 +28,5 @@ func buildEc2SecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 }
 
 func TestEc2SecurityGroups(t *testing.T) {
-	client.AwsMockTestHelper(t, Ec2SecurityGroups(), buildEc2SecurityGroups, client.TestOptions{})
+	client.AwsMockTestHelper(t, SecurityGroups(), buildEc2SecurityGroups, client.TestOptions{})
 }

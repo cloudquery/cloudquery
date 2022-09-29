@@ -6,10 +6,11 @@ import (
 
 var storageResources = []*Resource{
 	{
-		SubService: "buckets",
-		Struct:     &storage.BucketAttrs{},
-		SkipFetch:  true,
-		SkipMock:   true,
+		SubService:      "buckets",
+		Struct:          &storage.BucketAttrs{},
+		SkipFetch:       true,
+		SkipMock:        true,
+		NameTransformer: CreateReplaceTransformer(map[string]string{"c_o_r_s": "cors", "r_p_o": "rpo"}),
 	},
 }
 

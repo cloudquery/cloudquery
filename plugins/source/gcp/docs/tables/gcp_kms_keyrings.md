@@ -12,6 +12,6 @@ The following tables depend on `gcp_kms_keyrings`:
 | ------------- | ------------- |
 |project_id|String|
 |name|String|
-|create_time|JSON|
+|create_time|Timestamp|
 |_cq_id (PK)|UUID|
 |_cq_fetch_time|Timestamp|
