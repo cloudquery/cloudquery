@@ -17,17 +17,11 @@ var resourceManagerResources = []*Resource{
 		UnimplementedServer: &pb.UnimplementedFoldersServer{},
 	},
 	{
-		SubService:          "projects",
-		Struct:              &pb.Project{},
-		NewFunction:         resourcemanager.NewProjectsClient,
-		RequestStruct:       &pb.ListProjectsRequest{},
-		ResponseStruct:      &pb.ListProjectsResponse{},
-		RegisterServer:      pb.RegisterProjectsServer,
-		ListFunction:        (&pb.UnimplementedProjectsServer{}).ListProjects,
-		UnimplementedServer: &pb.UnimplementedProjectsServer{},
-		SkipFetch:           true,
-		SkipMock:            true,
-		SkipFields:          []string{"ProjectId"},
+		SubService: "projects",
+		Struct:     &pb.Project{},
+		SkipFetch:  true,
+		SkipMock:   true,
+		SkipFields: []string{"ProjectId"},
 	},
 }
 

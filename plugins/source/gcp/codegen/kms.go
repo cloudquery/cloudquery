@@ -1,7 +1,6 @@
 package codegen
 
 import (
-	kms "cloud.google.com/go/kms/apiv1"
 	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
@@ -9,32 +8,20 @@ var emptyString = ""
 
 var kmsResources = []*Resource{
 	{
-		SubService:          "crypto_keys",
-		Struct:              &pb.CryptoKey{},
-		NewFunction:         kms.NewKeyManagementClient,
-		RequestStruct:       &pb.ListCryptoKeysRequest{},
-		ResponseStruct:      &pb.ListCryptoKeysResponse{},
-		RegisterServer:      pb.RegisterKeyManagementServiceServer,
-		ListFunction:        (&pb.UnimplementedKeyManagementServiceServer{}).ListCryptoKeys,
-		UnimplementedServer: &pb.UnimplementedKeyManagementServiceServer{},
-		Multiplex:           &emptyString,
-		ChildTable:          true,
-		SkipMock:            true,
-		SkipFetch:           true,
-		SkipFields:          []string{"RotationSchedule"},
+		SubService: "crypto_keys",
+		Struct:     &pb.CryptoKey{},
+		Multiplex:  &emptyString,
+		ChildTable: true,
+		SkipMock:   true,
+		SkipFetch:  true,
+		SkipFields: []string{"RotationSchedule"},
 	},
 	{
-		SubService:          "keyrings",
-		Struct:              &pb.KeyRing{},
-		NewFunction:         kms.NewKeyManagementClient,
-		RequestStruct:       &pb.ListKeyRingsRequest{},
-		ResponseStruct:      &pb.ListKeyRingsResponse{},
-		RegisterServer:      pb.RegisterKeyManagementServiceServer,
-		ListFunction:        (&pb.UnimplementedKeyManagementServiceServer{}).ListKeyRings,
-		UnimplementedServer: &pb.UnimplementedKeyManagementServiceServer{},
-		Relations:           []string{"CryptoKeys()"},
-		SkipFetch:           true,
-		SkipMock:            true,
+		SubService: "keyrings",
+		Struct:     &pb.KeyRing{},
+		Relations:  []string{"CryptoKeys()"},
+		SkipFetch:  true,
+		SkipMock:   true,
 	},
 }
 
