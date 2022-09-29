@@ -1,21 +1,21 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin Okta Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
-      - ".github/workflows/dest_test.yml"
+      - "plugins/source/okta/**"
+      - ".github/workflows/source_okta.yml"
   push:
     branches:
       - main
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/okta
 
 jobs:
-  plugins-destination-test:
-    name: "plugins/destination/test"
+  plugins-destination-heroku:
+    name: "plugins/source/heroku"
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
@@ -29,7 +29,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.49.0
-          working-directory: plugins/destination/test
+          working-directory: plugins/source/k8s
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...

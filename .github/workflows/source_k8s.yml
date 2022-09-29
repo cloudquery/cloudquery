@@ -1,21 +1,21 @@
-name: Destination Plugin Test Workflow
+name: Source Plugin K8S Workflow
 
 on:
   pull_request:
     paths:
-      - "plugins/destination/test/**"
-      - ".github/workflows/dest_test.yml"
+      - "plugins/source/k8s/**"
+      - ".github/workflows/source_k8s.yml"
   push:
     branches:
       - main
 
 defaults:
   run:
-    working-directory: ./plugins/destination/test
+    working-directory: ./plugins/source/k8s
 
 jobs:
-  plugins-destination-test:
-    name: "plugins/destination/test"
+  plugins-destination-k8s:
+    name: "plugins/source/k8s"
     runs-on: ubuntu-latest
     steps:
       - name: Set up Go 1.x
@@ -29,7 +29,7 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: v1.49.0
-          working-directory: plugins/destination/test
+          working-directory: plugins/source/k8s
           args: "--config ../../.golangci.yml"
       - name: Get dependencies
         run: go get -t -d ./...
