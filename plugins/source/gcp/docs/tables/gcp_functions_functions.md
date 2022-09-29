@@ -16,7 +16,7 @@ The primary key for this table is **_cq_id**.
 |timeout|JSON|
 |available_memory_mb|Int|
 |service_account_email|String|
-|update_time|JSON|
+|update_time|Timestamp|
 |version_id|Int|
 |labels|JSON|
 |environment_variables|JSON|

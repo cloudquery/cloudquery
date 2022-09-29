@@ -66,8 +66,8 @@ func Functions() *schema.Table {
 			},
 			{
 				Name:     "update_time",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("UpdateTime"),
+				Type:     schema.TypeTimestamp,
+				Resolver: client.ResolveProtoTimestamp("UpdateTime"),
 			},
 			{
 				Name:     "version_id",
