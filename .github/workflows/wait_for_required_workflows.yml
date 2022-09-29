@@ -15,11 +15,9 @@ jobs:
           fetch-depth: 2 # OR "2" -> To retrieve the preceding commit.
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v31
+        uses: tj-actions/changed-files@v28
         with:
           dir_names: true
-          sha: ${{ github.event.pull_request.head.sha }}
-          base_sha: ${{ github.event.pull_request.base.sha }}
       - uses: actions/github-script@v6
         env:
           DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
