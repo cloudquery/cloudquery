@@ -21,9 +21,9 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version-file: ./plugins/source/gcp/go.mod
+          go-version-file: plugins/source/gcp/go.mod
           cache: true
-          cache-dependency-path: ./plugins/source/gcp/go.sum
+          cache-dependency-path: plugins/source/gcp/go.sum
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
