@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/source/azure/**"
+      - ".github/workflows/source_azure.yml"
   push:
     branches:
       - main

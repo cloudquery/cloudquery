@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "plugins/source/github/**"
+      - ".github/workflows/source_github.yml"
   push:
     branches:
       - main
