@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	"reflect"
