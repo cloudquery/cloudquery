@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	"github.com/cloudquery/plugin-sdk/codegen"

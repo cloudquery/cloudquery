@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	redis "cloud.google.com/go/redis/apiv1"
