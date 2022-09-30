@@ -4,10 +4,6 @@ This guide will help you add a new resource to an existing source plugin (a.k.a.
 
 ## General Guidance
 
-## Installing the tools
-
-- Install `mockgen` by running `make install-tools` in the root of this repository.
-
 ## Setting up the service
 
 If the service to which the resource belongs has not been used before in the plugin, there are a few steps that need to be done to configure it.
