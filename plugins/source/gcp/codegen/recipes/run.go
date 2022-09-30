@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	run "cloud.google.com/go/run/apiv2"

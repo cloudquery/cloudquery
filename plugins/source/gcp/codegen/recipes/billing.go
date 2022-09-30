@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	billing "cloud.google.com/go/billing/apiv1"

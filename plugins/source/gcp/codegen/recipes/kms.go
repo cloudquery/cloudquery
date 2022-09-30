@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"

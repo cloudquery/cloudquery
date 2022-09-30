@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	resourcemanager "cloud.google.com/go/resourcemanager/apiv3"

@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	monitoring "cloud.google.com/go/monitoring/apiv3/v2"
