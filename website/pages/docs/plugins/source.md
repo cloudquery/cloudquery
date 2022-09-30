@@ -4,7 +4,7 @@
 
 Documentation, configuration and available tables for every plugin are available in the relevant GitHub repository.
 
-Official source plugins follow [release stages](./source_plugins_release_stages).
+Official source plugins follow [release stages](source-plugin-release-stages).
 
 | **Name**                                                                                                 | Stage |
 |----------------------------------------------------------------------------------------------------------| ----- |
