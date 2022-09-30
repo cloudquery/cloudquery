@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	logging "cloud.google.com/go/logging/apiv2"

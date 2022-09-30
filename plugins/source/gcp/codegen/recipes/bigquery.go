@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	bigquery "google.golang.org/api/bigquery/v2"

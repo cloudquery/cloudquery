@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	functions "cloud.google.com/go/functions/apiv1"

@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	serviceusage "cloud.google.com/go/serviceusage/apiv1"
