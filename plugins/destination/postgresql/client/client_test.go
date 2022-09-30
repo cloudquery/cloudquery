@@ -29,6 +29,7 @@ func getTestData() map[string]interface{} {
 		"string_array_column": []interface{}{"test", "test2"},
 		"int_array_column":    []interface{}{float64(1), float64(2), float64(3)},
 		"timestamp_column":    "2019-01-01T00:00:00",
+		"interval_column":     "01:02:03",
 		"json_column":         map[string]interface{}{"1": float64(1), "test": "test"},
 		"uuid_array_column":   []interface{}{"1a6011b7-c5ee-4b55-95a6-37ce5e02a5a0", "9a6011b7-c5ee-4b55-95a6-37ce5e02a5a0"},
 		"inet_column":         "1.1.1.1",
@@ -88,6 +89,10 @@ func getTestTable() *schema.Table {
 			{
 				Name: "timestamp_column",
 				Type: schema.TypeTimestamp,
+			},
+			{
+				Name: "interval_column",
+				Type: schema.TypeTimeInterval,
 			},
 			{
 				Name: "json_column",
