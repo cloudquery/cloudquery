@@ -1,6 +1,6 @@
 # Source Plugin Release Stages
 
-[Official](./sources) source plugins go through multiple release stages: Alpha, Beta and GA.
+[Official](source) source plugins go through multiple release stages: Alpha, Beta and GA.
 
 ## Comparison Matrix
 
