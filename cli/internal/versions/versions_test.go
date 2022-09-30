@@ -1,14 +1,16 @@
-package plugins
+package versions
 
 import (
 	"context"
 	"strings"
 	"testing"
+
+	"github.com/cloudquery/plugin-sdk/clients"
 )
 
 func TestGetLatestCQPluginRelease(t *testing.T) {
 	ctx := context.Background()
-	version, err := getLatestCQPluginRelease(ctx, "test", PluginTypeSource)
+	version, err := getLatestCQPluginRelease(ctx, "test", clients.PluginTypeSource)
 	if err != nil {
 		t.Fatalf("error calling GetLatestPluginRelease: %v", err)
 	}
@@ -19,7 +21,7 @@ func TestGetLatestCQPluginRelease(t *testing.T) {
 
 func TestGetLatestCommunityPluginRelease(t *testing.T) {
 	ctx := context.Background()
-	version, err := getLatestCommunityPluginRelease(ctx, "yevgenypats", "test", PluginTypeSource)
+	version, err := getLatestCommunityPluginRelease(ctx, "yevgenypats", "test", clients.PluginTypeSource)
 	if err != nil {
 		t.Fatalf("error calling GetLatestPluginRelease: %v", err)
 	}
