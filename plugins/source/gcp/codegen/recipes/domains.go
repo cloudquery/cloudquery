@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	domains "cloud.google.com/go/domains/apiv1beta1"
