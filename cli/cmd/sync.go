@@ -118,7 +118,7 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 
 	bar := progressbar.NewOptions(-1,
 		progressbar.OptionSetDescription("Syncing resources..."),
-		progressbar.OptionSetItsString("resources/sec"),
+		progressbar.OptionSetItsString("resources"),
 		progressbar.OptionShowIts(),
 		progressbar.OptionSetElapsedTime(true),
 		progressbar.OptionShowCount(),
