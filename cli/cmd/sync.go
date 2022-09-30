@@ -70,7 +70,11 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
-	defer sourceClient.Close()
+	defer func() {
+		if err := sourceClient.Close(); err != nil {
+			fmt.Println("failed to close source client: ", err)
+		}
+	}()
 
 	destClients := make([]*clients.DestinationClient, len(sourceSpec.Destinations))
 	destSubscriptions := make([]chan []byte, len(sourceSpec.Destinations))
@@ -80,7 +84,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	defer func() {
 		for _, destClient := range destClients {
 			if destClient != nil {
-				destClient.Close()
+				if err := destClient.Close(); err != nil {
+					fmt.Println("failed to close destination client: ", err)
+				}
 			}
 		}
 	}()
