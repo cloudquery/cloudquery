@@ -165,7 +165,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
 	_ = bar.Finish()
-	fmt.Println("Fetch completed successfully.")
+	fmt.Println("Sync completed successfully.")
 	fmt.Printf("Summary: Resources: %d\n", totalResources)
 	return nil
 }
