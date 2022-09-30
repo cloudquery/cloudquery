@@ -8,7 +8,7 @@ Official source plugins follow [release stages](./source_plugins_release_stages)
 
 | **Name**                     | Releases                          | Changelog                           | Stage |
 |------------------------------|-----------------------------------|-------------------------------------|-------|
-| [AWS][AWS]                   | [Releases][AWS_Releases]          | [Changelog][AWS-Changelog]          | Alpha |
+| [AWS][AWS]                   | [Releases][AWS-Releases]          | [Changelog][AWS-Changelog]          | Alpha |
 | [Azure][Azure]               | [Releases][Azure-Releases]        | [Changelog][Azure-Changelog]        | Alpha |    
 | [GCP][GCP]                   | [Releases][GCP-Releases]          | [Changelog][GCP-Changelog]          | Alpha |
 | [DigitalOcean][DigitalOcean] | [Releases][DigitalOcean-Releases] | [Changelog][DigitalOcean-Changelog] | Alpha |
