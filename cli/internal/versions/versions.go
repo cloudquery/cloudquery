@@ -1,4 +1,4 @@
-package plugins
+package versions
 
 import (
 	"context"
@@ -7,6 +7,8 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/cloudquery/plugin-sdk/clients"
 )
 
 type manifestResponse struct {
@@ -26,7 +28,7 @@ const (
 
 // GetLatestPluginRelease returns the latest release version string for the given organization, plugin type
 // and plugin.
-func GetLatestPluginRelease(ctx context.Context, org, name string, typ PluginType) (string, error) {
+func GetLatestPluginRelease(ctx context.Context, org, name string, typ clients.PluginType) (string, error) {
 	if org == CloudQueryOrg {
 		return getLatestCQPluginRelease(ctx, name, typ)
 	}
@@ -48,7 +50,7 @@ func GetLatestCLIRelease(ctx context.Context) (string, error) {
 	return tag, nil
 }
 
-func getLatestCQPluginRelease(ctx context.Context, name string, typ PluginType) (string, error) {
+func getLatestCQPluginRelease(ctx context.Context, name string, typ clients.PluginType) (string, error) {
 	url := fmt.Sprintf(CloudQueryBaseURL+"/v2/%s-%s.json", typ, name)
 	b, err := doRequest(ctx, url)
 	if err != nil {
@@ -63,7 +65,7 @@ func getLatestCQPluginRelease(ctx context.Context, name string, typ PluginType) 
 	return version, nil
 }
 
-func getLatestCommunityPluginRelease(ctx context.Context, org, name string, typ PluginType) (string, error) {
+func getLatestCommunityPluginRelease(ctx context.Context, org, name string, typ clients.PluginType) (string, error) {
 	url := fmt.Sprintf(GithubBaseURL+"/%s/cq-%s-%s/releases/latest", org, typ, name)
 	b, err := doRequest(ctx, url)
 	if err != nil {
