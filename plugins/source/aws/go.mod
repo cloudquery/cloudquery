@@ -72,7 +72,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/waf v1.11.17
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.19.1
-	github.com/aws/aws-sdk-go-v2/service/xray v1.13.8
+	github.com/aws/aws-sdk-go-v2/service/xray v1.13.19
 	github.com/aws/smithy-go v1.13.3
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
