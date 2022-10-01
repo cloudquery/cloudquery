@@ -122,7 +122,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/shield v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.21.4
-	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.8
+	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.18
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gofrs/uuid v4.3.0+incompatible // indirect
