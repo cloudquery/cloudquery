@@ -86,7 +86,7 @@ require (
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
-	golang.org/x/sync v0.0.0-20220907140024-f12130a52804
+	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
 )
 
 require (
