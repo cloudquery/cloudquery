@@ -1,8 +1,7 @@
 # Development Environment Setup
 
 ## Requirements
- * [Go](https://go.dev/doc/install) 1.18+ (to build the plugins)
- * [Terraform](https://www.terraform.io/downloads) (to run integration tests) (optional)
+ * [Go](https://go.dev/doc/install) 1.19+ (to build the plugins)
 
 ## Quick Start
 
@@ -20,39 +19,38 @@ Build the CLI and all plugins:
 make build
 ```
 
-### Running plugins in debug mode
+### Running Source Plugins in Developer Mode
 
-1. Execute `make run` from the chosen plugin directory under [../plugins/source](../plugins/source) (e.g.  [../plugins/source/aws](../plugins/source/aws)).
-2. Note the `CQ_REATTACH_PROVIDERS` value.
-3. Open another terminal and run `CQ_REATTACH_PROVIDERS=[VALUE_FROM_PREV] ./bin/cloudquery fetch` 
+1. Execute `go run main.go serve` from the chosen plugin directory under [../plugins/source](../plugins/source) (e.g.  [../plugins/source/aws](../plugins/source/aws)).
+2. Create a config file for the source plugin. See the plugin's README.md for details. In the global spec section, set `registry` to `grpc` and `path` to `localhost:7777`. For example:
+   ```yaml
+   kind: "source"
+   spec:
+     # global config
+     name: "aws"
+     version: "latest"
+     registry: "grpc"
+     path: "localhost:7777"
+     tables: ["*"]
+     destinations: ["postgresql"]
+     spec:
+     # plugin-specific config
+   ```
+3. Create a config file for the destination plugin to load data into. See the [Destination Plugin](../plugins/destination)'s README.md for examples.
+4. Open another terminal and run `bin/cloudquery sync <config-dir>`, where `<config-dir>` is the directory containing the config files.
 
-> **Important**: Make sure the authentication variables are exported in the provider process and not in CloudQuery process.
-
-See [docs](https://docs.cloudquery.io/docs/developers/debugging) for more details.
+Note that plugin logs will be output to the plugin process terminal.
 
 ### Testing
 
-The provider has two types of tests:
+To run tests all unit tests for a plugin, inside the plugin directory run:
 
-1. *Unit Tests* - run locally without any credentials and use mocking to return data from AWS APIs.
-2. *Integration Tests* - run against real APIs and uses test environment defined with `terraform` under `terraform/service_name/`
-
-#### Unit Tests
-
-Unit Tests don't require any credentials or internet access
-
-```bash
-make test-unit # This runs go test ./...
+```shell
+make test-unit  # This runs go test ./...
 ```
+
+Unit Tests don't require any credentials, but some may require internet access.
 
 Unit tests for plugins include:
 - Specific resource tests. You can find those next to each resource, in the `resources/services` folder under the plugin directory.
-- DB migration tests. You can find the code for these tests in `provider_test.go`.
 - Client tests. You can find those in the `client` folder.
-
-#### Integration Tests
-
-These are documented in the Adding a new resource guide. See:
- - [Adding a new Resource (AWS)](../plugins/source/aws/docs/contributing/adding_a_new_resource.md#integration-tests)
- - [Adding a new Resource (Azure)](../plugins/source/azure/docs/contributing/adding_a_new_resource.md#integration-tests)
- - [Adding a new Resource (GCP)](../plugins/source/gcp/docs/contributing/adding_a_new_resource.md#integration-tests)

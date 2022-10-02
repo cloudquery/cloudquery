@@ -1,8 +1,8 @@
-# Contributing to CloudQuery Provider
+# Contributing to a CloudQuery Plugin
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-Please don't file an issue to ask a question. You'll get faster results by reaching out to the community on our [discord channel](https://cloudquery.io/discord).
+Please don't file an issue to ask a question. You'll get faster results by reaching out to the community on our [Discord channel](https://cloudquery.io/discord).
 
 The following is a set of guidelines for contributing to this repository.
 
@@ -20,7 +20,7 @@ The following is a set of guidelines for contributing to this repository.
 
 ### Your First Code Contribution
 
-Unsure where to begin contributing to CloudQuery? There are few key labels that you can use to search for issues:
+Unsure where to begin contributing to CloudQuery? There are a few key labels that you can use to search for issues:
 
 * `bug` - Can be a small issue of a missing column or incorrect primary key, which are good for beginners. Or more involved one.
 * `documentation` - Those are great for beginners as it gives the opportunity to both learn and put it in writing for everyone else.

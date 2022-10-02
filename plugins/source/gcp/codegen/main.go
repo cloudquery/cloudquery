@@ -13,9 +13,9 @@ import (
 	"strings"
 	"text/template"
 
-	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugins/source/gcp/codegen"
+	"github.com/cloudquery/plugins/source/gcp/codegen/recipes"
 	"github.com/iancoleman/strcase"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -23,27 +23,27 @@ import (
 //go:embed templates/*.go.tpl
 var gcpTemplatesFS embed.FS
 
-var resources []*codegen.Resource
+var resources []*recipes.Resource
 
 func main() {
-	resources = append(resources, codegen.ComputeResources()...)
-	resources = append(resources, codegen.DnsResources()...)
-	resources = append(resources, codegen.DomainsResources()...)
-	resources = append(resources, codegen.IamResources()...)
-	resources = append(resources, codegen.KmsResources()...)
-	resources = append(resources, codegen.ContainerResources()...)
-	resources = append(resources, codegen.LoggingResources()...)
-	resources = append(resources, codegen.RedisResources()...)
-	resources = append(resources, codegen.MonitoringResources()...)
-	resources = append(resources, codegen.SecretManagerResources()...)
-	resources = append(resources, codegen.ServiceusageResources()...)
-	resources = append(resources, codegen.SqlResources()...)
-	resources = append(resources, codegen.StorageResources()...)
-	resources = append(resources, codegen.BigqueryResources()...)
-	resources = append(resources, codegen.BillingResources()...)
-	resources = append(resources, codegen.ResourceManagerResources()...)
-	resources = append(resources, codegen.FunctionsResources()...)
-	resources = append(resources, codegen.RunResources()...)
+	resources = append(resources, recipes.ComputeResources()...)
+	resources = append(resources, recipes.DnsResources()...)
+	resources = append(resources, recipes.DomainsResources()...)
+	resources = append(resources, recipes.IamResources()...)
+	resources = append(resources, recipes.KmsResources()...)
+	resources = append(resources, recipes.ContainerResources()...)
+	resources = append(resources, recipes.LoggingResources()...)
+	resources = append(resources, recipes.RedisResources()...)
+	resources = append(resources, recipes.MonitoringResources()...)
+	resources = append(resources, recipes.SecretManagerResources()...)
+	resources = append(resources, recipes.ServiceusageResources()...)
+	resources = append(resources, recipes.SqlResources()...)
+	resources = append(resources, recipes.StorageResources()...)
+	resources = append(resources, recipes.BigqueryResources()...)
+	resources = append(resources, recipes.BillingResources()...)
+	resources = append(resources, recipes.ResourceManagerResources()...)
+	resources = append(resources, recipes.FunctionsResources()...)
+	resources = append(resources, recipes.RunResources()...)
 
 	for _, r := range resources {
 		generateResource(*r, false)
@@ -54,7 +54,7 @@ func main() {
 	generatePlugin(resources)
 }
 
-func generatePlugin(rr []*codegen.Resource) {
+func generatePlugin(rr []*recipes.Resource) {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
 		log.Fatal("Failed to get caller information")
@@ -83,7 +83,7 @@ func generatePlugin(rr []*codegen.Resource) {
 	}
 }
 
-func needsProjectIDColumn(r codegen.Resource) bool {
+func needsProjectIDColumn(r recipes.Resource) bool {
 	for _, c := range r.ExtraColumns {
 		if c.Name == "project_id" {
 			return false
@@ -92,7 +92,7 @@ func needsProjectIDColumn(r codegen.Resource) bool {
 	return true
 }
 
-func generateResource(r codegen.Resource, mock bool) {
+func generateResource(r recipes.Resource, mock bool) {
 	var err error
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -146,13 +146,13 @@ func generateResource(r codegen.Resource, mock bool) {
 
 	extraColumns := r.ExtraColumns
 	if needsProjectIDColumn(r) {
-		extraColumns = append([]sdkgen.ColumnDefinition{codegen.ProjectIdColumn}, extraColumns...)
+		extraColumns = append([]codegen.ColumnDefinition{recipes.ProjectIdColumn}, extraColumns...)
 	}
 
-	opts := []sdkgen.TableOption{
-		sdkgen.WithSkipFields(r.SkipFields),
-		sdkgen.WithExtraColumns(extraColumns),
-		sdkgen.WithTypeTransformer(func(field reflect.StructField) (schema.ValueType, error) {
+	opts := []codegen.TableOption{
+		codegen.WithSkipFields(r.SkipFields),
+		codegen.WithExtraColumns(extraColumns),
+		codegen.WithTypeTransformer(func(field reflect.StructField) (schema.ValueType, error) {
 			switch reflect.New(field.Type).Elem().Interface().(type) {
 			case *timestamppb.Timestamp,
 				timestamppb.Timestamp:
@@ -161,7 +161,7 @@ func generateResource(r codegen.Resource, mock bool) {
 				return schema.TypeInvalid, nil
 			}
 		}),
-		sdkgen.WithResolverTransformer(func(field reflect.StructField, path string) (string, error) {
+		codegen.WithResolverTransformer(func(field reflect.StructField, path string) (string, error) {
 			switch reflect.New(field.Type).Elem().Interface().(type) {
 			case *timestamppb.Timestamp,
 				timestamppb.Timestamp:
@@ -173,10 +173,10 @@ func generateResource(r codegen.Resource, mock bool) {
 	}
 
 	if r.NameTransformer != nil {
-		opts = append(opts, sdkgen.WithNameTransformer(r.NameTransformer))
+		opts = append(opts, codegen.WithNameTransformer(r.NameTransformer))
 	}
 
-	r.Table, err = sdkgen.NewTableFromStruct(
+	r.Table, err = codegen.NewTableFromStruct(
 		fmt.Sprintf("gcp_%s_%s", r.Service, r.SubService),
 		r.Struct,
 		opts...,
@@ -211,7 +211,7 @@ func generateResource(r codegen.Resource, mock bool) {
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse gcp templates: %w", err))
 	}
-	tpl, err = tpl.ParseFS(sdkgen.TemplatesFS, "templates/*.go.tpl")
+	tpl, err = tpl.ParseFS(codegen.TemplatesFS, "templates/*.go.tpl")
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to parse sdk template: %w", err))
 	}

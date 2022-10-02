@@ -1,4 +1,4 @@
-package codegen
+package recipes
 
 import (
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
