@@ -14,7 +14,7 @@ defaults:
     working-directory: ./plugins/source/aws
 
 jobs:
-  plugins-destination-aws:
+  plugins-source-aws:
     name: "plugins/source/aws"
     runs-on: ubuntu-latest
     steps:

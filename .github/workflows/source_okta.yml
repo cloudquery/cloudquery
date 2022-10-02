@@ -14,7 +14,7 @@ defaults:
     working-directory: ./plugins/source/okta
 
 jobs:
-  plugins-destination-okta:
+  plugins-source-okta:
     name: "plugins/source/okta"
     runs-on: ubuntu-latest
     steps:
