@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/billing v1.5.0
 	cloud.google.com/go/compute v1.10.0
 	cloud.google.com/go/container v1.4.0
-	cloud.google.com/go/domains v0.7.0
+	cloud.google.com/go/domains v0.104.0
 	cloud.google.com/go/functions v1.7.0
 	cloud.google.com/go/kms v1.4.0
 	cloud.google.com/go/logging v1.5.0
