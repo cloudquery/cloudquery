@@ -11,8 +11,7 @@ The following tables depend on `tf_resources`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|tf_data_cq_id|UUID|
-|running_id|UUID|
+|data_backend_name|String|
 |module|String|
 |mode|String|
 |type|String|
