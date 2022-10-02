@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2 # OR "2" -> To retrieve the preceding commit.
+          fetch-depth: 2
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v28
@@ -23,7 +23,8 @@ jobs:
           DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
         with:
           script: |
-            const { DIRS: dirs } = process.env
+            const dirs = process.env.DIRS.split(' ')
+            console.log(dirs)
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 15
             let actions = ["cli",
@@ -42,11 +43,15 @@ jobs:
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
                            ]
-            actions = actions.filter(item => dirs.includes(item))
+            const matchesDir = (action) => {
+              return dirs.some(dir => dir.startsWith(action))
+            }
+            actions = actions.filter(action => matchesDir(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
             }
+            console.log(`Waiting for ${actions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
