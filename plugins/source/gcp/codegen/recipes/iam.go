@@ -40,6 +40,7 @@ var iamResources = []*Resource{
 		SkipFields:      []string{"ProjectId"},
 		NameTransformer: CreateReplaceTransformer(map[string]string{"oauth_2": "oauth2"}),
 		Relations:       []string{"ServiceAccountKeys()"},
+		SkipMock:        true,
 	},
 	{
 		SubService:  "service_account_keys",
@@ -55,6 +56,7 @@ var iamResources = []*Resource{
 			},
 		},
 		SkipFields: []string{"ProjectId"},
+		SkipMock:   true,
 	},
 }
 
