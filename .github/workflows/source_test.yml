@@ -14,8 +14,8 @@ defaults:
     working-directory: ./plugins/source/test
 
 jobs:
-  plugins-destination-terraform:
-    name: "plugins/source/terraform"
+  plugins-destination-test:
+    name: "plugins/source/test"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
