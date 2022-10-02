@@ -26,7 +26,7 @@ func FunctionAliases() *schema.Table {
 			{
 				Name:     "function_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "arn",

@@ -23,8 +23,8 @@ func backupLongTermRetentionPolicies() *schema.Table {
 			},
 			{
 				Name:     "sql_database_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "weekly_retention",

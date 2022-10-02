@@ -16,8 +16,8 @@ The primary key for this table is **name**.
 |value_extractor|String|
 |label_extractors|JSON|
 |bucket_options|JSON|
-|create_time|JSON|
-|update_time|JSON|
+|create_time|Timestamp|
+|update_time|Timestamp|
 |version|Int|
 |_cq_id|UUID|
 |_cq_fetch_time|Timestamp|

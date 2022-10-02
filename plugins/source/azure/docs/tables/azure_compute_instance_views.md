@@ -10,7 +10,7 @@ This table depends on [`azure_compute_virtual_machines`](azure_compute_virtual_m
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|compute_virtual_machine_id|UUID|
+|compute_virtual_machine_id|String|
 |platform_update_domain|Int|
 |platform_fault_domain|Int|
 |computer_name|String|

@@ -26,12 +26,12 @@ func ApiRouteResponses() *schema.Table {
 			{
 				Name:     "api_route_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "route_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("route_id"),
+				Resolver: schema.ParentColumnResolver("route_id"),
 			},
 			{
 				Name:     "arn",

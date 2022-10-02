@@ -23,8 +23,8 @@ func virtualNetworkGatewayConnections() *schema.Table {
 			},
 			{
 				Name:     "network_virtual_network_gateway_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "authorization_key",
@@ -32,17 +32,17 @@ func virtualNetworkGatewayConnections() *schema.Table {
 				Resolver: schema.PathResolver("AuthorizationKey"),
 			},
 			{
-				Name:     "virtual_network_gateway_1",
+				Name:     "virtual_network_gateway1",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("VirtualNetworkGateway1"),
 			},
 			{
-				Name:     "virtual_network_gateway_2",
+				Name:     "virtual_network_gateway2",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("VirtualNetworkGateway2"),
 			},
 			{
-				Name:     "local_network_gateway_2",
+				Name:     "local_network_gateway2",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("LocalNetworkGateway2"),
 			},

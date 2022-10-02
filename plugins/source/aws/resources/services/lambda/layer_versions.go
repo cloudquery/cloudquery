@@ -31,7 +31,7 @@ func LayerVersions() *schema.Table {
 			{
 				Name:     "layer_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "compatible_architectures",

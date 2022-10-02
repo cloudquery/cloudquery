@@ -1,0 +1,82 @@
+name: Wait for all required workflows to pass
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  wait_for_required_workflows:
+    name: wait-for-required-workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v28
+        with:
+          dir_names: true
+      - uses: actions/github-script@v6
+        env:
+          DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
+        with:
+          script: |
+            const dirs = process.env.DIRS.split(' ')
+            console.log(dirs)
+            let now = new Date().getTime()
+            const deadline = now + 60 * 1000 * 15
+            let actions = ["cli",
+                           "plugins/source/aws",
+                           "plugins/source/azure",
+                           "plugins/source/cloudflare",
+                           "plugins/source/digitalocean",
+                           "plugins/source/gcp",
+                           "plugins/source/github",
+                           "plugins/source/heroku",
+                           "plugins/source/k8s",
+                           "plugins/source/okta",
+                           "plugins/source/terraform",
+                           "plugins/source/test",
+                           
+                           "plugins/destination/postgresql",
+                           "plugins/destination/test",
+                           ]
+            const matchesDir = (action) => {
+              return dirs.some(dir => dir.startsWith(action))
+            }
+            actions = actions.filter(action => matchesDir(action))
+            if (actions.length === 0) {
+              console.log("No actions to wait for")
+              return
+            }
+            console.log(`Waiting for ${actions.join(", ")}`)
+            while (now <= deadline) {
+              const checkRuns = await github.paginate(github.rest.checks.listForRef, {
+                owner: 'cloudquery',
+                repo: 'cloudquery',
+                ref: context.payload.pull_request.head.sha,
+                status: 'completed',
+                per_page: 100
+              })
+              console.log(checkRuns)
+              checkRuns.forEach(item => {
+                if (actions.includes(item.name)) {
+                  if (item.conclusion !== 'success') {
+                    throw new Error(`Check ${item.name} failed`)
+                  }
+                  actions = actions.filter(action => action !== item.name)
+                }
+              })
+              if (actions.length === 0) {
+                console.log("Done waiting for actions")
+                return
+              }
+              
+              await new Promise(r => setTimeout(r, 5000));
+              now = new Date().getTime()
+            }
+            throw new Error(`Timed out waiting for ${actions.join(', ')}`)
+
+            

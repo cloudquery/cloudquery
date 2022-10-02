@@ -8,7 +8,7 @@ The primary key for this table is **id**.
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|cdn_rule_set_id|UUID|
+|cdn_rule_set_id|String|
 |order|Int|
 |conditions|JSON|
 |actions|JSON|

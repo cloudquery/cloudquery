@@ -100,7 +100,7 @@ func ElasticbeanstalkResources() []*Resource {
 					{
 						Name:     "environment_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},
@@ -114,7 +114,7 @@ func ElasticbeanstalkResources() []*Resource {
 					{
 						Name:     "environment_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},

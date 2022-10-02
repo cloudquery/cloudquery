@@ -23,8 +23,8 @@ func virtualMachineExtensions() *schema.Table {
 			},
 			{
 				Name:     "compute_virtual_machine_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "force_update_tag",

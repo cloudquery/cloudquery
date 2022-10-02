@@ -41,7 +41,7 @@ func AccessAnalyzerResources() []*Resource {
 					{
 						Name:     "analyzer_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentPathResolver("Arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -54,7 +54,7 @@ func AccessAnalyzerResources() []*Resource {
 					{
 						Name:     "analyzer_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentPathResolver("Arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

@@ -1,89 +1,82 @@
-# Contribution Guide to GCP Source Plugin
+# GCP Source Plugin Contribution Guide
 
-## Adding a new resource
+Thanks for contributing to CloudQuery! You are awesome. This document serves as a guide for adding new services and resources to the GCP source plugin.
 
-Some information can be found in the [docs for developing a new provider](https://docs.cloudquery.io/developers/developing-new-provider).
+There are three main steps to adding a new GCP resource:
+1. [Add a code generation recipe](#1-add-a-code-generation-recipe)
+2. [Writing the resolver function to fetch the resource using the AWS SDK](#2-setting-up-the-resource)
 
-As a prerequisite, in [`google.golang.org/api`](https://pkg.go.dev/google.golang.org/api) ensure API calls exist to list/describe the desired resource, and make note of:
+## 1. Add a Code Generation Recipe
 
-- to which GCP service the resource belongs
-- the schema of the returned object(s)
+Every supported GCP service has a recipe file under [codegen/recipes](codegen/recipes). 
 
-## Setting up the service
+In the following examples, we will use the fictional `MyService` GCP service with `MyResource` resource as an example. We recommend taking a look at a few examples in [codegen/recipes](codegen/recipes) first, as these steps will make more sense with some examples to reference. 
 
-If the service to which the resource belongs has not been used before in cq-provider-gcp, there are a few steps that need to be done to configure it.
+If you are adding a service that needs a new recipe, see [Add a New Recipe File](#add-a-new-recipe-file). Otherwise, if the GCP service is already supported but is missing resource(s), you may skip to [Add a Resource to a Recipe](#add-a-resource-to-a-recipe).
 
-1. Create the service interface in [client/services.go](../../client/services.go)
-2. Add the service to the `Services` struct in the [client/services.go](../../client/services.go)
-3. Init the service in the `initServices` function in [client/services.go](../../client/services.go)
+### Add a New Recipe File
 
-## Setting up the resource
+The process to follow for adding a new recipe is:
 
-### Skeleton
+1. Add a new file under [codegen/recipes](codegen/recipes) called `myservice.go`.
+2. Inside the new file, add a function called `MyServiceResources()` that returns `[]*Resource`.
+3. Call the function from [codegen/main.go](codegen/main.go) by adding
+   `resources = append(resources, recipes.MyServiceResources()...)`
+4. Define the list of resources to be generated and return it inside this function. See
+   [Add a Resource to a Recipe](#add-a-resource-to-a-recipe) for more details.
 
-1. Create a file under `resources/` that follows the pattern of `resources/<service>/<resource_name>`.
-2. In that file, create a function that returns a `*schema.Table`
-3. In [resources/provider.go](./resources/provider.go), add a mapping between the function you just created and the name of the resource that will be used in the config YML file.
-4. Add a test file at `resources/<service>/<resource>_test.go`. Follow other examples to create a test for the resource.
-5. Run `go run docs/docs.go` to generate the documentation for the new resource
+### Add a Resource to a Recipe
 
-### Implementation
+`MyServiceResources()` should return a slice of `*Resource` instances. Each resource should, at a minimum, have the following fields defined:
+ 1. `Service`: This will become the table prefix, and will usually be the same as the filename you chose for the recipe.
+ 2. `SubService`: This will be the final part of the table name, e.g. `aws_myservice_subservice`
+ 4. `Struct`: This should be a pointer to the struct that will be synced to the destination. CloudQuery's plugin-sdk code generation will read the fields of this struct and convert it to a `Table` instance with appropriate column types.
 
-Now that the skeleton has been set up, you can start to actually implement the resource. This consists of two parts:
+#### All Available Resource Fields
 
-1. Defining the schema
-2. Implementing resolver functions
+All available Resource fields can be seen in [base.go](codegen/recipes/base.go). See the documentation for each field for an explanation of what it does.
 
-#### Defining the schema
+#### Common Fields
 
-It is recommended that you look at a few existing resources as examples and also read through the comments on the source code for the [Table](https://github.com/cloudquery/plugin-sdk/blob/main/provider/schema/table.go) and [Column](https://github.com/cloudquery/plugin-sdk/blob/main/provider/schema/column.go) implementations for details.
+If all the resources share the same value for a field (as is often the case for `Service` and `Multiplex`), our convention is to reduce boilerplate by setting these properties in a loop after defining the resources slice, e.g.
 
-For most fields, the SDK can directly resolve them into a `Column`s for you, so all you need to do is specify the `Name` and the `Type`.
+```go
+// set default values
+for _, r := range resources {
+    r.Service = "myservice"
+}
+```
 
-For complex fields or fields that require further API calls, you can defined your own `Resolver` for the `Column`.
+### Run Code Generation
+
+With the recipe file added and some resources defined, you are ready to run codegen. Inside the [codegen](codegen) directory, run:
+
+```shell
+go run main.go
+```
+
+This will update all resources and generate a new directory for your service under [resources/services](resources/services).
+
+## 3. Setting up the resource
+
+By following the steps outlined above, you should now have generated a `myservice` directory under `resources/services`, containing a file called `myresource.go` (these names are examples, your actual filenames will differ). We will now set up the resource. This involves two steps: refining the codegen recipe, and writing one or more resolver functions.
+
+1. Open the generated `myservice/myresource.go` and inspect the `schema.Table` that is being returned. Does it contain the appropriate columns for the resource? Does it have a primary key? If something looks off, return to the recipe for this resource (under [codegen/recipes](codegen/recipes)) and make adjustments. Then re-run code generation as described in [Run Code Generation](#run-code-generation). Repeat this process until the Table looks right.
+2. Your generated `Table` will reference a `Resolver` function that needs to be implemented. Sometimes this resolver can also be generated, and sometimes it will need to be written by hand.
+3. Finally, implement a mock test in `myresource_mock_test.go`. This can also often be generated, but not always.
+
+We recommend looking at other resources similar to yours to get an idea of what needs to be done in this step.  
 
 #### Implementing Resolver Functions
 
 A few important things to note when adding functions that call the GCP API:
 
 - If possible, always use an API call that allows you to fetch many resources at once
-- Take pagination into account. Ensure you fetch **all** of the resources
+- Take pagination into account. Ensure you fetch **all** the resources.
+- Columns may also have their own resolver functions (not covered in this guide). This may be used for simple transformations or when additional calls can help add further context to the table.
 
-#### Integration Tests
+## General Tips
 
-To Run Integration tests please run
-
-```bash
-docker run -p 5432:5432 -e POSTGRES_PASSWORD=pass -d  postgres:13.3
-gcloud auth application-default login
-# To run against our test environment (same as in the CI), run: gcloud config set project cq-provider-gcp
-# team members have write access to cq-playground (to apply new terraform files) gcloud config set project cq-playground
-# Otherwise just use your development project via gcloud config set project YOUR_PROJECT
-go test -run=TestIntegration -tags=integration ./...
-```
-
-To Run integration test for specific table:
-
-```bash
-go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
-# For example
-go test -run="TestIntegration/gcp_compute_instances" -tags=integration ./...
-```
-
-## Adding new Terraform File Guidelines
-
-There a few good rule of thumb to follow when creating new terraform resources that will be served as testing infrastructure:
-
-- If possible make all resources private.
-- Make sure to replace built-in plain text passwords with `random_password` generator
-- For every compute/db try to use the smallest size to keep the cost low
-- If auto-scaling option is present, always turn it off
-
-If you want to apply the terraform locally first before pushing it to CI and applying there use:
-
-```
-cd terraform/YOUR_SERVICE_NAME/local
-# Use AB as your initial so you can have multiple team members working on the same account without conflicting resources
-terraform apply -var="prefix=AB"
-go test -run="TestIntegration/ROOT_TABLE_NAME" -tags=integration ./...
-```
+- Keep transformations to a minimum. As far as possible, we aim to deliver an accurate reflection of what the API provides.
+- We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns. 
+- If you get stuck or need help, feel free to reach out on [Discord](https://www.cloudquery.io/discord). We are a friendly community and would love to help!

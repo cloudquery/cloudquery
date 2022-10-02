@@ -52,7 +52,7 @@ func RedshiftResources() []*Resource {
 						Name:        "cluster_arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver:    `schema.ParentResourceFieldResolver("arn")`,
+						Resolver:    `schema.ParentColumnResolver("arn")`,
 						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
@@ -77,7 +77,7 @@ func RedshiftResources() []*Resource {
 						Name:        "cluster_arn",
 						Description: "The Amazon Resource Name (ARN) for the resource.",
 						Type:        schema.TypeString,
-						Resolver:    `schema.ParentResourceFieldResolver("cluster_arn")`,
+						Resolver:    `schema.ParentColumnResolver("cluster_arn")`,
 						Options:     schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{

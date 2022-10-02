@@ -17,7 +17,7 @@ The following tables depend on `azure_sql_databases`:
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|sql_server_id|UUID|
+|sql_server_id|String|
 |sku|JSON|
 |kind|String|
 |managed_by|String|

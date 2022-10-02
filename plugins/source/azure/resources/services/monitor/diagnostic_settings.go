@@ -27,8 +27,8 @@ func diagnosticSettings() *schema.Table {
 			},
 			{
 				Name:     "monitor_resource_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "storage_account_id",

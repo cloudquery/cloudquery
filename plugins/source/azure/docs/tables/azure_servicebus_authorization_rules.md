@@ -11,7 +11,7 @@ The following tables depend on `azure_servicebus_authorization_rules`:
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|servicebus_topic_id|UUID|
+|servicebus_topic_id|String|
 |rights|StringArray|
 |system_data|JSON|
 |id (PK)|String|

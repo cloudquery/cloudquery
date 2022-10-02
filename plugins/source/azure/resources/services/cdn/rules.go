@@ -22,8 +22,8 @@ func rules() *schema.Table {
 			},
 			{
 				Name:     "cdn_rule_set_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "order",

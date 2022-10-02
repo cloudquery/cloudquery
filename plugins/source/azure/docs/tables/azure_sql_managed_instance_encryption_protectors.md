@@ -10,7 +10,7 @@ This table depends on [`azure_sql_managed_instances`](azure_sql_managed_instance
 | Name          | Type          |
 | ------------- | ------------- |
 |subscription_id|String|
-|sql_managed_instance_id|UUID|
+|sql_managed_instance_id|String|
 |kind|String|
 |server_key_name|String|
 |server_key_type|String|

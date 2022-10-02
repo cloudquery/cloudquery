@@ -23,8 +23,8 @@ func accessKeys() *schema.Table {
 			},
 			{
 				Name:     "servicebus_authorization_rule_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "primary_connection_string",

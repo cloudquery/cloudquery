@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0-pre.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.1-pre.1...cli-v1.3.0-pre.1) (2022-09-30)
+
+
+### Features
+
+* **cli:** Use SourceClient and DestinationClient directly ([#2165](https://github.com/cloudquery/cloudquery/issues/2165)) ([e594e61](https://github.com/cloudquery/cloudquery/commit/e594e615de5217ca695592a23a2a18e9fee9cfe7))
+
+
+### Bug Fixes
+
+* ProgressBar output fix ([#2163](https://github.com/cloudquery/cloudquery/issues/2163)) ([85fbd58](https://github.com/cloudquery/cloudquery/commit/85fbd58ceb755f870b097731e33f36b70d9d97db))
+
+## [1.2.1-pre.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.0-pre.1...cli-v1.2.1-pre.1) (2022-09-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* Version fetching code and test ([#2097](https://github.com/cloudquery/cloudquery/issues/2097)) ([f174f30](https://github.com/cloudquery/cloudquery/commit/f174f30822d390e41114828fbb54c8505ec02cd5))
+
 ## [1.2.0-pre.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.0-pre.1...cli-v1.2.0-pre.1) (2022-09-27)
 
 

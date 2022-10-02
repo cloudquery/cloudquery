@@ -22,6 +22,10 @@
       "destination": "/docs/plugins/source"
     },
     {
+      "source": "/plugins/:path*",
+      "destination": "/docs/plugins/source"
+    },
+    {
       "source": "/providers",
       "destination": "/docs/plugins/source"
     }

@@ -33,7 +33,7 @@ func AnalyzerFindings() *schema.Table {
 			{
 				Name:     "analyzer_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentPathResolver("Arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "analyzed_at",
