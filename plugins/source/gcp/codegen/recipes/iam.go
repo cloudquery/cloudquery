@@ -51,7 +51,7 @@ var iamResources = []*Resource{
 				Name:     "service_account_unique_id",
 				Type:     schema.TypeString,
 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				Resolver: `schema.ParentResourceFieldResolver("unique_id")`,
+				Resolver: `schema.ParentColumnResolver("unique_id")`,
 			},
 		},
 		SkipFields: []string{"ProjectId"},

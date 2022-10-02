@@ -21,7 +21,7 @@ func ServiceAccountKeys() *schema.Table {
 			{
 				Name:     "service_account_unique_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("unique_id"),
+				Resolver: schema.ParentColumnResolver("unique_id"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
