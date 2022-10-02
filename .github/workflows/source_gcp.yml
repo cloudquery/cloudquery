@@ -14,7 +14,7 @@ defaults:
     working-directory: ./plugins/source/gcp
 
 jobs:
-  plugins-destination-gcp:
+  plugins-source-gcp:
     name: "plugins/source/gcp"
     runs-on: ubuntu-latest
     steps:
