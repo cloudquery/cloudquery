@@ -12,6 +12,8 @@ require (
 	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../plugin-sdk
+
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect

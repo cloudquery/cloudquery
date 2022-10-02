@@ -3,13 +3,15 @@ module github.com/cloudquery/cloudquery/plugins/destination/postgresql
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.11.2
+	github.com/cloudquery/plugin-sdk v0.11.4
 	github.com/google/go-cmp v0.5.9
 	github.com/jackc/pgtype v1.12.0
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/rs/zerolog v1.28.0
 	github.com/vgarvardt/pgx-google-uuid/v4 v4.0.0
 )
+
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
 
 require (
 	github.com/cloudquery/faker/v3 v3.7.7 // indirect
