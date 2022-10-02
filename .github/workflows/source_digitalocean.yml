@@ -14,7 +14,7 @@ defaults:
     working-directory: ./plugins/source/digitalocean
 
 jobs:
-  plugins-destination-digitalocean:
+  plugins-source-digitalocean:
     name: "plugins/source/digitalocean"
     runs-on: ubuntu-latest
     steps:

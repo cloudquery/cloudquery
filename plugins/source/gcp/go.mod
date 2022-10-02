@@ -26,7 +26,7 @@ require (
 	github.com/spf13/cast v1.5.0
 	github.com/thoas/go-funk v0.9.2
 	google.golang.org/api v0.98.0
-	google.golang.org/genproto v0.0.0-20220927151529-dcaddaf36704
+	google.golang.org/genproto v0.0.0-20220930163606-c98284e70a91
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 )

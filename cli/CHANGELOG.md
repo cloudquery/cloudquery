@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0-pre.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.1-pre.1...cli-v1.3.0-pre.1) (2022-09-30)
+
+
+### Features
+
+* **cli:** Use SourceClient and DestinationClient directly ([#2165](https://github.com/cloudquery/cloudquery/issues/2165)) ([e594e61](https://github.com/cloudquery/cloudquery/commit/e594e615de5217ca695592a23a2a18e9fee9cfe7))
+
+
+### Bug Fixes
+
+* ProgressBar output fix ([#2163](https://github.com/cloudquery/cloudquery/issues/2163)) ([85fbd58](https://github.com/cloudquery/cloudquery/commit/85fbd58ceb755f870b097731e33f36b70d9d97db))
+
 ## [1.2.1-pre.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.0-pre.1...cli-v1.2.1-pre.1) (2022-09-30)
 
 
