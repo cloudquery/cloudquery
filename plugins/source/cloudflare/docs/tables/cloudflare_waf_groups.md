@@ -9,7 +9,7 @@ This table depends on [`cloudflare_waf_packages`](cloudflare_waf_packages.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|waf_package_cq_id|UUID|
+|waf_package_id|String|
 |id|String|
 |name|String|
 |description|String|

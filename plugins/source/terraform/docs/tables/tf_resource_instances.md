@@ -7,8 +7,7 @@ The primary key for this table is **_cq_id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|tf_resource_cq_id|UUID|
-|resource_id|UUID|
+|resource_name|UUID|
 |instance_id|String|
 |schema_version|Int|
 |attributes|JSON|
