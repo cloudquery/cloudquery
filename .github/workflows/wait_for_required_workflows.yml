@@ -60,7 +60,7 @@ jobs:
                 per_page: 100
               })
               const runs = checkRuns.map(({ name, conclusion }) => ({ name, conclusion }))
-              console.log(`Got the following check runs: ${runs}`)
+              console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
               const matchingRuns = runs.filter(({ name }) => actions.includes(name))
               const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
               if (failedRuns.length > 0) {
