@@ -12,7 +12,7 @@ defaults:
 
 jobs:
   cli:
-    name: cli
+    name: "cli"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
