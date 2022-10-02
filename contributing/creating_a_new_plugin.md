@@ -2,7 +2,7 @@
 
 There are two main types of CloudQuery plugins:
  - **source** plugins read data from a cloud provider, and
- - **target** plugins define a destination to write source data into. This is usually a database or file system.
+ - **destination** plugins define a destination to write source data into. This is usually a database or file system.
 
 ## Writing a Source Plugin
 
@@ -14,5 +14,5 @@ Source plugins were previously called **Providers**. See the following pages for
 
 ## Writing a Target Plugin
 
-This section is a work in progress. For now, [raise an issue](../issue_reporting.md) or reach out to us on Discord if 
-you would like to request (or work on) a new target plugin.  
+This section is a work in progress. For now, raise an issue or reach out to us on Discord if 
+you would like to request (or work on) a new destination plugin.  
