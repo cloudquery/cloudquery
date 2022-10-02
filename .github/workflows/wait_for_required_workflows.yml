@@ -30,7 +30,7 @@ jobs:
             const matchesDir = (action) => {
               return dirs.some(dir => dir.startsWith(action))
             }
-            const actions = ["cli",
+            let actions = ["cli",
                            "plugins/source/aws",
                            "plugins/source/azure",
                            "plugins/source/cloudflare",
@@ -49,6 +49,11 @@ jobs:
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
+            }
+            // We test the CLI on multiple OSes, so we need to wait for all of them
+            if (actions.includes("cli")) {
+              actions = actions.filter(action => action !== "cli")
+              actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
             console.log(`Waiting for ${actions.join(", ")}`)
             while (now <= deadline) {
