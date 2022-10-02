@@ -18,6 +18,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [1.0.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.0-pre.0...plugins-source-azure-v1.0.1-pre.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 540bb73 ([#2169](https://github.com/cloudquery/cloudquery/issues/2169)) ([d183fea](https://github.com/cloudquery/cloudquery/commit/d183feabb803cc5516cf23f651aa9ca33d13bfba))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.1.3 ([#2173](https://github.com/cloudquery/cloudquery/issues/2173)) ([d707d60](https://github.com/cloudquery/cloudquery/commit/d707d6061b2ea53a5c746d6dd9ea0d851fab4368))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* Use ParentResourceFieldResolver instead of ParentIDResolver ([#2125](https://github.com/cloudquery/cloudquery/issues/2125)) ([5039788](https://github.com/cloudquery/cloudquery/commit/50397883131f6652cfbcccadcf2817784a46e199))
+* Use TypeString for parent ids ([#2136](https://github.com/cloudquery/cloudquery/issues/2136)) ([a62f1a0](https://github.com/cloudquery/cloudquery/commit/a62f1a07e9a35198a984b081f4fb83ecaf79c4e8))
+
 ## [1.0.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v0.14.2-pre.0...plugins-source-azure-v1.0.0-pre.0) (2022-09-26)
 
 
