@@ -79,7 +79,7 @@ require (
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/cloudquery/plugin-sdk v0.11.0
 	github.com/ettle/strcase v0.1.1
-	github.com/gocarina/gocsv v0.0.0-20220823132111-71f3a5cb2654
+	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/mapstructure v1.5.0
