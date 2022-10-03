@@ -5,7 +5,7 @@ select
     :'check_id' as check_id,
     'Amazon ECS task definitions should have secure networking modes and user definitions' as title,
     account_id,
-    task_definition_arn as resource_id,
+    arn as resource_id,
     case when
         network_mode = 'host'
         and (c->>'Privileged')::boolean is distinct from true

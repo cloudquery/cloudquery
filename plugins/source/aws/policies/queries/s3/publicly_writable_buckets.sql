@@ -2,13 +2,11 @@ insert into aws_policy_results
 with policy_allow_public as (
     select
         arn,
-        bucket_cq_id,
         count(*) as statement_count
     from
         (
             select
                 aws_s3_buckets.arn,
-                aws_s3_buckets._cq_id as bucket_cq_id,
                 statements -> 'Principal' as principals
             from
                 aws_s3_buckets,
@@ -34,7 +32,7 @@ with policy_allow_public as (
             )
         )
     group by
-        arn, bucket_cq_id
+        arn
 )
 
 select
@@ -57,7 +55,7 @@ left join
 --       Principal = {"AWS": ["arn:aws:iam::12345678910:root", "*"]}
 --       Principal = "*"
 left join policy_allow_public on
-        aws_s3_buckets._cq_id = policy_allow_public.bucket_cq_id
+        aws_s3_buckets.arn = policy_allow_public.arn
 where
     (
         aws_s3_buckets.block_public_acls != TRUE

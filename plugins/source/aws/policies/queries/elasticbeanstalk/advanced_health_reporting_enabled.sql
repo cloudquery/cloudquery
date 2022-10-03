@@ -5,7 +5,7 @@ select
     :'check_id' as check_id,
     'Elastic Beanstalk environments should have enhanced health reporting enabled' as title,
     account_id,
-    environment_arn as resource_id,
+    arn as resource_id,
     case when
         health_status is null
         or health is null

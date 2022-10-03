@@ -1,9 +1,8 @@
 create or replace view view_aws_apigateway_method_settings as
 select
-    s._cq_id,
-    s.stage_name,
-    s.rest_api_arn,
     s.arn,
+    s.rest_api_arn,
+    s.stage_name,
     s.tracing_enabled as stage_data_trace_enabled,
     s.cache_cluster_enabled as stage_caching_enabled,
     s.web_acl_arn as waf,
