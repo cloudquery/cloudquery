@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -11,7 +12,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
-func TestWriteOverwrite(t *testing.T) {
+func TestWriteOverwriteDeleteStale(t *testing.T) {
 	ctx := context.Background()
 	client, err := New(ctx, getTestLogger(t), specs.Destination{
 		WriteMode: specs.WriteModeOverwriteDeleteStale,
@@ -54,7 +55,7 @@ func TestWriteOverwrite(t *testing.T) {
 		t.Fatalf("got %d, expected json_agg to return list with one entry", len(results))
 	}
 	if diff := cmp.Diff(results[0], testData); diff != "" {
-		t.Fatal(diff)
+		t.Fatal(fmt.Errorf("unexpected results: %s", diff))
 	}
 
 }
