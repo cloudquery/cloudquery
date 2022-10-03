@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -33,16 +34,22 @@ func NewCmdSync() *cobra.Command {
 	return cmd
 }
 
+func getPluralDirectories(count int) string {
+	if count == 1 {
+		return "directory"
+	}
+
+	return "directories"
+}
+
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
-	directory := "."
-	if len(args) > 0 {
-		directory = args[0]
-	}
-	fmt.Println("Loading specs from directory: ", directory)
+
+	directoryPlural := getPluralDirectories(len(args))
+	fmt.Printf("Loading specs from %s: %s\n", directoryPlural, strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
-		return fmt.Errorf("failed to load specs from directory %s: %w", directory, err)
+		return fmt.Errorf("failed to load specs from %s %s: %w", directoryPlural, strings.Join(args, ", "), err)
 	}
 
 	for _, sourceSpec := range specReader.Sources {
