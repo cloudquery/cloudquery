@@ -34,22 +34,13 @@ func NewCmdSync() *cobra.Command {
 	return cmd
 }
 
-func getPluralDirectories(count int) string {
-	if count == 1 {
-		return "directory"
-	}
-
-	return "directories"
-}
-
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
 
-	directoryPlural := getPluralDirectories(len(args))
-	fmt.Printf("Loading specs from %s: %s\n", directoryPlural, strings.Join(args, ", "))
+	fmt.Printf("Loading spec(s) from: %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
-		return fmt.Errorf("failed to load specs from %s %s: %w", directoryPlural, strings.Join(args, ", "), err)
+		return fmt.Errorf("failed to load spec(s) from: %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
 	for _, sourceSpec := range specReader.Sources {
