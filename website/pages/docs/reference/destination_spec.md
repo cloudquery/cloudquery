@@ -12,12 +12,13 @@ Name of the plugin. If you have multiple destination plugins this should be uniq
 ### path
 (`string`, `optional`)
 
-By default, `path` is automatically inferred from `name`. For example for `postgresql`, `path` will be `cloudquery/postgresql`, or for `community_org/dest_name` `path` will be `community_org/dest_name`.
+Configures how to retrieve the plugin. For plugins hosted on GitHub, `path` is inferred from `name` by default.
+For example `name: postgresql` will resolve `path` to `clouduquery/postgresql`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provider the full path to the repository such as `community-github-org/community-github-repo`
 
 ### version
 (`string`, `required`)
 
-`version` should be in the form of `vX.Y.Z` (or `vX.Y.Z-sometag` as per [semver](https://semver.org/)). Latest versions can be generated using `cloudquery gen` command. You can find all official plugin versions under [cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository.
+`version` must be a valid [SemVer](https://semver.org/)), e.g. `vMajor.Minor.Patch`. Latest versions can be generated using `cloudquery gen` command. You can find all official plugin versions under [cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository.
 
 ### registry
 (`string`, `optional`, default: `github`, available: `github`, `local`, `grpc`)
