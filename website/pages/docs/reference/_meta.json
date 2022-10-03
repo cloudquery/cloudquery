@@ -1,5 +1,5 @@
 {
-  "source_spec": "Source Spec",
-  "destination_spec": "Destination Spec Reference",
+  "source-spec": "Source Spec Reference",
+  "destination-spec": "Destination Spec Reference",
   "cli": "CLI"
 }
