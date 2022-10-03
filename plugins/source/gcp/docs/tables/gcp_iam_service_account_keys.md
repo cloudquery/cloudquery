@@ -1,6 +1,7 @@
 # Table: gcp_iam_service_account_keys
 
 
+
 The primary key for this table is **service_account_unique_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`gcp_iam_service_accounts`](gcp_iam_service_accounts.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |project_id|String|
 |service_account_unique_id (PK)|String|
 |disabled|Bool|
@@ -21,5 +26,3 @@ This table depends on [`gcp_iam_service_accounts`](gcp_iam_service_accounts.md).
 |public_key_data|String|
 |valid_after_time|String|
 |valid_before_time|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
