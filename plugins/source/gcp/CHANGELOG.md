@@ -14,6 +14,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.10.7-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.6-pre.0...plugins-source-gcp-v0.10.7-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.11.6 ([#2256](https://github.com/cloudquery/cloudquery/issues/2256)) ([f148b3f](https://github.com/cloudquery/cloudquery/commit/f148b3fc7994ceaa3eda0790eda505c3e8cdbbf1))
+* GCP policies ([#1879](https://github.com/cloudquery/cloudquery/issues/1879)) ([1591f9f](https://github.com/cloudquery/cloudquery/commit/1591f9fbe63775413b80e3c3714c876296d4ed43))
+
+## [0.10.6-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.5-pre.0...plugins-source-gcp-v0.10.6-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.5 ([#2230](https://github.com/cloudquery/cloudquery/issues/2230)) ([bd79416](https://github.com/cloudquery/cloudquery/commit/bd79416aa660fbdfc27269d55d098ba6cd6b5953))
+
 ## [0.10.5-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.4-pre.0...plugins-source-gcp-v0.10.5-pre.0) (2022-10-03)
 
 
