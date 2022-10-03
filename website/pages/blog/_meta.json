@@ -9,6 +9,7 @@
     "searchable": false
   },
   "cloudquery-v1-release": "CloudQuery v1 Release",
+  "migrating-from-v0-to-v1": "Migrating from CloudQuery v0 to v1",
   "aws-encryption-and-multi-account-access": "Encryption in AWS and Multi-Account Access",
   "introducing-the-github-cloudquery-provider": "Introducing The GitHub CloudQuery Provider",
   "configuring-workload-identity-federation-between-gcp-and-aws-eks": "Configuring Workload identity federation between GCP and AWS EKS",

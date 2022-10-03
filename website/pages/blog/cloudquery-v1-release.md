@@ -46,7 +46,7 @@ The new SDK codegen capabilities provides the following advantages for source pl
 - Autogenerating CloudQuery tables from Go structs.
 - Auto-detect underlying API changes and re-generate CloudQuery tables.
 
-A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/codegenmain/main.go) plugin which is 95% auto-generated.
+A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/codegenmain/main.go) plugin which is now 95% auto-generated.
 
 ## Auto Migrations
 
@@ -67,6 +67,10 @@ We have now two main repos:
 
 - Over the next few weeks we will work to fully stabilize the new release. After that, we will double down on new destination plugins, write modes and new source plugins with code generation.
 - New destinations: BigQuery, Snowflake, Kafka coming up! Feel free to open an issue if you have other requests!
+
+## Migrating from v0 to v1
+
+With the release of v1 comes a promise of increased stability. However, if you were using v0 before, there will be some breaking changes that need to be handled. See our [V1 Migration guide](/blog/migrating-from-v0-to-v1) for guidance. And if you have any questions, we are always happy to help on [Discord](https://www.cloudquery.io/discord)!
 
 ## Thanks!
 
