@@ -1,6 +1,6 @@
-# Destination Spec
+# Destination Spec Reference
 
-This goes through all the options available for destination plugins' `spec` object.
+This goes through all the available options for the destination plugin `spec` object.
 
 ## Spec
 

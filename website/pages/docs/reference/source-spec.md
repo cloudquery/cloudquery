@@ -1,6 +1,6 @@
 # Source Spec Reference
 
-This goes through all the options available for source plugins' `spec` object:
+This goes through all the available options for the source plugin `spec` object:
 
 ## Spec
 
