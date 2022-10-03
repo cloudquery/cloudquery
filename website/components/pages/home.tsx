@@ -59,10 +59,10 @@ export default function Home() {
               </span>
             </h1>
             <p className="max-w-2xl mt-6 text-xl font-medium leading-tight text-gray-400 sm:text-2xl md:text-3xl lg:text-4xl">
-              Sync cloud assets to a database, then query using standard SQL.
+              Sync cloud assets to any database, transform and visualize.
             </p>
             <p className="max-w-2xl mt-6 text-xl font-medium leading-tight text-gray-400 sm:text-2xl md:text-3xl lg:text-4xl">
-              CloudQuery is an open source platform specifically designed for security and infrastructure teams managing large cloud footprints.
+              CloudQuery is an open source high performance data integration platform designed for security and infrastructure teams.
             </p>
           </div>
           <div className="flex fix-flex-col h-32 mt-4 md:mt-0 mb-6 md:mb-0 items-center gap-3 md:flex-row xl:flex-row">
