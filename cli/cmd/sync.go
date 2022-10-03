@@ -19,6 +19,7 @@ cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
 `
+	cqDirectory = ".cq"
 )
 
 func NewCmdSync() *cobra.Command {
@@ -66,7 +67,7 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
-	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version)
+	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version, clients.WithSourceDirectory(cqDirectory))
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
@@ -91,7 +92,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		}
 	}()
 	for i, destinationSpec := range destinationsSpecs {
-		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version)
+		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version, clients.WithDestinationDirectory(cqDirectory))
 		if err != nil {
 			return fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
