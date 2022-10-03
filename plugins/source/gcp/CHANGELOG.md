@@ -14,6 +14,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.10.8-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.7-pre.0...plugins-source-gcp-v0.10.8-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* Run tinypng on GCP dashboard screenshots ([#2274](https://github.com/cloudquery/cloudquery/issues/2274)) ([a2b662c](https://github.com/cloudquery/cloudquery/commit/a2b662cef0f11efce886bf9f7072c34efe1f5316))
+
+## [0.10.7-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.6-pre.0...plugins-source-gcp-v0.10.7-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.11.6 ([#2256](https://github.com/cloudquery/cloudquery/issues/2256)) ([f148b3f](https://github.com/cloudquery/cloudquery/commit/f148b3fc7994ceaa3eda0790eda505c3e8cdbbf1))
+* GCP policies ([#1879](https://github.com/cloudquery/cloudquery/issues/1879)) ([1591f9f](https://github.com/cloudquery/cloudquery/commit/1591f9fbe63775413b80e3c3714c876296d4ed43))
+
 ## [0.10.6-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.5-pre.0...plugins-source-gcp-v0.10.6-pre.0) (2022-10-03)
 
 
