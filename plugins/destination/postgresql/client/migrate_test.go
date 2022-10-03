@@ -37,7 +37,7 @@ func TestMigrate(t *testing.T) {
 		t.Fatalf("failed to check if table exists: %v", err)
 	}
 	if !isExist {
-		t.Fatalf("failed to migrate table. table %s doens't exists", testTable.Name)
+		t.Fatalf("failed to migrate table. table %s doesn't exist", testTable.Name)
 	}
 	// test that calling migrate twice works
 	if err := c.Migrate(ctx, testTables); err != nil {
