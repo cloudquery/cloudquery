@@ -11,8 +11,6 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-
-
 type Client struct {
 	logger zerolog.Logger
 }
