@@ -40,7 +40,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	fmt.Printf("Loading spec(s) from: %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
-		return fmt.Errorf("failed to load spec(s) from: %s. Error: %w", strings.Join(args, ", "), err)
+		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
 	for _, sourceSpec := range specReader.Sources {
