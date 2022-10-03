@@ -24,38 +24,38 @@ AND    i.indisprimary;
 )
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (p *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	for _, table := range tables {
-		p.logger.Info().Str("table", table.Name).Msg("Migrating table")
+		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
 		if len(table.Columns) == 0 {
-			p.logger.Info().Str("table", table.Name).Msg("Table with not columns, skiping")
+			c.logger.Info().Str("table", table.Name).Msg("Table with not columns, skiping")
 			continue
 		}
-		tableExist, err := p.isTableExistSQL(ctx, table.Name)
+		tableExist, err := c.isTableExistSQL(ctx, table.Name)
 		if err != nil {
 			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 		}
 		if tableExist {
-			p.logger.Info().Str("table", table.Name).Msg("Table exist, auto-migrating")
-			if err := p.autoMigrateTable(ctx, table); err != nil {
+			c.logger.Info().Str("table", table.Name).Msg("Table exist, auto-migrating")
+			if err := c.autoMigrateTable(ctx, table); err != nil {
 				return err
 			}
 		} else {
-			p.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist creating")
-			if err := p.createTableIfNotExist(ctx, table); err != nil {
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist creating")
+			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
 		}
-		if err := p.Migrate(ctx, table.Relations); err != nil {
+		if err := c.Migrate(ctx, table.Relations); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (p *Client) isTableExistSQL(ctx context.Context, table string) (bool, error) {
+func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error) {
 	var tableExist int
-	if err := p.conn.QueryRow(ctx, isTableExistSQL, table).Scan(&tableExist); err != nil {
+	if err := c.conn.QueryRow(ctx, isTableExistSQL, table).Scan(&tableExist); err != nil {
 		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
 	}
 	return tableExist == 1, nil

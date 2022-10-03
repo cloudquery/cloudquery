@@ -57,7 +57,6 @@ func TestWriteOverwriteDeleteStale(t *testing.T) {
 	if diff := cmp.Diff(results[0], testData); diff != "" {
 		t.Fatal(fmt.Errorf("unexpected results: %s", diff))
 	}
-
 }
 
 func copyMap(m map[string]interface{}) map[string]interface{} {

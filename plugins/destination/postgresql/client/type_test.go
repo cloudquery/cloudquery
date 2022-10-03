@@ -43,5 +43,4 @@ func TestTypes(t *testing.T) {
 			t.Fatalf("failed to migrate table. column %s pg type is %s but expected %s", column.Name, pgColumn.typ, SchemaTypeToPg(column.Type))
 		}
 	}
-
 }

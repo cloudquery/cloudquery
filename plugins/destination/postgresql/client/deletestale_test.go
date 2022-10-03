@@ -49,7 +49,7 @@ func TestDeleteStale(t *testing.T) {
 		t.Fatalf("got %d, expected json_agg to return list with one entry", len(results))
 	}
 	// TODO: figure normal pgx<->go time normal conversion
-	syncTime := time.Now().UTC().Add(-24*30*12 * time.Hour)
+	syncTime := time.Now().UTC().Add(-24 * 30 * 12 * time.Hour)
 	// syncTime = syncTime.Add(time.Second * 2)
 	if err := c.DeleteStale(ctx, "simple_table", testData[schema.CqSourceName.Name].(string), syncTime); err != nil {
 		t.Fatalf("failed to delete stale data: %v", err)

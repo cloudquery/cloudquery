@@ -54,5 +54,4 @@ func TestDrop(t *testing.T) {
 	if isExist {
 		t.Fatalf("failed to migrate table. table %s stil exists", testTable.Name)
 	}
-
 }

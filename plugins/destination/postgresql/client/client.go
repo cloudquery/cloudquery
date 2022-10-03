@@ -20,12 +20,7 @@ type Spec struct {
 	PgxLogLevel      LogLevel `json:"pgx_log_level,omitempty"`
 }
 
-type Child struct {
-	childId int64
-}
-
 type Client struct {
-	Child
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination
@@ -96,20 +91,20 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 	return c, nil
 }
 
-func (p *Client) Close(ctx context.Context) error {
-	if p.conn == nil {
+func (c *Client) Close(ctx context.Context) error {
+	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
-	if p.conn != nil {
-		p.conn.Close()
-		p.conn = nil
+	if c.conn != nil {
+		c.conn.Close()
+		c.conn = nil
 	}
 	return nil
 }
 
-func (p *Client) currentDatabase() (string, error) {
+func (c *Client) currentDatabase() (string, error) {
 	var db string
-	err := p.conn.QueryRow(context.Background(), "select current_database()").Scan(&db)
+	err := c.conn.QueryRow(context.Background(), "select current_database()").Scan(&db)
 	if err != nil {
 		return "", err
 	}

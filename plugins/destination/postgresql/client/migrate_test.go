@@ -77,5 +77,4 @@ func TestMigrate(t *testing.T) {
 	if diff := cmp.Diff(results[0], testData); diff != "" {
 		t.Fatal(diff)
 	}
-
 }
