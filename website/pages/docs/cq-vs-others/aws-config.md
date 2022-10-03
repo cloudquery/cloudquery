@@ -4,7 +4,7 @@ AWS Config is the native AWS asset inventory provided by AWS.
 
 **Key Differences:**
 
-- **Resource Types**: CloudQuery [supports](https://www.cloudquery.io/plugins/aws/tables) more than 250 types of resources while AWS Config currently supports about 120 types of resources (tables). Being an open-source project you can easily add the missing resources without being blocked by a vendor.
+- **Resource Types**: CloudQuery [supports](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/docs/tables) more than 250 types of resources while AWS Config currently supports about 120 types of resources (tables). Being an open-source project you can easily add the missing resources without being blocked by a vendor.
 - **Database Agnostic and Raw Access to data**: CloudQuery supports multiple databases such as PostgreSQL, BigQuery and others. This makes it play nicely with the whole SQL eco-system and gives you the ability to re-use other tools like Grafana/BI. AWS Config is using a proprietary subset of SQL and database and thus doesn't give you the ability to re-use other tools easily.
 - **Cloud Agnostic**: CloudQuery gives you the ability to assess, audit and monitor [multi-cloud and SaaS infrastructure](https://hub.cloudquery.io).
 - **Pricing**: CloudQuery is open-source and thus you will pay only for the hosting of your PostgreSQL (you can use RDS, or any other managed version) and the compute for running [CQ binary](../deployment/overview). AWS Config charges both per item recorded and rule evaluated.
