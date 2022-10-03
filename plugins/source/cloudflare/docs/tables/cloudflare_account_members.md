@@ -9,7 +9,7 @@ This table depends on [`cloudflare_accounts`](cloudflare_accounts.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|account_cq_id|UUID|
+|account_id|String|
 |id|String|
 |code|String|
 |user|JSON|

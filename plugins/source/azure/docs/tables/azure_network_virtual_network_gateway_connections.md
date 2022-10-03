@@ -10,9 +10,9 @@ The primary key for this table is **id**.
 |subscription_id|String|
 |network_virtual_network_gateway_id|String|
 |authorization_key|String|
-|virtual_network_gateway_1|JSON|
-|virtual_network_gateway_2|JSON|
-|local_network_gateway_2|JSON|
+|virtual_network_gateway1|JSON|
+|virtual_network_gateway2|JSON|
+|local_network_gateway2|JSON|
 |connection_type|String|
 |connection_protocol|String|
 |routing_weight|Int|

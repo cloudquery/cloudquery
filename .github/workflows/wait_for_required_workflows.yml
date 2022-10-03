@@ -16,19 +16,25 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v28
-        with:
-          dir_names: true
       - uses: actions/github-script@v6
         env:
-          DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
+          FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         with:
           script: |
-            const dirs = process.env.DIRS.split(' ')
-            console.log(dirs)
+            const files = process.env.FILES.split(' ')
+            console.log(files)
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 15
-            const matchesDir = (action) => {
-              return dirs.some(dir => dir.startsWith(action))
+            const matchesWorkflow = (file, action) => {
+              if (!file.startsWith('.github/workflows/')) {
+                return false
+              }
+              const fs = require("fs");
+              const contents = fs.readFileSync(file, 'utf8');
+              return contents.includes(`name: "${action}"`)
+            }
+            const matchesFile = (action) => {
+              return files.some(file => file.startsWith(action) || matchesWorkflow(file, action))
             }
             const actions = ["cli",
                            "plugins/source/aws",
@@ -45,7 +51,7 @@ jobs:
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
-                           ].filter(action => matchesDir(action))
+                           ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
