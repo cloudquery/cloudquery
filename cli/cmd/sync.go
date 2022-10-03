@@ -37,7 +37,7 @@ func NewCmdSync() *cobra.Command {
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
 
-	fmt.Printf("Loading spec(s) from: %s\n", strings.Join(args, ", "))
+	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
