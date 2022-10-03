@@ -6746,7 +6746,8 @@
         },
         "ram": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "rds": {
@@ -7068,6 +7069,11 @@
         "route53": {
           "regions": {
             "aws-iso-b-global": {}
+          }
+        },
+        "route53resolver": {
+          "regions": {
+            "us-isob-east-1": {}
           }
         },
         "s3": {
