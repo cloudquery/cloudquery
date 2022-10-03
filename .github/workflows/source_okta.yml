@@ -14,8 +14,8 @@ defaults:
     working-directory: ./plugins/source/okta
 
 jobs:
-  plugins-destination-heroku:
-    name: "plugins/source/heroku"
+  plugins-source-okta:
+    name: "plugins/source/okta"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -39,3 +39,9 @@ jobs:
         run: go build .
       - name: Test
         run: go test ./...
+      - name: remove all docs
+        run: rm -f ./docs/tables/*.md
+      - name: build-docs
+        run: go run main.go doc docs/tables
+      - name: Fail if docs are changed
+        run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
