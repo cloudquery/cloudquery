@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 💥 Breaking Changes
 -->
 
+## [0.7.4-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v0.7.3-pre.0...plugins-source-digitalocean-v0.7.4-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.11.6 ([#2255](https://github.com/cloudquery/cloudquery/issues/2255)) ([c144272](https://github.com/cloudquery/cloudquery/commit/c144272ea6b4026b8eb0fd761934989bb0948d1c))
+
 ## [0.7.3-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v0.7.2-pre.0...plugins-source-digitalocean-v0.7.3-pre.0) (2022-10-03)
 
 
