@@ -14,8 +14,8 @@ defaults:
     working-directory: ./plugins/source/test
 
 jobs:
-  plugins-destination-terraform:
-    name: "plugins/source/terraform"
+  plugins-source-test:
+    name: "plugins/source/test"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -39,3 +39,9 @@ jobs:
         run: go build .
       - name: Test
         run: go test ./...
+      - name: remove all docs
+        run: rm -f ./docs/tables/*.md
+      - name: build-docs
+        run: go run main.go doc docs/tables
+      - name: Fail if docs are changed
+        run: test "$(git status -s ./docs/tables | wc -l)" -eq 0

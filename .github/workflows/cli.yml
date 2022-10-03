@@ -11,7 +11,7 @@ defaults:
     working-directory: ./cli
 
 jobs:
-  build-lint-and-test:
+  cli:
     name: cli
     runs-on: ubuntu-latest
     steps:

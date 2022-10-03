@@ -3,13 +3,13 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.11.2
+	github.com/cloudquery/plugin-sdk v0.11.5
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/rs/zerolog v1.28.0
 	github.com/schollz/progressbar/v3 v3.11.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
-	golang.org/x/sync v0.0.0-20220907140024-f12130a52804
+	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
 )
 
 require (
