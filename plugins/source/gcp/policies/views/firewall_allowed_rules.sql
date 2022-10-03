@@ -16,21 +16,21 @@ SELECT
     pr.single_port
 FROM combined AS gcf
     LEFT JOIN (
-        SELECT _cq_id, range_start, range_end, single_port
+        SELECT project_id, id, range_start, range_end, single_port
         FROM
             (
                 SELECT
-                    _cq_id,
+                    project_id, id,
                     split_part(p, '-', 1) :: INTEGER AS range_start,
                     split_part(p, '-', 2) :: INTEGER AS range_end,
                     NULL AS single_port
-                FROM ( SELECT _cq_id, JSONB_ARRAY_ELEMENTS_TEXT(value->'ports') AS p
+                FROM ( SELECT project_id, id, JSONB_ARRAY_ELEMENTS_TEXT(value->'ports') AS p
                     FROM combined) AS f
                 WHERE p ~ '^[0-9]+(-[0-9]+)$'
                 UNION
-                SELECT _cq_id, NULL AS range_start, NULL AS range_end, p AS single_port
-                FROM ( SELECT _cq_id, JSONB_ARRAY_ELEMENTS_TEXT(value->'ports') AS p
+                SELECT project_id, id, NULL AS range_start, NULL AS range_end, p AS single_port
+                FROM ( SELECT project_id, id, JSONB_ARRAY_ELEMENTS_TEXT(value->'ports') AS p
                     FROM combined) AS f
                 WHERE p ~ '^[0-9]*$') AS s
     ) AS pr
-    ON gcf._cq_id = pr._cq_id;
+    ON gcf.project_id = pr.project_id AND gcf.id = pr.id;
