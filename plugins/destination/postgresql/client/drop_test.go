@@ -40,7 +40,7 @@ func TestDrop(t *testing.T) {
 		t.Fatalf("failed to check if table exists: %v", err)
 	}
 	if !isExist {
-		t.Fatalf("failed to migrate table. table %s doens't exists", testTable.Name)
+		t.Fatalf("failed to migrate table. table %s doesn't exist", testTable.Name)
 	}
 
 	if err := c.Drop(ctx, testTables); err != nil {
