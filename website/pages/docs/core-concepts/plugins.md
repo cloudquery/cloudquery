@@ -16,7 +16,7 @@ The core responsibilities of a source plugin:
 - Extracting data from the supported APIs and transform them into the defined schema.
 - Send the data as JSON to the CLI for further processing and storage at the defined destination plugins.
 
-See [Configuration Reference](../reference/source_spec)
+See [Configuration Reference](../reference/source-spec)
 
 ## Destination Plugin
 
@@ -26,4 +26,4 @@ The core responsibilities of a destination plugin:
 - Auto-migrate the schemas defined by the source plugins.
 - Save each incoming json object in the appropriate table.
 
-See [Configuration Reference](../reference/destination_spec)
+See [Configuration Reference](../reference/destination-spec)
