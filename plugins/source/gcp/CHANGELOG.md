@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.10.5-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.4-pre.0...plugins-source-gcp-v0.10.5-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **gcp:** Re-add gcp_iam_service_account_keys ([#2134](https://github.com/cloudquery/cloudquery/issues/2134)) ([8f419c3](https://github.com/cloudquery/cloudquery/commit/8f419c39560814c89cb0d6f6aa88c080a00c193f)), closes [#1990](https://github.com/cloudquery/cloudquery/issues/1990)
+
 ## [0.10.4-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.3-pre.0...plugins-source-gcp-v0.10.4-pre.0) (2022-10-02)
 
 
