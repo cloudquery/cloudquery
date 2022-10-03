@@ -13,6 +13,6 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_databases asd ON
-        s._cq_id = asd.sql_server_id
+        s.id = asd.sql_server_id
     LEFT JOIN azure_sql_transparent_data_encryptions tde ON
-        asd._cq_id = tde.sql_database_id
+        asd.id = tde.sql_database_id

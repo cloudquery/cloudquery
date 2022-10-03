@@ -15,5 +15,5 @@ SELECT :'execution_time'                                                AS execu
 FROM azure_keyvault_vaults akv
          LEFT JOIN
      azure_keyvault_keys akvk ON
-         akv._cq_id = akvk.keyvault_vault_id;
+         akv.id = akvk.keyvault_vault_id;
 

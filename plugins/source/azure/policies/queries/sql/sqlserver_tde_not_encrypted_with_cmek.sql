@@ -14,4 +14,4 @@ SELECT
   end
 FROM azure_sql_servers s
          LEFT JOIN azure_sql_encryption_protectors p ON
-    s._cq_id = p.sql_server_id
+    s.id = p.sql_server_id

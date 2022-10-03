@@ -12,4 +12,4 @@ SELECT :'execution_time'                                                        
            END                                                                     AS status
 FROM azure_web_apps awa
          LEFT JOIN azure_web_site_auth_settings awaas ON
-    awa._cq_id = awaas.web_app_id
+    awa.id = awaas.web_app_id

@@ -18,5 +18,4 @@ SELECT
     then 'fail' else 'pass'
   end
 FROM azure_compute_virtual_machine_scale_sets s
-         LEFT JOIN sets_with_logs ss ON s._cq_id = ss.compute_virtual_machine_id
--- TODO check
+         LEFT JOIN sets_with_logs ss ON s.id = ss.compute_virtual_machine_id -- TODO check id match

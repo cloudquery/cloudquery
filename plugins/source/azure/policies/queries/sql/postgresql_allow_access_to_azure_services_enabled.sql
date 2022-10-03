@@ -14,4 +14,4 @@ SELECT
   end
 FROM azure_postgresql_servers aps
     LEFT JOIN azure_postgresql_firewall_rules apsfr ON
-        aps._cq_id = apsfr.postgresql_server_id
+        aps.id = apsfr.postgresql_server_id

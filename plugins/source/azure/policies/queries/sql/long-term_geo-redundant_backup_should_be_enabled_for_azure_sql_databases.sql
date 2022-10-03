@@ -13,4 +13,4 @@ SELECT
     then 'fail' else 'pass'
   end
 FROM azure_sql_databases asd
-    LEFT JOIN azure_sql_backup_long_term_retention_policies rp ON asd.long_term_retention_backup_resource_id = rp.id AND asd._cq_id = rp.sql_database_id
+    LEFT JOIN azure_sql_backup_long_term_retention_policies rp ON asd.long_term_retention_backup_resource_id = rp.id AND asd.id = rp.sql_database_id

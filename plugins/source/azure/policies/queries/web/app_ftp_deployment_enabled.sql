@@ -12,4 +12,4 @@ SELECT :'execution_time'                                 AS execution_time,
            END                                           AS status
 FROM azure_web_apps a
          LEFT JOIN azure_web_publishing_profiles p ON
-    a._cq_id = p.web_app_id
+    a.id = p.web_app_id

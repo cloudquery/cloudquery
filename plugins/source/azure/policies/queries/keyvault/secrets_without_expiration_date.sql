@@ -12,4 +12,4 @@ SELECT :'execution_time'                                                   AS ex
 FROM azure_keyvault_vaults akv
          LEFT JOIN
      azure_keyvault_secrets akvs ON
-         akv._cq_id = akvs.keyvault_vault_id
+         akv.id = akvs.keyvault_vault_id

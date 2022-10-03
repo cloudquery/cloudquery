@@ -2,7 +2,7 @@ WITH value_check AS (
     SELECT aps._cq_id, apsc.value
     FROM azure_postgresql_servers aps
         LEFT JOIN azure_postgresql_configurations apsc ON
-            aps._cq_id = apsc.postgresql_server_id
+            aps.id = apsc.postgresql_server_id
     WHERE apsc."name" = 'log_checkpoints'
 )
 insert into azure_policy_results

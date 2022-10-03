@@ -14,4 +14,4 @@ from
     azure_web_apps awa
 left join
     azure_web_vnet_connections as vnet
-on vnet.web_app_id = awa._cq_id
+on vnet.web_app_id = awa.id

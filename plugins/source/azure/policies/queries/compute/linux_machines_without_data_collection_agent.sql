@@ -16,4 +16,4 @@ SELECT
       and s.compute_virtual_machine_id IS NULL then 'fail' else 'pass'
   end
 FROM azure_compute_virtual_machines vms
-         LEFT JOIN secured_vms s ON vms._cq_id = s.compute_virtual_machine_id
+         LEFT JOIN secured_vms s ON vms.id = s.compute_virtual_machine_id

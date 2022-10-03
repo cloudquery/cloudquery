@@ -25,6 +25,6 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_server_vulnerability_assessments sv ON
-        s._cq_id = sv.sql_server_id
+        s.id = sv.sql_server_id
     LEFT JOIN emails_count c ON
         sv.id = c.id

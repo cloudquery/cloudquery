@@ -1,7 +1,7 @@
 WITH ad_admins_count AS ( SELECT ass._cq_id, count(*) AS admins_count
     FROM azure_sql_servers ass
         LEFT JOIN azure_sql_server_admins assa ON
-            ass._cq_id = assa.sql_server_id WHERE assa.administrator_type = 'ActiveDirectory' GROUP BY ass._cq_id,
+            ass.id = assa.sql_server_id WHERE assa.administrator_type = 'ActiveDirectory' GROUP BY ass._cq_id,
         assa.administrator_type
 )
 insert into azure_policy_results

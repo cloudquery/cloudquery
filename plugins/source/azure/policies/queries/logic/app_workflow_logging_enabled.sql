@@ -7,7 +7,7 @@ WITH
 		workflow_id
 	FROM
         azure_logic_workflows w
-    LEFT JOIN ds ON ds.logic_workflow_id = w._cq_id
+    LEFT JOIN ds ON ds.logic_workflow_id = w.id
 	WHERE
         (ds.logs->>'enabled')::boolean IS TRUE AND
         (ds.logs->'retentionPolicy'->>'enabled')::boolean IS TRUE)

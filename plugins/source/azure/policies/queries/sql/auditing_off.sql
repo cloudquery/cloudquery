@@ -13,4 +13,4 @@ SELECT
   end
 FROM azure_sql_servers s
     LEFT JOIN azure_sql_database_blob_auditing_policies assdbap ON
-        s._cq_id = assdbap.sql_database_id
+        s.id = assdbap.sql_database_id
