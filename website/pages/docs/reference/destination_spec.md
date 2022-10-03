@@ -4,22 +4,22 @@ This goes through all the options available for destination plugins' `spec` obje
 
 ## Spec
 
-### `name`
+### name
 (`string`, `required`)
 
 Name of the plugin. If you have multiple destination plugins this should be unique.
 
-### `path`
+### path
 (`string`, `optional`)
 
 By default, `path` is automatically inferred from `name`. For example for `postgresql`, `path` will be `cloudquery/postgresql`, or for `community_org/dest_name` `path` will be `community_org/dest_name`.
 
-### `version`
+### version
 (`string`, `required`)
 
 `version` should be in the form of `vX.Y.Z` (or `vX.Y.Z-sometag` as per [semver](https://semver.org/)). Latest versions can be generated using `cloudquery gen` command. You can find all official plugin versions under [cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository.
 
-### `registry` 
+### registry
 (`string`, `optional`, default: `github`, available: `github`, `local`, `grpc`)
  
  - `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it. 
