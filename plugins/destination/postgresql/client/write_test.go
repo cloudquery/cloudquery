@@ -14,7 +14,7 @@ import (
 func TestWriteOverwrite(t *testing.T) {
 	ctx := context.Background()
 	client, err := New(ctx, getTestLogger(t), specs.Destination{
-		WriteMode: specs.WriteModeOverwriteDeletestale,
+		WriteMode: specs.WriteModeOverwriteDeleteStale,
 		Spec: &Spec{
 			ConnectionString: getTestConnection(),
 		},

@@ -160,7 +160,6 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		return nil
 	})
 
-
 	if err := g.Wait(); err != nil {
 		_ = bar.Finish()
 		return fmt.Errorf("failed to fetch resources: %w", err)

@@ -196,5 +196,5 @@ func (c *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (*
 }
 
 func (c *Client) enabledPks() bool {
-	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeletestale
+	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
 }
