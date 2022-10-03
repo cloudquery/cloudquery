@@ -55,11 +55,14 @@ export default function Home() {
               Data integration
               <br className="hidden lg:block" />
               <span className="pr-1 inline-block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 ">
-                that works.
+                at scale.
               </span>
             </h1>
             <p className="max-w-2xl mt-6 text-xl font-medium leading-tight text-gray-400 sm:text-2xl md:text-3xl lg:text-4xl">
-              CloudQuery is an open source high performance data integration
+              Load your cloud resources into a database and query them using SQL.
+            </p>
+            <p className="max-w-2xl mt-6 text-xl font-medium leading-tight text-gray-400 sm:text-2xl md:text-3xl lg:text-4xl">
+              CloudQuery is an open source, high performance data integration
               platform designed for security and infrastructure teams.
             </p>
           </div>
