@@ -14,7 +14,7 @@ Follow the steps below to start syncing data from CloudQuery [source plugins](./
 
 ## Configure Destination Plugin
 
-Destination plugin defines where you will be syncing your data to (See: [available destinations](./plugins/destinations)).
+Destination plugins define where you will be syncing your data to (See: [available destinations](./plugins/destinations)).
 
 For example, let's configure the [PostgreSQL](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql) destination plugin.
 
@@ -24,25 +24,27 @@ spec:
   ## Required. name of the plugin
   name: "postgresql"
 
-  ## Optional. Default: "latest". We suggest pinning this to a specific version in production
+  ## Required. Must be a specific version tag starting with v, e.g. v1.2.3
   # version: "YOUR_VERSION"
 
-  ## Optional. Default: "overwrite". Available: "overwrite", "append". Not all modes are supported by all plugins
-  ## make sure to check the plugin documentation for more details.
-  write_mode: "overwrite" # overwrite, append
+  ## Optional. Default: "overwrite". Available: "overwrite", "append". Not all modes are supported by all plugins,
+  ## so make sure to check the plugin documentation for more details.
+  write_mode: "overwrite" # overwrite, overwrite-delete-stale, append
 
   spec:
-    ## plugin specific configuration
-    ## For postgreSQL:
+    ## plugin-specific configuration for PostgreSQL:
+
     ## Required. Connection string to your PostgreSQL instance
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
 ```
 
+For a list of all available destination plugin spec options, see [Destination Spec Reference](/docs/reference/destination-spec).
+
 ## Configure Source Plugin
 
-Source plugin define the APIs you want to sync from (See [available sources](./plugins/sources)).
+Source plugins define the APIs you want to sync from (See [available sources](./plugins/sources)).
 
-For example, let's configure [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
+For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
 
 ```yaml
 kind: source
@@ -69,6 +71,8 @@ spec:
   spec:
     # plugin specific configuration
 ```
+
+For a list of all available source plugin spec options, see [Source Spec Reference](/docs/reference/source-spec).
 
 ## Start Syncing
 
