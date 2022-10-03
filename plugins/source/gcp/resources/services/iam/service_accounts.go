@@ -62,5 +62,9 @@ func ServiceAccounts() *schema.Table {
 				Resolver: schema.PathResolver("Oauth2ClientId"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			ServiceAccountKeys(),
+		},
 	}
 }
