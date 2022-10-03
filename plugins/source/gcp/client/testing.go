@@ -44,7 +44,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Se
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	
+
 	p := plugins.NewSourcePlugin(
 		table.Name,
 		"dev",

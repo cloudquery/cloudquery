@@ -18,3 +18,7 @@ install-tools:
 .PHONY: install-hooks
 install-hooks:
 	pre-commit install
+
+.PHONY: lint
+lint:
+	@golangci-lint run --timeout 10m --verbose
