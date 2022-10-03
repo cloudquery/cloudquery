@@ -6,6 +6,9 @@ on:
       - "plugins/source/heroku/**"
       - ".github/workflows/source_heroku.yml"
   push:
+    paths:
+      - "plugins/source/heroku/**"
+      - ".github/workflows/source_heroku.yml"
     branches:
       - main
 

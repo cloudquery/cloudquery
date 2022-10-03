@@ -6,6 +6,9 @@ on:
       - "plugins/source/github/**"
       - ".github/workflows/source_github.yml"
   push:
+    paths:
+      - "plugins/source/github/**"
+      - ".github/workflows/source_github.yml"
     branches:
       - main
 

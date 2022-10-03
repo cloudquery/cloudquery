@@ -6,6 +6,9 @@ on:
       - "plugins/source/k8s/**"
       - ".github/workflows/source_k8s.yml"
   push:
+    paths:
+      - "plugins/source/k8s/**"
+      - ".github/workflows/source_k8s.yml"
     branches:
       - main
 

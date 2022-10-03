@@ -6,6 +6,9 @@ on:
       - "plugins/source/gcp/**"
       - ".github/workflows/source_gcp.yml"
   push:
+    paths:
+      - "plugins/source/gcp/**"
+      - ".github/workflows/source_gcp.yml"
     branches:
       - main
 

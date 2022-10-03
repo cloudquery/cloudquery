@@ -6,6 +6,9 @@ on:
       - "plugins/source/cloudflare/**"
       - ".github/workflows/source_cloudflare.yml"
   push:
+    paths:
+      - "plugins/source/cloudflare/**"
+      - ".github/workflows/source_cloudflare.yml"
     branches:
       - main
 

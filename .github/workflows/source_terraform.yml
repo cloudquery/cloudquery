@@ -6,6 +6,9 @@ on:
       - "plugins/source/terraform/**"
       - ".github/workflows/source_terraform.yml"
   push:
+    paths:
+      - "plugins/source/terraform/**"
+      - ".github/workflows/source_terraform.yml"
     branches:
       - main
 

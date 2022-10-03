@@ -6,6 +6,9 @@ on:
       - "plugins/destination/postgresql/**"
       - ".github/workflows/dest_postgresql.yml"
   push:
+    paths:
+      - "plugins/destination/postgresql/**"
+      - ".github/workflows/dest_postgresql.yml"
     branches:
       - main
 

@@ -6,6 +6,9 @@ on:
       - "plugins/destination/test/**"
       - ".github/workflows/dest_test.yml"
   push:
+    paths:
+      - "plugins/destination/test/**"
+      - ".github/workflows/dest_test.yml"
     branches:
       - main
 

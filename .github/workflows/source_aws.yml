@@ -6,6 +6,9 @@ on:
       - "plugins/source/aws/**"
       - ".github/workflows/source_aws.yml"
   push:
+    paths:
+      - "plugins/source/aws/**"
+      - ".github/workflows/source_aws.yml"
     branches:
       - main
 

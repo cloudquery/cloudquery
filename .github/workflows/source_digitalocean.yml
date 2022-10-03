@@ -6,6 +6,9 @@ on:
       - "plugins/source/digitalocean/**"
       - ".github/workflows/source_digitalocean.yml"
   push:
+    paths:
+      - "plugins/source/digitalocean/**"
+      - ".github/workflows/source_digitalocean.yml"
     branches:
       - main
 

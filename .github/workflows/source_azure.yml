@@ -6,6 +6,9 @@ on:
       - "plugins/source/azure/**"
       - ".github/workflows/source_azure.yml"
   push:
+    paths:
+      - "plugins/source/azure/**"
+      - ".github/workflows/source_azure.yml"
     branches:
       - main
 
