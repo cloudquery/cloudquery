@@ -1,12 +1,17 @@
 # Table: gcp_compute_forwarding_rules
 
 
+
 The primary key for this table is **self_link**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |project_id|String|
 |self_link (PK)|String|
 |ip_address|String|
@@ -39,5 +44,3 @@ The primary key for this table is **self_link**.
 |service_name|String|
 |subnetwork|String|
 |target|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
