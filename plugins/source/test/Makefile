@@ -1,8 +1,4 @@
-# Generate mocks for mock/unit testing 
-.PHONY: generate-mocks
-generate-mocks:
-	go generate ./client/services/...
-
+# Test unit
 .PHONY: test
 test:
 	go test -timeout 3m ./...
@@ -25,4 +21,3 @@ lint:
 .PHONY: gen-docs
 gen-docs:
 	go run main.go doc ./docs/tables
-

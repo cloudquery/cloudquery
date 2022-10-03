@@ -1,6 +1,5 @@
-# Test unit
-.PHONY: test-unit
-test-unit:
+.PHONY: test
+test:
 	go test -timeout 3m ./...
 
 .PHONY: lint
