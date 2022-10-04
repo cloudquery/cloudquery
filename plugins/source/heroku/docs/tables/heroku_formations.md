@@ -1,4 +1,5 @@
 # Table: heroku_formations
+
 https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |app|JSON|
 |command|String|
 |created_at|Timestamp|
@@ -15,5 +20,3 @@ The primary key for this table is **id**.
 |size|String|
 |type|String|
 |updated_at|Timestamp|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,6 +1,7 @@
 # Table: digitalocean_projects
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `digitalocean_projects`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |id (PK)|String|
 |owner_uuid|String|
 |owner_id|Int|
@@ -20,5 +25,3 @@ The following tables depend on `digitalocean_projects`:
 |is_default|Bool|
 |created_at|String|
 |updated_at|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

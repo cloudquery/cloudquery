@@ -1,6 +1,7 @@
 # Table: aws_route53_traffic_policy_versions
 
 
+
 The composite primary key for this table is (**traffic_policy_arn**, **id**, **version**).
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_route53_traffic_policies`](aws_route53_traffic_polic
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |traffic_policy_arn (PK)|String|
 |id (PK)|String|
@@ -17,5 +22,3 @@ This table depends on [`aws_route53_traffic_policies`](aws_route53_traffic_polic
 |name|String|
 |type|String|
 |comment|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

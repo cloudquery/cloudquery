@@ -1,6 +1,7 @@
 # Table: aws_redshift_cluster_parameter_groups
 
 
+
 The composite primary key for this table is (**cluster_arn**, **parameter_group_name**).
 
 ## Relations
@@ -11,11 +12,13 @@ The following tables depend on `aws_redshift_cluster_parameter_groups`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |cluster_arn (PK)|String|
 |parameter_group_name (PK)|String|
 |cluster_parameter_status_list|JSON|
 |parameter_apply_status|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

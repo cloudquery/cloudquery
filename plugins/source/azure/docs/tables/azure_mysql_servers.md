@@ -1,6 +1,7 @@
 # Table: azure_mysql_servers
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `azure_mysql_servers`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |identity|JSON|
 |sku|JSON|
@@ -33,5 +38,3 @@ The following tables depend on `azure_mysql_servers`:
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

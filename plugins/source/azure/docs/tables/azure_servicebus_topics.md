@@ -1,6 +1,7 @@
 # Table: azure_servicebus_topics
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -11,6 +12,10 @@ The following tables depend on `azure_servicebus_topics`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |servicebus_namespace_id|String|
 |size_in_bytes|Int|
@@ -34,5 +39,3 @@ The following tables depend on `azure_servicebus_topics`:
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,12 +1,17 @@
 # Table: aws_glue_database_table_indexes
 
 
+
 The composite primary key for this table is (**database_arn**, **database_table_name**, **index_name**).
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |database_arn (PK)|String|
@@ -15,5 +20,3 @@ The composite primary key for this table is (**database_arn**, **database_table_
 |index_status|String|
 |keys|JSON|
 |backfill_errors|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

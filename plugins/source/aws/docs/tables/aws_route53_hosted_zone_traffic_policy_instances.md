@@ -1,6 +1,7 @@
 # Table: aws_route53_hosted_zone_traffic_policy_instances
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_route53_hosted_zones`](aws_route53_hosted_zones.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |arn|String|
 |hosted_zone_arn|String|
@@ -21,5 +26,3 @@ This table depends on [`aws_route53_hosted_zones`](aws_route53_hosted_zones.md).
 |traffic_policy_id|String|
 |traffic_policy_type|String|
 |traffic_policy_version|Int|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,6 +1,7 @@
 # Table: aws_apigateway_domain_names
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_apigateway_domain_names`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -30,5 +35,3 @@ The following tables depend on `aws_apigateway_domain_names`:
 |regional_hosted_zone_id|String|
 |security_policy|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

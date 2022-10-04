@@ -1,6 +1,7 @@
 # Table: aws_s3_buckets
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -13,6 +14,10 @@ The following tables depend on `aws_s3_buckets`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |arn (PK)|String|
 |creation_date|Timestamp|
@@ -31,5 +36,3 @@ The following tables depend on `aws_s3_buckets`:
 |restrict_public_buckets|Bool|
 |tags|JSON|
 |ownership_controls|StringArray|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,6 +1,7 @@
 # Table: azure_web_apps
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -12,6 +13,10 @@ The following tables depend on `azure_web_apps`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |state|String|
 |host_names|StringArray|
@@ -61,5 +66,3 @@ The following tables depend on `azure_web_apps`:
 |location|String|
 |type|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

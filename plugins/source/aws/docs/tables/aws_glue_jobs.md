@@ -1,6 +1,7 @@
 # Table: aws_glue_jobs
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_glue_jobs`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -35,5 +40,3 @@ The following tables depend on `aws_glue_jobs`:
 |security_configuration|String|
 |timeout|Int|
 |worker_type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
