@@ -1,12 +1,17 @@
 # Table: aws_iot_thing_types
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |tags|JSON|
@@ -14,5 +19,3 @@ The primary key for this table is **arn**.
 |thing_type_metadata|JSON|
 |thing_type_name|String|
 |thing_type_properties|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

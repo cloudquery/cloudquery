@@ -1,6 +1,7 @@
 # Table: aws_eventbridge_event_bus_rules
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_eventbridge_event_buses`](aws_eventbridge_event_buse
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |event_bus_arn|String|
@@ -22,5 +27,3 @@ This table depends on [`aws_eventbridge_event_buses`](aws_eventbridge_event_buse
 |role_arn|String|
 |schedule_expression|String|
 |state|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

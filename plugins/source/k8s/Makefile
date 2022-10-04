@@ -4,11 +4,15 @@ generate-mocks:
 	go generate ./client/services/...
 
 # Test unit
-.PHONY: test-unit
-test-unit:
+.PHONY: test
+test:
 	go test -timeout 3m ./...
 
 # Install pre-commit hooks. This requires pre-commit to be installed (https://pre-commit.com/)
 .PHONY: install-hooks
 install-hooks:
 	pre-commit install
+
+.PHONY: gen-docs
+gen-docs:
+	go run main.go doc ./docs/tables

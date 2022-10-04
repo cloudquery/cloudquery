@@ -1,12 +1,17 @@
 # Table: aws_elasticsearch_domains
 
 
+
 The composite primary key for this table is (**account_id**, **region**, **id**).
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id (PK)|String|
 |region (PK)|String|
 |tags|JSON|
@@ -35,5 +40,3 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |snapshot_options|JSON|
 |upgrade_processing|Bool|
 |vpc_options|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

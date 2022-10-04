@@ -1,12 +1,17 @@
 # Table: aws_secretsmanager_secrets
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -27,5 +32,3 @@ The primary key for this table is **arn**.
 |rotation_lambda_arn|String|
 |rotation_rules|JSON|
 |version_ids_to_stages|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

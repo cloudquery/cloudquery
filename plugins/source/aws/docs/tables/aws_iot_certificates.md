@@ -1,12 +1,17 @@
 # Table: aws_iot_certificates
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |policies|StringArray|
@@ -24,5 +29,3 @@ The primary key for this table is **arn**.
 |status|String|
 |transfer_data|JSON|
 |validity|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,6 +1,7 @@
 # Table: aws_iam_users
 
 
+
 The composite primary key for this table is (**id**, **account_id**).
 
 ## Relations
@@ -13,6 +14,10 @@ The following tables depend on `aws_iam_users`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |arn|String|
 |id (PK)|String|
 |account_id (PK)|String|
@@ -22,5 +27,3 @@ The following tables depend on `aws_iam_users`:
 |user_name|String|
 |password_last_used|Timestamp|
 |permissions_boundary|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

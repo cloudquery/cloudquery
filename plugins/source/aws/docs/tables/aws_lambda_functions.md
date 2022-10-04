@@ -1,6 +1,7 @@
 # Table: aws_lambda_functions
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -14,6 +15,10 @@ The following tables depend on `aws_lambda_functions`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn|String|
@@ -26,5 +31,3 @@ The following tables depend on `aws_lambda_functions`:
 |configuration|JSON|
 |tags|JSON|
 |result_metadata|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

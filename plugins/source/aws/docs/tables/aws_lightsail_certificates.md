@@ -1,12 +1,17 @@
 # Table: aws_lightsail_certificates
 
 
+
 The primary key for this table is **_cq_id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |tags|JSON|
@@ -30,5 +35,3 @@ The primary key for this table is **_cq_id**.
 |status|String|
 |subject_alternative_names|StringArray|
 |support_code|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

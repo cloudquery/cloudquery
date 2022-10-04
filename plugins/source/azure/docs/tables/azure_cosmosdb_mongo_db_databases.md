@@ -1,6 +1,7 @@
 # Table: azure_cosmosdb_mongo_db_databases
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`azure_cosmosdb_accounts`](azure_cosmosdb_accounts.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |cosmosdb_account_id|String|
 |resource|JSON|
@@ -18,5 +23,3 @@ This table depends on [`azure_cosmosdb_accounts`](azure_cosmosdb_accounts.md).
 |type|String|
 |location|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

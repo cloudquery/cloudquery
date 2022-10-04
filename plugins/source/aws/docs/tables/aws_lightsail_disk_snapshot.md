@@ -1,6 +1,7 @@
 # Table: aws_lightsail_disk_snapshot
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_lightsail_disks`](aws_lightsail_disks.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |disk_arn|String|
@@ -27,5 +32,3 @@ This table depends on [`aws_lightsail_disks`](aws_lightsail_disks.md).
 |size_in_gb|Int|
 |state|String|
 |support_code|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

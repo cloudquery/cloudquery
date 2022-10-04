@@ -1,12 +1,17 @@
 # Table: azure_resources_policy_assignments
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |display_name|String|
 |policy_definition_id|String|
@@ -21,5 +26,3 @@ The primary key for this table is **id**.
 |sku|JSON|
 |location|String|
 |identity|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

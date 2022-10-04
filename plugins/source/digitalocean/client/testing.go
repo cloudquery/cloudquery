@@ -21,14 +21,16 @@ type TestOptions struct {
 func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *testing.T, ctrl *gomock.Controller) Services, options TestOptions) {
 	t.Helper()
 	table.IgnoreInTests = false
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		var doSpec Spec
 		if err := spec.UnmarshalSpec(&doSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal do spec: %w", err)
 		}
-		l := zerolog.New(zerolog.NewTestWriter(t)).Output(
-			zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-		).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+
 
 		ctrl := gomock.NewController(t)
 		services := createService(t, ctrl)
@@ -48,7 +50,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 			table,
 		},
 		newTestExecutionClient)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	plugins.TestSourcePluginSync(t, p, l, specs.Source{
 		Name:   "dev",
 		Tables: []string{table.Name},
 	})
