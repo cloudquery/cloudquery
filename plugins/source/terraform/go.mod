@@ -6,12 +6,12 @@ require (
 	github.com/aws/aws-sdk-go v1.44.109
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	golang.org/x/net v0.0.0-20220920203100-d0c6ba3f52d9 // indirect
-	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8 // indirect
+	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
 	google.golang.org/genproto v0.0.0-20220920201722-2b89144ce006 // indirect
 )
 
 require (
-	github.com/cloudquery/plugin-sdk v0.12.2
+	github.com/cloudquery/plugin-sdk v0.12.3
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
