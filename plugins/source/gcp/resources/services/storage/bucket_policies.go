@@ -31,26 +31,6 @@ func BucketPolicies() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Bindings"),
 			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
-			{
-				Name:     "kind",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Kind"),
-			},
-			{
-				Name:     "resource_id",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ResourceId"),
-			},
-			{
-				Name:     "version",
-				Type:     schema.TypeInt,
-				Resolver: schema.PathResolver("Version"),
-			},
 		},
 	}
 }

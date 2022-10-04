@@ -17,7 +17,3 @@ This table depends on [`gcp_storage_buckets`](gcp_storage_buckets.md).
 |project_id|String|
 |bucket_name (PK)|String|
 |bindings|JSON|
-|etag|String|
-|kind|String|
-|resource_id|String|
-|version|Int|

@@ -1,10 +1,10 @@
 package recipes
 
 import (
+	"cloud.google.com/go/iam"
 	"cloud.google.com/go/storage"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
-	storagev1 "google.golang.org/api/storage/v1"
 )
 
 var storageResources = []*Resource{
@@ -18,7 +18,7 @@ var storageResources = []*Resource{
 	},
 	{
 		SubService: "bucket_policies",
-		Struct:     &storagev1.Policy{},
+		Struct:     &iam.Policy3{},
 		SkipFetch:  true,
 		SkipMock:   true,
 		ChildTable: true,
