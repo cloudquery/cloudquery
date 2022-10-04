@@ -138,6 +138,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		progressbar.OptionShowIts(),
 		progressbar.OptionSetElapsedTime(true),
 		progressbar.OptionShowCount(),
+		progressbar.OptionClearOnFinish(),
 	)
 	failedWrites := uint64(0)
 	totalResources := 0
