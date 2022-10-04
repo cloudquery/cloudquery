@@ -17,7 +17,7 @@ CloudQuery has a pluggable architecture and uses the [gRPC](https://grpc.io/docs
 - Intended to be run only by CloudQuery CLI.
 - Communicates with CloudQuery CLI over gRPC to receive commands and actions.
 - Source Plugins: Initialization, authentication, and fetching data via third-party cloud/SaaS API.
-- Desintation Plugins: Authentication, Database migrations, Data Insertion.
+- Destination Plugins: Authentication, Database migrations, Data Insertion.
 
 ## SDK
 
