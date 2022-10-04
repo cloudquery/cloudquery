@@ -17,11 +17,11 @@ CloudQuery key use-cases and features:
 - Homepage: https://www.cloudquery.io
 - Releases: https://github.com/cloudquery/cloudquery/releases
 - Documentation: https://www.cloudquery.io/docs
-- Plugins: https://www.cloudquery.io/docs/plugins/source
+- Plugins: https://www.cloudquery.io/docs/plugins/sources
 
 ### Supported plugins (Actively expanding)
 
-Visit https://www.cloudquery.io/docs/plugins/source
+Visit https://www.cloudquery.io/docs/plugins/sources
 
 If you want us to add a new plugin or resource, please open an [Issue](https://github.com/cloudquery/cloudquery/issues).
 
@@ -35,7 +35,7 @@ Please check out our 'Getting Started' guides:
 - [Getting Started with GCP](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp)
 - [Getting Started with Azure](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure)
 
-For other plugins, you can visit our [plugins directory](https://www.cloudquery.io/docs/plugins/source), as well as reference the [Getting Started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
+For other plugins, you can visit our [plugins directory](https://www.cloudquery.io/docs/plugins/sources), as well as reference the [Getting Started with AWS](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) for general installation and configuration tips.
 
 ## Compile and run CLI
 

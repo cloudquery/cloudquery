@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -64,13 +65,14 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
+	syncTime := time.Now().UTC()
 	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
 	defer func() {
-		if err := sourceClient.Close(); err != nil {
-			fmt.Println("failed to close source client: ", err)
+		if err := sourceClient.Terminate(); err != nil {
+			fmt.Println("failed to terminate source client: ", err)
 		}
 	}()
 
@@ -82,8 +84,8 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	defer func() {
 		for _, destClient := range destClients {
 			if destClient != nil {
-				if err := destClient.Close(); err != nil {
-					fmt.Println("failed to close destination client: ", err)
+				if err := destClient.Terminate(); err != nil {
+					fmt.Println("failed to terminate destination client: ", err)
 				}
 			}
 		}
@@ -107,11 +109,11 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	}
 
 	resources := make(chan []byte)
-	g, ctx := errgroup.WithContext(ctx)
+	g, gctx := errgroup.WithContext(ctx)
 	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
-		if err := sourceClient.Sync(ctx, sourceSpec, resources); err != nil {
+		if err := sourceClient.Sync(gctx, sourceSpec, resources); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 		return nil
@@ -132,7 +134,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		g.Go(func() error {
 			var destFailedWrites uint64
 			var err error
-			if destFailedWrites, err = destClients[i].Write(ctx, destSubscriptions[i]); err != nil {
+			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Path, syncTime, destSubscriptions[i]); err != nil {
 				log.Error().Err(err).Msgf("failed to write for %s->%s", sourceSpec.Name, destination)
 			}
 			failedWrites += destFailedWrites
@@ -146,8 +148,8 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 			_ = bar.Add(1)
 			for i := range destSubscriptions {
 				select {
-				case <-ctx.Done():
-					return ctx.Err()
+				case <-gctx.Done():
+					return gctx.Err()
 				case destSubscriptions[i] <- resource:
 				}
 			}
@@ -162,8 +164,12 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		_ = bar.Finish()
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
+	summary, err := sourceClient.GetSyncSummary(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get sync summary: %w", err)
+	}
 	_ = bar.Finish()
 	fmt.Println("Sync completed successfully.")
-	fmt.Printf("Summary: Resources: %d\n", totalResources)
+	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d failed_writes: %d\n", totalResources, summary.Errors, summary.Panics, failedWrites)
 	return nil
 }

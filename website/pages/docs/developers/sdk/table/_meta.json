@@ -1,8 +1,0 @@
-{
-  "overview": "Overview",
-  "column-types": "Column Types",
-  "primary-key": "Primary Key",
-  "multiplexer-and-deletefilter": "Multiplexer and DeleteFilter",
-  "fetch-resolvers": "Fetch Resolvers",
-  "column-resolvers": "Column Resolvers"
-}

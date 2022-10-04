@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v1.1.6...plugins-source-test-v1.2.0) (2022-10-03)
+
+
+### Features
+
+* **postgresql:** Add support for overwrite-delete-stale ([#2220](https://github.com/cloudquery/cloudquery/issues/2220)) ([efdd136](https://github.com/cloudquery/cloudquery/commit/efdd136bdcf872f7a6104f23429e7ebfb4a7c7c6))
+
 ## [1.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v1.1.5...plugins-source-test-v1.1.6) (2022-09-26)
 
 

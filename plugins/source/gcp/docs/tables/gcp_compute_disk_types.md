@@ -1,12 +1,17 @@
 # Table: gcp_compute_disk_types
 
 
+
 The primary key for this table is **self_link**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |project_id|String|
 |self_link (PK)|String|
 |creation_timestamp|String|
@@ -19,5 +24,3 @@ The primary key for this table is **self_link**.
 |region|String|
 |valid_disk_size|String|
 |zone|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

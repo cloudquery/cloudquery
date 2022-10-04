@@ -14,6 +14,8 @@ github:
   - plugins/source/github/**/*
 k8s:
   - plugins/source/k8s/**/*
+heroku:
+  - plugins/source/heroku/**/*
 okta:
   - plugins/source/okta/**/*
 terraform:
