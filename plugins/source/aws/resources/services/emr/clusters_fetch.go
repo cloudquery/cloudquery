@@ -10,25 +10,43 @@ import (
 )
 
 func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	return client.ListAndDetailResolver(ctx, meta, res, listEmrClusters, emrClusterDetail)
+}
+
+func listEmrClusters(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	var config emr.ListClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().EMR
 	for {
-		response, err := svc.ListClusters(ctx, &config)
+		output, err := svc.ListClusters(ctx, &config)
 		if err != nil {
 			return err
 		}
-		for _, c := range response.Clusters {
-			out, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: c.Id})
-			if err != nil {
-				return err
-			}
-			res <- out.Cluster
+		for _, item := range output.Clusters {
+			detailChan <- item.Id
 		}
-		if aws.ToString(response.Marker) == "" {
+		if aws.ToString(output.Marker) == "" {
 			break
 		}
-		config.Marker = response.Marker
+		config.Marker = output.Marker
 	}
 	return nil
+}
+
+func emrClusterDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+	c := meta.(*client.Client)
+	svc := c.Services().EMR
+
+	clusterId := listInfo.(*string)
+
+	out, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: clusterId})
+	if err != nil {
+		if c.IsNotFoundError(err) {
+			return
+		}
+		errorChan <- err
+		return
+	}
+
+	resultsChan <- out.Cluster
 }
