@@ -69,7 +69,8 @@ func sync(cmd *cobra.Command, args []string) error {
 func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
 	syncTime := time.Now().UTC()
 	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
-		clients.WithSourceLogger(log.Logger))
+		clients.WithSourceLogger(log.Logger),
+	)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
@@ -94,7 +95,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		}
 	}()
 	for i, destinationSpec := range destinationsSpecs {
-		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version)
+		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version,
+			clients.WithDestinationLogger(log.Logger),
+		)
 		if err != nil {
 			return fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
