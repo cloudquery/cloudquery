@@ -37,6 +37,8 @@ func NewCmdSync() *cobra.Command {
 
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
+	log.Info().Msg("Start sync")
+	defer log.Info().Msg("End sync")
 
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
@@ -66,7 +68,8 @@ func sync(cmd *cobra.Command, args []string) error {
 
 func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
 	syncTime := time.Now().UTC()
-	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version)
+	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
+		clients.WithSourceLogger(log.Logger))
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
