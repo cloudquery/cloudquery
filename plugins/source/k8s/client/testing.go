@@ -33,7 +33,6 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 			return nil, fmt.Errorf("failed to unmarshal k8s spec: %w", err)
 		}
 
-
 		c := &Client{
 			logger:  logger,
 			Context: "testContext",
