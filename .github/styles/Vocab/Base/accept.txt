@@ -123,3 +123,5 @@ trojan
 Severability
 Goroutines
 upserted
+write_mode
+skip_tables
