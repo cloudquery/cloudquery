@@ -29,6 +29,11 @@ func FunctionEventSourceMappings() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
+				Name:     "amazon_managed_kafka_event_source_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AmazonManagedKafkaEventSourceConfig"),
+			},
+			{
 				Name:     "batch_size",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("BatchSize"),
@@ -97,6 +102,11 @@ func FunctionEventSourceMappings() *schema.Table {
 				Name:     "self_managed_event_source",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SelfManagedEventSource"),
+			},
+			{
+				Name:     "self_managed_kafka_event_source_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SelfManagedKafkaEventSourceConfig"),
 			},
 			{
 				Name:     "source_access_configurations",

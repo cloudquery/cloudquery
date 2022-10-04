@@ -77,6 +77,11 @@ func Findings() *schema.Table {
 				Resolver: schema.PathResolver("Type"),
 			},
 			{
+				Name:     "fix_available",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FixAvailable"),
+			},
+			{
 				Name:     "inspector_score",
 				Type:     schema.TypeFloat,
 				Resolver: schema.PathResolver("InspectorScore"),

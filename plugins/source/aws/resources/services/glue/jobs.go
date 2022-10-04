@@ -72,6 +72,11 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
+				Name:     "execution_class",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ExecutionClass"),
+			},
+			{
 				Name:     "execution_property",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ExecutionProperty"),
