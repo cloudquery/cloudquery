@@ -1,12 +1,17 @@
 # Table: digitalocean_accounts
 
 
+
 The primary key for this table is **uuid**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |uuid (PK)|String|
 |droplet_limit|Int|
 |floating_ip_limit|Int|
@@ -17,5 +22,3 @@ The primary key for this table is **uuid**.
 |status|String|
 |status_message|String|
 |team|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

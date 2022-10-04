@@ -1,6 +1,7 @@
 # Table: azure_monitor_resources
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +11,8 @@ The following tables depend on `azure_monitor_resources`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|id (PK)|String|
 |_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|id (PK)|String|

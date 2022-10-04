@@ -1,6 +1,7 @@
 # Table: aws_glue_databases
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_glue_databases`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -22,5 +27,3 @@ The following tables depend on `aws_glue_databases`:
 |location_uri|String|
 |parameters|JSON|
 |target_database|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

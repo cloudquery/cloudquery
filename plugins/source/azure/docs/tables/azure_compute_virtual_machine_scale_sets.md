@@ -1,12 +1,17 @@
 # Table: azure_compute_virtual_machine_scale_sets
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |sku|JSON|
 |plan|JSON|
@@ -33,5 +38,3 @@ The primary key for this table is **id**.
 |location|String|
 |tags|JSON|
 |do_not_run_extensions_on_overprovisioned_vms|Bool|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

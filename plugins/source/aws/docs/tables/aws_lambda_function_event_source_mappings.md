@@ -1,6 +1,7 @@
 # Table: aws_lambda_function_event_source_mappings
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_lambda_functions`](aws_lambda_functions.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |function_arn|String|
@@ -34,5 +39,3 @@ This table depends on [`aws_lambda_functions`](aws_lambda_functions.md).
 |topics|StringArray|
 |tumbling_window_in_seconds|Int|
 |uuid|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

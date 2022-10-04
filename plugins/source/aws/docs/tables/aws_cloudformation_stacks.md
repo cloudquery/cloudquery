@@ -1,6 +1,7 @@
 # Table: aws_cloudformation_stacks
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_cloudformation_stacks`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |id|String|
@@ -35,5 +40,3 @@ The following tables depend on `aws_cloudformation_stacks`:
 |root_id|String|
 |stack_status_reason|String|
 |timeout_in_minutes|Int|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

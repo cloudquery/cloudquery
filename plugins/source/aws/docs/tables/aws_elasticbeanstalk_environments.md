@@ -1,6 +1,7 @@
 # Table: aws_elasticbeanstalk_environments
 
 
+
 The composite primary key for this table is (**account_id**, **id**).
 
 ## Relations
@@ -11,6 +12,10 @@ The following tables depend on `aws_elasticbeanstalk_environments`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id (PK)|String|
 |arn|String|
 |region|String|
@@ -36,5 +41,3 @@ The following tables depend on `aws_elasticbeanstalk_environments`:
 |template_name|String|
 |tier|JSON|
 |version_label|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

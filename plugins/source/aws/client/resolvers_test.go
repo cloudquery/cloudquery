@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"testing"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	types1 "github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
@@ -61,7 +60,7 @@ func TestResolveTags(t *testing.T) {
 				},
 			},
 		}
-		r := schema.NewResourceData(ta, nil, time.Now(), tc.InputItem)
+		r := schema.NewResourceData(ta, nil, tc.InputItem)
 		err := ResolveTags(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
 		assert.Equal(t, tc.ExpectedTags, r.Get(ta.Columns[0].Name))
@@ -141,7 +140,7 @@ func TestResolveSliceJson(t *testing.T) {
 				},
 			},
 		}
-		r := schema.NewResourceData(ta, nil, time.Now(), tc.InputItem)
+		r := schema.NewResourceData(ta, nil, tc.InputItem)
 		err := SliceJsonResolver(tc.path, tc.keyPath, tc.valuePath)(context.Background(), nil, r, ta.Columns[0])
 		assert.NoError(t, err)
 		assert.Equal(t, tc.ExpectedData, r.Get(ta.Columns[0].Name))

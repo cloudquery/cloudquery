@@ -1,12 +1,17 @@
 # Table: aws_elasticache_service_updates
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -22,5 +27,3 @@ The primary key for this table is **arn**.
 |service_update_severity|String|
 |service_update_status|String|
 |service_update_type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
