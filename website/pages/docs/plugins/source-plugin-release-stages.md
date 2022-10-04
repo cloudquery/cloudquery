@@ -13,6 +13,6 @@ The main differences between the two stages are:
 
 For version `Major.Minor.Patch`:
 
-- `Major` is incremented when there are breaking changes.
+- `Major` is incremented when there are breaking changes (e.g. breaking configuration spec structure, column type changes).
 - `Minor` is incremented when we add features in a backwards compatible way.
 - `Patch` is incremented when we fix bugs in a backwards compatible way.
