@@ -1,4 +1,5 @@
 # Table: tf_resources
+
 Terraform resources
 
 The primary key for this table is **_cq_id**.
@@ -11,6 +12,10 @@ The following tables depend on `tf_resources`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |data_backend_name|String|
 |module|String|
 |mode|String|
@@ -18,5 +23,3 @@ The following tables depend on `tf_resources`:
 |name|String|
 |provider_path|String|
 |provider|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

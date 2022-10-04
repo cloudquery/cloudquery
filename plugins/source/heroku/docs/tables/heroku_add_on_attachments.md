@@ -1,4 +1,5 @@
 # Table: heroku_add_on_attachments
+
 https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |addon|JSON|
 |app|JSON|
 |created_at|Timestamp|
@@ -16,5 +21,3 @@ The primary key for this table is **id**.
 |namespace|String|
 |updated_at|Timestamp|
 |web_url|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
