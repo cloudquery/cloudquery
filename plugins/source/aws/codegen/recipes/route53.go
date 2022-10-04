@@ -2,7 +2,7 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
-	"github.com/aws/aws-sdk-go/service/route53domains"
+	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
