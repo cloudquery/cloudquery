@@ -26,11 +26,11 @@ The only code that needs to be written by you are the SDK calls to list or descr
 Here are the general steps to follow:
 
 - Find an appropriate Go SDK function that fetches the resource you are interested in.
-- Note the type of the return type that contains the information you want to read. This will be passed to codegen via the `Struct` property.
+- Note the type of the return type that contains the information you want to read. This will be passed to `codegen` via the `Struct` property.
 - Create a new recipe file for the resource, if one does not exist already.
 - Add the resource to the recipe file.
-- Run `go run main.go` in the codegen directory. The generated table will be in `plugins/source/<plugin>/resources/services/<service>/<resource>.go`.
-- To regenerate from updated config, re-run `go run main.go` from the codegen directory again.
+- Run `go run main.go` in the `codegen` directory. The generated table will be in `plugins/source/<plugin>/resources/services/<service>/<resource>.go`.
+- To regenerate from updated config, re-run `go run main.go` from the `codegen` directory again.
 - Implement one or more resolver functions (as referenced by the generated file) in `plugins/source/<plugin>/resources/services/<service>/<resource>_fetch.go`.
 - Add a mock test for the resource in `plugins/source/<plugin>/resources/services/<service>/<resource>_mock_test.go`
 

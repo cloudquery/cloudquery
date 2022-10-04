@@ -2,15 +2,16 @@
 
 Thanks for contributing to CloudQuery! You are awesome. This document serves as a guide for adding new services and resources to the GCP source plugin.
 
-There are three main steps to adding a new GCP resource:
-1. [Add a code generation recipe](#1-add-a-code-generation-recipe)
-2. [Writing the resolver function to fetch the resource using the AWS SDK](#2-setting-up-the-resource)
+There are two main steps to adding a new GCP resource:
 
-## 1. Add a Code Generation Recipe
+1. [Add a code generation recipe](#add-a-code-generation-recipe)
+2. [Writing the resolver function to fetch the resource using the AWS SDK](#setting-up-the-resource)
 
-Every supported GCP service has a recipe file under [codegen/recipes](codegen/recipes). 
+## Add a Code Generation Recipe
 
-In the following examples, we will use the fictional `MyService` GCP service with `MyResource` resource as an example. We recommend taking a look at a few examples in [codegen/recipes](codegen/recipes) first, as these steps will make more sense with some examples to reference. 
+Every supported GCP service has a recipe file under [codegen/recipes](codegen/recipes).
+
+In the following examples, we will use the fictional `MyService` GCP service with `MyResource` resource as an example. We recommend taking a look at a few examples in [codegen/recipes](codegen/recipes) first, as these steps will make more sense with some examples to reference.
 
 If you are adding a service that needs a new recipe, see [Add a New Recipe File](#add-a-new-recipe-file). Otherwise, if the GCP service is already supported but is missing resource(s), you may skip to [Add a Resource to a Recipe](#add-a-resource-to-a-recipe).
 
@@ -28,9 +29,10 @@ The process to follow for adding a new recipe is:
 ### Add a Resource to a Recipe
 
 `MyServiceResources()` should return a slice of `*Resource` instances. Each resource should, at a minimum, have the following fields defined:
- 1. `Service`: This will become the table prefix, and will usually be the same as the filename you chose for the recipe.
- 2. `SubService`: This will be the final part of the table name, e.g. `aws_myservice_subservice`
- 4. `Struct`: This should be a pointer to the struct that will be synced to the destination. CloudQuery's plugin-sdk code generation will read the fields of this struct and convert it to a `Table` instance with appropriate column types.
+
+1. `Service`: This will become the table prefix, and will usually be the same as the filename you chose for the recipe.
+2. `SubService`: This will be the final part of the table name, e.g. `gcp_myservice_subservice`
+3. `Struct`: This should be a pointer to the struct that will be synced to the destination. CloudQuery's plugin-sdk code generation will read the fields of this struct and convert it to a `Table` instance with appropriate column types.
 
 #### All Available Resource Fields
 
@@ -49,7 +51,7 @@ for _, r := range resources {
 
 ### Run Code Generation
 
-With the recipe file added and some resources defined, you are ready to run codegen. Inside the [codegen](codegen) directory, run:
+With the recipe file added and some resources defined, you are ready to run `codegen`. Inside the [`codegen`](codegen) directory, run:
 
 ```shell
 go run main.go
@@ -57,9 +59,9 @@ go run main.go
 
 This will update all resources and generate a new directory for your service under [resources/services](resources/services).
 
-## 3. Setting up the resource
+## Setting up the resource
 
-By following the steps outlined above, you should now have generated a `myservice` directory under `resources/services`, containing a file called `myresource.go` (these names are examples, your actual filenames will differ). We will now set up the resource. This involves two steps: refining the codegen recipe, and writing one or more resolver functions.
+By following the steps outlined above, you should now have generated a `myservice` directory under `resources/services`, containing a file called `myresource.go` (these names are examples, your actual filenames will differ). We will now set up the resource. This involves two steps: refining the `codegen` recipe, and writing one or more resolver functions.
 
 1. Open the generated `myservice/myresource.go` and inspect the `schema.Table` that is being returned. Does it contain the appropriate columns for the resource? Does it have a primary key? If something looks off, return to the recipe for this resource (under [codegen/recipes](codegen/recipes)) and make adjustments. Then re-run code generation as described in [Run Code Generation](#run-code-generation). Repeat this process until the Table looks right.
 2. Your generated `Table` will reference a `Resolver` function that needs to be implemented. Sometimes this resolver can also be generated, and sometimes it will need to be written by hand.
@@ -67,7 +69,7 @@ By following the steps outlined above, you should now have generated a `myservic
 
 We recommend looking at other resources similar to yours to get an idea of what needs to be done in this step.  
 
-#### Implementing Resolver Functions
+### Implementing Resolver Functions
 
 A few important things to note when adding functions that call the GCP API:
 
@@ -78,5 +80,5 @@ A few important things to note when adding functions that call the GCP API:
 ## General Tips
 
 - Keep transformations to a minimum. As far as possible, we aim to deliver an accurate reflection of what the API provides.
-- We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns. 
+- We generally only unroll structs one level deep. Nested structs should be transformed into JSON columns.
 - If you get stuck or need help, feel free to reach out on [Discord](https://www.cloudquery.io/discord). We are a friendly community and would love to help!

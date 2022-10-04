@@ -265,6 +265,6 @@ If you have comments, feedback on this post, follow-up topics you’d like to se
 
 [AWS Key Management Service: How AWS Services use AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html)
 
-[AWS Whitepaper: Organizing your AWS Environment Using Multiple Accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html)
+[AWS White paper: Organizing your AWS Environment Using Multiple Accounts](https://docs.aws.amazon.com/whitepapers/latest/organizing-your-aws-environment/organizing-your-aws-environment.html)
 
 [AWS Key Management Service Developer Guide: Condition Keys for AWS KMS](https://docs.aws.amazon.com/kms/latest/developerguide/policy-conditions.html)

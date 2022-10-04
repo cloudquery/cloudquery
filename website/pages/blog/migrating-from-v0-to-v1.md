@@ -16,6 +16,7 @@ We are thrilled to announce the release of the first major version of CloudQuery
 ## Changes in V1
 
 The [announcement blog post](/blog/cloudquery-v1-release) lists many of the important improvements, and we won't re-iterate them all here. Most changes are internal and developer-facing, but some do impact existing CloudQuery teams. Those are:
+
 - [changes to CLI commands](#changes-to-the-cli-commands)
 - [changes to the configuration format](#changes-to-the-configuration-format)
 - [changes to tables and schemas](#changes-to-tables-and-schemas)
@@ -39,13 +40,13 @@ Functionally it is still the same: it loads data from a source to a destination,
 
 `cloudquery sync` needs to be passed a path to a config file or directory containing config files. So for example, to sync using all `.yml` files in a directory named `config`:
 
-```
+```bash
 cloudquery sync config/
 ```
 
-Or to sync using a single yaml file named `config.yml`:
+Or to sync using a single YAML file named `config.yml`:
 
-```
+```bash
 cloudquery sync config.yml
 ```
 
@@ -55,7 +56,7 @@ See `cloudquery sync --help` for more details, or check our [online reference](/
 
 ## Changes to the Configuration Format
 
-V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI. 
+V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI.
 
 ### Source Plugins
 
@@ -140,7 +141,7 @@ Finally, during our work for v1, we endeavoured to make the table schemas more c
 - [CloudFlare](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/cloudflare/docs/v1-migration.md)
 - [DigitalOcean](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/digitalocean/docs/v1-migration.md)
 - [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/docs/v1-migration.md)
-- [Github](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/v1-migration.md)
+- [GitHub](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/docs/v1-migration.md)
 - [Heroku](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/heroku/docs/v1-migration.md)
 - [K8s](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/k8s/docs/v1-migration.md)
 - [Okta](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/okta/docs/v1-migration.md)
@@ -150,4 +151,4 @@ Note that these guides are (for the most part) automatically generated, so in so
 
 ### Get Help / Ask Questions
 
-If you have any questions about migrating or CloudQuery v1, don't hesitate to reach out on [Discord](https://www.cloudquery.io/discord). We're a friendly community and would love to help however we can.  
+If you have any questions about migrating or CloudQuery v1, don't hesitate to reach out on [Discord](https://www.cloudquery.io/discord). We're a friendly community and would love to help however we can.

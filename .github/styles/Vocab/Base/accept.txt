@@ -78,6 +78,7 @@ Tailscale
 Fastly
 Boldstart
 precompiled
+Precompiled
 zsh
 Steampipe
 dbt
@@ -108,3 +109,17 @@ Callout
 Fargate
 gists
 unencrypted
+Mailchimp
+faceprints
+voiceprints
+Deidentified
+Vogels
+Monorepo
+discoverability
+learnings
+Inforce
+licensors
+trojan
+Severability
+Goroutines
+upserted

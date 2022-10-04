@@ -4,32 +4,37 @@ This goes through all the available options for the destination plugin `spec` ob
 
 ## Spec
 
-### name
+### `name`
+
 (`string`, required)
 
 Name of the plugin. If you have multiple destination plugins, this should be unique. 
 
 The name field may be used to uniquely identify a particular destination configuration. For example, if you have two configs for the PostgreSQL plugin for syncing different databases, one may be named `db-1` and the other `db-2`. In this case, the `path` option below should be used to specify the download path for the plugin.
 
-### path
+### `path`
+
 (`string`, optional)
 
 Configures how to retrieve the plugin. For plugins hosted on GitHub, `path` is inferred from `name` by default.
 For example `name: postgresql` will resolve `path` to `clouduquery/postgresql`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
 
-### version
+### `version`
+
 (`string`, required)
 
-`version` must be a valid [SemVer](https://semver.org/)), e.g. `vMajor.Minor.Patch`. Latest versions can be generated using `cloudquery gen` command. You can find all official plugin versions under [cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository.
+`version` must be a valid [SemVer](https://semver.org/)), e.g. `vMajor.Minor.Patch`. Latest versions can be generated using `cloudquery gen` command. You can find all official plugin versions under [our GitHub releases page](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository.
 
-### registry
+### `registry`
+
 (`string`, optional, default: `github`, available: `github`, `local`, `grpc`)
  
- - `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it. 
- - `local`: CloudQuery will execute the plugin from a local path. 
- - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
+- `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it. 
+- `local`: CloudQuery will execute the plugin from a local path. 
+- `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
 
-### write_mode
+### `write_mode`
+
 (`string`, optional, default: `overwrite`. Available: `overwrite`, `overwrite-delete-stale`, `append`)
 
 Specifies the update method to use when inserting rows. The exact semantics depend on the destination plugin, and all destinations don't support all options, so check the destination plugin documentation for details.
