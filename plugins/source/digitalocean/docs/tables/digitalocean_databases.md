@@ -1,6 +1,7 @@
 # Table: digitalocean_databases
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -12,6 +13,10 @@ The following tables depend on `digitalocean_databases`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |id (PK)|String|
 |name|String|
 |engine|String|
@@ -29,5 +34,3 @@ The following tables depend on `digitalocean_databases`:
 |private_network_uuid|String|
 |tags|StringArray|
 |project_id|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,6 +1,7 @@
 # Table: azure_cdn_security_policies
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`azure_cdn_profiles`](azure_cdn_profiles.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |cdn_profile_id|String|
 |provisioning_state|String|
@@ -17,5 +22,3 @@ This table depends on [`azure_cdn_profiles`](azure_cdn_profiles.md).
 |name|String|
 |type|String|
 |system_data|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

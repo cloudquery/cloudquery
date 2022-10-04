@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta/v0.6.6...plugins-source-okta-v1.0.0) (2022-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+### Features
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
 ## [0.7.4-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v0.7.3-pre.0...plugins-source-okta-v0.7.4-pre.0) (2022-10-03)
 
 

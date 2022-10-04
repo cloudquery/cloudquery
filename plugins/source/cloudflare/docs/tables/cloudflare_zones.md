@@ -1,12 +1,17 @@
 # Table: cloudflare_zones
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |id (PK)|String|
 |name|String|
@@ -31,5 +36,3 @@ The primary key for this table is **id**.
 |meta|JSON|
 |account|JSON|
 |verification_key|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

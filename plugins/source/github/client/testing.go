@@ -19,12 +19,12 @@ func GithubMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 	table.IgnoreInTests = false
 	t.Helper()
 	ctrl := gomock.NewController(t)
-
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		return &Client{
-			logger: zerolog.New(zerolog.NewTestWriter(t)).Output(
-				zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-			).Level(zerolog.DebugLevel).With().Timestamp().Logger(),
+			logger: l,
 			Github: builder(t, ctrl),
 			Orgs:   []string{"testorg"},
 		}, nil
@@ -36,7 +36,7 @@ func GithubMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 			table,
 		},
 		newTestExecutionClient)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	plugins.TestSourcePluginSync(t, p, l, specs.Source{
 		Name:   "dev",
 		Tables: []string{table.Name},
 	})

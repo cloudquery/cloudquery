@@ -1,12 +1,17 @@
 # Table: digitalocean_storage_volumes
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |id (PK)|String|
 |droplet_ids|IntArray|
 |region|JSON|
@@ -17,5 +22,3 @@ The primary key for this table is **id**.
 |filesystem_type|String|
 |filesystem_label|String|
 |tags|StringArray|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

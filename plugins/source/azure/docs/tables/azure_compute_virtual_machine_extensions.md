@@ -1,6 +1,7 @@
 # Table: azure_compute_virtual_machine_extensions
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`azure_compute_virtual_machines`](azure_compute_virtual_m
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |compute_virtual_machine_id|String|
 |force_update_tag|String|
@@ -23,5 +28,3 @@ This table depends on [`azure_compute_virtual_machines`](azure_compute_virtual_m
 |location|String|
 |tags|JSON|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

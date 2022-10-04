@@ -1,6 +1,7 @@
 # Table: aws_qldb_ledger_journal_kinesis_streams
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_qldb_ledgers`](aws_qldb_ledgers.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |ledger_arn|String|
@@ -23,5 +28,3 @@ This table depends on [`aws_qldb_ledgers`](aws_qldb_ledgers.md).
 |error_cause|String|
 |exclusive_end_time|Timestamp|
 |inclusive_start_time|Timestamp|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

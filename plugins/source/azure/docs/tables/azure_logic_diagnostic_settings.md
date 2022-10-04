@@ -1,6 +1,7 @@
 # Table: azure_logic_diagnostic_settings
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`azure_logic_workflows`](azure_logic_workflows.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |logic_workflow_id|String|
 |storage_account_id|String|
@@ -22,5 +27,3 @@ This table depends on [`azure_logic_workflows`](azure_logic_workflows.md).
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
