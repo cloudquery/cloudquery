@@ -70,10 +70,11 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
 	}
-	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Msg("Start sync")
-	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Msg("End sync")
-
 	syncTime := time.Now().UTC()
+
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("syncTime", syncTime).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("syncTime", syncTime).Msg("End sync")
+
 	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
 		clients.WithSourceLogger(log.Logger),
 	)
