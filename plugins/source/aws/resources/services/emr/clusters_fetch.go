@@ -32,13 +32,10 @@ func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schem
 func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EMR
-	item := resource.Item.(types.ClusterSummary)
-
-	response, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: item.Id})
+	response, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: resource.Item.(types.ClusterSummary).Id})
 	if err != nil {
 		return err
 	}
-
-	resource.Item = response
+	resource.Item = response.Cluster
 	return nil
 }
