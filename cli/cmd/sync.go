@@ -37,10 +37,11 @@ func NewCmdSync() *cobra.Command {
 
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
-
+	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
+		log.Error().Strs("args", args).Err(err).Msg("Failed to load spec(s)")
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
@@ -65,8 +66,18 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
+	destinationNames := make([]string, len(destinationsSpecs))
+	for i := range destinationsSpecs {
+		destinationNames[i] = destinationsSpecs[i].Name
+	}
 	syncTime := time.Now().UTC()
-	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version)
+
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("End sync")
+
+	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
+		clients.WithSourceLogger(log.Logger),
+	)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
@@ -91,7 +102,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		}
 	}()
 	for i, destinationSpec := range destinationsSpecs {
-		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version)
+		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version,
+			clients.WithDestinationLogger(log.Logger),
+		)
 		if err != nil {
 			return fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
