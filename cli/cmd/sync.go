@@ -72,8 +72,8 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	}
 	syncTime := time.Now().UTC()
 
-	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("syncTime", syncTime).Msg("Start sync")
-	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("syncTime", syncTime).Msg("End sync")
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("End sync")
 
 	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
 		clients.WithSourceLogger(log.Logger),
