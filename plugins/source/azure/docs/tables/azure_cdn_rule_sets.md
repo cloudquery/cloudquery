@@ -1,6 +1,7 @@
 # Table: azure_cdn_rule_sets
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -11,6 +12,10 @@ The following tables depend on `azure_cdn_rule_sets`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |cdn_profile_id|String|
 |provisioning_state|String|
@@ -19,5 +24,3 @@ The following tables depend on `azure_cdn_rule_sets`:
 |name|String|
 |type|String|
 |system_data|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

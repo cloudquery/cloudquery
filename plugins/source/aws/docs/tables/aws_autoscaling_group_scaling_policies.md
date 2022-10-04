@@ -1,6 +1,7 @@
 # Table: aws_autoscaling_group_scaling_policies
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_autoscaling_groups`](aws_autoscaling_groups.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |group_arn|String|
@@ -28,5 +33,3 @@ This table depends on [`aws_autoscaling_groups`](aws_autoscaling_groups.md).
 |scaling_adjustment|Int|
 |step_adjustments|JSON|
 |target_tracking_configuration|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

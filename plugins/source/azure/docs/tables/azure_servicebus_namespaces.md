@@ -1,6 +1,7 @@
 # Table: azure_servicebus_namespaces
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `azure_servicebus_namespaces`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |sku|JSON|
 |identity|JSON|
@@ -29,5 +34,3 @@ The following tables depend on `azure_servicebus_namespaces`:
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

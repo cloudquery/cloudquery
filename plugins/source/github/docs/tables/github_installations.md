@@ -1,12 +1,17 @@
 # Table: github_installations
 
 
+
 The composite primary key for this table is (**org**, **id**).
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |org (PK)|String|
 |id (PK)|Int|
 |node_id|String|
@@ -28,5 +33,3 @@ The composite primary key for this table is (**org**, **id**).
 |has_multiple_single_files|Bool|
 |suspended_by|JSON|
 |suspended_at|Timestamp|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

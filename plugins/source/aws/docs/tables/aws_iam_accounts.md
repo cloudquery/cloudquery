@@ -1,12 +1,17 @@
 # Table: aws_iam_accounts
 
 
+
 The primary key for this table is **account_id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id (PK)|String|
 |users|Int|
 |users_quota|Int|
@@ -35,5 +40,3 @@ The primary key for this table is **account_id**.
 |versions_per_policy_quota|Int|
 |global_endpoint_token_version|Int|
 |aliases|StringArray|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

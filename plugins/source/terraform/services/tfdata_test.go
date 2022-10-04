@@ -1,16 +1,19 @@
 package services_test
 
 import (
+	"os"
 	"path"
 	"path/filepath"
 	"runtime"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/services"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/rs/zerolog"
 )
 
 func TestTfData(t *testing.T) {
@@ -24,7 +27,11 @@ func TestTfData(t *testing.T) {
 		},
 		client.Configure,
 	)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	logger := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+
+	plugins.TestSourcePluginSync(t, p, logger, specs.Source{
 		Name:         "dev",
 		Tables:       []string{"*"},
 		Destinations: []string{},

@@ -1,6 +1,7 @@
 # Table: digitalocean_registries
 
 
+
 The primary key for this table is **name**.
 
 ## Relations
@@ -10,10 +11,12 @@ The following tables depend on `digitalocean_registries`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |name (PK)|String|
 |storage_usage_bytes|Int|
 |storage_usage_bytes_updated_at|Timestamp|
 |created_at|Timestamp|
 |region|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

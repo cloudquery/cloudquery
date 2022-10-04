@@ -1,6 +1,7 @@
 # Table: aws_apigateway_rest_api_documentation_parts
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_apigateway_rest_apis`](aws_apigateway_rest_apis.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |rest_api_arn|String|
@@ -16,5 +21,3 @@ This table depends on [`aws_apigateway_rest_apis`](aws_apigateway_rest_apis.md).
 |id|String|
 |location|JSON|
 |properties|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

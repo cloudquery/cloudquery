@@ -1,6 +1,7 @@
 # Table: github_teams
 
 
+
 The composite primary key for this table is (**org**, **id**).
 
 ## Relations
@@ -11,6 +12,10 @@ The following tables depend on `github_teams`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |org (PK)|String|
 |id (PK)|Int|
 |node_id|String|
@@ -29,5 +34,3 @@ The following tables depend on `github_teams`:
 |repositories_url|String|
 |parent|JSON|
 |ldap_dn|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

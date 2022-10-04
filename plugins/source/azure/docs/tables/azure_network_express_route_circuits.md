@@ -1,12 +1,17 @@
 # Table: azure_network_express_route_circuits
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |sku|JSON|
 |allow_classic_operations|Bool|
@@ -29,5 +34,3 @@ The primary key for this table is **id**.
 |type|String|
 |location|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,6 +1,7 @@
 # Table: aws_backup_plan_selections
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_backup_plans`](aws_backup_plans.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |plan_arn|String|
@@ -18,5 +23,3 @@ This table depends on [`aws_backup_plans`](aws_backup_plans.md).
 |creator_request_id|String|
 |selection_id|String|
 |result_metadata|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

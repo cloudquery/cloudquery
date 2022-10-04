@@ -1,6 +1,7 @@
 # Table: aws_redshift_snapshots
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_redshift_clusters`](aws_redshift_clusters.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -46,5 +51,3 @@ This table depends on [`aws_redshift_clusters`](aws_redshift_clusters.md).
 |status|String|
 |total_backup_size_in_mega_bytes|Float|
 |vpc_id|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
