@@ -2,14 +2,14 @@
 This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated 2022-09-26.
+Last updated 2022-10-03.
 
 ## azure_account_location_paired_region
 This table was removed.
 
 
 ## azure_account_locations
-This table was removed.
+Renamed to [azure_subscriptions_locations](#azure_subscriptions_locations)
 
 
 ## azure_authorization_role_assignments
@@ -70,66 +70,19 @@ Moved to JSON column on [azure_batch_accounts](#azure_batch_accounts)
 |private_endpoint_connections|jsonb|added|
 
 ## azure_cdn_custom_domains
-This table was newly added.
+Renamed from [azure_cdn_profile_endpoint_custom_domains](azure_cdn_profile_endpoint_custom_domains)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|cdn_endpoint_id|uuid|added|
-|host_name|text|added|
-|resource_state|text|added|
-|custom_https_provisioning_state|text|added|
-|custom_https_provisioning_substate|text|added|
-|validation_data|text|added|
-|provisioning_state|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|system_data|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_cdn_endpoints
-This table was newly added.
+Renamed from [azure_cdn_profile_endpoints](azure_cdn_profile_endpoints)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|cdn_profile_id|uuid|added|
-|host_name|text|added|
-|origins|jsonb|added|
-|origin_groups|jsonb|added|
-|resource_state|text|added|
-|provisioning_state|text|added|
-|origin_path|text|added|
-|content_types_to_compress|text[]|added|
-|origin_host_header|text|added|
-|is_compression_enabled|boolean|added|
-|is_http_allowed|boolean|added|
-|is_https_allowed|boolean|added|
-|query_string_caching_behavior|text|added|
-|optimization_type|text|added|
-|probe_path|text|added|
-|geo_filters|jsonb|added|
-|default_origin_group|jsonb|added|
-|url_signing_keys|jsonb|added|
-|delivery_policy|jsonb|added|
-|web_application_firewall_policy_link|jsonb|added|
-|location|text|added|
-|tags|jsonb|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|system_data|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_cdn_profile_endpoint_custom_domains
-Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
+Renamed to [azure_cdn_custom_domains](#azure_cdn_custom_domains)
 
 
 ## azure_cdn_profile_endpoint_delivery_policy_rules
-Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
+Renamed to [azure_cdn_rules](#azure_cdn_rules)
 
 
 ## azure_cdn_profile_endpoint_geo_filters
@@ -145,7 +98,7 @@ Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
 
 
 ## azure_cdn_profile_endpoint_routes
-Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
+Renamed to [azure_cdn_routes](#azure_cdn_routes)
 
 
 ## azure_cdn_profile_endpoint_url_signing_keys
@@ -153,7 +106,7 @@ Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
 
 
 ## azure_cdn_profile_endpoints
-Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
+Renamed to [azure_cdn_endpoints](#azure_cdn_endpoints)
 
 
 ## azure_cdn_profile_rule_set_rules
@@ -161,11 +114,11 @@ Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
 
 
 ## azure_cdn_profile_rule_sets
-Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
+Renamed to [azure_cdn_rule_sets](#azure_cdn_rule_sets)
 
 
 ## azure_cdn_profile_security_policies
-Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
+Renamed to [azure_cdn_security_policies](#azure_cdn_security_policies)
 
 
 ## azure_cdn_profiles
@@ -187,83 +140,20 @@ Moved to JSON column on [azure_cdn_profiles](#azure_cdn_profiles)
 |system_data|jsonb|added|
 
 ## azure_cdn_routes
-This table was newly added.
+Renamed from [azure_cdn_profile_endpoint_routes](azure_cdn_profile_endpoint_routes)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|cdn_endpoint_id|uuid|added|
-|custom_domains|jsonb|added|
-|origin_group|jsonb|added|
-|origin_path|text|added|
-|rule_sets|jsonb|added|
-|supported_protocols|text[]|added|
-|patterns_to_match|text[]|added|
-|query_string_caching_behavior|text|added|
-|forwarding_protocol|text|added|
-|link_to_default_domain|text|added|
-|https_redirect|text|added|
-|enabled_state|text|added|
-|provisioning_state|text|added|
-|deployment_status|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|system_data|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_cdn_rule_sets
-This table was newly added.
+Renamed from [azure_cdn_profile_rule_sets](azure_cdn_profile_rule_sets)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|cdn_profile_id|uuid|added|
-|provisioning_state|text|added|
-|deployment_status|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|system_data|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_cdn_rules
-This table was newly added.
+Renamed from [azure_cdn_profile_endpoint_delivery_policy_rules](azure_cdn_profile_endpoint_delivery_policy_rules)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|cdn_rule_set_id|uuid|added|
-|order|bigint|added|
-|conditions|jsonb|added|
-|actions|jsonb|added|
-|match_processing_behavior|text|added|
-|provisioning_state|text|added|
-|deployment_status|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|system_data|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_cdn_security_policies
-This table was newly added.
+Renamed from [azure_cdn_profile_security_policies](azure_cdn_profile_security_policies)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|cdn_profile_id|uuid|added|
-|provisioning_state|text|added|
-|deployment_status|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|system_data|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_compute_disk_encryption_settings
 Moved to JSON column on [azure_compute_disks](#azure_compute_disks)
@@ -318,7 +208,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|compute_virtual_machine_id|uuid|added|
+|compute_virtual_machine_id|text|added|
 |platform_update_domain|bigint|added|
 |platform_fault_domain|bigint|added|
 |computer_name|text|added|
@@ -339,29 +229,11 @@ This table was newly added.
 |_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_compute_virtual_machine_extensions
-This table was newly added.
+Renamed from [azure_compute_virtual_machine_resources](azure_compute_virtual_machine_resources)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|compute_virtual_machine_id|uuid|added|
-|force_update_tag|text|added|
-|publisher|text|added|
-|type_handler_version|text|added|
-|auto_upgrade_minor_version|boolean|added|
-|enable_automatic_upgrade|boolean|added|
-|provisioning_state|text|added|
-|instance_view|jsonb|added|
-|id|text|added|
-|name|text|added|
-|location|text|added|
-|tags|jsonb|added|
-|type|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_compute_virtual_machine_resources
-Moved to JSON column on [azure_compute_virtual_machines](#azure_compute_virtual_machines)
+Renamed to [azure_compute_virtual_machine_extensions](#azure_compute_virtual_machine_extensions)
 
 
 ## azure_compute_virtual_machine_scale_set_extensions
@@ -639,7 +511,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|container_registry_id|uuid|added|
+|container_registry_id|text|added|
 |provisioning_state|text|added|
 |status|jsonb|added|
 |id|text|added|
@@ -711,7 +583,7 @@ Renamed to [azure_cosmosdb_mongo_db_databases](#azure_cosmosdb_mongo_db_database
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |autoscale_settings_max_throughput|integer|removed|
-|cosmosdb_account_id|uuid|added|
+|cosmosdb_account_id|text|added|
 |database_colls|text|removed|
 |database_etag|text|removed|
 |database_id|text|removed|
@@ -769,41 +641,12 @@ This table was removed.
 
 
 ## azure_datalake_storage_accounts
-This table was removed.
+Renamed to [azure_datalake_store_accounts](#azure_datalake_store_accounts)
 
 
 ## azure_datalake_store_accounts
-This table was newly added.
+Renamed from [azure_datalake_storage_accounts](azure_datalake_storage_accounts)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|identity|jsonb|added|
-|default_group|text|added|
-|encryption_config|jsonb|added|
-|encryption_state|text|added|
-|encryption_provisioning_state|text|added|
-|firewall_rules|jsonb|added|
-|virtual_network_rules|jsonb|added|
-|firewall_state|text|added|
-|firewall_allow_azure_ips|text|added|
-|trusted_id_providers|jsonb|added|
-|trusted_id_provider_state|text|added|
-|new_tier|text|added|
-|current_tier|text|added|
-|account_id|uuid|added|
-|provisioning_state|text|added|
-|state|text|added|
-|creation_time|timestamp without time zone|added|
-|last_modified_time|timestamp without time zone|added|
-|endpoint|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|location|text|added|
-|tags|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_eventhub_namespace_encryption_key_vault_properties
 Moved to JSON column on [azure_eventhub_namespaces](#azure_eventhub_namespaces)
@@ -838,7 +681,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|eventhub_namespace_id|uuid|added|
+|eventhub_namespace_id|text|added|
 |trusted_service_access_enabled|boolean|added|
 |default_action|text|added|
 |virtual_network_rules|jsonb|added|
@@ -886,77 +729,16 @@ This table was removed.
 
 
 ## azure_front_doors
-This table was removed.
+Renamed to [azure_frontdoor_doors](#azure_frontdoor_doors)
 
 
 ## azure_frontdoor_doors
-This table was newly added.
+Renamed from [azure_front_doors](azure_front_doors)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|resource_state|text|added|
-|provisioning_state|text|added|
-|cname|text|added|
-|frontdoor_id|text|added|
-|rules_engines|jsonb|added|
-|friendly_name|text|added|
-|routing_rules|jsonb|added|
-|load_balancing_settings|jsonb|added|
-|health_probe_settings|jsonb|added|
-|backend_pools|jsonb|added|
-|frontend_endpoints|jsonb|added|
-|backend_pools_settings|jsonb|added|
-|enabled_state|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|location|text|added|
-|tags|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_iothub_devices
-This table was newly added.
+Renamed from [azure_iothub_hubs](azure_iothub_hubs)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|etag|text|added|
-|properties_authorization_policies|jsonb|added|
-|properties_disable_local_auth|boolean|added|
-|properties_disable_device_sas|boolean|added|
-|properties_disable_module_sas|boolean|added|
-|properties_restrict_outbound_network_access|boolean|added|
-|properties_allowed_fqdn_list|text[]|added|
-|properties_public_network_access|text|added|
-|properties_ip_filter_rules|jsonb|added|
-|properties_network_rule_sets|jsonb|added|
-|properties_min_tls_version|text|added|
-|properties_private_endpoint_connections|jsonb|added|
-|properties_provisioning_state|text|added|
-|properties_state|text|added|
-|properties_host_name|text|added|
-|properties_event_hub_endpoints|jsonb|added|
-|properties_routing|jsonb|added|
-|properties_storage_endpoints|jsonb|added|
-|properties_messaging_endpoints|jsonb|added|
-|properties_enable_file_upload_notifications|boolean|added|
-|properties_cloud_to_device|jsonb|added|
-|properties_comments|text|added|
-|properties_features|text|added|
-|properties_locations|jsonb|added|
-|properties_enable_data_residency|boolean|added|
-|sku|jsonb|added|
-|identity|jsonb|added|
-|system_data|jsonb|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|location|text|added|
-|tags|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_iothub_hub_authorization_policies
 This table was removed.
@@ -995,72 +777,31 @@ This table was removed.
 
 
 ## azure_iothub_hubs
-This table was removed.
+Renamed to [azure_iothub_devices](#azure_iothub_devices)
 
 
 ## azure_keyvault_keys
-This table was newly added.
+Renamed from [azure_keyvault_vault_keys](azure_keyvault_vault_keys)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|keyvault_vault_id|uuid|added|
-|kid|text|added|
-|attributes|jsonb|added|
-|tags|jsonb|added|
-|managed|boolean|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_keyvault_managed_hsm
-Moved to JSON column on [azure_keyvault_managed_hsms](#azure_keyvault_managed_hsms)
+Renamed to [azure_keyvault_managed_hsms](#azure_keyvault_managed_hsms)
 
 
 ## azure_keyvault_managed_hsms
-This table was newly added.
+Renamed from [azure_keyvault_managed_hsm](azure_keyvault_managed_hsm)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|properties_tenant_id|uuid|added|
-|properties_initial_admin_object_ids|text[]|added|
-|properties_hsm_uri|text|added|
-|properties_enable_soft_delete|boolean|added|
-|properties_soft_delete_retention_in_days|bigint|added|
-|properties_enable_purge_protection|boolean|added|
-|properties_create_mode|text|added|
-|properties_status_message|text|added|
-|properties_provisioning_state|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|location|text|added|
-|sku|jsonb|added|
-|tags|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_keyvault_secrets
-This table was newly added.
+Renamed from [azure_keyvault_vault_secrets](azure_keyvault_vault_secrets)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|keyvault_vault_id|uuid|added|
-|id|text|added|
-|attributes|jsonb|added|
-|tags|jsonb|added|
-|content_type|text|added|
-|managed|boolean|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_keyvault_vault_access_policies
 Moved to JSON column on [azure_keyvault_vaults](#azure_keyvault_vaults)
 
 
 ## azure_keyvault_vault_keys
-Moved to JSON column on [azure_keyvault_vaults](#azure_keyvault_vaults)
+Renamed to [azure_keyvault_keys](#azure_keyvault_keys)
 
 
 ## azure_keyvault_vault_private_endpoint_connections
@@ -1068,7 +809,7 @@ Moved to JSON column on [azure_keyvault_vaults](#azure_keyvault_vaults)
 
 
 ## azure_keyvault_vault_secrets
-Moved to JSON column on [azure_keyvault_vaults](#azure_keyvault_vaults)
+Renamed to [azure_keyvault_secrets](#azure_keyvault_secrets)
 
 
 ## azure_keyvault_vaults
@@ -1109,7 +850,7 @@ Moved to JSON column on [azure_keyvault_vaults](#azure_keyvault_vaults)
 |vault_uri|text|removed|
 
 ## azure_logic_app_workflows
-This table was removed.
+Renamed to [azure_logic_workflows](#azure_logic_workflows)
 
 
 ## azure_logic_diagnostic_settings
@@ -1118,7 +859,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|logic_workflow_id|uuid|added|
+|logic_workflow_id|text|added|
 |storage_account_id|text|added|
 |service_bus_rule_id|text|added|
 |event_hub_authorization_rule_id|text|added|
@@ -1134,53 +875,15 @@ This table was newly added.
 |_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_logic_workflows
-This table was newly added.
+Renamed from [azure_logic_app_workflows](azure_logic_app_workflows)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|provisioning_state|text|added|
-|created_time|timestamp without time zone|added|
-|changed_time|timestamp without time zone|added|
-|state|text|added|
-|version|text|added|
-|access_endpoint|text|added|
-|endpoints_configuration|jsonb|added|
-|access_control|jsonb|added|
-|sku|jsonb|added|
-|integration_account|jsonb|added|
-|integration_service_environment|jsonb|added|
-|parameters|jsonb|added|
-|identity|jsonb|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|location|text|added|
-|tags|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_mariadb_configurations
-This table was newly added.
+Renamed from [azure_mariadb_server_configurations](azure_mariadb_server_configurations)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|mariadb_server_id|uuid|added|
-|value|text|added|
-|description|text|added|
-|default_value|text|added|
-|data_type|text|added|
-|allowed_values|text|added|
-|source|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_mariadb_server_configurations
-Moved to JSON column on [azure_mariadb_servers](#azure_mariadb_servers)
+Renamed to [azure_mariadb_configurations](#azure_mariadb_configurations)
 
 
 ## azure_mariadb_server_private_endpoint_connections
@@ -1283,7 +986,7 @@ Moved to JSON column on [azure_monitor_diagnostic_settings](#azure_monitor_diagn
 |_cq_id|uuid|added|
 |logs|jsonb|added|
 |metrics|jsonb|added|
-|monitor_resource_id|uuid|added|
+|monitor_resource_id|text|added|
 
 ## azure_monitor_log_profiles
 
@@ -1307,26 +1010,11 @@ This table was newly added.
 |_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_mysql_configurations
-This table was newly added.
+Renamed from [azure_mysql_server_configurations](azure_mysql_server_configurations)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|mysql_server_id|uuid|added|
-|value|text|added|
-|description|text|added|
-|default_value|text|added|
-|data_type|text|added|
-|allowed_values|text|added|
-|source|text|added|
-|id|text|added|
-|name|text|added|
-|type|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_mysql_server_configurations
-Moved to JSON column on [azure_mysql_servers](#azure_mysql_servers)
+Renamed to [azure_mysql_configurations](#azure_mysql_configurations)
 
 
 ## azure_mysql_server_private_endpoint_connections
@@ -1377,10 +1065,17 @@ Moved to JSON column on [azure_network_express_route_circuits](#azure_network_ex
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|address_prefix|text|added|
+|auth_resource_guid|text|added|
 |authorizations|jsonb|added|
 |bandwidth_in_gbps|real|updated|Type changed from float to real
+|circuit_connection_status|text|added|
+|connection_name|text|added|
+|express_route_circuit_peering_cq_id|uuid|added|
+|express_route_circuit_peering_id|text|added|
 |express_route_port|jsonb|added|
 |express_route_port_id|text|removed|
+|peer_express_route_circuit_peering_id|text|added|
 |peerings|jsonb|added|
 |service_provider_properties|jsonb|added|
 |service_provider_properties_bandwidth_in_mbps|integer|removed|
@@ -1435,7 +1130,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|network_watcher_id|uuid|added|
+|network_watcher_id|text|added|
 |target_resource_id|text|added|
 |target_resource_guid|text|added|
 |storage_id|text|added|
@@ -1481,7 +1176,7 @@ Moved to JSON column on [azure_network_interfaces](#azure_network_interfaces)
 |virtual_machine_id|text|removed|
 
 ## azure_network_peer_express_route_circuit_connections
-This table was removed.
+Renamed to [azure_network_express_route_circuits](#azure_network_express_route_circuits)
 
 
 ## azure_network_public_ip_addresses
@@ -1519,8 +1214,6 @@ Moved to JSON column on [azure_network_route_filters](#azure_network_route_filte
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|ipv6_peerings|jsonb|removed|
-|ipv_6_peerings|jsonb|added|
 |rules|jsonb|added|
 
 ## azure_network_route_table_routes
@@ -1567,11 +1260,17 @@ Moved to JSON column on [azure_network_security_groups](#azure_network_security_
 | ------------- | ------------- | --------------- | ---------------
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|network_virtual_network_gateway_id|uuid|added|
+|local_network_gateway2|jsonb|added|
+|local_network_gateway_2|jsonb|removed|
+|network_virtual_network_gateway_id|text|added|
 |peer|jsonb|added|
 |peer_id|text|removed|
 |routing_weight|bigint|updated|Type changed from integer to bigint
 |subscription_id|text|added|
+|virtual_network_gateway1|jsonb|added|
+|virtual_network_gateway2|jsonb|added|
+|virtual_network_gateway_1|jsonb|removed|
+|virtual_network_gateway_2|jsonb|removed|
 |virtual_network_gateway_cq_id|uuid|removed|
 
 ## azure_network_virtual_network_gateways
@@ -1592,7 +1291,7 @@ Moved to JSON column on [azure_network_security_groups](#azure_network_security_
 |extended_location_type|text|removed|
 |gateway_default_site|jsonb|added|
 |gateway_default_site_id|text|removed|
-|network_virtual_network_id|uuid|added|
+|network_virtual_network_id|text|added|
 |sku|jsonb|added|
 |sku_capacity|integer|removed|
 |sku_name|text|removed|
@@ -1658,7 +1357,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|postgresql_server_id|uuid|added|
+|postgresql_server_id|text|added|
 |value|text|added|
 |description|text|added|
 |default_value|text|added|
@@ -1677,7 +1376,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|postgresql_server_id|uuid|added|
+|postgresql_server_id|text|added|
 |start_ip_address|text|added|
 |end_ip_address|text|added|
 |id|text|added|
@@ -1919,7 +1618,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|servicebus_authorization_rule_id|uuid|added|
+|servicebus_authorization_rule_id|text|added|
 |primary_connection_string|text|added|
 |secondary_connection_string|text|added|
 |alias_primary_connection_string|text|added|
@@ -1936,7 +1635,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|servicebus_topic_id|uuid|added|
+|servicebus_topic_id|text|added|
 |rights|text[]|added|
 |system_data|jsonb|added|
 |id|text|added|
@@ -1988,7 +1687,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|servicebus_namespace_id|uuid|added|
+|servicebus_namespace_id|text|added|
 |size_in_bytes|bigint|added|
 |created_at|timestamp without time zone|added|
 |updated_at|timestamp without time zone|added|
@@ -2019,7 +1718,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_database_id|uuid|added|
+|sql_database_id|text|added|
 |weekly_retention|text|added|
 |monthly_retention|text|added|
 |yearly_retention|text|added|
@@ -2036,7 +1735,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_database_id|uuid|added|
+|sql_database_id|text|added|
 |kind|text|added|
 |state|text|added|
 |storage_endpoint|text|added|
@@ -2075,7 +1774,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_database_id|uuid|added|
+|sql_database_id|text|added|
 |location|text|added|
 |kind|text|added|
 |state|text|added|
@@ -2098,7 +1797,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_database_id|uuid|added|
+|sql_database_id|text|added|
 |scan_id|text|added|
 |trigger_type|text|added|
 |state|text|added|
@@ -2119,7 +1818,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_database_id|uuid|added|
+|sql_database_id|text|added|
 |storage_container_path|text|added|
 |storage_container_sas_key|text|added|
 |storage_account_access_key|text|added|
@@ -2163,7 +1862,7 @@ This table was newly added.
 |sku_tier|text|removed|
 |source_database_deletion_date|timestamp without time zone|added|
 |source_database_deletion_date_time|timestamp without time zone|removed|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |subscription_id|text|added|
 |transparent_data_encryption|jsonb|removed|
 
@@ -2173,7 +1872,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |kind|text|added|
 |location|text|added|
 |subregion|text|added|
@@ -2193,7 +1892,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |kind|text|added|
 |location|text|added|
 |start_ip_address|text|added|
@@ -2212,7 +1911,7 @@ This table was newly added.
 |_cq_id|uuid|added|
 |managed_database_cq_id|uuid|removed|
 |number_of_failed_security_checks|bigint|updated|Type changed from integer to bigint
-|sql_managed_database_id|uuid|added|
+|sql_managed_database_id|text|added|
 |subscription_id|text|added|
 
 ## azure_sql_managed_database_vulnerability_assessments
@@ -2226,7 +1925,7 @@ This table was newly added.
 |recurring_scans_email_subscription_admins|boolean|removed|
 |recurring_scans_emails|text[]|removed|
 |recurring_scans_is_enabled|boolean|removed|
-|sql_managed_database_id|uuid|added|
+|sql_managed_database_id|text|added|
 |subscription_id|text|added|
 
 ## azure_sql_managed_databases
@@ -2239,7 +1938,7 @@ This table was newly added.
 |creation_date_time|timestamp without time zone|removed|
 |earliest_restore_point|timestamp without time zone|added|
 |earliest_restore_point_time|timestamp without time zone|removed|
-|sql_managed_instance_id|uuid|added|
+|sql_managed_instance_id|text|added|
 |subscription_id|text|added|
 
 ## azure_sql_managed_instance_encryption_protectors
@@ -2249,7 +1948,7 @@ This table was newly added.
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |managed_instance_cq_id|uuid|removed|
-|sql_managed_instance_id|uuid|added|
+|sql_managed_instance_id|text|added|
 |subscription_id|text|added|
 
 ## azure_sql_managed_instance_private_endpoint_connections
@@ -2267,7 +1966,7 @@ Moved to JSON column on [azure_sql_managed_instances](#azure_sql_managed_instanc
 |recurring_scans_email_subscription_admins|boolean|removed|
 |recurring_scans_emails|text[]|removed|
 |recurring_scans_is_enabled|boolean|removed|
-|sql_managed_instance_id|uuid|added|
+|sql_managed_instance_id|text|added|
 |subscription_id|text|added|
 
 ## azure_sql_managed_instances
@@ -2298,7 +1997,7 @@ Moved to JSON column on [azure_sql_managed_instances](#azure_sql_managed_instanc
 |_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
 |server_cq_id|uuid|removed|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |subscription_id|text|added|
 
 ## azure_sql_server_blob_auditing_policies
@@ -2307,7 +2006,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |state|text|added|
 |storage_endpoint|text|added|
 |storage_account_access_key|text|added|
@@ -2333,7 +2032,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |system_data|jsonb|added|
 |is_azure_monitor_target_enabled|boolean|added|
 |state|text|added|
@@ -2368,7 +2067,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |state|text|added|
 |disabled_alerts|text[]|added|
 |email_addresses|text[]|added|
@@ -2402,7 +2101,7 @@ Moved to JSON column on [azure_sql_servers](#azure_sql_servers)
 |recurring_scans_emails|text[]|removed|
 |recurring_scans_is_enabled|boolean|removed|
 |server_cq_id|uuid|removed|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |subscription_id|text|added|
 
 ## azure_sql_servers
@@ -2423,7 +2122,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_database_id|uuid|added|
+|sql_database_id|text|added|
 |location|text|added|
 |status|text|added|
 |id|text|added|
@@ -2438,7 +2137,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|sql_server_id|uuid|added|
+|sql_server_id|text|added|
 |virtual_network_subnet_id|text|added|
 |ignore_missing_vnet_service_endpoint|boolean|added|
 |state|text|added|
@@ -2595,7 +2294,7 @@ Moved to JSON column on [azure_storage_blob_services](#azure_storage_blob_servic
 |sku|jsonb|added|
 |sku_name|text|removed|
 |sku_tier|text|removed|
-|storage_account_id|uuid|added|
+|storage_account_id|text|added|
 |subscription_id|text|added|
 
 ## azure_storage_containers
@@ -2607,7 +2306,7 @@ Moved to JSON column on [azure_storage_blob_services](#azure_storage_blob_servic
 |account_cq_id|uuid|removed|
 |account_id|text|removed|
 |remaining_retention_days|bigint|updated|Type changed from integer to bigint
-|storage_account_id|uuid|added|
+|storage_account_id|text|added|
 
 ## azure_streamanalytics_jobs
 This table was removed.
@@ -2652,66 +2351,27 @@ This table was newly added.
 |_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_subscription_subscriptions
-Moved to JSON column on [azure_subscriptions](#azure_subscriptions)
+Renamed to [azure_subscriptions](#azure_subscriptions)
 
 
 ## azure_subscription_tenants
-Moved to JSON column on [azure_subscriptions](#azure_subscriptions)
+Renamed to [azure_subscriptions_tenants](#azure_subscriptions_tenants)
 
 
 ## azure_subscriptions
-This table was newly added.
+Renamed from [azure_subscription_subscriptions](azure_subscription_subscriptions)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|authorization_source|text|added|
-|managed_by_tenants|jsonb|added|
-|subscription_policies|jsonb|added|
-|tags|jsonb|added|
-|display_name|text|added|
-|id|text|added|
-|state|text|added|
-|tenant_id|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_subscriptions_locations
-This table was newly added.
+Renamed from [azure_account_locations](azure_account_locations)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|metadata|jsonb|added|
-|display_name|text|added|
-|id|text|added|
-|name|text|added|
-|regional_display_name|text|added|
-|type|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_subscriptions_tenants
-This table was newly added.
+Renamed from [azure_subscription_tenants](azure_subscription_tenants)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|country|text|added|
-|country_code|text|added|
-|default_domain|text|added|
-|display_name|text|added|
-|domains|jsonb|added|
-|id|text|added|
-|tenant_branding_logo_url|text|added|
-|tenant_category|text|added|
-|tenant_id|text|added|
-|tenant_type|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_web_app_auth_settings
-Moved to JSON column on [azure_web_apps](#azure_web_apps)
+Renamed to [azure_web_site_auth_settings](#azure_web_site_auth_settings)
 
 
 ## azure_web_app_host_name_ssl_states
@@ -2719,7 +2379,7 @@ Moved to JSON column on [azure_web_apps](#azure_web_apps)
 
 
 ## azure_web_app_publishing_profiles
-Moved to JSON column on [azure_web_apps](#azure_web_apps)
+Renamed to [azure_web_publishing_profiles](#azure_web_publishing_profiles)
 
 
 ## azure_web_apps
@@ -2765,69 +2425,12 @@ Moved to JSON column on [azure_web_apps](#azure_web_apps)
 |vnet_connection|jsonb|removed|
 
 ## azure_web_publishing_profiles
-This table was newly added.
+Renamed from [azure_web_app_publishing_profiles](azure_web_app_publishing_profiles)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|web_app_id|uuid|added|
-|publish_url|text|added|
-|user_name|text|added|
-|user_pwd|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_web_site_auth_settings
-This table was newly added.
+Renamed from [azure_web_app_auth_settings](azure_web_app_auth_settings)
 
-| Name          | Type          | Status | Comment
-| ------------- | ------------- | --------------- | ---------------
-|subscription_id|text|added|
-|web_app_id|uuid|added|
-|enabled|boolean|added|
-|runtime_version|text|added|
-|unauthenticated_client_action|text|added|
-|token_store_enabled|boolean|added|
-|allowed_external_redirect_urls|text[]|added|
-|default_provider|text|added|
-|token_refresh_extension_hours|real|added|
-|client_id|text|added|
-|client_secret|text|added|
-|client_secret_setting_name|text|added|
-|client_secret_certificate_thumbprint|text|added|
-|issuer|text|added|
-|validate_issuer|boolean|added|
-|allowed_audiences|text[]|added|
-|additional_login_params|text[]|added|
-|aad_claims_authorization|text|added|
-|google_client_id|text|added|
-|google_client_secret|text|added|
-|google_client_secret_setting_name|text|added|
-|google_o_auth_scopes|text[]|added|
-|facebook_app_id|text|added|
-|facebook_app_secret|text|added|
-|facebook_app_secret_setting_name|text|added|
-|facebook_o_auth_scopes|text[]|added|
-|git_hub_client_id|text|added|
-|git_hub_client_secret|text|added|
-|git_hub_client_secret_setting_name|text|added|
-|git_hub_o_auth_scopes|text[]|added|
-|twitter_consumer_key|text|added|
-|twitter_consumer_secret|text|added|
-|twitter_consumer_secret_setting_name|text|added|
-|microsoft_account_client_id|text|added|
-|microsoft_account_client_secret|text|added|
-|microsoft_account_client_secret_setting_name|text|added|
-|microsoft_account_o_auth_scopes|text[]|added|
-|is_auth_from_file|text|added|
-|auth_file_path|text|added|
-|config_version|text|added|
-|id|text|added|
-|name|text|added|
-|kind|text|added|
-|type|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## azure_web_vnet_connections
 This table was newly added.
@@ -2835,7 +2438,7 @@ This table was newly added.
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
 |subscription_id|text|added|
-|web_app_id|uuid|added|
+|web_app_id|text|added|
 |vnet_resource_id|text|added|
 |cert_thumbprint|text|added|
 |cert_blob|text|added|
