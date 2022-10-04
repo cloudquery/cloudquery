@@ -9,7 +9,7 @@ WITH filter_metric_name AS (SELECT mf.account_id,
                                         INNER JOIN filter_metric_name fmn ON
                                            fmn.metric_name = aca.metric_name
                                        AND aca.account_id = fmn.account_id)
-SELECT account_id, metric_name, filter_pattern
+SELECT account_id, metric_name, filter_pattern as pattern
 FROM aws_sns_topics st
          LEFT JOIN alarms_actions_metric aam ON
     aam.topic_arn = st.arn

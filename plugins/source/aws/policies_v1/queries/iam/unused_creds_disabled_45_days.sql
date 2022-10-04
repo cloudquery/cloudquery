@@ -28,4 +28,4 @@ select :'execution_time',
            end
 from aws_iam_credential_reports r
          left join aws_iam_user_access_keys k on
-    k.user_arn = r.arn
+        k.user_arn = r.arn

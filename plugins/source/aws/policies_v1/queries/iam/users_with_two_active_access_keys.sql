@@ -7,7 +7,7 @@ select :'execution_time',
        user_arn,
        case
            when
-               count(*) > 1
+                   count(*) > 1
                then 'fail'
            else 'pass'
            end
