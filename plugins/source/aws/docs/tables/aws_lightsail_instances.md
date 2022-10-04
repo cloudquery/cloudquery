@@ -30,7 +30,6 @@ The following tables depend on `aws_lightsail_instances`:
 |ipv6_addresses|StringArray|
 |is_static_ip|Bool|
 |location|JSON|
-|metadata_options|JSON|
 |name|String|
 |networking|JSON|
 |private_ip_address|String|

@@ -16,7 +16,6 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |creation_time|Timestamp|
-|deliver_cross_account_role|String|
 |deliver_logs_error_message|String|
 |deliver_logs_permission_arn|String|
 |deliver_logs_status|String|
