@@ -8,15 +8,15 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 
 | **Name**                     | Releases                          | Changelog                           | Stage |
 |------------------------------|-----------------------------------|-------------------------------------|-------|
-| [AWS][AWS]                   | [Releases][AWS-Releases]          | [Changelog][AWS-Changelog]          | Alpha |
-| [Azure][Azure]               | [Releases][Azure-Releases]        | [Changelog][Azure-Changelog]        | Alpha |    
-| [GCP][GCP]                   | [Releases][GCP-Releases]          | [Changelog][GCP-Changelog]          | Alpha |
-| [DigitalOcean][DigitalOcean] | [Releases][DigitalOcean-Releases] | [Changelog][DigitalOcean-Changelog] | Alpha |
-| [GitHub][GitHub]             | [Releases][GitHub-Releases]       | [Changelog][GitHub-Changelog]       | Alpha |
-| [Heroku][Heroku]             | [Releases][Heroku-Releases]       | [Changelog][Heroku-Changelog]       | Alpha |
-| [k8s][k8s]                   | [Releases][k8s-Releases]          | [Changelog][k8s-Changelog]          | Alpha |
-| [Okta][Okta]                 | [Releases][Okta-Releases]         | [Changelog][Okta-Changelog]         | Alpha |
-| [Terraform][Terraform]       | [Releases][Terraform-Releases]    | [Changelog][Terraform-Changelog]    | Alpha |
+| [AWS][AWS]                   | [Releases][AWS-Releases]          | [Changelog][AWS-Changelog]          | GA |
+| [Azure][Azure]               | [Releases][Azure-Releases]        | [Changelog][Azure-Changelog]        | GA |    
+| [GCP][GCP]                   | [Releases][GCP-Releases]          | [Changelog][GCP-Changelog]          | GA |
+| [DigitalOcean][DigitalOcean] | [Releases][DigitalOcean-Releases] | [Changelog][DigitalOcean-Changelog] | GA |
+| [GitHub][GitHub]             | [Releases][GitHub-Releases]       | [Changelog][GitHub-Changelog]       | GA |
+| [Heroku][Heroku]             | [Releases][Heroku-Releases]       | [Changelog][Heroku-Changelog]       | Preview |
+| [k8s][k8s]                   | [Releases][k8s-Releases]          | [Changelog][k8s-Changelog]          | Preview |
+| [Okta][Okta]                 | [Releases][Okta-Releases]         | [Changelog][Okta-Changelog]         | Preview |
+| [Terraform][Terraform]       | [Releases][Terraform-Releases]    | [Changelog][Terraform-Changelog]    | Preview |
 
 ## Community
 
