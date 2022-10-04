@@ -1,7 +1,7 @@
 # Overview
 
 This section describes how CloudQuery is dealing with schema changes in plugins.
-The overall idea is to not to have breaking changes but rather always add columns because it is common for users to build views on top which we don't want to break. Those migration tactics are usually implemented in the destination plugins as source plugins are database agnostic and just send back json objects.
+The overall idea is to not to have breaking changes but rather always add columns because it is common for users to build views on top which we don't want to break. Those migration tactics are usually implemented in the destination plugins as source plugins are database agnostic and just send back JSON objects.
 
 ## Addition
 
@@ -19,4 +19,4 @@ CloudQuery is an open-source cloud asset inventory powered by SQL, and as such, 
 
 ## Type Change
 
-This is the most complex situation most probabbly and as a source plugin developer you want to avoid it if possible. However, on the destination plugin side, it will first try to change the column if it happens the new type can also store the old type data, if not, this will be the only case where the destination plugin will be re-creating the column.
+This is the most complex situation most probably and as a source plugin developer you want to avoid it if possible. However, on the destination plugin side, it will first try to change the column if it happens the new type can also store the old type data, if not, this will be the only case where the destination plugin will be re-creating the column.
