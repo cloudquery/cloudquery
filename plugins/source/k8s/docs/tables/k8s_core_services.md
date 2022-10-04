@@ -1,12 +1,17 @@
 # Table: k8s_core_services
 
 
+
 The primary key for this table is **uid**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |context|String|
 |uid (PK)|String|
 |spec_cluster_ip|Inet|
@@ -41,5 +46,3 @@ The primary key for this table is **uid**.
 |spec_internal_traffic_policy|String|
 |status_load_balancer|JSON|
 |status_conditions|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

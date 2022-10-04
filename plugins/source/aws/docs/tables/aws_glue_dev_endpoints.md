@@ -1,12 +1,17 @@
 # Table: aws_glue_dev_endpoints
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -36,5 +41,3 @@ The primary key for this table is **arn**.
 |worker_type|String|
 |yarn_endpoint_address|String|
 |zeppelin_remote_spark_interpreter_port|Int|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

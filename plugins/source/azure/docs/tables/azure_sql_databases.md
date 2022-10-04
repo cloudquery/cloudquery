@@ -1,6 +1,7 @@
 # Table: azure_sql_databases
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -16,6 +17,10 @@ The following tables depend on `azure_sql_databases`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |sql_server_id|String|
 |sku|JSON|
@@ -60,5 +65,3 @@ The following tables depend on `azure_sql_databases`:
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,12 +1,17 @@
 # Table: aws_fsx_data_repository_associations
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -21,5 +26,3 @@ The primary key for this table is **arn**.
 |imported_file_chunk_size|Int|
 |lifecycle|String|
 |s3|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

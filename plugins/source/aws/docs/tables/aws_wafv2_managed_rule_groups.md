@@ -1,12 +1,17 @@
 # Table: aws_wafv2_managed_rule_groups
 
 
+
 The composite primary key for this table is (**account_id**, **region**, **scope**).
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id (PK)|String|
 |region (PK)|String|
 |scope (PK)|String|
@@ -15,5 +20,3 @@ The composite primary key for this table is (**account_id**, **region**, **scope
 |name|String|
 |vendor_name|String|
 |versioning_supported|Bool|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
