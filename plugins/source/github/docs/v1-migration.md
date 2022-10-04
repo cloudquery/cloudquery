@@ -2,7 +2,7 @@
 This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated 2022-09-26.
+Last updated 2022-10-04.
 
 ## github_action_billing
 This table was removed.
@@ -13,37 +13,43 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |org|text|added|
 |total_minutes_used|bigint|added|
 |total_paid_minutes_used|real|added|
 |included_minutes|bigint|added|
 |minutes_used_breakdown|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## github_billing_package
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |org|text|added|
 |total_gigabytes_bandwidth_used|bigint|added|
 |total_paid_gigabytes_bandwidth_used|bigint|added|
 |included_gigabytes_bandwidth|bigint|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## github_billing_storage
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |org|text|added|
 |days_left_in_billing_cycle|bigint|added|
 |estimated_paid_storage_for_month|real|added|
 |estimated_storage_for_month|bigint|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## github_external_group_members
 Moved to JSON column on [github_external_groups](#github_external_groups)
@@ -57,8 +63,10 @@ Moved to JSON column on [github_external_groups](#github_external_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |members|jsonb|added|
 |teams|jsonb|added|
 |updated_at|timestamp without time zone|added|
@@ -68,8 +76,10 @@ Moved to JSON column on [github_external_groups](#github_external_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |delivered_at|timestamp without time zone|added|
 |delivered_at_time|timestamp without time zone|removed|
 |duration|real|updated|Type changed from float to real
@@ -87,15 +97,19 @@ Moved to JSON column on [github_external_groups](#github_external_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## github_installations
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account|jsonb|added|
 |account_avatar_url|text|removed|
 |account_bio|text|removed|
@@ -251,8 +265,10 @@ Moved to JSON column on [github_issues](#github_issues)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |assignee|jsonb|added|
 |assignee_avatar_url|text|removed|
 |assignee_bio|text|removed|
@@ -496,8 +512,10 @@ Moved to JSON column on [github_organizations](#github_organizations)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |created_at|timestamp without time zone|added|
 |created_at_time|timestamp without time zone|removed|
 |membership|jsonb|added|
@@ -518,8 +536,10 @@ Moved to JSON column on [github_organizations](#github_organizations)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |default_repo_permission|text|removed|
 |default_repo_settings|text|removed|
 |default_repository_permission|text|added|
@@ -551,8 +571,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |code_of_conduct|jsonb|added|
 |code_of_conduct_body|text|removed|
 |code_of_conduct_key|text|removed|
@@ -696,8 +718,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |created_at|timestamp without time zone|added|
 |created_at_time|timestamp without time zone|removed|
 |membership|jsonb|added|
@@ -718,8 +742,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |code_of_conduct|jsonb|added|
 |code_of_conduct_body|text|removed|
 |code_of_conduct_key|text|removed|
@@ -865,8 +891,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |ldap_dn|text|added|
 |ldapdn|text|removed|
 |organization|jsonb|added|
