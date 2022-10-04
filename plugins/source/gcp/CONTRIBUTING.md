@@ -7,7 +7,7 @@ There are two main steps to adding a new GCP resource:
 1. [Add a code generation recipe](#1-add-a-code-generation-recipe)
 2. [Writing the resolver function to fetch the resource using the AWS SDK](#2-setting-up-the-resource)
 
-## Add a Code Generation Recipe
+## 1. Add a Code Generation Recipe
 
 Every supported GCP service has a recipe file under [codegen/recipes](codegen/recipes).
 
@@ -26,7 +26,7 @@ The process to follow for adding a new recipe is:
 4. Define the list of resources to be generated and return it inside this function. See
    [Add a Resource to a Recipe](#add-a-resource-to-a-recipe) for more details.
 
-### 1. Add a Resource to a Recipe
+### Add a Resource to a Recipe
 
 `MyServiceResources()` should return a slice of `*Resource` instances. Each resource should, at a minimum, have the following fields defined:
 
