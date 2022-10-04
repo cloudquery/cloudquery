@@ -1,4 +1,5 @@
 # Table: heroku_review_apps
+
 https://devcenter.heroku.com/articles/platform-api-reference#review-app-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |app|JSON|
 |app_setup|JSON|
 |branch|String|
@@ -21,5 +26,3 @@ The primary key for this table is **id**.
 |status|String|
 |updated_at|Timestamp|
 |wait_for_ci|Bool|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

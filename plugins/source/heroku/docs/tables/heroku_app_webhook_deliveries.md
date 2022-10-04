@@ -1,4 +1,5 @@
 # Table: heroku_app_webhook_deliveries
+
 https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |created_at|Timestamp|
 |event|JSON|
 |id (PK)|String|
@@ -16,5 +21,3 @@ The primary key for this table is **id**.
 |status|String|
 |updated_at|Timestamp|
 |webhook|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
