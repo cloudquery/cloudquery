@@ -31,7 +31,7 @@ func (r *retryer) RetryDelay(attempt int, err error) (time.Duration, error) {
 	logParams := []interface{}{
 		"duration", dur.String(),
 		"attempt", attempt,
-		"err", err,
+		"err", err.Error(),
 	}
 	if retErr != nil {
 		logParams = append(logParams, "retrier_err", retErr)
