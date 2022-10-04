@@ -49,7 +49,7 @@ Or to sync using a single yaml file named `config.yml`:
 cloudquery sync config.yml
 ```
 
-In this case `config.yml` should contain at least one source and one destination config, each separated by a line containing three dashes (`---`).
+In this case `config.yml` should contain at least one source and one destination config, each separated by a line containing three dashes (`---`). More about this in [Files and Directories](#files-and-directories).
 
 See `cloudquery sync --help` for more details, or check our [online reference](/docs/reference/cli/cloudquery_sync).
 
@@ -115,7 +115,21 @@ spec:
 
 ### Files and Directories
 
-The `sync` command supports loading config from files or directories, and you may choose to combine multiple source- and destination- configs in a single file using `---` to separate different sections.
+The `sync` command supports loading config from files or directories, and you may choose to combine multiple source- and destination- configs in a single file using `---` on its own line to separate different sections. For example:
+
+```
+kind: source
+spec:
+    name: aws
+    version: 1.0.0
+    # rest of source spec here
+---
+kind: destination
+spec:
+    name: postgresql
+    version: 1.0.0
+    # rest of destination spec here
+```
 
 ## Changes to Tables and Schemas
 
