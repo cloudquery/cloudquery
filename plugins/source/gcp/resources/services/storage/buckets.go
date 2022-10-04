@@ -154,5 +154,9 @@ func Buckets() *schema.Table {
 				Resolver: schema.PathResolver("RPO"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			BucketPolicies(),
+		},
 	}
 }
