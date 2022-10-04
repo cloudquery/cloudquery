@@ -103,15 +103,6 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMn
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=
 github.com/cloudquery/faker/v3 v3.7.7/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
-<<<<<<< HEAD
-=======
-github.com/cloudquery/plugin-sdk v0.11.6 h1:K3PbvrvOPA5y3tqdQ3ovC1MZSLY9sZ9qSUYKlUDEDZc=
-github.com/cloudquery/plugin-sdk v0.11.6/go.mod h1:9j6SwEDfiEUhehSU6LSdI2E37jEmK0JYzx894juQjP4=
-github.com/cloudquery/plugin-sdk v0.12.0 h1:Y1yYEDJ3DfU7Go8CRYfN07lpa+QmgIU2KbKB/Ktnafo=
-github.com/cloudquery/plugin-sdk v0.12.0/go.mod h1:9j6SwEDfiEUhehSU6LSdI2E37jEmK0JYzx894juQjP4=
-github.com/cloudquery/plugin-sdk v0.12.1 h1:tfi/rUwawg7pKfvsAn1QEQP4iJMa72bCIIzRrFF1MYE=
-github.com/cloudquery/plugin-sdk v0.12.1/go.mod h1:9j6SwEDfiEUhehSU6LSdI2E37jEmK0JYzx894juQjP4=
->>>>>>> 003b04c6f (chore: Update all source plugin to v0.12.2)
 github.com/cloudquery/plugin-sdk v0.12.2 h1:6sK+aA473zE5ONhHaP8ids0TvleLEyRVRoE6JPFOVmI=
 github.com/cloudquery/plugin-sdk v0.12.2/go.mod h1:W/8ujzPKKjOxIbipGZGffR/SR7kgfSop6IF7k/l+Ga8=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
