@@ -37,6 +37,6 @@ jobs:
       - name: Test
         run: make test
       - name: gen-docs
-        run: go gen-docs
+        run: make gen-docs
       - name: Fail if docs are changed
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
