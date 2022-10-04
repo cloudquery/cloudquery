@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"google.golang.org/api/cloudkms/v1"
 	pb "google.golang.org/genproto/googleapis/cloud/kms/v1"
 )
 
@@ -9,7 +10,7 @@ var emptyString = ""
 var kmsResources = []*Resource{
 	{
 		SubService: "crypto_keys",
-		Struct:     &pb.CryptoKey{},
+		Struct:     &cloudkms.CryptoKey{},
 		Multiplex:  &emptyString,
 		ChildTable: true,
 		SkipMock:   true,
