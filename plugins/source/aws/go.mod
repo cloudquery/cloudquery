@@ -29,7 +29,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.8
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.8
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.15.9
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.47.1
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.62.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.8
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.11
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.6
@@ -51,7 +51,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/kinesis v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/kms v1.17.4
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.23.3
-	github.com/aws/aws-sdk-go-v2/service/lightsail v1.22.2
+	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.3
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.3
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.8
@@ -117,7 +117,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/glue v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.8 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.8 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.17 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/shield v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.12 // indirect

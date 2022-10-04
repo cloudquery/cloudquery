@@ -91,6 +91,11 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("Location"),
 			},
 			{
+				Name:     "metadata_options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MetadataOptions"),
+			},
+			{
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
