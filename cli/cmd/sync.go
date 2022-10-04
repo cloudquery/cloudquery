@@ -30,7 +30,7 @@ func NewCmdSync() *cobra.Command {
 		Long:    fetchShort,
 		Example: fetchExample,
 		Args:    cobra.MinimumNArgs(1),
-		RunE:    sync,
+		RunE:    commandWithPrettyErrors(sync),
 	}
 	return cmd
 }

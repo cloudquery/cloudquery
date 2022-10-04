@@ -20,9 +20,9 @@ func newCmdDoc() *cobra.Command {
 		Short:  docShort,
 		Args:   cobra.ExactValidArgs(1),
 		Hidden: true,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: commandWithPrettyErrors(func(cmd *cobra.Command, args []string) error {
 			return doc.GenMarkdownTreeCustom(cmd.Parent(), args[0], filePrepender, linkHandler)
-		},
+		}),
 	}
 	return cmd
 }
