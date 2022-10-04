@@ -37,12 +37,11 @@ func NewCmdSync() *cobra.Command {
 
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
-	log.Info().Msg("Start sync")
-	defer log.Info().Msg("End sync")
-
+	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
+		log.Error().Strs("args", args).Err(err).Msg("Failed to load spec(s)")
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
@@ -67,6 +66,13 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
+	destinationNames := make([]string, len(destinationsSpecs))
+	for i := range destinationsSpecs {
+		destinationNames[i] = destinationsSpecs[i].Name
+	}
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Msg("End sync")
+
 	syncTime := time.Now().UTC()
 	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
 		clients.WithSourceLogger(log.Logger),
