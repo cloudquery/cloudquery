@@ -15,4 +15,5 @@ install-hooks:
 
 .PHONY: gen-docs
 gen-docs:
+	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
