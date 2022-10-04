@@ -5,48 +5,40 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/emr"
+	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listEmrClusters, emrClusterDetail)
-}
-
-func listEmrClusters(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	var config emr.ListClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().EMR
 	for {
-		output, err := svc.ListClusters(ctx, &config)
+		response, err := svc.ListClusters(ctx, &config)
 		if err != nil {
 			return err
 		}
-		for _, item := range output.Clusters {
-			detailChan <- item.Id
-		}
-		if aws.ToString(output.Marker) == "" {
+		res <- response.Clusters
+
+		if aws.ToString(response.Marker) == "" {
 			break
 		}
-		config.Marker = output.Marker
+		config.Marker = response.Marker
 	}
 	return nil
 }
 
-func emrClusterDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
+func getCluster(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().EMR
+	item := resource.Item.(types.ClusterSummary)
 
-	clusterId := listInfo.(*string)
-
-	out, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: clusterId})
+	response, err := svc.DescribeCluster(ctx, &emr.DescribeClusterInput{ClusterId: item.Id})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
-		errorChan <- err
-		return
+		return err
 	}
 
-	resultsChan <- out.Cluster
+	resource.Item = response
+	return nil
 }
