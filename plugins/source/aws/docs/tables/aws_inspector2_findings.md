@@ -24,6 +24,7 @@ The primary key for this table is **arn**.
 |severity|String|
 |status|String|
 |type|String|
+|fix_available|String|
 |inspector_score|Float|
 |inspector_score_details|JSON|
 |network_reachability_details|JSON|

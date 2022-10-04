@@ -37,6 +37,7 @@ The primary key for this table is **arn**.
 |port|Int|
 |processor_features|JSON|
 |snapshot_create_time|Timestamp|
+|snapshot_database_time|Timestamp|
 |snapshot_target|String|
 |snapshot_type|String|
 |source_db_snapshot_identifier|String|

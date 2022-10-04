@@ -64,6 +64,7 @@ The primary key for this table is **arn**.
 |monitoring_interval|Int|
 |monitoring_role_arn|String|
 |multi_az|Bool|
+|network_type|String|
 |pending_modified_values|JSON|
 |percent_progress|String|
 |performance_insights_enabled|Bool|

@@ -23,6 +23,7 @@ This table depends on [`aws_glue_jobs`](aws_glue_jobs.md).
 |completed_on|Timestamp|
 |dpu_seconds|Float|
 |error_message|String|
+|execution_class|String|
 |execution_time|Int|
 |glue_version|String|
 |id|String|

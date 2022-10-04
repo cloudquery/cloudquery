@@ -18,6 +18,7 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |auto_registration_status|String|
 |certificate_id|String|
+|certificate_mode|String|
 |certificate_pem|String|
 |creation_date|Timestamp|
 |customer_version|Int|
