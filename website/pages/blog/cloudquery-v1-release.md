@@ -1,7 +1,7 @@
 ---
 title: CloudQuery V1 Release
 tag: announcement
-date: 2022/09/24
+date: 2022/10/04
 description: >-
   New exciting features, architecture changes and roadmap!
 author: yevgenypats

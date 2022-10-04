@@ -1,16 +1,16 @@
 # Source Plugin Release Stages
 
-[Official](source) source plugins go through multiple release stages: Alpha, Beta and GA.
+[Official](source) source plugins go through multiple release stages: Preview, and GA.
 
 ## Comparison Matrix
 
 See the following comparison matrix to understand differences and expectations.
 
-|                                | Alpha | Beta                | GA                  |
-| ------------------------------ | ----- | ------------------- | ------------------- |
-| Spec (Config) Breaking Changes | Yes   | No                  | No                  |
-| Schema Changes                 | Yes   | Semantic Versioning | Semantic Versioning |
-| Long Term Support (Bugfixes)   | No    | Yes                 | Yes                 |
+|                                | Preview | GA                  |
+| ------------------------------ | ------- | ------------------- |
+| Spec (Config) Breaking Changes | Yes     | Semantic Versioning |
+| Schema Changes                 | Yes     | Semantic Versioning |
+| Long Term Support (Bugfixes)   | No      | Yes                 |
 
 - Spec (Config) Breaking Changes - While a plugin is in Alpha, we might change how the plugin spec is defined for a plugin in a backward-incompatible way. Starting Beta we guarantee no **breaking** changes (we will still be adding features).
 - Schema Changes - While a plugin is in Alpha, breaking changes to schema are possible without the plugin following semantic versioning. Starting Beta, we do our best to not break the schema in non-backward compatible way, but if we do then plugin will follow [semantic versioning](#semantic-versioning).
