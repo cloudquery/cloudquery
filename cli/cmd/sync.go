@@ -3,8 +3,10 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/plugins"
+	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
@@ -35,17 +37,13 @@ func NewCmdSync() *cobra.Command {
 
 func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
-	directory := "."
-	if len(args) > 0 {
-		directory = args[0]
-	}
-	fmt.Println("Loading specs from directory: ", directory)
+
+	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
-		return fmt.Errorf("failed to load specs from directory %s: %w", directory, err)
+		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
-	pm := plugins.NewPluginManager()
 	for _, sourceSpec := range specReader.Sources {
 		if len(sourceSpec.Destinations) == 0 {
 			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
@@ -58,7 +56,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, pm, *sourceSpec, destinationsSpecs); err != nil {
+		if err := syncConnection(ctx, *sourceSpec, destinationsSpecs); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 	}
@@ -66,33 +64,38 @@ func sync(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
-	sourcePlugin, err := pm.NewSourcePlugin(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version)
+func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
+	syncTime := time.Now().UTC()
+	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
 	}
-	defer sourcePlugin.Close()
-	sourceClient := sourcePlugin.GetClient()
+	defer func() {
+		if err := sourceClient.Terminate(); err != nil {
+			fmt.Println("failed to terminate source client: ", err)
+		}
+	}()
 
-	destPlugins := make([]*plugins.DestinationPlugin, len(sourceSpec.Destinations))
+	destClients := make([]*clients.DestinationClient, len(sourceSpec.Destinations))
 	destSubscriptions := make([]chan []byte, len(sourceSpec.Destinations))
 	for i := range destSubscriptions {
 		destSubscriptions[i] = make(chan []byte)
 	}
 	defer func() {
-		for _, destPlugin := range destPlugins {
-			if destPlugin != nil {
-				destPlugin.Close()
+		for _, destClient := range destClients {
+			if destClient != nil {
+				if err := destClient.Terminate(); err != nil {
+					fmt.Println("failed to terminate destination client: ", err)
+				}
 			}
 		}
 	}()
 	for i, destinationSpec := range destinationsSpecs {
-		plugin, err := pm.NewDestinationPlugin(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version)
+		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version)
 		if err != nil {
 			return fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
-		destPlugins[i] = plugin
-		if err := destPlugins[i].GetClient().Initialize(ctx, destinationSpec); err != nil {
+		if err := destClients[i].Initialize(ctx, destinationSpec); err != nil {
 			return fmt.Errorf("failed to initialize destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
 		tables, err := sourceClient.GetTables(ctx)
@@ -100,17 +103,17 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 			return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 		}
 
-		if err := destPlugins[i].GetClient().Migrate(ctx, tables); err != nil {
+		if err := destClients[i].Migrate(ctx, tables); err != nil {
 			return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
 		}
 	}
 
 	resources := make(chan []byte)
-	g, ctx := errgroup.WithContext(ctx)
+	g, gctx := errgroup.WithContext(ctx)
 	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
-		if err := sourceClient.Sync(ctx, sourceSpec, resources); err != nil {
+		if err := sourceClient.Sync(gctx, sourceSpec, resources); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 		return nil
@@ -118,7 +121,7 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 
 	bar := progressbar.NewOptions(-1,
 		progressbar.OptionSetDescription("Syncing resources..."),
-		progressbar.OptionSetItsString("resources/sec"),
+		progressbar.OptionSetItsString("resources"),
 		progressbar.OptionShowIts(),
 		progressbar.OptionSetElapsedTime(true),
 		progressbar.OptionShowCount(),
@@ -131,7 +134,7 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 		g.Go(func() error {
 			var destFailedWrites uint64
 			var err error
-			if destFailedWrites, err = destPlugins[i].GetClient().Write(ctx, destSubscriptions[i]); err != nil {
+			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Path, syncTime, destSubscriptions[i]); err != nil {
 				log.Error().Err(err).Msgf("failed to write for %s->%s", sourceSpec.Name, destination)
 			}
 			failedWrites += destFailedWrites
@@ -145,8 +148,8 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 			_ = bar.Add(1)
 			for i := range destSubscriptions {
 				select {
-				case <-ctx.Done():
-					return ctx.Err()
+				case <-gctx.Done():
+					return gctx.Err()
 				case destSubscriptions[i] <- resource:
 				}
 			}
@@ -161,12 +164,12 @@ func syncConnection(ctx context.Context, pm *plugins.PluginManager, sourceSpec s
 		_ = bar.Finish()
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
-	_ = bar.Finish()
-	fmt.Println("Fetch completed successfully.")
-	fmt.Printf("Summary: Resources: %d, Failed Writes: %d, Fetch Errors: %d, Fetch Warnings: %d\n",
-		totalResources, failedWrites, sourcePlugin.Errors(), sourcePlugin.Warnings())
-	if sourcePlugin.Errors() > 0 || sourcePlugin.Warnings() > 0 || failedWrites > 0 {
-		fmt.Println("Please check the logs for more details on errors/warnings.")
+	summary, err := sourceClient.GetSyncSummary(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get sync summary: %w", err)
 	}
+	_ = bar.Finish()
+	fmt.Println("Sync completed successfully.")
+	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d failed_writes: %d\n", totalResources, summary.Errors, summary.Panics, failedWrites)
 	return nil
 }

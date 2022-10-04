@@ -3,8 +3,8 @@ module github.com/cloudquery/cloudquery/plugins/source/aws
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go v1.44.95
-	github.com/aws/aws-sdk-go-v2 v1.16.11
+	github.com/aws/aws-sdk-go v1.44.109
+	github.com/aws/aws-sdk-go-v2 v1.16.16
 	github.com/aws/aws-sdk-go-v2/config v1.15.14
 	github.com/aws/aws-sdk-go-v2/credentials v1.12.9
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.11.20
@@ -69,24 +69,24 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sqs v1.19.4
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.27.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.16.9
-	github.com/aws/aws-sdk-go-v2/service/waf v1.11.7
+	github.com/aws/aws-sdk-go-v2/service/waf v1.11.17
 	github.com/aws/aws-sdk-go-v2/service/wafv2 v1.20.4
 	github.com/aws/aws-sdk-go-v2/service/workspaces v1.19.1
-	github.com/aws/aws-sdk-go-v2/service/xray v1.13.8
-	github.com/aws/smithy-go v1.12.1
+	github.com/aws/aws-sdk-go-v2/service/xray v1.13.19
+	github.com/aws/smithy-go v1.13.3
 	github.com/basgys/goxml2json v1.1.0
 	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.11.0
+	github.com/cloudquery/plugin-sdk v0.11.6
 	github.com/ettle/strcase v0.1.1
-	github.com/gocarina/gocsv v0.0.0-20220823132111-71f3a5cb2654
+	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.0
 	github.com/thoas/go-funk v0.9.2
-	golang.org/x/sync v0.0.0-20220907140024-f12130a52804
+	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
 )
 
 require (
@@ -103,14 +103,14 @@ require (
 	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
-	golang.org/x/exp v0.0.0-20220921023135-46d9e7742f1e // indirect
+	golang.org/x/exp v0.0.0-20221002003631-540bb7301a08 // indirect
 )
 
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.3 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.12.8 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.18 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.12 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.23 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.15 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.16.0
 	github.com/aws/aws-sdk-go-v2/service/backup v1.16.3
@@ -122,7 +122,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/shield v1.16.7
 	github.com/aws/aws-sdk-go-v2/service/sso v1.11.12 // indirect
 	github.com/aws/aws-sdk-go-v2/service/transfer v1.21.4
-	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.8
+	github.com/aws/aws-sdk-go-v2/service/wafregional v1.12.18
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gofrs/uuid v4.3.0+incompatible // indirect

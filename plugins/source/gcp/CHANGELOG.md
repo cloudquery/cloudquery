@@ -14,6 +14,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [0.11.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.8-pre.0...plugins-source-gcp-v0.11.0-pre.0) (2022-10-04)
+
+
+### Features
+
+* **postgresql:** Add support for overwrite-delete-stale ([#2220](https://github.com/cloudquery/cloudquery/issues/2220)) ([efdd136](https://github.com/cloudquery/cloudquery/commit/efdd136bdcf872f7a6104f23429e7ebfb4a7c7c6))
+
+## [0.10.8-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.7-pre.0...plugins-source-gcp-v0.10.8-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* Run tinypng on GCP dashboard screenshots ([#2274](https://github.com/cloudquery/cloudquery/issues/2274)) ([a2b662c](https://github.com/cloudquery/cloudquery/commit/a2b662cef0f11efce886bf9f7072c34efe1f5316))
+
+## [0.10.7-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.6-pre.0...plugins-source-gcp-v0.10.7-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.11.6 ([#2256](https://github.com/cloudquery/cloudquery/issues/2256)) ([f148b3f](https://github.com/cloudquery/cloudquery/commit/f148b3fc7994ceaa3eda0790eda505c3e8cdbbf1))
+* GCP policies ([#1879](https://github.com/cloudquery/cloudquery/issues/1879)) ([1591f9f](https://github.com/cloudquery/cloudquery/commit/1591f9fbe63775413b80e3c3714c876296d4ed43))
+
+## [0.10.6-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.5-pre.0...plugins-source-gcp-v0.10.6-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.5 ([#2230](https://github.com/cloudquery/cloudquery/issues/2230)) ([bd79416](https://github.com/cloudquery/cloudquery/commit/bd79416aa660fbdfc27269d55d098ba6cd6b5953))
+
+## [0.10.5-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.4-pre.0...plugins-source-gcp-v0.10.5-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **gcp:** Re-add gcp_iam_service_account_keys ([#2134](https://github.com/cloudquery/cloudquery/issues/2134)) ([8f419c3](https://github.com/cloudquery/cloudquery/commit/8f419c39560814c89cb0d6f6aa88c080a00c193f)), closes [#1990](https://github.com/cloudquery/cloudquery/issues/1990)
+
+## [0.10.4-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.3-pre.0...plugins-source-gcp-v0.10.4-pre.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update google.golang.org/genproto digest to c98284e ([#2171](https://github.com/cloudquery/cloudquery/issues/2171)) ([e2b5c23](https://github.com/cloudquery/cloudquery/commit/e2b5c23b5eb2adae4ed0d254c8dde5574820b853))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.2 ([#2162](https://github.com/cloudquery/cloudquery/issues/2162)) ([5701aa5](https://github.com/cloudquery/cloudquery/commit/5701aa5b0a8d04e9e99e3efe6e27d5f7ff29b216))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.4 ([#2213](https://github.com/cloudquery/cloudquery/issues/2213)) ([1ffc1dd](https://github.com/cloudquery/cloudquery/commit/1ffc1dd2a30425d5c99b13c01d2923a531373958))
+* Re-add GCP project policies ([#2108](https://github.com/cloudquery/cloudquery/issues/2108)) ([1253568](https://github.com/cloudquery/cloudquery/commit/1253568397fdca65ea4c967683394fe6d6598a53)), closes [#1989](https://github.com/cloudquery/cloudquery/issues/1989)
+* Remove unused codegen fields in GCP ([#2109](https://github.com/cloudquery/cloudquery/issues/2109)) ([f9acf5d](https://github.com/cloudquery/cloudquery/commit/f9acf5d34134caa9bd73eb9c3fad730c967db6ec))
+
 ## [0.10.3-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v0.10.2-pre.0...plugins-source-gcp-v0.10.3-pre.0) (2022-09-26)
 
 

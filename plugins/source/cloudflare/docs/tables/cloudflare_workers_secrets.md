@@ -9,7 +9,7 @@ This table depends on [`cloudflare_worker_meta_data`](cloudflare_worker_meta_dat
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|worker_meta_data_cq_id|UUID|
+|worker_meta_data_id|String|
 |name|String|
 |type|String|
 |_cq_id (PK)|UUID|

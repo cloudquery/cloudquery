@@ -12,21 +12,31 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2 # OR "2" -> To retrieve the preceding commit.
+          fetch-depth: 2
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v28
-        with:
-          dir_names: true
       - uses: actions/github-script@v6
         env:
-          DIRS: ${{ steps.changed-files.outputs.all_changed_files }}
+          FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         with:
           script: |
-            const { DIRS: dirs } = process.env
+            const files = process.env.FILES.split(' ')
+            console.log(files)
             let now = new Date().getTime()
             const deadline = now + 60 * 1000 * 15
-            let actions = ["cli",
+            const matchesWorkflow = (file, action) => {
+              if (!file.startsWith('.github/workflows/')) {
+                return false
+              }
+              const fs = require("fs");
+              const contents = fs.readFileSync(file, 'utf8');
+              return contents.includes(`name: "${action}"`)
+            }
+            const matchesFile = (action) => {
+              return files.some(file => file.startsWith(action) || matchesWorkflow(file, action))
+            }
+            const actions = ["cli",
                            "plugins/source/aws",
                            "plugins/source/azure",
                            "plugins/source/cloudflare",
@@ -41,12 +51,12 @@ jobs:
                            
                            "plugins/destination/postgresql",
                            "plugins/destination/test",
-                           ]
-            actions = actions.filter(item => dirs.includes(item))
+                           ].filter(action => matchesFile(action))
             if (actions.length === 0) {
               console.log("No actions to wait for")
               return
             }
+            console.log(`Waiting for ${actions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
                 owner: 'cloudquery',
@@ -55,17 +65,15 @@ jobs:
                 status: 'completed',
                 per_page: 100
               })
-              console.log(checkRuns)
-              checkRuns.forEach(item => {
-                if (actions.includes(item.name)) {
-                  if (item.conclusion !== 'success') {
-                    throw new Error(`Check ${item.name} failed`)
-                  }
-                  actions = actions.filter(action => action !== item.name)
-                }
-              })
-              if (actions.length === 0) {
-                console.log("Done waiting for actions")
+              const runs = checkRuns.map(({ name, conclusion }) => ({ name, conclusion }))
+              console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
+              const matchingRuns = runs.filter(({ name }) => actions.includes(name))
+              const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
+              if (failedRuns.length > 0) {
+                throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
+              }
+              if (matchingRuns.length === actions.length) {
+                console.log("All required workflows have passed")
                 return
               }
               

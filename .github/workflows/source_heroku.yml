@@ -5,26 +5,25 @@ on:
     paths:
       - "plugins/source/heroku/**"
       - ".github/workflows/source_heroku.yml"
-  push:
-    branches:
-      - main
 
 defaults:
   run:
     working-directory: ./plugins/source/heroku
 
 jobs:
-  plugins-destination-heroku:
+  plugins-source-heroku:
     name: "plugins/source/heroku"
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.19.1
       - uses: actions/checkout@v3
         with:
           fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/source/heroku/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/heroku/go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
@@ -37,3 +36,9 @@ jobs:
         run: go build .
       - name: Test
         run: go test ./...
+      - name: remove all docs
+        run: rm -f ./docs/tables/*.md
+      - name: build-docs
+        run: go run main.go doc docs/tables
+      - name: Fail if docs are changed
+        run: test "$(git status -s ./docs/tables | wc -l)" -eq 0

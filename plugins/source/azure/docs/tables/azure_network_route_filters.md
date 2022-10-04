@@ -10,7 +10,7 @@ The primary key for this table is **id**.
 |subscription_id|String|
 |rules|JSON|
 |peerings|JSON|
-|ipv_6_peerings|JSON|
+|ipv6_peerings|JSON|
 |provisioning_state|String|
 |etag|String|
 |id (PK)|String|

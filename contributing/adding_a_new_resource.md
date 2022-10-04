@@ -4,10 +4,6 @@ This guide will help you add a new resource to an existing source plugin (a.k.a.
 
 ## General Guidance
 
-## Installing the tools
-
-- Install `mockgen` and `cq-gen` by running `make install-tools` in the root of this repository.
-
 ## Setting up the service
 
 If the service to which the resource belongs has not been used before in the plugin, there are a few steps that need to be done to configure it.
@@ -23,23 +19,20 @@ If the service to which the resource belongs has not been used before in the plu
 
 ## Setting up the resource
 
-For most resources, we use our open-source tool, `cq-gen`, to generate the code and documentation from a source SDK. For example,
-cq-gen can be configured to point to a specific Go struct. It will then recursively read all the fields and comments on this struct
-and generate the necessary structures and transformations to load it into a target database. This configuration is done via an `.hcl` config file,
-and its structure is documented in the [cq-gen repository](https://github.com/cloudquery/cq-gen).
+We use code generation to generate the code from a source SDK. This functionality is provided by the CloudQuery plugin-sdk. It will read all the fields on a given struct and generate the necessary structures and transformations to load it into a destination database. The configuration is done via "recipe" files, contained in the `codegen/recipes` directory for each source plugin.
 
-The only code that needs to be written by you, the human, are the SDK calls to list or describe the resources. Such glue functions
-are called "resolvers".
+The only code that needs to be written by you are the SDK calls to list or describe the resources. Such glue functions are called "resolvers".
 
 Here are the general steps to follow:
 
-- Find an appropriate Go SDK function (or OpenAPI definition) that fetches the resource you are interested in.
-- Note the name of the return type that contains the information you want to read. This will be passed to the cq-gen config via the `path` parameter.
-- Create a new directory for your resource under `resources/services`
-- Define the initial cq-gen `gen.hcl` config inside this directory. For this step it is useful to reference configs of other resources in the same plugin/provider. These will be `.hcl` files contained within the service directory.
-- Run `cq-gen --config gen.hcl --output .`
-- cq-gen will leave some functions unimplemented. You may fill in these function bodies with calls to the appropriate SDK functions.
-- To regenerate from updated config, either run the same command again, or use `go generate`
+- Find an appropriate Go SDK function that fetches the resource you are interested in.
+- Note the type of the return type that contains the information you want to read. This will be passed to codegen via the `Struct` property.
+- Create a new recipe file for the resource, if one does not exist already.
+- Add the resource to the recipe file.
+- Run `go run main.go` in the codegen directory. The generated table will be in `plugins/source/<plugin>/resources/services/<service>/<resource>.go`.
+- To regenerate from updated config, re-run `go run main.go` from the codegen directory again.
+- Implement one or more resolver functions (as referenced by the generated file) in `plugins/source/<plugin>/resources/services/<service>/<resource>_fetch.go`.
+- Add a mock test for the resource in `plugins/source/<plugin>/resources/services/<service>/<resource>_mock_test.go`
 
 ## Specific Guides
 

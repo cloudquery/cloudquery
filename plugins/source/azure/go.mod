@@ -4,13 +4,13 @@ go 1.19
 
 require (
 	github.com/Azure/azure-sdk-for-go v61.6.0+incompatible
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.1.2
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.1.3
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.1.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions v1.0.0
 	github.com/Azure/go-autorest/autorest v0.11.28
 	github.com/Azure/go-autorest/autorest/azure/auth v0.5.11
 	github.com/Azure/go-autorest/autorest/date v0.3.0
-	github.com/cloudquery/plugin-sdk v0.11.0
+	github.com/cloudquery/plugin-sdk v0.11.6
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/gofrs/uuid v4.3.0+incompatible
 	github.com/golang/mock v1.6.0
@@ -19,7 +19,7 @@ require (
 	github.com/rs/zerolog v1.28.0
 	github.com/stretchr/testify v1.8.0
 	github.com/tombuildsstuff/giovanni v0.20.0
-	golang.org/x/exp v0.0.0-20220921023135-46d9e7742f1e
+	golang.org/x/exp v0.0.0-20221002003631-540bb7301a08
 )
 
 require github.com/kylelemons/godebug v1.1.0 // indirect
@@ -63,7 +63,7 @@ require (
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220920203100-d0c6ba3f52d9 // indirect
-	golang.org/x/sync v0.0.0-20220907140024-f12130a52804 // indirect
+	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0 // indirect
 	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/genproto v0.0.0-20220920201722-2b89144ce006 // indirect

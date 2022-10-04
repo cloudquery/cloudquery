@@ -81,6 +81,7 @@ type resourceDefinition struct {
 	mockGetFunctionArgs      []string
 	subServiceOverride       string
 	relations                []resourceDefinition
+	singleSubscription       bool
 }
 
 type byTemplates struct {
@@ -161,7 +162,10 @@ func parseAzureStruct(serviceNameOverride string, definition resourceDefinition)
 
 func initColumns(table *codegen.TableDefinition, definition resourceDefinition) codegen.ColumnDefinitions {
 	columns := []codegen.ColumnDefinition{}
-	columns = append(columns, subscriptionIdColumn)
+	if !definition.singleSubscription {
+		// add subscription id if we are not in single subscription mode
+		columns = append(columns, subscriptionIdColumn)
+	}
 	if definition.parent != "" {
 		columns = append(columns, codegen.ColumnDefinition{
 			Name:     definition.parent,
@@ -218,6 +222,10 @@ func initTable(serviceNameOverride string, definition resourceDefinition, azureS
 
 	if definition.parent == "" {
 		table.Multiplex = "client.SubscriptionMultiplex"
+	}
+
+	if definition.singleSubscription {
+		table.Multiplex = "client.SingleSubscriptionMultiplex"
 	}
 
 	if definition.includeColumns != "" {

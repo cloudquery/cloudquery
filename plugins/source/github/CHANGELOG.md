@@ -1,5 +1,43 @@
 # Changelog
 
+## [0.1.16-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v0.1.15-pre.0...plugins-source-github-v0.1.16-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for github to v0.11.6 ([#2257](https://github.com/cloudquery/cloudquery/issues/2257)) ([b0a3b33](https://github.com/cloudquery/cloudquery/commit/b0a3b331948b3e90fe810dc002519d690282dcd3))
+
+## [0.1.15-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v0.1.14-pre.0...plugins-source-github-v0.1.15-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for github to v0.11.5 ([#2231](https://github.com/cloudquery/cloudquery/issues/2231)) ([25b9349](https://github.com/cloudquery/cloudquery/commit/25b9349a2fc2908e22a93b8b5f4f57e92adafe9f))
+
+## [0.1.14-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v0.1.13-pre.0...plugins-source-github-v0.1.14-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.2 ([#2162](https://github.com/cloudquery/cloudquery/issues/2162)) ([5701aa5](https://github.com/cloudquery/cloudquery/commit/5701aa5b0a8d04e9e99e3efe6e27d5f7ff29b216))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.4 ([#2214](https://github.com/cloudquery/cloudquery/issues/2214)) ([aa82b42](https://github.com/cloudquery/cloudquery/commit/aa82b427f2b296589608b16472cb9b36f9f3818b))
+
+## [0.1.13-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v0.1.12-pre.0...plugins-source-github-v0.1.13-pre.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* Add Github table docs back ([#1987](https://github.com/cloudquery/cloudquery/issues/1987)) ([1a21b5a](https://github.com/cloudquery/cloudquery/commit/1a21b5a118ff8bf03f3d93a52a92d2d47c89c140))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.2 ([#2162](https://github.com/cloudquery/cloudquery/issues/2162)) ([5701aa5](https://github.com/cloudquery/cloudquery/commit/5701aa5b0a8d04e9e99e3efe6e27d5f7ff29b216))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.4 ([#2214](https://github.com/cloudquery/cloudquery/issues/2214)) ([aa82b42](https://github.com/cloudquery/cloudquery/commit/aa82b427f2b296589608b16472cb9b36f9f3818b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.0 ([#1997](https://github.com/cloudquery/cloudquery/issues/1997)) ([4fa40da](https://github.com/cloudquery/cloudquery/commit/4fa40da04b427f864d2dc11f133e5c83e53ce4b6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.1 ([#2024](https://github.com/cloudquery/cloudquery/issues/2024)) ([8f88de4](https://github.com/cloudquery/cloudquery/commit/8f88de4b4eaeabae7369ba309e765a252392ee8c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.2 ([#2044](https://github.com/cloudquery/cloudquery/issues/2044)) ([9b69b46](https://github.com/cloudquery/cloudquery/commit/9b69b468536521b20b77ec1fc180fc85aeeba376))
+
 ## [0.1.13-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v0.1.12-pre.0...plugins-source-github-v0.1.13-pre.0) (2022-09-26)
 
 

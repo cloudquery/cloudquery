@@ -18,6 +18,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -->
 
+## [1.0.3-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.2-pre.0...plugins-source-azure-v1.0.3-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* Azure policies ([#1861](https://github.com/cloudquery/cloudquery/issues/1861)) ([062907a](https://github.com/cloudquery/cloudquery/commit/062907a9684a879c7ed2c8b1ab80d752993c8d15))
+* **deps:** Update plugin-sdk for azure to v0.11.6 ([#2252](https://github.com/cloudquery/cloudquery/issues/2252)) ([3092acb](https://github.com/cloudquery/cloudquery/commit/3092acb1e14fe63c417187588e9b67db8b2fb82f))
+
+## [1.0.2-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.1-pre.0...plugins-source-azure-v1.0.2-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.2 ([#2162](https://github.com/cloudquery/cloudquery/issues/2162)) ([5701aa5](https://github.com/cloudquery/cloudquery/commit/5701aa5b0a8d04e9e99e3efe6e27d5f7ff29b216))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.4 ([#2210](https://github.com/cloudquery/cloudquery/issues/2210)) ([760d0a6](https://github.com/cloudquery/cloudquery/commit/760d0a6e7983cfb08fa4b519a908fcda91abbdc0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.5 ([#2227](https://github.com/cloudquery/cloudquery/issues/2227)) ([7db2dde](https://github.com/cloudquery/cloudquery/commit/7db2dde8e14f370627451d8494f9a3b7fb20c61a))
+* Don't multiplex subscriptions ([#2018](https://github.com/cloudquery/cloudquery/issues/2018)) ([94d43b3](https://github.com/cloudquery/cloudquery/commit/94d43b3db6ea284ec6d01047f07397b5404ef96f))
+
+## [1.0.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.0-pre.0...plugins-source-azure-v1.0.1-pre.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 540bb73 ([#2169](https://github.com/cloudquery/cloudquery/issues/2169)) ([d183fea](https://github.com/cloudquery/cloudquery/commit/d183feabb803cc5516cf23f651aa9ca33d13bfba))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azcore to v1.1.3 ([#2173](https://github.com/cloudquery/cloudquery/issues/2173)) ([d707d60](https://github.com/cloudquery/cloudquery/commit/d707d6061b2ea53a5c746d6dd9ea0d851fab4368))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* Use ParentResourceFieldResolver instead of ParentIDResolver ([#2125](https://github.com/cloudquery/cloudquery/issues/2125)) ([5039788](https://github.com/cloudquery/cloudquery/commit/50397883131f6652cfbcccadcf2817784a46e199))
+* Use TypeString for parent ids ([#2136](https://github.com/cloudquery/cloudquery/issues/2136)) ([a62f1a0](https://github.com/cloudquery/cloudquery/commit/a62f1a07e9a35198a984b081f4fb83ecaf79c4e8))
+
 ## [1.0.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v0.14.2-pre.0...plugins-source-azure-v1.0.0-pre.0) (2022-09-26)
 
 

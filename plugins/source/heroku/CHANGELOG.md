@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.5-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v0.1.4-pre.0...plugins-source-heroku-v0.1.5-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v0.11.6 ([#2258](https://github.com/cloudquery/cloudquery/issues/2258)) ([2169bf5](https://github.com/cloudquery/cloudquery/commit/2169bf5d3611025473394198a6373e416dd55b8b))
+
+## [0.1.4-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v0.1.3-pre.0...plugins-source-heroku-v0.1.4-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.5 ([#2232](https://github.com/cloudquery/cloudquery/issues/2232)) ([e3a3a30](https://github.com/cloudquery/cloudquery/commit/e3a3a304530a93cc3315ffa8d109fa5722b9ad17))
+
+## [0.1.3-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v0.1.2-pre.0...plugins-source-heroku-v0.1.3-pre.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.2 ([#2162](https://github.com/cloudquery/cloudquery/issues/2162)) ([5701aa5](https://github.com/cloudquery/cloudquery/commit/5701aa5b0a8d04e9e99e3efe6e27d5f7ff29b216))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.4 ([#2215](https://github.com/cloudquery/cloudquery/issues/2215)) ([4d7310d](https://github.com/cloudquery/cloudquery/commit/4d7310daa5f170f14de64a32b89254ed1d5fa75f))
+
 ## [0.1.2-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v0.1.1-pre.0...plugins-source-heroku-v0.1.2-pre.0) (2022-09-26)
 
 

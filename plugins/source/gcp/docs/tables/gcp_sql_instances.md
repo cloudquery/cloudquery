@@ -1,12 +1,17 @@
 # Table: gcp_sql_instances
 
 
+
 The primary key for this table is **self_link**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |project_id|String|
 |self_link (PK)|String|
 |available_maintenance_versions|StringArray|
@@ -44,5 +49,3 @@ The primary key for this table is **self_link**.
 |settings|JSON|
 |state|String|
 |suspension_reason|StringArray|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

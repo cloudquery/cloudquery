@@ -42,5 +42,6 @@
 |gcp_billing_services||
 |gcp_resourcemanager_folders||
 |gcp_resourcemanager_projects||
+|gcp_resourcemanager_project_policies||
 |gcp_functions_functions||
 |gcp_run_services||
