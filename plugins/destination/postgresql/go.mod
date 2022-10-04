@@ -3,8 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/destination/postgresql
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.12.0
+	github.com/cloudquery/plugin-sdk v0.12.2
 	github.com/google/go-cmp v0.5.9
+	github.com/google/uuid v1.3.0
 	github.com/jackc/pgtype v1.12.0
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/rs/zerolog v1.28.0
@@ -18,7 +19,6 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gofrs/uuid v4.3.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
