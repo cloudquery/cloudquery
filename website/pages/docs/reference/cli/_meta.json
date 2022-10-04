@@ -1,0 +1,5 @@
+{
+  "cloudquery": "cloudquery",
+  "cloudquery_sync": "cloudquery sync",
+  "cloudquery_generate": "cloudquery generate"
+}

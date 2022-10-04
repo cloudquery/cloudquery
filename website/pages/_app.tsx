@@ -6,7 +6,6 @@ import { Prism } from "prism-react-renderer";
 (typeof global !== "undefined" ? global : window).Prism = Prism;
 
 require("prismjs/components/prism-powershell");
-require("prismjs/components/prism-hcl");
 require("prismjs/components/prism-ini");
 require("prismjs/components/prism-docker");
 require("prismjs/components/prism-toml");
