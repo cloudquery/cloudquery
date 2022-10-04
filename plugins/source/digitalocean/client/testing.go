@@ -31,7 +31,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 			return nil, fmt.Errorf("failed to unmarshal do spec: %w", err)
 		}
 
-
 		ctrl := gomock.NewController(t)
 		services := createService(t, ctrl)
 

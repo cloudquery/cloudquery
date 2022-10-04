@@ -19,6 +19,10 @@ install-tools:
 install-hooks:
 	pre-commit install
 
+.PHONY: lint
+lint:
+	golangci-lint run
+
 .PHONY: gen-docs
 gen-docs:
 	rm -rf ./docs/tables/*
