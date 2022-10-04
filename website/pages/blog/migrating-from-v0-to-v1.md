@@ -37,17 +37,19 @@ Users of CloudQuery v0 would be familiar with the main commands `init` and `fetc
 
 Functionally it is still the same: it loads data from a source to a destination, but `sync` now supports multiple destinations, while `fetch` only supported PostgreSQL. With this change also comes a change in expected config format, see the [next section](#changes-to-the-configuration-format) for more details on this.
 
-`cloudquery sync` needs to be passed a path to a config file or directory containing config files. So for example, to sync using a single yaml file:
+`cloudquery sync` needs to be passed a path to a config file or directory containing config files. So for example, to sync using all `.yml` files in a directory named `config`:
+
+```
+cloudquery sync config/
+```
+
+Or to sync using a single yaml file named `config.yml`:
 
 ```
 cloudquery sync config.yml
 ```
 
-or to sync using a directory of files (all `.yml` files in the directory will be used):
-
-```
-cloudquery sync config/
-```
+In this case `config.yml` should contain at least one source and one destination config, each separated by a line containing three dashes (`---`). More about this in [Files and Directories](#files-and-directories).
 
 See `cloudquery sync --help` for more details, or check our [online reference](/docs/reference/cli/cloudquery_sync).
 
@@ -113,7 +115,21 @@ spec:
 
 ### Files and Directories
 
-The `sync` command supports loading config from files or directories, and you may choose to combine multiple source- and destination- configs in a single file using `---` to separate different sections.
+The `sync` command supports loading config from files or directories, and you may choose to combine multiple source- and destination- configs in a single file using `---` on its own line to separate different sections. For example:
+
+```
+kind: source
+spec:
+    name: aws
+    version: 1.0.0
+    # rest of source spec here
+---
+kind: destination
+spec:
+    name: postgresql
+    version: 1.0.0
+    # rest of destination spec here
+```
 
 ## Changes to Tables and Schemas
 
