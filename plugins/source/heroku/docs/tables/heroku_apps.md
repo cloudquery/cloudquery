@@ -1,4 +1,5 @@
 # Table: heroku_apps
+
 https://devcenter.heroku.com/articles/platform-api-reference#app-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |acm|Bool|
 |archived_at|Timestamp|
 |build_stack|JSON|
@@ -28,5 +33,3 @@ The primary key for this table is **id**.
 |team|JSON|
 |updated_at|Timestamp|
 |web_url|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
