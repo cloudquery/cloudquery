@@ -20,6 +20,9 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 	t.Helper()
 
 	table.IgnoreInTests = false
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
 	newTestExecutionClient := func(ctx context.Context, _ zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
 		svc, err := createService()
@@ -30,9 +33,6 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 		if err := spec.UnmarshalSpec(&herokuSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal gcp spec: %w", err)
 		}
-		l := zerolog.New(zerolog.NewTestWriter(t)).Output(
-			zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-		).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 		c := &Client{
 			logger: l,
 			Heroku: svc,
@@ -48,7 +48,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 			table,
 		},
 		newTestExecutionClient)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	plugins.TestSourcePluginSync(t, p, l, specs.Source{
 		Name:   "dev",
 		Tables: []string{table.Name},
 	})

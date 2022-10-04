@@ -1,4 +1,5 @@
 # Table: heroku_domains
+
 https://devcenter.heroku.com/articles/platform-api-reference#domain-attributes
 
 The primary key for this table is **id**.
@@ -7,6 +8,10 @@ The primary key for this table is **id**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |acm_status|String|
 |acm_status_reason|String|
 |app|JSON|
@@ -18,5 +23,3 @@ The primary key for this table is **id**.
 |sni_endpoint|JSON|
 |status|String|
 |updated_at|Timestamp|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
