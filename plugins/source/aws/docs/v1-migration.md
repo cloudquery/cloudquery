@@ -2,7 +2,7 @@
 This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated 2022-09-26.
+Last updated 2022-10-04.
 
 ## aws_access_analyzer_analyzer_archive_rules
 Moved to JSON column on [aws_accessanalyzer_analyzers](#aws_accessanalyzer_analyzers)
@@ -25,6 +25,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |analyzer_arn|text|added|
@@ -32,14 +36,16 @@ This table was newly added.
 |filter|jsonb|added|
 |rule_name|text|added|
 |updated_at|timestamp without time zone|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_accessanalyzer_analyzer_findings
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |arn|text|added|
@@ -58,8 +64,6 @@ This table was newly added.
 |principal|jsonb|added|
 |resource|text|added|
 |sources|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_accessanalyzer_analyzers
 Renamed from [aws_access_analyzer_analyzers](aws_access_analyzer_analyzers)
@@ -73,8 +77,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |certificate_transparency_logging_preference|text|removed|
 |key_usages|jsonb|updated|Type changed from text[] to jsonb
 |options|jsonb|added|
@@ -88,15 +94,19 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_apigateway_client_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |client_certificate_id|text|added|
 |id|text|removed|
 
@@ -104,8 +114,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |domain_name|text|removed|
 |domain_name_arn|text|added|
@@ -116,8 +128,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |endpoint_configuration|jsonb|added|
 |endpoint_configuration_types|text[]|removed|
 |endpoint_configuration_vpc_endpoint_ids|text[]|removed|
@@ -130,8 +144,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |provider_ar_ns|text[]|added|
 |provider_arns|text[]|removed|
@@ -144,8 +160,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |rest_api_arn|text|added|
@@ -156,8 +174,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |location|jsonb|added|
 |location_method|text|removed|
@@ -174,8 +194,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |rest_api_arn|text|added|
@@ -186,8 +208,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |rest_api_arn|text|added|
@@ -198,8 +222,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |rest_api_arn|text|added|
@@ -210,8 +236,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |rest_api_arn|text|added|
@@ -222,8 +250,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |rest_api_arn|text|added|
@@ -234,8 +264,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |access_log_settings|jsonb|added|
 |access_log_settings_destination_arn|text|removed|
 |access_log_settings_format|text|removed|
@@ -254,8 +286,10 @@ Renamed to [aws_iam_accounts](#aws_iam_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |endpoint_configuration|jsonb|added|
 |endpoint_configuration_types|text[]|removed|
 |endpoint_configuration_vpc_endpoint_ids|text[]|removed|
@@ -268,8 +302,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |usage_plan_arn|text|added|
@@ -280,8 +316,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |api_stages|jsonb|added|
 |quota|jsonb|added|
 |quota_limit|bigint|removed|
@@ -295,15 +333,19 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_apigatewayv2_api_authorizers
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
@@ -317,8 +359,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
@@ -328,8 +372,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |api_integration_arn|text|added|
 |api_integration_cq_id|uuid|removed|
@@ -339,8 +385,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
@@ -353,8 +401,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
@@ -364,8 +414,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |api_route_arn|text|added|
 |api_route_cq_id|uuid|removed|
@@ -375,8 +427,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |api_arn|text|added|
 |api_cq_id|uuid|removed|
@@ -386,8 +440,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |access_log_settings|jsonb|added|
 |access_log_settings_destination_arn|text|removed|
 |access_log_settings_format|text|removed|
@@ -406,8 +462,10 @@ Moved to JSON column on [aws_apigateway_usage_plans](#aws_apigateway_usage_plans
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cors_configuration|jsonb|added|
 |cors_configuration_allow_credentials|boolean|removed|
 |cors_configuration_allow_headers|text[]|removed|
@@ -424,8 +482,10 @@ Moved to JSON column on [aws_apigatewayv2_domain_names](#aws_apigatewayv2_domain
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |domain_name_arn|text|added|
 |domain_name_cq_id|uuid|removed|
@@ -435,8 +495,10 @@ Moved to JSON column on [aws_apigatewayv2_domain_names](#aws_apigatewayv2_domain
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |domain_name_configurations|jsonb|added|
 |mutual_tls_authentication|jsonb|added|
 |mutual_tls_authentication_truststore_uri|text|removed|
@@ -447,8 +509,10 @@ Moved to JSON column on [aws_apigatewayv2_domain_names](#aws_apigatewayv2_domain
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |vpc_link_id|text|added|
 
@@ -456,8 +520,10 @@ Moved to JSON column on [aws_apigatewayv2_domain_names](#aws_apigatewayv2_domain
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |name|text|removed|
 |namespace|text|removed|
 |policy_name|text|added|
@@ -472,8 +538,10 @@ Moved to JSON column on [aws_appsync_graphql_apis](#aws_appsync_graphql_apis)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |additional_authentication_providers|jsonb|added|
 |api_id|text|added|
 |id|text|removed|
@@ -508,8 +576,10 @@ Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |columns|jsonb|added|
 |data_catalog_arn|text|added|
@@ -522,8 +592,10 @@ Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |data_catalog_arn|text|added|
 |data_catalog_cq_id|uuid|removed|
@@ -533,15 +605,19 @@ Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_athena_work_group_named_queries
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |work_group_arn|text|added|
@@ -551,8 +627,10 @@ Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |work_group_arn|text|added|
@@ -562,8 +640,10 @@ Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |acl_configuration_s3_acl_option|text|removed|
 |athena_error_error_category|bigint|removed|
@@ -604,8 +684,10 @@ Moved to JSON column on [aws_athena_data_catalogs](#aws_athena_data_catalogs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |acl_configuration_s3_acl_option|text|removed|
 |bytes_scanned_cutoff_per_query|bigint|removed|
 |configuration|jsonb|added|
@@ -627,8 +709,10 @@ Moved to JSON column on [aws_autoscaling_groups](#aws_autoscaling_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |global_timeout|bigint|updated|Type changed from integer to bigint
 |group_arn|text|added|
@@ -640,10 +724,11 @@ Moved to JSON column on [aws_autoscaling_groups](#aws_autoscaling_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
-|arn|text|removed|
 |cooldown|bigint|updated|Type changed from integer to bigint
 |estimated_instance_warmup|bigint|updated|Type changed from integer to bigint
 |group_arn|text|added|
@@ -651,7 +736,6 @@ Moved to JSON column on [aws_autoscaling_groups](#aws_autoscaling_groups)
 |min_adjustment_magnitude|bigint|updated|Type changed from integer to bigint
 |min_adjustment_step|bigint|updated|Type changed from integer to bigint
 |name|text|removed|
-|policy_arn|text|added|
 |policy_name|text|added|
 |policy_type|text|added|
 |predictive_scaling_configuration|jsonb|added|
@@ -677,8 +761,10 @@ Moved to JSON column on [aws_autoscaling_groups](#aws_autoscaling_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |auto_scaling_group_name|text|added|
 |context|text|added|
 |default_cooldown|bigint|updated|Type changed from integer to bigint
@@ -712,8 +798,10 @@ Moved to JSON column on [aws_autoscaling_launch_configurations](#aws_autoscaling
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |block_device_mappings|jsonb|added|
 |instance_monitoring|jsonb|added|
 |instance_monitoring_enabled|boolean|removed|
@@ -726,8 +814,10 @@ Moved to JSON column on [aws_autoscaling_launch_configurations](#aws_autoscaling
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |desired_capacity|bigint|updated|Type changed from integer to bigint
 |max_size|bigint|updated|Type changed from integer to bigint
 |min_size|bigint|updated|Type changed from integer to bigint
@@ -738,8 +828,10 @@ Moved to JSON column on [aws_autoscaling_launch_configurations](#aws_autoscaling
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |result_metadata|jsonb|added|
 
 ## aws_backup_plan_rules
@@ -750,8 +842,10 @@ Moved to JSON column on [aws_backup_plans](#aws_backup_plans)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |backup_plan_id|text|added|
 |backup_selection|jsonb|added|
@@ -770,8 +864,10 @@ Moved to JSON column on [aws_backup_plans](#aws_backup_plans)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |backup_plan|jsonb|added|
 |backup_plan_id|text|added|
 |deletion_date|timestamp without time zone|added|
@@ -783,18 +879,21 @@ Moved to JSON column on [aws_backup_plans](#aws_backup_plans)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |result_metadata|jsonb|added|
 
 ## aws_backup_vault_recovery_points
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
-|arn|text|removed|
 |backup_size|bigint|removed|
 |backup_size_in_bytes|bigint|added|
 |backup_vault_arn|text|added|
@@ -805,7 +904,6 @@ Moved to JSON column on [aws_backup_plans](#aws_backup_plans)
 |delete_after|bigint|removed|
 |lifecycle|jsonb|added|
 |move_to_cold_storage_after|bigint|removed|
-|recovery_point_arn|text|added|
 |region|text|added|
 |vault_arn|text|added|
 |vault_cq_id|uuid|removed|
@@ -814,8 +912,10 @@ Moved to JSON column on [aws_backup_plans](#aws_backup_plans)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |backup_vault_name|text|added|
 |name|text|removed|
 |notification_events|text[]|removed|
@@ -830,8 +930,10 @@ Moved to JSON column on [aws_cloudformation_stacks](#aws_cloudformation_stacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |drift_information|jsonb|added|
 |drift_last_check_timestamp|timestamp without time zone|removed|
@@ -846,8 +948,10 @@ Moved to JSON column on [aws_cloudformation_stacks](#aws_cloudformation_stacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |drift_information|jsonb|added|
 |drift_last_check_timestamp|timestamp without time zone|removed|
 |notification_ar_ns|text[]|added|
@@ -867,8 +971,10 @@ Moved to JSON column on [aws_cloudformation_stacks](#aws_cloudformation_stacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cache_policy|jsonb|added|
 |comment|text|removed|
 |cookies|text[]|removed|
@@ -917,8 +1023,10 @@ Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distribut
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |active_trusted_key_groups_enabled|boolean|removed|
 |active_trusted_signers_enabled|boolean|removed|
 |aliases|text[]|removed|
@@ -972,8 +1080,10 @@ Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distribut
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |data_resources|jsonb|added|
 |region|text|added|
@@ -983,8 +1093,10 @@ Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distribut
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |home_region|text|added|
 |is_logging|boolean|removed|
 |latest_cloud_watch_logs_delivery_error|text|removed|
@@ -1008,8 +1120,10 @@ Moved to JSON column on [aws_cloudwatch_alarms](#aws_cloudwatch_alarms)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |actions|text[]|removed|
 |alarm_actions|text[]|added|
 |alarm_configuration_updated_timestamp|timestamp without time zone|added|
@@ -1036,14 +1150,20 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_cloudwatchlogs_metric_filters
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |arn|text|added|
@@ -1052,8 +1172,6 @@ This table was newly added.
 |filter_pattern|text|added|
 |log_group_name|text|added|
 |metric_transformations|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_codebuild_project_environment_variables
 Moved to JSON column on [aws_codebuild_projects](#aws_codebuild_projects)
@@ -1075,8 +1193,10 @@ Moved to JSON column on [aws_codebuild_projects](#aws_codebuild_projects)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |artifacts|jsonb|added|
 |artifacts_artifact_identifier|text|removed|
 |artifacts_bucket_owner_access|text|removed|
@@ -1163,8 +1283,10 @@ Moved to JSON column on [aws_codepipeline_pipelines](#aws_codepipeline_pipelines
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |artifact_store_encryption_key_id|text|removed|
 |artifact_store_encryption_key_type|text|removed|
 |artifact_store_location|text|removed|
@@ -1187,8 +1309,10 @@ Moved to JSON column on [aws_codepipeline_webhooks](#aws_codepipeline_webhooks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |authentication|text|removed|
 |authentication_allowed_ip_range|text|removed|
 |authentication_secret_token|text|removed|
@@ -1205,8 +1329,10 @@ Moved to JSON column on [aws_cognito_identity_pools](#aws_cognito_identity_pools
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cognito_identity_providers|jsonb|added|
 |open_id_connect_provider_ar_ns|text[]|added|
 |open_id_connect_provider_arns|text[]|removed|
@@ -1218,8 +1344,10 @@ Moved to JSON column on [aws_cognito_identity_pools](#aws_cognito_identity_pools
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |user_pool_arn|text|added|
 |user_pool_cq_id|uuid|removed|
 
@@ -1231,8 +1359,10 @@ Moved to JSON column on [aws_cognito_user_pools](#aws_cognito_user_pools)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |admin_create_user_admin_only|boolean|removed|
 |admin_create_user_config|jsonb|added|
 |admin_create_user_config_unused_account_validity_days|integer|removed|
@@ -1293,8 +1423,10 @@ Moved to JSON column on [aws_cognito_user_pools](#aws_cognito_user_pools)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |recording_group|jsonb|added|
 |recording_group_all_supported|boolean|removed|
 |recording_group_include_global_resource_types|boolean|removed|
@@ -1304,8 +1436,10 @@ Moved to JSON column on [aws_cognito_user_pools](#aws_cognito_user_pools)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |conformance_pack_arn|text|added|
 |conformance_pack_cq_id|uuid|removed|
@@ -1319,8 +1453,10 @@ Moved to JSON column on [aws_cognito_user_pools](#aws_cognito_user_pools)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |conformance_pack_input_parameters|jsonb|removed|
 
 ## aws_dax_cluster_nodes
@@ -1331,8 +1467,10 @@ Moved to JSON column on [aws_dax_clusters](#aws_dax_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |active_nodes|bigint|updated|Type changed from integer to bigint
 |cluster_discovery_endpoint|jsonb|added|
 |cluster_discovery_endpoint_address|text|removed|
@@ -1361,8 +1499,10 @@ Moved to JSON column on [aws_directconnect_connections](#aws_directconnect_conne
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |aws_device|text|added|
 |aws_logical_device_id|text|added|
 |connection_name|text|added|
@@ -1374,8 +1514,10 @@ Moved to JSON column on [aws_directconnect_connections](#aws_directconnect_conne
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |allowed_prefixes_to_direct_connect_gateway|jsonb|updated|Type changed from text[] to jsonb
 |associated_gateway|jsonb|added|
@@ -1394,8 +1536,10 @@ Moved to JSON column on [aws_directconnect_connections](#aws_directconnect_conne
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |direct_connect_gateway_id|text|added|
 |gateway_arn|text|added|
@@ -1406,8 +1550,10 @@ Moved to JSON column on [aws_directconnect_connections](#aws_directconnect_conne
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |direct_connect_gateway_name|text|added|
 |direct_connect_gateway_state|text|added|
 |name|text|removed|
@@ -1422,8 +1568,10 @@ Moved to JSON column on [aws_directconnect_lags](#aws_directconnect_lags)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |aws_device|text|added|
 |aws_logical_device_id|text|added|
 |connection_ids|text[]|removed|
@@ -1440,8 +1588,10 @@ Moved to JSON column on [aws_directconnect_lags](#aws_directconnect_lags)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |state|text|removed|
 |virtual_gateway_state|text|added|
 
@@ -1453,8 +1603,10 @@ Moved to JSON column on [aws_directconnect_virtual_interfaces](#aws_directconnec
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |asn|bigint|updated|Type changed from integer to bigint
 |aws_logical_device_id|text|added|
 |bgp_peers|jsonb|added|
@@ -1475,8 +1627,10 @@ Moved to JSON column on [aws_dms_replication_instances](#aws_dms_replication_ins
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |allocated_storage|bigint|updated|Type changed from integer to bigint
 |class|text|removed|
 |identifier|text|removed|
@@ -1508,8 +1662,10 @@ Moved to JSON column on [aws_dms_replication_instances](#aws_dms_replication_ins
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |earliest_restorable_date_time|timestamp without time zone|removed|
 |latest_restorable_date_time|timestamp without time zone|removed|
@@ -1531,8 +1687,10 @@ Moved to JSON column on [aws_dynamodb_tables](#aws_dynamodb_tables)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |read_capacity|jsonb|removed|
 |region|text|added|
@@ -1550,8 +1708,10 @@ Moved to JSON column on [aws_dynamodb_tables](#aws_dynamodb_tables)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |global_secondary_indexes|jsonb|added|
 |id|text|removed|
 |inaccessible_encryption_date_time|timestamp without time zone|removed|
@@ -1582,15 +1742,19 @@ Moved to JSON column on [aws_dynamodb_tables](#aws_dynamodb_tables)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_ec2_customer_gateways
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |customer_gateway_id|text|added|
 |id|text|removed|
 
@@ -1598,10 +1762,12 @@ Moved to JSON column on [aws_dynamodb_tables](#aws_dynamodb_tables)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|added|
-|attribute|text|added|
+|attribute|jsonb|added|
 |create_volume_permissions|jsonb|removed|
 |restore_expiry_time|timestamp without time zone|added|
 |storage_tier|text|added|
@@ -1615,8 +1781,10 @@ Moved to JSON column on [aws_ec2_ebs_volumes](#aws_ec2_ebs_volumes)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |attachments|jsonb|added|
 |id|text|removed|
 |iops|bigint|updated|Type changed from integer to bigint
@@ -1628,8 +1796,10 @@ Moved to JSON column on [aws_ec2_ebs_volumes](#aws_ec2_ebs_volumes)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |egress_only_internet_gateway_id|text|added|
 |id|text|removed|
 
@@ -1637,8 +1807,10 @@ Moved to JSON column on [aws_ec2_ebs_volumes](#aws_ec2_ebs_volumes)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |carrier_ip|text|updated|Type changed from inet to text
 |customer_owned_ip|text|updated|Type changed from inet to text
 |private_ip_address|text|updated|Type changed from inet to text
@@ -1648,8 +1820,10 @@ Moved to JSON column on [aws_ec2_ebs_volumes](#aws_ec2_ebs_volumes)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |destination_options|jsonb|added|
 |id|text|removed|
 |max_aggregation_interval|bigint|updated|Type changed from integer to bigint
@@ -1666,8 +1840,10 @@ Moved to JSON column on [aws_ec2_hosts](#aws_ec2_hosts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |available_capacity|jsonb|added|
 |available_vcpus|integer|removed|
 |cores|integer|removed|
@@ -1691,8 +1867,10 @@ Moved to JSON column on [aws_ec2_images](#aws_ec2_images)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |block_device_mappings|jsonb|added|
 |boot_mode|text|added|
 |creation_date|text|updated|Type changed from timestamp without time zone to text
@@ -1749,8 +1927,10 @@ Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |details|jsonb|removed|
 |events|jsonb|added|
 |instance_state|jsonb|added|
@@ -1785,8 +1965,10 @@ Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|added|
 |ebs_info|jsonb|added|
 |ebs_info_ebs_optimized_info_baseline_bandwidth_in_mbps|bigint|removed|
@@ -1837,8 +2019,10 @@ Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |ami_launch_index|bigint|updated|Type changed from integer to bigint
 |block_device_mappings|jsonb|added|
 |cap_reservation_preference|text|removed|
@@ -1890,7 +2074,6 @@ Moved to JSON column on [aws_ec2_instances](#aws_ec2_instances)
 |state_reason|jsonb|added|
 |state_reason_code|text|removed|
 |state_reason_message|text|removed|
-|state_transition_reason_time|timestamp without time zone|removed|
 |tpm_support|text|added|
 |usage_operation|text|added|
 |usage_operation_update_time|timestamp without time zone|added|
@@ -1903,8 +2086,10 @@ Moved to JSON column on [aws_ec2_internet_gateways](#aws_ec2_internet_gateways)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |attachments|jsonb|added|
 |id|text|removed|
 |internet_gateway_id|text|added|
@@ -1913,8 +2098,10 @@ Moved to JSON column on [aws_ec2_internet_gateways](#aws_ec2_internet_gateways)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |public_key|text|added|
 
 ## aws_ec2_nat_gateway_addresses
@@ -1925,8 +2112,10 @@ Moved to JSON column on [aws_ec2_nat_gateways](#aws_ec2_nat_gateways)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |connectivity_type|text|added|
 |id|text|removed|
 |nat_gateway_addresses|jsonb|added|
@@ -1950,8 +2139,10 @@ Moved to JSON column on [aws_ec2_network_acls](#aws_ec2_network_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |associations|jsonb|added|
 |entries|jsonb|added|
 |id|text|removed|
@@ -1965,8 +2156,10 @@ Moved to JSON column on [aws_ec2_network_interfaces](#aws_ec2_network_interfaces
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |association|jsonb|added|
 |association_allocation_id|text|removed|
 |association_carrier_ip|text|removed|
@@ -1997,8 +2190,10 @@ Moved to JSON column on [aws_ec2_network_interfaces](#aws_ec2_network_interfaces
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_ec2_route_table_associations
 Moved to JSON column on [aws_ec2_route_tables](#aws_ec2_route_tables)
@@ -2016,8 +2211,10 @@ Moved to JSON column on [aws_ec2_route_tables](#aws_ec2_route_tables)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |associations|jsonb|added|
 |id|text|removed|
 |propagating_vgws|jsonb|added|
@@ -2044,8 +2241,10 @@ Moved to JSON column on [aws_ec2_security_groups](#aws_ec2_security_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |group_id|text|added|
 |id|text|removed|
 |ip_permissions|jsonb|added|
@@ -2059,8 +2258,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |available_ip_address_count|bigint|updated|Type changed from integer to bigint
 |enable_dns64|boolean|added|
 |enable_lni_at_device_index|bigint|added|
@@ -2075,8 +2276,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |association|jsonb|added|
 |association_route_table_id|text|removed|
@@ -2091,8 +2294,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |auto_accept_shared_associations|text|removed|
 |igmpv2_support|text|removed|
@@ -2107,8 +2312,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |accepter_owner_id|text|removed|
 |accepter_region|text|removed|
 |accepter_tgw_info|jsonb|added|
@@ -2129,8 +2336,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |transit_gateway_arn|text|added|
@@ -2141,8 +2350,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |appliance_mode_support|text|removed|
 |dns_support|text|removed|
@@ -2158,8 +2369,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |amazon_side_asn|bigint|removed|
 |association_default_route_table_id|text|removed|
 |auto_accept_shared_attachments|text|removed|
@@ -2193,8 +2406,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |private_dns_name_configuration|jsonb|added|
 |private_dns_name_configuration_name|text|removed|
 |private_dns_name_configuration_state|text|removed|
@@ -2207,8 +2422,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |private_dns_names|jsonb|updated|Type changed from text[] to jsonb
 |service_id|text|added|
@@ -2219,8 +2436,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |dns_entries|jsonb|added|
 |dns_options|jsonb|added|
 |groups|jsonb|added|
@@ -2239,8 +2458,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |accepter_allow_dns_resolution_from_remote_vpc|boolean|removed|
 |accepter_allow_egress_local_classic_link_to_remote_vpc|boolean|removed|
 |accepter_allow_egress_local_vpc_to_remote_classic_link|boolean|removed|
@@ -2271,8 +2492,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cidr_block_association_set|jsonb|added|
 |id|text|removed|
 |ipv6_cidr_block_association_set|jsonb|added|
@@ -2282,8 +2505,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |vpc_attachments|jsonb|added|
 |vpn_gateway_id|text|added|
@@ -2292,8 +2517,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |encryption_configuration|jsonb|added|
 |encryption_configuration_encryption_type|text|removed|
 |encryption_configuration_kms_key|text|removed|
@@ -2309,8 +2536,10 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|added|
 |image_scan_findings_summary|jsonb|added|
 |image_scan_findings_summary_finding_severity_counts|jsonb|removed|
@@ -2348,8 +2577,10 @@ Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |attachments|jsonb|added|
 |attributes|jsonb|added|
@@ -2399,8 +2630,10 @@ Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |cluster_cq_id|uuid|removed|
 |deployment_configuration|jsonb|added|
@@ -2439,8 +2672,10 @@ Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |attachments|jsonb|added|
 |cluster_cq_id|uuid|removed|
@@ -2453,8 +2688,10 @@ Moved to JSON column on [aws_ecs_clusters](#aws_ecs_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |active_services_count|bigint|updated|Type changed from integer to bigint
 |attachments|jsonb|added|
 |cluster_name|text|added|
@@ -2483,9 +2720,10 @@ Moved to JSON column on [aws_ecs_task_definitions](#aws_ecs_task_definitions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|arn|text|removed|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |container_definitions|jsonb|added|
 |ephemeral_storage|jsonb|added|
 |ephemeral_storage_size|integer|removed|
@@ -2497,15 +2735,16 @@ Moved to JSON column on [aws_ecs_task_definitions](#aws_ecs_task_definitions)
 |runtime_platform|jsonb|added|
 |runtime_platform_cpu_architecture|text|removed|
 |runtime_platform_os_family|text|removed|
-|task_definition_arn|text|added|
 |volumes|jsonb|added|
 
 ## aws_efs_filesystems
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |file_system_id|text|added|
 |id|text|removed|
 |number_of_mount_targets|bigint|updated|Type changed from integer to bigint
@@ -2528,8 +2767,10 @@ Moved to JSON column on [aws_eks_clusters](#aws_eks_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |certificate_authority|jsonb|added|
 |certificate_authority_data|text|removed|
 |connector_config|jsonb|added|
@@ -2568,8 +2809,10 @@ Moved to JSON column on [aws_elasticache_clusters](#aws_elasticache_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cache_cluster_create_time|timestamp without time zone|added|
 |cache_cluster_id|text|added|
 |cache_cluster_status|text|added|
@@ -2601,8 +2844,10 @@ Moved to JSON column on [aws_elasticache_clusters](#aws_elasticache_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_elasticache_global_replication_group_global_node_groups
 Moved to JSON column on [aws_elasticache_global_replication_groups](#aws_elasticache_global_replication_groups)
@@ -2616,8 +2861,10 @@ Moved to JSON column on [aws_elasticache_global_replication_groups](#aws_elastic
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |global_node_groups|jsonb|added|
 |members|jsonb|added|
 |region|text|added|
@@ -2630,8 +2877,10 @@ Moved to JSON column on [aws_elasticache_parameter_groups](#aws_elasticache_para
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_elasticache_replication_group_log_delivery_configurations
 Moved to JSON column on [aws_elasticache_replication_groups](#aws_elasticache_replication_groups)
@@ -2649,8 +2898,10 @@ Moved to JSON column on [aws_elasticache_replication_groups](#aws_elasticache_re
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |configuration_endpoint|jsonb|added|
 |configuration_endpoint_address|text|removed|
 |configuration_endpoint_port|bigint|removed|
@@ -2675,8 +2926,10 @@ Moved to JSON column on [aws_elasticache_reserved_cache_nodes](#aws_elasticache_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|added|
 |fixed_price|real|updated|Type changed from float to real
 |recurring_charges|jsonb|added|
@@ -2691,8 +2944,10 @@ Moved to JSON column on [aws_elasticache_reserved_cache_nodes](#aws_elasticache_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|added|
 |fixed_price|real|updated|Type changed from float to real
 |recurring_charges|jsonb|added|
@@ -2702,8 +2957,10 @@ Moved to JSON column on [aws_elasticache_reserved_cache_nodes](#aws_elasticache_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|added|
 |description|text|removed|
 |end_date|timestamp without time zone|removed|
@@ -2730,8 +2987,10 @@ Moved to JSON column on [aws_elasticache_snapshots](#aws_elasticache_snapshots)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |node_snapshots|jsonb|added|
 
 ## aws_elasticache_subnet_group_subnets
@@ -2742,16 +3001,20 @@ Moved to JSON column on [aws_elasticache_subnet_groups](#aws_elasticache_subnet_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |subnets|jsonb|added|
 
 ## aws_elasticache_user_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |pending_changes|jsonb|added|
 |pending_user_ids_to_add|text[]|removed|
 |pending_user_ids_to_remove|text[]|removed|
@@ -2760,8 +3023,10 @@ Moved to JSON column on [aws_elasticache_subnet_groups](#aws_elasticache_subnet_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |authentication|jsonb|added|
 |authentication_password_count|bigint|removed|
 |authentication_type|text|removed|
@@ -2770,8 +3035,10 @@ Moved to JSON column on [aws_elasticache_subnet_groups](#aws_elasticache_subnet_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |source_build_information|jsonb|added|
 |source_bundle|jsonb|added|
 |source_bundle_s3_bucket|text|removed|
@@ -2784,8 +3051,10 @@ Moved to JSON column on [aws_elasticache_subnet_groups](#aws_elasticache_subnet_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |application_name|text|added|
 |max_age_rule_delete_source_from_s3|boolean|removed|
 |max_age_rule_enabled|boolean|removed|
@@ -2801,8 +3070,10 @@ Moved to JSON column on [aws_elasticache_subnet_groups](#aws_elasticache_subnet_
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |environment_cq_id|uuid|removed|
 |environment_id|text|added|
@@ -2822,8 +3093,10 @@ Moved to JSON column on [aws_elasticbeanstalk_configuration_settings](#aws_elast
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |environment_cq_id|uuid|removed|
 |environment_id|text|added|
@@ -2838,10 +3111,10 @@ Moved to JSON column on [aws_elasticbeanstalk_environments](#aws_elasticbeanstal
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|arn|text|removed|
-|environment_arn|text|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |environment_links|jsonb|added|
 |environment_name|text|added|
 |load_balancer_domain|text|removed|
@@ -2857,8 +3130,10 @@ Moved to JSON column on [aws_elasticbeanstalk_environments](#aws_elasticbeanstal
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |advanced_security_enabled|boolean|removed|
 |advanced_security_internal_user_database_enabled|boolean|removed|
 |advanced_security_options|jsonb|added|
@@ -2936,8 +3211,10 @@ Moved to JSON column on [aws_elbv1_load_balancers](#aws_elbv1_load_balancers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |load_balance_name|text|removed|
 |load_balancer_arn|text|added|
@@ -2957,8 +3234,10 @@ Moved to JSON column on [aws_elbv1_load_balancers](#aws_elbv1_load_balancers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |attributes|jsonb|added|
 |attributes_access_log_emit_interval|integer|removed|
 |attributes_access_log_enabled|boolean|removed|
@@ -2990,8 +3269,10 @@ Moved to JSON column on [aws_elbv1_load_balancers](#aws_elbv1_load_balancers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |listener_arn|text|added|
 |listener_cq_id|uuid|removed|
@@ -3009,8 +3290,10 @@ Moved to JSON column on [aws_elbv2_listeners](#aws_elbv2_listeners)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |certificates|jsonb|added|
 |default_actions|jsonb|added|
 |load_balancer_cq_id|uuid|removed|
@@ -3020,8 +3303,10 @@ Moved to JSON column on [aws_elbv2_listeners](#aws_elbv2_listeners)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |access_logs_s3_bucket|text|removed|
 |access_logs_s3_enabled|boolean|removed|
 |access_logs_s3_prefix|text|removed|
@@ -3053,8 +3338,10 @@ Moved to JSON column on [aws_elbv2_load_balancers](#aws_elbv2_load_balancers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zones|jsonb|added|
 |load_balancer_name|text|added|
 |name|text|removed|
@@ -3066,8 +3353,10 @@ Moved to JSON column on [aws_elbv2_load_balancers](#aws_elbv2_load_balancers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |target|jsonb|added|
@@ -3085,8 +3374,10 @@ Moved to JSON column on [aws_elbv2_load_balancers](#aws_elbv2_load_balancers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |health_check_interval_seconds|bigint|updated|Type changed from integer to bigint
 |health_check_timeout_seconds|bigint|updated|Type changed from integer to bigint
 |healthy_threshold_count|bigint|updated|Type changed from integer to bigint
@@ -3107,8 +3398,10 @@ Moved to JSON column on [aws_emr_block_public_access_configs](#aws_emr_block_pub
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |block_public_access_configuration|jsonb|added|
 |block_public_access_configuration_metadata|jsonb|added|
 |block_public_security_group_rules|boolean|removed|
@@ -3122,8 +3415,10 @@ Moved to JSON column on [aws_emr_block_public_access_configs](#aws_emr_block_pub
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |creation_date_time|timestamp without time zone|removed|
 |ebs_root_volume_size|bigint|updated|Type changed from integer to bigint
 |ec2_instance_attribute_additional_master_security_groups|text[]|removed|
@@ -3158,8 +3453,10 @@ Moved to JSON column on [aws_emr_block_public_access_configs](#aws_emr_block_pub
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |event_bus_arn|text|added|
 |event_bus_cq_id|uuid|removed|
@@ -3169,8 +3466,10 @@ Moved to JSON column on [aws_emr_block_public_access_configs](#aws_emr_block_pub
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_firehose_delivery_stream_elasticsearch_destination
 Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_streams)
@@ -3200,8 +3499,10 @@ Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_s
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |delivery_stream_arn|text|removed|
 |delivery_stream_encryption_configuration|jsonb|added|
 |destinations|jsonb|added|
@@ -3223,8 +3524,10 @@ Moved to JSON column on [aws_firehose_delivery_streams](#aws_firehose_delivery_s
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|removed|
 |directory_information|jsonb|added|
 |directory_information_active_directory_id|text|removed|
@@ -3253,6 +3556,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |arn|text|added|
@@ -3267,14 +3574,16 @@ This table was newly added.
 |imported_file_chunk_size|bigint|added|
 |lifecycle|text|added|
 |s3|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_fsx_data_repository_tasks
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |arn|text|added|
@@ -3290,8 +3599,6 @@ This table was newly added.
 |report|jsonb|added|
 |start_time|timestamp without time zone|added|
 |status|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_fsx_file_systems
 Renamed from [aws_fsx_filesystems](aws_fsx_filesystems)
@@ -3321,8 +3628,10 @@ Renamed to [aws_fsx_file_systems](#aws_fsx_file_systems)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |administrative_actions|jsonb|added|
 |lifecycle_transition_reason|jsonb|added|
 |lifecycle_transition_reason_message|text|removed|
@@ -3332,6 +3641,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |arn|text|added|
@@ -3347,8 +3660,6 @@ This table was newly added.
 |storage_virtual_machine_id|text|added|
 |subtype|text|added|
 |uuid|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_fsx_storage_vms
 This table was removed.
@@ -3366,8 +3677,10 @@ Moved to JSON column on [aws_fsx_volumes](#aws_fsx_volumes)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |administrative_actions|jsonb|added|
 |id|text|removed|
 |lifecycle_transition_reason|jsonb|added|
@@ -3380,8 +3693,10 @@ Moved to JSON column on [aws_fsx_volumes](#aws_fsx_volumes)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |csv_classifier|jsonb|added|
 |csv_classifier_allow_single_column|boolean|removed|
 |csv_classifier_contains_header|text|removed|
@@ -3419,8 +3734,10 @@ Moved to JSON column on [aws_fsx_volumes](#aws_fsx_volumes)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |physical_connection_requirements|jsonb|added|
 |security_group_id_list|text[]|removed|
@@ -3454,8 +3771,10 @@ Moved to JSON column on [aws_glue_crawlers](#aws_glue_crawlers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |lake_formation_configuration|jsonb|added|
 |lake_formation_configuration_account_id|text|removed|
 |lake_formation_configuration_use_lake_formation_credentials|boolean|removed|
@@ -3486,8 +3805,10 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |database_arn|text|added|
 |database_table_cq_id|uuid|removed|
@@ -3502,8 +3823,10 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |additional_locations|text[]|removed|
 |bucket_columns|text[]|removed|
@@ -3534,8 +3857,10 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |target_database|jsonb|added|
 |target_database_catalog_id|text|removed|
 |target_database_name|text|removed|
@@ -3544,8 +3869,10 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |aws_kms_key_id|text|removed|
 |connection_password_encryption|jsonb|added|
 |encryption_at_rest|jsonb|added|
@@ -3557,8 +3884,10 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |endpoint_name|text|added|
 |name|text|removed|
 
@@ -3566,8 +3895,10 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |dpu_seconds|real|updated|Type changed from float to real
 |job_arn|text|added|
@@ -3581,8 +3912,10 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |command|jsonb|added|
 |command_name|text|removed|
 |command_python_version|text|removed|
@@ -3602,8 +3935,10 @@ Moved to JSON column on [aws_glue_ml_transforms](#aws_glue_ml_transforms)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |export_labels_task_run_properties_output_s3_path|text|removed|
 |find_matches_task_run_properties_job_id|text|removed|
@@ -3624,8 +3959,10 @@ Moved to JSON column on [aws_glue_ml_transforms](#aws_glue_ml_transforms)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |evaluation_metrics|jsonb|added|
 |evaluation_metrics_find_matches_metrics_area_under_pr_curve|float|removed|
 |evaluation_metrics_find_matches_metrics_column_importances|jsonb|removed|
@@ -3653,15 +3990,19 @@ Moved to JSON column on [aws_glue_ml_transforms](#aws_glue_ml_transforms)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_glue_registry_schema_versions
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |id|text|removed|
 |region|text|added|
@@ -3674,8 +4015,10 @@ Moved to JSON column on [aws_glue_ml_transforms](#aws_glue_ml_transforms)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |registry_cq_id|uuid|removed|
@@ -3689,8 +4032,10 @@ Moved to JSON column on [aws_glue_security_configurations](#aws_glue_security_co
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cloud_watch_encryption_kms_key_arn|text|removed|
 |cloud_watch_encryption_mode|text|removed|
 |encryption_configuration|jsonb|added|
@@ -3709,8 +4054,10 @@ Moved to JSON column on [aws_glue_triggers](#aws_glue_triggers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |actions|jsonb|added|
 |event_batching_condition|jsonb|added|
 |event_batching_condition_size|bigint|removed|
@@ -3722,8 +4069,10 @@ Moved to JSON column on [aws_glue_triggers](#aws_glue_triggers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |blueprint_details|jsonb|added|
 |blueprint_name|text|removed|
 |blueprint_run_id|text|removed|
@@ -3750,8 +4099,10 @@ Moved to JSON column on [aws_glue_triggers](#aws_glue_triggers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |administrator_id|text|added|
 |detector_arn|text|added|
 |detector_cq_id|uuid|removed|
@@ -3763,8 +4114,10 @@ Moved to JSON column on [aws_glue_triggers](#aws_glue_triggers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |created_at|text|updated|Type changed from timestamp without time zone to text
 |data_sources|jsonb|added|
 |data_sources_cloud_trail_status|text|removed|
@@ -3783,6 +4136,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |arn|text|added|
 |user_creation_time|timestamp without time zone|added|
 |password_last_changed|timestamp without time zone|added|
@@ -3805,15 +4162,15 @@ This table was newly added.
 |access_key1_last_used_service|text|added|
 |access_key2_last_used_region|text|added|
 |access_key2_last_used_service|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_iam_group_policies
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |group_arn|text|added|
 |group_cq_id|uuid|removed|
 |result_metadata|jsonb|added|
@@ -3822,8 +4179,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |group_name|text|added|
 |name|text|removed|
 
@@ -3831,16 +4190,20 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |result_metadata|jsonb|added|
 
 ## aws_iam_password_policies
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |max_password_age|bigint|updated|Type changed from integer to bigint
 |minimum_password_length|bigint|updated|Type changed from integer to bigint
 |password_reuse_prevention|bigint|updated|Type changed from integer to bigint
@@ -3849,8 +4212,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |attachment_count|bigint|updated|Type changed from integer to bigint
 |name|text|removed|
 |permissions_boundary_usage_count|bigint|updated|Type changed from integer to bigint
@@ -3865,8 +4230,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |result_metadata|jsonb|added|
 |role_arn|text|added|
@@ -3876,8 +4243,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |permissions_boundary|jsonb|added|
 |permissions_boundary_arn|text|removed|
 |permissions_boundary_type|text|removed|
@@ -3889,16 +4258,20 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |saml_metadata_document|text|removed|
 
 ## aws_iam_server_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |name|text|removed|
 |server_certificate_name|text|added|
 
@@ -3906,8 +4279,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |user_arn|text|added|
 |user_cq_id|uuid|removed|
@@ -3917,8 +4292,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |user_arn|text|added|
 |user_cq_id|uuid|removed|
@@ -3927,8 +4304,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |arn|text|added|
 |group_arn|text|removed|
@@ -3939,8 +4318,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |result_metadata|jsonb|added|
 |user_arn|text|added|
 |user_cq_id|uuid|removed|
@@ -3949,8 +4330,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |access_key_1_active|boolean|removed|
 |access_key_1_last_rotated|timestamp without time zone|removed|
 |access_key_2_active|boolean|removed|
@@ -3973,8 +4356,10 @@ Moved to JSON column on [aws_iam_policies](#aws_iam_policies)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |base32_string_seed|bigint[]|updated|Type changed from bytea to bigint[]
 |qr_code_png|bigint[]|updated|Type changed from bytea to bigint[]
 |user|jsonb|added|
@@ -3995,8 +4380,10 @@ Moved to JSON column on [aws_inspector2_findings](#aws_inspector2_findings)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |aws_account_id|text|added|
 |finding_arn|text|removed|
 |inspector_score|real|updated|Type changed from float to real
@@ -4009,16 +4396,20 @@ Moved to JSON column on [aws_inspector2_findings](#aws_inspector2_findings)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |numeric_severity|real|updated|Type changed from float to real
 
 ## aws_iot_billing_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |billing_group_id|text|added|
 |billing_group_metadata|jsonb|added|
 |billing_group_name|text|added|
@@ -4033,8 +4424,10 @@ Moved to JSON column on [aws_inspector2_findings](#aws_inspector2_findings)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |certificate_id|text|added|
 |certificate_pem|text|added|
 |customer_version|bigint|updated|Type changed from integer to bigint
@@ -4048,8 +4441,10 @@ Moved to JSON column on [aws_inspector2_findings](#aws_inspector2_findings)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |certificate_id|text|added|
 |certificate_mode|text|added|
 |certificate_pem|text|added|
@@ -4072,6 +4467,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |tags|jsonb|added|
@@ -4097,15 +4496,15 @@ This table was newly added.
 |target_selection|text|added|
 |targets|text[]|added|
 |timeout_config|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_iot_policies
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |creation_date|timestamp without time zone|removed|
 |default_version_id|text|removed|
 |document|text|removed|
@@ -4119,6 +4518,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |targets|text[]|added|
@@ -4134,8 +4537,6 @@ This table was newly added.
 |security_profile_name|text|added|
 |version|bigint|added|
 |result_metadata|jsonb|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_iot_stream_files
 Moved to JSON column on [aws_iot_streams](#aws_iot_streams)
@@ -4145,8 +4546,10 @@ Moved to JSON column on [aws_iot_streams](#aws_iot_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |files|jsonb|added|
 |id|text|removed|
 |stream_id|text|added|
@@ -4157,8 +4560,10 @@ Moved to JSON column on [aws_iot_streams](#aws_iot_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |attribute_payload_attributes|jsonb|removed|
 |attribute_payload_merge|boolean|removed|
 |creation_date|timestamp without time zone|removed|
@@ -4177,8 +4582,10 @@ Moved to JSON column on [aws_iot_streams](#aws_iot_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |creation_date|timestamp without time zone|removed|
 |deprecated|boolean|removed|
 |deprecation_date|timestamp without time zone|removed|
@@ -4193,8 +4600,10 @@ Moved to JSON column on [aws_iot_streams](#aws_iot_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |name|text|removed|
 |thing_name|text|added|
 |thing_type_name|text|added|
@@ -4208,8 +4617,10 @@ Moved to JSON column on [aws_iot_topic_rules](#aws_iot_topic_rules)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |aws_iot_sql_version|text|removed|
 |created_at|timestamp without time zone|removed|
 |description|text|removed|
@@ -4313,8 +4724,10 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |enhanced_monitoring|jsonb|added|
 |stream_arn|text|removed|
 |stream_mode_details|jsonb|added|
@@ -4324,8 +4737,10 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |customer_master_key_spec|text|added|
 |id|text|removed|
 |key_id|text|added|
@@ -4341,11 +4756,11 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
-|alias_arn|text|added|
-|arn|text|removed|
 |function_cq_id|uuid|removed|
 |region|text|added|
 |routing_config|jsonb|added|
@@ -4362,8 +4777,10 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |allocated_provisioned_concurrent_executions|bigint|updated|Type changed from integer to bigint
 |available_provisioned_concurrent_executions|bigint|updated|Type changed from integer to bigint
@@ -4376,8 +4793,10 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |destination_config|jsonb|added|
 |function_cq_id|uuid|removed|
@@ -4391,8 +4810,10 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |batch_size|bigint|updated|Type changed from integer to bigint
 |criteria_filters|text[]|removed|
@@ -4430,8 +4851,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |dead_letter_config|jsonb|added|
 |dead_letter_config_target_arn|text|removed|
@@ -4465,8 +4888,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |architectures|text[]|removed|
 |code|jsonb|added|
 |code_image_uri|text|removed|
@@ -4525,8 +4950,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |layer_version_arn|text|added|
 |layer_version_cq_id|uuid|removed|
@@ -4537,8 +4964,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |arn|text|added|
 |compatible_architectures|text[]|added|
@@ -4552,8 +4981,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |latest_matching_version|jsonb|updated|Type changed from bigint to jsonb
 |latest_matching_version_compatible_runtimes|text[]|removed|
 |latest_matching_version_created_date|timestamp without time zone|removed|
@@ -4568,8 +4999,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 
@@ -4577,8 +5010,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |location|jsonb|added|
 |monitored_resource_info|jsonb|added|
@@ -4591,8 +5026,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |bucket_arn|text|added|
 |bucket_cq_id|uuid|removed|
@@ -4606,8 +5043,10 @@ Moved to JSON column on [aws_lambda_functions](#aws_lambda_functions)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |access_log_config|jsonb|added|
 |access_log_config_destination|text|removed|
 |access_log_config_enabled|boolean|removed|
@@ -4634,8 +5073,10 @@ Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |domain_validation_records|jsonb|added|
 |renewal_summary|jsonb|added|
 |renewal_summary_reason|text|removed|
@@ -4646,8 +5087,10 @@ Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |container_service_arn|text|added|
 |container_service_cq_id|uuid|removed|
@@ -4661,8 +5104,10 @@ Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |container_service_arn|text|added|
 |container_service_cq_id|uuid|removed|
@@ -4672,8 +5117,10 @@ Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |current_deployment|jsonb|added|
 |current_deployment_containers|jsonb|removed|
@@ -4703,8 +5150,10 @@ Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |database_arn|text|added|
 |database_cq_id|uuid|removed|
@@ -4714,8 +5163,10 @@ Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |database_arn|text|added|
 |database_cq_id|uuid|removed|
@@ -4725,8 +5176,10 @@ Moved to JSON column on [aws_lightsail_certificates](#aws_lightsail_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |database_arn|text|added|
 |database_cq_id|uuid|removed|
@@ -4744,8 +5197,10 @@ Moved to JSON column on [aws_lightsail_databases](#aws_lightsail_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |location|jsonb|added|
 
@@ -4753,8 +5208,10 @@ Moved to JSON column on [aws_lightsail_databases](#aws_lightsail_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |hardware|jsonb|added|
 |hardware_cpu_count|bigint|removed|
@@ -4774,8 +5231,10 @@ Moved to JSON column on [aws_lightsail_disks](#aws_lightsail_disks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |disk_arn|text|added|
 |disk_cq_id|uuid|removed|
@@ -4788,8 +5247,10 @@ Moved to JSON column on [aws_lightsail_disks](#aws_lightsail_disks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |add_ons|jsonb|added|
 |location|jsonb|added|
 |location_availability_zone|text|removed|
@@ -4799,8 +5260,10 @@ Moved to JSON column on [aws_lightsail_disks](#aws_lightsail_disks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |cache_reset_create_time|timestamp without time zone|removed|
 |cache_reset_status|text|removed|
@@ -4833,8 +5296,10 @@ Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |instance_arn|text|added|
 |instance_cq_id|uuid|removed|
@@ -4852,8 +5317,10 @@ Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |from_attached_disks|jsonb|added|
 |location|jsonb|added|
@@ -4862,8 +5329,10 @@ Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |add_ons|jsonb|added|
 |hardware|jsonb|added|
 |hardware_cpu_count|bigint|removed|
@@ -4889,8 +5358,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |availability_zone|text|removed|
 |load_balancer_arn|text|added|
@@ -4906,8 +5377,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |instance_health_summary|jsonb|added|
 |location|jsonb|added|
@@ -4918,8 +5391,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |availability_zone|text|removed|
 |location|jsonb|added|
 
@@ -4927,8 +5402,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |broker_configuration_arn|text|added|
 |broker_configuration_cq_id|uuid|removed|
@@ -4939,8 +5416,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |broker_arn|text|added|
 |broker_cq_id|uuid|removed|
 |latest_revision|jsonb|updated|Type changed from integer to jsonb
@@ -4951,8 +5430,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |broker_arn|text|added|
 |broker_cq_id|uuid|removed|
 |broker_id|text|added|
@@ -4962,8 +5443,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |actions_required|jsonb|added|
 |broker_id|text|added|
 |configurations|jsonb|added|
@@ -4978,15 +5461,19 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_qldb_ledger_journal_kinesis_streams
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |aggregation_enabled|boolean|removed|
 |kinesis_configuration|jsonb|added|
@@ -4999,8 +5486,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |bucket|text|removed|
 |kms_key_arn|text|removed|
@@ -5015,8 +5504,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |encryption_description|jsonb|added|
 |encryption_status|text|removed|
 |inaccessible_kms_key_date_time|timestamp without time zone|removed|
@@ -5027,8 +5518,10 @@ Moved to JSON column on [aws_lightsail_load_balancers](#aws_lightsail_load_balan
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_rds_cluster_associated_roles
 Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
@@ -5047,6 +5540,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |cluster_parameter_group_arn|text|added|
@@ -5061,15 +5558,15 @@ This table was newly added.
 |parameter_value|text|added|
 |source|text|added|
 |supported_engine_modes|text[]|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_rds_cluster_parameter_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |db_cluster_parameter_group_name|text|added|
 |db_parameter_group_family|text|added|
 |family|text|removed|
@@ -5083,8 +5580,10 @@ Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |allocated_storage|bigint|updated|Type changed from integer to bigint
 |percent_progress|bigint|updated|Type changed from integer to bigint
 |port|bigint|updated|Type changed from integer to bigint
@@ -5098,8 +5597,10 @@ Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |allocated_storage|bigint|updated|Type changed from integer to bigint
 |associated_roles|jsonb|added|
 |auto_minor_version_upgrade|boolean|added|
@@ -5142,6 +5643,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |region|text|added|
 |db_parameter_group_arn|text|added|
@@ -5156,15 +5661,15 @@ This table was newly added.
 |parameter_value|text|added|
 |source|text|added|
 |supported_engine_modes|text[]|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_rds_db_parameter_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |db_parameter_group_family|text|added|
 |db_parameter_group_name|text|added|
 |family|text|removed|
@@ -5178,8 +5683,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |db_security_group_description|text|added|
 |db_security_group_name|text|added|
 |description|text|removed|
@@ -5189,8 +5696,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |allocated_storage|bigint|updated|Type changed from integer to bigint
 |iops|bigint|updated|Type changed from integer to bigint
 |original_snapshot_create_time|timestamp without time zone|added|
@@ -5203,8 +5712,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_rds_instance_associated_roles
 Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
@@ -5242,8 +5753,10 @@ Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |activity_stream_engine_native_audit_fields_included|boolean|added|
 |activity_stream_kinesis_stream_name|text|added|
 |activity_stream_kms_key_id|text|added|
@@ -5319,8 +5832,10 @@ Moved to JSON column on [aws_rds_subnet_groups](#aws_rds_subnet_groups)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |db_subnet_group_description|text|added|
 |db_subnet_group_name|text|added|
 |description|text|removed|
@@ -5355,12 +5870,31 @@ Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
 
 
 ## aws_redshift_cluster_parameter_groups
-Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
 
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|account_id|text|added|
+|cluster_arn|text|added|
+|cluster_cq_id|uuid|removed|
+|cluster_parameter_status_list|jsonb|added|
+|region|text|added|
 
 ## aws_redshift_cluster_parameters
-Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
 
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|account_id|text|added|
+|cluster_arn|text|added|
+|cluster_parameter_group_cq_id|uuid|removed|
+|region|text|added|
 
 ## aws_redshift_cluster_security_groups
 Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
@@ -5374,13 +5908,14 @@ Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |aqua_configuration|jsonb|added|
 |automated_snapshot_retention_period|bigint|updated|Type changed from integer to bigint
 |cluster_identifier|text|added|
 |cluster_nodes|jsonb|added|
-|cluster_parameter_groups|jsonb|added|
 |cluster_security_groups|jsonb|added|
 |cluster_snapshot_copy_status|jsonb|added|
 |cluster_snapshot_copy_status_destination_region|text|removed|
@@ -5436,8 +5971,10 @@ Moved to JSON column on [aws_redshift_clusters](#aws_redshift_clusters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |cust_subscription_id|text|added|
 |id|text|removed|
 
@@ -5449,8 +5986,10 @@ Moved to JSON column on [aws_redshift_snapshots](#aws_redshift_snapshots)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |accounts_with_restore_access|jsonb|added|
 |actual_incremental_backup_size|float|removed|
@@ -5477,24 +6016,29 @@ Moved to JSON column on [aws_redshift_subnet_groups](#aws_redshift_subnet_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |subnets|jsonb|added|
 
 ## aws_regions
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_resourcegroups_resource_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|arn|text|removed|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |description|text|added|
 |group|text|removed|
 |group_arn|text|added|
@@ -5510,13 +6054,15 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |arn|text|added|
 |name_servers|text[]|added|
 |caller_reference|text|added|
 |id|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_route53_domain_nameservers
 Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
@@ -5526,8 +6072,10 @@ Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |admin_contact|jsonb|added|
 |admin_contact_address_line1|text|removed|
 |admin_contact_address_line2|text|removed|
@@ -5580,8 +6128,10 @@ Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |alarm_identifier_name|text|removed|
 |alarm_identifier_region|text|removed|
 |child_health_checks|text[]|removed|
@@ -5617,8 +6167,10 @@ Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |hosted_zone_arn|text|added|
 |hosted_zone_cq_id|uuid|removed|
@@ -5628,8 +6180,10 @@ Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |alias_target|jsonb|added|
 |cidr_routing_config|jsonb|added|
@@ -5647,8 +6201,10 @@ Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |hosted_zone_arn|text|added|
 |hosted_zone_cq_id|uuid|removed|
@@ -5663,8 +6219,10 @@ Moved to JSON column on [aws_route53_hosted_zones](#aws_route53_hosted_zones)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |config|jsonb|added|
 |config_comment|text|removed|
 |config_private_zone|boolean|removed|
@@ -5682,8 +6240,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |latest_version|bigint|updated|Type changed from integer to bigint
 |traffic_policy_count|bigint|updated|Type changed from integer to bigint
 
@@ -5691,8 +6251,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |document|text|updated|Type changed from jsonb to text
 |traffic_policy_arn|text|added|
@@ -5708,21 +6270,25 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |block_public_acls|boolean|added|
 |block_public_policy|boolean|added|
 |ignore_public_acls|boolean|added|
 |restrict_public_buckets|boolean|added|
 |config_exists|boolean|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## aws_s3_bucket_cors_rules
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |bucket_arn|text|added|
 |bucket_cq_id|uuid|removed|
@@ -5732,8 +6298,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |apply_server_side_encryption_by_default|jsonb|added|
 |bucket_arn|text|added|
@@ -5745,8 +6313,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |bucket_arn|text|added|
 |bucket_cq_id|uuid|removed|
@@ -5761,8 +6331,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |abort_incomplete_multipart_upload|jsonb|added|
 |abort_incomplete_multipart_upload_days_after_initiation|integer|removed|
 |account_id|text|added|
@@ -5784,8 +6356,10 @@ Moved to JSON column on [aws_s3_buckets](#aws_s3_buckets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |replication_rules|jsonb|added|
 
 ## aws_sagemaker_endpoint_configuration_production_variants
@@ -5796,8 +6370,10 @@ Moved to JSON column on [aws_sagemaker_endpoint_configurations](#aws_sagemaker_e
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |async_inference_config|jsonb|added|
 |endpoint_config_name|text|added|
 |name|text|removed|
@@ -5816,8 +6392,10 @@ Moved to JSON column on [aws_sagemaker_models](#aws_sagemaker_models)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |containers|jsonb|added|
 |model_name|text|added|
 |name|text|removed|
@@ -5828,8 +6406,10 @@ Moved to JSON column on [aws_sagemaker_models](#aws_sagemaker_models)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |direct_internet_access|text|updated|Type changed from boolean to text
 |failure_reason|text|added|
 |instance_metadata_service_configuration|jsonb|added|
@@ -5874,8 +6454,10 @@ Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jo
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |algorithm_specification|jsonb|added|
 |billable_time_in_seconds|bigint|updated|Type changed from integer to bigint
 |debug_hook_config|jsonb|added|
@@ -5894,8 +6476,10 @@ Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jo
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |rotation_rules|jsonb|added|
 |rotation_rules_automatically_after_days|bigint|removed|
 |secret_versions_to_stages|jsonb|removed|
@@ -5905,8 +6489,10 @@ Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jo
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |name|text|removed|
 |template_name|text|added|
 
@@ -5922,8 +6508,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |attack_properties|jsonb|added|
 |mitigations|jsonb|updated|Type changed from text[] to jsonb
 |sub_resources|jsonb|added|
@@ -5932,8 +6520,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |protection_group_id|text|added|
 
@@ -5941,8 +6531,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |application_automatic_response_configuration_status|text|removed|
 |application_layer_automatic_response_configuration|jsonb|added|
 |region|text|removed|
@@ -5951,8 +6543,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |protected_resource_type_limits|jsonb|removed|
 |protection_group_limits_arbitrary_pattern_limits_max_members|integer|removed|
 |protection_group_limits_max_protection_groups|integer|removed|
@@ -5963,8 +6557,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |delivery_policy|text|updated|Type changed from jsonb to text
 |effective_delivery_policy|text|updated|Type changed from jsonb to text
 |filter_policy|text|updated|Type changed from jsonb to text
@@ -5973,8 +6569,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |delivery_policy|text|updated|Type changed from jsonb to text
 |effective_delivery_policy|text|updated|Type changed from jsonb to text
 |policy|text|updated|Type changed from jsonb to text
@@ -5983,8 +6581,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |policy|text|updated|Type changed from jsonb to text
 |redrive_allow_policy|text|updated|Type changed from jsonb to text
 |redrive_policy|text|updated|Type changed from jsonb to text
@@ -5993,8 +6593,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_ids|text[]|removed|
 |account_sharing_info_list|jsonb|removed|
 |category|text[]|added|
@@ -6005,8 +6607,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |execution_summary|jsonb|added|
 |execution_summary_execution_id|text|removed|
@@ -6020,8 +6624,10 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |association_instance_status_aggregated_count|jsonb|removed|
 |association_overview|jsonb|added|
 |association_overview_detailed_status|text|removed|
@@ -6037,8 +6643,10 @@ Moved to JSON column on [aws_ssm_parameters](#aws_ssm_parameters)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |policies|jsonb|added|
 
 ## aws_transfer_server_workflow_details_on_upload
@@ -6049,8 +6657,10 @@ Moved to JSON column on [aws_transfer_servers](#aws_transfer_servers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |endpoint_details|jsonb|added|
 |endpoint_details_address_allocation_ids|text[]|removed|
 |endpoint_details_security_group_ids|text[]|removed|
@@ -6073,8 +6683,10 @@ Moved to JSON column on [aws_transfer_servers](#aws_transfer_servers)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |metric_name|text|removed|
 |rule_group_id|text|added|
@@ -6087,8 +6699,10 @@ Moved to JSON column on [aws_waf_rules](#aws_waf_rules)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |metric_name|text|removed|
 |rule_id|text|added|
@@ -6097,8 +6711,10 @@ Moved to JSON column on [aws_waf_rules](#aws_waf_rules)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_waf_web_acl_logging_configuration
 Moved to JSON column on [aws_waf_web_acls](#aws_waf_web_acls)
@@ -6112,8 +6728,10 @@ Moved to JSON column on [aws_waf_web_acls](#aws_waf_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |default_action_type|text|removed|
 |id|text|removed|
 |logging_configuration|jsonb|updated|Type changed from text[] to jsonb
@@ -6128,8 +6746,10 @@ Moved to JSON column on [aws_wafregional_rate_based_rules](#aws_wafregional_rate
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |match_predicates|jsonb|added|
 |rule_id|text|added|
@@ -6138,8 +6758,10 @@ Moved to JSON column on [aws_wafregional_rate_based_rules](#aws_wafregional_rate
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |rule_group_id|text|added|
 
@@ -6151,8 +6773,10 @@ Moved to JSON column on [aws_wafregional_rules](#aws_wafregional_rules)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |predicates|jsonb|added|
 |rule_id|text|added|
@@ -6165,8 +6789,10 @@ Moved to JSON column on [aws_wafregional_web_acls](#aws_wafregional_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |default_action|jsonb|updated|Type changed from text to jsonb
 |id|text|removed|
 |rules|jsonb|added|
@@ -6176,8 +6802,10 @@ Moved to JSON column on [aws_wafregional_web_acls](#aws_wafregional_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |addresses|inet[]|updated|Type changed from cidr[] to inet[]
 |scope|text|removed|
 
@@ -6185,8 +6813,10 @@ Moved to JSON column on [aws_wafregional_web_acls](#aws_wafregional_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |available_labels|text[]|removed|
 |capacity|bigint|removed|
 |consumed_labels|text[]|removed|
@@ -6199,8 +6829,10 @@ Moved to JSON column on [aws_wafregional_web_acls](#aws_wafregional_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |regular_expression_list|jsonb|updated|Type changed from text[] to jsonb
 |scope|text|removed|
 
@@ -6208,8 +6840,10 @@ Moved to JSON column on [aws_wafregional_web_acls](#aws_wafregional_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |available_labels|jsonb|updated|Type changed from text[] to jsonb
 |consumed_labels|jsonb|updated|Type changed from text[] to jsonb
 |scope|text|removed|
@@ -6238,8 +6872,10 @@ Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |captcha_config|jsonb|added|
 |logging_configuration|jsonb|updated|Type changed from text[] to jsonb
 |post_process_firewall_manager_rule_groups|jsonb|added|
@@ -6255,8 +6891,10 @@ Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |change_compute_type|text|removed|
 |custom_security_group_id|text|removed|
 |default_ou|text|removed|
@@ -6291,8 +6929,10 @@ Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |compute_type_name|text|removed|
 |id|text|removed|
 |region|text|removed|
@@ -6307,15 +6947,19 @@ Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## aws_xray_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |insights_configuration|jsonb|added|
 |insights_enabled|boolean|removed|
 |notifications_enabled|boolean|removed|
@@ -6324,9 +6968,10 @@ Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|arn|text|removed|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |attributes|jsonb|removed|
 |fixed_rate|float|removed|
 |host|text|removed|
