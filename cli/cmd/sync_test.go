@@ -4,7 +4,6 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"strings"
 	"testing"
 )
 
@@ -30,9 +29,6 @@ func TestSync(t *testing.T) {
 	}
 	content := string(b)
 	if len(content) == 0 {
-		t.Fatalf("cloudquery.log empty, but expected some logs")
-	}
-	if !strings.Contains(content, "plugin=") {
-		t.Errorf("cloudquery.log is expected to contain lines with string plugin=, but none found. Logs were: \n%v", content)
+		t.Fatalf("cloudquery.log empty; expected some logs")
 	}
 }
