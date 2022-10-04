@@ -1,6 +1,7 @@
 # Table: aws_ecs_cluster_container_instances
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`aws_ecs_clusters`](aws_ecs_clusters.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |cluster_arn|String|
@@ -30,5 +35,3 @@ This table depends on [`aws_ecs_clusters`](aws_ecs_clusters.md).
 |status_reason|String|
 |version|Int|
 |version_info|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

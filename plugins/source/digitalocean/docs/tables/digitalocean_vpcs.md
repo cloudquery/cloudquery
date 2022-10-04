@@ -1,6 +1,7 @@
 # Table: digitalocean_vpcs
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `digitalocean_vpcs`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |id (PK)|String|
 |urn|String|
 |name|String|
@@ -18,5 +23,3 @@ The following tables depend on `digitalocean_vpcs`:
 |region|String|
 |created_at|Timestamp|
 |default|Bool|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

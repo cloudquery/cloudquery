@@ -1,6 +1,7 @@
 # Table: aws_athena_data_catalogs
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_athena_data_catalogs`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -18,5 +23,3 @@ The following tables depend on `aws_athena_data_catalogs`:
 |type|String|
 |description|String|
 |parameters|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

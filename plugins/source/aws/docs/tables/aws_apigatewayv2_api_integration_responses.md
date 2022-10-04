@@ -1,12 +1,17 @@
 # Table: aws_apigatewayv2_api_integration_responses
 
 
+
 The primary key for this table is **_cq_id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |api_integration_arn|String|
@@ -18,5 +23,3 @@ The primary key for this table is **_cq_id**.
 |response_parameters|JSON|
 |response_templates|JSON|
 |template_selection_expression|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

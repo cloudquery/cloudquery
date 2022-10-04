@@ -1,12 +1,17 @@
 # Table: azure_keyvault_managed_hsms
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |properties_tenant_id|UUID|
 |properties_initial_admin_object_ids|StringArray|
@@ -23,5 +28,3 @@ The primary key for this table is **id**.
 |location|String|
 |sku|JSON|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

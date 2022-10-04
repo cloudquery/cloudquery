@@ -1,6 +1,7 @@
 # Table: aws_ec2_transit_gateways
 
 
+
 The composite primary key for this table is (**id**, **arn**).
 
 ## Relations
@@ -14,6 +15,10 @@ The following tables depend on `aws_ec2_transit_gateways`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |tags|JSON|
 |id (PK)|String|
@@ -23,5 +28,3 @@ The following tables depend on `aws_ec2_transit_gateways`:
 |options|JSON|
 |owner_id|String|
 |state|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

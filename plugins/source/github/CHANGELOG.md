@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/github/v0.1.10...plugins-source-github-v1.0.0) (2022-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+### Features
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
 ## [0.1.16-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v0.1.15-pre.0...plugins-source-github-v0.1.16-pre.0) (2022-10-03)
 
 

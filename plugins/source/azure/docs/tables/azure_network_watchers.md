@@ -1,6 +1,7 @@
 # Table: azure_network_watchers
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `azure_network_watchers`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |etag|String|
 |provisioning_state|String|
@@ -18,5 +23,3 @@ The following tables depend on `azure_network_watchers`:
 |type|String|
 |location|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

@@ -1,12 +1,17 @@
 # Table: aws_sqs_queues
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -33,5 +38,3 @@ The primary key for this table is **arn**.
 |fifo_throughput_limit|String|
 |redrive_allow_policy|String|
 |unknown_fields|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

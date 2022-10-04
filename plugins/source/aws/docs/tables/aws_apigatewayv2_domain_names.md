@@ -1,6 +1,7 @@
 # Table: aws_apigatewayv2_domain_names
 
 
+
 The primary key for this table is **_cq_id**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_apigatewayv2_domain_names`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn|String|
@@ -18,5 +23,3 @@ The following tables depend on `aws_apigatewayv2_domain_names`:
 |domain_name_configurations|JSON|
 |mutual_tls_authentication|JSON|
 |tags|JSON|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|
