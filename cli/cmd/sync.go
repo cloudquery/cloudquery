@@ -138,6 +138,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		progressbar.OptionShowIts(),
 		progressbar.OptionSetElapsedTime(true),
 		progressbar.OptionShowCount(),
+		progressbar.OptionClearOnFinish(),
 	)
 	failedWrites := uint64(0)
 	totalResources := 0
@@ -175,7 +176,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 
 	if err := g.Wait(); err != nil {
 		_ = bar.Finish()
-		return fmt.Errorf("failed to fetch resources: %w", err)
+		return err
 	}
 	summary, err := sourceClient.GetSyncSummary(ctx)
 	if err != nil {
