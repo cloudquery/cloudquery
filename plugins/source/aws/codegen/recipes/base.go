@@ -56,20 +56,32 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 	},
 }
 
+// replaceWord will take a snake_case string and attempt to replace a single word in it, checking for it in different positions
+func replaceWord(s string, old string, new string) string {
+	const delim = "_"
+
+	if strings.HasPrefix(s, old+delim) { // replace if at the very start
+		s = new + delim + strings.TrimPrefix(s, old+delim)
+	}
+	if strings.HasSuffix(s, delim+old) { // replace if at the very end
+		s = strings.TrimSuffix(s, delim+old) + delim + new
+	}
+
+	// replace if separated (in the middle)
+	return strings.ReplaceAll(s, delim+old+delim, delim+new+delim)
+}
+
 func awsNameTransformer(f reflect.StructField) (string, error) {
 	name, err := codegen.DefaultNameTransformer(f)
 	if err != nil {
 		return name, err
 	}
-	// replace occurrences with <underscore-number> with <number>
 
 	// (this is codegen, no need to hyper-optimize by pre-compiling regular expressions)
-	r, err := regexp.Compile(`_(\d+)`)
-	if err != nil {
-		return "", err
-	}
+	// replace occurrences with <underscore-number> with <number>
+	result := regexp.MustCompile(`_(\d+)`).ReplaceAllString(name, `$1`)
 
-	return r.ReplaceAllString(name, `$1`), nil
+	return replaceWord(result, "e_c2", "ec2"), nil
 }
 
 func (r *Resource) Generate() error {
