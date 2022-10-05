@@ -12,7 +12,7 @@ func SNSResources() []*Resource {
 		{
 			SubService: "subscriptions",
 			Struct:     &models.Subscription{},
-			SkipFields: []string{"SubscriptionArn"},
+			SkipFields: []string{"SubscriptionArn", "DeliveryPolicy", "EffectiveDeliveryPolicy", "FilterPolicy", "RedrivePolicy"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -22,13 +22,33 @@ func SNSResources() []*Resource {
 						Resolver: `schema.PathResolver("SubscriptionArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("DeliveryPolicy")`,
+					},
+					{
+						Name:     "effective_delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("EffectiveDeliveryPolicy")`,
+					},
+					{
+						Name:     "filter_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("FilterPolicy")`,
+					},
+					{
+						Name:     "redrive_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("RedrivePolicy")`,
+					},
 				}...),
 		},
 
 		{
 			SubService: "topics",
 			Struct:     &models.Topic{},
-			SkipFields: []string{"Arn"},
+			SkipFields: []string{"Arn", "Policy", "EffectiveDeliveryPolicy", "DeliveryPolicy"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -42,6 +62,21 @@ func SNSResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveSnsTopicTags`,
+					},
+					{
+						Name:     "delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("DeliveryPolicy")`,
+					},
+					{
+						Name:     "policy",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("Policy")`,
+					},
+					{
+						Name:     "effective_delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("EffectiveDeliveryPolicy")`,
 					},
 				}...),
 		},

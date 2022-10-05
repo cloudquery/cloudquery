@@ -174,7 +174,7 @@ func Route53Resources() []*Resource {
 		{
 			SubService: "traffic_policy_versions",
 			Struct:     &types.TrafficPolicy{},
-			SkipFields: []string{"Version", "Id"},
+			SkipFields: []string{"Version", "Id", "Document"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -195,6 +195,11 @@ func Route53Resources() []*Resource {
 						Type:     schema.TypeInt,
 						Resolver: `schema.PathResolver("Version")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "document",
+						Type:     schema.TypeJSON,
+						Resolver: `schema.PathResolver("Document")`,
 					},
 				}...),
 		},
