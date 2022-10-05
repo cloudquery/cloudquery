@@ -41,7 +41,6 @@ func sync(cmd *cobra.Command, args []string) error {
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
 	if err != nil {
-		log.Error().Strs("args", args).Err(err).Msg("Failed to load spec(s)")
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
@@ -83,6 +82,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	}
 	defer func() {
 		if err := sourceClient.Terminate(); err != nil {
+			log.Error().Err(err).Msg("Failed to terminate source client")
 			fmt.Println("failed to terminate source client: ", err)
 		}
 	}()
@@ -96,6 +96,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		for _, destClient := range destClients {
 			if destClient != nil {
 				if err := destClient.Terminate(); err != nil {
+					log.Error().Err(err).Msg("Failed to terminate destination client")
 					fmt.Println("failed to terminate destination client: ", err)
 				}
 			}
@@ -123,6 +124,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 
 	resources := make(chan []byte)
 	g, gctx := errgroup.WithContext(ctx)
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start fetching resources")
 	fmt.Println("Starting sync for: ", sourceSpec.Name, "->", sourceSpec.Destinations)
 	g.Go(func() error {
 		defer close(resources)
@@ -183,7 +185,10 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		return fmt.Errorf("failed to get sync summary: %w", err)
 	}
 	_ = bar.Finish()
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("sync completed successfully")
 	fmt.Println("Sync completed successfully.")
 	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d failed_writes: %d\n", totalResources, summary.Errors, summary.Panics, failedWrites)
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
+		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failedWrites", failedWrites).Msg("sync completed successfully")
 	return nil
 }
