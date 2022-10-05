@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
+	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda/models"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -21,26 +22,7 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 			return err
 		}
 
-		for _, f := range response.Functions {
-			getFunctionInput := lambda.GetFunctionInput{
-				FunctionName: f.FunctionName,
-			}
-			funcResponse, err := svc.GetFunction(ctx, &getFunctionInput, func(options *lambda.Options) {
-				options.Region = c.Region
-			})
-
-			if err != nil {
-				if c.IsNotFoundError(err) || c.IsAccessDeniedError(err) {
-					c.Logger().Warn().Err(err).Msg("Failed to get function")
-					res <- &lambda.GetFunctionOutput{
-						Configuration: &f,
-					}
-					continue
-				}
-				return err
-			}
-			res <- funcResponse
-		}
+		res <- response.Functions
 
 		if aws.ToString(response.NextMarker) == "" {
 			break
@@ -49,6 +31,30 @@ func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
+
+func getFunction(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
+	f := resource.Item.(types.FunctionConfiguration)
+
+	funcResponse, err := svc.GetFunction(ctx, &lambda.GetFunctionInput{
+		FunctionName: f.FunctionName,
+	})
+	if err != nil {
+		if c.IsNotFoundError(err) || c.IsAccessDeniedError(err) {
+			c.Logger().Warn().Err(err).Msg("Failed to get function")
+			resource.Item = &lambda.GetFunctionOutput{
+				Configuration: &f,
+			}
+			return nil
+		}
+		return err
+	}
+
+	resource.Item = funcResponse
+	return nil
+}
+
 func resolvePolicyCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	r := resource.Item.(*lambda.GetFunctionOutput)
 	if r.Configuration == nil {
@@ -165,24 +171,31 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 			}
 			return err
 		}
-		aliases := make([]models.AliasWrapper, 0, len(output.Aliases))
-		for _, a := range output.Aliases {
-			alias := a
-			urlConfig, err := svc.GetFunctionUrlConfig(ctx, &lambda.GetFunctionUrlConfigInput{
-				FunctionName: p.Configuration.FunctionName,
-				Qualifier:    alias.Name,
-			})
-			if err != nil && !c.IsNotFoundError(err) {
-				return err
-			}
-			aliases = append(aliases, models.AliasWrapper{AliasConfiguration: &alias, UrlConfig: urlConfig})
-		}
-		res <- aliases
+		res <- output.Aliases
+
 		if output.NextMarker == nil {
 			break
 		}
 		config.Marker = output.NextMarker
 	}
+	return nil
+}
+
+func getFunctionAliasURLConfig(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Lambda
+	alias := resource.Item.(types.AliasConfiguration)
+	p := resource.Parent.Item.(*lambda.GetFunctionOutput)
+
+	urlConfig, err := svc.GetFunctionUrlConfig(ctx, &lambda.GetFunctionUrlConfigInput{
+		FunctionName: p.Configuration.FunctionName,
+		Qualifier:    alias.Name,
+	})
+	if err != nil && !c.IsNotFoundError(err) {
+		return err
+	}
+
+	resource.Item = &models.AliasWrapper{AliasConfiguration: &alias, UrlConfig: urlConfig}
 	return nil
 }
 

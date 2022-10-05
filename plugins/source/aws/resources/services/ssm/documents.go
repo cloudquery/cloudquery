@@ -9,9 +9,10 @@ import (
 
 func Documents() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ssm_documents",
-		Resolver:  fetchSsmDocuments,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ssm"),
+		Name:                "aws_ssm_documents",
+		Resolver:            fetchSsmDocuments,
+		PreResourceResolver: getDocument,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

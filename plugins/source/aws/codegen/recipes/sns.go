@@ -46,9 +46,10 @@ func SNSResources() []*Resource {
 		},
 
 		{
-			SubService: "topics",
-			Struct:     &models.Topic{},
-			SkipFields: []string{"Arn", "Policy", "EffectiveDeliveryPolicy", "DeliveryPolicy"},
+			SubService:          "topics",
+			Struct:              &models.Topic{},
+			SkipFields:          []string{"Arn", "Policy", "EffectiveDeliveryPolicy", "DeliveryPolicy"},
+			PreResourceResolver: "getTopic",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
