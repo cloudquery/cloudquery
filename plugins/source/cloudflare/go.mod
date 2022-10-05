@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/cloudflare/cloudflare-go v0.46.0
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.12.5
+	github.com/cloudquery/plugin-sdk v0.12.6
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
