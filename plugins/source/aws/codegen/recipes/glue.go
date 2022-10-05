@@ -351,9 +351,10 @@ func GlueResources() []*Resource {
 			},
 		},
 		{
-			SubService: "triggers",
-			Struct:     &types.Trigger{},
-			SkipFields: []string{},
+			SubService:          "triggers",
+			Struct:              &types.Trigger{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getTrigger",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
