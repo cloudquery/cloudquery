@@ -77,6 +77,7 @@ func NewCmdRoot() *cobra.Command {
 					Debug:   false,
 					Dsn:     sentryDsn,
 					Release: "cloudquery@" + Version,
+					Transport: sentry.NewHTTPSyncTransport(),
 					// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
 					Integrations: func(integrations []sentry.Integration) []sentry.Integration {
 						var filteredIntegrations []sentry.Integration
