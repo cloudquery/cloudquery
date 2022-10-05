@@ -23,6 +23,7 @@ func main() {
 	}()
 
 	if err := cmd.NewCmdRoot().Execute(); err != nil {
+		// This is fine that the defer function is not being calles as it means there was no panic
 		//nolint:gocritic
 		os.Exit(1)
 	}
