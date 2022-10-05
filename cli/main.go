@@ -4,13 +4,10 @@ import (
 	"fmt"
 	"os"
 	"runtime/debug"
-	"time"
 
 	"github.com/cloudquery/cloudquery/cli/cmd"
 	"github.com/getsentry/sentry-go"
 )
-
-const sentryFlushTimeout = 5 * time.Second
 
 func main() {
 	defer func() {
