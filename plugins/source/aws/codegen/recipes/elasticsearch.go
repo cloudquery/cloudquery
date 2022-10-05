@@ -9,9 +9,10 @@ import (
 func ElasticsearchResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "domains",
-			Struct:     &types.ElasticsearchDomainStatus{},
-			SkipFields: []string{"DomainId"},
+			SubService:          "domains",
+			Struct:              &types.ElasticsearchDomainStatus{},
+			SkipFields:          []string{"DomainId"},
+			PreResourceResolver: "getDomain",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",

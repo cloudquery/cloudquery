@@ -9,9 +9,10 @@ import (
 
 func IdentityPools() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cognito_identity_pools",
-		Resolver:  fetchCognitoIdentityPools,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cognito-identity"),
+		Name:                "aws_cognito_identity_pools",
+		Resolver:            fetchCognitoIdentityPools,
+		PreResourceResolver: getIdentityPool,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("cognito-identity"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
