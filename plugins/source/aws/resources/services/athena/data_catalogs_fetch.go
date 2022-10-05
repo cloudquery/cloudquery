@@ -36,9 +36,9 @@ func getDataCatalog(ctx context.Context, meta schema.ClientMeta, resource *schem
 		Name: catalogSummary.CatalogName,
 	})
 	if err != nil {
-		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
+		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" (with statuscode 400: InvalidRequestException:...) but it exists and its
 		// relations can be fetched by its name
-		if c.IsNotFoundError(err) && *catalogSummary.CatalogName == "AwsDataCatalog" {
+		if client.IsAWSError(err, "InvalidRequestException") && *catalogSummary.CatalogName == "AwsDataCatalog" {
 			resource.Item = types.DataCatalog{Name: catalogSummary.CatalogName, Type: catalogSummary.Type}
 			return nil
 		}
