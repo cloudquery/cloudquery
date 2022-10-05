@@ -1,13 +1,37 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"os/signal"
 	"runtime/debug"
 
 	"github.com/cloudquery/cloudquery/cli/cmd"
 	"github.com/getsentry/sentry-go"
+	"github.com/rs/zerolog/log"
 )
+
+func executeRootCmdWithContext() error {
+	ctx := context.Background()
+	// trap Ctrl+C and call cancel on the context
+	ctx, cancel := context.WithCancel(ctx)
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	defer func() {
+		signal.Stop(c)
+		cancel()
+	}()
+	go func() {
+		select {
+		case <-c:
+			cancel()
+		case <-ctx.Done():
+		}
+	}()
+
+	return cmd.NewCmdRoot().ExecuteContext(ctx)
+}
 
 func main() {
 	defer func() {
@@ -19,9 +43,8 @@ func main() {
 		}
 	}()
 
-	if err := cmd.NewCmdRoot().Execute(); err != nil {
-		// This is fine that the defer function is not being calles as it means there was no panic
-		//nolint:gocritic
+	if err := executeRootCmdWithContext(); err != nil {
+		log.Error().Err(err).Msg("exiting with error")
 		os.Exit(1)
 	}
 }

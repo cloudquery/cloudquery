@@ -151,7 +151,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 			var destFailedWrites uint64
 			var err error
 			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Path, syncTime, destSubscriptions[i]); err != nil {
-				log.Error().Err(err).Msgf("failed to write for %s->%s", sourceSpec.Name, destination)
+				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			failedWrites += destFailedWrites
 			return nil
@@ -185,7 +185,6 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		return fmt.Errorf("failed to get sync summary: %w", err)
 	}
 	_ = bar.Finish()
-	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("sync completed successfully")
 	fmt.Println("Sync completed successfully.")
 	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d failed_writes: %d\n", totalResources, summary.Errors, summary.Panics, failedWrites)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
