@@ -27,5 +27,4 @@ func main() {
 		//nolint:gocritic
 		os.Exit(1)
 	}
-	sentry.Flush(sentryFlushTimeout)
 }
