@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/k8s/plugins/source/k8s/v0.6.4...plugins-source-k8s-v1.0.0) (2022-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+### Features
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
 ## [1.0.2-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.0.1-pre.0...plugins-source-k8s-v1.0.2-pre.0) (2022-10-03)
 
 

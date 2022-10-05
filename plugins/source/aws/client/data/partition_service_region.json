@@ -858,6 +858,12 @@
             "aws-global": {}
           }
         },
+        "cases": {
+          "regions": {
+            "us-east-1": {},
+            "us-west-2": {}
+          }
+        },
         "cassandra": {
           "regions": {
             "ap-east-1": {},

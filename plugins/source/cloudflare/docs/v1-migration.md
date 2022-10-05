@@ -2,14 +2,16 @@
 This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated 2022-09-26.
+Last updated 2022-10-04.
 
 ## cloudflare_access_groups
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## cloudflare_account_member_roles
 Moved to JSON column on [cloudflare_accounts](#cloudflare_accounts)
@@ -19,9 +21,11 @@ Moved to JSON column on [cloudflare_accounts](#cloudflare_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
-|account_id|text|removed|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|account_cq_id|uuid|removed|
 |roles|jsonb|added|
 |user|jsonb|added|
 |user_email|text|removed|
@@ -34,8 +38,10 @@ Moved to JSON column on [cloudflare_accounts](#cloudflare_accounts)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |enforce_two_factor|boolean|removed|
 |settings|jsonb|added|
 
@@ -55,8 +61,10 @@ Moved to JSON column on [cloudflare_certificate_packs](#cloudflare_certificate_p
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |certificates|jsonb|added|
 |validation_errors|jsonb|added|
 |validation_records|jsonb|added|
@@ -65,16 +73,20 @@ Moved to JSON column on [cloudflare_certificate_packs](#cloudflare_certificate_p
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |priority|bigint|updated|Type changed from integer to bigint
 
 ## cloudflare_images
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |require_signed_ur_ls|boolean|added|
 |require_signed_url_s|boolean|removed|
 |variants|text[]|updated|Type changed from jsonb to text[]
@@ -83,8 +95,10 @@ Moved to JSON column on [cloudflare_certificate_packs](#cloudflare_certificate_p
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## cloudflare_waf
 This table was removed.
@@ -95,7 +109,11 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|waf_package_cq_id|uuid|added|
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|waf_package_id|text|added|
 |id|text|added|
 |name|text|added|
 |description|text|added|
@@ -104,15 +122,15 @@ This table was newly added.
 |package_id|text|added|
 |mode|text|added|
 |allowed_modes|text[]|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## cloudflare_waf_overrides
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |url_s|text[]|removed|
 |urls|text[]|added|
 
@@ -121,6 +139,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |id|text|added|
 |name|text|added|
@@ -129,8 +151,6 @@ This table was newly added.
 |detection_mode|text|added|
 |sensitivity|text|added|
 |action_mode|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## cloudflare_waf_rule_groups
 Moved to JSON column on [cloudflare_waf_rules](#cloudflare_waf_rules)
@@ -140,11 +160,13 @@ Moved to JSON column on [cloudflare_waf_rules](#cloudflare_waf_rules)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|removed|
 |waf_cq_id|uuid|removed|
-|waf_package_cq_id|uuid|added|
+|waf_package_id|text|added|
 |zone_id|text|removed|
 
 ## cloudflare_worker_cron_triggers
@@ -152,40 +174,46 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|worker_meta_data_cq_id|uuid|added|
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|worker_meta_data_id|text|added|
 |cron|text|added|
 |created_on|timestamp without time zone|added|
 |modified_on|timestamp without time zone|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## cloudflare_worker_meta_data
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |id|text|added|
 |etag|text|added|
 |size|bigint|added|
 |created_on|timestamp without time zone|added|
 |modified_on|timestamp without time zone|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## cloudflare_worker_routes
 This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |zone_id|text|added|
 |id|text|added|
 |pattern|text|added|
 |enabled|boolean|added|
 |script|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## cloudflare_workers_routes
 This table was removed.
@@ -208,18 +236,22 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|worker_meta_data_cq_id|uuid|added|
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|worker_meta_data_id|text|added|
 |name|text|added|
 |type|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## cloudflare_zones
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |account|jsonb|added|
 |deact_reason|text|added|
 |deactivation_reason|text|removed|

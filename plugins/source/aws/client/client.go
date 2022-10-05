@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -414,19 +416,29 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
-	configFns := []func(*config.LoadOptions) error{
-		config.WithDefaultRegion(defaultRegion),
-	}
 
-	maxRetries := 10
+	maxAttempts := 10
 	if awsConfig.MaxRetries != nil {
-		maxRetries = *awsConfig.MaxRetries
+		maxAttempts = *awsConfig.MaxRetries
 	}
 	maxBackoff := 30
 	if awsConfig.MaxBackoff != nil {
 		maxBackoff = *awsConfig.MaxBackoff
 	}
-	configFns = append(configFns, config.WithRetryer(newRetryer(logger, maxRetries, maxBackoff)))
+
+	configFns := []func(*config.LoadOptions) error{
+		config.WithDefaultRegion(defaultRegion),
+		// https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/retries-timeouts/
+		config.WithRetryer(func() aws.Retryer {
+			// return retry.NewAdaptiveMode()
+			return retry.NewStandard(func(so *retry.StandardOptions) {
+				so.MaxAttempts = maxAttempts
+				so.MaxBackoff = time.Duration(maxBackoff) * time.Second
+				so.RateLimiter = &NoRateLimiter{}
+			})
+			// return retry.AddWithMaxAttempts(retry.NewStandard(), 5)
+		}),
+	}
 
 	if account.DefaultRegion != "" {
 		// According to the docs: If multiple WithDefaultRegion calls are made, the last call overrides the previous call values

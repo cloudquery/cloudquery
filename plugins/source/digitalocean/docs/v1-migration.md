@@ -2,14 +2,16 @@
 This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated 2022-09-26.
+Last updated 2022-10-04.
 
 ## digitalocean_accounts
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |reserved_ip_limit|bigint|added|
 |team|jsonb|added|
 
@@ -22,19 +24,23 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |month_to_date_balance|text|added|
 |account_balance|text|added|
 |month_to_date_usage|text|added|
 |generated_at|timestamp without time zone|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## digitalocean_billing_history
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## digitalocean_cdn
 Moved to JSON column on [digitalocean_cdns](#digitalocean_cdns)
@@ -45,6 +51,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|added|
 |origin|text|added|
 |endpoint|text|added|
@@ -52,15 +62,15 @@ This table was newly added.
 |ttl|bigint|added|
 |certificate_id|text|added|
 |custom_domain|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## digitalocean_certificates
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |created|text|removed|
 |created_at|text|added|
 |s_h_a1_fingerprint|text|removed|
@@ -70,8 +80,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |database_cq_id|uuid|removed|
 |size_gigabytes|real|updated|Type changed from float to real
 
@@ -79,16 +91,20 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |database_cq_id|uuid|removed|
 
 ## digitalocean_database_replicas
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |connection|jsonb|added|
 |connection_database|text|removed|
 |connection_host|text|removed|
@@ -115,8 +131,10 @@ Moved to JSON column on [digitalocean_databases](#digitalocean_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |connection|jsonb|added|
 |connection_database|text|removed|
 |connection_host|text|removed|
@@ -149,8 +167,10 @@ Moved to JSON column on [digitalocean_databases](#digitalocean_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |domain_cq_id|uuid|removed|
 |id|text|updated|Type changed from bigint to text
 
@@ -158,15 +178,19 @@ Moved to JSON column on [digitalocean_databases](#digitalocean_databases)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## digitalocean_droplet_neighbors
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |droplet_cq_id|uuid|removed|
 
 ## digitalocean_droplet_networks_v4
@@ -181,8 +205,10 @@ Moved to JSON column on [digitalocean_droplets](#digitalocean_droplets)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |backup_ids|bigint[]|updated|Type changed from integer[] to bigint[]
 |created|text|removed|
 |created_at|text|added|
@@ -248,8 +274,10 @@ Moved to JSON column on [digitalocean_firewalls](#digitalocean_firewalls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |created|text|removed|
 |created_at|text|added|
 |droplet_ids|bigint[]|updated|Type changed from integer[] to bigint[]
@@ -262,8 +290,10 @@ Moved to JSON column on [digitalocean_firewalls](#digitalocean_firewalls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |droplet|jsonb|added|
 |droplet_id|bigint|removed|
 |ip|text|updated|Type changed from cidr to text
@@ -278,8 +308,10 @@ Moved to JSON column on [digitalocean_firewalls](#digitalocean_firewalls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |created|text|removed|
 |created_at|text|added|
 |size_giga_bytes|float|removed|
@@ -289,8 +321,10 @@ Moved to JSON column on [digitalocean_firewalls](#digitalocean_firewalls)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## digitalocean_load_balancer_droplets
 This table was removed.
@@ -309,6 +343,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |uuid|text|added|
 |type|text|added|
 |description|text|added|
@@ -319,15 +357,15 @@ This table was newly added.
 |tags|text[]|added|
 |alerts|jsonb|added|
 |enabled|boolean|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## digitalocean_project_resources
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |assigned_at|text|updated|Type changed from timestamp without time zone to text
 |links|jsonb|added|
 |links_self|text|removed|
@@ -337,8 +375,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 
 ## digitalocean_regions
 This table was removed.
@@ -349,13 +389,15 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |name|text|added|
 |storage_usage_bytes|bigint|added|
 |storage_usage_bytes_updated_at|timestamp without time zone|added|
 |created_at|timestamp without time zone|added|
 |region|text|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## digitalocean_registry
 Moved to JSON column on [digitalocean_registries](#digitalocean_registries)
@@ -365,8 +407,10 @@ Moved to JSON column on [digitalocean_registries](#digitalocean_registries)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |latest_tag|jsonb|updated|Type changed from text to jsonb
 |latest_tag_compressed_size_bytes|bigint|removed|
 |latest_tag_manifest_digest|text|removed|
@@ -380,8 +424,10 @@ Moved to JSON column on [digitalocean_registries](#digitalocean_registries)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |price_hourly|real|updated|Type changed from float to real
 |price_monthly|real|updated|Type changed from float to real
 |transfer|real|updated|Type changed from float to real
@@ -390,8 +436,10 @@ Moved to JSON column on [digitalocean_registries](#digitalocean_registries)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |created|text|removed|
 |created_at|text|added|
 |size_giga_bytes|float|removed|
@@ -405,8 +453,10 @@ Moved to JSON column on [digitalocean_spaces](#digitalocean_spaces)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |expose_headers|text[]|added|
 |id|text|added|
 |max_age_seconds|bigint|updated|Type changed from integer to bigint
@@ -417,8 +467,10 @@ Moved to JSON column on [digitalocean_spaces](#digitalocean_spaces)
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |acls|jsonb|added|
 |bucket|jsonb|added|
 |creation_date|timestamp without time zone|removed|
@@ -429,6 +481,10 @@ This table was newly added.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|added|
 |droplet_ids|bigint[]|added|
 |region|jsonb|added|
@@ -439,8 +495,6 @@ This table was newly added.
 |filesystem_type|text|added|
 |filesystem_label|text|added|
 |tags|text[]|added|
-|_cq_id|uuid|added|
-|_cq_fetch_time|timestamp without time zone|added|
 
 ## digitalocean_volume_droplets
 This table was removed.
@@ -454,8 +508,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |id|text|removed|
 |type|text|removed|
 |vpc_cq_id|uuid|removed|
@@ -464,8 +520,10 @@ This table was removed.
 
 | Name          | Type          | Status | Comment
 | ------------- | ------------- | --------------- | ---------------
-|_cq_fetch_time|timestamp without time zone|added|
 |_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
 |ip_range|text|updated|Type changed from cidr to text
 |region|text|added|
 |region_slug|text|removed|

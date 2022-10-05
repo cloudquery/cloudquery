@@ -19,15 +19,15 @@
     },
     {
       "source": "/providers/:path*",
-      "destination": "/docs/plugins/source"
+      "destination": "/docs/plugins/sources"
     },
     {
       "source": "/plugins/:path*",
-      "destination": "/docs/plugins/source"
+      "destination": "/docs/plugins/sources"
     },
     {
       "source": "/providers",
-      "destination": "/docs/plugins/source"
+      "destination": "/docs/plugins/sources"
     }
   ]
 }
