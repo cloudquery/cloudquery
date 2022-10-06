@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -19,12 +20,24 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 		t.Fatal(err)
 	}
 
+	subTemp := types.Subscription{}
+	err = faker.FakeData(&subTemp)
+	if err != nil {
+		t.Fatal(err)
+	}
+	emptySub := types.Subscription{
+		SubscriptionArn: aws.String("PendingConfirmation"),
+		Owner:           subTemp.Owner,
+		Protocol:        subTemp.Protocol,
+		TopicArn:        subTemp.TopicArn,
+		Endpoint:        subTemp.Endpoint,
+	}
 	m.EXPECT().ListSubscriptions(
 		gomock.Any(),
 		&sns.ListSubscriptionsInput{},
 	).Return(
 		&sns.ListSubscriptionsOutput{
-			Subscriptions: []types.Subscription{sub},
+			Subscriptions: []types.Subscription{sub, emptySub},
 		}, nil)
 
 	m.EXPECT().GetSubscriptionAttributes(
