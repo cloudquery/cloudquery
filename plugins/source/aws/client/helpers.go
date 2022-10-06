@@ -62,8 +62,6 @@ const (
 	WorkspacesService           AWSService = "workspaces"
 )
 
-const MAX_GOROUTINES = 10
-
 const (
 	PartitionServiceRegionFile = "data/partition_service_region.json"
 	defaultPartition           = "aws"
