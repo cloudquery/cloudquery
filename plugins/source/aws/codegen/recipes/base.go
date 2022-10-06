@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
-	"github.com/cloudquery/plugin-sdk/caser"
 	"go/format"
 	"os"
 	"path"
@@ -13,6 +12,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
