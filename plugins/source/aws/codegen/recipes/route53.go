@@ -1,8 +1,12 @@
 package recipes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -80,7 +84,7 @@ func Route53Resources() []*Resource {
 
 		{
 			SubService: "hosted_zones",
-			Struct:     &types.HostedZone{},
+			Struct:     &models.Route53HostedZoneWrapper{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: append(
 				defaultAccountColumns,
@@ -209,6 +213,10 @@ func Route53Resources() []*Resource {
 	for _, r := range resources {
 		r.Service = "route53"
 		r.Multiplex = "client.AccountMultiplex"
+		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
+		if strings.Contains(structName, "Wrapper") {
+			r.UnwrapEmbeddedStructs = true
+		}
 	}
 	return resources
 }
