@@ -146,3 +146,58 @@ func TestResolveSliceJson(t *testing.T) {
 		assert.Equal(t, tc.ExpectedData, r.Get(ta.Columns[0].Name))
 	}
 }
+
+var jsonString = "{\"k1\":\"v1\"}"
+var jsonBytes = []byte(jsonString)
+
+func TestResolveStringJson(t *testing.T) {
+	cases := []struct {
+		InputItem    interface{}
+		ExpectedData map[string]interface{}
+		Path         string
+	}{
+		{
+			InputItem: struct {
+				Json string
+			}{Json: jsonString},
+			ExpectedData: map[string]interface{}{"k1": "v1"},
+			Path:         "Json",
+		},
+		{
+			InputItem: struct {
+				Json *string
+			}{Json: &jsonString},
+			ExpectedData: map[string]interface{}{"k1": "v1"},
+			Path:         "Json",
+		},
+		{
+			InputItem: struct {
+				Json []byte
+			}{Json: jsonBytes},
+			ExpectedData: map[string]interface{}{"k1": "v1"},
+			Path:         "Json",
+		},
+		{
+			InputItem: struct {
+				Json *[]byte
+			}{Json: &jsonBytes},
+			ExpectedData: map[string]interface{}{"k1": "v1"},
+			Path:         "Json",
+		},
+	}
+
+	for _, tc := range cases {
+		ta := &schema.Table{
+			Columns: []schema.Column{
+				{
+					Name: "json",
+					Type: schema.TypeJSON,
+				},
+			},
+		}
+		r := schema.NewResourceData(ta, nil, tc.InputItem)
+		err := MarshaledJsonResolver(tc.Path)(context.Background(), nil, r, ta.Columns[0])
+		assert.NoError(t, err)
+		assert.Equal(t, tc.ExpectedData, r.Get(ta.Columns[0].Name))
+	}
+}

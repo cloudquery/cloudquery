@@ -24,7 +24,7 @@ func ECRResources() []*Resource {
 					},
 					{
 						Name:     "tags",
-						Type:     schema.TypeString,
+						Type:     schema.TypeJSON,
 						Resolver: `resolveRepositoryTags`,
 					},
 				}...),

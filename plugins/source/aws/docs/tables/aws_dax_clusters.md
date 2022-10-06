@@ -15,7 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|String|
+|tags|JSON|
 |active_nodes|Int|
 |cluster_discovery_endpoint|JSON|
 |cluster_endpoint_encryption_type|String|
