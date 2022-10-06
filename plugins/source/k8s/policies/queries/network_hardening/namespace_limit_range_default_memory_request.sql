@@ -1,27 +1,26 @@
-WITH default_limit_range AS (SELECT namespace,
-                                    default_request
-                             FROM k8s_core_limit_range_limits
-                                      JOIN k8s_core_limit_ranges
-                                           ON k8s_core_limit_ranges.cq_id =
-                                              k8s_core_limit_range_limits.limit_range_cq_id)
+
+
+WITH default_request_memory_limits AS (
+   SELECT namespace, value->'default_request'->>'memory' AS default_request_memory_limit
+   FROM k8s_core_limit_ranges CROSS JOIN jsonb_array_elements(k8s_core_limit_ranges.spec_limits))
 
 INSERT
 INTO k8s_policy_results (resource_id, execution_time, framework, check_id, title, context, namespace,
                         resource_name, status)
-select uid                                          AS resource_id,
-       :'execution_time'::timestamp                 AS execution_time,
-       :'framework'                                 AS framework,
-       :'check_id'                                  AS check_id,
-       'Namespaces Memory default resource request' AS title,
-       context                                      AS context,
-       name                                         AS namespace,
-       name                                         AS resource_name,
+select uid                                         AS resource_id,
+       :'execution_time'::timestamp                AS execution_time,
+       :'framework'                                AS framework,
+       :'check_id'                                 AS check_id,
+       'Namespaces Memory request resource quota' AS title,
+       context                                     AS context,
+       name                                        AS namespace,
+       name                                        AS resource_name,
        CASE
            WHEN
-               default_request ->> 'memory' IS NULL
+               (SELECT COUNT(default_request_memory_limit) FROM default_request_memory_limits  
+                  WHERE namespace = k8s_core_namespaces.name
+                  AND context = k8s_core_namespaces.context) = 0
                THEN 'fail'
            ELSE 'pass'
-           END                                      AS status
-FROM k8s_core_namespaces
-         LEFT JOIN default_limit_range
-                   ON default_limit_range.namespace = k8s_core_namespaces.name
+           END                                     AS status
+FROM k8s_core_namespaces;

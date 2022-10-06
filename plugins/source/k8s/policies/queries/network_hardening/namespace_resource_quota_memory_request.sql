@@ -10,10 +10,11 @@ select DISTINCT (k8s_core_namespaces.uid)                          AS resource_i
                 k8s_core_namespaces.name                           AS resource_name,
                 CASE
                     WHEN
-                        hard -> 'requests.memory' IS NULL AND hard -> 'memory' IS NULL
+                        (SELECT COUNT(*) FROM k8s_core_resource_quotas
+                            WHERE namespace = k8s_core_namespaces.name
+                            AND context = k8s_core_namespaces.context
+                            AND spec_hard->>'requests.memory' IS NOT NULL) = 0
                         THEN 'fail'
                     ELSE 'pass'
                     END                                            AS status
-FROM k8s_core_namespaces
-         LEFT JOIN k8s_core_resource_quotas
-                   ON k8s_core_resource_quotas.namespace = k8s_core_namespaces.name
+FROM k8s_core_namespaces;

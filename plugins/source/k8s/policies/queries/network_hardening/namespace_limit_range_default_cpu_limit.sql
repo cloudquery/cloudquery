@@ -1,9 +1,6 @@
-WITH default_limit_range AS (SELECT namespace,
-                                    k8s_core_limit_range_limits.default AS default_limit -- noqa
-                             FROM k8s_core_limit_range_limits
-                                      JOIN k8s_core_limit_ranges
-                                           ON k8s_core_limit_ranges.cq_id =
-                                              k8s_core_limit_range_limits.limit_range_cq_id)
+WITH default_cpu_limits AS (
+   SELECT context, namespace, value->'default'->>'cpu' AS default_cpu_limit
+   FROM k8s_core_limit_ranges CROSS JOIN jsonb_array_elements(k8s_core_limit_ranges.spec_limits))
 
 INSERT
 INTO k8s_policy_results (resource_id, execution_time, framework, check_id, title, context, namespace,
@@ -18,10 +15,10 @@ select uid                                     AS resource_id,
        name                                    AS resource_name,
        CASE
            WHEN
-               default_limit ->> 'cpu' IS NULL
+               (SELECT COUNT(default_cpu_limit) FROM default_cpu_limits
+                  WHERE namespace = k8s_core_namespaces.name
+                  AND context = k8s_core_namespaces.context) = 0
                THEN 'fail'
            ELSE 'pass'
            END                                 AS status
-FROM k8s_core_namespaces
-         LEFT JOIN default_limit_range
-                   ON default_limit_range.namespace = k8s_core_namespaces.name
+FROM k8s_core_namespaces;

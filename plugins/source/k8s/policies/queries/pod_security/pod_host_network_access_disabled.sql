@@ -10,7 +10,7 @@ select uid                                   AS resource_id,
        name                                  AS resource_name,
        CASE
            WHEN
-               host_network
+               spec_host_network
                THEN 'fail'
            ELSE 'pass'
            END                               AS status
