@@ -46,7 +46,7 @@ func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 }
 
 func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	plan := resource.Item.(backup.GetBackupPlanOutput)
+	plan := resource.Item.(*backup.GetBackupPlanOutput)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListTagsInput{ResourceArn: plan.BackupPlanArn}
@@ -71,7 +71,7 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 }
 
 func fetchBackupPlanSelections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	plan := parent.Item.(backup.GetBackupPlanOutput)
+	plan := parent.Item.(*backup.GetBackupPlanOutput)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListBackupSelectionsInput{
