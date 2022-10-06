@@ -39,17 +39,17 @@ func Queues() *schema.Table {
 			{
 				Name:     "policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Policy"),
+				Resolver: client.MarshaledJsonResolver("Policy"),
 			},
 			{
 				Name:     "redrive_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RedrivePolicy"),
+				Resolver: client.MarshaledJsonResolver("RedrivePolicy"),
 			},
 			{
 				Name:     "redrive_allow_policy ",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RedriveAllowPolicy"),
+				Resolver: client.MarshaledJsonResolver("RedriveAllowPolicy"),
 			},
 			{
 				Name:     "url",

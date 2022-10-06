@@ -38,7 +38,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 			"FilterPolicy":                 "{}",
 			"PendingConfirmation":          "true",
 			"RawMessageDelivery":           "true",
-			"RedrivePolicy":                "some",
+			"RedrivePolicy":                `{"deadLetterTargetArn": "test"}`,
 			"SubscriptionRoleArn":          "some",
 			"WeirdAndUnexpectedField":      "needs updating",
 		}},

@@ -8,7 +8,6 @@ import (
 
 func SQSResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService: "queues",
 			Struct:     &models.Queue{},
@@ -30,17 +29,17 @@ func SQSResources() []*Resource {
 					{
 						Name:     "policy",
 						Type:     schema.TypeJSON,
-						Resolver: `schema.PathResolver("Policy")`,
+						Resolver: `client.MarshaledJsonResolver("Policy")`,
 					},
 					{
 						Name:     "redrive_policy",
 						Type:     schema.TypeJSON,
-						Resolver: `schema.PathResolver("RedrivePolicy")`,
+						Resolver: `client.MarshaledJsonResolver("RedrivePolicy")`,
 					},
 					{
 						Name:     "redrive_allow_policy ",
 						Type:     schema.TypeJSON,
-						Resolver: `schema.PathResolver("RedriveAllowPolicy")`,
+						Resolver: `client.MarshaledJsonResolver("RedriveAllowPolicy")`,
 					},
 				}...),
 		},

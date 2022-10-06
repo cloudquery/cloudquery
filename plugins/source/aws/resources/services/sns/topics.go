@@ -39,17 +39,17 @@ func Topics() *schema.Table {
 			{
 				Name:     "delivery_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DeliveryPolicy"),
+				Resolver: client.MarshaledJsonResolver("DeliveryPolicy"),
 			},
 			{
 				Name:     "policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Policy"),
+				Resolver: client.MarshaledJsonResolver("Policy"),
 			},
 			{
 				Name:     "effective_delivery_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
+				Resolver: client.MarshaledJsonResolver("EffectiveDeliveryPolicy"),
 			},
 			{
 				Name:     "display_name",

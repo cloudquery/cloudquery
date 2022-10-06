@@ -34,22 +34,22 @@ func Subscriptions() *schema.Table {
 			{
 				Name:     "delivery_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("DeliveryPolicy"),
+				Resolver: client.MarshaledJsonResolver("DeliveryPolicy"),
 			},
 			{
 				Name:     "effective_delivery_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EffectiveDeliveryPolicy"),
+				Resolver: client.MarshaledJsonResolver("EffectiveDeliveryPolicy"),
 			},
 			{
 				Name:     "filter_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("FilterPolicy"),
+				Resolver: client.MarshaledJsonResolver("FilterPolicy"),
 			},
 			{
 				Name:     "redrive_policy",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RedrivePolicy"),
+				Resolver: client.MarshaledJsonResolver("RedrivePolicy"),
 			},
 			{
 				Name:     "endpoint",
