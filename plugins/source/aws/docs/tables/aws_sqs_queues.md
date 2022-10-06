@@ -18,7 +18,7 @@ The primary key for this table is **arn**.
 |tags|JSON|
 |policy|JSON|
 |redrive_policy|JSON|
-|redrive_allow_policy |JSON|
+|redrive_allow_policy|JSON|
 |url|String|
 |approximate_number_of_messages|Int|
 |approximate_number_of_messages_delayed|Int|

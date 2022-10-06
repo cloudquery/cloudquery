@@ -37,7 +37,7 @@ func SQSResources() []*Resource {
 						Resolver: `client.MarshaledJsonResolver("RedrivePolicy")`,
 					},
 					{
-						Name:     "redrive_allow_policy ",
+						Name:     "redrive_allow_policy",
 						Type:     schema.TypeJSON,
 						Resolver: `client.MarshaledJsonResolver("RedriveAllowPolicy")`,
 					},
