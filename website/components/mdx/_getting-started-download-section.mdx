@@ -2,39 +2,13 @@ import { Tabs, Tab } from '../Tabs'
 
 You can download the precompiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
-<Tabs options={['Linux', 'OSX', 'Windows']}>
-
-<Tab>
-
-<Tabs options={[ 'Precompiled Binaries (x86_64)', 'Precompiled Binaries (arm64)' ]}>
-
-<Tab>
-
-```bash
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Linux_x86_64 -o cloudquery
-chmod a+x cloudquery
-```
-
-</Tab>
-
-<Tab>
-
-```bash
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Linux_arm64 -o cloudquery
-chmod a+x cloudquery
-```
-
-</Tab>
-
-</Tabs>
-
-</Tab>
+<Tabs options={['OSX', 'Linux', 'Windows']}>
 
 <Tab>
 <Tabs options={['Homebrew', 'Precompiled Binaries (x86_64)', 'Precompiled Binaries (arm64)']}>
 <Tab>
 
-```bash
+```bash copy
 brew install cloudquery/tap/cloudquery
 
 # After initial install you can upgrade the version via:
@@ -45,7 +19,7 @@ brew install cloudquery/tap/cloudquery
 
 <Tab>
 
-```bash
+```bash copy
 curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Darwin_x86_64 -o cloudquery
 chmod a+x cloudquery
 ```
@@ -54,8 +28,34 @@ chmod a+x cloudquery
 
 <Tab>
 
-```bash
+```bash copy
 curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Darwin_arm64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+</Tabs>
+
+</Tab>
+
+<Tab>
+
+<Tabs options={[ 'Precompiled Binaries (x86_64)', 'Precompiled Binaries (arm64)' ]}>
+
+<Tab>
+
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Linux_x86_64 -o cloudquery
+chmod a+x cloudquery
+```
+
+</Tab>
+
+<Tab>
+
+```bash copy
+curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Linux_arm64 -o cloudquery
 chmod a+x cloudquery
 ```
 
@@ -71,7 +71,7 @@ chmod a+x cloudquery
 
 <Tab>
 
-```bash
+```bash copy
 curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Windows_x86_64.exe -o cloudquery.exe
 ```
 
@@ -79,7 +79,7 @@ curl -L https://versions.cloudquery.io/latest/v1/cloudquery_Windows_x86_64.exe -
 
 <Tab>
 
-```powershell
+```powershell copy
 Invoke-WebRequest https://versions.cloudquery.io/latest/v1/cloudquery_Windows_x86_64.exe -o cloudquery.exe
 ```
 

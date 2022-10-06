@@ -7,11 +7,6 @@ import (
 
 var docFiles = []string{
 	"cloudquery.md",
-	"cloudquery_completion.md",
-	"cloudquery_completion_bash.md",
-	"cloudquery_completion_fish.md",
-	"cloudquery_completion_powershell.md",
-	"cloudquery_completion_zsh.md",
 	"cloudquery_sync.md",
 }
 
