@@ -55,7 +55,7 @@ spec:
     # plugin specific configuration.
 ```
 
-Check the documentation [source spec](/docs/reference/source-spec), and for each [plugin](/docs/plugins/sources) for details on how to configure the plugin-specific spec part. However, generally these will be exactly the same as in v0, and all the same authentication functionality is still supported.
+Check the [source spec documentation](/docs/reference/source-spec) for general layout, and individual [plugin documentation](/docs/plugins/sources) for details on how to configure the plugin-specific spec. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
 
 ### Destination Plugins
 
