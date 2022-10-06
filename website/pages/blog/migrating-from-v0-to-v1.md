@@ -23,7 +23,7 @@ The [announcement blog post](/blog/cloudquery-v1-release) lists many of the impo
 
 ## Changes to the Configuration Format
 
-V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI. Mostly because we support now multiple destinations, there are seperate configs for source and destination plugins.
+V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI. Mostly because we now support multiple destinations, there are separate configs for source and destination plugins.
 
 ### Source Plugins
 
