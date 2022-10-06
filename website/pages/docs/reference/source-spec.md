@@ -17,7 +17,9 @@ The name field may be used to uniquely identify a particular source configuratio
 (`string`, optional)
 
 Configures how to retrieve the plugin. For plugins hosted on GitHub, `path` is inferred from `name` by default.
-For example `name: aws` will resolve `path` to `clouduquery/aws`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
+For example `name: aws` will resolve `path` to `clouduquery/aws`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`.  
+If plugin registry is set to `grpc`, path should be an address that plugin is listening on. For example if you started a plugin locally in debug mode it will be listening on `localhost:50051` and you can use that as the path.
+If plugin registry is `local`, path should be a path to the plugin binary. For example if you have a plugin binary in `~/.cloudquery/plugins` you can use `~/.cloudquery/plugins/<bin_name>` as the path.
 
 ### version
 
