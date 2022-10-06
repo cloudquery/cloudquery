@@ -139,15 +139,14 @@ func MarshaledJsonResolver(path string) schema.ColumnResolver {
 		var j map[string]interface{}
 		field := funk.Get(r.Item, path, funk.WithAllowZero())
 
+		if field == nil {
+			return nil
+		}
+
 		var val reflect.Value
+		val = reflect.ValueOf(field)
 		if reflect.TypeOf(field).Kind() == reflect.Ptr {
-			s := reflect.ValueOf(field)
-			if s.IsNil() {
-				return nil
-			}
-			val = s.Elem()
-		} else {
-			val = reflect.ValueOf(field)
+			val = val.Elem()
 		}
 		var err error
 		j = make(map[string]interface{})
