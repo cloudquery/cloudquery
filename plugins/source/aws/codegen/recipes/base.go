@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"embed"
 	"fmt"
+	"github.com/cloudquery/plugin-sdk/caser"
 	"go/format"
 	"os"
 	"path"
 	"reflect"
-	"regexp"
 	"runtime"
 	"strings"
 	"text/template"
@@ -57,19 +57,10 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 }
 
 func awsNameTransformer(f reflect.StructField) (string, error) {
-	name, err := codegen.DefaultNameTransformer(f)
-	if err != nil {
-		return name, err
-	}
-	// replace occurrences with <underscore-number> with <number>
-
-	// (this is codegen, no need to hyper-optimize by pre-compiling regular expressions)
-	r, err := regexp.Compile(`_(\d+)`)
-	if err != nil {
-		return "", err
-	}
-
-	return r.ReplaceAllString(name, `$1`), nil
+	c := caser.New(caser.WithCustomInitialisms(map[string]bool{
+		"EC2": true,
+	}))
+	return c.ToSnake(f.Name), nil
 }
 
 func (r *Resource) Generate() error {
