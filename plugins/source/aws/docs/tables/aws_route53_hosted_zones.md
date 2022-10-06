@@ -19,9 +19,7 @@ The following tables depend on `aws_route53_hosted_zones`:
 |_cq_sync_time|Timestamp|
 |account_id|String|
 |arn (PK)|String|
-|caller_reference|String|
-|id|String|
-|name|String|
-|config|JSON|
-|linked_service|JSON|
-|resource_record_set_count|Int|
+|hosted_zone|JSON|
+|tags|JSON|
+|delegation_set_id|String|
+|vp_cs|JSON|
