@@ -23,6 +23,7 @@ The primary key for this table is **arn**.
 |iam_role_id|String|
 |ip_group_ids|StringArray|
 |registration_code|String|
+|saml_properties|JSON|
 |selfservice_permissions|JSON|
 |state|String|
 |subnet_ids|StringArray|

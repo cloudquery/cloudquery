@@ -55,4 +55,5 @@ The primary key for this table is **arn**.
 |training_time_in_seconds|Int|
 |tuning_job_arn|String|
 |vpc_config|JSON|
+|warm_pool_status|JSON|
 |result_metadata|JSON|

@@ -17,12 +17,14 @@ The primary key for this table is **arn**.
 |arn (PK)|String|
 |tags|JSON|
 |creation_time|Timestamp|
-|file_system_id|String|
 |lifecycle|String|
 |task_id|String|
 |type|String|
+|capacity_to_release|Int|
 |end_time|Timestamp|
 |failure_details|JSON|
+|file_cache_id|String|
+|file_system_id|String|
 |paths|StringArray|
 |report|JSON|
 |start_time|Timestamp|
