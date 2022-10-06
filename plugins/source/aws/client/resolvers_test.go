@@ -165,6 +165,13 @@ func TestResolveStringJson(t *testing.T) {
 		},
 		{
 			InputItem: struct {
+				Json string
+			}{Json: ""},
+			ExpectedData: nil,
+			Path:         "Json",
+		},
+		{
+			InputItem: struct {
 				Json *string
 			}{Json: &jsonString},
 			ExpectedData: map[string]interface{}{"k1": "v1"},
@@ -195,6 +202,13 @@ func TestResolveStringJson(t *testing.T) {
 			InputItem: struct {
 				Json *[]byte
 			}{Json: nil},
+			ExpectedData: nil,
+			Path:         "Json",
+		},
+		{
+			InputItem: struct {
+				Json []byte
+			}{Json: []byte{}},
 			ExpectedData: nil,
 			Path:         "Json",
 		},

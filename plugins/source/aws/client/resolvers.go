@@ -148,17 +148,24 @@ func MarshaledJsonResolver(path string) schema.ColumnResolver {
 		if reflect.TypeOf(field).Kind() == reflect.Ptr {
 			val = val.Elem()
 		}
-		var err error
-		j = make(map[string]interface{})
+
+		var b []byte
 		switch val.Kind() {
 		case reflect.String:
-			err = json.Unmarshal([]byte(val.String()), &j)
+			b = []byte(val.String())
 		case reflect.Slice, reflect.Array:
-			err = json.Unmarshal(val.Bytes(), &j)
+			b = val.Bytes()
 		}
+		if len(b) == 0 {
+			return r.Set(c.Name, nil)
+		}
+
+		j = make(map[string]interface{})
+		err := json.Unmarshal(b, &j)
 		if err != nil {
 			return errors.WithStack(err)
 		}
+
 		return r.Set(c.Name, j)
 	}
 }
