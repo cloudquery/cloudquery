@@ -6,7 +6,6 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
-	route53Types "github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -36,7 +35,7 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			ResourceTagSets: []types.ResourceTagSet{
 				{
 					ResourceId: &hzId,
-					Tags:       []route53Types.Tag{tag},
+					Tags:       []types.Tag{tag},
 				},
 			},
 		}, nil)
