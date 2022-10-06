@@ -140,7 +140,7 @@ func MarshaledJsonResolver(path string) schema.ColumnResolver {
 		field := funk.Get(r.Item, path, funk.WithAllowZero())
 
 		if field == nil {
-			return nil
+			return r.Set(c.Name, nil)
 		}
 
 		var val reflect.Value
