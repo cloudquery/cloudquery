@@ -37,6 +37,21 @@ func Queues() *schema.Table {
 				Resolver: resolveSqsQueueTags,
 			},
 			{
+				Name:     "policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("Policy"),
+			},
+			{
+				Name:     "redrive_policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("RedrivePolicy"),
+			},
+			{
+				Name:     "redrive_allow_policy",
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("RedriveAllowPolicy"),
+			},
+			{
 				Name:     "url",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("URL"),
@@ -82,19 +97,9 @@ func Queues() *schema.Table {
 				Resolver: schema.PathResolver("MessageRetentionPeriod"),
 			},
 			{
-				Name:     "policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Policy"),
-			},
-			{
 				Name:     "receive_message_wait_time_seconds",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ReceiveMessageWaitTimeSeconds"),
-			},
-			{
-				Name:     "redrive_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RedrivePolicy"),
 			},
 			{
 				Name:     "visibility_timeout",
@@ -135,11 +140,6 @@ func Queues() *schema.Table {
 				Name:     "fifo_throughput_limit",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("FifoThroughputLimit"),
-			},
-			{
-				Name:     "redrive_allow_policy",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RedriveAllowPolicy"),
 			},
 			{
 				Name:     "unknown_fields",
