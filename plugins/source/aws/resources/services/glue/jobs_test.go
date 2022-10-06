@@ -17,7 +17,7 @@ func buildJobsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	node := types.CodeGenConfigurationNode{}
 
-	require.NoError(t, faker.FakeDataSkipFields(&node, []string{"ApplyMapping", "JDBCConnectorSource", ""}))
+	require.NoError(t, faker.FakeDataSkipFields(&node, []string{"ApplyMapping", "JDBCConnectorSource"}))
 	job := types.Job{
 		CodeGenConfigurationNodes: map[string]types.CodeGenConfigurationNode{"test": node},
 		ExecutionClass:            types.ExecutionClassFlex,
