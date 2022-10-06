@@ -61,6 +61,11 @@ func ConformancePacks() *schema.Table {
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdateRequestedTime"),
 			},
+			{
+				Name:     "template_ssm_document_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TemplateSSMDocumentDetails"),
+			},
 		},
 
 		Relations: []*schema.Table{

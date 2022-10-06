@@ -63,6 +63,11 @@ func EndpointConfigurations() *schema.Table {
 				Resolver: schema.PathResolver("DataCaptureConfig"),
 			},
 			{
+				Name:     "explainer_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExplainerConfig"),
+			},
+			{
 				Name:     "kms_key_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("KmsKeyId"),

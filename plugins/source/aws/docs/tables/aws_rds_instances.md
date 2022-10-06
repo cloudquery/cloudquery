@@ -21,6 +21,7 @@ The primary key for this table is **arn**.
 |activity_stream_kinesis_stream_name|String|
 |activity_stream_kms_key_id|String|
 |activity_stream_mode|String|
+|activity_stream_policy_status|String|
 |activity_stream_status|String|
 |allocated_storage|Int|
 |associated_roles|JSON|

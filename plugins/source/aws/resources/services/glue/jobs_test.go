@@ -20,8 +20,9 @@ func buildJobsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	require.NoError(t, faker.FakeDataSkipFields(&node, []string{"ApplyMapping", "JDBCConnectorSource"}))
 	job := types.Job{
 		CodeGenConfigurationNodes: map[string]types.CodeGenConfigurationNode{"test": node},
+		ExecutionClass:            types.ExecutionClassFlex,
 	}
-	require.NoError(t, faker.FakeDataSkipFields(&job, []string{"WorkerType", "CodeGenConfigurationNodes"}))
+	require.NoError(t, faker.FakeDataSkipFields(&job, []string{"WorkerType", "CodeGenConfigurationNodes", "ExecutionClass"}))
 	m.EXPECT().GetJobs(gomock.Any(), gomock.Any()).Return(&glue.GetJobsOutput{Jobs: []types.Job{job}}, nil)
 
 	var jobRuns glue.GetJobRunsOutput
