@@ -1486,6 +1486,19 @@ Moved to JSON column on [gcp_storage_buckets](#gcp_storage_buckets)
 Moved to JSON column on [gcp_storage_buckets](#gcp_storage_buckets)
 
 
+## gcp_storage_bucket_policies
+This table was newly added.
+
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|project_id|text|added|
+|bucket_name|text|added|
+|bindings|jsonb|added|
+
 ## gcp_storage_buckets
 
 | Name          | Type          | Status | Comment

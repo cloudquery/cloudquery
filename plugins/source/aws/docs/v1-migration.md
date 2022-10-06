@@ -1110,7 +1110,6 @@ Moved to JSON column on [aws_cloudfront_distributions](#aws_cloudfront_distribut
 |start_logging_time|timestamp without time zone|removed|
 |status|jsonb|added|
 |stop_logging_time|timestamp without time zone|removed|
-|tags|jsonb|removed|
 
 ## aws_cloudwatch_alarm_metrics
 Moved to JSON column on [aws_cloudwatch_alarms](#aws_cloudwatch_alarms)
@@ -1297,7 +1296,6 @@ Moved to JSON column on [aws_codepipeline_pipelines](#aws_codepipeline_pipelines
 |name|text|removed|
 |pipeline|jsonb|added|
 |role_arn|text|removed|
-|tags|text|updated|Type changed from jsonb to text
 |updated|timestamp without time zone|removed|
 |version|bigint|removed|
 
@@ -1458,6 +1456,7 @@ Moved to JSON column on [aws_cognito_user_pools](#aws_cognito_user_pools)
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
 |conformance_pack_input_parameters|jsonb|removed|
+|template_ssm_document_details|jsonb|added|
 
 ## aws_dax_cluster_nodes
 Moved to JSON column on [aws_dax_clusters](#aws_dax_clusters)
@@ -1488,7 +1487,6 @@ Moved to JSON column on [aws_dax_clusters](#aws_dax_clusters)
 |parameter_group_name|text|removed|
 |sse_description|jsonb|added|
 |sse_description_status|text|removed|
-|tags|text|updated|Type changed from jsonb to text
 |total_nodes|bigint|updated|Type changed from integer to bigint
 
 ## aws_directconnect_connection_mac_sec_keys
@@ -1824,6 +1822,7 @@ Moved to JSON column on [aws_ec2_ebs_volumes](#aws_ec2_ebs_volumes)
 |_cq_parent_id|uuid|added|
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
+|deliver_cross_account_role|text|added|
 |destination_options|jsonb|added|
 |id|text|removed|
 |max_aggregation_interval|bigint|updated|Type changed from integer to bigint
@@ -1877,6 +1876,7 @@ Moved to JSON column on [aws_ec2_images](#aws_ec2_images)
 |deprecation_time|text|updated|Type changed from timestamp without time zone to text
 |id|text|removed|
 |image_id|text|added|
+|imds_support|text|added|
 |last_launched_time|timestamp without time zone|removed|
 |state_reason|jsonb|added|
 |state_reason_code|text|removed|
@@ -2319,8 +2319,10 @@ Moved to JSON column on [aws_ec2_subnets](#aws_ec2_subnets)
 |accepter_owner_id|text|removed|
 |accepter_region|text|removed|
 |accepter_tgw_info|jsonb|added|
+|accepter_transit_gateway_attachment_id|text|added|
 |accepter_transit_gateway_id|text|removed|
 |account_id|text|added|
+|options|jsonb|added|
 |region|text|added|
 |requester_owner_id|text|removed|
 |requester_region|text|removed|
@@ -2529,7 +2531,6 @@ Moved to JSON column on [aws_ec2_vpcs](#aws_ec2_vpcs)
 |name|text|removed|
 |repository_name|text|added|
 |repository_uri|text|added|
-|tags|text|updated|Type changed from jsonb to text
 |uri|text|removed|
 
 ## aws_ecr_repository_images
@@ -2775,11 +2776,14 @@ Moved to JSON column on [aws_eks_clusters](#aws_eks_clusters)
 |certificate_authority_data|text|removed|
 |connector_config|jsonb|added|
 |encryption_config|jsonb|added|
+|health|jsonb|added|
+|id|text|added|
 |identity|jsonb|added|
 |identity_oidc_issuer|text|removed|
 |kubernetes_network_config|jsonb|added|
 |kubernetes_network_config_service_ipv4_cidr|text|removed|
 |logging|jsonb|added|
+|outpost_config|jsonb|added|
 |resources_vpc_config|jsonb|added|
 |resources_vpc_config_cluster_security_group_id|text|removed|
 |resources_vpc_config_endpoint_private_access|boolean|removed|
@@ -3410,6 +3414,7 @@ Moved to JSON column on [aws_emr_block_public_access_configs](#aws_emr_block_pub
 |created_by_arn|text|removed|
 |creation_date_time|timestamp without time zone|removed|
 |properties|jsonb|removed|
+|result_metadata|jsonb|added|
 
 ## aws_emr_clusters
 
@@ -3568,11 +3573,15 @@ This table was newly added.
 |batch_import_meta_data_on_create|boolean|added|
 |creation_time|timestamp without time zone|added|
 |data_repository_path|text|added|
+|data_repository_subdirectories|text[]|added|
 |failure_details|jsonb|added|
+|file_cache_id|text|added|
+|file_cache_path|text|added|
 |file_system_id|text|added|
 |file_system_path|text|added|
 |imported_file_chunk_size|bigint|added|
 |lifecycle|text|added|
+|nfs|jsonb|added|
 |s3|jsonb|added|
 
 ## aws_fsx_data_repository_tasks
@@ -3589,12 +3598,14 @@ This table was newly added.
 |arn|text|added|
 |tags|jsonb|added|
 |creation_time|timestamp without time zone|added|
-|file_system_id|text|added|
 |lifecycle|text|added|
 |task_id|text|added|
 |type|text|added|
+|capacity_to_release|bigint|added|
 |end_time|timestamp without time zone|added|
 |failure_details|jsonb|added|
+|file_cache_id|text|added|
+|file_system_id|text|added|
 |paths|text[]|added|
 |report|jsonb|added|
 |start_time|timestamp without time zone|added|
@@ -3901,6 +3912,7 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 |_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
 |dpu_seconds|real|updated|Type changed from float to real
+|execution_class|text|added|
 |job_arn|text|added|
 |job_cq_id|uuid|removed|
 |max_capacity|real|updated|Type changed from float to real
@@ -3921,11 +3933,13 @@ Moved to JSON column on [aws_glue_databases](#aws_glue_databases)
 |command_python_version|text|removed|
 |command_script_location|text|removed|
 |connections|jsonb|updated|Type changed from text[] to jsonb
+|execution_class|text|added|
 |execution_property|jsonb|added|
 |execution_property_max_concurrent_runs|bigint|removed|
 |max_capacity|real|updated|Type changed from float to real
 |notification_property|jsonb|added|
 |notification_property_notify_delay_after|bigint|removed|
+|source_control_details|jsonb|added|
 
 ## aws_glue_ml_transform_input_record_tables
 Moved to JSON column on [aws_glue_ml_transforms](#aws_glue_ml_transforms)
@@ -4386,6 +4400,7 @@ Moved to JSON column on [aws_inspector2_findings](#aws_inspector2_findings)
 |_cq_sync_time|timestamp without time zone|added|
 |aws_account_id|text|added|
 |finding_arn|text|removed|
+|fix_available|text|added|
 |inspector_score|real|updated|Type changed from float to real
 |remediation|jsonb|added|
 |remediation_recommendation_text|text|removed|
@@ -4429,6 +4444,7 @@ Moved to JSON column on [aws_inspector2_findings](#aws_inspector2_findings)
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
 |certificate_id|text|added|
+|certificate_mode|text|added|
 |certificate_pem|text|added|
 |customer_version|bigint|updated|Type changed from integer to bigint
 |id|text|removed|
@@ -4815,6 +4831,7 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
+|amazon_managed_kafka_event_source_config|jsonb|added|
 |batch_size|bigint|updated|Type changed from integer to bigint
 |criteria_filters|text[]|removed|
 |destination_config|jsonb|added|
@@ -4829,6 +4846,7 @@ Moved to JSON column on [aws_kinesis_streams](#aws_kinesis_streams)
 |region|text|added|
 |self_managed_event_source|jsonb|added|
 |self_managed_event_source_endpoints|jsonb|removed|
+|self_managed_kafka_event_source_config|jsonb|added|
 |tumbling_window_in_seconds|bigint|updated|Type changed from integer to bigint
 
 ## aws_lambda_function_file_system_configs
@@ -5340,6 +5358,7 @@ Moved to JSON column on [aws_lightsail_instances](#aws_lightsail_instances)
 |location|jsonb|added|
 |location_availability_zone|text|removed|
 |location_region_name|text|removed|
+|metadata_options|jsonb|added|
 |networking|jsonb|added|
 |networking_monthly_transfer_gb_per_month_allocated|bigint|removed|
 |state|jsonb|added|
@@ -5615,6 +5634,7 @@ Moved to JSON column on [aws_rds_clusters](#aws_rds_clusters)
 |iops|bigint|added|
 |monitoring_interval|bigint|added|
 |monitoring_role_arn|text|added|
+|network_type|text|added|
 |pending_cloudwatch_logs_types_to_disable|text[]|removed|
 |pending_cloudwatch_logs_types_to_enable|text[]|removed|
 |pending_modified_values|jsonb|added|
@@ -5705,6 +5725,7 @@ This table was removed.
 |original_snapshot_create_time|timestamp without time zone|added|
 |percent_progress|bigint|updated|Type changed from integer to bigint
 |port|bigint|updated|Type changed from integer to bigint
+|snapshot_database_time|timestamp without time zone|added|
 |snapshot_target|text|added|
 |tag_list|jsonb|added|
 
@@ -5761,6 +5782,7 @@ Moved to JSON column on [aws_rds_instances](#aws_rds_instances)
 |activity_stream_kinesis_stream_name|text|added|
 |activity_stream_kms_key_id|text|added|
 |activity_stream_mode|text|added|
+|activity_stream_policy_status|text|added|
 |activity_stream_status|text|added|
 |allocated_storage|bigint|updated|Type changed from integer to bigint
 |associated_roles|jsonb|added|
@@ -6107,7 +6129,7 @@ Moved to JSON column on [aws_route53_domains](#aws_route53_domains)
 |registrant_contact_state|text|removed|
 |registrant_contact_type|text|removed|
 |registrant_contact_zip_code|text|removed|
-|status_list|jsonb|updated|Type changed from text[] to jsonb
+|result_metadata|jsonb|added|
 |tech_contact|jsonb|added|
 |tech_contact_address_line1|text|removed|
 |tech_contact_address_line2|text|removed|
@@ -6256,7 +6278,6 @@ This table was removed.
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
 |account_id|text|added|
-|document|text|updated|Type changed from jsonb to text
 |traffic_policy_arn|text|added|
 |traffic_policy_cq_id|uuid|removed|
 |version|bigint|updated|Type changed from integer to bigint
@@ -6376,6 +6397,7 @@ Moved to JSON column on [aws_sagemaker_endpoint_configurations](#aws_sagemaker_e
 |_cq_sync_time|timestamp without time zone|added|
 |async_inference_config|jsonb|added|
 |endpoint_config_name|text|added|
+|explainer_config|jsonb|added|
 |name|text|removed|
 |production_variants|jsonb|added|
 |result_metadata|jsonb|added|
@@ -6471,6 +6493,7 @@ Moved to JSON column on [aws_sagemaker_training_jobs](#aws_sagemaker_training_jo
 |retry_strategy|jsonb|added|
 |training_job_name|text|added|
 |training_time_in_seconds|bigint|updated|Type changed from integer to bigint
+|warm_pool_status|jsonb|added|
 
 ## aws_secretsmanager_secrets
 
@@ -6561,9 +6584,7 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 |_cq_parent_id|uuid|added|
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
-|delivery_policy|text|updated|Type changed from jsonb to text
-|effective_delivery_policy|text|updated|Type changed from jsonb to text
-|filter_policy|text|updated|Type changed from jsonb to text
+|redrive_policy|jsonb|updated|Type changed from text to jsonb
 
 ## aws_sns_topics
 
@@ -6573,9 +6594,6 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 |_cq_parent_id|uuid|added|
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
-|delivery_policy|text|updated|Type changed from jsonb to text
-|effective_delivery_policy|text|updated|Type changed from jsonb to text
-|policy|text|updated|Type changed from jsonb to text
 
 ## aws_sqs_queues
 
@@ -6585,9 +6603,6 @@ Moved to JSON column on [aws_shield_attacks](#aws_shield_attacks)
 |_cq_parent_id|uuid|added|
 |_cq_source_name|text|added|
 |_cq_sync_time|timestamp without time zone|added|
-|policy|text|updated|Type changed from jsonb to text
-|redrive_allow_policy|text|updated|Type changed from jsonb to text
-|redrive_policy|text|updated|Type changed from jsonb to text
 
 ## aws_ssm_documents
 
@@ -6918,6 +6933,7 @@ Moved to JSON column on [aws_wafv2_web_acls](#aws_wafv2_web_acls)
 |rebuild_workspace|text|removed|
 |region|text|removed|
 |restart_workspace|text|removed|
+|saml_properties|jsonb|added|
 |selfservice_permissions|jsonb|added|
 |switch_running_mode|text|removed|
 |type|text|removed|
