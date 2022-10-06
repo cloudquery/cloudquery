@@ -18,7 +18,7 @@ This table depends on [`aws_route53_traffic_policies`](aws_route53_traffic_polic
 |traffic_policy_arn (PK)|String|
 |id (PK)|String|
 |version (PK)|Int|
-|document|String|
+|document|JSON|
 |name|String|
 |type|String|
 |comment|String|

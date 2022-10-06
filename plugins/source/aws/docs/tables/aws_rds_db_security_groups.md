@@ -18,7 +18,7 @@ The primary key for this table is **arn**.
 |tags|JSON|
 |db_security_group_description|String|
 |db_security_group_name|String|
-|ec2_security_groups|JSON|
+|e_c2_security_groups|JSON|
 |ip_ranges|JSON|
 |owner_id|String|
 |vpc_id|String|
