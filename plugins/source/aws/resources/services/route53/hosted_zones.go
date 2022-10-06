@@ -27,9 +27,34 @@ func HostedZones() *schema.Table {
 				},
 			},
 			{
-				Name:     "hosted_zone",
+				Name:     "caller_reference",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CallerReference"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Id"),
+			},
+			{
+				Name:     "name",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "config",
 				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("HostedZone"),
+				Resolver: schema.PathResolver("Config"),
+			},
+			{
+				Name:     "linked_service",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("LinkedService"),
+			},
+			{
+				Name:     "resource_record_set_count",
+				Type:     schema.TypeInt,
+				Resolver: schema.PathResolver("ResourceRecordSetCount"),
 			},
 			{
 				Name:     "tags",
