@@ -65,7 +65,7 @@ We have now two main repositories:
 
 ## Policies
 
-As we are a big believer in data-engineering best practices we provide set of standard [SQL queries](https://www.cloudquery.io/docs/core-concepts/policies) for popular benchmarks. Most importaently they are all open source and not abstracted behind any custom policy language so you can re-use them, customize and apply to your needs while enjoying the SQL eco-system.
+As we are a big believer in data-engineering best practices we provide a set of standard [SQL queries](https://www.cloudquery.io/docs/core-concepts/policies) for popular benchmarks. Most importantly, they are all open source and not abstracted behind any custom policy language so you can re-use them, customize and apply to your needs while enjoying the SQL eco-system.
 
 ## What's coming up next
 
