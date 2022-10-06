@@ -39,5 +39,6 @@ The following tables depend on `aws_glue_jobs`:
 |number_of_workers|Int|
 |role|String|
 |security_configuration|String|
+|source_control_details|JSON|
 |timeout|Int|
 |worker_type|String|

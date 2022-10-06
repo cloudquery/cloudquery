@@ -2,7 +2,7 @@
 This guide summarizes schema changes from CloudQuery v0 to v1. It is automatically generated and
 not guaranteed to be complete, but we hope it helps as a starting point and reference when migrating to v1.
 
-Last updated 2022-10-04.
+Last updated 2022-10-06.
 
 ## gcp_bigquery_dataset_accesses
 Moved to JSON column on [gcp_bigquery_datasets](#gcp_bigquery_datasets)
@@ -1485,6 +1485,19 @@ Moved to JSON column on [gcp_storage_buckets](#gcp_storage_buckets)
 ## gcp_storage_bucket_lifecycle_rules
 Moved to JSON column on [gcp_storage_buckets](#gcp_storage_buckets)
 
+
+## gcp_storage_bucket_policies
+This table was newly added.
+
+| Name          | Type          | Status | Comment
+| ------------- | ------------- | --------------- | ---------------
+|_cq_id|uuid|added|
+|_cq_parent_id|uuid|added|
+|_cq_source_name|text|added|
+|_cq_sync_time|timestamp without time zone|added|
+|project_id|text|added|
+|bucket_name|text|added|
+|bindings|jsonb|added|
 
 ## gcp_storage_buckets
 

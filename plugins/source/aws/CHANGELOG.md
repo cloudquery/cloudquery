@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.0.0...plugins-source-aws-v2.0.1) (2022-10-06)
+
+
+### Bug Fixes
+
+* **aws:** Re-add Cloudtrail tags ([#2479](https://github.com/cloudquery/cloudquery/issues/2479)) ([c2857d5](https://github.com/cloudquery/cloudquery/commit/c2857d5ec9b2c5ee8f892a5cfeb3ff685ac9fce2))
+* **aws:** Re-add Route53 hosted zone tags ([#2480](https://github.com/cloudquery/cloudquery/issues/2480)) ([ebb9eb6](https://github.com/cloudquery/cloudquery/commit/ebb9eb6c2a64dbb01cec2511602b220a88f11185))
+* **aws:** Regen glue jobs ([#2476](https://github.com/cloudquery/cloudquery/issues/2476)) ([c787928](https://github.com/cloudquery/cloudquery/commit/c78792861ba655d7165db6652391415df03eade9))
+* Fixed crashes when json field is nil ([#2486](https://github.com/cloudquery/cloudquery/issues/2486)) ([7dcda4f](https://github.com/cloudquery/cloudquery/commit/7dcda4f16f18d4b6868a859930d27e48ee30a056))
+
 ## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v1.0.1...plugins-source-aws-v2.0.0) (2022-10-06)
 
 
