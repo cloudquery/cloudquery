@@ -3,21 +3,24 @@ title: "sync"
 ---
 ## cloudquery sync
 
-Sync resources from configured source plugins to destination
+Sync resources from configured source plugins to destinations
 
 ### Synopsis
 
-Sync resources from configured source plugins to destination
+Sync resources from configured source plugins to destinations
 
 ```
-cloudquery sync [directory] [flags]
+cloudquery sync [file or directories...] [flags]
 ```
 
 ### Examples
 
 ```
-# Sync configured providers to PostgreSQL as configured in cloudquery.yml
-	cloudquery sync ./directory
+# Sync resources from configuration in a directory
+cloudquery sync ./directory
+# Sync resources from directories and files
+cloudquery sync ./directory ./aws.yml ./pg.yml
+
 ```
 
 ### Options
