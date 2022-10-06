@@ -27,7 +27,7 @@ Now, any CloudQuery source plugins will get support of new destinations plugins 
 
 Destinations are also designed in the same pluggable (gRPC) way, so it will be easy to develop community plugins and official plugins separately without bloating CloudQuery CLI.
 
-Last, but not least, with the upcoming new destinations we also support two new modes of operation: `overwrite` and `append-only`. Where previously we only supported `overwrite` mode, now you can achieve history-like capabilities for compliance and other use cases in conjunction with new destinations for data-lakes and data-warehouses where storage is cheap.
+Last, but not least, with the upcoming new destinations we also support three new modes of operation: `overwrite`, `overwrite-delete-stale` and `append-only`. Where previously we only supported `overwrite-delete-stale` mode, now you can achieve history-like capabilities for compliance and other use cases in conjunction with new destinations for data-lakes and data-warehouses where storage is cheap.
 
 ## Improved SDK
 
@@ -50,7 +50,7 @@ A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/p
 
 ## Auto Migrations
 
-As data integration platform users build their own views and queries on top so we want to make the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
+As data integration platform users build their own views and queries on top, we made the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
 
 For this New official destination plugins support [auto migrations](https://v1.cloudquery.io/docs/core-concepts/migrations) and [release stages](https://v1.cloudquery.io/docs/plugins/source_plugins_release_stages)
 
@@ -62,6 +62,10 @@ We have now two main repositories:
 
 - [github.com/cloudquery/cloudquery](https://github.com/cloudquery/cloudquery): CloudQuery main repository containing the CLI, official source and destination plugins.
 - [github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk): SDK for source and destination plugins.
+
+## Policies
+
+As we are a big believer in data-engineering best practices we provide a set of standard [SQL queries](https://www.cloudquery.io/docs/core-concepts/policies) for popular benchmarks. Most importantly, they are all open source and not abstracted behind any custom policy language so you can re-use them, customize and apply to your needs while enjoying the SQL eco-system.
 
 ## What's coming up next
 
