@@ -28,9 +28,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dax v1.11.17
 	github.com/aws/aws-sdk-go-v2/service/directconnect v1.17.18
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.1
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.62.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.18
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.22
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.23
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.15
 	github.com/aws/aws-sdk-go-v2/service/eks v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/elasticache v1.22.10
@@ -60,7 +60,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.22.2
 	github.com/aws/aws-sdk-go-v2/service/route53domains v1.12.17
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.11
-	github.com/aws/aws-sdk-go-v2/service/s3control v1.23.0
+	github.com/aws/aws-sdk-go-v2/service/s3control v1.24.0
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.46.0
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.16.2
 	github.com/aws/aws-sdk-go-v2/service/sesv2 v1.13.18
@@ -93,7 +93,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.18 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.6 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
-	github.com/getsentry/sentry-go v0.13.0 // indirect
+	github.com/getsentry/sentry-go v0.14.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
@@ -114,7 +114,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.24 // indirect
 	github.com/aws/aws-sdk-go-v2/service/athena v1.18.10
 	github.com/aws/aws-sdk-go-v2/service/backup v1.17.9
-	github.com/aws/aws-sdk-go-v2/service/glue v1.32.0
+	github.com/aws/aws-sdk-go-v2/service/glue v1.33.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.9 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.7.17 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.17 // indirect
