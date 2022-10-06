@@ -85,7 +85,7 @@ Check the [destination spec documentation](/docs/reference/destination-spec) for
 
 ## Changes to the CLI Commands
 
-Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`. These have changed in v1 and are no longer availabe (you should write those manually).
+Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`. These have changed in v1 and `init` is longer available (you should write config files manually).
 
 ### Init
 
