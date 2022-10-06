@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,7 +14,7 @@ func CloudtrailResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "trails",
-			Struct:     &types.Trail{},
+			Struct:     &models.CloudTrailWrapper{},
 			SkipFields: []string{"TrailARN"},
 			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{
 				{

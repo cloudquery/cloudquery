@@ -116,6 +116,11 @@ func Trails() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SnsTopicName"),
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
 		},
 
 		Relations: []*schema.Table{
