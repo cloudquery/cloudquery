@@ -23,7 +23,7 @@ The [announcement blog post](/blog/cloudquery-v1-release) lists many of the impo
 
 ## Changes to the Configuration Format
 
-V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI.
+V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI. Mostly because we support now multiple destinations, there are seperate configs for source and destination plugins.
 
 ### Source Plugins
 
@@ -55,7 +55,7 @@ spec:
     # plugin specific configuration.
 ```
 
-Check the documentation for each plugin for details on how to configure the plugin-specific spec part. However, generally these will be exactly the same as in v0, and all the same authentication functionality is still supported.
+Check the documentation [source spec](/docs/reference/source-spec), and for each [plugin](/docs/plugins/sources) for details on how to configure the plugin-specific spec part. However, generally these will be exactly the same as in v0, and all the same authentication functionality is still supported.
 
 ### Destination Plugins
 
@@ -81,9 +81,11 @@ spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"```
 ```
 
+Check the documentation [destination spec](/docs/reference/destination-spec), and for each [plugin](/docs/plugins/destinations) for details on how to configure the plugin-specific spec part. However, generally these will be exactly the same as in v0, and all the same authentication functionality is still supported.
+
 ## Changes to the CLI Commands
 
-Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`. These have changed in v1.
+Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`. These have changed in v1 and are no longer availabe (you should write those manually).
 
 ### Init
 
