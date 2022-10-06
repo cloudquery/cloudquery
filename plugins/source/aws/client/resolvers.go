@@ -138,7 +138,9 @@ func MarshaledJsonResolver(path string) schema.ColumnResolver {
 	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		var j map[string]interface{}
 		field := funk.Get(r.Item, path, funk.WithAllowZero())
-
+		if field == nil {
+			return r.Set(c.Name, j)
+		}
 		var val reflect.Value
 		if reflect.TypeOf(field).Kind() == reflect.Ptr {
 			s := reflect.ValueOf(field)
