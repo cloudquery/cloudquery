@@ -44,8 +44,8 @@ func TrafficPolicyVersions() *schema.Table {
 			},
 			{
 				Name:     "document",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Document"),
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("Document"),
 			},
 			{
 				Name:     "name",

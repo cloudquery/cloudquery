@@ -15,16 +15,16 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|delivery_policy|JSON|
+|effective_delivery_policy|JSON|
+|filter_policy|JSON|
+|redrive_policy|JSON|
 |endpoint|String|
 |owner|String|
 |protocol|String|
 |topic_arn|String|
 |confirmation_was_authenticated|Bool|
-|delivery_policy|String|
-|effective_delivery_policy|String|
-|filter_policy|String|
 |pending_confirmation|Bool|
 |raw_message_delivery|Bool|
-|redrive_policy|String|
 |subscription_role_arn|String|
 |unknown_fields|JSON|

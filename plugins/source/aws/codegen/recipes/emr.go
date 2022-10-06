@@ -29,9 +29,10 @@ func EMRResources() []*Resource {
 			},
 		},
 		{
-			SubService: "clusters",
-			Struct:     &types.Cluster{},
-			SkipFields: []string{"ClusterArn", "Tags"},
+			SubService:          "clusters",
+			Struct:              &types.Cluster{},
+			SkipFields:          []string{"ClusterArn", "Tags"},
+			PreResourceResolver: "getCluster",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

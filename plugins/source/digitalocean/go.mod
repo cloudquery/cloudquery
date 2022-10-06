@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.27.1
 	github.com/aws/smithy-go v1.13.3
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.12.3
+	github.com/cloudquery/plugin-sdk v0.12.7
 	github.com/digitalocean/godo v1.81.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/golang/mock v1.6.0

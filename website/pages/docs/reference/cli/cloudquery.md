@@ -30,7 +30,5 @@ Find more information at:
 
 ### SEE ALSO
 
-* [cloudquery completion](/docs/cli/commands/cloudquery_completion)	 - Generate the autocompletion script for the specified shell
-* [cloudquery generate](/docs/cli/commands/cloudquery_generate)	 - Generate initial config file for source and destination plugins
-* [cloudquery sync](/docs/cli/commands/cloudquery_sync)	 - Sync resources from configured source plugins to destination
+* [cloudquery sync](/docs/cli/commands/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
 

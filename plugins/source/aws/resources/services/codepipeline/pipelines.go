@@ -34,7 +34,7 @@ func Pipelines() *schema.Table {
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: resolvePipelineTags,
 			},
 			{

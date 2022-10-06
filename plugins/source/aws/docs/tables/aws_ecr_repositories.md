@@ -18,7 +18,7 @@ The following tables depend on `aws_ecr_repositories`:
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|String|
+|tags|JSON|
 |created_at|Timestamp|
 |encryption_configuration|JSON|
 |image_scanning_configuration|JSON|
