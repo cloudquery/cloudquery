@@ -65,7 +65,7 @@ func NewCmdRoot() *cobra.Command {
 			}
 			if logConsole {
 				if err := os.Stdout.Close(); err != nil {
-					return fmt.Errorf("failed to close stderr: %w", err)
+					return fmt.Errorf("failed to close stdout: %w", err)
 				}
 				if logFormat.String() == "text" {
 					writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: noColor})
