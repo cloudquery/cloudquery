@@ -1,3 +1,7 @@
+# Deprecation Notice
+
+These are the policy files for CloudQuery **v0.x.x**. Please use the [policies_v1/](../policies_v1/) directory for CloudQuery v1.x.x policies.
+
 # CloudQuery Policies
 
 CloudQuery SQL Policies for Kubernetes

@@ -74,9 +74,10 @@ func NewCmdRoot() *cobra.Command {
 			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
 			if sentryDsn != "" && Version != "development" {
 				if err := sentry.Init(sentry.ClientOptions{
-					Debug:   false,
-					Dsn:     sentryDsn,
-					Release: "cloudquery@" + Version,
+					Debug:     false,
+					Dsn:       sentryDsn,
+					Release:   "cloudquery@" + Version,
+					Transport: sentry.NewHTTPSyncTransport(),
 					// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
 					Integrations: func(integrations []sentry.Integration) []sentry.Integration {
 						var filteredIntegrations []sentry.Integration
@@ -135,6 +136,7 @@ func NewCmdRoot() *cobra.Command {
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
+	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	return cmd
 }

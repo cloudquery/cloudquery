@@ -24,7 +24,7 @@ func DaxResources() []*Resource {
 					},
 					{
 						Name:     "tags",
-						Type:     schema.TypeString,
+						Type:     schema.TypeJSON,
 						Resolver: `resolveClusterTags`,
 					},
 				}...),
