@@ -67,7 +67,7 @@ func HostedZones() *schema.Table {
 				Resolver: schema.PathResolver("DelegationSetId"),
 			},
 			{
-				Name:     "vp_cs",
+				Name:     "vpcs",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("VPCs"),
 			},

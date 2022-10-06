@@ -58,7 +58,8 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 
 func awsNameTransformer(f reflect.StructField) (string, error) {
 	c := caser.New(caser.WithCustomInitialisms(map[string]bool{
-		"EC2": true,
+		"EC2":  true,
+		"VPCs": true,
 	}))
 	return c.ToSnake(f.Name), nil
 }
