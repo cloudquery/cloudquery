@@ -5,3 +5,10 @@ lint:
 .PHONY: test
 test:
 	go test ./...
+
+
+.PHONY: doc
+doc:
+	rm -rf ../website/pages/docs/reference/cli/*.md
+	go run main.go doc ../website/pages/docs/reference/cli/
+

@@ -22,6 +22,9 @@ func Buckets() *schema.Table {
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "acl",
@@ -153,6 +156,10 @@ func Buckets() *schema.Table {
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("RPO"),
 			},
+		},
+
+		Relations: []*schema.Table{
+			BucketPolicies(),
 		},
 	}
 }

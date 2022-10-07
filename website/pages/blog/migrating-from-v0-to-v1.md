@@ -21,42 +21,9 @@ The [announcement blog post](/blog/cloudquery-v1-release) lists many of the impo
 - [changes to the configuration format](#changes-to-the-configuration-format)
 - [changes to tables and schemas](#changes-to-tables-and-schemas)
 
-## Changes to the CLI Commands
-
-Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`, as well as some others. These are no longer in V1, but similar commands have replaced them to reflect that CloudQuery now supports both source and destination plugins.
-
-### Generate commands
-
-- Use `cloudquery gen source <plugin-name>` to generate the config for a source plugin (e.g. `cloudquery gen source aws`)
-- Use `cloudquery gen destination <plugin-name>` to generate the config for a destination plugin (e.g. `cloudquery gen destination postgresql`)
-
-`cloudquery init` has been replaced by `cloudquery gen` and is no longer part of the CLI. See `cloudquery gen --help` for more information, or check our [online reference](/docs/reference/cli/cloudquery_generate).
-
-### Sync commands
-
-`cloudquery sync` replaces the v0 `cloudquery fetch` command.
-
-Functionally it is still the same: it loads data from a source to a destination, but `sync` now supports multiple destinations, while `fetch` only supported PostgreSQL. With this change also comes a change in expected config format, see the [next section](#changes-to-the-configuration-format) for more details on this.
-
-`cloudquery sync` needs to be passed a path to a config file or directory containing config files. So for example, to sync using all `.yml` files in a directory named `config`:
-
-```bash
-cloudquery sync config/
-```
-
-Or to sync using a single YAML file named `config.yml`:
-
-```bash
-cloudquery sync config.yml
-```
-
-In this case `config.yml` should contain at least one source and one destination config, each separated by a line containing three dashes (`---`). More about this in [Files and Directories](#files-and-directories).
-
-See `cloudquery sync --help` for more details, or check our [online reference](/docs/reference/cli/cloudquery_sync).
-
 ## Changes to the Configuration Format
 
-V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI.
+V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI. Mostly because we now support multiple destinations, there are separate configs for source and destination plugins.
 
 ### Source Plugins
 
@@ -88,7 +55,7 @@ spec:
     # plugin specific configuration.
 ```
 
-Check the documentation for each plugin for details on how to configure the plugin-specific spec part. However, generally these will be exactly the same as in v0, and all the same authentication functionality is still supported.
+Check the [source spec documentation](/docs/reference/source-spec) for general layout, and individual [plugin documentation](/docs/plugins/sources) for details on how to configure the plugin-specific spec. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
 
 ### Destination Plugins
 
@@ -113,6 +80,51 @@ spec:
     ## Required. Connection string to your PostgreSQL instance
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"```
 ```
+
+Check the [destination spec documentation](/docs/reference/destination-spec) for general layout, and individual [destination plugin documentation](/docs/plugins/destinations) for details on how to configure the plugin-specific spec part. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
+
+## Changes to the CLI Commands
+
+Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`. These have changed in v1 and `init` is longer available (you should write config files manually).
+
+### Init
+
+`init` was a command that generated a starter configuration template, but it is no longer a command in v1 of the CLI. Instead, please refer to our [Quickstart](https://www.cloudquery.io/docs/quickstart) guide to see how source and destination plugins should be configured.
+
+The previous `init` command also generated a full list of tables to fetch. In v1, you can fetch all tables by using a wildcard entry:
+
+```
+tables: ["*"]
+```
+
+in the source configuration file. This can also be combined with the `skip_tables` option to fetch all tables except some subset:
+
+```
+tables: ["*"]
+skip_tables: ["aws_accessanalyzer_analyzers", "aws_acm_certificates"]
+```
+
+### Sync
+
+`cloudquery sync` replaces the v0 `cloudquery fetch` command.
+
+Functionally it is still the same: it loads data from a source to a destination, but `sync` now supports multiple destinations, while `fetch` only supported PostgreSQL. With this change also comes a change in expected config format, see the [next section](#changes-to-the-configuration-format) for more details on this.
+
+`cloudquery sync` needs to be passed a path to a config file or directory containing config files. So for example, to sync using all `.yml` files in a directory named `config`:
+
+```bash
+cloudquery sync config/
+```
+
+Or to sync using a single YAML file named `config.yml`:
+
+```bash
+cloudquery sync config.yml
+```
+
+In this case `config.yml` should contain at least one source and one destination config, each separated by a line containing three dashes (`---`). More about this in [Files and Directories](#files-and-directories).
+
+See `cloudquery sync --help` for more details, or check our [online reference](/docs/reference/cli/cloudquery_sync).
 
 ### Files and Directories
 

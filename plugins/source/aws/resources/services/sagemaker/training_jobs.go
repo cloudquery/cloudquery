@@ -233,6 +233,11 @@ func TrainingJobs() *schema.Table {
 				Resolver: schema.PathResolver("VpcConfig"),
 			},
 			{
+				Name:     "warm_pool_status",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("WarmPoolStatus"),
+			},
+			{
 				Name:     "result_metadata",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ResultMetadata"),

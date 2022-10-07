@@ -17,6 +17,7 @@ This table depends on [`aws_lambda_functions`](aws_lambda_functions.md).
 |account_id|String|
 |region|String|
 |function_arn|String|
+|amazon_managed_kafka_event_source_config|JSON|
 |batch_size|Int|
 |bisect_batch_on_function_error|Bool|
 |destination_config|JSON|
@@ -31,6 +32,7 @@ This table depends on [`aws_lambda_functions`](aws_lambda_functions.md).
 |parallelization_factor|Int|
 |queues|StringArray|
 |self_managed_event_source|JSON|
+|self_managed_kafka_event_source_config|JSON|
 |source_access_configurations|JSON|
 |starting_position|String|
 |starting_position_timestamp|Timestamp|

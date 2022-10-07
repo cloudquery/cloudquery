@@ -47,6 +47,11 @@ func CaCertificates() *schema.Table {
 				Resolver: schema.PathResolver("CertificateId"),
 			},
 			{
+				Name:     "certificate_mode",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("CertificateMode"),
+			},
+			{
 				Name:     "certificate_pem",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CertificatePem"),

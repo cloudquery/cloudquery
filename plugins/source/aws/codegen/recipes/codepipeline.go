@@ -42,7 +42,7 @@ func CodePipelineResources() []*Resource {
 					},
 					{
 						Name:     "tags",
-						Type:     schema.TypeString,
+						Type:     schema.TypeJSON,
 						Resolver: `resolvePipelineTags`,
 					},
 				}...),

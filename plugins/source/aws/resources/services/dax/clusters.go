@@ -33,7 +33,7 @@ func Clusters() *schema.Table {
 			},
 			{
 				Name:     "tags",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: resolveClusterTags,
 			},
 			{

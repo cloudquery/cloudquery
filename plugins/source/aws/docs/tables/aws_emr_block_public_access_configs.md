@@ -16,3 +16,4 @@ The composite primary key for this table is (**account_id**, **region**).
 |region (PK)|String|
 |block_public_access_configuration|JSON|
 |block_public_access_configuration_metadata|JSON|
+|result_metadata|JSON|

@@ -35,3 +35,4 @@ The following tables depend on `aws_cloudtrail_trails`:
 |s3_key_prefix|String|
 |sns_topic_arn|String|
 |sns_topic_name|String|
+|tags|JSON|

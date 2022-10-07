@@ -27,7 +27,7 @@ Now, any CloudQuery source plugins will get support of new destinations plugins 
 
 Destinations are also designed in the same pluggable (gRPC) way, so it will be easy to develop community plugins and official plugins separately without bloating CloudQuery CLI.
 
-Last, but not least, with the upcoming new destinations we also support two new modes of operation: `overwrite` and `append-only`. Where previously we only supported `overwrite` mode, now you can achieve history-like capabilities for compliance and other use cases in conjunction with new destinations for data-lakes and data-warehouses where storage is cheap.
+Last, but not least, with the upcoming new destinations we also support three new modes of operation: `overwrite`, `overwrite-delete-stale` and `append-only`. Where previously we only supported `overwrite-delete-stale` mode, now you can achieve history-like capabilities for compliance and other use cases in conjunction with new destinations for data-lakes and data-warehouses where storage is cheap.
 
 ## Improved SDK
 
@@ -35,7 +35,7 @@ As data-integration is a scale problem we've put a lot of effort to provide an S
 
 - **Built-in Concurrency** - High performance is critical--especially for infrastructure tasks—-this is why we take advantage of the excellent concurrency support in Go. We do smart scheduling for the source plugin requests, so plugins can extract information in parallel from multiple APIs as well as multiple accounts. This is a common use case, especially when syncing from the big cloud providers.
 - **Structured logging** - ELT depends on third party APIs which can have down time, permissions errors, throttling errors and more. The key to running such pipelines successfully is monitoring and understanding errors. The new SDK provides structured logging with fast performance from the `zerolog` library, so it’s easy to understand errors, counts, timings, etc.
-- **Cross Platform / Cross Language support** - Plugins are now communicating via simple gRPC protocol which means plugins can be compiled to any OS and architecture and can be written in any language (although we are currently only supporting Go). Previously they also worked over via gRPC but we used HashiCorp go-plugin abstraction on top of gRPC which turned out to be not a great fit for us and unnecessary size and documentation bloat, the new dependency light CLI size was reduced from 40MB->21MB and made development and debugging a breath.
+- **Cross Platform / Cross Language support** - Plugins are now communicating via simple gRPC protocol, which means plugins can be compiled to any OS and architecture and can be written in any language (although we are currently only supporting Go). Previously they also streamed over gRPC, but we used HashiCorp's go-plugin abstraction on top of gRPC, which turned out not to be a great fit for us, causing unnecessary size and documentation bloat. The new dependency-light CLI size is now 21MB, down from 40MB, and makes development and debugging a breeze.
 
 ## Code Generation
 
@@ -50,7 +50,7 @@ A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/p
 
 ## Auto Migrations
 
-As data integration platform users build their own views and queries on top so we want to make the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
+As data integration platform users build their own views and queries on top, we made the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
 
 For this New official destination plugins support [auto migrations](https://v1.cloudquery.io/docs/core-concepts/migrations) and [release stages](https://v1.cloudquery.io/docs/plugins/source_plugins_release_stages)
 
@@ -62,6 +62,10 @@ We have now two main repositories:
 
 - [github.com/cloudquery/cloudquery](https://github.com/cloudquery/cloudquery): CloudQuery main repository containing the CLI, official source and destination plugins.
 - [github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk): SDK for source and destination plugins.
+
+## Policies
+
+As we are a big believer in data-engineering best practices we provide a set of standard [SQL queries](https://www.cloudquery.io/docs/core-concepts/policies) for popular benchmarks. Most importantly, they are all open source and not abstracted behind any custom policy language so you can re-use them, customize and apply to your needs while enjoying the SQL eco-system.
 
 ## What's coming up next
 

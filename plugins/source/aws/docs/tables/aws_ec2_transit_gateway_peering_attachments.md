@@ -19,7 +19,9 @@ This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
 |transit_gateway_arn|String|
 |tags|JSON|
 |accepter_tgw_info|JSON|
+|accepter_transit_gateway_attachment_id|String|
 |creation_time|Timestamp|
+|options|JSON|
 |requester_tgw_info|JSON|
 |state|String|
 |status|JSON|

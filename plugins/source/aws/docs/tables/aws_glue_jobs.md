@@ -26,6 +26,7 @@ The following tables depend on `aws_glue_jobs`:
 |created_on|Timestamp|
 |default_arguments|JSON|
 |description|String|
+|execution_class|String|
 |execution_property|JSON|
 |glue_version|String|
 |last_modified_on|Timestamp|
@@ -38,5 +39,6 @@ The following tables depend on `aws_glue_jobs`:
 |number_of_workers|Int|
 |role|String|
 |security_configuration|String|
+|source_control_details|JSON|
 |timeout|Int|
 |worker_type|String|

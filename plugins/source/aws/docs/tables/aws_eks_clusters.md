@@ -21,10 +21,13 @@ The primary key for this table is **arn**.
 |created_at|Timestamp|
 |encryption_config|JSON|
 |endpoint|String|
+|health|JSON|
+|id|String|
 |identity|JSON|
 |kubernetes_network_config|JSON|
 |logging|JSON|
 |name|String|
+|outpost_config|JSON|
 |platform_version|String|
 |resources_vpc_config|JSON|
 |role_arn|String|

@@ -39,6 +39,11 @@ func BlockPublicAccessConfigs() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("BlockPublicAccessConfigurationMetadata"),
 			},
+			{
+				Name:     "result_metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResultMetadata"),
+			},
 		},
 	}
 }
