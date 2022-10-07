@@ -9,6 +9,20 @@ import (
 func KMSResources() []*Resource {
 	resources := []*Resource{
 		{
+			SubService: "aliases",
+			Struct:     &types.AliasListEntry{},
+			SkipFields: []string{"AliasArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+
+					{
+						Name:    "alias_arn",
+						Type:    schema.TypeString,
+						Options: schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		}, {
 			SubService: "keys",
 			Struct:     &types.KeyMetadata{},
 			SkipFields: []string{"Arn"},
