@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
@@ -98,6 +99,7 @@ func tables() []*schema.Table {
 		cloudformation.Stacks(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudhsmv2.Clusters(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
 		cloudwatchlogs.LogGroups(),

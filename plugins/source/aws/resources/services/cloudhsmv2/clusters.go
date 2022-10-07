@@ -7,10 +7,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Hsms() *schema.Table {
+func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cloudhsmv2_hsms",
-		Resolver:  fetchCloudhsmv2Hsms,
+		Name:      "aws_cloudhsmv2_clusters",
+		Resolver:  fetchCloudhsmv2Clusters,
 		Multiplex: client.ServiceAccountRegionMultiplexer("cloudhsmv2"),
 		Columns: []schema.Column{
 			{
@@ -26,7 +26,7 @@ func Hsms() *schema.Table {
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Arn"),
+				Resolver: resolveClusterArn,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

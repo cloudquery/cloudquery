@@ -9,7 +9,7 @@ import (
 func CloudHSMV2() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "hsms",
+			SubService: "clusters",
 			Struct:     &types.Cluster{},
 			Multiplex:  `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
 			ExtraColumns: append(
@@ -18,7 +18,7 @@ func CloudHSMV2() []*Resource {
 					{
 						Name:     "arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
+						Resolver: `resolveClusterArn`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
