@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.12.7
+	github.com/cloudquery/plugin-sdk v0.12.8
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/rs/zerolog v1.28.0
 	github.com/schollz/progressbar/v3 v3.11.0
@@ -11,8 +11,6 @@ require (
 	github.com/spf13/viper v1.12.0
 	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0
 )
-
-replace github.com/cloudquery/plugin-sdk => ../../plugin-sdk
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
