@@ -10,14 +10,17 @@ This goes through all the available options for the destination plugin `spec` ob
 
 Name of the plugin. If you have multiple destination plugins, this should be unique. 
 
-The name field may be used to uniquely identify a particular destination configuration. For example, if you have two configs for the PostgreSQL plugin for syncing different databases, one may be named `db-1` and the other `db-2`. In this case, the `path` option below should be used to specify the download path for the plugin.
+The name field may be used to uniquely identify a particular destination configuration. For example, if you have two configs for the PostgreSQL plugin for syncing different databases, one may be named `db-1` and the other `db-2`.
 
 ### path
 
-(`string`, optional)
+(`string`, required)
 
-Configures how to retrieve the plugin. For plugins hosted on GitHub, `path` is inferred from `name` by default.
-For example `name: postgresql` will resolve `path` to `clouduquery/postgresql`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
+Configures how to retrieve the plugin.
+For example `path` that is set `clouduquery/postgresql` will use official aws plugin that is the part of cloudquery repository. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`.  
+If plugin registry is set to `grpc`, path should be an address that plugin is listening on. For example if you started a plugin locally in debug mode it will be listening on `localhost:50051` and you can use that as the path.
+If plugin registry is `local`, path should be a path to the plugin binary. For example if you have a plugin binary in `~/.cloudquery/plugins` you can use `~/.cloudquery/plugins/<bin_name>` as the path.
+
 
 ### version
 

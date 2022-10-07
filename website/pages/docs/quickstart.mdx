@@ -30,11 +30,11 @@ spec:
   ## Optinal. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc"
   # registry: "github"
 
-  ## Optional. path for the plugin. Default: "cloudquery/name".
+  ## Required. path for the plugin.".
   ## If registry is "github" path should be "repo/name".
   ## If registry is "local", path is path to binary. Example: "~/path/to/plugin/binary".
   ## If registry is "grpc", then it should be address of the plugin (usually useful in debug). Example: "localhost:7777".
-  # path: "cloudquery/postgresql"
+  path: "cloudquery/postgresql"
 
   ## Required. Must be a specific version starting with v, e.g. v1.2.3
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
@@ -80,11 +80,11 @@ spec:
   ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc"
   # registry: "github"
 
-  ## Optional. path for the plugin. Default: "cloudquery/name".
+  ## Required. path for the plugin.".
   ## If registry is "github" path should be "repo/name"
   ## If registry is "local", path is path to binary. Example: "~/path/to/plugin/binary".
   ## If registry is "grpc", then it should be address of the plugin (usually useful in debug).  Example: "localhost:7777".
-  # path: cloudquery/aws
+  path: cloudquery/aws
 
   ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
   ## will reduce the amount of data synced and improve performance.
