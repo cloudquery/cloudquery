@@ -17,9 +17,10 @@ func KMSResources() []*Resource {
 				[]codegen.ColumnDefinition{
 
 					{
-						Name:    "alias_arn",
-						Type:    schema.TypeString,
-						Options: schema.ColumnCreationOptions{PrimaryKey: true},
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+						Resolver: `schema.PathResolver("AliasArn")`,
 					},
 				}...),
 		}, {

@@ -24,8 +24,9 @@ func Aliases() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name: "alias_arn",
-				Type: schema.TypeString,
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AliasArn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
