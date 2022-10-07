@@ -1,0 +1,85 @@
+name: Wait for all required workflows to pass
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  wait_for_required_workflows:
+    name: wait-for-required-workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v28
+      - uses: actions/github-script@v6
+        env:
+          FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        with:
+          script: |
+            const files = process.env.FILES.split(' ')
+            console.log(files)
+            let now = new Date().getTime()
+            const deadline = now + 60 * 1000 * 15
+            const matchesWorkflow = (file, action) => {
+              if (!file.startsWith('.github/workflows/')) {
+                return false
+              }
+              const fs = require("fs");
+              const contents = fs.readFileSync(file, 'utf8');
+              return contents.includes(`name: "${action}"`)
+            }
+            const matchesFile = (action) => {
+              return files.some(file => file.startsWith(action) || matchesWorkflow(file, action))
+            }
+            const actions = ["cli",
+                           "plugins/source/aws",
+                           "plugins/source/azure",
+                           "plugins/source/cloudflare",
+                           "plugins/source/digitalocean",
+                           "plugins/source/gcp",
+                           "plugins/source/github",
+                           "plugins/source/heroku",
+                           "plugins/source/k8s",
+                           "plugins/source/okta",
+                           "plugins/source/terraform",
+                           "plugins/source/test",
+                           
+                           "plugins/destination/postgresql",
+                           "plugins/destination/test",
+                           ].filter(action => matchesFile(action))
+            if (actions.length === 0) {
+              console.log("No actions to wait for")
+              return
+            }
+            console.log(`Waiting for ${actions.join(", ")}`)
+            while (now <= deadline) {
+              const checkRuns = await github.paginate(github.rest.checks.listForRef, {
+                owner: 'cloudquery',
+                repo: 'cloudquery',
+                ref: context.payload.pull_request.head.sha,
+                status: 'completed',
+                per_page: 100
+              })
+              const runs = checkRuns.map(({ name, conclusion }) => ({ name, conclusion }))
+              console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
+              const matchingRuns = runs.filter(({ name }) => actions.includes(name))
+              const failedRuns = matchingRuns.filter(({ conclusion }) => conclusion !== 'success')
+              if (failedRuns.length > 0) {
+                throw new Error(`The following required workflows failed: ${failedRuns.map(({ name }) => name).join(", ")}`)
+              }
+              if (matchingRuns.length === actions.length) {
+                console.log("All required workflows have passed")
+                return
+              }
+              
+              await new Promise(r => setTimeout(r, 5000));
+              now = new Date().getTime()
+            }
+            throw new Error(`Timed out waiting for ${actions.join(', ')}`)
+
+            

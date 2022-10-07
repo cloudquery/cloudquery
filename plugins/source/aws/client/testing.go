@@ -20,15 +20,15 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	table.IgnoreInTests = false
 	t.Helper()
 	ctrl := gomock.NewController(t)
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
 	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-		var awsSpec Config
+		var awsSpec Spec
 		if err := spec.UnmarshalSpec(&awsSpec); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal aws spec: %w", err)
 		}
-		l := zerolog.New(zerolog.NewTestWriter(t)).Output(
-			zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-		).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 		c := NewAwsClient(l)
 		c.ServicesManager.InitServicesForPartitionAccountAndRegion("aws", "testAccount", "us-east-1", builder(t, ctrl))
 		c.Partition = "aws"
@@ -42,7 +42,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 			table,
 		},
 		newTestExecutionClient)
-	plugins.TestSourcePluginSync(t, p, specs.Source{
+	plugins.TestSourcePluginSync(t, p, l, specs.Source{
 		Name:   "dev",
 		Tables: []string{table.Name},
 	})

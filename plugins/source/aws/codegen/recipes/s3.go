@@ -1,9 +1,11 @@
 package recipes
 
 import (
+	"reflect"
+	"strings"
+
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
-	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -13,7 +15,7 @@ func S3Resources() []*Resource {
 
 		{
 			SubService: "accounts",
-			Struct:     &s3controlTypes.PublicAccessBlockConfiguration{},
+			Struct:     &models.PublicAccessBlockConfigurationWrapper{},
 			SkipFields: []string{"ARN"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -26,8 +28,8 @@ func S3Resources() []*Resource {
 		},
 		{
 			SubService: "buckets",
-			Struct:     &s3.WrappedBucket{},
-			SkipFields: []string{""},
+			Struct:     &models.WrappedBucket{},
+			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -54,8 +56,8 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -68,8 +70,8 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -82,8 +84,8 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -96,8 +98,8 @@ func S3Resources() []*Resource {
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "bucket_arn",
-						Type:     schema.TypeUUID,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -107,6 +109,10 @@ func S3Resources() []*Resource {
 	for _, r := range resources {
 		r.Service = "s3"
 		r.Multiplex = "client.AccountMultiplex"
+		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
+		if strings.Contains(structName, "Wrapper") {
+			r.UnwrapEmbeddedStructs = true
+		}
 	}
 	return resources
 }

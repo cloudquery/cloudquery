@@ -26,7 +26,7 @@ func DataCatalogDatabases() *schema.Table {
 			{
 				Name:     "data_catalog_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},

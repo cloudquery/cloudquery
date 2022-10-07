@@ -1,13 +1,20 @@
-
 # Table: azure_resources_links
-Azure resource links
+
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|id|text|The fully qualified ID of the resource link.|
-|name|text|The name of the resource link.|
-|type|text|The resource link object.|
-|source_id|text|The fully qualified ID of the source resource in the link.|
-|target_id|text|The fully qualified ID of the target resource in the link.|
-|notes|text|Notes about the resource link.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|id (PK)|String|
+|name|String|
+|properties_source_id|String|
+|properties_target_id|String|
+|properties_notes|String|

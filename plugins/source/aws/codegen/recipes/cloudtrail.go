@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,16 +13,10 @@ import (
 func CloudtrailResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:           "trails",
-			Struct:               &types.Trail{},
-			SkipFields:           []string{"TrailARN"},
-			PostResourceResolver: `postCloudtrailTrailResolver`,
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSAccount`,
-				},
+			SubService: "trails",
+			Struct:     &models.CloudTrailWrapper{},
+			SkipFields: []string{"TrailARN"},
+			ExtraColumns: append(defaultRegionalColumns, []codegen.ColumnDefinition{
 				{
 					Name:     "cloudwatch_logs_log_group_name",
 					Type:     schema.TypeString,
@@ -33,7 +28,12 @@ func CloudtrailResources() []*Resource {
 					Resolver: `schema.PathResolver("TrailARN")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 				},
-			},
+				{
+					Name:     "status",
+					Type:     schema.TypeJSON,
+					Resolver: `resolveCloudTrailStatus`,
+				},
+			}...),
 			Relations: []string{
 				"TrailEventSelectors()",
 			},
@@ -43,12 +43,12 @@ func CloudtrailResources() []*Resource {
 			Struct:     &types.EventSelector{},
 			SkipFields: []string{},
 			ExtraColumns: append(
-				defaultAccountColumns,
+				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "trail_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -57,7 +57,7 @@ func CloudtrailResources() []*Resource {
 	// set default values
 	for _, r := range resources {
 		r.Service = "cloudtrail"
-		r.Multiplex = `client.AccountMultiplex`
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("cloudtrail")`
 		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
 		if strings.Contains(structName, "Wrapper") {
 			r.UnwrapEmbeddedStructs = true

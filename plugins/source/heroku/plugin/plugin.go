@@ -7,11 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-const exampleConfig = `
-# Required. OAuth token to authenticate with Heroku API
-token: <token>
-`
-
 var (
 	Version = "development"
 )
@@ -76,6 +71,5 @@ func Plugin() *plugins.SourcePlugin {
 			codegen.VPNConnections(),
 		},
 		client.Configure,
-		plugins.WithSourceExampleConfig(exampleConfig),
 	)
 }

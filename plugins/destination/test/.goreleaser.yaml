@@ -1,0 +1,13 @@
+variables:
+  component: destination/test
+
+project_name: plugins/destination/test
+
+monorepo:
+  tag_prefix: plugins-destination-test-
+  dir: plugins/destination/test
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml

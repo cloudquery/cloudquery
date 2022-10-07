@@ -21,12 +21,12 @@ func GroupPolicies() *schema.Table {
 			{
 				Name:     "group_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "group_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "policy_document",

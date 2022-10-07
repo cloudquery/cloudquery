@@ -1,0 +1,200 @@
+package client
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/jackc/pgx/v4"
+)
+
+const (
+	isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1"
+
+	// https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
+	sqlSelectPrimaryKeys = `
+SELECT a.attname as pkey FROM pg_index i       
+JOIN   pg_attribute a ON a.attrelid = i.indrelid
+  AND a.attnum = ANY(i.indkey)
+WHERE  i.indrelid = $1::regclass
+AND    i.indisprimary;
+`
+)
+
+// This is the responsibility of the CLI of the client to lock before running migration
+func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
+	for _, table := range tables {
+		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
+		if len(table.Columns) == 0 {
+			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
+			continue
+		}
+		tableExist, err := c.isTableExistSQL(ctx, table.Name)
+		if err != nil {
+			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
+		}
+		if tableExist {
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+			if err := c.autoMigrateTable(ctx, table); err != nil {
+				return err
+			}
+		} else {
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+			if err := c.createTableIfNotExist(ctx, table); err != nil {
+				return err
+			}
+		}
+		if err := c.Migrate(ctx, table.Relations); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *Client) isTableExistSQL(ctx context.Context, table string) (bool, error) {
+	var tableExist int
+	if err := c.conn.QueryRow(ctx, isTableExistSQL, table).Scan(&tableExist); err != nil {
+		return false, fmt.Errorf("failed to check if table %s exists: %w", table, err)
+	}
+	return tableExist == 1, nil
+}
+
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) error {
+	var err error
+	var pgColumns *pgTableColumns
+	var pgPKs *pgTablePrimaryKeys
+	// create the new column as it doesn't exist
+	tableName := pgx.Identifier{table.Name}.Sanitize()
+	if pgColumns, err = c.getPgTableColumns(ctx, table.Name); err != nil {
+		return fmt.Errorf("failed to get table %s columns types: %w", table.Name, err)
+	}
+
+	if pgPKs, err = c.getPgTablePrimaryKeys(ctx, table.Name); err != nil {
+		return fmt.Errorf("failed to get table %s columns primary keys: %w", table.Name, err)
+	}
+	reCreatePrimaryKeys := false
+
+	for _, col := range table.Columns {
+		columnName := pgx.Identifier{col.Name}.Sanitize()
+		columnType := SchemaTypeToPg(col.Type)
+		pgColumn := pgColumns.getPgColumn(col.Name)
+
+		switch {
+		case pgColumn == nil:
+			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Msg("Column doesn't exist, creating")
+
+			sql := "alter table " + tableName + " add column " + columnName + " " + columnType
+			if col.CreationOptions.PrimaryKey {
+				reCreatePrimaryKeys = true
+			}
+			if _, err := c.conn.Exec(ctx, sql); err != nil {
+				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
+			}
+		case pgColumn.typ != columnType:
+			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Str("old_type", pgColumn.typ).Str("new_type", columnType).Msg("Column exists but type is different, re-creating")
+			// column exists but type is different
+
+			// if this column contains primary key we will need to recreate the primary key
+			if c.enabledPks() && col.CreationOptions.PrimaryKey {
+				reCreatePrimaryKeys = true
+			}
+			sql := "alter table " + tableName + " drop column " + columnName
+			// right now we will drop the column and re-create. in the future we will have an option to automigrate
+			if _, err := c.conn.Exec(ctx, sql); err != nil {
+				return fmt.Errorf("failed to drop column %s on table %s: %w", col.Name, table.Name, err)
+			}
+			sql = "alter table " + tableName + " add column " + columnName + " " + columnType
+			if _, err := c.conn.Exec(ctx, sql); err != nil {
+				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
+			}
+		default:
+			// column exists and type is the same but constraint might differ
+			if c.enabledPks() && pgPKs.columnExist(col.Name) != col.CreationOptions.PrimaryKey {
+				c.logger.Info().Str("table", table.Name).Str("column", col.Name).Bool("pk", col.CreationOptions.PrimaryKey).Msg("Column exists with different primary keys")
+				reCreatePrimaryKeys = true
+			}
+		}
+	}
+	if reCreatePrimaryKeys {
+		c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
+		constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
+		sql := "alter table " + tableName + " drop constraint if exists " + constraintName
+		if _, err := c.conn.Exec(ctx, sql); err != nil {
+			return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
+		}
+		sql = "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
+		if _, err := c.conn.Exec(ctx, sql); err != nil {
+			return fmt.Errorf("failed to add primary key constraint on table %s: %w", table.Name, err)
+		}
+	}
+	return nil
+}
+
+func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
+	var sb strings.Builder
+	tableName := pgx.Identifier{table.Name}.Sanitize()
+	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
+	sb.WriteString(tableName)
+	sb.WriteString(" (")
+	totalColumns := len(table.Columns)
+
+	primaryKeys := []string{}
+	for i, col := range table.Columns {
+		pgType := SchemaTypeToPg(col.Type)
+		columnName := pgx.Identifier{col.Name}.Sanitize()
+		fieldDef := columnName + " " + pgType
+		sb.WriteString(fieldDef)
+		if i != totalColumns-1 {
+			sb.WriteString(",")
+		}
+		if c.enabledPks() && col.CreationOptions.PrimaryKey {
+			primaryKeys = append(primaryKeys, col.Name)
+		}
+	}
+
+	if len(primaryKeys) > 0 {
+		sb.WriteString(", CONSTRAINT ")
+		sb.WriteString(table.Name)
+		sb.WriteString("_cqpk PRIMARY KEY (")
+		sb.WriteString(strings.Join(primaryKeys, ","))
+		sb.WriteString(")")
+	} else {
+		sb.WriteString(", CONSTRAINT ")
+		sb.WriteString(table.Name)
+		sb.WriteString("_cqpk PRIMARY KEY (_cq_id)")
+	}
+	sb.WriteString(")")
+	_, err := c.conn.Exec(ctx, sb.String())
+	if err != nil {
+		return fmt.Errorf("failed to create table %s: %w", table.Name, err)
+	}
+	return nil
+}
+
+func (c *Client) getPgTablePrimaryKeys(ctx context.Context, tableName string) (*pgTablePrimaryKeys, error) {
+	pks := pgTablePrimaryKeys{
+		name: tableName,
+	}
+	rows, err := c.conn.Query(ctx, sqlSelectPrimaryKeys, tableName)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var column string
+		if err := rows.Scan(&column); err != nil {
+			return nil, err
+		}
+		pks.columns = append(pks.columns, strings.ToLower(column))
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return &pks, nil
+}
+
+func (c *Client) enabledPks() bool {
+	return c.spec.WriteMode == specs.WriteModeOverwrite || c.spec.WriteMode == specs.WriteModeOverwriteDeleteStale
+}

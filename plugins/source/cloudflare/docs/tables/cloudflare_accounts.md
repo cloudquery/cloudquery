@@ -1,11 +1,22 @@
-
 # Table: cloudflare_accounts
-Account represents the root object that owns resources.
+
+
+
+The primary key for this table is **id**.
+
+## Relations
+The following tables depend on `cloudflare_accounts`:
+  - [`cloudflare_account_members`](cloudflare_account_members.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|id|text|The unique universal identifier for a Cloudflare account.|
-|name|text|Cloudflare account name.|
-|type|text|Cloudflare account type.|
-|created_on|timestamp without time zone|Creation timestamp of the account.|
-|enforce_two_factor|boolean|True if the account has enforce 2fa authentication.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|id (PK)|String|
+|name|String|
+|type|String|
+|created_on|Timestamp|
+|settings|JSON|

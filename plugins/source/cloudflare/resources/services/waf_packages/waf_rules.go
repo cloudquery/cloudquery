@@ -12,9 +12,9 @@ func wafRules() *schema.Table {
 		Resolver: fetchWAFRules,
 		Columns: []schema.Column{
 			{
-				Name:     "waf_package_cq_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Name:     "waf_package_id",
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "id",

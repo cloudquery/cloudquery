@@ -1,14 +1,16 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/provider"
-	"github.com/cloudquery/cq-provider-sdk/serve"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/plugin"
+
+	"github.com/cloudquery/plugin-sdk/serve"
 )
 
+var sentryDsn = `https://f13561aecb1e42508070ef5743feb6fe@o1396617.ingest.sentry.io/6771378`
+
 func main() {
-	p := provider.Provider()
-	serve.Serve(&serve.Options{
-		Name:     p.Name,
-		Provider: p,
-	})
+	serve.Source(
+		plugin.Plugin(),
+		serve.WithSourceSentryDSN(sentryDsn),
+	)
 }

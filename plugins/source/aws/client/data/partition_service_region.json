@@ -564,6 +564,7 @@
             "ap-southeast-2": {},
             "ap-southeast-3": {},
             "ca-central-1": {},
+            "ca-central-1-fips": {},
             "eu-central-1": {},
             "eu-north-1": {},
             "eu-south-1": {},
@@ -573,9 +574,13 @@
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
+            "us-east-1-fips": {},
             "us-east-2": {},
+            "us-east-2-fips": {},
             "us-west-1": {},
-            "us-west-2": {}
+            "us-west-1-fips": {},
+            "us-west-2": {},
+            "us-west-2-fips": {}
           }
         },
         "apprunner": {
@@ -853,6 +858,12 @@
             "aws-global": {}
           }
         },
+        "cases": {
+          "regions": {
+            "us-east-1": {},
+            "us-west-2": {}
+          }
+        },
         "cassandra": {
           "regions": {
             "ap-east-1": {},
@@ -1020,6 +1031,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -1260,6 +1272,28 @@
             "us-west-2": {}
           }
         },
+        "codestar-notifications": {
+          "regions": {
+            "ap-east-1": {},
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "me-south-1": {},
+            "sa-east-1": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
+            "us-west-2": {}
+          }
+        },
         "cognito-identity": {
           "regions": {
             "ap-northeast-1": {},
@@ -1431,6 +1465,8 @@
           "regions": {
             "ap-southeast-2": {},
             "eu-west-2": {},
+            "fips-us-east-1": {},
+            "fips-us-west-2": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -1825,6 +1861,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -2277,10 +2314,25 @@
         "emr-serverless": {
           "regions": {
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
+            "eu-central-1": {},
+            "eu-north-1": {},
             "eu-west-1": {},
+            "eu-west-2": {},
+            "eu-west-3": {},
+            "fips-ca-central-1": {},
             "fips-us-east-1": {},
+            "fips-us-east-2": {},
+            "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "sa-east-1": {},
             "us-east-1": {},
+            "us-east-2": {},
+            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -2766,6 +2818,20 @@
             "aws-global": {}
           }
         },
+        "ingest.timestream": {
+          "regions": {
+            "ap-northeast-1": {},
+            "ap-southeast-2": {},
+            "eu-central-1": {},
+            "eu-west-1": {},
+            "ingest-fips-us-east-1": {},
+            "ingest-fips-us-east-2": {},
+            "ingest-fips-us-west-2": {},
+            "us-east-1": {},
+            "us-east-2": {},
+            "us-west-2": {}
+          }
+        },
         "inspector": {
           "regions": {
             "ap-northeast-1": {},
@@ -2888,6 +2954,12 @@
             "us-west-2": {}
           }
         },
+        "iotfleetwise": {
+          "regions": {
+            "eu-central-1": {},
+            "us-east-1": {}
+          }
+        },
         "iotsecuredtunneling": {
           "regions": {
             "ap-east-1": {},
@@ -2976,6 +3048,10 @@
         },
         "ivschat": {
           "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
+            "eu-central-1": {},
             "eu-west-1": {},
             "us-east-1": {},
             "us-west-2": {}
@@ -2991,6 +3067,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -3664,6 +3741,17 @@
             "us-west-2": {}
           }
         },
+        "migrationhub-orchestrator": {
+          "regions": {
+            "ap-northeast-1": {},
+            "ap-southeast-2": {},
+            "eu-central-1": {},
+            "eu-west-1": {},
+            "eu-west-2": {},
+            "us-east-1": {},
+            "us-west-2": {}
+          }
+        },
         "migrationhub-strategy": {
           "regions": {
             "ap-northeast-1": {},
@@ -4005,8 +4093,10 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "fips-us-east-1": {},
+            "fips-us-east-2": {},
             "fips-us-west-2": {},
             "us-east-1": {},
+            "us-east-2": {},
             "us-west-2": {}
           }
         },
@@ -4172,6 +4262,7 @@
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
+            "ap-southeast-3": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-north-1": {},
@@ -6230,6 +6321,12 @@
             "cn-northwest-1": {}
           }
         },
+        "rbin": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "rds": {
           "regions": {
             "cn-north-1": {},
@@ -6672,7 +6769,8 @@
         },
         "ram": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "rds": {
@@ -6766,7 +6864,8 @@
         },
         "synthetics": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "tagging": {
@@ -6986,9 +7085,19 @@
             "us-isob-east-1": {}
           }
         },
+        "resource-groups": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
         "route53": {
           "regions": {
             "aws-iso-b-global": {}
+          }
+        },
+        "route53resolver": {
+          "regions": {
+            "us-isob-east-1": {}
           }
         },
         "s3": {
@@ -7780,6 +7889,14 @@
         },
         "ram": {
           "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "rbin": {
+          "regions": {
+            "fips-us-gov-east-1": {},
+            "fips-us-gov-west-1": {},
             "us-gov-east-1": {},
             "us-gov-west-1": {}
           }

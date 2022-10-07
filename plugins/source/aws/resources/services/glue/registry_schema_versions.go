@@ -26,7 +26,7 @@ func RegistrySchemaVersions() *schema.Table {
 			{
 				Name:     "registry_schema_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "metadata",

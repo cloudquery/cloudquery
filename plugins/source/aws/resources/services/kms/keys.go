@@ -41,9 +41,10 @@ func Keys() *schema.Table {
 				},
 			},
 			{
-				Name:     "replica_keys",
-				Type:     schema.TypeJSON,
-				Resolver: resolveKeysReplicaKeys,
+				Name:          "replica_keys",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveKeysReplicaKeys,
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "key_id",

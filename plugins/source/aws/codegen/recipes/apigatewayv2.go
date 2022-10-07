@@ -45,12 +45,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "api_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "arn",
@@ -69,12 +69,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "api_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "arn",
@@ -93,12 +93,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "api_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "arn",
@@ -120,12 +120,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_integration_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "integration_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("integration_id")`,
+						Resolver: `schema.ParentColumnResolver("integration_id")`,
 					},
 					{
 						Name:     "arn",
@@ -144,12 +144,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "api_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "arn",
@@ -173,12 +173,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "api_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "arn",
@@ -200,12 +200,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_route_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "route_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("route_id")`,
+						Resolver: `schema.ParentColumnResolver("route_id")`,
 					},
 					{
 						Name:     "arn",
@@ -224,12 +224,12 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "api_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "api_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "arn",
@@ -265,7 +265,7 @@ func APIGatewayV2Resources() []*Resource {
 					{
 						Name:     "domain_name_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "arn",

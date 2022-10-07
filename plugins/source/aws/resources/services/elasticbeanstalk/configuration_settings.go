@@ -26,7 +26,7 @@ func ConfigurationSettings() *schema.Table {
 			{
 				Name:     "environment_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "application_name",

@@ -11,7 +11,7 @@ func Policies() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_applicationautoscaling_policies",
 		Resolver:  fetchApplicationautoscalingPolicies,
-		Multiplex: client.ServiceAccountRegionMultiplexer("application-autoscaling"),
+		Multiplex: client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

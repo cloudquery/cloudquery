@@ -1,13 +1,21 @@
-
 # Table: aws_wafregional_rule_groups
-A collection of predefined rules that you can add to a web ACL.
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|ARN of the rule group.|
-|tags|jsonb|Rule group tags.|
-|id|text|A unique identifier for a RuleGroup|
-|metric_name|text|A friendly name or description for the metrics for this RuleGroup|
-|name|text|The friendly name or description for the RuleGroup|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|tags|JSON|
+|rule_group_id|String|
+|metric_name|String|
+|name|String|

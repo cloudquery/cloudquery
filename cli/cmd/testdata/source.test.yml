@@ -1,0 +1,5 @@
+kind: source
+spec:
+  name: test
+  destinations: [test]
+  version: v1.2.0

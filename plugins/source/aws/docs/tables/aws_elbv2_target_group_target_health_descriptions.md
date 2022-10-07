@@ -1,14 +1,22 @@
-
 # Table: aws_elbv2_target_group_target_health_descriptions
-Information about the health of a target.
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_elbv2_target_groups`](aws_elbv2_target_groups.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|target_group_cq_id|uuid|Unique CloudQuery ID of aws_elbv2_target_groups table (FK)|
-|health_check_port|text|The port to use to connect with the target.|
-|target_id|text|The ID of the target.|
-|target_availability_zone|text|An Availability Zone or all.|
-|target_port|integer|The port on which the target is listening.|
-|target_health_description|text|A description of the target health that provides additional details.|
-|target_health_reason|text|The reason code. If the target state is healthy, a reason code is not provided.|
-|target_health_state|text|The state of the target.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|target_group_arn|String|
+|health_check_port|String|
+|target|JSON|
+|target_health|JSON|

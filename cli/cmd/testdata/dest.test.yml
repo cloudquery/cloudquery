@@ -1,0 +1,4 @@
+kind: destination
+spec:
+  name: test
+  version: v1.2.0

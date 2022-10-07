@@ -1,24 +1,28 @@
-
 # Table: azure_resources_policy_assignments
-Azure network watcher
+
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|display_name|text|The display name of the policy assignment|
-|policy_definition_id|text|The ID of the policy definition or policy set definition being assigned|
-|scope|text|The scope for the policy assignment|
-|not_scopes|text[]|The policy's excluded scopes|
-|parameters|jsonb|The parameter values for the assigned policy rule|
-|description|text|This message will be part of response in case of policy violation|
-|metadata|jsonb|The policy assignment metadata|
-|enforcement_mode|text|The policy assignment enforcement mode|
-|id|text|The ID of the policy assignment|
-|type|text|The type of the policy assignment|
-|name|text|The name of the policy assignment|
-|sku_name|text|The name of the policy sku|
-|sku_tier|text|The policy sku tier|
-|location|text|The location of the policy assignment|
-|identity_principal_id|text|The principal ID of the resource identity|
-|identity_tenant_id|text|The tenant ID of the resource identity|
-|identity_type|text|The identity type|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|display_name|String|
+|policy_definition_id|String|
+|scope|String|
+|not_scopes|StringArray|
+|parameters|JSON|
+|description|String|
+|enforcement_mode|String|
+|id (PK)|String|
+|type|String|
+|name|String|
+|sku|JSON|
+|location|String|
+|identity|JSON|

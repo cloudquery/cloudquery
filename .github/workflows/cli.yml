@@ -1,0 +1,37 @@
+name: CLI Workflow
+
+on:
+  pull_request:
+    paths:
+      - "cli/**"
+      - ".github/workflows/cli.yml"
+
+defaults:
+  run:
+    working-directory: ./cli
+
+jobs:
+  cli:
+    name: cli
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: cli/go.mod
+          cache: true
+          cache-dependency-path: cli/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.49.0
+          working-directory: cli
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test
+        run: go test ./...

@@ -26,12 +26,12 @@ func ApiIntegrations() *schema.Table {
 			{
 				Name:     "api_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "api_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "arn",

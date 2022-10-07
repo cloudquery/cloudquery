@@ -47,7 +47,7 @@ func SecurityProfiles() *schema.Table {
 				Resolver: schema.PathResolver("AdditionalMetricsToRetain"),
 			},
 			{
-				Name:     "additional_metrics_to_retain_v_2",
+				Name:     "additional_metrics_to_retain_v2",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("AdditionalMetricsToRetainV2"),
 			},

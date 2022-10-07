@@ -8,21 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
 )
 
 func buildFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var f types.FileSystem
-	require.NoError(t, faker.FakeDataSkipFields(&f, []string{
-		"AdministrativeActions",
-		"FileSystemType",
-		"Lifecycle",
-		"StorageType",
-	}))
+	err := faker.FakeObject(&f, faker.WithMaxDepth(5))
+	if err != nil {
+		t.Fatalf("FakeObject returned error: %v", err)
+	}
 	f.FileSystemType = types.FileSystemTypeLustre
 	f.Lifecycle = types.FileSystemLifecycleAvailable
 	f.StorageType = types.StorageTypeHdd

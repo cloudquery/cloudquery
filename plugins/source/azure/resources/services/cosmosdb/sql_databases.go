@@ -23,8 +23,8 @@ func sQLDatabases() *schema.Table {
 			},
 			{
 				Name:     "cosmosdb_account_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "resource",

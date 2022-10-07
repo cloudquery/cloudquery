@@ -1,7 +1,10 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups"
+	"reflect"
+	"strings"
+
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/resourcegroups/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -11,11 +14,17 @@ func ResourceGroupsResources() []*Resource {
 
 		{
 			SubService: "resource_groups",
-			Struct:     &resourcegroups.ResourceGroupWrapper{},
-			SkipFields: []string{"ARN"},
+			Struct:     &models.ResourceGroupWrapper{},
+			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("GroupArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
@@ -29,6 +38,10 @@ func ResourceGroupsResources() []*Resource {
 	for _, r := range resources {
 		r.Service = "resourcegroups"
 		r.Multiplex = `client.ServiceAccountRegionMultiplexer("resource-groups")`
+		structName := reflect.ValueOf(r.Struct).Elem().Type().Name()
+		if strings.Contains(structName, "Wrapper") {
+			r.UnwrapEmbeddedStructs = true
+		}
 	}
 	return resources
 }

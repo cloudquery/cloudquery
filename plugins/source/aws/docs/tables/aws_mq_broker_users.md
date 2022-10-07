@@ -1,13 +1,25 @@
-
 # Table: aws_mq_broker_users
 
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_mq_brokers`](aws_mq_brokers.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|broker_cq_id|uuid|Unique CloudQuery ID of aws_mq_brokers table (FK)|
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|console_access|boolean|Enables access to the the ActiveMQ Web Console for the ActiveMQ user.|
-|groups|text[]|The list of groups (20 maximum) to which the ActiveMQ user belongs|
-|pending|jsonb|The status of the changes pending for the ActiveMQ user.|
-|username|text|The username of the ActiveMQ user.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|broker_arn|String|
+|broker_id|String|
+|console_access|Bool|
+|groups|StringArray|
+|pending|JSON|
+|username|String|
+|result_metadata|JSON|

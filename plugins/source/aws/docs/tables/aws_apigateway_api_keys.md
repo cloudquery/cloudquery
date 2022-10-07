@@ -1,19 +1,27 @@
-
 # Table: aws_apigateway_api_keys
-A resource that can be distributed to callers for executing Method resources that require an API key
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource|
-|region|text|The AWS Region of the resource|
-|arn|text|The Amazon Resource Name (ARN) for the resource|
-|created_date|timestamp without time zone|The timestamp when the API Key was created|
-|customer_id|text|An AWS Marketplace customer identifier , when integrating with the AWS SaaS Marketplace|
-|description|text|The description of the API Key|
-|enabled|boolean|Specifies whether the API Key can be used by callers|
-|id|text|The identifier of the API Key|
-|last_updated_date|timestamp without time zone|The timestamp when the API Key was last updated|
-|name|text|The name of the API Key|
-|stage_keys|text[]|A list of Stage resources that are associated with the ApiKey resource|
-|tags|jsonb|The collection of tags|
-|value|text|The value of the API Key|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|created_date|Timestamp|
+|customer_id|String|
+|description|String|
+|enabled|Bool|
+|id|String|
+|last_updated_date|Timestamp|
+|name|String|
+|stage_keys|StringArray|
+|tags|JSON|
+|value|String|

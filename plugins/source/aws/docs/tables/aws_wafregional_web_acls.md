@@ -1,14 +1,23 @@
-
 # Table: aws_wafregional_web_acls
-Contains the Rules that identify the requests that you want to allow, block, or count.
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|tags|jsonb|Web ACL tags.|
-|default_action|text|Specifies how you want AWS WAF to respond to requests that match the settings in a Rule|
-|id|text|A unique identifier for a WebACL|
-|metric_name|text|A friendly name or description for the metrics for this WebACL|
-|name|text|A friendly name or description of the WebACL|
-|arn|text|Tha Amazon Resource Name (ARN) of the web ACL.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|tags|JSON|
+|default_action|JSON|
+|rules|JSON|
+|web_acl_id|String|
+|metric_name|String|
+|name|String|

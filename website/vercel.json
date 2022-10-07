@@ -18,20 +18,16 @@
       "destination": "https://img.abyssale.com/3b183707-abf0-46ec-9edd-16b712a08b65?text_title=:title"
     },
     {
-      "source": "/providers/:org/:provider/latest/schema",
-      "destination": "/plugins/:provider/tables"
+      "source": "/providers/:path*",
+      "destination": "/docs/plugins/sources"
     },
     {
-      "source": "/providers/cloudquery/:provider/latest",
-      "destination": "/plugins/:provider"
+      "source": "/plugins/:path*",
+      "destination": "/docs/plugins/sources"
     },
     {
       "source": "/providers",
-      "destination": "/plugins"
-    },
-    {
-      "source": "/providers/:path*",
-      "destination": "/plugins"
+      "destination": "/docs/plugins/sources"
     }
   ]
 }

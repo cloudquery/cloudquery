@@ -35,6 +35,12 @@ func XRayResources() []*Resource {
 			Struct:     &types.SamplingRuleRecord{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("SamplingRule.RuleARN")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
 					Name:     "tags",
 					Type:     schema.TypeJSON,
 					Resolver: `resolveXraySamplingRuleTags`,

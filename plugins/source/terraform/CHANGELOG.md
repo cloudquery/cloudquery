@@ -5,6 +5,76 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/terraform/v0.5.6...plugins-source-terraform-v1.0.0) (2022-10-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+### Features
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+## [0.6.4-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v0.6.3-pre.0...plugins-source-terraform-v0.6.4-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for terraform to v0.11.6 ([#2269](https://github.com/cloudquery/cloudquery/issues/2269)) ([adb6a6f](https://github.com/cloudquery/cloudquery/commit/adb6a6f8f5dc8d0c3b0f735a4955b256e63c69ba))
+
+## [0.6.3-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v0.6.2-pre.0...plugins-source-terraform-v0.6.3-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.5 ([#2237](https://github.com/cloudquery/cloudquery/issues/2237)) ([6545b1c](https://github.com/cloudquery/cloudquery/commit/6545b1ccc3bc08e631b7e2ec9a9c7369284248a9))
+
+## [0.6.2-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v0.6.1-pre.0...plugins-source-terraform-v0.6.2-pre.0) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go to v1.44.109 ([#2174](https://github.com/cloudquery/cloudquery/issues/2174)) ([e16760c](https://github.com/cloudquery/cloudquery/commit/e16760c3fb7397bfc77a51b5c29cec41e64d27ca))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.10.2 ([#2048](https://github.com/cloudquery/cloudquery/issues/2048)) ([e407991](https://github.com/cloudquery/cloudquery/commit/e4079914772d8191639b9935aa5970b8e27b082f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.0 ([#2135](https://github.com/cloudquery/cloudquery/issues/2135)) ([1729467](https://github.com/cloudquery/cloudquery/commit/1729467b2119555e18b15d73c91cd501ccf7ecb8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.2 ([#2162](https://github.com/cloudquery/cloudquery/issues/2162)) ([5701aa5](https://github.com/cloudquery/cloudquery/commit/5701aa5b0a8d04e9e99e3efe6e27d5f7ff29b216))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.4 ([#2218](https://github.com/cloudquery/cloudquery/issues/2218)) ([e4c024b](https://github.com/cloudquery/cloudquery/commit/e4c024ba91e9dfda5179bbdff1928ee4398beb45))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.0 ([#1997](https://github.com/cloudquery/cloudquery/issues/1997)) ([4fa40da](https://github.com/cloudquery/cloudquery/commit/4fa40da04b427f864d2dc11f133e5c83e53ce4b6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.1 ([#2024](https://github.com/cloudquery/cloudquery/issues/2024)) ([8f88de4](https://github.com/cloudquery/cloudquery/commit/8f88de4b4eaeabae7369ba309e765a252392ee8c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.8.2 ([#2044](https://github.com/cloudquery/cloudquery/issues/2044)) ([9b69b46](https://github.com/cloudquery/cloudquery/commit/9b69b468536521b20b77ec1fc180fc85aeeba376))
+
+## [0.6.1-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/terraform/v0.6.0-pre.0...plugins/source/terraform/v0.6.1-pre.0) (2022-09-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.12 ([#1916](https://github.com/cloudquery/cloudquery/issues/1916)) ([27d8153](https://github.com/cloudquery/cloudquery/commit/27d81534baaa1312a6bd87294d298dd8b5348a79))
+
+## [0.6.0-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/terraform-v0.5.6-pre.0...plugins/source/terraform/v0.6.0-pre.0) (2022-09-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Migrate Terraform plugin to v2 (#1780)
+
+### Features
+
+* Migrate Terraform plugin to v2 ([#1780](https://github.com/cloudquery/cloudquery/issues/1780)) ([bac87ad](https://github.com/cloudquery/cloudquery/commit/bac87adb620104eb4eb7fcc715cfe6c44c96f8f5))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.3 ([#1858](https://github.com/cloudquery/cloudquery/issues/1858)) ([9e3ace7](https://github.com/cloudquery/cloudquery/commit/9e3ace775da2d600968ef4275e9e0013d4dfd825))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.6.4 ([#1862](https://github.com/cloudquery/cloudquery/issues/1862)) ([5d141cf](https://github.com/cloudquery/cloudquery/commit/5d141cf6006e26cf240ddf295dda53c16f7386a4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.2 ([#1872](https://github.com/cloudquery/cloudquery/issues/1872)) ([49ed26d](https://github.com/cloudquery/cloudquery/commit/49ed26d231c91ac1b5b00cc55d3d0a8a5a6306f7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.3 ([#1886](https://github.com/cloudquery/cloudquery/issues/1886)) ([7435d59](https://github.com/cloudquery/cloudquery/commit/7435d593e51ca829d3a328eebc9517e9cb2a4ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.4 ([#1889](https://github.com/cloudquery/cloudquery/issues/1889)) ([63a5362](https://github.com/cloudquery/cloudquery/commit/63a5362995aa680b291f2411d01e776e884896d4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.7.9 ([#1891](https://github.com/cloudquery/cloudquery/issues/1891)) ([3469f20](https://github.com/cloudquery/cloudquery/commit/3469f20e76e9dcbf48b9c6e3e7c0c2224c5b8ad3))
+* Provide `Version` in all providers ([#1729](https://github.com/cloudquery/cloudquery/issues/1729)) ([f82318e](https://github.com/cloudquery/cloudquery/commit/f82318e22670c46ecdfa7861bc716046969a9e14))
+* Unify plugin package structure ([#1735](https://github.com/cloudquery/cloudquery/issues/1735)) ([897d8f4](https://github.com/cloudquery/cloudquery/commit/897d8f4d31d78fb078fb1e57108bd30e437ddee4))
+* Update Terraform docs ([#1573](https://github.com/cloudquery/cloudquery/issues/1573)) ([c0f48fc](https://github.com/cloudquery/cloudquery/commit/c0f48fc6250c75b8843dfcd8e9bce31bb998c495))
+
 ## [0.5.6](https://github.com/cloudquery/cloudquery/compare/plugins/source/terraform/v0.5.5...plugins/source/terraform/v0.5.6) (2022-09-06)
 
 

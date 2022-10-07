@@ -20,8 +20,8 @@ func BucketEncryptionRules() *schema.Table {
 			},
 			{
 				Name:     "bucket_arn",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "apply_server_side_encryption_by_default",

@@ -67,27 +67,27 @@ func NetworkInterfaces() *schema.Table {
 				Resolver: schema.PathResolver("InterfaceType"),
 			},
 			{
-				Name:     "ipv_4_prefixes",
+				Name:     "ipv4_prefixes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ipv4Prefixes"),
 			},
 			{
-				Name:     "ipv_6_address",
+				Name:     "ipv6_address",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Ipv6Address"),
 			},
 			{
-				Name:     "ipv_6_addresses",
+				Name:     "ipv6_addresses",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ipv6Addresses"),
 			},
 			{
-				Name:     "ipv_6_native",
+				Name:     "ipv6_native",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Ipv6Native"),
 			},
 			{
-				Name:     "ipv_6_prefixes",
+				Name:     "ipv6_prefixes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ipv6Prefixes"),
 			},

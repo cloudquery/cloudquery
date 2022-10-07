@@ -1,15 +1,27 @@
-
 # Table: aws_apigatewayv2_api_deployments
-An immutable representation of an API that can be called by users.
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_apigatewayv2_apis`](aws_apigatewayv2_apis.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|api_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_apis table (FK)|
-|api_id|text|The API ID.|
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|auto_deployed|boolean|Specifies whether a deployment was automatically released.|
-|created_date|timestamp without time zone|The date and time when the Deployment resource was created.|
-|deployment_id|text|The identifier for the deployment.|
-|deployment_status|text|The status of the deployment: PENDING, FAILED, or SUCCEEDED.|
-|deployment_status_message|text|May contain additional feedback on the status of an API deployment.|
-|description|text|The description for the deployment.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|api_arn|String|
+|api_id|String|
+|arn|String|
+|auto_deployed|Bool|
+|created_date|Timestamp|
+|deployment_id|String|
+|deployment_status|String|
+|deployment_status_message|String|
+|description|String|

@@ -15,6 +15,6 @@ jobs:
     steps:
       - uses: actions/labeler@v4
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          repo-token: ${{ secrets.GH_CQ_BOT }}
           sync-labels: true
           configuration-path: .github/pr_labeler.yml

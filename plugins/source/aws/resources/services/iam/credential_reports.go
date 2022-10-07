@@ -24,10 +24,55 @@ func CredentialReports() *schema.Table {
 			{
 				Name:     "user_creation_time",
 				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("UserCreationTime"),
+				Resolver: timestampPathResolver("UserCreationTime"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "password_last_changed",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("PasswordLastChanged"),
+			},
+			{
+				Name:     "password_next_rotation",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("PasswordNextRotation"),
+			},
+			{
+				Name:     "access_key_1_last_rotated",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("AccessKey1LastRotated"),
+			},
+			{
+				Name:     "access_key_2_last_rotated",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("AccessKey2LastRotated"),
+			},
+			{
+				Name:     "cert_1_last_rotated",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("Cert1LastRotated"),
+			},
+			{
+				Name:     "cert_2_last_rotated",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("Cert2LastRotated"),
+			},
+			{
+				Name:     "access_key_1_last_used_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("AccessKey1LastUsedDate"),
+			},
+			{
+				Name:     "access_key_2_last_used_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("AccessKey2LastUsedDate"),
+			},
+			{
+				Name:     "password_last_used",
+				Type:     schema.TypeTimestamp,
+				Resolver: timestampPathResolver("PasswordLastUsed"),
 			},
 			{
 				Name:     "user",
@@ -40,94 +85,49 @@ func CredentialReports() *schema.Table {
 				Resolver: schema.PathResolver("PasswordStatus"),
 			},
 			{
-				Name:     "password_last_changed",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PasswordLastChanged"),
-			},
-			{
-				Name:     "password_next_rotation",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PasswordNextRotation"),
-			},
-			{
 				Name:     "mfa_active",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("MfaActive"),
 			},
 			{
-				Name:     "access_key_1_active",
+				Name:     "access_key1_active",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AccessKey1Active"),
 			},
 			{
-				Name:     "access_key_2_active",
+				Name:     "access_key2_active",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("AccessKey2Active"),
 			},
 			{
-				Name:     "access_key_1_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessKey1LastRotated"),
-			},
-			{
-				Name:     "access_key_2_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("AccessKey2LastRotated"),
-			},
-			{
-				Name:     "cert_1_active",
+				Name:     "cert1_active",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Cert1Active"),
 			},
 			{
-				Name:     "cert_2_active",
+				Name:     "cert2_active",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("Cert2Active"),
 			},
 			{
-				Name:     "cert_1_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Cert1LastRotated"),
-			},
-			{
-				Name:     "cert_2_last_rotated",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Cert2LastRotated"),
-			},
-			{
-				Name:     "access_key_1_last_used_date",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("AccessKey1LastUsedDate"),
-			},
-			{
-				Name:     "access_key_1_last_used_region",
+				Name:     "access_key1_last_used_region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AccessKey1LastUsedRegion"),
 			},
 			{
-				Name:     "access_key_1_last_used_service",
+				Name:     "access_key1_last_used_service",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AccessKey1LastUsedService"),
 			},
 			{
-				Name:     "access_key_2_last_used_date",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("AccessKey2LastUsedDate"),
-			},
-			{
-				Name:     "access_key_2_last_used_region",
+				Name:     "access_key2_last_used_region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AccessKey2LastUsedRegion"),
 			},
 			{
-				Name:     "access_key_2_last_used_service",
+				Name:     "access_key2_last_used_service",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AccessKey2LastUsedService"),
-			},
-			{
-				Name:     "password_last_used",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("PasswordLastUsed"),
 			},
 		},
 	}

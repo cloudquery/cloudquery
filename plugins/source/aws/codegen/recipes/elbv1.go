@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
-	elbv1Service "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -14,7 +14,7 @@ func ELBv1Resources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "load_balancers",
-			Struct:     &elbv1Service.ELBv1LoadBalancerWrapper{},
+			Struct:     &models.ELBv1LoadBalancerWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -41,12 +41,12 @@ func ELBv1Resources() []*Resource {
 					{
 						Name:     "load_balancer_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "load_balancer_name",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("load_balancer_name")`,
+						Resolver: `schema.ParentColumnResolver("load_balancer_name")`,
 					},
 					{
 						Name:     "policy_attribute_descriptions",

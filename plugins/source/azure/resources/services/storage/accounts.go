@@ -64,7 +64,7 @@ func Accounts() *schema.Table {
 			},
 			{
 				Name:     "last_geo_failover_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastGeoFailoverTime"),
 			},
 			{
@@ -79,7 +79,7 @@ func Accounts() *schema.Table {
 			},
 			{
 				Name:     "creation_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{

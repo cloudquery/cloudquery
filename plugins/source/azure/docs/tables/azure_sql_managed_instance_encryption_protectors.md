@@ -1,15 +1,26 @@
-
 # Table: azure_sql_managed_instance_encryption_protectors
-ManagedInstanceEncryptionProtector the managed instance encryption protector
+
+
+
+The primary key for this table is **id**.
+
+## Relations
+This table depends on [`azure_sql_managed_instances`](azure_sql_managed_instances.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|managed_instance_cq_id|uuid|Unique CloudQuery ID of azure_sql_managed_instances table (FK)|
-|kind|text|Kind of encryption protector|
-|server_key_name|text|The name of the managed instance key|
-|server_key_type|text|The encryption protector type like 'ServiceManaged', 'AzureKeyVault'|
-|uri|text|The URI of the server key|
-|thumbprint|text|Thumbprint of the server key|
-|id|text|Resource ID|
-|name|text|Resource name|
-|type|text|Resource type|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|sql_managed_instance_id|String|
+|kind|String|
+|server_key_name|String|
+|server_key_type|String|
+|uri|String|
+|thumbprint|String|
+|id (PK)|String|
+|name|String|
+|type|String|

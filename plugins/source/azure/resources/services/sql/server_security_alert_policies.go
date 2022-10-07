@@ -23,8 +23,8 @@ func serverSecurityAlertPolicies() *schema.Table {
 			},
 			{
 				Name:     "sql_server_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "state",
@@ -63,7 +63,7 @@ func serverSecurityAlertPolicies() *schema.Table {
 			},
 			{
 				Name:     "creation_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{

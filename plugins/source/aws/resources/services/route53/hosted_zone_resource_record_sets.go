@@ -21,7 +21,7 @@ func HostedZoneResourceRecordSets() *schema.Table {
 			{
 				Name:     "hosted_zone_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "name",

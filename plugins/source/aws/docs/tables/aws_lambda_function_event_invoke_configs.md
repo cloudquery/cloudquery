@@ -1,13 +1,23 @@
-
 # Table: aws_lambda_function_event_invoke_configs
-A configuration object that specifies the destination of an event after Lambda processes it. 
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_lambda_functions`](aws_lambda_functions.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|function_cq_id|uuid|Unique CloudQuery ID of aws_lambda_functions table (FK)|
-|on_failure_destination|text|The Amazon Resource Name (ARN) of the destination resource.|
-|on_success_destination|text|The Amazon Resource Name (ARN) of the destination resource.|
-|function_arn|text|The Amazon Resource Name (ARN) of the function.|
-|last_modified|timestamp without time zone|The date and time that the configuration was last updated.|
-|maximum_event_age_in_seconds|integer|The maximum age of a request that Lambda sends to a function for processing.|
-|maximum_retry_attempts|integer|The maximum number of times to retry when the function returns an error.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|function_arn|String|
+|destination_config|JSON|
+|last_modified|Timestamp|
+|maximum_event_age_in_seconds|Int|
+|maximum_retry_attempts|Int|

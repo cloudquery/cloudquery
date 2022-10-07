@@ -1,14 +1,23 @@
-
 # Table: aws_resourcegroups_resource_groups
 
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|tags|jsonb||
-|arn|text|The ARN of the resource group|
-|group|text|The name of the resource group|
-|group_description|text|The description of the resource group|
-|resource_query|text|The query that defines a group or a search|
-|resource_query_type|text|The type of the query|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|tags|JSON|
+|group_arn|String|
+|name|String|
+|description|String|
+|query|String|
+|type|String|

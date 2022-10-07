@@ -1,35 +1,50 @@
-
 # Table: aws_mq_brokers
 
+
+
+The primary key for this table is **arn**.
+
+## Relations
+The following tables depend on `aws_mq_brokers`:
+  - [`aws_mq_broker_configurations`](aws_mq_broker_configurations.md)
+  - [`aws_mq_broker_users`](aws_mq_broker_users.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|authentication_strategy|text|The authentication strategy used to secure the broker|
-|auto_minor_version_upgrade|boolean|Enables automatic upgrades to new minor versions for brokers, as Apache releases the versions.|
-|arn|text|The broker's Amazon Resource Name (ARN).|
-|id|text|The unique ID that Amazon MQ generates for the broker.|
-|broker_instances|jsonb|A list of information about allocated brokers.|
-|broker_name|text|The broker's name|
-|broker_state|text|The broker's status.|
-|created|timestamp without time zone|The time when the broker was created.|
-|deployment_mode|text|The deployment mode of the broker.|
-|encryption_options_use_aws_owned_key|boolean|Enables the use of an AWS owned CMK using AWS Key Management Service (KMS).|
-|encryption_options_kms_key_id|text|The symmetric customer master key (CMK) to use for the AWS Key Management Service (KMS).|
-|engine_type|text|The type of broker engine.|
-|engine_version|text|The broker engine's version|
-|host_instance_type|text|The broker's instance type.|
-|ldap_server_metadata|jsonb|The metadata of the LDAP server used to authenticate and authorize connections to the broker.|
-|logs|jsonb|The list of information about logs currently enabled and pending to be deployed for the specified broker.|
-|maintenance_window_start_time|jsonb|The parameters that determine the WeeklyStartTime.|
-|pending_authentication_strategy|text|The authentication strategy that will be applied when the broker is rebooted. The default is SIMPLE.|
-|pending_engine_version|text|The broker engine version to upgrade to|
-|pending_host_instance_type|text|The broker's host instance type to upgrade to|
-|pending_ldap_server_metadata|jsonb|The metadata of the LDAP server that will be used to authenticate and authorize connections to the broker after it is rebooted.|
-|pending_security_groups|text[]|The list of pending security groups to authorize connections to brokers.|
-|publicly_accessible|boolean|Enables connections from applications outside of the VPC that hosts the broker's subnets.|
-|security_groups|text[]|The list of rules (1 minimum, 125 maximum) that authorize connections to brokers.|
-|storage_type|text|The broker's storage type.|
-|subnet_ids|text[]|The list of groups that define which subnets and IP ranges the broker can use from different Availability Zones.|
-|tags|jsonb|The list of all tags associated with this broker.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|actions_required|JSON|
+|authentication_strategy|String|
+|auto_minor_version_upgrade|Bool|
+|broker_id|String|
+|broker_instances|JSON|
+|broker_name|String|
+|broker_state|String|
+|configurations|JSON|
+|created|Timestamp|
+|deployment_mode|String|
+|encryption_options|JSON|
+|engine_type|String|
+|engine_version|String|
+|host_instance_type|String|
+|ldap_server_metadata|JSON|
+|logs|JSON|
+|maintenance_window_start_time|JSON|
+|pending_authentication_strategy|String|
+|pending_engine_version|String|
+|pending_host_instance_type|String|
+|pending_ldap_server_metadata|JSON|
+|pending_security_groups|StringArray|
+|publicly_accessible|Bool|
+|security_groups|StringArray|
+|storage_type|String|
+|subnet_ids|StringArray|
+|tags|JSON|
+|users|JSON|
+|result_metadata|JSON|

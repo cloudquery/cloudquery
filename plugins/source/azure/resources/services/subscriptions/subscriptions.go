@@ -13,13 +13,8 @@ func Subscriptions() *schema.Table {
 	return &schema.Table{
 		Name:      "azure_subscriptions",
 		Resolver:  fetchSubscriptionsSubscriptions,
-		Multiplex: client.SubscriptionMultiplex,
+		Multiplex: client.SingleSubscriptionMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:     "subscription_id",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAzureSubscription,
-			},
 			{
 				Name:     "authorization_source",
 				Type:     schema.TypeString,

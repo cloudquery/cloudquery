@@ -1,27 +1,56 @@
 package client
 
 import (
+	"context"
+	"fmt"
+	"os"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"github.com/golang/mock/gomock"
+	"github.com/rs/zerolog"
 )
 
-func DOTestHelper(t *testing.T, table *schema.Table) {
-	cfg := ``
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:      "digitalocean_test_provider",
-			Version:   "development",
-			Configure: Configure,
-			Config: func() provider.Config {
-				return &Config{}
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
+type TestOptions struct {
+	SkipEmptyJsonB bool
+}
+
+func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *testing.T, ctrl *gomock.Controller) Services, options TestOptions) {
+	t.Helper()
+	table.IgnoreInTests = false
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+
+	newTestExecutionClient := func(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
+		var doSpec Spec
+		if err := spec.UnmarshalSpec(&doSpec); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal do spec: %w", err)
+		}
+
+		ctrl := gomock.NewController(t)
+		services := createService(t, ctrl)
+
+		c := Client{
+			logger:       l,
+			SpacesRegion: "nyc3",
+			Services:     &services,
+		}
+		return &c, nil
+	}
+
+	p := plugins.NewSourcePlugin(
+		table.Name,
+		"dev",
+		[]*schema.Table{
+			table,
 		},
-		Config: cfg,
+		newTestExecutionClient)
+	plugins.TestSourcePluginSync(t, p, l, specs.Source{
+		Name:   "dev",
+		Tables: []string{table.Name},
 	})
 }

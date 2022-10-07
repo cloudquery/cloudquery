@@ -23,8 +23,8 @@ func serverBlobAuditingPolicies() *schema.Table {
 			},
 			{
 				Name:     "sql_server_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "state",
@@ -50,6 +50,11 @@ func serverBlobAuditingPolicies() *schema.Table {
 				Name:     "audit_actions_and_groups",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("AuditActionsAndGroups"),
+			},
+			{
+				Name:     "storage_account_subscription_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("StorageAccountSubscriptionID"),
 			},
 			{
 				Name:     "is_storage_secondary_key_in_use",

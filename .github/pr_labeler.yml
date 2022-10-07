@@ -14,10 +14,14 @@ github:
   - plugins/source/github/**/*
 k8s:
   - plugins/source/k8s/**/*
+heroku:
+  - plugins/source/heroku/**/*
 okta:
   - plugins/source/okta/**/*
 terraform:
   - plugins/source/terraform/**/*
+postgresql:
+  - plugins/destination/postgresql/**/*
 website:
   - website/**/*
 cli:

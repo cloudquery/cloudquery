@@ -1,23 +1,41 @@
-
 # Table: aws_apigateway_rest_apis
-Represents a REST API
+
+
+
+The primary key for this table is **arn**.
+
+## Relations
+The following tables depend on `aws_apigateway_rest_apis`:
+  - [`aws_apigateway_rest_api_authorizers`](aws_apigateway_rest_api_authorizers.md)
+  - [`aws_apigateway_rest_api_deployments`](aws_apigateway_rest_api_deployments.md)
+  - [`aws_apigateway_rest_api_documentation_parts`](aws_apigateway_rest_api_documentation_parts.md)
+  - [`aws_apigateway_rest_api_documentation_versions`](aws_apigateway_rest_api_documentation_versions.md)
+  - [`aws_apigateway_rest_api_gateway_responses`](aws_apigateway_rest_api_gateway_responses.md)
+  - [`aws_apigateway_rest_api_models`](aws_apigateway_rest_api_models.md)
+  - [`aws_apigateway_rest_api_request_validators`](aws_apigateway_rest_api_request_validators.md)
+  - [`aws_apigateway_rest_api_resources`](aws_apigateway_rest_api_resources.md)
+  - [`aws_apigateway_rest_api_stages`](aws_apigateway_rest_api_stages.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource|
-|region|text|The AWS Region of the resource|
-|arn|text|The Amazon Resource Name (ARN) for the resource|
-|api_key_source|text|The source of the API key for metering requests according to a usage plan|
-|binary_media_types|text[]|The list of binary media types supported by the RestApi|
-|created_date|timestamp without time zone|The timestamp when the API was created|
-|description|text|The API's description|
-|disable_execute_api_endpoint|boolean|Specifies whether clients can invoke your API by using the default execute-api endpoint|
-|endpoint_configuration_types|text[]|A list of endpoint types of an API (RestApi) or its custom domain name (DomainName)|
-|endpoint_configuration_vpc_endpoint_ids|text[]|A list of VpcEndpointIds of an API (RestApi) against which to create Route53 ALIASes|
-|id|text|The API's identifier|
-|minimum_compression_size|bigint|A nullable integer that is used to enable compression (with non-negative between 0 and 10485760 (10M) bytes, inclusive) or disable compression (with a null value) on an API|
-|name|text|The API's name|
-|policy|text|A stringified JSON policy document that applies to this RestApi regardless of the caller and Method configuration|
-|tags|jsonb|The collection of tags|
-|version|text|A version identifier for the API|
-|warnings|text[]|The warning messages reported when failonwarnings is turned on during API import|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|api_key_source|String|
+|binary_media_types|StringArray|
+|created_date|Timestamp|
+|description|String|
+|disable_execute_api_endpoint|Bool|
+|endpoint_configuration|JSON|
+|id|String|
+|minimum_compression_size|Int|
+|name|String|
+|policy|String|
+|tags|JSON|
+|version|String|
+|warnings|StringArray|

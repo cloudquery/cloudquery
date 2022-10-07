@@ -26,7 +26,7 @@ func TargetGroupTargetHealthDescriptions() *schema.Table {
 			{
 				Name:     "target_group_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "health_check_port",

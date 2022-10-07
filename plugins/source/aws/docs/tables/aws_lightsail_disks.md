@@ -1,25 +1,36 @@
-
 # Table: aws_lightsail_disks
-Describes a block storage disk
+
+
+
+The primary key for this table is **arn**.
+
+## Relations
+The following tables depend on `aws_lightsail_disks`:
+  - [`aws_lightsail_disk_snapshot`](aws_lightsail_disk_snapshot.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|The Amazon Resource Name (ARN) of the disk|
-|attached_to|text|The resources to which the disk is attached|
-|attachment_state|text|(Deprecated) The attachment state of the disk|
-|created_at|timestamp without time zone|The date when the disk was created|
-|gb_in_use|bigint|(Deprecated) The number of GB in use by the disk|
-|iops|bigint|The input/output operations per second (IOPS) of the disk|
-|is_attached|boolean|A Boolean value indicating whether the disk is attached|
-|is_system_disk|boolean|A Boolean value indicating whether this disk is a system disk (has an operating system loaded on it)|
-|location_availability_zone|text|The Availability Zone|
-|location_region_name|text|The AWS Region name|
-|name|text|The unique name of the disk|
-|path|text|The disk path|
-|resource_type|text|The Lightsail resource type (eg, Disk)|
-|size_in_gb|bigint|The size of the disk in GB|
-|state|text|Describes the status of the disk|
-|support_code|text|The support code|
-|tags|jsonb|The tag keys and optional values for the resource|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|tags|JSON|
+|add_ons|JSON|
+|attached_to|String|
+|attachment_state|String|
+|created_at|Timestamp|
+|gb_in_use|Int|
+|iops|Int|
+|is_attached|Bool|
+|is_system_disk|Bool|
+|location|JSON|
+|name|String|
+|path|String|
+|resource_type|String|
+|size_in_gb|Int|
+|state|String|
+|support_code|String|

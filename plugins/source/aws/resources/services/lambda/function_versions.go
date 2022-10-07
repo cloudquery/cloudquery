@@ -26,7 +26,7 @@ func FunctionVersions() *schema.Table {
 			{
 				Name:     "function_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "architectures",
@@ -34,7 +34,7 @@ func FunctionVersions() *schema.Table {
 				Resolver: schema.PathResolver("Architectures"),
 			},
 			{
-				Name:     "code_sha_256",
+				Name:     "code_sha256",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CodeSha256"),
 			},

@@ -2,6 +2,7 @@ package wafv2
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -84,6 +85,10 @@ func resolveWafv2ruleGroupPolicy(ctx context.Context, meta schema.ClientMeta, re
 		}
 		return err
 	}
-
-	return resource.Set(c.Name, policy.Policy)
+	var p map[string]interface{}
+	err = json.Unmarshal([]byte(*policy.Policy), &p)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, p)
 }

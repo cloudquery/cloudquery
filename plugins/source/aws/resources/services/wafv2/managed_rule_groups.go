@@ -9,10 +9,9 @@ import (
 
 func ManagedRuleGroups() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_wafv2_managed_rule_groups",
-		Resolver:             fetchWafv2ManagedRuleGroups,
-		PostResourceResolver: resolveDescribeManagedRuleGroup,
-		Multiplex:            client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Name:      "aws_wafv2_managed_rule_groups",
+		Resolver:  fetchWafv2ManagedRuleGroups,
+		Multiplex: client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -37,6 +36,11 @@ func ManagedRuleGroups() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "properties",
+				Type:     schema.TypeJSON,
+				Resolver: resolveManageRuleGroupProperties,
 			},
 			{
 				Name:     "description",

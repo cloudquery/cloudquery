@@ -1,21 +1,35 @@
-
 # Table: aws_glue_registry_schemas
-An object that contains minimal details for a schema
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_glue_registries`](aws_glue_registries.md).
+The following tables depend on `aws_glue_registry_schemas`:
+  - [`aws_glue_registry_schema_versions`](aws_glue_registry_schema_versions.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|registry_cq_id|uuid|Unique CloudQuery ID of aws_glue_registries table (FK)|
-|tags|jsonb|Resource tags.|
-|compatibility|text|The compatibility mode of the schema.|
-|created_time|text|The date and time the schema was created.|
-|data_format|text|The data format of the schema definition|
-|description|text|A description of schema if specified when created|
-|latest_schema_version|bigint|The latest version of the schema associated with the returned schema definition.|
-|next_schema_version|bigint|The next version of the schema associated with the returned schema definition.|
-|registry_arn|text|The Amazon Resource Name (ARN) of the registry.|
-|registry_name|text|The name of the registry.|
-|arn|text|The Amazon Resource Name (ARN) of the schema.|
-|schema_checkpoint|bigint|The version number of the checkpoint (the last time the compatibility mode was changed).|
-|schema_name|text|The name of the schema.|
-|schema_status|text|The status of the schema.|
-|updated_time|text|The date and time the schema was updated.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn|String|
+|tags|JSON|
+|compatibility|String|
+|created_time|String|
+|data_format|String|
+|description|String|
+|latest_schema_version|Int|
+|next_schema_version|Int|
+|registry_arn|String|
+|registry_name|String|
+|schema_checkpoint|Int|
+|schema_name|String|
+|schema_status|String|
+|updated_time|String|
+|result_metadata|JSON|

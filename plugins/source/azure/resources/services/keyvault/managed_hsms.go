@@ -21,6 +21,11 @@ func ManagedHsms() *schema.Table {
 				Resolver: client.ResolveAzureSubscription,
 			},
 			{
+				Name:     "properties_tenant_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("Properties.TenantID"),
+			},
+			{
 				Name:     "properties_initial_admin_object_ids",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("Properties.InitialAdminObjectIds"),

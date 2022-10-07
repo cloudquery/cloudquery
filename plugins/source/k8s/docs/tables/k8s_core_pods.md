@@ -1,59 +1,75 @@
-
 # Table: k8s_core_pods
-Pod is a collection of containers that can run on a host
+
+
+
+The primary key for this table is **uid**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|context|text|Name of the context from k8s configuration.|
-|kind|text|Kind is a string value representing the REST resource this object represents.|
-|api_version|text|Defines the versioned schema of this representation of an object.|
-|name|text|Unique name within a namespace.|
-|namespace|text|Namespace defines the space within which each name must be unique.|
-|uid|text|UID is the unique in time and space value for this object.|
-|resource_version|text|An opaque value that represents the internal version of this object.|
-|generation|bigint|A sequence number representing a specific generation of the desired state.|
-|deletion_grace_period_seconds|bigint|Number of seconds allowed for this object to gracefully terminate.|
-|labels|jsonb|Map of string keys and values that can be used to organize and categorize objects.|
-|annotations|jsonb|Annotations is an unstructured key value map stored with a resource that may be set by external tools.|
-|owner_references|jsonb|List of objects depended by this object.|
-|finalizers|text[]|List of finalizers|
-|zzz_cluster_name|text|Deprecated: ClusterName is a legacy field that was always cleared by the system and never used; it will be removed in the future. The name in the database is changed to help clients detect accidental use.|
-|restart_policy|text|Restart policy for all containers within the pod.|
-|termination_grace_period_seconds|bigint|Optional duration in seconds the pod needs to terminate gracefully|
-|active_deadline_seconds|bigint|Optional duration in seconds the pod may be active on the node relative to StartTime before the system will actively try to mark it failed and kill associated containers.|
-|dns_policy|text|Sets DNS policy for the pod.|
-|node_selector|jsonb|Selector which must be true for the pod to fit on a node.|
-|service_account_name|text|Name of the ServiceAccount to use to run this pod.|
-|automount_service_account_token|boolean|Indicates whether a service account token should be automatically mounted.|
-|node_name|text|Requests to schedule this pod onto a specific node.|
-|host_network|boolean|Host networking requested for this pod.|
-|host_pid|boolean|Use the host's pid namespace.|
-|host_ipc|boolean|Use the host's ipc namespace.|
-|share_process_namespace|boolean|Share a single process namespace between all of the containers in a pod.|
-|security_context|jsonb|Holds pod-level security attributes and common container settings.|
-|image_pull_secrets|jsonb|Optional list of references to secrets in the same namespace to use for pulling any of the images used by this PodSpec.|
-|hostname|text|Specifies the hostname of the Pod.|
-|subdomain|text|Specifies the subdomain of the Pod.|
-|affinity|jsonb|If specified, the pod's scheduling constraints.|
-|scheduler_name|text|If specified, the pod will be dispatched by specified scheduler.|
-|tolerations|jsonb|If specified, the pod's tolerations.|
-|host_aliases|jsonb|Optional list of hosts and IPs that will be injected into the pod's hosts file if specified.|
-|priority_class_name|text|If specified, indicates the pod's priority|
-|priority|integer|The priority value|
-|dns_config|jsonb|Specifies the DNS parameters of a pod.|
-|readiness_gates|jsonb|If specified, all readiness gates will be evaluated for pod readiness.|
-|runtime_class_name|text|Refers to a RuntimeClass object in the node.k8s.io group, which should be used to run this pod|
-|enable_service_links|boolean|Indicates whether information about services should be injected into pod's environment variables.|
-|preemption_policy|text|Policy for preempting pods with lower priority.|
-|overhead|jsonb|Represents the resource overhead associated with running a pod for a given RuntimeClass.|
-|topology_spread_constraints|jsonb|Describes how a group of pods ought to spread across topology domains|
-|set_hostname_as_fqdn|boolean|If true the pod's hostname will be configured as the pod's FQDN, rather than the leaf name.|
-|phase|text|The phase of a Pod is a simple, high-level summary of where the Pod is in its lifecycle.|
-|conditions|jsonb|Current service state of pod.|
-|message|text|A human readable message indicating details about why the pod is in this condition.|
-|reason|text|A brief CamelCase message indicating details about why the pod is in this state.|
-|nominated_node_name|text|Set only when this pod preempts other pods on the node, but it cannot be scheduled right away as preemption victims receive their graceful termination periods.|
-|host_ip|inet|IP address of the host to which the pod is assigned.|
-|pod_ip|inet|IP address allocated to the pod.|
-|pod_ips|inet[]|podIPs holds the IP addresses allocated to the pod|
-|qos_class|text|The Quality of Service (QOS) classification assigned to the pod based on resource requirements.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|context|String|
+|uid (PK)|String|
+|status_host_ip|Inet|
+|status_pod_ip|Inet|
+|status_pod_ips|InetArray|
+|kind|String|
+|api_version|String|
+|name|String|
+|namespace|String|
+|resource_version|String|
+|generation|Int|
+|deletion_grace_period_seconds|Int|
+|labels|JSON|
+|annotations|JSON|
+|owner_references|JSON|
+|finalizers|StringArray|
+|spec_volumes|JSON|
+|spec_init_containers|JSON|
+|spec_containers|JSON|
+|spec_ephemeral_containers|JSON|
+|spec_restart_policy|String|
+|spec_termination_grace_period_seconds|Int|
+|spec_active_deadline_seconds|Int|
+|spec_dns_policy|String|
+|spec_node_selector|JSON|
+|spec_service_account_name|String|
+|spec_automount_service_account_token|Bool|
+|spec_node_name|String|
+|spec_host_network|Bool|
+|spec_host_pid|Bool|
+|spec_host_ipc|Bool|
+|spec_share_process_namespace|Bool|
+|spec_security_context|JSON|
+|spec_image_pull_secrets|JSON|
+|spec_hostname|String|
+|spec_subdomain|String|
+|spec_affinity|JSON|
+|spec_scheduler_name|String|
+|spec_tolerations|JSON|
+|spec_host_aliases|JSON|
+|spec_priority_class_name|String|
+|spec_priority|Int|
+|spec_dns_config|JSON|
+|spec_readiness_gates|JSON|
+|spec_runtime_class_name|String|
+|spec_enable_service_links|Bool|
+|spec_preemption_policy|String|
+|spec_overhead|JSON|
+|spec_topology_spread_constraints|JSON|
+|spec_set_hostname_as_fqdn|Bool|
+|spec_os|JSON|
+|status_phase|String|
+|status_conditions|JSON|
+|status_message|String|
+|status_reason|String|
+|status_nominated_node_name|String|
+|status_start_time|Timestamp|
+|status_init_container_statuses|JSON|
+|status_container_statuses|JSON|
+|status_qos_class|String|
+|status_ephemeral_container_statuses|JSON|

@@ -25,6 +25,7 @@ func SubscribedRuleGroups() *schema.Table {
 			{
 				Name:        "rule_group_id",
 				Type:        schema.TypeString,
+				Resolver:    schema.PathResolver("RuleGroupId"),
 				Description: `A unique identifier for a RuleGroup.`,
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,

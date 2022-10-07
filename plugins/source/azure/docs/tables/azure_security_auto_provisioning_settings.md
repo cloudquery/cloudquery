@@ -1,11 +1,19 @@
-
 # Table: azure_security_auto_provisioning_settings
-AutoProvisioningSetting auto provisioning setting
+
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|auto_provision|text|Describes what kind of security agent provisioning action to take Possible values include: 'AutoProvisionOn', 'AutoProvisionOff'|
-|id|text|Resource Id|
-|name|text|Resource name|
-|resource_type|text|Resource type|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|auto_provision|String|
+|id (PK)|String|
+|name|String|
+|type|String|

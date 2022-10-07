@@ -35,6 +35,11 @@ func Policies() *schema.Table {
 				Resolver: resolveIamPolicyTags,
 			},
 			{
+				Name:     "policy_version_list",
+				Type:     schema.TypeJSON,
+				Resolver: resolveIamPolicyVersionList,
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Arn"),

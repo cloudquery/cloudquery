@@ -27,12 +27,12 @@ func Workflows() *schema.Table {
 			},
 			{
 				Name:     "created_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedTime"),
 			},
 			{
 				Name:     "changed_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ChangedTime"),
 			},
 			{

@@ -26,7 +26,7 @@ func MlTransformTaskRuns() *schema.Table {
 			{
 				Name:     "ml_transform_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "completed_on",

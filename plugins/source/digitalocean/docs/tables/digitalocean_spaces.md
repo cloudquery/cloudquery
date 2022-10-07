@@ -1,10 +1,21 @@
-
 # Table: digitalocean_spaces
 
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+The following tables depend on `digitalocean_spaces`:
+  - [`digitalocean_space_cors`](digitalocean_space_cors.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|name|text|name of the space.|
-|creation_date|timestamp without time zone|the date of the bucket’s creation.|
-|location|text|A “slug” representing the region where the bucket is located (e.g. nyc3).|
-|public|boolean|Whether anyone can list the contents of this Space.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|acls|JSON|
+|bucket|JSON|
+|location|String|
+|public|Bool|

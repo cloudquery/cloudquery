@@ -9,15 +9,19 @@ import (
 
 func Trails() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_cloudtrail_trails",
-		Resolver:             fetchCloudtrailTrails,
-		PostResourceResolver: postCloudtrailTrailResolver,
-		Multiplex:            client.AccountMultiplex,
+		Name:      "aws_cloudtrail_trails",
+		Resolver:  fetchCloudtrailTrails,
+		Multiplex: client.ServiceAccountRegionMultiplexer("cloudtrail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
 			},
 			{
 				Name:     "cloudwatch_logs_log_group_name",
@@ -31,6 +35,11 @@ func Trails() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "status",
+				Type:     schema.TypeJSON,
+				Resolver: resolveCloudTrailStatus,
 			},
 			{
 				Name:     "cloud_watch_logs_log_group_arn",
@@ -88,12 +97,12 @@ func Trails() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "s_3_bucket_name",
+				Name:     "s3_bucket_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("S3BucketName"),
 			},
 			{
-				Name:     "s_3_key_prefix",
+				Name:     "s3_key_prefix",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("S3KeyPrefix"),
 			},
@@ -106,6 +115,11 @@ func Trails() *schema.Table {
 				Name:     "sns_topic_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SnsTopicName"),
+			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
 			},
 		},
 

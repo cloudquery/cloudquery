@@ -142,6 +142,11 @@ func DbSnapshots() *schema.Table {
 				Resolver: schema.PathResolver("SnapshotCreateTime"),
 			},
 			{
+				Name:     "snapshot_database_time",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("SnapshotDatabaseTime"),
+			},
+			{
 				Name:     "snapshot_target",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SnapshotTarget"),

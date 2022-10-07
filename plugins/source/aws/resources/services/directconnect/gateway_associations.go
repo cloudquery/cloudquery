@@ -26,12 +26,12 @@ func GatewayAssociations() *schema.Table {
 			{
 				Name:     "gateway_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "gateway_id",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("id"),
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "allowed_prefixes_to_direct_connect_gateway",

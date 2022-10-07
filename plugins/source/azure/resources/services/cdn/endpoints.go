@@ -22,8 +22,8 @@ func endpoints() *schema.Table {
 			},
 			{
 				Name:     "cdn_profile_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "host_name",

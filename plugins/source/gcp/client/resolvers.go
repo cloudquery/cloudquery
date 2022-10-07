@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/spf13/cast"
 	"github.com/thoas/go-funk"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 func ResolveProject(_ context.Context, meta schema.ClientMeta, r *schema.Resource, _ schema.Column) error {
@@ -46,4 +47,18 @@ func resolveLocation(_ context.Context, c schema.ClientMeta, r *schema.Resource)
 		return nil
 	}
 	return r.Set("location", match[3])
+}
+
+func ResolveProtoTimestamp(path string) schema.ColumnResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		data := funk.Get(resource.Item, path)
+		if data == nil {
+			return nil
+		}
+		ts, ok := data.(*timestamppb.Timestamp)
+		if !ok {
+			return fmt.Errorf("unextected type, wanted \"*timestamppb.Timestamp\", have \"%T\"", data)
+		}
+		return resource.Set(c.Name, ts.AsTime())
+	}
 }

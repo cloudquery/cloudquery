@@ -1,10 +1,22 @@
-
 # Table: aws_lightsail_database_log_events
 
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_lightsail_databases`](aws_lightsail_databases.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|database_cq_id|uuid|Unique CloudQuery ID of aws_lightsail_databases table (FK)|
-|created_at|timestamp without time zone|The timestamp when the database log event was created|
-|message|text|The message of the database log event|
-|log_stream_name|text|An object describing the result of your get relational database log streams request|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|database_arn|String|
+|created_at|Timestamp|
+|message|String|
+|log_stream_name|String|

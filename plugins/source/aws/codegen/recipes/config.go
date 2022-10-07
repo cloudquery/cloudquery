@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/config/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -14,7 +14,7 @@ func ConfigResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "configuration_recorders",
-			Struct:     &config.ConfigurationRecorderWrapper{},
+			Struct:     &models.ConfigurationRecorderWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -47,7 +47,7 @@ func ConfigResources() []*Resource {
 		},
 		{
 			SubService: "conformance_pack_rule_compliances",
-			Struct:     &config.ConformancePackComplianceWrapper{},
+			Struct:     &models.ConformancePackComplianceWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -55,7 +55,7 @@ func ConfigResources() []*Resource {
 					{
 						Name:     "conformance_pack_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

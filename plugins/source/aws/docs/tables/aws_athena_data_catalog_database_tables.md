@@ -1,12 +1,25 @@
-
 # Table: aws_athena_data_catalog_database_tables
-Contains metadata for a table
+
+
+
+The composite primary key for this table is (**data_catalog_arn**, **data_catalog_database_name**, **name**).
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|data_catalog_database_cq_id|uuid|Unique CloudQuery ID of aws_athena_data_catalog_databases table (FK)|
-|name|text|The name of the table|
-|create_time|timestamp without time zone|The time that the table was created|
-|last_access_time|timestamp without time zone|The last time the table was accessed|
-|parameters|jsonb|A set of custom key/value pairs for table properties|
-|table_type|text|The type of table|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|data_catalog_arn (PK)|String|
+|data_catalog_database_name (PK)|String|
+|name (PK)|String|
+|columns|JSON|
+|create_time|Timestamp|
+|last_access_time|Timestamp|
+|parameters|JSON|
+|partition_keys|JSON|
+|table_type|String|

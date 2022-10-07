@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/digitalocean
 
 monorepo:
-  tag_prefix: plugins/source/digitalocean/
+  tag_prefix: plugins-source-digitalocean-
   dir: plugins/source/digitalocean
 
 includes:

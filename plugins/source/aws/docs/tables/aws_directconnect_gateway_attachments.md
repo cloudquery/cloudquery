@@ -1,14 +1,27 @@
-
 # Table: aws_directconnect_gateway_attachments
-Information about the attachment between a Direct Connect gateway and virtual interfaces.
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_directconnect_gateways`](aws_directconnect_gateways.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|gateway_cq_id|uuid|Unique CloudQuery ID of aws_directconnect_gateways table (FK)|
-|gateway_id|text|The ID of the Direct Connect gateway.|
-|attachment_state|text|The state of the attachment.|
-|attachment_type|text|The type of attachment.|
-|state_change_error|text|The error message if the state of an object failed to advance.|
-|virtual_interface_id|text|The ID of the virtual interface.|
-|virtual_interface_owner_account|text|The ID of the AWS account that owns the virtual interface.|
-|virtual_interface_region|text|The AWS Region where the virtual interface is located.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|gateway_arn|String|
+|gateway_id|String|
+|attachment_state|String|
+|attachment_type|String|
+|direct_connect_gateway_id|String|
+|state_change_error|String|
+|virtual_interface_id|String|
+|virtual_interface_owner_account|String|
+|virtual_interface_region|String|

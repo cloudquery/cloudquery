@@ -2,7 +2,6 @@ package kms
 
 import (
 	"context"
-	"encoding/json"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kms"
@@ -46,11 +45,7 @@ func resolveKeysReplicaKeys(ctx context.Context, meta schema.ClientMeta, resourc
 	if key.MultiRegionConfiguration == nil {
 		return nil
 	}
-	b, err := json.Marshal(key.MultiRegionConfiguration.ReplicaKeys)
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, b)
+	return resource.Set(c.Name, key.MultiRegionConfiguration.ReplicaKeys)
 }
 func resolveKeysTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)

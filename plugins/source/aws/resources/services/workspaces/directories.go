@@ -72,6 +72,11 @@ func Directories() *schema.Table {
 				Resolver: schema.PathResolver("RegistrationCode"),
 			},
 			{
+				Name:     "saml_properties",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SamlProperties"),
+			},
+			{
 				Name:     "selfservice_permissions",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SelfservicePermissions"),

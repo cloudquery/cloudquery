@@ -7,11 +7,14 @@ import (
 	"go/format"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"strings"
 	"text/template"
 
 	"github.com/cloudquery/plugin-sdk/codegen"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/google/go-github/v45/github"
 	"github.com/iancoleman/strcase"
 )
 
@@ -32,6 +35,16 @@ type Resource struct {
 //go:embed templates/*.go.tpl
 var templatesFS embed.FS
 
+func timestampTransformer(field reflect.StructField) (schema.ValueType, error) {
+	timestamp := github.Timestamp{}
+	switch field.Type {
+	case reflect.TypeOf(timestamp), reflect.TypeOf(&timestamp):
+		return schema.TypeTimestamp, nil
+	default:
+		return schema.TypeInvalid, nil
+	}
+}
+
 func (r *Resource) Generate() error {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -47,6 +60,7 @@ func (r *Resource) Generate() error {
 	r.Table, err = codegen.NewTableFromStruct(r.TableName, r.Struct,
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
+		codegen.WithTypeTransformer(timestampTransformer),
 	)
 	if err != nil {
 		return err

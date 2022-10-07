@@ -26,7 +26,7 @@ func TransitGatewayPeeringAttachments() *schema.Table {
 			{
 				Name:     "transit_gateway_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "tags",
@@ -39,9 +39,19 @@ func TransitGatewayPeeringAttachments() *schema.Table {
 				Resolver: schema.PathResolver("AccepterTgwInfo"),
 			},
 			{
+				Name:     "accepter_transit_gateway_attachment_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("AccepterTransitGatewayAttachmentId"),
+			},
+			{
 				Name:     "creation_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
+			},
+			{
+				Name:     "options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Options"),
 			},
 			{
 				Name:     "requester_tgw_info",

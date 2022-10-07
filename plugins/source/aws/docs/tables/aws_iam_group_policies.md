@@ -1,12 +1,23 @@
-
 # Table: aws_iam_group_policies
-Inline policies that are embedded in the specified IAM group
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_iam_groups`](aws_iam_groups.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|group_cq_id|uuid|Unique CloudQuery ID of aws_iam_groups table (FK)|
-|group_id|text|Group ID the policy belongs too.|
-|group_name|text|The group the policy is associated with.|
-|policy_document|jsonb|The policy document. IAM stores policies in JSON format. However, resources that were created using AWS CloudFormation templates can be formatted in YAML. AWS CloudFormation always converts a YAML policy to JSON format before submitting it to IAM.|
-|policy_name|text|The name of the policy.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|group_arn|String|
+|group_id|String|
+|policy_document|JSON|
+|group_name|String|
+|policy_name|String|
+|result_metadata|JSON|

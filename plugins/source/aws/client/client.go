@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -101,7 +103,6 @@ type Client struct {
 	logger          zerolog.Logger
 	// this is set by table clientList
 	AccountID            string
-	GlobalRegion         string
 	Region               string
 	AutoscalingNamespace string
 	WAFScope             wafv2types.Scope
@@ -412,12 +413,31 @@ func getAccountId(ctx context.Context, awsCfg aws.Config) (*sts.GetCallerIdentit
 	return svc.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 }
 
-func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Config, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
+func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *Spec, account Account, stsClient AssumeRoleAPIClient) (aws.Config, error) {
 	var err error
 	var awsCfg aws.Config
+
+	maxAttempts := 10
+	if awsConfig.MaxRetries != nil {
+		maxAttempts = *awsConfig.MaxRetries
+	}
+	maxBackoff := 30
+	if awsConfig.MaxBackoff != nil {
+		maxBackoff = *awsConfig.MaxBackoff
+	}
+
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion(defaultRegion),
-		config.WithRetryer(newRetryer(logger, awsConfig.MaxRetries, awsConfig.MaxBackoff)),
+		// https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/retries-timeouts/
+		config.WithRetryer(func() aws.Retryer {
+			// return retry.NewAdaptiveMode()
+			return retry.NewStandard(func(so *retry.StandardOptions) {
+				so.MaxAttempts = maxAttempts
+				so.MaxBackoff = time.Duration(maxBackoff) * time.Second
+				so.RateLimiter = &NoRateLimiter{}
+			})
+			// return retry.AddWithMaxAttempts(retry.NewStandard(), 5)
+		}),
 	}
 
 	if account.DefaultRegion != "" {
@@ -471,14 +491,13 @@ func configureAwsClient(ctx context.Context, logger zerolog.Logger, awsConfig *C
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (schema.ClientMeta, error) {
-	var awsConfig Config
+	var awsConfig Spec
 	err := spec.UnmarshalSpec(&awsConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 
 	client := NewAwsClient(logger)
-	client.GlobalRegion = awsConfig.GlobalRegion
 	var adminAccountSts AssumeRoleAPIClient
 	if awsConfig.Organization != nil && len(awsConfig.Accounts) > 0 {
 		return nil, errors.New("specifying accounts via both the Accounts and Org properties is not supported. If you want to do both, you should use multiple provider blocks")

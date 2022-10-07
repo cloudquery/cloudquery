@@ -7,14 +7,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3control"
 	s3controlTypes "github.com/aws/aws-sdk-go-v2/service/s3control/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/s3/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/pkg/errors"
 )
-
-type S3AccountConfig struct {
-	s3controlTypes.PublicAccessBlockConfiguration
-	ConfigExists bool
-}
 
 func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -30,9 +26,9 @@ func fetchS3Accounts(ctx context.Context, meta schema.ClientMeta, _ *schema.Reso
 		if !errors.As(err, &nspabc) {
 			return err
 		}
-		res <- S3AccountConfig{s3controlTypes.PublicAccessBlockConfiguration{}, false}
+		res <- models.PublicAccessBlockConfigurationWrapper{ConfigExists: false}
 	} else {
-		res <- S3AccountConfig{*resp.PublicAccessBlockConfiguration, true}
+		res <- models.PublicAccessBlockConfigurationWrapper{PublicAccessBlockConfiguration: *resp.PublicAccessBlockConfiguration, ConfigExists: true}
 	}
 
 	return nil

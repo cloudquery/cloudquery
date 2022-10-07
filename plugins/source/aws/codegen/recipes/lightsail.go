@@ -2,7 +2,7 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -50,7 +50,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "bucket_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -101,7 +101,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "container_service_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -115,7 +115,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "container_service_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -167,7 +167,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "database_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -181,13 +181,13 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "database_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
 		{
 			SubService: "database_log_events",
-			Struct:     &lightsail.LogEventWrapper{},
+			Struct:     &models.LogEventWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -195,7 +195,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "database_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -231,7 +231,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "disk_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",
@@ -242,7 +242,7 @@ func LightsailResources() []*Resource {
 		},
 		{
 			SubService: "distributions",
-			Struct:     &lightsail.DistributionWrapper{},
+			Struct:     &models.DistributionWrapper{},
 			SkipFields: []string{"Arn", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -316,7 +316,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "instance_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -352,7 +352,7 @@ func LightsailResources() []*Resource {
 					{
 						Name:     "load_balancer_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",

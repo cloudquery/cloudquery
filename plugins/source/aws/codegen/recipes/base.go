@@ -7,10 +7,12 @@ import (
 	"go/format"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"strings"
 	"text/template"
 
+	"github.com/cloudquery/plugin-sdk/caser"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/iancoleman/strcase"
@@ -54,6 +56,14 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 	},
 }
 
+func awsNameTransformer(f reflect.StructField) (string, error) {
+	c := caser.New(caser.WithCustomInitialisms(map[string]bool{
+		"EC2": true,
+		"VPC": true,
+	}))
+	return c.ToSnake(f.Name), nil
+}
+
 func (r *Resource) Generate() error {
 	_, filename, _, ok := runtime.Caller(0)
 	if !ok {
@@ -62,9 +72,10 @@ func (r *Resource) Generate() error {
 	dir := path.Dir(filename)
 
 	var err error
-	opts := []codegen.TableOptions{
+	opts := []codegen.TableOption{
 		codegen.WithSkipFields(r.SkipFields),
 		codegen.WithExtraColumns(r.ExtraColumns),
+		codegen.WithNameTransformer(awsNameTransformer),
 	}
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())

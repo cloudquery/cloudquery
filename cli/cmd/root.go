@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -51,7 +52,7 @@ func NewCmdRoot() *cobra.Command {
 			}
 			var writers []io.Writer
 			if !noLogFile {
-				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
+				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 				if err != nil {
 					return err
 				}
@@ -63,6 +64,9 @@ func NewCmdRoot() *cobra.Command {
 				}
 			}
 			if logConsole {
+				if err := os.Stdout.Close(); err != nil {
+					return fmt.Errorf("failed to close stdout: %w", err)
+				}
 				if logFormat.String() == "text" {
 					writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: noColor})
 				} else {
@@ -72,33 +76,33 @@ func NewCmdRoot() *cobra.Command {
 
 			mw := io.MultiWriter(writers...)
 			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
-			err = sentry.Init(sentry.ClientOptions{
-				Debug:   false,
-				Dsn:     sentryDsn,
-				Release: "cloudquery@" + Version,
-				// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
-				Integrations: func(integrations []sentry.Integration) []sentry.Integration {
-					var filteredIntegrations []sentry.Integration
-					for _, integration := range integrations {
-						if integration.Name() == "Modules" {
-							continue
+			if sentryDsn != "" && Version != "development" {
+				if err := sentry.Init(sentry.ClientOptions{
+					Debug:     false,
+					Dsn:       sentryDsn,
+					Release:   "cloudquery@" + Version,
+					Transport: sentry.NewHTTPSyncTransport(),
+					// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
+					Integrations: func(integrations []sentry.Integration) []sentry.Integration {
+						var filteredIntegrations []sentry.Integration
+						for _, integration := range integrations {
+							if integration.Name() == "Modules" {
+								continue
+							}
+							filteredIntegrations = append(filteredIntegrations, integration)
 						}
-						filteredIntegrations = append(filteredIntegrations, integration)
-					}
-					return filteredIntegrations
-				},
-			})
-			if err != nil {
-				log.Error().Err(err).Msg("error initializing sentry")
+						return filteredIntegrations
+					},
+				}); err != nil {
+					return err
+				}
 			}
-
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			if logFile != nil {
 				logFile.Close()
 			}
-			// analytics.Close()
 		},
 	}
 
@@ -135,7 +139,8 @@ func NewCmdRoot() *cobra.Command {
 	}
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
-	cmd.AddCommand(NewCmdGenerate(), NewCmdSync(), newCmdDoc())
+	cmd.AddCommand(NewCmdSync(), newCmdDoc())
+	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	return cmd
 }

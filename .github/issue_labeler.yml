@@ -20,6 +20,8 @@ okta:
     - '/(okta)/i'
 terraform:
     - '/(terraform)/i'
+postgresql:
+    - '/(postgresql)/i'
 docs:
     - '/(docs|documentation)/i'
 website:

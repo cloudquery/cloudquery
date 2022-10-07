@@ -7,11 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-const exampleConfig = `
-# This is an example config file for the test plugin.
-account_ids: []
-`
-
 var (
 	Version = "development"
 )
@@ -24,6 +19,5 @@ func Plugin() *plugins.SourcePlugin {
 			tables.TestSomeTable(),
 		},
 		client.New,
-		plugins.WithSourceExampleConfig(exampleConfig),
 	)
 }

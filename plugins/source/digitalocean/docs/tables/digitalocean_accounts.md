@@ -1,14 +1,24 @@
-
 # Table: digitalocean_accounts
-Account represents a DigitalOcean Account
+
+
+
+The primary key for this table is **uuid**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|droplet_limit|bigint|The total number of Droplets current user or team may have active at one time.|
-|floating_ip_limit|bigint|The total number of Floating IPs the current user or team may have.|
-|volume_limit|bigint|The total number of volumes the current user or team may have.|
-|email|text|The email address used by the current user to register for DigitalOcean.|
-|uuid|text|The unique universal identifier for the current user.|
-|email_verified|boolean|If true, the user has verified their account via email. False otherwise.|
-|status|text|This value is one of "active", "warning" or "locked".|
-|status_message|text|A human-readable message giving more details about the status of the account.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|uuid (PK)|String|
+|droplet_limit|Int|
+|floating_ip_limit|Int|
+|reserved_ip_limit|Int|
+|volume_limit|Int|
+|email|String|
+|email_verified|Bool|
+|status|String|
+|status_message|String|
+|team|JSON|

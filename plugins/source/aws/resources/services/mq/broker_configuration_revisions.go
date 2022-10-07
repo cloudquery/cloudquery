@@ -26,7 +26,7 @@ func BrokerConfigurationRevisions() *schema.Table {
 			{
 				Name:     "broker_configuration_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "data",

@@ -107,7 +107,7 @@ func ManagedInstances() *schema.Table {
 			},
 			{
 				Name:     "restore_point_in_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("RestorePointInTime"),
 			},
 			{

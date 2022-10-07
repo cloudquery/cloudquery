@@ -1,15 +1,24 @@
-
 # Table: aws_ec2_key_pairs
-Describes an EC2 Key Pair.
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|arn|text|The Amazon Resource Name (ARN) of the Key Pair|
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|create_time|timestamp without time zone|The date and time when the key was created in ISO 8601 date-time format.|
-|key_fingerprint|text|The fingerprint of the private key digest.|
-|key_name|text|The name of the key pair.|
-|key_pair_id|text|The ID of the key pair.|
-|key_type|text|The type of key pair.|
-|tags|jsonb|Any tags assigned to the key pair.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|create_time|Timestamp|
+|key_fingerprint|String|
+|key_name|String|
+|key_pair_id|String|
+|key_type|String|
+|public_key|String|
+|tags|JSON|

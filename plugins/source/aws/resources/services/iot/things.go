@@ -24,9 +24,10 @@ func Things() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:     "principals",
-				Type:     schema.TypeStringArray,
-				Resolver: ResolveIotThingPrincipals,
+				Name:          "principals",
+				Type:          schema.TypeStringArray,
+				Resolver:      ResolveIotThingPrincipals,
+				IgnoreInTests: true,
 			},
 			{
 				Name:     "arn",

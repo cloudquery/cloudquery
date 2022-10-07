@@ -1,15 +1,26 @@
-
 # Table: azure_sql_server_admins
-ServerAzureADAdministrator azure Active Directory administrator
+
+
+
+The primary key for this table is **id**.
+
+## Relations
+This table depends on [`azure_sql_servers`](azure_sql_servers.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|server_cq_id|uuid|Unique ID of azure_sql_servers table (FK)|
-|administrator_type|text|Type of the sever administrator|
-|login|text|Login name of the server administrator|
-|sid|uuid|SID (object ID) of the server administrator|
-|tenant_id|uuid|Tenant ID of the administrator|
-|azure_ad_only_authentication|boolean|Azure Active Directory only Authentication enabled|
-|id|text|Resource ID|
-|name|text|Resource name|
-|type|text|Resource type|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|sql_server_id|String|
+|administrator_type|String|
+|login|String|
+|sid|UUID|
+|tenant_id|UUID|
+|azure_ad_only_authentication|Bool|
+|id (PK)|String|
+|name|String|
+|type|String|

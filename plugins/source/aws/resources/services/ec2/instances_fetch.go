@@ -2,6 +2,8 @@ package ec2
 
 import (
 	"context"
+	"regexp"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
@@ -10,6 +12,8 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
+
+var stateTransitionReasonTimeRegex = regexp.MustCompile(`\((.*)\)`)
 
 func fetchEc2Instances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config ec2.DescribeInstancesInput
@@ -45,4 +49,23 @@ func resolveInstanceArn(_ context.Context, meta schema.ClientMeta, resource *sch
 		Resource:  "instances/" + aws.ToString(item.InstanceId),
 	}
 	return resource.Set(c.Name, a.String())
+}
+
+func resolveEc2InstanceStateTransitionReasonTime(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	instance := resource.Item.(types.Instance)
+	if instance.StateTransitionReason == nil {
+		return nil
+	}
+	match := stateTransitionReasonTimeRegex.FindStringSubmatch(*instance.StateTransitionReason)
+	if len(match) < 2 {
+		// failed to get time from message
+		return nil
+	}
+	const layout = "2006-01-02 15:04:05 MST"
+	tm, err := time.Parse(layout, match[1])
+	if err != nil {
+		meta.Logger().Warn().Err(err).Str("instance_id", aws.ToString(instance.InstanceId)).Msg("Failed to parse state_transition_reason_time")
+		return nil
+	}
+	return resource.Set(c.Name, tm)
 }

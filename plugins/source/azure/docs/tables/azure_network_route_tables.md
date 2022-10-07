@@ -1,17 +1,26 @@
-
 # Table: azure_network_route_tables
-Azure route table
+
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|id|text|Resource ID.|
-|route_table_subnets|text[]|A collection of references to subnets.|
-|disable_bgp_route_propagation|boolean|Whether to disable the routes learned by BGP on that route table.|
-|provisioning_state|text|The provisioning state of the route table resource.|
-|resource_guid|text|The resource GUID property of the route table.|
-|etag|text|A unique read-only string that changes whenever the resource is updated.|
-|name|text|Resource name.|
-|type|text|Resource type.|
-|location|text|Resource location.|
-|tags|jsonb|Resource tags.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|routes|JSON|
+|subnets|JSON|
+|disable_bgp_route_propagation|Bool|
+|provisioning_state|String|
+|resource_guid|String|
+|etag|String|
+|id (PK)|String|
+|name|String|
+|type|String|
+|location|String|
+|tags|JSON|

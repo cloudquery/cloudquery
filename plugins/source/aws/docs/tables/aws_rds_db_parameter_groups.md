@@ -1,13 +1,24 @@
-
 # Table: aws_rds_db_parameter_groups
-Contains the details of an Amazon RDS DB parameter group
+
+
+
+The primary key for this table is **arn**.
+
+## Relations
+The following tables depend on `aws_rds_db_parameter_groups`:
+  - [`aws_rds_db_parameter_group_db_parameters`](aws_rds_db_parameter_group_db_parameters.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|The Amazon Resource Name (ARN) for the DB parameter group.|
-|family|text|The name of the DB parameter group family that this DB parameter group is compatible with.|
-|name|text|The name of the DB parameter group.|
-|description|text|Provides the customer-specified description for this DB parameter group.|
-|tags|jsonb|List of tags|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|tags|JSON|
+|db_parameter_group_family|String|
+|db_parameter_group_name|String|
+|description|String|

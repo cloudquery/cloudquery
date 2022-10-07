@@ -9,9 +9,10 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_emr_clusters",
-		Resolver:  fetchEmrClusters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
+		Name:                "aws_emr_clusters",
+		Resolver:            fetchEmrClusters,
+		PreResourceResolver: getCluster,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("elasticmapreduce"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -67,7 +68,7 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("EbsRootVolumeSize"),
 			},
 			{
-				Name:     "ec_2_instance_attributes",
+				Name:     "ec2_instance_attributes",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Ec2InstanceAttributes"),
 			},

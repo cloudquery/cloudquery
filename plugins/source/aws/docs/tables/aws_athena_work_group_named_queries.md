@@ -1,13 +1,25 @@
-
 # Table: aws_athena_work_group_named_queries
-A query, where QueryString contains the SQL statements that make up the query
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_athena_work_groups`](aws_athena_work_groups.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|work_group_cq_id|uuid|Unique CloudQuery ID of aws_athena_work_groups table (FK)|
-|database|text|The database to which the query belongs|
-|name|text|The query name|
-|query_string|text|The SQL statements that make up the query|
-|description|text|The query description|
-|named_query_id|text|The unique identifier of the query|
-|work_group|text|The name of the workgroup that contains the named query|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|work_group_arn|String|
+|database|String|
+|name|String|
+|query_string|String|
+|description|String|
+|named_query_id|String|
+|work_group|String|

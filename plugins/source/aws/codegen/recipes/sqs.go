@@ -1,18 +1,17 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/sqs/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
 func SQSResources() []*Resource {
 	resources := []*Resource{
-
 		{
 			SubService: "queues",
-			Struct:     &sqs.Queue{},
-			SkipFields: []string{"Arn"},
+			Struct:     &models.Queue{},
+			SkipFields: []string{"Arn", "Policy", "RedriveAllowPolicy", "RedrivePolicy"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -26,6 +25,21 @@ func SQSResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveSqsQueueTags`,
+					},
+					{
+						Name:     "policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("Policy")`,
+					},
+					{
+						Name:     "redrive_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("RedrivePolicy")`,
+					},
+					{
+						Name:     "redrive_allow_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("RedriveAllowPolicy")`,
 					},
 				}...),
 		},

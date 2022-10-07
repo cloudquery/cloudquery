@@ -47,12 +47,12 @@ func ConformancePacks() *schema.Table {
 				Resolver: schema.PathResolver("CreatedBy"),
 			},
 			{
-				Name:     "delivery_s_3_bucket",
+				Name:     "delivery_s3_bucket",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DeliveryS3Bucket"),
 			},
 			{
-				Name:     "delivery_s_3_key_prefix",
+				Name:     "delivery_s3_key_prefix",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DeliveryS3KeyPrefix"),
 			},
@@ -60,6 +60,11 @@ func ConformancePacks() *schema.Table {
 				Name:     "last_update_requested_time",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastUpdateRequestedTime"),
+			},
+			{
+				Name:     "template_ssm_document_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TemplateSSMDocumentDetails"),
 			},
 		},
 

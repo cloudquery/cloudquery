@@ -2,7 +2,7 @@ name: release-plugin
 on:
   push:
     tags:
-      - "plugins/*/*/v*.*.*"
+      - "plugins-*-*-v*.*.*"
 env:
   CGO_ENABLED: 0
 
@@ -10,16 +10,14 @@ jobs:
   release-plugin-binary:
     runs-on: ubuntu-latest
     steps:
-      # Tag format is plugins/<type>/<name>/<version>
+      # Tag format is plugins-<type>-<name>-<version>
       - name: Split tag
         id: split
         run: |
           tag=${{ github.ref_name }}
-          plugin_dir=${tag%%v*}
-          plugin_type=$(echo $tag | cut -d/ -f2)
-          plugin_name=$(echo $tag | cut -d/ -f3)
-          plugin_version=$(echo $tag | cut -d/ -f4)
-          echo ::set-output name=plugin_dir::${plugin_dir}
+          plugin_type=$(echo $tag | cut -d- -f2)
+          plugin_name=$(echo $tag | cut -d- -f3)
+          plugin_version=$(echo $tag | cut -d- -f4-)
           echo ::set-output name=plugin_name::${plugin_name}
           echo ::set-output name=plugin_type::${plugin_type}
           echo ::set-output name=plugin_version::${plugin_version}
@@ -33,10 +31,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      - name: Set up Go
+      - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version: 1.19.1
+          go-version-file: plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/go.mod
+          cache: true
+          cache-dependency-path: plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/go.sum
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
@@ -44,7 +44,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugin_dir}}.goreleaser.yaml
+        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -54,7 +54,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --rm-dist -f ./${{steps.split.outputs.plugin_dir}}.goreleaser.yaml
+        run: goreleaser release --rm-dist -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
@@ -63,7 +63,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v1/${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}.json'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./sites/versions/v2/${{steps.split.outputs.plugin_type}}-${{steps.split.outputs.plugin_name}}.json'
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

@@ -6,13 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type DetectorWrapper struct {
-	*guardduty.GetDetectorOutput
-	Id string
-}
 
 func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -30,7 +26,7 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 			if err != nil {
 				return err
 			}
-			res <- DetectorWrapper{d, dId}
+			res <- models.DetectorWrapper{GetDetectorOutput: d, Id: dId}
 		}
 		if output.NextToken == nil {
 			return nil
@@ -40,7 +36,7 @@ func fetchGuarddutyDetectors(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	detector := parent.Item.(DetectorWrapper)
+	detector := parent.Item.(models.DetectorWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().GuardDuty
 	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}
@@ -59,6 +55,6 @@ func fetchGuarddutyDetectorMembers(ctx context.Context, meta schema.ClientMeta, 
 
 func resolveGuarddutyARN() schema.ColumnResolver {
 	return client.ResolveARN(client.GuardDutyService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"detector", resource.Item.(DetectorWrapper).Id}, nil
+		return []string{"detector", resource.Item.(models.DetectorWrapper).Id}, nil
 	})
 }

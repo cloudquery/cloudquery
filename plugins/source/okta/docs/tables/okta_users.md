@@ -1,36 +1,44 @@
-
 # Table: okta_users
 
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|activated|timestamp without time zone||
-|created|timestamp without time zone||
-|credentials_password_hash_algorithm|text||
-|credentials_password_hash_salt|text||
-|credentials_password_hash_salt_order|text||
-|credentials_password_hash_value|text||
-|credentials_password_hash_work_factor|bigint||
-|credentials_password_hook_type|text||
-|credentials_password_value|text||
-|credentials_provider_name|text||
-|credentials_provider_type|text||
-|credentials_recovery_question_answer|text||
-|credentials_recovery_question|text||
-|id|text||
-|last_login|timestamp without time zone||
-|last_updated|timestamp without time zone||
-|password_changed|timestamp without time zone||
-|profile|jsonb||
-|status|text||
-|status_changed|timestamp without time zone||
-|transitioning_to_status|text||
-|type_created|timestamp without time zone||
-|type_created_by|text||
-|type_default|boolean||
-|type_description|text||
-|type_display_name|text||
-|type_id|text||
-|type_last_updated|timestamp without time zone||
-|type_last_updated_by|text||
-|type_name|text||
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|activated|Timestamp|
+|created|Timestamp|
+|credentials_password_hash_algorithm|String|
+|credentials_password_hash_salt|String|
+|credentials_password_hash_salt_order|String|
+|credentials_password_hash_value|String|
+|credentials_password_hash_work_factor|Int|
+|credentials_password_hook_type|String|
+|credentials_password_value|String|
+|credentials_provider_name|String|
+|credentials_provider_type|String|
+|credentials_recovery_question_answer|String|
+|credentials_recovery_question|String|
+|id (PK)|String|
+|last_login|Timestamp|
+|last_updated|Timestamp|
+|password_changed|Timestamp|
+|profile|JSON|
+|status|String|
+|status_changed|Timestamp|
+|transitioning_to_status|String|
+|type_created|Timestamp|
+|type_created_by|String|
+|type_default|Bool|
+|type_description|String|
+|type_display_name|String|
+|type_id|String|
+|type_last_updated|Timestamp|
+|type_last_updated_by|String|
+|type_name|String|

@@ -8,19 +8,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/fsx/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"github.com/stretchr/testify/require"
 )
 
 func buildSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var s types.Snapshot
-	require.NoError(t, faker.FakeDataSkipFields(&s, []string{
-		"AdministrativeActions",
-		"Lifecycle",
-	}))
+	err := faker.FakeObject(&s)
+	if err != nil {
+		t.Fatalf("FakeObject returned error: %v", err)
+	}
 	s.Lifecycle = types.SnapshotLifecycleAvailable
 	m.EXPECT().DescribeSnapshots(
 		gomock.Any(),

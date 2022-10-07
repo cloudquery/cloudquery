@@ -41,6 +41,11 @@ func Accounts() *schema.Table {
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("RestrictPublicBuckets"),
 			},
+			{
+				Name:     "config_exists",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("ConfigExists"),
+			},
 		},
 	}
 }

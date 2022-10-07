@@ -25,7 +25,7 @@ func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		t.Fatal(err)
 	}
 	logging := redshift.DescribeLoggingStatusOutput{}
-	err = faker.FakeData(&p)
+	err = faker.FakeData(&logging)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,10 +34,10 @@ func buildRedshiftClustersMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&redshift.DescribeClustersOutput{
 			Clusters: []types.Cluster{g},
 		}, nil)
-	//m.EXPECT().DescribeClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-	//	&redshift.DescribeClusterParametersOutput{
-	//		Parameters: []types.Parameter{p},
-	//	}, nil)
+	m.EXPECT().DescribeClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&redshift.DescribeClusterParametersOutput{
+			Parameters: []types.Parameter{p},
+		}, nil)
 	m.EXPECT().DescribeLoggingStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&logging, nil)
 

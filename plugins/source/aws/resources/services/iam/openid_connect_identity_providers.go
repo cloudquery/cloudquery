@@ -30,6 +30,31 @@ func OpenidConnectIdentityProviders() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: client.ResolveTags,
 			},
+			{
+				Name:     "client_id_list",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("ClientIDList"),
+			},
+			{
+				Name:     "create_date",
+				Type:     schema.TypeTimestamp,
+				Resolver: schema.PathResolver("CreateDate"),
+			},
+			{
+				Name:     "thumbprint_list",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("ThumbprintList"),
+			},
+			{
+				Name:     "url",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Url"),
+			},
+			{
+				Name:     "result_metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResultMetadata"),
+			},
 		},
 	}
 }

@@ -26,7 +26,7 @@ func InstancePortStates() *schema.Table {
 			{
 				Name:     "instance_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "cidr_list_aliases",
@@ -44,7 +44,7 @@ func InstancePortStates() *schema.Table {
 				Resolver: schema.PathResolver("FromPort"),
 			},
 			{
-				Name:     "ipv_6_cidrs",
+				Name:     "ipv6_cidrs",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("Ipv6Cidrs"),
 			},

@@ -11,6 +11,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 )
 
 func createStatefulSets(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -32,6 +33,10 @@ func fakeStatefulSet(t *testing.T) appsv1.StatefulSet {
 	if err := faker.FakeDataSkipFields(&rs.Spec, []string{"PodManagementPolicy", "Selector", "Template", "VolumeClaimTemplates"}); err != nil {
 		t.Fatal(err)
 	}
+
+	intOrStr := intstr.FromInt(100)
+	rs.Spec.UpdateStrategy.RollingUpdate.MaxUnavailable = &intOrStr
+
 	rs.Spec.PodManagementPolicy = "test"
 	rs.Spec.VolumeClaimTemplates = []corev1.PersistentVolumeClaim{*k8sTesting.FakePersistentVolumeClaim(t)}
 	rs.Spec.Selector = k8sTesting.FakeSelector(t)

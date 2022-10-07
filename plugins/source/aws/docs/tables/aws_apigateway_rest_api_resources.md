@@ -1,14 +1,25 @@
-
 # Table: aws_apigateway_rest_api_resources
-Represents an API resource
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_apigateway_rest_apis`](aws_apigateway_rest_apis.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|rest_api_cq_id|uuid|Unique CloudQuery ID of aws_apigateway_rest_apis table (FK)|
-|rest_api_id|text|The API's identifier|
-|arn|text|The Amazon Resource Name (ARN) for the resource|
-|id|text|The resource's identifier|
-|parent_id|text|The parent resource's identifier|
-|path|text|The full path for this resource|
-|path_part|text|The last path segment for this resource|
-|resource_methods|jsonb|Gets an API resource's method of a given HTTP verb|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|rest_api_arn|String|
+|arn|String|
+|id|String|
+|parent_id|String|
+|path|String|
+|path_part|String|
+|resource_methods|JSON|

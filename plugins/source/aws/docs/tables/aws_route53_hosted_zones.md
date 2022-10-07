@@ -1,18 +1,30 @@
-
 # Table: aws_route53_hosted_zones
-A complex type that contains general information about the hosted zone.
+
+
+
+The primary key for this table is **arn**.
+
+## Relations
+The following tables depend on `aws_route53_hosted_zones`:
+  - [`aws_route53_hosted_zone_query_logging_configs`](aws_route53_hosted_zone_query_logging_configs.md)
+  - [`aws_route53_hosted_zone_resource_record_sets`](aws_route53_hosted_zone_resource_record_sets.md)
+  - [`aws_route53_hosted_zone_traffic_policy_instances`](aws_route53_hosted_zone_traffic_policy_instances.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|tags|jsonb|The tags associated with the hosted zone.|
-|arn|text|Amazon Resource Name (ARN) of the route53 hosted zone.|
-|delegation_set_id|text|A complex type that lists the Amazon Route 53 name servers for the specified hosted zone.|
-|caller_reference|text|The value that you specified for CallerReference when you created the hosted zone.|
-|id|text|The ID that Amazon Route 53 assigned to the hosted zone when you created it.|
-|name|text|The name of the domain.|
-|config_comment|text|Any comments that you want to include about the hosted zone.|
-|config_private_zone|boolean|A value that indicates whether this is a private hosted zone.|
-|linked_service_description|text|If the health check or hosted zone was created by another service, an optional description that can be provided by the other service.|
-|linked_service_principal|text|If the health check or hosted zone was created by another service, the service that created the resource.|
-|resource_record_set_count|bigint|The number of resource record sets in the hosted zone.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|arn (PK)|String|
+|caller_reference|String|
+|id|String|
+|name|String|
+|config|JSON|
+|linked_service|JSON|
+|resource_record_set_count|Int|
+|tags|JSON|
+|delegation_set_id|String|
+|vpcs|JSON|

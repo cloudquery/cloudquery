@@ -1,17 +1,30 @@
-
 # Table: aws_elasticbeanstalk_configuration_settings
-Describes the settings for a configuration set.
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_elasticbeanstalk_environments`](aws_elasticbeanstalk_environments.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|environment_cq_id|uuid|Unique CloudQuery ID of aws_elasticbeanstalk_environments table (FK)|
-|application_name|text|The name of the application associated with this configuration set.|
-|application_arn|text|The arn of the associated application.|
-|date_created|timestamp without time zone|The date (in UTC time) when this configuration set was created.|
-|date_updated|timestamp without time zone|The date (in UTC time) when this configuration set was last modified.|
-|deployment_status|text|If this configuration set is associated with an environment, the DeploymentStatus parameter indicates the deployment status of this configuration set:  * null: This configuration is not associated with a running environment.  * pending: This is a draft configuration that is not deployed to the associated environment but is in the process of deploying.  * deployed: This is the configuration that is currently deployed to the associated running environment.  * failed: This is a draft configuration that failed to successfully deploy.|
-|description|text|Describes this configuration set.|
-|environment_name|text|If not null, the name of the environment for this configuration set.|
-|platform_arn|text|The ARN of the platform version.|
-|solution_stack_name|text|The name of the solution stack this configuration set uses.|
-|template_name|text|If not null, the name of the configuration template for this configuration set.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|environment_id|String|
+|application_name|String|
+|date_created|Timestamp|
+|date_updated|Timestamp|
+|deployment_status|String|
+|description|String|
+|environment_name|String|
+|option_settings|JSON|
+|platform_arn|String|
+|solution_stack_name|String|
+|template_name|String|
+|application_arn|String|

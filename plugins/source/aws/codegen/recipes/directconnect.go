@@ -68,12 +68,12 @@ func DirectConnectResources() []*Resource {
 					{
 						Name:     "gateway_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "gateway_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},
@@ -87,12 +87,12 @@ func DirectConnectResources() []*Resource {
 					{
 						Name:     "gateway_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "gateway_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},

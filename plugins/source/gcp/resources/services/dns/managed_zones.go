@@ -106,21 +106,6 @@ func ManagedZones() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Visibility"),
 			},
-			{
-				Name:     "server_response",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ServerResponse"),
-			},
-			{
-				Name:     "force_send_fields",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("ForceSendFields"),
-			},
-			{
-				Name:     "null_fields",
-				Type:     schema.TypeStringArray,
-				Resolver: schema.PathResolver("NullFields"),
-			},
 		},
 	}
 }

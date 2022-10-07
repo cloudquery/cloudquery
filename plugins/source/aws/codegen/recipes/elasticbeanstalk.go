@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elasticbeanstalk/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -50,13 +50,18 @@ func ElasticbeanstalkResources() []*Resource {
 		{
 			SubService: "environments",
 			Struct:     &types.EnvironmentDescription{},
-			SkipFields: []string{"EnvironmentId"},
+			SkipFields: []string{"EnvironmentId", "EnvironmentArn"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
 					Type:     schema.TypeString,
 					Resolver: `client.ResolveAWSAccount`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "arn",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("EnvironmentArn")`,
 				},
 				{
 					Name:     "region",
@@ -87,7 +92,7 @@ func ElasticbeanstalkResources() []*Resource {
 		},
 		{
 			SubService: "configuration_settings",
-			Struct:     &elasticbeanstalk.ConfigurationSettingsDescriptionWrapper{},
+			Struct:     &models.ConfigurationSettingsDescriptionWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -95,13 +100,13 @@ func ElasticbeanstalkResources() []*Resource {
 					{
 						Name:     "environment_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},
 		{
 			SubService: "configuration_options",
-			Struct:     &elasticbeanstalk.ConfigurationOptionDescriptionWrapper{},
+			Struct:     &models.ConfigurationOptionDescriptionWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
@@ -109,7 +114,7 @@ func ElasticbeanstalkResources() []*Resource {
 					{
 						Name:     "environment_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},

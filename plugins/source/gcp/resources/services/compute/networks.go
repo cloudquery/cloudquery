@@ -32,7 +32,7 @@ func Networks() *schema.Table {
 				},
 			},
 			{
-				Name:     "i_pv_4_range",
+				Name:     "ipv4_range",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("IPv4Range"),
 			},
@@ -52,7 +52,7 @@ func Networks() *schema.Table {
 				Resolver: schema.PathResolver("Description"),
 			},
 			{
-				Name:     "enable_ula_internal_ipv_6",
+				Name:     "enable_ula_internal_ipv6",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("EnableUlaInternalIpv6"),
 			},
@@ -62,7 +62,7 @@ func Networks() *schema.Table {
 				Resolver: schema.PathResolver("FirewallPolicy"),
 			},
 			{
-				Name:     "gateway_i_pv_4",
+				Name:     "gateway_ipv4",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("GatewayIPv4"),
 			},
@@ -72,7 +72,7 @@ func Networks() *schema.Table {
 				Resolver: schema.PathResolver("Id"),
 			},
 			{
-				Name:     "internal_ipv_6_range",
+				Name:     "internal_ipv6_range",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("InternalIpv6Range"),
 			},

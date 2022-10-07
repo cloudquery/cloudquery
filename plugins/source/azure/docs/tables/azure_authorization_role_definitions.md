@@ -1,14 +1,23 @@
-
 # Table: azure_authorization_role_definitions
-RoleDefinition role definition
+
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|id|text|The role definition ID|
-|name|text|The role definition name|
-|type|text|The role definition type|
-|role_name|text|The role name|
-|description|text|The role definition description|
-|role_type|text|The role type|
-|assignable_scopes|text[]|Role definition assignable scopes|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|id (PK)|String|
+|name|String|
+|type|String|
+|role_name|String|
+|description|String|
+|permissions|JSON|
+|assignable_scopes|StringArray|
+|role_type|String|

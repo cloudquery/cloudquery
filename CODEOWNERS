@@ -1,3 +1,9 @@
 /.github/  @erezrokah @hermanschaaf @yevgenypats
 /cli/       @yevgenypats
 /plugins/ @cloudquery/cloudquery-opensource
+/plugins/source/aws @hermanschaaf @yevgenypats
+/plugins/source/azure @erezrokah @yevgenypats
+/plugins/source/gcp @yevgenypats @disq
+
+**/go.mod
+**/go.sum

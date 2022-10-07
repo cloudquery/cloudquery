@@ -8,9 +8,11 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/gertd/go-pluralize"
+	"github.com/gofrs/uuid"
 	"github.com/iancoleman/strcase"
 )
 
@@ -79,6 +81,7 @@ type resourceDefinition struct {
 	mockGetFunctionArgs      []string
 	subServiceOverride       string
 	relations                []resourceDefinition
+	singleSubscription       bool
 }
 
 type byTemplates struct {
@@ -159,12 +162,15 @@ func parseAzureStruct(serviceNameOverride string, definition resourceDefinition)
 
 func initColumns(table *codegen.TableDefinition, definition resourceDefinition) codegen.ColumnDefinitions {
 	columns := []codegen.ColumnDefinition{}
-	columns = append(columns, subscriptionIdColumn)
+	if !definition.singleSubscription {
+		// add subscription id if we are not in single subscription mode
+		columns = append(columns, subscriptionIdColumn)
+	}
 	if definition.parent != "" {
 		columns = append(columns, codegen.ColumnDefinition{
 			Name:     definition.parent,
-			Type:     schema.TypeUUID,
-			Resolver: "schema.ParentIDResolver",
+			Type:     schema.TypeString,
+			Resolver: `schema.ParentColumnResolver("id")`,
 		})
 	}
 
@@ -187,14 +193,27 @@ func getTableName(azureService, azureSubService string, override string) string 
 	return fmt.Sprintf("%s_%s_%s", pluginName, strings.ToLower(azureService), strcase.ToSnake(azureSubService))
 }
 
+func timeStampTransformer(field reflect.StructField) (schema.ValueType, error) {
+	dateTime := date.Time{}
+	uuid := uuid.UUID{}
+	switch field.Type {
+	case reflect.TypeOf(dateTime), reflect.TypeOf(&dateTime):
+		return schema.TypeTimestamp, nil
+	case reflect.TypeOf(uuid), reflect.TypeOf(&uuid):
+		return schema.TypeUUID, nil
+	}
+	return schema.TypeInvalid, nil
+}
+
 func initTable(serviceNameOverride string, definition resourceDefinition, azureService string, azureSubService string, azureStructName string) *codegen.TableDefinition {
 	skipFields := append(definition.skipFields, defaultSkipFields...)
 	table, err := codegen.NewTableFromStruct(
 		getTableName(azureService, azureSubService, definition.tableName),
 		definition.azureStruct,
 		codegen.WithSkipFields(skipFields),
-		codegen.WithUnwrapAllEmbeddedStructs(),                  // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
-		codegen.WithUnwrapFieldsStructs([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
+		codegen.WithUnwrapAllEmbeddedStructs(),                 // Unwrap all embedded structs otherwise all resources will just have `Id, Type, Name, Location, Tags` columns
+		codegen.WithUnwrapStructFields([]string{"Properties"}), // Some resources have a `Properties` field which contains the actual resource properties instead of an embedded struct
+		codegen.WithTypeTransformer(timeStampTransformer),
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -203,6 +222,10 @@ func initTable(serviceNameOverride string, definition resourceDefinition, azureS
 
 	if definition.parent == "" {
 		table.Multiplex = "client.SubscriptionMultiplex"
+	}
+
+	if definition.singleSubscription {
+		table.Multiplex = "client.SingleSubscriptionMultiplex"
 	}
 
 	if definition.includeColumns != "" {

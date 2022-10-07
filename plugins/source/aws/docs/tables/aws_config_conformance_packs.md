@@ -1,16 +1,27 @@
-
 # Table: aws_config_conformance_packs
-Returns details of a conformance pack.
+
+
+
+The primary key for this table is **arn**.
+
+## Relations
+The following tables depend on `aws_config_conformance_packs`:
+  - [`aws_config_conformance_pack_rule_compliances`](aws_config_conformance_pack_rule_compliances.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|Amazon Resource Name (ARN) of the conformance pack.|
-|conformance_pack_id|text|ID of the conformance pack.|
-|conformance_pack_name|text|Name of the conformance pack.|
-|conformance_pack_input_parameters|jsonb|A list of ConformancePackInputParameter objects.|
-|created_by|text|AWS service that created the conformance pack.|
-|delivery_s3_bucket|text|Amazon S3 bucket where AWS Config stores conformance pack templates.|
-|delivery_s3_key_prefix|text|The prefix for the Amazon S3 bucket.|
-|last_update_requested_time|timestamp without time zone|Last time when conformation pack update was requested.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|conformance_pack_id|String|
+|conformance_pack_name|String|
+|created_by|String|
+|delivery_s3_bucket|String|
+|delivery_s3_key_prefix|String|
+|last_update_requested_time|Timestamp|
+|template_ssm_document_details|JSON|

@@ -1,15 +1,28 @@
-
 # Table: azure_network_security_groups
-Azure network security group
+
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|resource_guid|text|The resource GUID property of the network security group resource|
-|provisioning_state|text|The provisioning state of the network security group resource Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'|
-|etag|text|A unique read-only string that changes whenever the resource is updated|
-|id|text|Resource ID|
-|name|text|Resource name|
-|type|text|Resource type|
-|location|text|Resource location|
-|tags|jsonb|Resource tags|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|security_rules|JSON|
+|default_security_rules|JSON|
+|network_interfaces|JSON|
+|subnets|JSON|
+|flow_logs|JSON|
+|resource_guid|String|
+|provisioning_state|String|
+|etag|String|
+|id (PK)|String|
+|name|String|
+|type|String|
+|location|String|
+|tags|JSON|

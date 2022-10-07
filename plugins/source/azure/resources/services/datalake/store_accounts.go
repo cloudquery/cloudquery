@@ -89,6 +89,11 @@ func StoreAccounts() *schema.Table {
 				Resolver: schema.PathResolver("CurrentTier"),
 			},
 			{
+				Name:     "account_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("AccountID"),
+			},
+			{
 				Name:     "provisioning_state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ProvisioningState"),
@@ -100,12 +105,12 @@ func StoreAccounts() *schema.Table {
 			},
 			{
 				Name:     "creation_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
 				Name:     "last_modified_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastModifiedTime"),
 			},
 			{

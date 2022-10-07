@@ -134,7 +134,7 @@ func tables() []*schema.Table {
 		ec2.NatGateways(),
 		ec2.NetworkAcls(),
 		ec2.NetworkInterfaces(),
-		ec2.Ec2RegionalConfig(),
+		ec2.RegionalConfig(),
 		ec2.AwsRegions(),
 		ec2.RouteTables(),
 		ec2.SecurityGroups(),

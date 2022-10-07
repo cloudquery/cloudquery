@@ -1,15 +1,26 @@
-
 # Table: aws_glue_registry_schema_versions
-An object containing the details about a schema version
+
+
+
+The primary key for this table is **_cq_id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|registry_schema_cq_id|uuid|Unique CloudQuery ID of aws_glue_registry_schemas table (FK)|
-|metadata|jsonb||
-|created_time|text|The date and time the schema version was created.|
-|data_format|text|The data format of the schema definition|
-|schema_arn|text|The Amazon Resource Name (ARN) of the schema.|
-|schema_definition|text|The schema definition for the schema ID.|
-|id|text|The SchemaVersionId of the schema version.|
-|status|text|The status of the schema version.|
-|version_number|bigint|The version number of the schema.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|registry_schema_arn|String|
+|metadata|JSON|
+|created_time|String|
+|data_format|String|
+|schema_arn|String|
+|schema_definition|String|
+|schema_version_id|String|
+|status|String|
+|version_number|Int|
+|result_metadata|JSON|

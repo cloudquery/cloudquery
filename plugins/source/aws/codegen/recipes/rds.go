@@ -54,7 +54,7 @@ func RDSResources() []*Resource {
 					{
 						Name:     "cluster_parameter_group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -134,7 +134,7 @@ func RDSResources() []*Resource {
 					{
 						Name:     "db_parameter_group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

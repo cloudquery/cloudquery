@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sesv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
@@ -31,7 +32,7 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 				return err
 			}
 
-			res <- &Template{
+			res <- &models.Template{
 				TemplateName:     getOutput.TemplateName,
 				Text:             getOutput.TemplateContent.Text,
 				Html:             getOutput.TemplateContent.Html,
@@ -49,6 +50,6 @@ func fetchSesTemplates(ctx context.Context, meta schema.ClientMeta, parent *sche
 }
 func resolveSesTemplateArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	return client.ResolveARN(client.SESService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"template", *resource.Item.(*Template).TemplateName}, nil
+		return []string{"template", *resource.Item.(*models.Template).TemplateName}, nil
 	})(ctx, meta, resource, c)
 }

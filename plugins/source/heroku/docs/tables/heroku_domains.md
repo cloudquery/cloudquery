@@ -1,19 +1,25 @@
-
 # Table: heroku_domains
+
 https://devcenter.heroku.com/articles/platform-api-reference#domain-attributes
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|acm_status|String||
-|acm_status_reason|String||
-|app|JSON||
-|c_name|String||
-|created_at|Timestamp||
-|hostname|String||
-|id|String||
-|kind|String||
-|sni_endpoint|JSON||
-|status|String||
-|updated_at|Timestamp||
-|_cq_id|UUID|Internal CQ ID of the row|
-|_cq_fetch_time|Timestamp|Internal CQ row of when fetch was started (this will be the same for all rows in a single fetch)|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|acm_status|String|
+|acm_status_reason|String|
+|app|JSON|
+|c_name|String|
+|created_at|Timestamp|
+|hostname|String|
+|id (PK)|String|
+|kind|String|
+|sni_endpoint|JSON|
+|status|String|
+|updated_at|Timestamp|

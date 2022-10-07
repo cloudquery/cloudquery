@@ -26,7 +26,7 @@ func UsagePlanKeys() *schema.Table {
 			{
 				Name:     "usage_plan_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "arn",

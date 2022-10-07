@@ -1,14 +1,26 @@
-
 # Table: aws_sagemaker_endpoint_configurations
-Provides summary information for an endpoint configuration.
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|kms_key_id|text|Amazon Web Services KMS key ID Amazon SageMaker uses to encrypt data when storing it on the ML storage volume attached to the instance.|
-|data_capture_config|jsonb||
-|tags|jsonb|The tags associated with the model.|
-|creation_time|timestamp without time zone|A timestamp that indicates when the endpoint configuration was created.|
-|arn|text|The Amazon Resource Name (ARN) of the endpoint configuration.|
-|name|text|Name of the Amazon SageMaker endpoint configuration.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|tags|JSON|
+|creation_time|Timestamp|
+|endpoint_config_name|String|
+|production_variants|JSON|
+|async_inference_config|JSON|
+|data_capture_config|JSON|
+|explainer_config|JSON|
+|kms_key_id|String|
+|result_metadata|JSON|

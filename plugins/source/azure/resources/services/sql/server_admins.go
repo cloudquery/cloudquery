@@ -23,8 +23,8 @@ func serverAdmins() *schema.Table {
 			},
 			{
 				Name:     "sql_server_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "administrator_type",
@@ -35,6 +35,16 @@ func serverAdmins() *schema.Table {
 				Name:     "login",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Login"),
+			},
+			{
+				Name:     "sid",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("Sid"),
+			},
+			{
+				Name:     "tenant_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("TenantID"),
 			},
 			{
 				Name:     "azure_ad_only_authentication",

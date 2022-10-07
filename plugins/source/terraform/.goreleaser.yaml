@@ -4,7 +4,7 @@ variables:
 project_name: plugins/source/terraform
 
 monorepo:
-  tag_prefix: plugins/source/terraform/
+  tag_prefix: plugins-source-terraform-
   dir: plugins/source/terraform
 
 includes:

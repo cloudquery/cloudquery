@@ -76,7 +76,7 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("IpAddressType"),
 			},
 			{
-				Name:     "ipv_6_addresses",
+				Name:     "ipv6_addresses",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("Ipv6Addresses"),
 			},
@@ -89,6 +89,11 @@ func Instances() *schema.Table {
 				Name:     "location",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Location"),
+			},
+			{
+				Name:     "metadata_options",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("MetadataOptions"),
 			},
 			{
 				Name:     "name",

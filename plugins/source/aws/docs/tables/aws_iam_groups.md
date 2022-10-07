@@ -1,13 +1,24 @@
-
 # Table: aws_iam_groups
-Contains information about an IAM group entity.
+
+
+
+The composite primary key for this table is (**account_id**, **id**).
+
+## Relations
+The following tables depend on `aws_iam_groups`:
+  - [`aws_iam_group_policies`](aws_iam_group_policies.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|policies|jsonb|List of policies attached to group.|
-|arn|text|The Amazon Resource Name (ARN) specifying the group. For more information about ARNs and how to use them in policies, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.|
-|create_date|timestamp without time zone|The date and time, in ISO 8601 date-time format (http://www.iso.org/iso/iso8601), when the group was created.|
-|id|text|The stable and unique string identifying the group. For more information about IDs, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.|
-|name|text|The friendly name that identifies the group.|
-|path|text|The path to the group. For more information about paths, see IAM identifiers (https://docs.aws.amazon.com/IAM/latest/UserGuide/Using_Identifiers.html) in the IAM User Guide.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id (PK)|String|
+|policies|JSON|
+|id (PK)|String|
+|arn|String|
+|create_date|Timestamp|
+|group_name|String|
+|path|String|

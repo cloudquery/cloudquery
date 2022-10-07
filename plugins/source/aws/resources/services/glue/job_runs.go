@@ -26,7 +26,7 @@ func JobRuns() *schema.Table {
 			{
 				Name:     "job_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "allocated_capacity",
@@ -57,6 +57,11 @@ func JobRuns() *schema.Table {
 				Name:     "error_message",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ErrorMessage"),
+			},
+			{
+				Name:     "execution_class",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ExecutionClass"),
 			},
 			{
 				Name:     "execution_time",

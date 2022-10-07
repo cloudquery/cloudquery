@@ -19,7 +19,10 @@
       "typesetting": "article"
     }
   },
-  "plugins": "Plugins",
+  "plugins": {
+    "title": "Plugins",
+    "href": "/docs/plugins/sources"
+  },
   "confirm": {
     "title": "Confirm",
     "hidden": true

@@ -26,7 +26,7 @@ func LoadBalancerTlsCertificates() *schema.Table {
 			{
 				Name:     "load_balancer_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "tags",

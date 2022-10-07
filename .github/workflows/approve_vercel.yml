@@ -24,11 +24,11 @@ jobs:
           sha: ${{ github.event.pull_request.head.sha }}
           files: |
             website
-            plugins/**/docs/**
       - uses: actions/github-script@v6
         # Only override the status if no website files have changed
         if: steps.changed-files.outputs.any_changed == 'false'
         with:
+          github-token: ${{ secrets.GH_CQ_BOT }}
           script: |
             github.rest.repos.createCommitStatus({
               owner: `cloudquery`,

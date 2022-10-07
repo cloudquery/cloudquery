@@ -167,7 +167,7 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("Params"),
 			},
 			{
-				Name:     "private_ipv_6_google_access",
+				Name:     "private_ipv6_google_access",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("PrivateIpv6GoogleAccess"),
 			},

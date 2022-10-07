@@ -2,72 +2,41 @@ package versions
 
 import (
 	"context"
-	"fmt"
-	"net/http"
-	"net/http/httptest"
+	"strings"
 	"testing"
+
+	"github.com/cloudquery/plugin-sdk/clients"
 )
 
-func TestClient_GetLatestPluginRelease(t *testing.T) {
-	cloudQueryServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/v1/source-aws.json" {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-		fmt.Fprintf(w, `{"latest":"plugins/source/test/v1.2.3"}`)
-	}))
-	defer cloudQueryServer.Close()
-
-	githubServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/some-org/cq-target-postgres/releases/latest" {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-		fmt.Fprintf(w, `{"tag_name":"v4.5.6"}`)
-	}))
-	defer githubServer.Close()
-
-	c := NewClient()
-	c.cloudQueryBaseURL = cloudQueryServer.URL
-	c.githubBaseURL = githubServer.URL
-
+func TestGetLatestCQPluginRelease(t *testing.T) {
 	ctx := context.Background()
-	version, err := c.GetLatestPluginRelease(ctx, CloudQueryOrg, "source", "aws")
+	version, err := getLatestCQPluginRelease(ctx, "test", clients.PluginTypeSource)
 	if err != nil {
 		t.Fatalf("error calling GetLatestPluginRelease: %v", err)
 	}
-	if version != "v1.2.3" {
-		t.Errorf("got cloudquery org version = %q, want %q", version, "v1.2.3")
-	}
-
-	githubVersion, err := c.GetLatestPluginRelease(ctx, "some-org", "target", "postgres")
-	if err != nil {
-		t.Fatalf("error calling GetLatestPluginRelease: %v", err)
-	}
-	if githubVersion != "v4.5.6" {
-		t.Errorf("got community plugin version = %q, want %q", version, "v4.5.6")
+	if !strings.HasPrefix(version, "v") {
+		t.Errorf("got version = %q, want a version starting with 'v'", version)
 	}
 }
 
-func TestClient_GetLatestCLIRelease(t *testing.T) {
-	cloudQueryServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path != "/v1/cli.json" {
-			w.WriteHeader(http.StatusNotFound)
-			return
-		}
-		fmt.Fprintf(w, `{"latest":"cli/v1.2.3"}`)
-	}))
-	defer cloudQueryServer.Close()
-
-	c := NewClient()
-	c.cloudQueryBaseURL = cloudQueryServer.URL
-
+func TestGetLatestCommunityPluginRelease(t *testing.T) {
 	ctx := context.Background()
-	version, err := c.GetLatestCLIRelease(ctx)
+	version, err := getLatestCommunityPluginRelease(ctx, "yevgenypats", "test", clients.PluginTypeSource)
+	if err != nil {
+		t.Fatalf("error calling GetLatestPluginRelease: %v", err)
+	}
+	if !strings.HasPrefix(version, "v") {
+		t.Errorf("got version = %q, want a version starting with 'v'", version)
+	}
+}
+
+func TestGetLatestCLIRelease(t *testing.T) {
+	version, err := GetLatestCLIRelease(context.Background())
 	if err != nil {
 		t.Fatalf("error calling GetLatestCLIRelease: %v", err)
 	}
-	if version != "v1.2.3" {
-		t.Errorf("got cloudquery cli version = %q, want %q", version, "v1.2.3")
+
+	if !strings.HasPrefix(version, "v") {
+		t.Errorf("got version = %q, want a version starting with 'v'", version)
 	}
 }

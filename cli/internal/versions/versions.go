@@ -7,6 +7,8 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/cloudquery/plugin-sdk/clients"
 )
 
 type manifestResponse struct {
@@ -18,48 +20,24 @@ type githubLatestResponse struct {
 	// other fields are ignored
 }
 
-// Client interacts with repositories to fetch version information.
-// It relies on convention to determine the URL format to use when fetching.
-// Official CloudQuery plugin versions are fetched from release manifest files,
-// while community plugins are fetched using GithubLatestURL.
-type Client struct {
-	cloudQueryBaseURL string
-	githubBaseURL     string
-	httpClient        *http.Client
-}
-
 const (
 	CloudQueryOrg     = "cloudquery"
 	GithubBaseURL     = "https://github.com"
 	CloudQueryBaseURL = "https://versions.cloudquery.io"
 )
 
-// NewClient returns a new client for fetching plugin versions.
-func NewClient() *Client {
-	return &Client{
-		cloudQueryBaseURL: CloudQueryBaseURL,
-		githubBaseURL:     GithubBaseURL,
-		httpClient:        http.DefaultClient,
-	}
-}
-
-// GetLatestCLIRelease returns the latest release version string for CloudQuery CLI
-func (c *Client) GetLatestCLIRelease(ctx context.Context) (string, error) {
-	return c.readCLIManifest(ctx)
-}
-
 // GetLatestPluginRelease returns the latest release version string for the given organization, plugin type
 // and plugin.
-func (c *Client) GetLatestPluginRelease(ctx context.Context, org, pluginType, pluginName string) (string, error) {
+func GetLatestPluginRelease(ctx context.Context, org, name string, typ clients.PluginType) (string, error) {
 	if org == CloudQueryOrg {
-		return c.readManifest(ctx, pluginName)
+		return getLatestCQPluginRelease(ctx, name, typ)
 	}
-	return c.readGithubLatest(ctx, org, pluginType, pluginName)
+	return getLatestCommunityPluginRelease(ctx, org, name, typ)
 }
 
-func (c *Client) readCLIManifest(ctx context.Context) (string, error) {
-	url := fmt.Sprintf(c.cloudQueryBaseURL + "/v1/cli.json")
-	b, err := c.doRequest(ctx, url)
+func GetLatestCLIRelease(ctx context.Context) (string, error) {
+	url := fmt.Sprintf(CloudQueryBaseURL + "/v2/cli.json")
+	b, err := doRequest(ctx, url)
 	if err != nil {
 		return "", fmt.Errorf("reading manifest for cli: %w", err)
 	}
@@ -68,12 +46,13 @@ func (c *Client) readCLIManifest(ctx context.Context) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
 	}
-	return extractVersionFromTag(mr.Latest), nil
+	tag := strings.TrimPrefix(mr.Latest, "cli-")
+	return tag, nil
 }
 
-func (c *Client) readManifest(ctx context.Context, name string) (string, error) {
-	url := fmt.Sprintf(c.cloudQueryBaseURL+"/v1/%s-%s.json", "source", name)
-	b, err := c.doRequest(ctx, url)
+func getLatestCQPluginRelease(ctx context.Context, name string, typ clients.PluginType) (string, error) {
+	url := fmt.Sprintf(CloudQueryBaseURL+"/v2/%s-%s.json", typ, name)
+	b, err := doRequest(ctx, url)
 	if err != nil {
 		return "", fmt.Errorf("reading manifest for %v: %w", name, err)
 	}
@@ -82,19 +61,13 @@ func (c *Client) readManifest(ctx context.Context, name string) (string, error) 
 	if err != nil {
 		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
 	}
-	return extractVersionFromTag(mr.Latest), nil
+	version := strings.TrimPrefix(mr.Latest, fmt.Sprintf("plugins-%s-%s-", string(typ), name))
+	return version, nil
 }
 
-// extractVersionFromTag takes a tag of the form "plugins/source/test/v0.1.21" and returns
-// the version, i.e. "v0.1.21"
-func extractVersionFromTag(tag string) string {
-	parts := strings.Split(tag, "/")
-	return parts[len(parts)-1]
-}
-
-func (c *Client) readGithubLatest(ctx context.Context, org, pluginType, name string) (string, error) {
-	url := fmt.Sprintf(c.githubBaseURL+"/%s/cq-%s-%s/releases/latest", org, pluginType, name)
-	b, err := c.doRequest(ctx, url)
+func getLatestCommunityPluginRelease(ctx context.Context, org, name string, typ clients.PluginType) (string, error) {
+	url := fmt.Sprintf(GithubBaseURL+"/%s/cq-%s-%s/releases/latest", org, typ, name)
+	b, err := doRequest(ctx, url)
 	if err != nil {
 		return "", fmt.Errorf("reading %v: %w", url, err)
 	}
@@ -106,13 +79,13 @@ func (c *Client) readGithubLatest(ctx context.Context, org, pluginType, name str
 	return gr.TagName, nil
 }
 
-func (c *Client) doRequest(ctx context.Context, url string) ([]byte, error) {
+func doRequest(ctx context.Context, url string) ([]byte, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Add("Accept", "application/json")
-	resp, err := c.httpClient.Do(req)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}

@@ -26,7 +26,15 @@ func VaultRecoveryPoints() *schema.Table {
 			{
 				Name:     "vault_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
+			},
+			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("RecoveryPointArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "tags",
@@ -92,11 +100,6 @@ func VaultRecoveryPoints() *schema.Table {
 				Name:     "lifecycle",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Lifecycle"),
-			},
-			{
-				Name:     "recovery_point_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("RecoveryPointArn"),
 			},
 			{
 				Name:     "resource_arn",

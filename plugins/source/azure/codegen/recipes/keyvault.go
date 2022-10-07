@@ -18,6 +18,16 @@ func KeyValue() []Resource {
 			mockListFunctionArgs:     []string{`"test"`, `&maxResults`},
 			mockListResult:           "KeyListResult",
 		},
+		{
+			azureStruct:              &keyvault71.SecretItem{},
+			listFunction:             "GetSecrets",
+			listFunctionArgs:         []string{"*vault.Properties.VaultURI", "&maxResults"},
+			listFunctionArgsInit:     []string{"vault := parent.Item.(keyvault.Vault)", "maxResults := int32(25)"},
+			subServiceOverride:       "Secrets",
+			mockListFunctionArgsInit: []string{"maxResults := int32(25)"},
+			mockListFunctionArgs:     []string{`"test"`, `&maxResults`},
+			mockListResult:           "SecretListResult",
+		},
 	}
 	var resourcesByTemplates = []byTemplates{
 		{

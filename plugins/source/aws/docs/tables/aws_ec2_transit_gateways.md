@@ -1,25 +1,30 @@
-
 # Table: aws_ec2_transit_gateways
 
+
+
+The composite primary key for this table is (**id**, **arn**).
+
+## Relations
+The following tables depend on `aws_ec2_transit_gateways`:
+  - [`aws_ec2_transit_gateway_attachments`](aws_ec2_transit_gateway_attachments.md)
+  - [`aws_ec2_transit_gateway_route_tables`](aws_ec2_transit_gateway_route_tables.md)
+  - [`aws_ec2_transit_gateway_vpc_attachments`](aws_ec2_transit_gateway_vpc_attachments.md)
+  - [`aws_ec2_transit_gateway_peering_attachments`](aws_ec2_transit_gateway_peering_attachments.md)
+  - [`aws_ec2_transit_gateway_multicast_domains`](aws_ec2_transit_gateway_multicast_domains.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text||
-|region|text||
-|amazon_side_asn|bigint||
-|association_default_route_table_id|text||
-|auto_accept_shared_attachments|text||
-|creation_time|timestamp without time zone||
-|default_route_table_association|text||
-|default_route_table_propagation|text||
-|description|text||
-|dns_support|text||
-|multicast_support|text||
-|owner_id|text||
-|propagation_default_route_table_id|text||
-|state|text||
-|tags|jsonb||
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|transit_gateway_cidr_blocks|text[]||
-|id|text||
-|vpn_ecmp_support|text||
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|tags|JSON|
+|id (PK)|String|
+|arn (PK)|String|
+|creation_time|Timestamp|
+|description|String|
+|options|JSON|
+|owner_id|String|
+|state|String|

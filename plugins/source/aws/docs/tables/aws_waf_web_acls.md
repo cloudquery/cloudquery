@@ -1,14 +1,20 @@
-
 # Table: aws_waf_web_acls
-This is AWS WAF Classic documentation
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|tags|jsonb||
-|default_action_type|text|Specifies how you want AWS WAF to respond to requests that match the settings in a Rule|
-|id|text|A unique identifier for a WebACL|
-|metric_name|text|A friendly name or description for the metrics for this WebACL|
-|name|text|A friendly name or description of the WebACL|
-|arn|text|Tha Amazon Resource Name (ARN) of the web ACL.|
-|logging_configuration|text[]|The LoggingConfiguration for the specified web ACL.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|arn (PK)|String|
+|tags|JSON|
+|logging_configuration|JSON|
+|name|String|
+|web_acl_id|String|

@@ -82,7 +82,7 @@ func Apps() *schema.Table {
 			},
 			{
 				Name:     "last_modified_time_utc",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastModifiedTimeUtc"),
 			},
 			{
@@ -162,7 +162,7 @@ func Apps() *schema.Table {
 			},
 			{
 				Name:     "suspended_till",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SuspendedTill"),
 			},
 			{
@@ -204,6 +204,11 @@ func Apps() *schema.Table {
 				Name:     "redundancy_mode",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RedundancyMode"),
+			},
+			{
+				Name:     "in_progress_operation_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("InProgressOperationID"),
 			},
 			{
 				Name:     "storage_account_required",

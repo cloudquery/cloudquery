@@ -36,7 +36,7 @@ func VirtualMfaDevices() *schema.Table {
 				Resolver: client.ResolveTags,
 			},
 			{
-				Name:     "base_32_string_seed",
+				Name:     "base32_string_seed",
 				Type:     schema.TypeIntArray,
 				Resolver: schema.PathResolver("Base32StringSeed"),
 			},

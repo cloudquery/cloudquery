@@ -26,7 +26,7 @@ func GroupLifecycleHooks() *schema.Table {
 			{
 				Name:     "group_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "auto_scaling_group_name",

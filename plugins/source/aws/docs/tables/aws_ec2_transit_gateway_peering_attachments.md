@@ -1,19 +1,28 @@
-
 # Table: aws_ec2_transit_gateway_peering_attachments
 
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|transit_gateway_cq_id|uuid||
-|accepter_owner_id|text||
-|accepter_region|text||
-|accepter_transit_gateway_id|text||
-|creation_time|timestamp without time zone||
-|requester_owner_id|text||
-|requester_region|text||
-|requester_transit_gateway_id|text||
-|state|text||
-|status_code|text||
-|status_message|text||
-|tags|jsonb||
-|transit_gateway_attachment_id|text||
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|transit_gateway_arn|String|
+|tags|JSON|
+|accepter_tgw_info|JSON|
+|accepter_transit_gateway_attachment_id|String|
+|creation_time|Timestamp|
+|options|JSON|
+|requester_tgw_info|JSON|
+|state|String|
+|status|JSON|
+|transit_gateway_attachment_id|String|

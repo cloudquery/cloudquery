@@ -1,10 +1,18 @@
-
 # Table: aws_ec2_regional_config
-Ec2 Regional Config defines common default configuration for ec2 service
+
+
+
+The composite primary key for this table is (**account_id**, **region**).
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text||
-|region|text||
-|ebs_encryption_enabled_by_default|boolean|Indicates whether EBS encryption by default is enabled for your account in the current Region.|
-|ebs_default_kms_key_id|text|The Amazon Resource Name (ARN) of the default CMK for encryption by default.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id (PK)|String|
+|region (PK)|String|
+|ebs_encryption_enabled_by_default|Bool|
+|ebs_default_kms_key_id|String|

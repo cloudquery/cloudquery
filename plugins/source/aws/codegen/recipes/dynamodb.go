@@ -42,7 +42,7 @@ func DynamoDBResources() []*Resource {
 					{
 						Name:     "table_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -56,7 +56,7 @@ func DynamoDBResources() []*Resource {
 					{
 						Name:     "table_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},

@@ -1,12 +1,23 @@
-
 # Table: cloudflare_certificate_packs
-CertificatePack is the overarching structure of a certificate pack response.
+
+
+
+The primary key for this table is **id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The Account ID of the resource.|
-|zone_id|text|The Zone ID of the resource.|
-|id|text|The unique identifier for a certificate_pack|
-|type|text|Type of certificate pack|
-|hosts|text[]|comma separated list of valid host names for the certificate packs. Must contain the zone apex, may not contain more than 50 hosts, and may not be empty.|
-|primary_certificate|text|Identifier of the primary certificate in a pack|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|zone_id|String|
+|id (PK)|String|
+|type|String|
+|hosts|StringArray|
+|certificates|JSON|
+|primary_certificate|String|
+|validation_records|JSON|
+|validation_errors|JSON|

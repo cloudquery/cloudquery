@@ -63,6 +63,16 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("Endpoint"),
 			},
 			{
+				Name:     "health",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Health"),
+			},
+			{
+				Name:     "id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("Id"),
+			},
+			{
 				Name:     "identity",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Identity"),
@@ -81,6 +91,11 @@ func Clusters() *schema.Table {
 				Name:     "name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Name"),
+			},
+			{
+				Name:     "outpost_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("OutpostConfig"),
 			},
 			{
 				Name:     "platform_version",

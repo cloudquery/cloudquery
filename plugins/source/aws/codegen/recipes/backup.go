@@ -55,7 +55,7 @@ func BackupResources() []*Resource {
 					{
 						Name:     "plan_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 				}...),
 		},
@@ -79,10 +79,9 @@ func BackupResources() []*Resource {
 			},
 		},
 		{
-			SubService:           "vaults",
-			Struct:               &types.BackupVaultListMember{},
-			SkipFields:           []string{"BackupVaultArn"},
-			PostResourceResolver: `resolveVaultNotifications`,
+			SubService: "vaults",
+			Struct:     &types.BackupVaultListMember{},
+			SkipFields: []string{"BackupVaultArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -99,6 +98,12 @@ func BackupResources() []*Resource {
 						IgnoreInTests: true,
 					},
 					{
+						Name:          "notifications",
+						Type:          schema.TypeJSON,
+						Resolver:      `resolveVaultNotifications`,
+						IgnoreInTests: true,
+					},
+					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveVaultTags`,
@@ -111,14 +116,20 @@ func BackupResources() []*Resource {
 		{
 			SubService: "vault_recovery_points",
 			Struct:     &types.RecoveryPointByBackupVault{},
-			SkipFields: []string{},
+			SkipFields: []string{"RecoveryPointArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "vault_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
+					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("RecoveryPointArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 					{
 						Name:     "tags",

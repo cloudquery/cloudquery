@@ -23,8 +23,8 @@ func publishingProfiles() *schema.Table {
 			},
 			{
 				Name:     "web_app_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "publish_url",

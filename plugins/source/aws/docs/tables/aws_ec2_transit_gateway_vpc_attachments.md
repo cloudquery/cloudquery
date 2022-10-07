@@ -1,16 +1,28 @@
-
 # Table: aws_ec2_transit_gateway_vpc_attachments
 
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|transit_gateway_cq_id|uuid||
-|creation_time|timestamp without time zone||
-|appliance_mode_support|text||
-|dns_support|text||
-|ipv6_support|text||
-|state|text||
-|tags|jsonb||
-|transit_gateway_attachment_id|text||
-|vpc_id|text||
-|vpc_owner_id|text||
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|transit_gateway_arn|String|
+|tags|JSON|
+|creation_time|Timestamp|
+|options|JSON|
+|state|String|
+|subnet_ids|StringArray|
+|transit_gateway_attachment_id|String|
+|transit_gateway_id|String|
+|vpc_id|String|
+|vpc_owner_id|String|

@@ -3,9 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"os"
 
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -25,10 +23,6 @@ type Client struct {
 	logger zerolog.Logger
 }
 
-const (
-	serviceAccountEnvKey = "CQ_SERVICE_ACCOUNT_KEY_JSON"
-)
-
 //revive:disable:modifies-value-receiver
 
 // withProject allows multiplexer to create a new client with given subscriptionId
@@ -42,10 +36,6 @@ func isValidJson(content []byte) error {
 	var v map[string]interface{}
 	err := json.Unmarshal(content, &v)
 	if err != nil {
-		var syntaxError *json.SyntaxError
-		if errors.As(err, &syntaxError) {
-			return fmt.Errorf("the environment variable %s should contain valid JSON object. %w", serviceAccountEnvKey, err)
-		}
 		return err
 	}
 	return nil
@@ -69,15 +59,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	projects := gcpSpec.ProjectIDs
 
 	serviceAccountKeyJSON := []byte(gcpSpec.ServiceAccountKeyJSON)
-	if len(serviceAccountKeyJSON) == 0 {
-		serviceAccountKeyJSON = []byte(os.Getenv(serviceAccountEnvKey))
-	}
 
 	// Add a fake request reason because it is not possible to pass nil options
 	options := []option.ClientOption{option.WithRequestReason("cloudquery resource fetch")}
 	if len(serviceAccountKeyJSON) != 0 {
 		if err := isValidJson(serviceAccountKeyJSON); err != nil {
-			return nil, fmt.Errorf("invalid service account key JSON: %w", err)
+			return nil, fmt.Errorf("invalid json at service_account_key_json: %w", err)
 		}
 		options = append(options, option.WithCredentialsJSON(serviceAccountKeyJSON))
 	}

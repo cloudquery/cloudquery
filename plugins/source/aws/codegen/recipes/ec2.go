@@ -2,6 +2,7 @@ package recipes
 
 import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -58,7 +59,7 @@ func EC2Resources() []*Resource {
 					},
 					{
 						Name:     "attribute",
-						Type:     schema.TypeString,
+						Type:     schema.TypeJSON,
 						Resolver: "resolveEbsSnapshotAttribute",
 					},
 				}...),
@@ -157,6 +158,12 @@ func EC2Resources() []*Resource {
 						Resolver: "resolveInstanceArn",
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:          "state_transition_reason_time",
+						Type:          schema.TypeTimestamp,
+						Resolver:      "resolveEc2InstanceStateTransitionReasonTime",
+						IgnoreInTests: true,
+					},
 				}...),
 		},
 		{
@@ -249,6 +256,24 @@ func EC2Resources() []*Resource {
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
+		},
+		{
+			SubService: "regional_config",
+			Struct:     &models.RegionalConfig{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSAccount`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "region",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSRegion`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
 		},
 		{
 			SubService: "reserved_instances",
@@ -345,7 +370,7 @@ func EC2Resources() []*Resource {
 					{
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",
@@ -364,7 +389,7 @@ func EC2Resources() []*Resource {
 					{
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",
@@ -383,7 +408,7 @@ func EC2Resources() []*Resource {
 					{
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",
@@ -402,7 +427,7 @@ func EC2Resources() []*Resource {
 					{
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",
@@ -421,7 +446,7 @@ func EC2Resources() []*Resource {
 					{
 						Name:     "transit_gateway_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",

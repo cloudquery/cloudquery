@@ -1,15 +1,24 @@
-
 # Table: aws_iot_streams
-Information about a stream.
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|created_at|timestamp without time zone|The date when the stream was created.|
-|description|text|The description of the stream.|
-|last_updated_at|timestamp without time zone|The date when the stream was last updated.|
-|role_arn|text|An IAM role IoT assumes to access your S3 files.|
-|arn|text|The stream ARN.|
-|id|text|The stream ID.|
-|version|integer|The stream version.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|created_at|Timestamp|
+|description|String|
+|files|JSON|
+|last_updated_at|Timestamp|
+|role_arn|String|
+|stream_id|String|
+|stream_version|Int|

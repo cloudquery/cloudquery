@@ -1,13 +1,22 @@
-
 # Table: aws_wafregional_rules
-A combination of identifiers for web requests that you want to allow, block, or count.
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|ARN of the rule.|
-|tags|jsonb|Rule tags.|
-|id|text|A unique identifier for a Rule|
-|metric_name|text|A friendly name or description for the metrics for this Rule|
-|name|text|The friendly name or description for the Rule|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|tags|JSON|
+|predicates|JSON|
+|rule_id|String|
+|metric_name|String|
+|name|String|

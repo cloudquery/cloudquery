@@ -39,6 +39,16 @@ func Deliveries() *schema.Table {
 				},
 			},
 			{
+				Name:     "request",
+				Type:     schema.TypeString,
+				Resolver: resolveRequest,
+			},
+			{
+				Name:     "response",
+				Type:     schema.TypeString,
+				Resolver: resolveResponse,
+			},
+			{
 				Name:     "delivered_at",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("DeliveredAt.Time"),
@@ -87,16 +97,6 @@ func Deliveries() *schema.Table {
 				Name:     "repository_id",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("RepositoryID"),
-			},
-			{
-				Name:     "request",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Request"),
-			},
-			{
-				Name:     "response",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Response"),
 			},
 		},
 	}

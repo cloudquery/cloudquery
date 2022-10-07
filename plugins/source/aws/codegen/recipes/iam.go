@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
-	iamService "github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -15,7 +15,7 @@ func IAMResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService: "accounts",
-			Struct:     &iamService.Account{},
+			Struct:     &models.Account{},
 			SkipFields: []string{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -28,8 +28,20 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "credential_reports",
-			Struct:     &iamService.CredentialReportEntry{},
-			SkipFields: []string{"Arn", "UserCreationTime"},
+			Struct:     &models.CredentialReportEntry{},
+			SkipFields: []string{
+				"Arn",
+				"UserCreationTime",
+				"PasswordLastChanged",
+				"PasswordNextRotation",
+				"AccessKey1LastRotated",
+				"AccessKey2LastRotated",
+				"Cert1LastRotated",
+				"Cert2LastRotated",
+				"AccessKey1LastUsedDate",
+				"AccessKey2LastUsedDate",
+				"PasswordLastUsed",
+			},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "arn",
@@ -40,8 +52,53 @@ func IAMResources() []*Resource {
 				{
 					Name:     "user_creation_time",
 					Type:     schema.TypeTimestamp,
-					Resolver: `schema.PathResolver("UserCreationTime")`,
+					Resolver: `timestampPathResolver("UserCreationTime")`,
 					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "password_last_changed",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("PasswordLastChanged")`,
+				},
+				{
+					Name:     "password_next_rotation",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("PasswordNextRotation")`,
+				},
+				{
+					Name:     "access_key_1_last_rotated",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("AccessKey1LastRotated")`,
+				},
+				{
+					Name:     "access_key_2_last_rotated",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("AccessKey2LastRotated")`,
+				},
+				{
+					Name:     "cert_1_last_rotated",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("Cert1LastRotated")`,
+				},
+				{
+					Name:     "cert_2_last_rotated",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("Cert2LastRotated")`,
+				},
+				{
+					Name:     "access_key_1_last_used_date",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("AccessKey1LastUsedDate")`,
+				},
+				{
+					Name:     "access_key_2_last_used_date",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("AccessKey2LastUsedDate")`,
+				},
+				{
+					Name:     "password_last_used",
+					Type:     schema.TypeTimestamp,
+					Resolver: `timestampPathResolver("PasswordLastUsed")`,
 				},
 			},
 			Relations: []string{},
@@ -81,12 +138,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "group_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "group_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "policy_document",
@@ -97,7 +154,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "openid_connect_identity_providers",
-			Struct:     &types.OpenIDConnectProviderListEntry{},
+			Struct:     &models.IamOpenIdIdentityProviderWrapper{},
 			SkipFields: []string{"Arn", "Tags"},
 			ExtraColumns: append(
 				defaultAccountColumns,
@@ -116,7 +173,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "password_policies",
-			Struct:     &iamService.PasswordPolicyWrapper{},
+			Struct:     &models.PasswordPolicyWrapper{},
 			SkipFields: []string{},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
@@ -129,8 +186,8 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService: "policies",
-			Struct:     &types.Policy{},
-			SkipFields: []string{"PolicyId", "Tags"},
+			Struct:     &types.ManagedPolicyDetail{},
+			SkipFields: []string{"PolicyId", "Tags", "PolicyVersionList"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -148,6 +205,11 @@ func IAMResources() []*Resource {
 					Name:     "tags",
 					Type:     schema.TypeJSON,
 					Resolver: `resolveIamPolicyTags`,
+				},
+				{
+					Name:     "policy_version_list",
+					Type:     schema.TypeJSON,
+					Resolver: `resolveIamPolicyVersionList`,
 				},
 			},
 		},
@@ -198,7 +260,7 @@ func IAMResources() []*Resource {
 					{
 						Name:     "role_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "policy_document",
@@ -282,7 +344,7 @@ func IAMResources() []*Resource {
 		},
 		{
 			SubService:           "user_access_keys",
-			Struct:               &iamService.AccessKeyWrapper{},
+			Struct:               &models.AccessKeyWrapper{},
 			SkipFields:           []string{},
 			PostResourceResolver: `postIamUserAccessKeyResolver`,
 			ExtraColumns: append(
@@ -291,12 +353,20 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
+					},
+					{
+						Name: "last_used",
+						Type: schema.TypeTimestamp,
+					},
+					{
+						Name: "last_used_service_name",
+						Type: schema.TypeString,
 					},
 				}...),
 		},
@@ -310,12 +380,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},
@@ -329,12 +399,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 				}...),
 		},
@@ -348,12 +418,12 @@ func IAMResources() []*Resource {
 					{
 						Name:     "user_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "user_id",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("id")`,
+						Resolver: `schema.ParentColumnResolver("id")`,
 					},
 					{
 						Name:     "policy_document",

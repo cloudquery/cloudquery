@@ -23,8 +23,8 @@ func containers() *schema.Table {
 			},
 			{
 				Name:     "storage_account_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "version",
@@ -38,7 +38,7 @@ func containers() *schema.Table {
 			},
 			{
 				Name:     "deleted_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("DeletedTime"),
 			},
 			{
@@ -63,7 +63,7 @@ func containers() *schema.Table {
 			},
 			{
 				Name:     "last_modified_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("LastModifiedTime"),
 			},
 			{

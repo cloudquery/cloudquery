@@ -1,16 +1,28 @@
-
 # Table: aws_route53_hosted_zone_traffic_policy_instances
-A complex type that contains settings for the new traffic policy instance.
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_route53_hosted_zones`](aws_route53_hosted_zones.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|hosted_zone_cq_id|uuid|Unique CloudQuery ID of aws_route53_hosted_zones table (FK)|
-|id|text|The ID that Amazon Route 53 assigned to the new traffic policy instance.|
-|message|text|If State is Failed, an explanation of the reason for the failure.|
-|name|text|The DNS name, such as www.|
-|state|text|The value of State is one of the following values: Applied Amazon Route 53 has finished creating resource record sets, and changes have propagated to all Route 53 edge locations.|
-|ttl|bigint|The TTL that Amazon Route 53 assigned to all of the resource record sets that it created in the specified hosted zone.|
-|traffic_policy_id|text|The ID of the traffic policy that Amazon Route 53 used to create resource record sets in the specified hosted zone.|
-|traffic_policy_type|text|The DNS type that Amazon Route 53 assigned to all of the resource record sets that it created for this traffic policy instance.|
-|traffic_policy_version|integer|The version of the traffic policy that Amazon Route 53 used to create resource record sets in the specified hosted zone.|
-|arn|text|Amazon Resource Name (ARN) of the route53 hosted zone traffic policy instance.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|arn|String|
+|hosted_zone_arn|String|
+|hosted_zone_id|String|
+|id|String|
+|message|String|
+|name|String|
+|state|String|
+|ttl|Int|
+|traffic_policy_id|String|
+|traffic_policy_type|String|
+|traffic_policy_version|Int|

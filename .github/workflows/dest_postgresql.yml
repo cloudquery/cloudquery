@@ -1,0 +1,54 @@
+name: Destination Plugin Postgresql Workflow
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/postgresql/**"
+      - ".github/workflows/dest_postgresql.yml"
+
+defaults:
+  run:
+    working-directory: ./plugins/destination/postgresql
+
+jobs:
+  plugins-destination-postgresql:
+    name: "plugins/destination/postgresql"
+    runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres:
+        image: postgres:11
+        env:
+          POSTGRES_PASSWORD: pass
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v3
+        with:
+          go-version-file: plugins/destination/postgresql/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/postgresql/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.49.0
+          working-directory: plugins/destination/postgresql
+          args: "--config ../../.golangci.yml"
+      - name: Get dependencies
+        run: go get -t -d ./...
+      - name: Build
+        run: go build .
+      - name: Test
+        run: go test ./...

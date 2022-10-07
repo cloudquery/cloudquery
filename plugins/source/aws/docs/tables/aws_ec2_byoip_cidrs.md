@@ -1,12 +1,20 @@
-
 # Table: aws_ec2_byoip_cidrs
-Information about an address range that is provisioned for use with your AWS resources through bring your own IP addresses (BYOIP).
+
+
+
+The composite primary key for this table is (**account_id**, **region**, **cidr**).
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|cidr|text|The address range, in CIDR notation.|
-|description|text|The description of the address range.|
-|state|text|The state of the address pool.|
-|status_message|text|Upon success, contains the ID of the address pool.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id (PK)|String|
+|region (PK)|String|
+|cidr (PK)|String|
+|description|String|
+|state|String|
+|status_message|String|

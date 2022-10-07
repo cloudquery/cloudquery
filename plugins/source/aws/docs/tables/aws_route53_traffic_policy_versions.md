@@ -1,13 +1,24 @@
-
 # Table: aws_route53_traffic_policy_versions
-A complex type that contains settings for a traffic policy.
+
+
+
+The composite primary key for this table is (**traffic_policy_arn**, **id**, **version**).
+
+## Relations
+This table depends on [`aws_route53_traffic_policies`](aws_route53_traffic_policies.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|traffic_policy_cq_id|uuid|Unique CloudQuery ID of aws_route53_traffic_policies table (FK)|
-|document|jsonb|The definition of a traffic policy in JSON format.|
-|id|text|The ID that Amazon Route 53 assigned to a traffic policy when you created it.|
-|name|text|The name that you specified when you created the traffic policy.|
-|type|text|The DNS type of the resource record sets that Amazon Route 53 creates when you use a traffic policy to create a traffic policy instance.|
-|version|integer|The version number that Amazon Route 53 assigns to a traffic policy.|
-|comment|text|The comment that you specify in the CreateTrafficPolicy request, if any.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|traffic_policy_arn (PK)|String|
+|id (PK)|String|
+|version (PK)|Int|
+|document|JSON|
+|name|String|
+|type|String|
+|comment|String|

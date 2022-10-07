@@ -20,8 +20,8 @@ func BucketGrants() *schema.Table {
 			},
 			{
 				Name:     "bucket_arn",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "grantee",

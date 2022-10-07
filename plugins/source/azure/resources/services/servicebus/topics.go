@@ -23,8 +23,8 @@ func topics() *schema.Table {
 			},
 			{
 				Name:     "servicebus_namespace_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "size_in_bytes",
@@ -33,17 +33,17 @@ func topics() *schema.Table {
 			},
 			{
 				Name:     "created_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
 				Name:     "updated_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("UpdatedAt"),
 			},
 			{
 				Name:     "accessed_at",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("AccessedAt"),
 			},
 			{

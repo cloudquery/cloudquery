@@ -81,7 +81,7 @@ func FSXResources() []*Resource {
 		{
 			SubService: "file_systems",
 			Struct:     &types.FileSystem{},
-			SkipFields: []string{"ResourceARN", "Tags"},
+			SkipFields: []string{"AdministrativeActions", "ResourceARN", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -95,13 +95,19 @@ func FSXResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `client.ResolveTags`,
+					},
+					{
+						Name:          "administrative_actions",
+						Type:          schema.TypeJSON,
+						Resolver:      `schema.PathResolver("AdministrativeActions")`,
+						IgnoreInTests: true,
 					},
 				}...),
 		},
 		{
 			SubService: "snapshots",
 			Struct:     &types.Snapshot{},
-			SkipFields: []string{"ResourceARN", "Tags"},
+			SkipFields: []string{"AdministrativeActions", "ResourceARN", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -115,6 +121,12 @@ func FSXResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `client.ResolveTags`,
+					},
+					{
+						Name:          "administrative_actions",
+						Type:          schema.TypeJSON,
+						Resolver:      `schema.PathResolver("AdministrativeActions")`,
+						IgnoreInTests: true,
 					},
 				}...),
 		},
@@ -141,7 +153,7 @@ func FSXResources() []*Resource {
 		{
 			SubService: "volumes",
 			Struct:     &types.Volume{},
-			SkipFields: []string{"ResourceARN", "Tags"},
+			SkipFields: []string{"AdministrativeActions", "ResourceARN", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -155,6 +167,12 @@ func FSXResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `client.ResolveTags`,
+					},
+					{
+						Name:          "administrative_actions",
+						Type:          schema.TypeJSON,
+						Resolver:      `schema.PathResolver("AdministrativeActions")`,
+						IgnoreInTests: true,
 					},
 				}...),
 		},

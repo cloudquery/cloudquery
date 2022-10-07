@@ -32,6 +32,12 @@ func Instances() *schema.Table {
 				},
 			},
 			{
+				Name:          "state_transition_reason_time",
+				Type:          schema.TypeTimestamp,
+				Resolver:      resolveEc2InstanceStateTransitionReasonTime,
+				IgnoreInTests: true,
+			},
+			{
 				Name:     "ami_launch_index",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AmiLaunchIndex"),
@@ -132,7 +138,7 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("InstanceType"),
 			},
 			{
-				Name:     "ipv_6_address",
+				Name:     "ipv6_address",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Ipv6Address"),
 			},

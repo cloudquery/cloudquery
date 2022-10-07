@@ -1,13 +1,24 @@
-
 # Table: aws_ec2_route_tables
-Describes a route table.
+
+
+
+The primary key for this table is **arn**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|owner_id|text|The ID of the AWS account that owns the route table.|
-|id|text|The ID of the route table.|
-|tags|jsonb|Any tags assigned to the route table.|
-|vpc_id|text|The ID of the VPC.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|associations|JSON|
+|owner_id|String|
+|propagating_vgws|JSON|
+|route_table_id|String|
+|routes|JSON|
+|tags|JSON|
+|vpc_id|String|

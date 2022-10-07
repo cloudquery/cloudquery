@@ -92,6 +92,11 @@ func Images() *schema.Table {
 				Resolver: schema.PathResolver("ImageType"),
 			},
 			{
+				Name:     "imds_support",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ImdsSupport"),
+			},
+			{
 				Name:     "kernel_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("KernelId"),

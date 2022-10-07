@@ -1,13 +1,28 @@
-
 # Table: aws_lambda_layer_versions
-Details about a version of an AWS Lambda layer (https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html). 
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_lambda_layers`](aws_lambda_layers.md).
+The following tables depend on `aws_lambda_layer_versions`:
+  - [`aws_lambda_layer_version_policies`](aws_lambda_layer_version_policies.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|layer_cq_id|uuid|Unique CloudQuery ID of aws_lambda_layers table (FK)|
-|compatible_runtimes|text[]|The layer's compatible runtimes.|
-|created_date|timestamp without time zone|The date that the version was created, in ISO 8601 format|
-|description|text|The description of the version.|
-|layer_version_arn|text|The ARN of the layer version.|
-|license_info|text|The layer's open-source license.|
-|version|bigint|The version number.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn|String|
+|layer_arn|String|
+|compatible_architectures|StringArray|
+|compatible_runtimes|StringArray|
+|created_date|String|
+|description|String|
+|license_info|String|
+|version|Int|

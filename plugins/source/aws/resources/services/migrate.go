@@ -268,7 +268,7 @@ func findExtraColumns(content string) ([]string, []string) {
 		if strings.Contains(block, "Resolver:") {
 			block = strings.ReplaceAll(block, "_cq_id", "_arn")
 			block = strings.ReplaceAll(block, "schema.TypeUUID", "schema.TypeString")
-			block = strings.ReplaceAll(block, "schema.ParentIdResolver", `schema.ParentResourceFieldResolver("arn")`)
+			block = strings.ReplaceAll(block, "schema.ParentIdResolver", `schema.ParentColumnResolver("arn")`)
 			if strings.Contains(block, "client.ResolveTags") {
 				skipFields = append(skipFields, "Tags")
 			}

@@ -1,12 +1,20 @@
-
 # Table: digitalocean_billing_history
 
+
+
+The primary key for this table is **invoice_id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|description|text|Description of the billing history entry.|
-|amount|text|Amount of the billing history entry.|
-|invoice_id|text|ID of the invoice associated with the billing history entry, if  applicable.|
-|invoice_uuid|text|UUID of the invoice associated with the billing history entry, if  applicable.|
-|date|timestamp without time zone|Time the billing history entry occurred.|
-|type|text|Type of billing history entry.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|invoice_id (PK)|String|
+|description|String|
+|amount|String|
+|invoice_uuid|String|
+|date|Timestamp|
+|type|String|

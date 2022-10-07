@@ -1,10 +1,18 @@
-
 # Table: aws_waf_subscribed_rule_groups
-This is AWS WAF Classic documentation
+
+
+
+The composite primary key for this table is (**account_id**, **rule_group_id**).
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|metric_name|text|A friendly name or description for the metrics for this RuleGroup|
-|name|text|A friendly name or description of the RuleGroup|
-|rule_group_id|text|A unique identifier for a RuleGroup.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id (PK)|String|
+|rule_group_id (PK)|String|
+|metric_name|String|
+|name|String|

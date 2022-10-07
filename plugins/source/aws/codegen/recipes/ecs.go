@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -89,7 +89,7 @@ func ECSResources() []*Resource {
 					{
 						Name:     "cluster_arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.ParentResourceFieldResolver("arn")`,
+						Resolver: `schema.ParentColumnResolver("arn")`,
 					},
 					{
 						Name:     "tags",
@@ -101,11 +101,17 @@ func ECSResources() []*Resource {
 		},
 		{
 			SubService: "task_definitions",
-			Struct:     &ecs.TaskDefinitionWrapper{},
-			SkipFields: []string{"Tags"},
+			Struct:     &models.TaskDefinitionWrapper{},
+			SkipFields: []string{"TaskDefinitionArn", "Tags"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("TaskDefinitionArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
 					{
 						Name:     "tags",
 						Type:     schema.TypeJSON,

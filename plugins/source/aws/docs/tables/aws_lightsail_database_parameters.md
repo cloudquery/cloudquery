@@ -1,15 +1,27 @@
-
 # Table: aws_lightsail_database_parameters
-Describes the parameters of a database
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_lightsail_databases`](aws_lightsail_databases.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|database_cq_id|uuid|Unique CloudQuery ID of aws_lightsail_databases table (FK)|
-|allowed_values|text|Specifies the valid range of values for the parameter|
-|apply_method|text|Indicates when parameter updates are applied|
-|apply_type|text|Specifies the engine-specific parameter type|
-|data_type|text|Specifies the valid data type for the parameter|
-|description|text|Provides a description of the parameter|
-|is_modifiable|boolean|A Boolean value indicating whether the parameter can be modified|
-|name|text|Specifies the name of the parameter|
-|value|text|Specifies the value of the parameter|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|database_arn|String|
+|allowed_values|String|
+|apply_method|String|
+|apply_type|String|
+|data_type|String|
+|description|String|
+|is_modifiable|Bool|
+|parameter_name|String|
+|parameter_value|String|

@@ -22,8 +22,8 @@ func routes() *schema.Table {
 			},
 			{
 				Name:     "cdn_endpoint_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "custom_domains",

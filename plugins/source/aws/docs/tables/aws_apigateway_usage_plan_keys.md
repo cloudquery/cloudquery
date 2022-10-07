@@ -1,13 +1,24 @@
-
 # Table: aws_apigateway_usage_plan_keys
-Represents a usage plan key to identify a plan customer
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_apigateway_usage_plans`](aws_apigateway_usage_plans.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|usage_plan_cq_id|uuid|Unique CloudQuery ID of aws_apigateway_usage_plans table (FK)|
-|usage_plan_id|text|The identifier of a UsagePlan resource|
-|arn|text|The Amazon Resource Name (ARN) for the resource|
-|id|text|The Id of a usage plan key|
-|name|text|The name of a usage plan key|
-|type|text|The type of a usage plan key|
-|value|text|The value of a usage plan key|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|usage_plan_arn|String|
+|arn|String|
+|id|String|
+|name|String|
+|type|String|
+|value|String|

@@ -57,9 +57,24 @@ func DataRepositoryAssociations() *schema.Table {
 				Resolver: schema.PathResolver("DataRepositoryPath"),
 			},
 			{
+				Name:     "data_repository_subdirectories",
+				Type:     schema.TypeStringArray,
+				Resolver: schema.PathResolver("DataRepositorySubdirectories"),
+			},
+			{
 				Name:     "failure_details",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("FailureDetails"),
+			},
+			{
+				Name:     "file_cache_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileCacheId"),
+			},
+			{
+				Name:     "file_cache_path",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("FileCachePath"),
 			},
 			{
 				Name:     "file_system_id",
@@ -82,7 +97,12 @@ func DataRepositoryAssociations() *schema.Table {
 				Resolver: schema.PathResolver("Lifecycle"),
 			},
 			{
-				Name:     "s_3",
+				Name:     "nfs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("NFS"),
+			},
+			{
+				Name:     "s3",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("S3"),
 			},

@@ -23,8 +23,8 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "sql_server_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "sku",
@@ -77,8 +77,13 @@ func databases() *schema.Table {
 				Resolver: schema.PathResolver("Status"),
 			},
 			{
+				Name:     "database_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("DatabaseID"),
+			},
+			{
 				Name:     "creation_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("CreationDate"),
 			},
 			{
@@ -103,12 +108,12 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "restore_point_in_time",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("RestorePointInTime"),
 			},
 			{
 				Name:     "source_database_deletion_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("SourceDatabaseDeletionDate"),
 			},
 			{
@@ -153,7 +158,7 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "earliest_restore_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("EarliestRestoreDate"),
 			},
 			{
@@ -193,12 +198,12 @@ func databases() *schema.Table {
 			},
 			{
 				Name:     "paused_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("PausedDate"),
 			},
 			{
 				Name:     "resumed_date",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ResumedDate"),
 			},
 			{

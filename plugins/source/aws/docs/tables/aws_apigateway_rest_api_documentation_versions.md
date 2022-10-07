@@ -1,12 +1,23 @@
-
 # Table: aws_apigateway_rest_api_documentation_versions
-A snapshot of the documentation of an API
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_apigateway_rest_apis`](aws_apigateway_rest_apis.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|rest_api_cq_id|uuid|Unique CloudQuery ID of aws_apigateway_rest_apis table (FK)|
-|rest_api_id|text|The API's identifier|
-|arn|text|The Amazon Resource Name (ARN) for the resource|
-|created_date|timestamp without time zone|The date when the API documentation snapshot is created|
-|description|text|The description of the API documentation snapshot|
-|version|text|The version identifier of the API documentation snapshot|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|rest_api_arn|String|
+|arn|String|
+|created_date|Timestamp|
+|description|String|
+|version|String|

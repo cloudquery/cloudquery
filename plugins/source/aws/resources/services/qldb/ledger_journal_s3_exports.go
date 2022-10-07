@@ -26,7 +26,7 @@ func LedgerJournalS3Exports() *schema.Table {
 			{
 				Name:     "ledger_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
 				Name:     "exclusive_end_time",
@@ -59,7 +59,7 @@ func LedgerJournalS3Exports() *schema.Table {
 				Resolver: schema.PathResolver("RoleArn"),
 			},
 			{
-				Name:     "s_3_export_configuration",
+				Name:     "s3_export_configuration",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("S3ExportConfiguration"),
 			},

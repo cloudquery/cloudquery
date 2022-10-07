@@ -23,8 +23,8 @@ func serverDevOpsAuditingSettings() *schema.Table {
 			},
 			{
 				Name:     "sql_server_id",
-				Type:     schema.TypeUUID,
-				Resolver: schema.ParentIDResolver,
+				Type:     schema.TypeString,
+				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
 				Name:     "system_data",
@@ -50,6 +50,11 @@ func serverDevOpsAuditingSettings() *schema.Table {
 				Name:     "storage_account_access_key",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StorageAccountAccessKey"),
+			},
+			{
+				Name:     "storage_account_subscription_id",
+				Type:     schema.TypeUUID,
+				Resolver: schema.PathResolver("StorageAccountSubscriptionID"),
 			},
 			{
 				Name:     "id",

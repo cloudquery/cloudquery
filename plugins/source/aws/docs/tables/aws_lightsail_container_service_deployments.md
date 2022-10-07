@@ -1,14 +1,24 @@
-
 # Table: aws_lightsail_container_service_deployments
-Describes a container deployment configuration of an Amazon Lightsail container service
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_lightsail_container_services`](aws_lightsail_container_services.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|container_service_cq_id|uuid|Unique CloudQuery ID of aws_lightsail_container_services table (FK)|
-|containers|jsonb|An object that describes the configuration for the containers of the deployment|
-|created_at|timestamp without time zone|The timestamp when the deployment was created|
-|public_endpoint_container_name|text|The name of the container entry of the deployment that the endpoint configuration applies to|
-|public_endpoint_container_port|bigint|The port of the specified container to which traffic is forwarded to|
-|public_endpoint_health_check|jsonb|An object that describes the health check configuration of the container|
-|state|text|The state of the deployment|
-|version|bigint|The version number of the deployment|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|container_service_arn|String|
+|containers|JSON|
+|created_at|Timestamp|
+|public_endpoint|JSON|
+|state|String|
+|version|Int|

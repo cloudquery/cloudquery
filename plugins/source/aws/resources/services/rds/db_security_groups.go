@@ -47,7 +47,7 @@ func DbSecurityGroups() *schema.Table {
 				Resolver: schema.PathResolver("DBSecurityGroupName"),
 			},
 			{
-				Name:     "ec_2_security_groups",
+				Name:     "ec2_security_groups",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("EC2SecurityGroups"),
 			},

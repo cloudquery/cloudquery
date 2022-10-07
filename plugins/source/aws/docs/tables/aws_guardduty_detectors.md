@@ -1,20 +1,29 @@
-
 # Table: aws_guardduty_detectors
 
+
+
+The composite primary key for this table is (**account_id**, **region**, **id**).
+
+## Relations
+The following tables depend on `aws_guardduty_detectors`:
+  - [`aws_guardduty_detector_members`](aws_guardduty_detector_members.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|id|text|The Unique Identifier of the Detector.|
-|service_role|text|The GuardDuty service role.|
-|status|text|The detector status.|
-|created_at|timestamp without time zone|The timestamp of when the detector was created.|
-|data_sources_cloud_trail_status|text|Describes whether CloudTrail is enabled as a data source for the detector.|
-|data_sources_dns_logs_status|text|Denotes whether DNS logs is enabled as a data source.|
-|data_sources_flow_logs_status|text|Denotes whether VPC flow logs is enabled as a data source.|
-|data_sources_s3_logs_status|text|A value that describes whether S3 data event logs are automatically enabled for new members of the organization.|
-|finding_publishing_frequency|text|The publishing frequency of the finding.|
-|tags|jsonb|The tags of the detector resource.|
-|updated_at|timestamp without time zone|The last-updated timestamp for the detector.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id (PK)|String|
+|region (PK)|String|
+|arn|String|
+|id (PK)|String|
+|service_role|String|
+|status|String|
+|created_at|String|
+|data_sources|JSON|
+|finding_publishing_frequency|String|
+|tags|JSON|
+|updated_at|String|
+|result_metadata|JSON|

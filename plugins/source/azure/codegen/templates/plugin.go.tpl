@@ -5,13 +5,10 @@ import (
 	{{range .Packages}}"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/{{.}}"
     {{end}}"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
-	_ "embed"
 )
 
 var (
 	Version = "Development"
-	//go:embed example.yml
-	exampleConfig string
 )
 
 func Plugin() *plugins.SourcePlugin {
@@ -23,6 +20,5 @@ func Plugin() *plugins.SourcePlugin {
             {{end}}
 		},
 		client.New,
-		plugins.WithSourceExampleConfig(exampleConfig),
 	)
 }

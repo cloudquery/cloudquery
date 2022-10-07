@@ -21,7 +21,7 @@ func TrafficPolicyVersions() *schema.Table {
 			{
 				Name:     "traffic_policy_arn",
 				Type:     schema.TypeString,
-				Resolver: schema.ParentResourceFieldResolver("arn"),
+				Resolver: schema.ParentColumnResolver("arn"),
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
@@ -44,8 +44,8 @@ func TrafficPolicyVersions() *schema.Table {
 			},
 			{
 				Name:     "document",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Document"),
+				Type:     schema.TypeJSON,
+				Resolver: client.MarshaledJsonResolver("Document"),
 			},
 			{
 				Name:     "name",

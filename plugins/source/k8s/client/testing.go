@@ -1,63 +1,58 @@
 package client
 
 import (
+	"context"
+	"fmt"
+	"os"
 	"testing"
+	"time"
 
-	"github.com/cloudquery/cq-provider-sdk/provider"
-	"github.com/cloudquery/cq-provider-sdk/provider/diag"
-	"github.com/cloudquery/cq-provider-sdk/provider/schema"
-	providertest "github.com/cloudquery/cq-provider-sdk/provider/testing"
+	"github.com/cloudquery/plugin-sdk/plugins"
+	"github.com/cloudquery/plugin-sdk/schema"
+	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/golang/mock/gomock"
-	"github.com/hashicorp/go-hclog"
+	"github.com/rs/zerolog"
 )
 
 type TestOptions struct {
 	SkipEmptyJsonB bool
 }
 
-func K8sTestHelper(t *testing.T, table *schema.Table, snapshotDirPath string) {
-	cfg := ``
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:      "k8s_mock_test_provider",
-			Version:   "development",
-			Configure: Configure,
-			Config: func() provider.Config {
-				return &Config{}
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-		},
-		Config: cfg,
-	})
-}
-
 func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, options TestOptions) {
 	t.Helper()
-	ctrl := gomock.NewController(t)
 
-	cfg := ``
+	table.IgnoreInTests = false
 
-	providertest.TestResource(t, providertest.ResourceTestCase{
-		Provider: &provider.Provider{
-			Name:    "k8s_mock_test_provider",
-			Version: "development",
-			Configure: func(logger hclog.Logger, _ interface{}) (schema.ClientMeta, diag.Diagnostics) {
-				c := &Client{
-					Log:     logger,
-					Context: "testContext",
-				}
-				c.SetServices(map[string]Services{"testContext": builder(t, ctrl)})
-				return c, nil
-			},
-			ResourceMap: map[string]*schema.Table{
-				"test_resource": table,
-			},
-			Config: func() provider.Config {
-				return &Config{}
-			},
+	mockController := gomock.NewController(t)
+	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
+		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
+	configureFunc := func(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.ClientMeta, error) {
+		var k8sSpec Spec
+		if err := s.UnmarshalSpec(&k8sSpec); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal k8s spec: %w", err)
+		}
+
+		c := &Client{
+			logger:  logger,
+			Context: "testContext",
+			spec:    &k8sSpec,
+		}
+		c.SetServices(map[string]Services{"testContext": builder(t, mockController)})
+		return c, nil
+	}
+
+	plugin := plugins.NewSourcePlugin(
+		table.Name,
+		"dev",
+		[]*schema.Table{
+			table,
 		},
-		Config: cfg,
+		configureFunc,
+	)
+
+	plugins.TestSourcePluginSync(t, plugin, l, specs.Source{
+		Name:   "dev",
+		Tables: []string{table.Name},
 	})
 }

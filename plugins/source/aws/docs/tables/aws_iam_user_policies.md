@@ -1,12 +1,23 @@
-
 # Table: aws_iam_user_policies
-Inline policies that are embedded in the specified IAM user
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_iam_users`](aws_iam_users.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|user_cq_id|uuid|Unique CloudQuery ID of aws_iam_users table (FK)|
-|account_id|text|The AWS Account ID of the resource.|
-|user_id|text|user ID the policy belongs too.|
-|policy_document|jsonb|The policy document. IAM stores policies in JSON format. However, resources that were created using AWS CloudFormation templates can be formatted in YAML. AWS CloudFormation always converts a YAML policy to JSON format before submitting it to IAM.|
-|policy_name|text|The name of the policy.|
-|user_name|text|The user the policy is associated with.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|user_arn|String|
+|user_id|String|
+|policy_document|JSON|
+|policy_name|String|
+|user_name|String|
+|result_metadata|JSON|

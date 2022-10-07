@@ -1,23 +1,41 @@
-
 # Table: azure_sql_servers
-Azure sql server
+
+
+
+The primary key for this table is **id**.
+
+## Relations
+The following tables depend on `azure_sql_servers`:
+  - [`azure_sql_firewall_rules`](azure_sql_firewall_rules.md)
+  - [`azure_sql_databases`](azure_sql_databases.md)
+  - [`azure_sql_encryption_protectors`](azure_sql_encryption_protectors.md)
+  - [`azure_sql_virtual_network_rules`](azure_sql_virtual_network_rules.md)
+  - [`azure_sql_server_admins`](azure_sql_server_admins.md)
+  - [`azure_sql_server_blob_auditing_policies`](azure_sql_server_blob_auditing_policies.md)
+  - [`azure_sql_server_dev_ops_auditing_settings`](azure_sql_server_dev_ops_auditing_settings.md)
+  - [`azure_sql_server_vulnerability_assessments`](azure_sql_server_vulnerability_assessments.md)
+  - [`azure_sql_server_security_alert_policies`](azure_sql_server_security_alert_policies.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|identity_principal_id|uuid|The Azure Active Directory principal id|
-|identity_type|text|The identity type.|
-|identity_tenant_id|uuid|The Azure Active Directory tenant id|
-|kind|text|Kind of sql server.|
-|administrator_login|text|Administrator username for the server Once created it cannot be changed|
-|administrator_login_password|text|The administrator login password (required for server creation)|
-|version|text|The version of the server|
-|state|text|The state of the server|
-|fully_qualified_domain_name|text|The fully qualified domain name of the server|
-|minimal_tls_version|text|Minimal TLS version Allowed values: '10', '11', '12'|
-|public_network_access|text|Whether or not public endpoint access is allowed for this server.|
-|location|text|Resource location|
-|tags|jsonb|Resource tags|
-|id|text|Resource ID|
-|name|text|Resource name|
-|type|text|Resource type|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|identity|JSON|
+|kind|String|
+|administrator_login|String|
+|administrator_login_password|String|
+|version|String|
+|state|String|
+|fully_qualified_domain_name|String|
+|private_endpoint_connections|JSON|
+|minimal_tls_version|String|
+|public_network_access|String|
+|location|String|
+|tags|JSON|
+|id (PK)|String|
+|name|String|
+|type|String|

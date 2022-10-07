@@ -1,14 +1,25 @@
-
 # Table: tf_resources
+
 Terraform resources
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`tf_data`](tf_data.md).
+The following tables depend on `tf_resources`:
+  - [`tf_resource_instances`](tf_resource_instances.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|tf_data_cq_id|uuid|Unique CloudQuery ID of tf_data table (FK)|
-|running_id|uuid|Unique fetch operation id|
-|module|text|Resource module if exists|
-|mode|text|Resource mode, for example: data, managed, etc|
-|type|text|Resource type|
-|name|text|Resource name|
-|provider_path|text|Resource provider full path, for example: provider["registry.terraform.io/hashicorp/aws"]|
-|provider|text|Resource provider name, for example: aws, gcp, etc|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|data_backend_name|String|
+|module|String|
+|mode|String|
+|type|String|
+|name|String|
+|provider_path|String|
+|provider|String|

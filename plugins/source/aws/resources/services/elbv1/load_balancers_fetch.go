@@ -7,14 +7,9 @@ import (
 	elbv1 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancing/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/elbv1/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type ELBv1LoadBalancerWrapper struct {
-	types.LoadBalancerDescription
-	Tags       map[string]string
-	Attributes *types.LoadBalancerAttributes
-}
 
 func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
@@ -37,7 +32,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 				return err
 			}
 
-			wrapper := ELBv1LoadBalancerWrapper{
+			wrapper := models.ELBv1LoadBalancerWrapper{
 				LoadBalancerDescription: lb,
 				Tags:                    client.TagsToMap(getTagsByLoadBalancerName(*lb.LoadBalancerName, tagsResponse.TagDescriptions)),
 				Attributes:              loadBalancerAttributes.LoadBalancerAttributes,
@@ -77,7 +72,7 @@ func fetchElbv1LoadBalancers(ctx context.Context, meta schema.ClientMeta, parent
 }
 
 func fetchElbv1LoadBalancerPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(ELBv1LoadBalancerWrapper)
+	r := parent.Item.(models.ELBv1LoadBalancerWrapper)
 	c := meta.(*client.Client)
 	svc := c.Services().ELBv1
 	response, err := svc.DescribeLoadBalancerPolicies(ctx, &elbv1.DescribeLoadBalancerPoliciesInput{LoadBalancerName: r.LoadBalancerName})
@@ -108,6 +103,6 @@ func getTagsByLoadBalancerName(id string, tagsResponse []types.TagDescription) [
 
 func resolveLoadBalancerARN() schema.ColumnResolver {
 	return client.ResolveARN(client.ElasticLoadBalancingService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"loadbalancer", *resource.Item.(ELBv1LoadBalancerWrapper).LoadBalancerName}, nil
+		return []string{"loadbalancer", *resource.Item.(models.ELBv1LoadBalancerWrapper).LoadBalancerName}, nil
 	})
 }

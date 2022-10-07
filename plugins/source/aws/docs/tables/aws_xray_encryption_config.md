@@ -1,11 +1,19 @@
-
 # Table: aws_xray_encryption_config
-A configuration document that specifies encryption configuration settings
+
+
+
+The primary key for this table is **_cq_id**.
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|key_id|text|The ID of the KMS key used for encryption, if applicable|
-|status|text|The encryption status|
-|type|text|The type of encryption|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|key_id|String|
+|status|String|
+|type|String|

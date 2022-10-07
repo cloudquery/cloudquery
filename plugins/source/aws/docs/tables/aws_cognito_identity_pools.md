@@ -1,18 +1,28 @@
-
 # Table: aws_cognito_identity_pools
-An object representing an Amazon Cognito identity pool.
+
+
+
+The composite primary key for this table is (**account_id**, **region**, **id**).
+
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|region|text|The AWS Region of the resource.|
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|allow_unauthenticated_identities|boolean|TRUE if the identity pool supports unauthenticated logins.|
-|id|text|An identity pool ID in the format REGION:GUID.|
-|identity_pool_name|text|A string that you provide.|
-|allow_classic_flow|boolean|Enables or disables the Basic (Classic) authentication flow|
-|developer_provider_name|text|The "domain" by which Cognito will refer to your users.|
-|identity_pool_tags|jsonb|The tags that are assigned to the identity pool|
-|open_id_connect_provider_arns|text[]|The ARNs of the OpenID Connect providers.|
-|saml_provider_arns|text[]|An array of Amazon Resource Names (ARNs) of the SAML provider for your identity pool.|
-|supported_login_providers|jsonb|Optional key:value pairs mapping provider names to provider app IDs.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id (PK)|String|
+|region (PK)|String|
+|arn|String|
+|id (PK)|String|
+|allow_unauthenticated_identities|Bool|
+|identity_pool_name|String|
+|allow_classic_flow|Bool|
+|cognito_identity_providers|JSON|
+|developer_provider_name|String|
+|identity_pool_tags|JSON|
+|open_id_connect_provider_ar_ns|StringArray|
+|saml_provider_ar_ns|StringArray|
+|supported_login_providers|JSON|
+|result_metadata|JSON|

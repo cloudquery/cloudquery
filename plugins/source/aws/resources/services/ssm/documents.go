@@ -9,10 +9,9 @@ import (
 
 func Documents() *schema.Table {
 	return &schema.Table{
-		Name:                 "aws_ssm_documents",
-		Resolver:             fetchSsmDocuments,
-		PostResourceResolver: ssmDocumentPostResolver,
-		Multiplex:            client.ServiceAccountRegionMultiplexer("ssm"),
+		Name:      "aws_ssm_documents",
+		Resolver:  fetchSsmDocuments,
+		Multiplex: client.ServiceAccountRegionMultiplexer("ssm"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -31,6 +30,11 @@ func Documents() *schema.Table {
 				CreationOptions: schema.ColumnCreationOptions{
 					PrimaryKey: true,
 				},
+			},
+			{
+				Name:     "permissions",
+				Type:     schema.TypeJSON,
+				Resolver: resolveDocumentPermission,
 			},
 			{
 				Name:     "tags",
@@ -158,7 +162,7 @@ func Documents() *schema.Table {
 				Resolver: schema.PathResolver("SchemaVersion"),
 			},
 			{
-				Name:     "sha_1",
+				Name:     "sha1",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Sha1"),
 			},

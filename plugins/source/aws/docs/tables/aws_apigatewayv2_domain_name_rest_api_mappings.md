@@ -1,12 +1,24 @@
-
 # Table: aws_apigatewayv2_domain_name_rest_api_mappings
-Represents an API mapping.
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_apigatewayv2_domain_names`](aws_apigatewayv2_domain_names.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|domain_name_cq_id|uuid|Unique CloudQuery ID of aws_apigatewayv2_domain_names table (FK)|
-|api_id|text|The API identifier.|
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|stage|text|The API stage.|
-|api_mapping_id|text|The API mapping identifier.|
-|api_mapping_key|text|The API mapping key.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|domain_name_arn|String|
+|arn|String|
+|api_id|String|
+|stage|String|
+|api_mapping_id|String|
+|api_mapping_key|String|

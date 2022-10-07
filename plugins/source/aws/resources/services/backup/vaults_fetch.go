@@ -2,14 +2,13 @@ package backup
 
 import (
 	"context"
-	"errors"
+	"encoding/json"
 	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
-	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -76,10 +75,19 @@ func resolveVaultAccessPolicy(ctx context.Context, meta schema.ClientMeta, resou
 		}
 		return err
 	}
-	return resource.Set(c.Name, result.Policy)
+	if result.Policy == nil {
+		return nil
+	}
+
+	var p map[string]interface{}
+	err = json.Unmarshal([]byte(*result.Policy), &p)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, p)
 }
 
-func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, col schema.Column) error {
 	vault := resource.Item.(types.BackupVaultListMember)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
@@ -91,20 +99,9 @@ func resolveVaultNotifications(ctx context.Context, meta schema.ClientMeta, reso
 		},
 	)
 	if err != nil {
-		var ae smithy.APIError
-		if !errors.As(err, &ae) {
-			return err
-		}
-		if ae.ErrorCode() == "ERROR_2106" {
-			// trying to ignore "ERROR_2106: Failed reading notifications from database for Backup vault ..."
-			return nil
-		}
 		return err
 	}
-	if err := resource.Set("notification_events", result.BackupVaultEvents); err != nil {
-		return err
-	}
-	return resource.Set("notification_sns_topic_arn", result.SNSTopicArn)
+	return resource.Set(col.Name, result)
 }
 
 func fetchBackupVaultRecoveryPoints(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {

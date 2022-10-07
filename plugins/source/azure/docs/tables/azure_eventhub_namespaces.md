@@ -1,30 +1,36 @@
-
 # Table: azure_eventhub_namespaces
-Azure EventHub namespace
+
+
+
+The primary key for this table is **id**.
+
+## Relations
+The following tables depend on `azure_eventhub_namespaces`:
+  - [`azure_eventhub_network_rule_sets`](azure_eventhub_network_rule_sets.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|subscription_id|text|Azure subscription id|
-|sku_name|text|Name of this SKU|
-|sku_tier|text|The billing tier of this particular SKU|
-|sku_capacity|integer|The Event Hubs throughput units, value should be 0 to 20 throughput units.|
-|identity_principal_id|text|ObjectId from the KeyVault|
-|identity_tenant_id|text|TenantId from the KeyVault|
-|identity_type|text|Enumerates the possible value Identity type, which currently supports only 'SystemAssigned'|
-|provisioning_state|text|Provisioning state of the Namespace.|
-|created_at_time|timestamp without time zone||
-|updated_at_time|timestamp without time zone||
-|service_bus_endpoint|text|Endpoint you can use to perform Service Bus operations.|
-|cluster_arm_id|text|Cluster ARM ID of the Namespace.|
-|metric_id|text|Identifier for Azure Insights metrics.|
-|is_auto_inflate_enabled|boolean|Value that indicates whether AutoInflate is enabled for eventhub namespace.|
-|maximum_throughput_units|integer|Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units|
-|kafka_enabled|boolean|Value that indicates whether Kafka is enabled for eventhub namespace.|
-|zone_redundant|boolean|Enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.|
-|encryption_key_source|text|Enumerates the possible value of keySource for Encryption|
-|location|text|Resource location.|
-|tags|jsonb|Resource tags.|
-|id|text|Resource ID.|
-|name|text|Resource name.|
-|type|text|Resource type.|
-|network_rule_set|jsonb|Network rule set for a namespace.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|subscription_id|String|
+|sku|JSON|
+|identity|JSON|
+|provisioning_state|String|
+|created_at|Timestamp|
+|updated_at|Timestamp|
+|service_bus_endpoint|String|
+|cluster_arm_id|String|
+|metric_id|String|
+|is_auto_inflate_enabled|Bool|
+|maximum_throughput_units|Int|
+|kafka_enabled|Bool|
+|zone_redundant|Bool|
+|encryption|JSON|
+|location|String|
+|tags|JSON|
+|id (PK)|String|
+|name|String|
+|type|String|

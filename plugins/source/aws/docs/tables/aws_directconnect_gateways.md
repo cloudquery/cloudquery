@@ -1,14 +1,27 @@
-
 # Table: aws_directconnect_gateways
-Information about a Direct Connect gateway, which enables you to connect virtual interfaces and virtual private gateway or transit gateways.
+
+
+
+The primary key for this table is **arn**.
+
+## Relations
+The following tables depend on `aws_directconnect_gateways`:
+  - [`aws_directconnect_gateway_associations`](aws_directconnect_gateway_associations.md)
+  - [`aws_directconnect_gateway_attachments`](aws_directconnect_gateway_attachments.md)
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|account_id|text|The AWS Account ID of the resource.|
-|arn|text|The Amazon Resource Name (ARN) for the resource.|
-|amazon_side_asn|bigint|The autonomous system number (ASN) for the Amazon side of the connection.|
-|id|text|The ID of the Direct Connect gateway.|
-|name|text|The name of the Direct Connect gateway.|
-|state|text|The state of the Direct Connect gateway.|
-|owner_account|text|The ID of the AWS account that owns the Direct Connect gateway.|
-|state_change_error|text|The error message if the state of an object failed to advance.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|region|String|
+|arn (PK)|String|
+|id|String|
+|amazon_side_asn|Int|
+|direct_connect_gateway_name|String|
+|direct_connect_gateway_state|String|
+|owner_account|String|
+|state_change_error|String|

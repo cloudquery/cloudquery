@@ -1,13 +1,24 @@
-
 # Table: aws_s3_bucket_cors_rules
-Specifies a cross-origin access rule for an Amazon S3 bucket.
+
+
+
+The primary key for this table is **_cq_id**.
+
+## Relations
+This table depends on [`aws_s3_buckets`](aws_s3_buckets.md).
+
 ## Columns
-| Name        | Type           | Description  |
-| ------------- | ------------- | -----  |
-|bucket_cq_id|uuid|Unique CloudQuery ID of aws_s3_buckets table (FK)|
-|allowed_methods|text[]|An HTTP method that you allow the origin to execute|
-|allowed_origins|text[]|One or more origins you want customers to be able to access the bucket from.|
-|allowed_headers|text[]|Headers that are specified in the Access-Control-Request-Headers header|
-|expose_headers|text[]|One or more headers in the response that you want customers to be able to access from their applications (for example, from a JavaScript XMLHttpRequest object).|
-|id|text|Unique identifier for the rule|
-|max_age_seconds|integer|The time in seconds that your browser is to cache the preflight response for the specified resource.|
+| Name          | Type          |
+| ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
+|account_id|String|
+|bucket_arn|String|
+|allowed_methods|StringArray|
+|allowed_origins|StringArray|
+|allowed_headers|StringArray|
+|expose_headers|StringArray|
+|id|String|
+|max_age_seconds|Int|

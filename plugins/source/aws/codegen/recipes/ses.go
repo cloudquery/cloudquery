@@ -1,7 +1,7 @@
 package recipes
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ses/models"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -11,7 +11,7 @@ func SESResources() []*Resource {
 
 		{
 			SubService: "templates",
-			Struct:     &ses.Template{},
+			Struct:     &models.Template{},
 			SkipFields: []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
