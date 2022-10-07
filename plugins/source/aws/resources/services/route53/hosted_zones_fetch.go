@@ -9,15 +9,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/route53/models"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
-
-type Route53HostedZoneWrapper struct {
-	types.HostedZone
-	Tags            map[string]string
-	DelegationSetId *string
-	VPCs            []types.VPC
-}
 
 func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	var config route53.ListHostedZonesInput
@@ -44,13 +38,12 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 			if gotHostedZone.DelegationSet != nil {
 				delegationSetId = gotHostedZone.DelegationSet.Id
 			}
-			wrapper := Route53HostedZoneWrapper{
+			res <- &models.Route53HostedZoneWrapper{
 				HostedZone:      h,
 				Tags:            client.TagsToMap(getRoute53tagsByResourceID(*h.Id, tagsResponse.ResourceTagSets)),
 				DelegationSetId: delegationSetId,
 				VPCs:            gotHostedZone.VPCs,
 			}
-			res <- wrapper
 		}
 		return nil
 	}
@@ -82,7 +75,7 @@ func fetchRoute53HostedZones(ctx context.Context, meta schema.ClientMeta, parent
 	return nil
 }
 func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(Route53HostedZoneWrapper)
+	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	svc := meta.(*client.Client).Services().Route53
 	config := route53.ListQueryLoggingConfigsInput{HostedZoneId: r.Id}
 	for {
@@ -99,7 +92,7 @@ func fetchRoute53HostedZoneQueryLoggingConfigs(ctx context.Context, meta schema.
 	return nil
 }
 func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(Route53HostedZoneWrapper)
+	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	svc := meta.(*client.Client).Services().Route53
 	config := route53.ListResourceRecordSetsInput{HostedZoneId: r.Id}
 	for {
@@ -121,7 +114,7 @@ func fetchRoute53HostedZoneResourceRecordSets(ctx context.Context, meta schema.C
 	return nil
 }
 func fetchRoute53HostedZoneTrafficPolicyInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	r := parent.Item.(Route53HostedZoneWrapper)
+	r := parent.Item.(*models.Route53HostedZoneWrapper)
 	config := route53.ListTrafficPolicyInstancesByHostedZoneInput{HostedZoneId: r.Id}
 	svc := meta.(*client.Client).Services().Route53
 	for {
@@ -148,7 +141,7 @@ func getRoute53tagsByResourceID(id string, set []types.ResourceTagSet) []types.T
 }
 func resolveRoute53HostedZoneArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	hz := resource.Item.(Route53HostedZoneWrapper)
+	hz := resource.Item.(*models.Route53HostedZoneWrapper)
 	return resource.Set(c.Name, cl.PartitionGlobalARN(client.Route53Service, "hostedzone", *hz.Id))
 }
 func resolveRoute53HostedZoneQueryLoggingConfigsArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {

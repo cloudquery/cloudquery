@@ -137,6 +137,11 @@ func Jobs() *schema.Table {
 				Resolver: schema.PathResolver("SecurityConfiguration"),
 			},
 			{
+				Name:     "source_control_details",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("SourceControlDetails"),
+			},
+			{
 				Name:     "timeout",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("Timeout"),
