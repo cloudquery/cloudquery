@@ -9,7 +9,7 @@ import (
 func CloudHSMV2() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "graphql_apis",
+			SubService: "hsms",
 			Struct:     &types.Cluster{},
 			Multiplex:  `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
 			ExtraColumns: append(
