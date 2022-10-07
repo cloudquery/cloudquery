@@ -9,9 +9,10 @@ import (
 
 func SamlIdentityProviders() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_saml_identity_providers",
-		Resolver:  fetchIamSamlIdentityProviders,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_iam_saml_identity_providers",
+		Resolver:            fetchIamSamlIdentityProviders,
+		PreResourceResolver: getSamlIdentityProvider,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

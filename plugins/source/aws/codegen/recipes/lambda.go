@@ -14,9 +14,10 @@ import (
 func LambdaResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "functions",
-			Struct:     &lambda.GetFunctionOutput{},
-			SkipFields: []string{},
+			SubService:          "functions",
+			Struct:              &lambda.GetFunctionOutput{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getFunction",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -67,9 +68,10 @@ func LambdaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "function_aliases",
-			Struct:     &models.AliasWrapper{},
-			SkipFields: []string{"AliasArn"},
+			SubService:          "function_aliases",
+			Struct:              &models.AliasWrapper{},
+			SkipFields:          []string{"AliasArn"},
+			PreResourceResolver: "getFunctionAliasURLConfig",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

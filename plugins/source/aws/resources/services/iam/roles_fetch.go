@@ -75,18 +75,27 @@ func fetchIamRolePolicies(ctx context.Context, meta schema.ClientMeta, parent *s
 			}
 			return err
 		}
-		for _, p := range output.PolicyNames {
-			policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName})
-			if err != nil {
-				return err
-			}
-			res <- policyResult
-		}
+		res <- output.PolicyNames
+
 		if aws.ToString(output.Marker) == "" {
 			break
 		}
 		config.Marker = output.Marker
 	}
+	return nil
+}
+
+func getRolePolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().IAM
+	p := resource.Item.(string)
+	role := resource.Parent.Item.(*types.Role)
+
+	policyResult, err := svc.GetRolePolicy(ctx, &iam.GetRolePolicyInput{PolicyName: &p, RoleName: role.RoleName})
+	if err != nil {
+		return err
+	}
+	resource.Item = policyResult
 	return nil
 }
 

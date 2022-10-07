@@ -10,9 +10,10 @@ func ShieldResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "attacks",
-			Struct:     &types.AttackDetail{},
-			SkipFields: []string{"AttackId"},
+			SubService:          "attacks",
+			Struct:              &types.AttackDetail{},
+			SkipFields:          []string{"AttackId"},
+			PreResourceResolver: "getAttack",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

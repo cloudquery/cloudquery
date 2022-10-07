@@ -25,21 +25,26 @@ func fetchShieldAttacks(ctx context.Context, meta schema.ClientMeta, parent *sch
 		if err != nil {
 			return err
 		}
-		for _, a := range output.AttackSummaries {
-			config := shield.DescribeAttackInput{AttackId: a.AttackId}
-			attack, err := svc.DescribeAttack(ctx, &config, func(o *shield.Options) {
-				o.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- attack.Attack
-		}
+		res <- output.AttackSummaries
 
 		if aws.ToString(output.NextToken) == "" {
 			break
 		}
 		config.NextToken = output.NextToken
 	}
+	return nil
+}
+
+func getAttack(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Shield
+	a := resource.Item.(types.AttackSummary)
+
+	attack, err := svc.DescribeAttack(ctx, &shield.DescribeAttackInput{AttackId: a.AttackId})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = attack.Attack
 	return nil
 }
