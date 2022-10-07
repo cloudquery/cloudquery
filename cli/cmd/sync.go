@@ -150,7 +150,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		g.Go(func() error {
 			var destFailedWrites uint64
 			var err error
-			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Path, syncTime, destSubscriptions[i]); err != nil {
+			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			failedWrites += destFailedWrites
