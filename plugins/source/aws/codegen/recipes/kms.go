@@ -15,7 +15,6 @@ func KMSResources() []*Resource {
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
-
 					{
 						Name:     "arn",
 						Type:     schema.TypeString,
