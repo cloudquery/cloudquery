@@ -23,6 +23,21 @@ func CloudHSMV2() []*Resource {
 					},
 				}...),
 		},
+		{
+			SubService: "backups",
+			Struct:     &types.Backup{},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `resolveBackupArn`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
 	}
 
 	for _, r := range resources {

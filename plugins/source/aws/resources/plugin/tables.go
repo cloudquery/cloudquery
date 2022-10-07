@@ -99,6 +99,7 @@ func tables() []*schema.Table {
 		cloudformation.Stacks(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudhsmv2.Backups(),
 		cloudhsmv2.Clusters(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
