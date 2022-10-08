@@ -185,9 +185,11 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		return fmt.Errorf("failed to get sync summary: %w", err)
 	}
 	_ = bar.Finish()
+	tt := time.Since(syncTime)
+
 	fmt.Println("Sync completed successfully.")
-	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", totalResources, summary.Errors, summary.Panics, failedWrites, time.Since(syncTime).Truncate(time.Second).String())
+	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", totalResources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
-		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failedWrites", failedWrites).Msg("sync completed successfully")
+		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
 	return nil
 }
