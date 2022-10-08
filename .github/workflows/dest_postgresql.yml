@@ -35,9 +35,7 @@ jobs:
         ports:
           - 26257:26257
         # Set health checks to wait until postgres has started
-        options: >-
-          start-single-node
-          --insecure
+        options: start-single-node --insecure
     steps:
       - uses: actions/checkout@v3
         with:
