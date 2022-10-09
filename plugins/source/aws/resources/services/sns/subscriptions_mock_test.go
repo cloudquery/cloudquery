@@ -1,6 +1,7 @@
 package sns
 
 import (
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/sns"
@@ -19,12 +20,25 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 		t.Fatal(err)
 	}
 
+	subTemp := types.Subscription{}
+	err = faker.FakeData(&subTemp)
+	if err != nil {
+		t.Fatal(err)
+	}
+	emptySub := types.Subscription{
+		SubscriptionArn: aws.String("PendingConfirmation"),
+		Owner:           subTemp.Owner,
+		Protocol:        subTemp.Protocol,
+		TopicArn:        subTemp.TopicArn,
+		Endpoint:        subTemp.Endpoint,
+	}
+
 	m.EXPECT().ListSubscriptions(
 		gomock.Any(),
 		&sns.ListSubscriptionsInput{},
 	).Return(
 		&sns.ListSubscriptionsOutput{
-			Subscriptions: []types.Subscription{sub},
+			Subscriptions: []types.Subscription{sub, emptySub},
 		}, nil)
 
 	m.EXPECT().GetSubscriptionAttributes(
@@ -38,7 +52,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 			"FilterPolicy":                 "{}",
 			"PendingConfirmation":          "true",
 			"RawMessageDelivery":           "true",
-			"RedrivePolicy":                "some",
+			"RedrivePolicy":                `{"deadLetterTargetArn": "test"}`,
 			"SubscriptionRoleArn":          "some",
 			"WeirdAndUnexpectedField":      "needs updating",
 		}},

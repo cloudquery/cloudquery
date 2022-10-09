@@ -12,7 +12,7 @@ func SNSResources() []*Resource {
 		{
 			SubService: "subscriptions",
 			Struct:     &models.Subscription{},
-			SkipFields: []string{"SubscriptionArn"},
+			SkipFields: []string{"SubscriptionArn", "DeliveryPolicy", "EffectiveDeliveryPolicy", "FilterPolicy", "RedrivePolicy"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -22,13 +22,34 @@ func SNSResources() []*Resource {
 						Resolver: `schema.PathResolver("SubscriptionArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("DeliveryPolicy")`,
+					},
+					{
+						Name:     "effective_delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("EffectiveDeliveryPolicy")`,
+					},
+					{
+						Name:     "filter_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("FilterPolicy")`,
+					},
+					{
+						Name:     "redrive_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("RedrivePolicy")`,
+					},
 				}...),
 		},
 
 		{
-			SubService: "topics",
-			Struct:     &models.Topic{},
-			SkipFields: []string{"Arn"},
+			SubService:          "topics",
+			Struct:              &models.Topic{},
+			SkipFields:          []string{"Arn", "Policy", "EffectiveDeliveryPolicy", "DeliveryPolicy"},
+			PreResourceResolver: "getTopic",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -42,6 +63,21 @@ func SNSResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveSnsTopicTags`,
+					},
+					{
+						Name:     "delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("DeliveryPolicy")`,
+					},
+					{
+						Name:     "policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("Policy")`,
+					},
+					{
+						Name:     "effective_delivery_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("EffectiveDeliveryPolicy")`,
 					},
 				}...),
 		},

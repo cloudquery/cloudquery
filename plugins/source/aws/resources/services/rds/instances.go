@@ -62,6 +62,11 @@ func Instances() *schema.Table {
 				Resolver: schema.PathResolver("ActivityStreamMode"),
 			},
 			{
+				Name:     "activity_stream_policy_status",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ActivityStreamPolicyStatus"),
+			},
+			{
 				Name:     "activity_stream_status",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("ActivityStreamStatus"),

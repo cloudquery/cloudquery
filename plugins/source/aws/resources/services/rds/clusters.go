@@ -277,6 +277,11 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("MultiAZ"),
 			},
 			{
+				Name:     "network_type",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("NetworkType"),
+			},
+			{
 				Name:     "pending_modified_values",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PendingModifiedValues"),

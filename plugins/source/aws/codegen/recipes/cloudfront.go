@@ -24,9 +24,10 @@ func CloudfrontResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "distributions",
-			Struct:     &types.Distribution{},
-			SkipFields: []string{"ARN"},
+			SubService:          "distributions",
+			Struct:              &types.Distribution{},
+			SkipFields:          []string{"ARN"},
+			PreResourceResolver: "getDistribution",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

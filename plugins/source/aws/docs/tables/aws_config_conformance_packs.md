@@ -24,3 +24,4 @@ The following tables depend on `aws_config_conformance_packs`:
 |delivery_s3_bucket|String|
 |delivery_s3_key_prefix|String|
 |last_update_requested_time|Timestamp|
+|template_ssm_document_details|JSON|

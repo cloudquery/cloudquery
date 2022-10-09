@@ -9,9 +9,10 @@ import (
 
 func EndpointConfigurations() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sagemaker_endpoint_configurations",
-		Resolver:  fetchSagemakerEndpointConfigurations,
-		Multiplex: client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		Name:                "aws_sagemaker_endpoint_configurations",
+		Resolver:            fetchSagemakerEndpointConfigurations,
+		PreResourceResolver: getEndpointConfiguration,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -61,6 +62,11 @@ func EndpointConfigurations() *schema.Table {
 				Name:     "data_capture_config",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("DataCaptureConfig"),
+			},
+			{
+				Name:     "explainer_config",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ExplainerConfig"),
 			},
 			{
 				Name:     "kms_key_id",

@@ -9,9 +9,10 @@ import (
 
 func Plans() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_backup_plans",
-		Resolver:  fetchBackupPlans,
-		Multiplex: client.ServiceAccountRegionMultiplexer("backup"),
+		Name:                "aws_backup_plans",
+		Resolver:            fetchBackupPlans,
+		PreResourceResolver: getPlan,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

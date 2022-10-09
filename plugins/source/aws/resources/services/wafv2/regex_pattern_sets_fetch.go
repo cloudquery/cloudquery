@@ -23,28 +23,38 @@ func fetchWafv2RegexPatternSets(ctx context.Context, meta schema.ClientMeta, par
 		if err != nil {
 			return err
 		}
-		for _, s := range result.RegexPatternSets {
-			info, err := svc.GetRegexPatternSet(
-				ctx,
-				&wafv2.GetRegexPatternSetInput{
-					Id:    s.Id,
-					Name:  s.Name,
-					Scope: cl.WAFScope,
-				},
-				func(options *wafv2.Options) {
-					options.Region = cl.Region
-				},
-			)
-			if err != nil {
-				return err
-			}
-			res <- info.RegexPatternSet
-		}
+
+		res <- result.RegexPatternSets
+
 		if aws.ToString(result.NextMarker) == "" {
 			break
 		}
 		params.NextMarker = result.NextMarker
 	}
+	return nil
+}
+
+func getRegexPatternSet(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().WafV2
+	s := resource.Item.(types.RegexPatternSetSummary)
+
+	info, err := svc.GetRegexPatternSet(
+		ctx,
+		&wafv2.GetRegexPatternSetInput{
+			Id:    s.Id,
+			Name:  s.Name,
+			Scope: cl.WAFScope,
+		},
+		func(options *wafv2.Options) {
+			options.Region = cl.Region
+		},
+	)
+	if err != nil {
+		return err
+	}
+
+	resource.Item = info.RegexPatternSet
 	return nil
 }
 

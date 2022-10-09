@@ -10,9 +10,10 @@ import (
 func CognitoResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "identity_pools",
-			Struct:     &cognitoidentity.DescribeIdentityPoolOutput{},
-			SkipFields: []string{"IdentityPoolId"},
+			SubService:          "identity_pools",
+			Struct:              &cognitoidentity.DescribeIdentityPoolOutput{},
+			SkipFields:          []string{"IdentityPoolId"},
+			PreResourceResolver: "getIdentityPool",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -40,9 +41,10 @@ func CognitoResources() []*Resource {
 			},
 		},
 		{
-			SubService: "user_pools",
-			Struct:     &types.UserPoolType{},
-			SkipFields: []string{"Id"},
+			SubService:          "user_pools",
+			Struct:              &types.UserPoolType{},
+			SkipFields:          []string{"Id"},
+			PreResourceResolver: "getUserPool",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -68,9 +70,10 @@ func CognitoResources() []*Resource {
 			},
 		},
 		{
-			SubService: "user_pool_identity_providers",
-			Struct:     &types.IdentityProviderType{},
-			SkipFields: []string{},
+			SubService:          "user_pool_identity_providers",
+			Struct:              &types.IdentityProviderType{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getUserPoolIdentityProvider",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

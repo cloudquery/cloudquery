@@ -15,6 +15,6 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|String|
+|tags|JSON|
 |metadata|JSON|
 |pipeline|JSON|

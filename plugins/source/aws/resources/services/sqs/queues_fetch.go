@@ -13,39 +13,16 @@ import (
 )
 
 func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services().SQS
+	c := meta.(*client.Client)
+	svc := c.Services().SQS
 	var params sqs.ListQueuesInput
 	for {
 		result, err := svc.ListQueues(ctx, &params)
 		if err != nil {
 			return err
 		}
+		res <- result.QueueUrls
 
-		for _, url := range result.QueueUrls {
-			input := sqs.GetQueueAttributesInput{
-				QueueUrl:       aws.String(url),
-				AttributeNames: []types.QueueAttributeName{types.QueueAttributeNameAll},
-			}
-			out, err := svc.GetQueueAttributes(ctx, &input)
-			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-
-			var q models.Queue
-			d, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &q})
-			if err != nil {
-				return err
-			}
-			if err := d.Decode(out.Attributes); err != nil {
-				return err
-			}
-			q.URL = url
-			res <- q
-		}
 		if aws.ToString(result.NextToken) == "" {
 			break
 		}
@@ -53,10 +30,38 @@ func fetchSqsQueues(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	}
 	return nil
 }
+
+func getQueue(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().SQS
+	qURL := resource.Item.(string)
+
+	input := sqs.GetQueueAttributesInput{
+		QueueUrl:       aws.String(qURL),
+		AttributeNames: []types.QueueAttributeName{types.QueueAttributeNameAll},
+	}
+	out, err := svc.GetQueueAttributes(ctx, &input)
+	if err != nil {
+		return err
+	}
+
+	q := &models.Queue{URL: qURL}
+	d, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: q})
+	if err != nil {
+		return err
+	}
+	if err := d.Decode(out.Attributes); err != nil {
+		return err
+	}
+
+	resource.Item = q
+	return nil
+}
+
 func resolveSqsQueueTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().SQS
-	q := resource.Item.(models.Queue)
+	q := resource.Item.(*models.Queue)
 	result, err := svc.ListQueueTags(ctx, &sqs.ListQueueTagsInput{QueueUrl: &q.URL})
 	if err != nil {
 		return err

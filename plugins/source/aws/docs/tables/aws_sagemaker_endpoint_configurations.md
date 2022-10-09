@@ -21,5 +21,6 @@ The primary key for this table is **arn**.
 |production_variants|JSON|
 |async_inference_config|JSON|
 |data_capture_config|JSON|
+|explainer_config|JSON|
 |kms_key_id|String|
 |result_metadata|JSON|

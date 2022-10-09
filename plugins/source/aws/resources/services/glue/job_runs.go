@@ -59,6 +59,11 @@ func JobRuns() *schema.Table {
 				Resolver: schema.PathResolver("ErrorMessage"),
 			},
 			{
+				Name:     "execution_class",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("ExecutionClass"),
+			},
+			{
 				Name:     "execution_time",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ExecutionTime"),

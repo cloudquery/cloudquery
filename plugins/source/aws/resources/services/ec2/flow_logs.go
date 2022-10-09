@@ -37,6 +37,11 @@ func FlowLogs() *schema.Table {
 				Resolver: schema.PathResolver("CreationTime"),
 			},
 			{
+				Name:     "deliver_cross_account_role",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DeliverCrossAccountRole"),
+			},
+			{
 				Name:     "deliver_logs_error_message",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DeliverLogsErrorMessage"),

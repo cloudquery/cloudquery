@@ -5,6 +5,17 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6](https://github.com/cloudquery/cloudquery/compare/cli-v1.0.5...cli-v1.0.6) (2022-10-08)
+
+
+### Bug Fixes
+
+* **cli:** Close stdout when using --log-console ([#2459](https://github.com/cloudquery/cloudquery/issues/2459)) ([264c493](https://github.com/cloudquery/cloudquery/commit/264c493653e00c1c2a5b6e0fc886e4f94b80e5f0))
+* **deps:** Update plugin-sdk for cli to v0.12.8 ([#2497](https://github.com/cloudquery/cloudquery/issues/2497)) ([33c0c46](https://github.com/cloudquery/cloudquery/commit/33c0c46941eba43a1fd6019402f2081d3769a84b))
+* **deps:** Update plugin-sdk for cli to v0.12.9 ([#2511](https://github.com/cloudquery/cloudquery/issues/2511)) ([6787155](https://github.com/cloudquery/cloudquery/commit/678715514c2a7b4da5549ac0c95d647fd5f25748))
+* Show sync time ([#2493](https://github.com/cloudquery/cloudquery/issues/2493)) ([014e8aa](https://github.com/cloudquery/cloudquery/commit/014e8aadcc436f3d556dd9e274a67242ec543a62))
+* SourceName ([#2522](https://github.com/cloudquery/cloudquery/issues/2522)) ([0b7db32](https://github.com/cloudquery/cloudquery/commit/0b7db3275e66dcf376d9efd0f8b54c2b1be17671))
+
 ## [1.0.5](https://github.com/cloudquery/cloudquery/compare/cli-v1.0.4...cli-v1.0.5) (2022-10-05)
 
 

@@ -9,9 +9,10 @@ import (
 
 func Secrets() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_secretsmanager_secrets",
-		Resolver:  fetchSecretsmanagerSecrets,
-		Multiplex: client.ServiceAccountRegionMultiplexer("secretsmanager"),
+		Name:                "aws_secretsmanager_secrets",
+		Resolver:            fetchSecretsmanagerSecrets,
+		PreResourceResolver: getSecret,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("secretsmanager"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

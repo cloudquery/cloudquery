@@ -27,6 +27,7 @@ The primary key for this table is **arn**.
 |image_location|String|
 |image_owner_alias|String|
 |image_type|String|
+|imds_support|String|
 |kernel_id|String|
 |name|String|
 |owner_id|String|

@@ -23,7 +23,7 @@ The [announcement blog post](/blog/cloudquery-v1-release) lists many of the impo
 
 ## Changes to the Configuration Format
 
-V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI.
+V1 introduces a new config format that is closely related to the old one, but an old config will need some massaging to work with the CloudQuery v1 CLI. Mostly because we now support multiple destinations, there are separate configs for source and destination plugins.
 
 ### Source Plugins
 
@@ -55,7 +55,7 @@ spec:
     # plugin specific configuration.
 ```
 
-Check the documentation for each plugin for details on how to configure the plugin-specific spec part. However, generally these will be exactly the same as in v0, and all the same authentication functionality is still supported.
+Check the [source spec documentation](/docs/reference/source-spec) for general layout, and individual [plugin documentation](/docs/plugins/sources) for details on how to configure the plugin-specific spec. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
 
 ### Destination Plugins
 
@@ -81,9 +81,11 @@ spec:
     connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"```
 ```
 
+Check the [destination spec documentation](/docs/reference/destination-spec) for general layout, and individual [destination plugin documentation](/docs/plugins/destinations) for details on how to configure the plugin-specific spec part. Generally these will be the same as in v0, and all the same authentication functionality is still supported.
+
 ## Changes to the CLI Commands
 
-Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`. These have changed in v1.
+Users of CloudQuery v0 would be familiar with the main commands `init` and `fetch`. These have changed in v1 and `init` is longer available (you should write config files manually).
 
 ### Init
 
@@ -159,6 +161,12 @@ Finally, during our work for v1, we endeavoured to make the table schemas more c
 
 Note that these guides are (for the most part) automatically generated, so in some cases a table may be marked as removed when it was actually renamed. Please reach out to us if you find any errors.
 
-### Get Help / Ask Questions
+## Start from a clean Database
 
-If you have any questions about migrating or CloudQuery v1, don't hesitate to reach out on [Discord](https://www.cloudquery.io/discord). We're a friendly community and would love to help however we can.
+V1 introduces functionality to automatically perform backwards-compatible Postgres migrations when new columns or tables are added. However, this functionality relies on a clean start being made in V1, and if you try to run it against a database with tables from v0, there is a good chance it will fail.
+
+Therefore, it is important that you **start from a clean database**. This can either mean creating a new database and pointing the v1 configuration there, or dropping all the tables in your v0 database. 
+
+## Get Help / Ask Questions
+
+If you run into issues not covered here, or have any questions about migrating or CloudQuery v1, don't hesitate to reach out on [Discord](https://www.cloudquery.io/discord). We're a friendly community and would love to help however we can.

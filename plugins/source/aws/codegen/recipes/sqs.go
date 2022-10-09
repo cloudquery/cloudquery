@@ -8,11 +8,11 @@ import (
 
 func SQSResources() []*Resource {
 	resources := []*Resource{
-
 		{
-			SubService: "queues",
-			Struct:     &models.Queue{},
-			SkipFields: []string{"Arn"},
+			SubService:          "queues",
+			Struct:              &models.Queue{},
+			SkipFields:          []string{"Arn", "Policy", "RedriveAllowPolicy", "RedrivePolicy"},
+			PreResourceResolver: "getQueue",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -26,6 +26,21 @@ func SQSResources() []*Resource {
 						Name:     "tags",
 						Type:     schema.TypeJSON,
 						Resolver: `resolveSqsQueueTags`,
+					},
+					{
+						Name:     "policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("Policy")`,
+					},
+					{
+						Name:     "redrive_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("RedrivePolicy")`,
+					},
+					{
+						Name:     "redrive_allow_policy",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("RedriveAllowPolicy")`,
 					},
 				}...),
 		},
