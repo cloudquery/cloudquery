@@ -36,7 +36,7 @@ spec:
   name: "aws" # required
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "vX.Y.Z"
+  version: "v2.0.0" # latest version of aws plugin
  
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
@@ -68,7 +68,7 @@ spec:
   name: "postgresql"
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "vX.Y.Z"
+  version: "v1.0.0" # latest version of postgresql plugin
  
   ## Optional. Default: "overwrite". Available: "overwrite", "append", "overwrite-delete-stale". Not all modes are 
   ## supported by all plugins, so make sure to check the plugin documentation for more details.
@@ -133,14 +133,14 @@ The `sync` command supports loading config from files or directories, and you ma
 ```
 kind: source
 spec:
-    name: aws
-    version: 1.0.0
+    name: "aws"
+    version: "v2.0.0" # latest version of aws plugin
     # rest of source spec here
 ---
 kind: destination
 spec:
-    name: postgresql
-    version: 1.0.0
+    name: "postgresql"
+    version: "v1.0.0" # latest version of postgresql plugin
     # rest of destination spec here
 ```
 

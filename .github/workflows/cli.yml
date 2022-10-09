@@ -12,8 +12,11 @@ defaults:
 
 jobs:
   cli:
-    name: cli
-    runs-on: ubuntu-latest
+    name: "cli"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -26,6 +29,7 @@ jobs:
           cache-dependency-path: cli/go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
+        if: matrix.os == 'ubuntu-latest'
         with:
           version: v1.49.0
           working-directory: cli
