@@ -1,6 +1,6 @@
 # Architecture
 
-This is an advanced section describing the inner workings and design of CloudQuery. \(It might be useful when developing new providers\).
+This is an advanced section describing the inner workings and design of CloudQuery. \(It might be useful when developing new plugins\).
 
 CloudQuery has a pluggable architecture and uses the [gRPC](https://grpc.io/docs/languages/go/basics/) to communicate between plugins.
 
@@ -21,7 +21,7 @@ CloudQuery has a pluggable architecture and uses the [gRPC](https://grpc.io/docs
 
 ## SDK
 
-CloudQuery providers utilize `plugin-sdk`, which abstracts most of the TL \(in ETL, extract-transform-load\). So, as a developer, you will only have to implement the \("E" in "ETL"\) initializing, authentication, and fetching of the data via the third-party APIs — the SDK will take care of transforming the data and loading it into the database. Also, your plugin will get support out-of-the-box for new features and things like other database support as cloudquery-core progresses.
+CloudQuery plugins utilize `plugin-sdk`, which abstracts most of the TL \(in ETL, extract-transform-load\). So, as a developer, you will only have to implement the \("E" in "ETL"\) initializing, authentication, and fetching of the data via the third-party APIs — the SDK will take care of transforming the data and loading it into the database. Also, your plugin will get support out-of-the-box for new features and things like other database support as cloudquery-core progresses.
 
 ## Resources
 
