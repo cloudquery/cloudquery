@@ -16,7 +16,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [Heroku][heroku]      | v1.0.0         | [Changelog][Heroku-Changelog]       | Preview |
 | [k8s][k8s] | v1.1.0         | [Changelog][k8s-Changelog]          | Preview |
 | [Okta][okta]          | v1.0.0         | [Changelog][Okta-Changelog]         | Preview |
-| [Terraform][terraform] | v1.0.0         | [Changelog][Terraform-Changelog]    | Preview |
+| [Terraform][terraform] | v1.0.1         | [Changelog][Terraform-Changelog]    | Preview |
 
 ## Community
 
