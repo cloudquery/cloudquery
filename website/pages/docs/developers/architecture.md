@@ -25,5 +25,5 @@ CloudQuery providers utilize `plugin-sdk`, which abstracts most of the TL \(in E
 
 ## Resources
 
-- [Creating a new plugin Tutorial](https://www.cloudquery.io/docs/developers/tutorials/creating-new-plugin).
+- [Creating a new plugin Tutorial](./creating-new-plugin).
 - [cloudquery/plugin-sdk documentation](https://pkg.go.dev/github.com/cloudquery/plugin-sdk)
