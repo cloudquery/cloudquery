@@ -1,6 +1,7 @@
 # Table: aws_ecr_repositories
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,10 +11,14 @@ The following tables depend on `aws_ecr_repositories`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
-|tags|String|
+|tags|JSON|
 |created_at|Timestamp|
 |encryption_configuration|JSON|
 |image_scanning_configuration|JSON|
@@ -21,5 +26,3 @@ The following tables depend on `aws_ecr_repositories`:
 |registry_id|String|
 |repository_name|String|
 |repository_uri|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

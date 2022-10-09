@@ -55,16 +55,8 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 		if err != nil {
 			return err
 		}
-		for _, item := range result.Schemas {
-			s, err := svc.GetSchema(ctx, &glue.GetSchemaInput{SchemaId: &types.SchemaId{SchemaArn: item.SchemaArn}})
-			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			res <- s
-		}
+		res <- result.Schemas
+
 		if aws.ToString(result.NextToken) == "" {
 			break
 		}
@@ -72,6 +64,21 @@ func fetchGlueRegistrySchemas(ctx context.Context, meta schema.ClientMeta, paren
 	}
 	return nil
 }
+
+func getRegistrySchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	item := resource.Item.(types.SchemaListItem)
+
+	s, err := svc.GetSchema(ctx, &glue.GetSchemaInput{SchemaId: &types.SchemaId{SchemaArn: item.SchemaArn}})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = s
+	return nil
+}
+
 func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
@@ -87,6 +94,7 @@ func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, 
 	}
 	return resource.Set(c.Name, result.Tags)
 }
+
 func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	cl := meta.(*client.Client)
 	s := parent.Item.(*glue.GetSchemaOutput)
@@ -103,18 +111,8 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 		if err != nil {
 			return err
 		}
-		for _, item := range result.Schemas {
-			s, err := svc.GetSchemaVersion(ctx, &glue.GetSchemaVersionInput{
-				SchemaVersionId: item.SchemaVersionId,
-			})
-			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			res <- s
-		}
+		res <- result.Schemas
+
 		if aws.ToString(result.NextToken) == "" {
 			break
 		}
@@ -122,6 +120,23 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 	}
 	return nil
 }
+
+func getRegistrySchemaVersion(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	item := resource.Item.(types.SchemaVersionListItem)
+
+	s, err := svc.GetSchemaVersion(ctx, &glue.GetSchemaVersionInput{
+		SchemaVersionId: item.SchemaVersionId,
+	})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = s
+	return nil
+}
+
 func resolveGlueRegistrySchemaVersionMetadata(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue

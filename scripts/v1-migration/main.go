@@ -29,7 +29,29 @@ var outputTemplate string
 var CustomTableComments = map[string]string{}
 
 var RenamedTables = map[string]string{
-	"aws_accounts": "aws_iam_accounts",
+	"aws_accounts":                                         "aws_iam_accounts",
+	"azure_account_locations":                              "azure_subscriptions_locations",
+	"azure_datalake_storage_accounts":                      "azure_datalake_store_accounts",
+	"azure_front_doors":                                    "azure_frontdoor_doors",
+	"azure_iothub_hubs":                                    "azure_iothub_devices",
+	"azure_keyvault_managed_hsm":                           "azure_keyvault_managed_hsms",
+	"azure_keyvault_vault_keys":                            "azure_keyvault_keys",
+	"azure_keyvault_vault_secrets":                         "azure_keyvault_secrets",
+	"azure_logic_app_workflows":                            "azure_logic_workflows",
+	"azure_mariadb_server_configurations":                  "azure_mariadb_configurations",
+	"azure_mysql_server_configurations":                    "azure_mysql_configurations",
+	"azure_network_peer_express_route_circuit_connections": "azure_network_express_route_circuits",
+	"azure_subscription_subscriptions":                     "azure_subscriptions",
+	"azure_subscription_tenants":                           "azure_subscriptions_tenants",
+	"azure_web_app_auth_settings":                          "azure_web_site_auth_settings",
+	"azure_web_app_publishing_profiles":                    "azure_web_publishing_profiles",
+	"azure_cdn_profile_endpoints":                          "azure_cdn_endpoints",
+	"azure_cdn_profile_endpoint_custom_domains":            "azure_cdn_custom_domains",
+	"azure_cdn_profile_endpoint_delivery_policy_rules":     "azure_cdn_rules",
+	"azure_cdn_profile_endpoint_routes":                    "azure_cdn_routes",
+	"azure_cdn_profile_security_policies":                  "azure_cdn_security_policies",
+	"azure_cdn_profile_rule_sets":                          "azure_cdn_rule_sets",
+	"azure_compute_virtual_machine_resources":              "azure_compute_virtual_machine_extensions",
 }
 
 type Table struct {

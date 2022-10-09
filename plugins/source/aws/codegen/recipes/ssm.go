@@ -9,9 +9,10 @@ import (
 func SSMResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "documents",
-			Struct:     &types.DocumentDescription{},
-			SkipFields: []string{"Tags"},
+			SubService:          "documents",
+			Struct:              &types.DocumentDescription{},
+			SkipFields:          []string{"Tags"},
+			PreResourceResolver: "getDocument",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

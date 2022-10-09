@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -51,7 +52,7 @@ func NewCmdRoot() *cobra.Command {
 			}
 			var writers []io.Writer
 			if !noLogFile {
-				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0666)
+				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 				if err != nil {
 					return err
 				}
@@ -63,6 +64,9 @@ func NewCmdRoot() *cobra.Command {
 				}
 			}
 			if logConsole {
+				if err := os.Stdout.Close(); err != nil {
+					return fmt.Errorf("failed to close stdout: %w", err)
+				}
 				if logFormat.String() == "text" {
 					writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: noColor})
 				} else {
@@ -74,9 +78,10 @@ func NewCmdRoot() *cobra.Command {
 			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
 			if sentryDsn != "" && Version != "development" {
 				if err := sentry.Init(sentry.ClientOptions{
-					Debug:   false,
-					Dsn:     sentryDsn,
-					Release: "cloudquery@" + Version,
+					Debug:     false,
+					Dsn:       sentryDsn,
+					Release:   "cloudquery@" + Version,
+					Transport: sentry.NewHTTPSyncTransport(),
 					// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
 					Integrations: func(integrations []sentry.Integration) []sentry.Integration {
 						var filteredIntegrations []sentry.Integration
@@ -135,6 +140,7 @@ func NewCmdRoot() *cobra.Command {
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
+	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	return cmd
 }

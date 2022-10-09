@@ -56,6 +56,21 @@ func HostedZones() *schema.Table {
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ResourceRecordSetCount"),
 			},
+			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Tags"),
+			},
+			{
+				Name:     "delegation_set_id",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DelegationSetId"),
+			},
+			{
+				Name:     "vpcs",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("VPCs"),
+			},
 		},
 
 		Relations: []*schema.Table{

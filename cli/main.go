@@ -1,20 +1,51 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"os"
-	"time"
+	"os/signal"
+	"runtime/debug"
 
 	"github.com/cloudquery/cloudquery/cli/cmd"
 	"github.com/getsentry/sentry-go"
+	"github.com/rs/zerolog/log"
 )
 
-const sentryFlushTimeout = 5 * time.Second
+func executeRootCmdWithContext() error {
+	ctx := context.Background()
+	// trap Ctrl+C and call cancel on the context
+	ctx, cancel := context.WithCancel(ctx)
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	defer func() {
+		signal.Stop(c)
+		cancel()
+	}()
+	go func() {
+		select {
+		case <-c:
+			cancel()
+		case <-ctx.Done():
+		}
+	}()
+
+	return cmd.NewCmdRoot().ExecuteContext(ctx)
+}
 
 func main() {
-	if err := cmd.NewCmdRoot().Execute(); err != nil {
-		sentry.CaptureMessage(err.Error())
-		sentry.Flush(sentryFlushTimeout)
+	defer func() {
+		err := recover()
+		if err != nil {
+			originalMessage := fmt.Sprintf("panic: %v\n\n%s", err, string(debug.Stack()))
+			sentry.CurrentHub().CaptureMessage(originalMessage)
+			panic(err)
+		}
+	}()
+
+	if err := executeRootCmdWithContext(); err != nil {
+		log.Error().Err(err).Msg("exiting with error")
+		//nolint:all This is fine if deffered is not called because there was no panic
 		os.Exit(1)
 	}
-	sentry.Flush(sentryFlushTimeout)
 }

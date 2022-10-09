@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/aws/aws-sdk-go-v2/service/secretsmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -19,31 +20,30 @@ func fetchSecretsmanagerSecrets(ctx context.Context, meta schema.ClientMeta, _ *
 		if err != nil {
 			return err
 		}
-
-		var secrets []*secretsmanager.DescribeSecretOutput
-
-		// get more details about the secret
-		for _, n := range response.SecretList {
-			cfg := secretsmanager.DescribeSecretInput{
-				SecretId: n.ARN,
-			}
-			resp, err := svc.DescribeSecret(ctx, &cfg, func(options *secretsmanager.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-
-			secrets = append(secrets, resp)
-		}
-
-		res <- secrets
+		res <- response.SecretList
 
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		cfg.NextToken = response.NextToken
 	}
+	return nil
+}
+
+func getSecret(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().SecretsManager
+	n := resource.Item.(types.SecretListEntry)
+
+	// get more details about the secret
+	resp, err := svc.DescribeSecret(ctx, &secretsmanager.DescribeSecretInput{
+		SecretId: n.ARN,
+	})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = resp
 	return nil
 }
 

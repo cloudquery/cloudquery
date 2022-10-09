@@ -5,9 +5,6 @@ on:
     paths:
       - "plugins/source/github/**"
       - ".github/workflows/source_github.yml"
-  push:
-    branches:
-      - main
 
 defaults:
   run:
@@ -38,10 +35,8 @@ jobs:
       - name: Build
         run: go build .
       - name: Test
-        run: go test ./...
-      - name: remove all docs
-        run: rm -f ./docs/tables/*.md
-      - name: build-docs
-        run: go run main.go doc docs/tables
+        run: make test
+      - name: gen-docs
+        run: make gen-docs
       - name: Fail if docs are changed
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0

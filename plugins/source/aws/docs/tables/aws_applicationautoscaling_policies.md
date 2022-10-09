@@ -1,12 +1,17 @@
 # Table: aws_applicationautoscaling_policies
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -19,5 +24,3 @@ The primary key for this table is **arn**.
 |alarms|JSON|
 |step_scaling_policy_configuration|JSON|
 |target_tracking_scaling_policy_configuration|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

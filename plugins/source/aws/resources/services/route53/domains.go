@@ -9,9 +9,10 @@ import (
 
 func Domains() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_route53_domains",
-		Resolver:  fetchRoute53Domains,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_route53_domains",
+		Resolver:            fetchRoute53Domains,
+		PreResourceResolver: getDomain,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -35,6 +36,26 @@ func Domains() *schema.Table {
 				Description: `A list of tags`,
 			},
 			{
+				Name:     "admin_contact",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("AdminContact"),
+			},
+			{
+				Name:     "nameservers",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("Nameservers"),
+			},
+			{
+				Name:     "registrant_contact",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("RegistrantContact"),
+			},
+			{
+				Name:     "tech_contact",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("TechContact"),
+			},
+			{
 				Name:     "abuse_contact_email",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AbuseContactEmail"),
@@ -43,11 +64,6 @@ func Domains() *schema.Table {
 				Name:     "abuse_contact_phone",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AbuseContactPhone"),
-			},
-			{
-				Name:     "admin_contact",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("AdminContact"),
 			},
 			{
 				Name:     "admin_privacy",
@@ -73,16 +89,6 @@ func Domains() *schema.Table {
 				Name:     "expiration_date",
 				Type:     schema.TypeTimestamp,
 				Resolver: schema.PathResolver("ExpirationDate"),
-			},
-			{
-				Name:     "nameservers",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Nameservers"),
-			},
-			{
-				Name:     "registrant_contact",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("RegistrantContact"),
 			},
 			{
 				Name:     "registrant_privacy",
@@ -111,13 +117,8 @@ func Domains() *schema.Table {
 			},
 			{
 				Name:     "status_list",
-				Type:     schema.TypeJSON,
+				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("StatusList"),
-			},
-			{
-				Name:     "tech_contact",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TechContact"),
 			},
 			{
 				Name:     "tech_privacy",
@@ -133,6 +134,11 @@ func Domains() *schema.Table {
 				Name:     "who_is_server",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("WhoIsServer"),
+			},
+			{
+				Name:     "result_metadata",
+				Type:     schema.TypeJSON,
+				Resolver: schema.PathResolver("ResultMetadata"),
 			},
 		},
 	}

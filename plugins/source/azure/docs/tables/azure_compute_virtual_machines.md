@@ -1,6 +1,7 @@
 # Table: azure_compute_virtual_machines
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -11,6 +12,10 @@ The following tables depend on `azure_compute_virtual_machines`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |plan|JSON|
 |hardware_profile|JSON|
@@ -45,5 +50,3 @@ The following tables depend on `azure_compute_virtual_machines`:
 |type|String|
 |location|String|
 |tags|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

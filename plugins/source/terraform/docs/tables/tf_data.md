@@ -1,4 +1,5 @@
 # Table: tf_data
+
 Terraform meta data
 
 The primary key for this table is **_cq_id**.
@@ -10,11 +11,13 @@ The following tables depend on `tf_data`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |backend_type|String|
 |backend_name|String|
 |version|Int|
 |terraform_version|String|
 |serial|Int|
 |lineage|String|
-|_cq_id (PK)|UUID|
-|_cq_fetch_time|Timestamp|

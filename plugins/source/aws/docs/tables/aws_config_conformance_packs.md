@@ -1,6 +1,7 @@
 # Table: aws_config_conformance_packs
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_config_conformance_packs`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -19,5 +24,4 @@ The following tables depend on `aws_config_conformance_packs`:
 |delivery_s3_bucket|String|
 |delivery_s3_key_prefix|String|
 |last_update_requested_time|Timestamp|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|
+|template_ssm_document_details|JSON|

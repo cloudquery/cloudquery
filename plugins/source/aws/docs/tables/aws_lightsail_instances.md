@@ -1,6 +1,7 @@
 # Table: aws_lightsail_instances
 
 
+
 The primary key for this table is **arn**.
 
 ## Relations
@@ -10,6 +11,10 @@ The following tables depend on `aws_lightsail_instances`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |access_details|JSON|
@@ -25,6 +30,7 @@ The following tables depend on `aws_lightsail_instances`:
 |ipv6_addresses|StringArray|
 |is_static_ip|Bool|
 |location|JSON|
+|metadata_options|JSON|
 |name|String|
 |networking|JSON|
 |private_ip_address|String|
@@ -34,5 +40,3 @@ The following tables depend on `aws_lightsail_instances`:
 |state|JSON|
 |support_code|String|
 |username|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

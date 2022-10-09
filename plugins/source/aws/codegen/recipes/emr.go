@@ -1,8 +1,8 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
-	"github.com/aws/aws-sdk-go/service/emr"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -29,9 +29,10 @@ func EMRResources() []*Resource {
 			},
 		},
 		{
-			SubService: "clusters",
-			Struct:     &types.Cluster{},
-			SkipFields: []string{"ClusterArn", "Tags"},
+			SubService:          "clusters",
+			Struct:              &types.Cluster{},
+			SkipFields:          []string{"ClusterArn", "Tags"},
+			PreResourceResolver: "getCluster",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

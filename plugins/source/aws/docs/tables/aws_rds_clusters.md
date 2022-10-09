@@ -1,12 +1,17 @@
 # Table: aws_rds_clusters
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -59,6 +64,7 @@ The primary key for this table is **arn**.
 |monitoring_interval|Int|
 |monitoring_role_arn|String|
 |multi_az|Bool|
+|network_type|String|
 |pending_modified_values|JSON|
 |percent_progress|String|
 |performance_insights_enabled|Bool|
@@ -78,5 +84,3 @@ The primary key for this table is **arn**.
 |storage_type|String|
 |tag_list|JSON|
 |vpc_security_groups|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

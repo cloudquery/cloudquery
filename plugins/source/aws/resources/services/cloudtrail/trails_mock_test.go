@@ -5,7 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
-	cloudtrailTypes "github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
+	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -17,7 +17,7 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	services := client.Services{
 		Cloudtrail: m,
 	}
-	trail := cloudtrailTypes.Trail{}
+	trail := types.Trail{}
 	err := faker.FakeData(&trail)
 	if err != nil {
 		t.Fatal(err)
@@ -31,14 +31,14 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	if err != nil {
 		t.Fatal(err)
 	}
-	eventSelector := cloudtrailTypes.EventSelector{}
+	eventSelector := types.EventSelector{}
 	err = faker.FakeData(&eventSelector)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeTrails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudtrail.DescribeTrailsOutput{
-			TrailList: []cloudtrailTypes.Trail{trail},
+			TrailList: []types.Trail{trail},
 		},
 		nil,
 	)
@@ -48,7 +48,7 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	)
 	m.EXPECT().GetEventSelectors(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudtrail.GetEventSelectorsOutput{
-			EventSelectors: []cloudtrailTypes.EventSelector{eventSelector},
+			EventSelectors: []types.EventSelector{eventSelector},
 		},
 		nil,
 	)

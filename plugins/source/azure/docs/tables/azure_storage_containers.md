@@ -1,6 +1,7 @@
 # Table: azure_storage_containers
 
 
+
 The primary key for this table is **id**.
 
 ## Relations
@@ -9,6 +10,10 @@ This table depends on [`azure_storage_accounts`](azure_storage_accounts.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |subscription_id|String|
 |storage_account_id|String|
 |version|String|
@@ -31,5 +36,3 @@ This table depends on [`azure_storage_accounts`](azure_storage_accounts.md).
 |id (PK)|String|
 |name|String|
 |type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

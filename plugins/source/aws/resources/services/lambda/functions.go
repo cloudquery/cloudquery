@@ -11,6 +11,7 @@ func Functions() *schema.Table {
 	return &schema.Table{
 		Name:                 "aws_lambda_functions",
 		Resolver:             fetchLambdaFunctions,
+		PreResourceResolver:  getFunction,
 		PostResourceResolver: resolvePolicyCodeSigningConfig,
 		Multiplex:            client.ServiceAccountRegionMultiplexer("lambda"),
 		Columns: []schema.Column{

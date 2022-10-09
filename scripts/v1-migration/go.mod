@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/scripts/v1-migration
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.11.6
+	github.com/cloudquery/plugin-sdk v0.12.9
 	github.com/gertd/go-pluralize v0.2.1
 )
 
@@ -18,6 +18,6 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/thoas/go-funk v0.9.2 // indirect
 	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0 // indirect
-	golang.org/x/sys v0.0.0-20220919091848-fb04ddd9f9c8 // indirect
+	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
 	golang.org/x/text v0.3.7 // indirect
 )

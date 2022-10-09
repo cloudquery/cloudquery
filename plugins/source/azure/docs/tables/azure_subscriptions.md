@@ -1,12 +1,17 @@
 # Table: azure_subscriptions
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |authorization_source|String|
 |managed_by_tenants|JSON|
 |subscription_policies|JSON|
@@ -15,5 +20,3 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |state|String|
 |tenant_id|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

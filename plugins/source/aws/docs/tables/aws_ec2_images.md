@@ -1,12 +1,17 @@
 # Table: aws_ec2_images
 
 
+
 The primary key for this table is **arn**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |account_id|String|
 |region|String|
 |arn (PK)|String|
@@ -22,6 +27,7 @@ The primary key for this table is **arn**.
 |image_location|String|
 |image_owner_alias|String|
 |image_type|String|
+|imds_support|String|
 |kernel_id|String|
 |name|String|
 |owner_id|String|
@@ -39,5 +45,3 @@ The primary key for this table is **arn**.
 |tpm_support|String|
 |usage_operation|String|
 |virtualization_type|String|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

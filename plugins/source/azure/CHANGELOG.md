@@ -9,14 +9,24 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-<!-- 
-## Unreleased
-### Added
-### Changed
-### Fixed
-### Breaking Changes
+## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.13.4...plugins-source-azure-v1.0.0) (2022-10-04)
 
--->
+
+### ⚠ BREAKING CHANGES
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+### Features
+
+* [Official v1 release](https://www.cloudquery.io/blog/cloudquery-v1-release)
+
+## [1.0.3-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.2-pre.0...plugins-source-azure-v1.0.3-pre.0) (2022-10-03)
+
+
+### Bug Fixes
+
+* Azure policies ([#1861](https://github.com/cloudquery/cloudquery/issues/1861)) ([062907a](https://github.com/cloudquery/cloudquery/commit/062907a9684a879c7ed2c8b1ab80d752993c8d15))
+* **deps:** Update plugin-sdk for azure to v0.11.6 ([#2252](https://github.com/cloudquery/cloudquery/issues/2252)) ([3092acb](https://github.com/cloudquery/cloudquery/commit/3092acb1e14fe63c417187588e9b67db8b2fb82f))
 
 ## [1.0.2-pre.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.1-pre.0...plugins-source-azure-v1.0.2-pre.0) (2022-10-03)
 

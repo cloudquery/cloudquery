@@ -9,9 +9,10 @@ import (
 
 func Ipsets() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_wafv2_ipsets",
-		Resolver:  fetchWafv2Ipsets,
-		Multiplex: client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
+		Name:                "aws_wafv2_ipsets",
+		Resolver:            fetchWafv2Ipsets,
+		PreResourceResolver: getIpset,
+		Multiplex:           client.ServiceAccountRegionScopeMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

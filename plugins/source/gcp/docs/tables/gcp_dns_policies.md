@@ -1,12 +1,17 @@
 # Table: gcp_dns_policies
 
 
+
 The primary key for this table is **id**.
 
 
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
+|_cq_source_name|String|
+|_cq_sync_time|Timestamp|
 |project_id|String|
 |id (PK)|Int|
 |alternative_name_server_config|JSON|
@@ -16,5 +21,3 @@ The primary key for this table is **id**.
 |kind|String|
 |name|String|
 |networks|JSON|
-|_cq_id|UUID|
-|_cq_fetch_time|Timestamp|

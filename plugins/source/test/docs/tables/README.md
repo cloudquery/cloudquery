@@ -1,4 +1,3 @@
-
 # Source Plugin: test
 ## Tables
 | Name          | Description   |
