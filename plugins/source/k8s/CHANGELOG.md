@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.0.0...plugins-source-k8s-v1.1.0) (2022-10-09)
+
+
+### Features
+
+* Convert policies to v1 ([#2467](https://github.com/cloudquery/cloudquery/issues/2467)) ([8ae4547](https://github.com/cloudquery/cloudquery/commit/8ae45472977ec345e2dfbb29160b9d55ee475262))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.12.3 ([#2360](https://github.com/cloudquery/cloudquery/issues/2360)) ([0e61300](https://github.com/cloudquery/cloudquery/commit/0e613003694739501c8f5c43dee38263dc1350f5))
+* **deps:** Update plugin-sdk for k8s to v0.12.4 ([#2402](https://github.com/cloudquery/cloudquery/issues/2402)) ([4b8cf59](https://github.com/cloudquery/cloudquery/commit/4b8cf59807adc50289a0c995c59afac2da132388))
+* **deps:** Update plugin-sdk for k8s to v0.12.5 ([#2424](https://github.com/cloudquery/cloudquery/issues/2424)) ([539aafc](https://github.com/cloudquery/cloudquery/commit/539aafc7ee4aeba66567a6ad8f62ebb94d01dcee))
+* **deps:** Update plugin-sdk for k8s to v0.12.6 ([#2440](https://github.com/cloudquery/cloudquery/issues/2440)) ([1d8b267](https://github.com/cloudquery/cloudquery/commit/1d8b2675e11b5919da9e859b24bc33b9d7307c9e))
+* **deps:** Update plugin-sdk for k8s to v0.12.7 ([#2453](https://github.com/cloudquery/cloudquery/issues/2453)) ([d19d373](https://github.com/cloudquery/cloudquery/commit/d19d373fe8e019f5484f107a18ae342f0912663e))
+* **deps:** Update plugin-sdk for k8s to v0.12.8 ([#2503](https://github.com/cloudquery/cloudquery/issues/2503)) ([a50ffcc](https://github.com/cloudquery/cloudquery/commit/a50ffcc7c23246694bf77131d696a9a3c7f81176))
+* **deps:** Update plugin-sdk for k8s to v0.12.9 ([#2517](https://github.com/cloudquery/cloudquery/issues/2517)) ([71cdfe8](https://github.com/cloudquery/cloudquery/commit/71cdfe8879099923d18855bc664844030678ab8d))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/k8s/plugins/source/k8s/v0.6.4...plugins-source-k8s-v1.0.0) (2022-10-04)
 
 
