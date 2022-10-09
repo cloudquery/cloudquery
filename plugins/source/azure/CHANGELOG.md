@@ -9,6 +9,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v1.0.0...plugins-source-azure-v1.0.1) (2022-10-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for azure to v0.12.3 ([#2278](https://github.com/cloudquery/cloudquery/issues/2278)) ([2035607](https://github.com/cloudquery/cloudquery/commit/2035607509c28c51bfdb2ae1fbde12f42d3151ab))
+* **deps:** Update plugin-sdk for azure to v0.12.4 ([#2395](https://github.com/cloudquery/cloudquery/issues/2395)) ([730471e](https://github.com/cloudquery/cloudquery/commit/730471e44642d4e4daac5358a0fbfc59dab5c79b))
+* **deps:** Update plugin-sdk for azure to v0.12.5 ([#2417](https://github.com/cloudquery/cloudquery/issues/2417)) ([b7ff62e](https://github.com/cloudquery/cloudquery/commit/b7ff62ea449673922d9a120a173009ded7946d15))
+* **deps:** Update plugin-sdk for azure to v0.12.6 ([#2433](https://github.com/cloudquery/cloudquery/issues/2433)) ([4caccc9](https://github.com/cloudquery/cloudquery/commit/4caccc9be4abee1a78b86a68f8ef9fdb6d70fa6c))
+* **deps:** Update plugin-sdk for azure to v0.12.7 ([#2446](https://github.com/cloudquery/cloudquery/issues/2446)) ([d0bf9d7](https://github.com/cloudquery/cloudquery/commit/d0bf9d7a77aab5e708c03677c055a9be77332bd9))
+* **deps:** Update plugin-sdk for azure to v0.12.8 ([#2496](https://github.com/cloudquery/cloudquery/issues/2496)) ([9eddb8b](https://github.com/cloudquery/cloudquery/commit/9eddb8be9e80486427f3493cd3bba839a1508ce4))
+* **deps:** Update plugin-sdk for azure to v0.12.9 ([#2510](https://github.com/cloudquery/cloudquery/issues/2510)) ([8a0161e](https://github.com/cloudquery/cloudquery/commit/8a0161eb610ef2ac68685bd47f572c34b0822683))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/azure/v0.13.4...plugins-source-azure-v1.0.0) (2022-10-04)
 
 
