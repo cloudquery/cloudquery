@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.0.1...plugins-destination-postgresql-v1.1.0) (2022-10-09)
+
+
+### Features
+
+* **pg:** Support CockroachDB ([#2531](https://github.com/cloudquery/cloudquery/issues/2531)) ([0b4c2c1](https://github.com/cloudquery/cloudquery/commit/0b4c2c1589b49708d57a18d4c8cf3fae5fe05d2c))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.12.10 ([#2556](https://github.com/cloudquery/cloudquery/issues/2556)) ([571346e](https://github.com/cloudquery/cloudquery/commit/571346e29311d4a280310773817cdce4fcf00d94))
+
 ## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.0.0...plugins-destination-postgresql-v1.0.1) (2022-10-09)
 
 
