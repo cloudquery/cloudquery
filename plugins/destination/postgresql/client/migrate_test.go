@@ -56,7 +56,6 @@ func TestMigrate(t *testing.T) {
 		t.Fatalf("failed to migrate tables with missing column: %v", err)
 	}
 
-
 	if err := c.Write(ctx, "simple_table", testData); err != nil {
 		t.Fatalf("failed to write data: %v", err)
 	}

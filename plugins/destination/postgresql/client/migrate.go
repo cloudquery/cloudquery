@@ -135,7 +135,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 			}
 			return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 		}
-		
+
 		sql = "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
 		if _, err := tx.Exec(ctx, sql); err != nil {
 			if err := tx.Rollback(ctx); err != nil {
