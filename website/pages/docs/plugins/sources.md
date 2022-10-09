@@ -9,14 +9,14 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | **Name**              | Latest Version | Changelog                           | Stage |
 |-----------------------|----------------|-------------------------------------|-------|
 | [AWS][aws]            | v2.0.0         | [Changelog][AWS-Changelog]          | GA |
-| [Azure][azure]        | v1.0.0         | [Changelog][Azure-Changelog]        | GA |    
+| [Azure][azure] | v1.0.1         | [Changelog][Azure-Changelog]        | GA |    
 | [GCP][gcp]            | v1.0.0         | [Changelog][GCP-Changelog]          | GA |
-| [DigitalOcean][digitalocean] | v1.0.0         | [Changelog][DigitalOcean-Changelog] | GA |
-| [GitHub][github] | v1.0.1         | [Changelog][GitHub-Changelog]       | GA |
+| [DigitalOcean][digitalocean] | v1.0.1         | [Changelog][DigitalOcean-Changelog] | GA |
+| [GitHub][github]      | v1.0.1         | [Changelog][GitHub-Changelog]       | GA |
 | [Heroku][heroku]      | v1.0.0         | [Changelog][Heroku-Changelog]       | Preview |
-| [k8s][k8s]            | v1.0.0         | [Changelog][k8s-Changelog]          | Preview |
+| [k8s][k8s] | v1.1.0         | [Changelog][k8s-Changelog]          | Preview |
 | [Okta][okta]          | v1.0.0         | [Changelog][Okta-Changelog]         | Preview |
-| [Terraform][terraform] | v1.0.0         | [Changelog][Terraform-Changelog]    | Preview |
+| [Terraform][terraform] | v1.0.1         | [Changelog][Terraform-Changelog]    | Preview |
 
 ## Community
 
