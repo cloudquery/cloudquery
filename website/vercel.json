@@ -32,6 +32,10 @@
     {
       "source": "/providers",
       "destination": "/docs/plugins/sources"
+    },
+    {
+      "source": "/docs/getting-started/:path*",
+      "destination": "/docs/quickstart"
     }
   ]
 }

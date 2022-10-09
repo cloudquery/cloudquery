@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-terraform-v1.0.0...plugins-source-terraform-v1.0.1) (2022-10-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for terraform to v0.12.3 ([#2367](https://github.com/cloudquery/cloudquery/issues/2367)) ([05f7512](https://github.com/cloudquery/cloudquery/commit/05f7512a51ced36f265e93de96a9612f98e96b5f))
+* **deps:** Update plugin-sdk for terraform to v0.12.4 ([#2407](https://github.com/cloudquery/cloudquery/issues/2407)) ([4f0dc99](https://github.com/cloudquery/cloudquery/commit/4f0dc99113a7a29208b48f7e61ae3e9c7a275a61))
+* **deps:** Update plugin-sdk for terraform to v0.12.5 ([#2428](https://github.com/cloudquery/cloudquery/issues/2428)) ([a86c5a0](https://github.com/cloudquery/cloudquery/commit/a86c5a0da3ef65483b11baa9ff14f309c6c29ca9))
+* **deps:** Update plugin-sdk for terraform to v0.12.6 ([#2443](https://github.com/cloudquery/cloudquery/issues/2443)) ([6eb79be](https://github.com/cloudquery/cloudquery/commit/6eb79be021d9b74a1ca19eed9fd35e9d5116fe22))
+* **deps:** Update plugin-sdk for terraform to v0.12.7 ([#2456](https://github.com/cloudquery/cloudquery/issues/2456)) ([03de0df](https://github.com/cloudquery/cloudquery/commit/03de0dffc6f33973cac26e00fdc13e2e201c550b))
+* **deps:** Update plugin-sdk for terraform to v0.12.8 ([#2507](https://github.com/cloudquery/cloudquery/issues/2507)) ([e7b4b41](https://github.com/cloudquery/cloudquery/commit/e7b4b419439d0dfb1b1e03ce3551c430e3b3d2de))
+* **deps:** Update plugin-sdk for terraform to v0.12.9 ([#2520](https://github.com/cloudquery/cloudquery/issues/2520)) ([6ee7cac](https://github.com/cloudquery/cloudquery/commit/6ee7cace2df42a2e8262a8cd3c9b2ad9f723936d))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/terraform/v0.5.6...plugins-source-terraform-v1.0.0) (2022-10-04)
 
 
