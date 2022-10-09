@@ -23,7 +23,7 @@ func getTestData() map[string]interface{} {
 		"id":                  uuid.New().String(),
 		"bool_column":         true,
 		"int_column":          float64(3),
-		"float_column":        float64(3.3),
+		"float_column":        float64(3),
 		"uuid_column":         "9a6011b7-c5ee-4b55-95a6-37ce5e02a5a0",
 		"string_column":       "test",
 		"string_array_column": []interface{}{"test", "test2"},
@@ -130,7 +130,11 @@ func getTestLogger(t *testing.T) zerolog.Logger {
 }
 
 func getTestConnection() string {
-	return "postgresql://postgres:pass@localhost:5432/postgres"
+	testConn := os.Getenv("CQ_DEST_PG_TEST_CONN")
+	if testConn == "" {
+		return "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
+	}
+	return testConn
 }
 
 func TestInitialize(t *testing.T) {
