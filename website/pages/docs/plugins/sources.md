@@ -14,7 +14,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [DigitalOcean][digitalocean] | v1.0.0         | [Changelog][DigitalOcean-Changelog] | GA |
 | [GitHub][github]      | v1.0.0         | [Changelog][GitHub-Changelog]       | GA |
 | [Heroku][heroku]      | v1.0.0         | [Changelog][Heroku-Changelog]       | Preview |
-| [k8s][k8s]            | v1.0.0         | [Changelog][k8s-Changelog]          | Preview |
+| [k8s][k8s] | v1.1.0         | [Changelog][k8s-Changelog]          | Preview |
 | [Okta][okta]          | v1.0.0         | [Changelog][Okta-Changelog]         | Preview |
 | [Terraform][terraform] | v1.0.0         | [Changelog][Terraform-Changelog]    | Preview |
 
