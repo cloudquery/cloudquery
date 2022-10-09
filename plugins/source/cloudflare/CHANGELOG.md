@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v1.0.0...plugins-source-cloudflare-v1.0.1) (2022-10-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cloudflare to v0.12.3 ([#2355](https://github.com/cloudquery/cloudquery/issues/2355)) ([9bef18e](https://github.com/cloudquery/cloudquery/commit/9bef18e64eaab35e2cba74db096797bbb30820c4))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.4 ([#2397](https://github.com/cloudquery/cloudquery/issues/2397)) ([56b1761](https://github.com/cloudquery/cloudquery/commit/56b1761bf2e9c7087048c1886f62f3dd6f09609a))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.5 ([#2419](https://github.com/cloudquery/cloudquery/issues/2419)) ([33578a8](https://github.com/cloudquery/cloudquery/commit/33578a87a13718285c0a78ed1bccd7f777e248f8))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.6 ([#2435](https://github.com/cloudquery/cloudquery/issues/2435)) ([e59c6bd](https://github.com/cloudquery/cloudquery/commit/e59c6bdd79d2984ca36b9f2925a676ba4729b5f6))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.7 ([#2448](https://github.com/cloudquery/cloudquery/issues/2448)) ([b1b598d](https://github.com/cloudquery/cloudquery/commit/b1b598db31b2d6eeff82e35ab07b33af1309d12a))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.8 ([#2498](https://github.com/cloudquery/cloudquery/issues/2498)) ([b211718](https://github.com/cloudquery/cloudquery/commit/b2117189fb74bdd412400650ed120bc7b1d3c493))
+* **deps:** Update plugin-sdk for cloudflare to v0.12.9 ([#2512](https://github.com/cloudquery/cloudquery/issues/2512)) ([fb684c0](https://github.com/cloudquery/cloudquery/commit/fb684c0c454c862afe4560a00797ad08973f834d))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/cloudflare/v0.1.7...plugins-source-cloudflare-v1.0.0) (2022-10-04)
 
 
