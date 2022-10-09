@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.0.1...plugins-source-aws-v2.1.0) (2022-10-09)
+
+
+### Features
+
+* **aws:** Use PreResourceResolver to resolve list/describe resources ([#2461](https://github.com/cloudquery/cloudquery/issues/2461)) ([f31ece8](https://github.com/cloudquery/cloudquery/commit/f31ece870bcd2d43c12ec06df711325bee1ad43e))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.12.10 ([#2544](https://github.com/cloudquery/cloudquery/issues/2544)) ([4e4fdb6](https://github.com/cloudquery/cloudquery/commit/4e4fdb6d8f6ae82a1287ead4b02f8f4bd1dc843e))
+* **deps:** Update plugin-sdk for aws to v0.12.8 ([#2495](https://github.com/cloudquery/cloudquery/issues/2495)) ([ddb163e](https://github.com/cloudquery/cloudquery/commit/ddb163e18eb802c70dd0bdd6b6beaee31c977bf5))
+* **deps:** Update plugin-sdk for aws to v0.12.9 ([#2509](https://github.com/cloudquery/cloudquery/issues/2509)) ([cda0307](https://github.com/cloudquery/cloudquery/commit/cda0307f67c928c4add1afaf0159516fef676f6a))
+* Update endpoints ([#2490](https://github.com/cloudquery/cloudquery/issues/2490)) ([624e7a8](https://github.com/cloudquery/cloudquery/commit/624e7a867089e1fb711d6d98ccca118832496206))
+* Update endpoints ([#2529](https://github.com/cloudquery/cloudquery/issues/2529)) ([f170e50](https://github.com/cloudquery/cloudquery/commit/f170e50a7deba4761f5b12bee7b92245dd088f0c))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.0.0...plugins-source-aws-v2.0.1) (2022-10-06)
 
 
