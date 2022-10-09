@@ -26,6 +26,10 @@
       "destination": "/docs/plugins/sources"
     },
     {
+      "source": "/docs/developers/developing-source-plugin",
+      "destination": "/docs/developers/creating-new-plugin"
+    },
+    {
       "source": "/providers",
       "destination": "/docs/plugins/sources"
     }
