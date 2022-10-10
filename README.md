@@ -9,6 +9,10 @@ CloudQuery extracts, transforms, and loads configuration from cloud APIs to
 variety of supported destinations such as databases, data lakes, or streaming platforms
 for further analysis.
 
+### Installation
+
+See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for instructions how to start syncing data with CloudQuery.
+
 ## Why CloudQuery?
 
 - **Open source**: Easily extendable plugin architecture. Contribute to our official plugins or develop your own with the CloudQuery SDK.
