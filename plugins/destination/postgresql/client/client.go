@@ -15,11 +15,6 @@ import (
 	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
 )
 
-type Spec struct {
-	ConnectionString string   `json:"connection_string,omitempty"`
-	PgxLogLevel      LogLevel `json:"pgx_log_level,omitempty"`
-}
-
 type Client struct {
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
@@ -27,6 +22,8 @@ type Client struct {
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
+	batchSize int
+	batch *pgx.Batch
 }
 
 type pgTablePrimaryKeys struct {
@@ -68,17 +65,21 @@ const (
 	invalid pgType = iota
 	pgTypePostgreSQL
 	pgTypeCockroachDB
+
 )
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
+		batch: &pgx.Batch{},
 	}
 	var specPostgreSql Spec
 	c.spec = spec
 	if err := spec.UnmarshalSpec(&specPostgreSql); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
+	specPostgreSql.SetDefaults()
+	c.batchSize = specPostgreSql.BatchSize
 
 	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
@@ -117,14 +118,20 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
+	}
+	if c.batch.Len() > 0 {
+		br := c.conn.SendBatch(ctx, c.batch)
+		err = br.Close()
+		c.batch = &pgx.Batch{}
 	}
 	if c.conn != nil {
 		c.conn.Close()
 		c.conn = nil
 	}
-	return nil
+	return err
 }
 
 func (c *Client) currentDatabase(ctx context.Context) (string, error) {
