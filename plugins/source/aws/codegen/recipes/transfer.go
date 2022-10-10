@@ -10,9 +10,10 @@ func TransferResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "servers",
-			Struct:     &types.DescribedServer{},
-			SkipFields: []string{"Arn", "Tags"},
+			SubService:          "servers",
+			Struct:              &types.DescribedServer{},
+			SkipFields:          []string{"Arn", "Tags"},
+			PreResourceResolver: "getServer",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

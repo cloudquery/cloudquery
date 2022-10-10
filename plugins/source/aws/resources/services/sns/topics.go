@@ -9,9 +9,10 @@ import (
 
 func Topics() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sns_topics",
-		Resolver:  fetchSnsTopics,
-		Multiplex: client.ServiceAccountRegionMultiplexer("sns"),
+		Name:                "aws_sns_topics",
+		Resolver:            fetchSnsTopics,
+		PreResourceResolver: getTopic,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("sns"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -15,6 +15,7 @@ CloudQuery uses a YAML file as the primary means of configuration. For the Cloud
 ```docker
 docker run \
   -v <ABSOLUTE_PATH_TO_CONFIG_DIR>:/config \
+  # set any env variable with -e <ENV_VAR_NAME>=<ENV_VAR_VALUE>
   ghcr.io/cloudquery/cloudquery:latest \
   sync /config
 ```

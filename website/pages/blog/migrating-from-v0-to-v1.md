@@ -36,7 +36,7 @@ spec:
   name: "aws" # required
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "vX.Y.Z"
+  version: "v2.1.0" # latest version of aws plugin
  
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
@@ -68,7 +68,7 @@ spec:
   name: "postgresql"
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "vX.Y.Z"
+  version: "v1.1.0" # latest version of postgresql plugin
  
   ## Optional. Default: "overwrite". Available: "overwrite", "append", "overwrite-delete-stale". Not all modes are 
   ## supported by all plugins, so make sure to check the plugin documentation for more details.
@@ -133,14 +133,14 @@ The `sync` command supports loading config from files or directories, and you ma
 ```
 kind: source
 spec:
-    name: aws
-    version: 1.0.0
+    name: "aws"
+    version: "v2.1.0" # latest version of aws plugin
     # rest of source spec here
 ---
 kind: destination
 spec:
-    name: postgresql
-    version: 1.0.0
+    name: "postgresql"
+    version: "v1.1.0" # latest version of postgresql plugin
     # rest of destination spec here
 ```
 
@@ -161,6 +161,12 @@ Finally, during our work for v1, we endeavoured to make the table schemas more c
 
 Note that these guides are (for the most part) automatically generated, so in some cases a table may be marked as removed when it was actually renamed. Please reach out to us if you find any errors.
 
-### Get Help / Ask Questions
+## Start from a clean Database
 
-If you have any questions about migrating or CloudQuery v1, don't hesitate to reach out on [Discord](https://www.cloudquery.io/discord). We're a friendly community and would love to help however we can.
+V1 introduces functionality to automatically perform backwards-compatible Postgres migrations when new columns or tables are added. However, this functionality relies on a clean start being made in V1, and if you try to run it against a database with tables from v0, there is a good chance it will fail.
+
+Therefore, it is important that you **start from a clean database**. This can either mean creating a new database and pointing the v1 configuration there, or dropping all the tables in your v0 database. 
+
+## Get Help / Ask Questions
+
+If you run into issues not covered here, or have any questions about migrating or CloudQuery v1, don't hesitate to reach out on [Discord](https://www.cloudquery.io/discord). We're a friendly community and would love to help however we can.

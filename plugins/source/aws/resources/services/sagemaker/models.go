@@ -9,9 +9,10 @@ import (
 
 func Models() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sagemaker_models",
-		Resolver:  fetchSagemakerModels,
-		Multiplex: client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		Name:                "aws_sagemaker_models",
+		Resolver:            fetchSagemakerModels,
+		PreResourceResolver: getModel,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

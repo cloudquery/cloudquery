@@ -9,9 +9,10 @@ import (
 
 func Workflows() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_workflows",
-		Resolver:  fetchGlueWorkflows,
-		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
+		Name:                "aws_glue_workflows",
+		Resolver:            fetchGlueWorkflows,
+		PreResourceResolver: getWorkflow,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

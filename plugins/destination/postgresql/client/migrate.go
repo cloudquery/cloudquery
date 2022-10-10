@@ -28,7 +28,7 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 	for _, table := range tables {
 		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
 		if len(table.Columns) == 0 {
-			c.logger.Info().Str("table", table.Name).Msg("Table with not columns, skiping")
+			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
 			continue
 		}
 		tableExist, err := c.isTableExistSQL(ctx, table.Name)
@@ -36,12 +36,12 @@ func (c *Client) Migrate(ctx context.Context, tables schema.Tables) error {
 			return fmt.Errorf("failed to check if table %s exists: %w", table.Name, err)
 		}
 		if tableExist {
-			c.logger.Info().Str("table", table.Name).Msg("Table exist, auto-migrating")
+			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 			if err := c.autoMigrateTable(ctx, table); err != nil {
 				return err
 			}
 		} else {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist creating")
+			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 			if err := c.createTableIfNotExist(ctx, table); err != nil {
 				return err
 			}
@@ -78,7 +78,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 	for _, col := range table.Columns {
 		columnName := pgx.Identifier{col.Name}.Sanitize()
-		columnType := SchemaTypeToPg(col.Type)
+		columnType := c.SchemaTypeToPg(col.Type)
 		pgColumn := pgColumns.getPgColumn(col.Name)
 
 		switch {
@@ -93,7 +93,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, table.Name, err)
 			}
 		case pgColumn.typ != columnType:
-			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Str("old_type", pgColumn.typ).Str("new_type", columnType).Msg("Column exist but type is different, re-creating")
+			c.logger.Info().Str("table", table.Name).Str("column", col.Name).Str("old_type", pgColumn.typ).Str("new_type", columnType).Msg("Column exists but type is different, re-creating")
 			// column exists but type is different
 
 			// if this column contains primary key we will need to recreate the primary key
@@ -112,21 +112,49 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 		default:
 			// column exists and type is the same but constraint might differ
 			if c.enabledPks() && pgPKs.columnExist(col.Name) != col.CreationOptions.PrimaryKey {
-				c.logger.Info().Str("table", table.Name).Str("column", col.Name).Bool("pk", col.CreationOptions.PrimaryKey).Msg("Column exist with different primary keys")
+				c.logger.Info().Str("table", table.Name).Str("column", col.Name).Bool("pk", col.CreationOptions.PrimaryKey).Msg("Column exists with different primary keys")
 				reCreatePrimaryKeys = true
 			}
 		}
 	}
 	if reCreatePrimaryKeys {
-		c.logger.Info().Str("table", table.Name).Msg("recreating primary keys")
+		c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
+		if err := c.setNullOnPks(ctx, table); err != nil {
+			return fmt.Errorf("failed to enforce not null on primary keys: %w", err)
+		}
+
+		tx, err := c.conn.Begin(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to begin transaction to recreate primary keys: %w", err)
+		}
 		constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
 		sql := "alter table " + tableName + " drop constraint if exists " + constraintName
-		if _, err := c.conn.Exec(ctx, sql); err != nil {
+		if _, err := tx.Exec(ctx, sql); err != nil {
+			if err := tx.Rollback(ctx); err != nil {
+				c.logger.Error().Err(err).Msg("failed to rollback transaction")
+			}
 			return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 		}
+
 		sql = "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
-		if _, err := c.conn.Exec(ctx, sql); err != nil {
+		if _, err := tx.Exec(ctx, sql); err != nil {
+			if err := tx.Rollback(ctx); err != nil {
+				c.logger.Error().Err(err).Msg("failed to rollback transaction")
+			}
 			return fmt.Errorf("failed to add primary key constraint on table %s: %w", table.Name, err)
+		}
+		if err := tx.Commit(ctx); err != nil {
+			return fmt.Errorf("failed to commit transaction to recreate primary keys: %w", err)
+		}
+	}
+	return nil
+}
+
+func (c *Client) setNullOnPks(ctx context.Context, table *schema.Table) error {
+	for _, col := range table.PrimaryKeys() {
+		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " set not null"
+		if _, err := c.conn.Exec(ctx, sql); err != nil {
+			return fmt.Errorf("failed to set not null on column %s on table %s: %w", col, table.Name, err)
 		}
 	}
 	return nil
@@ -142,7 +170,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 
 	primaryKeys := []string{}
 	for i, col := range table.Columns {
-		pgType := SchemaTypeToPg(col.Type)
+		pgType := c.SchemaTypeToPg(col.Type)
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
 		sb.WriteString(fieldDef)

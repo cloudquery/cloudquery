@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.0.1...plugins-source-okta-v1.0.2) (2022-10-10)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for okta to v0.12.10 ([#2553](https://github.com/cloudquery/cloudquery/issues/2553)) ([197d44e](https://github.com/cloudquery/cloudquery/commit/197d44e0a3e66bd874a7fb35009af4352cfea746))
+
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.0.0...plugins-source-okta-v1.0.1) (2022-10-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for okta to v0.12.3 ([#2361](https://github.com/cloudquery/cloudquery/issues/2361)) ([a68bbde](https://github.com/cloudquery/cloudquery/commit/a68bbde29d6a604ed8d0eb3daaa735a19bb74967))
+* **deps:** Update plugin-sdk for okta to v0.12.4 ([#2404](https://github.com/cloudquery/cloudquery/issues/2404)) ([7d6a79a](https://github.com/cloudquery/cloudquery/commit/7d6a79af65602000817c76972202430869c49499))
+* **deps:** Update plugin-sdk for okta to v0.12.5 ([#2425](https://github.com/cloudquery/cloudquery/issues/2425)) ([1148e36](https://github.com/cloudquery/cloudquery/commit/1148e360ac0386c8b520e3697720c8233af6fdaa))
+* **deps:** Update plugin-sdk for okta to v0.12.6 ([#2441](https://github.com/cloudquery/cloudquery/issues/2441)) ([8cf4356](https://github.com/cloudquery/cloudquery/commit/8cf4356ebf4442cc5f4f7826c477da866b236d92))
+* **deps:** Update plugin-sdk for okta to v0.12.7 ([#2454](https://github.com/cloudquery/cloudquery/issues/2454)) ([5906903](https://github.com/cloudquery/cloudquery/commit/59069039fabb32ff11a39daf75bc8cda82e24a39))
+* **deps:** Update plugin-sdk for okta to v0.12.8 ([#2504](https://github.com/cloudquery/cloudquery/issues/2504)) ([52aef04](https://github.com/cloudquery/cloudquery/commit/52aef043a5197dd851614db89088238c92eee509))
+* **deps:** Update plugin-sdk for okta to v0.12.9 ([#2518](https://github.com/cloudquery/cloudquery/issues/2518)) ([1b8d5b8](https://github.com/cloudquery/cloudquery/commit/1b8d5b8b12a4c2c6747c7736a40b2d801d6d06c4))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/okta/v0.6.6...plugins-source-okta-v1.0.0) (2022-10-04)
 
 

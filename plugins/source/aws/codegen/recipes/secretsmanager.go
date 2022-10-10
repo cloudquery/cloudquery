@@ -9,9 +9,10 @@ import (
 func SecretsManagerResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "secrets",
-			Struct:     &secretsmanager.DescribeSecretOutput{},
-			SkipFields: []string{"ARN", "Tags", "ResultMetadata"},
+			SubService:          "secrets",
+			Struct:              &secretsmanager.DescribeSecretOutput{},
+			SkipFields:          []string{"ARN", "Tags", "ResultMetadata"},
+			PreResourceResolver: "getSecret",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

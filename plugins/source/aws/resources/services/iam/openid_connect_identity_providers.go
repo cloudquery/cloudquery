@@ -9,9 +9,10 @@ import (
 
 func OpenidConnectIdentityProviders() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_openid_connect_identity_providers",
-		Resolver:  fetchIamOpenidConnectIdentityProviders,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_iam_openid_connect_identity_providers",
+		Resolver:            fetchIamOpenidConnectIdentityProviders,
+		PreResourceResolver: getOpenIdConnectIdentityProvider,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

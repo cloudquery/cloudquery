@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -19,26 +20,29 @@ func fetchSagemakerEndpointConfigurations(ctx context.Context, meta schema.Clien
 			return err
 		}
 
-		// get more details about the notebook instance
-		for _, n := range response.EndpointConfigs {
-			config := sagemaker.DescribeEndpointConfigInput{
-				EndpointConfigName: n.EndpointConfigName,
-			}
-			response, err := svc.DescribeEndpointConfig(ctx, &config, func(options *sagemaker.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-
-			res <- response
-		}
+		res <- response.EndpointConfigs
 
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
 		config.NextToken = response.NextToken
 	}
+	return nil
+}
+
+func getEndpointConfiguration(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().SageMaker
+	n := resource.Item.(types.EndpointConfigSummary)
+
+	response, err := svc.DescribeEndpointConfig(ctx, &sagemaker.DescribeEndpointConfigInput{
+		EndpointConfigName: n.EndpointConfigName,
+	})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = response
 	return nil
 }
 

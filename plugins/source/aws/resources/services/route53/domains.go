@@ -9,9 +9,10 @@ import (
 
 func Domains() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_route53_domains",
-		Resolver:  fetchRoute53Domains,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_route53_domains",
+		Resolver:            fetchRoute53Domains,
+		PreResourceResolver: getDomain,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

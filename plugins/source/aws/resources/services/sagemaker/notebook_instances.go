@@ -9,9 +9,10 @@ import (
 
 func NotebookInstances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sagemaker_notebook_instances",
-		Resolver:  fetchSagemakerNotebookInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		Name:                "aws_sagemaker_notebook_instances",
+		Resolver:            fetchSagemakerNotebookInstances,
+		PreResourceResolver: getNotebookInstance,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

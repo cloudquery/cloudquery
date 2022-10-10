@@ -9,9 +9,10 @@ import (
 
 func GroupPolicies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_group_policies",
-		Resolver:  fetchIamGroupPolicies,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_iam_group_policies",
+		Resolver:            fetchIamGroupPolicies,
+		PreResourceResolver: getGroupPolicy,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

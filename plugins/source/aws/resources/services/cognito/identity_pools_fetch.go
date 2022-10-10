@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
+	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -12,30 +13,36 @@ import (
 func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().CognitoIdentityPools
-	optsFunc := func(options *cognitoidentity.Options) {
-		options.Region = c.Region
-	}
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
 		MaxResults: 60,
 	}
 	for {
-		out, err := svc.ListIdentityPools(ctx, &params, optsFunc)
+		out, err := svc.ListIdentityPools(ctx, &params)
 		if err != nil {
 			return err
 		}
-		for _, item := range out.IdentityPools {
-			ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId}, optsFunc)
-			if err != nil {
-				return err
-			}
-			res <- ipo
-		}
+		res <- out.IdentityPools
+
 		if aws.ToString(out.NextToken) == "" {
 			break
 		}
 		params.NextToken = out.NextToken
 	}
+	return nil
+}
+
+func getIdentityPool(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().CognitoIdentityPools
+	item := resource.Item.(types.IdentityPoolShortDescription)
+
+	ipo, err := svc.DescribeIdentityPool(ctx, &cognitoidentity.DescribeIdentityPoolInput{IdentityPoolId: item.IdentityPoolId})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = ipo
 	return nil
 }
 

@@ -8,6 +8,7 @@ require (
 	cloud.google.com/go/container v1.4.0
 	cloud.google.com/go/domains v0.7.0
 	cloud.google.com/go/functions v1.7.0
+	cloud.google.com/go/iam v0.4.0
 	cloud.google.com/go/kms v1.4.0
 	cloud.google.com/go/logging v1.5.0
 	cloud.google.com/go/monitoring v1.6.0
@@ -17,7 +18,7 @@ require (
 	cloud.google.com/go/secretmanager v1.7.0
 	cloud.google.com/go/serviceusage v1.2.0
 	cloud.google.com/go/storage v1.27.0
-	github.com/cloudquery/plugin-sdk v0.12.7
+	github.com/cloudquery/plugin-sdk v0.12.10
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/julienschmidt/httprouter v1.3.0
@@ -33,7 +34,6 @@ require (
 
 require (
 	cloud.google.com/go v0.104.0 // indirect
-	cloud.google.com/go/iam v0.4.0 // indirect
 	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
