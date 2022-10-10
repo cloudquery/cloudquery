@@ -31,5 +31,5 @@ func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestRegions(t *testing.T) {
-	client.AwsMockTestHelper(t, AwsRegions(), buildRegionsMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Regions(), buildRegionsMock, client.TestOptions{})
 }
