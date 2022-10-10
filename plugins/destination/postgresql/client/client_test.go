@@ -45,8 +45,8 @@ func getTestTable() *schema.Table {
 		Columns: []schema.Column{
 			schema.CqIDColumn,
 			schema.CqParentIDColumn,
-			schema.CqSyncTime,
-			schema.CqSourceName,
+			schema.CqSyncTimeColumn,
+			schema.CqSourceNameColumn,
 			{
 				Name: "id",
 				Type: schema.TypeUUID,
