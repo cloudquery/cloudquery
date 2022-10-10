@@ -10,7 +10,7 @@ We provide out of the box SQL policies and dashboards for asset inventories and 
 
 ## Examples
 
-Examples on how to run can be found in the provider repositories:
+Examples on how to run can be found in under each plugin directory:
 
 - [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/policies)
 - [GCP](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp/policies)
