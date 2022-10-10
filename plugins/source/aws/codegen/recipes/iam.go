@@ -129,9 +129,10 @@ func IAMResources() []*Resource {
 			Relations: []string{"GroupPolicies()"},
 		},
 		{
-			SubService: "group_policies",
-			Struct:     &iam.GetGroupPolicyOutput{},
-			SkipFields: []string{"PolicyDocument"},
+			SubService:          "group_policies",
+			Struct:              &iam.GetGroupPolicyOutput{},
+			SkipFields:          []string{"PolicyDocument"},
+			PreResourceResolver: "getGroupPolicy",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -153,9 +154,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "openid_connect_identity_providers",
-			Struct:     &models.IamOpenIdIdentityProviderWrapper{},
-			SkipFields: []string{"Arn", "Tags"},
+			SubService:          "openid_connect_identity_providers",
+			Struct:              &models.IamOpenIdIdentityProviderWrapper{},
+			SkipFields:          []string{"Arn", "Tags"},
+			PreResourceResolver: "getOpenIdConnectIdentityProvider",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -251,9 +253,10 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService: "role_policies",
-			Struct:     &iam.GetRolePolicyOutput{},
-			SkipFields: []string{"PolicyDocument"},
+			SubService:          "role_policies",
+			Struct:              &iam.GetRolePolicyOutput{},
+			SkipFields:          []string{"PolicyDocument"},
+			PreResourceResolver: "getRolePolicy",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -270,9 +273,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "saml_identity_providers",
-			Struct:     &types.SAMLProviderListEntry{},
-			SkipFields: []string{"Arn", "Tags"},
+			SubService:          "saml_identity_providers",
+			Struct:              &types.SAMLProviderListEntry{},
+			SkipFields:          []string{"Arn", "Tags"},
+			PreResourceResolver: "getSamlIdentityProvider",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -409,9 +413,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "user_policies",
-			Struct:     &iam.GetUserPolicyOutput{},
-			SkipFields: []string{"PolicyDocument"},
+			SubService:          "user_policies",
+			Struct:              &iam.GetUserPolicyOutput{},
+			SkipFields:          []string{"PolicyDocument"},
+			PreResourceResolver: "getUserPolicy",
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

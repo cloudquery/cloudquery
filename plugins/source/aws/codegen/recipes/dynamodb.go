@@ -9,9 +9,10 @@ import (
 func DynamoDBResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "tables",
-			Struct:     &types.TableDescription{},
-			SkipFields: []string{"TableArn"},
+			SubService:          "tables",
+			Struct:              &types.TableDescription{},
+			SkipFields:          []string{"TableArn"},
+			PreResourceResolver: "getTable",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
+	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -25,26 +26,7 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 			return err
 		}
 
-		// get more details about the notebook instance
-		for _, n := range response.NotebookInstances {
-			config := sagemaker.DescribeNotebookInstanceInput{
-				NotebookInstanceName: n.NotebookInstanceName,
-			}
-			response, err := svc.DescribeNotebookInstance(ctx, &config, func(options *sagemaker.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
-
-			notebook := WrappedSageMakerNotebookInstance{
-				DescribeNotebookInstanceOutput: response,
-				NotebookInstanceArn:            *n.NotebookInstanceArn,
-				NotebookInstanceName:           *n.NotebookInstanceName,
-			}
-
-			res <- notebook
-		}
+		res <- response.NotebookInstances
 
 		if aws.ToString(response.NextToken) == "" {
 			break
@@ -54,8 +36,29 @@ func fetchSagemakerNotebookInstances(ctx context.Context, meta schema.ClientMeta
 	return nil
 }
 
+func getNotebookInstance(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().SageMaker
+	n := resource.Item.(types.NotebookInstanceSummary)
+
+	// get more details about the notebook instance
+	response, err := svc.DescribeNotebookInstance(ctx, &sagemaker.DescribeNotebookInstanceInput{
+		NotebookInstanceName: n.NotebookInstanceName,
+	})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = &WrappedSageMakerNotebookInstance{
+		DescribeNotebookInstanceOutput: response,
+		NotebookInstanceArn:            *n.NotebookInstanceArn,
+		NotebookInstanceName:           *n.NotebookInstanceName,
+	}
+	return nil
+}
+
 func resolveSagemakerNotebookInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, _ schema.Column) error {
-	r := resource.Item.(WrappedSageMakerNotebookInstance)
+	r := resource.Item.(*WrappedSageMakerNotebookInstance)
 	c := meta.(*client.Client)
 	svc := c.Services().SageMaker
 	config := sagemaker.ListTagsInput{

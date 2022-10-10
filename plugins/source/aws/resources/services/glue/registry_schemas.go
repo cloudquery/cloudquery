@@ -9,9 +9,10 @@ import (
 
 func RegistrySchemas() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_glue_registry_schemas",
-		Resolver:  fetchGlueRegistrySchemas,
-		Multiplex: client.ServiceAccountRegionMultiplexer("glue"),
+		Name:                "aws_glue_registry_schemas",
+		Resolver:            fetchGlueRegistrySchemas,
+		PreResourceResolver: getRegistrySchema,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("glue"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

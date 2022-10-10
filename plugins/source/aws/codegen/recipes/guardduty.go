@@ -13,9 +13,10 @@ import (
 func GuarddutyResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "detectors",
-			Struct:     &models.DetectorWrapper{},
-			SkipFields: []string{"Id"},
+			SubService:          "detectors",
+			Struct:              &models.DetectorWrapper{},
+			SkipFields:          []string{"Id"},
+			PreResourceResolver: "getDetector",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",

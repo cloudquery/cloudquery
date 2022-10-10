@@ -20,17 +20,7 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 		if err != nil {
 			return err
 		}
-
-		for i := range output.TableNames {
-			response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &output.TableNames[i]})
-			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			res <- response.Table
-		}
+		res <- output.TableNames
 
 		if aws.ToString(output.LastEvaluatedTableName) == "" {
 			break
@@ -40,6 +30,22 @@ func fetchDynamodbTables(ctx context.Context, meta schema.ClientMeta, parent *sc
 
 	return nil
 }
+
+func getTable(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().DynamoDB
+
+	tableName := resource.Item.(string)
+
+	response, err := svc.DescribeTable(ctx, &dynamodb.DescribeTableInput{TableName: &tableName})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = response.Table
+	return nil
+}
+
 func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	table := resource.Item.(*types.TableDescription)
 

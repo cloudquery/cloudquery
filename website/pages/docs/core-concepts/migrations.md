@@ -15,7 +15,7 @@ If a source plugin removes a column the destination plugin will not drop it and 
 
 Rename is basically Removal + Addition, meaning the destination plugin will just add additional column and new data will be saved there. It will be up to the user to do any migrations if needed.
 
-CloudQuery is an open-source cloud asset inventory powered by SQL, and as such, when providers change their schema (change/remove columns) some migrations from the previous run are required. CloudQuery automatically drops and recreates those tables automatically as needed.
+CloudQuery is an open-source cloud asset inventory powered by SQL, and as such, when plugins change their schema (change/remove columns) some migrations from the previous run are required. CloudQuery automatically drops and recreates those tables automatically as needed.
 
 ## Type Change
 

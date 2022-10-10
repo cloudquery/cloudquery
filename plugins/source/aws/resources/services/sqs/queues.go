@@ -9,9 +9,10 @@ import (
 
 func Queues() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sqs_queues",
-		Resolver:  fetchSqsQueues,
-		Multiplex: client.ServiceAccountRegionMultiplexer("sqs"),
+		Name:                "aws_sqs_queues",
+		Resolver:            fetchSqsQueues,
+		PreResourceResolver: getQueue,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("sqs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

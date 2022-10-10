@@ -78,7 +78,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 
 	for _, col := range table.Columns {
 		columnName := pgx.Identifier{col.Name}.Sanitize()
-		columnType := SchemaTypeToPg(col.Type)
+		columnType := c.SchemaTypeToPg(col.Type)
 		pgColumn := pgColumns.getPgColumn(col.Name)
 
 		switch {
@@ -119,14 +119,42 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table) erro
 	}
 	if reCreatePrimaryKeys {
 		c.logger.Info().Str("table", table.Name).Msg("Recreating primary keys")
+		if err := c.setNullOnPks(ctx, table); err != nil {
+			return fmt.Errorf("failed to enforce not null on primary keys: %w", err)
+		}
+
+		tx, err := c.conn.Begin(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to begin transaction to recreate primary keys: %w", err)
+		}
 		constraintName := pgx.Identifier{table.Name + "_cqpk"}.Sanitize()
 		sql := "alter table " + tableName + " drop constraint if exists " + constraintName
-		if _, err := c.conn.Exec(ctx, sql); err != nil {
+		if _, err := tx.Exec(ctx, sql); err != nil {
+			if err := tx.Rollback(ctx); err != nil {
+				c.logger.Error().Err(err).Msg("failed to rollback transaction")
+			}
 			return fmt.Errorf("failed to drop primary key constraint on table %s: %w", table.Name, err)
 		}
+
 		sql = "alter table " + tableName + " add constraint " + constraintName + " primary key (" + strings.Join(table.PrimaryKeys(), ",") + ")"
-		if _, err := c.conn.Exec(ctx, sql); err != nil {
+		if _, err := tx.Exec(ctx, sql); err != nil {
+			if err := tx.Rollback(ctx); err != nil {
+				c.logger.Error().Err(err).Msg("failed to rollback transaction")
+			}
 			return fmt.Errorf("failed to add primary key constraint on table %s: %w", table.Name, err)
+		}
+		if err := tx.Commit(ctx); err != nil {
+			return fmt.Errorf("failed to commit transaction to recreate primary keys: %w", err)
+		}
+	}
+	return nil
+}
+
+func (c *Client) setNullOnPks(ctx context.Context, table *schema.Table) error {
+	for _, col := range table.PrimaryKeys() {
+		sql := "alter table " + pgx.Identifier{table.Name}.Sanitize() + " alter column " + pgx.Identifier{col}.Sanitize() + " set not null"
+		if _, err := c.conn.Exec(ctx, sql); err != nil {
+			return fmt.Errorf("failed to set not null on column %s on table %s: %w", col, table.Name, err)
 		}
 	}
 	return nil
@@ -142,7 +170,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 
 	primaryKeys := []string{}
 	for i, col := range table.Columns {
-		pgType := SchemaTypeToPg(col.Type)
+		pgType := c.SchemaTypeToPg(col.Type)
 		columnName := pgx.Identifier{col.Name}.Sanitize()
 		fieldDef := columnName + " " + pgType
 		sb.WriteString(fieldDef)

@@ -25,40 +25,8 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 		if err != nil {
 			return err
 		}
-		for _, webAcl := range output.WebACLs {
-			webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: c.WAFScope}
-			webAclOutput, err := service.GetWebACL(ctx, &webAclConfig, func(options *wafv2.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				return err
-			}
 
-			cfg := wafv2.GetLoggingConfigurationInput{
-				ResourceArn: webAclOutput.WebACL.ARN,
-			}
-
-			loggingConfigurationOutput, err := service.GetLoggingConfiguration(ctx, &cfg, func(options *wafv2.Options) {
-				options.Region = c.Region
-			})
-			if err != nil {
-				if client.IsAWSError(err, "WAFNonexistentItemException") {
-					c.Logger().Debug().Err(err).Msg("Logging configuration not found for")
-				} else {
-					c.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed with error")
-				}
-			}
-
-			var webAclLoggingConfiguration *types.LoggingConfiguration
-			if loggingConfigurationOutput != nil {
-				webAclLoggingConfiguration = loggingConfigurationOutput.LoggingConfiguration
-			}
-
-			res <- &models.WebACLWrapper{
-				WebACL:               webAclOutput.WebACL,
-				LoggingConfiguration: webAclLoggingConfiguration,
-			}
-		}
+		res <- output.WebACLs
 
 		if aws.ToString(output.NextMarker) == "" {
 			break
@@ -67,6 +35,47 @@ func fetchWafv2WebAcls(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 	return nil
 }
+
+func getWebAcl(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().WafV2
+	webAcl := resource.Item.(types.WebACLSummary)
+
+	webAclConfig := wafv2.GetWebACLInput{Id: webAcl.Id, Name: webAcl.Name, Scope: c.WAFScope}
+	webAclOutput, err := svc.GetWebACL(ctx, &webAclConfig, func(options *wafv2.Options) {
+		options.Region = c.Region
+	})
+	if err != nil {
+		return err
+	}
+
+	cfg := wafv2.GetLoggingConfigurationInput{
+		ResourceArn: webAclOutput.WebACL.ARN,
+	}
+
+	loggingConfigurationOutput, err := svc.GetLoggingConfiguration(ctx, &cfg, func(options *wafv2.Options) {
+		options.Region = c.Region
+	})
+	if err != nil {
+		if client.IsAWSError(err, "WAFNonexistentItemException") {
+			c.Logger().Debug().Err(err).Msg("Logging configuration not found for")
+		} else {
+			c.Logger().Error().Err(err).Msg("GetLoggingConfiguration failed with error")
+		}
+	}
+
+	var webAclLoggingConfiguration *types.LoggingConfiguration
+	if loggingConfigurationOutput != nil {
+		webAclLoggingConfiguration = loggingConfigurationOutput.LoggingConfiguration
+	}
+
+	resource.Item = &models.WebACLWrapper{
+		WebACL:               webAclOutput.WebACL,
+		LoggingConfiguration: webAclLoggingConfiguration,
+	}
+	return nil
+}
+
 func resolveWafv2webACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	webACL := resource.Item.(*models.WebACLWrapper)
 

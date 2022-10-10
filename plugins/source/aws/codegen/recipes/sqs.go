@@ -9,9 +9,10 @@ import (
 func SQSResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "queues",
-			Struct:     &models.Queue{},
-			SkipFields: []string{"Arn", "Policy", "RedriveAllowPolicy", "RedrivePolicy"},
+			SubService:          "queues",
+			Struct:              &models.Queue{},
+			SkipFields:          []string{"Arn", "Policy", "RedriveAllowPolicy", "RedrivePolicy"},
+			PreResourceResolver: "getQueue",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

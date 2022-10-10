@@ -9,9 +9,10 @@ import (
 
 func Detectors() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_guardduty_detectors",
-		Resolver:  fetchGuarddutyDetectors,
-		Multiplex: client.ServiceAccountRegionMultiplexer("guardduty"),
+		Name:                "aws_guardduty_detectors",
+		Resolver:            fetchGuarddutyDetectors,
+		PreResourceResolver: getDetector,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("guardduty"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

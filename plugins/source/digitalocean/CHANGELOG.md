@@ -5,6 +5,19 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v1.0.0...plugins-source-digitalocean-v1.0.1) (2022-10-09)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.12.3 ([#2356](https://github.com/cloudquery/cloudquery/issues/2356)) ([63a500e](https://github.com/cloudquery/cloudquery/commit/63a500e32820a52940807a2bd040dd3bf82b9e5b))
+* **deps:** Update plugin-sdk for digitalocean to v0.12.4 ([#2398](https://github.com/cloudquery/cloudquery/issues/2398)) ([6e70184](https://github.com/cloudquery/cloudquery/commit/6e7018429c69bb65e00c5c089f2457721c5d5617))
+* **deps:** Update plugin-sdk for digitalocean to v0.12.5 ([#2420](https://github.com/cloudquery/cloudquery/issues/2420)) ([940e9ab](https://github.com/cloudquery/cloudquery/commit/940e9ab0eef25cd5a32e9eea280b620d8b35b641))
+* **deps:** Update plugin-sdk for digitalocean to v0.12.6 ([#2436](https://github.com/cloudquery/cloudquery/issues/2436)) ([379a6a6](https://github.com/cloudquery/cloudquery/commit/379a6a6d718ef2ada97e5991e7d938600fcf85c4))
+* **deps:** Update plugin-sdk for digitalocean to v0.12.7 ([#2449](https://github.com/cloudquery/cloudquery/issues/2449)) ([121983d](https://github.com/cloudquery/cloudquery/commit/121983d27d74a2c09ad4e7cca9e9fbe6e06f6b02))
+* **deps:** Update plugin-sdk for digitalocean to v0.12.8 ([#2499](https://github.com/cloudquery/cloudquery/issues/2499)) ([e346804](https://github.com/cloudquery/cloudquery/commit/e3468040148fad827f3b24262d6f815532465743))
+* **deps:** Update plugin-sdk for digitalocean to v0.12.9 ([#2513](https://github.com/cloudquery/cloudquery/issues/2513)) ([43e2eab](https://github.com/cloudquery/cloudquery/commit/43e2eab158df7be3b52266705cad2b15452ef358))
+
 ## [1.0.0](https://github.com/cloudquery/cloudquery/compare/plugins/source/digitalocean/v0.6.5...plugins-source-digitalocean-v1.0.0) (2022-10-04)
 
 
