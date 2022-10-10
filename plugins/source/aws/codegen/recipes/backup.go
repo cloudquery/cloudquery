@@ -23,9 +23,10 @@ func BackupResources() []*Resource {
 			},
 		},
 		{
-			SubService: "plans",
-			Struct:     &backup.GetBackupPlanOutput{},
-			SkipFields: []string{"BackupPlanArn"},
+			SubService:          "plans",
+			Struct:              &backup.GetBackupPlanOutput{},
+			SkipFields:          []string{"BackupPlanArn"},
+			PreResourceResolver: "getPlan",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

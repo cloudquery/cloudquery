@@ -10,9 +10,10 @@ import (
 func QLDBResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "ledgers",
-			Struct:     &qldb.DescribeLedgerOutput{},
-			SkipFields: []string{"Arn"},
+			SubService:          "ledgers",
+			Struct:              &qldb.DescribeLedgerOutput{},
+			SkipFields:          []string{"Arn"},
+			PreResourceResolver: "getLedger",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

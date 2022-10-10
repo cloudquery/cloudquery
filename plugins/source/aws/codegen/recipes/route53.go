@@ -32,9 +32,10 @@ func Route53Resources() []*Resource {
 		},
 
 		{
-			SubService: "domains",
-			Struct:     &route53domains.GetDomainDetailOutput{},
-			SkipFields: []string{"DomainName", "_"},
+			SubService:          "domains",
+			Struct:              &route53domains.GetDomainDetailOutput{},
+			SkipFields:          []string{"DomainName", "_"},
+			PreResourceResolver: "getDomain",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",

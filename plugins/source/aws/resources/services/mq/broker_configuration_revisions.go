@@ -9,9 +9,10 @@ import (
 
 func BrokerConfigurationRevisions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_mq_broker_configuration_revisions",
-		Resolver:  fetchMqBrokerConfigurationRevisions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("mq"),
+		Name:                "aws_mq_broker_configuration_revisions",
+		Resolver:            fetchMqBrokerConfigurationRevisions,
+		PreResourceResolver: getMqBrokerConfigurationRevision,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("mq"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -39,8 +39,8 @@ func TestTypes(t *testing.T) {
 			t.Fatalf("failed to find column %s in table %s", column.Name, testTable.Name)
 		}
 
-		if pgColumn.typ != SchemaTypeToPg(column.Type) {
-			t.Fatalf("failed to migrate table. column %s pg type is %s but expected %s", column.Name, pgColumn.typ, SchemaTypeToPg(column.Type))
+		if pgColumn.typ != c.SchemaTypeToPg(column.Type) {
+			t.Fatalf("failed to migrate table. column %s pg type is %s but expected %s", column.Name, pgColumn.typ, c.SchemaTypeToPg(column.Type))
 		}
 	}
 }

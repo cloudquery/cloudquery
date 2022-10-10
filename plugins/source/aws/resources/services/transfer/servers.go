@@ -9,9 +9,10 @@ import (
 
 func Servers() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_transfer_servers",
-		Resolver:  fetchTransferServers,
-		Multiplex: client.ServiceAccountRegionMultiplexer("transfer"),
+		Name:                "aws_transfer_servers",
+		Resolver:            fetchTransferServers,
+		PreResourceResolver: getServer,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("transfer"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

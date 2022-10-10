@@ -10,9 +10,10 @@ func SESResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "templates",
-			Struct:     &models.Template{},
-			SkipFields: []string{},
+			SubService:          "templates",
+			Struct:              &models.Template{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getTemplate",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

@@ -19,18 +19,8 @@ func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *sch
 		if err != nil {
 			return err
 		}
-		for _, name := range result.Workflows {
-			w, err := svc.GetWorkflow(ctx, &glue.GetWorkflowInput{Name: aws.String(name)})
-			if err != nil {
-				if cl.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			if w.Workflow != nil {
-				res <- *w.Workflow
-			}
-		}
+		res <- result.Workflows
+
 		if aws.ToString(result.NextToken) == "" {
 			break
 		}
@@ -38,16 +28,32 @@ func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
+
+func getWorkflow(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Glue
+	wf := resource.Item.(string)
+
+	w, err := svc.GetWorkflow(ctx, &glue.GetWorkflowInput{Name: &wf})
+	if err != nil {
+		return err
+	}
+
+	resource.Item = w.Workflow
+	return nil
+}
+
 func resolveGlueWorkflowArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	arn := aws.String(workflowARN(cl, aws.ToString(resource.Item.(types.Workflow).Name)))
+	arn := aws.String(workflowARN(cl, aws.ToString(resource.Item.(*types.Workflow).Name)))
 	return resource.Set(c.Name, arn)
 }
+
 func resolveGlueWorkflowTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Glue
 	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
-		ResourceArn: aws.String(workflowARN(cl, aws.ToString(resource.Item.(types.Workflow).Name))),
+		ResourceArn: aws.String(workflowARN(cl, aws.ToString(resource.Item.(*types.Workflow).Name))),
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {

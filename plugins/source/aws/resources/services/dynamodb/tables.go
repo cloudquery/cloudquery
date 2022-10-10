@@ -9,9 +9,10 @@ import (
 
 func Tables() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_dynamodb_tables",
-		Resolver:  fetchDynamodbTables,
-		Multiplex: client.ServiceAccountRegionMultiplexer("dynamodb"),
+		Name:                "aws_dynamodb_tables",
+		Resolver:            fetchDynamodbTables,
+		PreResourceResolver: getTable,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("dynamodb"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

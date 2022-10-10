@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
+	"github.com/aws/aws-sdk-go-v2/service/backup/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -18,21 +19,8 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 		if err != nil {
 			return err
 		}
-		for _, m := range result.BackupPlansList {
-			plan, err := svc.GetBackupPlan(
-				ctx,
-				&backup.GetBackupPlanInput{BackupPlanId: m.BackupPlanId, VersionId: m.VersionId},
-				func(o *backup.Options) {
-					o.Region = cl.Region
-				},
-			)
-			if err != nil {
-				return err
-			}
-			if plan != nil {
-				res <- *plan
-			}
-		}
+		res <- result.BackupPlansList
+
 		if aws.ToString(result.NextToken) == "" {
 			break
 		}
@@ -41,16 +29,30 @@ func fetchBackupPlans(ctx context.Context, meta schema.ClientMeta, parent *schem
 	return nil
 }
 
+func getPlan(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services().Backup
+	m := resource.Item.(types.BackupPlansListMember)
+
+	plan, err := svc.GetBackupPlan(
+		ctx,
+		&backup.GetBackupPlanInput{BackupPlanId: m.BackupPlanId, VersionId: m.VersionId},
+	)
+	if err != nil {
+		return err
+	}
+	resource.Item = plan
+	return nil
+}
+
 func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	plan := resource.Item.(backup.GetBackupPlanOutput)
+	plan := resource.Item.(*backup.GetBackupPlanOutput)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListTagsInput{ResourceArn: plan.BackupPlanArn}
 	tags := make(map[string]string)
 	for {
-		result, err := svc.ListTags(ctx, &params, func(o *backup.Options) {
-			o.Region = cl.Region
-		})
+		result, err := svc.ListTags(ctx, &params)
 		if result == nil {
 			break
 		}
@@ -69,7 +71,7 @@ func resolvePlanTags(ctx context.Context, meta schema.ClientMeta, resource *sche
 }
 
 func fetchBackupPlanSelections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	plan := parent.Item.(backup.GetBackupPlanOutput)
+	plan := parent.Item.(*backup.GetBackupPlanOutput)
 	cl := meta.(*client.Client)
 	svc := cl.Services().Backup
 	params := backup.ListBackupSelectionsInput{

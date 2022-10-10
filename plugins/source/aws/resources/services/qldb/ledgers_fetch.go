@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
+	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -18,20 +19,8 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 		if err != nil {
 			return err
 		}
-		ledgers := make([]*qldb.DescribeLedgerOutput, 0, len(response.Ledgers))
-		for _, l := range response.Ledgers {
-			response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name}, func(o *qldb.Options) {
-				o.Region = c.Region
-			})
-			if err != nil {
-				if c.IsNotFoundError(err) {
-					continue
-				}
-				return err
-			}
-			ledgers = append(ledgers, response)
-		}
-		res <- ledgers
+		res <- response.Ledgers
+
 		if aws.ToString(response.NextToken) == "" {
 			break
 		}
@@ -39,6 +28,20 @@ func fetchQldbLedgers(ctx context.Context, meta schema.ClientMeta, _ *schema.Res
 	}
 	return nil
 }
+
+func getLedger(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().QLDB
+	l := resource.Item.(types.LedgerSummary)
+
+	response, err := svc.DescribeLedger(ctx, &qldb.DescribeLedgerInput{Name: l.Name})
+	if err != nil {
+		return err
+	}
+	resource.Item = response
+	return nil
+}
+
 func resolveQldbLedgerTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	ledger := resource.Item.(*qldb.DescribeLedgerOutput)
 
