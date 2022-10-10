@@ -32,6 +32,11 @@ func ReservedInstances() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "availability_zone",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("AvailabilityZone"),
@@ -110,11 +115,6 @@ func ReservedInstances() *schema.Table {
 				Name:     "state",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("State"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "usage_price",
