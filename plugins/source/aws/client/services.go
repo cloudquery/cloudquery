@@ -332,8 +332,10 @@ type Ec2Client interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecr.go . EcrClient
 type EcrClient interface {
+	DescribeRegistry(ctx context.Context, params *ecr.DescribeRegistryInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRegistryOutput, error)
 	DescribeRepositories(ctx context.Context, params *ecr.DescribeRepositoriesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error)
 	DescribeImages(ctx context.Context, params *ecr.DescribeImagesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error)
+	GetRegistryPolicy(ctx context.Context, params *ecr.GetRegistryPolicyInput, optFns ...func(*ecr.Options)) (*ecr.GetRegistryPolicyOutput, error)
 	ListTagsForResource(ctx context.Context, params *ecr.ListTagsForResourceInput, optFns ...func(*ecr.Options)) (*ecr.ListTagsForResourceOutput, error)
 }
 
