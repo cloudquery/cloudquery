@@ -46,6 +46,7 @@
 |aws_directconnect_virtual_interfaces||
 |aws_dms_replication_instances||
 |aws_dynamodb_tables||
+|aws_regions|Describes a Region.|
 |aws_ec2_byoip_cidrs||
 |aws_ec2_customer_gateways||
 |aws_ec2_ebs_snapshots||
@@ -55,26 +56,27 @@
 |aws_ec2_flow_logs||
 |aws_ec2_hosts||
 |aws_ec2_images||
+|aws_ec2_instances||
 |aws_ec2_instance_statuses||
 |aws_ec2_instance_types||
-|aws_ec2_instances||
 |aws_ec2_internet_gateways||
 |aws_ec2_key_pairs||
 |aws_ec2_nat_gateways||
 |aws_ec2_network_acls||
 |aws_ec2_network_interfaces||
 |aws_ec2_regional_config||
-|aws_regions|Describes a Region.|
 |aws_ec2_route_tables||
 |aws_ec2_security_groups||
 |aws_ec2_subnets||
 |aws_ec2_transit_gateways||
+|aws_ec2_vpc_endpoints||
 |aws_ec2_vpc_endpoint_service_configurations||
 |aws_ec2_vpc_endpoint_services||
-|aws_ec2_vpc_endpoints||
 |aws_ec2_vpc_peering_connections||
 |aws_ec2_vpcs||
 |aws_ec2_vpn_gateways||
+|aws_ecr_registries||
+|aws_ecr_registry_policies||
 |aws_ecr_repositories||
 |aws_ecs_clusters||
 |aws_ecs_task_definitions||
@@ -92,8 +94,8 @@
 |aws_elasticache_subnet_groups||
 |aws_elasticache_user_groups||
 |aws_elasticache_users||
-|aws_elasticbeanstalk_application_versions||
 |aws_elasticbeanstalk_applications||
+|aws_elasticbeanstalk_application_versions||
 |aws_elasticbeanstalk_environments||
 |aws_elasticsearch_domains||
 |aws_elbv1_load_balancers||
@@ -144,8 +146,8 @@
 |aws_iot_security_profiles||
 |aws_iot_streams||
 |aws_iot_thing_groups||
-|aws_iot_thing_types||
 |aws_iot_things||
+|aws_iot_thing_types||
 |aws_iot_topic_rules||
 |aws_kinesis_streams||
 |aws_kms_aliases||
@@ -157,12 +159,12 @@
 |aws_lightsail_buckets||
 |aws_lightsail_certificates||
 |aws_lightsail_container_services||
-|aws_lightsail_database_snapshots||
 |aws_lightsail_databases||
+|aws_lightsail_database_snapshots||
 |aws_lightsail_disks||
 |aws_lightsail_distributions||
-|aws_lightsail_instance_snapshots||
 |aws_lightsail_instances||
+|aws_lightsail_instance_snapshots||
 |aws_lightsail_load_balancers||
 |aws_lightsail_static_ips||
 |aws_mq_brokers||
@@ -170,8 +172,8 @@
 |aws_qldb_ledgers||
 |aws_rds_certificates||
 |aws_rds_cluster_parameter_groups||
-|aws_rds_cluster_snapshots||
 |aws_rds_clusters||
+|aws_rds_cluster_snapshots||
 |aws_rds_db_parameter_groups||
 |aws_rds_db_security_groups||
 |aws_rds_db_snapshots||
