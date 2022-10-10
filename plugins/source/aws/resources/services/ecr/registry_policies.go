@@ -19,11 +19,6 @@ func RegistryPolicies() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
 				Name:     "registry_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RegistryId"),
@@ -33,7 +28,7 @@ func RegistryPolicies() *schema.Table {
 			},
 			{
 				Name:     "policy_text",
-				Type:     schema.TypeString,
+				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("PolicyText"),
 			},
 		},

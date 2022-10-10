@@ -14,32 +14,43 @@ func ECRResources() []*Resource {
 			Struct:     &ecr.DescribeRegistryOutput{},
 			SkipFields: []string{"RegistryId", "ResultMetadata"},
 			Multiplex:  `client.AccountMultiplex`,
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "registry_id",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("RegistryId")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSAccount`,
+				},
+				{
+					Name:     "registry_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("RegistryId")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
 		},
 		{
 			SubService: "registry_policies",
 			Struct:     &ecr.GetRegistryPolicyOutput{},
-			SkipFields: []string{"RegistryId", "ResultMetadata"},
+			SkipFields: []string{"RegistryId", "PolicyText", "ResultMetadata"},
 			Multiplex:  `client.AccountMultiplex`,
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "registry_id",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("RegistryId")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: `client.ResolveAWSAccount`,
+				},
+				{
+					Name:     "registry_id",
+					Type:     schema.TypeString,
+					Resolver: `schema.PathResolver("RegistryId")`,
+					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:     "policy_text",
+					Type:     schema.TypeJSON,
+					Resolver: `schema.PathResolver("PolicyText")`,
+				},
+			},
 		},
 		{
 			SubService: "repositories",

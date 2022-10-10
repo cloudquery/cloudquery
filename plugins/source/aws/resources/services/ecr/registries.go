@@ -19,11 +19,6 @@ func Registries() *schema.Table {
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:     "region",
-				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
 				Name:     "registry_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RegistryId"),

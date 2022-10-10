@@ -18,12 +18,29 @@ func buildEcrRegistryPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.
 	if err != nil {
 		t.Fatal(err)
 	}
-	var policyText string
-	err = faker.FakeData(&policyText)
-	if err != nil {
-		t.Fatal(err)
-	}
-
+	policyText := `{
+		"Version": "2012-10-17",
+		"Statement": [
+			{
+				"Effect": "Allow",
+				"Action": [
+					"ecr:GetAuthorizationToken",
+					"ecr:BatchCheckLayerAvailability",
+					"ecr:GetDownloadUrlForLayer",
+					"ecr:GetRepositoryPolicy",
+					"ecr:DescribeRepositories",
+					"ecr:ListImages",
+					"ecr:DescribeImages",
+					"ecr:BatchGetImage",
+					"ecr:GetLifecyclePolicy",
+					"ecr:GetLifecyclePolicyPreview",
+					"ecr:ListTagsForResource",
+					"ecr:DescribeImageScanFindings"
+				],
+				"Resource": "*"
+			}
+		]
+	}`
 	m.EXPECT().GetRegistryPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ecr.GetRegistryPolicyOutput{
 			PolicyText: aws.String(policyText),
