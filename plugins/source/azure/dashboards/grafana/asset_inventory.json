@@ -123,7 +123,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select count(*) from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) and cq_table in (${cq_tables}) ;",
+          "rawSql": "select count(*) from azure_resources where subscription_id in (${subscription_ids}) and location in (${locations}) and _cq_table in (${cq_tables}) ;",
           "refId": "A"
         }
       ],
@@ -183,7 +183,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select subscription_id, count(*) from azure_resources where location in (${locations}) and cq_table in (${cq_tables}) group by subscription_id order by count desc;",
+          "rawSql": "select subscription_id, count(*) from azure_resources where location in (${locations}) and _cq_table in (${cq_tables}) group by subscription_id order by count desc;",
           "refId": "A"
         }
       ],
@@ -295,7 +295,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cq_table"
+              "options": "_cq_table"
             },
             "properties": [
               {
@@ -331,7 +331,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "fetch_date"
+              "options": "_cq_sync_time"
             },
             "properties": [
               {

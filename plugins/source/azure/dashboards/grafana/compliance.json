@@ -200,7 +200,7 @@
         "type": "postgres",
         "uid": "${DS_POSTGRESQL}"
       },
-      "description": "Time since the most recent CloudQuery fetch happened.",
+      "description": "Time since the most recent CloudQuery sync happened.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -258,7 +258,7 @@
           "refId": "A"
         }
       ],
-      "title": "Last Fetch",
+      "title": "Last Sync",
       "type": "stat"
     },
     {
