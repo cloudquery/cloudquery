@@ -40,3 +40,5 @@ jobs:
         run: make gen-docs
       - name: Fail if docs are changed
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
+      - name: Fail if code generation changed services
+        run: test "$(git status -s ./resources/services | wc -l)" -eq 0
