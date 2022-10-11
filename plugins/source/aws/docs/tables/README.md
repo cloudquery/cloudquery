@@ -149,6 +149,7 @@
 |aws_iot_things||
 |aws_iot_topic_rules||
 |aws_kinesis_streams||
+|aws_kms_aliases||
 |aws_kms_keys||
 |aws_lambda_functions||
 |aws_lambda_layers||

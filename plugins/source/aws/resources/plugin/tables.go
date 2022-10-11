@@ -220,6 +220,7 @@ func tables() []*schema.Table {
 		iot.Things(),
 		iot.TopicRules(),
 		kinesis.Streams(),
+		kms.Aliases(),
 		kms.Keys(),
 		lambda.Functions(),
 		lambda.Layers(),

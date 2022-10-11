@@ -9,17 +9,23 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func (p *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
+func (c *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
 	var sql string
 	var values []interface{}
-	if p.spec.WriteMode == specs.WriteModeAppend {
+
+	if c.spec.WriteMode == specs.WriteModeAppend {
 		sql, values = insert(table, data)
 	} else {
 		sql, values = upsert(table, data)
 	}
-	_, err := p.conn.Exec(ctx, sql, values...)
-	if err != nil {
-		return fmt.Errorf("failed to insert data with sql '%s': %w", sql, err)
+	c.batch.Queue(sql, values...)
+	if c.batch.Len() >= c.batchSize {
+		br := c.conn.SendBatch(ctx, c.batch)
+		if err := br.Close(); err != nil {
+			c.batch = &pgx.Batch{}
+			return fmt.Errorf("failed to execute batch: %v", err)
+		}
+		c.batch = &pgx.Batch{}
 	}
 	return nil
 }
