@@ -11,10 +11,10 @@ The following tables depend on `gcp_kms_keyrings`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |project_id|String|
 |name|String|
 |create_time|Timestamp|
