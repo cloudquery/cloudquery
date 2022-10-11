@@ -35,7 +35,7 @@ For production deployment see [terraform-aws-cloudquery](https://github.com/clou
 
 You can try out some of our pre-made dashboards by [importing](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard) them straight from our GitHub: [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/dashboards), [GCP](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/dashboards)
 
-## Dashboards Examples and Use Cases
+## Dashboard Examples and Use Cases
 
 ### Asset (Resource) Search
 
