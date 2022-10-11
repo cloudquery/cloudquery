@@ -192,19 +192,21 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", totalResources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
 		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
-	analyticsClient.Enqueue(analytics.Track{
+	if err := analyticsClient.Enqueue(analytics.Track{
 		UserId: "test",
-		Event: "sync",
+		Event:  "sync",
 		Properties: map[string]interface{}{
-			"cli_version": Version,
-			"source_path": sourceSpec.Path,
+			"cli_version":    Version,
+			"source_path":    sourceSpec.Path,
 			"source_version": sourceSpec.Version,
-			"destinations": sourceSpec.Destinations,
-			"resources": totalResources,
-			"errors": summary.Errors,
-			"panic": summary.Panics,
-			"failed_writes": failedWrites,
+			"destinations":   sourceSpec.Destinations,
+			"resources":      totalResources,
+			"errors":         summary.Errors,
+			"panic":          summary.Panics,
+			"failed_writes":  failedWrites,
 		},
-	})
+	}); err != nil {
+		log.Error().Err(err).Msg("Failed to enqueue analytics event")
+	}
 	return nil
 }

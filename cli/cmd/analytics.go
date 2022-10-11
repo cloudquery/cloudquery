@@ -13,7 +13,7 @@ type Analytics struct {
 
 func initAnalytics() *Analytics {
 	c := Analytics{
-		client : analytics.New(rudderStackWritekey, rudderStackEndpoint),
+		client: analytics.New(rudderStackWritekey, rudderStackEndpoint),
 	}
 	return &c
 }
@@ -31,4 +31,3 @@ func (a *Analytics) Close() error {
 	}
 	return nil
 }
-

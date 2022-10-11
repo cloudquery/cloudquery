@@ -38,9 +38,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		} else {
 			writers = append(writers, os.Stderr)
 		}
-
 	}
-
 	mw := io.MultiWriter(writers...)
 	log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
 	return logFile, nil

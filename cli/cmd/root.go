@@ -28,7 +28,6 @@ Find more information at:
 	analyticsClient *Analytics
 )
 
-
 func strInArray(str string, arr []string) bool {
 	for _, s := range arr {
 		if s == str {
@@ -37,7 +36,6 @@ func strInArray(str string, arr []string) bool {
 	}
 	return false
 }
-
 
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
@@ -72,7 +70,7 @@ func NewCmdRoot() *cobra.Command {
 			}
 
 			if sentryDsn != "" && Version != "development" && telemetryLevel != "none" {
-				if err := initSentry(sentryDsn, Version) ; err != nil {
+				if err := initSentry(sentryDsn, Version); err != nil {
 					// we don't fail on sentry init errors as there might be no connection or sentry can be blocked.
 					log.Err(err).Msg("failed to initialize sentry")
 				}
@@ -100,7 +98,7 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemtry (analytics) flags
-	cmd.PersistentFlags().String("telemetry-level", "all" ,"Telemetry level (none, errors, all)")
+	cmd.PersistentFlags().String("telemetry-level", "all", "Telemetry level (none, errors, all)")
 	// we dont need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
 	// the only exception is the telemetry as people might want to put in a bash starter script
 	if err := viper.BindPFlag("telemetry-level", cmd.PersistentFlags().Lookup("telemetry-level")); err != nil {
@@ -119,9 +117,9 @@ func initViper() {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
-	viper.SetConfigName("config") // name of config file (without extension)
-	viper.SetConfigType("yaml") // REQUIRED if the config file does not have the extension in the name
-	viper.AddConfigPath("/etc/cq/")   // path to look for the config file in
-	viper.AddConfigPath("$HOME/.cq")  // call multiple times to add many search paths
-	viper.AddConfigPath(".")  
+	viper.SetConfigName("config")    // name of config file (without extension)
+	viper.SetConfigType("yaml")      // REQUIRED if the config file does not have the extension in the name
+	viper.AddConfigPath("/etc/cq/")  // path to look for the config file in
+	viper.AddConfigPath("$HOME/.cq") // call multiple times to add many search paths
+	viper.AddConfigPath(".")
 }
