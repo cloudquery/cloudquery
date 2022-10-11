@@ -34,7 +34,7 @@ LOOP
 END LOOP;
 
 IF strSQL = ''::TEXT THEN
-    RAISE EXCEPTION 'No tables found with ID and SUBSCRIPTION_ID columns. Run a fetch first and try again.';
+    RAISE EXCEPTION 'No tables found with ID and SUBSCRIPTION_ID columns. Run a sync first and try again.';
 ELSE
     EXECUTE FORMAT('CREATE VIEW azure_resources AS (%s)', strSQL);
 END IF;
