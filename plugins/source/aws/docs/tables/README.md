@@ -46,7 +46,6 @@
 |aws_directconnect_virtual_interfaces||
 |aws_dms_replication_instances||
 |aws_dynamodb_tables||
-|aws_regions|Describes a Region.|
 |aws_ec2_byoip_cidrs||
 |aws_ec2_customer_gateways||
 |aws_ec2_ebs_snapshots||
@@ -65,6 +64,7 @@
 |aws_ec2_network_acls||
 |aws_ec2_network_interfaces||
 |aws_ec2_regional_config||
+|aws_regions|Describes a Region.|
 |aws_ec2_reserved_instances||
 |aws_ec2_route_tables||
 |aws_ec2_security_groups||

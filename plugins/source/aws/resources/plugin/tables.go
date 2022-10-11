@@ -117,7 +117,6 @@ func tables() []*schema.Table {
 		directconnect.VirtualInterfaces(),
 		dms.ReplicationInstances(),
 		dynamodb.Tables(),
-		ec2.AwsRegions(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
 		ec2.EbsSnapshots(),
