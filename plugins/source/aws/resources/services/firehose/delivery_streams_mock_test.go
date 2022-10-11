@@ -6,9 +6,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/firehose/types"
-	"github.com/bxcodec/faker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,7 +16,7 @@ func buildKinesisFirehoses(t *testing.T, ctrl *gomock.Controller) client.Service
 	f := mocks.NewMockFirehoseClient(ctrl)
 
 	streams := firehose.ListDeliveryStreamsOutput{}
-	err := faker.FakeData(&streams)
+	err := faker.FakeObject(&streams)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -26,7 +26,7 @@ func buildKinesisFirehoses(t *testing.T, ctrl *gomock.Controller) client.Service
 
 	stream := firehose.DescribeDeliveryStreamOutput{}
 
-	err = faker.FakeData(&stream)
+	err = faker.FakeObject(&stream)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func buildKinesisFirehoses(t *testing.T, ctrl *gomock.Controller) client.Service
 	f.EXPECT().DescribeDeliveryStream(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(&stream, nil)
 
 	tags := firehose.ListTagsForDeliveryStreamOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}

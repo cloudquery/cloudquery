@@ -74,7 +74,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.13.19
 	github.com/aws/smithy-go v1.13.3
 	github.com/basgys/goxml2json v1.1.0
-	github.com/bxcodec/faker v2.0.1+incompatible
 	github.com/cloudquery/faker/v3 v3.7.7
 	github.com/cloudquery/plugin-sdk v0.12.10
 	github.com/ettle/strcase v0.1.1
