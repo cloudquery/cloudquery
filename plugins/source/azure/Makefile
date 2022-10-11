@@ -26,4 +26,5 @@ gen-docs:
 
 .PHONY: gen-code
 gen-code:
+	go install golang.org/x/tools/cmd/goimports@latest
 	go run codegen/main.go
