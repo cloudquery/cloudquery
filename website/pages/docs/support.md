@@ -8,7 +8,7 @@ Community support is free and available to everyone.
 
 [Join our Discord](https://discord.gg/8qZ7Y4Z) to ask questions and get help from both us and the community.
 
-[Github Issues](https://github.com/cloudquery/cloudquery/issues) for bug reports, feature requests, and/or questions.
+[GitHub Issues](https://github.com/cloudquery/cloudquery/issues) for bug reports, feature requests, and/or questions.
 
 ## Enterprise
 
