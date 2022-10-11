@@ -12,7 +12,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegenmain/recipes"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/codegen/recipes"
 	sdkgen "github.com/cloudquery/plugin-sdk/codegen"
 )
 
