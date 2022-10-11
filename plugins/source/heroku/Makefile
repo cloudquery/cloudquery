@@ -27,3 +27,7 @@ gen-docs:
 .PHONY: lint
 lint:
 	golangci-lint run
+
+.PHONY: gen-code
+gen-code:
+	go run codegen/main.go
