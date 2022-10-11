@@ -30,7 +30,7 @@ LOOP
 END LOOP;
 
 IF strSQL = ''::TEXT THEN
-    RAISE EXCEPTION 'No tables found with ARN and ACCOUNT_ID columns. Run a fetch first and try again.';
+    RAISE EXCEPTION 'No tables found with ARN and ACCOUNT_ID columns. Run a sync first and try again.';
 ELSE
 	EXECUTE FORMAT('CREATE VIEW aws_resources AS (%s)', strSQL);
 END IF;
