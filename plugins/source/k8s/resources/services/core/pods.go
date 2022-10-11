@@ -272,6 +272,11 @@ func Pods() *schema.Table {
 				Resolver: schema.PathResolver("Spec.OS"),
 			},
 			{
+				Name:     "spec_host_users",
+				Type:     schema.TypeBool,
+				Resolver: schema.PathResolver("Spec.HostUsers"),
+			},
+			{
 				Name:     "status_phase",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Status.Phase"),
