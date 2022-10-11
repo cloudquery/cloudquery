@@ -151,6 +151,7 @@ type Services struct {
 	DynamoDB               DynamoDBClient
 	EC2                    Ec2Client
 	ECR                    EcrClient
+	ECRPublic              EcrPublicClient
 	ECS                    EcsClient
 	EFS                    EfsClient
 	Eks                    EksClient

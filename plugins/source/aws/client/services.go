@@ -28,6 +28,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
@@ -336,6 +337,16 @@ type EcrClient interface {
 	DescribeRepositories(ctx context.Context, params *ecr.DescribeRepositoriesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error)
 	DescribeImages(ctx context.Context, params *ecr.DescribeImagesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error)
 	ListTagsForResource(ctx context.Context, params *ecr.ListTagsForResourceInput, optFns ...func(*ecr.Options)) (*ecr.ListTagsForResourceOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_ecrpublic.go . EcrPublicClient
+type EcrPublicClient interface {
+	DescribeImageTags(ctx context.Context, params *ecrpublic.DescribeImageTagsInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImageTagsOutput, error)
+	DescribeImages(ctx context.Context, params *ecrpublic.DescribeImagesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImagesOutput, error)
+	DescribeRegistries(ctx context.Context, params *ecrpublic.DescribeRegistriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRegistriesOutput, error)
+	DescribeRepositories(ctx context.Context, params *ecrpublic.DescribeRepositoriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRepositoriesOutput, error)
+	GetRepositoryPolicy(ctx context.Context, params *ecrpublic.GetRepositoryPolicyInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.GetRepositoryPolicyOutput, error)
+	ListTagsForResource(ctx context.Context, params *ecrpublic.ListTagsForResourceInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecs.go . EcsClient

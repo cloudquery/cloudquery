@@ -35,6 +35,7 @@ func main() {
 	resources = append(resources, recipes.EMRResources()...)
 	resources = append(resources, recipes.EC2Resources()...)
 	resources = append(resources, recipes.ECRResources()...)
+	resources = append(resources, recipes.ECRPublicResources()...)
 	resources = append(resources, recipes.ECSResources()...)
 	resources = append(resources, recipes.EFSResources()...)
 	resources = append(resources, recipes.EKSResources()...)
