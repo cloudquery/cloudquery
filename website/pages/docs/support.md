@@ -1,6 +1,6 @@
 # Support
 
-Few levels and channels of support are available
+A few levels and channels of support are available.
 
 ## Community
 
