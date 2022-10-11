@@ -42,21 +42,6 @@ func Repositories() *schema.Table {
 				Resolver: schema.PathResolver("CreatedAt"),
 			},
 			{
-				Name:     "encryption_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("EncryptionConfiguration"),
-			},
-			{
-				Name:     "image_scanning_configuration",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ImageScanningConfiguration"),
-			},
-			{
-				Name:     "image_tag_mutability",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("ImageTagMutability"),
-			},
-			{
 				Name:     "registry_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("RegistryId"),

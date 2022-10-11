@@ -51,16 +51,6 @@ func RepositoryImages() *schema.Table {
 				Resolver: schema.PathResolver("ImagePushedAt"),
 			},
 			{
-				Name:     "image_scan_findings_summary",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ImageScanFindingsSummary"),
-			},
-			{
-				Name:     "image_scan_status",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("ImageScanStatus"),
-			},
-			{
 				Name:     "image_size_in_bytes",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("ImageSizeInBytes"),
@@ -69,11 +59,6 @@ func RepositoryImages() *schema.Table {
 				Name:     "image_tags",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("ImageTags"),
-			},
-			{
-				Name:     "last_recorded_pull_time",
-				Type:     schema.TypeTimestamp,
-				Resolver: schema.PathResolver("LastRecordedPullTime"),
 			},
 			{
 				Name:     "registry_id",

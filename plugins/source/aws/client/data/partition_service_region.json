@@ -221,7 +221,6 @@
             "us-west-2-fips": {}
           }
         },
-        
         "api.ecr": {
           "regions": {
             "af-south-1": {},
