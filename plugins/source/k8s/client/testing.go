@@ -19,6 +19,8 @@ type TestOptions struct {
 }
 
 func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, *gomock.Controller) Services, options TestOptions) {
+	version := "vDev"
+
 	t.Helper()
 
 	table.IgnoreInTests = false
@@ -44,7 +46,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 
 	plugin := plugins.NewSourcePlugin(
 		table.Name,
-		"dev",
+		version,
 		[]*schema.Table{
 			table,
 		},
@@ -52,7 +54,9 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	)
 
 	plugins.TestSourcePluginSync(t, plugin, l, specs.Source{
-		Name:   "dev",
-		Tables: []string{table.Name},
+		Name:         "dev",
+		Version:      version,
+		Tables:       []string{table.Name},
+		Destinations: []string{"mock-destination"},
 	})
 }

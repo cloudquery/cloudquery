@@ -65,6 +65,7 @@
 |aws_ec2_network_acls||
 |aws_ec2_network_interfaces||
 |aws_ec2_regional_config||
+|aws_ec2_reserved_instances||
 |aws_ec2_route_tables||
 |aws_ec2_security_groups||
 |aws_ec2_subnets||

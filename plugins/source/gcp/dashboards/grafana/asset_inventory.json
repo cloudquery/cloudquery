@@ -123,7 +123,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select count(*) from gcp_resources where project_id in (${project_ids}) and region in (${regions}) and cq_table in (${cq_tables}) ;",
+          "rawSql": "select count(*) from gcp_resources where project_id in (${project_ids}) and region in (${regions}) and _cq_table in (${cq_tables}) ;",
           "refId": "A"
         }
       ],
@@ -183,7 +183,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select project_id, count(*) from gcp_resources where region in (${regions}) and cq_table in (${cq_tables}) group by project_id order by count desc;",
+          "rawSql": "select project_id, count(*) from gcp_resources where region in (${regions}) and _cq_table in (${cq_tables}) group by project_id order by count desc;",
           "refId": "A"
         }
       ],
@@ -295,19 +295,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cq_meta"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 392
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "cq_table"
+              "options": "_cq_table"
             },
             "properties": [
               {
@@ -343,7 +331,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "fetch_date"
+              "options": "_cq_sync_time"
             },
             "properties": [
               {
@@ -355,7 +343,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "cq_id"
+              "options": "_cq_id"
             },
             "properties": [
               {
@@ -395,7 +383,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select cq_id, cq_table, project_id, region, id, fetch_date from gcp_resources where project_id in (${project_ids}) and region in (${regions}) and cq_table in (${cq_tables}) ;",
+          "rawSql": "select _cq_id, _cq_table, project_id, region, id, _cq_sync_time from gcp_resources where project_id in (${project_ids}) and region in (${regions}) and _cq_table in (${cq_tables}) ;",
           "refId": "A",
           "select": [
             [
@@ -468,7 +456,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select cq_table, count(*) from gcp_resources where project_id in (${project_ids}) and region in (${regions}) group by cq_table order by count desc;",
+          "rawSql": "select _cq_table, count(*) from gcp_resources where project_id in (${project_ids}) and region in (${regions}) group by _cq_table order by count desc;",
           "refId": "A"
         }
       ],
@@ -605,13 +593,13 @@
       },
       {
         "current": {},
-        "definition": "select distinct(cq_table) from gcp_resources;",
+        "definition": "select distinct(_cq_table) from gcp_resources;",
         "hide": 0,
         "includeAll": true,
         "multi": true,
         "name": "cq_tables",
         "options": [],
-        "query": "select distinct(cq_table) from gcp_resources;",
+        "query": "select distinct(_cq_table) from gcp_resources;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,

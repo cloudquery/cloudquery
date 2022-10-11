@@ -276,6 +276,25 @@ func EC2Resources() []*Resource {
 			},
 		},
 		{
+			SubService: "reserved_instances",
+			Struct:     &types.ReservedInstances{},
+			SkipFields: []string{"Tags"},
+			ExtraColumns: append(defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: "resolveReservedInstanceArn",
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `client.ResolveTags`,
+					},
+				}...),
+		},
+		{
 			SubService: "route_tables",
 			Struct:     &types.RouteTable{},
 			ExtraColumns: append(defaultRegionalColumns,

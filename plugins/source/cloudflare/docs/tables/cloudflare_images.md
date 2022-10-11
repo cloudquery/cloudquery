@@ -16,6 +16,6 @@ The primary key for this table is **id**.
 |id (PK)|String|
 |filename|String|
 |metadata|JSON|
-|require_signed_ur_ls|Bool|
+|require_signed_urls|Bool|
 |variants|StringArray|
 |uploaded|Timestamp|

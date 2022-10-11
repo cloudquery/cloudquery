@@ -10,7 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func AwsRegions() *schema.Table {
+func Regions() *schema.Table {
 	return &schema.Table{
 		Name:        "aws_regions",
 		Description: "Describes a Region.",
