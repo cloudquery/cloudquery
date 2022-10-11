@@ -11,7 +11,7 @@ func RegistryPolicies() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_ecr_registry_policies",
 		Resolver:  fetchEcrRegistryPolicies,
-		Multiplex: client.AccountMultiplex("api.ecr"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("api.ecr"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

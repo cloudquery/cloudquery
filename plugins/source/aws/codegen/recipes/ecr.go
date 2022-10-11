@@ -13,7 +13,7 @@ func ECRResources() []*Resource {
 			SubService: "registries",
 			Struct:     &ecr.DescribeRegistryOutput{},
 			SkipFields: []string{"RegistryId", "ResultMetadata"},
-			Multiplex:  `client.AccountMultiplex("api.ecr")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -29,7 +29,7 @@ func ECRResources() []*Resource {
 			SubService: "registry_policies",
 			Struct:     &ecr.GetRegistryPolicyOutput{},
 			SkipFields: []string{"RegistryId", "PolicyText", "ResultMetadata"},
-			Multiplex:  `client.AccountMultiplex("api.ecr")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
