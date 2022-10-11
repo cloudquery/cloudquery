@@ -66,9 +66,7 @@ func resolveWafregionalWebACLTags(ctx context.Context, meta schema.ClientMeta, r
 }
 
 func resolveWafregionalWebACLResourcesForWebACL(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-
 	service := meta.(*client.Client).Services().WafRegional
-
 	output, err := service.ListResourcesForWebACL(ctx, &wafregional.ListResourcesForWebACLInput{
 		WebACLId: resource.Item.(types.WebACL).WebACLId,
 	})
