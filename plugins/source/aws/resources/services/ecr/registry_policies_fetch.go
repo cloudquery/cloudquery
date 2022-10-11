@@ -13,6 +13,9 @@ func fetchEcrRegistryPolicies(ctx context.Context, meta schema.ClientMeta, paren
 	svc := c.Services().ECR
 	output, err := svc.GetRegistryPolicy(ctx, &ecr.GetRegistryPolicyInput{})
 	if err != nil {
+		if client.IsAWSError(err, "RegistryPolicyNotFoundException") {
+			return nil
+		}
 		return err
 	}
 	res <- output
