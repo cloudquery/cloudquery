@@ -6,7 +6,7 @@ Several levels and channels of support are available.
 
 Community support is free and available to everyone.
 
-[Join our Discord](https://discord.gg/8qZ7Y4Z) to ask questions and get help from us and the community about CloudQuery.
+[Join our Discord](https://discord.gg/8qZ7Y4Z) to ask questions and get help from both us and the community.
 
 [Github Issues](https://github.com/cloudquery/cloudquery/issues) for bug reports, feature requests, and/or questions.
 
