@@ -25,6 +25,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecrpublic"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/efs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eks"
@@ -148,6 +149,7 @@ func tables() []*schema.Table {
 		ec2.Vpcs(),
 		ec2.VpnGateways(),
 		ecr.Repositories(),
+		ecrpublic.Repositories(),
 		ecs.Clusters(),
 		ecs.TaskDefinitions(),
 		efs.Filesystems(),

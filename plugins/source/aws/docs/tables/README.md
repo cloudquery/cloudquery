@@ -77,6 +77,7 @@
 |aws_ec2_vpcs||
 |aws_ec2_vpn_gateways||
 |aws_ecr_repositories||
+|aws_ecrpublic_repositories||
 |aws_ecs_clusters||
 |aws_ecs_task_definitions||
 |aws_efs_filesystems||
