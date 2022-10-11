@@ -15,7 +15,7 @@ func ECRResources() []*Resource {
 			SkipFields: []string{"RegistryId", "ResultMetadata"},
 			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
 			ExtraColumns: append(
-				defaultRegionalColumns,
+				defaultRegionalColumnsPK,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "registry_id",
@@ -31,7 +31,7 @@ func ECRResources() []*Resource {
 			SkipFields: []string{"RegistryId", "PolicyText", "ResultMetadata"},
 			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
 			ExtraColumns: append(
-				defaultRegionalColumns,
+				defaultRegionalColumnsPK,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "registry_id",

@@ -2,7 +2,7 @@
 
 
 
-The primary key for this table is **registry_id**.
+The composite primary key for this table is (**account_id**, **region**, **registry_id**).
 
 
 ## Columns
@@ -12,7 +12,7 @@ The primary key for this table is **registry_id**.
 |_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|account_id|String|
-|region|String|
+|account_id (PK)|String|
+|region (PK)|String|
 |registry_id (PK)|String|
 |policy_text|JSON|

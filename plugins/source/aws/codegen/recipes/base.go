@@ -56,6 +56,21 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 	},
 }
 
+var defaultRegionalColumnsPK = []codegen.ColumnDefinition{
+	{
+		Name:     "account_id",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAWSAccount",
+		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+	},
+	{
+		Name:     "region",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAWSRegion",
+		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+	},
+}
+
 func awsNameTransformer(f reflect.StructField) (string, error) {
 	c := caser.New(caser.WithCustomInitialisms(map[string]bool{
 		"EC2": true,
