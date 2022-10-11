@@ -15,7 +15,7 @@ The primary key for this table is **id**.
 |acm_status|String|
 |acm_status_reason|String|
 |app|JSON|
-|c_name|String|
+|cname|String|
 |created_at|Timestamp|
 |hostname|String|
 |id (PK)|String|
