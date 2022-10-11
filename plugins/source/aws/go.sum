@@ -188,8 +188,8 @@ github.com/bxcodec/faker v2.0.1+incompatible/go.mod h1:BNzfpVdTwnFJ6GtfYTcQu6l6r
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=
 github.com/cloudquery/faker/v3 v3.7.7/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
-github.com/cloudquery/plugin-sdk v0.12.10 h1:97n58G5mLE/Ek8WLKq/bjhD5JJPTotVonS105ie9MNY=
-github.com/cloudquery/plugin-sdk v0.12.10/go.mod h1:B2Z0lWNPeX7OSCVt/PP5fMZMUqVyZ2gpuNS3RfE9k0E=
+github.com/cloudquery/plugin-sdk v0.13.1 h1:8a/G32GYR93NkE0gmAZ2OfMfvh2aKmSD5xosVUfugLA=
+github.com/cloudquery/plugin-sdk v0.13.1/go.mod h1:B2Z0lWNPeX7OSCVt/PP5fMZMUqVyZ2gpuNS3RfE9k0E=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
