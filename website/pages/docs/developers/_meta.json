@@ -1,5 +1,5 @@
 {
   "architecture": "Architecture",
-  "developing-source-plugin": "Developing Source Plugin Tutorial",
-  "codegen": "Generating resources"
+  "creating-new-plugin": "Creating a New Plugin",
+  "codegen": "Generating Resources"
 }

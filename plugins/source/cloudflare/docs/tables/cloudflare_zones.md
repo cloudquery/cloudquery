@@ -15,10 +15,10 @@ The primary key for this table is **id**.
 |account_id|String|
 |id (PK)|String|
 |name|String|
-|dev_mode|Int|
-|original_ns|StringArray|
+|development_mode|Int|
+|original_name_servers|StringArray|
 |original_registrar|String|
-|original_dns_host|String|
+|original_dnshost|String|
 |created_on|Timestamp|
 |modified_on|Timestamp|
 |name_servers|StringArray|
@@ -30,9 +30,9 @@ The primary key for this table is **id**.
 |paused|Bool|
 |type|String|
 |host|JSON|
-|vanity_ns|StringArray|
+|vanity_name_servers|StringArray|
 |betas|StringArray|
-|deact_reason|String|
+|deactivation_reason|String|
 |meta|JSON|
 |account|JSON|
 |verification_key|String|

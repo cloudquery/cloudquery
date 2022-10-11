@@ -5,6 +5,7 @@ This destination plugin let's you sync data from a CloudQuery source to a Postgr
 Known supported databases versions:
 
 - PostgreSQL > v10
+- CockroachDB > v20.2
 
 ## PostgreSQL Spec
 
@@ -18,3 +19,7 @@ This is the top level spec used by the PostgreSQL destination Plugin.
 
   Available: "error", "warn", "info", "debug", "trace"
   define if and in which level to log [`pgx`](https://github.com/jackc/pgx) call.
+
+- `batch_size` (int) (optional, defaults to 1000)
+
+  Number of rows to insert in a single batch.

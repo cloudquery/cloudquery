@@ -23,3 +23,8 @@ install-hooks:
 gen-docs:
 	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
+
+.PHONY: gen-code
+gen-code:
+	go install golang.org/x/tools/cmd/goimports@latest
+	go run codegen/main.go

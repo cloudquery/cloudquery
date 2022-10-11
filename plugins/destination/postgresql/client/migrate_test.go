@@ -15,6 +15,7 @@ func TestMigrate(t *testing.T) {
 		WriteMode: specs.WriteModeOverwriteDeleteStale,
 		Spec: &Spec{
 			ConnectionString: getTestConnection(),
+			BatchSize:        1,
 		},
 	})
 	if err != nil {
@@ -44,11 +45,14 @@ func TestMigrate(t *testing.T) {
 		t.Fatalf("failed to migrate tables second time: %v", err)
 	}
 
-	if err := c.Migrate(ctx, []*schema.Table{testTable}); err != nil {
-		t.Fatalf("failed to migrate tables with different column: %v", err)
-	}
 	// check migration without column does nothing
 	testTable.Columns = testTable.Columns[:len(testTable.Columns)-1]
+	if err := c.Migrate(ctx, []*schema.Table{testTable}); err != nil {
+		t.Fatalf("failed to migrate tables with missing column: %v", err)
+	}
+
+	// migrate primary key
+	testTable.Columns[2].CreationOptions.PrimaryKey = true
 	if err := c.Migrate(ctx, []*schema.Table{testTable}); err != nil {
 		t.Fatalf("failed to migrate tables with missing column: %v", err)
 	}

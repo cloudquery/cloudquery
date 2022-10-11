@@ -15,17 +15,15 @@ import (
 	pgxUUID "github.com/vgarvardt/pgx-google-uuid/v4"
 )
 
-type Spec struct {
-	ConnectionString string   `json:"connection_string,omitempty"`
-	PgxLogLevel      LogLevel `json:"pgx_log_level,omitempty"`
-}
-
 type Client struct {
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	spec                specs.Destination
 	currentDatabaseName string
 	currentSchemaName   string
+	pgType              pgType
+	batchSize           int
+	batch               *pgx.Batch
 }
 
 type pgTablePrimaryKeys struct {
@@ -43,21 +41,44 @@ type pgTableColumns struct {
 	columns []pgColumn
 }
 
-const sqlSelectColumnTypes = `SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
-FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.relfilenode AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = $1)
-WHERE a.attnum > 0 -- hide internal columns
-AND NOT a.attisdropped -- hide deleted columns
-AND b.relname = $2`
+const sqlSelectColumnTypes = `
+SELECT
+pg_attribute.attname AS column_name,
+pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod) AS data_type
+FROM
+pg_catalog.pg_attribute
+INNER JOIN
+pg_catalog.pg_class ON pg_class.oid = pg_attribute.attrelid
+INNER JOIN
+pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
+WHERE
+pg_attribute.attnum > 0
+AND NOT pg_attribute.attisdropped
+AND pg_class.relname = $1
+ORDER BY
+attnum ASC;
+`
+
+type pgType int
+
+const (
+	invalid pgType = iota
+	pgTypePostgreSQL
+	pgTypeCockroachDB
+)
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
+		batch:  &pgx.Batch{},
 	}
 	var specPostgreSql Spec
 	c.spec = spec
 	if err := spec.UnmarshalSpec(&specPostgreSql); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
+	specPostgreSql.SetDefaults()
+	c.batchSize = specPostgreSql.BatchSize
 
 	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
@@ -83,39 +104,73 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
 	}
 
-	c.currentDatabaseName, err = c.currentDatabase()
+	c.currentDatabaseName, err = c.currentDatabase(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current database: %w", err)
 	}
 	c.currentSchemaName = "public"
+	c.pgType, err = c.getPgType(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get database type: %w", err)
+	}
 	return c, nil
 }
 
 func (c *Client) Close(ctx context.Context) error {
+	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
+	}
+	if c.batch.Len() > 0 {
+		br := c.conn.SendBatch(ctx, c.batch)
+		err = br.Close()
+		c.batch = &pgx.Batch{}
 	}
 	if c.conn != nil {
 		c.conn.Close()
 		c.conn = nil
 	}
-	return nil
+	return err
 }
 
-func (c *Client) currentDatabase() (string, error) {
+func (c *Client) currentDatabase(ctx context.Context) (string, error) {
 	var db string
-	err := c.conn.QueryRow(context.Background(), "select current_database()").Scan(&db)
+	err := c.conn.QueryRow(ctx, "select current_database()").Scan(&db)
 	if err != nil {
 		return "", err
 	}
 	return db, nil
 }
 
+func (c *Client) getPgType(ctx context.Context) (pgType, error) {
+	var version string
+	var typ pgType
+	err := c.conn.QueryRow(ctx, "select version()").Scan(&version)
+	if err != nil {
+		return typ, err
+	}
+	versionTokens := strings.Split(version, " ")
+	if len(versionTokens) == 0 {
+		return typ, fmt.Errorf("failed to parse version string %s", version)
+	}
+	name := strings.ToLower(versionTokens[0])
+	switch name {
+	case "postgresql":
+		typ = pgTypePostgreSQL
+	case "cockroachdb":
+		typ = pgTypeCockroachDB
+	default:
+		return typ, fmt.Errorf("unknown database type %s", name)
+	}
+
+	return typ, nil
+}
+
 func (c *Client) getPgTableColumns(ctx context.Context, tableName string) (*pgTableColumns, error) {
 	tc := pgTableColumns{
 		name: tableName,
 	}
-	rows, err := c.conn.Query(ctx, sqlSelectColumnTypes, c.currentSchemaName, tableName)
+	rows, err := c.conn.Query(ctx, sqlSelectColumnTypes, tableName)
 	if err != nil {
 		return nil, err
 	}

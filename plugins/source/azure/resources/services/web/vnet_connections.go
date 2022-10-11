@@ -92,6 +92,10 @@ func fetchWebVnetConnections(ctx context.Context, meta schema.ClientMeta, parent
 	svc := meta.(*client.Client).Services().Web.VnetConnections
 
 	site := parent.Item.(web.Site)
+	if site.SiteConfig == nil {
+		return nil
+	}
+
 	response, err := svc.GetVnetConnection(ctx, *site.ResourceGroup, *site.Name, *site.SiteConfig.VnetName)
 	if err != nil {
 		return err

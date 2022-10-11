@@ -75,6 +75,26 @@ func (mr *MockKmsClientMockRecorder) GetKeyRotationStatus(arg0, arg1 interface{}
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetKeyRotationStatus", reflect.TypeOf((*MockKmsClient)(nil).GetKeyRotationStatus), varargs...)
 }
 
+// ListAliases mocks base method.
+func (m *MockKmsClient) ListAliases(arg0 context.Context, arg1 *kms.ListAliasesInput, arg2 ...func(*kms.Options)) (*kms.ListAliasesOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAliases", varargs...)
+	ret0, _ := ret[0].(*kms.ListAliasesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAliases indicates an expected call of ListAliases.
+func (mr *MockKmsClientMockRecorder) ListAliases(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAliases", reflect.TypeOf((*MockKmsClient)(nil).ListAliases), varargs...)
+}
+
 // ListKeys mocks base method.
 func (m *MockKmsClient) ListKeys(arg0 context.Context, arg1 *kms.ListKeysInput, arg2 ...func(*kms.Options)) (*kms.ListKeysOutput, error) {
 	m.ctrl.T.Helper()
