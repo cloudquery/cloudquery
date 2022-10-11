@@ -2,14 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
-	"github.com/getsentry/sentry-go"
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/rudderlabs/analytics-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -25,18 +23,32 @@ Open source data integration that works.
 
 Find more information at:
 	https://cloudquery.io`
+	telemetryLevels = []string{"none", "errors", "all"}
+
+	analyticsClient *Analytics
 )
+
+
+func strInArray(str string, arr []string) bool {
+	for _, s := range arr {
+		if s == str {
+			return true
+		}
+	}
+	return false
+}
+
 
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
-	noColor := false
 	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
 	sentryDsn := sentryDsnDefault
 
 	var logFile *os.File
+	var analyticsClient analytics.Client
 	cmd := &cobra.Command{
 		Use:     "cloudquery",
 		Short:   rootShort,
@@ -46,63 +58,33 @@ func NewCmdRoot() *cobra.Command {
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
-			zerologLevel, err := zerolog.ParseLevel(logLevel.String())
-			if err != nil {
+			var err error
+			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
 				return err
 			}
-			var writers []io.Writer
-			if !noLogFile {
-				logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-				if err != nil {
-					return err
-				}
-				if logFormat.String() == "text" {
-					// for file logging we dont need color. we can add it as an option but don't think it is useful
-					writers = append(writers, zerolog.ConsoleWriter{Out: logFile, NoColor: true})
-				} else {
-					writers = append(writers, logFile)
-				}
+
+			telemetryLevel := viper.GetString("telemetry-level")
+			if !strInArray(telemetryLevel, telemetryLevels) {
+				return fmt.Errorf("invalid telemetry level %s. must be one of %v", telemetryLevel, telemetryLevels)
 			}
-			if logConsole {
-				if err := os.Stdout.Close(); err != nil {
-					return fmt.Errorf("failed to close stdout: %w", err)
-				}
-				if logFormat.String() == "text" {
-					writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: noColor})
-				} else {
-					writers = append(writers, os.Stderr)
+			if telemetryLevel == "all" {
+				analyticsClient = initAnalytics()
+			}
+
+			if sentryDsn != "" && Version != "development" && telemetryLevel != "none" {
+				if err := initSentry(sentryDsn, Version) ; err != nil {
+					// we don't fail on sentry init errors as there might be no connection or sentry can be blocked.
+					log.Err(err).Msg("failed to initialize sentry")
 				}
 			}
 
-			mw := io.MultiWriter(writers...)
-			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
-			if sentryDsn != "" && Version != "development" {
-				if err := sentry.Init(sentry.ClientOptions{
-					Debug:     false,
-					Dsn:       sentryDsn,
-					Release:   "cloudquery@" + Version,
-					Transport: sentry.NewHTTPSyncTransport(),
-					// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
-					Integrations: func(integrations []sentry.Integration) []sentry.Integration {
-						var filteredIntegrations []sentry.Integration
-						for _, integration := range integrations {
-							if integration.Name() == "Modules" {
-								continue
-							}
-							filteredIntegrations = append(filteredIntegrations, integration)
-						}
-						return filteredIntegrations
-					},
-				}); err != nil {
-					return err
-				}
-			}
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
 			if logFile != nil {
 				logFile.Close()
 			}
+			analyticsClient.Close()
 		},
 	}
 
@@ -118,25 +100,13 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemtry (analytics) flags
-	cmd.PersistentFlags().Bool("no-telemetry", false, "disable telemetry collection")
+	cmd.PersistentFlags().String("telemetry-level", "all" ,"Telemetry level (none, errors, all)")
 	// we dont need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
 	// the only exception is the telemetry as people might want to put in a bash starter script
-	if err := viper.BindPFlag("no-telemetry", cmd.PersistentFlags().Lookup("no-telemetry")); err != nil {
+	if err := viper.BindPFlag("telemetry-level", cmd.PersistentFlags().Lookup("telemetry-level")); err != nil {
 		panic(err)
 	}
-	cmd.PersistentFlags().Bool("telemetry-inspect", false, "enable telemetry inspection")
-	cmd.PersistentFlags().Bool("telemetry-debug", false, "enable telemetry debug logging")
 
-	// Sentry (error reporting) flags
-	cmd.PersistentFlags().StringVar(&sentryDsn, "sentry-dsn", sentryDsnDefault, "sentry DSN")
-
-	hiddenFlags := []string{"telemetry-inspect", "telemetry-debug", "sentry-dsn"}
-	for _, f := range hiddenFlags {
-		err := cmd.PersistentFlags().MarkHidden(f)
-		if err != nil {
-			panic(err)
-		}
-	}
 	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
@@ -149,4 +119,9 @@ func initViper() {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+	viper.SetConfigName("config") // name of config file (without extension)
+	viper.SetConfigType("yaml") // REQUIRED if the config file does not have the extension in the name
+	viper.AddConfigPath("/etc/cq/")   // path to look for the config file in
+	viper.AddConfigPath("$HOME/.cq")  // call multiple times to add many search paths
+	viper.AddConfigPath(".")  
 }
