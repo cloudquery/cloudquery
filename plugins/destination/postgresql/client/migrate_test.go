@@ -15,6 +15,7 @@ func TestMigrate(t *testing.T) {
 		WriteMode: specs.WriteModeOverwriteDeleteStale,
 		Spec: &Spec{
 			ConnectionString: getTestConnection(),
+			BatchSize:        1,
 		},
 	})
 	if err != nil {

@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func (p *Client) DeleteStale(ctx context.Context, table string, source string, syncTime time.Time) error {
+func (c *Client) DeleteStale(ctx context.Context, table string, source string, syncTime time.Time) error {
 	var sb strings.Builder
 	sb.WriteString("delete from ")
 	sb.WriteString(pgx.Identifier{table}.Sanitize())
@@ -18,7 +18,7 @@ func (p *Client) DeleteStale(ctx context.Context, table string, source string, s
 	sb.WriteString(" = $1 and ")
 	sb.WriteString(schema.CqSyncTimeColumn.Name)
 	sb.WriteString(" < $2")
-	if _, err := p.conn.Exec(ctx, sb.String(), source, syncTime); err != nil {
+	if _, err := c.conn.Exec(ctx, sb.String(), source, syncTime); err != nil {
 		return err
 	}
 	return nil
