@@ -13,44 +13,38 @@ func ECRResources() []*Resource {
 			SubService: "registries",
 			Struct:     &ecr.DescribeRegistryOutput{},
 			SkipFields: []string{"RegistryId", "ResultMetadata"},
-			Multiplex:  `client.AccountMultiplex`,
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSAccount`,
-				},
-				{
-					Name:     "registry_id",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("RegistryId")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-			},
+			Multiplex:  `client.AccountMultiplex("api.ecr")`,
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "registry_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("RegistryId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
 		},
 		{
 			SubService: "registry_policies",
 			Struct:     &ecr.GetRegistryPolicyOutput{},
 			SkipFields: []string{"RegistryId", "PolicyText", "ResultMetadata"},
-			Multiplex:  `client.AccountMultiplex`,
-			ExtraColumns: []codegen.ColumnDefinition{
-				{
-					Name:     "account_id",
-					Type:     schema.TypeString,
-					Resolver: `client.ResolveAWSAccount`,
-				},
-				{
-					Name:     "registry_id",
-					Type:     schema.TypeString,
-					Resolver: `schema.PathResolver("RegistryId")`,
-					Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-				},
-				{
-					Name:     "policy_text",
-					Type:     schema.TypeJSON,
-					Resolver: `client.MarshaledJsonResolver("PolicyText")`,
-				},
-			},
+			Multiplex:  `client.AccountMultiplex("api.ecr")`,
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "registry_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("RegistryId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "policy_text",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("PolicyText")`,
+					},
+				}...),
 		},
 		{
 			SubService: "repositories",

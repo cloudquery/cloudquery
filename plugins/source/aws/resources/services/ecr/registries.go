@@ -11,12 +11,17 @@ func Registries() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_ecr_registries",
 		Resolver:  fetchEcrRegistries,
-		Multiplex: client.AccountMultiplex,
+		Multiplex: client.AccountMultiplex("api.ecr"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
 			},
 			{
 				Name:     "registry_id",
