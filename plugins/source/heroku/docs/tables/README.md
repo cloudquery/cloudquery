@@ -1,57 +1,57 @@
 # Source Plugin: heroku
 ## Tables
-| Name          | Description   |
-| ------------- | ------------- |
-|heroku_account_features|https://devcenter.heroku.com/articles/platform-api-reference#account-feature-attributes|
-|heroku_add_ons|https://devcenter.heroku.com/articles/platform-api-reference#add-on-attributes|
-|heroku_add_on_attachments|https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-attributes|
-|heroku_add_on_configs|https://devcenter.heroku.com/articles/platform-api-reference#add-on-config-attributes|
-|heroku_add_on_region_capabilities|https://devcenter.heroku.com/articles/platform-api-reference#add-on-region-capability-attributes|
-|heroku_add_on_services|https://devcenter.heroku.com/articles/platform-api-reference#add-on-service-attributes|
-|heroku_add_on_webhooks|https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-attributes|
-|heroku_add_on_webhook_deliveries|https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-delivery-attributes|
-|heroku_add_on_webhook_events|https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event-attributes|
-|heroku_apps|https://devcenter.heroku.com/articles/platform-api-reference#app-attributes|
-|heroku_app_features|https://devcenter.heroku.com/articles/platform-api-reference#app-feature-attributes|
-|heroku_app_transfers|https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-attributes|
-|heroku_app_webhooks|https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-attributes|
-|heroku_app_webhook_deliveries|https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-attributes|
-|heroku_app_webhook_events|https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-attributes|
-|heroku_builds|https://devcenter.heroku.com/articles/platform-api-reference#build-attributes|
-|heroku_buildpack_installations|https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installation-attributes|
-|heroku_collaborators|https://devcenter.heroku.com/articles/platform-api-reference#collaborator-attributes|
-|heroku_credits|https://devcenter.heroku.com/articles/platform-api-reference#credit-attributes|
-|heroku_domains|https://devcenter.heroku.com/articles/platform-api-reference#domain-attributes|
-|heroku_dynos|https://devcenter.heroku.com/articles/platform-api-reference#dyno-attributes|
-|heroku_dyno_sizes|https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-attributes|
-|heroku_enterprise_accounts|https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-attributes|
-|heroku_enterprise_account_members|https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-attributes|
-|heroku_formations|https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes|
-|heroku_inbound_rulesets|https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-attributes|
-|heroku_invoices|https://devcenter.heroku.com/articles/platform-api-reference#invoice-attributes|
-|heroku_keys|https://devcenter.heroku.com/articles/platform-api-reference#key-attributes|
-|heroku_log_drains|https://devcenter.heroku.com/articles/platform-api-reference#log-drain-attributes|
-|heroku_oauth_authorizations|https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization-attributes|
-|heroku_oauth_clients|https://devcenter.heroku.com/articles/platform-api-reference#o-auth-client-attributes|
-|heroku_outbound_rulesets|https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-attributes|
-|heroku_peerings|https://devcenter.heroku.com/articles/platform-api-reference#peering-attributes|
-|heroku_permission_entities|https://devcenter.heroku.com/articles/platform-api-reference#permission-entity-attributes|
-|heroku_pipelines|https://devcenter.heroku.com/articles/platform-api-reference#pipeline-attributes|
-|heroku_pipeline_builds|https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-attributes|
-|heroku_pipeline_couplings|https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-attributes|
-|heroku_pipeline_deployments|https://devcenter.heroku.com/articles/platform-api-reference#pipeline-deployment-attributes|
-|heroku_pipeline_releases|https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release-attributes|
-|heroku_regions|https://devcenter.heroku.com/articles/platform-api-reference#region-attributes|
-|heroku_releases|https://devcenter.heroku.com/articles/platform-api-reference#release-attributes|
-|heroku_review_apps|https://devcenter.heroku.com/articles/platform-api-reference#review-app-attributes|
-|heroku_spaces|https://devcenter.heroku.com/articles/platform-api-reference#space-attributes|
-|heroku_space_app_accesses|https://devcenter.heroku.com/articles/platform-api-reference#space-app-access-attributes|
-|heroku_stacks|https://devcenter.heroku.com/articles/platform-api-reference#stack-attributes|
-|heroku_team_app_permissions|https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-attributes|
-|heroku_team_features|https://devcenter.heroku.com/articles/platform-api-reference#team-feature-attributes|
-|heroku_teams|https://devcenter.heroku.com/articles/platform-api-reference#team-attributes|
-|heroku_team_invitations|https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-attributes|
-|heroku_team_invoices|https://devcenter.heroku.com/articles/platform-api-reference#team-invoice-attributes|
-|heroku_team_members|https://devcenter.heroku.com/articles/platform-api-reference#team-member-attributes|
-|heroku_team_spaces|https://devcenter.heroku.com/articles/platform-api-reference#team-space-attributes|
-|heroku_vpn_connections|https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection-attributes|
+| Name          | Relations | Description   |
+| ------------- | --------- | ------------- |
+| [heroku_account_features](heroku_account_features.md)| | https://devcenter.heroku.com/articles/platform-api-reference#account-feature-attributes|
+| [heroku_add_ons](heroku_add_ons.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-attributes|
+| [heroku_add_on_attachments](heroku_add_on_attachments.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-attachment-attributes|
+| [heroku_add_on_configs](heroku_add_on_configs.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-config-attributes|
+| [heroku_add_on_region_capabilities](heroku_add_on_region_capabilities.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-region-capability-attributes|
+| [heroku_add_on_services](heroku_add_on_services.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-service-attributes|
+| [heroku_add_on_webhooks](heroku_add_on_webhooks.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-attributes|
+| [heroku_add_on_webhook_deliveries](heroku_add_on_webhook_deliveries.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-delivery-attributes|
+| [heroku_add_on_webhook_events](heroku_add_on_webhook_events.md)| | https://devcenter.heroku.com/articles/platform-api-reference#add-on-webhook-event-attributes|
+| [heroku_apps](heroku_apps.md)| | https://devcenter.heroku.com/articles/platform-api-reference#app-attributes|
+| [heroku_app_features](heroku_app_features.md)| | https://devcenter.heroku.com/articles/platform-api-reference#app-feature-attributes|
+| [heroku_app_transfers](heroku_app_transfers.md)| | https://devcenter.heroku.com/articles/platform-api-reference#app-transfer-attributes|
+| [heroku_app_webhooks](heroku_app_webhooks.md)| | https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-attributes|
+| [heroku_app_webhook_deliveries](heroku_app_webhook_deliveries.md)| | https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-delivery-attributes|
+| [heroku_app_webhook_events](heroku_app_webhook_events.md)| | https://devcenter.heroku.com/articles/platform-api-reference#app-webhook-event-attributes|
+| [heroku_builds](heroku_builds.md)| | https://devcenter.heroku.com/articles/platform-api-reference#build-attributes|
+| [heroku_buildpack_installations](heroku_buildpack_installations.md)| | https://devcenter.heroku.com/articles/platform-api-reference#buildpack-installation-attributes|
+| [heroku_collaborators](heroku_collaborators.md)| | https://devcenter.heroku.com/articles/platform-api-reference#collaborator-attributes|
+| [heroku_credits](heroku_credits.md)| | https://devcenter.heroku.com/articles/platform-api-reference#credit-attributes|
+| [heroku_domains](heroku_domains.md)| | https://devcenter.heroku.com/articles/platform-api-reference#domain-attributes|
+| [heroku_dynos](heroku_dynos.md)| | https://devcenter.heroku.com/articles/platform-api-reference#dyno-attributes|
+| [heroku_dyno_sizes](heroku_dyno_sizes.md)| | https://devcenter.heroku.com/articles/platform-api-reference#dyno-size-attributes|
+| [heroku_enterprise_accounts](heroku_enterprise_accounts.md)| | https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-attributes|
+| [heroku_enterprise_account_members](heroku_enterprise_account_members.md)| | https://devcenter.heroku.com/articles/platform-api-reference#enterprise-account-member-attributes|
+| [heroku_formations](heroku_formations.md)| | https://devcenter.heroku.com/articles/platform-api-reference#formation-attributes|
+| [heroku_inbound_rulesets](heroku_inbound_rulesets.md)| | https://devcenter.heroku.com/articles/platform-api-reference#inbound-ruleset-attributes|
+| [heroku_invoices](heroku_invoices.md)| | https://devcenter.heroku.com/articles/platform-api-reference#invoice-attributes|
+| [heroku_keys](heroku_keys.md)| | https://devcenter.heroku.com/articles/platform-api-reference#key-attributes|
+| [heroku_log_drains](heroku_log_drains.md)| | https://devcenter.heroku.com/articles/platform-api-reference#log-drain-attributes|
+| [heroku_oauth_authorizations](heroku_oauth_authorizations.md)| | https://devcenter.heroku.com/articles/platform-api-reference#o-auth-authorization-attributes|
+| [heroku_oauth_clients](heroku_oauth_clients.md)| | https://devcenter.heroku.com/articles/platform-api-reference#o-auth-client-attributes|
+| [heroku_outbound_rulesets](heroku_outbound_rulesets.md)| | https://devcenter.heroku.com/articles/platform-api-reference#outbound-ruleset-attributes|
+| [heroku_peerings](heroku_peerings.md)| | https://devcenter.heroku.com/articles/platform-api-reference#peering-attributes|
+| [heroku_permission_entities](heroku_permission_entities.md)| | https://devcenter.heroku.com/articles/platform-api-reference#permission-entity-attributes|
+| [heroku_pipelines](heroku_pipelines.md)| | https://devcenter.heroku.com/articles/platform-api-reference#pipeline-attributes|
+| [heroku_pipeline_builds](heroku_pipeline_builds.md)| | https://devcenter.heroku.com/articles/platform-api-reference#pipeline-build-attributes|
+| [heroku_pipeline_couplings](heroku_pipeline_couplings.md)| | https://devcenter.heroku.com/articles/platform-api-reference#pipeline-coupling-attributes|
+| [heroku_pipeline_deployments](heroku_pipeline_deployments.md)| | https://devcenter.heroku.com/articles/platform-api-reference#pipeline-deployment-attributes|
+| [heroku_pipeline_releases](heroku_pipeline_releases.md)| | https://devcenter.heroku.com/articles/platform-api-reference#pipeline-release-attributes|
+| [heroku_regions](heroku_regions.md)| | https://devcenter.heroku.com/articles/platform-api-reference#region-attributes|
+| [heroku_releases](heroku_releases.md)| | https://devcenter.heroku.com/articles/platform-api-reference#release-attributes|
+| [heroku_review_apps](heroku_review_apps.md)| | https://devcenter.heroku.com/articles/platform-api-reference#review-app-attributes|
+| [heroku_spaces](heroku_spaces.md)| | https://devcenter.heroku.com/articles/platform-api-reference#space-attributes|
+| [heroku_space_app_accesses](heroku_space_app_accesses.md)| | https://devcenter.heroku.com/articles/platform-api-reference#space-app-access-attributes|
+| [heroku_stacks](heroku_stacks.md)| | https://devcenter.heroku.com/articles/platform-api-reference#stack-attributes|
+| [heroku_team_app_permissions](heroku_team_app_permissions.md)| | https://devcenter.heroku.com/articles/platform-api-reference#team-app-permission-attributes|
+| [heroku_team_features](heroku_team_features.md)| | https://devcenter.heroku.com/articles/platform-api-reference#team-feature-attributes|
+| [heroku_teams](heroku_teams.md)| | https://devcenter.heroku.com/articles/platform-api-reference#team-attributes|
+| [heroku_team_invitations](heroku_team_invitations.md)| | https://devcenter.heroku.com/articles/platform-api-reference#team-invitation-attributes|
+| [heroku_team_invoices](heroku_team_invoices.md)| | https://devcenter.heroku.com/articles/platform-api-reference#team-invoice-attributes|
+| [heroku_team_members](heroku_team_members.md)| | https://devcenter.heroku.com/articles/platform-api-reference#team-member-attributes|
+| [heroku_team_spaces](heroku_team_spaces.md)| | https://devcenter.heroku.com/articles/platform-api-reference#team-space-attributes|
+| [heroku_vpn_connections](heroku_vpn_connections.md)| | https://devcenter.heroku.com/articles/platform-api-reference#vpn-connection-attributes|
