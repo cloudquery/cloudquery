@@ -13,5 +13,6 @@ The primary key for this table is **registry_id**.
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
 |account_id|String|
+|region|String|
 |registry_id (PK)|String|
 |policy_text|JSON|
