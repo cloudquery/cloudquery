@@ -14,9 +14,9 @@ func (c *Client) DeleteStale(ctx context.Context, table string, source string, s
 	sb.WriteString("delete from ")
 	sb.WriteString(pgx.Identifier{table}.Sanitize())
 	sb.WriteString(" where ")
-	sb.WriteString(schema.CqSourceName.Name)
+	sb.WriteString(schema.CqSourceNameColumn.Name)
 	sb.WriteString(" = $1 and ")
-	sb.WriteString(schema.CqSyncTime.Name)
+	sb.WriteString(schema.CqSyncTimeColumn.Name)
 	sb.WriteString(" < $2")
 	if _, err := c.conn.Exec(ctx, sb.String(), source, syncTime); err != nil {
 		return err

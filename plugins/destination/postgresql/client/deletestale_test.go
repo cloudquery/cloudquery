@@ -52,7 +52,7 @@ func TestDeleteStale(t *testing.T) {
 	// TODO: figure normal pgx<->go time normal conversion
 	syncTime := time.Now().UTC().Add(-24 * 30 * 12 * time.Hour)
 	// syncTime = syncTime.Add(time.Second * 2)
-	if err := c.DeleteStale(ctx, "simple_table", testData[schema.CqSourceName.Name].(string), syncTime); err != nil {
+	if err := c.DeleteStale(ctx, "simple_table", testData[schema.CqSourceNameColumn.Name].(string), syncTime); err != nil {
 		t.Fatalf("failed to delete stale data: %v", err)
 	}
 	totalResults, err = selectTableAsJson(ctx, c.conn, testTable.Name, &results)
@@ -66,7 +66,7 @@ func TestDeleteStale(t *testing.T) {
 		t.Fatalf("got %d, expected json_agg to return list with 1 entries", len(results))
 	}
 	syncTime = time.Now().UTC()
-	if err := c.DeleteStale(ctx, "simple_table", testData[schema.CqSourceName.Name].(string), syncTime); err != nil {
+	if err := c.DeleteStale(ctx, "simple_table", testData[schema.CqSourceNameColumn.Name].(string), syncTime); err != nil {
 		t.Fatalf("failed to delete stale data: %v", err)
 	}
 	totalResults, err = selectTableAsJson(ctx, c.conn, testTable.Name, &results)
