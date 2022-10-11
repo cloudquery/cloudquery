@@ -18,7 +18,7 @@ func TestWriteOverwriteDeleteStale(t *testing.T) {
 		WriteMode: specs.WriteModeOverwriteDeleteStale,
 		Spec: &Spec{
 			ConnectionString: getTestConnection(),
-			BatchSize: 			1,
+			BatchSize:        1,
 		},
 	})
 	if err != nil {
@@ -74,7 +74,7 @@ func TestWriteAppend(t *testing.T) {
 		WriteMode: specs.WriteModeAppend,
 		Spec: &Spec{
 			ConnectionString: getTestConnection(),
-			BatchSize: 			1,
+			BatchSize:        1,
 		},
 	})
 	if err != nil {

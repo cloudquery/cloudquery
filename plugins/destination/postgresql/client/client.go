@@ -22,8 +22,8 @@ type Client struct {
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	batchSize int
-	batch *pgx.Batch
+	batchSize           int
+	batch               *pgx.Batch
 }
 
 type pgTablePrimaryKeys struct {
@@ -65,13 +65,12 @@ const (
 	invalid pgType = iota
 	pgTypePostgreSQL
 	pgTypeCockroachDB
-
 )
 
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
-		batch: &pgx.Batch{},
+		batch:  &pgx.Batch{},
 	}
 	var specPostgreSql Spec
 	c.spec = spec

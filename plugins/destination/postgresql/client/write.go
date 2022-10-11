@@ -12,7 +12,6 @@ import (
 func (c *Client) Write(ctx context.Context, table string, data map[string]interface{}) error {
 	var sql string
 	var values []interface{}
-	
 
 	if c.spec.WriteMode == specs.WriteModeAppend {
 		sql, values = insert(table, data)
