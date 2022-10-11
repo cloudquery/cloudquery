@@ -25,9 +25,9 @@ func WorkerMetaDataResources() []Resource {
 			CFStruct: &cloudflare.WorkerCronTrigger{},
 			DefaultColumns: []codegen.ColumnDefinition{
 				{
-					Name:     "worker_meta_data_cq_id",
-					Type:     schema.TypeUUID,
-					Resolver: "schema.ParentIDResolver",
+					Name:     "worker_meta_data_id",
+					Type:     schema.TypeString,
+					Resolver: "schema.ParentColumnResolver(\"id\")",
 				},
 			},
 			Template:         "resource_manual",
@@ -41,9 +41,9 @@ func WorkerMetaDataResources() []Resource {
 			CFStruct: &cloudflare.WorkersSecret{},
 			DefaultColumns: []codegen.ColumnDefinition{
 				{
-					Name:     "worker_meta_data_cq_id",
-					Type:     schema.TypeUUID,
-					Resolver: "schema.ParentIDResolver",
+					Name:     "worker_meta_data_id",
+					Type:     schema.TypeString,
+					Resolver: "schema.ParentColumnResolver(\"id\")",
 				},
 			},
 			Template:         "resource_manual",

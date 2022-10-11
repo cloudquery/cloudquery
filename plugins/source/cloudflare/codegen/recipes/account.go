@@ -23,9 +23,9 @@ func AccountResources() []Resource {
 			CFStruct: &cloudflare.AccountMember{},
 			DefaultColumns: []codegen.ColumnDefinition{
 				{
-					Name:     "account_cq_id",
-					Type:     schema.TypeUUID,
-					Resolver: "schema.ParentIDResolver",
+					Name:     "account_id",
+					Type:     schema.TypeString,
+					Resolver: "schema.ParentColumnResolver(\"id\")",
 				},
 			},
 			Template:         "resource_manual",

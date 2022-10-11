@@ -35,21 +35,6 @@ func GetLatestPluginRelease(ctx context.Context, org, name string, typ clients.P
 	return getLatestCommunityPluginRelease(ctx, org, name, typ)
 }
 
-func GetLatestCLIRelease(ctx context.Context) (string, error) {
-	url := fmt.Sprintf(CloudQueryBaseURL + "/v2/cli.json")
-	b, err := doRequest(ctx, url)
-	if err != nil {
-		return "", fmt.Errorf("reading manifest for cli: %w", err)
-	}
-	mr := &manifestResponse{}
-	err = json.Unmarshal(b, mr)
-	if err != nil {
-		return "", fmt.Errorf("unmarshaling manifest response: %w", err)
-	}
-	tag := strings.TrimPrefix(mr.Latest, "cli-")
-	return tag, nil
-}
-
 func getLatestCQPluginRelease(ctx context.Context, name string, typ clients.PluginType) (string, error) {
 	url := fmt.Sprintf(CloudQueryBaseURL+"/v2/%s-%s.json", typ, name)
 	b, err := doRequest(ctx, url)

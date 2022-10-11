@@ -16,4 +16,4 @@ This table depends on [`cloudflare_worker_meta_data`](cloudflare_worker_meta_dat
 |_cq_sync_time|Timestamp|
 |worker_meta_data_id|String|
 |name|String|
-|type|String|
+|secret_text|String|
