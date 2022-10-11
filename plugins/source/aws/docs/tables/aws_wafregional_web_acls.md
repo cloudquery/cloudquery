@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |tags|JSON|
+|resources_for_web_acl|StringArray|
 |default_action|JSON|
 |rules|JSON|
 |web_acl_id|String|
