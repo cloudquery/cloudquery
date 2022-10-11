@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |backup_id|String|
 |backup_state|String|
 |cluster_id|String|
@@ -25,4 +26,3 @@ The primary key for this table is **arn**.
 |source_backup|String|
 |source_cluster|String|
 |source_region|String|
-|tag_list|JSON|

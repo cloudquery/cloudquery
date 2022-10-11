@@ -32,6 +32,11 @@ func Backups() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTagField("TagList"),
+			},
+			{
 				Name:     "backup_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("BackupId"),
@@ -80,11 +85,6 @@ func Backups() *schema.Table {
 				Name:     "source_region",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("SourceRegion"),
-			},
-			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
 			},
 		},
 	}

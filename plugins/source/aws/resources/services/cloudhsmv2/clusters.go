@@ -32,6 +32,11 @@ func Clusters() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTagField("TagList"),
+			},
+			{
 				Name:     "backup_policy",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("BackupPolicy"),
@@ -95,11 +100,6 @@ func Clusters() *schema.Table {
 				Name:     "subnet_mapping",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("SubnetMapping"),
-			},
-			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
 			},
 			{
 				Name:     "vpc_id",

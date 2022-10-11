@@ -15,6 +15,7 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |backup_policy|String|
 |backup_retention_policy|JSON|
 |certificates|JSON|
@@ -28,5 +29,4 @@ The primary key for this table is **arn**.
 |state|String|
 |state_message|String|
 |subnet_mapping|JSON|
-|tag_list|JSON|
 |vpc_id|String|

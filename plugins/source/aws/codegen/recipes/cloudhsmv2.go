@@ -12,6 +12,7 @@ func CloudHSMV2() []*Resource {
 			SubService: "clusters",
 			Struct:     &types.Cluster{},
 			Multiplex:  `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
+			SkipFields: []string{"TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -21,12 +22,18 @@ func CloudHSMV2() []*Resource {
 						Resolver: `resolveClusterArn`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `client.ResolveTagField("TagList")`,
+					},
 				}...),
 		},
 		{
 			SubService: "backups",
 			Struct:     &types.Backup{},
 			Multiplex:  `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
+			SkipFields: []string{"TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -35,6 +42,10 @@ func CloudHSMV2() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `resolveBackupArn`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					}, {
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `client.ResolveTagField("TagList")`,
 					},
 				}...),
 		},
