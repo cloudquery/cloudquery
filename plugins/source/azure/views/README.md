@@ -4,4 +4,4 @@ This directory contains useful aggregated views that you can create against the 
 
 Those views are also tests in CI to make sure it works with the latest schema.
 
-For dashboard examples that reuse those views take a look at [https://github.com/cloudquery/dashboards](https://github.com/cloudquery/dashboards).
+For dashboard examples that reuse those views take a look at [dashboards](../dashboards).

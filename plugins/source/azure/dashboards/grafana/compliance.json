@@ -254,7 +254,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select (cq_meta::JSONB->>'last_updated')::timestamp with time zone as time, 1  from azure_compute_virtual_machines  order by time desc limit 1;",
+          "rawSql": "select _cq_sync_time as time, 1 from azure_compute_virtual_machines  order by time desc limit 1;",
           "refId": "A"
         }
       ],
