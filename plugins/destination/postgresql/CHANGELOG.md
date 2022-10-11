@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.1.0...plugins-destination-postgresql-v1.2.0) (2022-10-11)
+
+
+### Features
+
+* **pg:** Use pgx batch to improve performance ([#2604](https://github.com/cloudquery/cloudquery/issues/2604)) ([ed16cef](https://github.com/cloudquery/cloudquery/commit/ed16cef82213be1d7a5282e3c598dc5a06a45adb))
+
+
+### Bug Fixes
+
+* Update postgresql plugin to work with new sdk (deleteStale feature) ([#2587](https://github.com/cloudquery/cloudquery/issues/2587)) ([f5f9257](https://github.com/cloudquery/cloudquery/commit/f5f9257a4eb1c153401d792a65aa65698a0fb321))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.0.1...plugins-destination-postgresql-v1.1.0) (2022-10-09)
 
 
