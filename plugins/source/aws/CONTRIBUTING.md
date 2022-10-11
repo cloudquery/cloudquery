@@ -105,10 +105,16 @@ By following the steps outlined above, you should now have generated a `myservic
    svc := meta.(*client.Client).Services().MyService
    ```
    With this in hand, complete the resolver function to fetch all resources. After resources are retrieved, send them to the `res` channel for the SDK to deliver to all destinations.
-3. Finally, implement a mock test in `myresource_mock_test.go`. We will not describe this in detail here; look at a few examples for similar resources to get you started.
+3. Implement a mock test in `myresource_mock_test.go`. We will not describe this in detail here; look at a few examples for similar resources to get you started.
 
 We recommend looking at other resources similar to yours to get an idea of what needs to be done in this step.  
 
+4. Make sure to register the resource you just created with the plugin by adding it to the array that `plugin.tables()` returns in
+   `/resources/plugin/tables.go`
+
+   using the naming conventions from steps 1-3 the call would look like:
+      `myservice.myresource(),`
+   
 ### Implementing Resolver Functions
 
 A few important things to note when adding functions that call the AWS API:

@@ -22,8 +22,6 @@ builds:
         goarch: arm64
 archives:
   - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
-    format: binary
-  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: zip
     id: zip
     files:

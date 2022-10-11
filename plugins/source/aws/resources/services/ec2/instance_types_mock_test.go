@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	ec2Types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/smithy-go/middleware"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
@@ -14,14 +14,14 @@ import (
 
 func buildEc2InstanceTypes(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
-	info := ec2Types.InstanceTypeInfo{}
+	info := types.InstanceTypeInfo{}
 	err := faker.FakeData(&info)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeInstanceTypes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ec2.DescribeInstanceTypesOutput{
-			InstanceTypes:  []ec2Types.InstanceTypeInfo{info},
+			InstanceTypes:  []types.InstanceTypeInfo{info},
 			NextToken:      nil,
 			ResultMetadata: middleware.Metadata{},
 		}, nil)

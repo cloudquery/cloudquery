@@ -5,7 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
-	ec2Types "github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/faker/v3"
@@ -14,7 +14,7 @@ import (
 
 func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
-	l := ec2Types.Reservation{}
+	l := types.Reservation{}
 	err := faker.FakeData(&l)
 	if err != nil {
 		t.Fatal(err)
@@ -26,12 +26,12 @@ func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
 	// this test ensures that pagination works by returning a token once, but not the second time
 	m.EXPECT().DescribeInstances(gomock.Any(), gomock.Any(), gomock.Any()).Times(1).Return(
 		&ec2.DescribeInstancesOutput{
-			Reservations: []ec2Types.Reservation{},
+			Reservations: []types.Reservation{},
 			NextToken:    &nextToken,
 		}, nil)
 	m.EXPECT().DescribeInstances(gomock.Any(), gomock.Any(), gomock.Any()).Times(1).Return(
 		&ec2.DescribeInstancesOutput{
-			Reservations: []ec2Types.Reservation{l},
+			Reservations: []types.Reservation{l},
 			NextToken:    nil,
 		}, nil)
 	return client.Services{
