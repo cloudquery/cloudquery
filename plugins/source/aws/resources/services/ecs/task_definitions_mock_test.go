@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	faker "github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Servi
 
 	faker.SetIgnoreInterface(true)
 	listTaskDefinitionsOutput := ecs.ListTaskDefinitionsOutput{}
-	err := faker.FakeObject(&listTaskDefinitionsOutput)
+	err := faker.FakeData(&listTaskDefinitionsOutput)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m.EXPECT().ListTaskDefinitions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&listTaskDefinitionsOutput, nil)
 
 	taskDefinition := &ecs.DescribeTaskDefinitionOutput{}
-	err = faker.FakeObject(&taskDefinition)
+	err = faker.FakeData(&taskDefinition)
 	if err != nil {
 		t.Fatal(err)
 	}

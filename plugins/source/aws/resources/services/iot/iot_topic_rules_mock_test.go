@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	faker "github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 

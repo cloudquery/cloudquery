@@ -7,7 +7,7 @@ import (
 	ecsTypes "github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	faker "github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,7 +18,7 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	}
 	faker.SetIgnoreInterface(true)
 	c := ecsTypes.Cluster{}
-	err := faker.FakeObject(&c)
+	err := faker.FakeData(&c)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -37,7 +37,7 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().ListServices(gomock.Any(), gomock.Any(), gomock.Any()).Return(&servicesList, nil)
 
 	svcs := ecs.DescribeServicesOutput{}
-	err = faker.FakeObject(&svcs)
+	err = faker.FakeData(&svcs)
 	if err != nil {
 		t.Fatal(err)
 	}
