@@ -11,7 +11,7 @@ func Accounts() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_organizations_accounts",
 		Resolver:  fetchOrganizationsAccounts,
-		Multiplex: client.ServiceAccountRegionMultiplexer("organizations"),
+		Multiplex: client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
