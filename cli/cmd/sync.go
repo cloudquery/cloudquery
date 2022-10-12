@@ -21,6 +21,7 @@ cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
 `
+	unknownFieldErrorPrefix = "code = InvalidArgument desc = failed to decode spec: json: unknown field "
 )
 
 func NewCmdSync() *cobra.Command {
@@ -129,7 +130,8 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync(gctx, sourceSpec, resources); err != nil {
-			if strings.Contains(err.Error(), `code = InvalidArgument desc = failed to decode spec: json: unknown field "table_concurrency"`) {
+			switch {
+			case strings.Contains(err.Error(), unknownFieldErrorPrefix+`"table_concurrency"`), strings.Contains(err.Error(), unknownFieldErrorPrefix+`"resource_concurrency"`):
 				return fmt.Errorf("unsupported version of source %s@%s. Please update to the latest version from https://cloudquery.io/docs/plugins/sources", sourceSpec.Name, sourceSpec.Version)
 			}
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
