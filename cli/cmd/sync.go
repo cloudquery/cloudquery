@@ -21,11 +21,12 @@ cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
 `
+	unknownFieldErrorPrefix = "code = InvalidArgument desc = failed to decode spec: json: unknown field "
 )
 
 func NewCmdSync() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "sync [file or directories...]",
+		Use:     "sync [files or directories]",
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
@@ -129,6 +130,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync(gctx, sourceSpec, resources); err != nil {
+			if isUnknownConcurrencyFieldError(err) {
+				return fmt.Errorf("unsupported version of source %s@%s. Please update to the latest version from https://cloudquery.io/docs/plugins/sources", sourceSpec.Name, sourceSpec.Version)
+			}
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 		return nil
@@ -152,6 +156,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 			var err error
 			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
+			}
+			if destClients[i].Close(ctx); err != nil {
+				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			failedWrites += destFailedWrites
 			return nil
@@ -192,4 +199,8 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
 		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
 	return nil
+}
+
+func isUnknownConcurrencyFieldError(err error) bool {
+	return strings.Contains(err.Error(), unknownFieldErrorPrefix+`"table_concurrency"`) || strings.Contains(err.Error(), unknownFieldErrorPrefix+`"resource_concurrency"`)
 }

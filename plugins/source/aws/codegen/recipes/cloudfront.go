@@ -9,9 +9,10 @@ import (
 func CloudfrontResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "cache_policies",
-			Struct:     &types.CachePolicySummary{},
-			SkipFields: []string{},
+			SubService:  "cache_policies",
+			Struct:      &types.CachePolicySummary{},
+			Description: "https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -26,6 +27,7 @@ func CloudfrontResources() []*Resource {
 		{
 			SubService:          "distributions",
 			Struct:              &types.Distribution{},
+			Description:         "https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_Distribution.html",
 			SkipFields:          []string{"ARN"},
 			PreResourceResolver: "getDistribution",
 			ExtraColumns: append(

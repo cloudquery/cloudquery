@@ -9,9 +9,10 @@ import (
 
 func RestApiRequestValidators() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_rest_api_request_validators",
-		Resolver:  fetchApigatewayRestApiRequestValidators,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_rest_api_request_validators",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_RequestValidator.html",
+		Resolver:    fetchApigatewayRestApiRequestValidators,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -18,6 +18,7 @@ type TestOptions struct {
 }
 
 func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
+	version := "vDev"
 	t.Helper()
 
 	table.IgnoreInTests = false
@@ -47,13 +48,15 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Se
 
 	p := plugins.NewSourcePlugin(
 		table.Name,
-		"dev",
+		version,
 		[]*schema.Table{
 			table,
 		},
 		newTestExecutionClient)
 	plugins.TestSourcePluginSync(t, p, l, specs.Source{
-		Name:   "dev",
-		Tables: []string{table.Name},
+		Name:         "dev",
+		Version:      version,
+		Tables:       []string{table.Name},
+		Destinations: []string{"mock-destination"},
 	})
 }

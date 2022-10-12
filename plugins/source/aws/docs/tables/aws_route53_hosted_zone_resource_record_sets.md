@@ -10,10 +10,10 @@ This table depends on [`aws_route53_hosted_zones`](aws_route53_hosted_zones.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |hosted_zone_arn|String|
 |name|String|
