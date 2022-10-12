@@ -11,8 +11,43 @@ import (
 )
 
 func fetchAthenaDataCatalogs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listDataCatalogs, dataCatalogDetail)
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+	input := athena.ListDataCatalogsInput{}
+	for {
+		response, err := svc.ListDataCatalogs(ctx, &input)
+		if err != nil {
+			return err
+		}
+		res <- response.DataCatalogsSummary
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
+	}
+	return nil
 }
+
+func getDataCatalog(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+	catalogSummary := resource.Item.(types.DataCatalogSummary)
+	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
+		Name: catalogSummary.CatalogName,
+	})
+	if err != nil {
+		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" (with statuscode 400: InvalidRequestException:...) but it exists and its
+		// relations can be fetched by its name
+		if client.IsAWSError(err, "InvalidRequestException") && *catalogSummary.CatalogName == "AwsDataCatalog" {
+			resource.Item = types.DataCatalog{Name: catalogSummary.CatalogName, Type: catalogSummary.Type}
+			return nil
+		}
+		return err
+	}
+	resource.Item = *dc.DataCatalog
+	return nil
+}
+
 func resolveAthenaDataCatalogArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.DataCatalog)
@@ -83,49 +118,6 @@ func fetchAthenaDataCatalogDatabaseTables(ctx context.Context, meta schema.Clien
 	return nil
 }
 
-func listDataCatalogs(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
-	input := athena.ListDataCatalogsInput{}
-	for {
-		response, err := svc.ListDataCatalogs(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
-		if err != nil {
-			return err
-		}
-		for _, item := range response.DataCatalogsSummary {
-			detailChan <- item
-		}
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
-	}
-	return nil
-}
-func dataCatalogDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
-	c := meta.(*client.Client)
-	catalogSummary := listInfo.(types.DataCatalogSummary)
-	svc := c.Services().Athena
-	dc, err := svc.GetDataCatalog(ctx, &athena.GetDataCatalogInput{
-		Name: catalogSummary.CatalogName,
-	})
-	if err != nil {
-		// retrieving of default data catalog (AwsDataCatalog) returns "not found error" but it exists and its
-		// relations can be fetched by its name
-		if *catalogSummary.CatalogName == "AwsDataCatalog" {
-			resultsChan <- types.DataCatalog{Name: catalogSummary.CatalogName, Type: catalogSummary.Type}
-			return
-		}
-		if c.IsNotFoundError(err) {
-			return
-		}
-		errorChan <- err
-		return
-	}
-	resultsChan <- *dc.DataCatalog
-}
 func createDataCatalogArn(cl *client.Client, catalogName string) string {
 	return cl.ARN(client.Athena, "datacatalog", catalogName)
 }

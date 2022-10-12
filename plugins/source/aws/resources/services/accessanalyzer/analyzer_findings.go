@@ -9,8 +9,9 @@ import (
 
 func AnalyzerFindings() *schema.Table {
 	return &schema.Table{
-		Name:     "aws_accessanalyzer_analyzer_findings",
-		Resolver: fetchAccessanalyzerAnalyzerFindings,
+		Name:        "aws_accessanalyzer_analyzer_findings",
+		Description: "https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html",
+		Resolver:    fetchAccessanalyzerAnalyzerFindings,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -12,10 +12,10 @@ The following tables depend on `cloudflare_worker_meta_data`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |id (PK)|String|
 |etag|String|

@@ -1,6 +1,6 @@
 # Table: aws_autoscaling_group_scaling_policies
 
-
+https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html
 
 The primary key for this table is **arn**.
 
@@ -10,10 +10,10 @@ This table depends on [`aws_autoscaling_groups`](aws_autoscaling_groups.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |group_arn|String|

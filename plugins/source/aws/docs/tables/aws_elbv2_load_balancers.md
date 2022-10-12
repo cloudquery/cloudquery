@@ -12,10 +12,10 @@ The following tables depend on `aws_elbv2_load_balancers`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |web_acl_arn|String|
