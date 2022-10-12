@@ -23,3 +23,7 @@ install-hooks:
 gen-docs:
 	rm -rf ./docs/tables/*
 	go run main.go doc ./docs/tables
+
+.PHONY: gen-code
+gen-code:
+	go run codegen/main.go
