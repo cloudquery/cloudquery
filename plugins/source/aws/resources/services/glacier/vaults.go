@@ -57,11 +57,6 @@ func Vaults() *schema.Table {
 				Resolver: schema.PathResolver("SizeInBytes"),
 			},
 			{
-				Name:     "vault_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("VaultARN"),
-			},
-			{
 				Name:     "vault_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VaultName"),

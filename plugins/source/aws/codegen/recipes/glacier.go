@@ -11,6 +11,7 @@ func GlacierResources() []*Resource {
 		{
 			SubService: "vaults",
 			Struct:     &types.DescribeVaultOutput{},
+			SkipFields: []string{"VaultARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
