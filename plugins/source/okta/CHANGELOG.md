@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.0.2...plugins-source-okta-v1.0.3) (2022-10-12)
+
+
+### Bug Fixes
+
+* Upgrade source SDK versions to v0.13.5 ([#2610](https://github.com/cloudquery/cloudquery/issues/2610)) ([611868e](https://github.com/cloudquery/cloudquery/commit/611868e7fbb707b524ccc5c04a7ff95fe122ae05))
+
 ## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v1.0.1...plugins-source-okta-v1.0.2) (2022-10-10)
 
 
