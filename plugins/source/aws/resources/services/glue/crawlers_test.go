@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,14 +14,14 @@ func buildCrawlers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var crawler glue.GetCrawlersOutput
-	if err := faker.FakeData(&crawler); err != nil {
+	if err := faker.FakeObject(&crawler); err != nil {
 		t.Fatal(err)
 	}
 	crawler.NextToken = nil
 	m.EXPECT().GetCrawlers(gomock.Any(), gomock.Any(), gomock.Any()).Return(&crawler, nil)
 
 	var tags glue.GetTagsOutput
-	if err := faker.FakeData(&tags); err != nil {
+	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().GetTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)

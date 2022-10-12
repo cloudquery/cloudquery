@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -26,7 +26,7 @@ func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
 	)
 
 	var d types.DocumentDescription
-	if err := faker.FakeData(&d); err != nil {
+	if err := faker.FakeObject(&d); err != nil {
 		t.Fatal(err)
 	}
 	d.Name = &docName

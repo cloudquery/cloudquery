@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -15,7 +15,7 @@ func buildSecurityConfigurationsMock(t *testing.T, ctrl *gomock.Controller) clie
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var s glue.GetSecurityConfigurationsOutput
-	require.NoError(t, faker.FakeData(&s))
+	require.NoError(t, faker.FakeObject(&s))
 	s.NextToken = nil
 	m.EXPECT().GetSecurityConfigurations(
 		gomock.Any(),
