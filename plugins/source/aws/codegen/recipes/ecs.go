@@ -100,9 +100,10 @@ func ECSResources() []*Resource {
 			Relations: []string{},
 		},
 		{
-			SubService: "task_definitions",
-			Struct:     &models.TaskDefinitionWrapper{},
-			SkipFields: []string{"TaskDefinitionArn", "Tags"},
+			SubService:          "task_definitions",
+			Struct:              &models.TaskDefinitionWrapper{},
+			SkipFields:          []string{"TaskDefinitionArn", "Tags"},
+			PreResourceResolver: "getTaskDefinition",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

@@ -2,6 +2,7 @@ package ecs
 
 import (
 	"context"
+	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
@@ -12,44 +13,15 @@ import (
 )
 
 func fetchEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listEcsTaskDefinitions, ecsTaskDefinitionDetail)
-}
-
-func ecsTaskDefinitionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, detail interface{}) {
-	c := meta.(*client.Client)
-	svc := c.Services().ECS
-	taskArn := detail.(string)
-	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
-		TaskDefinition: aws.String(taskArn),
-		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
-	})
-	if err != nil {
-		errorChan <- err
-		return
-	}
-	if describeTaskDefinitionOutput.TaskDefinition == nil {
-		return
-	}
-	resultsChan <- models.TaskDefinitionWrapper{
-		TaskDefinition: describeTaskDefinitionOutput.TaskDefinition,
-		Tags:           describeTaskDefinitionOutput.Tags,
-	}
-}
-
-func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, res chan<- interface{}) error {
 	var config ecs.ListTaskDefinitionsInput
-	region := meta.(*client.Client).Region
 	svc := meta.(*client.Client).Services().ECS
 	for {
-		listClustersOutput, err := svc.ListTaskDefinitions(ctx, &config, func(o *ecs.Options) {
-			o.Region = region
-		})
+		listClustersOutput, err := svc.ListTaskDefinitions(ctx, &config)
 		if err != nil {
 			return err
 		}
-		for _, taskDefinitionArn := range listClustersOutput.TaskDefinitionArns {
-			res <- taskDefinitionArn
-		}
+		res <- listClustersOutput.TaskDefinitionArns
+
 		if listClustersOutput.NextToken == nil {
 			break
 		}
@@ -58,14 +30,29 @@ func listEcsTaskDefinitions(ctx context.Context, meta schema.ClientMeta, res cha
 	return nil
 }
 
+func getTaskDefinition(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().ECS
+	taskArn := resource.Item.(string)
+
+	describeTaskDefinitionOutput, err := svc.DescribeTaskDefinition(ctx, &ecs.DescribeTaskDefinitionInput{
+		TaskDefinition: aws.String(taskArn),
+		Include:        []types.TaskDefinitionField{types.TaskDefinitionFieldTags},
+	})
+	if err != nil {
+		return err
+	}
+	if describeTaskDefinitionOutput.TaskDefinition == nil {
+		return errors.New("nil TaskDefinition encountered")
+	}
+	resource.Item = models.TaskDefinitionWrapper{
+		TaskDefinition: describeTaskDefinitionOutput.TaskDefinition,
+		Tags:           describeTaskDefinitionOutput.Tags,
+	}
+	return nil
+}
+
 func resolveEcsTaskDefinitionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(models.TaskDefinitionWrapper)
-	j := map[string]string{}
-	for _, a := range r.Tags {
-		if a.Key == nil {
-			continue
-		}
-		j[*a.Key] = aws.ToString(a.Value)
-	}
-	return resource.Set(c.Name, j)
+	return resource.Set(c.Name, client.TagsToMap(r.Tags))
 }
