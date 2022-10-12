@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.0.2...plugins-source-github-v1.0.3) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.5 ([#2660](https://github.com/cloudquery/cloudquery/issues/2660)) ([748a0b3](https://github.com/cloudquery/cloudquery/commit/748a0b3f2cd8429696b38daa386bd0ca32fc3fdf))
+* **deps:** Update plugin-sdk for azure to v0.13.5 ([#2591](https://github.com/cloudquery/cloudquery/issues/2591)) ([c36f60a](https://github.com/cloudquery/cloudquery/commit/c36f60a36fc20823f471ced3ba1726d778bfcda2))
+* **deps:** Update plugin-sdk for cloudflare to v0.13.5 ([#2593](https://github.com/cloudquery/cloudquery/issues/2593)) ([ed96887](https://github.com/cloudquery/cloudquery/commit/ed968873a7310daca0dff9fafc94394cca9801e4))
+* **deps:** Update plugin-sdk for digitalocean to v0.13.5 ([#2594](https://github.com/cloudquery/cloudquery/issues/2594)) ([5570015](https://github.com/cloudquery/cloudquery/commit/55700155cf1afdbe7e2dd8cc9ae5477a992c1306))
+* **deps:** Update plugin-sdk for gcp to v0.13.5 ([#2595](https://github.com/cloudquery/cloudquery/issues/2595)) ([ec17c48](https://github.com/cloudquery/cloudquery/commit/ec17c48959bcdab3d1aed763beee1d0bf37a589e))
+* **deps:** Update plugin-sdk for github to v0.13.6 ([#2723](https://github.com/cloudquery/cloudquery/issues/2723)) ([f98ee9c](https://github.com/cloudquery/cloudquery/commit/f98ee9c6dbe510e1717401ea0eeefbb514cc0567))
+
 ## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v1.0.1...plugins-source-github-v1.0.2) (2022-10-12)
 
 
