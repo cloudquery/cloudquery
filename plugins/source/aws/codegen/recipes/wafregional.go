@@ -90,6 +90,11 @@ func WAFRegionalResources() []*Resource {
 						Type:        schema.TypeJSON,
 						Resolver:    `resolveWafregionalWebACLTags`,
 					},
+					{
+						Name:     "resources_for_web_acl",
+						Type:     schema.TypeStringArray,
+						Resolver: `resolveWafregionalWebACLResourcesForWebACL`,
+					},
 				}...),
 		},
 	}
