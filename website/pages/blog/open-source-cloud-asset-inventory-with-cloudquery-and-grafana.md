@@ -22,7 +22,7 @@ This is what you will get:
 - All your assets configuration across cloud providers and SaaS apps in **one** database
 - Vanilla PostgreSQL
 - Reuse your current (assuming you use Grafana) visualization, monitoring and alerting workflows - send reports and alerts via email, slack.
-- 3 out-of-the-box [Grafana Dashboards](https://github.com/cloudquery/grafana-dashboards) filterable asset inventory dashboards for AWS and GCP including security & compliance dashboards.
+- 3 out-of-the-box filterable asset inventory dashboards for [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/dashboards) and [GCP](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/dashboards) including security & compliance dashboards.
 
 ## Running
 
@@ -33,9 +33,9 @@ For production deployment see [terraform-aws-cloudquery](https://github.com/clou
 
 ## Importing Dashboards
 
-You can try out some of our pre-made dashboards by [importing](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard) them straight from our [GitHub](https://github.com/cloudquery/grafana-dashboards)
+You can try out some of our pre-made dashboards by [importing](https://grafana.com/docs/grafana/latest/dashboards/export-import/#import-dashboard) them straight from our GitHub: [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/dashboards), [GCP](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws/dashboards)
 
-## Dashboards Examples and Use Cases
+## Dashboard Examples and Use Cases
 
 ### Asset (Resource) Search
 
@@ -43,14 +43,14 @@ One of the most common but a lot of times non-trivial tasks is to find a specifi
 Just a few examples (as number of real-world scenarios is really indefinite ):
 
 - **Finding an asset across accounts/regions by name/ARN:** In AWS specifically it might involve either clicking through 30+ regions, if you know in which account it is located or even more if not.
-- **Finding an ec2 instance by it’s public/private IP:** This will also either involve click-ops, or bash sorcery.
+- **Finding an ec2 instance by its public/private IP:** This will also either involve click-ops, or bash sorcery.
 
 Some of those can be also solved by AWS Config but has the following limitations:
 
 - **AWS Only** - Works only on AWS resources (can’t ingest data from other services/cloud-providers).
 - As this is using a proprietary subset of SQL, it can’t be integrated to your current Visualization, Monitoring Alerts workflows, such as Grafana.
 
-This is why we created open-source **“basic inventory”** Grafana [dashboards](https://github.com/cloudquery/grafana-dashboards/tree/main/dashboards) that you are free to use, customize or build completely new ones (feel free to share back or suggest other):
+This is why we created open-source **“basic inventory”** Grafana dashboards that you are free to use, customize or build completely new ones (feel free to share back or suggest other):
 
 #### Filterable AWS dashboards by accounts and regions
 

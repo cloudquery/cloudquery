@@ -25,7 +25,7 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 
 func NewCmdSync() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "sync [file or directories...]",
+		Use:     "sync [files or directories]",
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
@@ -152,6 +152,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 			var err error
 			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
+			}
+			if destClients[i].Close(ctx); err != nil {
+				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			failedWrites += destFailedWrites
 			return nil
