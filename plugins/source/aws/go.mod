@@ -16,6 +16,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/autoscaling v1.23.16
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.22.10
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.5
+	github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.19
 	github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.18.1
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.6
 	github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs v1.15.20
