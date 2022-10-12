@@ -27,6 +27,8 @@
 |aws_cloudformation_stacks||
 |aws_cloudfront_cache_policies||
 |aws_cloudfront_distributions||
+|aws_cloudhsmv2_backups||
+|aws_cloudhsmv2_clusters||
 |aws_cloudtrail_trails||
 |aws_cloudwatch_alarms||
 |aws_cloudwatchlogs_log_groups||
