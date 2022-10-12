@@ -30,4 +30,3 @@ jobs:
           organization: cloudquery
           project_id: 7
           resource_node_id: ${{ github.event.issue.node_id }}
-          status_value: No Status
