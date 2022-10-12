@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/source/github/gen/recipies"
+	"github.com/cloudquery/cloudquery/plugins/source/github/codegen/recipies"
 )
 
 func main() {
