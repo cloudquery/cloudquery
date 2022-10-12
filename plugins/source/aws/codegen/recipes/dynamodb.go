@@ -11,6 +11,7 @@ func DynamoDBResources() []*Resource {
 		{
 			SubService:          "tables",
 			Struct:              &types.TableDescription{},
+			Description:         "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html",
 			SkipFields:          []string{"TableArn"},
 			PreResourceResolver: "getTable",
 			ExtraColumns: append(
@@ -34,9 +35,10 @@ func DynamoDBResources() []*Resource {
 			},
 		},
 		{
-			SubService: "table_replica_auto_scalings",
-			Struct:     &types.ReplicaAutoScalingDescription{},
-			SkipFields: []string{},
+			SubService:  "table_replica_auto_scalings",
+			Struct:      &types.ReplicaAutoScalingDescription{},
+			Description: "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -48,9 +50,10 @@ func DynamoDBResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "table_continuous_backups",
-			Struct:     &types.ContinuousBackupsDescription{},
-			SkipFields: []string{},
+			SubService:  "table_continuous_backups",
+			Struct:      &types.ContinuousBackupsDescription{},
+			Description: "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ContinuousBackupsDescription.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
