@@ -13,7 +13,7 @@ func OrganizationsResources() []*Resource {
 			Struct:      &types.Account{},
 			Description: "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html",
 			SkipFields:  []string{"Arn"},
-			Multiplex:   `client.ServiceAccountRegionMultiplexer("dax")`,
+			Multiplex:  `client.AccountMultiplex`,
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
