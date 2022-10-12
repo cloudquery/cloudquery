@@ -12,10 +12,10 @@ The following tables depend on `aws_athena_data_catalog_databases`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |data_catalog_arn (PK)|String|

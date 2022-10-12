@@ -8,10 +8,10 @@ The composite primary key for this table is (**arn**, **user_creation_time**).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |arn (PK)|String|
 |user_creation_time (PK)|Timestamp|
 |password_last_changed|Timestamp|

@@ -13,10 +13,10 @@ The following tables depend on `aws_route53_hosted_zones`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |arn (PK)|String|
 |caller_reference|String|
