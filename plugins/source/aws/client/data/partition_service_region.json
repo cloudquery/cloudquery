@@ -260,6 +260,12 @@
             "us-west-2": {}
           }
         },
+        "api.ecr-public": {
+          "regions": {
+            "us-east-1": {},
+            "us-west-2": {}
+          }
+        },
         "api.elastic-inference": {
           "regions": {
             "ap-northeast-1": {},

@@ -10,10 +10,11 @@ import (
 func CodePipelineResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "webhooks",
-			Struct:     &types.ListWebhookItem{},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("codepipeline")`,
-			SkipFields: []string{"Arn"},
+			SubService:  "webhooks",
+			Struct:      &types.ListWebhookItem{},
+			Description: "https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html",
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("codepipeline")`,
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

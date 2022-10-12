@@ -79,9 +79,10 @@ func SagemakerResources() []*Resource {
 		},
 
 		{
-			SubService: "training_jobs",
-			Struct:     &sagemaker.DescribeTrainingJobOutput{},
-			SkipFields: []string{"TrainingJobArn"},
+			SubService:          "training_jobs",
+			Struct:              &sagemaker.DescribeTrainingJobOutput{},
+			SkipFields:          []string{"TrainingJobArn"},
+			PreResourceResolver: "getTrainingJob",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

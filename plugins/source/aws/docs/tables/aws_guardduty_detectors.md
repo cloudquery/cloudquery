@@ -11,10 +11,10 @@ The following tables depend on `aws_guardduty_detectors`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id (PK)|String|
 |region (PK)|String|
 |arn|String|
