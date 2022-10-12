@@ -39,9 +39,10 @@ func CloudtrailResources() []*Resource {
 			},
 		},
 		{
-			SubService: "trail_event_selectors",
-			Struct:     &types.EventSelector{},
-			SkipFields: []string{},
+			SubService:  "trail_event_selectors",
+			Struct:      &types.EventSelector{},
+			Description: "https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

@@ -1,6 +1,6 @@
 # Table: aws_autoscaling_group_lifecycle_hooks
 
-
+https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html
 
 The primary key for this table is **_cq_id**.
 

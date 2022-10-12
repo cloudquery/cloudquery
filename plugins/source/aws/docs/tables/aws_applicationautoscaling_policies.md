@@ -1,6 +1,6 @@
 # Table: aws_applicationautoscaling_policies
 
-
+https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html
 
 The primary key for this table is **arn**.
 

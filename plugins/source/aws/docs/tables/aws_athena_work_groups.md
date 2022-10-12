@@ -1,6 +1,6 @@
 # Table: aws_athena_work_groups
 
-
+https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroup.html
 
 The primary key for this table is **arn**.
 

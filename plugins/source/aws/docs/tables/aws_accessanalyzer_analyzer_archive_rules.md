@@ -1,6 +1,6 @@
 # Table: aws_accessanalyzer_analyzer_archive_rules
 
-
+https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ArchiveRuleSummary.html
 
 The primary key for this table is **_cq_id**.
 

@@ -9,9 +9,10 @@ import (
 
 func VpcPeeringConnections() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_vpc_peering_connections",
-		Resolver:  fetchEc2VpcPeeringConnections,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_vpc_peering_connections",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcPeeringConnection.html",
+		Resolver:    fetchEc2VpcPeeringConnections,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -9,9 +9,10 @@ import (
 
 func RestApiDocumentationVersions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_rest_api_documentation_versions",
-		Resolver:  fetchApigatewayRestApiDocumentationVersions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_rest_api_documentation_versions",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_DocumentationVersion.html",
+		Resolver:    fetchApigatewayRestApiDocumentationVersions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

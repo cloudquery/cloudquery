@@ -55,6 +55,26 @@ func (mr *MockEcrClientMockRecorder) DescribeImages(arg0, arg1 interface{}, arg2
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeImages", reflect.TypeOf((*MockEcrClient)(nil).DescribeImages), varargs...)
 }
 
+// DescribeRegistry mocks base method.
+func (m *MockEcrClient) DescribeRegistry(arg0 context.Context, arg1 *ecr.DescribeRegistryInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeRegistryOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeRegistry", varargs...)
+	ret0, _ := ret[0].(*ecr.DescribeRegistryOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeRegistry indicates an expected call of DescribeRegistry.
+func (mr *MockEcrClientMockRecorder) DescribeRegistry(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRegistry", reflect.TypeOf((*MockEcrClient)(nil).DescribeRegistry), varargs...)
+}
+
 // DescribeRepositories mocks base method.
 func (m *MockEcrClient) DescribeRepositories(arg0 context.Context, arg1 *ecr.DescribeRepositoriesInput, arg2 ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error) {
 	m.ctrl.T.Helper()
@@ -73,6 +93,26 @@ func (mr *MockEcrClientMockRecorder) DescribeRepositories(arg0, arg1 interface{}
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRepositories", reflect.TypeOf((*MockEcrClient)(nil).DescribeRepositories), varargs...)
+}
+
+// GetRegistryPolicy mocks base method.
+func (m *MockEcrClient) GetRegistryPolicy(arg0 context.Context, arg1 *ecr.GetRegistryPolicyInput, arg2 ...func(*ecr.Options)) (*ecr.GetRegistryPolicyOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetRegistryPolicy", varargs...)
+	ret0, _ := ret[0].(*ecr.GetRegistryPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRegistryPolicy indicates an expected call of GetRegistryPolicy.
+func (mr *MockEcrClientMockRecorder) GetRegistryPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRegistryPolicy", reflect.TypeOf((*MockEcrClient)(nil).GetRegistryPolicy), varargs...)
 }
 
 // ListTagsForResource mocks base method.

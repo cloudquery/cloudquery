@@ -1,6 +1,6 @@
 # Table: aws_athena_data_catalog_databases
 
-
+https://docs.aws.amazon.com/athena/latest/APIReference/API_Database.html
 
 The composite primary key for this table is (**data_catalog_arn**, **name**).
 

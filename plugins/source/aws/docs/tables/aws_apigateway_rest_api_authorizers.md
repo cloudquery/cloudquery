@@ -1,6 +1,6 @@
 # Table: aws_apigateway_rest_api_authorizers
 
-
+https://docs.aws.amazon.com/apigateway/latest/api/API_Authorizer.html
 
 The primary key for this table is **_cq_id**.
 

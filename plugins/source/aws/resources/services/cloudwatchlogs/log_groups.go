@@ -9,9 +9,10 @@ import (
 
 func LogGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cloudwatchlogs_log_groups",
-		Resolver:  fetchCloudwatchlogsLogGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("logs"),
+		Name:        "aws_cloudwatchlogs_log_groups",
+		Description: "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html",
+		Resolver:    fetchCloudwatchlogsLogGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
