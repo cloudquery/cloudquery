@@ -10,7 +10,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 |-----------------------|----------------|-------------------------------------|-------|
 | [AWS][aws] | v2.5.0         | [Changelog][AWS-Changelog]          | GA |
 | [Azure][azure] | v1.0.2         | [Changelog][Azure-Changelog]        | GA |    
-| [GCP][gcp]            | v1.0.2         | [Changelog][GCP-Changelog]          | GA |
+| [GCP][gcp] | v1.0.3         | [Changelog][GCP-Changelog]          | GA |
 | [DigitalOcean][digitalocean] | v2.0.0         | [Changelog][DigitalOcean-Changelog] | GA |
 | [GitHub][github]      | v1.0.2         | [Changelog][GitHub-Changelog]       | GA |
 | [Heroku][heroku] | v2.0.0         | [Changelog][Heroku-Changelog]       | Preview |
