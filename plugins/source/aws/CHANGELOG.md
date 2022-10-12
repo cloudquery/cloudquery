@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.1.0...plugins-source-aws-v2.2.0) (2022-10-12)
+
+
+### Features
+
+* Add support for EC2 reserved instances ([#1912](https://github.com/cloudquery/cloudquery/issues/1912)) ([42120a2](https://github.com/cloudquery/cloudquery/commit/42120a2207cb1889536bdad4211a383751abdd5f))
+* Add Support for HSMv2 Clusters and Backups ([#2530](https://github.com/cloudquery/cloudquery/issues/2530)) ([b448bc6](https://github.com/cloudquery/cloudquery/commit/b448bc6cebdf7ddbcdcd9fedb6ebb5fa427821f2))
+* Add Support For KMS Aliases ([#2528](https://github.com/cloudquery/cloudquery/issues/2528)) ([2e422dc](https://github.com/cloudquery/cloudquery/commit/2e422dc411836da33fb8c4b6f1a6238de2fee469))
+
+
+### Bug Fixes
+
+* **aws:** Migrate Grafana dashboards ([#2621](https://github.com/cloudquery/cloudquery/issues/2621)) ([438e439](https://github.com/cloudquery/cloudquery/commit/438e4392c8acd89a6469150636ede39aa9af9304))
+* **docs:** Add more info on adding Resource ([#2603](https://github.com/cloudquery/cloudquery/issues/2603)) ([9a29bbd](https://github.com/cloudquery/cloudquery/commit/9a29bbd8f850370f157f29816cbdc11ae3d25e3d))
+* Update AWS plugin to SDK v0.13.5 ([#2661](https://github.com/cloudquery/cloudquery/issues/2661)) ([a835034](https://github.com/cloudquery/cloudquery/commit/a8350347e0562a858fc86c1b5c398225f8993642))
+
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.0.1...plugins-source-aws-v2.1.0) (2022-10-09)
 
 
