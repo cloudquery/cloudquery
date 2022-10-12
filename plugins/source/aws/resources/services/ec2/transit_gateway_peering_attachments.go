@@ -9,9 +9,10 @@ import (
 
 func TransitGatewayPeeringAttachments() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_transit_gateway_peering_attachments",
-		Resolver:  fetchEc2TransitGatewayPeeringAttachments,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_transit_gateway_peering_attachments",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html",
+		Resolver:    fetchEc2TransitGatewayPeeringAttachments,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -1,6 +1,6 @@
 # Table: aws_cloudformation_stacks
 
-
+https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html
 
 The primary key for this table is **arn**.
 
@@ -11,10 +11,10 @@ The following tables depend on `aws_cloudformation_stacks`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |id|String|

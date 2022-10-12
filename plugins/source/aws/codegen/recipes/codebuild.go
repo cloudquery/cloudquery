@@ -9,9 +9,10 @@ import (
 func CodeBuildResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "projects",
-			Struct:     &types.Project{},
-			SkipFields: []string{"Arn"},
+			SubService:  "projects",
+			Struct:      &types.Project{},
+			Description: "https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html",
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
