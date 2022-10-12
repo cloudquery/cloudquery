@@ -15,7 +15,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/plugin-sdk/schema"
-	"golang.org/x/sync/semaphore"
 )
 
 type AWSService string
@@ -62,8 +61,6 @@ const (
 	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
 )
-
-const MAX_GOROUTINES = 10
 
 const (
 	PartitionServiceRegionFile = "data/partition_service_region.json"
@@ -417,45 +414,6 @@ func TagsToMap(tagSlice interface{}) map[string]string {
 	ret := make(map[string]string, slc.Len())
 	TagsIntoMap(tagSlice, ret)
 	return ret
-}
-
-func ListAndDetailResolver(ctx context.Context, meta schema.ClientMeta, res chan<- interface{}, list ListResolverFunc, details DetailResolverFunc) error {
-	errorChan := make(chan error)
-	detailChan := make(chan interface{})
-	c := meta.(*Client)
-	// Channel that will communicate with goroutine that is aggregating the errors
-	done := make(chan struct{})
-	go func() {
-		defer close(done)
-		for detailError := range errorChan {
-			c.logger.Warn().Err(detailError).Msg("Error while fetching details")
-		}
-	}()
-	sem := semaphore.NewWeighted(int64(MAX_GOROUTINES))
-
-	go func() {
-		defer close(errorChan)
-		for item := range detailChan {
-			if err := sem.Acquire(ctx, 1); err != nil {
-				continue
-			}
-			func(summary interface{}) {
-				defer sem.Release(1)
-				details(ctx, meta, res, errorChan, summary)
-			}(item)
-		}
-	}()
-
-	err := list(ctx, meta, detailChan)
-	close(detailChan)
-	if err != nil {
-		return err
-	}
-
-	// All items will be attempted to be fetched, and all errors will be aggregated
-	<-done
-
-	return nil
 }
 
 func Sleep(ctx context.Context, dur time.Duration) error {
