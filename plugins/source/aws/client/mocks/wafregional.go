@@ -135,6 +135,26 @@ func (mr *MockWafRegionalClientMockRecorder) ListRateBasedRules(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRateBasedRules", reflect.TypeOf((*MockWafRegionalClient)(nil).ListRateBasedRules), varargs...)
 }
 
+// ListResourcesForWebACL mocks base method.
+func (m *MockWafRegionalClient) ListResourcesForWebACL(arg0 context.Context, arg1 *wafregional.ListResourcesForWebACLInput, arg2 ...func(*wafregional.Options)) (*wafregional.ListResourcesForWebACLOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListResourcesForWebACL", varargs...)
+	ret0, _ := ret[0].(*wafregional.ListResourcesForWebACLOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListResourcesForWebACL indicates an expected call of ListResourcesForWebACL.
+func (mr *MockWafRegionalClientMockRecorder) ListResourcesForWebACL(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListResourcesForWebACL", reflect.TypeOf((*MockWafRegionalClient)(nil).ListResourcesForWebACL), varargs...)
+}
+
 // ListRuleGroups mocks base method.
 func (m *MockWafRegionalClient) ListRuleGroups(arg0 context.Context, arg1 *wafregional.ListRuleGroupsInput, arg2 ...func(*wafregional.Options)) (*wafregional.ListRuleGroupsOutput, error) {
 	m.ctrl.T.Helper()

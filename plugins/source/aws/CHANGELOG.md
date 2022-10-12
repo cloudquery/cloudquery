@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.4.0...plugins-source-aws-v2.5.0) (2022-10-12)
+
+
+### Features
+
+* Add Support for ECR Public Repositories ([#2645](https://github.com/cloudquery/cloudquery/issues/2645)) ([0e5d974](https://github.com/cloudquery/cloudquery/commit/0e5d9747f32348829eaeffa1fb2b134334f45e44))
+* **aws:** Add Column for WAFRegional for ListResourcesForWebACL ([#2648](https://github.com/cloudquery/cloudquery/issues/2648)) ([5c7dfed](https://github.com/cloudquery/cloudquery/commit/5c7dfed99d2b1421209fd39c4ddcf93440fd652f))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.5 ([#2660](https://github.com/cloudquery/cloudquery/issues/2660)) ([748a0b3](https://github.com/cloudquery/cloudquery/commit/748a0b3f2cd8429696b38daa386bd0ca32fc3fdf))
+* **deps:** Update plugin-sdk for aws to v0.13.6 ([#2717](https://github.com/cloudquery/cloudquery/issues/2717)) ([0fba29f](https://github.com/cloudquery/cloudquery/commit/0fba29faa002b8786febb66ec1a2adaf6c666cc8))
+* **deps:** Update plugin-sdk for azure to v0.13.5 ([#2591](https://github.com/cloudquery/cloudquery/issues/2591)) ([c36f60a](https://github.com/cloudquery/cloudquery/commit/c36f60a36fc20823f471ced3ba1726d778bfcda2))
+* **deps:** Update plugin-sdk for cloudflare to v0.13.5 ([#2593](https://github.com/cloudquery/cloudquery/issues/2593)) ([ed96887](https://github.com/cloudquery/cloudquery/commit/ed968873a7310daca0dff9fafc94394cca9801e4))
+* **deps:** Update plugin-sdk for digitalocean to v0.13.5 ([#2594](https://github.com/cloudquery/cloudquery/issues/2594)) ([5570015](https://github.com/cloudquery/cloudquery/commit/55700155cf1afdbe7e2dd8cc9ae5477a992c1306))
+* **deps:** Update plugin-sdk for gcp to v0.13.5 ([#2595](https://github.com/cloudquery/cloudquery/issues/2595)) ([ec17c48](https://github.com/cloudquery/cloudquery/commit/ec17c48959bcdab3d1aed763beee1d0bf37a589e))
+* Fix multiplexer for AWS Organizations ([#2727](https://github.com/cloudquery/cloudquery/issues/2727)) ([21bb98e](https://github.com/cloudquery/cloudquery/commit/21bb98e79d1203a5a59a44099c8610c8bf680bbc))
+
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.3.0...plugins-source-aws-v2.4.0) (2022-10-12)
 
 
