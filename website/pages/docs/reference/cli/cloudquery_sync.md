@@ -10,7 +10,7 @@ Sync resources from configured source plugins to destinations
 Sync resources from configured source plugins to destinations
 
 ```
-cloudquery sync [file or directories...] [flags]
+cloudquery sync [files or directories] [flags]
 ```
 
 ### Examples

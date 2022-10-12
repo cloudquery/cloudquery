@@ -9,9 +9,10 @@ import (
 
 func TrainingJobs() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sagemaker_training_jobs",
-		Resolver:  fetchSagemakerTrainingJobs,
-		Multiplex: client.ServiceAccountRegionMultiplexer("api.sagemaker"),
+		Name:                "aws_sagemaker_training_jobs",
+		Resolver:            fetchSagemakerTrainingJobs,
+		PreResourceResolver: getTrainingJob,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("api.sagemaker"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
