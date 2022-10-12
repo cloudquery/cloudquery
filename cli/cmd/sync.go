@@ -129,6 +129,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync(gctx, sourceSpec, resources); err != nil {
+			if strings.Contains(err.Error(), `code = InvalidArgument desc = failed to decode spec: json: unknown field "table_concurrency"`) {
+				return fmt.Errorf("unsupported version of source %s@%s. Please update to the latest version from https://cloudquery.io/docs/plugins/sources", sourceSpec.Name, sourceSpec.Version)
+			}
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 		return nil
