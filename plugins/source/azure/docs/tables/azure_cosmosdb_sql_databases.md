@@ -10,10 +10,10 @@ This table depends on [`azure_cosmosdb_accounts`](azure_cosmosdb_accounts.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |subscription_id|String|
 |cosmosdb_account_id|String|
 |resource|JSON|
