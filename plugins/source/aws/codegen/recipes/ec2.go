@@ -262,6 +262,40 @@ func EC2Resources() []*Resource {
 				}...),
 		},
 		{
+			Name:       "aws_regions", // rename table for backwards-compatibility
+			SubService: "regions",
+			Struct:     &types.Region{},
+			SkipFields: []string{"RegionName"},
+			Multiplex:  `client.AccountMultiplex`,
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:        "account_id",
+					Description: "The AWS Account ID of the resource.",
+					Type:        schema.TypeString,
+					Resolver:    `client.ResolveAWSAccount`,
+				},
+				{
+					Name:        "enabled",
+					Description: "Defines if region is enabled stated or not.",
+					Type:        schema.TypeBool,
+					Resolver:    `resolveRegionEnabled`,
+				},
+				{
+					Name:        "partition",
+					Description: "AWS partition",
+					Type:        schema.TypeString,
+					Resolver:    `resolveRegionPartition`,
+				},
+				// for backwards-compatibility: renamed "region_name" to "region"
+				{
+					Name:        "region",
+					Description: "The name of the Region.",
+					Type:        schema.TypeString,
+					Resolver:    `schema.PathResolver("RegionName")`,
+				},
+			},
+		},
+		{
 			SubService: "regional_config",
 			Struct:     &models.RegionalConfig{},
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -568,7 +602,9 @@ func EC2Resources() []*Resource {
 	}
 	for _, r := range resources {
 		r.Service = "ec2"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("ec2")`
+		if r.Multiplex == "" {
+			r.Multiplex = `client.ServiceAccountRegionMultiplexer("ec2")`
+		}
 	}
 	return resources
 }

@@ -66,7 +66,7 @@
 | [aws_ec2_network_acls](aws_ec2_network_acls.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkAcl.html|
 | [aws_ec2_network_interfaces](aws_ec2_network_interfaces.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html|
 | [aws_ec2_regional_config](aws_ec2_regional_config.md)| | |
-| [aws_regions](aws_regions.md)| | Describes a Region.|
+| [aws_regions](aws_regions.md)| | |
 | [aws_ec2_reserved_instances](aws_ec2_reserved_instances.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html|
 | [aws_ec2_route_tables](aws_ec2_route_tables.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html|
 | [aws_ec2_security_groups](aws_ec2_security_groups.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SecurityGroup.html|

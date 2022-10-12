@@ -19,6 +19,8 @@ import (
 )
 
 type Resource struct {
+	// Name overrides the table name: used only in rare cases for backwards-compatibility.
+	Name                  string
 	Service               string
 	SubService            string
 	Struct                interface{}
@@ -81,8 +83,12 @@ func (r *Resource) Generate() error {
 	if r.UnwrapEmbeddedStructs {
 		opts = append(opts, codegen.WithUnwrapAllEmbeddedStructs())
 	}
+	name := fmt.Sprintf("aws_%s_%s", r.Service, r.SubService)
+	if r.Name != "" {
+		name = r.Name
+	}
 	r.Table, err = codegen.NewTableFromStruct(
-		fmt.Sprintf("aws_%s_%s", r.Service, r.SubService),
+		name,
 		r.Struct,
 		opts...,
 	)
