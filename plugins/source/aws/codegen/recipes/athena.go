@@ -9,9 +9,10 @@ import (
 func AthenaResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "data_catalogs",
-			Struct:     &types.DataCatalog{},
-			SkipFields: []string{},
+			SubService:          "data_catalogs",
+			Struct:              &types.DataCatalog{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getDataCatalog",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -83,9 +84,10 @@ func AthenaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "work_groups",
-			Struct:     &types.WorkGroup{},
-			SkipFields: []string{},
+			SubService:          "work_groups",
+			Struct:              &types.WorkGroup{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getWorkGroup",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

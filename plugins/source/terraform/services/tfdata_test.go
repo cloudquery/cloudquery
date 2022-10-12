@@ -33,8 +33,9 @@ func TestTfData(t *testing.T) {
 
 	plugins.TestSourcePluginSync(t, p, logger, specs.Source{
 		Name:         "dev",
+		Version:      "vDev",
 		Tables:       []string{"*"},
-		Destinations: []string{},
+		Destinations: []string{"mock-destination"},
 		Spec: map[string]interface{}{
 			"backends": []map[string]interface{}{
 				{

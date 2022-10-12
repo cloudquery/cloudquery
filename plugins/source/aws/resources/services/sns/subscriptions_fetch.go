@@ -13,10 +13,6 @@ import (
 )
 
 func fetchSnsSubscriptions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listSubscriptions, subscriptionDetail)
-}
-
-func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
 	config := sns.ListSubscriptionsInput{}
@@ -25,9 +21,7 @@ func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan c
 		if err != nil {
 			return err
 		}
-		for _, item := range output.Subscriptions {
-			detailChan <- item
-		}
+		res <- output.Subscriptions
 
 		if aws.ToString(output.NextToken) == "" {
 			break
@@ -37,10 +31,10 @@ func listSubscriptions(ctx context.Context, meta schema.ClientMeta, detailChan c
 	return nil
 }
 
-func subscriptionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, summary interface{}) {
+func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
 	c := meta.(*client.Client)
 	svc := c.Services().SNS
-	item := summary.(types.Subscription)
+	item := resource.Item.(types.Subscription)
 	s := models.Subscription{
 		SubscriptionArn: item.SubscriptionArn,
 		Owner:           item.Owner,
@@ -50,26 +44,21 @@ func subscriptionDetail(ctx context.Context, meta schema.ClientMeta, resultsChan
 	}
 	// Return early if SubscriptionARN is not set because it is still pending
 	if aws.ToString(item.SubscriptionArn) == "PendingConfirmation" {
-		resultsChan <- s
-		return
+		resource.Item = s
+		return nil
 	}
 
 	attrs, err := svc.GetSubscriptionAttributes(ctx, &sns.GetSubscriptionAttributesInput{SubscriptionArn: item.SubscriptionArn})
 	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
-		errorChan <- err
-		return
+		return err
 	}
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})
 	if err != nil {
-		errorChan <- err
-		return
+		return err
 	}
 	if err := dec.Decode(attrs.Attributes); err != nil {
-		errorChan <- err
-		return
+		return err
 	}
-	resultsChan <- s
+	resource.Item = s
+	return nil
 }
