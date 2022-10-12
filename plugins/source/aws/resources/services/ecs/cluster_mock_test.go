@@ -49,14 +49,14 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().ListContainerInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(&instancesList, nil)
 
 	instances := ecs.DescribeContainerInstancesOutput{}
-	err = faker.FakeObject(&instances)
+	err = faker.FakeData(&instances)
 	if err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeContainerInstances(gomock.Any(), gomock.Any(), gomock.Any()).Return(&instances, nil)
 
 	listTasks := ecs.ListTasksOutput{}
-	err = faker.FakeObject(&listTasks)
+	err = faker.FakeData(&listTasks)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -64,7 +64,7 @@ func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().ListTasks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&listTasks, nil)
 
 	tasks := ecs.DescribeTasksOutput{}
-	err = faker.FakeObject(&tasks)
+	err = faker.FakeData(&tasks)
 	if err != nil {
 		t.Fatal(err)
 	}

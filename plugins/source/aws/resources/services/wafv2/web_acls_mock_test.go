@@ -11,7 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	faker "github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 
@@ -20,25 +20,25 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	cfm := mocks.NewMockCloudfrontClient(ctrl)
 
 	tempWebACLSum := types.WebACLSummary{}
-	if err := faker.FakeObject(&tempWebACLSum); err != nil {
+	if err := faker.FakeData(&tempWebACLSum); err != nil {
 		t.Fatal(err)
 	}
 	// Faker can't handle recursive nested structs so we have to build some
 	// parts from scratch.
 	defaultAction := types.DefaultAction{}
-	if err := faker.FakeObject(&defaultAction); err != nil {
+	if err := faker.FakeData(&defaultAction); err != nil {
 		t.Fatal(err)
 	}
 	visibilityConfig := types.VisibilityConfig{}
-	if err := faker.FakeObject(&visibilityConfig); err != nil {
+	if err := faker.FakeData(&visibilityConfig); err != nil {
 		t.Fatal(err)
 	}
 	customRespBody := map[string]types.CustomResponseBody{}
-	if err := faker.FakeObject(&customRespBody); err != nil {
+	if err := faker.FakeData(&customRespBody); err != nil {
 		t.Fatal(err)
 	}
 	overrideAction := types.OverrideAction{}
-	if err := faker.FakeObject(&overrideAction); err != nil {
+	if err := faker.FakeData(&overrideAction); err != nil {
 		t.Fatal(err)
 	}
 	processRuleGroups := types.FirewallManagerRuleGroup{
@@ -49,23 +49,23 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		VisibilityConfig:         &visibilityConfig,
 	}
 	action := types.RuleAction{}
-	if err := faker.FakeObject(&action); err != nil {
+	if err := faker.FakeData(&action); err != nil {
 		t.Fatal(err)
 	}
 	labels := make([]types.Label, 0)
-	if err := faker.FakeObject(&labels); err != nil {
+	if err := faker.FakeData(&labels); err != nil {
 		t.Fatal(err)
 	}
 	var tempResourceArns []string
-	if err := faker.FakeObject(&tempResourceArns); err != nil {
+	if err := faker.FakeData(&tempResourceArns); err != nil {
 		t.Fatal(err)
 	}
 	var tempTags []types.Tag
-	if err := faker.FakeObject(&tempTags); err != nil {
+	if err := faker.FakeData(&tempTags); err != nil {
 		t.Fatal(err)
 	}
 	var loggingConfiguration types.LoggingConfiguration
-	if err := faker.FakeObject(&loggingConfiguration); err != nil {
+	if err := faker.FakeData(&loggingConfiguration); err != nil {
 		t.Fatal(err)
 	}
 	rule := types.Rule{
@@ -122,7 +122,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	}, nil)
 
 	distributionList := cftypes.DistributionList{}
-	if err := faker.FakeObject(&distributionList); err != nil {
+	if err := faker.FakeData(&distributionList); err != nil {
 		t.Fatal(err)
 	}
 	distributionList.NextMarker = nil

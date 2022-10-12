@@ -10,7 +10,7 @@ import (
 	s3Types "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	faker "github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 
@@ -18,60 +18,60 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mgr := mocks.NewMockS3ManagerClient(ctrl)
 	m := mocks.NewMockS3Client(ctrl)
 	b := s3Types.Bucket{}
-	err := faker.FakeObject(&b)
+	err := faker.FakeData(&b)
 	if err != nil {
 		t.Fatal(err)
 	}
 	bloc := s3.GetBucketLocationOutput{}
-	err = faker.FakeObject(&bloc)
+	err = faker.FakeData(&bloc)
 	if err != nil {
 		t.Fatal(err)
 	}
 	blog := s3.GetBucketLoggingOutput{}
-	err = faker.FakeObject(&blog)
+	err = faker.FakeData(&blog)
 	if err != nil {
 		t.Fatal(err)
 	}
 	bpol := s3.GetBucketPolicyOutput{}
-	err = faker.FakeObject(&bpol)
+	err = faker.FakeData(&bpol)
 	if err != nil {
 		t.Fatal(err)
 	}
 	jsonDoc := `{"stuff": 3}`
 	bpol.Policy = &jsonDoc
 	bver := s3.GetBucketVersioningOutput{}
-	err = faker.FakeObject(&bver)
+	err = faker.FakeData(&bver)
 	if err != nil {
 		t.Fatal(err)
 	}
 	bgrant := s3Types.Grant{}
-	err = faker.FakeObject(&bgrant)
+	err = faker.FakeData(&bgrant)
 	if err != nil {
 		t.Fatal(err)
 	}
 	bcors := s3Types.CORSRule{}
-	err = faker.FakeObject(&bcors)
+	err = faker.FakeData(&bcors)
 	if err != nil {
 		t.Fatal(err)
 	}
 	bencryption := s3.GetBucketEncryptionOutput{}
-	err = faker.FakeObject(&bencryption)
+	err = faker.FakeData(&bencryption)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	bpba := s3.GetPublicAccessBlockOutput{}
-	err = faker.FakeObject(&bpba)
+	err = faker.FakeData(&bpba)
 	if err != nil {
 		t.Fatal(err)
 	}
 	btag := s3.GetBucketTaggingOutput{}
-	err = faker.FakeObject(&btag)
+	err = faker.FakeData(&btag)
 	if err != nil {
 		t.Fatal(err)
 	}
 	bownershipcontrols := s3.GetBucketOwnershipControlsOutput{}
-	err = faker.FakeObject(&bownershipcontrols)
+	err = faker.FakeData(&bownershipcontrols)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -103,11 +103,11 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	// bucket replication struct has interfaces and faker doesn't work well with it so we will build it manually
 	sourceSelectionCriteria := s3Types.SourceSelectionCriteria{}
-	if err := faker.FakeObject(&sourceSelectionCriteria); err != nil {
+	if err := faker.FakeData(&sourceSelectionCriteria); err != nil {
 		t.Fatal(err)
 	}
 	replicationDest := s3Types.Destination{}
-	if err := faker.FakeObject(&replicationDest); err != nil {
+	if err := faker.FakeData(&replicationDest); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().GetBucketReplication(gomock.Any(), gomock.Any(), gomock.Any()).Return(

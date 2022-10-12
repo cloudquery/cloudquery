@@ -9,34 +9,34 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/plugin-sdk/faker"
+	faker "github.com/cloudquery/faker/v3"
 	"github.com/golang/mock/gomock"
 )
 
 func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockWafV2Client(ctrl)
 	visibilityConfig := types.VisibilityConfig{}
-	if err := faker.FakeObject(&visibilityConfig); err != nil {
+	if err := faker.FakeData(&visibilityConfig); err != nil {
 		t.Fatal(err)
 	}
 	customRespBody := map[string]types.CustomResponseBody{}
-	if err := faker.FakeObject(&customRespBody); err != nil {
+	if err := faker.FakeData(&customRespBody); err != nil {
 		t.Fatal(err)
 	}
 	var labelSummaries []types.LabelSummary
-	if err := faker.FakeObject(&labelSummaries); err != nil {
+	if err := faker.FakeData(&labelSummaries); err != nil {
 		t.Fatal(err)
 	}
 	overrideAction := types.OverrideAction{}
-	if err := faker.FakeObject(&overrideAction); err != nil {
+	if err := faker.FakeData(&overrideAction); err != nil {
 		t.Fatal(err)
 	}
 	action := types.RuleAction{}
-	if err := faker.FakeObject(&action); err != nil {
+	if err := faker.FakeData(&action); err != nil {
 		t.Fatal(err)
 	}
 	var labels []types.Label
-	if err := faker.FakeObject(&labelSummaries); err != nil {
+	if err := faker.FakeData(&labelSummaries); err != nil {
 		t.Fatal(err)
 	}
 	rule := types.Rule{
@@ -49,17 +49,17 @@ func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		RuleLabels:       labels,
 	}
 	var tempPolicyOutput wafv2.GetPermissionPolicyOutput
-	if err := faker.FakeObject(&tempPolicyOutput); err != nil {
+	if err := faker.FakeData(&tempPolicyOutput); err != nil {
 		t.Fatal(err)
 	}
 	tempPolicyOutput.Policy = aws.String(`{"test": 1}`)
 	var tempTags []types.Tag
-	if err := faker.FakeObject(&tempTags); err != nil {
+	if err := faker.FakeData(&tempTags); err != nil {
 		t.Fatal(err)
 	}
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		tempRuleGroupSum := types.RuleGroupSummary{}
-		if err := faker.FakeObject(&tempRuleGroupSum); err != nil {
+		if err := faker.FakeData(&tempRuleGroupSum); err != nil {
 			t.Fatal(err)
 		}
 		m.EXPECT().ListRuleGroups(gomock.Any(), &wafv2.ListRuleGroupsInput{Scope: scope}, gomock.Any()).Return(&wafv2.ListRuleGroupsOutput{
