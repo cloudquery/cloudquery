@@ -9,9 +9,10 @@ import (
 func CloudwatchResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "alarms",
-			Struct:     &types.MetricAlarm{},
-			SkipFields: []string{"AlarmArn", "Dimensions"},
+			SubService:  "alarms",
+			Struct:      &types.MetricAlarm{},
+			Description: "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html",
+			SkipFields:  []string{"AlarmArn", "Dimensions"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

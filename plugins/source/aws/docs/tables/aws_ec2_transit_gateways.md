@@ -1,6 +1,6 @@
 # Table: aws_ec2_transit_gateways
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 
 The composite primary key for this table is (**id**, **arn**).
 

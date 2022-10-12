@@ -1,6 +1,6 @@
 # Table: aws_apigateway_usage_plans
 
-
+https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html
 
 The primary key for this table is **_cq_id**.
 

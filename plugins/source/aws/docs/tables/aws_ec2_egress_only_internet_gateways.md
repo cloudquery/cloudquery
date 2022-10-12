@@ -1,6 +1,6 @@
 # Table: aws_ec2_egress_only_internet_gateways
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_EgressOnlyInternetGateway.html
 
 The primary key for this table is **arn**.
 

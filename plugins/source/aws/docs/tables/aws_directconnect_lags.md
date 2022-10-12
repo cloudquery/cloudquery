@@ -1,6 +1,6 @@
 # Table: aws_directconnect_lags
 
-
+https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Lag.html
 
 The primary key for this table is **arn**.
 
