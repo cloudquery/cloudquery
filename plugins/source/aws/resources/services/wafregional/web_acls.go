@@ -38,6 +38,11 @@ func WebAcls() *schema.Table {
 				Description: `Web ACL tags.`,
 			},
 			{
+				Name:     "resources_for_web_acl",
+				Type:     schema.TypeStringArray,
+				Resolver: resolveWafregionalWebACLResourcesForWebACL,
+			},
+			{
 				Name:     "default_action",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("DefaultAction"),
