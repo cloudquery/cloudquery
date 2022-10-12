@@ -1,7 +1,7 @@
 {
-  "cli": "1.0.9",
+  "cli": "1.1.0",
   "cli+FILLER": "0.0.0",
-  "plugins/source/aws": "2.3.0",
+  "plugins/source/aws": "2.4.0",
   "plugins/source/aws+FILLER": "0.0.0",
   "plugins/source/azure": "1.0.2",
   "plugins/source/azure+FILLER": "0.0.0",
