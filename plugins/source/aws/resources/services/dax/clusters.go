@@ -9,9 +9,10 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_dax_clusters",
-		Resolver:  fetchDaxClusters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("dax"),
+		Name:        "aws_dax_clusters",
+		Description: "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html",
+		Resolver:    fetchDaxClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("dax"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -1,6 +1,6 @@
 # Table: aws_directconnect_gateways
 
-
+https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html
 
 The primary key for this table is **arn**.
 

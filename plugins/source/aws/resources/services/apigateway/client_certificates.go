@@ -9,9 +9,10 @@ import (
 
 func ClientCertificates() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_client_certificates",
-		Resolver:  fetchApigatewayClientCertificates,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_client_certificates",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_ClientCertificate.html",
+		Resolver:    fetchApigatewayClientCertificates,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

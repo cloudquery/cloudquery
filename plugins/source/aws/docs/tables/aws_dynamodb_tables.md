@@ -1,6 +1,6 @@
 # Table: aws_dynamodb_tables
 
-
+https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html
 
 The primary key for this table is **arn**.
 

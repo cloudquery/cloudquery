@@ -1,6 +1,6 @@
 # Table: aws_appsync_graphql_apis
 
-
+https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html
 
 The primary key for this table is **arn**.
 

@@ -1,6 +1,6 @@
 # Table: aws_directconnect_gateway_associations
 
-
+https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAssociation.html
 
 The primary key for this table is **_cq_id**.
 

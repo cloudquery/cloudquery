@@ -1,6 +1,6 @@
 # Table: aws_backup_global_settings
 
-
+https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSettings.html
 
 The primary key for this table is **account_id**.
 

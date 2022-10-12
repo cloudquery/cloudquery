@@ -9,9 +9,10 @@ import (
 
 func DataCatalogDatabaseTables() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_athena_data_catalog_database_tables",
-		Resolver:  fetchAthenaDataCatalogDatabaseTables,
-		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
+		Name:        "aws_athena_data_catalog_database_tables",
+		Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_TableMetadata.html",
+		Resolver:    fetchAthenaDataCatalogDatabaseTables,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
