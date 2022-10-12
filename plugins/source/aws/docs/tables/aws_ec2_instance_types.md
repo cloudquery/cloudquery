@@ -1,6 +1,6 @@
 # Table: aws_ec2_instance_types
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceTypeInfo.html
 
 The primary key for this table is **arn**.
 

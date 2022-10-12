@@ -1,6 +1,6 @@
 # Table: aws_ec2_vpc_peering_connections
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcPeeringConnection.html
 
 The primary key for this table is **arn**.
 

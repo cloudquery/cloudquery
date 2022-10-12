@@ -1,6 +1,6 @@
 # Table: aws_ec2_vpc_endpoints
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcEndpoint.html
 
 The primary key for this table is **arn**.
 

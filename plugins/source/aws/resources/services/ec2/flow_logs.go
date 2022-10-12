@@ -9,9 +9,10 @@ import (
 
 func FlowLogs() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_flow_logs",
-		Resolver:  fetchEc2FlowLogs,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_flow_logs",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_FlowLog.html",
+		Resolver:    fetchEc2FlowLogs,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

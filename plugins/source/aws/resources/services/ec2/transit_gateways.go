@@ -9,9 +9,10 @@ import (
 
 func TransitGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_transit_gateways",
-		Resolver:  fetchEc2TransitGateways,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_transit_gateways",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html",
+		Resolver:    fetchEc2TransitGateways,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

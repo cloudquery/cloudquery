@@ -1,6 +1,6 @@
 # Table: aws_dynamodb_table_replica_auto_scalings
 
-
+https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html
 
 The primary key for this table is **_cq_id**.
 

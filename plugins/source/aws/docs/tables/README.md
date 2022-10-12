@@ -2,82 +2,84 @@
 ## Tables
 | Name          | Relations | Description   |
 | ------------- | --------- | ------------- |
-| [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md)| [aws_accessanalyzer_analyzer_findings](aws_accessanalyzer_analyzer_findings.md)<br />[aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md)| |
-| [aws_acm_certificates](aws_acm_certificates.md)| | |
-| [aws_apigateway_api_keys](aws_apigateway_api_keys.md)| | |
-| [aws_apigateway_client_certificates](aws_apigateway_client_certificates.md)| | |
-| [aws_apigateway_domain_names](aws_apigateway_domain_names.md)| [aws_apigateway_domain_name_base_path_mappings](aws_apigateway_domain_name_base_path_mappings.md)| |
-| [aws_apigateway_rest_apis](aws_apigateway_rest_apis.md)| [aws_apigateway_rest_api_authorizers](aws_apigateway_rest_api_authorizers.md)<br />[aws_apigateway_rest_api_deployments](aws_apigateway_rest_api_deployments.md)<br />[aws_apigateway_rest_api_documentation_parts](aws_apigateway_rest_api_documentation_parts.md)<br />[aws_apigateway_rest_api_documentation_versions](aws_apigateway_rest_api_documentation_versions.md)<br />[aws_apigateway_rest_api_gateway_responses](aws_apigateway_rest_api_gateway_responses.md)<br />[aws_apigateway_rest_api_models](aws_apigateway_rest_api_models.md)<br />[aws_apigateway_rest_api_request_validators](aws_apigateway_rest_api_request_validators.md)<br />[aws_apigateway_rest_api_resources](aws_apigateway_rest_api_resources.md)<br />[aws_apigateway_rest_api_stages](aws_apigateway_rest_api_stages.md)| |
-| [aws_apigateway_usage_plans](aws_apigateway_usage_plans.md)| [aws_apigateway_usage_plan_keys](aws_apigateway_usage_plan_keys.md)| |
-| [aws_apigateway_vpc_links](aws_apigateway_vpc_links.md)| | |
-| [aws_apigatewayv2_apis](aws_apigatewayv2_apis.md)| [aws_apigatewayv2_api_authorizers](aws_apigatewayv2_api_authorizers.md)<br />[aws_apigatewayv2_api_deployments](aws_apigatewayv2_api_deployments.md)<br />[aws_apigatewayv2_api_integrations](aws_apigatewayv2_api_integrations.md)<br />[aws_apigatewayv2_api_models](aws_apigatewayv2_api_models.md)<br />[aws_apigatewayv2_api_routes](aws_apigatewayv2_api_routes.md)<br />[aws_apigatewayv2_api_stages](aws_apigatewayv2_api_stages.md)| |
-| [aws_apigatewayv2_domain_names](aws_apigatewayv2_domain_names.md)| [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md)| |
-| [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md)| | |
-| [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md)| | |
-| [aws_appsync_graphql_apis](aws_appsync_graphql_apis.md)| | |
-| [aws_athena_data_catalogs](aws_athena_data_catalogs.md)| [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md)| |
-| [aws_athena_work_groups](aws_athena_work_groups.md)| [aws_athena_work_group_prepared_statements](aws_athena_work_group_prepared_statements.md)<br />[aws_athena_work_group_query_executions](aws_athena_work_group_query_executions.md)<br />[aws_athena_work_group_named_queries](aws_athena_work_group_named_queries.md)| |
+| [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzers.md)| [aws_accessanalyzer_analyzer_findings](aws_accessanalyzer_analyzer_findings.md)<br />[aws_accessanalyzer_analyzer_archive_rules](aws_accessanalyzer_analyzer_archive_rules.md)| https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_AnalyzerSummary.html|
+| [aws_acm_certificates](aws_acm_certificates.md)| | https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html|
+| [aws_apigateway_api_keys](aws_apigateway_api_keys.md)| | https://docs.aws.amazon.com/apigateway/latest/api/API_ApiKey.html|
+| [aws_apigateway_client_certificates](aws_apigateway_client_certificates.md)| | https://docs.aws.amazon.com/apigateway/latest/api/API_ClientCertificate.html|
+| [aws_apigateway_domain_names](aws_apigateway_domain_names.md)| [aws_apigateway_domain_name_base_path_mappings](aws_apigateway_domain_name_base_path_mappings.md)| https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html|
+| [aws_apigateway_rest_apis](aws_apigateway_rest_apis.md)| [aws_apigateway_rest_api_authorizers](aws_apigateway_rest_api_authorizers.md)<br />[aws_apigateway_rest_api_deployments](aws_apigateway_rest_api_deployments.md)<br />[aws_apigateway_rest_api_documentation_parts](aws_apigateway_rest_api_documentation_parts.md)<br />[aws_apigateway_rest_api_documentation_versions](aws_apigateway_rest_api_documentation_versions.md)<br />[aws_apigateway_rest_api_gateway_responses](aws_apigateway_rest_api_gateway_responses.md)<br />[aws_apigateway_rest_api_models](aws_apigateway_rest_api_models.md)<br />[aws_apigateway_rest_api_request_validators](aws_apigateway_rest_api_request_validators.md)<br />[aws_apigateway_rest_api_resources](aws_apigateway_rest_api_resources.md)<br />[aws_apigateway_rest_api_stages](aws_apigateway_rest_api_stages.md)| https://docs.aws.amazon.com/apigateway/latest/api/API_RestApi.html|
+| [aws_apigateway_usage_plans](aws_apigateway_usage_plans.md)| [aws_apigateway_usage_plan_keys](aws_apigateway_usage_plan_keys.md)| https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html|
+| [aws_apigateway_vpc_links](aws_apigateway_vpc_links.md)| | https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html|
+| [aws_apigatewayv2_apis](aws_apigatewayv2_apis.md)| [aws_apigatewayv2_api_authorizers](aws_apigatewayv2_api_authorizers.md)<br />[aws_apigatewayv2_api_deployments](aws_apigatewayv2_api_deployments.md)<br />[aws_apigatewayv2_api_integrations](aws_apigatewayv2_api_integrations.md)<br />[aws_apigatewayv2_api_models](aws_apigatewayv2_api_models.md)<br />[aws_apigatewayv2_api_routes](aws_apigatewayv2_api_routes.md)<br />[aws_apigatewayv2_api_stages](aws_apigatewayv2_api_stages.md)| https://docs.aws.amazon.com/apigateway/latest/api/API_Api.html|
+| [aws_apigatewayv2_domain_names](aws_apigatewayv2_domain_names.md)| [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md)| https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html|
+| [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md)| | https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html|
+| [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md)| | https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html|
+| [aws_appsync_graphql_apis](aws_appsync_graphql_apis.md)| | https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html|
+| [aws_athena_data_catalogs](aws_athena_data_catalogs.md)| [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md)| https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html|
+| [aws_athena_work_groups](aws_athena_work_groups.md)| [aws_athena_work_group_prepared_statements](aws_athena_work_group_prepared_statements.md)<br />[aws_athena_work_group_query_executions](aws_athena_work_group_query_executions.md)<br />[aws_athena_work_group_named_queries](aws_athena_work_group_named_queries.md)| https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroup.html|
 | [aws_autoscaling_groups](aws_autoscaling_groups.md)| [aws_autoscaling_group_scaling_policies](aws_autoscaling_group_scaling_policies.md)<br />[aws_autoscaling_group_lifecycle_hooks](aws_autoscaling_group_lifecycle_hooks.md)| |
-| [aws_autoscaling_launch_configurations](aws_autoscaling_launch_configurations.md)| | |
-| [aws_autoscaling_scheduled_actions](aws_autoscaling_scheduled_actions.md)| | |
-| [aws_backup_global_settings](aws_backup_global_settings.md)| | |
-| [aws_backup_plans](aws_backup_plans.md)| [aws_backup_plan_selections](aws_backup_plan_selections.md)| |
-| [aws_backup_region_settings](aws_backup_region_settings.md)| | |
-| [aws_backup_vaults](aws_backup_vaults.md)| [aws_backup_vault_recovery_points](aws_backup_vault_recovery_points.md)| |
-| [aws_cloudformation_stacks](aws_cloudformation_stacks.md)| [aws_cloudformation_stack_resources](aws_cloudformation_stack_resources.md)| |
-| [aws_cloudfront_cache_policies](aws_cloudfront_cache_policies.md)| | |
-| [aws_cloudfront_distributions](aws_cloudfront_distributions.md)| | |
-| [aws_cloudhsmv2_backups](aws_cloudhsmv2_backups.md)| | |
-| [aws_cloudhsmv2_clusters](aws_cloudhsmv2_clusters.md)| | |
+| [aws_autoscaling_launch_configurations](aws_autoscaling_launch_configurations.md)| | https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration.html|
+| [aws_autoscaling_scheduled_actions](aws_autoscaling_scheduled_actions.md)| | https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScheduledUpdateGroupAction.html|
+| [aws_backup_global_settings](aws_backup_global_settings.md)| | https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSettings.html|
+| [aws_backup_plans](aws_backup_plans.md)| [aws_backup_plan_selections](aws_backup_plan_selections.md)| https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupPlan.html|
+| [aws_backup_region_settings](aws_backup_region_settings.md)| | https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeRegionSettings.html|
+| [aws_backup_vaults](aws_backup_vaults.md)| [aws_backup_vault_recovery_points](aws_backup_vault_recovery_points.md)| https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BackupVaultListMember.html|
+| [aws_cloudformation_stacks](aws_cloudformation_stacks.md)| [aws_cloudformation_stack_resources](aws_cloudformation_stack_resources.md)| https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html|
+| [aws_cloudfront_cache_policies](aws_cloudfront_cache_policies.md)| | https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_CachePolicySummary.html|
+| [aws_cloudfront_distributions](aws_cloudfront_distributions.md)| | https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_Distribution.html|
+| [aws_cloudhsmv2_backups](aws_cloudhsmv2_backups.md)| | https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Backup.html|
+| [aws_cloudhsmv2_clusters](aws_cloudhsmv2_clusters.md)| | https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Cluster.html|
 | [aws_cloudtrail_trails](aws_cloudtrail_trails.md)| [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)| |
-| [aws_cloudwatch_alarms](aws_cloudwatch_alarms.md)| | |
-| [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_groups.md)| | |
-| [aws_cloudwatchlogs_metric_filters](aws_cloudwatchlogs_metric_filters.md)| | |
-| [aws_codebuild_projects](aws_codebuild_projects.md)| | |
+| [aws_cloudwatch_alarms](aws_cloudwatch_alarms.md)| | https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricAlarm.html|
+| [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_groups.md)| | https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html|
+| [aws_cloudwatchlogs_metric_filters](aws_cloudwatchlogs_metric_filters.md)| | https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html|
+| [aws_codebuild_projects](aws_codebuild_projects.md)| | https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Project.html|
 | [aws_codepipeline_pipelines](aws_codepipeline_pipelines.md)| | |
-| [aws_codepipeline_webhooks](aws_codepipeline_webhooks.md)| | |
+| [aws_codepipeline_webhooks](aws_codepipeline_webhooks.md)| | https://docs.aws.amazon.com/codepipeline/latest/APIReference/API_ListWebhookItem.html|
 | [aws_cognito_identity_pools](aws_cognito_identity_pools.md)| | |
-| [aws_cognito_user_pools](aws_cognito_user_pools.md)| [aws_cognito_user_pool_identity_providers](aws_cognito_user_pool_identity_providers.md)| |
+| [aws_cognito_user_pools](aws_cognito_user_pools.md)| [aws_cognito_user_pool_identity_providers](aws_cognito_user_pool_identity_providers.md)| https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html|
 | [aws_config_configuration_recorders](aws_config_configuration_recorders.md)| | |
-| [aws_config_conformance_packs](aws_config_conformance_packs.md)| [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md)| |
-| [aws_dax_clusters](aws_dax_clusters.md)| | |
-| [aws_directconnect_connections](aws_directconnect_connections.md)| | |
-| [aws_directconnect_gateways](aws_directconnect_gateways.md)| [aws_directconnect_gateway_associations](aws_directconnect_gateway_associations.md)<br />[aws_directconnect_gateway_attachments](aws_directconnect_gateway_attachments.md)| |
-| [aws_directconnect_lags](aws_directconnect_lags.md)| | |
-| [aws_directconnect_virtual_gateways](aws_directconnect_virtual_gateways.md)| | |
-| [aws_directconnect_virtual_interfaces](aws_directconnect_virtual_interfaces.md)| | |
+| [aws_config_conformance_packs](aws_config_conformance_packs.md)| [aws_config_conformance_pack_rule_compliances](aws_config_conformance_pack_rule_compliances.md)| https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html|
+| [aws_dax_clusters](aws_dax_clusters.md)| | https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html|
+| [aws_directconnect_connections](aws_directconnect_connections.md)| | https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html|
+| [aws_directconnect_gateways](aws_directconnect_gateways.md)| [aws_directconnect_gateway_associations](aws_directconnect_gateway_associations.md)<br />[aws_directconnect_gateway_attachments](aws_directconnect_gateway_attachments.md)| https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGateway.html|
+| [aws_directconnect_lags](aws_directconnect_lags.md)| | https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Lag.html|
+| [aws_directconnect_virtual_gateways](aws_directconnect_virtual_gateways.md)| | https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualGateway.html|
+| [aws_directconnect_virtual_interfaces](aws_directconnect_virtual_interfaces.md)| | https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterface.html|
 | [aws_dms_replication_instances](aws_dms_replication_instances.md)| | |
-| [aws_dynamodb_tables](aws_dynamodb_tables.md)| [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md)<br />[aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md)| |
-| [aws_ec2_byoip_cidrs](aws_ec2_byoip_cidrs.md)| | |
-| [aws_ec2_customer_gateways](aws_ec2_customer_gateways.md)| | |
-| [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots.md)| | |
-| [aws_ec2_ebs_volumes](aws_ec2_ebs_volumes.md)| | |
-| [aws_ec2_egress_only_internet_gateways](aws_ec2_egress_only_internet_gateways.md)| | |
-| [aws_ec2_eips](aws_ec2_eips.md)| | |
-| [aws_ec2_flow_logs](aws_ec2_flow_logs.md)| | |
-| [aws_ec2_hosts](aws_ec2_hosts.md)| | |
-| [aws_ec2_images](aws_ec2_images.md)| | |
-| [aws_ec2_instance_statuses](aws_ec2_instance_statuses.md)| | |
-| [aws_ec2_instance_types](aws_ec2_instance_types.md)| | |
-| [aws_ec2_instances](aws_ec2_instances.md)| | |
-| [aws_ec2_internet_gateways](aws_ec2_internet_gateways.md)| | |
-| [aws_ec2_key_pairs](aws_ec2_key_pairs.md)| | |
-| [aws_ec2_nat_gateways](aws_ec2_nat_gateways.md)| | |
-| [aws_ec2_network_acls](aws_ec2_network_acls.md)| | |
-| [aws_ec2_network_interfaces](aws_ec2_network_interfaces.md)| | |
+| [aws_dynamodb_tables](aws_dynamodb_tables.md)| [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md)<br />[aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md)| https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html|
+| [aws_ec2_byoip_cidrs](aws_ec2_byoip_cidrs.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ByoipCidr.html|
+| [aws_ec2_customer_gateways](aws_ec2_customer_gateways.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CustomerGateway.html|
+| [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html|
+| [aws_ec2_ebs_volumes](aws_ec2_ebs_volumes.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html|
+| [aws_ec2_egress_only_internet_gateways](aws_ec2_egress_only_internet_gateways.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_EgressOnlyInternetGateway.html|
+| [aws_ec2_eips](aws_ec2_eips.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Address.html|
+| [aws_ec2_flow_logs](aws_ec2_flow_logs.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_FlowLog.html|
+| [aws_ec2_hosts](aws_ec2_hosts.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Host.html|
+| [aws_ec2_images](aws_ec2_images.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html|
+| [aws_ec2_instances](aws_ec2_instances.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Instance.html|
+| [aws_ec2_instance_statuses](aws_ec2_instance_statuses.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceStatus.html|
+| [aws_ec2_instance_types](aws_ec2_instance_types.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceTypeInfo.html|
+| [aws_ec2_internet_gateways](aws_ec2_internet_gateways.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InternetGateway.html|
+| [aws_ec2_key_pairs](aws_ec2_key_pairs.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_KeyPairInfo.html|
+| [aws_ec2_nat_gateways](aws_ec2_nat_gateways.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NatGateway.html|
+| [aws_ec2_network_acls](aws_ec2_network_acls.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkAcl.html|
+| [aws_ec2_network_interfaces](aws_ec2_network_interfaces.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html|
 | [aws_ec2_regional_config](aws_ec2_regional_config.md)| | |
 | [aws_regions](aws_regions.md)| | Describes a Region.|
-| [aws_ec2_reserved_instances](aws_ec2_reserved_instances.md)| | |
-| [aws_ec2_route_tables](aws_ec2_route_tables.md)| | |
-| [aws_ec2_security_groups](aws_ec2_security_groups.md)| | |
-| [aws_ec2_subnets](aws_ec2_subnets.md)| | |
-| [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md)| [aws_ec2_transit_gateway_attachments](aws_ec2_transit_gateway_attachments.md)<br />[aws_ec2_transit_gateway_route_tables](aws_ec2_transit_gateway_route_tables.md)<br />[aws_ec2_transit_gateway_vpc_attachments](aws_ec2_transit_gateway_vpc_attachments.md)<br />[aws_ec2_transit_gateway_peering_attachments](aws_ec2_transit_gateway_peering_attachments.md)<br />[aws_ec2_transit_gateway_multicast_domains](aws_ec2_transit_gateway_multicast_domains.md)| |
-| [aws_ec2_vpc_endpoint_service_configurations](aws_ec2_vpc_endpoint_service_configurations.md)| | |
-| [aws_ec2_vpc_endpoint_services](aws_ec2_vpc_endpoint_services.md)| | |
-| [aws_ec2_vpc_endpoints](aws_ec2_vpc_endpoints.md)| | |
-| [aws_ec2_vpc_peering_connections](aws_ec2_vpc_peering_connections.md)| | |
-| [aws_ec2_vpcs](aws_ec2_vpcs.md)| | |
-| [aws_ec2_vpn_gateways](aws_ec2_vpn_gateways.md)| | |
+| [aws_ec2_reserved_instances](aws_ec2_reserved_instances.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html|
+| [aws_ec2_route_tables](aws_ec2_route_tables.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html|
+| [aws_ec2_security_groups](aws_ec2_security_groups.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SecurityGroup.html|
+| [aws_ec2_subnets](aws_ec2_subnets.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html|
+| [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md)| [aws_ec2_transit_gateway_attachments](aws_ec2_transit_gateway_attachments.md)<br />[aws_ec2_transit_gateway_route_tables](aws_ec2_transit_gateway_route_tables.md)<br />[aws_ec2_transit_gateway_vpc_attachments](aws_ec2_transit_gateway_vpc_attachments.md)<br />[aws_ec2_transit_gateway_peering_attachments](aws_ec2_transit_gateway_peering_attachments.md)<br />[aws_ec2_transit_gateway_multicast_domains](aws_ec2_transit_gateway_multicast_domains.md)| https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html|
+| [aws_ec2_vpc_endpoints](aws_ec2_vpc_endpoints.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcEndpoint.html|
+| [aws_ec2_vpc_endpoint_service_configurations](aws_ec2_vpc_endpoint_service_configurations.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceConfiguration.html|
+| [aws_ec2_vpc_endpoint_services](aws_ec2_vpc_endpoint_services.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html|
+| [aws_ec2_vpc_peering_connections](aws_ec2_vpc_peering_connections.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcPeeringConnection.html|
+| [aws_ec2_vpcs](aws_ec2_vpcs.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Vpc.html|
+| [aws_ec2_vpn_gateways](aws_ec2_vpn_gateways.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpnGateway.html|
+| [aws_ecr_registries](aws_ecr_registries.md)| | |
+| [aws_ecr_registry_policies](aws_ecr_registry_policies.md)| | |
 | [aws_ecr_repositories](aws_ecr_repositories.md)| [aws_ecr_repository_images](aws_ecr_repository_images.md)| |
 | [aws_ecs_clusters](aws_ecs_clusters.md)| [aws_ecs_cluster_tasks](aws_ecs_cluster_tasks.md)<br />[aws_ecs_cluster_services](aws_ecs_cluster_services.md)<br />[aws_ecs_cluster_container_instances](aws_ecs_cluster_container_instances.md)| |
 | [aws_ecs_task_definitions](aws_ecs_task_definitions.md)| | |
@@ -95,8 +97,8 @@
 | [aws_elasticache_subnet_groups](aws_elasticache_subnet_groups.md)| | |
 | [aws_elasticache_user_groups](aws_elasticache_user_groups.md)| | |
 | [aws_elasticache_users](aws_elasticache_users.md)| | |
-| [aws_elasticbeanstalk_application_versions](aws_elasticbeanstalk_application_versions.md)| | |
 | [aws_elasticbeanstalk_applications](aws_elasticbeanstalk_applications.md)| | |
+| [aws_elasticbeanstalk_application_versions](aws_elasticbeanstalk_application_versions.md)| | |
 | [aws_elasticbeanstalk_environments](aws_elasticbeanstalk_environments.md)| [aws_elasticbeanstalk_configuration_settings](aws_elasticbeanstalk_configuration_settings.md)<br />[aws_elasticbeanstalk_configuration_options](aws_elasticbeanstalk_configuration_options.md)| |
 | [aws_elasticsearch_domains](aws_elasticsearch_domains.md)| | |
 | [aws_elbv1_load_balancers](aws_elbv1_load_balancers.md)| [aws_elbv1_load_balancer_policies](aws_elbv1_load_balancer_policies.md)| |
@@ -147,8 +149,8 @@
 | [aws_iot_security_profiles](aws_iot_security_profiles.md)| | |
 | [aws_iot_streams](aws_iot_streams.md)| | |
 | [aws_iot_thing_groups](aws_iot_thing_groups.md)| | |
-| [aws_iot_thing_types](aws_iot_thing_types.md)| | |
 | [aws_iot_things](aws_iot_things.md)| | |
+| [aws_iot_thing_types](aws_iot_thing_types.md)| | |
 | [aws_iot_topic_rules](aws_iot_topic_rules.md)| | |
 | [aws_kinesis_streams](aws_kinesis_streams.md)| | |
 | [aws_kms_aliases](aws_kms_aliases.md)| | |
@@ -160,12 +162,12 @@
 | [aws_lightsail_buckets](aws_lightsail_buckets.md)| [aws_lightsail_bucket_access_keys](aws_lightsail_bucket_access_keys.md)| |
 | [aws_lightsail_certificates](aws_lightsail_certificates.md)| | |
 | [aws_lightsail_container_services](aws_lightsail_container_services.md)| [aws_lightsail_container_service_deployments](aws_lightsail_container_service_deployments.md)<br />[aws_lightsail_container_service_images](aws_lightsail_container_service_images.md)| |
-| [aws_lightsail_database_snapshots](aws_lightsail_database_snapshots.md)| | |
 | [aws_lightsail_databases](aws_lightsail_databases.md)| [aws_lightsail_database_parameters](aws_lightsail_database_parameters.md)<br />[aws_lightsail_database_events](aws_lightsail_database_events.md)<br />[aws_lightsail_database_log_events](aws_lightsail_database_log_events.md)| |
+| [aws_lightsail_database_snapshots](aws_lightsail_database_snapshots.md)| | |
 | [aws_lightsail_disks](aws_lightsail_disks.md)| [aws_lightsail_disk_snapshot](aws_lightsail_disk_snapshot.md)| |
 | [aws_lightsail_distributions](aws_lightsail_distributions.md)| | |
-| [aws_lightsail_instance_snapshots](aws_lightsail_instance_snapshots.md)| | |
 | [aws_lightsail_instances](aws_lightsail_instances.md)| [aws_lightsail_instance_port_states](aws_lightsail_instance_port_states.md)| |
+| [aws_lightsail_instance_snapshots](aws_lightsail_instance_snapshots.md)| | |
 | [aws_lightsail_load_balancers](aws_lightsail_load_balancers.md)| [aws_lightsail_load_balancer_tls_certificates](aws_lightsail_load_balancer_tls_certificates.md)| |
 | [aws_lightsail_static_ips](aws_lightsail_static_ips.md)| | |
 | [aws_mq_brokers](aws_mq_brokers.md)| [aws_mq_broker_configurations](aws_mq_broker_configurations.md)<br />[aws_mq_broker_users](aws_mq_broker_users.md)| |
@@ -173,8 +175,8 @@
 | [aws_qldb_ledgers](aws_qldb_ledgers.md)| [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md)<br />[aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md)| |
 | [aws_rds_certificates](aws_rds_certificates.md)| | |
 | [aws_rds_cluster_parameter_groups](aws_rds_cluster_parameter_groups.md)| [aws_rds_cluster_parameter_group_parameters](aws_rds_cluster_parameter_group_parameters.md)| |
-| [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md)| | |
 | [aws_rds_clusters](aws_rds_clusters.md)| | |
+| [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md)| | |
 | [aws_rds_db_parameter_groups](aws_rds_db_parameter_groups.md)| [aws_rds_db_parameter_group_db_parameters](aws_rds_db_parameter_group_db_parameters.md)| |
 | [aws_rds_db_security_groups](aws_rds_db_security_groups.md)| | |
 | [aws_rds_db_snapshots](aws_rds_db_snapshots.md)| | |

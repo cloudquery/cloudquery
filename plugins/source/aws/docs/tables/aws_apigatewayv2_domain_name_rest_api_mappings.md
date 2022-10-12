@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_domain_name_rest_api_mappings
 
-
+https://docs.aws.amazon.com/apigateway/latest/api/API_ApiMapping.html
 
 The primary key for this table is **_cq_id**.
 

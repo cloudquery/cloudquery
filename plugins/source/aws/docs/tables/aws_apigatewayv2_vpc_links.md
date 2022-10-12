@@ -1,6 +1,6 @@
 # Table: aws_apigatewayv2_vpc_links
 
-
+https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html
 
 The primary key for this table is **_cq_id**.
 

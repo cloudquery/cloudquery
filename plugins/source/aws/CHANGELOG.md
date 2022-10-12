@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.3.0...plugins-source-aws-v2.4.0) (2022-10-12)
+
+
+### Features
+
+* Add API URL for many AWS resources ([#2686](https://github.com/cloudquery/cloudquery/issues/2686)) ([dba6ffa](https://github.com/cloudquery/cloudquery/commit/dba6ffaabe422d5748e066f7b0581c0dca0aa804))
+* Add Support for ECR Registries ([#2602](https://github.com/cloudquery/cloudquery/issues/2602)) ([a1c3f4f](https://github.com/cloudquery/cloudquery/commit/a1c3f4f2d90a848273f34064f03beae396ba45f9))
+
 ## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.2.0...plugins-source-aws-v2.3.0) (2022-10-12)
 
 

@@ -1,6 +1,6 @@
 # Table: aws_apigateway_domain_name_base_path_mappings
 
-
+https://docs.aws.amazon.com/apigateway/latest/api/API_BasePathMapping.html
 
 The primary key for this table is **_cq_id**.
 
