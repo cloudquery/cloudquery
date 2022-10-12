@@ -1,6 +1,6 @@
 # Table: aws_ec2_subnets
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Subnet.html
 
 The primary key for this table is **arn**.
 

@@ -1,6 +1,6 @@
 # Table: aws_ec2_instance_statuses
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceStatus.html
 
 The primary key for this table is **arn**.
 

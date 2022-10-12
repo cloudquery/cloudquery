@@ -1,6 +1,6 @@
 # Table: aws_ec2_transit_gateway_route_tables
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayRouteTable.html
 
 The primary key for this table is **_cq_id**.
 

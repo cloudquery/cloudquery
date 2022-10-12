@@ -1,6 +1,6 @@
 # Table: aws_backup_vault_recovery_points
 
-
+https://docs.aws.amazon.com/aws-backup/latest/devguide/API_RecoveryPointByBackupVault.html
 
 The primary key for this table is **arn**.
 

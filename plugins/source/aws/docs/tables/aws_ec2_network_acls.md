@@ -1,6 +1,6 @@
 # Table: aws_ec2_network_acls
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkAcl.html
 
 The primary key for this table is **arn**.
 
