@@ -12,10 +12,10 @@ The following tables depend on `tf_resources`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |data_backend_name|String|
 |module|String|
 |mode|String|
