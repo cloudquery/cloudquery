@@ -23,6 +23,7 @@ type Resource struct {
 	SubService            string
 	Struct                interface{}
 	SkipFields            []string
+	Description           string
 	ExtraColumns          []codegen.ColumnDefinition
 	Table                 *codegen.TableDefinition
 	Multiplex             string
@@ -56,6 +57,21 @@ var defaultRegionalColumns = []codegen.ColumnDefinition{
 	},
 }
 
+var defaultRegionalColumnsPK = []codegen.ColumnDefinition{
+	{
+		Name:     "account_id",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAWSAccount",
+		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+	},
+	{
+		Name:     "region",
+		Type:     schema.TypeString,
+		Resolver: "client.ResolveAWSRegion",
+		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+	},
+}
+
 func awsNameTransformer(f reflect.StructField) (string, error) {
 	c := caser.New(caser.WithCustomInitialisms(map[string]bool{
 		"EC2": true,
@@ -85,6 +101,7 @@ func (r *Resource) Generate() error {
 		r.Struct,
 		opts...,
 	)
+	r.Table.Description = r.Description
 	if err != nil {
 		return err
 	}

@@ -1,6 +1,6 @@
 # Table: aws_athena_data_catalogs
 
-
+https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html
 
 The primary key for this table is **arn**.
 

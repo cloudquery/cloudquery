@@ -29,6 +29,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
@@ -340,9 +341,21 @@ type Ec2Client interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecr.go . EcrClient
 type EcrClient interface {
+	DescribeRegistry(ctx context.Context, params *ecr.DescribeRegistryInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRegistryOutput, error)
 	DescribeRepositories(ctx context.Context, params *ecr.DescribeRepositoriesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error)
 	DescribeImages(ctx context.Context, params *ecr.DescribeImagesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error)
+	GetRegistryPolicy(ctx context.Context, params *ecr.GetRegistryPolicyInput, optFns ...func(*ecr.Options)) (*ecr.GetRegistryPolicyOutput, error)
 	ListTagsForResource(ctx context.Context, params *ecr.ListTagsForResourceInput, optFns ...func(*ecr.Options)) (*ecr.ListTagsForResourceOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_ecrpublic.go . EcrPublicClient
+type EcrPublicClient interface {
+	DescribeImageTags(ctx context.Context, params *ecrpublic.DescribeImageTagsInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImageTagsOutput, error)
+	DescribeImages(ctx context.Context, params *ecrpublic.DescribeImagesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImagesOutput, error)
+	DescribeRegistries(ctx context.Context, params *ecrpublic.DescribeRegistriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRegistriesOutput, error)
+	DescribeRepositories(ctx context.Context, params *ecrpublic.DescribeRepositoriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRepositoriesOutput, error)
+	GetRepositoryPolicy(ctx context.Context, params *ecrpublic.GetRepositoryPolicyInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.GetRepositoryPolicyOutput, error)
+	ListTagsForResource(ctx context.Context, params *ecrpublic.ListTagsForResourceInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecs.go . EcsClient
@@ -826,6 +839,7 @@ type WafRegionalClient interface {
 	GetRuleGroup(ctx context.Context, params *wafregional.GetRuleGroupInput, optFns ...func(*wafregional.Options)) (*wafregional.GetRuleGroupOutput, error)
 	GetWebACL(ctx context.Context, params *wafregional.GetWebACLInput, optFns ...func(*wafregional.Options)) (*wafregional.GetWebACLOutput, error)
 	ListRateBasedRules(ctx context.Context, params *wafregional.ListRateBasedRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRateBasedRulesOutput, error)
+	ListResourcesForWebACL(ctx context.Context, params *wafregional.ListResourcesForWebACLInput, optFns ...func(*wafregional.Options)) (*wafregional.ListResourcesForWebACLOutput, error)
 	ListRuleGroups(ctx context.Context, params *wafregional.ListRuleGroupsInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRuleGroupsOutput, error)
 	ListRules(ctx context.Context, params *wafregional.ListRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRulesOutput, error)
 	ListTagsForResource(ctx context.Context, params *wafregional.ListTagsForResourceInput, optFns ...func(*wafregional.Options)) (*wafregional.ListTagsForResourceOutput, error)

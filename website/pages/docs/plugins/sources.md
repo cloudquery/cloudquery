@@ -8,7 +8,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 
 | **Name**              | Latest Version | Changelog                           | Stage |
 |-----------------------|----------------|-------------------------------------|-------|
-| [AWS][aws] | v2.1.0         | [Changelog][AWS-Changelog]          | GA |
+| [AWS][aws] | v2.4.0         | [Changelog][AWS-Changelog]          | GA |
 | [Azure][azure] | v1.0.2         | [Changelog][Azure-Changelog]        | GA |    
 | [GCP][gcp]            | v1.0.2         | [Changelog][GCP-Changelog]          | GA |
 | [DigitalOcean][digitalocean] | v2.0.0         | [Changelog][DigitalOcean-Changelog] | GA |
@@ -16,7 +16,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [Heroku][heroku] | v2.0.0         | [Changelog][Heroku-Changelog]       | Preview |
 | [k8s][k8s] | v1.2.0         | [Changelog][k8s-Changelog]          | Preview |
 | [Okta][okta] | v1.0.3         | [Changelog][Okta-Changelog]         | Preview |
-| [Terraform][terraform] | v1.0.1         | [Changelog][Terraform-Changelog]    | Preview |
+| [Terraform][terraform] | v1.0.2         | [Changelog][Terraform-Changelog]    | Preview |
 
 ## Community
 

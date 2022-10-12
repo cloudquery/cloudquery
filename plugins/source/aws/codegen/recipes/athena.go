@@ -10,6 +10,7 @@ func AthenaResources() []*Resource {
 	resources := []*Resource{
 		{
 			SubService:          "data_catalogs",
+			Description:         "https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html",
 			Struct:              &types.DataCatalog{},
 			SkipFields:          []string{},
 			PreResourceResolver: "getDataCatalog",
@@ -33,9 +34,10 @@ func AthenaResources() []*Resource {
 			},
 		},
 		{
-			SubService: "data_catalog_databases",
-			Struct:     &types.Database{},
-			SkipFields: []string{"Name"},
+			SubService:  "data_catalog_databases",
+			Struct:      &types.Database{},
+			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_Database.html",
+			SkipFields:  []string{"Name"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -57,9 +59,10 @@ func AthenaResources() []*Resource {
 			},
 		},
 		{
-			SubService: "data_catalog_database_tables",
-			Struct:     &types.TableMetadata{},
-			SkipFields: []string{"Name"},
+			SubService:  "data_catalog_database_tables",
+			Struct:      &types.TableMetadata{},
+			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_TableMetadata.html",
+			SkipFields:  []string{"Name"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -85,6 +88,7 @@ func AthenaResources() []*Resource {
 		},
 		{
 			SubService:          "work_groups",
+			Description:         "https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroup.html",
 			Struct:              &types.WorkGroup{},
 			SkipFields:          []string{},
 			PreResourceResolver: "getWorkGroup",
@@ -110,9 +114,10 @@ func AthenaResources() []*Resource {
 			},
 		},
 		{
-			SubService: "work_group_prepared_statements",
-			Struct:     &types.PreparedStatement{},
-			SkipFields: []string{},
+			SubService:  "work_group_prepared_statements",
+			Struct:      &types.PreparedStatement{},
+			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -124,9 +129,10 @@ func AthenaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "work_group_query_executions",
-			Struct:     &types.QueryExecution{},
-			SkipFields: []string{},
+			SubService:  "work_group_query_executions",
+			Struct:      &types.QueryExecution{},
+			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -138,9 +144,10 @@ func AthenaResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "work_group_named_queries",
-			Struct:     &types.NamedQuery{},
-			SkipFields: []string{},
+			SubService:  "work_group_named_queries",
+			Struct:      &types.NamedQuery{},
+			Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_NamedQuery.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

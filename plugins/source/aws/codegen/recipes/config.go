@@ -28,9 +28,10 @@ func ConfigResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "conformance_packs",
-			Struct:     &types.ConformancePackDetail{},
-			SkipFields: []string{"ConformancePackArn", "ConformancePackInputParameters"},
+			SubService:  "conformance_packs",
+			Struct:      &types.ConformancePackDetail{},
+			Description: "https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html",
+			SkipFields:  []string{"ConformancePackArn", "ConformancePackInputParameters"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

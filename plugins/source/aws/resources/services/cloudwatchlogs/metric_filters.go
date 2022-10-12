@@ -9,9 +9,10 @@ import (
 
 func MetricFilters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cloudwatchlogs_metric_filters",
-		Resolver:  fetchCloudwatchlogsMetricFilters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("logs"),
+		Name:        "aws_cloudwatchlogs_metric_filters",
+		Description: "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html",
+		Resolver:    fetchCloudwatchlogsMetricFilters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("logs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
