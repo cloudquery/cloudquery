@@ -116,6 +116,8 @@
 | [aws_fsx_snapshots](aws_fsx_snapshots.md)| | |
 | [aws_fsx_storage_virtual_machines](aws_fsx_storage_virtual_machines.md)| | |
 | [aws_fsx_volumes](aws_fsx_volumes.md)| | |
+| [aws_glacier_data_retrieval_policies](aws_glacier_data_retrieval_policies.md)| | |
+| [aws_glacier_vaults](aws_glacier_vaults.md)| [aws_glacier_vault_access_policies](aws_glacier_vault_access_policies.md)<br />[aws_glacier_vault_lock_policies](aws_glacier_vault_lock_policies.md)| |
 | [aws_glue_classifiers](aws_glue_classifiers.md)| | |
 | [aws_glue_connections](aws_glue_connections.md)| | |
 | [aws_glue_crawlers](aws_glue_crawlers.md)| | |

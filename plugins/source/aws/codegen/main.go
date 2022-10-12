@@ -46,6 +46,7 @@ func main() {
 	resources = append(resources, recipes.EventbridgeResources()...)
 	resources = append(resources, recipes.FirehoseResources()...)
 	resources = append(resources, recipes.FSXResources()...)
+	resources = append(resources, recipes.GlacierResources()...)
 	resources = append(resources, recipes.GlueResources()...)
 	resources = append(resources, recipes.GuarddutyResources()...)
 	resources = append(resources, recipes.IAMResources()...)
