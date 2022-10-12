@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v1.0.1...plugins-source-heroku-v2.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Rename domains `c_name` to `cname` (#2635)
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for heroku to v0.12.10 ([#2551](https://github.com/cloudquery/cloudquery/issues/2551)) ([d0771ec](https://github.com/cloudquery/cloudquery/commit/d0771eca723b5805410d54781f9cdb0668ef7d03))
+* Rename domains `c_name` to `cname` ([#2635](https://github.com/cloudquery/cloudquery/issues/2635)) ([70ff2dc](https://github.com/cloudquery/cloudquery/commit/70ff2dcfa34b19a092b25d7c5474bd32fbbca700))
+* Upgrade source SDK versions to v0.13.5 ([#2610](https://github.com/cloudquery/cloudquery/issues/2610)) ([611868e](https://github.com/cloudquery/cloudquery/commit/611868e7fbb707b524ccc5c04a7ff95fe122ae05))
+
 ## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v1.0.0...plugins-source-heroku-v1.0.1) (2022-10-09)
 
 
