@@ -9,10 +9,11 @@ import (
 func DaxResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "clusters",
-			Struct:     &types.Cluster{},
-			SkipFields: []string{"ClusterArn"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("dax")`,
+			SubService:  "clusters",
+			Struct:      &types.Cluster{},
+			Description: "https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_dax_Cluster.html",
+			SkipFields:  []string{"ClusterArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("dax")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

@@ -9,10 +9,11 @@ import (
 func AccessAnalyzerResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "analyzers",
-			Struct:     &types.AnalyzerSummary{},
-			SkipFields: []string{"Arn"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("access-analyzer")`,
+			SubService:  "analyzers",
+			Struct:      &types.AnalyzerSummary{},
+			Description: "https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_AnalyzerSummary.html",
+			SkipFields:  []string{"Arn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("access-analyzer")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -26,9 +27,10 @@ func AccessAnalyzerResources() []*Resource {
 			Relations: []string{"AnalyzerFindings()", "AnalyzerArchiveRules()"},
 		},
 		{
-			SubService: "analyzer_findings",
-			Struct:     &types.FindingSummary{},
-			SkipFields: []string{"Arn"},
+			SubService:  "analyzer_findings",
+			Struct:      &types.FindingSummary{},
+			Description: "https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html",
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -46,8 +48,9 @@ func AccessAnalyzerResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "analyzer_archive_rules",
-			Struct:     &types.ArchiveRuleSummary{},
+			SubService:  "analyzer_archive_rules",
+			Struct:      &types.ArchiveRuleSummary{},
+			Description: "https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ArchiveRuleSummary.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

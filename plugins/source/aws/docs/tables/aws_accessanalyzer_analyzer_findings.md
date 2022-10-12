@@ -1,6 +1,6 @@
 # Table: aws_accessanalyzer_analyzer_findings
 
-
+https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html
 
 The primary key for this table is **arn**.
 

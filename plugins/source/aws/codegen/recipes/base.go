@@ -23,6 +23,7 @@ type Resource struct {
 	SubService            string
 	Struct                interface{}
 	SkipFields            []string
+	Description           string
 	ExtraColumns          []codegen.ColumnDefinition
 	Table                 *codegen.TableDefinition
 	Multiplex             string
@@ -85,6 +86,7 @@ func (r *Resource) Generate() error {
 		r.Struct,
 		opts...,
 	)
+	r.Table.Description = r.Description
 	if err != nil {
 		return err
 	}

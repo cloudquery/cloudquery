@@ -9,9 +9,10 @@ import (
 
 func ApiRoutes() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_api_routes",
-		Resolver:  fetchApigatewayv2ApiRoutes,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigatewayv2_api_routes",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_Route.html",
+		Resolver:    fetchApigatewayv2ApiRoutes,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

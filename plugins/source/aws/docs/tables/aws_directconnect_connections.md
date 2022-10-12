@@ -1,6 +1,6 @@
 # Table: aws_directconnect_connections
 
-
+https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html
 
 The composite primary key for this table is (**arn**, **id**).
 
