@@ -9,9 +9,10 @@ import (
 
 func Policies() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_applicationautoscaling_policies",
-		Resolver:  fetchApplicationautoscalingPolicies,
-		Multiplex: client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
+		Name:        "aws_applicationautoscaling_policies",
+		Description: "https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html",
+		Resolver:    fetchApplicationautoscalingPolicies,
+		Multiplex:   client.ServiceAccountRegionNamespaceMultiplexer("application-autoscaling"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

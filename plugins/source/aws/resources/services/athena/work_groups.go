@@ -9,9 +9,10 @@ import (
 
 func WorkGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_athena_work_groups",
-		Resolver:  fetchAthenaWorkGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
+		Name:        "aws_athena_work_groups",
+		Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroup.html",
+		Resolver:    fetchAthenaWorkGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -9,9 +9,10 @@ import (
 
 func DataCatalogs() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_athena_data_catalogs",
-		Resolver:  fetchAthenaDataCatalogs,
-		Multiplex: client.ServiceAccountRegionMultiplexer("athena"),
+		Name:        "aws_athena_data_catalogs",
+		Description: "https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html",
+		Resolver:    fetchAthenaDataCatalogs,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("athena"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

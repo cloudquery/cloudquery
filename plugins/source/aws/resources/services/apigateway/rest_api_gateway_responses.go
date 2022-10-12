@@ -9,9 +9,10 @@ import (
 
 func RestApiGatewayResponses() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_rest_api_gateway_responses",
-		Resolver:  fetchApigatewayRestApiGatewayResponses,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_rest_api_gateway_responses",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_GatewayResponse.html",
+		Resolver:    fetchApigatewayRestApiGatewayResponses,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -9,9 +9,10 @@ import (
 
 func Hosts() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_hosts",
-		Resolver:  fetchEc2Hosts,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_hosts",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Host.html",
+		Resolver:    fetchEc2Hosts,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
