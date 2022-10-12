@@ -23,3 +23,11 @@ jobs:
           project_id: 2
           resource_node_id: ${{ github.event.issue.node_id }}
           status_value: ${{ env.todo }} # Target status
+      - name: Add issue to Public Roadmap
+        uses: leonsteinhaeuser/project-beta-automations@v2.0.1
+        with:
+          gh_token: ${{ secrets.GH_CQ_BOT }}
+          organization: cloudquery
+          project_id: 7
+          resource_node_id: ${{ github.event.issue.node_id }}
+          status_value: No Status
