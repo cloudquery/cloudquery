@@ -8,10 +8,10 @@ The primary key for this table is **uuid**.
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |uuid (PK)|String|
 |droplet_limit|Int|
 |floating_ip_limit|Int|
