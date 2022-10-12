@@ -95,6 +95,26 @@ func (mr *MockGlacierClientMockRecorder) GetVaultLock(arg0, arg1 interface{}, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVaultLock", reflect.TypeOf((*MockGlacierClient)(nil).GetVaultLock), varargs...)
 }
 
+// GetVaultNotifications mocks base method.
+func (m *MockGlacierClient) GetVaultNotifications(arg0 context.Context, arg1 *glacier.GetVaultNotificationsInput, arg2 ...func(*glacier.Options)) (*glacier.GetVaultNotificationsOutput, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetVaultNotifications", varargs...)
+	ret0, _ := ret[0].(*glacier.GetVaultNotificationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVaultNotifications indicates an expected call of GetVaultNotifications.
+func (mr *MockGlacierClientMockRecorder) GetVaultNotifications(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVaultNotifications", reflect.TypeOf((*MockGlacierClient)(nil).GetVaultNotifications), varargs...)
+}
+
 // ListTagsForVault mocks base method.
 func (m *MockGlacierClient) ListTagsForVault(arg0 context.Context, arg1 *glacier.ListTagsForVaultInput, arg2 ...func(*glacier.Options)) (*glacier.ListTagsForVaultOutput, error) {
 	m.ctrl.T.Helper()
