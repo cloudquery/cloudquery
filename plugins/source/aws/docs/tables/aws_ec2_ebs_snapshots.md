@@ -1,6 +1,6 @@
 # Table: aws_ec2_ebs_snapshots
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html
 
 The primary key for this table is **arn**.
 

@@ -1,6 +1,6 @@
 # Table: aws_acm_certificates
 
-
+https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html
 
 The primary key for this table is **arn**.
 

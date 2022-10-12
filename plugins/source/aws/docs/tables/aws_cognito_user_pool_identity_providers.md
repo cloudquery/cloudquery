@@ -1,6 +1,6 @@
 # Table: aws_cognito_user_pool_identity_providers
 
-
+https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html
 
 The primary key for this table is **_cq_id**.
 

@@ -1,6 +1,6 @@
 # Table: aws_cloudwatchlogs_metric_filters
 
-
+https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html
 
 The primary key for this table is **arn**.
 

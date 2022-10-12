@@ -9,9 +9,10 @@ import (
 
 func NatGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_nat_gateways",
-		Resolver:  fetchEc2NatGateways,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_nat_gateways",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NatGateway.html",
+		Resolver:    fetchEc2NatGateways,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

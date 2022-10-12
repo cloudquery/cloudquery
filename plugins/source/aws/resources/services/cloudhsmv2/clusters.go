@@ -9,9 +9,10 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cloudhsmv2_clusters",
-		Resolver:  fetchCloudhsmv2Clusters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cloudhsmv2"),
+		Name:        "aws_cloudhsmv2_clusters",
+		Description: "https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Cluster.html",
+		Resolver:    fetchCloudhsmv2Clusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudhsmv2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
