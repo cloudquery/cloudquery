@@ -79,6 +79,7 @@
 | [aws_ec2_vpcs](aws_ec2_vpcs.md)| | |
 | [aws_ec2_vpn_gateways](aws_ec2_vpn_gateways.md)| | |
 | [aws_ecr_repositories](aws_ecr_repositories.md)| [aws_ecr_repository_images](aws_ecr_repository_images.md)| |
+| [aws_ecrpublic_repositories](aws_ecrpublic_repositories.md)| [aws_ecrpublic_repository_images](aws_ecrpublic_repository_images.md)| |
 | [aws_ecs_clusters](aws_ecs_clusters.md)| [aws_ecs_cluster_tasks](aws_ecs_cluster_tasks.md)<br />[aws_ecs_cluster_services](aws_ecs_cluster_services.md)<br />[aws_ecs_cluster_container_instances](aws_ecs_cluster_container_instances.md)| |
 | [aws_ecs_task_definitions](aws_ecs_task_definitions.md)| | |
 | [aws_efs_filesystems](aws_efs_filesystems.md)| | |
