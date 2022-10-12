@@ -57,9 +57,9 @@
 | [aws_ec2_flow_logs](aws_ec2_flow_logs.md)| | |
 | [aws_ec2_hosts](aws_ec2_hosts.md)| | |
 | [aws_ec2_images](aws_ec2_images.md)| | |
+| [aws_ec2_instances](aws_ec2_instances.md)| | |
 | [aws_ec2_instance_statuses](aws_ec2_instance_statuses.md)| | |
 | [aws_ec2_instance_types](aws_ec2_instance_types.md)| | |
-| [aws_ec2_instances](aws_ec2_instances.md)| | |
 | [aws_ec2_internet_gateways](aws_ec2_internet_gateways.md)| | |
 | [aws_ec2_key_pairs](aws_ec2_key_pairs.md)| | |
 | [aws_ec2_nat_gateways](aws_ec2_nat_gateways.md)| | |
@@ -72,12 +72,14 @@
 | [aws_ec2_security_groups](aws_ec2_security_groups.md)| | |
 | [aws_ec2_subnets](aws_ec2_subnets.md)| | |
 | [aws_ec2_transit_gateways](aws_ec2_transit_gateways.md)| [aws_ec2_transit_gateway_attachments](aws_ec2_transit_gateway_attachments.md)<br />[aws_ec2_transit_gateway_route_tables](aws_ec2_transit_gateway_route_tables.md)<br />[aws_ec2_transit_gateway_vpc_attachments](aws_ec2_transit_gateway_vpc_attachments.md)<br />[aws_ec2_transit_gateway_peering_attachments](aws_ec2_transit_gateway_peering_attachments.md)<br />[aws_ec2_transit_gateway_multicast_domains](aws_ec2_transit_gateway_multicast_domains.md)| |
+| [aws_ec2_vpc_endpoints](aws_ec2_vpc_endpoints.md)| | |
 | [aws_ec2_vpc_endpoint_service_configurations](aws_ec2_vpc_endpoint_service_configurations.md)| | |
 | [aws_ec2_vpc_endpoint_services](aws_ec2_vpc_endpoint_services.md)| | |
-| [aws_ec2_vpc_endpoints](aws_ec2_vpc_endpoints.md)| | |
 | [aws_ec2_vpc_peering_connections](aws_ec2_vpc_peering_connections.md)| | |
 | [aws_ec2_vpcs](aws_ec2_vpcs.md)| | |
 | [aws_ec2_vpn_gateways](aws_ec2_vpn_gateways.md)| | |
+| [aws_ecr_registries](aws_ecr_registries.md)| | |
+| [aws_ecr_registry_policies](aws_ecr_registry_policies.md)| | |
 | [aws_ecr_repositories](aws_ecr_repositories.md)| [aws_ecr_repository_images](aws_ecr_repository_images.md)| |
 | [aws_ecs_clusters](aws_ecs_clusters.md)| [aws_ecs_cluster_tasks](aws_ecs_cluster_tasks.md)<br />[aws_ecs_cluster_services](aws_ecs_cluster_services.md)<br />[aws_ecs_cluster_container_instances](aws_ecs_cluster_container_instances.md)| |
 | [aws_ecs_task_definitions](aws_ecs_task_definitions.md)| | |
@@ -95,8 +97,8 @@
 | [aws_elasticache_subnet_groups](aws_elasticache_subnet_groups.md)| | |
 | [aws_elasticache_user_groups](aws_elasticache_user_groups.md)| | |
 | [aws_elasticache_users](aws_elasticache_users.md)| | |
-| [aws_elasticbeanstalk_application_versions](aws_elasticbeanstalk_application_versions.md)| | |
 | [aws_elasticbeanstalk_applications](aws_elasticbeanstalk_applications.md)| | |
+| [aws_elasticbeanstalk_application_versions](aws_elasticbeanstalk_application_versions.md)| | |
 | [aws_elasticbeanstalk_environments](aws_elasticbeanstalk_environments.md)| [aws_elasticbeanstalk_configuration_settings](aws_elasticbeanstalk_configuration_settings.md)<br />[aws_elasticbeanstalk_configuration_options](aws_elasticbeanstalk_configuration_options.md)| |
 | [aws_elasticsearch_domains](aws_elasticsearch_domains.md)| | |
 | [aws_elbv1_load_balancers](aws_elbv1_load_balancers.md)| [aws_elbv1_load_balancer_policies](aws_elbv1_load_balancer_policies.md)| |
@@ -147,8 +149,8 @@
 | [aws_iot_security_profiles](aws_iot_security_profiles.md)| | |
 | [aws_iot_streams](aws_iot_streams.md)| | |
 | [aws_iot_thing_groups](aws_iot_thing_groups.md)| | |
-| [aws_iot_thing_types](aws_iot_thing_types.md)| | |
 | [aws_iot_things](aws_iot_things.md)| | |
+| [aws_iot_thing_types](aws_iot_thing_types.md)| | |
 | [aws_iot_topic_rules](aws_iot_topic_rules.md)| | |
 | [aws_kinesis_streams](aws_kinesis_streams.md)| | |
 | [aws_kms_aliases](aws_kms_aliases.md)| | |
@@ -160,12 +162,12 @@
 | [aws_lightsail_buckets](aws_lightsail_buckets.md)| [aws_lightsail_bucket_access_keys](aws_lightsail_bucket_access_keys.md)| |
 | [aws_lightsail_certificates](aws_lightsail_certificates.md)| | |
 | [aws_lightsail_container_services](aws_lightsail_container_services.md)| [aws_lightsail_container_service_deployments](aws_lightsail_container_service_deployments.md)<br />[aws_lightsail_container_service_images](aws_lightsail_container_service_images.md)| |
-| [aws_lightsail_database_snapshots](aws_lightsail_database_snapshots.md)| | |
 | [aws_lightsail_databases](aws_lightsail_databases.md)| [aws_lightsail_database_parameters](aws_lightsail_database_parameters.md)<br />[aws_lightsail_database_events](aws_lightsail_database_events.md)<br />[aws_lightsail_database_log_events](aws_lightsail_database_log_events.md)| |
+| [aws_lightsail_database_snapshots](aws_lightsail_database_snapshots.md)| | |
 | [aws_lightsail_disks](aws_lightsail_disks.md)| [aws_lightsail_disk_snapshot](aws_lightsail_disk_snapshot.md)| |
 | [aws_lightsail_distributions](aws_lightsail_distributions.md)| | |
-| [aws_lightsail_instance_snapshots](aws_lightsail_instance_snapshots.md)| | |
 | [aws_lightsail_instances](aws_lightsail_instances.md)| [aws_lightsail_instance_port_states](aws_lightsail_instance_port_states.md)| |
+| [aws_lightsail_instance_snapshots](aws_lightsail_instance_snapshots.md)| | |
 | [aws_lightsail_load_balancers](aws_lightsail_load_balancers.md)| [aws_lightsail_load_balancer_tls_certificates](aws_lightsail_load_balancer_tls_certificates.md)| |
 | [aws_lightsail_static_ips](aws_lightsail_static_ips.md)| | |
 | [aws_mq_brokers](aws_mq_brokers.md)| [aws_mq_broker_configurations](aws_mq_broker_configurations.md)<br />[aws_mq_broker_users](aws_mq_broker_users.md)| |
@@ -173,8 +175,8 @@
 | [aws_qldb_ledgers](aws_qldb_ledgers.md)| [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md)<br />[aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md)| |
 | [aws_rds_certificates](aws_rds_certificates.md)| | |
 | [aws_rds_cluster_parameter_groups](aws_rds_cluster_parameter_groups.md)| [aws_rds_cluster_parameter_group_parameters](aws_rds_cluster_parameter_group_parameters.md)| |
-| [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md)| | |
 | [aws_rds_clusters](aws_rds_clusters.md)| | |
+| [aws_rds_cluster_snapshots](aws_rds_cluster_snapshots.md)| | |
 | [aws_rds_db_parameter_groups](aws_rds_db_parameter_groups.md)| [aws_rds_db_parameter_group_db_parameters](aws_rds_db_parameter_group_db_parameters.md)| |
 | [aws_rds_db_security_groups](aws_rds_db_security_groups.md)| | |
 | [aws_rds_db_snapshots](aws_rds_db_snapshots.md)| | |
