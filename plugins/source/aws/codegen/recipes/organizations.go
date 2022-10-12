@@ -12,7 +12,7 @@ func OrganizationsResources() []*Resource {
 			SubService: "accounts",
 			Struct:     &types.Account{},
 			SkipFields: []string{"Arn"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("dax")`,
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("organizations")`,
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
