@@ -476,6 +476,7 @@ type GlacierClient interface {
 	ListTagsForVault(ctx context.Context, params *glacier.ListTagsForVaultInput, optFns ...func(*glacier.Options)) (*glacier.ListTagsForVaultOutput, error)
 	GetVaultAccessPolicy(ctx context.Context, params *glacier.GetVaultAccessPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultAccessPolicyOutput, error)
 	GetVaultLock(ctx context.Context, params *glacier.GetVaultLockInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultLockOutput, error)
+	GetVaultNotifications(ctx context.Context, params *glacier.GetVaultNotificationsInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultNotificationsOutput, error)
 	GetDataRetrievalPolicy(ctx context.Context, params *glacier.GetDataRetrievalPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetDataRetrievalPolicyOutput, error)
 }
 

@@ -30,6 +30,7 @@ func GlacierResources() []*Resource {
 			Relations: []string{
 				"VaultAccessPolicies()",
 				"VaultLockPolicies()",
+				"VaultNotifications()",
 			},
 		},
 		{
@@ -69,6 +70,20 @@ func GlacierResources() []*Resource {
 						Name:     "policy",
 						Type:     schema.TypeJSON,
 						Resolver: `client.MarshaledJsonResolver("Policy")`,
+					},
+				}...),
+		},
+		{
+			SubService: "vault_notifications",
+			Struct:     &types.VaultNotificationConfig{},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "vault_arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.ParentColumnResolver("arn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
 		},
