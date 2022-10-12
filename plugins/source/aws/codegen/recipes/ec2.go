@@ -219,19 +219,6 @@ func EC2Resources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "nat_gateways",
-			Struct:     &types.NatGateway{},
-			ExtraColumns: append(defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: "resolveNatGatewayArn",
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-		},
-		{
 			SubService: "network_acls",
 			Struct:     &types.NetworkAcl{},
 			ExtraColumns: append(defaultRegionalColumns,
