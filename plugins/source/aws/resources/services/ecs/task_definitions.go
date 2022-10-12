@@ -9,9 +9,10 @@ import (
 
 func TaskDefinitions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ecs_task_definitions",
-		Resolver:  fetchEcsTaskDefinitions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ecs"),
+		Name:                "aws_ecs_task_definitions",
+		Resolver:            fetchEcsTaskDefinitions,
+		PreResourceResolver: getTaskDefinition,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("ecs"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
