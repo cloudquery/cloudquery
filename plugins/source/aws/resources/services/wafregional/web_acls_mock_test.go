@@ -49,6 +49,19 @@ func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	m.EXPECT().ListResourcesForWebACL(
+		gomock.Any(),
+		&wafregional.ListResourcesForWebACLInput{
+			WebACLId: acl.WebACLId,
+		},
+		gomock.Any(),
+	).Return(
+		&wafregional.ListResourcesForWebACLOutput{
+			ResourceArns: []string{"arn:aws:cloudfront::123456789012:distribution/EDFDVBD6EXAMPLE"},
+		},
+		nil,
+	)
+
 	return client.Services{WafRegional: m}
 }
 
