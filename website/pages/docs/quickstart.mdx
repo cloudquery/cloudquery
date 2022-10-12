@@ -38,9 +38,9 @@ spec:
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
   version: "v1.3.1" # latest version of postgresql plugin
 
-  ## Optional. Default: "overwrite". Available: "overwrite", "overwrite-delete-stale", "append". Not all modes are supported by all plugins,
-  ## so make sure to check the plugin documentation for more details.
-  write_mode: "overwrite" # overwrite, overwrite-delete-stale, append
+  ## Optional. Default: "overwrite-delete-stale". Available: "overwrite-delete-stale", "overwrite", "append". 
+  ##  Not all modes are supported by all plugins, so make sure to check the plugin documentation for more details.
+  write_mode: "overwrite-delete-stale" # overwrite-delete-stale, overwrite, append
 
   spec:
     ## plugin-specific configuration for PostgreSQL.
