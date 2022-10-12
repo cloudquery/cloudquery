@@ -16,7 +16,7 @@ The primary key for this table is **id**.
 |name|String|
 |dns_names|StringArray|
 |not_after|String|
-|sha_1_fingerprint|String|
+|sha1_fingerprint|String|
 |created_at|String|
 |state|String|
 |type|String|

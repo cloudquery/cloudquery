@@ -5,16 +5,16 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs/types"
-	"github.com/bxcodec/faker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockCloudwatchLogsClient(ctrl)
 	l := types.LogGroup{}
-	err := faker.FakeData(&l)
+	err := faker.FakeObject(&l)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -24,7 +24,7 @@ func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 		}, nil)
 
 	tags := &cloudwatchlogs.ListTagsLogGroupOutput{}
-	err = faker.FakeData(tags)
+	err = faker.FakeObject(tags)
 	if err != nil {
 		t.Fatal(err)
 	}
