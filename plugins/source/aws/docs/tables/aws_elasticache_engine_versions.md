@@ -1,8 +1,8 @@
 # Table: aws_elasticache_engine_versions
 
-Provides all of the details about a particular cache engine version.
 
-The composite primary key for this table is (**account_id**, **region**, **engine**, **engine_version**).
+
+The composite primary key for this table is (**account_id**, **region**).
 
 
 ## Columns
@@ -17,5 +17,5 @@ The composite primary key for this table is (**account_id**, **region**, **engin
 |cache_engine_description|String|
 |cache_engine_version_description|String|
 |cache_parameter_group_family|String|
-|engine (PK)|String|
-|engine_version (PK)|String|
+|engine|String|
+|engine_version|String|

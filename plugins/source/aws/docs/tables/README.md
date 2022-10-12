@@ -84,7 +84,7 @@
 |aws_efs_filesystems||
 |aws_eks_clusters||
 |aws_elasticache_clusters||
-|aws_elasticache_engine_versions|Provides all of the details about a particular cache engine version.|
+|aws_elasticache_engine_versions||
 |aws_elasticache_global_replication_groups||
 |aws_elasticache_parameter_groups||
 |aws_elasticache_replication_groups||
