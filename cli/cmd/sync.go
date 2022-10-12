@@ -25,7 +25,7 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 
 func NewCmdSync() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "sync [file or directories...]",
+		Use:     "sync [files or directories]",
 		Short:   fetchShort,
 		Long:    fetchShort,
 		Example: fetchExample,
