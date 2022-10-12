@@ -135,6 +135,7 @@ type Services struct {
 	Athena                 AthenaClient
 	Autoscaling            AutoscalingClient
 	Backup                 BackupClient
+	CloudHSMV2             CloudHSMV2Client
 	Cloudformation         CloudFormationClient
 	Cloudfront             CloudfrontClient
 	Cloudtrail             CloudtrailClient

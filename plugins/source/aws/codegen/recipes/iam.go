@@ -216,9 +216,10 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService: "roles",
-			Struct:     &types.Role{},
-			SkipFields: []string{"RoleId", "Tags", "AssumeRolePolicyDocument"},
+			SubService:          "roles",
+			Struct:              &types.Role{},
+			SkipFields:          []string{"RoleId", "Tags", "AssumeRolePolicyDocument"},
+			PreResourceResolver: "getRole",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -312,9 +313,10 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService: "users",
-			Struct:     &types.User{},
-			SkipFields: []string{"Arn", "AccountId", "UserId", "Tags"},
+			SubService:          "users",
+			Struct:              &types.User{},
+			SkipFields:          []string{"Arn", "AccountId", "UserId", "Tags"},
+			PreResourceResolver: "getUser",
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "arn",
