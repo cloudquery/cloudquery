@@ -1,6 +1,6 @@
 # Table: aws_lightsail_instance_snapshots
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstanceSnapshot.html
 
 The primary key for this table is **arn**.
 

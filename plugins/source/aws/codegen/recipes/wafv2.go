@@ -15,6 +15,7 @@ func WAFv2Resources() []*Resource {
 		{
 			SubService:          "ipsets",
 			Struct:              &types.IPSet{},
+			Description:         "https://docs.aws.amazon.com/waf/latest/APIReference/API_IPSet.html",
 			SkipFields:          []string{"Addresses", "ARN"},
 			PreResourceResolver: "getIpset",
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -47,9 +48,10 @@ func WAFv2Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "managed_rule_groups",
-			Struct:     &types.ManagedRuleGroupSummary{},
-			SkipFields: []string{"Scope"},
+			SubService:  "managed_rule_groups",
+			Struct:      &types.ManagedRuleGroupSummary{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_ManagedRuleGroupSummary.html",
+			SkipFields:  []string{"Scope"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -79,6 +81,7 @@ func WAFv2Resources() []*Resource {
 		{
 			SubService:          "regex_pattern_sets",
 			Struct:              &types.RegexPatternSet{},
+			Description:         "https://docs.aws.amazon.com/waf/latest/APIReference/API_RegexPatternSet.html",
 			SkipFields:          []string{"ARN"},
 			PreResourceResolver: "getRegexPatternSet",
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -108,6 +111,7 @@ func WAFv2Resources() []*Resource {
 		{
 			SubService:          "rule_groups",
 			Struct:              &types.RuleGroup{},
+			Description:         "https://docs.aws.amazon.com/waf/latest/APIReference/API_RuleGroup.html",
 			SkipFields:          []string{"ARN"},
 			PreResourceResolver: "getRuleGroup",
 			ExtraColumns: []codegen.ColumnDefinition{

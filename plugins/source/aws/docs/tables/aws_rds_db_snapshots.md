@@ -1,6 +1,6 @@
 # Table: aws_rds_db_snapshots
 
-
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html
 
 The primary key for this table is **arn**.
 

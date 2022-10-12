@@ -9,9 +9,10 @@ import (
 
 func Clusters() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_redshift_clusters",
-		Resolver:  fetchRedshiftClusters,
-		Multiplex: client.ServiceAccountRegionMultiplexer("redshift"),
+		Name:        "aws_redshift_clusters",
+		Description: "https://docs.aws.amazon.com/redshift/latest/APIReference/API_Cluster.html",
+		Resolver:    fetchRedshiftClusters,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("redshift"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

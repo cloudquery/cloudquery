@@ -1,6 +1,6 @@
 # Table: aws_rds_cluster_snapshots
 
-
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.html
 
 The primary key for this table is **arn**.
 

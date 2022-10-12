@@ -9,9 +9,10 @@ import (
 
 func DbSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_rds_db_snapshots",
-		Resolver:  fetchRdsDbSnapshots,
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_rds_db_snapshots",
+		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html",
+		Resolver:    fetchRdsDbSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

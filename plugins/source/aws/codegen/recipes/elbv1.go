@@ -32,9 +32,10 @@ func ELBv1Resources() []*Resource {
 			},
 		},
 		{
-			SubService: "load_balancer_policies",
-			Struct:     &types.PolicyDescription{},
-			SkipFields: []string{"PolicyAttributeDescriptions"},
+			SubService:  "load_balancer_policies",
+			Struct:      &types.PolicyDescription{},
+			Description: "https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_PolicyDescription.html",
+			SkipFields:  []string{"PolicyAttributeDescriptions"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

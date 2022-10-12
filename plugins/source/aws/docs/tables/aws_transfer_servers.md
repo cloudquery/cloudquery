@@ -1,6 +1,6 @@
 # Table: aws_transfer_servers
 
-
+https://docs.aws.amazon.com/transfer/latest/userguide/API_DescribedServer.html
 
 The primary key for this table is **arn**.
 
