@@ -130,8 +130,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	g.Go(func() error {
 		defer close(resources)
 		if err := sourceClient.Sync(gctx, sourceSpec, resources); err != nil {
-			switch {
-			case strings.Contains(err.Error(), unknownFieldErrorPrefix+`"table_concurrency"`), strings.Contains(err.Error(), unknownFieldErrorPrefix+`"resource_concurrency"`):
+			if isUnknownConcurrencyFieldError(err) {
 				return fmt.Errorf("unsupported version of source %s@%s. Please update to the latest version from https://cloudquery.io/docs/plugins/sources", sourceSpec.Name, sourceSpec.Version)
 			}
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
@@ -200,4 +199,8 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
 		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
 	return nil
+}
+
+func isUnknownConcurrencyFieldError(err error) bool {
+	return strings.Contains(err.Error(), unknownFieldErrorPrefix+`"table_concurrency"`) || strings.Contains(err.Error(), unknownFieldErrorPrefix+`"resource_concurrency"`)
 }
