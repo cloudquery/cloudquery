@@ -1,5 +1,5 @@
 # Source Plugin: okta
 ## Tables
-| Name          | Description   |
-| ------------- | ------------- |
-|okta_users||
+| Name          | Relations | Description   |
+| ------------- | --------- | ------------- |
+| [okta_users](okta_users.md)| | |
