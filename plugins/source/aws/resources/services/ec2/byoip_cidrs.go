@@ -9,9 +9,10 @@ import (
 
 func ByoipCidrs() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_byoip_cidrs",
-		Resolver:  fetchEc2ByoipCidrs,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_byoip_cidrs",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ByoipCidr.html",
+		Resolver:    fetchEc2ByoipCidrs,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

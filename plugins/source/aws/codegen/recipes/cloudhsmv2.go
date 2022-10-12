@@ -9,10 +9,11 @@ import (
 func CloudHSMV2() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "clusters",
-			Struct:     &types.Cluster{},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
-			SkipFields: []string{"TagList"},
+			SubService:  "clusters",
+			Struct:      &types.Cluster{},
+			Description: "https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Cluster.html",
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
+			SkipFields:  []string{"TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -30,10 +31,11 @@ func CloudHSMV2() []*Resource {
 				}...),
 		},
 		{
-			SubService: "backups",
-			Struct:     &types.Backup{},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
-			SkipFields: []string{"TagList"},
+			SubService:  "backups",
+			Struct:      &types.Backup{},
+			Description: "https://docs.aws.amazon.com/cloudhsm/latest/APIReference/API_Backup.html",
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("cloudhsmv2")`,
+			SkipFields:  []string{"TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

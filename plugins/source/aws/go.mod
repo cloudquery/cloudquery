@@ -31,6 +31,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.17.1
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/ecr v1.17.18
+	github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.17
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.18.23
 	github.com/aws/aws-sdk-go-v2/service/efs v1.17.15
 	github.com/aws/aws-sdk-go-v2/service/eks v1.22.1
@@ -76,7 +77,7 @@ require (
 	github.com/aws/smithy-go v1.13.3
 	github.com/basgys/goxml2json v1.1.0
 	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.12.10
+	github.com/cloudquery/plugin-sdk v0.13.5
 	github.com/ettle/strcase v0.1.1
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0

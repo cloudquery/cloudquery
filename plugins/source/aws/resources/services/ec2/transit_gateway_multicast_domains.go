@@ -9,9 +9,10 @@ import (
 
 func TransitGatewayMulticastDomains() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_transit_gateway_multicast_domains",
-		Resolver:  fetchEc2TransitGatewayMulticastDomains,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_transit_gateway_multicast_domains",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayMulticastDomain.html",
+		Resolver:    fetchEc2TransitGatewayMulticastDomains,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

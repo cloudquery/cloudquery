@@ -1,6 +1,7 @@
 package recipes
 
 import (
+	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -8,6 +9,43 @@ import (
 
 func ECRResources() []*Resource {
 	resources := []*Resource{
+		{
+			SubService: "registries",
+			Struct:     &ecr.DescribeRegistryOutput{},
+			SkipFields: []string{"RegistryId", "ResultMetadata"},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "registry_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("RegistryId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService: "registry_policies",
+			Struct:     &ecr.GetRegistryPolicyOutput{},
+			SkipFields: []string{"RegistryId", "PolicyText", "ResultMetadata"},
+			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
+			ExtraColumns: append(
+				defaultRegionalColumnsPK,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "registry_id",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("RegistryId")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "policy_text",
+						Type:     schema.TypeJSON,
+						Resolver: `client.MarshaledJsonResolver("PolicyText")`,
+					},
+				}...),
+		},
 		{
 			SubService: "repositories",
 			Struct:     &types.Repository{},

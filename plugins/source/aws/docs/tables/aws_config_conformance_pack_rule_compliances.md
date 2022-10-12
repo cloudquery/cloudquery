@@ -10,10 +10,10 @@ This table depends on [`aws_config_conformance_packs`](aws_config_conformance_pa
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |conformance_pack_arn|String|
