@@ -39,3 +39,7 @@ jobs:
         run: go build .
       - name: Test
         run: go test ./...
+      - name: gen-docs
+        run: make gen-docs
+      - name: Fail if docs are changed
+        run: test "$(git status -s ../website/pages/docs/reference/cli/*.md | wc -l)" -eq 0
