@@ -7,8 +7,8 @@ test:
 	go test ./...
 
 
-.PHONY: doc
-doc:
+.PHONY: gen-docs
+gen-docs:
 	rm -rf ../website/pages/docs/reference/cli/*.md
 	go run main.go doc ../website/pages/docs/reference/cli/
 

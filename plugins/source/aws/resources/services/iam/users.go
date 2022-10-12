@@ -9,9 +9,10 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_iam_users",
-		Resolver:  fetchIamUsers,
-		Multiplex: client.AccountMultiplex,
+		Name:                "aws_iam_users",
+		Resolver:            fetchIamUsers,
+		PreResourceResolver: getUser,
+		Multiplex:           client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "arn",

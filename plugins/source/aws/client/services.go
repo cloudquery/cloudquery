@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
@@ -182,6 +183,12 @@ type BackupClient interface {
 	ListTags(ctx context.Context, params *backup.ListTagsInput, optFns ...func(*backup.Options)) (*backup.ListTagsOutput, error)
 	DescribeGlobalSettings(ctx context.Context, params *backup.DescribeGlobalSettingsInput, optFns ...func(*backup.Options)) (*backup.DescribeGlobalSettingsOutput, error)
 	DescribeRegionSettings(ctx context.Context, params *backup.DescribeRegionSettingsInput, optFns ...func(*backup.Options)) (*backup.DescribeRegionSettingsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_cloudhsmv2.go . CloudHSMV2Client
+type CloudHSMV2Client interface {
+	DescribeBackups(ctx context.Context, params *cloudhsmv2.DescribeBackupsInput, optFns ...func(*cloudhsmv2.Options)) (*cloudhsmv2.DescribeBackupsOutput, error)
+	DescribeClusters(ctx context.Context, params *cloudhsmv2.DescribeClustersInput, optFns ...func(*cloudhsmv2.Options)) (*cloudhsmv2.DescribeClustersOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_cloudformation.go . CloudFormationClient

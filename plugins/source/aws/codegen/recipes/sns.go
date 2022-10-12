@@ -10,9 +10,10 @@ func SNSResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "subscriptions",
-			Struct:     &models.Subscription{},
-			SkipFields: []string{"SubscriptionArn", "DeliveryPolicy", "EffectiveDeliveryPolicy", "FilterPolicy", "RedrivePolicy"},
+			SubService:          "subscriptions",
+			Struct:              &models.Subscription{},
+			SkipFields:          []string{"SubscriptionArn", "DeliveryPolicy", "EffectiveDeliveryPolicy", "FilterPolicy", "RedrivePolicy"},
+			PreResourceResolver: "getSnsSubscription",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

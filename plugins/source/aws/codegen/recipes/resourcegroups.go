@@ -13,9 +13,10 @@ func ResourceGroupsResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "resource_groups",
-			Struct:     &models.ResourceGroupWrapper{},
-			SkipFields: []string{},
+			SubService:          "resource_groups",
+			Struct:              &models.ResourceGroupWrapper{},
+			SkipFields:          []string{},
+			PreResourceResolver: "getResourceGroup",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
