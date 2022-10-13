@@ -51,6 +51,18 @@ Useful when using glob in `tables`, specify which tables to skip when syncing th
 
 Specify the names of the destinations to sync the data of the source plugin to.
 
+### table_concurrency
+
+(`int`, optional, default: `500000`, introduced in CLI `v1.0.8`)
+
+Sets a global limit on the number of tables to sync concurrently.
+
+### resource_concurrency
+
+(`int`, optional, default: `500000`, introduced in CLI `v1.0.8`)
+
+Sets an (approximate) global limit on the number of concurrent requests performed to fetch further details about resources. Note that this limit only applies to top-level tables and not their child relations.
+
 ## Development
 
 Spec is defined in [plugin-sdk](https://github.com/cloudquery/plugin-sdk/blob/main/specs/source.go#L11)
