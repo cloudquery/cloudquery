@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -15,7 +15,7 @@ func buildMlTransformsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var transforms glue.GetMLTransformsOutput
-	require.NoError(t, faker.FakeData(&transforms))
+	require.NoError(t, faker.FakeObject(&transforms))
 	transforms.NextToken = nil
 	m.EXPECT().GetMLTransforms(
 		gomock.Any(),
@@ -23,7 +23,7 @@ func buildMlTransformsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	).Return(&transforms, nil)
 
 	var runs glue.GetMLTaskRunsOutput
-	require.NoError(t, faker.FakeData(&runs))
+	require.NoError(t, faker.FakeObject(&runs))
 	runs.NextToken = nil
 	m.EXPECT().GetMLTaskRuns(
 		gomock.Any(),
