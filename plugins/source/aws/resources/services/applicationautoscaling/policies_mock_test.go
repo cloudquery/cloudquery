@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildApplicationAutoscalingPoliciesMock(t *testing.T, ctrl *gomock.Controll
 		ApplicationAutoscaling: m,
 	}
 	c := types.ScalingPolicy{}
-	if err := faker.FakeData(&c); err != nil {
+	if err := faker.FakeObject(&c); err != nil {
 		t.Fatal(err)
 	}
 	output := &applicationautoscaling.DescribeScalingPoliciesOutput{

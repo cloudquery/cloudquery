@@ -3,7 +3,7 @@ package testing
 import (
 	"testing"
 
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	apiresource "k8s.io/apimachinery/pkg/api/resource"
@@ -12,7 +12,7 @@ import (
 
 func FakeThroughPointers(t *testing.T, ptrs ...interface{}) {
 	for i, ptr := range ptrs {
-		if err := faker.FakeData(ptr); err != nil {
+		if err := faker.FakeObject(ptr); err != nil {
 			t.Fatalf("%v %v", i, ptr)
 		}
 	}
@@ -42,7 +42,7 @@ func FakeDaemonSet(t *testing.T) appsv1.DaemonSet {
 
 func FakeManagedFields(t *testing.T) metav1.ManagedFieldsEntry {
 	m := metav1.ManagedFieldsEntry{}
-	if err := faker.FakeData(&m); err != nil {
+	if err := faker.FakeObject(&m); err != nil {
 		t.Fatal(err)
 	}
 	m.FieldsV1 = &metav1.FieldsV1{
@@ -53,7 +53,7 @@ func FakeManagedFields(t *testing.T) metav1.ManagedFieldsEntry {
 
 func FakePodTemplateSpec(t *testing.T) corev1.PodTemplateSpec {
 	var templateSpec corev1.PodTemplateSpec
-	if err := faker.FakeDataSkipFields(&templateSpec, []string{"Spec"}); err != nil {
+	if err := faker.FakeObject(&templateSpec); err != nil {
 		t.Fatal(err)
 	}
 	templateSpec.Spec = FakePodSpec(t)
@@ -101,7 +101,16 @@ func FakeNode(t *testing.T) corev1.Node {
 
 func FakeResourceList(t *testing.T) *corev1.ResourceList {
 	rl := make(corev1.ResourceList)
-	rl[corev1.ResourceName(faker.UUIDHyphenated())] = *apiresource.NewQuantity(faker.UnixTime(), apiresource.BinarySI)
+	rq := apiresource.Quantity{}
+	if err := faker.FakeObject(&rq); err != nil {
+		t.Fatal(err)
+	}
+	var rn corev1.ResourceName
+	if err := faker.FakeObject(&rn); err != nil {
+		t.Fatal(err)
+	}
+
+	rl[rn] = rq
 	return &rl
 }
 
@@ -229,15 +238,7 @@ func FakePod(t *testing.T) corev1.Pod {
 
 func FakePodSpec(t *testing.T) corev1.PodSpec {
 	var podSpec corev1.PodSpec
-	if err := faker.FakeDataSkipFields(&podSpec, []string{
-		"RestartPolicy",
-		"Overhead",
-		"InitContainers",
-		"Containers",
-		"EphemeralContainers",
-		"Volumes",
-		"DNSPolicy",
-	}); err != nil {
+	if err := faker.FakeObject(&podSpec); err != nil {
 		t.Fatal(err)
 	}
 	podSpec.Overhead = *FakeResourceList(t)
@@ -269,19 +270,11 @@ func FakeSelector(_ *testing.T) *metav1.LabelSelector {
 
 func FakePersistentVolumeClaim(t *testing.T) *corev1.PersistentVolumeClaim {
 	claim := corev1.PersistentVolumeClaim{}
-	if err := faker.FakeDataSkipFields(&claim, []string{"Spec", "Status"}); err != nil {
+	if err := faker.FakeObject(&claim); err != nil {
 		t.Fatal(err)
 	}
-	if err := faker.FakeDataSkipFields(&claim.Status, []string{"Capacity", "Phase", "AllocatedResources"}); err != nil {
-		t.Fatal(err)
-	}
-
 	claim.ManagedFields = []metav1.ManagedFieldsEntry{FakeManagedFields(t)}
-	claim.Status.Phase = "test"
 	claim.Status.Capacity = *FakeResourceList(t)
-	if err := faker.FakeDataSkipFields(&claim.Spec, []string{"Resources"}); err != nil {
-		t.Fatal(err)
-	}
 	claim.Spec.Resources.Requests = *FakeResourceList(t)
 	claim.Spec.Resources.Limits = *FakeResourceList(t)
 

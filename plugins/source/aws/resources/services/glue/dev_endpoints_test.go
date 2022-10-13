@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
@@ -15,7 +15,7 @@ func buildDevEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var devEndpoint glue.GetDevEndpointsOutput
-	require.NoError(t, faker.FakeData(&devEndpoint))
+	require.NoError(t, faker.FakeObject(&devEndpoint))
 	devEndpoint.NextToken = nil
 	m.EXPECT().GetDevEndpoints(
 		gomock.Any(),

@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -16,12 +16,12 @@ func buildContainerServicesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	dep := types.ContainerServiceDeployment{State: "test", Containers: map[string]types.Container{"test": {Image: aws.String("test")}}}
-	err := faker.FakeDataSkipFields(&dep, []string{"Containers", "State"})
+	err := faker.FakeObject(&dep)
 	if err != nil {
 		t.Fatal(err)
 	}
 	service := types.ContainerService{CurrentDeployment: &dep, NextDeployment: &dep, Power: "test", ResourceType: "test", State: "test"}
-	err = faker.FakeDataSkipFields(&service, []string{"CurrentDeployment", "NextDeployment", "Power", "ResourceType", "State"})
+	err = faker.FakeObject(&service)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func buildContainerServicesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 		&lightsail.GetContainerServiceDeploymentsOutput{Deployments: []types.ContainerServiceDeployment{dep}}, nil)
 
 	i := lightsail.GetContainerImagesOutput{}
-	err = faker.FakeData(&i)
+	err = faker.FakeObject(&i)
 	if err != nil {
 		t.Fatal(err)
 	}
