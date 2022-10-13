@@ -7,14 +7,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildParameters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockSSMClient(ctrl)
 	var pm types.ParameterMetadata
-	if err := faker.FakeData(&pm); err != nil {
+	if err := faker.FakeObject(&pm); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().DescribeParameters(

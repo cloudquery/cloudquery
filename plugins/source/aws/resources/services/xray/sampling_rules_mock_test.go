@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/xray/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildSamplingRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 	test := "test"
 
 	var rule types.SamplingRuleRecord
-	if err := faker.FakeData(&rule); err != nil {
+	if err := faker.FakeObject(&rule); err != nil {
 		t.Fatal(err)
 	}
 
