@@ -47,4 +47,4 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 
 (`object`, optional)
 
-Plugin specific configurations. Visit [destination plugins](docs/plugins/destinations) documentation for more information.
+Plugin specific configurations. Visit [destination plugins](/docs/plugins/destinations) documentation for more information.
