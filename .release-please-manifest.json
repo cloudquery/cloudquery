@@ -25,6 +25,6 @@
   "plugins/source/test+FILLER": "0.0.0",
   "plugins/destination/postgresql": "1.3.0",
   "plugins/destination/postgresql+FILLER": "0.0.0",
-  "plugins/destination/test": "1.2.2",
+  "plugins/destination/test": "1.2.3",
   "plugins/destination/test+FILLER": "0.0.0"
 }
