@@ -61,7 +61,7 @@ func RDSResources() []*Resource {
 		{
 			SubService: "cluster_snapshots",
 			Struct:     &types.DBClusterSnapshot{},
-			SkipFields: []string{"DBClusterSnapshotArn"},
+			SkipFields: []string{"DBClusterSnapshotArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -86,7 +86,7 @@ func RDSResources() []*Resource {
 		{
 			SubService: "clusters",
 			Struct:     &types.DBCluster{},
-			SkipFields: []string{"DBClusterArn"},
+			SkipFields: []string{"DBClusterArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -161,7 +161,7 @@ func RDSResources() []*Resource {
 		{
 			SubService: "db_snapshots",
 			Struct:     &types.DBSnapshot{},
-			SkipFields: []string{"DBSnapshotArn"},
+			SkipFields: []string{"DBSnapshotArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -206,7 +206,7 @@ func RDSResources() []*Resource {
 		{
 			SubService: "instances",
 			Struct:     &types.DBInstance{},
-			SkipFields: []string{"DBInstanceArn", "ProcessorFeatures", "Tags"},
+			SkipFields: []string{"DBInstanceArn", "ProcessorFeatures", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
