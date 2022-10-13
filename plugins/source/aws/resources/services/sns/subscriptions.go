@@ -9,9 +9,10 @@ import (
 
 func Subscriptions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_sns_subscriptions",
-		Resolver:  fetchSnsSubscriptions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("sns"),
+		Name:                "aws_sns_subscriptions",
+		Resolver:            fetchSnsSubscriptions,
+		PreResourceResolver: getSnsSubscription,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("sns"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

@@ -1,6 +1,6 @@
 # Table: aws_ec2_nat_gateways
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NatGateway.html
 
 The primary key for this table is **arn**.
 

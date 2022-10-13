@@ -1,6 +1,6 @@
 # Table: aws_ec2_transit_gateway_multicast_domains
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayMulticastDomain.html
 
 The primary key for this table is **_cq_id**.
 

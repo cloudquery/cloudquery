@@ -14,13 +14,45 @@ import (
 )
 
 func fetchAthenaWorkGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listWorkGroups, workGroupDetail)
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+	input := athena.ListWorkGroupsInput{}
+	for {
+		response, err := svc.ListWorkGroups(ctx, &input)
+		if err != nil {
+			return err
+		}
+		res <- response.WorkGroups
+		if aws.ToString(response.NextToken) == "" {
+			break
+		}
+		input.NextToken = response.NextToken
+	}
+
+	return nil
 }
+
+func getWorkGroup(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	c := meta.(*client.Client)
+	svc := c.Services().Athena
+
+	wg := resource.Item.(types.WorkGroupSummary)
+	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
+		WorkGroup: wg.Name,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = *dc.WorkGroup
+	return nil
+}
+
 func resolveAthenaWorkGroupArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	dc := resource.Item.(types.WorkGroup)
 	return resource.Set(c.Name, createWorkGroupArn(cl, *dc.Name))
 }
+
 func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services().Athena
@@ -44,6 +76,7 @@ func resolveAthenaWorkGroupTags(ctx context.Context, meta schema.ClientMeta, res
 	}
 	return resource.Set(c.Name, tags)
 }
+
 func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
@@ -75,6 +108,7 @@ func fetchAthenaWorkGroupPreparedStatements(ctx context.Context, meta schema.Cli
 	}
 	return nil
 }
+
 func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
@@ -105,6 +139,7 @@ func fetchAthenaWorkGroupQueryExecutions(ctx context.Context, meta schema.Client
 	}
 	return nil
 }
+
 func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Athena
@@ -136,52 +171,10 @@ func fetchAthenaWorkGroupNamedQueries(ctx context.Context, meta schema.ClientMet
 	return nil
 }
 
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
-
-func listWorkGroups(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
-	input := athena.ListWorkGroupsInput{}
-	for {
-		response, err := svc.ListWorkGroups(ctx, &input, func(options *athena.Options) {
-			options.Region = c.Region
-		})
-		if err != nil {
-			return err
-		}
-		for _, item := range response.WorkGroups {
-			detailChan <- item
-		}
-
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
-	}
-
-	return nil
-}
-func workGroupDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, summary interface{}) {
-	c := meta.(*client.Client)
-	svc := c.Services().Athena
-	wg := summary.(types.WorkGroupSummary)
-	dc, err := svc.GetWorkGroup(ctx, &athena.GetWorkGroupInput{
-		WorkGroup: wg.Name,
-	})
-	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
-		errorChan <- err
-		return
-	}
-	resultsChan <- *dc.WorkGroup
-}
 func createWorkGroupArn(cl *client.Client, groupName string) string {
 	return cl.ARN(client.Athena, "workgroup", groupName)
 }
+
 func isQueryExecutionNotFound(err error) bool {
 	var ae smithy.APIError
 	if !errors.As(err, &ae) {

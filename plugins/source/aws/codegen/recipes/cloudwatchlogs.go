@@ -9,9 +9,10 @@ import (
 func CloudWatchLogsResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "metric_filters",
-			Struct:     &types.MetricFilter{},
-			SkipFields: []string{"Arn"},
+			SubService:  "metric_filters",
+			Struct:      &types.MetricFilter{},
+			Description: "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html",
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -24,9 +25,10 @@ func CloudWatchLogsResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "log_groups",
-			Struct:     &types.LogGroup{},
-			SkipFields: []string{"Arn"},
+			SubService:  "log_groups",
+			Struct:      &types.LogGroup{},
+			Description: "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html",
+			SkipFields:  []string{"Arn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
