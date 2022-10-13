@@ -17,7 +17,7 @@ The name field may be used to uniquely identify a particular destination configu
 (`string`, optional)
 
 Configures how to retrieve the plugin. For plugins hosted on GitHub, `path` is inferred from `name` by default.
-For example `name: postgresql` will resolve `path` to `clouduquery/postgresql`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
+For example `name: postgresql` will resolve `path` to `cloudquery/postgresql`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
 
 ### version
 
