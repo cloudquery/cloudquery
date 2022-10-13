@@ -367,11 +367,6 @@ func Clusters() *schema.Table {
 				Resolver: schema.PathResolver("StorageType"),
 			},
 			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
-			},
-			{
 				Name:     "vpc_security_groups",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("VpcSecurityGroups"),
