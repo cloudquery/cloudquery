@@ -63,3 +63,9 @@ Sets a global limit on the number of tables to sync concurrently.
 
 Sets an (approximate) global limit on the number of concurrent requests performed to fetch further details about resources. Note that this limit only applies to top-level tables and not their child relations.
 
+### spec
+
+(`object`, optional)
+
+Plugin specific configurations. See [plugin](..plugins/sources) specific documentation for more information.
+
