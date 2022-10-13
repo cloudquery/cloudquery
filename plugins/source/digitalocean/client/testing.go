@@ -19,6 +19,8 @@ type TestOptions struct {
 }
 
 func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *testing.T, ctrl *gomock.Controller) Services, options TestOptions) {
+	version := "vDev"
+
 	t.Helper()
 	table.IgnoreInTests = false
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
@@ -44,13 +46,15 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 
 	p := plugins.NewSourcePlugin(
 		table.Name,
-		"dev",
+		version,
 		[]*schema.Table{
 			table,
 		},
 		newTestExecutionClient)
 	plugins.TestSourcePluginSync(t, p, l, specs.Source{
-		Name:   "dev",
-		Tables: []string{table.Name},
+		Name:         "dev",
+		Version:      version,
+		Tables:       []string{table.Name},
+		Destinations: []string{"mock-destination"},
 	})
 }

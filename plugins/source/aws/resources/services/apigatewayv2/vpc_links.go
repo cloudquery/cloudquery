@@ -9,9 +9,10 @@ import (
 
 func VpcLinks() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_vpc_links",
-		Resolver:  fetchApigatewayv2VpcLinks,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigatewayv2_vpc_links",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html",
+		Resolver:    fetchApigatewayv2VpcLinks,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

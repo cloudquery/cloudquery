@@ -9,9 +9,10 @@ import (
 
 func Apis() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigatewayv2_apis",
-		Resolver:  fetchApigatewayv2Apis,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigatewayv2_apis",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_Api.html",
+		Resolver:    fetchApigatewayv2Apis,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

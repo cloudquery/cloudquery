@@ -42,3 +42,7 @@ jobs:
         run: go run main.go doc docs/tables
       - name: Fail if docs are changed
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
+      - name: gen-code
+        run: make gen-code
+      - name: Fail if code generation changed services
+        run: test "$(git status -s ./resources/services | wc -l)" -eq 0

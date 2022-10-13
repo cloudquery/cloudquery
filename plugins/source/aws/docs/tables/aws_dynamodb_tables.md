@@ -1,6 +1,6 @@
 # Table: aws_dynamodb_tables
 
-
+https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TableDescription.html
 
 The primary key for this table is **arn**.
 
@@ -12,10 +12,10 @@ The following tables depend on `aws_dynamodb_tables`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |tags|JSON|

@@ -13,9 +13,10 @@ import (
 func AutoscalingResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService: "launch_configurations",
-			Struct:     &types.LaunchConfiguration{},
-			SkipFields: []string{"LaunchConfigurationARN"},
+			SubService:  "launch_configurations",
+			Struct:      &types.LaunchConfiguration{},
+			Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LaunchConfiguration.html",
+			SkipFields:  []string{"LaunchConfigurationARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -57,9 +58,10 @@ func AutoscalingResources() []*Resource {
 			},
 		},
 		{
-			SubService: "group_scaling_policies",
-			Struct:     &types.ScalingPolicy{},
-			SkipFields: []string{"PolicyARN"},
+			SubService:  "group_scaling_policies",
+			Struct:      &types.ScalingPolicy{},
+			Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html",
+			SkipFields:  []string{"PolicyARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -77,9 +79,10 @@ func AutoscalingResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "group_lifecycle_hooks",
-			Struct:     &types.LifecycleHook{},
-			SkipFields: []string{},
+			SubService:  "group_lifecycle_hooks",
+			Struct:      &types.LifecycleHook{},
+			Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -91,9 +94,10 @@ func AutoscalingResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "scheduled_actions",
-			Struct:     &types.ScheduledUpdateGroupAction{},
-			SkipFields: []string{"ScheduledActionARN"},
+			SubService:  "scheduled_actions",
+			Struct:      &types.ScheduledUpdateGroupAction{},
+			Description: "https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScheduledUpdateGroupAction.html",
+			SkipFields:  []string{"ScheduledActionARN"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

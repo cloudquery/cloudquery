@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.2.2...plugins-destination-postgresql-v1.3.0) (2022-10-13)
+
+
+### Features
+
+* **postgresql:** Add interval column type for `schema.TimeInterval` ([#2167](https://github.com/cloudquery/cloudquery/issues/2167)) ([f2e6a53](https://github.com/cloudquery/cloudquery/commit/f2e6a532c74bed1b20aae7d74b4a923eb533953c))
+
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.2.1...plugins-destination-postgresql-v1.2.2) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.13.6 ([#2731](https://github.com/cloudquery/cloudquery/issues/2731)) ([8916d33](https://github.com/cloudquery/cloudquery/commit/8916d3350a6c62ff0e6bd7ec4e9e8672878af54c))
+
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.2.0...plugins-destination-postgresql-v1.2.1) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.13.1 ([#2613](https://github.com/cloudquery/cloudquery/issues/2613)) ([63d3f22](https://github.com/cloudquery/cloudquery/commit/63d3f22dff516dcc4f315e3dec32e651fbccdc84))
+* **deps:** Update plugin-sdk for postgresql to v0.13.5 ([#2665](https://github.com/cloudquery/cloudquery/issues/2665)) ([f274ba6](https://github.com/cloudquery/cloudquery/commit/f274ba6047dd7f568a3c8214e7d384b0858babcc))
+
 ## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.1.0...plugins-destination-postgresql-v1.2.0) (2022-10-11)
 
 

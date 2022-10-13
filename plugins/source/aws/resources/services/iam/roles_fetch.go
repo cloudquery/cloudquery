@@ -13,7 +13,33 @@ import (
 )
 
 func fetchIamRoles(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	return client.ListAndDetailResolver(ctx, meta, res, listRoles, roleDetail)
+	var config iam.ListRolesInput
+	svc := meta.(*client.Client).Services().IAM
+	for {
+		response, err := svc.ListRoles(ctx, &config)
+		if err != nil {
+			return err
+		}
+		res <- response.Roles
+		if aws.ToString(response.Marker) == "" {
+			break
+		}
+		config.Marker = response.Marker
+	}
+	return nil
+}
+
+func getRole(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	role := resource.Item.(types.Role)
+	svc := meta.(*client.Client).Services().IAM
+	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
+		RoleName: role.RoleName,
+	})
+	if err != nil {
+		return err
+	}
+	resource.Item = roleDetails.Role
+	return nil
 }
 
 func resolveIamRolePolicies(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
@@ -113,40 +139,4 @@ func resolveRolePoliciesPolicyDocument(ctx context.Context, meta schema.ClientMe
 		return err
 	}
 	return resource.Set(c.Name, document)
-}
-
-func listRoles(ctx context.Context, meta schema.ClientMeta, detailChan chan<- interface{}) error {
-	var config iam.ListRolesInput
-	svc := meta.(*client.Client).Services().IAM
-	for {
-		response, err := svc.ListRoles(ctx, &config)
-		if err != nil {
-			return err
-		}
-		for _, role := range response.Roles {
-			detailChan <- role
-		}
-		if aws.ToString(response.Marker) == "" {
-			break
-		}
-		config.Marker = response.Marker
-	}
-	return nil
-}
-
-func roleDetail(ctx context.Context, meta schema.ClientMeta, resultsChan chan<- interface{}, errorChan chan<- error, listInfo interface{}) {
-	c := meta.(*client.Client)
-	role := listInfo.(types.Role)
-	svc := meta.(*client.Client).Services().IAM
-	roleDetails, err := svc.GetRole(ctx, &iam.GetRoleInput{
-		RoleName: role.RoleName,
-	})
-	if err != nil {
-		if c.IsNotFoundError(err) {
-			return
-		}
-		errorChan <- err
-		return
-	}
-	resultsChan <- roleDetails.Role
 }
