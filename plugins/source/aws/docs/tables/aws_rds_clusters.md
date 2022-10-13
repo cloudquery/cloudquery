@@ -82,5 +82,4 @@ The primary key for this table is **arn**.
 |status|String|
 |storage_encrypted|Bool|
 |storage_type|String|
-|tag_list|JSON|
 |vpc_security_groups|JSON|

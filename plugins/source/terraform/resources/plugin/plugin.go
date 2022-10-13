@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/terraform/client"
-	"github.com/cloudquery/cloudquery/plugins/source/terraform/services"
+	"github.com/cloudquery/cloudquery/plugins/source/terraform/resources/services"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
