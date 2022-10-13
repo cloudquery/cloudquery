@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.2.2...plugins-destination-postgresql-v1.3.0) (2022-10-13)
+
+
+### Features
+
+* **postgresql:** Add interval column type for `schema.TimeInterval` ([#2167](https://github.com/cloudquery/cloudquery/issues/2167)) ([f2e6a53](https://github.com/cloudquery/cloudquery/commit/f2e6a532c74bed1b20aae7d74b4a923eb533953c))
+
 ## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.2.1...plugins-destination-postgresql-v1.2.2) (2022-10-12)
 
 
