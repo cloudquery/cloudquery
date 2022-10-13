@@ -7,7 +7,6 @@ import (
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/rs/zerolog/log"
-	"github.com/rudderlabs/analytics-go"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -25,7 +24,7 @@ Find more information at:
 	https://cloudquery.io`
 	telemetryLevels = []string{"none", "errors", "all"}
 
-	analyticsClient *Analytics
+	analyticsClient *AnalyticsClient
 )
 
 func strInArray(str string, arr []string) bool {
@@ -46,7 +45,6 @@ func NewCmdRoot() *cobra.Command {
 	sentryDsn := sentryDsnDefault
 
 	var logFile *os.File
-	var analyticsClient analytics.Client
 	cmd := &cobra.Command{
 		Use:     "cloudquery",
 		Short:   rootShort,
@@ -66,13 +64,16 @@ func NewCmdRoot() *cobra.Command {
 				return fmt.Errorf("invalid telemetry level %s. must be one of %v", telemetryLevel, telemetryLevels)
 			}
 			if telemetryLevel == "all" {
-				analyticsClient = initAnalytics()
+				analyticsClient, err = initAnalytics()
+				if err != nil {
+					log.Warn().Err(err).Msg("failed to initialize analytics client")
+				}
 			}
 
 			if sentryDsn != "" && Version != "development" && telemetryLevel != "none" {
 				if err := initSentry(sentryDsn, Version); err != nil {
 					// we don't fail on sentry init errors as there might be no connection or sentry can be blocked.
-					log.Err(err).Msg("failed to initialize sentry")
+					log.Warn().Err(err).Msg("failed to initialize sentry")
 				}
 			}
 

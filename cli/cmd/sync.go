@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/clients"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
-	"github.com/rudderlabs/analytics-go"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 	"golang.org/x/sync/errgroup"
@@ -144,7 +143,7 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 		progressbar.OptionClearOnFinish(),
 	)
 	failedWrites := uint64(0)
-	totalResources := 0
+	totalResources := uint64(0)
 	for i, destination := range sourceSpec.Destinations {
 		i := i
 		destination := destination
@@ -191,22 +190,9 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	fmt.Println("Sync completed successfully.")
 	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", totalResources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
-		Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
-	if err := analyticsClient.Enqueue(analytics.Track{
-		UserId: "test",
-		Event:  "sync",
-		Properties: map[string]interface{}{
-			"cli_version":    Version,
-			"source_path":    sourceSpec.Path,
-			"source_version": sourceSpec.Version,
-			"destinations":   sourceSpec.Destinations,
-			"resources":      totalResources,
-			"errors":         summary.Errors,
-			"panic":          summary.Panics,
-			"failed_writes":  failedWrites,
-		},
-	}); err != nil {
-		log.Error().Err(err).Msg("Failed to enqueue analytics event")
+		Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+	if err := analyticsClient.SendSyncSummary(ctx, sourceSpec, destinationsSpecs, totalResources, summary.Errors, summary.Panics); err != nil {
+		log.Warn().Err(err).Msg("Failed to send sync summary")
 	}
 	return nil
 }

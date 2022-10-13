@@ -1,33 +1,72 @@
 package cmd
 
-import "github.com/rudderlabs/analytics-go"
+import (
+	"context"
+	"crypto/tls"
+	"crypto/x509"
 
-const (
-	rudderStackWritekey = "2Fz1JvndsXs5WjHQ03fSYNv4gcp"
-	rudderStackEndpoint = "https://cloudquerypgm.dataplane.rudderstack.com"
+	"github.com/cloudquery/cloudquery/cli/internal/pb"
+	"github.com/cloudquery/plugin-sdk/specs"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 )
 
-type Analytics struct {
-	client analytics.Client
+const (
+	analyticsHost = "analyticsv1.cloudquery.io:443"
+)
+
+type AnalyticsClient struct {
+	client pb.AnalyticsClient
+	conn  *grpc.ClientConn
 }
 
-func initAnalytics() *Analytics {
-	c := Analytics{
-		client: analytics.New(rudderStackWritekey, rudderStackEndpoint),
+func initAnalytics() (*AnalyticsClient, error) {
+	systemRoots, err := x509.SystemCertPool()
+	if err != nil {
+					return nil, err
 	}
-	return &c
+	cred := credentials.NewTLS(&tls.Config{
+					RootCAs: systemRoots,
+	})
+	conn, err := grpc.Dial(analyticsHost, grpc.WithAuthority(analyticsHost), grpc.WithTransportCredentials(cred))
+	// conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		return nil, err
+	}
+
+	return &AnalyticsClient{
+		client: pb.NewAnalyticsClient(conn),
+		conn:  conn,
+	}, nil
 }
 
-func (a *Analytics) Enqueue(event analytics.Message) error {
-	if a.client != nil {
-		return a.client.Enqueue(event)
+func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, resources uint64, errors uint64, panics uint64) error {
+	if c.client != nil {
+		summary := &pb.SyncSummary{
+			SourceName: sourceSpec.Path,
+			SourceVersion: sourceSpec.Version,
+			Resources: int64(resources),
+			Errors: int64(errors),
+			Panics: int64(panics),
+		}
+		for _, destinationSpec := range destinationsSpecs {
+			summary.Dest = append(summary.Dest, &pb.Destination{
+				Name: destinationSpec.Name,
+				Version: destinationSpec.Version,
+			})
+		}
+
+		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
+			SyncSummary: summary,
+		})
+		return err
 	}
 	return nil
 }
 
-func (a *Analytics) Close() error {
-	if a.client != nil {
-		return a.client.Close()
+func (c *AnalyticsClient) Close() error {
+	if c.conn != nil {
+		return c.conn.Close()
 	}
 	return nil
 }
