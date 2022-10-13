@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/cli
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.6
+	github.com/cloudquery/plugin-sdk v0.13.7
 	github.com/getsentry/sentry-go v0.13.0
 	github.com/rs/zerolog v1.28.0
 	github.com/schollz/progressbar/v3 v3.11.0
