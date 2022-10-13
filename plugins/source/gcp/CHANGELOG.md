@@ -5,6 +5,36 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.4...plugins-source-gcp-v1.0.5) (2022-10-13)
+
+
+### Bug Fixes
+
+* **gcp-policy:** Only show user defined service accounts in service accounts with admin privileges query ([#2775](https://github.com/cloudquery/cloudquery/issues/2775)) ([909b0f1](https://github.com/cloudquery/cloudquery/commit/909b0f1a6b26cd22fafcb18c31fe010b2541baf4))
+
+## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.3...plugins-source-gcp-v1.0.4) (2022-10-13)
+
+
+### Bug Fixes
+
+* **gcp:** Use duration properly ([#2763](https://github.com/cloudquery/cloudquery/issues/2763)) ([e320875](https://github.com/cloudquery/cloudquery/commit/e320875c26d221a6fe757d8b9df5a4f93829c225))
+
+## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.2...plugins-source-gcp-v1.0.3) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.13.6 ([#2722](https://github.com/cloudquery/cloudquery/issues/2722)) ([92e8dcf](https://github.com/cloudquery/cloudquery/commit/92e8dcf7526d1620dc04f56664f0c143f6c78a42))
+
+## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.1...plugins-source-gcp-v1.0.2) (2022-10-12)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.12.10 ([#2549](https://github.com/cloudquery/cloudquery/issues/2549)) ([9709d15](https://github.com/cloudquery/cloudquery/commit/9709d15f0a1edcfc14e032a7d2c8e9b4c885e745))
+* **gcp:** Migrate Grafana dashboards ([#2634](https://github.com/cloudquery/cloudquery/issues/2634)) ([d194943](https://github.com/cloudquery/cloudquery/commit/d1949430655c1e001d8139e4daf4052bfb8006a2))
+* Upgrade source SDK versions to v0.13.5 ([#2610](https://github.com/cloudquery/cloudquery/issues/2610)) ([611868e](https://github.com/cloudquery/cloudquery/commit/611868e7fbb707b524ccc5c04a7ff95fe122ae05))
+
 ## [1.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.0...plugins-source-gcp-v1.0.1) (2022-10-07)
 
 

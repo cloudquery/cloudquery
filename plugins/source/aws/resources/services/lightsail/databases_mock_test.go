@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	b := lightsail.GetRelationalDatabasesOutput{}
-	err := faker.FakeData(&b)
+	err := faker.FakeObject(&b)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&b, nil)
 
 	ac := lightsail.GetRelationalDatabaseParametersOutput{}
-	err = faker.FakeData(&ac)
+	err = faker.FakeObject(&ac)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -33,7 +33,7 @@ func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ac, nil)
 
 	e := lightsail.GetRelationalDatabaseEventsOutput{}
-	err = faker.FakeData(&e)
+	err = faker.FakeObject(&e)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,7 +42,7 @@ func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetRelationalDatabaseEvents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&e, nil)
 	ls := lightsail.GetRelationalDatabaseLogStreamsOutput{}
-	err = faker.FakeData(&ls)
+	err = faker.FakeObject(&ls)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -50,7 +50,7 @@ func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ls, nil)
 
 	le := lightsail.GetRelationalDatabaseLogEventsOutput{}
-	err = faker.FakeData(&le)
+	err = faker.FakeObject(&le)
 	if err != nil {
 		t.Fatal(err)
 	}

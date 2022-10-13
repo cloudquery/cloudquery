@@ -9,9 +9,10 @@ import (
 
 func DeliveryStreams() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_firehose_delivery_streams",
-		Resolver:  fetchFirehoseDeliveryStreams,
-		Multiplex: client.ServiceAccountRegionMultiplexer("firehose"),
+		Name:                "aws_firehose_delivery_streams",
+		Resolver:            fetchFirehoseDeliveryStreams,
+		PreResourceResolver: getDeliveryStream,
+		Multiplex:           client.ServiceAccountRegionMultiplexer("firehose"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

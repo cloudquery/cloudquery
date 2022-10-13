@@ -9,9 +9,10 @@ import (
 
 func EgressOnlyInternetGateways() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_ec2_egress_only_internet_gateways",
-		Resolver:  fetchEc2EgressOnlyInternetGateways,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ec2"),
+		Name:        "aws_ec2_egress_only_internet_gateways",
+		Description: "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_EgressOnlyInternetGateway.html",
+		Resolver:    fetchEc2EgressOnlyInternetGateways,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("ec2"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

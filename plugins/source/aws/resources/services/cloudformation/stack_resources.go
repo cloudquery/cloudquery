@@ -9,9 +9,10 @@ import (
 
 func StackResources() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_cloudformation_stack_resources",
-		Resolver:  fetchCloudformationStackResources,
-		Multiplex: client.ServiceAccountRegionMultiplexer("cloudformation"),
+		Name:        "aws_cloudformation_stack_resources",
+		Description: "https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html",
+		Resolver:    fetchCloudformationStackResources,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("cloudformation"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

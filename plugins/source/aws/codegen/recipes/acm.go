@@ -11,6 +11,7 @@ func ACMResources() []*Resource {
 		{
 			SubService:          "certificates",
 			Struct:              &types.CertificateDetail{},
+			Description:         "https://docs.aws.amazon.com/acm/latest/APIReference/API_CertificateDetail.html",
 			SkipFields:          []string{"CertificateArn"},
 			PreResourceResolver: "getCertificate",
 			Multiplex:           `client.ServiceAccountRegionMultiplexer("acm")`,

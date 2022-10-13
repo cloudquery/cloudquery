@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/backup"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudfront"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudhsmv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatch"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudwatchlogs"
@@ -25,6 +26,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecrpublic"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/efs"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eks"
@@ -98,6 +100,8 @@ func tables() []*schema.Table {
 		cloudformation.Stacks(),
 		cloudfront.CachePolicies(),
 		cloudfront.Distributions(),
+		cloudhsmv2.Backups(),
+		cloudhsmv2.Clusters(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
 		cloudwatchlogs.LogGroups(),
@@ -126,9 +130,9 @@ func tables() []*schema.Table {
 		ec2.FlowLogs(),
 		ec2.Hosts(),
 		ec2.Images(),
+		ec2.Instances(),
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
-		ec2.Instances(),
 		ec2.InternetGateways(),
 		ec2.KeyPairs(),
 		ec2.NatGateways(),
@@ -141,13 +145,16 @@ func tables() []*schema.Table {
 		ec2.SecurityGroups(),
 		ec2.Subnets(),
 		ec2.TransitGateways(),
+		ec2.VpcEndpoints(),
 		ec2.VpcEndpointServiceConfigurations(),
 		ec2.VpcEndpointServices(),
-		ec2.VpcEndpoints(),
 		ec2.VpcPeeringConnections(),
 		ec2.Vpcs(),
 		ec2.VpnGateways(),
+		ecr.Registries(),
+		ecr.RegistryPolicies(),
 		ecr.Repositories(),
+		ecrpublic.Repositories(),
 		ecs.Clusters(),
 		ecs.TaskDefinitions(),
 		efs.Filesystems(),
@@ -164,8 +171,8 @@ func tables() []*schema.Table {
 		elasticache.SubnetGroups(),
 		elasticache.UserGroups(),
 		elasticache.Users(),
-		elasticbeanstalk.ApplicationVersions(),
 		elasticbeanstalk.Applications(),
+		elasticbeanstalk.ApplicationVersions(),
 		elasticbeanstalk.Environments(),
 		elasticsearch.Domains(),
 		elbv1.LoadBalancers(),
@@ -216,8 +223,8 @@ func tables() []*schema.Table {
 		iot.SecurityProfiles(),
 		iot.Streams(),
 		iot.ThingGroups(),
-		iot.ThingTypes(),
 		iot.Things(),
+		iot.ThingTypes(),
 		iot.TopicRules(),
 		kinesis.Streams(),
 		kms.Aliases(),
@@ -229,12 +236,12 @@ func tables() []*schema.Table {
 		lightsail.Buckets(),
 		lightsail.Certificates(),
 		lightsail.ContainerServices(),
-		lightsail.DatabaseSnapshots(),
 		lightsail.Databases(),
+		lightsail.DatabaseSnapshots(),
 		lightsail.Disks(),
 		lightsail.Distributions(),
-		lightsail.InstanceSnapshots(),
 		lightsail.Instances(),
+		lightsail.InstanceSnapshots(),
 		lightsail.LoadBalancers(),
 		lightsail.StaticIps(),
 		mq.Brokers(),
@@ -242,8 +249,8 @@ func tables() []*schema.Table {
 		qldb.Ledgers(),
 		rds.Certificates(),
 		rds.ClusterParameterGroups(),
-		rds.ClusterSnapshots(),
 		rds.Clusters(),
+		rds.ClusterSnapshots(),
 		rds.DbParameterGroups(),
 		rds.DbSecurityGroups(),
 		rds.DbSnapshots(),

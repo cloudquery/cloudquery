@@ -1,6 +1,6 @@
 # Table: aws_ec2_transit_gateway_peering_attachments
 
-
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html
 
 The primary key for this table is **_cq_id**.
 
@@ -10,10 +10,10 @@ This table depends on [`aws_ec2_transit_gateways`](aws_ec2_transit_gateways.md).
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |transit_gateway_arn|String|

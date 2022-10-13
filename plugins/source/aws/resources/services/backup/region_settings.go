@@ -9,9 +9,10 @@ import (
 
 func RegionSettings() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_backup_region_settings",
-		Resolver:  fetchBackupRegionSettings,
-		Multiplex: client.ServiceAccountRegionMultiplexer("backup"),
+		Name:        "aws_backup_region_settings",
+		Description: "https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeRegionSettings.html",
+		Resolver:    fetchBackupRegionSettings,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("backup"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

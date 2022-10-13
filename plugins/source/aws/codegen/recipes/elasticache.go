@@ -24,6 +24,26 @@ func ElastiCacheResources() []*Resource {
 				}...),
 		},
 		{
+			SubService: "engine_versions",
+			Struct:     &types.CacheEngineVersion{},
+			ExtraColumns: []codegen.ColumnDefinition{
+				{
+					Name:        "account_id",
+					Description: "The AWS Account ID of the resource.",
+					Type:        schema.TypeString,
+					Resolver:    `client.ResolveAWSAccount`,
+					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+				{
+					Name:        "region",
+					Description: "The AWS Region of the resource.",
+					Type:        schema.TypeString,
+					Resolver:    `client.ResolveAWSRegion`,
+					Options:     schema.ColumnCreationOptions{PrimaryKey: true},
+				},
+			},
+		},
+		{
 			SubService: "global_replication_groups",
 			Struct:     &types.GlobalReplicationGroup{},
 			SkipFields: []string{"ARN"},
