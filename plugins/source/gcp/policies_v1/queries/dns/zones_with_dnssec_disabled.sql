@@ -1,6 +1,6 @@
--- SELECT project_id, id, "name", self_link AS link
--- FROM gcp_compute_networks gcn
--- WHERE ip_v4_range IS NULL
+-- select * from gcp_dns_managed_zones
+-- where visibility != 'private'
+-- and ((dnssec_config is null) or (dnssec_config->>'state' = 'off'));
 
 
 INSERT INTO gcp_policy_results (resource_id, execution_time, framework, check_id, title, project_id, status)
@@ -12,8 +12,9 @@ SELECT "id"                                                      AS resource_id,
        project_id                                                AS project_id,
        CASE
            WHEN
-               ipv4_range IS NULL
+               visibility != 'private'
+               and ((dnssec_config is null) or (dnssec_config->>'state' = 'off'))
                THEN 'fail'
            ELSE 'pass'
            END                                                   AS status
-FROM gcp_compute_networks;
+FROM gcp_dns_managed_zones;
