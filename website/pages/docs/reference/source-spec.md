@@ -1,6 +1,8 @@
 # Source Spec Reference
 
-This goes through all the available options for the source plugin `spec` object:
+Following are available options for the top level source plugin `spec` object. 
+
+Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](https://www.cloudquery.io/docs/plugins/sources). (eg. [AWS plugin configuration](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)). Also check out our [recipes](https://www.cloudquery.io/docs/recipes/aws-postgresql) for common configuration examples.
 
 ## Spec
 
