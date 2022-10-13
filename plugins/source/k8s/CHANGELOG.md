@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.2.1...plugins-source-k8s-v1.2.2) (2022-10-13)
+
+
+### Bug Fixes
+
+* **k8s:** Structure plugin so version is embedded by Go Releaser ([#2759](https://github.com/cloudquery/cloudquery/issues/2759)) ([8666bee](https://github.com/cloudquery/cloudquery/commit/8666beecb8cc7d3f95cc18bdb06f66280e81d7a0))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v1.2.0...plugins-source-k8s-v1.2.1) (2022-10-12)
 
 
