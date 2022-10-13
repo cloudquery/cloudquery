@@ -1,5 +1,42 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.0.2...plugins-source-heroku-v3.0.0) (2022-10-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Rename domains `c_name` to `cname` (#2635)
+* Official v1 release (#2335)
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v0.11.5 ([#2232](https://github.com/cloudquery/cloudquery/issues/2232)) ([e3a3a30](https://github.com/cloudquery/cloudquery/commit/e3a3a304530a93cc3315ffa8d109fa5722b9ad17))
+* **deps:** Update plugin-sdk for aws to v0.13.5 ([#2660](https://github.com/cloudquery/cloudquery/issues/2660)) ([748a0b3](https://github.com/cloudquery/cloudquery/commit/748a0b3f2cd8429696b38daa386bd0ca32fc3fdf))
+* **deps:** Update plugin-sdk for azure to v0.13.5 ([#2591](https://github.com/cloudquery/cloudquery/issues/2591)) ([c36f60a](https://github.com/cloudquery/cloudquery/commit/c36f60a36fc20823f471ced3ba1726d778bfcda2))
+* **deps:** Update plugin-sdk for cloudflare to v0.13.5 ([#2593](https://github.com/cloudquery/cloudquery/issues/2593)) ([ed96887](https://github.com/cloudquery/cloudquery/commit/ed968873a7310daca0dff9fafc94394cca9801e4))
+* **deps:** Update plugin-sdk for digitalocean to v0.13.5 ([#2594](https://github.com/cloudquery/cloudquery/issues/2594)) ([5570015](https://github.com/cloudquery/cloudquery/commit/55700155cf1afdbe7e2dd8cc9ae5477a992c1306))
+* **deps:** Update plugin-sdk for gcp to v0.13.5 ([#2595](https://github.com/cloudquery/cloudquery/issues/2595)) ([ec17c48](https://github.com/cloudquery/cloudquery/commit/ec17c48959bcdab3d1aed763beee1d0bf37a589e))
+* **deps:** Update plugin-sdk for heroku to v0.11.6 ([#2258](https://github.com/cloudquery/cloudquery/issues/2258)) ([2169bf5](https://github.com/cloudquery/cloudquery/commit/2169bf5d3611025473394198a6373e416dd55b8b))
+* **deps:** Update plugin-sdk for heroku to v0.12.10 ([#2551](https://github.com/cloudquery/cloudquery/issues/2551)) ([d0771ec](https://github.com/cloudquery/cloudquery/commit/d0771eca723b5805410d54781f9cdb0668ef7d03))
+* **deps:** Update plugin-sdk for heroku to v0.12.2 ([#2333](https://github.com/cloudquery/cloudquery/issues/2333)) ([ee2e0fc](https://github.com/cloudquery/cloudquery/commit/ee2e0fc86b2c4b5c83453e753d2fe9b5bb32b2fa))
+* **deps:** Update plugin-sdk for heroku to v0.12.3 ([#2359](https://github.com/cloudquery/cloudquery/issues/2359)) ([335a1e3](https://github.com/cloudquery/cloudquery/commit/335a1e3c5d8ad909a90c13f68bf827efca92f056))
+* **deps:** Update plugin-sdk for heroku to v0.12.4 ([#2401](https://github.com/cloudquery/cloudquery/issues/2401)) ([8df20da](https://github.com/cloudquery/cloudquery/commit/8df20daa813fd5900af5712ac801205068def273))
+* **deps:** Update plugin-sdk for heroku to v0.12.5 ([#2423](https://github.com/cloudquery/cloudquery/issues/2423)) ([b7b5dce](https://github.com/cloudquery/cloudquery/commit/b7b5dce3f5d09b1f0ab3fa3ffb5eea76a7452892))
+* **deps:** Update plugin-sdk for heroku to v0.12.6 ([#2439](https://github.com/cloudquery/cloudquery/issues/2439)) ([b0fb24e](https://github.com/cloudquery/cloudquery/commit/b0fb24e22143db6f50c70ad0f901d688d98dc981))
+* **deps:** Update plugin-sdk for heroku to v0.12.7 ([#2452](https://github.com/cloudquery/cloudquery/issues/2452)) ([44142b6](https://github.com/cloudquery/cloudquery/commit/44142b671d3debca755aa2ec80ef4f6cc955ef59))
+* **deps:** Update plugin-sdk for heroku to v0.12.8 ([#2502](https://github.com/cloudquery/cloudquery/issues/2502)) ([1f5f938](https://github.com/cloudquery/cloudquery/commit/1f5f9381de0b55b4dad396ede57c75aa31fc8900))
+* **deps:** Update plugin-sdk for heroku to v0.12.9 ([#2516](https://github.com/cloudquery/cloudquery/issues/2516)) ([c04e790](https://github.com/cloudquery/cloudquery/commit/c04e7904a45a27cb4f6551f39e2750b88a409ab6))
+* **deps:** Update plugin-sdk for heroku to v0.13.6 ([#2597](https://github.com/cloudquery/cloudquery/issues/2597)) ([0a8c19b](https://github.com/cloudquery/cloudquery/commit/0a8c19b5f99cdbb01d816e188693b4c74ba698c9))
+* **deps:** Update plugin-sdk for heroku to v0.13.7 ([#2785](https://github.com/cloudquery/cloudquery/issues/2785)) ([7f1ddd5](https://github.com/cloudquery/cloudquery/commit/7f1ddd5aaefd2be52716f407ce51c6885e6c41a8))
+* Rename domains `c_name` to `cname` ([#2635](https://github.com/cloudquery/cloudquery/issues/2635)) ([70ff2dc](https://github.com/cloudquery/cloudquery/commit/70ff2dcfa34b19a092b25d7c5474bd32fbbca700))
+* Update all source plugin to v0.12.2 ([#2316](https://github.com/cloudquery/cloudquery/issues/2316)) ([5099dcf](https://github.com/cloudquery/cloudquery/commit/5099dcff4683b45b81db721c6a172857b0f796ae))
+* Upgrade source SDK versions to v0.13.5 ([#2610](https://github.com/cloudquery/cloudquery/issues/2610)) ([611868e](https://github.com/cloudquery/cloudquery/commit/611868e7fbb707b524ccc5c04a7ff95fe122ae05))
+
+
+### Miscellaneous Chores
+
+* Official v1 release ([#2335](https://github.com/cloudquery/cloudquery/issues/2335)) ([e32de23](https://github.com/cloudquery/cloudquery/commit/e32de23a1c3da88ea36c327d6244721337c41570))
+
 ## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-heroku-v2.0.1...plugins-source-heroku-v2.0.2) (2022-10-13)
 
 
