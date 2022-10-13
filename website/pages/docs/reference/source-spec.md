@@ -67,5 +67,5 @@ Sets an (approximate) global limit on the number of concurrent requests performe
 
 (`object`, optional)
 
-Plugin specific configurations. Visit [source plugins](docs/plugins/sources) documentation for more information.
+Plugin specific configurations. Visit [source plugins](/docs/plugins/sources) documentation for more information.
 
