@@ -6,14 +6,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/shield"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildAttacks(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockShieldClient(ctrl)
 	protection := shield.ListAttacksOutput{}
-	err := faker.FakeData(&protection)
+	err := faker.FakeObject(&protection)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -21,7 +21,7 @@ func buildAttacks(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListAttacks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&protection, nil)
 
 	tags := shield.DescribeAttackOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
