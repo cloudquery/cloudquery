@@ -119,7 +119,7 @@ func NewCmdRoot() *cobra.Command {
 		},
 	}
 
-	cmd.PersistentFlags().String("data-dir", "./.cq", "set persistent data directory (env: CQ_DATA_DIR)")
+	cmd.PersistentFlags().String("data-dir", ".cq", "set persistent data directory (env: CQ_DATA_DIR)")
 
 	cmd.PersistentFlags().String("color", "auto", "Enable colorized output when log-console is set (on, off, auto)")
 	err := cmd.PersistentFlags().MarkDeprecated("color", "console logs are always colorless")
