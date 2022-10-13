@@ -43,6 +43,8 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 - `overwrite-delete-stale`: Same as `overwrite`, but stale rows are also deleted.
 - `append`: Rows are never overwritten or deleted, only appended.
 
-## Development
+### spec
 
-Spec is defined in [plugin-sdk](https://github.com/cloudquery/plugin-sdk/blob/main/specs/destination.go#L12)
+(`object`, optional)
+
+Plugin specific configurations. Visit [destination plugins](/docs/plugins/destinations) documentation for more information.
