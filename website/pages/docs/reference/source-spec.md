@@ -1,10 +1,12 @@
 # Source Spec Reference
 
-This goes through all the available options for the source plugin `spec` object:
+Following are available options for the top level source plugin `spec` object. 
+
+Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](https://www.cloudquery.io/docs/plugins/sources). (eg. [AWS plugin configuration](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)). Also check out our [recipes](https://www.cloudquery.io/docs/recipes/aws-postgresql) for common configuration examples.
 
 ## Spec
 
-### `name`
+### name
 
 (`string`, required)
 
@@ -63,6 +65,3 @@ Sets a global limit on the number of tables to sync concurrently.
 
 Sets an (approximate) global limit on the number of concurrent requests performed to fetch further details about resources. Note that this limit only applies to top-level tables and not their child relations.
 
-## Development
-
-Spec is defined in [plugin-sdk](https://github.com/cloudquery/plugin-sdk/blob/main/specs/source.go#L11)
