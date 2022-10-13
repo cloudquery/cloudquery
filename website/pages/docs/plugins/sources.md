@@ -8,7 +8,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 
 | **Name**              | Latest Version | Changelog                           | Stage |
 |-----------------------|----------------|-------------------------------------|-------|
-| [AWS][aws] | v2.5.1         | [Changelog][AWS-Changelog]          | GA |
+| [AWS][aws] | v2.5.2         | [Changelog][AWS-Changelog]          | GA |
 | [Azure][azure] | v1.0.3         | [Changelog][Azure-Changelog]        | GA |    
 | [GCP][gcp] | v1.0.5         | [Changelog][GCP-Changelog]          | GA |
 | [DigitalOcean][digitalocean] | v2.0.2         | [Changelog][DigitalOcean-Changelog] | GA |
