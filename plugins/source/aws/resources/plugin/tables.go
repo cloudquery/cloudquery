@@ -40,6 +40,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/emr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eventbridge"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/firehose"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/frauddetector"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/fsx"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glacier"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
@@ -193,6 +194,18 @@ func tables() []*schema.Table {
 		emr.Clusters(),
 		eventbridge.EventBuses(),
 		firehose.DeliveryStreams(),
+		frauddetector.BatchImports(),
+		frauddetector.BatchPredictions(),
+		frauddetector.Detectors(),
+		frauddetector.EntityTypes(),
+		frauddetector.EventTypes(),
+		frauddetector.ExternalModels(),
+		frauddetector.Labels(),
+		frauddetector.Models(),
+		frauddetector.ModelVersions(),
+		frauddetector.Outcomes(),
+		frauddetector.Rules(),
+		frauddetector.Variables(),
 		fsx.Backups(),
 		fsx.DataRepositoryAssociations(),
 		fsx.DataRepositoryTasks(),

@@ -43,6 +43,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
+	"github.com/aws/aws-sdk-go-v2/service/frauddetector"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
 	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
@@ -492,6 +493,22 @@ type FirehoseClient interface {
 	DescribeDeliveryStream(ctx context.Context, params *firehose.DescribeDeliveryStreamInput, optFns ...func(*firehose.Options)) (*firehose.DescribeDeliveryStreamOutput, error)
 	ListDeliveryStreams(ctx context.Context, params *firehose.ListDeliveryStreamsInput, optFns ...func(*firehose.Options)) (*firehose.ListDeliveryStreamsOutput, error)
 	ListTagsForDeliveryStream(ctx context.Context, params *firehose.ListTagsForDeliveryStreamInput, optFns ...func(*firehose.Options)) (*firehose.ListTagsForDeliveryStreamOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/frauddetector.go . FraudDetectorClient
+type FraudDetectorClient interface {
+	DescribeModelVersions(context.Context, *frauddetector.DescribeModelVersionsInput, ...func(*frauddetector.Options)) (*frauddetector.DescribeModelVersionsOutput, error)
+	GetBatchImportJobs(context.Context, *frauddetector.GetBatchImportJobsInput, ...func(*frauddetector.Options)) (*frauddetector.GetBatchImportJobsOutput, error)
+	GetBatchPredictionJobs(context.Context, *frauddetector.GetBatchPredictionJobsInput, ...func(*frauddetector.Options)) (*frauddetector.GetBatchPredictionJobsOutput, error)
+	GetDetectors(context.Context, *frauddetector.GetDetectorsInput, ...func(*frauddetector.Options)) (*frauddetector.GetDetectorsOutput, error)
+	GetEntityTypes(context.Context, *frauddetector.GetEntityTypesInput, ...func(*frauddetector.Options)) (*frauddetector.GetEntityTypesOutput, error)
+	GetEventTypes(context.Context, *frauddetector.GetEventTypesInput, ...func(*frauddetector.Options)) (*frauddetector.GetEventTypesOutput, error)
+	GetExternalModels(context.Context, *frauddetector.GetExternalModelsInput, ...func(*frauddetector.Options)) (*frauddetector.GetExternalModelsOutput, error)
+	GetLabels(context.Context, *frauddetector.GetLabelsInput, ...func(*frauddetector.Options)) (*frauddetector.GetLabelsOutput, error)
+	GetModels(context.Context, *frauddetector.GetModelsInput, ...func(*frauddetector.Options)) (*frauddetector.GetModelsOutput, error)
+	GetOutcomes(context.Context, *frauddetector.GetOutcomesInput, ...func(*frauddetector.Options)) (*frauddetector.GetOutcomesOutput, error)
+	GetRules(context.Context, *frauddetector.GetRulesInput, ...func(*frauddetector.Options)) (*frauddetector.GetRulesOutput, error)
+	GetVariables(context.Context, *frauddetector.GetVariablesInput, ...func(*frauddetector.Options)) (*frauddetector.GetVariablesOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/fsx.go . FsxClient
