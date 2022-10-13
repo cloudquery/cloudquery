@@ -1,6 +1,8 @@
 # Source Spec Reference
 
-This goes through all the available options for the source plugin `spec` object:
+Following are available options for the top level source plugin `spec` object. 
+
+Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](https://www.cloudquery.io/docs/plugins/sources). (eg. [AWS plugin configuration](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)). Also check out our [recipes](https://www.cloudquery.io/docs/recipes/aws-postgresql) for common configuration examples.
 
 ## Spec
 
@@ -17,7 +19,7 @@ The name field may be used to uniquely identify a particular source configuratio
 (`string`, optional)
 
 Configures how to retrieve the plugin. For plugins hosted on GitHub, `path` is inferred from `name` by default.
-For example `name: aws` will resolve `path` to `clouduquery/aws`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
+For example `name: aws` will resolve `path` to `cloudquery/aws`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
 
 ### version
 
@@ -62,4 +64,10 @@ Sets a global limit on the number of tables to sync concurrently.
 (`int`, optional, default: `500000`, introduced in CLI `v1.0.8`)
 
 Sets an (approximate) global limit on the number of concurrent requests performed to fetch further details about resources. Note that this limit only applies to top-level tables and not their child relations.
+
+### spec
+
+(`object`, optional)
+
+Plugin specific configurations. Visit [source plugins](/docs/plugins/sources) documentation for more information.
 

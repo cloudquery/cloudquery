@@ -2,7 +2,7 @@ package plugin
 
 import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
-	"github.com/cloudquery/cloudquery/plugins/source/okta/services"
+	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services"
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
