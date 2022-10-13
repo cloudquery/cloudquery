@@ -17,16 +17,16 @@ const (
 
 type AnalyticsClient struct {
 	client pb.AnalyticsClient
-	conn  *grpc.ClientConn
+	conn   *grpc.ClientConn
 }
 
 func initAnalytics() (*AnalyticsClient, error) {
 	systemRoots, err := x509.SystemCertPool()
 	if err != nil {
-					return nil, err
+		return nil, err
 	}
 	cred := credentials.NewTLS(&tls.Config{
-					RootCAs: systemRoots,
+		RootCAs: systemRoots,
 	})
 	conn, err := grpc.Dial(analyticsHost, grpc.WithAuthority(analyticsHost), grpc.WithTransportCredentials(cred))
 	// conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -36,22 +36,22 @@ func initAnalytics() (*AnalyticsClient, error) {
 
 	return &AnalyticsClient{
 		client: pb.NewAnalyticsClient(conn),
-		conn:  conn,
+		conn:   conn,
 	}, nil
 }
 
 func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, resources uint64, errors uint64, panics uint64) error {
 	if c.client != nil {
 		summary := &pb.SyncSummary{
-			SourceName: sourceSpec.Path,
+			SourceName:    sourceSpec.Path,
 			SourceVersion: sourceSpec.Version,
-			Resources: int64(resources),
-			Errors: int64(errors),
-			Panics: int64(panics),
+			Resources:     int64(resources),
+			Errors:        int64(errors),
+			Panics:        int64(panics),
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			summary.Dest = append(summary.Dest, &pb.Destination{
-				Name: destinationSpec.Name,
+				Name:    destinationSpec.Name,
 				Version: destinationSpec.Version,
 			})
 		}
