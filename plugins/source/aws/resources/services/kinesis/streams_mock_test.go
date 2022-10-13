@@ -7,9 +7,9 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis"
 	"github.com/aws/aws-sdk-go-v2/service/kinesis/types"
-	"github.com/bxcodec/faker"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -31,7 +31,7 @@ func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) client.Services 
 	k := mocks.NewMockKinesisClient(ctrl)
 
 	streams := kinesis.ListStreamsOutput{}
-	err := faker.FakeData(&streams)
+	err := faker.FakeObject(&streams)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) client.Services 
 			}}},
 	}
 	customKinesisClient := customKinesisClient{}
-	err = faker.FakeData(&customKinesisClient)
+	err = faker.FakeObject(&customKinesisClient)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,7 +62,7 @@ func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) client.Services 
 	k.EXPECT().DescribeStreamSummary(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(&stream, nil)
 
 	tags := kinesis.ListTagsForStreamOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}

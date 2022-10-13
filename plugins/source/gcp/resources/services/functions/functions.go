@@ -51,8 +51,8 @@ func Functions() *schema.Table {
 			},
 			{
 				Name:     "timeout",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Timeout"),
+				Type:     schema.TypeTimeInterval,
+				Resolver: client.ResolveProtoDuration("Timeout"),
 			},
 			{
 				Name:     "available_memory_mb",

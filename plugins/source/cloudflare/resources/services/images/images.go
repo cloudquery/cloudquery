@@ -38,7 +38,7 @@ func Images() *schema.Table {
 				Resolver: schema.PathResolver("Metadata"),
 			},
 			{
-				Name:     "require_signed_ur_ls",
+				Name:     "require_signed_urls",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("RequireSignedURLs"),
 			},

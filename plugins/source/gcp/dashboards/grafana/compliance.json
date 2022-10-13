@@ -200,7 +200,7 @@
         "type": "postgres",
         "uid": "${DS_POSTGRESQL}"
       },
-      "description": "Time since the most recent CloudQuery fetch happened.",
+      "description": "Time since the most recent CloudQuery sync happened.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -254,11 +254,11 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select to_timestamp(cq_meta::JSONB->>'last_updated', 'YYYY-MM-DDTH24:MI:SS.US')::timestamp as time, 1  from gcp_compute_instances  order by time desc limit 1;",
+          "rawSql": "select _cq_sync_time as time, 1 from gcp_compute_instances order by time desc limit 1;",
           "refId": "A"
         }
       ],
-      "title": "Last Fetch",
+      "title": "Last Sync",
       "type": "stat"
     },
     {

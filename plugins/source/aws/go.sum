@@ -42,6 +42,8 @@ github.com/aws/aws-sdk-go-v2/service/cloudformation v1.22.10 h1:Stmfzuj3KSEBB3tb
 github.com/aws/aws-sdk-go-v2/service/cloudformation v1.22.10/go.mod h1:25Dm6AWo23nKPF1kmGP3MpgCWixf4t8ViwWemcTFXQU=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.5 h1:nLAPA7/DSmDWYP/MGtRNP6bHjiL8Fmyg8qeDxW90nm0=
 github.com/aws/aws-sdk-go-v2/service/cloudfront v1.20.5/go.mod h1:HYQXu2AKM7RLCn3APoQ5EvL2N/RlI4LSNN8pIGbdaDQ=
+github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.19 h1:ra5OmtvAkz8r58HVi/DiecemN/7TMttC7Wb3NzBSh+4=
+github.com/aws/aws-sdk-go-v2/service/cloudhsmv2 v1.13.19/go.mod h1:Wl9LHyboc/cg5kc6L/oZUkjj7NnRmqg14K1TKB1XO48=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.18.1 h1:Q8EfidXIfYA13XLkY9yRX9gPI0lnS/+S7K43bZdoQOg=
 github.com/aws/aws-sdk-go-v2/service/cloudtrail v1.18.1/go.mod h1:ie2MjsIIl3B504HezWdwXAgvBJGBpz360cckbkhiyRk=
 github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.21.6 h1:Mwb2A5ygEijjkxgM3hVEiWSHwdH82nkyU2wgP4u/Hxk=
@@ -70,6 +72,8 @@ github.com/aws/aws-sdk-go-v2/service/ec2 v1.63.0 h1:9ailn+011zwUJdS8RuamANJVAyX+
 github.com/aws/aws-sdk-go-v2/service/ec2 v1.63.0/go.mod h1:0+6fPoY0SglgzQUs2yml7X/fup12cMlVumJufh5npRQ=
 github.com/aws/aws-sdk-go-v2/service/ecr v1.17.18 h1:uiF/RI+Up8H2xdgT2GWa20YzxiKEalHieqNjm6HC3Xk=
 github.com/aws/aws-sdk-go-v2/service/ecr v1.17.18/go.mod h1:DQtDYmexqR+z+B6HBCvY7zK/tuXKv6Zy/IwOXOK3eow=
+github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.17 h1:bcQy5/dcJO8VQD+p0tDoIYdgEC3ch9f1/BNRES7XMug=
+github.com/aws/aws-sdk-go-v2/service/ecrpublic v1.13.17/go.mod h1:r1Vuka0kyzqN0sZm4lYTXf0Vhl+o/mTLq6vKpBBZYaQ=
 github.com/aws/aws-sdk-go-v2/service/ecs v1.18.23 h1:gdqm7KhgE1COL5CM2eUYD6XFtqOJC1bhOa5vwLGPP0g=
 github.com/aws/aws-sdk-go-v2/service/ecs v1.18.23/go.mod h1:6bV2xEub6Vch19ZZASMbrNMNIpBPTwy64r9WIQ+wsSE=
 github.com/aws/aws-sdk-go-v2/service/efs v1.17.15 h1:HgRxrC7KIUJW6gFf4AEjFPvrgh73aADaa1XZpiFsfgA=
@@ -183,13 +187,11 @@ github.com/basgys/goxml2json v1.1.0/go.mod h1:wH7a5Np/Q4QoECFIU8zTQlZwZkrilY0itP
 github.com/bitly/go-simplejson v0.5.0 h1:6IH+V8/tVMab511d5bn4M7EwGXZf9Hj6i2xSwkNEM+Y=
 github.com/bitly/go-simplejson v0.5.0/go.mod h1:cXHtHw4XUPsvGaxgjIAn8PhEWG9NfngEKAMDJEczWVA=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
-github.com/bxcodec/faker v2.0.1+incompatible h1:P0KUpUw5w6WJXwrPfv35oc91i4d8nf40Nwln+M/+faA=
-github.com/bxcodec/faker v2.0.1+incompatible/go.mod h1:BNzfpVdTwnFJ6GtfYTcQu6l6rHShT+veBxNCnjCx5XM=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=
 github.com/cloudquery/faker/v3 v3.7.7/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
-github.com/cloudquery/plugin-sdk v0.12.10 h1:97n58G5mLE/Ek8WLKq/bjhD5JJPTotVonS105ie9MNY=
-github.com/cloudquery/plugin-sdk v0.12.10/go.mod h1:B2Z0lWNPeX7OSCVt/PP5fMZMUqVyZ2gpuNS3RfE9k0E=
+github.com/cloudquery/plugin-sdk v0.13.7 h1:xoGR83yq+OKs/ir+fcowlHOB9Gkow7P5+252hQGgVwk=
+github.com/cloudquery/plugin-sdk v0.13.7/go.mod h1:B2Z0lWNPeX7OSCVt/PP5fMZMUqVyZ2gpuNS3RfE9k0E=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

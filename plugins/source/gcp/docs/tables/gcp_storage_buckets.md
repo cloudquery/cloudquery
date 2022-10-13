@@ -11,10 +11,10 @@ The following tables depend on `gcp_storage_buckets`:
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id|UUID|
+|_cq_parent_id|UUID|
 |project_id|String|
 |name (PK)|String|
 |acl|JSON|

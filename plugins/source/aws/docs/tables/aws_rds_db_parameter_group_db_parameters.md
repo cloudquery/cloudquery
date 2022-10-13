@@ -10,10 +10,10 @@ This table depends on [`aws_rds_db_parameter_groups`](aws_rds_db_parameter_group
 ## Columns
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|UUID|
-|_cq_parent_id|UUID|
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
+|_cq_id (PK)|UUID|
+|_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |db_parameter_group_arn|String|

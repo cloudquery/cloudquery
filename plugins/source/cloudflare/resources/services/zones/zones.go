@@ -33,12 +33,12 @@ func Zones() *schema.Table {
 				Resolver: schema.PathResolver("Name"),
 			},
 			{
-				Name:     "dev_mode",
+				Name:     "development_mode",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("DevMode"),
 			},
 			{
-				Name:     "original_ns",
+				Name:     "original_name_servers",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("OriginalNS"),
 			},
@@ -48,7 +48,7 @@ func Zones() *schema.Table {
 				Resolver: schema.PathResolver("OriginalRegistrar"),
 			},
 			{
-				Name:     "original_dns_host",
+				Name:     "original_dnshost",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("OriginalDNSHost"),
 			},
@@ -108,7 +108,7 @@ func Zones() *schema.Table {
 				Resolver: schema.PathResolver("Host"),
 			},
 			{
-				Name:     "vanity_ns",
+				Name:     "vanity_name_servers",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("VanityNS"),
 			},
@@ -118,7 +118,7 @@ func Zones() *schema.Table {
 				Resolver: schema.PathResolver("Betas"),
 			},
 			{
-				Name:     "deact_reason",
+				Name:     "deactivation_reason",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DeactReason"),
 			},

@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/kms"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockKmsClient(ctrl)
 
 	keys := kms.ListKeysOutput{}
-	err := faker.FakeData(&keys)
+	err := faker.FakeObject(&keys)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,7 +23,7 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&keys, nil)
 
 	tags := kms.ListResourceTagsOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&tags, nil)
 
 	key := kms.DescribeKeyOutput{}
-	err = faker.FakeData(&key)
+	err = faker.FakeObject(&key)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -40,7 +40,7 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&key, nil)
 
 	rotation := kms.GetKeyRotationStatusOutput{}
-	err = faker.FakeData(&rotation)
+	err = faker.FakeObject(&rotation)
 	if err != nil {
 		t.Fatal(err)
 	}

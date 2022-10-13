@@ -9,9 +9,10 @@ import (
 
 func UsagePlanKeys() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_apigateway_usage_plan_keys",
-		Resolver:  fetchApigatewayUsagePlanKeys,
-		Multiplex: client.ServiceAccountRegionMultiplexer("apigateway"),
+		Name:        "aws_apigateway_usage_plan_keys",
+		Description: "https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlanKey.html",
+		Resolver:    fetchApigatewayUsagePlanKeys,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("apigateway"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
