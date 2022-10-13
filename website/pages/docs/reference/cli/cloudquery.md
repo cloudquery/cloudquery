@@ -17,15 +17,15 @@ Find more information at:
 ### Options
 
 ```
-      --color string           Enable colorized output (on, off, auto) (default "auto")
-      --data-dir string        set persistent data directory (env: CQ_DATA_DIR) (default "./.cq")
-  -h, --help                   help for cloudquery
-      --log-console            enable console logging
-      --log-file-name string   Log filename (default "cloudquery.log")
-      --log-format string      Logging format (json, text) (default "text")
-      --log-level string       Logging level (default "info")
-      --no-log-file            Disable logging to file
-      --no-telemetry           disable telemetry collection
+      --color string             Enable colorized output (on, off, auto) (default "auto")
+      --data-dir string          set persistent data directory (env: CQ_DATA_DIR) (default "./.cq")
+  -h, --help                     help for cloudquery
+      --log-console              enable console logging
+      --log-file-name string     Log filename (default "cloudquery.log")
+      --log-format string        Logging format (json, text) (default "text")
+      --log-level string         Logging level (default "info")
+      --no-log-file              Disable logging to file
+      --telemetry-level string   Telemetry level (none, errors, all) (default "all")
 ```
 
 ### SEE ALSO
