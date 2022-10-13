@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildWebhooks(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockCodePipelineClient(ctrl)
 
 	var webhook types.ListWebhookItem
-	if err := faker.FakeData(&webhook); err != nil {
+	if err := faker.FakeObject(&webhook); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().ListWebhooks(

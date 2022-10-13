@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		Cloudwatch: m,
 	}
 	a := types.MetricAlarm{}
-	err := faker.FakeData(&a)
+	err := faker.FakeObject(&a)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -28,7 +28,7 @@ func buildCloudWatchAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		}, nil)
 
 	tagResponse := cloudwatch.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tagResponse)
+	err = faker.FakeObject(&tagResponse)
 	if err != nil {
 		t.Fatal(err)
 	}

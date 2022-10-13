@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildApigatewayv2VpcLinks(t *testing.T, ctrl *gomock.Controller) client.Ser
 	m := mocks.NewMockApigatewayv2Client(ctrl)
 
 	v := types.VpcLink{}
-	err := faker.FakeData(&v)
+	err := faker.FakeObject(&v)
 	if err != nil {
 		t.Fatal(err)
 	}

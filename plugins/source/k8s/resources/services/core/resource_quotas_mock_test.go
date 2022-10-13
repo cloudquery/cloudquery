@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/mocks"
 	k8sTesting "github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/testing"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -15,11 +15,11 @@ import (
 func createCoreResourceQuotas(t *testing.T, ctrl *gomock.Controller) client.Services {
 	resourceQuotas := mocks.NewMockResourceQuotasClient(ctrl)
 	e := corev1.ResourceQuota{}
-	if err := faker.FakeDataSkipFields(&e, []string{"Spec", "Status"}); err != nil {
+	if err := faker.FakeObject(&e); err != nil {
 		t.Fatal(err)
 	}
 	ss := corev1.ScopeSelector{}
-	if err := faker.FakeData(&ss); err != nil {
+	if err := faker.FakeObject(&ss); err != nil {
 		t.Fatal(err)
 	}
 	rqsp := corev1.ResourceQuotaSpec{
