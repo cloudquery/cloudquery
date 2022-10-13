@@ -22,6 +22,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 	version := "vDev"
 
 	t.Helper()
+	t.Parallel()
 	table.IgnoreInTests = false
 
 	ctrl := gomock.NewController(t)

@@ -18,6 +18,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(t *te
 	version := "vDev"
 
 	t.Helper()
+	t.Parallel()
 
 	table.IgnoreInTests = false
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro}).Level(zerolog.DebugLevel).With().Timestamp().Logger()

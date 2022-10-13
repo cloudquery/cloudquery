@@ -19,6 +19,7 @@ func GithubMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 	version := "vDev"
 	table.IgnoreInTests = false
 	t.Helper()
+	t.Parallel()
 	ctrl := gomock.NewController(t)
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},

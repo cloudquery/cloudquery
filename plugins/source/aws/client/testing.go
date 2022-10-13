@@ -21,6 +21,7 @@ func AwsMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 
 	table.IgnoreInTests = false
 	t.Helper()
+	t.Parallel()
 	ctrl := gomock.NewController(t)
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},

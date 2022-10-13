@@ -20,6 +20,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*he
 	version := "vDev"
 
 	t.Helper()
+	t.Parallel()
 
 	table.IgnoreInTests = false
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(

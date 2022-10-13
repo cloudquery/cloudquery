@@ -20,6 +20,7 @@ type TestOptions struct {
 func MockTestHelper(t *testing.T, table *schema.Table, createService func() (*Services, error), options TestOptions) {
 	version := "vDev"
 	t.Helper()
+	t.Parallel()
 
 	table.IgnoreInTests = false
 

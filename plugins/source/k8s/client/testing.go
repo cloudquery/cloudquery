@@ -22,6 +22,7 @@ func K8sMockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.
 	version := "vDev"
 
 	t.Helper()
+	t.Parallel()
 
 	table.IgnoreInTests = false
 
