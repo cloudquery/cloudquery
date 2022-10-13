@@ -4,8 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudquery/cq-gen v0.0.12
-	github.com/cloudquery/faker/v3 v3.7.7
-	github.com/cloudquery/plugin-sdk v0.13.5
+	github.com/cloudquery/plugin-sdk v0.13.6
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.5.9
 	github.com/googleapis/gax-go/v2 v2.4.0
@@ -26,6 +25,7 @@ require (
 	github.com/apparentlymart/go-textseg/v13 v13.0.0 // indirect
 	github.com/cenkalti/backoff v2.2.1+incompatible // indirect
 	github.com/cloudquery/cq-provider-sdk v0.14.7 // indirect
+	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/creasty/defaults v1.6.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect

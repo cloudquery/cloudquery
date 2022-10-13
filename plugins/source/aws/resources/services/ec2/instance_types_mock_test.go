@@ -8,14 +8,14 @@ import (
 	"github.com/aws/smithy-go/middleware"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
 func buildEc2InstanceTypes(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	info := types.InstanceTypeInfo{}
-	err := faker.FakeData(&info)
+	err := faker.FakeObject(&info)
 	if err != nil {
 		t.Fatal(err)
 	}

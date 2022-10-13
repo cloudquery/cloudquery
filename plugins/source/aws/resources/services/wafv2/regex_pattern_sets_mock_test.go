@@ -8,7 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildRegexPatternSetsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
 		var s types.RegexPatternSet
-		if err := faker.FakeData(&s); err != nil {
+		if err := faker.FakeObject(&s); err != nil {
 			t.Fatal(err)
 		}
 		m.EXPECT().ListRegexPatternSets(

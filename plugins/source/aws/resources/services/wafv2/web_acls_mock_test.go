@@ -1,7 +1,6 @@
 package wafv2
 
 import (
-	"math/rand"
 	"testing"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -11,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/wafv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -20,82 +19,30 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	cfm := mocks.NewMockCloudfrontClient(ctrl)
 
 	tempWebACLSum := types.WebACLSummary{}
-	if err := faker.FakeData(&tempWebACLSum); err != nil {
-		t.Fatal(err)
-	}
-	// Faker can't handle recursive nested structs so we have to build some
-	// parts from scratch.
-	defaultAction := types.DefaultAction{}
-	if err := faker.FakeData(&defaultAction); err != nil {
-		t.Fatal(err)
-	}
-	visibilityConfig := types.VisibilityConfig{}
-	if err := faker.FakeData(&visibilityConfig); err != nil {
-		t.Fatal(err)
-	}
-	customRespBody := map[string]types.CustomResponseBody{}
-	if err := faker.FakeData(&customRespBody); err != nil {
-		t.Fatal(err)
-	}
-	overrideAction := types.OverrideAction{}
-	if err := faker.FakeData(&overrideAction); err != nil {
-		t.Fatal(err)
-	}
-	processRuleGroups := types.FirewallManagerRuleGroup{
-		FirewallManagerStatement: &types.FirewallManagerStatement{},
-		Name:                     aws.String(faker.Word()),
-		OverrideAction:           &overrideAction,
-		Priority:                 rand.Int31(),
-		VisibilityConfig:         &visibilityConfig,
-	}
-	action := types.RuleAction{}
-	if err := faker.FakeData(&action); err != nil {
-		t.Fatal(err)
-	}
-	labels := make([]types.Label, 0)
-	if err := faker.FakeData(&labels); err != nil {
+	if err := faker.FakeObject(&tempWebACLSum); err != nil {
 		t.Fatal(err)
 	}
 	var tempResourceArns []string
-	if err := faker.FakeData(&tempResourceArns); err != nil {
+	if err := faker.FakeObject(&tempResourceArns); err != nil {
 		t.Fatal(err)
 	}
 	var tempTags []types.Tag
-	if err := faker.FakeData(&tempTags); err != nil {
+	if err := faker.FakeObject(&tempTags); err != nil {
 		t.Fatal(err)
 	}
 	var loggingConfiguration types.LoggingConfiguration
-	if err := faker.FakeData(&loggingConfiguration); err != nil {
+	if err := faker.FakeObject(&loggingConfiguration); err != nil {
 		t.Fatal(err)
 	}
-	rule := types.Rule{
-		Name:             aws.String(faker.Name()),
-		Priority:         rand.Int31(),
-		Statement:        &types.Statement{AndStatement: &types.AndStatement{}},
-		VisibilityConfig: &visibilityConfig,
-		Action:           &action,
-		OverrideAction:   &overrideAction,
-		RuleLabels:       labels,
+	rule := types.Rule{}
+	if err := faker.FakeObject(&rule); err != nil {
+		t.Fatal(err)
 	}
+
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
-		immunityTime := int64(300)
-		tempWebACL := types.WebACL{
-			ARN:                                  aws.String(faker.UUIDHyphenated()),
-			DefaultAction:                        &defaultAction,
-			Id:                                   aws.String(faker.UUIDDigit()),
-			Name:                                 aws.String(faker.Word()),
-			VisibilityConfig:                     &visibilityConfig,
-			Capacity:                             rand.Int63(),
-			CustomResponseBodies:                 customRespBody,
-			Description:                          aws.String(faker.Word()),
-			LabelNamespace:                       aws.String(faker.Word()),
-			ManagedByFirewallManager:             true,
-			PostProcessFirewallManagerRuleGroups: []types.FirewallManagerRuleGroup{processRuleGroups},
-			PreProcessFirewallManagerRuleGroups:  []types.FirewallManagerRuleGroup{processRuleGroups},
-			Rules:                                []types.Rule{rule},
-			CaptchaConfig: &types.CaptchaConfig{ImmunityTimeProperty: &types.ImmunityTimeProperty{
-				ImmunityTime: &immunityTime,
-			}},
+		tempWebACL := types.WebACL{}
+		if err := faker.FakeObject(&tempWebACL); err != nil {
+			t.Fatal(err)
 		}
 		m.EXPECT().ListWebACLs(gomock.Any(), &wafv2.ListWebACLsInput{
 			Scope: scope,
@@ -122,7 +69,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	}, nil)
 
 	distributionList := cftypes.DistributionList{}
-	if err := faker.FakeData(&distributionList); err != nil {
+	if err := faker.FakeObject(&distributionList); err != nil {
 		t.Fatal(err)
 	}
 	distributionList.NextMarker = nil

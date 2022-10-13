@@ -9,7 +9,7 @@ import (
 	gdTypes "github.com/aws/aws-sdk-go-v2/service/guardduty/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -17,7 +17,7 @@ func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m := mocks.NewMockGuardDutyClient(ctrl)
 
 	var d guardduty.GetDetectorOutput
-	if err := faker.FakeData(&d); err != nil {
+	if err := faker.FakeObject(&d); err != nil {
 		t.Fatal(err)
 	}
 	d.CreatedAt = aws.String(time.Now().Format(time.RFC3339))
@@ -31,7 +31,7 @@ func buildGuardDutyDetectors(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m.EXPECT().GetDetector(gomock.Any(), gomock.Any(), gomock.Any()).Return(&d, nil)
 
 	var member gdTypes.Member
-	if err := faker.FakeData(&member); err != nil {
+	if err := faker.FakeObject(&member); err != nil {
 		t.Fatal(err)
 	}
 	member.UpdatedAt = aws.String(time.Now().Format(time.RFC3339))
