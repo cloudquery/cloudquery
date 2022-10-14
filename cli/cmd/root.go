@@ -118,9 +118,4 @@ func initViper() {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
-	viper.SetConfigName("cloudquery") // name of config file (without extension)
-	viper.SetConfigType("yaml")       // REQUIRED if the config file does not have the extension in the name
-	viper.AddConfigPath("/etc/cq/")   // path to look for the config file in
-	viper.AddConfigPath("$HOME/.cq")  // call multiple times to add many search paths
-	viper.AddConfigPath(".")
 }
