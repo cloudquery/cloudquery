@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/scripts/v1-migration
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.7
+	github.com/cloudquery/plugin-sdk v0.13.8
 	github.com/gertd/go-pluralize v0.2.1
 )
 
