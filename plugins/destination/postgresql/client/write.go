@@ -36,9 +36,15 @@ func insert(table string, data map[string]interface{}) (string, []interface{}) {
 
 	columns := make([]string, 0, len(data))
 	values := make([]interface{}, 0, len(data))
-	for c, v := range data {
-		columns = append(columns, pgx.Identifier{c}.Sanitize())
-		values = append(values, v)
+
+	keys := make([]string, 0, len(data))
+	for k := range data {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		columns = append(columns, pgx.Identifier{key}.Sanitize())
+		values = append(values, data[key])
 	}
 	sb.WriteString("insert into ")
 	sb.WriteString(table)
@@ -69,9 +75,16 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 
 	columns := make([]string, 0, len(data))
 	values := make([]interface{}, 0, len(data))
-	for c, v := range data {
-		columns = append(columns, pgx.Identifier{c}.Sanitize())
-		values = append(values, v)
+
+	// Columns need to be in the same order so that the query can be cached
+	keys := make([]string, 0, len(data))
+	for k := range data {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		columns = append(columns, pgx.Identifier{key}.Sanitize())
+		values = append(values, data[key])
 	}
 
 	sb.WriteString("insert into ")
