@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.6...plugins-source-gcp-v2.0.0) (2022-10-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* Rollback: Remove the 'functions.Timeout' column (#2845)
+
+### Bug Fixes
+
+* Rollback: Remove the 'functions.Timeout' column ([#2845](https://github.com/cloudquery/cloudquery/issues/2845)) ([3fc8bce](https://github.com/cloudquery/cloudquery/commit/3fc8bce29fd55f5f1687add265624396a03055d4))
+
 ## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.5...plugins-source-gcp-v1.0.6) (2022-10-13)
 
 
