@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -42,6 +43,7 @@ func insert(table string, data map[string]interface{}) (string, []interface{}) {
 	sb.WriteString("insert into ")
 	sb.WriteString(table)
 	sb.WriteString(" (")
+	sort.Strings(columns)
 	for i, c := range columns {
 		sb.WriteString(c)
 		// sb.WriteString("::" + SchemaTypeToPg())
@@ -75,6 +77,7 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 	sb.WriteString("insert into ")
 	sb.WriteString(table)
 	sb.WriteString(" (")
+	sort.Strings(columns)
 	for i, c := range columns {
 		sb.WriteString(c)
 		// sb.WriteString("::" + SchemaTypeToPg())
