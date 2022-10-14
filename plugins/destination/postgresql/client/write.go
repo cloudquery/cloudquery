@@ -37,6 +37,8 @@ func insert(table string, data map[string]interface{}) (string, []interface{}) {
 	columns := make([]string, 0, len(data))
 	values := make([]interface{}, 0, len(data))
 
+	// Sort the columns prior to adding data to columns and values arrays
+	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
 	keys := make([]string, 0, len(data))
 	for k := range data {
 		keys = append(keys, k)
@@ -75,8 +77,8 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 
 	columns := make([]string, 0, len(data))
 	values := make([]interface{}, 0, len(data))
-
-	// Columns need to be in the same order so that the query can be cached
+	// Sort the columns prior to adding data to columns and values arrays
+	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
 	keys := make([]string, 0, len(data))
 	for k := range data {
 		keys = append(keys, k)
