@@ -86,9 +86,8 @@ github.com/cloudquery/cq-gen v0.0.12/go.mod h1:qZBvNPx/X4yVQVCOe1TnIi7eJkiF+96xc
 github.com/cloudquery/cq-provider-sdk v0.14.7 h1:95yw0qc1IebxRAJyGdJjNM8gXJOHjMZuItbMvorZGpE=
 github.com/cloudquery/cq-provider-sdk v0.14.7/go.mod h1:fJNnqlYU+yKV7uH5luznZr6IA4XLllauGau1uRAsqmE=
 github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=
-github.com/cloudquery/faker/v3 v3.7.7/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
-github.com/cloudquery/plugin-sdk v0.13.7 h1:xoGR83yq+OKs/ir+fcowlHOB9Gkow7P5+252hQGgVwk=
-github.com/cloudquery/plugin-sdk v0.13.7/go.mod h1:B2Z0lWNPeX7OSCVt/PP5fMZMUqVyZ2gpuNS3RfE9k0E=
+github.com/cloudquery/plugin-sdk v0.13.8 h1:wvkvAvJXvF44iQr1LC57MmHxVuzdE9+c5G1Y2FKDUT8=
+github.com/cloudquery/plugin-sdk v0.13.8/go.mod h1:8mt4PDjek0NkldnWFnM/i0zpfyUYVcRy/imEN1L/Cxs=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20200629203442-efcf912fb354/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
 github.com/cncf/udpa/go v0.0.0-20201120205902-5459f2c99403/go.mod h1:WmhPx2Nbnhtbo57+VJT5O0JRkEi1Wbu0z5j0R8u5Hbk=
