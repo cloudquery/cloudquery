@@ -11,7 +11,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [AWS][aws] | v2.5.2         | [Changelog][AWS-Changelog]          | GA |
 | [Azure][azure] | v1.0.3         | [Changelog][Azure-Changelog]        | GA |    
 | [GCP][gcp] | v2.0.0         | [Changelog][GCP-Changelog]          | GA |
-| [DigitalOcean][digitalocean] | v2.0.2         | [Changelog][DigitalOcean-Changelog] | GA |
+| [DigitalOcean][digitalocean] | v2.0.3         | [Changelog][DigitalOcean-Changelog] | GA |
 | [GitHub][github]      | v1.0.2         | [Changelog][GitHub-Changelog]       | GA |
 | [Heroku][heroku] | v2.0.2         | [Changelog][Heroku-Changelog]       | Preview |
 | [k8s][k8s] | v1.2.2         | [Changelog][k8s-Changelog]          | Preview |
