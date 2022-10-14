@@ -1,14 +1,11 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
-	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
@@ -22,27 +19,20 @@ Open source data integration that works.
 
 Find more information at:
 	https://cloudquery.io`
-	telemetryLevels = []string{"none", "errors", "all"}
 
 	analyticsClient *AnalyticsClient
 )
 
-func strInArray(str string, arr []string) bool {
-	for _, s := range arr {
-		if s == str {
-			return true
-		}
-	}
-	return false
-}
-
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
+	telemetryLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
 	sentryDsn := sentryDsnDefault
+
+	telemetryLevel.Set(getEnvOrDefault("CQ_TELEMETRY_LEVEL", telemetryLevel.Value))
 
 	var logFile *os.File
 	cmd := &cobra.Command{
@@ -59,18 +49,14 @@ func NewCmdRoot() *cobra.Command {
 				return err
 			}
 
-			telemetryLevel := viper.GetString("telemetry-level")
-			if !strInArray(telemetryLevel, telemetryLevels) {
-				return fmt.Errorf("invalid telemetry level %s. must be one of %v", telemetryLevel, telemetryLevels)
-			}
-			if telemetryLevel == "all" {
+			if telemetryLevel.String() == "all" {
 				analyticsClient, err = initAnalytics()
 				if err != nil {
 					log.Warn().Err(err).Msg("failed to initialize analytics client")
 				}
 			}
 
-			if sentryDsn != "" && Version != "development" && telemetryLevel != "none" {
+			if sentryDsn != "" && Version != "development" && telemetryLevel.String() != "none" {
 				if err := initSentry(sentryDsn, Version); err != nil {
 					// we don't fail on sentry init errors as there might be no connection or sentry can be blocked.
 					log.Warn().Err(err).Msg("failed to initialize sentry")
@@ -99,23 +85,11 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemtry (analytics) flags
-	cmd.PersistentFlags().String("telemetry-level", "all", "Telemetry level (none, errors, all)")
-	// we dont need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
-	// the only exception is the telemetry as people might want to put in a bash starter script
-	if err := viper.BindPFlag("telemetry-level", cmd.PersistentFlags().Lookup("telemetry-level")); err != nil {
-		panic(err)
-	}
+	cmd.PersistentFlags().Var(telemetryLevel, "telemetry-level", "Telemetry level (none, errors, all)")
 
-	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	return cmd
-}
-
-func initViper() {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix("CQ")
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 }
