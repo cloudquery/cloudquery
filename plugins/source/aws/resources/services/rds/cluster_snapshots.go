@@ -137,11 +137,6 @@ func ClusterSnapshots() *schema.Table {
 				Resolver: schema.PathResolver("StorageEncrypted"),
 			},
 			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
-			},
-			{
 				Name:     "vpc_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VpcId"),
