@@ -138,19 +138,11 @@ func NewCmdRoot() *cobra.Command {
 
 	// Telemtry (analytics) flags
 	cmd.PersistentFlags().BoolVar(&noTelemetry, "no-telemetry", false, "disable telemetry collection (env: CQ_NO_TELEMETRY)")
-	cmd.PersistentFlags().Bool("telemetry-inspect", false, "enable telemetry inspection")
-	cmd.PersistentFlags().Bool("telemetry-debug", false, "enable telemetry debug logging")
 
 	// Sentry (error reporting) flags
 	cmd.PersistentFlags().StringVar(&sentryDsn, "sentry-dsn", sentryDsnDefault, "sentry DSN")
+	cmd.PersistentFlags().MarkHidden("sentry-dsn")
 
-	hiddenFlags := []string{"telemetry-inspect", "telemetry-debug", "sentry-dsn"}
-	for _, f := range hiddenFlags {
-		err := cmd.PersistentFlags().MarkHidden(f)
-		if err != nil {
-			panic(err)
-		}
-	}
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
 	cmd.CompletionOptions.HiddenDefaultCmd = true
