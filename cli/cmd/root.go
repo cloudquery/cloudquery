@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/getsentry/sentry-go"
@@ -43,6 +44,10 @@ func NewCmdRoot() *cobra.Command {
 		Long:    rootLong,
 		Version: Version,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			zerolog.TimestampFunc = func() time.Time {
+				return time.Now().UTC()
+			}
+
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
@@ -58,7 +63,11 @@ func NewCmdRoot() *cobra.Command {
 				}
 				if logFormat.String() == "text" {
 					// for file logging we dont need color. we can add it as an option but don't think it is useful
-					writers = append(writers, zerolog.ConsoleWriter{Out: logFile, NoColor: true})
+					writers = append(writers, zerolog.ConsoleWriter{
+						Out:             logFile,
+						NoColor:         true,
+						FormatTimestamp: formatTimestampUtcRfc3339,
+					})
 				} else {
 					writers = append(writers, logFile)
 				}
@@ -68,7 +77,11 @@ func NewCmdRoot() *cobra.Command {
 					return fmt.Errorf("failed to close stdout: %w", err)
 				}
 				if logFormat.String() == "text" {
-					writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: noColor})
+					writers = append(writers, zerolog.ConsoleWriter{
+						Out:             os.Stderr,
+						NoColor:         noColor,
+						FormatTimestamp: formatTimestampUtcRfc3339,
+					})
 				} else {
 					writers = append(writers, os.Stderr)
 				}
@@ -149,4 +162,14 @@ func initViper() {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+}
+
+// formats a timestamp in UTC and RFC3339
+func formatTimestampUtcRfc3339(timestamp interface{}) string {
+	timestampConcrete, ok := timestamp.(time.Time)
+	if !ok {
+		return fmt.Sprintf("%v", timestamp)
+	}
+
+	return timestampConcrete.UTC().Format(time.RFC3339)
 }
