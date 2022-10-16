@@ -15,10 +15,10 @@ The primary key for this table is **arn**.
 |account_id|String|
 |region|String|
 |arn (PK)|String|
+|tags|JSON|
 |associations|JSON|
 |entries|JSON|
 |is_default|Bool|
 |network_acl_id|String|
 |owner_id|String|
-|tags|JSON|
 |vpc_id|String|
