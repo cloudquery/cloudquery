@@ -17,7 +17,6 @@ Find more information at:
 ### Options
 
 ```
-      --color string           Enable colorized output (on, off, auto) (default "auto")
       --data-dir string        set persistent data directory (env: CQ_DATA_DIR) (default "./.cq")
   -h, --help                   help for cloudquery
       --log-console            enable console logging
