@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.5](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.4...cli-v1.1.5) (2022-10-16)
+
+
+### Bug Fixes
+
+* **cli:** Deprecate color flag ([#2812](https://github.com/cloudquery/cloudquery/issues/2812)) ([9565195](https://github.com/cloudquery/cloudquery/commit/95651957931271a002a2ca5cc343842b9773aab6))
+
 ## [1.1.4](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.3...cli-v1.1.4) (2022-10-16)
 
 
