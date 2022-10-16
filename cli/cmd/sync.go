@@ -36,23 +36,8 @@ func NewCmdSync() *cobra.Command {
 	return cmd
 }
 
-func getCQDir(cmd *cobra.Command) (string, error) {
-	// backwards compatibility
-	cqDir, err := cmd.Flags().GetString("data-dir") // old flag
-	if err != nil {
-		return "", err
-	}
-	if cqDir == "" {
-		cqDir, err = cmd.Flags().GetString("cq-dir") // new flag
-		if err != nil {
-			return "", err
-		}
-	}
-	return cqDir, nil
-}
-
 func sync(cmd *cobra.Command, args []string) error {
-	cqDir, err := getCQDir(cmd)
+	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err
 	}
