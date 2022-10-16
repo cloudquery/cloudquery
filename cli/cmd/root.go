@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
@@ -12,7 +11,6 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
@@ -35,6 +33,7 @@ func NewCmdRoot() *cobra.Command {
 	noLogFile := false
 	logFileName := "cloudquery.log"
 	sentryDsn := sentryDsnDefault
+	noTelemetry := false
 
 	var logFile *os.File
 	cmd := &cobra.Command{
@@ -88,7 +87,10 @@ func NewCmdRoot() *cobra.Command {
 
 			mw := io.MultiWriter(writers...)
 			log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
-			if sentryDsn != "" && Version != "development" {
+
+			noTelemetry = getEnvOrDefault("CQ_NO_TELEMETRY", "false") == "true" || noTelemetry
+			sentryEnabled := sentryDsn != "" && Version != "development" && !noTelemetry
+			if sentryEnabled {
 				if err := sentry.Init(sentry.ClientOptions{
 					Debug:     false,
 					Dsn:       sentryDsn,
@@ -135,12 +137,7 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemtry (analytics) flags
-	cmd.PersistentFlags().Bool("no-telemetry", false, "disable telemetry collection")
-	// we dont need viper support for most flags as all can be used via command line for now (we can add in the future if really necessary)
-	// the only exception is the telemetry as people might want to put in a bash starter script
-	if err := viper.BindPFlag("no-telemetry", cmd.PersistentFlags().Lookup("no-telemetry")); err != nil {
-		panic(err)
-	}
+	cmd.PersistentFlags().BoolVar(&noTelemetry, "no-telemetry", false, "disable telemetry collection (env: CQ_NO_TELEMETRY)")
 	cmd.PersistentFlags().Bool("telemetry-inspect", false, "enable telemetry inspection")
 	cmd.PersistentFlags().Bool("telemetry-debug", false, "enable telemetry debug logging")
 
@@ -154,18 +151,11 @@ func NewCmdRoot() *cobra.Command {
 			panic(err)
 		}
 	}
-	initViper()
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	return cmd
-}
-
-func initViper() {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix("CQ")
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 }
 
 // formats a timestamp in UTC and RFC3339

@@ -38,7 +38,7 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
       --log-format string      Logging format (json, text) (default "text")
       --log-level string       Logging level (default "info")
       --no-log-file            Disable logging to file
-      --no-telemetry           disable telemetry collection
+      --no-telemetry           disable telemetry collection (env: CQ_NO_TELEMETRY)
 ```
 
 ### SEE ALSO
