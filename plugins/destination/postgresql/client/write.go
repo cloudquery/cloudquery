@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -35,13 +36,22 @@ func insert(table string, data map[string]interface{}) (string, []interface{}) {
 
 	columns := make([]string, 0, len(data))
 	values := make([]interface{}, 0, len(data))
-	for c, v := range data {
-		columns = append(columns, pgx.Identifier{c}.Sanitize())
-		values = append(values, v)
+
+	// Sort the columns prior to adding data to columns and values arrays
+	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
+	keys := make([]string, 0, len(data))
+	for k := range data {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		columns = append(columns, pgx.Identifier{key}.Sanitize())
+		values = append(values, data[key])
 	}
 	sb.WriteString("insert into ")
 	sb.WriteString(table)
 	sb.WriteString(" (")
+	sort.Strings(columns)
 	for i, c := range columns {
 		sb.WriteString(c)
 		// sb.WriteString("::" + SchemaTypeToPg())
@@ -67,14 +77,22 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 
 	columns := make([]string, 0, len(data))
 	values := make([]interface{}, 0, len(data))
-	for c, v := range data {
-		columns = append(columns, pgx.Identifier{c}.Sanitize())
-		values = append(values, v)
+	// Sort the columns prior to adding data to columns and values arrays
+	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
+	keys := make([]string, 0, len(data))
+	for k := range data {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, key := range keys {
+		columns = append(columns, pgx.Identifier{key}.Sanitize())
+		values = append(values, data[key])
 	}
 
 	sb.WriteString("insert into ")
 	sb.WriteString(table)
 	sb.WriteString(" (")
+	sort.Strings(columns)
 	for i, c := range columns {
 		sb.WriteString(c)
 		// sb.WriteString("::" + SchemaTypeToPg())
