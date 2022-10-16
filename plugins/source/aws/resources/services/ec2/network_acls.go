@@ -33,6 +33,11 @@ func NetworkAcls() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: client.ResolveTags,
+			},
+			{
 				Name:     "associations",
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Associations"),
@@ -56,11 +61,6 @@ func NetworkAcls() *schema.Table {
 				Name:     "owner_id",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("OwnerId"),
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Tags"),
 			},
 			{
 				Name:     "vpc_id",
