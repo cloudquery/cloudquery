@@ -141,7 +141,10 @@ func NewCmdRoot() *cobra.Command {
 
 	// Sentry (error reporting) flags
 	cmd.PersistentFlags().StringVar(&sentryDsn, "sentry-dsn", sentryDsnDefault, "sentry DSN")
-	cmd.PersistentFlags().MarkHidden("sentry-dsn")
+	err = cmd.PersistentFlags().MarkHidden("sentry-dsn")
+	if err != nil {
+		panic(err)
+	}
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
