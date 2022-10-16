@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.2...plugins-destination-postgresql-v1.3.3) (2022-10-16)
+
+
+### Bug Fixes
+
+* Improve PG Write Speeds ([#2887](https://github.com/cloudquery/cloudquery/issues/2887)) ([80cfed7](https://github.com/cloudquery/cloudquery/commit/80cfed7a7b0d005bd16a682b48cc00b380c41df0))
+
 ## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.1...plugins-destination-postgresql-v1.3.2) (2022-10-14)
 
 
