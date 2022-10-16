@@ -5,6 +5,52 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.4...cli-v2.0.0) (2022-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* Official v1 release (#2321)
+
+### Features
+
+* Warn on usage with plugins with SDK < v0.13 ([#2696](https://github.com/cloudquery/cloudquery/issues/2696)) ([a96e1ec](https://github.com/cloudquery/cloudquery/commit/a96e1ec483a4d223541a665874fbffae8bf262a2))
+
+
+### Bug Fixes
+
+* Add back missing plugin logs ([#2389](https://github.com/cloudquery/cloudquery/issues/2389)) ([f3335a8](https://github.com/cloudquery/cloudquery/commit/f3335a8a1f71fb519628bc3721b8299ff133b824))
+* **cli:** Close stdout when using --log-console ([#2459](https://github.com/cloudquery/cloudquery/issues/2459)) ([264c493](https://github.com/cloudquery/cloudquery/commit/264c493653e00c1c2a5b6e0fc886e4f94b80e5f0))
+* **cli:** Dont truncate log (append only) ([#2384](https://github.com/cloudquery/cloudquery/issues/2384)) ([b0c1536](https://github.com/cloudquery/cloudquery/commit/b0c15367b80833ada353141707acdc5e9f8a2a49))
+* **deps:** Update plugin-sdk for aws to v0.13.5 ([#2660](https://github.com/cloudquery/cloudquery/issues/2660)) ([748a0b3](https://github.com/cloudquery/cloudquery/commit/748a0b3f2cd8429696b38daa386bd0ca32fc3fdf))
+* **deps:** Update plugin-sdk for azure to v0.13.5 ([#2591](https://github.com/cloudquery/cloudquery/issues/2591)) ([c36f60a](https://github.com/cloudquery/cloudquery/commit/c36f60a36fc20823f471ced3ba1726d778bfcda2))
+* **deps:** Update plugin-sdk for cli to v0.12.10 ([#2546](https://github.com/cloudquery/cloudquery/issues/2546)) ([0b03fb7](https://github.com/cloudquery/cloudquery/commit/0b03fb7304a82f02e9689c2be978f9bc8af8644c))
+* **deps:** Update plugin-sdk for cli to v0.12.3 ([#2354](https://github.com/cloudquery/cloudquery/issues/2354)) ([64af793](https://github.com/cloudquery/cloudquery/commit/64af7935e0e973ac361aec9e0956eeece7d32978))
+* **deps:** Update plugin-sdk for cli to v0.12.4 ([#2396](https://github.com/cloudquery/cloudquery/issues/2396)) ([519708f](https://github.com/cloudquery/cloudquery/commit/519708f5964dfb405fbe401b230060d424e5ef4a))
+* **deps:** Update plugin-sdk for cli to v0.12.5 ([#2418](https://github.com/cloudquery/cloudquery/issues/2418)) ([3d94132](https://github.com/cloudquery/cloudquery/commit/3d941325de7b94878f09e5435f92e89e6a266ab1))
+* **deps:** Update plugin-sdk for cli to v0.12.6 ([#2434](https://github.com/cloudquery/cloudquery/issues/2434)) ([112c015](https://github.com/cloudquery/cloudquery/commit/112c0159063e5ba80e870972528ee4e9ebcd9016))
+* **deps:** Update plugin-sdk for cli to v0.12.7 ([#2447](https://github.com/cloudquery/cloudquery/issues/2447)) ([7579eed](https://github.com/cloudquery/cloudquery/commit/7579eed5ca78ce51aa61405763817779cc27a813))
+* **deps:** Update plugin-sdk for cli to v0.12.8 ([#2497](https://github.com/cloudquery/cloudquery/issues/2497)) ([33c0c46](https://github.com/cloudquery/cloudquery/commit/33c0c46941eba43a1fd6019402f2081d3769a84b))
+* **deps:** Update plugin-sdk for cli to v0.12.9 ([#2511](https://github.com/cloudquery/cloudquery/issues/2511)) ([6787155](https://github.com/cloudquery/cloudquery/commit/678715514c2a7b4da5549ac0c95d647fd5f25748))
+* **deps:** Update plugin-sdk for cli to v0.13.5 ([#2592](https://github.com/cloudquery/cloudquery/issues/2592)) ([b45b73b](https://github.com/cloudquery/cloudquery/commit/b45b73b306a8504904124c9b02ee511fa7d64c1f))
+* **deps:** Update plugin-sdk for cli to v0.13.6 ([#2719](https://github.com/cloudquery/cloudquery/issues/2719)) ([dc10caa](https://github.com/cloudquery/cloudquery/commit/dc10caadc188ab9429994331420bc5dae27b2400))
+* **deps:** Update plugin-sdk for cli to v0.13.7 ([#2780](https://github.com/cloudquery/cloudquery/issues/2780)) ([06fd929](https://github.com/cloudquery/cloudquery/commit/06fd92962a00f4cd67fe6fd7d8a6e868f9cc1bd7))
+* **deps:** Update plugin-sdk for cli to v0.13.8 ([#2850](https://github.com/cloudquery/cloudquery/issues/2850)) ([1a79e1c](https://github.com/cloudquery/cloudquery/commit/1a79e1c2d8ebf8c73afc200696748704088962c4))
+* **deps:** Update plugin-sdk for cloudflare to v0.13.5 ([#2593](https://github.com/cloudquery/cloudquery/issues/2593)) ([ed96887](https://github.com/cloudquery/cloudquery/commit/ed968873a7310daca0dff9fafc94394cca9801e4))
+* **deps:** Update plugin-sdk for digitalocean to v0.13.5 ([#2594](https://github.com/cloudquery/cloudquery/issues/2594)) ([5570015](https://github.com/cloudquery/cloudquery/commit/55700155cf1afdbe7e2dd8cc9ae5477a992c1306))
+* **deps:** Update plugin-sdk for gcp to v0.13.5 ([#2595](https://github.com/cloudquery/cloudquery/issues/2595)) ([ec17c48](https://github.com/cloudquery/cloudquery/commit/ec17c48959bcdab3d1aed763beee1d0bf37a589e))
+* Flush destination plugins when sync finish ([#2651](https://github.com/cloudquery/cloudquery/issues/2651)) ([117e791](https://github.com/cloudquery/cloudquery/commit/117e7912bd12ea7a03ca3e69cba147283df17612))
+* Log timestamps in UTC and RFC3339 ([#2839](https://github.com/cloudquery/cloudquery/issues/2839)) ([44fe6ba](https://github.com/cloudquery/cloudquery/commit/44fe6ba0ab627e18f31290a81c1951ba70f47c6e))
+* Remove unnecessary error wrapping ([#2415](https://github.com/cloudquery/cloudquery/issues/2415)) ([7296633](https://github.com/cloudquery/cloudquery/commit/72966336a3862b71ade658fce84c577830c4b2b9))
+* Show sync time ([#2493](https://github.com/cloudquery/cloudquery/issues/2493)) ([014e8aa](https://github.com/cloudquery/cloudquery/commit/014e8aadcc436f3d556dd9e274a67242ec543a62))
+* SourceName ([#2522](https://github.com/cloudquery/cloudquery/issues/2522)) ([0b7db32](https://github.com/cloudquery/cloudquery/commit/0b7db3275e66dcf376d9efd0f8b54c2b1be17671))
+* Use [files and directories] in sync command description ([#2652](https://github.com/cloudquery/cloudquery/issues/2652)) ([8b7caed](https://github.com/cloudquery/cloudquery/commit/8b7caedb6f51c0b009f19ffb9a66f94486793a71))
+
+
+### Miscellaneous Chores
+
+* Official v1 release ([#2321](https://github.com/cloudquery/cloudquery/issues/2321)) ([ad3397c](https://github.com/cloudquery/cloudquery/commit/ad3397c182ddad42a0e050a63087de0fd9561dbb))
+
 ## [1.1.4](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.3...cli-v1.1.4) (2022-10-16)
 
 
