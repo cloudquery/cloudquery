@@ -1,5 +1,5 @@
 {
-  "cli": "1.1.4",
+  "cli": "1.1.5",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "3.0.0",
   "plugins/source/aws+FILLER": "0.0.0",
