@@ -17,7 +17,7 @@ Find more information at:
 ### Options
 
 ```
-      --data-dir string        set persistent data directory (env: CQ_DATA_DIR) (default ".cq")
+      --cq-dir string          directory to store cloudquery files, such as downloaded plugins (default ".cq")
   -h, --help                   help for cloudquery
       --log-console            enable console logging
       --log-file-name string   Log filename (default "cloudquery.log")

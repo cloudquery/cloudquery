@@ -36,8 +36,23 @@ func NewCmdSync() *cobra.Command {
 	return cmd
 }
 
+func getCQDir(cmd *cobra.Command) (string, error) {
+	// backwards compatibility
+	cqDir, err := cmd.Flags().GetString("data-dir") // old flag
+	if err != nil {
+		return "", err
+	}
+	if cqDir == "" {
+		cqDir, err = cmd.Flags().GetString("cq-dir") // new flag
+		if err != nil {
+			return "", err
+		}
+	}
+	return cqDir, nil
+}
+
 func sync(cmd *cobra.Command, args []string) error {
-	dataDir, err := cmd.Flags().GetString("data-dir")
+	cqDir, err := getCQDir(cmd)
 	if err != nil {
 		return err
 	}
@@ -62,7 +77,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, dataDir, *sourceSpec, destinationsSpecs); err != nil {
+		if err := syncConnection(ctx, cqDir, *sourceSpec, destinationsSpecs); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 	}
@@ -70,7 +85,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func syncConnection(ctx context.Context, dataDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
+func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
@@ -82,7 +97,7 @@ func syncConnection(ctx context.Context, dataDir string, sourceSpec specs.Source
 
 	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
 		clients.WithSourceLogger(log.Logger),
-		clients.WithSourceDirectory(dataDir),
+		clients.WithSourceDirectory(cqDir),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
@@ -112,7 +127,7 @@ func syncConnection(ctx context.Context, dataDir string, sourceSpec specs.Source
 	for i, destinationSpec := range destinationsSpecs {
 		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version,
 			clients.WithDestinationLogger(log.Logger),
-			clients.WithDestinationDirectory(dataDir),
+			clients.WithDestinationDirectory(cqDir),
 		)
 		if err != nil {
 			return fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)

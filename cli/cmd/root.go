@@ -119,10 +119,15 @@ func NewCmdRoot() *cobra.Command {
 		},
 	}
 
-	cmd.PersistentFlags().String("data-dir", ".cq", "set persistent data directory (env: CQ_DATA_DIR)")
+	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
+	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
+	err := cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
+	if err != nil {
+		panic(err)
+	}
 
 	cmd.PersistentFlags().String("color", "auto", "Enable colorized output when log-console is set (on, off, auto)")
-	err := cmd.PersistentFlags().MarkDeprecated("color", "console logs are always colorless")
+	err = cmd.PersistentFlags().MarkDeprecated("color", "console logs are always colorless")
 	if err != nil {
 		panic(err)
 	}
