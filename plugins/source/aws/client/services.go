@@ -29,6 +29,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
@@ -41,6 +42,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -340,9 +342,21 @@ type Ec2Client interface {
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecr.go . EcrClient
 type EcrClient interface {
+	DescribeRegistry(ctx context.Context, params *ecr.DescribeRegistryInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRegistryOutput, error)
 	DescribeRepositories(ctx context.Context, params *ecr.DescribeRepositoriesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeRepositoriesOutput, error)
 	DescribeImages(ctx context.Context, params *ecr.DescribeImagesInput, optFns ...func(*ecr.Options)) (*ecr.DescribeImagesOutput, error)
+	GetRegistryPolicy(ctx context.Context, params *ecr.GetRegistryPolicyInput, optFns ...func(*ecr.Options)) (*ecr.GetRegistryPolicyOutput, error)
 	ListTagsForResource(ctx context.Context, params *ecr.ListTagsForResourceInput, optFns ...func(*ecr.Options)) (*ecr.ListTagsForResourceOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_ecrpublic.go . EcrPublicClient
+type EcrPublicClient interface {
+	DescribeImageTags(ctx context.Context, params *ecrpublic.DescribeImageTagsInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImageTagsOutput, error)
+	DescribeImages(ctx context.Context, params *ecrpublic.DescribeImagesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeImagesOutput, error)
+	DescribeRegistries(ctx context.Context, params *ecrpublic.DescribeRegistriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRegistriesOutput, error)
+	DescribeRepositories(ctx context.Context, params *ecrpublic.DescribeRepositoriesInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.DescribeRepositoriesOutput, error)
+	GetRepositoryPolicy(ctx context.Context, params *ecrpublic.GetRepositoryPolicyInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.GetRepositoryPolicyOutput, error)
+	ListTagsForResource(ctx context.Context, params *ecrpublic.ListTagsForResourceInput, optFns ...func(*ecrpublic.Options)) (*ecrpublic.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_ecs.go . EcsClient
@@ -454,6 +468,16 @@ type FsxClient interface {
 	DescribeSnapshots(ctx context.Context, params *fsx.DescribeSnapshotsInput, optFns ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error)
 	DescribeStorageVirtualMachines(ctx context.Context, params *fsx.DescribeStorageVirtualMachinesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error)
 	DescribeVolumes(ctx context.Context, params *fsx.DescribeVolumesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeVolumesOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/glacier.go . GlacierClient
+type GlacierClient interface {
+	ListVaults(ctx context.Context, params *glacier.ListVaultsInput, optFns ...func(*glacier.Options)) (*glacier.ListVaultsOutput, error)
+	ListTagsForVault(ctx context.Context, params *glacier.ListTagsForVaultInput, optFns ...func(*glacier.Options)) (*glacier.ListTagsForVaultOutput, error)
+	GetVaultAccessPolicy(ctx context.Context, params *glacier.GetVaultAccessPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultAccessPolicyOutput, error)
+	GetVaultLock(ctx context.Context, params *glacier.GetVaultLockInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultLockOutput, error)
+	GetVaultNotifications(ctx context.Context, params *glacier.GetVaultNotificationsInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultNotificationsOutput, error)
+	GetDataRetrievalPolicy(ctx context.Context, params *glacier.GetDataRetrievalPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetDataRetrievalPolicyOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
@@ -826,6 +850,7 @@ type WafRegionalClient interface {
 	GetRuleGroup(ctx context.Context, params *wafregional.GetRuleGroupInput, optFns ...func(*wafregional.Options)) (*wafregional.GetRuleGroupOutput, error)
 	GetWebACL(ctx context.Context, params *wafregional.GetWebACLInput, optFns ...func(*wafregional.Options)) (*wafregional.GetWebACLOutput, error)
 	ListRateBasedRules(ctx context.Context, params *wafregional.ListRateBasedRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRateBasedRulesOutput, error)
+	ListResourcesForWebACL(ctx context.Context, params *wafregional.ListResourcesForWebACLInput, optFns ...func(*wafregional.Options)) (*wafregional.ListResourcesForWebACLOutput, error)
 	ListRuleGroups(ctx context.Context, params *wafregional.ListRuleGroupsInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRuleGroupsOutput, error)
 	ListRules(ctx context.Context, params *wafregional.ListRulesInput, optFns ...func(*wafregional.Options)) (*wafregional.ListRulesOutput, error)
 	ListTagsForResource(ctx context.Context, params *wafregional.ListTagsForResourceInput, optFns ...func(*wafregional.Options)) (*wafregional.ListTagsForResourceOutput, error)

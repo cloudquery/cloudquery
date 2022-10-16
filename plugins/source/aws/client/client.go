@@ -24,6 +24,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
+	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatch"
 	"github.com/aws/aws-sdk-go-v2/service/cloudwatchlogs"
@@ -39,6 +40,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/service/ecrpublic"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/efs"
 	"github.com/aws/aws-sdk-go-v2/service/eks"
@@ -51,6 +53,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -152,6 +155,7 @@ type Services struct {
 	DynamoDB               DynamoDBClient
 	EC2                    Ec2Client
 	ECR                    EcrClient
+	ECRPublic              EcrPublicClient
 	ECS                    EcsClient
 	EFS                    EfsClient
 	Eks                    EksClient
@@ -164,6 +168,7 @@ type Services struct {
 	EventBridge            EventBridgeClient
 	Firehose               FirehoseClient
 	FSX                    FsxClient
+	Glacier                GlacierClient
 	Glue                   GlueClient
 	GuardDuty              GuardDutyClient
 	IAM                    IamClient
@@ -612,6 +617,7 @@ func initServices(region string, c aws.Config) Services {
 		Athena:                 athena.NewFromConfig(awsCfg),
 		Autoscaling:            autoscaling.NewFromConfig(awsCfg),
 		Backup:                 backup.NewFromConfig(awsCfg),
+		CloudHSMV2:             cloudhsmv2.NewFromConfig(awsCfg),
 		Cloudformation:         cloudformation.NewFromConfig(awsCfg),
 		Cloudfront:             cloudfront.NewFromConfig(awsCfg),
 		Cloudtrail:             cloudtrail.NewFromConfig(awsCfg),
@@ -628,6 +634,7 @@ func initServices(region string, c aws.Config) Services {
 		DynamoDB:               dynamodb.NewFromConfig(awsCfg),
 		EC2:                    ec2.NewFromConfig(awsCfg),
 		ECR:                    ecr.NewFromConfig(awsCfg),
+		ECRPublic:              ecrpublic.NewFromConfig(awsCfg),
 		ECS:                    ecs.NewFromConfig(awsCfg),
 		EFS:                    efs.NewFromConfig(awsCfg),
 		Eks:                    eks.NewFromConfig(awsCfg),
@@ -640,6 +647,7 @@ func initServices(region string, c aws.Config) Services {
 		EventBridge:            eventbridge.NewFromConfig(awsCfg),
 		Firehose:               firehose.NewFromConfig(awsCfg),
 		FSX:                    fsx.NewFromConfig(awsCfg),
+		Glacier:                glacier.NewFromConfig(awsCfg),
 		Glue:                   glue.NewFromConfig(awsCfg),
 		GuardDuty:              guardduty.NewFromConfig(awsCfg),
 		IAM:                    iam.NewFromConfig(awsCfg),

@@ -9,14 +9,14 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/heroku/client"
-	faker "github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	heroku "github.com/heroku/heroku-go/v5"
 	"github.com/julienschmidt/httprouter"
 )
 
 func createKeys() (*heroku.Service, error) {
 	items := make(heroku.KeyListResult, 1)
-	if err := faker.FakeData(&items); err != nil {
+	if err := faker.FakeObject(&items); err != nil {
 		return nil, err
 	}
 	mux := httprouter.New()
