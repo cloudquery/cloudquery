@@ -33,11 +33,6 @@ func Clusters() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveNeptuneClusterTags,
-			},
-			{
 				Name:     "allocated_storage",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AllocatedStorage"),

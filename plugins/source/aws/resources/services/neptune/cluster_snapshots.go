@@ -33,11 +33,6 @@ func ClusterSnapshots() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveNeptuneClusterSnapshotTags,
-			},
-			{
 				Name:     "attributes",
 				Type:     schema.TypeJSON,
 				Resolver: resolveNeptuneClusterSnapshotAttributes,

@@ -33,16 +33,6 @@ func Instances() *schema.Table {
 				},
 			},
 			{
-				Name:     "processor_features",
-				Type:     schema.TypeJSON,
-				Resolver: resolveNeptuneInstanceProcessorFeatures,
-			},
-			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveNeptuneInstanceTags,
-			},
-			{
 				Name:     "allocated_storage",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AllocatedStorage"),

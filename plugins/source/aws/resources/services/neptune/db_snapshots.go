@@ -33,11 +33,6 @@ func DbSnapshots() *schema.Table {
 				},
 			},
 			{
-				Name:     "tags",
-				Type:     schema.TypeJSON,
-				Resolver: resolveNeptuneDBSnapshotTags,
-			},
-			{
 				Name:     "attributes",
 				Type:     schema.TypeJSON,
 				Resolver: resolveNeptuneDBSnapshotAttributes,

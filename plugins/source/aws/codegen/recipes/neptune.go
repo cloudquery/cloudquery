@@ -65,7 +65,7 @@ func NeptuneResources() []*Resource {
 			SubService:  "cluster_snapshots",
 			Struct:      &types.DBClusterSnapshot{},
 			Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots",
-			SkipFields:  []string{"DBClusterSnapshotArn", "TagList"},
+			SkipFields:  []string{"DBClusterSnapshotArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -74,11 +74,6 @@ func NeptuneResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("DBClusterSnapshotArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveNeptuneClusterSnapshotTags`,
 					},
 					{
 						Name:     "attributes",
@@ -91,7 +86,7 @@ func NeptuneResources() []*Resource {
 			SubService:  "clusters",
 			Struct:      &types.DBCluster{},
 			Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-clusters.html#DescribeDBClusters",
-			SkipFields:  []string{"DBClusterArn", "TagList"},
+			SkipFields:  []string{"DBClusterArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -100,11 +95,6 @@ func NeptuneResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("DBClusterArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveNeptuneClusterTags`,
 					},
 				}...),
 		},
@@ -170,7 +160,7 @@ func NeptuneResources() []*Resource {
 			SubService:  "db_snapshots",
 			Struct:      &types.DBClusterSnapshot{},
 			Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots",
-			SkipFields:  []string{"DBSnapshotArn", "TagList"},
+			SkipFields:  []string{"DBSnapshotArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -179,11 +169,6 @@ func NeptuneResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("DBSnapshotArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveNeptuneDBSnapshotTags`,
 					},
 					{
 						Name:     "attributes",
@@ -217,7 +202,7 @@ func NeptuneResources() []*Resource {
 			SubService:  "instances",
 			Struct:      &types.DBInstance{},
 			Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances",
-			SkipFields:  []string{"DBInstanceArn", "ProcessorFeatures", "TagList"},
+			SkipFields:  []string{"DBInstanceArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -226,16 +211,6 @@ func NeptuneResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("DBInstanceArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "processor_features",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveNeptuneInstanceProcessorFeatures`,
-					},
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveNeptuneInstanceTags`,
 					},
 				}...),
 		},
