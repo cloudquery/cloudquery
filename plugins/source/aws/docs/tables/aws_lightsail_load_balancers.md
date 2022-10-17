@@ -1,6 +1,6 @@
 # Table: aws_lightsail_load_balancers
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancer.html
 
 The primary key for this table is **arn**.
 

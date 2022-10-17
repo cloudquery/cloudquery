@@ -1,6 +1,6 @@
 # Table: aws_inspector2_findings
 
-
+https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html
 
 The primary key for this table is **arn**.
 

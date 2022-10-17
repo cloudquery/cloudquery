@@ -31,6 +31,7 @@ func EMRResources() []*Resource {
 		{
 			SubService:          "clusters",
 			Struct:              &types.Cluster{},
+			Description:         "https://docs.aws.amazon.com/emr/latest/APIReference/API_Cluster.html",
 			SkipFields:          []string{"ClusterArn", "Tags"},
 			PreResourceResolver: "getCluster",
 			ExtraColumns: append(

@@ -1,6 +1,6 @@
 # Table: aws_elbv2_target_group_target_health_descriptions
 
-
+https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetHealthDescription.html
 
 The primary key for this table is **_cq_id**.
 

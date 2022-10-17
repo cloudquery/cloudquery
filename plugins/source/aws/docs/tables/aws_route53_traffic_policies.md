@@ -1,6 +1,6 @@
 # Table: aws_route53_traffic_policies
 
-
+https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicySummary.html
 
 The primary key for this table is **arn**.
 
