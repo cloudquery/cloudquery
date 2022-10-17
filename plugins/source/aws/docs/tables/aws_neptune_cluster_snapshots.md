@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |region|String|
 |arn (PK)|String|
 |attributes|JSON|
+|tags|JSON|
 |allocated_storage|Int|
 |availability_zones|StringArray|
 |cluster_create_time|Timestamp|
