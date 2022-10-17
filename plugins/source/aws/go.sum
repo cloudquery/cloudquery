@@ -98,6 +98,8 @@ github.com/aws/aws-sdk-go-v2/service/firehose v1.14.19 h1:ZixUxhof6atH8oppf3nAuG
 github.com/aws/aws-sdk-go-v2/service/firehose v1.14.19/go.mod h1:b6JZhhQAJ41f8eUzOHVBKWVzmz6f1BwM/7n4Gm6ET9c=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.25.0 h1:q//cV2/u6Sv7KFDJHIm2EttWaEq95Zs7BjedBM+FChU=
 github.com/aws/aws-sdk-go-v2/service/fsx v1.25.0/go.mod h1:pjzNrKeJc+qRfGYCPsFuPc7/P5zM3DL1dpxtGbrTfWs=
+github.com/aws/aws-sdk-go-v2/service/glacier v1.13.17 h1:oOw5Y/aRQWOr+G9rC9SUgSEfQwF+uXxnddLkBRzAFUg=
+github.com/aws/aws-sdk-go-v2/service/glacier v1.13.17/go.mod h1:l6wthXw/l38/jEr0Bz7LJYcZKEbzwKNaw0+ftgql0cM=
 github.com/aws/aws-sdk-go-v2/service/glue v1.33.0 h1:rckWHoo5WNp2geF1yjvvLvO9TDTAeAJbHulXuzwN2SE=
 github.com/aws/aws-sdk-go-v2/service/glue v1.33.0/go.mod h1:aupHsCJmK66t1MQ542c6qBSuJYEA2IwKmwi4M3jdT1M=
 github.com/aws/aws-sdk-go-v2/service/guardduty v1.15.9 h1:c4cDiLROLNl0glOnn4ywlvKhN5KIoWHEZJiHI+mw3I8=
@@ -188,10 +190,8 @@ github.com/bitly/go-simplejson v0.5.0 h1:6IH+V8/tVMab511d5bn4M7EwGXZf9Hj6i2xSwkN
 github.com/bitly/go-simplejson v0.5.0/go.mod h1:cXHtHw4XUPsvGaxgjIAn8PhEWG9NfngEKAMDJEczWVA=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/faker/v3 v3.7.7 h1:vODOmAXGhxAacVrUOjr4Jti2lFhXgkPjG6/L3C2REgQ=
-github.com/cloudquery/faker/v3 v3.7.7/go.mod h1:1b8WVG9Gh0T2hVo1a8dWeXfu0AhqSB6J/mmJaesqOeo=
-github.com/cloudquery/plugin-sdk v0.13.7 h1:xoGR83yq+OKs/ir+fcowlHOB9Gkow7P5+252hQGgVwk=
-github.com/cloudquery/plugin-sdk v0.13.7/go.mod h1:B2Z0lWNPeX7OSCVt/PP5fMZMUqVyZ2gpuNS3RfE9k0E=
+github.com/cloudquery/plugin-sdk v0.13.8 h1:wvkvAvJXvF44iQr1LC57MmHxVuzdE9+c5G1Y2FKDUT8=
+github.com/cloudquery/plugin-sdk v0.13.8/go.mod h1:8mt4PDjek0NkldnWFnM/i0zpfyUYVcRy/imEN1L/Cxs=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

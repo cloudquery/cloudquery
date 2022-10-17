@@ -1,6 +1,6 @@
 # Table: aws_iam_user_groups
 
-
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html
 
 The primary key for this table is **_cq_id**.
 

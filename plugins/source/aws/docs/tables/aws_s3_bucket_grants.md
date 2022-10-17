@@ -1,6 +1,6 @@
 # Table: aws_s3_bucket_grants
 
-
+https://docs.aws.amazon.com/AmazonS3/latest/API/API_Grant.html
 
 The primary key for this table is **_cq_id**.
 

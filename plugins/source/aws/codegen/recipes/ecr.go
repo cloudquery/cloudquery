@@ -47,10 +47,11 @@ func ECRResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "repositories",
-			Struct:     &types.Repository{},
-			SkipFields: []string{"RepositoryArn"},
-			Multiplex:  `client.ServiceAccountRegionMultiplexer("api.ecr")`,
+			SubService:  "repositories",
+			Struct:      &types.Repository{},
+			Description: "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html",
+			SkipFields:  []string{"RepositoryArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("api.ecr")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -69,8 +70,9 @@ func ECRResources() []*Resource {
 			Relations: []string{"RepositoryImages()"},
 		},
 		{
-			SubService: "repository_images",
-			Struct:     &types.ImageDetail{},
+			SubService:  "repository_images",
+			Struct:      &types.ImageDetail{},
+			Description: "https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

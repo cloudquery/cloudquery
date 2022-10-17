@@ -25,7 +25,7 @@ LOOP
         FROM %s',
         tbl,
         CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='region' AND table_name=tbl) THEN 'region' ELSE E'\'unavailable\'' END,
-        CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name IN ('tags','tag_list','tag_set') AND table_name=tbl) THEN (SELECT column_name FROM information_schema.columns WHERE column_name IN ('tags','tag_list','tag_set') AND table_name=tbl LIMIT 1) ELSE '''{}''::jsonb' END,
+        CASE WHEN EXISTS (SELECT 1 FROM information_schema.columns WHERE column_name='tags' AND table_name=tbl) THEN 'tags' ELSE '''{}''::jsonb' END,
         tbl);
 END LOOP;
 

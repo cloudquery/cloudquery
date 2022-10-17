@@ -1,6 +1,6 @@
 # Table: aws_qldb_ledger_journal_kinesis_streams
 
-
+https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html
 
 The primary key for this table is **_cq_id**.
 

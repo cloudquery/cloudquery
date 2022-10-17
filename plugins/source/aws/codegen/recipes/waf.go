@@ -10,9 +10,10 @@ func WAFResources() []*Resource {
 	resources := []*Resource{
 
 		{
-			SubService: "rule_groups",
-			Struct:     &types.RuleGroupSummary{},
-			SkipFields: []string{"ARN"},
+			SubService:  "rule_groups",
+			Struct:      &types.RuleGroupSummary{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleGroupSummary.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -36,9 +37,10 @@ func WAFResources() []*Resource {
 		},
 
 		{
-			SubService: "rules",
-			Struct:     &types.RuleSummary{},
-			SkipFields: []string{"ARN"},
+			SubService:  "rules",
+			Struct:      &types.RuleSummary{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleSummary.html",
+			SkipFields:  []string{"ARN"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -57,9 +59,10 @@ func WAFResources() []*Resource {
 		},
 
 		{
-			SubService: "subscribed_rule_groups",
-			Struct:     &types.SubscribedRuleGroupSummary{},
-			SkipFields: []string{"RuleGroupId"},
+			SubService:  "subscribed_rule_groups",
+			Struct:      &types.SubscribedRuleGroupSummary{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_SubscribedRuleGroupSummary.html",
+			SkipFields:  []string{"RuleGroupId"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:        "account_id",
@@ -79,9 +82,10 @@ func WAFResources() []*Resource {
 		},
 
 		{
-			SubService: "web_acls",
-			Struct:     &types.WebACLSummary{},
-			SkipFields: []string{"WebACLArn"},
+			SubService:  "web_acls",
+			Struct:      &types.WebACLSummary{},
+			Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_WebACLSummary.html",
+			SkipFields:  []string{"WebACLArn"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

@@ -1,6 +1,6 @@
 # Table: aws_qldb_ledger_journal_s3_exports
 
-
+https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html
 
 The primary key for this table is **_cq_id**.
 
