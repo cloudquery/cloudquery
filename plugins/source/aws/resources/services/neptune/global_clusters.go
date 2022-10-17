@@ -33,6 +33,11 @@ func GlobalClusters() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveNeptuneGlobalClusterTags,
+			},
+			{
 				Name:     "deletion_protection",
 				Type:     schema.TypeBool,
 				Resolver: schema.PathResolver("DeletionProtection"),

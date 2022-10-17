@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
+	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
@@ -25,4 +26,15 @@ func fetchNeptuneInstances(ctx context.Context, meta schema.ClientMeta, parent *
 		config.Marker = response.Marker
 	}
 	return nil
+}
+
+func resolveNeptuneInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	s := resource.Item.(types.DBInstance)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Neptune
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBInstanceArn})
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

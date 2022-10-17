@@ -3,6 +3,7 @@ package neptune
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -41,6 +42,18 @@ func buildNeptuneClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller
 		},
 		nil,
 	)
+
+	mock.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&neptune.ListTagsForResourceInput{ResourceName: s.DBClusterSnapshotArn},
+		gomock.Any(),
+	).Return(
+		&neptune.ListTagsForResourceOutput{
+			TagList: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}},
+		},
+		nil,
+	)
+
 	return client.Services{Neptune: mock}
 }
 

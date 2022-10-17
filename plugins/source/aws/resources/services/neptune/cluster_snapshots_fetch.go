@@ -51,3 +51,14 @@ func resolveNeptuneClusterSnapshotAttributes(ctx context.Context, meta schema.Cl
 
 	return resource.Set(column.Name, out.DBClusterSnapshotAttributesResult.DBClusterSnapshotAttributes)
 }
+
+func resolveNeptuneClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	s := resource.Item.(types.DBClusterSnapshot)
+	cl := meta.(*client.Client)
+	svc := cl.Services().Neptune
+	out, err := svc.ListTagsForResource(ctx, &neptune.ListTagsForResourceInput{ResourceName: s.DBClusterSnapshotArn})
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, client.TagsToMap(out.TagList))
+}

@@ -15,11 +15,11 @@ import (
 func buildNeptuneGlobalClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 	var gc types.GlobalCluster
-	if err := faker.FakeObject(&s); err != nil {
+	if err := faker.FakeObject(&gc); err != nil {
 		t.Fatal(err)
 	}
 	mock.EXPECT().DescribeGlobalClusters(gomock.Any(), &neptune.DescribeGlobalClustersInput{}, gomock.Any()).Return(
-		&neptune.DescribeGlobalClustersOutput{GlobalClusters: []types.EventSubscription{gc}},
+		&neptune.DescribeGlobalClustersOutput{GlobalClusters: []types.GlobalCluster{gc}},
 		nil,
 	)
 
@@ -37,5 +37,5 @@ func buildNeptuneGlobalClusters(t *testing.T, ctrl *gomock.Controller) client.Se
 }
 
 func TestNeptuneGlobalCluster(t *testing.T) {
-	client.AwsMockTestHelper(t, EventSubscriptions(), buildNeptuneEventSubscriptions, client.TestOptions{})
+	client.AwsMockTestHelper(t, GlobalClusters(), buildNeptuneGlobalClusters, client.TestOptions{})
 }

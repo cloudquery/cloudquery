@@ -64,6 +64,11 @@ func NeptuneResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `resolveNeptuneClusterSnapshotAttributes`,
 					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveNeptuneClusterSnapshotTags`,
+					},
 				}...),
 		},
 		{
@@ -79,6 +84,11 @@ func NeptuneResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("DBClusterArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveNeptuneClusterTags`,
 					},
 				}...),
 		},
@@ -133,6 +143,11 @@ func NeptuneResources() []*Resource {
 						Resolver: `schema.PathResolver("GlobalClusterArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveNeptuneGlobalClusterTags`,
+					},
 				}...),
 		},
 		{
@@ -170,6 +185,11 @@ func NeptuneResources() []*Resource {
 						Resolver: `schema.PathResolver("DBInstanceArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveNeptuneInstanceTags`,
+					},
 				}...),
 		},
 		{
@@ -185,6 +205,11 @@ func NeptuneResources() []*Resource {
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("DBSubnetGroupArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "tags",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveNeptuneSubnetGroupTags`,
 					},
 				}...),
 		},

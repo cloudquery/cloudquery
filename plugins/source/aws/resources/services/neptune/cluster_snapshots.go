@@ -38,6 +38,11 @@ func ClusterSnapshots() *schema.Table {
 				Resolver: resolveNeptuneClusterSnapshotAttributes,
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveNeptuneClusterSnapshotTags,
+			},
+			{
 				Name:     "allocated_storage",
 				Type:     schema.TypeInt,
 				Resolver: schema.PathResolver("AllocatedStorage"),

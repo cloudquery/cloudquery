@@ -3,6 +3,7 @@ package neptune
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/neptune/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -23,6 +24,16 @@ func buildNeptuneDBClusters(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&neptune.DescribeDBClustersOutput{
 			DBClusters: []types.DBCluster{l},
 		}, nil)
+	m.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&neptune.ListTagsForResourceInput{ResourceName: l.DBClusterArn},
+		gomock.Any(),
+	).Return(
+		&neptune.ListTagsForResourceOutput{
+			TagList: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}},
+		},
+		nil,
+	)
 	return client.Services{
 		Neptune: m,
 	}
@@ -40,6 +51,17 @@ func buildNeptuneDBInstances(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&neptune.DescribeDBInstancesOutput{
 			DBInstances: []types.DBInstance{l},
 		}, nil)
+	m.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&neptune.ListTagsForResourceInput{ResourceName: l.DBInstanceArn},
+		gomock.Any(),
+	).Return(
+		&neptune.ListTagsForResourceOutput{
+			TagList: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}},
+		},
+		nil,
+	)
+
 	return client.Services{
 		Neptune: m,
 	}
@@ -57,6 +79,17 @@ func buildNeptuneDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Se
 		&neptune.DescribeDBSubnetGroupsOutput{
 			DBSubnetGroups: []types.DBSubnetGroup{l},
 		}, nil)
+
+	m.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&neptune.ListTagsForResourceInput{ResourceName: l.DBSubnetGroupArn},
+		gomock.Any(),
+	).Return(
+		&neptune.ListTagsForResourceOutput{
+			TagList: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}},
+		},
+		nil,
+	)
 	return client.Services{
 		Neptune: m,
 	}

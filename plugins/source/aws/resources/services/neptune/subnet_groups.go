@@ -33,6 +33,11 @@ func SubnetGroups() *schema.Table {
 				},
 			},
 			{
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveNeptuneSubnetGroupTags,
+			},			
+			{
 				Name:     "db_subnet_group_description",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DBSubnetGroupDescription"),
