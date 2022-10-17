@@ -12,7 +12,7 @@ func WebAcls() *schema.Table {
 		Name:        "aws_wafregional_web_acls",
 		Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_WebACL.html",
 		Resolver:    fetchWafregionalWebAcls,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("waf"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

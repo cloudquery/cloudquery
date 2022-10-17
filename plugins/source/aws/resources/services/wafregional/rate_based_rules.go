@@ -12,7 +12,7 @@ func RateBasedRules() *schema.Table {
 		Name:        "aws_wafregional_rate_based_rules",
 		Description: "https://docs.aws.amazon.com/waf/latest/APIReference/API_wafRegional_RateBasedRule.html",
 		Resolver:    fetchWafregionalRateBasedRules,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("waf"),
+		Multiplex:   client.ServiceAccountRegionMultiplexer("waf-regional"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
