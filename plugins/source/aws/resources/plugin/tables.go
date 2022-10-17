@@ -252,7 +252,6 @@ func tables() []*schema.Table {
 		neptune.ClusterParameterGroups(),
 		neptune.Clusters(),
 		neptune.ClusterSnapshots(),
-		neptune.ClusterSnapshots(),
 		neptune.DbParameterGroups(),
 		neptune.EventSubscriptions(),
 		neptune.Instances(),
