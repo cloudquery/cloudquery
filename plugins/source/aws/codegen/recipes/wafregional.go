@@ -106,7 +106,7 @@ func WAFRegionalResources() []*Resource {
 	// set default values
 	for _, r := range resources {
 		r.Service = "wafregional"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("waf")`
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("waf-regional")`
 	}
 	return resources
 }
