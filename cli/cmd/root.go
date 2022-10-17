@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/getsentry/sentry-go"
@@ -30,7 +31,6 @@ Find more information at:
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
-	noColor := false
 	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
@@ -43,6 +43,10 @@ func NewCmdRoot() *cobra.Command {
 		Long:    rootLong,
 		Version: Version,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			zerolog.TimestampFunc = func() time.Time {
+				return time.Now().UTC()
+			}
+
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
@@ -58,7 +62,11 @@ func NewCmdRoot() *cobra.Command {
 				}
 				if logFormat.String() == "text" {
 					// for file logging we dont need color. we can add it as an option but don't think it is useful
-					writers = append(writers, zerolog.ConsoleWriter{Out: logFile, NoColor: true})
+					writers = append(writers, zerolog.ConsoleWriter{
+						Out:             logFile,
+						NoColor:         true,
+						FormatTimestamp: formatTimestampUtcRfc3339,
+					})
 				} else {
 					writers = append(writers, logFile)
 				}
@@ -68,7 +76,11 @@ func NewCmdRoot() *cobra.Command {
 					return fmt.Errorf("failed to close stdout: %w", err)
 				}
 				if logFormat.String() == "text" {
-					writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: noColor})
+					writers = append(writers, zerolog.ConsoleWriter{
+						Out:             os.Stderr,
+						NoColor:         true,
+						FormatTimestamp: formatTimestampUtcRfc3339,
+					})
 				} else {
 					writers = append(writers, os.Stderr)
 				}
@@ -97,6 +109,7 @@ func NewCmdRoot() *cobra.Command {
 					return err
 				}
 			}
+
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
@@ -106,9 +119,18 @@ func NewCmdRoot() *cobra.Command {
 		},
 	}
 
-	cmd.PersistentFlags().String("data-dir", "./.cq", "set persistent data directory (env: CQ_DATA_DIR)")
+	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
+	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
+	err := cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
+	if err != nil {
+		panic(err)
+	}
 
-	cmd.PersistentFlags().String("color", "auto", "Enable colorized output (on, off, auto)")
+	cmd.PersistentFlags().String("color", "auto", "Enable colorized output when log-console is set (on, off, auto)")
+	err = cmd.PersistentFlags().MarkDeprecated("color", "console logs are always colorless")
+	if err != nil {
+		panic(err)
+	}
 
 	// Logging Flags
 	cmd.PersistentFlags().BoolVar(&logConsole, "log-console", false, "enable console logging")
@@ -149,4 +171,14 @@ func initViper() {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("CQ")
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+}
+
+// formats a timestamp in UTC and RFC3339
+func formatTimestampUtcRfc3339(timestamp interface{}) string {
+	timestampConcrete, ok := timestamp.(time.Time)
+	if !ok {
+		return fmt.Sprintf("%v", timestamp)
+	}
+
+	return timestampConcrete.UTC().Format(time.RFC3339)
 }

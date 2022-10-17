@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,7 +15,7 @@ func buildInspectorV2Findings(t *testing.T, ctrl *gomock.Controller) client.Serv
 	inspectorClient := mocks.NewMockInspectorV2Client(ctrl)
 
 	finding := types.Finding{}
-	err := faker.FakeData(&finding)
+	err := faker.FakeObject(&finding)
 	if err != nil {
 		t.Fatal(err)
 	}

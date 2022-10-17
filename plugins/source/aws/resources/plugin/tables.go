@@ -39,6 +39,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eventbridge"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/firehose"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/fsx"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glacier"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
@@ -189,6 +190,8 @@ func tables() []*schema.Table {
 		fsx.Snapshots(),
 		fsx.StorageVirtualMachines(),
 		fsx.Volumes(),
+		glacier.DataRetrievalPolicies(),
+		glacier.Vaults(),
 		glue.Classifiers(),
 		glue.Connections(),
 		glue.Crawlers(),

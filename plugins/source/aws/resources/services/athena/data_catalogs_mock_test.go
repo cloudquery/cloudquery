@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -14,7 +14,7 @@ func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockAthenaClient(ctrl)
 
 	catalogs := athena.ListDataCatalogsOutput{}
-	err := faker.FakeData(&catalogs)
+	err := faker.FakeObject(&catalogs)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -22,7 +22,7 @@ func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListDataCatalogs(gomock.Any(), gomock.Any(), gomock.Any()).Return(&catalogs, nil)
 
 	catalog := athena.GetDataCatalogOutput{}
-	err = faker.FakeData(&catalog)
+	err = faker.FakeObject(&catalog)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -30,7 +30,7 @@ func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetDataCatalog(gomock.Any(), gomock.Any(), gomock.Any()).Return(&catalog, nil)
 
 	databases := athena.ListDatabasesOutput{}
-	err = faker.FakeData(&databases)
+	err = faker.FakeObject(&databases)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -38,7 +38,7 @@ func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListDatabases(gomock.Any(), gomock.Any(), gomock.Any()).Return(&databases, nil)
 
 	tags := athena.ListTagsForResourceOutput{}
-	err = faker.FakeData(&tags)
+	err = faker.FakeObject(&tags)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -46,7 +46,7 @@ func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
 	tables := athena.ListTableMetadataOutput{}
-	err = faker.FakeData(&tables)
+	err = faker.FakeObject(&tables)
 	if err != nil {
 		t.Fatal(err)
 	}

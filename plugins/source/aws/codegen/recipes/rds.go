@@ -65,7 +65,7 @@ func RDSResources() []*Resource {
 			SubService:  "cluster_snapshots",
 			Struct:      &types.DBClusterSnapshot{},
 			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBClusterSnapshot.html",
-			SkipFields:  []string{"DBClusterSnapshotArn"},
+			SkipFields:  []string{"DBClusterSnapshotArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -91,7 +91,7 @@ func RDSResources() []*Resource {
 			SubService:  "clusters",
 			Struct:      &types.DBCluster{},
 			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html",
-			SkipFields:  []string{"DBClusterArn"},
+			SkipFields:  []string{"DBClusterArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -170,7 +170,7 @@ func RDSResources() []*Resource {
 			SubService:  "db_snapshots",
 			Struct:      &types.DBSnapshot{},
 			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSnapshot.html",
-			SkipFields:  []string{"DBSnapshotArn"},
+			SkipFields:  []string{"DBSnapshotArn", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -217,7 +217,7 @@ func RDSResources() []*Resource {
 			SubService:  "instances",
 			Struct:      &types.DBInstance{},
 			Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html",
-			SkipFields:  []string{"DBInstanceArn", "ProcessorFeatures", "Tags"},
+			SkipFields:  []string{"DBInstanceArn", "ProcessorFeatures", "TagList"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{

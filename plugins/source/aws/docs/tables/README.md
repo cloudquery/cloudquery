@@ -66,7 +66,7 @@
 | [aws_ec2_network_acls](aws_ec2_network_acls.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkAcl.html|
 | [aws_ec2_network_interfaces](aws_ec2_network_interfaces.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_NetworkInterface.html|
 | [aws_ec2_regional_config](aws_ec2_regional_config.md)| | |
-| [aws_regions](aws_regions.md)| | Describes a Region.|
+| [aws_regions](aws_regions.md)| | |
 | [aws_ec2_reserved_instances](aws_ec2_reserved_instances.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReservedInstances.html|
 | [aws_ec2_route_tables](aws_ec2_route_tables.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RouteTable.html|
 | [aws_ec2_security_groups](aws_ec2_security_groups.md)| | https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SecurityGroup.html|
@@ -116,6 +116,8 @@
 | [aws_fsx_snapshots](aws_fsx_snapshots.md)| | https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html|
 | [aws_fsx_storage_virtual_machines](aws_fsx_storage_virtual_machines.md)| | https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html|
 | [aws_fsx_volumes](aws_fsx_volumes.md)| | https://docs.aws.amazon.com/fsx/latest/APIReference/API_Volume.html|
+| [aws_glacier_data_retrieval_policies](aws_glacier_data_retrieval_policies.md)| | |
+| [aws_glacier_vaults](aws_glacier_vaults.md)| [aws_glacier_vault_access_policies](aws_glacier_vault_access_policies.md)<br />[aws_glacier_vault_lock_policies](aws_glacier_vault_lock_policies.md)<br />[aws_glacier_vault_notifications](aws_glacier_vault_notifications.md)| |
 | [aws_glue_classifiers](aws_glue_classifiers.md)| | |
 | [aws_glue_connections](aws_glue_connections.md)| | |
 | [aws_glue_crawlers](aws_glue_crawlers.md)| | |

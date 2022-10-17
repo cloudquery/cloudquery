@@ -178,11 +178,6 @@ func DbSnapshots() *schema.Table {
 				Resolver: schema.PathResolver("StorageType"),
 			},
 			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
-			},
-			{
 				Name:     "tde_credential_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("TdeCredentialArn"),

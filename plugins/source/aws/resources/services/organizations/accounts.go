@@ -12,7 +12,7 @@ func Accounts() *schema.Table {
 		Name:        "aws_organizations_accounts",
 		Description: "https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html",
 		Resolver:    fetchOrganizationsAccounts,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("dax"),
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

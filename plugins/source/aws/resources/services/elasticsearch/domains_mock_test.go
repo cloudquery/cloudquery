@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/elasticsearchservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
-	"github.com/cloudquery/faker/v3"
+	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
 )
 
@@ -15,14 +15,14 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	m := mocks.NewMockElasticSearch(ctrl)
 
 	var di types.DomainInfo
-	if err := faker.FakeData(&di); err != nil {
+	if err := faker.FakeObject(&di); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListDomainNames(gomock.Any(), &elasticsearchservice.ListDomainNamesInput{}, gomock.Any()).Return(
 		&elasticsearchservice.ListDomainNamesOutput{DomainNames: []types.DomainInfo{di}}, nil)
 
 	var ds types.ElasticsearchDomainStatus
-	if err := faker.FakeData(&ds); err != nil {
+	if err := faker.FakeObject(&ds); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().DescribeElasticsearchDomain(
@@ -32,7 +32,7 @@ func buildElasticSearchDomains(t *testing.T, ctrl *gomock.Controller) client.Ser
 	).Return(&elasticsearchservice.DescribeElasticsearchDomainOutput{DomainStatus: &ds}, nil)
 
 	var tags elasticsearchservice.ListTagsOutput
-	if err := faker.FakeData(&tags); err != nil {
+	if err := faker.FakeObject(&tags); err != nil {
 		t.Fatal(err)
 	}
 	m.EXPECT().ListTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)

@@ -36,11 +36,11 @@ spec:
 
   ## Required. Must be a specific version starting with v, e.g. v1.2.3
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
-  version: "v1.2.1" # latest version of postgresql plugin
+  version: "v1.3.3" # latest version of postgresql plugin
 
-  ## Optional. Default: "overwrite". Available: "overwrite", "overwrite-delete-stale", "append". Not all modes are supported by all plugins,
-  ## so make sure to check the plugin documentation for more details.
-  write_mode: "overwrite" # overwrite, overwrite-delete-stale, append
+  ## Optional. Default: "overwrite-delete-stale". Available: "overwrite-delete-stale", "overwrite", "append". 
+  ##  Not all modes are supported by all plugins, so make sure to check the plugin documentation for more details.
+  write_mode: "overwrite-delete-stale" # overwrite-delete-stale, overwrite, append
 
   spec:
     ## plugin-specific configuration for PostgreSQL.
@@ -72,7 +72,7 @@ spec:
 
   ## Required. Must be a specific version starting with v, e.g. v1.2.3
   ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
-  version: "v2.4.0" # latest version of aws plugin
+  version: "v3.0.1" # latest version of aws plugin
 
   ## Optional. Where to search for the plugin. Default: "github". Options: "github", "local", "grpc"
   # registry: "github"
@@ -98,6 +98,13 @@ spec:
 
 - All general options for source spec you can find under [references/source-spec](/docs/reference/source-spec).
 - All options for `postgresql` destination plugin spec you can find [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)
+
+## Authenticate with the Cloud Provider
+
+CloudQuery uses similar authentication methods to the official SDKs of each cloud provider.
+The AWS authentication guide is located [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/README.md).
+
+You can find authentication for other plugins in their corresponding [READMEs](https://github.com/cloudquery/cloudquery/tree/main/plugins/source).
 
 ## Start Syncing
 
