@@ -1,6 +1,6 @@
 # Table: aws_lambda_function_concurrency_configs
 
-
+https://docs.aws.amazon.com/lambda/latest/dg/API_ProvisionedConcurrencyConfigListItem.html
 
 The primary key for this table is **_cq_id**.
 

@@ -1,6 +1,6 @@
 # Table: aws_redshift_event_subscriptions
 
-
+https://docs.aws.amazon.com/redshift/latest/APIReference/API_EventSubscription.html
 
 The primary key for this table is **arn**.
 

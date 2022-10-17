@@ -1,6 +1,6 @@
 # Table: aws_iam_user_attached_policies
 
-
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html
 
 The primary key for this table is **_cq_id**.
 

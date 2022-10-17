@@ -1,6 +1,6 @@
 # Table: aws_iam_users
 
-
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html
 
 The composite primary key for this table is (**id**, **account_id**).
 

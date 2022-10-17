@@ -1,6 +1,6 @@
 # Table: aws_mq_brokers
 
-
+https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html
 
 The primary key for this table is **arn**.
 

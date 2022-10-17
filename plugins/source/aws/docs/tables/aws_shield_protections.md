@@ -1,6 +1,6 @@
 # Table: aws_shield_protections
 
-
+https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_Protection.html
 
 The primary key for this table is **arn**.
 

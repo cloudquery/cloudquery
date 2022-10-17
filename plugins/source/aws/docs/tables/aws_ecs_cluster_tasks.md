@@ -1,6 +1,6 @@
 # Table: aws_ecs_cluster_tasks
 
-
+https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Task.html
 
 The primary key for this table is **arn**.
 

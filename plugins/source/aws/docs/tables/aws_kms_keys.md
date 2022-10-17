@@ -1,6 +1,6 @@
 # Table: aws_kms_keys
 
-
+https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html
 
 The primary key for this table is **arn**.
 

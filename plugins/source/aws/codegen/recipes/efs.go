@@ -8,9 +8,10 @@ import (
 
 var efsResources = []*Resource{
 	{
-		SubService: "filesystems",
-		Struct:     &types.FileSystemDescription{},
-		SkipFields: []string{"FileSystemArn"},
+		SubService:  "filesystems",
+		Struct:      &types.FileSystemDescription{},
+		Description: "https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html",
+		SkipFields:  []string{"FileSystemArn"},
 		ExtraColumns: append(
 			defaultRegionalColumns,
 			[]codegen.ColumnDefinition{

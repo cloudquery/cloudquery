@@ -1,6 +1,6 @@
 # Table: aws_lambda_function_versions
 
-
+https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html
 
 The primary key for this table is **_cq_id**.
 

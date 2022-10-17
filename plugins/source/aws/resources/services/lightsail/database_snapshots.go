@@ -9,9 +9,10 @@ import (
 
 func DatabaseSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_database_snapshots",
-		Resolver:  fetchLightsailDatabaseSnapshots,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_database_snapshots",
+		Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseSnapshot.html",
+		Resolver:    fetchLightsailDatabaseSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

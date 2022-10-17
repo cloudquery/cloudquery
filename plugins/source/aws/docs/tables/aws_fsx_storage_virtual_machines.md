@@ -1,6 +1,6 @@
 # Table: aws_fsx_storage_virtual_machines
 
-
+https://docs.aws.amazon.com/fsx/latest/APIReference/API_StorageVirtualMachine.html
 
 The primary key for this table is **arn**.
 
