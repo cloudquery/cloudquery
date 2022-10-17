@@ -44,6 +44,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.17
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.19
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.17
@@ -54,6 +55,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/lambda v1.24.6
 	github.com/aws/aws-sdk-go-v2/service/lightsail v1.23.0
 	github.com/aws/aws-sdk-go-v2/service/mq v1.13.13
+	github.com/aws/aws-sdk-go-v2/service/neptune v1.17.12
 	github.com/aws/aws-sdk-go-v2/service/organizations v1.16.13
 	github.com/aws/aws-sdk-go-v2/service/qldb v1.14.18
 	github.com/aws/aws-sdk-go-v2/service/rds v1.26.1
@@ -90,7 +92,6 @@ require (
 
 require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.0.14 // indirect
-	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.17 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.18 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.6 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
