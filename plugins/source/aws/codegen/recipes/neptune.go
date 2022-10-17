@@ -156,27 +156,27 @@ func NeptuneResources() []*Resource {
 		// 			},
 		// 		}...),
 		// },
-		{
-			SubService:  "db_snapshots",
-			Struct:      &types.DBClusterSnapshot{},
-			Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots",
-			SkipFields:  []string{"DBSnapshotArn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("DBSnapshotArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-					{
-						Name:     "attributes",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveNeptuneDBSnapshotAttributes`,
-					},
-				}...),
-		},
+		// {
+		// 	SubService:  "db_snapshots",
+		// 	Struct:      &types.DBClusterSnapshot{},
+		// 	Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots",
+		// 	SkipFields:  []string{"DBSnapshotArn"},
+		// 	ExtraColumns: append(
+		// 		defaultRegionalColumns,
+		// 		[]codegen.ColumnDefinition{
+		// 			{
+		// 				Name:     "arn",
+		// 				Type:     schema.TypeString,
+		// 				Resolver: `schema.PathResolver("DBSnapshotArn")`,
+		// 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+		// 			},
+		// 			{
+		// 				Name:     "attributes",
+		// 				Type:     schema.TypeJSON,
+		// 				Resolver: `resolveNeptuneDBSnapshotAttributes`,
+		// 			},
+		// 		}...),
+		// },
 		{
 			SubService:  "event_subscriptions",
 			Struct:      &types.EventSubscription{},
