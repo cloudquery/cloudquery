@@ -8,22 +8,6 @@ import (
 
 func NeptuneResources() []*Resource {
 	resources := []*Resource{
-		// {
-		// 	SubService:  "certificates",
-		// 	Struct:      &types.Certificate{},
-		// 	Description: "https://docs.aws.amazon.com/neptune/latest/APIReference/API_Certificate.html",
-		// 	SkipFields:  []string{"CertificateArn"},
-		// 	ExtraColumns: append(
-		// 		defaultRegionalColumns,
-		// 		[]codegen.ColumnDefinition{
-		// 			{
-		// 				Name:     "arn",
-		// 				Type:     schema.TypeString,
-		// 				Resolver: `schema.PathResolver("CertificateArn")`,
-		// 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-		// 			},
-		// 		}...),
-		// },
 		{
 			SubService:  "cluster_parameter_groups",
 			Struct:      &types.DBClusterParameterGroup{},
@@ -135,48 +119,22 @@ func NeptuneResources() []*Resource {
 					},
 				}...),
 		},
-		// {
-		// 	SubService:  "db_security_groups",
-		// 	Struct:      &types.DBSecurityGroup{},
-		// 	Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSecurityGroup.html",
-		// 	SkipFields:  []string{"DBSecurityGroupArn"},
-		// 	ExtraColumns: append(
-		// 		defaultRegionalColumns,
-		// 		[]codegen.ColumnDefinition{
-		// 			{
-		// 				Name:     "arn",
-		// 				Type:     schema.TypeString,
-		// 				Resolver: `schema.PathResolver("DBSecurityGroupArn")`,
-		// 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-		// 			},
-		// 			{
-		// 				Name:     "tags",
-		// 				Type:     schema.TypeJSON,
-		// 				Resolver: `resolveNeptuneDbSecurityGroupTags`,
-		// 			},
-		// 		}...),
-		// },
-		// {
-		// 	SubService:  "db_snapshots",
-		// 	Struct:      &types.DBClusterSnapshot{},
-		// 	Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots",
-		// 	SkipFields:  []string{"DBSnapshotArn"},
-		// 	ExtraColumns: append(
-		// 		defaultRegionalColumns,
-		// 		[]codegen.ColumnDefinition{
-		// 			{
-		// 				Name:     "arn",
-		// 				Type:     schema.TypeString,
-		// 				Resolver: `schema.PathResolver("DBSnapshotArn")`,
-		// 				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-		// 			},
-		// 			{
-		// 				Name:     "attributes",
-		// 				Type:     schema.TypeJSON,
-		// 				Resolver: `resolveNeptuneDBSnapshotAttributes`,
-		// 			},
-		// 		}...),
-		// },
+		{
+			SubService:  "global_clusters",
+			Struct:      &types.GlobalCluster{},
+			Description: "https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances",
+			SkipFields:  []string{"GlobalClusterArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("GlobalClusterArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
 		{
 			SubService:  "event_subscriptions",
 			Struct:      &types.EventSubscription{},

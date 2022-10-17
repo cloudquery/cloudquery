@@ -155,26 +155,6 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBClusters(arg0, arg1 interface
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBClusters", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeDBClusters), varargs...)
 }
 
-// DescribeDBEngineVersions mocks base method.
-func (m *MockNeptuneClient) DescribeDBEngineVersions(arg0 context.Context, arg1 *neptune.DescribeDBEngineVersionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBEngineVersionsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeDBEngineVersions", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribeDBEngineVersionsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeDBEngineVersions indicates an expected call of DescribeDBEngineVersions.
-func (mr *MockNeptuneClientMockRecorder) DescribeDBEngineVersions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBEngineVersions", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeDBEngineVersions), varargs...)
-}
-
 // DescribeDBInstances mocks base method.
 func (m *MockNeptuneClient) DescribeDBInstances(arg0 context.Context, arg1 *neptune.DescribeDBInstancesInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeDBInstancesOutput, error) {
 	m.ctrl.T.Helper()
@@ -255,66 +235,6 @@ func (mr *MockNeptuneClientMockRecorder) DescribeDBSubnetGroups(arg0, arg1 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBSubnetGroups", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeDBSubnetGroups), varargs...)
 }
 
-// DescribeEngineDefaultClusterParameters mocks base method.
-func (m *MockNeptuneClient) DescribeEngineDefaultClusterParameters(arg0 context.Context, arg1 *neptune.DescribeEngineDefaultClusterParametersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEngineDefaultClusterParametersOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeEngineDefaultClusterParameters", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribeEngineDefaultClusterParametersOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeEngineDefaultClusterParameters indicates an expected call of DescribeEngineDefaultClusterParameters.
-func (mr *MockNeptuneClientMockRecorder) DescribeEngineDefaultClusterParameters(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEngineDefaultClusterParameters", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeEngineDefaultClusterParameters), varargs...)
-}
-
-// DescribeEngineDefaultParameters mocks base method.
-func (m *MockNeptuneClient) DescribeEngineDefaultParameters(arg0 context.Context, arg1 *neptune.DescribeEngineDefaultParametersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEngineDefaultParametersOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeEngineDefaultParameters", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribeEngineDefaultParametersOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeEngineDefaultParameters indicates an expected call of DescribeEngineDefaultParameters.
-func (mr *MockNeptuneClientMockRecorder) DescribeEngineDefaultParameters(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEngineDefaultParameters", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeEngineDefaultParameters), varargs...)
-}
-
-// DescribeEventCategories mocks base method.
-func (m *MockNeptuneClient) DescribeEventCategories(arg0 context.Context, arg1 *neptune.DescribeEventCategoriesInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEventCategoriesOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeEventCategories", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribeEventCategoriesOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeEventCategories indicates an expected call of DescribeEventCategories.
-func (mr *MockNeptuneClientMockRecorder) DescribeEventCategories(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEventCategories", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeEventCategories), varargs...)
-}
-
 // DescribeEventSubscriptions mocks base method.
 func (m *MockNeptuneClient) DescribeEventSubscriptions(arg0 context.Context, arg1 *neptune.DescribeEventSubscriptionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEventSubscriptionsOutput, error) {
 	m.ctrl.T.Helper()
@@ -335,26 +255,6 @@ func (mr *MockNeptuneClientMockRecorder) DescribeEventSubscriptions(arg0, arg1 i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEventSubscriptions", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeEventSubscriptions), varargs...)
 }
 
-// DescribeEvents mocks base method.
-func (m *MockNeptuneClient) DescribeEvents(arg0 context.Context, arg1 *neptune.DescribeEventsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeEventsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeEvents", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribeEventsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeEvents indicates an expected call of DescribeEvents.
-func (mr *MockNeptuneClientMockRecorder) DescribeEvents(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEvents", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeEvents), varargs...)
-}
-
 // DescribeGlobalClusters mocks base method.
 func (m *MockNeptuneClient) DescribeGlobalClusters(arg0 context.Context, arg1 *neptune.DescribeGlobalClustersInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeGlobalClustersOutput, error) {
 	m.ctrl.T.Helper()
@@ -373,66 +273,6 @@ func (mr *MockNeptuneClientMockRecorder) DescribeGlobalClusters(arg0, arg1 inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeGlobalClusters", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeGlobalClusters), varargs...)
-}
-
-// DescribeOrderableDBInstanceOptions mocks base method.
-func (m *MockNeptuneClient) DescribeOrderableDBInstanceOptions(arg0 context.Context, arg1 *neptune.DescribeOrderableDBInstanceOptionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeOrderableDBInstanceOptionsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeOrderableDBInstanceOptions", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribeOrderableDBInstanceOptionsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeOrderableDBInstanceOptions indicates an expected call of DescribeOrderableDBInstanceOptions.
-func (mr *MockNeptuneClientMockRecorder) DescribeOrderableDBInstanceOptions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeOrderableDBInstanceOptions", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeOrderableDBInstanceOptions), varargs...)
-}
-
-// DescribePendingMaintenanceActions mocks base method.
-func (m *MockNeptuneClient) DescribePendingMaintenanceActions(arg0 context.Context, arg1 *neptune.DescribePendingMaintenanceActionsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribePendingMaintenanceActionsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribePendingMaintenanceActions", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribePendingMaintenanceActionsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribePendingMaintenanceActions indicates an expected call of DescribePendingMaintenanceActions.
-func (mr *MockNeptuneClientMockRecorder) DescribePendingMaintenanceActions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribePendingMaintenanceActions", reflect.TypeOf((*MockNeptuneClient)(nil).DescribePendingMaintenanceActions), varargs...)
-}
-
-// DescribeValidDBInstanceModifications mocks base method.
-func (m *MockNeptuneClient) DescribeValidDBInstanceModifications(arg0 context.Context, arg1 *neptune.DescribeValidDBInstanceModificationsInput, arg2 ...func(*neptune.Options)) (*neptune.DescribeValidDBInstanceModificationsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeValidDBInstanceModifications", varargs...)
-	ret0, _ := ret[0].(*neptune.DescribeValidDBInstanceModificationsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeValidDBInstanceModifications indicates an expected call of DescribeValidDBInstanceModifications.
-func (mr *MockNeptuneClientMockRecorder) DescribeValidDBInstanceModifications(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeValidDBInstanceModifications", reflect.TypeOf((*MockNeptuneClient)(nil).DescribeValidDBInstanceModifications), varargs...)
 }
 
 // ListTagsForResource mocks base method.
