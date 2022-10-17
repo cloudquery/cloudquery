@@ -51,6 +51,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
@@ -248,6 +249,14 @@ func tables() []*schema.Table {
 		lightsail.LoadBalancers(),
 		lightsail.StaticIps(),
 		mq.Brokers(),
+		neptune.ClusterParameterGroups(),
+		neptune.Clusters(),
+		neptune.ClusterSnapshots(),
+		neptune.ClusterSnapshots(),
+		neptune.DbParameterGroups(),
+		neptune.EventSubscriptions(),
+		neptune.Instances(),
+		neptune.SubnetGroups(),
 		organizations.Accounts(),
 		qldb.Ledgers(),
 		rds.Certificates(),
