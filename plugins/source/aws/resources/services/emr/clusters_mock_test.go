@@ -17,7 +17,12 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 	if err := faker.FakeObject(&summary); err != nil {
 		t.Fatal(err)
 	}
-	mock.EXPECT().ListClusters(gomock.Any(), &emr.ListClustersInput{}, gomock.Any()).Return(
+	mock.EXPECT().ListClusters(gomock.Any(), &emr.ListClustersInput{ClusterStates: []types.ClusterState{
+		types.ClusterStateRunning,
+		types.ClusterStateStarting,
+		types.ClusterStateBootstrapping,
+		types.ClusterStateWaiting,
+	}}, gomock.Any()).Return(
 		&emr.ListClustersOutput{Clusters: []types.ClusterSummary{summary}},
 		nil,
 	)
