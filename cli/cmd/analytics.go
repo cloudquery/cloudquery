@@ -53,7 +53,7 @@ func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
-				Path:    destinationSpec.Name,
+				Path:    destinationSpec.Path,
 				Version: destinationSpec.Version,
 			})
 		}

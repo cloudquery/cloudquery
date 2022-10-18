@@ -36,7 +36,14 @@ func NewCmdRoot() *cobra.Command {
 	logFileName := "cloudquery.log"
 	sentryDsn := sentryDsnDefault
 
-	err := telemetryLevel.Set(getEnvOrDefault("CQ_TELEMETRY_LEVEL", telemetryLevel.Value))
+	// support legacy telemetry environment variable,
+	// but the newer CQ_TELEMETRY_LEVEL environment variable takes precedence
+	defaultTelemetryValue := telemetryLevel.Value
+	legacyTelemetry := os.Getenv("CQ_NO_TELEMETRY")
+	if legacyTelemetry != "" {
+		defaultTelemetryValue = "none"
+	}
+	err := telemetryLevel.Set(getEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to set telemetry level: "+err.Error())
 		os.Exit(1)
@@ -59,6 +66,11 @@ func NewCmdRoot() *cobra.Command {
 			var err error
 			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
 				return err
+			}
+
+			// log warnings now that the logger is initialized
+			if legacyTelemetry != "" {
+				log.Warn().Msg("The CQ_NO_TELEMETRY environment variable will be deprecated, please use CQ_TELEMETRY_LEVEL=none instead.")
 			}
 
 			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
@@ -116,6 +128,7 @@ func NewCmdRoot() *cobra.Command {
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
+
 	return cmd
 }
 
