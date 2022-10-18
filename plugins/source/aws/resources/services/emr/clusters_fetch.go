@@ -11,7 +11,14 @@ import (
 )
 
 func fetchEmrClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config emr.ListClustersInput
+	config := emr.ListClustersInput{
+		ClusterStates: []types.ClusterState{
+			types.ClusterStateRunning,
+			types.ClusterStateStarting,
+			types.ClusterStateBootstrapping,
+			types.ClusterStateWaiting,
+		},
+	}
 	c := meta.(*client.Client)
 	svc := c.Services().EMR
 	for {

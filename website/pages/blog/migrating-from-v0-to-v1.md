@@ -36,7 +36,7 @@ spec:
   name: "aws" # required
  
   # Required. Must be a specific version starting with v, e.g. v1.2.3
-  version: "v3.0.1" # latest version of aws plugin
+  version: "v3.1.0" # latest version of aws plugin
  
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
@@ -134,7 +134,7 @@ The `sync` command supports loading config from files or directories, and you ma
 kind: source
 spec:
     name: "aws"
-    version: "v3.0.1" # latest version of aws plugin
+    version: "v3.1.0" # latest version of aws plugin
     # rest of source spec here
 ---
 kind: destination
