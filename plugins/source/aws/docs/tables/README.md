@@ -14,6 +14,7 @@
 | [aws_apigatewayv2_domain_names](aws_apigatewayv2_domain_names.md)| [aws_apigatewayv2_domain_name_rest_api_mappings](aws_apigatewayv2_domain_name_rest_api_mappings.md)| https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html|
 | [aws_apigatewayv2_vpc_links](aws_apigatewayv2_vpc_links.md)| | https://docs.aws.amazon.com/apigateway/latest/api/API_VpcLink.html|
 | [aws_applicationautoscaling_policies](aws_applicationautoscaling_policies.md)| | https://docs.aws.amazon.com/autoscaling/plans/APIReference/API_ScalingPolicy.html|
+| [aws_apprunner_services](aws_apprunner_services.md)| | https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html|
 | [aws_appsync_graphql_apis](aws_appsync_graphql_apis.md)| | https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html|
 | [aws_athena_data_catalogs](aws_athena_data_catalogs.md)| [aws_athena_data_catalog_databases](aws_athena_data_catalog_databases.md)| https://docs.aws.amazon.com/athena/latest/APIReference/API_DataCatalog.html|
 | [aws_athena_work_groups](aws_athena_work_groups.md)| [aws_athena_work_group_prepared_statements](aws_athena_work_group_prepared_statements.md)<br />[aws_athena_work_group_query_executions](aws_athena_work_group_query_executions.md)<br />[aws_athena_work_group_named_queries](aws_athena_work_group_named_queries.md)| https://docs.aws.amazon.com/athena/latest/APIReference/API_WorkGroup.html|
