@@ -1,26 +1,26 @@
 package recipes
 
 import (
-	"github.com/aws/aws-sdk-go-v2/service/appsync/types"
+	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/plugin-sdk/codegen"
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func Apprunner() []*Resource {
+func ApprunnerResources() []*Resource {
 	resources := []*Resource{
 		{
-			SubService:  "graphql_apis",
-			Struct:      &types.GraphqlApi{},
-			Description: "https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html",
-			SkipFields:  []string{"Arn"},
-			Multiplex:   `client.ServiceAccountRegionMultiplexer("appsync")`,
+			SubService:  "services",
+			Struct:      &types.Service{},
+			Description: "https://docs.aws.amazon.com/apprunner/latest/api/API_Service.html",
+			SkipFields:  []string{"ServiceArn"},
+			Multiplex:   `client.ServiceAccountRegionMultiplexer("apprunner")`,
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
 					{
 						Name:     "arn",
 						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("Arn")`,
+						Resolver: `schema.PathResolver("ServiceArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),
@@ -28,7 +28,7 @@ func Apprunner() []*Resource {
 	}
 
 	for _, r := range resources {
-		r.Service = "appsync"
+		r.Service = "apprunner"
 	}
 	return resources
 }

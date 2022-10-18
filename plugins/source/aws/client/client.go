@@ -135,7 +135,7 @@ type Services struct {
 	Apigateway             ApigatewayClient
 	Apigatewayv2           Apigatewayv2Client
 	ApplicationAutoscaling ApplicationAutoscalingClient
-	Apprunner              ApprunnerClient
+	Apprunner              AppRunnerClient
 	AppSync                AppSyncClient
 	Athena                 AthenaClient
 	Autoscaling            AutoscalingClient
