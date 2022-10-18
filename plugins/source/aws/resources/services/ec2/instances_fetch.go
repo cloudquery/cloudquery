@@ -46,7 +46,7 @@ func resolveInstanceArn(_ context.Context, meta schema.ClientMeta, resource *sch
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "instances/" + aws.ToString(item.InstanceId),
+		Resource:  "instance/" + aws.ToString(item.InstanceId),
 	}
 	return resource.Set(c.Name, a.String())
 }
