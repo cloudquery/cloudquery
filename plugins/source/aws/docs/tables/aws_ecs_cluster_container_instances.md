@@ -1,6 +1,6 @@
 # Table: aws_ecs_cluster_container_instances
 
-
+https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html
 
 The primary key for this table is **_cq_id**.
 

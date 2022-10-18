@@ -4,6 +4,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: release-please-main
+  cancel-in-progress: true
+
 jobs:
   release-pr:
     runs-on: ubuntu-latest

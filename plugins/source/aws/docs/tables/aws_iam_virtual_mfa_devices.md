@@ -1,6 +1,6 @@
 # Table: aws_iam_virtual_mfa_devices
 
-
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html
 
 The primary key for this table is **serial_number**.
 

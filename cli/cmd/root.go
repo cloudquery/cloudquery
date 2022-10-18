@@ -31,7 +31,6 @@ Find more information at:
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
-	noColor := false
 	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
@@ -79,7 +78,7 @@ func NewCmdRoot() *cobra.Command {
 				if logFormat.String() == "text" {
 					writers = append(writers, zerolog.ConsoleWriter{
 						Out:             os.Stderr,
-						NoColor:         noColor,
+						NoColor:         true,
 						FormatTimestamp: formatTimestampUtcRfc3339,
 					})
 				} else {
@@ -110,6 +109,7 @@ func NewCmdRoot() *cobra.Command {
 					return err
 				}
 			}
+
 			return nil
 		},
 		PersistentPostRun: func(cmd *cobra.Command, args []string) {
@@ -119,9 +119,18 @@ func NewCmdRoot() *cobra.Command {
 		},
 	}
 
-	cmd.PersistentFlags().String("data-dir", "./.cq", "set persistent data directory (env: CQ_DATA_DIR)")
+	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
+	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
+	err := cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
+	if err != nil {
+		panic(err)
+	}
 
-	cmd.PersistentFlags().String("color", "auto", "Enable colorized output (on, off, auto)")
+	cmd.PersistentFlags().String("color", "auto", "Enable colorized output when log-console is set (on, off, auto)")
+	err = cmd.PersistentFlags().MarkDeprecated("color", "console logs are always colorless")
+	if err != nil {
+		panic(err)
+	}
 
 	// Logging Flags
 	cmd.PersistentFlags().BoolVar(&logConsole, "log-console", false, "enable console logging")

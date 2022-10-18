@@ -9,9 +9,10 @@ import (
 
 func Databases() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_lightsail_databases",
-		Resolver:  fetchLightsailDatabases,
-		Multiplex: client.ServiceAccountRegionMultiplexer("lightsail"),
+		Name:        "aws_lightsail_databases",
+		Description: "https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabase.html",
+		Resolver:    fetchLightsailDatabases,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("lightsail"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

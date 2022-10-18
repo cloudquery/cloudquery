@@ -1,6 +1,6 @@
 # Table: aws_ssm_instances
 
-
+https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html
 
 The primary key for this table is **arn**.
 

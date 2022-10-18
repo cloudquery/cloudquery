@@ -1,6 +1,6 @@
 # Table: aws_ecrpublic_repositories
 
-
+https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_Repository.html
 
 The primary key for this table is **arn**.
 

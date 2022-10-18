@@ -1,6 +1,6 @@
 # Table: aws_rds_certificates
 
-
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html
 
 The primary key for this table is **arn**.
 

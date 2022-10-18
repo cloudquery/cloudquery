@@ -1,6 +1,6 @@
 # Table: aws_eventbridge_event_buses
 
-
+https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_EventBus.html
 
 The primary key for this table is **arn**.
 

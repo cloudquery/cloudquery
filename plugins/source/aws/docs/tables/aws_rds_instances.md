@@ -1,6 +1,6 @@
 # Table: aws_rds_instances
 
-
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html
 
 The primary key for this table is **arn**.
 

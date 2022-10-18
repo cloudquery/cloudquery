@@ -1,6 +1,6 @@
 # Table: aws_ecrpublic_repository_images
 
-
+https://docs.aws.amazon.com/AmazonECRPublic/latest/APIReference/API_ImageDetail.html
 
 The primary key for this table is **arn**.
 

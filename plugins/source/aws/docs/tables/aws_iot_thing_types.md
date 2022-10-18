@@ -1,6 +1,6 @@
 # Table: aws_iot_thing_types
 
-
+https://docs.aws.amazon.com/iot/latest/apireference/API_ThingTypeDefinition.html
 
 The primary key for this table is **arn**.
 
