@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"github.com/thoas/go-funk"
 )
 
 const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
@@ -26,7 +27,7 @@ Find more information at:
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
-	telemetryLevel := enum.NewEnum([]string{"none", "errors", "all"}, "all")
+	telemetryLevel := enum.NewEnum([]string{"none", "errors", "stats", "all"}, "all")
 	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
@@ -49,14 +50,16 @@ func NewCmdRoot() *cobra.Command {
 				return err
 			}
 
-			if telemetryLevel.String() == "all" && Version != "development" {
+			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
+			if Version != "development" && sendStats {
 				analyticsClient, err = initAnalytics()
 				if err != nil {
 					log.Warn().Err(err).Msg("failed to initialize analytics client")
 				}
 			}
 
-			if sentryDsn != "" && Version != "development" && telemetryLevel.String() != "none" {
+			sendErrors := funk.ContainsString([]string{"all", "errors"}, telemetryLevel.String())
+			if sentryDsn != "" && Version != "development" && sendErrors {
 				if err := initSentry(sentryDsn, Version); err != nil {
 					// we don't fail on sentry init errors as there might be no connection or sentry can be blocked.
 					log.Warn().Err(err).Msg("failed to initialize sentry")
@@ -87,7 +90,7 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
 	// Telemetry (analytics) flags
-	cmd.PersistentFlags().Var(telemetryLevel, "telemetry-level", "Telemetry level (none, errors, all)")
+	cmd.PersistentFlags().Var(telemetryLevel, "telemetry-level", "Telemetry level (none, errors, stats, all)")
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
