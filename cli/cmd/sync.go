@@ -211,7 +211,9 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
 		Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
-	if analyticsClient != nil {
+
+	// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
+	if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
 		log.Info().Msg("Sending sync summary to " + analyticsHost)
 		if err := analyticsClient.SendSyncSummary(ctx, sourceSpec, destinationsSpecs, uid, *summary); err != nil {
 			log.Warn().Err(err).Msg("Failed to send sync summary")
