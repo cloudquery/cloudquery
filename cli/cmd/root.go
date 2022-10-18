@@ -68,6 +68,11 @@ func NewCmdRoot() *cobra.Command {
 				return err
 			}
 
+			// log warnings now that the logger is initialized
+			if legacyTelemetry != "" {
+				log.Warn().Msg("The CQ_NO_TELEMETRY environment variable will be deprecated, please use CQ_TELEMETRY_LEVEL=none instead.")
+			}
+
 			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
 			if Version != "development" && sendStats {
 				analyticsClient, err = initAnalytics()
@@ -123,6 +128,7 @@ func NewCmdRoot() *cobra.Command {
 	cmd.AddCommand(NewCmdSync(), newCmdDoc())
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
+
 	return cmd
 }
 
