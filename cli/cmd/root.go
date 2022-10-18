@@ -15,7 +15,7 @@ var (
 	rootShort = "CloudQuery CLI"
 	rootLong  = `CloudQuery CLI
 
-Open source data integration that works.
+Open source data integration at scale.
 
 Find more information at:
 	https://cloudquery.io`
@@ -26,7 +26,7 @@ Find more information at:
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
-	telemetryLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
+	telemetryLevel := enum.NewEnum([]string{"none", "errors", "all"}, "all")
 	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
@@ -49,7 +49,7 @@ func NewCmdRoot() *cobra.Command {
 				return err
 			}
 
-			if telemetryLevel.String() == "all" {
+			if telemetryLevel.String() == "all" && Version != "development" {
 				analyticsClient, err = initAnalytics()
 				if err != nil {
 					log.Warn().Err(err).Msg("failed to initialize analytics client")
@@ -69,7 +69,9 @@ func NewCmdRoot() *cobra.Command {
 			if logFile != nil {
 				logFile.Close()
 			}
-			analyticsClient.Close()
+			if analyticsClient != nil {
+				analyticsClient.Close()
+			}
 		},
 	}
 
@@ -84,7 +86,7 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(&noLogFile, "no-log-file", false, "Disable logging to file")
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
-	// Telemtry (analytics) flags
+	// Telemetry (analytics) flags
 	cmd.PersistentFlags().Var(telemetryLevel, "telemetry-level", "Telemetry level (none, errors, all)")
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})

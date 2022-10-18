@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"fmt"
+	"github.com/google/uuid"
 	"strings"
 	"time"
 
@@ -45,6 +46,11 @@ func sync(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
+	invocationUUID, err := uuid.NewRandom()
+	if err != nil {
+		return fmt.Errorf("failed to generate invocation uuid: %w", err)
+	}
+
 	for _, sourceSpec := range specReader.Sources {
 		if len(sourceSpec.Destinations) == 0 {
 			return fmt.Errorf("no destinations found for source %s", sourceSpec.Name)
@@ -57,7 +63,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, *sourceSpec, destinationsSpecs); err != nil {
+		if err := syncConnection(ctx, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 	}
@@ -65,7 +71,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination) error {
+func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string) error {
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
@@ -195,11 +201,14 @@ func syncConnection(ctx context.Context, sourceSpec specs.Source, destinationsSp
 	tt := time.Since(syncTime)
 
 	fmt.Println("Sync completed successfully.")
-	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", totalResources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
+	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
 		Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
-	if err := analyticsClient.SendSyncSummary(ctx, sourceSpec, destinationsSpecs, totalResources, summary.Errors, summary.Panics); err != nil {
-		log.Warn().Err(err).Msg("Failed to send sync summary")
+	if analyticsClient != nil {
+		log.Info().Msg("Sending sync summary to " + analyticsHost)
+		if err := analyticsClient.SendSyncSummary(ctx, sourceSpec, destinationsSpecs, uid, *summary); err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync summary")
+		}
 	}
 	return nil
 }
