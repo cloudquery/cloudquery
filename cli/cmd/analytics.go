@@ -4,8 +4,8 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
-
 	"github.com/cloudquery/cloudquery/cli/internal/pb"
+	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -29,7 +29,6 @@ func initAnalytics() (*AnalyticsClient, error) {
 		RootCAs: systemRoots,
 	})
 	conn, err := grpc.Dial(analyticsHost, grpc.WithAuthority(analyticsHost), grpc.WithTransportCredentials(cred))
-	// conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return nil, err
 	}
@@ -40,24 +39,27 @@ func initAnalytics() (*AnalyticsClient, error) {
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, resources uint64, errors uint64, panics uint64) error {
+func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, summary schema.SyncSummary) error {
 	if c.client != nil {
-		summary := &pb.SyncSummary{
-			SourceName:    sourceSpec.Path,
-			SourceVersion: sourceSpec.Version,
-			Resources:     int64(resources),
-			Errors:        int64(errors),
-			Panics:        int64(panics),
+		syncSummary := &pb.SyncSummary{
+			Invocation_UUID: invocationUUID,
+			SourcePath:      sourceSpec.Path,
+			SourceVersion:   sourceSpec.Version,
+			Destinations:    make([]*pb.Destination, 1),
+			Resources:       int64(summary.Resources),
+			Errors:          int64(summary.Errors),
+			Panics:          int64(summary.Panics),
+			ClientVersion:   Version,
 		}
 		for _, destinationSpec := range destinationsSpecs {
-			summary.Dest = append(summary.Dest, &pb.Destination{
-				Name:    destinationSpec.Name,
+			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
+				Path:    destinationSpec.Name,
 				Version: destinationSpec.Version,
 			})
 		}
 
 		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
-			SyncSummary: summary,
+			SyncSummary: syncSummary,
 		})
 		return err
 	}
