@@ -3,9 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/rs/zerolog"
-	"github.com/spf13/viper"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
@@ -38,7 +36,11 @@ func NewCmdRoot() *cobra.Command {
 	logFileName := "cloudquery.log"
 	sentryDsn := sentryDsnDefault
 
-	telemetryLevel.Set(getEnvOrDefault("CQ_TELEMETRY_LEVEL", telemetryLevel.Value))
+	err := telemetryLevel.Set(getEnvOrDefault("CQ_TELEMETRY_LEVEL", telemetryLevel.Value))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to set telemetry level: "+err.Error())
+		os.Exit(1)
+	}
 
 	var logFile *os.File
 	cmd := &cobra.Command{
@@ -89,7 +91,7 @@ func NewCmdRoot() *cobra.Command {
 
 	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
 	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
-	err := cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
+	err = cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
 	if err != nil {
 		panic(err)
 	}
@@ -115,12 +117,6 @@ func NewCmdRoot() *cobra.Command {
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	return cmd
-}
-
-func initViper() {
-	viper.AutomaticEnv()
-	viper.SetEnvPrefix("CQ")
-	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 }
 
 // formats a timestamp in UTC and RFC3339
