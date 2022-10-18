@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.0.1...plugins-source-aws-v3.1.0) (2022-10-18)
+
+
+### Features
+
+* Add URLs to docs for more AWS resources ([#2729](https://github.com/cloudquery/cloudquery/issues/2729)) ([665aea2](https://github.com/cloudquery/cloudquery/commit/665aea252fc893d5d8f3f5234b67876009144b47))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.9 ([#2926](https://github.com/cloudquery/cloudquery/issues/2926)) ([1fe9a43](https://github.com/cloudquery/cloudquery/commit/1fe9a43ac58555ee75e6f26a402e22853532ab7f))
+* Improve IAM Policy sync performance ([#2826](https://github.com/cloudquery/cloudquery/issues/2826)) ([13d4689](https://github.com/cloudquery/cloudquery/commit/13d46898c8ea98540e3618666256af92daac9537))
+
 ## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.0.0...plugins-source-aws-v3.0.1) (2022-10-16)
 
 
