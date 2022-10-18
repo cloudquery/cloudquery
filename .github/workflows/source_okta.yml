@@ -5,6 +5,12 @@ on:
     paths:
       - "plugins/source/okta/**"
       - ".github/workflows/source_okta.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/okta/**"
+      - ".github/workflows/source_okta.yml"
 
 defaults:
   run:
@@ -37,6 +43,8 @@ jobs:
       - name: Test
         run: make test
       - name: gen-docs
+        if: github.event_name == 'pull_request'
         run: make gen-docs
       - name: Fail if docs are changed
+        if: github.event_name == 'pull_request'
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0

@@ -5,6 +5,12 @@ on:
     paths:
       - "plugins/source/test/**"
       - ".github/workflows/source_test.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/test/**"
+      - ".github/workflows/source_test.yml"
 
 defaults:
   run:
@@ -37,6 +43,8 @@ jobs:
       - name: Test
         run: make test
       - name: build-docs
+        if: github.event_name == 'pull_request'
         run: make gen-docs
       - name: Fail if docs are changed
+        if: github.event_name == 'pull_request'
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
