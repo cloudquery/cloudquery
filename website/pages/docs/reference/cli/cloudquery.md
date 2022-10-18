@@ -9,7 +9,7 @@ CloudQuery CLI
 
 CloudQuery CLI
 
-Open source data integration that works.
+Open source data integration at scale.
 
 Find more information at:
 	https://cloudquery.io
@@ -24,7 +24,7 @@ Find more information at:
       --log-format string        Logging format (json, text) (default "text")
       --log-level string         Logging level (default "info")
       --no-log-file              Disable logging to file
-      --telemetry-level string   Telemetry level (none, errors, all) (default "all")
+      --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
 ### SEE ALSO
