@@ -1,6 +1,6 @@
 # Table: aws_rds_clusters
 
-
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html
 
 The primary key for this table is **arn**.
 
@@ -82,5 +82,4 @@ The primary key for this table is **arn**.
 |status|String|
 |storage_encrypted|Bool|
 |storage_type|String|
-|tag_list|JSON|
 |vpc_security_groups|JSON|

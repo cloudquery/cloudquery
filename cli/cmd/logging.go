@@ -24,7 +24,11 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		}
 		if logFormat.String() == "text" {
 			// for file logging we dont need color. we can add it as an option but don't think it is useful
-			writers = append(writers, zerolog.ConsoleWriter{Out: logFile, NoColor: true})
+			writers = append(writers, zerolog.ConsoleWriter{
+				Out:             logFile,
+				NoColor:         true,
+				FormatTimestamp: formatTimestampUtcRfc3339,
+			})
 		} else {
 			writers = append(writers, logFile)
 		}
@@ -34,7 +38,11 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 			return nil, fmt.Errorf("failed to close stdout: %w", err)
 		}
 		if logFormat.String() == "text" {
-			writers = append(writers, zerolog.ConsoleWriter{Out: os.Stderr, NoColor: false})
+			writers = append(writers, zerolog.ConsoleWriter{
+				Out:             os.Stderr,
+				NoColor:         true,
+				FormatTimestamp: formatTimestampUtcRfc3339,
+			})
 		} else {
 			writers = append(writers, os.Stderr)
 		}

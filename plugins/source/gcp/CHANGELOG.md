@@ -5,6 +5,38 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.0.2...plugins-source-gcp-v2.0.3) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.13.9 ([#2931](https://github.com/cloudquery/cloudquery/issues/2931)) ([7b95252](https://github.com/cloudquery/cloudquery/commit/7b95252b430027a732d1462168e16360615d6085))
+
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.0.1...plugins-source-gcp-v2.0.2) (2022-10-18)
+
+
+### Bug Fixes
+
+* **gcp-policy:** Correct broken file path ([#2911](https://github.com/cloudquery/cloudquery/issues/2911)) ([9346279](https://github.com/cloudquery/cloudquery/commit/9346279b36d385ca910ae122d866d5e974741c16))
+
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.0.0...plugins-source-gcp-v2.0.1) (2022-10-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.13.8 ([#2853](https://github.com/cloudquery/cloudquery/issues/2853)) ([c4507c3](https://github.com/cloudquery/cloudquery/commit/c4507c3e2374c5f5ecd3f2702f47a2a7d2f523ae))
+
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.6...plugins-source-gcp-v2.0.0) (2022-10-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* Rollback: Remove the 'functions.Timeout' column (#2845)
+
+### Bug Fixes
+
+* Rollback: Remove the 'functions.Timeout' column ([#2845](https://github.com/cloudquery/cloudquery/issues/2845)) ([3fc8bce](https://github.com/cloudquery/cloudquery/commit/3fc8bce29fd55f5f1687add265624396a03055d4))
+
 ## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v1.0.5...plugins-source-gcp-v1.0.6) (2022-10-13)
 
 

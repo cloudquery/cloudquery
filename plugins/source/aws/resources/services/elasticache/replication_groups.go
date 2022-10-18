@@ -9,9 +9,10 @@ import (
 
 func ReplicationGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_elasticache_replication_groups",
-		Resolver:  fetchElasticacheReplicationGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("elasticache"),
+		Name:        "aws_elasticache_replication_groups",
+		Description: "https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReplicationGroup.html",
+		Resolver:    fetchElasticacheReplicationGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("elasticache"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

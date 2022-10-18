@@ -5,6 +5,41 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.0...cli-v1.2.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.9 ([#2928](https://github.com/cloudquery/cloudquery/issues/2928)) ([017e8e0](https://github.com/cloudquery/cloudquery/commit/017e8e00791a547abd7c92677aaadfcb4a9e4e7a))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.5...cli-v1.2.0) (2022-10-16)
+
+
+### Features
+
+* Deprecate --data-dir in favor of --cq-dir ([#2796](https://github.com/cloudquery/cloudquery/issues/2796)) ([75278ae](https://github.com/cloudquery/cloudquery/commit/75278aed376ffceea46d70fd464e7bd5c60fb4ad))
+
+## [1.1.5](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.4...cli-v1.1.5) (2022-10-16)
+
+
+### Bug Fixes
+
+* **cli:** Deprecate color flag ([#2812](https://github.com/cloudquery/cloudquery/issues/2812)) ([9565195](https://github.com/cloudquery/cloudquery/commit/95651957931271a002a2ca5cc343842b9773aab6))
+
+## [1.1.4](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.3...cli-v1.1.4) (2022-10-16)
+
+
+### Bug Fixes
+
+* Log timestamps in UTC and RFC3339 ([#2839](https://github.com/cloudquery/cloudquery/issues/2839)) ([44fe6ba](https://github.com/cloudquery/cloudquery/commit/44fe6ba0ab627e18f31290a81c1951ba70f47c6e))
+
+## [1.1.3](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.2...cli-v1.1.3) (2022-10-14)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for cli to v0.13.8 ([#2850](https://github.com/cloudquery/cloudquery/issues/2850)) ([1a79e1c](https://github.com/cloudquery/cloudquery/commit/1a79e1c2d8ebf8c73afc200696748704088962c4))
+
 ## [1.1.2](https://github.com/cloudquery/cloudquery/compare/cli-v1.1.1...cli-v1.1.2) (2022-10-13)
 
 

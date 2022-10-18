@@ -32,8 +32,7 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 ### Options inherited from parent commands
 
 ```
-      --color string             Enable colorized output (on, off, auto) (default "auto")
-      --data-dir string          set persistent data directory (env: CQ_DATA_DIR) (default "./.cq")
+      --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
       --log-format string        Logging format (json, text) (default "text")

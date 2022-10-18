@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/okta/plugin"
+	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/serve"
 )
 

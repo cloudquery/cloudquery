@@ -1,7 +1,12 @@
 package cmd
 
 import (
+	"fmt"
+	"github.com/rs/zerolog"
+	"github.com/spf13/viper"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/rs/zerolog/log"
@@ -42,6 +47,10 @@ func NewCmdRoot() *cobra.Command {
 		Long:    rootLong,
 		Version: Version,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			zerolog.TimestampFunc = func() time.Time {
+				return time.Now().UTC()
+			}
+
 			// Don't print usage on command errors.
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
@@ -78,9 +87,18 @@ func NewCmdRoot() *cobra.Command {
 		},
 	}
 
-	cmd.PersistentFlags().String("data-dir", "./.cq", "set persistent data directory (env: CQ_DATA_DIR)")
+	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
+	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
+	err := cmd.PersistentFlags().MarkDeprecated("data-dir", "use cq-dir instead")
+	if err != nil {
+		panic(err)
+	}
 
-	cmd.PersistentFlags().String("color", "auto", "Enable colorized output (on, off, auto)")
+	cmd.PersistentFlags().String("color", "auto", "Enable colorized output when log-console is set (on, off, auto)")
+	err = cmd.PersistentFlags().MarkDeprecated("color", "console logs are always colorless")
+	if err != nil {
+		panic(err)
+	}
 
 	// Logging Flags
 	cmd.PersistentFlags().BoolVar(&logConsole, "log-console", false, "enable console logging")
@@ -97,4 +115,20 @@ func NewCmdRoot() *cobra.Command {
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	return cmd
+}
+
+func initViper() {
+	viper.AutomaticEnv()
+	viper.SetEnvPrefix("CQ")
+	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
+}
+
+// formats a timestamp in UTC and RFC3339
+func formatTimestampUtcRfc3339(timestamp interface{}) string {
+	timestampConcrete, ok := timestamp.(time.Time)
+	if !ok {
+		return fmt.Sprintf("%v", timestamp)
+	}
+
+	return timestampConcrete.UTC().Format(time.RFC3339)
 }

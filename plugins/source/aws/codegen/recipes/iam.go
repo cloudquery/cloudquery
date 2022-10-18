@@ -104,9 +104,10 @@ func IAMResources() []*Resource {
 			Relations: []string{},
 		},
 		{
-			SubService: "groups",
-			Struct:     &types.Group{},
-			SkipFields: []string{"GroupId"},
+			SubService:  "groups",
+			Struct:      &types.Group{},
+			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html",
+			SkipFields:  []string{"GroupId"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -187,9 +188,10 @@ func IAMResources() []*Resource {
 			},
 		},
 		{
-			SubService: "policies",
-			Struct:     &types.ManagedPolicyDetail{},
-			SkipFields: []string{"PolicyId", "Tags", "PolicyVersionList"},
+			SubService:  "policies",
+			Struct:      &types.ManagedPolicyDetail{},
+			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html",
+			SkipFields:  []string{"PolicyId", "Tags", "PolicyVersionList"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -218,6 +220,7 @@ func IAMResources() []*Resource {
 		{
 			SubService:          "roles",
 			Struct:              &types.Role{},
+			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html",
 			SkipFields:          []string{"RoleId", "Tags", "AssumeRolePolicyDocument"},
 			PreResourceResolver: "getRole",
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -276,6 +279,7 @@ func IAMResources() []*Resource {
 		{
 			SubService:          "saml_identity_providers",
 			Struct:              &types.SAMLProviderListEntry{},
+			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_SAMLProviderListEntry.html",
 			SkipFields:          []string{"Arn", "Tags"},
 			PreResourceResolver: "getSamlIdentityProvider",
 			ExtraColumns: append(
@@ -294,9 +298,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "server_certificates",
-			Struct:     &types.ServerCertificateMetadata{},
-			SkipFields: []string{"ServerCertificateId"},
+			SubService:  "server_certificates",
+			Struct:      &types.ServerCertificateMetadata{},
+			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServerCertificateMetadata.html",
+			SkipFields:  []string{"ServerCertificateId"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:     "account_id",
@@ -315,6 +320,7 @@ func IAMResources() []*Resource {
 		{
 			SubService:          "users",
 			Struct:              &types.User{},
+			Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html",
 			SkipFields:          []string{"Arn", "AccountId", "UserId", "Tags"},
 			PreResourceResolver: "getUser",
 			ExtraColumns: []codegen.ColumnDefinition{
@@ -377,9 +383,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "user_groups",
-			Struct:     &types.Group{},
-			SkipFields: []string{},
+			SubService:  "user_groups",
+			Struct:      &types.Group{},
+			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -396,9 +403,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "user_attached_policies",
-			Struct:     &types.AttachedPolicy{},
-			SkipFields: []string{},
+			SubService:  "user_attached_policies",
+			Struct:      &types.AttachedPolicy{},
+			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{
@@ -440,9 +448,10 @@ func IAMResources() []*Resource {
 				}...),
 		},
 		{
-			SubService: "virtual_mfa_devices",
-			Struct:     &types.VirtualMFADevice{},
-			SkipFields: []string{"SerialNumber", "Tags", "UserTags"},
+			SubService:  "virtual_mfa_devices",
+			Struct:      &types.VirtualMFADevice{},
+			Description: "https://docs.aws.amazon.com/IAM/latest/APIReference/API_VirtualMFADevice.html",
+			SkipFields:  []string{"SerialNumber", "Tags", "UserTags"},
 			ExtraColumns: append(
 				defaultAccountColumns,
 				[]codegen.ColumnDefinition{

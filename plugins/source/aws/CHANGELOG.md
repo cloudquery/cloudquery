@@ -6,6 +6,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.1.0...plugins-source-aws-v3.2.0) (2022-10-18)
+
+
+### Features
+
+* **aws:** EMR Fetch only running clusters ([#2918](https://github.com/cloudquery/cloudquery/issues/2918)) ([d2f19f5](https://github.com/cloudquery/cloudquery/commit/d2f19f59218132f73612cca9b0328d01cdf60f67))
+
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.0.1...plugins-source-aws-v3.1.0) (2022-10-18)
+
+
+### Features
+
+* Add URLs to docs for more AWS resources ([#2729](https://github.com/cloudquery/cloudquery/issues/2729)) ([665aea2](https://github.com/cloudquery/cloudquery/commit/665aea252fc893d5d8f3f5234b67876009144b47))
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.9 ([#2926](https://github.com/cloudquery/cloudquery/issues/2926)) ([1fe9a43](https://github.com/cloudquery/cloudquery/commit/1fe9a43ac58555ee75e6f26a402e22853532ab7f))
+* Improve IAM Policy sync performance ([#2826](https://github.com/cloudquery/cloudquery/issues/2826)) ([13d4689](https://github.com/cloudquery/cloudquery/commit/13d46898c8ea98540e3618666256af92daac9537))
+
+## [3.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.0.0...plugins-source-aws-v3.0.1) (2022-10-16)
+
+
+### Bug Fixes
+
+* Add codegen for AWS regions ([#2701](https://github.com/cloudquery/cloudquery/issues/2701)) ([9b1b2ca](https://github.com/cloudquery/cloudquery/commit/9b1b2ca6cd1be1f7a6a0f0ab834eaad2215a2559))
+
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.5.2...plugins-source-aws-v3.0.0) (2022-10-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* More tag cleanup (#2837)
+
+### Features
+
+* **aws:** CQ Policies to Validate IMDSv2 Usage and Enforcement across EC2, Lightsail, and AMIs ([#2807](https://github.com/cloudquery/cloudquery/issues/2807)) ([31d4f79](https://github.com/cloudquery/cloudquery/commit/31d4f797fef81f93fc325f54015e8f601ea39450))
+* **aws:** Glacier resources ([#2703](https://github.com/cloudquery/cloudquery/issues/2703)) ([34e9f61](https://github.com/cloudquery/cloudquery/commit/34e9f61b992fb3ab0bd8b0c46b6c3d52104a49c3)), closes [#2583](https://github.com/cloudquery/cloudquery/issues/2583)
+
+
+### Bug Fixes
+
+* **aws:** Clean up tag fields ([#2776](https://github.com/cloudquery/cloudquery/issues/2776)) ([d071a0e](https://github.com/cloudquery/cloudquery/commit/d071a0e82ccd92c86ef84f68231415153067b5e5))
+* **deps:** Update plugin-sdk for aws to v0.13.8 ([#2848](https://github.com/cloudquery/cloudquery/issues/2848)) ([14e2571](https://github.com/cloudquery/cloudquery/commit/14e2571b65d37d797e8db521f7960ec6bfd3a6f9))
+* More tag cleanup ([#2837](https://github.com/cloudquery/cloudquery/issues/2837)) ([e781491](https://github.com/cloudquery/cloudquery/commit/e7814914b9a2e72af1d74427d86182e278acce92)), closes [#2836](https://github.com/cloudquery/cloudquery/issues/2836)
+* Update endpoints ([#2831](https://github.com/cloudquery/cloudquery/issues/2831)) ([a3b289c](https://github.com/cloudquery/cloudquery/commit/a3b289c1d2200dc2cf70bfc248c021e6a3c6c714))
+* Update endpoints ([#2890](https://github.com/cloudquery/cloudquery/issues/2890)) ([2d3b885](https://github.com/cloudquery/cloudquery/commit/2d3b885c306c12588f6253f1f326847ee82017cf))
+
 ## [2.5.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v2.5.1...plugins-source-aws-v2.5.2) (2022-10-13)
 
 

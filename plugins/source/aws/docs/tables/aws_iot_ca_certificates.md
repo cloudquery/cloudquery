@@ -1,6 +1,6 @@
 # Table: aws_iot_ca_certificates
 
-
+https://docs.aws.amazon.com/iot/latest/apireference/API_CACertificateDescription.html
 
 The primary key for this table is **arn**.
 

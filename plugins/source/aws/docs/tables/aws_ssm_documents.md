@@ -1,6 +1,6 @@
 # Table: aws_ssm_documents
 
-
+https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html
 
 The primary key for this table is **arn**.
 

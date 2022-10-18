@@ -9,9 +9,10 @@ import (
 
 func Instances() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_rds_instances",
-		Resolver:  fetchRdsInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("rds"),
+		Name:        "aws_rds_instances",
+		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBInstance.html",
+		Resolver:    fetchRdsInstances,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("rds"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -390,11 +391,6 @@ func Instances() *schema.Table {
 				Name:     "storage_type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("StorageType"),
-			},
-			{
-				Name:     "tag_list",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("TagList"),
 			},
 			{
 				Name:     "tde_credential_arn",

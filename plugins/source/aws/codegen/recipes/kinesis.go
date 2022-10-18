@@ -11,6 +11,7 @@ func KinesisResources() []*Resource {
 		{
 			SubService:          "streams",
 			Struct:              &types.StreamDescriptionSummary{},
+			Description:         "https://docs.aws.amazon.com/kinesis/latest/APIReference/API_StreamDescriptionSummary.html",
 			SkipFields:          []string{"StreamARN"},
 			PreResourceResolver: "getStream",
 			ExtraColumns: append(

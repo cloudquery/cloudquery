@@ -5,6 +5,12 @@ on:
     paths:
       - "plugins/source/k8s/**"
       - ".github/workflows/source_k8s.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/k8s/**"
+      - ".github/workflows/source_k8s.yml"
 
 defaults:
   run:
@@ -37,10 +43,14 @@ jobs:
       - name: Test
         run: make test
       - name: gen-docs
+        if: github.event_name == 'pull_request'
         run: make gen-docs
       - name: Fail if docs are changed
+        if: github.event_name == 'pull_request'
         run: test "$(git status -s ./docs/tables | wc -l)" -eq 0
       - name: gen-code
+        if: github.event_name == 'pull_request'
         run: make gen-code
       - name: Fail if code generation changed services
+        if: github.event_name == 'pull_request'
         run: test "$(git status -s ./resources/services | wc -l)" -eq 0

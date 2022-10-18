@@ -10,6 +10,7 @@ import (
 func Roles() *schema.Table {
 	return &schema.Table{
 		Name:                "aws_iam_roles",
+		Description:         "https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html",
 		Resolver:            fetchIamRoles,
 		PreResourceResolver: getRole,
 		Multiplex:           client.AccountMultiplex,

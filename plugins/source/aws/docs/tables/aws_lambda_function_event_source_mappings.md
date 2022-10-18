@@ -1,6 +1,6 @@
 # Table: aws_lambda_function_event_source_mappings
 
-
+https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html
 
 The primary key for this table is **_cq_id**.
 

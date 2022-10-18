@@ -44,6 +44,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/eventbridge v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.14.19
 	github.com/aws/aws-sdk-go-v2/service/fsx v1.25.0
+	github.com/aws/aws-sdk-go-v2/service/glacier v1.13.17
 	github.com/aws/aws-sdk-go-v2/service/guardduty v1.15.9
 	github.com/aws/aws-sdk-go-v2/service/iam v1.18.19
 	github.com/aws/aws-sdk-go-v2/service/inspector v1.12.17
@@ -76,7 +77,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/xray v1.13.19
 	github.com/aws/smithy-go v1.13.3
 	github.com/basgys/goxml2json v1.1.0
-	github.com/cloudquery/plugin-sdk v0.13.7
+	github.com/cloudquery/plugin-sdk v0.13.9
 	github.com/ettle/strcase v0.1.1
 	github.com/gocarina/gocsv v0.0.0-20220927221512-ad3251f9fa25
 	github.com/golang/mock v1.6.0
@@ -93,7 +94,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.18 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.13.6 // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
-	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/getsentry/sentry-go v0.14.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/providers/zerolog/v2 v2.0.0-rc.2 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.2 // indirect

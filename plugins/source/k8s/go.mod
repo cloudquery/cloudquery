@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/k8s
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.7
+	github.com/cloudquery/plugin-sdk v0.13.9
 	github.com/golang/mock v1.6.0
 	github.com/iancoleman/strcase v0.2.0
 	github.com/rs/zerolog v1.28.0
@@ -23,7 +23,6 @@ require (
 	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
-	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.8.0 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect

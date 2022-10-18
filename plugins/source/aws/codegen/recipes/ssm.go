@@ -11,6 +11,7 @@ func SSMResources() []*Resource {
 		{
 			SubService:          "documents",
 			Struct:              &types.DocumentDescription{},
+			Description:         "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentDescription.html",
 			SkipFields:          []string{"Tags"},
 			PreResourceResolver: "getDocument",
 			ExtraColumns: append(
@@ -36,9 +37,10 @@ func SSMResources() []*Resource {
 		},
 
 		{
-			SubService: "instances",
-			Struct:     &types.InstanceInformation{},
-			SkipFields: []string{},
+			SubService:  "instances",
+			Struct:      &types.InstanceInformation{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html",
+			SkipFields:  []string{},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -52,9 +54,10 @@ func SSMResources() []*Resource {
 			Relations: []string{`InstanceComplianceItems()`},
 		},
 		{
-			SubService: "instance_compliance_items",
-			Struct:     &types.ComplianceItem{},
-			SkipFields: []string{"Id"},
+			SubService:  "instance_compliance_items",
+			Struct:      &types.ComplianceItem{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html",
+			SkipFields:  []string{"Id"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -74,9 +77,10 @@ func SSMResources() []*Resource {
 		},
 
 		{
-			SubService: "parameters",
-			Struct:     &types.ParameterMetadata{},
-			SkipFields: []string{"Name"},
+			SubService:  "parameters",
+			Struct:      &types.ParameterMetadata{},
+			Description: "https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ParameterMetadata.html",
+			SkipFields:  []string{"Name"},
 			ExtraColumns: []codegen.ColumnDefinition{
 				{
 					Name:        "account_id",

@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/cloudflare/cloudflare-go v0.46.0
-	github.com/cloudquery/plugin-sdk v0.13.7
+	github.com/cloudquery/plugin-sdk v0.13.9
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.28.0
 )
@@ -43,7 +43,6 @@ require (
 	github.com/charithe/durationcheck v0.0.9 // indirect
 	github.com/chavacava/garif v0.0.0-20220316182200-5cad0b5181d4 // indirect
 	github.com/client9/misspell v0.3.4 // indirect
-	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/daixiang0/gci v0.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/denis-tingaikin/go-header v0.4.3 // indirect

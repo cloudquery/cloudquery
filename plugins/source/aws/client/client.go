@@ -53,6 +53,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -167,6 +168,7 @@ type Services struct {
 	EventBridge            EventBridgeClient
 	Firehose               FirehoseClient
 	FSX                    FsxClient
+	Glacier                GlacierClient
 	Glue                   GlueClient
 	GuardDuty              GuardDutyClient
 	IAM                    IamClient
@@ -645,6 +647,7 @@ func initServices(region string, c aws.Config) Services {
 		EventBridge:            eventbridge.NewFromConfig(awsCfg),
 		Firehose:               firehose.NewFromConfig(awsCfg),
 		FSX:                    fsx.NewFromConfig(awsCfg),
+		Glacier:                glacier.NewFromConfig(awsCfg),
 		Glue:                   glue.NewFromConfig(awsCfg),
 		GuardDuty:              guardduty.NewFromConfig(awsCfg),
 		IAM:                    iam.NewFromConfig(awsCfg),
