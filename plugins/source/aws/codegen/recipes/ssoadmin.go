@@ -16,7 +16,7 @@ func SSOAdminResources() []*Resource {
 	// set default values
 	for _, r := range resources {
 		r.Service = "ssoadmin"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("ssoadmin")`
+		r.Multiplex = `client.ServiceAccountRegionMultiplexer("identitystore")`
 	}
 	return resources
 }
