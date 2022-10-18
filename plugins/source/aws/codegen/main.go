@@ -13,6 +13,7 @@ func main() {
 	resources = append(resources, recipes.APIGatewayResources()...)
 	resources = append(resources, recipes.APIGatewayV2Resources()...)
 	resources = append(resources, recipes.ApplicationAutoScalingResources()...)
+	resources = append(resources, recipes.ApprunnerResources()...)
 	resources = append(resources, recipes.AppSync()...)
 	resources = append(resources, recipes.AthenaResources()...)
 	resources = append(resources, recipes.AutoscalingResources()...)
