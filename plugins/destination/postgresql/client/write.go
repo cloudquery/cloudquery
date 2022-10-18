@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/specs"
@@ -31,52 +32,37 @@ func (c *Client) Write(ctx context.Context, table string, data map[string]interf
 	return nil
 }
 
-func insert(table string, data map[string]interface{}) (string, []interface{}) {
-	var sb strings.Builder
-
-	columns := make([]string, 0, len(data))
-	values := make([]interface{}, 0, len(data))
-
-	// Sort the columns prior to adding data to columns and values arrays
-	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
-	keys := make([]string, 0, len(data))
-	for k := range data {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		columns = append(columns, pgx.Identifier{key}.Sanitize())
-		values = append(values, data[key])
-	}
-	sb.WriteString("insert into ")
-	sb.WriteString(table)
-	sb.WriteString(" (")
-	sort.Strings(columns)
-	for i, c := range columns {
-		sb.WriteString(c)
-		// sb.WriteString("::" + SchemaTypeToPg())
-		if i < len(columns)-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(") values (")
-		}
-	}
-	for i := range values {
-		sb.WriteString(fmt.Sprintf("$%d", i+1))
-		if i < len(values)-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(")")
-		}
-	}
+func insert(table string, data map[string]interface{}) (string, []any) {
+	sb := new(strings.Builder)
+	_, values := header(sb, table, data)
 	return sb.String(), values
 }
 
-func upsert(table string, data map[string]interface{}) (string, []interface{}) {
-	var sb strings.Builder
+func upsert(table string, data map[string]interface{}) (string, []any) {
+	sb := new(strings.Builder)
+	columns, values := header(sb, table, data)
 
-	columns := make([]string, 0, len(data))
-	values := make([]interface{}, 0, len(data))
+	constraintName := table + `_cqpk`
+	sb.WriteString(" on conflict on constraint ")
+	sb.WriteString(constraintName)
+
+	sb.WriteString(" do update set ")
+	excluded := func(column string) {
+		sb.WriteString(column + `=excluded.` + column) // excluded references the new values
+	}
+	for _, column := range columns[:len(columns)-1] {
+		excluded(column)
+		sb.WriteString(",")
+	}
+	excluded(columns[len(columns)-1])
+
+	return sb.String(), values
+}
+
+func header(sb *strings.Builder, table string, data map[string]any) (columns []string, values []any) {
+	columns = make([]string, 0, len(data))
+	values = make([]any, 0, len(data))
+
 	// Sort the columns prior to adding data to columns and values arrays
 	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
 	keys := make([]string, 0, len(data))
@@ -92,38 +78,11 @@ func upsert(table string, data map[string]interface{}) (string, []interface{}) {
 	sb.WriteString("insert into ")
 	sb.WriteString(table)
 	sb.WriteString(" (")
-	sort.Strings(columns)
-	for i, c := range columns {
-		sb.WriteString(c)
-		// sb.WriteString("::" + SchemaTypeToPg())
-		if i < len(columns)-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(") values (")
-		}
+	sb.WriteString(strings.Join(columns, ","))
+	sb.WriteString(") values (")
+	for i := 1; i < len(values); i++ {
+		sb.WriteString(`$` + strconv.Itoa(i) + `,`)
 	}
-	for i := range values {
-		sb.WriteString(fmt.Sprintf("$%d", i+1))
-		if i < len(values)-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(")")
-		}
-	}
-	constraintName := fmt.Sprintf("%s_cqpk", table)
-	sb.WriteString(" on conflict on constraint ")
-	sb.WriteString(constraintName)
-	sb.WriteString(" do update set ")
-	for i, column := range columns {
-		sb.WriteString(column)
-		sb.WriteString("=excluded.") // excluded references the new values
-		sb.WriteString(column)
-		if i < len(columns)-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString("")
-		}
-	}
-
-	return sb.String(), values
+	sb.WriteString(`$` + strconv.Itoa(len(values)) + `)`)
+	return columns, values
 }
