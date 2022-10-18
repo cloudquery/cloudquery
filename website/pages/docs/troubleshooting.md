@@ -26,7 +26,7 @@ Usually the first step that will be needed to debug/resolve an issue is to run `
 ### Error: "failed to migrate source"...
 
 If you see an error such as `failed to migrate source`, it means that, while upgrading a plugin, the migration of the SQL schema failed.
-CloudQuery makes a best-effort to automatically and transparently manage the schema of the plugins, but 
+CloudQuery makes a best-effort attempt to automatically and transparently manage the schemas of plugins, but 
 this can sometimes fail during version upgrades.
 
 The solution is to drop-and recreate the database or schema. (or all the plugins tables, such as `aws_*`).
