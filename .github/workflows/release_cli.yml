@@ -26,18 +26,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      - uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.19.1-release-cache-${{ hashFiles('cli/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-1.19.1-release-cache-cli
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
           go-version-file: cli/go.mod
+          cache: true
+          cache-dependency-path: cli/go.sum
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
