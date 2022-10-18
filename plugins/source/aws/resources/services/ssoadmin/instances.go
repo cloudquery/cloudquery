@@ -11,7 +11,7 @@ func Instances() *schema.Table {
 	return &schema.Table{
 		Name:      "aws_ssoadmin_instances",
 		Resolver:  fetchSsoadminInstances,
-		Multiplex: client.ServiceAccountRegionMultiplexer("ssoadmin"),
+		Multiplex: client.ServiceAccountRegionMultiplexer("identitystore"),
 		Columns: []schema.Column{
 			{
 				Name:     "identity_store_id",
