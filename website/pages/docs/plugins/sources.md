@@ -11,11 +11,11 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [AWS][aws] | v3.1.0         | [Changelog][AWS-Changelog]          | GA |
 | [Azure][azure] | v1.0.5         | [Changelog][Azure-Changelog]        | GA |    
 | [GCP][gcp] | v2.0.2         | [Changelog][GCP-Changelog]          | GA |
-| [DigitalOcean][digitalocean] | v2.0.3         | [Changelog][DigitalOcean-Changelog] | GA |
+| [DigitalOcean][digitalocean] | v2.0.4         | [Changelog][DigitalOcean-Changelog] | GA |
 | [GitHub][github]      | v1.0.5         | [Changelog][GitHub-Changelog]       | GA |
-| [Heroku][heroku] | v2.0.3         | [Changelog][Heroku-Changelog]       | Preview |
+| [Heroku][heroku] | v2.0.4         | [Changelog][Heroku-Changelog]       | Preview |
 | [k8s][k8s] | v2.0.0         | [Changelog][k8s-Changelog]          | Preview |
-| [Okta][okta] | v1.0.7         | [Changelog][Okta-Changelog]         | Preview |
+| [Okta][okta] | v1.0.8         | [Changelog][Okta-Changelog]         | Preview |
 | [Terraform][terraform] | v1.0.6         | [Changelog][Terraform-Changelog]    | Preview |
 
 ## Community
