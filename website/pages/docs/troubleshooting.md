@@ -29,7 +29,7 @@ If you see an error such as `failed to migrate source`, it means that, while upg
 CloudQuery makes a best-effort attempt to automatically and transparently manage the schemas of plugins, but 
 this can sometimes fail during version upgrades.
 
-The solution is to drop-and recreate the database or schema. (or all the plugins tables, such as `aws_*`).
+The easiest solution is to drop and recreate the database or schema (or all the plugins tables, such as `aws_*`).
 Some queries that may help you (handle with care!):
 
 ```sql
