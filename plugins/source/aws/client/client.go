@@ -65,6 +65,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -180,6 +181,7 @@ type Services struct {
 	Lambda                 LambdaClient
 	Lightsail              LightsailClient
 	MQ                     MQClient
+	Neptune                NeptuneClient
 	Organizations          OrganizationsClient
 	QLDB                   QLDBClient
 	RDS                    RdsClient
@@ -659,6 +661,7 @@ func initServices(region string, c aws.Config) Services {
 		Lambda:                 lambda.NewFromConfig(awsCfg),
 		Lightsail:              lightsail.NewFromConfig(awsCfg),
 		MQ:                     mq.NewFromConfig(awsCfg),
+		Neptune:                neptune.NewFromConfig(awsCfg),
 		Organizations:          organizations.NewFromConfig(awsCfg),
 		QLDB:                   qldb.NewFromConfig(awsCfg),
 		RDS:                    rds.NewFromConfig(awsCfg),
