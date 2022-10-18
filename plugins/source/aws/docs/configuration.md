@@ -12,7 +12,7 @@ This is the top level spec used by the AWS source plugin.
 
   List of all accounts to fetch information from
 
-- `organization` ([Organization](#organization)) (default: not used)
+- `org` ([Organization](#organization)) (default: not used)
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
@@ -44,7 +44,7 @@ This is used to specify one or more accounts to extract information from.
 
   If specified will use this when assuming role to `role_arn`
 
-## Organization
+## org
 
 - `organization_units` ([]string)
 
