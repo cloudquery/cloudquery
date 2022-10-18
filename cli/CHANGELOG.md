@@ -5,6 +5,20 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.0...cli-v1.3.1) (2022-10-18)
+
+
+### Bug Fixes
+
+* Minor adjustments to anonymized analytics ([#2990](https://github.com/cloudquery/cloudquery/issues/2990)) ([2102286](https://github.com/cloudquery/cloudquery/commit/21022862cb8fb023a365f09c72edc5b867526f59))
+
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.1...cli-v1.3.0) (2022-10-18)
+
+
+### Features
+
+* Add anonymised analytics ([#2619](https://github.com/cloudquery/cloudquery/issues/2619)) ([56d09d2](https://github.com/cloudquery/cloudquery/commit/56d09d25540f88a65b8a0f5f5f7f6fe6ba501403))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/cli-v1.2.0...cli-v1.2.1) (2022-10-18)
 
 
