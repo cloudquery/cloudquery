@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.4...plugins-destination-test-v1.2.5) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for test to v0.13.9 ([#2957](https://github.com/cloudquery/cloudquery/issues/2957)) ([ba8e3b6](https://github.com/cloudquery/cloudquery/commit/ba8e3b61614a02c3ce5c569d4a1114667e98d052))
+* **destination-test:** Structure plugin so version is embedded by Go Releaser ([#2946](https://github.com/cloudquery/cloudquery/issues/2946)) ([d7120d9](https://github.com/cloudquery/cloudquery/commit/d7120d9052393e6cfb7e44798e04456b0c6aab6e))
+
 ## [1.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v1.2.3...plugins-destination-test-v1.2.4) (2022-10-14)
 
 

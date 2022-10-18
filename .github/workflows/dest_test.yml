@@ -5,6 +5,12 @@ on:
     paths:
       - "plugins/destination/test/**"
       - ".github/workflows/dest_test.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/test/**"
+      - ".github/workflows/dest_test.yml"
 
 defaults:
   run:
