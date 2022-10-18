@@ -175,6 +175,13 @@
 | [aws_lightsail_load_balancers](aws_lightsail_load_balancers.md)| [aws_lightsail_load_balancer_tls_certificates](aws_lightsail_load_balancer_tls_certificates.md)| https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancer.html|
 | [aws_lightsail_static_ips](aws_lightsail_static_ips.md)| | https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_StaticIp.html|
 | [aws_mq_brokers](aws_mq_brokers.md)| [aws_mq_broker_configurations](aws_mq_broker_configurations.md)<br />[aws_mq_broker_users](aws_mq_broker_users.md)| https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html|
+| [aws_neptune_cluster_parameter_groups](aws_neptune_cluster_parameter_groups.md)| [aws_neptune_cluster_parameter_group_parameters](aws_neptune_cluster_parameter_group_parameters.md)| https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBParameters|
+| [aws_neptune_clusters](aws_neptune_clusters.md)| | https://docs.aws.amazon.com/neptune/latest/userguide/api-clusters.html#DescribeDBClusters|
+| [aws_neptune_cluster_snapshots](aws_neptune_cluster_snapshots.md)| | https://docs.aws.amazon.com/neptune/latest/userguide/api-snapshots.html#DescribeDBClusterSnapshots|
+| [aws_neptune_db_parameter_groups](aws_neptune_db_parameter_groups.md)| [aws_neptune_db_parameter_group_db_parameters](aws_neptune_db_parameter_group_db_parameters.md)| https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBClusterParameterGroups|
+| [aws_neptune_event_subscriptions](aws_neptune_event_subscriptions.md)| | https://docs.aws.amazon.com/neptune/latest/userguide/api-events.html#DescribeEventSubscriptions|
+| [aws_neptune_instances](aws_neptune_instances.md)| | https://docs.aws.amazon.com/neptune/latest/userguide/api-instances.html#DescribeDBInstances|
+| [aws_neptune_subnet_groups](aws_neptune_subnet_groups.md)| | https://docs.aws.amazon.com/neptune/latest/userguide/api-subnets.html#DescribeDBSubnetGroups|
 | [aws_organizations_accounts](aws_organizations_accounts.md)| | https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html|
 | [aws_qldb_ledgers](aws_qldb_ledgers.md)| [aws_qldb_ledger_journal_kinesis_streams](aws_qldb_ledger_journal_kinesis_streams.md)<br />[aws_qldb_ledger_journal_s3_exports](aws_qldb_ledger_journal_s3_exports.md)| |
 | [aws_rds_certificates](aws_rds_certificates.md)| | https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Certificate.html|

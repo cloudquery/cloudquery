@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.4...plugins-destination-postgresql-v1.3.5) (2022-10-18)
+
+
+### Bug Fixes
+
+* **postgresql:** Structure plugin so version is embedded by Go Releaser ([#2947](https://github.com/cloudquery/cloudquery/issues/2947)) ([7535f31](https://github.com/cloudquery/cloudquery/commit/7535f319f38f80d4a0fb3a72504f38161f22ee9e))
+
 ## [1.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.3...plugins-destination-postgresql-v1.3.4) (2022-10-18)
 
 

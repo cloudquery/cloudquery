@@ -22,3 +22,11 @@ There are a couple of ways to get help for any CloudQuery-related issues or ques
 ### Verbose Logging
 
 Usually the first step that will be needed to debug/resolve an issue is to run `cloudquery` with `--log-level debug` to enable verbose logging.
+
+### Error: "failed to migrate source"...
+
+If you see an error such as `failed to migrate source`, it means that, while upgrading a plugin, the migration of the SQL schema failed.
+CloudQuery makes a best-effort attempt to automatically and transparently manage the schemas of plugins, but 
+this can sometimes fail during version upgrades.
+
+The easiest solution is to drop and recreate the database or schema (or less destructively, all the plugin's tables, such as `aws_*`).
