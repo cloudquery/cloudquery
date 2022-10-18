@@ -45,7 +45,7 @@ func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.
 			Invocation_UUID: invocationUUID,
 			SourcePath:      sourceSpec.Path,
 			SourceVersion:   sourceSpec.Version,
-			Destinations:    make([]*pb.Destination, 1),
+			Destinations:    make([]*pb.Destination, 0, 1),
 			Resources:       int64(summary.Resources),
 			Errors:          int64(summary.Errors),
 			Panics:          int64(summary.Panics),
