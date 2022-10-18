@@ -20,7 +20,7 @@ This is the top level spec used by the PostgreSQL destination Plugin.
   - `"postgres://localhost:5432/mydb?sslmode=disable"` _connect with os username cloudquery is being run as_
   - `"postgres:///mydb?host=/tmp"` _connect over unix socket_
   - `"dbname=mydb"` _unix domain socket, just specifying the db name - useful if you want to use peer authentication_
-  - `""user=jack password=jack\\'ssooper\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable" _DSN with escaped backslash and single quote_
+  - `""user=jack password=jack\\'ssooper\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable"` _DSN with escaped backslash and single quote_
 
 - `pgx_log_level` (string) (optional, defaults to "error")
 
