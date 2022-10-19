@@ -35,66 +35,6 @@ func (m *MockDocDBClient) EXPECT() *MockDocDBClientMockRecorder {
 	return m.recorder
 }
 
-// DescribeCertificates mocks base method.
-func (m *MockDocDBClient) DescribeCertificates(arg0 context.Context, arg1 *docdb.DescribeCertificatesInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeCertificatesOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeCertificates", varargs...)
-	ret0, _ := ret[0].(*docdb.DescribeCertificatesOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeCertificates indicates an expected call of DescribeCertificates.
-func (mr *MockDocDBClientMockRecorder) DescribeCertificates(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCertificates", reflect.TypeOf((*MockDocDBClient)(nil).DescribeCertificates), varargs...)
-}
-
-// DescribeDBClusterParameterGroups mocks base method.
-func (m *MockDocDBClient) DescribeDBClusterParameterGroups(arg0 context.Context, arg1 *docdb.DescribeDBClusterParameterGroupsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClusterParameterGroupsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeDBClusterParameterGroups", varargs...)
-	ret0, _ := ret[0].(*docdb.DescribeDBClusterParameterGroupsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeDBClusterParameterGroups indicates an expected call of DescribeDBClusterParameterGroups.
-func (mr *MockDocDBClientMockRecorder) DescribeDBClusterParameterGroups(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBClusterParameterGroups", reflect.TypeOf((*MockDocDBClient)(nil).DescribeDBClusterParameterGroups), varargs...)
-}
-
-// DescribeDBClusterParameters mocks base method.
-func (m *MockDocDBClient) DescribeDBClusterParameters(arg0 context.Context, arg1 *docdb.DescribeDBClusterParametersInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClusterParametersOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeDBClusterParameters", varargs...)
-	ret0, _ := ret[0].(*docdb.DescribeDBClusterParametersOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeDBClusterParameters indicates an expected call of DescribeDBClusterParameters.
-func (mr *MockDocDBClientMockRecorder) DescribeDBClusterParameters(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBClusterParameters", reflect.TypeOf((*MockDocDBClient)(nil).DescribeDBClusterParameters), varargs...)
-}
-
 // DescribeDBClusterSnapshotAttributes mocks base method.
 func (m *MockDocDBClient) DescribeDBClusterSnapshotAttributes(arg0 context.Context, arg1 *docdb.DescribeDBClusterSnapshotAttributesInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotAttributesOutput, error) {
 	m.ctrl.T.Helper()
@@ -153,66 +93,6 @@ func (mr *MockDocDBClientMockRecorder) DescribeDBClusters(arg0, arg1 interface{}
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBClusters", reflect.TypeOf((*MockDocDBClient)(nil).DescribeDBClusters), varargs...)
-}
-
-// DescribeDBEngineVersions mocks base method.
-func (m *MockDocDBClient) DescribeDBEngineVersions(arg0 context.Context, arg1 *docdb.DescribeDBEngineVersionsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBEngineVersionsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeDBEngineVersions", varargs...)
-	ret0, _ := ret[0].(*docdb.DescribeDBEngineVersionsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeDBEngineVersions indicates an expected call of DescribeDBEngineVersions.
-func (mr *MockDocDBClientMockRecorder) DescribeDBEngineVersions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBEngineVersions", reflect.TypeOf((*MockDocDBClient)(nil).DescribeDBEngineVersions), varargs...)
-}
-
-// DescribeDBInstances mocks base method.
-func (m *MockDocDBClient) DescribeDBInstances(arg0 context.Context, arg1 *docdb.DescribeDBInstancesInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBInstancesOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeDBInstances", varargs...)
-	ret0, _ := ret[0].(*docdb.DescribeDBInstancesOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeDBInstances indicates an expected call of DescribeDBInstances.
-func (mr *MockDocDBClientMockRecorder) DescribeDBInstances(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBInstances", reflect.TypeOf((*MockDocDBClient)(nil).DescribeDBInstances), varargs...)
-}
-
-// DescribeDBSubnetGroups mocks base method.
-func (m *MockDocDBClient) DescribeDBSubnetGroups(arg0 context.Context, arg1 *docdb.DescribeDBSubnetGroupsInput, arg2 ...func(*docdb.Options)) (*docdb.DescribeDBSubnetGroupsOutput, error) {
-	m.ctrl.T.Helper()
-	varargs := []interface{}{arg0, arg1}
-	for _, a := range arg2 {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "DescribeDBSubnetGroups", varargs...)
-	ret0, _ := ret[0].(*docdb.DescribeDBSubnetGroupsOutput)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// DescribeDBSubnetGroups indicates an expected call of DescribeDBSubnetGroups.
-func (mr *MockDocDBClientMockRecorder) DescribeDBSubnetGroups(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBSubnetGroups", reflect.TypeOf((*MockDocDBClient)(nil).DescribeDBSubnetGroups), varargs...)
 }
 
 // ListTagsForResource mocks base method.

@@ -33,9 +33,9 @@ func DocumentDBResources() []*Resource {
 			},
 		},
 		{
-			SubService: "cluster_snapshots",
-			Struct:     &types.DBClusterSnapshot{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
+			SubService:  "cluster_snapshots",
+			Struct:      &types.DBClusterSnapshot{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html",
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -48,92 +48,9 @@ func DocumentDBResources() []*Resource {
 			Relations: []string{"ClusterSnapshotAttributes()"},
 		},
 		{
-			SubService: "cluster_snapshot_attributes",
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-			Struct: &types.DBClusterSnapshotAttributesResult{},
-		},
-		{
-			SubService: "cluster_parameter_groups",
-			Struct:     &types.DBClusterParameterGroup{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-			SkipFields: []string{"DBClusterParameterGroupArn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveDBClusterParameterGroupTags`,
-					},
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("DBClusterParameterGroupArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-			Relations: []string{
-				"ClusterParameters()",
-			},
-		},
-		{
-			SubService: "cluster_parameters",
-			Struct:     &types.Parameter{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-		},
-		{
-			SubService: "certificates",
-			Struct:     &types.Certificate{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-			ExtraColumns: defaultRegionalColumns,
-		},
-		{
-			SubService: "engine_versions",
-			Struct:     &types.DBEngineVersion{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-			ExtraColumns: defaultRegionalColumns,
-		},
-		{
-			SubService: "instances",
-			Struct:     &types.DBInstance{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-			SkipFields: []string{"DBInstanceArn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveDBInstanceTags`,
-					},
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("DBInstanceArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
-		},
-		{
-			SubService: "subnet_groups",
-			Struct:     &types.DBSubnetGroup{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-			SkipFields: []string{"DBSubnetGroupArn"},
-			ExtraColumns: append(
-				defaultRegionalColumns,
-				[]codegen.ColumnDefinition{
-					{
-						Name:     "tags",
-						Type:     schema.TypeJSON,
-						Resolver: `resolveDBSubnetGroupTags`,
-					},
-					{
-						Name:     "arn",
-						Type:     schema.TypeString,
-						Resolver: `schema.PathResolver("DBSubnetGroupArn")`,
-						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-					},
-				}...),
+			SubService:  "cluster_snapshot_attributes",
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshotAttributesResult.html",
+			Struct:      &types.DBClusterSnapshotAttributesResult{},
 		},
 	}
 
