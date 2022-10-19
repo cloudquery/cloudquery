@@ -46,7 +46,7 @@ brew upgrade cloudquery
 
 ### Choosing database
 
-CloudQuery currently supports two types of databases: PostgreSQL & TimescaleDB (for historical snapshots). In this post we will use the default SQLite which is great for local development and testing (see [here](https://www.cloudquery.io/docs/configuration/overview) on how to use others).
+CloudQuery currently supports two types of databases: PostgreSQL & TimescaleDB (for historical snapshots). In this post we will use the default SQLite which is great for local development and testing (see [here](/docs) on how to use others).
 
 ### Authenticating with AWS
 

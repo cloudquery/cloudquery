@@ -27,7 +27,7 @@ function FooterHeader({ children }: { children: ReactNode }) {
 const navigation = {
   general: [
     { name: "Documentation", href: "/docs" },
-    { name: "CLI reference", href: "/docs/cli/commands/cloudquery" },
+    { name: "CLI reference", href: "/docs/reference/cli/cloudquery" },
     { name: "Blog", href: "/blog" },
     {
       name: "Releases",

@@ -53,7 +53,7 @@ Running this is as simple as ensuring your database has the latest cloud asset c
 
 ### Quick Start
 
-Following is a quick start to run the policy. Otherwise checkout full details on our [docs](/docs/policies).
+Following is a quick start to run the policy. Otherwise checkout full details on our [docs](/docs/core-concepts/policies).
 
 ### Prerequisite
 
