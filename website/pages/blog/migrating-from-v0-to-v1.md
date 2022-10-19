@@ -41,7 +41,7 @@ spec:
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
  
-  ## Default: cloudquery/name
+  ## Plugin path. For official plugins, this should be in the format "cloudquery/<name>", e.g. "cloudquery/aws"
   path: "cloudquery/aws"
  
   ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
