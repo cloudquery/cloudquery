@@ -54,6 +54,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -661,6 +662,23 @@ type MQClient interface {
 	DescribeUser(ctx context.Context, params *mq.DescribeUserInput, optFns ...func(*mq.Options)) (*mq.DescribeUserOutput, error)
 	ListBrokers(ctx context.Context, params *mq.ListBrokersInput, optFns ...func(*mq.Options)) (*mq.ListBrokersOutput, error)
 	ListConfigurationRevisions(ctx context.Context, params *mq.ListConfigurationRevisionsInput, optFns ...func(*mq.Options)) (*mq.ListConfigurationRevisionsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_neptune.go . NeptuneClient
+type NeptuneClient interface {
+	DescribeDBClusterEndpoints(ctx context.Context, params *neptune.DescribeDBClusterEndpointsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterEndpointsOutput, error)
+	DescribeDBClusterParameterGroups(ctx context.Context, params *neptune.DescribeDBClusterParameterGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterParameterGroupsOutput, error)
+	DescribeDBClusterParameters(ctx context.Context, params *neptune.DescribeDBClusterParametersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterParametersOutput, error)
+	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *neptune.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotAttributesOutput, error)
+	DescribeDBClusterSnapshots(ctx context.Context, params *neptune.DescribeDBClusterSnapshotsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotsOutput, error)
+	DescribeDBClusters(ctx context.Context, params *neptune.DescribeDBClustersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClustersOutput, error)
+	DescribeDBInstances(ctx context.Context, params *neptune.DescribeDBInstancesInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBInstancesOutput, error)
+	DescribeDBParameterGroups(ctx context.Context, params *neptune.DescribeDBParameterGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBParameterGroupsOutput, error)
+	DescribeDBParameters(ctx context.Context, params *neptune.DescribeDBParametersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBParametersOutput, error)
+	DescribeDBSubnetGroups(ctx context.Context, params *neptune.DescribeDBSubnetGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBSubnetGroupsOutput, error)
+	DescribeEventSubscriptions(ctx context.Context, params *neptune.DescribeEventSubscriptionsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeEventSubscriptionsOutput, error)
+	DescribeGlobalClusters(ctx context.Context, params *neptune.DescribeGlobalClustersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeGlobalClustersOutput, error)
+	ListTagsForResource(ctx context.Context, params *neptune.ListTagsForResourceInput, optFns ...func(*neptune.Options)) (*neptune.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_organizations.go . OrganizationsClient
