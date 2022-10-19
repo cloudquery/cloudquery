@@ -1,4 +1,4 @@
-name: Manual Approve
+name: Manual Commands
 
 on:
   issue_comment:

@@ -1,4 +1,4 @@
-name: Manual Triggers
+name: Manual Commands Triggers
 
 on:
   repository_dispatch:
