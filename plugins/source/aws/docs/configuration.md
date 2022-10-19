@@ -1,5 +1,24 @@
 # AWS Source Plugin Configuration Reference
 
+## Example
+
+```
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  version: "v3.3.0" # latest version of aws plugin
+  tables: ["*"]
+  destinations: ["postgresql"]
+  spec: # AWS Spec section described below
+    regions: 
+      - us-east-1
+    accounts:
+      - id: "account1"
+        local_profile: "account1"
+    debug: false
+```
+
 ## AWS Spec
 
 This is the top level spec used by the AWS source plugin.
@@ -44,7 +63,16 @@ This is used to specify one or more accounts to extract information from.
 
   If specified will use this when assuming role to `role_arn`
 
-## org
+- `default_region` (string) (default: `us-east-1`)
+
+  If specified, this region will be used as the default region for the account.
+
+- `regions` (string)
+
+  Regions to use for this account. Defaults to global `regions` setting.
+
+
+## Organization
 
 - `organization_units` ([]string)
 
