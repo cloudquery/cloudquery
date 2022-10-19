@@ -18,6 +18,10 @@
       "destination": "https://img.abyssale.com/3b183707-abf0-46ec-9edd-16b712a08b65?text_title=:title"
     },
     {
+      "source": "/docs/cli/commands/cloudquery",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
       "source": "/providers/:path*",
       "destination": "/docs/plugins/sources"
     },
