@@ -5,9 +5,9 @@ https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_Listene
 The primary key for this table is **arn**.
 
 ## Relations
-This table depends on [`aws_elbv2_load_balancers`](aws_elbv2_load_balancers.md).
-The following tables depend on `aws_elbv2_listeners`:
-  - [`aws_elbv2_listener_certificates`](aws_elbv2_listener_certificates.md)
+This table depends on [aws_elbv2_load_balancers](aws_elbv2_load_balancers.md).
+The following tables depend on aws_elbv2_listeners:
+  - [aws_elbv2_listener_certificates](aws_elbv2_listener_certificates.md)
 
 ## Columns
 | Name          | Type          |

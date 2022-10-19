@@ -5,7 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_container_registries`](azure_container_registries.md).
+This table depends on [azure_container_registries](azure_container_registries.md).
 
 ## Columns
 | Name          | Type          |
