@@ -31,11 +31,11 @@ This is the top level spec used by the AWS source plugin.
 
   Regions to use.
 
-- `accounts` ([][Account](#account)) (default: current account)
+- `accounts` ([][Account](#accounts)) (default: current account)
 
   List of all accounts to fetch information from
 
-- `org` ([Organization](#organization)) (default: not used)
+- `org` ([org](#org)) (default: not used)
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
@@ -43,9 +43,9 @@ This is the top level spec used by the AWS source plugin.
 
   If true, will log AWS debug logs, including retries and other request/response metadata
 
-## Account
+## accounts
 
-This is used to specify one or more accounts to extract information from.
+This is used to specify one or more accounts to extract information from. Note that it should be an array of objects, each with the following fields:
 
 - `id` (string) (**required**)
 
@@ -76,7 +76,7 @@ This is used to specify one or more accounts to extract information from.
   Regions to use for this account. Defaults to global `regions` setting.
 
 
-## Organization
+## org
 
 - `organization_units` ([]string)
 
