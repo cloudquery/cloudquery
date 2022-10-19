@@ -5,7 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_storage_accounts`](azure_storage_accounts.md).
+This table depends on [azure_storage_accounts](azure_storage_accounts.md).
 
 ## Columns
 | Name          | Type          |

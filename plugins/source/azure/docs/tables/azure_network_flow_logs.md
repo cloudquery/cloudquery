@@ -5,7 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_network_watchers`](azure_network_watchers.md).
+This table depends on [azure_network_watchers](azure_network_watchers.md).
 
 ## Columns
 | Name          | Type          |
