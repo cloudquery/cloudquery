@@ -12,26 +12,28 @@ Name of the plugin. If you have multiple destination plugins, this should be uni
 
 The name field may be used to uniquely identify a particular destination configuration. For example, if you have two configs for the PostgreSQL plugin for syncing different databases, one may be named `db-1` and the other `db-2`. In this case, the `path` option below should be used to specify the download path for the plugin.
 
+### registry
+
+(`string`, optional, default: `github`, available: `github`, `local`, `grpc`)
+
+- `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it.
+- `local`: CloudQuery will execute the plugin from a local path. 
+- `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
+
 ### path
 
-(`string`, optional)
+(`string`, required)
 
-Configures how to retrieve the plugin. For plugins hosted on GitHub, `path` is inferred from `name` by default.
-For example `name: postgresql` will resolve `path` to `cloudquery/postgresql`. If you'd like to use a plugin that is not hosted on the CloudQuery repository, provide the full path to the repository such as `community-github-org/community-github-repo`
+Configures how to retrieve the plugin. The contents depend on the value of `registry` (`github` by default).
+- For plugins hosted on GitHub, `path` should be of the form `"<org>/<repository>"`.
+- For plugins that are located in the local filesystem, `path` should a filesystem path to the plugin binary.
+- To connect to a running plugin via `grpc` (mostly useful for debugging), `path` should be the host-port of the plugin (e.g. `localhost:7777`).
 
 ### version
 
 (`string`, required)
 
 `version` must be a valid [SemVer](https://semver.org/)), e.g. `vMajor.Minor.Patch`. Latest versions can be generated using `cloudquery gen` command. You can find all official plugin versions under [our GitHub releases page](https://github.com/cloudquery/cloudquery/releases), and for community plugins you can find it in the relevant community repository.
-
-### registry
-
-(`string`, optional, default: `github`, available: `github`, `local`, `grpc`)
- 
-- `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it. 
-- `local`: CloudQuery will execute the plugin from a local path. 
-- `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
 
 ### write_mode
 
