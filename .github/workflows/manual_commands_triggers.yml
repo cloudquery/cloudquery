@@ -1,0 +1,37 @@
+name: Manual Commands Triggers
+
+on:
+  repository_dispatch:
+    types: [docs-command]
+
+jobs:
+  ok-to-run:
+    runs-on: ubuntu-latest
+    outputs:
+      status: ${{ steps.manually_approved.outputs.result }}
+    steps:
+      - name: Check if was manually approved
+        id: manually_approved
+        run: |
+          manually_approved=${{ github.event_name == 'repository_dispatch' && github.event.client_payload.slash_command.args.named.sha != '' && contains(github.event.client_payload.pull_request.head.sha, github.event.client_payload.slash_command.args.named.sha) }}
+          echo ::set-output name=result::"$manually_approved"
+  docs:
+    needs: [ok-to-run]
+    if: github.event_name == 'repository_dispatch' && github.event.action == 'docs-command' && needs.ok-to-run.outputs.status == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.client_payload.slash_command.args.named.sha }}
+          repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
+          token: ${{ secrets.GH_CQ_BOT }}
+
+      - name: Generate docs
+        run: make gen-docs
+        working-directory: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: Update docs"
+          branch: ${{ github.event.client_payload.pull_request.head.ref }}
