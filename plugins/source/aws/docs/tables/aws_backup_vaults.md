@@ -5,8 +5,8 @@ https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BackupVaultListMember
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_backup_vaults`:
-  - [`aws_backup_vault_recovery_points`](aws_backup_vault_recovery_points.md)
+The following tables depend on aws_backup_vaults:
+  - [aws_backup_vault_recovery_points](aws_backup_vault_recovery_points.md)
 
 ## Columns
 | Name          | Type          |

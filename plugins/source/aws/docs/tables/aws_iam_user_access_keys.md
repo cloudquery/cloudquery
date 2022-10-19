@@ -5,7 +5,7 @@
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_iam_users`](aws_iam_users.md).
+This table depends on [aws_iam_users](aws_iam_users.md).
 
 ## Columns
 | Name          | Type          |
