@@ -18,6 +18,10 @@
       "destination": "https://img.abyssale.com/3b183707-abf0-46ec-9edd-16b712a08b65?text_title=:title"
     },
     {
+      "source": "/docs/cli/commands/cloudquery",
+      "destination": "/docs/reference/cli/cloudquery"
+    },
+    {
       "source": "/providers/:path*",
       "destination": "/docs/plugins/sources"
     },
@@ -28,6 +32,18 @@
     {
       "source": "/docs/developers/developing-source-plugin",
       "destination": "/docs/developers/creating-new-plugin"
+    },
+    {
+      "source": "/docs/developers/developing-new-provider",
+      "destination": "/docs/developers/creating-new-plugin"
+    },
+    {
+      "source": "/docs/configuration/overview",
+      "destination": "/docs"
+    },
+    {
+      "source": "/docs/policies",
+      "destination": "/docs/core-concepts/policies"
     },
     {
       "source": "/providers",

@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/rs/zerolog"
 	"os"
 	"time"
+
+	"github.com/rs/zerolog"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/rs/zerolog/log"
@@ -22,7 +23,7 @@ var (
 Open source data integration at scale.
 
 Find more information at:
-	https://cloudquery.io`
+	https://www.cloudquery.io`
 
 	analyticsClient *AnalyticsClient
 )
