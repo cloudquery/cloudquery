@@ -5,7 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`azure_logic_workflows`](azure_logic_workflows.md).
+This table depends on [azure_logic_workflows](azure_logic_workflows.md).
 
 ## Columns
 | Name          | Type          |

@@ -5,8 +5,8 @@
 The primary key for this table is **_cq_id**.
 
 ## Relations
-The following tables depend on `gcp_kms_keyrings`:
-  - [`gcp_kms_crypto_keys`](gcp_kms_crypto_keys.md)
+The following tables depend on gcp_kms_keyrings:
+  - [gcp_kms_crypto_keys](gcp_kms_crypto_keys.md)
 
 ## Columns
 | Name          | Type          |

@@ -5,7 +5,7 @@ https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_Service.html
 The primary key for this table is **arn**.
 
 ## Relations
-This table depends on [`aws_ecs_clusters`](aws_ecs_clusters.md).
+This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 
 ## Columns
 | Name          | Type          |
