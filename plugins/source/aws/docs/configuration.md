@@ -31,7 +31,7 @@ This is the top level spec used by the AWS source plugin.
 
   List of all accounts to fetch information from
 
-- `org` ([Organization](#org)) (default: not used)
+- `org` ([Organization](#organization)) (default: not used)
 
   In AWS organization mode, CloudQuery will source all accounts underneath automatically
 
