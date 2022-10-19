@@ -24,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr"
@@ -125,6 +126,12 @@ func tables() []*schema.Table {
 		directconnect.VirtualInterfaces(),
 		dms.ReplicationInstances(),
 		dynamodb.Tables(),
+		docdb.Certificates(),
+		docdb.ClusterParameterGroups(),
+		docdb.Clusters(),
+		docdb.EngineVersions(),
+		docdb.Instances(),
+		docdb.SubnetGroups(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
 		ec2.EbsSnapshots(),

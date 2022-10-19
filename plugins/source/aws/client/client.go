@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"strings"
 	"time"
 
@@ -155,6 +156,7 @@ type Services struct {
 	DAX                    DAXClient
 	Directconnect          DirectconnectClient
 	DMS                    DatabasemigrationserviceClient
+	DocDB                  DocDBClient
 	DynamoDB               DynamoDBClient
 	EC2                    Ec2Client
 	ECR                    EcrClient
@@ -636,6 +638,7 @@ func initServices(region string, c aws.Config) Services {
 		DAX:                    dax.NewFromConfig(awsCfg),
 		Directconnect:          directconnect.NewFromConfig(awsCfg),
 		DMS:                    databasemigrationservice.NewFromConfig(awsCfg),
+		DocDB:                  docdb.NewFromConfig(awsCfg),
 		DynamoDB:               dynamodb.NewFromConfig(awsCfg),
 		EC2:                    ec2.NewFromConfig(awsCfg),
 		ECR:                    ecr.NewFromConfig(awsCfg),
