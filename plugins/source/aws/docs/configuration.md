@@ -31,7 +31,7 @@ This is the top level spec used by the AWS source plugin.
 
   Regions to use.
 
-- `accounts` ([][Account](#accounts)) (default: current account)
+- `accounts` ([][account](#accounts)) (default: current account)
 
   List of all accounts to fetch information from
 
