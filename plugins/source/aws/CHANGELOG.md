@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.4.0...plugins-source-aws-v3.4.1) (2022-10-19)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for aws to v0.13.11 ([#3011](https://github.com/cloudquery/cloudquery/issues/3011)) ([e0d0e59](https://github.com/cloudquery/cloudquery/commit/e0d0e592c0b88bbb8f5923679fdd9d4a22dc3879))
+
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.3.0...plugins-source-aws-v3.4.0) (2022-10-19)
+
+
+### Features
+
+* **aws:** Add Support for App Runner Services ([#2997](https://github.com/cloudquery/cloudquery/issues/2997)) ([b22b06f](https://github.com/cloudquery/cloudquery/commit/b22b06f5508367d022057b12918df0928536d00d))
+
+
+### Bug Fixes
+
+* Update endpoints ([#3003](https://github.com/cloudquery/cloudquery/issues/3003)) ([776d849](https://github.com/cloudquery/cloudquery/commit/776d849c3594f4646575ba44b3d764e3b13db1c2))
+
 ## [3.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v3.2.1...plugins-source-aws-v3.3.0) (2022-10-18)
 
 

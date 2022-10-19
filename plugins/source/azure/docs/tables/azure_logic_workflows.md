@@ -5,8 +5,8 @@
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_logic_workflows`:
-  - [`azure_logic_diagnostic_settings`](azure_logic_diagnostic_settings.md)
+The following tables depend on azure_logic_workflows:
+  - [azure_logic_diagnostic_settings](azure_logic_diagnostic_settings.md)
 
 ## Columns
 | Name          | Type          |

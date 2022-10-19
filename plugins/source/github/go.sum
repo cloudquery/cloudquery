@@ -2,8 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/bradleyjkemp/cupaloy/v2 v2.8.0 h1:any4BmKE+jGIaMpnU8YgH/I2LPiLBufr6oMMlVBbn9M=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/plugin-sdk v0.13.9 h1:/sjNumIe5lk3AkI2kl2/XsNygdH5oS+BpZ1N9eBo0lE=
-github.com/cloudquery/plugin-sdk v0.13.9/go.mod h1:8mt4PDjek0NkldnWFnM/i0zpfyUYVcRy/imEN1L/Cxs=
+github.com/cloudquery/plugin-sdk v0.13.11 h1:/09m9PVtqUAGCtyVx6gPq8oQqg0IxBLJmZgj7N7/EsA=
+github.com/cloudquery/plugin-sdk v0.13.11/go.mod h1:8mt4PDjek0NkldnWFnM/i0zpfyUYVcRy/imEN1L/Cxs=
 github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=

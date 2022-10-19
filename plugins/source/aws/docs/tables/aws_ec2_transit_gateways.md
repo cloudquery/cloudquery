@@ -5,12 +5,12 @@ https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 The composite primary key for this table is (**id**, **arn**).
 
 ## Relations
-The following tables depend on `aws_ec2_transit_gateways`:
-  - [`aws_ec2_transit_gateway_attachments`](aws_ec2_transit_gateway_attachments.md)
-  - [`aws_ec2_transit_gateway_route_tables`](aws_ec2_transit_gateway_route_tables.md)
-  - [`aws_ec2_transit_gateway_vpc_attachments`](aws_ec2_transit_gateway_vpc_attachments.md)
-  - [`aws_ec2_transit_gateway_peering_attachments`](aws_ec2_transit_gateway_peering_attachments.md)
-  - [`aws_ec2_transit_gateway_multicast_domains`](aws_ec2_transit_gateway_multicast_domains.md)
+The following tables depend on aws_ec2_transit_gateways:
+  - [aws_ec2_transit_gateway_attachments](aws_ec2_transit_gateway_attachments.md)
+  - [aws_ec2_transit_gateway_route_tables](aws_ec2_transit_gateway_route_tables.md)
+  - [aws_ec2_transit_gateway_vpc_attachments](aws_ec2_transit_gateway_vpc_attachments.md)
+  - [aws_ec2_transit_gateway_peering_attachments](aws_ec2_transit_gateway_peering_attachments.md)
+  - [aws_ec2_transit_gateway_multicast_domains](aws_ec2_transit_gateway_multicast_domains.md)
 
 ## Columns
 | Name          | Type          |

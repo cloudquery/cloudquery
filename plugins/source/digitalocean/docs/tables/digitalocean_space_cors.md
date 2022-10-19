@@ -5,7 +5,7 @@
 The primary key for this table is **id**.
 
 ## Relations
-This table depends on [`digitalocean_spaces`](digitalocean_spaces.md).
+This table depends on [digitalocean_spaces](digitalocean_spaces.md).
 
 ## Columns
 | Name          | Type          |

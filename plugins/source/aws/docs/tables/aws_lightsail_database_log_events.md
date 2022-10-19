@@ -5,7 +5,7 @@
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_lightsail_databases`](aws_lightsail_databases.md).
+This table depends on [aws_lightsail_databases](aws_lightsail_databases.md).
 
 ## Columns
 | Name          | Type          |

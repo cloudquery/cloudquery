@@ -5,8 +5,8 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_DomainName.html
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_apigateway_domain_names`:
-  - [`aws_apigateway_domain_name_base_path_mappings`](aws_apigateway_domain_name_base_path_mappings.md)
+The following tables depend on aws_apigateway_domain_names:
+  - [aws_apigateway_domain_name_base_path_mappings](aws_apigateway_domain_name_base_path_mappings.md)
 
 ## Columns
 | Name          | Type          |

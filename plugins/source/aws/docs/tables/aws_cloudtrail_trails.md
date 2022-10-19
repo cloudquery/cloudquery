@@ -5,8 +5,8 @@
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_cloudtrail_trails`:
-  - [`aws_cloudtrail_trail_event_selectors`](aws_cloudtrail_trail_event_selectors.md)
+The following tables depend on aws_cloudtrail_trails:
+  - [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)
 
 ## Columns
 | Name          | Type          |

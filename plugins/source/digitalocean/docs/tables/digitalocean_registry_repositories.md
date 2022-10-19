@@ -5,7 +5,7 @@
 The primary key for this table is **name**.
 
 ## Relations
-This table depends on [`digitalocean_registries`](digitalocean_registries.md).
+This table depends on [digitalocean_registries](digitalocean_registries.md).
 
 ## Columns
 | Name          | Type          |
