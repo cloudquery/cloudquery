@@ -12,7 +12,7 @@ CloudQuery CLI
 Open source data integration at scale.
 
 Find more information at:
-	https://cloudquery.io
+	https://www.cloudquery.io
 
 ### Options
 
@@ -29,5 +29,5 @@ Find more information at:
 
 ### SEE ALSO
 
-* [cloudquery sync](/docs/cli/commands/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
+* [cloudquery sync](/docs/reference/cli/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
 
