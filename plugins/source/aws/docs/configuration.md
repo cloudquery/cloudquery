@@ -2,15 +2,19 @@
 
 ## Example
 
+This example connects a single AWS account in one region to a Postgres destination. The source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/reference/source-spec).
+
 ```
 kind: source
 spec:
+  # Source spec section
   name: aws
   path: cloudquery/aws
   version: "v3.3.0" # latest version of aws plugin
   tables: ["*"]
   destinations: ["postgresql"]
-  spec: # AWS Spec section described below
+  spec: 
+    # AWS Spec section described below
     regions: 
       - us-east-1
     accounts:
