@@ -5,7 +5,7 @@ https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html
 The primary key for this table is **arn**.
 
 ## Relations
-This table depends on [`aws_redshift_clusters`](aws_redshift_clusters.md).
+This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
 
 ## Columns
 | Name          | Type          |
