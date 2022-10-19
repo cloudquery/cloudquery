@@ -2179,12 +2179,14 @@
             "fips-eu-west-1": {},
             "fips-eu-west-2": {},
             "fips-eu-west-3": {},
+            "fips-me-central-1": {},
             "fips-me-south-1": {},
             "fips-sa-east-1": {},
             "fips-us-east-1": {},
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -2563,27 +2565,41 @@
         },
         "fsx": {
           "regions": {
+            "af-south-1": {},
+            "ap-east-1": {},
             "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-northeast-3": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ca-central-1": {},
             "eu-central-1": {},
+            "eu-north-1": {},
+            "eu-south-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "eu-west-3": {},
             "fips-ca-central-1": {},
             "fips-prod-ca-central-1": {},
             "fips-prod-us-east-1": {},
             "fips-prod-us-east-2": {},
+            "fips-prod-us-west-1": {},
             "fips-prod-us-west-2": {},
             "fips-us-east-1": {},
             "fips-us-east-2": {},
+            "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-south-1": {},
             "prod-ca-central-1": {},
             "prod-us-east-1": {},
             "prod-us-east-2": {},
+            "prod-us-west-1": {},
             "prod-us-west-2": {},
+            "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
+            "us-west-1": {},
             "us-west-2": {}
           }
         },
@@ -7429,6 +7445,12 @@
         },
         "connect": {
           "regions": {
+            "us-gov-west-1": {}
+          }
+        },
+        "controltower": {
+          "regions": {
+            "us-gov-east-1": {},
             "us-gov-west-1": {}
           }
         },
