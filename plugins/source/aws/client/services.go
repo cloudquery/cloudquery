@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -136,6 +137,22 @@ type Apigatewayv2Client interface {
 	GetStages(ctx context.Context, params *apigatewayv2.GetStagesInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStagesOutput, error)
 	GetTags(ctx context.Context, params *apigatewayv2.GetTagsInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetTagsOutput, error)
 	GetVpcLinks(ctx context.Context, params *apigatewayv2.GetVpcLinksInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetVpcLinksOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_apprunner.go . AppRunnerClient
+type AppRunnerClient interface {
+	DescribeAutoScalingConfiguration(ctx context.Context, params *apprunner.DescribeAutoScalingConfigurationInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeAutoScalingConfigurationOutput, error)
+	DescribeCustomDomains(ctx context.Context, params *apprunner.DescribeCustomDomainsInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeCustomDomainsOutput, error)
+	DescribeObservabilityConfiguration(ctx context.Context, params *apprunner.DescribeObservabilityConfigurationInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeObservabilityConfigurationOutput, error)
+	DescribeService(ctx context.Context, params *apprunner.DescribeServiceInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeServiceOutput, error)
+	DescribeVpcConnector(ctx context.Context, params *apprunner.DescribeVpcConnectorInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeVpcConnectorOutput, error)
+	ListAutoScalingConfigurations(ctx context.Context, params *apprunner.ListAutoScalingConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListAutoScalingConfigurationsOutput, error)
+	ListConnections(ctx context.Context, params *apprunner.ListConnectionsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListConnectionsOutput, error)
+	ListObservabilityConfigurations(ctx context.Context, params *apprunner.ListObservabilityConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListObservabilityConfigurationsOutput, error)
+	ListOperations(ctx context.Context, params *apprunner.ListOperationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListOperationsOutput, error)
+	ListServices(ctx context.Context, params *apprunner.ListServicesInput, optFns ...func(*apprunner.Options)) (*apprunner.ListServicesOutput, error)
+	ListTagsForResource(ctx context.Context, params *apprunner.ListTagsForResourceInput, optFns ...func(*apprunner.Options)) (*apprunner.ListTagsForResourceOutput, error)
+	ListVpcConnectors(ctx context.Context, params *apprunner.ListVpcConnectorsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListVpcConnectorsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_appsync.go . AppSyncClient
