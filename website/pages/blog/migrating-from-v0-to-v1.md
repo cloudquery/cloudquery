@@ -41,8 +41,8 @@ spec:
   ## Optional. Default: "github". Available: "local", "grpc"
   # registry: github
  
-  ## Optional. Default: cloudquery/name
-  # path: cloudquery/aws
+  ## Plugin path. For official plugins, this should be in the format "cloudquery/<name>", e.g. "cloudquery/aws"
+  path: "cloudquery/aws"
  
   ## Optional. Default: ["*"] - all tables. We recommend to specify specific tables that you need to sync as this
   ## will reduce the amount of data synced and improve performance.
@@ -67,6 +67,8 @@ spec:
   ## Required. name of the plugin
   name: "postgresql"
  
+  path: "cloudquery/postgresql"
+
   # Required. Must be a specific version starting with v, e.g. v1.2.3
   version: "v1.3.5" # latest version of postgresql plugin
  
