@@ -7,8 +7,10 @@ description: >-
 author: SCKelemen
 ---
 # Getting Started with CloudQuery on GCP with Kubernetes
-Samuel Kelemen
-20 October 2022
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
 
 In this tutorial, you'll learn how to get started with Kubernetes on GCP's Kubernetes Engine.
 You'll then learn how to gather insights on your cluster using CloudQuery.
