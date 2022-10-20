@@ -122,7 +122,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is not null)",
+            "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (\n(${Subnets} = '${ALL}' OR aws_ec2_instances.subnet_id in (${Subnets}))\nAND (${Region} = '${ALL}' OR aws_ec2_instances.region in (${Region}))\nAND aws_ec2_instances.public_ip_address is not null\n)",
             "refId": "A",
             "select": [
               [
@@ -234,7 +234,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  count(*) as \"Public Instances\"\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is not null)",
+            "rawSql": "SELECT\n  count(*) as \"Public Instances\"\nFROM aws_ec2_instances where (\n(${Subnets} = '${ALL}' OR aws_ec2_instances.subnet_id in (${Subnets})) \nAND (${Region} = '${ALL}' OR aws_ec2_instances.region in (${Region})) \nAND aws_ec2_instances.public_ip_address is not null\n)",
             "refId": "A",
             "select": [
               [
@@ -263,7 +263,7 @@
             "hide": false,
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  count(*) as \"Private Instances\"\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
+            "rawSql": "SELECT\n  count(*) as \"Private Instances\"\nFROM aws_ec2_instances where (\n(${Subnets} = '${ALL}' OR aws_ec2_instances.subnet_id in (${Subnets})) \nAND (${Region} = '${ALL}' OR aws_ec2_instances.region in (${Region})) \nAND aws_ec2_instances.public_ip_address is null\n)",
             "refId": "B",
             "select": [
               [
@@ -350,7 +350,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
+            "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (\n(${Subnets} = '${ALL}' OR aws_ec2_instances.subnet_id in (${Subnets})) \nAND (${Region} = '${ALL}' OR aws_ec2_instances.region in (${Region})) \nAND aws_ec2_instances.public_ip_address is null)",
             "refId": "A",
             "select": [
               [
@@ -449,7 +449,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT DISTINCT r.value->>'DestinationCidrBlock' AS destination,\n                r.value->>'GatewayId' AS gateway_id,\n                r.value->>'InstanceId' AS instance_id,\n                r.value->>'NatGatewayId' AS nat_gateway_id,\n                r.value->>'State' AS state\nFROM aws_ec2_route_tables,\njsonb_array_elements(aws_ec2_route_tables.routes) r,\njsonb_array_elements(associations) as a\nWHERE a->>'SubnetId' in (${Subnets})",
+            "rawSql": "SELECT DISTINCT r.value->>'DestinationCidrBlock' AS destination,\n                r.value->>'GatewayId' AS gateway_id,\n                r.value->>'InstanceId' AS instance_id,\n                r.value->>'NatGatewayId' AS nat_gateway_id,\n                r.value->>'State' AS state\nFROM aws_ec2_route_tables,\njsonb_array_elements(aws_ec2_route_tables.routes) r,\njsonb_array_elements(associations) as a\nWHERE (${Subnets} = '${ALL}' OR a->>'SubnetId' in (${Subnets}))",
             "refId": "A",
             "select": [
               [
@@ -485,7 +485,27 @@
     "templating": {
       "list": [
         {
-          "allValue": "",
+          "hide": 2,
+          "label": "",
+          "name": "ALL",
+          "query": "all",
+          "skipUrlSync": false,
+          "type": "constant",
+          "current": {
+            "value": "all",
+            "text": "all",
+            "selected": false
+          },
+          "options": [
+            {
+              "value": "all",
+              "text": "all",
+              "selected": false
+            }
+          ]
+        },
+        {
+          "allValue": "'$ALL'",
           "current": {},
           "datasource": "${DS_POSTGRESQL}",
           "definition": "select distinct vpc_id from aws_ec2_vpcs",
@@ -505,10 +525,10 @@
           "type": "query"
         },
         {
-          "allValue": null,
+          "allValue": "'$ALL'",
           "current": {},
           "datasource": "${DS_POSTGRESQL}",
-          "definition": "select distinct subnet_id from aws_ec2_subnets where vpc_id in (${VPCs})",
+          "definition": "select distinct subnet_id from aws_ec2_subnets where ${VPCs} = '${ALL}' OR vpc_id in (${VPCs})",
           "description": null,
           "error": null,
           "hide": 0,
@@ -517,7 +537,7 @@
           "multi": true,
           "name": "Subnets",
           "options": [],
-          "query": "select distinct subnet_id from aws_ec2_subnets where vpc_id in (${VPCs})",
+          "query": "select distinct subnet_id from aws_ec2_subnets where ${VPCs} = '${ALL}' OR vpc_id in (${VPCs})",
           "refresh": 2,
           "regex": "",
           "skipUrlSync": false,
@@ -525,10 +545,10 @@
           "type": "query"
         },
         {
-          "allValue": null,
+          "allValue": "'$ALL'",
           "current": {},
           "datasource": "${DS_POSTGRESQL}",
-          "definition": "select distinct region from aws_ec2_vpcs where vpc_id in (${VPCs})",
+          "definition": "select distinct region from aws_ec2_vpcs where ${VPCs} = '${ALL}' OR vpc_id in (${VPCs})",
           "description": null,
           "error": null,
           "hide": 0,
@@ -537,7 +557,7 @@
           "multi": true,
           "name": "Region",
           "options": [],
-          "query": "select distinct region from aws_ec2_vpcs where vpc_id in (${VPCs})",
+          "query": "select distinct region from aws_ec2_vpcs where ${VPCs} = '${ALL}' OR vpc_id in (${VPCs})",
           "refresh": 2,
           "regex": "",
           "skipUrlSync": false,
