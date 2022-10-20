@@ -32,7 +32,7 @@ Let’s start by creating a kubernetes cluster on GKE.
 Kubernetes clusters are a pool of compute resources, on which workloads can be scheduled.
 Clusters are a set of machines tied to a specific GCP region.
 
-To create a cluster, you'll need the project name, the GCP region, and a name for your cluster.
+To create a cluster, you'll need the project name, the GCP region, add a name for your cluster.
 ${project-name} = cq-kelemen
 ${region} = europe-west1
 ${cluster-name} = cq-kelemen-cluster
