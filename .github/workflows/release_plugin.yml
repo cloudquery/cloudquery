@@ -21,7 +21,7 @@ jobs:
           echo ::set-output name=plugin_name::${plugin_name}
           echo ::set-output name=plugin_type::${plugin_type}
           echo ::set-output name=plugin_version::${plugin_version}
-          echo ::set-output name=plugins_dir::plugins/${plugin_type}/${plugin_name}/go.mod
+          echo ::set-output name=plugins_dir::plugins/${plugin_type}/${plugin_name}
       # Fail if not a valid SemVer string
       - name: Parse semver string
         uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
