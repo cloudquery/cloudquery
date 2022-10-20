@@ -3,7 +3,6 @@ package docdb
 import (
 	"context"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,21 +17,13 @@ func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, par
 	input := &docdb.DescribeDBClusterSnapshotsInput{
 		DBClusterIdentifier: item.DBClusterIdentifier,
 	}
-
-	for {
-		output, err := svc.DescribeDBClusterSnapshots(ctx, input)
+	p := docdb.NewDescribeDBClusterSnapshotsPaginator(svc, input)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		if len(output.DBClusterSnapshots) == 0 {
-			return nil
-		}
-		res <- output.DBClusterSnapshots
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- response.DBClusterSnapshots
 	}
 	return nil
 }

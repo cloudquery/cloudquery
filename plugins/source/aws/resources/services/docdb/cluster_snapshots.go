@@ -30,6 +30,14 @@ func ClusterSnapshots() *schema.Table {
 				Resolver: resolveDBClusterSnapshotTags,
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DBClusterSnapshotArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
 				Name:     "availability_zones",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("AvailabilityZones"),
@@ -43,11 +51,6 @@ func ClusterSnapshots() *schema.Table {
 				Name:     "db_cluster_identifier",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DBClusterIdentifier"),
-			},
-			{
-				Name:     "db_cluster_snapshot_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DBClusterSnapshotArn"),
 			},
 			{
 				Name:     "db_cluster_snapshot_identifier",

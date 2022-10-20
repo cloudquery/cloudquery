@@ -311,6 +311,7 @@ type DirectconnectClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_docdb.go . DocDBClient
 type DocDBClient interface {
 	DescribeDBClusters(ctx context.Context, params *docdb.DescribeDBClustersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClustersOutput, error)
+	DescribeDbClustersPages(ctx context.Context, params *docdb.DescribeDBClustersInput, fn func(*docdb.DescribeDBClustersOutput, bool) bool, optFns ...func(*docdb.Options)) error
 	ListTagsForResource(ctx context.Context, params *docdb.ListTagsForResourceInput, optFns ...func(*docdb.Options)) (*docdb.ListTagsForResourceOutput, error)
 	DescribeDBClusterSnapshots(ctx context.Context, params *docdb.DescribeDBClusterSnapshotsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotsOutput, error)
 	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *docdb.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotAttributesOutput, error)
