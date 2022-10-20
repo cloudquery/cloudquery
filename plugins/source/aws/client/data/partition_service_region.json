@@ -3221,6 +3221,7 @@
         },
         "kms": {
           "regions": {
+            "ProdFips": {},
             "af-south-1": {},
             "af-south-1-fips": {},
             "ap-east-1": {},
@@ -3243,6 +3244,7 @@
             "ca-central-1-fips": {},
             "eu-central-1": {},
             "eu-central-1-fips": {},
+            "eu-central-2-fips": {},
             "eu-north-1": {},
             "eu-north-1-fips": {},
             "eu-south-1": {},
@@ -6860,7 +6862,8 @@
         },
         "ssm": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "states": {
