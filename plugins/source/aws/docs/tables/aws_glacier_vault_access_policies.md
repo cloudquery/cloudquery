@@ -5,7 +5,7 @@
 The primary key for this table is **vault_arn**.
 
 ## Relations
-This table depends on [`aws_glacier_vaults`](aws_glacier_vaults.md).
+This table depends on [aws_glacier_vaults](aws_glacier_vaults.md).
 
 ## Columns
 | Name          | Type          |

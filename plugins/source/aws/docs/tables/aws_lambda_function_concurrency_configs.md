@@ -5,7 +5,7 @@ https://docs.aws.amazon.com/lambda/latest/dg/API_ProvisionedConcurrencyConfigLis
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_lambda_functions`](aws_lambda_functions.md).
+This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 
 ## Columns
 | Name          | Type          |

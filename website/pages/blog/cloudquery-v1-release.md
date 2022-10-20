@@ -46,13 +46,13 @@ The new SDK code generation capabilities provide the following advantages for so
 - Automatically generating CloudQuery tables from Go structs.
 - Auto-detect underlying API changes and re-generate CloudQuery tables.
 
-A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/codegenmain/main.go) plugin which is now 95% auto-generated.
+A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/gcp/codegen/main.go) plugin which is now 95% auto-generated.
 
 ## Auto Migrations
 
 As data integration platform users build their own views and queries on top, we made the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
 
-For this New official destination plugins support [auto migrations](https://v1.cloudquery.io/docs/core-concepts/migrations) and [release stages](https://v1.cloudquery.io/docs/plugins/source_plugins_release_stages)
+For this New official destination plugins support [auto migrations](/docs/core-concepts/migrations) and [release stages](/docs/plugins/source-plugin-release-stages)
 
 ## Monorepo
 

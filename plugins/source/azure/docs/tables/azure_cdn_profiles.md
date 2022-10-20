@@ -5,10 +5,10 @@
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_cdn_profiles`:
-  - [`azure_cdn_endpoints`](azure_cdn_endpoints.md)
-  - [`azure_cdn_rule_sets`](azure_cdn_rule_sets.md)
-  - [`azure_cdn_security_policies`](azure_cdn_security_policies.md)
+The following tables depend on azure_cdn_profiles:
+  - [azure_cdn_endpoints](azure_cdn_endpoints.md)
+  - [azure_cdn_rule_sets](azure_cdn_rule_sets.md)
+  - [azure_cdn_security_policies](azure_cdn_security_policies.md)
 
 ## Columns
 | Name          | Type          |
