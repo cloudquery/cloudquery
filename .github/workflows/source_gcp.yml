@@ -12,14 +12,13 @@ on:
       - "plugins/source/gcp/**"
       - ".github/workflows/source_gcp.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/gcp
-
 jobs:
   plugins-source-gcp:
     name: "plugins/source/gcp"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/gcp
     steps:
       - uses: actions/checkout@v3
         with:

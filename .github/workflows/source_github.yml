@@ -12,14 +12,13 @@ on:
       - "plugins/source/github/**"
       - ".github/workflows/source_github.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/github
-
 jobs:
   plugins-source-github:
     name: "plugins/source/github"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/github
     steps:
       - uses: actions/checkout@v3
         with:

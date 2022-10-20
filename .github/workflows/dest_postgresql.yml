@@ -12,14 +12,13 @@ on:
       - "plugins/destination/postgresql/**"
       - ".github/workflows/dest_postgresql.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/destination/postgresql
-
 jobs:
   plugins-destination-postgresql:
     name: "plugins/destination/postgresql"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/postgresql
     services:
       # Label used to access the service container
       postgres:

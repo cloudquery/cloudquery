@@ -12,14 +12,13 @@ on:
       - "plugins/source/azure/**"
       - ".github/workflows/source_azure.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/azure
-
 jobs:
   plugins-source-azure:
     name: "plugins/source/azure"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/azure
     steps:
       - uses: actions/checkout@v3
         with:
