@@ -79,8 +79,8 @@ jobs:
         continue-on-error: true
         with:
           include: "sites/versions/vercel.json"
-          find: 'releases\/download\/cli\-v[^\/]+'
-          replace: "releases/download/${{github.ref_name}}"
+          find: 'releases\/download\/cli\-v[^\/]+[\s\S]+?,'
+          replace: 'releases/download/${{github.ref_name}}" },'
           
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''
