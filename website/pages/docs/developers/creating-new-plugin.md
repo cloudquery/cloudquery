@@ -13,7 +13,7 @@ All other official source and destination plugins can be found [here](https://gi
 
 ## Naming Conventions
 
-Community plugins use the following Github repository naming conventions:
+Community plugins use the following GitHub repository naming conventions:
 
  - `org/cq-source-<name>` for source plugins
  - `org/cq-destination-<name>` for destination plugins
@@ -36,7 +36,7 @@ spec:
 
 for destination plugins. 
 
-Names generally contain no dashes or underscores. So for example, if you are developing a source plugin for a new cloud service called Cloud Widgets, you should create the plugin repository under `org/cq-source-cloudwidgets`.
+Names should not contain dashes or underscores. So for example, if you are developing a source plugin for a new cloud service called Cloud Widgets, you should create the plugin repository under `org/cq-source-cloudwidgets`.
 
 Official plugins, in contrast, are contained in the `cloudquery/cloudquery` monorepo. By convention, they can be imported using a special path `cloudquery/<name>`, e.g.:
 
