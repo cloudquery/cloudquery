@@ -5,8 +5,8 @@
 The primary key for this table is **id**.
 
 ## Relations
-The following tables depend on `azure_monitor_resources`:
-  - [`azure_monitor_diagnostic_settings`](azure_monitor_diagnostic_settings.md)
+The following tables depend on azure_monitor_resources:
+  - [azure_monitor_diagnostic_settings](azure_monitor_diagnostic_settings.md)
 
 ## Columns
 | Name          | Type          |

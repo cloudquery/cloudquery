@@ -76,7 +76,7 @@ You can observe the following components:
 
 Replacing acronyms with use-cases: Instead of adding more acronyms we just want to focus on the end use-cases:
 
-- **Security & Compliance Policies:** We introduced [CloudQuery Policies](/docs/policies) which is just a thin layer that gives users the ability to run a pack of SQL queries.
+- **Security & Compliance Policies:** We introduced [CloudQuery Policies](/docs/core-concepts/policies) which is just a thin layer that gives users the ability to run a pack of SQL queries.
 - **Search & Visibility:** Standard SQL gives you visibility across accounts and clouds.
 - **Cost:** This is something we didn’t actively touch yet, but are looking for feedback and suggestions.
 - **History:** Being able to look back in time and investigate is useful for a variety of use-cases such as post-mortems, incident-response, and compliance. This is why we introduced CloudQuery history with [TimescaleDB](https://www.cloudquery.io/blog/announcing-cloudquery-history)
