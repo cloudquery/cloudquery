@@ -68,6 +68,8 @@ jobs:
         run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
   validate-release:
     runs-on: ubuntu-latest
+    env:
+      CGO_ENABLED: 0
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
