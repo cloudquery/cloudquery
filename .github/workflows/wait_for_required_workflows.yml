@@ -61,6 +61,7 @@ jobs:
               actions = actions.filter(action => action !== "cli")
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
+            actions = [...actions, 'validate-release']
             console.log(`Waiting for ${actions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {
