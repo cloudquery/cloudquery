@@ -62,7 +62,6 @@ func DocumentDBResources() []*Resource {
 				Name:     "db_cluster_snapshot_arn",
 				Type:     schema.TypeString,
 				Resolver: `schema.ParentColumnResolver("arn")`,
-				Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 			}},
 		},
 	}

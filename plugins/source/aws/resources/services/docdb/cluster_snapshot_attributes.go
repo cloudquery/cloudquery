@@ -18,9 +18,6 @@ func ClusterSnapshotAttributes() *schema.Table {
 				Name:     "db_cluster_snapshot_arn",
 				Type:     schema.TypeString,
 				Resolver: schema.ParentColumnResolver("arn"),
-				CreationOptions: schema.ColumnCreationOptions{
-					PrimaryKey: true,
-				},
 			},
 			{
 				Name:     "db_cluster_snapshot_attributes",
