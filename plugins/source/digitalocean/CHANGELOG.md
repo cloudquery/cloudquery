@@ -5,6 +5,20 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.0.6...plugins-source-digitalocean-v2.0.7) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.12 ([#3103](https://github.com/cloudquery/cloudquery/issues/3103)) ([daf0708](https://github.com/cloudquery/cloudquery/commit/daf0708ec904332bce41540f680fbb90b56ebbc6))
+
+## [2.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.0.5...plugins-source-digitalocean-v2.0.6) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for digitalocean to v0.13.12 ([#3103](https://github.com/cloudquery/cloudquery/issues/3103)) ([daf0708](https://github.com/cloudquery/cloudquery/commit/daf0708ec904332bce41540f680fbb90b56ebbc6))
+
 ## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v2.0.4...plugins-source-digitalocean-v2.0.5) (2022-10-19)
 
 

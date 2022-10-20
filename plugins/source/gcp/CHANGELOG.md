@@ -5,6 +5,27 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.0.6...plugins-source-gcp-v2.1.0) (2022-10-20)
+
+
+### Features
+
+* Add folder_ids to the GCP spec ([#2991](https://github.com/cloudquery/cloudquery/issues/2991)) ([07f398b](https://github.com/cloudquery/cloudquery/commit/07f398b22c5467d77c170dddec88bc06a7671090))
+
+## [2.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.0.5...plugins-source-gcp-v2.0.6) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.13.12 ([#3104](https://github.com/cloudquery/cloudquery/issues/3104)) ([3af2ba6](https://github.com/cloudquery/cloudquery/commit/3af2ba63b41fe9472753fba89f7920ed722258c7))
+
+## [2.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.0.4...plugins-source-gcp-v2.0.5) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for gcp to v0.13.12 ([#3104](https://github.com/cloudquery/cloudquery/issues/3104)) ([3af2ba6](https://github.com/cloudquery/cloudquery/commit/3af2ba63b41fe9472753fba89f7920ed722258c7))
+
 ## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v2.0.3...plugins-source-gcp-v2.0.4) (2022-10-19)
 
 
