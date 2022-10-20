@@ -20,8 +20,49 @@ As part of an initiative to remove platform specific code from Kubernetes, authe
 
 ## What does this mean for CloudQuery users?
 
-CloudQuery does not use any specific resources. 
-Users can upgrade by 
+CloudQuery does not use any specific resources which hinder the upgrade. 
 
+### Install
+The easiest way to upgrade, is to install `gke-gcloud-auth-plugin` from `gcloud components` on Mac or Windows:
 
-For more information, read [Google's press release]().
+```zsh
+gcloud components install gke-gcloud-auth-plugin
+```
+
+and apt on Deb based systems:
+```bash
+sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
+```
+
+### Verify
+
+Mac or Linux:
+```
+gke-gcloud-auth-plugin --version 
+```
+
+Windows:
+```
+gke-gcloud-auth-plugin.exe --version
+```
+
+### Switch authentication methods
+Set the flag:
+```sh
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+```
+
+Update components:
+```sh
+gcloud components update
+```
+
+Force credential update:
+```
+gcloud container clusters get-credentials {$CLUSTER_NAME}
+```
+
+Now you should be able to use `kubectl` as normal, and you
+should no longer see the warning in the CloudQuery output.
+
+For more information, read [Google's press release](https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke).
