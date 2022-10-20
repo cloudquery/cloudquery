@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.6](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.5...cli-v1.3.6) (2022-10-20)
+
+
+### Bug Fixes
+
+* Set Sentry server name to oss to make it fully anonymous ([#3089](https://github.com/cloudquery/cloudquery/issues/3089)) ([2c44927](https://github.com/cloudquery/cloudquery/commit/2c4492792c9b14ba1d22ff3eb6d1db4ae937c49d))
+
 ## [1.3.5](https://github.com/cloudquery/cloudquery/compare/cli-v1.3.4...cli-v1.3.5) (2022-10-20)
 
 
