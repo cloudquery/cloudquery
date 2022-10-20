@@ -8,7 +8,7 @@ func initSentry(sentryDsn string, version string) error {
 		Dsn:        sentryDsn,
 		Release:    "cloudquery@" + version,
 		Transport:  sentry.NewHTTPSyncTransport(),
-		ServerName: "", // left empty on purpose to avoid sending any identifying information
+		ServerName: "oss", // set to "oss" on purpose to avoid sending any identifying information
 		// https://docs.sentry.io/platforms/go/configuration/options/#removing-default-integrations
 		Integrations: func(integrations []sentry.Integration) []sentry.Integration {
 			var filteredIntegrations []sentry.Integration
