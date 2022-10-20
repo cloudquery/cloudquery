@@ -5,13 +5,15 @@ Samuel Kelemen
 In this tutorial, you'll learn how to get started with Kubernetes on GCP's Kubernetes Engine.
 You'll then learn how to gather insights on your cluster using CloudQuery.
 
-This tutorial relies on the follow tools. If you haven't already installed them, take a moment
+This tutorial relies on the following tools. If you haven't already installed them, take a moment
 to install them before progressing: 
 
 Prerequisites:
  - [gcloud](https://cloud.google.com/sdk/docs/install)
  - [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
  - [gke-gcloud-auth-plugin](https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke)
+ - [postgres]()
+ - [psql]()
 
 
 
@@ -20,16 +22,19 @@ Let’s start by creating a kubernetes cluster on GKE.
 Kubernetes clusters are a pool of compute resources, on which workloads can be scheduled.
 Clusters are a set of machines tied to a specific GCP region.
 
+To create a cluster, you'll need the project name, the GCP region, and a name for your cluster.
 ${project-name} = cq-kelemen
 ${region} = europe-west1
 ${cluster-name} = cq-kelemen-cluster
 
+The following command will create a cluster in the specified region, and setup the default network.
+We will expose the network to the public internet, so that we, and our end users, can reach our services.
 ```
 # create a kubernetes cluster and setup the default network
 gcloud container --project "${project-name}" clusters create-auto "${cluster-name}" --region "${region}" --release-channel "regular" --network "projects/${project-name}/global/networks/default" --subnetwork "projects/${project-name}/regions/${region}/subnetworks/default" --cluster-ipv4-cidr "/17" --services-ipv4-cidr "/22"
 ```
 
-Now that we have a Kubernetes Clusters and an appropriate network, we can create some workloads
+Now that we have a Kubernetes cluster and an appropriate network, we can create some workloads
 which will run on the cluster.
 
 Google has micro services demo which simulates an E-Commerce store. We can deploy this on the cluster
@@ -40,6 +45,10 @@ First, let's clone the demo:
 ```zsh
 git clone https://github.com/GoogleCloudPlatform/microservices-demo.git
 ```
+Let's take a minute to understand the kubernetes manifests.
+
+Kubernetes manifests allow you to specify configuration to the kubernetes system.
+You can configure your services from them manifests.
 
 Next we will apply the manifests to the cluster.
 ```zsh
@@ -49,7 +58,7 @@ kubectl apply -f ./release/kubernetes-manifests.yaml
 Deploying the resources could take a few minutes.
 If everything is running correctly, you should be able to reach your e-commerce site.
 It should look like [mine](http://35.205.158.178/).
-![Screenshot: e-commerce store demo](../img/estore.jpg)
+![Screenshot: e-commerce store demo](/images/blog/getting-started-with-gcp-and-kubernetes/estore.png)
 
 ## Gathering insights with CloudQuery
 
@@ -100,4 +109,18 @@ Summary: resources: 311, errors: 0, panic: 0 failed_writes: 0
 Starting sync for:  gcp -> [postgresql]
 Sync completed successfully.                           
 Summary: resources: 7035, errors: 18, panic: 0 failed_writes: 0
+```
+
+Our resources should now appear in our postgress database. 
+
+View the pods in our Kubernetes cluster:
+```sql
+select * from k8s_core_pods;
+```
+
+
+Run the GCP CIS policy:
+```
+"psql -U postgres -h localhost -f /plugins/source/gcp/policies_v1/cis_v1.2.0/policy.sql"      
+
 ```
