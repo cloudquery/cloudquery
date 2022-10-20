@@ -21,6 +21,7 @@ jobs:
           echo ::set-output name=plugin_name::${plugin_name}
           echo ::set-output name=plugin_type::${plugin_type}
           echo ::set-output name=plugin_version::${plugin_version}
+          echo ::set-output name=plugins_dir::plugins/${plugin_type}/${plugin_name}
       # Fail if not a valid SemVer string
       - name: Parse semver string
         uses: booxmedialtd/ws-action-parse-semver@e4a833cf5d612066a210bd9b62d1c3b20be3b325
@@ -31,12 +32,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.19.1-release-cache-${{ hashFiles(format('{0}/{1}', steps.split.outputs.plugins_dir, 'go.sum')) }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.19.1-release-cache-plugins-${{ steps.split.outputs.plugin_type }}-${{ steps.split.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v3
         with:
-          go-version-file: plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/go.mod
-          cache: true
-          cache-dependency-path: plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/go.sum
+          go-version-file: ${{steps.split.outputs.plugins_dir}}/go.mod
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
@@ -44,7 +51,7 @@ jobs:
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
+        run: goreleaser release --rm-dist --skip-validate --skip-publish --skip-sign -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
@@ -54,7 +61,7 @@ jobs:
         with:
           gpg_private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Run GoReleaser
-        run: goreleaser release --rm-dist -f ./plugins/${{steps.split.outputs.plugin_type}}/${{steps.split.outputs.plugin_name}}/.goreleaser.yaml
+        run: goreleaser release --rm-dist -f ./${{steps.split.outputs.plugins_dir}}/.goreleaser.yaml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
