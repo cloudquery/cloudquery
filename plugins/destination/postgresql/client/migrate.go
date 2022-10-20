@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1 and table_schema in (SELECT reset_val FROM pg_settings WHERE name='search_path')"
+	isTableExistSQL = "select count(*) from information_schema.tables where table_name = $1 and table_schema in (SELECT unnest(string_to_array(reset_val,',')) FROM pg_settings WHERE name='search_path')"
 
 	// https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
 	sqlSelectPrimaryKeys = `
