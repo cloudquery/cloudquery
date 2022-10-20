@@ -12,7 +12,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [Azure][azure] | v1.0.8         | [Changelog][Azure-Changelog]        | GA |    
 | [GCP][gcp] | v2.0.4         | [Changelog][GCP-Changelog]          | GA |
 | [DigitalOcean][digitalocean] | v2.0.6         | [Changelog][DigitalOcean-Changelog] | GA |
-| [GitHub][github]      | v1.0.7         | [Changelog][GitHub-Changelog]       | GA |
+| [GitHub][github] | v1.0.8         | [Changelog][GitHub-Changelog]       | GA |
 | [Heroku][heroku] | v2.0.5         | [Changelog][Heroku-Changelog]       | Preview |
 | [k8s][k8s] | v2.0.2         | [Changelog][k8s-Changelog]          | Preview |
 | [Okta][okta] | v1.0.9         | [Changelog][Okta-Changelog]         | Preview |
