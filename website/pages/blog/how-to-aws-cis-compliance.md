@@ -32,7 +32,7 @@ You can download the pre-compiled binary from [releases](https://github.com/clou
 
 ```powershell
 export OS=darwin # Possible values: linux,windows,darwin
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_${OS}_amd64 -o cloudquery
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_${OS}_amd64 -o cloudquery
 chmod a+x cloudquery
 ```
 
