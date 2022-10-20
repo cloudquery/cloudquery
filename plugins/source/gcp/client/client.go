@@ -78,7 +78,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	if len(projects) == 0 {
 		c.logger.Info().Msg("No project_ids specified, assuming all active projects")
 		var err error
-		projects, err = getProjectsV1(ctx, options...)
+		projects, err = getProjectsV1(ctx, filter, options...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
@@ -95,7 +95,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 }
 
 // getProjectsV1 requires the `resourcemanager.projects.get` permission to list projects
-func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]string, error) {
+func getProjectsV1(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
 	var (
 		projects []string
 	)
@@ -103,8 +103,10 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 	if err != nil {
 		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
 	}
-
-	call := service.Projects.List().Filter("lifecycleState=ACTIVE").Context(ctx)
+	if filter == "" {
+		filter = "lifecycleState=ACTIVE"
+	}
+	call := service.Projects.List().Filter(filter).Context(ctx)
 	for {
 		output, err := call.Do()
 		if err != nil {

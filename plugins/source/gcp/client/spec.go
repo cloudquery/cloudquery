@@ -4,4 +4,5 @@ package client
 type Spec struct {
 	ProjectIDs            []string `json:"project_ids"`
 	ServiceAccountKeyJSON string   `json:"service_account_key_json"`
+	Filter                string   `json:"project_filter"`
 }
