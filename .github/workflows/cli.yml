@@ -5,6 +5,12 @@ on:
     paths:
       - "cli/**"
       - ".github/workflows/cli.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "cli/**"
+      - ".github/workflows/cli.yml"
 
 jobs:
   cli:
