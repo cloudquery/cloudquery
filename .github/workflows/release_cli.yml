@@ -85,7 +85,7 @@ jobs:
         continue-on-error: true
         with:
           include: "sites/versions/vercel.json"
-          find: 'releases\/download\/cli\-v[^\/]+[\s\S]+?,'
+          find: 'releases\/download\/cli\-v[^\/]+[\s\S]+?},'
           replace: 'releases/download/${{github.ref_name}}" },'
           
       - name: Create Pull Request
