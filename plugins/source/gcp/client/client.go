@@ -78,7 +78,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 	if len(projects) == 0 {
 		c.logger.Info().Msg("No project_ids specified, assuming all active projects")
 		var err error
-		projects, err = getProjectsV1(ctx, filter, options...)
+		projects, err = getProjectsV1(ctx, gcpSpec.Filter, options...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
