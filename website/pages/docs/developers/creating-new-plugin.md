@@ -9,7 +9,7 @@ More real world examples are:
 - [GCP Source Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp)
 - [PostgreSQL Destination Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql)
 
-All other official source and destination plugins can be found [here](https://github.com/cloudquery/cloudquery/tree/main/plugins)
+Other source and destination plugins to reference can be found [here](https://github.com/cloudquery/cloudquery/tree/main/plugins)
 
 ## Naming Conventions
 
