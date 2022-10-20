@@ -6,8 +6,6 @@ The primary key for this table is **arn**.
 
 ## Relations
 This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
-The following tables depend on aws_docdb_cluster_snapshots:
-  - [aws_docdb_cluster_snapshot_attributes](aws_docdb_cluster_snapshot_attributes.md)
 
 ## Columns
 | Name          | Type          |
@@ -20,6 +18,7 @@ The following tables depend on aws_docdb_cluster_snapshots:
 |region|String|
 |tags|JSON|
 |arn (PK)|String|
+|attributes|JSON|
 |availability_zones|StringArray|
 |cluster_create_time|Timestamp|
 |db_cluster_identifier|String|

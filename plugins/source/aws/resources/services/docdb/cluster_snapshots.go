@@ -38,6 +38,11 @@ func ClusterSnapshots() *schema.Table {
 				},
 			},
 			{
+				Name:     "attributes",
+				Type:     schema.TypeJSON,
+				Resolver: resolveDocdbClusterSnapshotAttributes,
+			},
+			{
 				Name:     "availability_zones",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("AvailabilityZones"),
@@ -117,10 +122,6 @@ func ClusterSnapshots() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VpcId"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			ClusterSnapshotAttributes(),
 		},
 	}
 }

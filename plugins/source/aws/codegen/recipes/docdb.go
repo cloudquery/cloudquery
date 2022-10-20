@@ -51,18 +51,12 @@ func DocumentDBResources() []*Resource {
 						Resolver: `schema.PathResolver("DBClusterSnapshotArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
+					{
+						Name:     "attributes",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveDocdbClusterSnapshotAttributes`,
+					},
 				}...),
-			Relations: []string{"ClusterSnapshotAttributes()"},
-		},
-		{
-			SubService:  "cluster_snapshot_attributes",
-			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshotAttributesResult.html",
-			Struct:      &types.DBClusterSnapshotAttributesResult{},
-			ExtraColumns: []codegen.ColumnDefinition{{
-				Name:     "db_cluster_snapshot_arn",
-				Type:     schema.TypeString,
-				Resolver: `schema.ParentColumnResolver("arn")`,
-			}},
 		},
 	}
 

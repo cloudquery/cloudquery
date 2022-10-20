@@ -28,6 +28,22 @@ func fetchDocdbClusterSnapshots(ctx context.Context, meta schema.ClientMeta, par
 	return nil
 }
 
+func resolveDocdbClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	item := resource.Item.(types.DBClusterSnapshot)
+	cli := meta.(*client.Client)
+	svc := cli.Services().DocDB
+
+	input := &docdb.DescribeDBClusterSnapshotAttributesInput{
+		DBClusterSnapshotIdentifier: item.DBClusterSnapshotIdentifier,
+	}
+
+	output, err := svc.DescribeDBClusterSnapshotAttributes(ctx, input)
+	if err != nil {
+		return err
+	}
+	return resource.Set(c.Name, output.DBClusterSnapshotAttributesResult.DBClusterSnapshotAttributes)
+}
+
 func resolveDBClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	item := resource.Item.(types.DBClusterSnapshot)
 	return resolveDocDBTags(ctx, meta, resource, *item.DBClusterSnapshotArn, c.Name)
