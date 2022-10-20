@@ -1,4 +1,12 @@
-# Getting Started with Cloudquery on GCP with Kubernetes
+---
+title: Getting Started with CloudQuery on GCP with Kubernetes
+tag: security
+date: 2022/10/20
+description: >-
+  Gain visibility into your GKE clusters with CloudQuery.
+author: SCKelemen
+---
+# Getting Started with CloudQuery on GCP with Kubernetes
 Samuel Kelemen
 20 October 2022
 
