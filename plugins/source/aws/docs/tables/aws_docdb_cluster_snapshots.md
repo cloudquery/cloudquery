@@ -2,7 +2,7 @@
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 ## Relations
 This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
@@ -14,15 +14,15 @@ The following tables depend on aws_docdb_cluster_snapshots:
 | ------------- | ------------- |
 |_cq_source_name|String|
 |_cq_sync_time|Timestamp|
-|_cq_id (PK)|UUID|
+|_cq_id|UUID|
 |_cq_parent_id|UUID|
 |account_id|String|
 |region|String|
 |tags|JSON|
+|arn (PK)|String|
 |availability_zones|StringArray|
 |cluster_create_time|Timestamp|
 |db_cluster_identifier|String|
-|db_cluster_snapshot_arn|String|
 |db_cluster_snapshot_identifier|String|
 |engine|String|
 |engine_version|String|
