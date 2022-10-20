@@ -9,9 +9,10 @@ import (
 
 func ClusterSnapshotAttributes() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_docdb_cluster_snapshot_attributes",
-		Resolver:  fetchDocdbClusterSnapshotAttributes,
-		Multiplex: client.ServiceAccountRegionMultiplexer("docdb"),
+		Name:        "aws_docdb_cluster_snapshot_attributes",
+		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshotAttributesResult.html",
+		Resolver:    fetchDocdbClusterSnapshotAttributes,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{
 			{
 				Name:     "db_cluster_snapshot_attributes",
