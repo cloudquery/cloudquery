@@ -31,8 +31,8 @@ CloudQuery is an open-source framework that transforms your cloud infrastructure
 You can download the pre-compiled binary from [releases](https://github.com/cloudquery/cloudquery/releases), or using CLI:
 
 ```powershell
-export OS=Darwin # Possible values: Linux,Windows,Darwin
-curl -L https://versions.cloudquery.io/latest/v1/cloudquery_${OS}_x86_64 -o cloudquery
+export OS=darwin # Possible values: linux,windows,darwin
+curl -L https://versions.cloudquery.io/latest/v2/cloudquery_${OS}_amd64 -o cloudquery
 chmod a+x cloudquery
 ```
 
