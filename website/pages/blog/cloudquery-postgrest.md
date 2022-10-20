@@ -32,7 +32,7 @@ In this blog post, we will walk you through how to set up [CloudQuery](https://g
 
 ### Step 1: **Install or Deploy CloudQuery**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool, take a look at our [Getting Started with AWS Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) or [GCP](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp), [Azure](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure) .
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool. Take a look at our [quickstart guide](/docs/quickstart).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to AWS on RDS Aurora and EKS at [github.com/cloudquery/terraform-aws-cloudquery](https://github.com/cloudquery/terraform-aws-cloudquery) , or GCP and Cloud SQL at [https://github.com/cloudquery/terraform-gcp-cloudquery](https://github.com/cloudquery/terraform-gcp-cloudquery)
 
@@ -81,7 +81,7 @@ curl "http://localhost:3000/aws_ec2_instances?arn=eq.arnsomething"
 
 ### Step 4: Create New Views
 
-By default, PostgREST exposes all tables and relationships of the existing table. But let’s say you want to create a new view. All you need to do is create the new view, and PostgREST will automatically generate the model for that. For example, checkout this [blog](https://www.cloudquery.io/blog/aws-resources-view) on how to create a unified AWS resource [view](https://github.com/cloudquery/cq-provider-aws/tree/main/views) (or GCP [View](https://github.com/cloudquery/cq-provider-gcp/tree/main/views)). And just like that you can now query and search all your resources by ARN, tags, or name using GraphQL!
+By default, PostgREST exposes all tables and relationships of the existing table. But let’s say you want to create a new view. All you need to do is create the new view, and PostgREST will automatically generate the model for that. For example, checkout this [blog](https://www.cloudquery.io/blog/aws-resources-view) on how to create a unified AWS resource [view](https://github.com/cloudquery/cq-provider-aws/tree/main/views) (or GCP [View](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/gcp/views)). And just like that you can now query and search all your resources by ARN, tags, or name using GraphQL!
 
 ### Step 5: Deploying in production
 

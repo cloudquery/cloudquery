@@ -5,8 +5,8 @@
 The primary key for this table is **name**.
 
 ## Relations
-The following tables depend on `digitalocean_domains`:
-  - [`digitalocean_domain_records`](digitalocean_domain_records.md)
+The following tables depend on digitalocean_domains:
+  - [digitalocean_domain_records](digitalocean_domain_records.md)
 
 ## Columns
 | Name          | Type          |
