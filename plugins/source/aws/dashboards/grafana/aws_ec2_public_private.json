@@ -213,7 +213,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Privatee Instances"
+              "options": "Private Instances"
             },
             "properties": [
               {
