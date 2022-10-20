@@ -1,6 +1,6 @@
 # Table: aws_docdb_cluster_snapshots
 
-
+https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html
 
 The primary key for this table is **_cq_id**.
 
