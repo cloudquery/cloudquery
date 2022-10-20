@@ -12,14 +12,13 @@ on:
       - "plugins/source/digitalocean/**"
       - ".github/workflows/source_digitalocean.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/digitalocean
-
 jobs:
   plugins-source-digitalocean:
     name: "plugins/source/digitalocean"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/digitalocean
     steps:
       - uses: actions/checkout@v3
         with:

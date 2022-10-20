@@ -12,14 +12,13 @@ on:
       - "plugins/source/test/**"
       - ".github/workflows/source_test.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/test
-
 jobs:
   plugins-source-test:
     name: "plugins/source/test"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/test
     steps:
       - uses: actions/checkout@v3
         with:

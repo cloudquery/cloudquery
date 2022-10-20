@@ -12,14 +12,13 @@ on:
       - "plugins/source/k8s/**"
       - ".github/workflows/source_k8s.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/k8s
-
 jobs:
   plugins-source-k8s:
     name: "plugins/source/k8s"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/k8s
     steps:
       - uses: actions/checkout@v3
         with:

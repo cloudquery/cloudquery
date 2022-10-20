@@ -12,14 +12,13 @@ on:
       - "plugins/destination/test/**"
       - ".github/workflows/dest_test.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/destination/test
-
 jobs:
   plugins-destination-test:
     name: "plugins/destination/test"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/test
     steps:
       - uses: actions/checkout@v3
         with:

@@ -12,14 +12,13 @@ on:
       - "plugins/source/cloudflare/**"
       - ".github/workflows/source_cloudflare.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/cloudflare
-
 jobs:
   plugins-source-cloudflare:
     name: "plugins/source/cloudflare"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/cloudflare
     steps:
       - uses: actions/checkout@v3
         with:

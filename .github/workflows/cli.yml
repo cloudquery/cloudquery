@@ -6,14 +6,13 @@ on:
       - "cli/**"
       - ".github/workflows/cli.yml"
 
-defaults:
-  run:
-    working-directory: ./cli
-
 jobs:
   cli:
     name: "cli"
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./cli
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]

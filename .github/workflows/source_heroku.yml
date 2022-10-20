@@ -12,14 +12,13 @@ on:
       - "plugins/source/heroku/**"
       - ".github/workflows/source_heroku.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/heroku
-
 jobs:
   plugins-source-heroku:
     name: "plugins/source/heroku"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/heroku
     steps:
       - uses: actions/checkout@v3
         with:

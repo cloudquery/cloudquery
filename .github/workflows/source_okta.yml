@@ -12,14 +12,13 @@ on:
       - "plugins/source/okta/**"
       - ".github/workflows/source_okta.yml"
 
-defaults:
-  run:
-    working-directory: ./plugins/source/okta
-
 jobs:
   plugins-source-okta:
     name: "plugins/source/okta"
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/okta
     steps:
       - uses: actions/checkout@v3
         with:
