@@ -43,5 +43,5 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 
 ### SEE ALSO
 
-* [cloudquery](/docs/cli/commands/cloudquery)	 - CloudQuery CLI
+* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
 

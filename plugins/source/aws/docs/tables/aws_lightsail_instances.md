@@ -5,8 +5,8 @@ https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Instance.html
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_lightsail_instances`:
-  - [`aws_lightsail_instance_port_states`](aws_lightsail_instance_port_states.md)
+The following tables depend on aws_lightsail_instances:
+  - [aws_lightsail_instance_port_states](aws_lightsail_instance_port_states.md)
 
 ## Columns
 | Name          | Type          |

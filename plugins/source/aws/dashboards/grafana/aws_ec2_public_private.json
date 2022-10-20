@@ -122,7 +122,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  (Tags->>'Name') as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is not null)",
+            "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address,\n  public_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is not null)",
             "refId": "A",
             "select": [
               [
@@ -263,7 +263,7 @@
             "hide": false,
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  count(*) as \"Privatee Instances\"\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
+            "rawSql": "SELECT\n  count(*) as \"Private Instances\"\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and aws_ec2_instances.region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
             "refId": "B",
             "select": [
               [
@@ -350,7 +350,7 @@
             "group": [],
             "metricColumn": "none",
             "rawQuery": true,
-            "rawSql": "SELECT\n  (Tags->>'Name') as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
+            "rawSql": "SELECT\n  jsonb_path_query_first(tags, '$[*]? (@.Key == \"Name\")') ->> 'Value' as Name,\n  subnet_id,\n  instance_id,\n  region,\n  private_ip_address\nFROM aws_ec2_instances where (aws_ec2_instances.subnet_id in (${Subnets}) and region in (${Region}) and aws_ec2_instances.public_ip_address is null)",
             "refId": "A",
             "select": [
               [

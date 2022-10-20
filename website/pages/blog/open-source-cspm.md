@@ -18,7 +18,7 @@ CSPMs are probably the biggest offenders of yet another dashboard and here in Cl
 
 - **ETL (Extract-Transform-Load) ingestion layer:** [CloudQuery](https://github.com/cloudquery/cloudquery)
 - **Datastore:** PostgreSQL
-- **Policies:** Standard SQL Policies to be executed via `psql` [/docs/policies](/docs/policies)
+- **Policies:** Standard [SQL Policies](/docs/core-concepts/policies) to be executed via `psql`
 - **Data Visualization and Exploration Platform:** Grafana
 
 ## What you will get
@@ -29,7 +29,7 @@ CSPMs are probably the biggest offenders of yet another dashboard and here in Cl
 
 ### Step 1: **Install or Deploy CloudQuery**
 
-If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool. Take a look at our [Getting Started with AWS Guide](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) or [GCP](https://www.cloudquery.io/docs/getting-started/getting-started-with-gcp), [Azure](https://www.cloudquery.io/docs/getting-started/getting-started-with-azure).
+If it’s your first time using CloudQuery we suggest you first run it locally to get familiar with the tool. Take a look at our [quick start guide](/docs/quickstart).
 
 If you are already familiar with CloudQuery, take a look at how to deploy it to AWS on RDS Aurora and EKS at [github.com/cludquery/terraform-aws-cloudquery](https://github.com/cloudquery/terraform-aws-cloudquery) , or GCP and Cloud SQL at [https://github.com/cloudquery/terraform-gcp-cloudquery](https://github.com/cloudquery/terraform-gcp-cloudquery)
 
@@ -43,11 +43,11 @@ Grafana is a well-known open source observability and visualization tool. It is 
 
 ### Step 3: Run Policies (CSPM - Cloud Security Posture Management)
 
-CloudQuery policies and rules are implemented in pure SQL and they store results in a single table that you can easily query and visualize. Here is a [link](/docs/policies) to all available policies and compliance frameworks. In this section we will go quickly through how to run multiple benchmarks for AWS.
+CloudQuery policies and rules are implemented in pure SQL and they store results in a single table that you can easily query and visualize. Here is a [link](/docs/core-concepts/policies) to all available policies and compliance frameworks. In this section we will go quickly through how to run multiple benchmarks for AWS.
 
 ```bash
-https://github.com/cloudquery/cq-provider-aws
-cd policies
+git clone https://github.com/cloudquery/cloudquery.git
+cd cloudquery/plugins/source/aws/policies_v1
 # change the DSN to your PostgreSQL instance populated by CloudQuery
 psql postgres://postgres:pass@localhost:5432/postgres -f policy.sql
 ```

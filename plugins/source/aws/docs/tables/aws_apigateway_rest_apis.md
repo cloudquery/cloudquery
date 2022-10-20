@@ -5,16 +5,16 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_RestApi.html
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_apigateway_rest_apis`:
-  - [`aws_apigateway_rest_api_authorizers`](aws_apigateway_rest_api_authorizers.md)
-  - [`aws_apigateway_rest_api_deployments`](aws_apigateway_rest_api_deployments.md)
-  - [`aws_apigateway_rest_api_documentation_parts`](aws_apigateway_rest_api_documentation_parts.md)
-  - [`aws_apigateway_rest_api_documentation_versions`](aws_apigateway_rest_api_documentation_versions.md)
-  - [`aws_apigateway_rest_api_gateway_responses`](aws_apigateway_rest_api_gateway_responses.md)
-  - [`aws_apigateway_rest_api_models`](aws_apigateway_rest_api_models.md)
-  - [`aws_apigateway_rest_api_request_validators`](aws_apigateway_rest_api_request_validators.md)
-  - [`aws_apigateway_rest_api_resources`](aws_apigateway_rest_api_resources.md)
-  - [`aws_apigateway_rest_api_stages`](aws_apigateway_rest_api_stages.md)
+The following tables depend on aws_apigateway_rest_apis:
+  - [aws_apigateway_rest_api_authorizers](aws_apigateway_rest_api_authorizers.md)
+  - [aws_apigateway_rest_api_deployments](aws_apigateway_rest_api_deployments.md)
+  - [aws_apigateway_rest_api_documentation_parts](aws_apigateway_rest_api_documentation_parts.md)
+  - [aws_apigateway_rest_api_documentation_versions](aws_apigateway_rest_api_documentation_versions.md)
+  - [aws_apigateway_rest_api_gateway_responses](aws_apigateway_rest_api_gateway_responses.md)
+  - [aws_apigateway_rest_api_models](aws_apigateway_rest_api_models.md)
+  - [aws_apigateway_rest_api_request_validators](aws_apigateway_rest_api_request_validators.md)
+  - [aws_apigateway_rest_api_resources](aws_apigateway_rest_api_resources.md)
+  - [aws_apigateway_rest_api_stages](aws_apigateway_rest_api_stages.md)
 
 ## Columns
 | Name          | Type          |

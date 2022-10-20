@@ -22,7 +22,7 @@ CloudQuery policies gives you a powerful way to automate, customize, codify, and
 
 ## Overview
 
-CloudQuery NSA and CISA Kubernetes Hardening Guidance Policy contains more than 60 checks and is available on [GitHub](https://github.com/cloudquery-policies/k8s/tree/main/nsa_cisa_v1). The documentation for all the checks and queries is available on [GitHub](https://github.com/cloudquery/cq-provider-k8s/tree/main/policies)
+CloudQuery NSA and CISA Kubernetes Hardening Guidance Policy contains more than 60 checks and is available on [GitHub](https://github.com/cloudquery-policies/k8s/tree/main/nsa_cisa_v1). The documentation for all the checks and queries is available on [GitHub](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/k8s/policies_v1)
 
 Here is a snippet from the NSA & CISA Kubernetes policy:
 
@@ -76,11 +76,11 @@ You are also free to fork this repository and create your own policy to adopt th
 
 Running this is as simple as ensuring your database has the latest cloud asset configuration with the fetch command and then executing each of pre-made queries with the policy run command.
 
-Following is a quick start to run the policy. Otherwise, checkout full details on our [docs](/docs/policies).
+Following is a quick start to run the policy. Otherwise, checkout full details on our [docs](/docs/core-concepts/policies).
 
 ### Prerequisite
 
-Please follow the [Getting Started](https://www.cloudquery.io/docs/getting-started/getting-started-with-aws) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](/plugins/k8s).
+Please follow the [quickstart guide](/docs/quickstart) documentation on how to `install`, `init`, and `fetch` the [K8S Provider](/docs/plugins/sources).
 
 ### Running
 
@@ -106,4 +106,4 @@ cloudquery policy run k8s//nsa_cisa_v1 --output-dir=results
 
 ## Build your own and share!
 
-Do you have a policy that you want to codify, or you’ve been running it with python or bash scripts? You are welcome to try out codifying it with CloudQuery Policies. Feel free to drop on [discord](https://www.cloudquery.io/discord) or [GitHub](https://github.com/cloudquery) to get any help, and we will share your policy on [CloudQuery Hub](https://hub.cloudquery.io/).
+Do you have a policy that you want to codify, or you’ve been running it with python or bash scripts? You are welcome to try out codifying it with CloudQuery Policies. Feel free to drop on [discord](https://www.cloudquery.io/discord) or [GitHub](https://github.com/cloudquery/cloudquery/issues) to get any help, and we will share your policy on [CloudQuery Hub](https://www.cloudquery.io/).
