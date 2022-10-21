@@ -86,52 +86,34 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 	defer func() {
 		if err := sourceClient.Terminate(); err != nil {
 			log.Error().Err(err).Msg("Failed to terminate source client")
-			fmt.Println("failed to terminate source client: ", err)
+			fmt.Println("failed to terminate source client:", err)
 		}
 	}()
 
-	destClients, err := initializeDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
-	// we make sure to defer the closing of clients here before checking the error, otherwise
-	// if one of the clients returns an error, the clients opened before it may never get closed
-	defer func() {
-		for _, destClient := range destClients {
-			if destClient != nil {
-				if err := destClient.Terminate(); err != nil {
-					log.Error().Err(err).Msg("Failed to terminate destination client")
-					fmt.Println("failed to terminate destination client: ", err)
-				}
-			}
-		}
-	}()
+	destClients, closeDestClients, err := initializeDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
 	if err != nil {
 		return err
 	}
+	defer closeDestClients()
 
 	fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Starting migration")
-	tableCount, err := runMigration(ctx, sourceSpec, destinationsSpecs, sourceClient, destClients)
+	tables, err := sourceClient.GetTables(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
+	}
+	for i, destinationSpec := range destinationsSpecs {
+		if err := destClients[i].Migrate(ctx, tables); err != nil {
+			return fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
+		}
 	}
 	tt := time.Since(migrateTime)
 	fmt.Printf("Migration completed successfully.\n")
-	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
-		Int("tables", tableCount).Float64("time_took", tt.Seconds()).Msg("Migration completed successfully")
+	log.Info().Str("source", sourceSpec.Name).
+		Strs("destinations", sourceSpec.Destinations).
+		Int("num_tables", len(tables)).
+		Float64("time_took", tt.Seconds()).
+		Msg("Migration completed successfully")
 
 	return nil
-}
-
-func runMigration(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, sourceClient *clients.SourceClient, destClients []*clients.DestinationClient) (count int, err error) {
-	for i, destinationSpec := range destinationsSpecs {
-		tables, err := sourceClient.GetTables(ctx)
-		if err != nil {
-			return count, fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
-		}
-
-		if err := destClients[i].Migrate(ctx, tables); err != nil {
-			return count, fmt.Errorf("failed to migrate source %s on destination %s : %w", sourceSpec.Name, destinationSpec.Name, err)
-		}
-		count += len(tables)
-	}
-	return count, nil
 }
