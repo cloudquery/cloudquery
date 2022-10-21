@@ -83,17 +83,23 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		return nil, err
 	}
 
-	if len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 {
-		c.logger.Info().Msg("No project_ids or folder_ids specified, assuming all active projects")
+	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
+		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
+	}
+
+	switch {
+	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0:
+		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
 		projects, err = getProjectsV1(ctx, options...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
-	} else {
+
+	case len(gcpSpec.FolderIDs) > 0:
 		folderIds := []string{}
 
 		for _, parentFolder := range gcpSpec.FolderIDs {
-			c.logger.Info().Msg("Listing folders..")
+			c.logger.Info().Msg("Listing folders...")
 			childFolders, err := listFolders(ctx, c.Services.ResourcemanagerFoldersClient, parentFolder, *gcpSpec.FolderRecursionDepth)
 			if err != nil {
 				return nil, fmt.Errorf("failed to list folders: %w", err)
@@ -103,15 +109,28 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 
 		logFolderIds(&c.logger, folderIds)
 
-		c.logger.Info().Msg("listing folder projects..")
+		c.logger.Info().Msg("listing folder projects...")
 		folderProjects, err := listProjectsInFolders(ctx, c.Services.ResourcemanagerProjectsClient, folderIds)
 		projects = setUnion(projects, folderProjects)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list projects: %w", err)
 		}
+
+	case len(gcpSpec.ProjectFilter) > 0:
+		c.logger.Info().Msg("Listing projects with filter...")
+		projectsWithFilter, err := getProjectsV1WithFilter(ctx, gcpSpec.ProjectFilter, options...)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get projects with filter: %w", err)
+		}
+
+		projects = setUnion(projects, projectsWithFilter)
 	}
 
 	logProjectIds(&logger, projects)
+
+	if len(projects) == 0 {
+		return nil, fmt.Errorf("no active projects")
+	}
 
 	c.projects = projects
 	if len(projects) == 1 {
@@ -168,6 +187,35 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 
 	if len(projects) == 0 {
 		return nil, fmt.Errorf("no active projects")
+	}
+
+	return projects, nil
+}
+
+func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
+	var (
+		projects []string
+	)
+	service, err := crmv1.NewService(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
+	}
+
+	call := service.Projects.List().Filter(filter).Context(ctx)
+	for {
+		output, err := call.Do()
+		if err != nil {
+			return nil, err
+		}
+		for _, project := range output.Projects {
+			if project.LifecycleState == "ACTIVE" {
+				projects = append(projects, project.ProjectId)
+			}
+		}
+		if output.NextPageToken == "" {
+			break
+		}
+		call.PageToken(output.NextPageToken)
 	}
 
 	return projects, nil
