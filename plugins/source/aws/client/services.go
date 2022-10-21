@@ -27,6 +27,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -305,6 +306,14 @@ type DirectconnectClient interface {
 	DescribeLags(ctx context.Context, params *directconnect.DescribeLagsInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeLagsOutput, error)
 	DescribeVirtualGateways(ctx context.Context, params *directconnect.DescribeVirtualGatewaysInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeVirtualGatewaysOutput, error)
 	DescribeVirtualInterfaces(ctx context.Context, params *directconnect.DescribeVirtualInterfacesInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeVirtualInterfacesOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_docdb.go . DocDBClient
+type DocDBClient interface {
+	DescribeDBClusters(ctx context.Context, params *docdb.DescribeDBClustersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClustersOutput, error)
+	ListTagsForResource(ctx context.Context, params *docdb.ListTagsForResourceInput, optFns ...func(*docdb.Options)) (*docdb.ListTagsForResourceOutput, error)
+	DescribeDBClusterSnapshots(ctx context.Context, params *docdb.DescribeDBClusterSnapshotsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotsOutput, error)
+	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *docdb.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotAttributesOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dynamodb.go . DynamoDBClient
