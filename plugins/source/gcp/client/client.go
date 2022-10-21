@@ -188,7 +188,7 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 	})
 
 	for {
-		folder, err := it.Next()
+		child, err := it.Next()
 
 		if err == iterator.Done {
 			break
@@ -197,8 +197,12 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 			return nil, err
 		}
 
-		if folder.State == resourcemanagerv3pb.Folder_ACTIVE {
-			folders = append(folders, folder.Name)
+		if child.State == resourcemanagerv3pb.Folder_ACTIVE {
+			childFolders, err := listFolders(ctx, folderClient, child.Name, recursionDepth-1)
+			if err != nil {
+				return nil, err
+			}
+			folders = append(folders, childFolders...)
 		}
 	}
 
