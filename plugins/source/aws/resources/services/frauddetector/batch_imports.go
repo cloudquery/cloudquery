@@ -9,9 +9,10 @@ import (
 
 func BatchImports() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_frauddetector_batch_imports",
-		Resolver:  fetchFrauddetectorBatchImports,
-		Multiplex: client.ServiceAccountRegionMultiplexer("frauddetector"),
+		Name:        "aws_frauddetector_batch_imports",
+		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchImport.html",
+		Resolver:    fetchFrauddetectorBatchImports,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",

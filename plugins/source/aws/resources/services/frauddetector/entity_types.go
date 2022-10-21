@@ -9,9 +9,10 @@ import (
 
 func EntityTypes() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_frauddetector_entity_types",
-		Resolver:  fetchFrauddetectorEntityTypes,
-		Multiplex: client.ServiceAccountRegionMultiplexer("frauddetector"),
+		Name:        "aws_frauddetector_entity_types",
+		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_EntityType.html",
+		Resolver:    fetchFrauddetectorEntityTypes,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{
 			{
 				Name:     "arn",
