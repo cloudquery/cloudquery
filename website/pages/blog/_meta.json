@@ -53,7 +53,5 @@
   "announcing-cloudquery-hub": "Announcing CloudQuery Hub",
   "introducing-cloudquery-sdk": "Introducing CloudQuery SDK",
   "continuous-aws-iam-security-best-practices": "Continuous AWS IAM Security Best Practices",
-  "how-to-aws-cis-compliance": "How to run AWS CIS Benchmark with CloudQuery",
-  "getting-started-with-gcp-and-kubernetes": "Getting Started with GCP and Kubernetes",
-  "changes-to-kubernetes-auth": "Changes to Kubernetes Authentication"
+  "how-to-aws-cis-compliance": "How to run AWS CIS Benchmark with CloudQuery"
 }
