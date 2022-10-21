@@ -83,17 +83,23 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 		return nil, err
 	}
 
-	if len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 {
-		c.logger.Info().Msg("No project_ids or folder_ids specified, assuming all active projects")
+	if len(gcpSpec.ProjectFilter) > 0 && len(gcpSpec.FolderIDs) > 0 {
+		return nil, fmt.Errorf("project_filter and folder_ids are mutually exclusive")
+	}
+
+	switch {
+	case len(projects) == 0 && len(gcpSpec.FolderIDs) == 0 && len(gcpSpec.ProjectFilter) == 0:
+		c.logger.Info().Msg("No project_ids, folder_ids, or project_filter specified - assuming all active projects")
 		projects, err = getProjectsV1(ctx, options...)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get projects: %w", err)
 		}
-	} else {
+
+	case len(gcpSpec.FolderIDs) > 0:
 		folderIds := []string{}
 
 		for _, parentFolder := range gcpSpec.FolderIDs {
-			c.logger.Info().Msg("Listing folders..")
+			c.logger.Info().Msg("Listing folders...")
 			childFolders, err := listFolders(ctx, c.Services.ResourcemanagerFoldersClient, parentFolder, *gcpSpec.FolderRecursionDepth)
 			if err != nil {
 				return nil, fmt.Errorf("failed to list folders: %w", err)
@@ -103,15 +109,28 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 
 		logFolderIds(&c.logger, folderIds)
 
-		c.logger.Info().Msg("listing folder projects..")
+		c.logger.Info().Msg("listing folder projects...")
 		folderProjects, err := listProjectsInFolders(ctx, c.Services.ResourcemanagerProjectsClient, folderIds)
-		projects = append(projects, folderProjects...)
+		projects = setUnion(projects, folderProjects)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list projects: %w", err)
 		}
+
+	case len(gcpSpec.ProjectFilter) > 0:
+		c.logger.Info().Msg("Listing projects with filter...")
+		projectsWithFilter, err := getProjectsV1WithFilter(ctx, gcpSpec.ProjectFilter, options...)
+		if err != nil {
+			return nil, fmt.Errorf("failed to get projects with filter: %w", err)
+		}
+
+		projects = setUnion(projects, projectsWithFilter)
 	}
 
 	logProjectIds(&logger, projects)
+
+	if len(projects) == 0 {
+		return nil, fmt.Errorf("no active projects")
+	}
 
 	c.projects = projects
 	if len(projects) == 1 {
@@ -173,6 +192,35 @@ func getProjectsV1(ctx context.Context, options ...option.ClientOption) ([]strin
 	return projects, nil
 }
 
+func getProjectsV1WithFilter(ctx context.Context, filter string, options ...option.ClientOption) ([]string, error) {
+	var (
+		projects []string
+	)
+	service, err := crmv1.NewService(ctx, options...)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create cloudresourcemanager service: %w", err)
+	}
+
+	call := service.Projects.List().Filter(filter).Context(ctx)
+	for {
+		output, err := call.Do()
+		if err != nil {
+			return nil, err
+		}
+		for _, project := range output.Projects {
+			if project.LifecycleState == "ACTIVE" {
+				projects = append(projects, project.ProjectId)
+			}
+		}
+		if output.NextPageToken == "" {
+			break
+		}
+		call.PageToken(output.NextPageToken)
+	}
+
+	return projects, nil
+}
+
 // listFolders recursively lists the folders in the 'parent' folder. Includes the 'parent' folder itself.
 // recursionDepth is the depth of folders to recurse - where 0 means not to recurse any folders.
 func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersClient, parent string, recursionDepth int) ([]string, error) {
@@ -188,7 +236,7 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 	})
 
 	for {
-		folder, err := it.Next()
+		child, err := it.Next()
 
 		if err == iterator.Done {
 			break
@@ -197,8 +245,12 @@ func listFolders(ctx context.Context, folderClient *resourcemanagerv3.FoldersCli
 			return nil, err
 		}
 
-		if folder.State == resourcemanagerv3pb.Folder_ACTIVE {
-			folders = append(folders, folder.Name)
+		if child.State == resourcemanagerv3pb.Folder_ACTIVE {
+			childFolders, err := listFolders(ctx, folderClient, child.Name, recursionDepth-1)
+			if err != nil {
+				return nil, err
+			}
+			folders = append(folders, childFolders...)
 		}
 	}
 
@@ -229,4 +281,20 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanagerv3
 	}
 
 	return projects, nil
+}
+
+func setUnion(a []string, b []string) []string {
+	set := map[string]bool{}
+	for _, s := range a {
+		set[s] = true
+	}
+	for _, s := range b {
+		set[s] = true
+	}
+
+	union := []string{}
+	for s := range set {
+		union = append(union, s)
+	}
+	return union
 }
