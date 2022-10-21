@@ -17,10 +17,10 @@ func initializeDestinationClients(ctx context.Context, sourceSpec specs.Source, 
 			clients.WithDestinationDirectory(cqDir),
 		)
 		if err != nil {
-			return nil, fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
+			return destClients, fmt.Errorf("failed to create destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
 		if err := destClients[i].Initialize(ctx, destinationSpec); err != nil {
-			return nil, fmt.Errorf("failed to initialize destination plugin client for %s: %w", destinationSpec.Name, err)
+			return destClients, fmt.Errorf("failed to initialize destination plugin client for %s: %w", destinationSpec.Name, err)
 		}
 	}
 	return destClients, nil
