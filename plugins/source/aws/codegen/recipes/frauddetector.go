@@ -8,82 +8,125 @@ import (
 
 func FraudDetectorResources() []*Resource {
 	const arnField = "Arn"
-	arnColumn := codegen.ColumnDefinition{
-		Name:     "arn",
-		Type:     schema.TypeString,
-		Resolver: `schema.PathResolver("` + arnField + `")`,
-		Options:  schema.ColumnCreationOptions{PrimaryKey: true},
-	}
+	skipFields := []string{arnField}
+	extraColumns := append(defaultRegionalColumns,
+		codegen.ColumnDefinition{
+			Name:     "arn",
+			Type:     schema.TypeString,
+			Resolver: `schema.PathResolver("` + arnField + `")`,
+			Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+		},
+	)
 
-	resources := []*Resource{
+	return []*Resource{
 		{
-			SubService:  "batch_imports",
-			Struct:      new(types.BatchImport),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchImport.html",
+			Service:      "frauddetector",
+			SubService:   "batch_imports",
+			Struct:       new(types.BatchImport),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchImport.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "batch_predictions",
-			Struct:      new(types.BatchPrediction),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchPrediction.html",
+			Service:      "frauddetector",
+			SubService:   "batch_predictions",
+			Struct:       new(types.BatchPrediction),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_BatchPrediction.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "detectors",
-			Struct:      new(types.Detector),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_Detector.html",
+			Service:      "frauddetector",
+			SubService:   "detectors",
+			Struct:       new(types.Detector),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Detector.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
+			Relations:    []string{"Rules()"},
 		},
 		{
-			SubService:  "entity_types",
-			Struct:      new(types.EntityType),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_EntityType.html",
+			Service:      "frauddetector",
+			SubService:   "entity_types",
+			Struct:       new(types.EntityType),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_EntityType.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "event_types",
-			Struct:      new(types.EventType),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html",
+			Service:      "frauddetector",
+			SubService:   "event_types",
+			Struct:       new(types.EventType),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "external_models",
-			Struct:      new(types.ExternalModel),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_ExternalModel.html",
+			Service:      "frauddetector",
+			SubService:   "external_models",
+			Struct:       new(types.ExternalModel),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_ExternalModel.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "labels",
-			Struct:      new(types.Label),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html",
+			Service:      "frauddetector",
+			SubService:   "labels",
+			Struct:       new(types.Label),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "models",
-			Struct:      new(types.Model),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_Model.html",
+			Service:      "frauddetector",
+			SubService:   "models",
+			Struct:       new(types.Model),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Model.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "model_versions",
-			Struct:      new(types.ModelVersionDetail),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html",
+			Service:      "frauddetector",
+			SubService:   "model_versions",
+			Struct:       new(types.ModelVersionDetail),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "outcomes",
-			Struct:      new(types.Outcome),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_Outcome.html",
+			Service:      "frauddetector",
+			SubService:   "outcomes",
+			Struct:       new(types.Outcome),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Outcome.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "rules",
-			Struct:      new(types.RuleDetail),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_RuleDetail.html",
+			Service:      "frauddetector",
+			SubService:   "rules", // relation for the detectors
+			Struct:       new(types.RuleDetail),
+			Multiplex:    "", // we skip multiplexing here as it's a relation
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_RuleDetail.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 		{
-			SubService:  "variables",
-			Struct:      new(types.Variable),
-			Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_Variable.html",
+			Service:      "frauddetector",
+			SubService:   "variables",
+			Struct:       new(types.Variable),
+			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Variable.html",
+			ExtraColumns: extraColumns,
+			SkipFields:   skipFields,
 		},
 	}
-
-	// set default values
-	for _, r := range resources {
-		r.Service = "frauddetector"
-		r.Multiplex = `client.ServiceAccountRegionMultiplexer("frauddetector")`
-		r.ExtraColumns = append(r.ExtraColumns, arnColumn)
-		r.SkipFields = append(r.SkipFields, arnField)
-	}
-	return resources
 }

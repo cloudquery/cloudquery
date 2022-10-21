@@ -15,6 +15,16 @@ func ExternalModels() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{
 			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
+			},
+			{
 				Name:     "arn",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Arn"),

@@ -12,8 +12,17 @@ func Rules() *schema.Table {
 		Name:        "aws_frauddetector_rules",
 		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_RuleDetail.html",
 		Resolver:    fetchFrauddetectorRules,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{
+			{
+				Name:     "account_id",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "region",
+				Type:     schema.TypeString,
+				Resolver: client.ResolveAWSRegion,
+			},
 			{
 				Name:     "arn",
 				Type:     schema.TypeString,
