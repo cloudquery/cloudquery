@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/spf13/cobra"
 	"io"
 	"os"
 
@@ -23,7 +24,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 			return nil, err
 		}
 		if logFormat.String() == "text" {
-			// for file logging we dont need color. we can add it as an option but don't think it is useful
+			// for file logging we don't need color. we can add it as an option but don't think it is useful
 			writers = append(writers, zerolog.ConsoleWriter{
 				Out:             logFile,
 				NoColor:         true,
@@ -50,4 +51,14 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 	mw := io.MultiWriter(writers...)
 	log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Timestamp().Logger()
 	return logFile, nil
+}
+
+func logErrors(f cmdFunc, msg string) cmdFunc {
+	return func(cmd *cobra.Command, args []string) error {
+		err := f(cmd, args)
+		if err != nil {
+			log.Error().Err(err).Msg(msg)
+		}
+		return err
+	}
 }
