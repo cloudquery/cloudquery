@@ -90,10 +90,9 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 		}
 	}()
 
-	destClients, err := initializeClients(ctx, sourceSpec, destinationsSpecs, cqDir)
-	if err != nil {
-		return err
-	}
+	destClients, err := initializeDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
+	// we make sure to defer the closing of clients here before checking the error, otherwise
+	// if one of the clients returns an error, the clients opened before it may never get closed
 	defer func() {
 		for _, destClient := range destClients {
 			if destClient != nil {
@@ -104,6 +103,9 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 			}
 		}
 	}()
+	if err != nil {
+		return err
+	}
 
 	fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Starting migration")

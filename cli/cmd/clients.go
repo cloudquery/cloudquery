@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func initializeClients(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, cqDir string) ([]*clients.DestinationClient, error) {
+func initializeDestinationClients(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, cqDir string) ([]*clients.DestinationClient, error) {
 	var err error
 	destClients := make([]*clients.DestinationClient, len(sourceSpec.Destinations))
 	for i, destinationSpec := range destinationsSpecs {

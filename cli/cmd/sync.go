@@ -44,7 +44,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	noMigration, err := cmd.Flags().GetBool("no-migrate")
+	noMigrate, err := cmd.Flags().GetBool("no-migrate")
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigration); err != nil {
+		if err := syncConnection(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String(), noMigrate); err != nil {
 			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
 		}
 	}
@@ -82,7 +82,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, skipMigration bool) error {
+func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string, noMigrate bool) error {
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
@@ -106,10 +106,9 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 		}
 	}()
 
-	destClients, err := initializeClients(ctx, sourceSpec, destinationsSpecs, cqDir)
-	if err != nil {
-		return err
-	}
+	destClients, err := initializeDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
+	// we make sure to defer the closing of clients here before checking the error, otherwise
+	// if one of the clients returns an error, the clients opened before it may never get closed
 	defer func() {
 		for _, destClient := range destClients {
 			if destClient != nil {
@@ -120,8 +119,11 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 			}
 		}
 	}()
+	if err != nil {
+		return err
+	}
 
-	if !skipMigration {
+	if !noMigrate {
 		fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 		log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Start migration")
 		tableCount, err := runMigration(ctx, sourceSpec, destinationsSpecs, sourceClient, destClients)
