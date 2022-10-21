@@ -24,10 +24,11 @@ Find more information at:
       --log-format string        Logging format (json, text) (default "text")
       --log-level string         Logging level (default "info")
       --no-log-file              Disable logging to file
-      --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
+      --telemetry-level string   Telemetry level (none, errors, stats, all) (default "none")
 ```
 
 ### SEE ALSO
 
+* [cloudquery migrate](/docs/reference/cli/cloudquery_migrate)	 - Run migration for source and destination plugins specified in configuration
 * [cloudquery sync](/docs/reference/cli/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
 
