@@ -33,6 +33,12 @@ func EntityTypes() *schema.Table {
 				},
 			},
 			{
+				Name:          "tags",
+				Type:          schema.TypeJSON,
+				Resolver:      resolveResourceTags,
+				IgnoreInTests: true,
+			},
+			{
 				Name:     "created_time",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("CreatedTime"),

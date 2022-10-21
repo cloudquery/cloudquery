@@ -17,6 +17,12 @@ func FraudDetectorResources() []*Resource {
 			Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 		},
 	)
+	tagsCol := codegen.ColumnDefinition{
+		Name:          "tags",
+		Type:          schema.TypeJSON,
+		Resolver:      `resolveResourceTags`,
+		IgnoreInTests: true,
+	}
 
 	return []*Resource{
 		{
@@ -43,7 +49,7 @@ func FraudDetectorResources() []*Resource {
 			Struct:       new(types.Detector),
 			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Detector.html",
-			ExtraColumns: extraColumns,
+			ExtraColumns: append(extraColumns, tagsCol),
 			SkipFields:   skipFields,
 			Relations:    []string{"Rules()"},
 		},
@@ -53,7 +59,7 @@ func FraudDetectorResources() []*Resource {
 			Struct:       new(types.EntityType),
 			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_EntityType.html",
-			ExtraColumns: extraColumns,
+			ExtraColumns: append(extraColumns, tagsCol),
 			SkipFields:   skipFields,
 		},
 		{
@@ -62,7 +68,7 @@ func FraudDetectorResources() []*Resource {
 			Struct:       new(types.EventType),
 			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html",
-			ExtraColumns: extraColumns,
+			ExtraColumns: append(extraColumns, tagsCol),
 			SkipFields:   skipFields,
 		},
 		{
@@ -80,7 +86,7 @@ func FraudDetectorResources() []*Resource {
 			Struct:       new(types.Label),
 			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Label.html",
-			ExtraColumns: extraColumns,
+			ExtraColumns: append(extraColumns, tagsCol),
 			SkipFields:   skipFields,
 		},
 		{
@@ -108,7 +114,7 @@ func FraudDetectorResources() []*Resource {
 			Struct:       new(types.Outcome),
 			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Outcome.html",
-			ExtraColumns: extraColumns,
+			ExtraColumns: append(extraColumns, tagsCol),
 			SkipFields:   skipFields,
 		},
 		{
@@ -126,7 +132,7 @@ func FraudDetectorResources() []*Resource {
 			Struct:       new(types.Variable),
 			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Variable.html",
-			ExtraColumns: extraColumns,
+			ExtraColumns: append(extraColumns, tagsCol),
 			SkipFields:   skipFields,
 		},
 	}
