@@ -130,7 +130,6 @@ func tables() []*schema.Table {
 		docdb.ClusterParameterGroups(),
 		docdb.Clusters(),
 		docdb.EngineVersions(),
-		docdb.Instances(),
 		docdb.SubnetGroups(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),

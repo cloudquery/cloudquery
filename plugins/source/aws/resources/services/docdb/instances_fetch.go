@@ -9,25 +9,20 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func fetchDocdbInstances(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- interface{}) error {
+func fetchDocdbInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+	item := parent.Item.(types.DBCluster)
 	c := meta.(*client.Client)
 	svc := c.Services().DocDB
 
-	input := &docdb.DescribeDBInstancesInput{}
+	input := &docdb.DescribeDBInstancesInput{Filters: []types.Filter{{Name: aws.String("db-cluster-id"), Values: []string{*item.DBClusterIdentifier}}}}
 
-	for {
-		output, err := svc.DescribeDBInstances(ctx, input)
+	p := docdb.NewDescribeDBInstancesPaginator(svc, input)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(output.DBInstances) == 0 {
-			return nil
-		}
-		res <- output.DBInstances
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- response.DBInstances
 	}
 	return nil
 }
