@@ -12,11 +12,110 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+type testTypeTestCase struct {
+	name string
+	typ schema.CQType
+}
+
+var testTypeTestCases = []testTypeTestCase{
+	{
+		name: "string",
+		typ: &schema.String{
+			String: "test",
+			Valid: true,
+		},
+	},
+	{
+		name: "uuid",
+		typ: schema.NewMustUUID(uuid.New()),
+	},
+	{
+		name: "int",
+		typ: &schema.Int64{
+			Int64: 1,
+			Valid: true,
+		},
+	},
+	{
+		name: "bool",
+		typ: &schema.Bool{
+			Bool: true,
+			Valid: true,
+		},
+	},
+	{
+		name: "json",
+		typ: &schema.Json{
+			Json: []byte(`{"test": "test"}`),
+			Valid: true,
+		},
+	},
+}
+
+func TestWriteTypes(t *testing.T) {
+	for _, tc := range testTypeTestCases {
+		t.Run(tc.name, func(t *testing.T) {
+			ctx := context.Background()
+			client, err := New(ctx, getTestLogger(t), specs.Destination{
+				WriteMode: specs.WriteModeOverwriteDeleteStale,
+				Spec: &Spec{
+					PgxLogLevel: 		LogLevelTrace,
+					ConnectionString: getTestConnection(),
+					BatchSize:        1,
+				},
+			})
+			if err != nil {
+				t.Fatalf("failed to initialize client: %v", err)
+			}
+			c := client.(*Client)
+			tables := []*schema.Table{
+				{
+					Name: "test_table",
+					Columns: schema.ColumnList{
+						{
+							Name: "test_column",
+							Type: tc.typ.Type(),
+						},
+					},
+				},
+			}
+			if err := c.Migrate(ctx, tables); err != nil {
+				t.Fatalf("failed to migrate tables: %v", err)
+			}
+			testData := &schema.DestinationResource{
+				TableName: tables[0].Name,
+				Data: schema.CQTypes{tc.typ},
+			}
+			resources := make(chan *schema.DestinationResource, 1)
+			resources <- testData
+
+			if err := c.Write(ctx, tables, resources); err != nil {
+				t.Fatalf("failed to write data: %v", err)
+			}
+
+			rows, err := c.conn.Query(ctx, "SELECT test_column FROM test_table")
+			if err != nil {
+				t.Fatal(err)
+			}
+			totalResults := uint64(0)
+			for rows.Next() {
+				
+				if err := rows.Scan(results); err != nil {
+					return 0, err
+				}
+				totalResults++
+			}
+
+		})
+	}
+}
+
 func TestWriteOverwriteDeleteStale(t *testing.T) {
 	ctx := context.Background()
 	client, err := New(ctx, getTestLogger(t), specs.Destination{
 		WriteMode: specs.WriteModeOverwriteDeleteStale,
 		Spec: &Spec{
+			PgxLogLevel: 		LogLevelTrace,
 			ConnectionString: getTestConnection(),
 			BatchSize:        1,
 		},
@@ -37,10 +136,13 @@ func TestWriteOverwriteDeleteStale(t *testing.T) {
 	if err := c.Migrate(ctx, testTables); err != nil {
 		t.Fatalf("failed to migrate tables: %v", err)
 	}
-	if err := c.Write(ctx, "simple_table", testData); err != nil {
+	resources := make(chan *schema.DestinationResource, 1)
+	resources <- testData
+	if err := c.Write(ctx, testTables, resources); err != nil {
 		t.Fatalf("failed to write data: %v", err)
 	}
-	if err := c.Write(ctx, "simple_table", testData); err != nil {
+	resources <- testData
+	if err := c.Write(ctx, testTables, resources); err != nil {
 		t.Fatalf("failed to write data: %v", err)
 	}
 
@@ -60,13 +162,6 @@ func TestWriteOverwriteDeleteStale(t *testing.T) {
 	}
 }
 
-func copyMap(m map[string]interface{}) map[string]interface{} {
-	newMap := make(map[string]interface{}, len(m))
-	for k, v := range m {
-		newMap[k] = v
-	}
-	return newMap
-}
 
 func TestWriteAppend(t *testing.T) {
 	ctx := context.Background()
@@ -85,11 +180,11 @@ func TestWriteAppend(t *testing.T) {
 	testTable := getTestTable()
 	testTables := []*schema.Table{testTable}
 	testData := getTestData()
-	testDataTwo := copyMap(testData)
-	testDataTwo["_cq_id"] = uuid.New().String()
-	expectedData := map[string]map[string]interface{}{
-		testData["_cq_id"].(string):    testData,
-		testDataTwo["_cq_id"].(string): testDataTwo,
+	testDataTwo := getTestData()
+	testDataTwo.Data[0] = uuid.New().String()
+	expectedData := map[string][]interface{}{
+		testData.Data[0].(string):    testData.Data,
+		testDataTwo.Data[0].(string): testDataTwo.Data,
 	}
 
 	// check migration logic
@@ -99,10 +194,13 @@ func TestWriteAppend(t *testing.T) {
 	if err := c.Migrate(ctx, testTables); err != nil {
 		t.Fatalf("failed to migrate tables: %v", err)
 	}
-	if err := c.Write(ctx, "simple_table", testData); err != nil {
+	resources := make(chan *schema.DestinationResource, 1)
+	resources <- testData
+	if err := c.Write(ctx, testTables, resources); err != nil {
 		t.Fatalf("failed to write data: %v", err)
 	}
-	if err := c.Write(ctx, "simple_table", testDataTwo); err != nil {
+	resources <- testDataTwo
+	if err := c.Write(ctx, testTables, resources); err != nil {
 		t.Fatalf("failed to write second data: %v", err)
 	}
 

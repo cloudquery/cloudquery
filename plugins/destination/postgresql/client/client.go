@@ -22,8 +22,8 @@ type Client struct {
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
+	stats 							plugins.DestinationStats
 	batchSize           int
-	batch               *pgx.Batch
 }
 
 type pgTablePrimaryKeys struct {
@@ -70,7 +70,6 @@ const (
 func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (plugins.DestinationClient, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
-		batch:  &pgx.Batch{},
 	}
 	var specPostgreSql Spec
 	c.spec = spec
@@ -120,11 +119,6 @@ func (c *Client) Close(ctx context.Context) error {
 	var err error
 	if c.conn == nil {
 		return fmt.Errorf("client already closed or not initialized")
-	}
-	if c.batch.Len() > 0 {
-		br := c.conn.SendBatch(ctx, c.batch)
-		err = br.Close()
-		c.batch = &pgx.Batch{}
 	}
 	if c.conn != nil {
 		c.conn.Close()

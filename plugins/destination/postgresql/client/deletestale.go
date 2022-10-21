@@ -9,16 +9,21 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func (c *Client) DeleteStale(ctx context.Context, table string, source string, syncTime time.Time) error {
-	var sb strings.Builder
-	sb.WriteString("delete from ")
-	sb.WriteString(pgx.Identifier{table}.Sanitize())
-	sb.WriteString(" where ")
-	sb.WriteString(schema.CqSourceNameColumn.Name)
-	sb.WriteString(" = $1 and ")
-	sb.WriteString(schema.CqSyncTimeColumn.Name)
-	sb.WriteString(" < $2")
-	if _, err := c.conn.Exec(ctx, sb.String(), source, syncTime); err != nil {
+func (c *Client) DeleteStale(ctx context.Context, tables schema.Tables, source string, syncTime time.Time) error {
+	batch := &pgx.Batch{}
+	for _, table := range tables {
+		var sb strings.Builder
+		sb.WriteString("delete from ")
+		sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
+		sb.WriteString(" where ")
+		sb.WriteString(schema.CqSourceNameColumn.Name)
+		sb.WriteString(" = $1 and ")
+		sb.WriteString(schema.CqSyncTimeColumn.Name)
+		sb.WriteString(" < $2")
+		batch.Queue(sb.String(), source, syncTime)
+	}
+	br := c.conn.SendBatch(ctx, batch)
+	if err := br.Close(); err != nil {
 		return err
 	}
 	return nil

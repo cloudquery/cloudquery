@@ -12,31 +12,34 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func getTestData() map[string]interface{} {
+func getTestData() *schema.DestinationResource {
 	// because data is sent over the wire encoded in json we need to use strings, numbers, objects, arrays, booleans and nulls
 	// to test everything correctly
-	return map[string]interface{}{
-		"_cq_id":              uuid.New().String(),
-		"_cq_parent_id":       nil,
-		"_cq_source_name":     "test_source",
-		"_cq_sync_time":       "2022-09-02T20:57:55.449238",
-		"id":                  uuid.New().String(),
-		"bool_column":         true,
-		"int_column":          float64(3),
-		"float_column":        float64(3),
-		"uuid_column":         "9a6011b7-c5ee-4b55-95a6-37ce5e02a5a0",
-		"string_column":       "test",
-		"string_array_column": []interface{}{"test", "test2"},
-		"int_array_column":    []interface{}{float64(1), float64(2), float64(3)},
-		"timestamp_column":    "2019-01-01T00:00:00",
-		"interval_column":     "01:02:03",
-		"json_column":         map[string]interface{}{"1": float64(1), "test": "test"},
-		"uuid_array_column":   []interface{}{"1a6011b7-c5ee-4b55-95a6-37ce5e02a5a0", "9a6011b7-c5ee-4b55-95a6-37ce5e02a5a0"},
-		"inet_column":         "1.1.1.1",
-		"inet_array_column":   []interface{}{"8.8.8.8/0"},
-		"cidr_column":         "0.0.0.0/24",
-		"cidr_array_column":   []interface{}{"0.0.0.0/24", "0.0.0.0/16"},
-		"mac_addr_column":     "00:00:00:00:00:ab",
+	return &schema.DestinationResource {
+		TableName: "simple_table",
+		Data: []interface{}{
+			uuid.New().String(),
+			nil,
+			"test_source",
+			"2022-09-02T20:57:55.449238",
+			uuid.New().String(),
+			true,
+			float64(3),
+			float64(3),
+			"9a6011b7-c5ee-4b55-95a6-37ce5e02a5a0",
+			"test",
+			[]interface{}{"test", "test2"},
+			[]interface{}{float64(1), float64(2), float64(3)},
+			"2019-01-01T00:00:00",
+			"01:02:03",
+			map[string]interface{}{"1": float64(1), "test": "test"},
+			[]interface{}{"1a6011b7-c5ee-4b55-95a6-37ce5e02a5a0", "9a6011b7-c5ee-4b55-95a6-37ce5e02a5a0"},
+			"1.1.1.1",
+			[]interface{}{"8.8.8.8"},
+			"0.0.0.0/24",
+			[]interface{}{"0.0.0.0/24", "0.0.0.0/16"},
+			"00:00:00:00:00:ab",
+		},
 	}
 }
 
@@ -46,8 +49,8 @@ func getTestTable() *schema.Table {
 		Columns: []schema.Column{
 			schema.CqIDColumn,
 			schema.CqParentIDColumn,
-			schema.CqSyncTimeColumn,
 			schema.CqSourceNameColumn,
+			schema.CqSyncTimeColumn,
 			{
 				Name: "id",
 				Type: schema.TypeUUID,

@@ -48,7 +48,7 @@ func LogLevelFromString(s string) (LogLevel, error) {
 	case "warn":
 		return LogLevelWarn, nil
 	case "error":
-		return LogLevelWarn, nil
+		return LogLevelError, nil
 	default:
 		return LogLevelError, fmt.Errorf("invalid level %s", s)
 	}
