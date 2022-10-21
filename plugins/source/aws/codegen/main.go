@@ -55,6 +55,7 @@ func generateResources() ([]*recipes.Resource, error) {
 	resources = append(resources, recipes.GlueResources()...)
 	resources = append(resources, recipes.GuarddutyResources()...)
 	resources = append(resources, recipes.IAMResources()...)
+	resources = append(resources, recipes.IdentitystoreResources()...)
 	resources = append(resources, recipes.Inspector2Resources()...)
 	resources = append(resources, recipes.InspectorResources()...)
 	resources = append(resources, recipes.IOTResources()...)
