@@ -90,11 +90,11 @@ func migrateConnection(ctx context.Context, cqDir string, sourceSpec specs.Sourc
 		}
 	}()
 
-	destClients, closeDestClients, err := initializeDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
+	destClients, err := newDestinationClients(ctx, sourceSpec, destinationsSpecs, cqDir)
 	if err != nil {
 		return err
 	}
-	defer closeDestClients()
+	defer destClients.Close()
 
 	fmt.Println("Starting migration for:", sourceSpec.Name, "->", sourceSpec.Destinations)
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).Msg("Starting migration")
