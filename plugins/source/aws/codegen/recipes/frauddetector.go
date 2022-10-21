@@ -91,12 +91,13 @@ func FraudDetectorResources() []*Resource {
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_Model.html",
 			ExtraColumns: extraColumns,
 			SkipFields:   skipFields,
+			Relations:    []string{"ModelVersions()"},
 		},
 		{
 			Service:      "frauddetector",
-			SubService:   "model_versions",
+			SubService:   "model_versions", // relation for models
 			Struct:       new(types.ModelVersionDetail),
-			Multiplex:    `client.ServiceAccountRegionMultiplexer("frauddetector")`,
+			Multiplex:    "", // we skip multiplexing here as it's a relation
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html",
 			ExtraColumns: extraColumns,
 			SkipFields:   skipFields,
@@ -112,7 +113,7 @@ func FraudDetectorResources() []*Resource {
 		},
 		{
 			Service:      "frauddetector",
-			SubService:   "rules", // relation for the detectors
+			SubService:   "rules", // relation for detectors
 			Struct:       new(types.RuleDetail),
 			Multiplex:    "", // we skip multiplexing here as it's a relation
 			Description:  "https://docs.aws.amazon.com/frauddetector/latest/api/API_RuleDetail.html",

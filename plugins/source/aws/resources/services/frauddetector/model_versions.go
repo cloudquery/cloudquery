@@ -12,7 +12,6 @@ func ModelVersions() *schema.Table {
 		Name:        "aws_frauddetector_model_versions",
 		Description: "https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html",
 		Resolver:    fetchFrauddetectorModelVersions,
-		Multiplex:   client.ServiceAccountRegionMultiplexer("frauddetector"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",

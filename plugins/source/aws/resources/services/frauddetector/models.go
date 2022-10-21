@@ -63,5 +63,9 @@ func Models() *schema.Table {
 				Resolver: schema.PathResolver("ModelType"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			ModelVersions(),
+		},
 	}
 }
