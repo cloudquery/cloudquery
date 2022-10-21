@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"strings"
 	"time"
 
@@ -155,6 +156,7 @@ type Services struct {
 	DAX                    DAXClient
 	Directconnect          DirectconnectClient
 	DMS                    DatabasemigrationserviceClient
+	DocDB                  DocDBClient
 	DynamoDB               DynamoDBClient
 	EC2                    Ec2Client
 	ECR                    EcrClient
@@ -547,13 +549,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		awsCfg, err := configureAwsClient(ctx, logger, &awsConfig, account, adminAccountSts)
 		if err != nil {
 			if account.source == "org" {
-				logger.Warn().Msg("unable to assume role in account")
+				logger.Warn().Msg("Unable to assume role in account")
 				continue
 			}
 			var ae smithy.APIError
 			if errors.As(err, &ae) {
 				if strings.Contains(ae.ErrorCode(), "AccessDenied") {
-					// log warning here
+					logger.Warn().Str("account", account.AccountName).Err(err).Msg("Access denied for account")
 					continue
 				}
 			}
@@ -576,15 +578,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 				}
 			})
 		if err != nil {
-			// log warning here
-			// diags = diags.Add(diag.FromError(fmt.Errorf("failed to find disabled regions for account %s. AWS Error: %w", account.AccountName, err), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			logger.Warn().Str("account", account.AccountName).Err(err).Msg("Failed to find disabled regions for account")
 			continue
 		}
 		account.Regions = filterDisabledRegions(localRegions, res.Regions)
 
 		if len(account.Regions) == 0 {
-			// log warning here
-			// diags = diags.Add(FromError(fmt.Errorf("no enabled regions provided in config for account %s", account.AccountName), diag.ACCESS, diag.WithSeverity(diag.WARNING)))
+			logger.Warn().Str("account", account.AccountName).Err(err).Msg("No enabled regions provided in config for account")
 			continue
 		}
 		awsCfg.Region = account.Regions[0]
@@ -603,7 +603,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec specs.Source) (s
 		client.ServicesManager.InitServicesForPartitionAccountAndScope(iamArn.Partition, *output.Account, initServices(cloudfrontScopeRegion, awsCfg))
 	}
 	if len(client.ServicesManager.services) == 0 {
-		return nil, fmt.Errorf("no enabled accounts instantiated ")
+		return nil, fmt.Errorf("no enabled accounts instantiated")
 	}
 	return &client, nil
 }
@@ -636,6 +636,7 @@ func initServices(region string, c aws.Config) Services {
 		DAX:                    dax.NewFromConfig(awsCfg),
 		Directconnect:          directconnect.NewFromConfig(awsCfg),
 		DMS:                    databasemigrationservice.NewFromConfig(awsCfg),
+		DocDB:                  docdb.NewFromConfig(awsCfg),
 		DynamoDB:               dynamodb.NewFromConfig(awsCfg),
 		EC2:                    ec2.NewFromConfig(awsCfg),
 		ECR:                    ecr.NewFromConfig(awsCfg),

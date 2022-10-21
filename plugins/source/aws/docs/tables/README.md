@@ -85,6 +85,8 @@
 | [aws_dynamodb_tables](aws_dynamodb_tables.md) |
 | ↳ [aws_dynamodb_table_replica_auto_scalings](aws_dynamodb_table_replica_auto_scalings.md) |
 | ↳ [aws_dynamodb_table_continuous_backups](aws_dynamodb_table_continuous_backups.md) |
+| [aws_docdb_clusters](aws_docdb_clusters.md) |
+| ↳ [aws_docdb_cluster_snapshots](aws_docdb_cluster_snapshots.md) |
 | [aws_ec2_byoip_cidrs](aws_ec2_byoip_cidrs.md) |
 | [aws_ec2_customer_gateways](aws_ec2_customer_gateways.md) |
 | [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots.md) |
