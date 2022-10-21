@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_external_models
 
-
+https://docs.aws.amazon.com/frauddetector/latest/api/API_ExternalModel.html
 
 The primary key for this table is **arn**.
 
@@ -12,6 +12,8 @@ The primary key for this table is **arn**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|account_id|String|
+|region|String|
 |arn (PK)|String|
 |created_time|String|
 |input_configuration|JSON|

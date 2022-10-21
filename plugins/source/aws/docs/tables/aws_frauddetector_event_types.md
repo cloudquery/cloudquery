@@ -1,6 +1,6 @@
 # Table: aws_frauddetector_event_types
 
-
+https://docs.aws.amazon.com/frauddetector/latest/api/API_EventType.html
 
 The primary key for this table is **arn**.
 
@@ -12,7 +12,10 @@ The primary key for this table is **arn**.
 |_cq_sync_time|Timestamp|
 |_cq_id|UUID|
 |_cq_parent_id|UUID|
+|account_id|String|
+|region|String|
 |arn (PK)|String|
+|tags|JSON|
 |created_time|String|
 |description|String|
 |entity_types|StringArray|
