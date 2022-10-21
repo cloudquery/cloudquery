@@ -105,7 +105,7 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 
 		c.logger.Info().Msg("listing folder projects..")
 		folderProjects, err := listProjectsInFolders(ctx, c.Services.ResourcemanagerProjectsClient, folderIds)
-		projects = append(projects, folderProjects...)
+		projects = setUnion(projects, folderProjects)
 		if err != nil {
 			return nil, fmt.Errorf("failed to list projects: %w", err)
 		}
@@ -229,4 +229,20 @@ func listProjectsInFolders(ctx context.Context, projectClient *resourcemanagerv3
 	}
 
 	return projects, nil
+}
+
+func setUnion(a []string, b []string) []string {
+	set := map[string]bool{}
+	for _, s := range a {
+		set[s] = true
+	}
+	for _, s := range b {
+		set[s] = true
+	}
+
+	union := []string{}
+	for s := range set {
+		union = append(union, s)
+	}
+	return union
 }
