@@ -20,8 +20,6 @@ cloudquery migrate ./directory ./aws.yml ./pg.yml
 `
 )
 
-type cmdFunc func(cmd *cobra.Command, args []string) error
-
 func NewCmdMigrate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "migrate [files or directories]",
@@ -29,7 +27,7 @@ func NewCmdMigrate() *cobra.Command {
 		Long:    migrateShort,
 		Example: migrateExample,
 		Args:    cobra.MinimumNArgs(1),
-		RunE:    logErrors(migrate, "Migration failed with errors"),
+		RunE:    migrate,
 	}
 	return cmd
 }
