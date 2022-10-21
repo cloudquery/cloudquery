@@ -26,8 +26,8 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 ### Options
 
 ```
-  -h, --help           help for sync
-      --no-migration   Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
+  -h, --help         help for sync
+      --no-migrate   Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
 ```
 
 ### Options inherited from parent commands
@@ -39,7 +39,7 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
       --log-format string        Logging format (json, text) (default "text")
       --log-level string         Logging level (default "info")
       --no-log-file              Disable logging to file
-      --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
+      --telemetry-level string   Telemetry level (none, errors, stats, all) (default "none")
 ```
 
 ### SEE ALSO

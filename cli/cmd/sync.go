@@ -34,7 +34,7 @@ func NewCmdSync() *cobra.Command {
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    logErrors(sync, "Sync failed with errors"),
 	}
-	cmd.Flags().Bool("no-migration", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
+	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
 	return cmd
 }
 
@@ -44,7 +44,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
-	noMigration, err := cmd.Flags().GetBool("no-migration")
+	noMigration, err := cmd.Flags().GetBool("no-migrate")
 	if err != nil {
 		return err
 	}
