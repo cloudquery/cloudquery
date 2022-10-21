@@ -11,7 +11,7 @@ import (
 
 func fetchFrauddetectorModelVersions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	paginator := frauddetector.NewDescribeModelVersionsPaginator(meta.(*client.Client).Services().FraudDetector,
-		&frauddetector.DescribeModelVersionsInput{ModelId: parent.Item.(*types.Model).ModelId})
+		&frauddetector.DescribeModelVersionsInput{ModelId: parent.Item.(types.Model).ModelId})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {

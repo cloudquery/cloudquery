@@ -11,7 +11,7 @@ import (
 
 func fetchFrauddetectorRules(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	paginator := frauddetector.NewGetRulesPaginator(meta.(*client.Client).Services().FraudDetector,
-		&frauddetector.GetRulesInput{DetectorId: parent.Item.(*types.Detector).DetectorId})
+		&frauddetector.GetRulesInput{DetectorId: parent.Item.(types.Detector).DetectorId})
 	for paginator.HasMorePages() {
 		output, err := paginator.NextPage(ctx)
 		if err != nil {
