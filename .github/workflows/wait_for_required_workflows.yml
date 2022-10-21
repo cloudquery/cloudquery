@@ -11,14 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v32
+        uses: Ana06/get-changed-files@v2.1.0
       - uses: actions/github-script@v6
         env:
-          FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          FILES: ${{ steps.changed-files.outputs.all }}
         with:
           script: |
             const files = process.env.FILES.split(' ')
@@ -61,6 +59,7 @@ jobs:
               actions = actions.filter(action => action !== "cli")
               actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
             }
+            actions = [...actions, 'validate-release']
             console.log(`Waiting for ${actions.join(", ")}`)
             while (now <= deadline) {
               const checkRuns = await github.paginate(github.rest.checks.listForRef, {

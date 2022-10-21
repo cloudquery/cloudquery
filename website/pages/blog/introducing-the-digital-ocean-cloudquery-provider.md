@@ -92,4 +92,4 @@ SELECT'current' AS id, 'current month balance' AS description, month_to_date_usa
 
 ## What's next
 
-We are going to continue to expand and maintain the DigitalOcean Provider, adding support for more current and future resources. Interested in seeing another provider? Check out [Developing New Provider](https://www.cloudquery.io/docs/developers/developing-new-provider) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).
+We are going to continue to expand and maintain the DigitalOcean Provider, adding support for more current and future resources. Interested in seeing another provider? Check out [Developing New Provider](/docs/developers/creating-new-plugin) and/or open an issue on our [GitHub](https://github.com/cloudquery/cloudquery).

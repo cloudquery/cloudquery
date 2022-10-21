@@ -9,9 +9,10 @@ import (
 
 func ClusterSnapshots() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_docdb_cluster_snapshots",
-		Resolver:  fetchDocdbClusterSnapshots,
-		Multiplex: client.ServiceAccountRegionMultiplexer("docdb"),
+		Name:        "aws_docdb_cluster_snapshots",
+		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html",
+		Resolver:    fetchDocdbClusterSnapshots,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -29,6 +30,19 @@ func ClusterSnapshots() *schema.Table {
 				Resolver: resolveDBClusterSnapshotTags,
 			},
 			{
+				Name:     "arn",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("DBClusterSnapshotArn"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "attributes",
+				Type:     schema.TypeJSON,
+				Resolver: resolveDocdbClusterSnapshotAttributes,
+			},
+			{
 				Name:     "availability_zones",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("AvailabilityZones"),
@@ -42,11 +56,6 @@ func ClusterSnapshots() *schema.Table {
 				Name:     "db_cluster_identifier",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DBClusterIdentifier"),
-			},
-			{
-				Name:     "db_cluster_snapshot_arn",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("DBClusterSnapshotArn"),
 			},
 			{
 				Name:     "db_cluster_snapshot_identifier",
@@ -113,10 +122,6 @@ func ClusterSnapshots() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("VpcId"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			ClusterSnapshotAttributes(),
 		},
 	}
 }

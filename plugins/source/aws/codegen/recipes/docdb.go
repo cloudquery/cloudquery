@@ -33,9 +33,10 @@ func DocumentDBResources() []*Resource {
 			},
 		},
 		{
-			SubService: "cluster_snapshots",
-			Struct:     &types.DBClusterSnapshot{},
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
+			SubService:  "cluster_snapshots",
+			Struct:      &types.DBClusterSnapshot{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html",
+			SkipFields:  []string{"DBClusterSnapshotArn"},
 			ExtraColumns: append(
 				defaultRegionalColumns,
 				[]codegen.ColumnDefinition{
@@ -44,13 +45,18 @@ func DocumentDBResources() []*Resource {
 						Type:     schema.TypeJSON,
 						Resolver: `resolveDBClusterSnapshotTags`,
 					},
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("DBClusterSnapshotArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+					{
+						Name:     "attributes",
+						Type:     schema.TypeJSON,
+						Resolver: `resolveDocdbClusterSnapshotAttributes`,
+					},
 				}...),
-			Relations: []string{"ClusterSnapshotAttributes()"},
-		},
-		{
-			SubService: "cluster_snapshot_attributes",
-			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
-			Struct: &types.DBClusterSnapshotAttributesResult{},
 		},
 		{
 			SubService: "cluster_parameter_groups",
