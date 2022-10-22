@@ -24,6 +24,8 @@ func buildModels(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&frauddetector.GetModelsOutput{Models: []types.Model{data}}, nil,
 	)
 
+	buildModelVersions(t, fdClient)
+
 	return client.Services{
 		FraudDetector: fdClient,
 	}
