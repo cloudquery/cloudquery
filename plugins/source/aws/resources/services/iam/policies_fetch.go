@@ -38,10 +38,6 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	svc := cl.Services().IAM
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn})
 	if err != nil {
-		if cl.IsNotFoundError(err) {
-			meta.Logger().Debug().Err(err).Msg("ListPolicyTags: Policy does not exist")
-			return nil
-		}
 		return err
 	}
 	return resource.Set("tags", client.TagsToMap(response.Tags))
@@ -53,7 +49,7 @@ func resolveIamPolicyVersionList(ctx context.Context, meta schema.ClientMeta, re
 		if v, err := url.PathUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
 			r.PolicyVersionList[i].Document = &v
 		} else {
-			meta.Logger().Warn().Err(err).Str("policy_id", aws.ToString(r.PolicyId)).Msg("Failed to unescape policy document, leaving as-is")
+			// meta.Logger().Warn().Err(err).Str("policy_id", aws.ToString(r.PolicyId)).Msg("Failed to unescape policy document, leaving as-is")
 		}
 	}
 	return resource.Set(c.Name, r.PolicyVersionList)

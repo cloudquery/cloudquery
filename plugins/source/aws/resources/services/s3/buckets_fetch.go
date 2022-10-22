@@ -218,10 +218,6 @@ func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource 
 		options.Region = bucketRegion
 	})
 	if err != nil {
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketLogging")
-			return nil
-		}
 		return err
 	}
 	if loggingOutput.LoggingEnabled == nil {
@@ -245,7 +241,6 @@ func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketPolicy")
 			return nil
 		}
 		return err
@@ -270,7 +265,6 @@ func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resour
 	})
 	if err != nil {
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketVersioning")
 			return nil
 		}
 		return err
@@ -292,7 +286,6 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn().Err(err).Msg("received access denied on GetPublicAccessBlock")
 			return nil
 		}
 		return err
@@ -317,7 +310,6 @@ func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resou
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketReplication")
 			return nil
 		}
 		return err
@@ -342,7 +334,6 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 			return nil
 		}
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketTagging")
 			return nil
 		}
 		return err
@@ -373,7 +364,6 @@ func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta,
 		}
 
 		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			meta.Logger().Warn().Err(err).Msg("received access denied on GetBucketOwnershipControls")
 			return nil
 		}
 

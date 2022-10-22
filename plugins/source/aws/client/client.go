@@ -298,6 +298,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) Name() string {
+	return c.AccountID
+}
+
 // Identify the given client
 func (c *Client) Identify() string {
 	return strings.TrimRight(strings.Join([]string{
