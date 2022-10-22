@@ -24,6 +24,8 @@ func buildEventTypes(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&frauddetector.GetEventTypesOutput{EventTypes: []types.EventType{data}}, nil,
 	)
 
+	addTagsCall(t, fdClient)
+
 	return client.Services{
 		FraudDetector: fdClient,
 	}

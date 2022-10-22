@@ -24,6 +24,8 @@ func buildEntityTypes(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&frauddetector.GetEntityTypesOutput{EntityTypes: []types.EntityType{data}}, nil,
 	)
 
+	addTagsCall(t, fdClient)
+
 	return client.Services{
 		FraudDetector: fdClient,
 	}

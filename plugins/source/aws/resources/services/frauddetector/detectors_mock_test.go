@@ -24,6 +24,8 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&frauddetector.GetDetectorsOutput{Detectors: []types.Detector{data}}, nil,
 	)
 
+	addTagsCall(t, fdClient)
+
 	return client.Services{
 		FraudDetector: fdClient,
 	}

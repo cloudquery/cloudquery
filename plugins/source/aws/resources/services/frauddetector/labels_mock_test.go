@@ -24,6 +24,8 @@ func buildLabels(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&frauddetector.GetLabelsOutput{Labels: []types.Label{data}}, nil,
 	)
 
+	addTagsCall(t, fdClient)
+
 	return client.Services{
 		FraudDetector: fdClient,
 	}

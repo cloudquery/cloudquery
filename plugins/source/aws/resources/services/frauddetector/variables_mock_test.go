@@ -24,6 +24,8 @@ func buildVariables(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&frauddetector.GetVariablesOutput{Variables: []types.Variable{data}}, nil,
 	)
 
+	addTagsCall(t, fdClient)
+
 	return client.Services{
 		FraudDetector: fdClient,
 	}
