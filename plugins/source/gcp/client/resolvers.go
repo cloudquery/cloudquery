@@ -22,7 +22,7 @@ func AddGcpMetadata(ctx context.Context, c schema.ClientMeta, r *schema.Resource
 }
 
 func ResolveResourceId(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-	data, err := cast.ToStringE(funk.Get(r.Item, "Id", funk.WithAllowZero()))
+	data, err := cast.ToStringE(funk.Get(r.GetItem(), "Id", funk.WithAllowZero()))
 	if err != nil {
 		return err
 	}
@@ -36,7 +36,7 @@ func resolveLocation(_ context.Context, c schema.ClientMeta, r *schema.Resource)
 	}
 	name := r.Get("name")
 	if name == nil {
-		c.Logger().Warn().Str("resource", fmt.Sprintf("%T", r.Item)).Msg("missing name for resource")
+		// c.Logger().Warn().Str("resource", fmt.Sprintf("%T", r.GetItem())).Msg("missing name for resource")
 		return nil
 	}
 	nameStr, err := cast.ToStringE(name)
@@ -52,7 +52,7 @@ func resolveLocation(_ context.Context, c schema.ClientMeta, r *schema.Resource)
 
 func ResolveProtoTimestamp(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		data := funk.Get(resource.Item, path)
+		data := funk.Get(resource.GetItem(), path)
 		if data == nil {
 			return nil
 		}
@@ -66,7 +66,7 @@ func ResolveProtoTimestamp(path string) schema.ColumnResolver {
 
 func ResolveProtoDuration(path string) schema.ColumnResolver {
 	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-		data := funk.Get(resource.Item, path)
+		data := funk.Get(resource.GetItem(), path)
 		if data == nil {
 			return nil
 		}

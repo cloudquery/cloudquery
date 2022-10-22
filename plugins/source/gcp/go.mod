@@ -32,6 +32,8 @@ require (
 	google.golang.org/protobuf v1.28.1
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
+
 require (
 	cloud.google.com/go v0.104.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

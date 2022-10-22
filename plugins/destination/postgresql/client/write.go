@@ -7,6 +7,7 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/cloudquery/plugin-sdk/cqtypes"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/jackc/pgconn"
@@ -14,37 +15,143 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-func (c *Client) transformValues(values schema.CQTypes) []interface{} {
+
+func CQTextArray(c *cqtypes.TextArray) pgtype.TextArray {
+	r := pgtype.TextArray{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.Text{String: v.String, Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
+func CQInt8Array(c *cqtypes.Int8Array) pgtype.Int8Array {
+	r := pgtype.Int8Array{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.Int8{Int: v.Int, Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
+func CQUUIDArray(c *cqtypes.UUIDArray) pgtype.UUIDArray {
+	r := pgtype.UUIDArray{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.UUID{Bytes: v.Bytes, Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
+func CQCIDRArray(c *cqtypes.CIDRArray) pgtype.CIDRArray {
+	r := pgtype.CIDRArray{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.CIDR{IPNet: v.IPNet, Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
+func CQMacaddrArray(c *cqtypes.MacaddrArray) pgtype.MacaddrArray {
+	r := pgtype.MacaddrArray{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.Macaddr{Addr: v.Addr, Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
+func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []interface{} {
 	pgValues := make([]interface{}, len(values))
 	for i, v := range values {
-		typ := v.Type()
-		switch typ {
-		case schema.TypeBool:
-			v := v.(*schema.Bool)
+		switch t := v.(type) {
+		case *cqtypes.Bool:
 			pgValues[i] = pgtype.Bool{
-				Bool: v.Bool,
-				Status: pgtype.Present,
+				Bool: t.Bool,
+				Status: pgtype.Status(t.Status),
 			}
-		case schema.TypeUUID:
-			v := v.(*schema.UUID)
-			pgValues[i] = pgtype.UUID{
-				Bytes: v.Bytes,
-				Status: pgtype.Present,
-			}
-		case schema.TypeString:
-			v := v.(*schema.String)
-			pgValues[i] = pgtype.Text{
-				String: v.String,
-				Status: pgtype.Present,
-			}
-		case schema.TypeInt:
-			v := v.(*schema.Int64)
+		case *cqtypes.Int8:
 			pgValues[i] = pgtype.Int8{
-				Int: v.Int64,
-				Status: pgtype.Present,
+				Int: t.Int,
+				Status: pgtype.Status(t.Status),
 			}
+		case *cqtypes.Float8:
+			pgValues[i] = pgtype.Float8{
+				Float: t.Float,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.UUID:
+			pgValues[i] = pgtype.UUID{
+				Bytes: t.Bytes,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.Text:
+			pgValues[i] = pgtype.Text{
+				String: t.String,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.Bytea:
+			pgValues[i] = pgtype.Bytea{
+				Bytes: t.Bytes,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.TextArray:
+			pgValues[i] = CQTextArray(t)
+		case *cqtypes.Int8Array:
+			pgValues[i] = CQInt8Array(t)
+		case *cqtypes.Timestamptz:
+			pgValues[i] = pgtype.Timestamptz{
+				Time: t.Time,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.JSON:
+			pgValues[i] = pgtype.JSON{
+				Bytes: t.Bytes,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.UUIDArray:
+			pgValues[i] = CQUUIDArray(t)
+		case *cqtypes.Inet:
+			pgValues[i] = pgtype.Inet{
+				IPNet: t.IPNet,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.CIDR:
+			pgValues[i] = pgtype.CIDR{
+				IPNet: t.IPNet,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.CIDRArray:
+			pgValues[i] = CQCIDRArray(t)
+		case *cqtypes.Macaddr:
+			pgValues[i] = pgtype.Macaddr{
+				Addr: t.Addr,
+				Status: pgtype.Status(t.Status),
+			}
+		case *cqtypes.MacaddrArray:
+			pgValues[i] = CQMacaddrArray(t)
 		default:
-			c.logger.Warn().Str("type", typ.String()).Msg("unsupported type")
+			pgValues[i] = pgtype.Text{
+				Status: pgtype.Null,
+			}
+			c.stats.Errors++
+			panic(fmt.Errorf("unsupported type %T at index %d column_name %s table_name %s", v, i, table.Columns[i].Name, table.Name))
+			// c.logger.Error().Msgf()
 		}
 	}
 	return pgValues
@@ -55,16 +162,18 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <- chan *s
 	batch := &pgx.Batch{}
 
 	for r := range res {
-		if c.spec.WriteMode == specs.WriteModeAppend {
-			sql = insert(tables.Get(r.TableName))
-		} else {
-			sql = upsert(tables.Get(r.TableName))
+		table := tables.Get(r.TableName)
+		if table == nil {
+			panic(fmt.Errorf("table %s not found", r.TableName))
 		}
-		values := c.transformValues(r.Data)
-		
+		if c.spec.WriteMode == specs.WriteModeAppend {
+			sql = insert(table)
+		} else {
+			sql = upsert(table)
+		}
+		values := c.transformValues(table, r.Data)
 		batch.Queue(sql, values...)
 		if batch.Len() >= c.batchSize {
-			fmt.Println(sql)
 			br := c.conn.SendBatch(ctx, batch)
 			if err := br.Close(); err != nil {
 				if _, ok := err.(*pgconn.PgError); ok {

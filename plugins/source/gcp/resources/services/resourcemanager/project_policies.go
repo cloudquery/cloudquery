@@ -28,11 +28,11 @@ func ProjectPolicies() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("Bindings"),
 			},
-			{
-				Name:     "etag",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Etag"),
-			},
+			// {
+			// 	Name:     "etag",
+			// 	Type:     schema.TypeByteArray,
+			// 	Resolver: schema.PathResolver("Etag"),
+			// },
 			{
 				Name:     "version",
 				Type:     schema.TypeInt,
