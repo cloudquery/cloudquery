@@ -33,10 +33,9 @@ func Labels() *schema.Table {
 				},
 			},
 			{
-				Name:          "tags",
-				Type:          schema.TypeJSON,
-				Resolver:      resolveResourceTags,
-				IgnoreInTests: true,
+				Name:     "tags",
+				Type:     schema.TypeJSON,
+				Resolver: resolveResourceTags,
 			},
 			{
 				Name:     "created_time",

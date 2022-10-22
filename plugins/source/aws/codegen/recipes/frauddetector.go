@@ -18,10 +18,9 @@ func FraudDetectorResources() []*Resource {
 		},
 	)
 	tagsCol := codegen.ColumnDefinition{
-		Name:          "tags",
-		Type:          schema.TypeJSON,
-		Resolver:      `resolveResourceTags`,
-		IgnoreInTests: true,
+		Name:     "tags",
+		Type:     schema.TypeJSON,
+		Resolver: `resolveResourceTags`,
 	}
 
 	return []*Resource{
