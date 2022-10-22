@@ -15,10 +15,6 @@ require (
 replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
 
 require (
-<<<<<<< HEAD
-	github.com/davecgh/go-spew v1.1.1 // indirect
-=======
->>>>>>> 44257d1fb (feat: Add CQType system)
 	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gofrs/uuid v4.3.0+incompatible // indirect

@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"sort"
 	"strings"
 	"sync/atomic"
 
@@ -208,33 +207,11 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <- chan *s
 
 func insert(table *schema.Table) string {
 	var sb strings.Builder
-<<<<<<< HEAD
-
-	columns := make([]string, 0, len(data))
-	values := make([]interface{}, 0, len(data))
-
-	// Sort the columns prior to adding data to columns and values arrays
-	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
-	keys := make([]string, 0, len(data))
-	for k := range data {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		columns = append(columns, pgx.Identifier{key}.Sanitize())
-		values = append(values, data[key])
-	}
-=======
->>>>>>> 44257d1fb (feat: Add CQType system)
 	sb.WriteString("insert into ")
 	sb.WriteString(pgx.Identifier{table.Name}.Sanitize())
 	sb.WriteString(" (")
-<<<<<<< HEAD
-	sort.Strings(columns)
-=======
 	columns := table.Columns
 	columnsLen := len(columns)
->>>>>>> 44257d1fb (feat: Add CQType system)
 	for i, c := range columns {
 		sb.WriteString(pgx.Identifier{c.Name}.Sanitize())
 		if i < columnsLen - 1 {
@@ -261,46 +238,7 @@ func upsert(table *schema.Table) string {
 	columns := table.Columns
 	columnsLen := len(columns)
 
-<<<<<<< HEAD
-	columns := make([]string, 0, len(data))
-	values := make([]interface{}, 0, len(data))
-	// Sort the columns prior to adding data to columns and values arrays
-	// Columns need to be in the same order so that the query can be cached during the statement preparation stage
-	keys := make([]string, 0, len(data))
-	for k := range data {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-	for _, key := range keys {
-		columns = append(columns, pgx.Identifier{key}.Sanitize())
-		values = append(values, data[key])
-	}
-
-	sb.WriteString("insert into ")
-	sb.WriteString(table)
-	sb.WriteString(" (")
-	sort.Strings(columns)
-	for i, c := range columns {
-		sb.WriteString(c)
-		// sb.WriteString("::" + SchemaTypeToPg())
-		if i < len(columns)-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(") values (")
-		}
-	}
-	for i := range values {
-		sb.WriteString(fmt.Sprintf("$%d", i+1))
-		if i < len(values)-1 {
-			sb.WriteString(",")
-		} else {
-			sb.WriteString(")")
-		}
-	}
-	constraintName := fmt.Sprintf("%s_cqpk", table)
-=======
 	constraintName := fmt.Sprintf("%s_cqpk", table.Name)
->>>>>>> 44257d1fb (feat: Add CQType system)
 	sb.WriteString(" on conflict on constraint ")
 	sb.WriteString(constraintName)
 	sb.WriteString(" do update set ")

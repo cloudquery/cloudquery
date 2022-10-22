@@ -1,12 +1,10 @@
 package cmd
 
 import (
-	"context"
 	"crypto/tls"
 	"crypto/x509"
+
 	"github.com/cloudquery/cloudquery/cli/internal/pb"
-	"github.com/cloudquery/plugin-sdk/schema"
-	"github.com/cloudquery/plugin-sdk/specs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )
@@ -39,32 +37,32 @@ func initAnalytics() (*AnalyticsClient, error) {
 	}, nil
 }
 
-func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, summary schema.SyncSummary) error {
-	if c.client != nil {
-		syncSummary := &pb.SyncSummary{
-			Invocation_UUID: invocationUUID,
-			SourcePath:      sourceSpec.Path,
-			SourceVersion:   sourceSpec.Version,
-			Destinations:    make([]*pb.Destination, 0, 1),
-			Resources:       int64(summary.Resources),
-			Errors:          int64(summary.Errors),
-			Panics:          int64(summary.Panics),
-			ClientVersion:   Version,
-		}
-		for _, destinationSpec := range destinationsSpecs {
-			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
-				Path:    destinationSpec.Path,
-				Version: destinationSpec.Version,
-			})
-		}
+// func (c *AnalyticsClient) SendSyncSummary(ctx context.Context, sourceSpec specs.Source, destinationsSpecs []specs.Destination, invocationUUID string, summary schema.SyncSummary) error {
+// 	if c.client != nil {
+// 		syncSummary := &pb.SyncSummary{
+// 			Invocation_UUID: invocationUUID,
+// 			SourcePath:      sourceSpec.Path,
+// 			SourceVersion:   sourceSpec.Version,
+// 			Destinations:    make([]*pb.Destination, 0, 1),
+// 			Resources:       int64(summary.Resources),
+// 			Errors:          int64(summary.Errors),
+// 			Panics:          int64(summary.Panics),
+// 			ClientVersion:   Version,
+// 		}
+// 		for _, destinationSpec := range destinationsSpecs {
+// 			syncSummary.Destinations = append(syncSummary.Destinations, &pb.Destination{
+// 				Path:    destinationSpec.Path,
+// 				Version: destinationSpec.Version,
+// 			})
+// 		}
 
-		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
-			SyncSummary: syncSummary,
-		})
-		return err
-	}
-	return nil
-}
+// 		_, err := c.client.SendEvent(ctx, &pb.Event_Request{
+// 			SyncSummary: syncSummary,
+// 		})
+// 		return err
+// 	}
+// 	return nil
+// }
 
 func (c *AnalyticsClient) Close() error {
 	if c.conn != nil {
