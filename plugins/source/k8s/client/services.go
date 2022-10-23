@@ -29,6 +29,7 @@ type Services struct {
 	ResourceQuotas  ResourceQuotasClient
 	RoleBindings    RoleBindingsClient
 	Roles           RolesClient
+	Secrets         SecretsClient
 	ServiceAccounts ServiceAccountsClient
 	Services        ServicesClient
 	StatefulSets    StatefulSetsClient
@@ -102,6 +103,11 @@ type RoleBindingsClient interface {
 //go:generate mockgen -package=mocks -destination=./mocks/roles.go . RolesClient
 type RolesClient interface {
 	List(ctx context.Context, opts metav1.ListOptions) (*rbacv1.RoleList, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/secrets.go . SecretsClient
+type SecretsClient interface {
+	List(ctx context.Context, opts metav1.ListOptions) (*corev1.SecretList, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/service_accounts.go . ServiceAccountsClient
