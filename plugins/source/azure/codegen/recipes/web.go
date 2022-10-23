@@ -23,11 +23,12 @@ func Web() []Resource {
 	var vnetInfoResource = resourceDefinition{
 		azureStruct:  &web.VnetInfo{},
 		listFunction: "GetVnetConnection",
-		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)", `if site.SiteConfig == nil {
-			               return nil
-			       }
-				   `},
-		listFunctionArgs: []string{"*site.ResourceGroup", "*site.Name", "*site.SiteConfig.VnetName"},
+		listFunctionArgsInit: []string{"site := parent.Item.(web.Site)", `vnetName := funk.Get(site, "SiteConfig.VnetName")
+		if vnetName == nil {
+			return nil
+		}
+		`},
+		listFunctionArgs: []string{"*site.ResourceGroup", "*site.Name", "*vnetName.(*string)"},
 		listHandler: `if err != nil {
 				return err
 			}
