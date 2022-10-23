@@ -10,5 +10,5 @@ test:
 .PHONY: gen-docs
 gen-docs:
 	rm -rf ../website/pages/docs/reference/cli/*.md
-	go run main.go doc ../website/pages/docs/reference/cli/
+	unset CQ_NO_TELEMETRY && unset CQ_TELEMETRY_LEVEL && go run main.go doc ../website/pages/docs/reference/cli/
 
