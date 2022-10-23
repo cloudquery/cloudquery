@@ -75,7 +75,7 @@ func CoreResources() []*Resource {
 		{
 			SubService: "secrets",
 			Struct:     &corev1.Secret{},
-			SkipFields: []string{"Data", "StreamData"},
+			SkipFields: []string{"Data", "StringData"},
 		},
 		{
 			SubService: "service_accounts",

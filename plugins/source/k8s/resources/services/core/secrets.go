@@ -87,16 +87,6 @@ func Secrets() *schema.Table {
 				Resolver: schema.PathResolver("Immutable"),
 			},
 			{
-				Name:     "data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("Data"),
-			},
-			{
-				Name:     "string_data",
-				Type:     schema.TypeJSON,
-				Resolver: schema.PathResolver("StringData"),
-			},
-			{
 				Name:     "type",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Type"),
