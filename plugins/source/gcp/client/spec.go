@@ -6,6 +6,7 @@ type Spec struct {
 	ServiceAccountKeyJSON string   `json:"service_account_key_json"`
 	FolderIDs             []string `json:"folder_ids"`
 	FolderRecursionDepth  *int     `json:"folder_recursion_depth"`
+	ProjectFilter         string   `json:"project_filter"`
 }
 
 func (spec *Spec) setDefaults() {
