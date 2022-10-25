@@ -39,5 +39,9 @@ func Groups() *schema.Table {
 				Resolver: schema.PathResolver("ExternalIds"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			GroupMemberships(),
+		},
 	}
 }
