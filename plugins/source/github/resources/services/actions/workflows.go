@@ -9,9 +9,9 @@ import (
 
 func Workflows() *schema.Table {
 	return &schema.Table{
-		Name:                "github_workflows",
-		Resolver:           fetchWorkflows,
-		Multiplex:           client.OrgMultiplex,
+		Name:      "github_workflows",
+		Resolver:  fetchWorkflows,
+		Multiplex: client.OrgMultiplex,
 		Columns: []schema.Column{
 			{
 				Name:        "org",

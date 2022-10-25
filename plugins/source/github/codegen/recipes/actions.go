@@ -7,14 +7,13 @@ import (
 func Actions() []*Resource {
 	return []*Resource{
 		{
-			Service:             "actions",
-			SubService:          "workflows",
-			PreResourceResolver: "getWorkflow",
-			Multiplex:           orgMultiplex,
-			Struct:              new(github.Workflow),
-			TableName:           "workflows",
-			SkipFields:          skipID,
-			ExtraColumns:        append(orgColumns, idColumn),
+			Service:      "actions",
+			SubService:   "workflows",
+			Multiplex:    orgMultiplex,
+			Struct:       new(github.Workflow),
+			TableName:    "workflows",
+			SkipFields:   skipID,
+			ExtraColumns: append(orgColumns, idColumn),
 		},
 	}
 }
