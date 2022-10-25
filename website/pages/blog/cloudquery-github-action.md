@@ -1,4 +1,15 @@
-# Running CloudQuery with GitHub Actions
+---
+title: Running CloudQuery with GitHub Actions
+tag: tutorial
+date: 2022/10/25
+description: >-
+  CloudQuery Deploy-less Orchestration with GitHub Actions
+author: erezrokah
+---
+
+import { BlogHeader } from "../../components/BlogHeader"
+
+<BlogHeader/>
 
 In this blog post, we will show you how to run CloudQuery with [GitHub Actions](https://github.com/features/actions) and the AWS source plugin.
 
