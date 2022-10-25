@@ -14,14 +14,9 @@ func IdentitystoreResources() []*Resource {
 		{
 			SubService: "users",
 			Struct:     &types.User{},
-			Relations:  []string{"UserMemberships()"},
 		},
 		{
 			SubService: "group_memberships",
-			Struct:     &types.GroupMembership{},
-		},
-		{
-			SubService: "user_memberships",
 			Struct:     &types.GroupMembership{},
 		},
 	}

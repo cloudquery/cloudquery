@@ -94,9 +94,5 @@ func Users() *schema.Table {
 				Resolver: schema.PathResolver("UserType"),
 			},
 		},
-
-		Relations: []*schema.Table{
-			UserMemberships(),
-		},
 	}
 }
