@@ -12,6 +12,7 @@ type GithubServices struct {
 	Repositories  RepositoriesService
 	Organizations OrganizationsService
 	Issues        IssuesService
+	Actions       ActionsService
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_teams.go . TeamsService
@@ -48,4 +49,9 @@ type OrganizationsService interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_issues.go . IssuesService
 type IssuesService interface {
 	ListByOrg(ctx context.Context, org string, opts *github.IssueListOptions) ([]*github.Issue, *github.Response, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_actions.go . ActionsService
+type ActionsService interface {
+	ListWorkflows(ctx context.Context, owner, repo string, opts *github.ListOptions) (*github.Workflows, *github.Response, error)
 }
