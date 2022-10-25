@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.3...plugins-source-k8s-v2.1.0) (2022-10-25)
+
+
+### Features
+
+* Add k8s_core_secrets resource ([#3183](https://github.com/cloudquery/cloudquery/issues/3183)) ([c2aa5a6](https://github.com/cloudquery/cloudquery/commit/c2aa5a6d9ade3ec65414189b40cae33c7d1c6214))
+
 ## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.2...plugins-source-k8s-v2.0.3) (2022-10-20)
 
 
