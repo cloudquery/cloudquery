@@ -169,10 +169,8 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 		g.Go(func() error {
 			var err error
 			if err = destClients[i].Write(gctx, tables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
+				// panic(err)
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
-			}
-			if destClients[i].Close(ctx); err != nil {
-				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
 			return nil
 		})
@@ -187,6 +185,8 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 				case <-gctx.Done():
 					return gctx.Err()
 				case destSubscriptions[i] <- resource:
+				case <-time.After(time.Second * 5):
+						return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, sourceSpec.Destinations[i], err)
 				}
 			}
 		}

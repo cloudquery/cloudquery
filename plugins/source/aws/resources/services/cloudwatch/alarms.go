@@ -147,11 +147,11 @@ func Alarms() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Statistic"),
 			},
-			{
-				Name:     "threshold",
-				Type:     schema.TypeFloat,
-				Resolver: schema.PathResolver("Threshold"),
-			},
+			// {
+			// 	Name:     "threshold",
+			// 	Type:     schema.TypeFloat,
+			// 	Resolver: schema.PathResolver("Threshold"),
+			// },
 			{
 				Name:     "threshold_metric_id",
 				Type:     schema.TypeString,

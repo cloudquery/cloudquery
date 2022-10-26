@@ -90,10 +90,7 @@ func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []i
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.Float8:
-			pgValues[i] = pgtype.Float8{
-				Float: t.Float,
-				Status: pgtype.Status(t.Status),
-			}
+			pgValues[i] = "0.0"
 		case *cqtypes.UUID:
 			pgValues[i] = pgtype.UUID{
 				Bytes: t.Bytes,
@@ -171,6 +168,11 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <- chan *s
 			sql = upsert(table)
 		}
 		values := c.transformValues(table, r.Data)
+		// if _, err := c.conn.Exec(ctx, sql, values...); err != nil {
+		// 	fmt.Println(values)
+		// 	panic(err)
+		// }
+		
 		batch.Queue(sql, values...)
 		if batch.Len() >= c.batchSize {
 			br := c.conn.SendBatch(ctx, batch)

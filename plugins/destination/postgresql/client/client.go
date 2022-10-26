@@ -75,7 +75,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		return nil, fmt.Errorf("failed to unmarshal postgresql spec: %w", err)
 	}
 	specPostgreSql.SetDefaults()
-	c.batchSize = specPostgreSql.BatchSize
+	// c.batchSize = specPostgreSql.BatchSize
+	c.batchSize = 10
 
 	logLevel, err := pgx.LogLevelFromString(specPostgreSql.PgxLogLevel.String())
 	if err != nil {
