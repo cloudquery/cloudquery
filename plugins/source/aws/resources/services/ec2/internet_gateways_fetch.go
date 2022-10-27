@@ -37,7 +37,7 @@ func resolveInternetGatewayArn(_ context.Context, meta schema.ClientMeta, resour
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "internet_gateways/" + aws.ToString(item.InternetGatewayId),
+		Resource:  "internet-gateway/" + aws.ToString(item.InternetGatewayId),
 	}
 	return resource.Set(c.Name, a.String())
 }
