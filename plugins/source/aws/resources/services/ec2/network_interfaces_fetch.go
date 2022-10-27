@@ -39,7 +39,7 @@ func resolveNetworkInterfaceArn(_ context.Context, meta schema.ClientMeta, resou
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "network_interface/" + aws.ToString(item.NetworkInterfaceId),
+		Resource:  "network-interface/" + aws.ToString(item.NetworkInterfaceId),
 	}
 	return resource.Set(c.Name, a.String())
 }

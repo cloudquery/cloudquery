@@ -37,7 +37,7 @@ func resolveNatGatewayArn(_ context.Context, meta schema.ClientMeta, resource *s
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "nat_gateway/" + aws.ToString(item.NatGatewayId),
+		Resource:  "natgateway/" + aws.ToString(item.NatGatewayId),
 	}
 	return resource.Set(c.Name, a.String())
 }
