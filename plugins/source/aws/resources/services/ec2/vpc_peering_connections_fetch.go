@@ -39,7 +39,7 @@ func resolveVpcPeeringConnectionArn(_ context.Context, meta schema.ClientMeta, r
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "vpc_peering_connection/" + aws.ToString(item.VpcPeeringConnectionId),
+		Resource:  "vpc-peering-connection/" + aws.ToString(item.VpcPeeringConnectionId),
 	}
 	return resource.Set(c.Name, a.String())
 }
