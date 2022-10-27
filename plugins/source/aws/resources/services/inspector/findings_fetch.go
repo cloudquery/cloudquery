@@ -12,7 +12,7 @@ import (
 func fetchInspectorFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
 	c := meta.(*client.Client)
 	svc := c.Services().Inspector
-	input := inspector.ListFindingsInput{MaxResults: aws.Int32(100)}
+	input := inspector.ListFindingsInput{MaxResults: aws.Int32(500)}
 	for {
 		response, err := svc.ListFindings(ctx, &input)
 		if err != nil {
