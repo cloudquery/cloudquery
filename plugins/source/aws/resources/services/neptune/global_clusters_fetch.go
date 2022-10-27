@@ -11,14 +11,11 @@ import (
 )
 
 func fetchNeptuneGlobalClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	input := neptune.DescribeGlobalClustersInput{
-		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
-	}
-
+	var config neptune.DescribeGlobalClustersInput
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
 	for {
-		response, err := svc.DescribeGlobalClusters(ctx, &input)
+		response, err := svc.DescribeGlobalClusters(ctx, &config)
 		if err != nil {
 			return err
 		}
@@ -26,7 +23,7 @@ func fetchNeptuneGlobalClusters(ctx context.Context, meta schema.ClientMeta, par
 		if aws.ToString(response.Marker) == "" {
 			break
 		}
-		input.Marker = response.Marker
+		config.Marker = response.Marker
 	}
 	return nil
 }
