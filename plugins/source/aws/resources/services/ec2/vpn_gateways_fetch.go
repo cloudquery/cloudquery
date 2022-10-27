@@ -31,7 +31,7 @@ func resolveVpnGatewayArn(_ context.Context, meta schema.ClientMeta, resource *s
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "vpn_gateway/" + aws.ToString(item.VpnGatewayId),
+		Resource:  "vpn-gateway/" + aws.ToString(item.VpnGatewayId),
 	}
 	return resource.Set(c.Name, a.String())
 }
