@@ -76,7 +76,7 @@ func resolveImageArn(ctx context.Context, meta schema.ClientMeta, resource *sche
 
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service:   "ecr",
+		Service:   "ecr-public",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  "repository_image/" + *item.RegistryId + "/" + *item.ImageDigest,
