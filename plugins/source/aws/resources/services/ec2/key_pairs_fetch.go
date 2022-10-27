@@ -31,7 +31,7 @@ func resolveKeyPairArn(_ context.Context, meta schema.ClientMeta, resource *sche
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "key_pair/" + aws.ToString(item.KeyPairId),
+		Resource:  "key-pair/" + aws.ToString(item.KeyPairId),
 	}
 	return resource.Set(c.Name, a.String())
 }
