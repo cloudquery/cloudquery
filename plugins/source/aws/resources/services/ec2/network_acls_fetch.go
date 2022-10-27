@@ -37,7 +37,7 @@ func resolveNetworkAclArn(_ context.Context, meta schema.ClientMeta, resource *s
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "network_acl/" + aws.ToString(item.NetworkAclId),
+		Resource:  "network-acl/" + aws.ToString(item.NetworkAclId),
 	}
 	return resource.Set(c.Name, a.String())
 }

@@ -37,7 +37,7 @@ func resolveRouteTableArn(_ context.Context, meta schema.ClientMeta, resource *s
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "route_table/" + aws.ToString(item.RouteTableId),
+		Resource:  "route-table/" + aws.ToString(item.RouteTableId),
 	}
 	return resource.Set(c.Name, a.String())
 }
