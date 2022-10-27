@@ -11,7 +11,9 @@ import (
 )
 
 func fetchNeptuneClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	var config neptune.DescribeDBClustersInput
+	config := neptune.DescribeDBClustersInput{
+		Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+	}
 	c := meta.(*client.Client)
 	svc := c.Services().Neptune
 	for {
