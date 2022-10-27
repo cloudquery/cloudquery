@@ -3,7 +3,7 @@
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "3.5.2",
   "plugins/source/aws+FILLER": "0.0.0",
-  "plugins/source/azure": "1.0.9",
+  "plugins/source/azure": "1.0.10",
   "plugins/source/azure+FILLER": "0.0.0",
   "plugins/source/cloudflare": "2.0.7",
   "plugins/source/cloudflare+FILLER": "0.0.0",
