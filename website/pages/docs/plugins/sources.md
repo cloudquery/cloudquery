@@ -13,7 +13,7 @@ Official source plugins follow [release stages](source-plugin-release-stages).
 | [GCP][gcp] | v2.2.1         | [Changelog][GCP-Changelog]          | GA |
 | [DigitalOcean][digitalocean] | v2.0.8         | [Changelog][DigitalOcean-Changelog] | GA |
 | [GitHub][github]             | v1.0.9         | [Changelog][GitHub-Changelog]       | GA |
-| [Heroku][heroku]             | v2.0.6         | [Changelog][Heroku-Changelog]       | Preview |
+| [Heroku][heroku] | v2.0.7         | [Changelog][Heroku-Changelog]       | Preview |
 | [k8s][k8s] | v2.1.1         | [Changelog][k8s-Changelog]          | Preview |
 | [Okta][okta] | v1.0.11        | [Changelog][Okta-Changelog]         | Preview |
 | [Terraform][terraform] | v1.0.10         | [Changelog][Terraform-Changelog]    | Preview |
