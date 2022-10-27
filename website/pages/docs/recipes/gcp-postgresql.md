@@ -13,7 +13,7 @@ kind: destination
 spec:
   name: postgresql
   path: cloudquery/postgresql
-  version: "v1.3.9" # latest version of postgresql plugin
+  version: "v1.3.11" # latest version of postgresql plugin
   spec:
     connection_string: ${PG_CONNECTION_STRING}
 ```
