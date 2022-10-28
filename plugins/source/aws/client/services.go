@@ -326,6 +326,7 @@ type DocDBClient interface {
 	DescribeEvents(ctx context.Context, params *docdb.DescribeEventsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeEventsOutput, error)
 	DescribeGlobalClusters(ctx context.Context, params *docdb.DescribeGlobalClustersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeGlobalClustersOutput, error)
 	DescribePendingMaintenanceActions(ctx context.Context, params *docdb.DescribePendingMaintenanceActionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribePendingMaintenanceActionsOutput, error)
+	DescribeOrderableDBInstanceOptions(ctx context.Context, params *docdb.DescribeOrderableDBInstanceOptionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeOrderableDBInstanceOptionsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dynamodb.go . DynamoDBClient

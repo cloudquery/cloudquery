@@ -1,12 +1,13 @@
 package docdb
 
 import (
+	"testing"
+
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/faker"
 	"github.com/golang/mock/gomock"
-	"testing"
 )
 
 func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -30,6 +31,16 @@ func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 	}
 	m.EXPECT().DescribeEngineDefaultClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&parameters,
+		nil,
+	)
+
+	var instanceOptions docdb.DescribeOrderableDBInstanceOptionsOutput
+	if err := faker.FakeObject(&instanceOptions); err != nil {
+		t.Fatal(err)
+	}
+	instanceOptions.Marker = nil
+	m.EXPECT().DescribeOrderableDBInstanceOptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&instanceOptions,
 		nil,
 	)
 

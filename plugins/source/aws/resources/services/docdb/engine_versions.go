@@ -69,5 +69,10 @@ func EngineVersions() *schema.Table {
 				Resolver: schema.PathResolver("ValidUpgradeTarget"),
 			},
 		},
+
+		Relations: []*schema.Table{
+			ClusterParameters(),
+			OrderableDbInstanceOptions(),
+		},
 	}
 }
