@@ -69,15 +69,44 @@ func sync(cmd *cobra.Command, args []string) error {
 			}
 			destinationsSpecs = append(destinationsSpecs, *spec)
 		}
-		if err := syncConnection(ctx, cqDir, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
-			return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
+
+		sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
+			clients.WithSourceLogger(log.Logger),
+			clients.WithSourceDirectory(cqDir),
+		)
+		if err != nil {
+			return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
+		}
+		defer func() {
+			if err := sourceClient.Terminate(); err != nil {
+				log.Error().Err(err).Msg("Failed to terminate source client")
+				fmt.Println("failed to terminate source client: ", err)
+			}
+		}()
+
+		v, err := sourceClient.GetProtocolVersion(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get protocol version for source %s: %w", sourceSpec.Name, err)
+		}
+		switch v {
+		case 1:
+			if err := syncConnectionV1(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
+				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
+			}
+		case 2:
+			if err := syncConnectionV2(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
+				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
+			}
+		default:
+			return fmt.Errorf("unknown protocol version %d for source %s", v, sourceSpec.Name)
 		}
 	}
 
 	return nil
 }
 
-func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string) error {
+func syncConnectionV1(ctx context.Context, cqDir string, sourceClient *clients.SourceClient, sourceSpec specs.Source, destinationsSpecs []specs.Destination, uid string) error {
+	var err error
 	destinationNames := make([]string, len(destinationsSpecs))
 	for i := range destinationsSpecs {
 		destinationNames[i] = destinationsSpecs[i].Name
@@ -86,20 +115,6 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("Start sync")
 	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationNames).Time("sync_time", syncTime).Msg("End sync")
-
-	sourceClient, err := clients.NewSourceClient(ctx, sourceSpec.Registry, sourceSpec.Path, sourceSpec.Version,
-		clients.WithSourceLogger(log.Logger),
-		clients.WithSourceDirectory(cqDir),
-	)
-	if err != nil {
-		return fmt.Errorf("failed to get source plugin client for %s: %w", sourceSpec.Name, err)
-	}
-	defer func() {
-		if err := sourceClient.Terminate(); err != nil {
-			log.Error().Err(err).Msg("Failed to terminate source client")
-			fmt.Println("failed to terminate source client: ", err)
-		}
-	}()
 
 	destClients := make([]*clients.DestinationClient, len(sourceSpec.Destinations))
 	destSubscriptions := make([]chan []byte, len(sourceSpec.Destinations))
