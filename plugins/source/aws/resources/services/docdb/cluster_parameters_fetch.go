@@ -2,7 +2,7 @@ package docdb
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
+	"fmt"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -10,28 +10,43 @@ import (
 )
 
 func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
-	item := parent.Item.(types.DBClusterParameterGroup)
 	c := meta.(*client.Client)
 	svc := c.Services().DocDB
+	switch item := parent.Item.(type) {
+	case types.DBClusterParameterGroup:
+		return fetchParameterGroupParameters(ctx, svc, item, res)
+	case types.DBEngineVersion:
+		return fetchEngineVersionParameters(ctx, svc, item, res)
+	}
+	return fmt.Errorf("wrong parrent type to fetch cluster parameters")
+}
 
+func fetchParameterGroupParameters(ctx context.Context, svc client.DocDBClient, item types.DBClusterParameterGroup, res chan<- interface{}) error {
 	input := &docdb.DescribeDBClusterParametersInput{
 		DBClusterParameterGroupName: item.DBClusterParameterGroupName,
 	}
-
-	for {
-		output, err := svc.DescribeDBClusterParameters(ctx, input)
+	p := docdb.NewDescribeDBClusterParametersPaginator(svc, input)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-
-		if len(output.Parameters) == 0 {
-			return nil
-		}
-		res <- output.Parameters
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- response.Parameters
 	}
+	return nil
+}
+
+func fetchEngineVersionParameters(ctx context.Context, svc client.DocDBClient, item types.DBEngineVersion, res chan<- interface{}) error {
+	input := &docdb.DescribeEngineDefaultClusterParametersInput{
+		DBParameterGroupFamily: item.DBParameterGroupFamily,
+	}
+	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input)
+	if err != nil {
+		return err
+	}
+	if output.EngineDefaults == nil || len(output.EngineDefaults.Parameters) == 0 {
+		return nil
+	}
+	res <- output.EngineDefaults.Parameters
 	return nil
 }

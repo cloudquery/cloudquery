@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/service/docdb"
 
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/acm"
@@ -28,6 +27,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -318,8 +318,14 @@ type DocDBClient interface {
 	DescribeDBClusterParameterGroups(ctx context.Context, params *docdb.DescribeDBClusterParameterGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterParameterGroupsOutput, error)
 	DescribeCertificates(ctx context.Context, params *docdb.DescribeCertificatesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeCertificatesOutput, error)
 	DescribeDBEngineVersions(ctx context.Context, params *docdb.DescribeDBEngineVersionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBEngineVersionsOutput, error)
+	DescribeEngineDefaultClusterParameters(ctx context.Context, params *docdb.DescribeEngineDefaultClusterParametersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeEngineDefaultClusterParametersOutput, error)
 	DescribeDBInstances(ctx context.Context, params *docdb.DescribeDBInstancesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBInstancesOutput, error)
 	DescribeDBSubnetGroups(ctx context.Context, params *docdb.DescribeDBSubnetGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBSubnetGroupsOutput, error)
+	DescribeEventCategories(ctx context.Context, params *docdb.DescribeEventCategoriesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeEventCategoriesOutput, error)
+	DescribeEventSubscriptions(ctx context.Context, params *docdb.DescribeEventSubscriptionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeEventSubscriptionsOutput, error)
+	DescribeEvents(ctx context.Context, params *docdb.DescribeEventsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeEventsOutput, error)
+	DescribeGlobalClusters(ctx context.Context, params *docdb.DescribeGlobalClustersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeGlobalClustersOutput, error)
+	DescribePendingMaintenanceActions(ctx context.Context, params *docdb.DescribePendingMaintenanceActionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribePendingMaintenanceActionsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dynamodb.go . DynamoDBClient

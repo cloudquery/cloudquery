@@ -92,6 +92,9 @@ func DocumentDBResources() []*Resource {
 			Struct:     &types.DBEngineVersion{},
 			//Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html",
 			ExtraColumns: defaultRegionalColumns,
+			Relations: []string{
+				"ClusterParameters()",
+			},
 		},
 		{
 			SubService: "instances",
@@ -131,6 +134,54 @@ func DocumentDBResources() []*Resource {
 						Name:     "arn",
 						Type:     schema.TypeString,
 						Resolver: `schema.PathResolver("DBSubnetGroupArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "global_clusters",
+			Struct:      &types.GlobalCluster{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.html",
+			SkipFields:  []string{"GlobalClusterArn"},
+			ExtraColumns: append(
+				defaultAccountColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("GlobalClusterArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "global_clusters",
+			Struct:      &types.GlobalCluster{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.html",
+			SkipFields:  []string{"GlobalClusterArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("GlobalClusterArn")`,
+						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
+					},
+				}...),
+		},
+		{
+			SubService:  "global_clusters",
+			Struct:      &types.GlobalCluster{},
+			Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_GlobalCluster.html",
+			SkipFields:  []string{"GlobalClusterArn"},
+			ExtraColumns: append(
+				defaultRegionalColumns,
+				[]codegen.ColumnDefinition{
+					{
+						Name:     "arn",
+						Type:     schema.TypeString,
+						Resolver: `schema.PathResolver("GlobalClusterArn")`,
 						Options:  schema.ColumnCreationOptions{PrimaryKey: true},
 					},
 				}...),

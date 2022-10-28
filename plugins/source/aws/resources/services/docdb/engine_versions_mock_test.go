@@ -24,6 +24,15 @@ func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		nil,
 	)
 
+	var parameters docdb.DescribeEngineDefaultClusterParametersOutput
+	if err := faker.FakeObject(&parameters); err != nil {
+		t.Fatal(err)
+	}
+	m.EXPECT().DescribeEngineDefaultClusterParameters(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&parameters,
+		nil,
+	)
+
 	return services
 }
 
