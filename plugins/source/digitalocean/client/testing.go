@@ -51,7 +51,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, createService func(t *tes
 			table,
 		},
 		newTestExecutionClient)
-	plugins.TestSourcePluginSync(t, p, l, specs.Source{
+	p.SetLogger(l)
+	plugins.TestSourcePluginSync(t, p, specs.Source{
 		Name:         "dev",
 		Version:      version,
 		Tables:       []string{table.Name},

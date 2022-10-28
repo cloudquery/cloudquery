@@ -75,6 +75,18 @@ func CQMacaddrArray(c *cqtypes.MacaddrArray) pgtype.MacaddrArray {
 	return r
 }
 
+func CQInetArray(c *cqtypes.InetArray) pgtype.InetArray {
+	r := pgtype.InetArray{}
+	for _, v := range c.Elements {
+		r.Elements = append(r.Elements, pgtype.Inet{IPNet: v.IPNet, Status: pgtype.Status(v.Status)})
+	}
+	r.Status = pgtype.Status(c.Status)
+	for _, d := range c.Dimensions {
+		r.Dimensions = append(r.Dimensions, pgtype.ArrayDimension{Length: d.Length, LowerBound: d.LowerBound})
+	}
+	return r
+}
+
 func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []interface{} {
 	pgValues := make([]interface{}, len(values))
 	for i, v := range values {
@@ -141,11 +153,13 @@ func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []i
 			}
 		case *cqtypes.MacaddrArray:
 			pgValues[i] = CQMacaddrArray(t)
+		case *cqtypes.InetArray:
+			pgValues[i] = CQInetArray(t)
 		default:
 			pgValues[i] = pgtype.Text{
 				Status: pgtype.Null,
 			}
-			c.stats.Errors++
+			c.metrics.Errors++
 			panic(fmt.Errorf("unsupported type %T at index %d column_name %s table_name %s", v, i, table.Columns[i].Name, table.Name))
 			// c.logger.Error().Msgf()
 		}
@@ -178,14 +192,14 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <- chan *s
 			br := c.conn.SendBatch(ctx, batch)
 			if err := br.Close(); err != nil {
 				if _, ok := err.(*pgconn.PgError); ok {
-					atomic.AddUint64(&c.stats.Errors, 1)
+					atomic.AddUint64(&c.metrics.Errors, 1)
 					c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
 				} else {
 					// no recoverable error
 					return fmt.Errorf("failed to execute batch: %w", err)
 				}
 			}
-			atomic.AddUint64(&c.stats.Writes, uint64(c.batchSize))
+			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 			batch = &pgx.Batch{}
 		}
 	}
@@ -194,14 +208,14 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <- chan *s
 		br := c.conn.SendBatch(ctx, batch)
 		if err := br.Close(); err != nil {
 			if _, ok := err.(*pgconn.PgError); ok {
-				atomic.AddUint64(&c.stats.Errors, 1)
+				atomic.AddUint64(&c.metrics.Errors, 1)
 				c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
 			} else {
 				// no recoverable error
 				return fmt.Errorf("failed to execute batch: %w", err)
 			}
 		}
-		atomic.AddUint64(&c.stats.Writes, uint64(c.batchSize))
+		atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
 	}
 
 	return nil

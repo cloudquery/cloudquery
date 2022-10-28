@@ -17,6 +17,8 @@ require (
 	github.com/rs/zerolog v1.28.0
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
+
 require (
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.3 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.4.0 // indirect

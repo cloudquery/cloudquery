@@ -31,6 +31,10 @@ func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
 
+func (c *Client) Name() string {
+	return c.Context
+}
+
 func (c *Client) Services() Services {
 	return c.services[c.Context]
 }

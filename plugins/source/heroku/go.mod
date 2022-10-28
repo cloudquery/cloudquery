@@ -18,6 +18,8 @@ require (
 	google.golang.org/grpc v1.49.0
 )
 
+replace github.com/cloudquery/plugin-sdk => ../../../../plugin-sdk
+
 require (
 	cloud.google.com/go/compute v1.7.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect

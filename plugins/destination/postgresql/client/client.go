@@ -20,7 +20,7 @@ type Client struct {
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	stats 							plugins.DestinationStats
+	metrics 						plugins.DestinationMetrics
 	batchSize           int
 }
 

@@ -91,11 +91,11 @@ func sync(cmd *cobra.Command, args []string) error {
 		switch v {
 		case 1:
 			if err := syncConnectionV1(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
-				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
+				return err
 			}
 		case 2:
 			if err := syncConnectionV2(ctx, cqDir, sourceClient, *sourceSpec, destinationsSpecs, invocationUUID.String()); err != nil {
-				return fmt.Errorf("failed to sync source %s: %w", sourceSpec.Name, err)
+				return err
 			}
 		default:
 			return fmt.Errorf("unknown protocol version %d for source %s", v, sourceSpec.Name)

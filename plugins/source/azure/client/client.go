@@ -24,6 +24,7 @@ type Client struct {
 	services       map[string]*services.Services
 }
 
+
 func getAuth(logger *zerolog.Logger) (autorest.Authorizer, *azidentity.DefaultAzureCredential, error) {
 	// Old-SDK auth with ordering:
 	//  1. Environment
@@ -122,6 +123,12 @@ func New(ctx context.Context, logger zerolog.Logger, s specs.Source) (schema.Cli
 func (c *Client) Logger() *zerolog.Logger {
 	return &c.logger
 }
+
+func (c *Client) Name() string {
+	return c.SubscriptionId
+}
+
+
 
 // withSubscription allows multiplexer to create a new client with given subscriptionId
 func (c Client) withSubscription(subscriptionId string) *Client {

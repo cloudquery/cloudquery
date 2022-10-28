@@ -126,19 +126,23 @@ func syncConnectionV2(ctx context.Context, cqDir string,sourceClient *clients.So
 	}
 
 	_ = bar.Finish()
-	// tt := time.Since(syncTime)
 
-	fmt.Println("Sync completed successfully.")
+	metrics, err := sourceClient.GetMetrics(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get metrics for source %s: %w", sourceSpec.Name, err)
+	}
+
+	fmt.Printf("Sync completed successfully. Resources: %d, Errors: %d, Panics: %d\n", metrics.TotalResources(), metrics.TotalErrors(), metrics.TotalPanics())
 	// fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
 	// log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
-	// 	Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+		// Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
 
 	// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
 	if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
 		log.Info().Msg("Sending sync summary to " + analyticsHost)
-		// if err := analyticsClient.SendSyncSummary(ctx, sourceSpec, destinationsSpecs, uid, *summary); err != nil {
-		// 	log.Warn().Err(err).Msg("Failed to send sync summary")
-		// }
+		if err := analyticsClient.SendSyncMetrics(ctx, sourceSpec, destinationsSpecs, uid, metrics); err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync summary")
+		}
 	}
 	return nil
 }
