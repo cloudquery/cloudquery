@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/apigateway"
 	"github.com/aws/aws-sdk-go-v2/service/apigatewayv2"
 	"github.com/aws/aws-sdk-go-v2/service/applicationautoscaling"
+	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/appsync"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
@@ -26,6 +27,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/aws/aws-sdk-go-v2/service/dax"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
+	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -42,6 +44,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/eventbridge"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/fsx"
+	"github.com/aws/aws-sdk-go-v2/service/glacier"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -53,6 +56,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
+	"github.com/aws/aws-sdk-go-v2/service/neptune"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
@@ -134,6 +138,22 @@ type Apigatewayv2Client interface {
 	GetStages(ctx context.Context, params *apigatewayv2.GetStagesInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetStagesOutput, error)
 	GetTags(ctx context.Context, params *apigatewayv2.GetTagsInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetTagsOutput, error)
 	GetVpcLinks(ctx context.Context, params *apigatewayv2.GetVpcLinksInput, optFns ...func(*apigatewayv2.Options)) (*apigatewayv2.GetVpcLinksOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_apprunner.go . AppRunnerClient
+type AppRunnerClient interface {
+	DescribeAutoScalingConfiguration(ctx context.Context, params *apprunner.DescribeAutoScalingConfigurationInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeAutoScalingConfigurationOutput, error)
+	DescribeCustomDomains(ctx context.Context, params *apprunner.DescribeCustomDomainsInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeCustomDomainsOutput, error)
+	DescribeObservabilityConfiguration(ctx context.Context, params *apprunner.DescribeObservabilityConfigurationInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeObservabilityConfigurationOutput, error)
+	DescribeService(ctx context.Context, params *apprunner.DescribeServiceInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeServiceOutput, error)
+	DescribeVpcConnector(ctx context.Context, params *apprunner.DescribeVpcConnectorInput, optFns ...func(*apprunner.Options)) (*apprunner.DescribeVpcConnectorOutput, error)
+	ListAutoScalingConfigurations(ctx context.Context, params *apprunner.ListAutoScalingConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListAutoScalingConfigurationsOutput, error)
+	ListConnections(ctx context.Context, params *apprunner.ListConnectionsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListConnectionsOutput, error)
+	ListObservabilityConfigurations(ctx context.Context, params *apprunner.ListObservabilityConfigurationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListObservabilityConfigurationsOutput, error)
+	ListOperations(ctx context.Context, params *apprunner.ListOperationsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListOperationsOutput, error)
+	ListServices(ctx context.Context, params *apprunner.ListServicesInput, optFns ...func(*apprunner.Options)) (*apprunner.ListServicesOutput, error)
+	ListTagsForResource(ctx context.Context, params *apprunner.ListTagsForResourceInput, optFns ...func(*apprunner.Options)) (*apprunner.ListTagsForResourceOutput, error)
+	ListVpcConnectors(ctx context.Context, params *apprunner.ListVpcConnectorsInput, optFns ...func(*apprunner.Options)) (*apprunner.ListVpcConnectorsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_appsync.go . AppSyncClient
@@ -286,6 +306,20 @@ type DirectconnectClient interface {
 	DescribeLags(ctx context.Context, params *directconnect.DescribeLagsInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeLagsOutput, error)
 	DescribeVirtualGateways(ctx context.Context, params *directconnect.DescribeVirtualGatewaysInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeVirtualGatewaysOutput, error)
 	DescribeVirtualInterfaces(ctx context.Context, params *directconnect.DescribeVirtualInterfacesInput, optFns ...func(*directconnect.Options)) (*directconnect.DescribeVirtualInterfacesOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_docdb.go . DocDBClient
+type DocDBClient interface {
+	DescribeDBClusters(ctx context.Context, params *docdb.DescribeDBClustersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClustersOutput, error)
+	ListTagsForResource(ctx context.Context, params *docdb.ListTagsForResourceInput, optFns ...func(*docdb.Options)) (*docdb.ListTagsForResourceOutput, error)
+	DescribeDBClusterSnapshots(ctx context.Context, params *docdb.DescribeDBClusterSnapshotsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotsOutput, error)
+	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *docdb.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterSnapshotAttributesOutput, error)
+	DescribeDBClusterParameters(ctx context.Context, params *docdb.DescribeDBClusterParametersInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterParametersOutput, error)
+	DescribeDBClusterParameterGroups(ctx context.Context, params *docdb.DescribeDBClusterParameterGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBClusterParameterGroupsOutput, error)
+	DescribeCertificates(ctx context.Context, params *docdb.DescribeCertificatesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeCertificatesOutput, error)
+	DescribeDBEngineVersions(ctx context.Context, params *docdb.DescribeDBEngineVersionsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBEngineVersionsOutput, error)
+	DescribeDBInstances(ctx context.Context, params *docdb.DescribeDBInstancesInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBInstancesOutput, error)
+	DescribeDBSubnetGroups(ctx context.Context, params *docdb.DescribeDBSubnetGroupsInput, optFns ...func(*docdb.Options)) (*docdb.DescribeDBSubnetGroupsOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dynamodb.go . DynamoDBClient
@@ -469,6 +503,16 @@ type FsxClient interface {
 	DescribeVolumes(ctx context.Context, params *fsx.DescribeVolumesInput, optFns ...func(*fsx.Options)) (*fsx.DescribeVolumesOutput, error)
 }
 
+//go:generate mockgen -package=mocks -destination=./mocks/glacier.go . GlacierClient
+type GlacierClient interface {
+	ListVaults(ctx context.Context, params *glacier.ListVaultsInput, optFns ...func(*glacier.Options)) (*glacier.ListVaultsOutput, error)
+	ListTagsForVault(ctx context.Context, params *glacier.ListTagsForVaultInput, optFns ...func(*glacier.Options)) (*glacier.ListTagsForVaultOutput, error)
+	GetVaultAccessPolicy(ctx context.Context, params *glacier.GetVaultAccessPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultAccessPolicyOutput, error)
+	GetVaultLock(ctx context.Context, params *glacier.GetVaultLockInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultLockOutput, error)
+	GetVaultNotifications(ctx context.Context, params *glacier.GetVaultNotificationsInput, optFns ...func(*glacier.Options)) (*glacier.GetVaultNotificationsOutput, error)
+	GetDataRetrievalPolicy(ctx context.Context, params *glacier.GetDataRetrievalPolicyInput, optFns ...func(*glacier.Options)) (*glacier.GetDataRetrievalPolicyOutput, error)
+}
+
 //go:generate mockgen -package=mocks -destination=./mocks/glue.go . GlueClient
 type GlueClient interface {
 	GetClassifiers(ctx context.Context, params *glue.GetClassifiersInput, optFns ...func(*glue.Options)) (*glue.GetClassifiersOutput, error)
@@ -650,6 +694,23 @@ type MQClient interface {
 	DescribeUser(ctx context.Context, params *mq.DescribeUserInput, optFns ...func(*mq.Options)) (*mq.DescribeUserOutput, error)
 	ListBrokers(ctx context.Context, params *mq.ListBrokersInput, optFns ...func(*mq.Options)) (*mq.ListBrokersOutput, error)
 	ListConfigurationRevisions(ctx context.Context, params *mq.ListConfigurationRevisionsInput, optFns ...func(*mq.Options)) (*mq.ListConfigurationRevisionsOutput, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_neptune.go . NeptuneClient
+type NeptuneClient interface {
+	DescribeDBClusterEndpoints(ctx context.Context, params *neptune.DescribeDBClusterEndpointsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterEndpointsOutput, error)
+	DescribeDBClusterParameterGroups(ctx context.Context, params *neptune.DescribeDBClusterParameterGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterParameterGroupsOutput, error)
+	DescribeDBClusterParameters(ctx context.Context, params *neptune.DescribeDBClusterParametersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterParametersOutput, error)
+	DescribeDBClusterSnapshotAttributes(ctx context.Context, params *neptune.DescribeDBClusterSnapshotAttributesInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotAttributesOutput, error)
+	DescribeDBClusterSnapshots(ctx context.Context, params *neptune.DescribeDBClusterSnapshotsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClusterSnapshotsOutput, error)
+	DescribeDBClusters(ctx context.Context, params *neptune.DescribeDBClustersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBClustersOutput, error)
+	DescribeDBInstances(ctx context.Context, params *neptune.DescribeDBInstancesInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBInstancesOutput, error)
+	DescribeDBParameterGroups(ctx context.Context, params *neptune.DescribeDBParameterGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBParameterGroupsOutput, error)
+	DescribeDBParameters(ctx context.Context, params *neptune.DescribeDBParametersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBParametersOutput, error)
+	DescribeDBSubnetGroups(ctx context.Context, params *neptune.DescribeDBSubnetGroupsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeDBSubnetGroupsOutput, error)
+	DescribeEventSubscriptions(ctx context.Context, params *neptune.DescribeEventSubscriptionsInput, optFns ...func(*neptune.Options)) (*neptune.DescribeEventSubscriptionsOutput, error)
+	DescribeGlobalClusters(ctx context.Context, params *neptune.DescribeGlobalClustersInput, optFns ...func(*neptune.Options)) (*neptune.DescribeGlobalClustersOutput, error)
+	ListTagsForResource(ctx context.Context, params *neptune.ListTagsForResourceInput, optFns ...func(*neptune.Options)) (*neptune.ListTagsForResourceOutput, error)
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_organizations.go . OrganizationsClient

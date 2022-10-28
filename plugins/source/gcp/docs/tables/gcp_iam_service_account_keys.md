@@ -5,7 +5,7 @@
 The primary key for this table is **service_account_unique_id**.
 
 ## Relations
-This table depends on [`gcp_iam_service_accounts`](gcp_iam_service_accounts.md).
+This table depends on [gcp_iam_service_accounts](gcp_iam_service_accounts.md).
 
 ## Columns
 | Name          | Type          |
@@ -21,7 +21,6 @@ This table depends on [`gcp_iam_service_accounts`](gcp_iam_service_accounts.md).
 |key_origin|String|
 |key_type|String|
 |name|String|
-|private_key_data|String|
 |private_key_type|String|
 |public_key_data|String|
 |valid_after_time|String|

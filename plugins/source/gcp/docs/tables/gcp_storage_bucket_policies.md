@@ -5,7 +5,7 @@
 The primary key for this table is **bucket_name**.
 
 ## Relations
-This table depends on [`gcp_storage_buckets`](gcp_storage_buckets.md).
+This table depends on [gcp_storage_buckets](gcp_storage_buckets.md).
 
 ## Columns
 | Name          | Type          |

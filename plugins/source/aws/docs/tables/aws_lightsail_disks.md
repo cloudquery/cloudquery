@@ -1,12 +1,12 @@
 # Table: aws_lightsail_disks
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Disk.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_lightsail_disks`:
-  - [`aws_lightsail_disk_snapshot`](aws_lightsail_disk_snapshot.md)
+The following tables depend on aws_lightsail_disks:
+  - [aws_lightsail_disk_snapshot](aws_lightsail_disk_snapshot.md)
 
 ## Columns
 | Name          | Type          |

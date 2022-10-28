@@ -1,12 +1,12 @@
 # Table: aws_lightsail_buckets
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-The following tables depend on `aws_lightsail_buckets`:
-  - [`aws_lightsail_bucket_access_keys`](aws_lightsail_bucket_access_keys.md)
+The following tables depend on aws_lightsail_buckets:
+  - [aws_lightsail_bucket_access_keys](aws_lightsail_bucket_access_keys.md)
 
 ## Columns
 | Name          | Type          |

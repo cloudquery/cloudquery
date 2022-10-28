@@ -1,6 +1,6 @@
 # Table: aws_rds_subnet_groups
 
-
+https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBSubnetGroup.html
 
 The primary key for this table is **arn**.
 

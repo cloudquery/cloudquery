@@ -3,12 +3,11 @@ module github.com/cloudquery/cloudquery/plugins/source/test
 go 1.19
 
 require (
-	github.com/cloudquery/plugin-sdk v0.13.5
+	github.com/cloudquery/plugin-sdk v0.13.14
 	github.com/rs/zerolog v1.28.0
 )
 
 require (
-	github.com/cloudquery/faker/v3 v3.7.7 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/getsentry/sentry-go v0.13.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

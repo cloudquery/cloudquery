@@ -1,6 +1,6 @@
 # Table: aws_wafv2_regex_pattern_sets
 
-
+https://docs.aws.amazon.com/waf/latest/APIReference/API_RegexPatternSet.html
 
 The primary key for this table is **arn**.
 

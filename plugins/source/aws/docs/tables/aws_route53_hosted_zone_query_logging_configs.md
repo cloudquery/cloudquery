@@ -1,11 +1,11 @@
 # Table: aws_route53_hosted_zone_query_logging_configs
 
-
+https://docs.aws.amazon.com/Route53/latest/APIReference/API_QueryLoggingConfig.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-This table depends on [`aws_route53_hosted_zones`](aws_route53_hosted_zones.md).
+This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
 
 ## Columns
 | Name          | Type          |

@@ -1,6 +1,6 @@
 # Table: aws_waf_rules
 
-
+https://docs.aws.amazon.com/waf/latest/APIReference/API_waf_RuleSummary.html
 
 The primary key for this table is **arn**.
 

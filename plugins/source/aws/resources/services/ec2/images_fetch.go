@@ -48,7 +48,7 @@ func resolveImageArn(_ context.Context, meta schema.ClientMeta, resource *schema
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "images/" + aws.ToString(item.ImageId),
+		Resource:  "image/" + aws.ToString(item.ImageId),
 	}
 	return resource.Set(c.Name, a.String())
 }

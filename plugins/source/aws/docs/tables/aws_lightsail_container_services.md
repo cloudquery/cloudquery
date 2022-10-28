@@ -1,13 +1,13 @@
 # Table: aws_lightsail_container_services
 
-
+https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerService.html
 
 The primary key for this table is **arn**.
 
 ## Relations
-The following tables depend on `aws_lightsail_container_services`:
-  - [`aws_lightsail_container_service_deployments`](aws_lightsail_container_service_deployments.md)
-  - [`aws_lightsail_container_service_images`](aws_lightsail_container_service_images.md)
+The following tables depend on aws_lightsail_container_services:
+  - [aws_lightsail_container_service_deployments](aws_lightsail_container_service_deployments.md)
+  - [aws_lightsail_container_service_images](aws_lightsail_container_service_images.md)
 
 ## Columns
 | Name          | Type          |

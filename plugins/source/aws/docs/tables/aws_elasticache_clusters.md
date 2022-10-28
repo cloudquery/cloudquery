@@ -1,6 +1,6 @@
 # Table: aws_elasticache_clusters
 
-
+https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheCluster.html
 
 The primary key for this table is **arn**.
 

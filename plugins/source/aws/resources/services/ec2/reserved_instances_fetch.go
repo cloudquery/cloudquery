@@ -33,7 +33,7 @@ func resolveReservedInstanceArn(_ context.Context, meta schema.ClientMeta, resou
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "reserved-instances/" + aws.ToString(item.ReservedInstancesId),
+		Resource:  "reserved-instance/" + aws.ToString(item.ReservedInstancesId),
 	}
 	return resource.Set(c.Name, a.String())
 }

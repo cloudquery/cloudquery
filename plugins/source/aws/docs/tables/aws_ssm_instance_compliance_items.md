@@ -1,11 +1,11 @@
 # Table: aws_ssm_instance_compliance_items
 
-
+https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_ComplianceItem.html
 
 The composite primary key for this table is (**id**, **instance_arn**).
 
 ## Relations
-This table depends on [`aws_ssm_instances`](aws_ssm_instances.md).
+This table depends on [aws_ssm_instances](aws_ssm_instances.md).
 
 ## Columns
 | Name          | Type          |

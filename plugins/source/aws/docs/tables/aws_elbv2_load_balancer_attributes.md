@@ -1,11 +1,11 @@
 # Table: aws_elbv2_load_balancer_attributes
 
-
+https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancerAttribute.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_elbv2_load_balancers`](aws_elbv2_load_balancers.md).
+This table depends on [aws_elbv2_load_balancers](aws_elbv2_load_balancers.md).
 
 ## Columns
 | Name          | Type          |

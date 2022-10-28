@@ -1,11 +1,11 @@
 # Table: aws_guardduty_detector_members
 
-
+https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html
 
 The primary key for this table is **_cq_id**.
 
 ## Relations
-This table depends on [`aws_guardduty_detectors`](aws_guardduty_detectors.md).
+This table depends on [aws_guardduty_detectors](aws_guardduty_detectors.md).
 
 ## Columns
 | Name          | Type          |

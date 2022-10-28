@@ -1,6 +1,6 @@
 # Table: aws_wafv2_rule_groups
 
-
+https://docs.aws.amazon.com/waf/latest/APIReference/API_RuleGroup.html
 
 The primary key for this table is **arn**.
 

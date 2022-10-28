@@ -5,8 +5,8 @@ https://docs.aws.amazon.com/apigateway/latest/api/API_UsagePlan.html
 The primary key for this table is **_cq_id**.
 
 ## Relations
-The following tables depend on `aws_apigateway_usage_plans`:
-  - [`aws_apigateway_usage_plan_keys`](aws_apigateway_usage_plan_keys.md)
+The following tables depend on aws_apigateway_usage_plans:
+  - [aws_apigateway_usage_plan_keys](aws_apigateway_usage_plan_keys.md)
 
 ## Columns
 | Name          | Type          |

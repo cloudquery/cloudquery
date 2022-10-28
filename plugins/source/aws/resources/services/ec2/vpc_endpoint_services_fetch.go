@@ -37,7 +37,7 @@ func resolveVpcEndpointServiceArn(_ context.Context, meta schema.ClientMeta, res
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "vpc_endpoint_service/" + aws.ToString(item.ServiceId),
+		Resource:  "vpc-endpoint-service/" + aws.ToString(item.ServiceId),
 	}
 	return resource.Set(c.Name, a.String())
 }

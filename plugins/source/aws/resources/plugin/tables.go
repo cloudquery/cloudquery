@@ -6,6 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigateway"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apigatewayv2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/applicationautoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/apprunner"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/appsync"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/athena"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/autoscaling"
@@ -23,6 +24,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dax"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/directconnect"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dynamodb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ec2"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr"
@@ -39,6 +41,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/eventbridge"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/firehose"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/fsx"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glacier"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/glue"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/iam"
@@ -50,6 +53,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lambda"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/lightsail"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/mq"
+	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/neptune"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/organizations"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/qldb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/rds"
@@ -87,6 +91,7 @@ func tables() []*schema.Table {
 		apigatewayv2.DomainNames(),
 		apigatewayv2.VpcLinks(),
 		applicationautoscaling.Policies(),
+		apprunner.Services(),
 		appsync.GraphqlApis(),
 		athena.DataCatalogs(),
 		athena.WorkGroups(),
@@ -121,6 +126,11 @@ func tables() []*schema.Table {
 		directconnect.VirtualInterfaces(),
 		dms.ReplicationInstances(),
 		dynamodb.Tables(),
+		docdb.Certificates(),
+		docdb.ClusterParameterGroups(),
+		docdb.Clusters(),
+		docdb.EngineVersions(),
+		docdb.SubnetGroups(),
 		ec2.ByoipCidrs(),
 		ec2.CustomerGateways(),
 		ec2.EbsSnapshots(),
@@ -189,6 +199,8 @@ func tables() []*schema.Table {
 		fsx.Snapshots(),
 		fsx.StorageVirtualMachines(),
 		fsx.Volumes(),
+		glacier.DataRetrievalPolicies(),
+		glacier.Vaults(),
 		glue.Classifiers(),
 		glue.Connections(),
 		glue.Crawlers(),
@@ -245,6 +257,13 @@ func tables() []*schema.Table {
 		lightsail.LoadBalancers(),
 		lightsail.StaticIps(),
 		mq.Brokers(),
+		neptune.ClusterParameterGroups(),
+		neptune.Clusters(),
+		neptune.ClusterSnapshots(),
+		neptune.DbParameterGroups(),
+		neptune.EventSubscriptions(),
+		neptune.Instances(),
+		neptune.SubnetGroups(),
 		organizations.Accounts(),
 		qldb.Ledgers(),
 		rds.Certificates(),
