@@ -91,7 +91,15 @@
 | ↳ [aws_docdb_cluster_snapshots](aws_docdb_cluster_snapshots.md) |
 | ↳ [aws_docdb_instances](aws_docdb_instances.md) |
 | [aws_docdb_engine_versions](aws_docdb_engine_versions.md) |
+| ↳ [aws_docdb_cluster_parameters](aws_docdb_cluster_parameters.md) |
+| ↳ [aws_docdb_orderable_db_instance_options](aws_docdb_orderable_db_instance_options.md) |
+| [aws_docdb_instances](aws_docdb_instances.md) |
 | [aws_docdb_subnet_groups](aws_docdb_subnet_groups.md) |
+| [aws_docdb_events](aws_docdb_events.md) |
+| [aws_docdb_event_categories](aws_docdb_event_categories.md) |
+| [aws_docdb_event_subscriptions](aws_docdb_event_subscriptions.md) |
+| [aws_docdb_global_clusters](aws_docdb_global_clusters.md) |
+| [aws_docdb_pending_maintenance_actions](aws_docdb_pending_maintenance_actions.md) |
 | [aws_ec2_byoip_cidrs](aws_ec2_byoip_cidrs.md) |
 | [aws_ec2_customer_gateways](aws_ec2_customer_gateways.md) |
 | [aws_ec2_ebs_snapshots](aws_ec2_ebs_snapshots.md) |

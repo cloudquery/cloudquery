@@ -4,8 +4,6 @@ https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBInstance.html
 
 The primary key for this table is **arn**.
 
-## Relations
-This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 
 ## Columns
 | Name          | Type          |
