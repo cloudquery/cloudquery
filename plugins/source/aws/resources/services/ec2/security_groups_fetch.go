@@ -39,7 +39,7 @@ func resolveSecurityGroupArn(_ context.Context, meta schema.ClientMeta, resource
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "security_group/" + aws.ToString(item.GroupId),
+		Resource:  "security-group/" + aws.ToString(item.GroupId),
 	}
 	return resource.Set(c.Name, a.String())
 }
