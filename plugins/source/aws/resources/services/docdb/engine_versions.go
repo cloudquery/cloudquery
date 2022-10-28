@@ -9,19 +9,34 @@ import (
 
 func EngineVersions() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_docdb_engine_versions",
-		Resolver:  fetchDocdbEngineVersions,
-		Multiplex: client.ServiceAccountRegionMultiplexer("docdb"),
+		Name:        "aws_docdb_engine_versions",
+		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBEngineVersion.html",
+		Resolver:    fetchDocdbEngineVersions,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
 				Type:     schema.TypeString,
 				Resolver: client.ResolveAWSAccount,
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
-				Name:     "region",
+				Name:     "engine",
 				Type:     schema.TypeString,
-				Resolver: client.ResolveAWSRegion,
+				Resolver: schema.PathResolver("Engine"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
+			},
+			{
+				Name:     "engine_version",
+				Type:     schema.TypeString,
+				Resolver: schema.PathResolver("EngineVersion"),
+				CreationOptions: schema.ColumnCreationOptions{
+					PrimaryKey: true,
+				},
 			},
 			{
 				Name:     "db_engine_description",
@@ -39,16 +54,6 @@ func EngineVersions() *schema.Table {
 				Resolver: schema.PathResolver("DBParameterGroupFamily"),
 			},
 			{
-				Name:     "engine",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("Engine"),
-			},
-			{
-				Name:     "engine_version",
-				Type:     schema.TypeString,
-				Resolver: schema.PathResolver("EngineVersion"),
-			},
-			{
 				Name:     "exportable_log_types",
 				Type:     schema.TypeStringArray,
 				Resolver: schema.PathResolver("ExportableLogTypes"),
@@ -63,10 +68,6 @@ func EngineVersions() *schema.Table {
 				Type:     schema.TypeJSON,
 				Resolver: schema.PathResolver("ValidUpgradeTarget"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			ClusterParameters(),
 		},
 	}
 }

@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.10...plugins-destination-postgresql-v1.3.11) (2022-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.13.14 ([#3248](https://github.com/cloudquery/cloudquery/issues/3248)) ([90e2fba](https://github.com/cloudquery/cloudquery/commit/90e2fba5052da7324e1ef32c275d872385052a3f))
+
+## [1.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.9...plugins-destination-postgresql-v1.3.10) (2022-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.13.13 ([#3223](https://github.com/cloudquery/cloudquery/issues/3223)) ([1e90c14](https://github.com/cloudquery/cloudquery/commit/1e90c14fc43752ec67d3faf46c4f7b70ed9fa902))
+
+## [1.3.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.8...plugins-destination-postgresql-v1.3.9) (2022-10-20)
+
+
+### Bug Fixes
+
+* Support Migrations in Custom Schemas ([#3144](https://github.com/cloudquery/cloudquery/issues/3144)) ([92ecd66](https://github.com/cloudquery/cloudquery/commit/92ecd6691b33ea4407146ea4282aee7ec7ccfb20))
+
+## [1.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.7...plugins-destination-postgresql-v1.3.8) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for postgresql to v0.13.12 ([#3110](https://github.com/cloudquery/cloudquery/issues/3110)) ([9ec603a](https://github.com/cloudquery/cloudquery/commit/9ec603a7ecd0c55a043ea4c621c31fce6fe55625))
+
 ## [1.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v1.3.6...plugins-destination-postgresql-v1.3.7) (2022-10-19)
 
 

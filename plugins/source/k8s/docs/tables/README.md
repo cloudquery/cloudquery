@@ -14,6 +14,7 @@
 | [k8s_core_nodes](k8s_core_nodes.md) |
 | [k8s_core_pods](k8s_core_pods.md) |
 | [k8s_core_resource_quotas](k8s_core_resource_quotas.md) |
+| [k8s_core_secrets](k8s_core_secrets.md) |
 | [k8s_core_service_accounts](k8s_core_service_accounts.md) |
 | [k8s_core_services](k8s_core_services.md) |
 | [k8s_networking_network_policies](k8s_networking_network_policies.md) |

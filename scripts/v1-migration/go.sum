@@ -1,5 +1,5 @@
-github.com/cloudquery/plugin-sdk v0.13.11 h1:/09m9PVtqUAGCtyVx6gPq8oQqg0IxBLJmZgj7N7/EsA=
-github.com/cloudquery/plugin-sdk v0.13.11/go.mod h1:8mt4PDjek0NkldnWFnM/i0zpfyUYVcRy/imEN1L/Cxs=
+github.com/cloudquery/plugin-sdk v0.13.14 h1:GC7dv4F8IMFWvpUq0sOZI2NmAtsJSKu3Ztu18JGqXnU=
+github.com/cloudquery/plugin-sdk v0.13.14/go.mod h1:8mt4PDjek0NkldnWFnM/i0zpfyUYVcRy/imEN1L/Cxs=
 github.com/coreos/go-systemd/v22 v22.3.3-0.20220203105225-a9a7ef127534/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

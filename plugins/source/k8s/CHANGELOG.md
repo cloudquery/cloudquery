@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.1.0...plugins-source-k8s-v2.1.1) (2022-10-27)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.13.14 ([#3219](https://github.com/cloudquery/cloudquery/issues/3219)) ([be559e7](https://github.com/cloudquery/cloudquery/commit/be559e7bc7aaf84273f5a39fae9daa5f8cf296aa))
+
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.3...plugins-source-k8s-v2.1.0) (2022-10-25)
+
+
+### Features
+
+* Add k8s_core_secrets resource ([#3183](https://github.com/cloudquery/cloudquery/issues/3183)) ([c2aa5a6](https://github.com/cloudquery/cloudquery/commit/c2aa5a6d9ade3ec65414189b40cae33c7d1c6214))
+
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.2...plugins-source-k8s-v2.0.3) (2022-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update plugin-sdk for k8s to v0.13.12 ([#3107](https://github.com/cloudquery/cloudquery/issues/3107)) ([88f0d9d](https://github.com/cloudquery/cloudquery/commit/88f0d9db429173f8c9e2f97e8e23bc98fba72e89))
+
 ## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v2.0.1...plugins-source-k8s-v2.0.2) (2022-10-19)
 
 

@@ -2,7 +2,6 @@ package docdb
 
 import (
 	"context"
-	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -13,20 +12,13 @@ func fetchDocdbCertificates(ctx context.Context, meta schema.ClientMeta, _ *sche
 	svc := c.Services().DocDB
 
 	input := &docdb.DescribeCertificatesInput{}
-
-	for {
-		output, err := svc.DescribeCertificates(ctx, input)
+	p := docdb.NewDescribeCertificatesPaginator(svc, input)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx)
 		if err != nil {
 			return err
 		}
-		if len(output.Certificates) == 0 {
-			return nil
-		}
-		res <- output.Certificates
-		if aws.ToString(output.Marker) == "" {
-			break
-		}
-		input.Marker = output.Marker
+		res <- response.Certificates
 	}
 	return nil
 }

@@ -37,7 +37,7 @@ func resolveFlowLogArn(_ context.Context, meta schema.ClientMeta, resource *sche
 		Service:   "ec2",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "flow_logs/" + aws.ToString(item.FlowLogId),
+		Resource:  "vpc-flow-log/" + aws.ToString(item.FlowLogId),
 	}
 	return resource.Set(c.Name, a.String())
 }

@@ -9,9 +9,10 @@ import (
 
 func ClusterParameterGroups() *schema.Table {
 	return &schema.Table{
-		Name:      "aws_docdb_cluster_parameter_groups",
-		Resolver:  fetchDocdbClusterParameterGroups,
-		Multiplex: client.ServiceAccountRegionMultiplexer("docdb"),
+		Name:        "aws_docdb_cluster_parameter_groups",
+		Description: "https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterParameterGroup.html",
+		Resolver:    fetchDocdbClusterParameterGroups,
+		Multiplex:   client.ServiceAccountRegionMultiplexer("docdb"),
 		Columns: []schema.Column{
 			{
 				Name:     "account_id",
@@ -37,6 +38,11 @@ func ClusterParameterGroups() *schema.Table {
 				},
 			},
 			{
+				Name:     "parameters",
+				Type:     schema.TypeJSON,
+				Resolver: resolveDocdbClusterParameterGroupParameters,
+			},
+			{
 				Name:     "db_cluster_parameter_group_name",
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("DBClusterParameterGroupName"),
@@ -51,10 +57,6 @@ func ClusterParameterGroups() *schema.Table {
 				Type:     schema.TypeString,
 				Resolver: schema.PathResolver("Description"),
 			},
-		},
-
-		Relations: []*schema.Table{
-			ClusterParameters(),
 		},
 	}
 }
