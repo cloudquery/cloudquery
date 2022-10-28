@@ -9,7 +9,6 @@ import (
 	"github.com/google/uuid"
 
 	"github.com/cloudquery/plugin-sdk/clients"
-	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
@@ -117,11 +116,6 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 			}
 		}
 	}()
-	tables, err := sourceClient.GetTables(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
-	}
-
 	for i, destinationSpec := range destinationsSpecs {
 		destClients[i], err = clients.NewDestinationClient(ctx, destinationSpec.Registry, destinationSpec.Path, destinationSpec.Version,
 			clients.WithDestinationLogger(log.Logger),
@@ -132,6 +126,10 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 		}
 		if err := destClients[i].Initialize(ctx, destinationSpec); err != nil {
 			return fmt.Errorf("failed to initialize destination plugin client for %s: %w", destinationSpec.Name, err)
+		}
+		tables, err := sourceClient.GetTables(ctx)
+		if err != nil {
+			return fmt.Errorf("failed to get tables for source %s: %w", sourceSpec.Name, err)
 		}
 
 		if err := destClients[i].Migrate(ctx, tables); err != nil {
@@ -162,16 +160,21 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 		progressbar.OptionShowCount(),
 		progressbar.OptionClearOnFinish(),
 	)
-	totalResources := 0
+	failedWrites := uint64(0)
+	totalResources := uint64(0)
 	for i, destination := range sourceSpec.Destinations {
 		i := i
 		destination := destination
 		g.Go(func() error {
+			var destFailedWrites uint64
 			var err error
-			if err = destClients[i].Write(gctx, tables, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
-				// panic(err)
+			if destFailedWrites, err = destClients[i].Write(gctx, sourceSpec.Name, syncTime, destSubscriptions[i]); err != nil {
 				return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, destination, err)
 			}
+			if destClients[i].Close(ctx); err != nil {
+				return fmt.Errorf("failed to close destination client for %s->%s: %w", sourceSpec.Name, destination, err)
+			}
+			failedWrites += destFailedWrites
 			return nil
 		})
 	}
@@ -185,8 +188,6 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 				case <-gctx.Done():
 					return gctx.Err()
 				case destSubscriptions[i] <- resource:
-				case <-time.After(time.Second * 5):
-						return fmt.Errorf("failed to write for %s->%s: %w", sourceSpec.Name, sourceSpec.Destinations[i], err)
 				}
 			}
 		}
@@ -200,42 +201,28 @@ func syncConnection(ctx context.Context, cqDir string, sourceSpec specs.Source, 
 		_ = bar.Finish()
 		return err
 	}
-	// summary, err := sourceClient.GetSyncSummary(ctx)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to get sync summary: %w", err)
-	// }
-	_, err = sourceClient.GetStats(ctx)
+	summary, err := sourceClient.GetSyncSummary(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to get sync summary: %w", err)
 	}
-	
 	_ = bar.Finish()
-	// tt := time.Since(syncTime)
+	tt := time.Since(syncTime)
 
 	fmt.Println("Sync completed successfully.")
-	// fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", totalResources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
-	// log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
-	// 	Int("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+	fmt.Printf("Summary: resources: %d, errors: %d, panic: %d, failed_writes: %d, time: %s\n", summary.Resources, summary.Errors, summary.Panics, failedWrites, tt.Truncate(time.Second).String())
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", sourceSpec.Destinations).
+		Uint64("resources", totalResources).Uint64("errors", summary.Errors).Uint64("panic", summary.Panics).Uint64("failed_writes", failedWrites).Float64("time_took", tt.Seconds()).Msg("Sync completed successfully")
+
+	// Send analytics, if activated. We only send if the source plugin registry is GitHub, mostly to avoid sending data from development machines.
+	if analyticsClient != nil && sourceSpec.Registry == specs.RegistryGithub {
+		log.Info().Msg("Sending sync summary to " + analyticsHost)
+		if err := analyticsClient.SendSyncSummary(ctx, sourceSpec, destinationsSpecs, uid, *summary); err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync summary")
+		}
+	}
 	return nil
 }
 
 func isUnknownConcurrencyFieldError(err error) bool {
 	return strings.Contains(err.Error(), unknownFieldErrorPrefix+`"table_concurrency"`) || strings.Contains(err.Error(), unknownFieldErrorPrefix+`"resource_concurrency"`)
-}
-
-
-func filterTables(tables schema.Tables, filter []string) schema.Tables{
-	if len(filter) == 0 {
-		return tables
-	}
-	var filteredTables schema.Tables
-	for _, t := range tables {
-		for _, f := range filter {
-			if f == t.Name {
-				filteredTables = append(filteredTables, t)
-				break
-			}
-		}
-	}
-	return filteredTables
 }
