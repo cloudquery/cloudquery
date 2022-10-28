@@ -32,6 +32,7 @@ func Plugin() *plugins.SourcePlugin {
 			core.Nodes(),
 			core.Pods(),
 			core.ResourceQuotas(),
+			core.Secrets(),
 			core.ServiceAccounts(),
 			core.Services(),
 			networking.NetworkPolicies(),

@@ -33,7 +33,7 @@ func resolveMetricFilterArn(ctx context.Context, meta schema.ClientMeta, resourc
 	cl := meta.(*client.Client)
 	a := arn.ARN{
 		Partition: cl.Partition,
-		Service:   "cloudwatchlogs",
+		Service:   "logs",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
 		Resource:  "metric_filter/" + aws.ToString(resource.Item.(types.MetricFilter).FilterName),

@@ -176,6 +176,7 @@ func initServices(client *kubernetes.Clientset) Services {
 		ResourceQuotas:  client.CoreV1().ResourceQuotas(""),
 		RoleBindings:    client.RbacV1().RoleBindings(""),
 		Roles:           client.RbacV1().Roles(""),
+		Secrets:         client.CoreV1().Secrets(""),
 		ServiceAccounts: client.CoreV1().ServiceAccounts(""),
 		Services:        client.CoreV1().Services(""),
 		StatefulSets:    client.AppsV1().StatefulSets(""),
