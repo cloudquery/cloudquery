@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/schema"
 )
 
-func (c *Client) read(ctx context.Context, tables schema.Tables, sourceName string, syncTime time.Time) error {
+func (c *Client) read(tables schema.Tables, sourceName string, syncTime time.Time) error {
 	return nil
 }
 
