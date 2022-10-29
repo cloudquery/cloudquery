@@ -18,7 +18,7 @@ import (
 func CQTextArray(c *cqtypes.TextArray) pgtype.TextArray {
 	r := pgtype.TextArray{}
 	for _, v := range c.Elements {
-		r.Elements = append(r.Elements, pgtype.Text{String: v.String, Status: pgtype.Status(v.Status)})
+		r.Elements = append(r.Elements, pgtype.Text{String: v.Str, Status: pgtype.Status(v.Status)})
 	}
 	r.Status = pgtype.Status(c.Status)
 	for _, d := range c.Dimensions {
@@ -110,7 +110,7 @@ func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []i
 			}
 		case *cqtypes.Text:
 			pgValues[i] = pgtype.Text{
-				String: t.String,
+				String: t.Str,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.Bytea:
