@@ -14,7 +14,6 @@ import (
 	"github.com/jackc/pgx/v4"
 )
 
-
 func CQTextArray(c *cqtypes.TextArray) pgtype.TextArray {
 	r := pgtype.TextArray{}
 	for _, v := range c.Elements {
@@ -87,25 +86,25 @@ func CQInetArray(c *cqtypes.InetArray) pgtype.InetArray {
 	return r
 }
 
-func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []interface{} {
+func (c *Client) transformValues(table *schema.Table, values cqtypes.CQTypes) []interface{} {
 	pgValues := make([]interface{}, len(values))
 	for i, v := range values {
 		switch t := v.(type) {
 		case *cqtypes.Bool:
 			pgValues[i] = pgtype.Bool{
-				Bool: t.Bool,
+				Bool:   t.Bool,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.Int8:
 			pgValues[i] = pgtype.Int8{
-				Int: t.Int,
+				Int:    t.Int,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.Float8:
 			pgValues[i] = "0.0"
 		case *cqtypes.UUID:
 			pgValues[i] = pgtype.UUID{
-				Bytes: t.Bytes,
+				Bytes:  t.Bytes,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.Text:
@@ -115,7 +114,7 @@ func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []i
 			}
 		case *cqtypes.Bytea:
 			pgValues[i] = pgtype.Bytea{
-				Bytes: t.Bytes,
+				Bytes:  t.Bytes,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.TextArray:
@@ -124,31 +123,31 @@ func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []i
 			pgValues[i] = CQInt8Array(t)
 		case *cqtypes.Timestamptz:
 			pgValues[i] = pgtype.Timestamptz{
-				Time: t.Time,
+				Time:   t.Time,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.JSON:
 			pgValues[i] = pgtype.JSON{
-				Bytes: t.Bytes,
+				Bytes:  t.Bytes,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.UUIDArray:
 			pgValues[i] = CQUUIDArray(t)
 		case *cqtypes.Inet:
 			pgValues[i] = pgtype.Inet{
-				IPNet: t.IPNet,
+				IPNet:  t.IPNet,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.CIDR:
 			pgValues[i] = pgtype.CIDR{
-				IPNet: t.IPNet,
+				IPNet:  t.IPNet,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.CIDRArray:
 			pgValues[i] = CQCIDRArray(t)
 		case *cqtypes.Macaddr:
 			pgValues[i] = pgtype.Macaddr{
-				Addr: t.Addr,
+				Addr:   t.Addr,
 				Status: pgtype.Status(t.Status),
 			}
 		case *cqtypes.MacaddrArray:
@@ -167,7 +166,7 @@ func (c *Client) transformValues(table *schema.Table, values schema.CQTypes) []i
 	return pgValues
 }
 
-func (c *Client) Write(ctx context.Context, tables schema.Tables, res <- chan *schema.DestinationResource) error {
+func (c *Client) Write(ctx context.Context, tables schema.Tables, res <-chan *schema.DestinationResource) error {
 	var sql string
 	batch := &pgx.Batch{}
 
@@ -182,26 +181,26 @@ func (c *Client) Write(ctx context.Context, tables schema.Tables, res <- chan *s
 			sql = upsert(table)
 		}
 		values := c.transformValues(table, r.Data)
-		// if _, err := c.conn.Exec(ctx, sql, values...); err != nil {
-		// 	fmt.Println(values)
-		// 	panic(err)
-		// }
-		
-		batch.Queue(sql, values...)
-		if batch.Len() >= c.batchSize {
-			br := c.conn.SendBatch(ctx, batch)
-			if err := br.Close(); err != nil {
-				if _, ok := err.(*pgconn.PgError); ok {
-					atomic.AddUint64(&c.metrics.Errors, 1)
-					c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
-				} else {
-					// no recoverable error
-					return fmt.Errorf("failed to execute batch: %w", err)
-				}
-			}
-			atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
-			batch = &pgx.Batch{}
+		if _, err := c.conn.Exec(ctx, sql, values...); err != nil {
+			fmt.Println(values)
+			panic(err)
 		}
+
+		// batch.Queue(sql, values...)
+		// if batch.Len() >= c.batchSize {
+		// 	br := c.conn.SendBatch(ctx, batch)
+		// 	if err := br.Close(); err != nil {
+		// 		if _, ok := err.(*pgconn.PgError); ok {
+		// 			atomic.AddUint64(&c.metrics.Errors, 1)
+		// 			c.logger.Error().Err(err).Msgf("failed to execute batch with pgerror")
+		// 		} else {
+		// 			// no recoverable error
+		// 			return fmt.Errorf("failed to execute batch: %w", err)
+		// 		}
+		// 	}
+		// 	atomic.AddUint64(&c.metrics.Writes, uint64(c.batchSize))
+		// 	batch = &pgx.Batch{}
+		// }
 	}
 
 	if batch.Len() > 0 {
@@ -230,7 +229,7 @@ func insert(table *schema.Table) string {
 	columnsLen := len(columns)
 	for i, c := range columns {
 		sb.WriteString(pgx.Identifier{c.Name}.Sanitize())
-		if i < columnsLen - 1 {
+		if i < columnsLen-1 {
 			sb.WriteString(",")
 		} else {
 			sb.WriteString(") values (")
@@ -238,7 +237,7 @@ func insert(table *schema.Table) string {
 	}
 	for i, _ := range columns {
 		sb.WriteString(fmt.Sprintf("$%d", i+1))
-		if i < columnsLen - 1 {
+		if i < columnsLen-1 {
 			sb.WriteString(",")
 		} else {
 			sb.WriteString(")")
@@ -249,7 +248,7 @@ func insert(table *schema.Table) string {
 
 func upsert(table *schema.Table) string {
 	var sb strings.Builder
-	
+
 	sb.WriteString(insert(table))
 	columns := table.Columns
 	columnsLen := len(columns)
@@ -262,7 +261,7 @@ func upsert(table *schema.Table) string {
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())
 		sb.WriteString("=excluded.") // excluded references the new values
 		sb.WriteString(pgx.Identifier{column.Name}.Sanitize())
-		if i < columnsLen - 1 {
+		if i < columnsLen-1 {
 			sb.WriteString(",")
 		} else {
 			sb.WriteString("")

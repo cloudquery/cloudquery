@@ -5,5 +5,5 @@ import (
 )
 
 func (c *Client) Metrics() plugins.DestinationMetrics {
-		return c.metrics
+	return c.metrics
 }

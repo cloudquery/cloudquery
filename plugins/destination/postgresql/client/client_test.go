@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
 	"github.com/cloudquery/plugin-sdk/specs"
 	"github.com/rs/zerolog"
@@ -15,7 +16,7 @@ func getTestData() *schema.DestinationResource {
 	// because data is sent over the wire encoded in json we need to use strings, numbers, objects, arrays, booleans and nulls
 	// to test everything correctly
 	return nil
-	
+
 	// return &schema.DestinationResource {
 	// 	TableName: "simple_table",
 	// 	Data: []interface{}{
@@ -169,5 +170,21 @@ func TestInitialize(t *testing.T) {
 
 	if err.Error() != "client already closed or not initialized" {
 		t.Fatal("expected error when closing a closed client second time")
+	}
+}
+
+
+func TestPgPlugin(t *testing.T) {
+	ctx := context.Background()
+	p := plugins.NewDestinationPlugin("postgresql", "development", New)
+
+	if err := plugins.DestiantionPluginTestHelper(ctx, p, getTestLogger(t), specs.Destination{
+		WriteMode: specs.WriteModeAppend,
+		Spec: Spec{
+			ConnectionString: getTestConnection(),
+			PgxLogLevel: LogLevelTrace,
+		},
+	}); err != nil {
+		t.Fatal(err)
 	}
 }

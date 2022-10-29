@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/plugins"
 	"github.com/cloudquery/plugin-sdk/schema"
@@ -28,6 +29,13 @@ type migrateMsg struct {
 	err    chan error
 }
 
+type readMsg struct {
+	tables schema.Tables
+	source string
+	sync   time.Time
+	err    chan error
+}
+
 type closeMsg struct {
 	err chan error
 }
@@ -43,6 +51,7 @@ type Client struct {
 	writeChan      chan *schema.DestinationResource
 	endWriteChan   chan *endWriteMsg
 	migrateChan    chan *migrateMsg
+	readChan 		 chan *readMsg
 	closeChan      chan *closeMsg
 
 	wg *sync.WaitGroup
@@ -66,6 +75,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec specs.Destination) (pl
 		writeChan:      make(chan *schema.DestinationResource),
 		endWriteChan:   make(chan *endWriteMsg),
 		migrateChan:    make(chan *migrateMsg),
+		readChan: 			 make(chan *readMsg),
 		closeChan:      make(chan *closeMsg),
 		writers:        make(map[string]*tableWriter),
 		wg:             &sync.WaitGroup{},
@@ -116,6 +126,8 @@ func (c *Client) listen() {
 			c.writeResource(resource)
 		case msg := <-c.migrateChan:
 			msg.err <- c.migrate(msg.tables)
+		case msg := <-c.readChan:
+			msg.err <- c.read(msg.tables, msg.source, msg.sync)
 		case msg := <-c.closeChan:
 			msg.err <- c.close()
 		}
