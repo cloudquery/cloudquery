@@ -21,7 +21,9 @@ func buildNeptuneClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller
 	}
 	mock.EXPECT().DescribeDBClusterSnapshots(
 		gomock.Any(),
-		&neptune.DescribeDBClusterSnapshotsInput{},
+		&neptune.DescribeDBClusterSnapshotsInput{
+			Filters: []types.Filter{{Name: aws.String("engine"), Values: []string{"neptune"}}},
+		},
 		gomock.Any(),
 	).Return(
 		&neptune.DescribeDBClusterSnapshotsOutput{DBClusterSnapshots: []types.DBClusterSnapshot{s}},
