@@ -86,7 +86,7 @@ jobs:
         with:
           include: "sites/versions/vercel.json"
           find: 'releases\/download\/cli\-v[^\/]+[\s\S]+?},'
-          replace: 'releases/download/${{github.ref_name}}" },'
+          replace: 'releases/download/${{github.ref_name}}/:binary" },'
           
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

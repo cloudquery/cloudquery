@@ -309,7 +309,9 @@
           "regions": {
             "ap-northeast-1": {},
             "ap-southeast-2": {},
+            "eu-central-1": {},
             "eu-west-1": {},
+            "sa-east-1": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -959,6 +961,7 @@
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -1538,6 +1541,7 @@
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -2919,6 +2923,7 @@
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -3234,6 +3239,7 @@
             "ap-northeast-3-fips": {},
             "ap-south-1": {},
             "ap-south-1-fips": {},
+            "ap-south-2-fips": {},
             "ap-southeast-1": {},
             "ap-southeast-1-fips": {},
             "ap-southeast-2": {},
@@ -4273,6 +4279,7 @@
             "fips-us-east-2": {},
             "fips-us-west-1": {},
             "fips-us-west-2": {},
+            "me-central-1": {},
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
@@ -5736,6 +5743,12 @@
             "eu-west-2": {},
             "fips-us-east-1": {},
             "fips-us-west-2": {},
+            "ui-ap-northeast-1": {},
+            "ui-ap-southeast-2": {},
+            "ui-eu-central-1": {},
+            "ui-eu-west-2": {},
+            "ui-us-east-1": {},
+            "ui-us-west-2": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -6658,7 +6671,8 @@
         },
         "ds": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "dynamodb": {

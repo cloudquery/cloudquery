@@ -12,7 +12,6 @@ func TestSync(t *testing.T) {
 		os.RemoveAll("cloudquery.log")
 	})
 
-	// this works but some funny stuff is going on
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 	testDataDir := path.Join(currentDir, "testdata")
